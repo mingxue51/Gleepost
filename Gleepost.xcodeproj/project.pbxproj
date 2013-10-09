@@ -510,6 +510,13 @@
 			name = "NewChat Classes";
 			sourceTree = "<group>";
 		};
+		586581331805E316005814B4 /* Login Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Login Images";
+			sourceTree = "<group>";
+		};
 		586659C117F1F44A00A0354E /* Other Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -546,6 +553,7 @@
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
+				586581331805E316005814B4 /* Login Images */,
 				581C9C4418047E1B00279256 /* Icons */,
 				58DC02381804377D0008993A /* New Chat Images */,
 				5898328F17F8AD2B008CB807 /* Profile */,

@@ -26,6 +26,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSLog(@"ChatViewController");
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     //[self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
@@ -52,7 +54,6 @@
 
     
     //Clear the sub view chatAnimations.
-    UIView *deleteView;
     for (UIView *subView in self.view.subviews)
     {
         if (subView.tag == 100)
@@ -62,9 +63,6 @@
             
         }
     }
-    
-   
-    
     
 }
 
@@ -79,8 +77,6 @@
     [btnBack addTarget:self action:@selector(navigateToSettings:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
     [btnBack setFrame:CGRectMake(0, 0, 20, 20)];
-   // btnBack.frame = imageView.bounds;
-   // [imageView addSubview:btnBack];
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     

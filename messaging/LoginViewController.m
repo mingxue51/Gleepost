@@ -29,6 +29,13 @@
 {
     [super viewDidLoad];
     
+    
+    //Change the colour format of the navigation bar.
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
+    
+    [self setBackground];
+    
     if(DEV) {
         self.nameTextField.text = @"TestingUser";
         self.passwordTextField.text = @"TestingPass";
@@ -41,6 +48,22 @@
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
   //  [self setNeedsStatusBarAppearanceUpdate];
+}
+
+-(void) setBackground
+{
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] init];
+    
+    [backgroundImage setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    
+    backgroundImage.image = newChatImage;
+    
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
 }
 
 
