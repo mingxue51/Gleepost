@@ -1,0 +1,5 @@
+platform :ios, '6.0'
+pod 'AFNetworking',	  '~> 1.3.1'
+pod 'AFHTTPRequestOperationLogger',	'~> 0.10.0'
+pod 'MBProgressHUD', '~> 0.7'
+pod 'OHHTTPStubs', '2.0.0'

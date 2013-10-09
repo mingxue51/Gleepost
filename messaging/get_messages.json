@@ -1,0 +1,22 @@
+{
+    "success":true,
+    "conversation":
+    {
+        "participants":
+        [
+         {"id":9, "username":"Patrick11"},
+         {"id":23, "username":"PeterGatsby11"}
+         ],
+        "messages":
+        [
+         {
+         "id":1234214,
+         "by": {"id":9, "username":"Patrick11"},
+         "text":"asl? ;)",
+         "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC",
+         "seen":false},
+         {"id":1234214, "by":{"id":23, "username":"PeterGatsby"}, "text":"asl? ;)", "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC", "seen":false},
+         {"id":1234214, "by":{"id":23, "username":"PeterGatsby"}, "text":"asl? ;)", "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC", "seen":false}
+         ]
+    }
+}

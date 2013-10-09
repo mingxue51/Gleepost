@@ -1,0 +1,30 @@
+{
+    "success":true,
+    "posts":
+        [
+             {
+                 "id":2,
+                 "by": {
+                     "id":9,
+                     "username":"Patrick"
+                    },
+                 "timestamp":"2013-08-26 12:52:51.174460521 +0000 UTC",
+                 "text":"This is a cool post for cool people!",
+                 "comments":4,
+                 "likes":5,
+                 "hates":3
+             },
+             {
+                 "id":1, 
+                 "by": { 
+                     "id":23,
+                     "username":"PeterGatsby" 
+                    },
+                 "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC", 
+                 "text":"Sailor Moon FTW!" ,
+                 "comments":4,
+                 "likes":5,
+                 "hates":3
+            },
+         ]
+}

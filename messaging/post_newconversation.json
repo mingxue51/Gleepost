@@ -1,0 +1,9 @@
+{
+    "success":true,
+    "conversation": {
+"participants": [
+{"id":9, "username":"Patrick"},
+{"id":23, "username":"PeterGatsby"}
+]
+}
+}
