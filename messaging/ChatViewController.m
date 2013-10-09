@@ -35,6 +35,40 @@
     [self addSettingsImageToNavigationBar];
 }
 
+-(void) viewDidAppear:(BOOL)animated
+{
+    NSLog(@"viewDidAppear");
+    [super viewDidAppear:animated];
+    
+    [self initialiseAnimationViewToTheViewController];
+
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"viewDidDisappear");
+    
+    [super viewDidDisappear:animated];
+
+    
+    //Clear the sub view chatAnimations.
+    UIView *deleteView;
+    for (UIView *subView in self.view.subviews)
+    {
+        if (subView.tag == 100)
+        {
+            [(ChatViewAnimations*)subView removeElements];
+            [subView removeFromSuperview];
+            
+        }
+    }
+    
+   
+    
+    
+}
+
+
 -(void) addSettingsImageToNavigationBar
 {
     UIImage *settingsIcon = [UIImage imageNamed:@"settings_icon"];
@@ -68,7 +102,7 @@
 -(void) initialiseAnimationViewToTheViewController
 {
     self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
+    self.chatAnimations.tag = 100;
     [self.view addSubview:self.chatAnimations];
     [self.view sendSubviewToBack:self.chatAnimations];
     

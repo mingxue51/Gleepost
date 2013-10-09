@@ -9,19 +9,29 @@
 #import "ChatViewAnimations.h"
 const int higherLimit = 50;
 const int lowerLimit = 220;
+
+
+
 @implementation ChatViewAnimations
+
+
+
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self setBackgroundImage];
-        [self initialiseCircles];
-        [self initialiseScrollView];
-        [self setUpTimers];
+       
+       [self initialiseCircles];
+       [self setBackgroundImage];
+       [self initialiseScrollView];
+       [self setUpTimers];
+        
+       animationsFinished = NO;
         
         
+
         
         
        // littleBubble.frame = CGRectMake(20, 20, 20, 20);
@@ -49,9 +59,18 @@ const int lowerLimit = 220;
     return self;
 }
 
+-(void) removeElements
+{
+    animateBubbles = YES;
+}
+
+
+
 -(void) initialiseScrollView
 {
     self.pullDownScrollView = [[PullDownScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    [self.pullDownScrollView setChatViewAnimations:self];
+    
     
     [self addSubview:self.pullDownScrollView];
 }
@@ -80,7 +99,7 @@ const int lowerLimit = 220;
 
 -(void) addArrayToView
 {
-    for(UIImageView *imageView in self.cirlcles)
+    for(UIImageView *imageView in self.circles)
     {
         [self addSubview:imageView];
     }
@@ -88,11 +107,13 @@ const int lowerLimit = 220;
 
 -(void) setUpTimers
 {
-    NSTimer *timer1 = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(animateCircles:) userInfo:nil repeats:YES];
-    [timer1 fire];
+    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(animateCircles:) userInfo:nil repeats:YES];
+    [self.timer1 fire];
     
-    NSTimer *timer2 = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(animateCircles2:) userInfo:nil repeats:YES];
-    [timer2 fire];
+    self.timer2 = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(animateCircles2:) userInfo:nil repeats:YES];
+    [self.timer2 fire];
+    
+  
     
 }
 
@@ -106,15 +127,15 @@ static int prevRandomY;
     
     NSMutableArray *halfCircleElements = [[NSMutableArray alloc] init];
     
-    for(int i=0; i<self.cirlcles.count; ++i)
+    for(int i=0; i<self.circles.count; ++i)
     {
-        if(i > self.cirlcles.count/2-1)
+        if(i > self.circles.count/2-1)
         {
             break;
         }
         else
         {
-            [halfCircleElements addObject:[self.cirlcles objectAtIndex:i]];
+            [halfCircleElements addObject:[self.circles objectAtIndex:i]];
         }
     }
     
@@ -208,15 +229,15 @@ static int prevRandomY;
     
     NSMutableArray *halfCircleElements = [[NSMutableArray alloc] init];
     
-    for(int i=self.cirlcles.count-1; i<self.cirlcles.count; --i)
+    for(int i=self.circles.count-1; i<self.circles.count; --i)
     {
-        if(i < self.cirlcles.count/2)
+        if(i < self.circles.count/2)
         {
             break;
         }
         else
         {
-            [halfCircleElements addObject:[self.cirlcles objectAtIndex:i]];
+            [halfCircleElements addObject:[self.circles objectAtIndex:i]];
         }
     }
     
@@ -266,6 +287,84 @@ static int prevRandomY;
 }
 
 /**
+ Animates circles in fancy way when the pull down circled pulled.
+ Move circles to the big central circle and make bigger the central one.
+ */
+static float widthLimit = 200;
+static BOOL animateBubbles = YES;
+-(void) animateCirclesFancy
+{
+
+//    if(animationsFinished)
+//    {
+//        
+//        NSLog(@"Animation Finished");
+//        return;
+//        
+//    }
+    
+    NSLog(@"Animation Started");
+
+    
+    CGRect mainCircleFrame = self.centralCircle.frame;
+    
+    if(mainCircleFrame.size.width > widthLimit)
+    {
+        return;
+    }
+    
+    
+    [UIView animateWithDuration:3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+                [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-1.1, mainCircleFrame.origin.y-1, mainCircleFrame.size.width+2, mainCircleFrame.size.height+2)];
+        
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+    
+    if(!animateBubbles)
+    {
+        return;
+    }
+    
+    for(UIImageView *imageView in self.circles)
+    {
+        animateBubbles = NO;
+
+        CGSize sizeOfCircleImage = self.centralCircle.frame.size;
+
+
+        
+        [UIView animateWithDuration:1 animations:^{
+            
+        [imageView setFrame: CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/3.5), imageView.image.size.width/2, imageView.image.size.height/2)];
+            
+            
+        //(self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/4.5)
+        }completion:^(BOOL finished) {
+            
+            [self hideBubbles];
+//            [self.timer1 invalidate];
+//            
+//            [self.timer2 invalidate];
+        }];
+    }
+    
+    animationsFinished = YES;
+}
+
+-(void) hideBubbles
+{
+    for(UIImageView *imageView in self.circles)
+    {
+        imageView.hidden = YES;
+    }
+}
+
+
+/**
  
  Checks the limitation of the y value.
  
@@ -306,12 +405,12 @@ static int prevRandomY;
     
 
     
-    self.cirlcles = [[NSMutableArray alloc] init];
+    self.circles = [[NSMutableArray alloc] init];
     
-    [self.cirlcles addObject:littleBubble];
-    [self.cirlcles addObject:littleBubble2];
-    [self.cirlcles addObject:littleBubble3];
-    [self.cirlcles addObject:littleBubble4];
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
     
     //Repeat the images and change the positiong of them.
     
@@ -332,10 +431,10 @@ static int prevRandomY;
     [littleBubble5 setFrame:CGRectMake(250, 80, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
-    [self.cirlcles addObject:littleBubble];
-    [self.cirlcles addObject:littleBubble2];
-    [self.cirlcles addObject:littleBubble3];
-    [self.cirlcles addObject:littleBubble4];
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
     
     
     
@@ -355,26 +454,26 @@ static int prevRandomY;
     [littleBubble5 setFrame:CGRectMake(200, 40, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
-    [self.cirlcles addObject:littleBubble];
-    [self.cirlcles addObject:littleBubble2];
-    [self.cirlcles addObject:littleBubble3];
-    [self.cirlcles addObject:littleBubble4];
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
     
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(59, 250, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
-    [self.cirlcles addObject:littleBubble3];
+    [self.circles addObject:littleBubble3];
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(98, 79, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
-    [self.cirlcles addObject:littleBubble3];
+    [self.circles addObject:littleBubble3];
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(120, 39, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
-    [self.cirlcles addObject:littleBubble3];
+    [self.circles addObject:littleBubble3];
     
 }
 

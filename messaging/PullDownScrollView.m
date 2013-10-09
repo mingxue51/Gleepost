@@ -7,8 +7,10 @@
 //
 
 #import "PullDownScrollView.h"
+#import "ChatViewAnimations.h"
 
 @implementation PullDownScrollView
+@synthesize chatViewAnimations = _chatViewAnimations;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -24,6 +26,10 @@
     return self;
 }
 
+-(void) setChatViewAnimations:(ChatViewAnimations *)chatViewAnimations
+{
+    _chatViewAnimations = chatViewAnimations;
+}
 
 -(void) initialiseElements
 {
@@ -62,6 +68,8 @@
         if (isDraging && myscrollView.contentOffset.y < 0 - REFHEIGHT)
         {
             NSLog(@"Animation.");
+            [_chatViewAnimations animateCirclesFancy];
+           // isDraging = NO;
         }
         else
         {
