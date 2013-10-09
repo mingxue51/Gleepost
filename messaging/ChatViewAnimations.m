@@ -295,13 +295,13 @@ static BOOL animateBubbles = YES;
 -(void) animateCirclesFancy
 {
 
-//    if(animationsFinished)
-//    {
-//        
-//        NSLog(@"Animation Finished");
-//        return;
-//        
-//    }
+    if(!animateBubbles)
+    {
+        
+        NSLog(@"Animation Finished");
+        return;
+        
+    }
     
     NSLog(@"Animation Started");
 
@@ -314,45 +314,87 @@ static BOOL animateBubbles = YES;
     }
     
     
-    [UIView animateWithDuration:3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        
-                [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-1.1, mainCircleFrame.origin.y-1, mainCircleFrame.size.width+2, mainCircleFrame.size.height+2)];
-        
-        
-    } completion:^(BOOL finished) {
-        
-    }];
+//    [UIView animateWithDuration:3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//        
+//                [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-27, mainCircleFrame.origin.y-25, mainCircleFrame.size.width+50, mainCircleFrame.size.height+50)];
+//        
+//        
+//    } completion:^(BOOL finished) {
+//        
+//    }];
     
     
-    if(!animateBubbles)
-    {
-        return;
-    }
+//    if(!animateBubbles)
+//    {
+//        return;
+//    }
     
+    CGSize sizeOfCircleImage = self.centralCircle.frame.size;
+    
+    int i=0;
     for(UIImageView *imageView in self.circles)
     {
         animateBubbles = NO;
 
-        CGSize sizeOfCircleImage = self.centralCircle.frame.size;
 
-
+        if(i%2==0)
+        {
+            [self animateBubbleWithDuration:1 delay:0 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+        }
+        else
+        {
+            [self animateBubbleWithDuration:1 delay:0.5 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+        }
+        [UIView animateWithDuration:1.7 animations:^{
         
-        [UIView animateWithDuration:1 animations:^{
-            
-        [imageView setFrame: CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/3.5), imageView.image.size.width/2, imageView.image.size.height/2)];
-            
-            
-        //(self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/4.5)
-        }completion:^(BOOL finished) {
-            
-            [self hideBubbles];
-//            [self.timer1 invalidate];
-//            
-//            [self.timer2 invalidate];
+        [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-53, mainCircleFrame.origin.y-50, mainCircleFrame.size.width+100, mainCircleFrame.size.height+100)];
+        
         }];
+        ++i;
+        
     }
     
     animationsFinished = YES;
+}
+
+
+-(void) animateBubbleWithDuration: (float)duration delay: (float)delay imageView: (UIImageView*) imageView sizeOfCircle: (CGSize)circleSize andMainCircleFrameSize: (CGRect)mainCircleFrame
+{
+    
+
+    [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveLinear animations:^{
+        
+        [imageView setFrame: CGRectMake((self.frame.size.width/2)-(circleSize.width/7.5), (self.frame.size.height/2)-(circleSize.height/3.5), imageView.image.size.width/2, imageView.image.size.height/2)];
+        
+
+
+        //(self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/4.5)
+    }completion:^(BOOL finished) {
+        
+       // [self hideBubbles];
+        
+
+        
+        /**
+         
+         [UIView animateWithDuration:0.5 animations:^{
+         
+         [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-1.7, mainCircleFrame.origin.y-1.5, mainCircleFrame.size.width+5, mainCircleFrame.size.height+5)];
+         
+         
+         } completion:^(BOOL finished) {
+         
+         }];
+         
+         */
+        
+        
+        
+        //            [self.timer1 invalidate];
+        //
+        //            [self.timer2 invalidate];
+    }];
+
 }
 
 -(void) hideBubbles
@@ -411,6 +453,8 @@ static BOOL animateBubbles = YES;
     [self.circles addObject:littleBubble2];
     [self.circles addObject:littleBubble3];
     [self.circles addObject:littleBubble4];
+    [self.circles addObject:littleBubble5];
+    
     
     //Repeat the images and change the positiong of them.
     
@@ -435,7 +479,7 @@ static BOOL animateBubbles = YES;
     [self.circles addObject:littleBubble2];
     [self.circles addObject:littleBubble3];
     [self.circles addObject:littleBubble4];
-    
+    [self.circles addObject:littleBubble5];
     
     
     littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
@@ -458,7 +502,7 @@ static BOOL animateBubbles = YES;
     [self.circles addObject:littleBubble2];
     [self.circles addObject:littleBubble3];
     [self.circles addObject:littleBubble4];
-    
+    [self.circles addObject:littleBubble5];
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(59, 250, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
@@ -474,6 +518,75 @@ static BOOL animateBubbles = YES;
     [littleBubble3 setFrame:CGRectMake(120, 39, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
     [self.circles addObject:littleBubble3];
+    
+    
+    //Add not appeard bubbles.
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(190, -120, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(30, -100, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(59, -500, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(-300, -800, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(200, -250, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
+    [self.circles addObject:littleBubble5];
+    
+    
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(100, -150, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(80, -80, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(-700, -800, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(-300, -600, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(-400, -250, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
+    [self.circles addObject:littleBubble5];
+    
+    
+    
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(355, -250, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(320, -80, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(320, -800, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(320, -600, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(320, -250, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
+    [self.circles addObject:littleBubble5];
     
 }
 

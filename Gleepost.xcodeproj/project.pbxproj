@@ -27,6 +27,7 @@
 		584CBE7E17F0573C00CD756A /* avatar_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CBE7D17F0573C00CD756A /* avatar_icon.png */; };
 		584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CBE7F17F058E100CD756A /* chat_background@2x.png */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
+		5865813218059DAD005814B4 /* Bubbles.m in Sources */ = {isa = PBXBuildFile; fileRef = 5865813118059DAD005814B4 /* Bubbles.m */; };
 		586659A417F1A20800A0354E /* chat_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659A317F1A20800A0354E /* chat_background.png */; };
 		586659AC17F1A87700A0354E /* avatar_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659AB17F1A87700A0354E /* avatar_big.png */; };
 		586659B417F1AC2300A0354E /* messageboxgreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659B017F1AC2300A0354E /* messageboxgreen.png */; };
@@ -195,6 +196,8 @@
 		584CBE7F17F058E100CD756A /* chat_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_background@2x.png"; sourceTree = "<group>"; };
 		585DF77517ECAC1400FBFC35 /* ChatMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageTableViewCell.h; sourceTree = "<group>"; };
 		585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageTableViewCell.m; sourceTree = "<group>"; };
+		5865813018059DAD005814B4 /* Bubbles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bubbles.h; sourceTree = "<group>"; };
+		5865813118059DAD005814B4 /* Bubbles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bubbles.m; sourceTree = "<group>"; };
 		586659A317F1A20800A0354E /* chat_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_background.png; sourceTree = "<group>"; };
 		586659AB17F1A87700A0354E /* avatar_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar_big.png; sourceTree = "<group>"; };
 		586659B017F1AC2300A0354E /* messageboxgreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageboxgreen.png; sourceTree = "<group>"; };
@@ -472,18 +475,27 @@
 			isa = PBXGroup;
 			children = (
 				582143C917FC59E10032ECEB /* External Code */,
-				80C4CABB17CFE65200AFA80C /* ChatViewController.h */,
-				80C4CABC17CFE65200AFA80C /* ChatViewController.m */,
 				585DF77517ECAC1400FBFC35 /* ChatMessageTableViewCell.h */,
 				585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */,
 				80AB897517C28D740053E784 /* ViewTopicViewController.h */,
 				80AB897617C28D740053E784 /* ViewTopicViewController.m */,
+			);
+			name = "Chat Classes";
+			sourceTree = "<group>";
+		};
+		5865812F18059CE0005814B4 /* NewChat Classes */ = {
+			isa = PBXGroup;
+			children = (
+				80C4CABB17CFE65200AFA80C /* ChatViewController.h */,
+				80C4CABC17CFE65200AFA80C /* ChatViewController.m */,
 				58DC024B18043DEE0008993A /* ChatViewAnimations.h */,
 				58DC024C18043DEE0008993A /* ChatViewAnimations.m */,
 				581C9C4118044CD300279256 /* PullDownScrollView.h */,
 				581C9C4218044CD300279256 /* PullDownScrollView.m */,
+				5865813018059DAD005814B4 /* Bubbles.h */,
+				5865813118059DAD005814B4 /* Bubbles.m */,
 			);
-			name = "Chat Classes";
+			name = "NewChat Classes";
 			sourceTree = "<group>";
 		};
 		586659C117F1F44A00A0354E /* Other Images */ = {
@@ -708,11 +720,12 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				585DF77417ECABD600FBFC35 /* Chat Classes */,
+				5865812F18059CE0005814B4 /* NewChat Classes */,
 				5841315D17FF0B0500A3278D /* Comment Classes */,
 				584906B917FD945F0045B65D /* Post Classes */,
 				587EA49D17F9B5A3005B3286 /* Contacts Classes */,
 				5898328B17F8A22D008CB807 /* Profile Classes */,
-				585DF77417ECABD600FBFC35 /* Chat Classes */,
 				80AB894017C26E610053E784 /* LoginViewController.h */,
 				80AB894117C26E610053E784 /* LoginViewController.m */,
 				80AB894317C26E7E0053E784 /* TimelineViewController.h */,
@@ -1075,6 +1088,7 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				80AB895A17C2721A0053E784 /* SocialContent.m in Sources */,
 				80AB895D17C277D40053E784 /* NewPostViewController.m in Sources */,
+				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
 				80AB896617C27D3D0053E784 /* Thread.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,

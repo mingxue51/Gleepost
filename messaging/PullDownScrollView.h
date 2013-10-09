@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#define REFHEIGHT   10
+#define REFHEIGHT   30
 
 @class ChatViewAnimations;
 
