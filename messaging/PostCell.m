@@ -18,16 +18,19 @@
 @synthesize socialPanel;
 
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+-(id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self)
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
     {
-        // Initialization code
-        NSLog(@"PostCell : init");
+        [self createElements];
     }
+    
     return self;
 }
+
+
 
 -(void) createElements
 {

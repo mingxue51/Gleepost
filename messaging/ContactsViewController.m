@@ -262,6 +262,7 @@
     static NSString *CellIdentifier = @"ContactCell";
     ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    
 //    if (cell == nil)
 //    {
 		//cell = [[ContactUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -273,7 +274,7 @@
     //[cell test];
     
     //PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    [cell createElements];
+    //[cell createElements];
     
     //[cell.nameUser setText: [self.users objectAtIndex:indexPath.row]];
     //NSMutableArray *currentUsers = [self.categorisedUsers objectAtIndex:indexPath.row];

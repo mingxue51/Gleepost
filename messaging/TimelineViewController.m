@@ -109,9 +109,9 @@ static BOOL likePushed;
     [self.navigationController.navigationBar setTranslucent:YES];
     
     // ios7 only
-    if([self respondsToSelector:@selector(setBackButtonBackgroundImage:forState:barMetrics:)]) {
+    //if([self respondsToSelector:@selector(setBackButtonBackgroundImage:forState:barMetrics:)]) {
         [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-    }
+   // }
     
     
     //Possible way to change the size of the navigation bar.
@@ -265,18 +265,17 @@ static BOOL likePushed;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"Post Size: %d", self.posts.count);
     return self.posts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    
+
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    //TODO: See if there is a need to create a new cell in case cell equals nil.
-    
-    //Creates the elements on the cell.
-    [cell createElements];
+
     
     //Add the user's image to the corresponding cell.
     UIImage *img = [UIImage imageNamed:@"avatar_big"];

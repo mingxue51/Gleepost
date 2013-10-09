@@ -31,15 +31,6 @@ static BOOL likePushed;
 
 @implementation ProfileViewController
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -159,16 +150,12 @@ static BOOL likePushed;
     static NSString *CellIdentifier = @"Cell";
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    //TODO: See if there is a need to create a new cell in case cell equals nil.
-    
-    //Creates the elements on the cell.
-    [cell createElements];
     
     //Add the user's image to the corresponding cell.
     UIImage *img = [UIImage imageNamed:@"avatar_big"];
     cell.userImage.image = img;
     cell.userImage.contentMode = UIViewContentModeScaleAspectFit;
-    [cell.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width, img.size.height)];
+    [cell.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width-15, img.size.height-15)];
     Post *post = self.posts[indexPath.row];
     
     //Add the user's name.

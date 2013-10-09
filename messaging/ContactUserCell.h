@@ -20,6 +20,5 @@
 /** Creates the elements of the cell. */
 -(void) createElements;
 
--(void) test;
 
 @end

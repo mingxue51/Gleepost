@@ -15,10 +15,10 @@
 - (id)initWithFrame:(CGRect)frame
 {
     
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:CGRectMake(75, 0, frame.size.width-150, frame.size.height)];
     if (self)
     {
-        [self setContentSize:CGSizeMake(frame.size.width, frame.size.height+1)];
+        [self setContentSize:CGSizeMake(frame.size.width-160, frame.size.height+1)];
         [self initialiseElements];
         self.delegate = self;
         

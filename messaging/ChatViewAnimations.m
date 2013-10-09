@@ -65,7 +65,6 @@ const int lowerLimit = 220;
 }
 
 
-
 -(void) initialiseScrollView
 {
     self.pullDownScrollView = [[PullDownScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
@@ -119,8 +118,7 @@ const int lowerLimit = 220;
 
 static BOOL goBack = NO;
 static BOOL goBack2 = NO;
-static int prevRandomX;
-static int prevRandomY;
+
 -(void) animateCircles: (id)sender
 {
     srand(time(0));
@@ -146,8 +144,6 @@ static int prevRandomY;
             
             if(goBack)
             {
-
-              
                 int rX = rand() % 20;
                 int rY = rand() % 20;
                 
@@ -496,6 +492,29 @@ static BOOL animateBubbles = YES;
     
     littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
     [littleBubble5 setFrame:CGRectMake(200, 40, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    
+    [self.circles addObject:littleBubble];
+    [self.circles addObject:littleBubble2];
+    [self.circles addObject:littleBubble3];
+    [self.circles addObject:littleBubble4];
+    [self.circles addObject:littleBubble5];
+    
+    
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(300, 120, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(250, 50, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(200, 100, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(220, 80, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(240, 40, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
     [self.circles addObject:littleBubble];

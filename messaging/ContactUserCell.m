@@ -10,22 +10,19 @@
 
 @implementation ContactUserCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+
+-(id) initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self)
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
     {
-        
-        
-        
+        [self createElements];
     }
+    
     return self;
 }
 
--(void) test
-{
-    NSLog(@"Test Method");
-}
 
 -(void) createElements
 {
@@ -39,12 +36,5 @@
     self.nameUser = [[UILabel alloc] initWithFrame:CGRectMake(60.f, 0.f, 280.f, 40.f)];
     [self.contentView addSubview:self.nameUser];
 }
-
-//- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-//{
-//    [super setSelected:selected animated:animated];
-//
-//    // Configure the view for the selected state
-//}
 
 @end
