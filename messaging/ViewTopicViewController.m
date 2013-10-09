@@ -7,14 +7,18 @@
 //
 
 #import "ViewTopicViewController.h"
+#import "ProfileViewController.h"
+
+#import "MessageCell.h"
+
+#import "SessionManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
-#import "MBProgressHUD.h"
-#import "Message.h"
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
-#import "ChatMessageTableViewCell.h"
-#import "ProfileViewController.h"
+
+#import "Message.h"
+
 
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
@@ -35,6 +39,8 @@ const int flexibleResizeLimit = 120;
 
 @property (assign, nonatomic) BOOL longPollingRequestRunning;
 
+@property (strong, nonatomic) NSString  *currentCellIdentifier;
+
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
 
@@ -47,39 +53,16 @@ const int flexibleResizeLimit = 120;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"View TOPIC");
     
     self.longPollingRequestRunning = NO;
     
-    //Change the format of the navigation bar.
-    //[self.navigationController.navigationBar setTranslucent:YES];
-    
-    
-    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar"] forBarMetrics:UIBarMetricsDefault];
-    //[self setBackgroundToNavigationBar];
+    self.title = [self.conversation getParticipantsNames];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
-    
+    self.navigationController.navigationBar.translucent = NO;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_background"]];
 
     [self.tableView setBackgroundColor:[UIColor clearColor]];
-    [self.tableView setUserInteractionEnabled:YES];
-    [self.tableView setDelegate:self];
-    
-    /**
-     allowsSelection
-     allowsSelectionDuringEditing
-     */
-    
-    [self.tableView setAllowsSelection:YES];
-    [self.tableView setAllowsSelectionDuringEditing:YES];
-    
 
-
-    
-    self.title = [self.conversation getParticipantsNames];
-    
-    //Set background to the messageView.
     [self.messageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]]];
     
     
@@ -92,7 +75,6 @@ const int flexibleResizeLimit = 120;
     [btnBack addTarget:self action:@selector(addContact) forControlEvents:UIControlEventTouchUpInside];
     btnBack.frame = imageView.bounds;
     [imageView addSubview:btnBack];
-    
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
     self.navigationItem.rightBarButtonItem = item;
     
@@ -160,106 +142,37 @@ const int flexibleResizeLimit = 120;
     self.longPollingRequestRunning = NO;
 }
 
-//-(void) initialiseChatElements
-//{
-//    //Initialise variables.
-//    previousTextViewSize = 1;
-//    
-//    //Add a UIView for testing purposes.
-//    self.messageTestView = [[UIView alloc] initWithFrame:CGRectMake(0, 515, 320, 85)];
-//   
-//    
-//    
-//    //Create an image view and add it to the view as a background.
-//   // UIImageView *back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"typing_bar"]];
-//    [self.messageTestView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]]];
-//    //[self.messageTestView addSubview:back];
-//    //[self.messageTestView sendSubviewToBack:back];
-//    
-//    //Initialise the message text view.
-//    self.messageTestTextView = [[UITextView alloc] initWithFrame:CGRectMake(56, 10, 182, 30)];
-//    
-//    //Set settings for the message text view.
-//    
-//    
-//    //Add message text view to the message view.
-//    [self.messageTestView addSubview: self.messageTestTextView];
-//    
-//    [self.messageTestTextView setDelegate:self];
-//    
-//    
-//    //Get the size of the messageView.
-//    CGRect messageViewRect = [self.messageTestView bounds];
-//    
-//    //Create and add the camera button.
-//    UIButton *cameraButton = [[UIButton alloc] init];
-//    [cameraButton setBackgroundImage:[UIImage imageNamed:@"camera_icon"] forState:UIControlStateNormal];
-//    [cameraButton setFrame:CGRectMake(10.0f, messageViewRect.size.height/5, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
-//    [cameraButton addTarget:self
-//                     action:@selector(addImageToTheChat:)
-//           forControlEvents:UIControlEventTouchDown];
-//    
-//    [self.messageTestView addSubview:cameraButton];
-//    
-//    //Create and add the send button.
-//    self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    
-//    [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
-//    
-//    self.sendButton.frame = CGRectMake(195.0, 0.0f, 160.0, 40.0);
-//    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    
-//    [self.messageTestView addSubview:self.sendButton];
-//    
-//    [self.messageTestView setHidden:YES];
-//    
-//    [self.view addSubview:self.messageTestView];
-//}
+
 
 -(void) addContact
 {
     NSLog(@"Add Contact.");
 }
 
-
-/**
- Called when the user needs to send an image to an opponent.
- 
- */
 -(void)addImageToTheChat:(id) sender
 {
     NSLog(@"Camera icon pushed!");
 }
 
-/**
- 
- Navigates to user's profile.
- 
- */
 -(void)navigateToProfile:(id)sender
 {
-    NSLog(@"Navigate to Profile.");
-    
     [self performSegueWithIdentifier:@"view profile" sender:self];
-    
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-//    ProfileViewController* pvc = segue.destinationViewController;
-  //  [pvc setHidesBottomBarWhenPushed:NO];
-
-   // [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
-   
-
-}
 
 #pragma mark - Messages management
 
 - (void)addNewMessage:(Message *)message
 {
+    self.messageTextField.text = @"";
+    
     [self.messages addObject:message];
     [self.tableView reloadData];
+    
+    // scroll to the last element
+    if(self.messages.count > 1) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 
@@ -276,6 +189,11 @@ const int flexibleResizeLimit = 120;
         if(success) {
             // TODO: crashes if array is empty
             if(messages.count != 0) {
+                for(Message *m in messages) {
+                    m.content = [NSString stringWithFormat:@"%d - %@", m.author.key, m.content];
+//                    m.content = [NSString stringWithFormat:@"%@ SDLKFJ KLSDJF KLSDJF KLSJDF KLJSDF KLJSDF LKJSDF LKJSDF KLJSDF LKJSDF", m.content];
+                }
+                
                 self.messages = [messages mutableCopy];
                 [self.tableView reloadData];
                 [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
@@ -310,6 +228,49 @@ const int flexibleResizeLimit = 120;
 }
 
 
+#pragma mark - New message
+
+- (IBAction)sendButtonClicked:(id)sender
+{
+    if([self.messageTextField.text isEmpty])
+    {
+        return;
+    }
+    
+    Message *message = [[Message alloc] init];
+    message.content = self.messageTextField.text;
+    message.conversation = self.conversation;
+    message.author = [[User alloc] init];
+    message.author.key = [SessionManager sharedInstance].key;
+    
+    [self addNewMessage:message];
+    
+//    [self hideKeyboardFromTextViewIfNeeded];
+    
+//    id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
+//    
+//    [WebClientHelper showStandardLoaderWithTitle:@"Sending message" forView:view];
+//    [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL success) {
+//        [WebClientHelper hideStandardLoaderForView:view];
+//        
+//        if(success) {
+//            [self startRequest];
+//            // self.messageTextField.text = @"Message:";
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
+}
+
+
+#pragma mark - Click elements
+
+- (IBAction)tableViewClicked:(id)sender
+{
+    [self hideKeyboardFromTextViewIfNeeded];
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -324,329 +285,350 @@ const int flexibleResizeLimit = 120;
     return self.messages.count;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [cell setBackgroundColor:[UIColor clearColor]];
-}
-
-
-
-
-static CGFloat padding = 20.0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *LeftCellIdentifier = @"LeftCell";
+    static NSString *RightCellIdentifier = @"RightCell";
     
-    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    ChatMessageTableViewCell *cell = (ChatMessageTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; //NOTE: Not the same.
-    
-    //If the cell is hidden it means that the cell is already created.
-    if([cell isHidden])
-    {
-        return cell;
-    }
-    else
-    {
-        [cell createElements];
-    }
-    
-
-    if(cell == nil)
-    {
-        cell = [[ChatMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.userInteractionEnabled = YES;
-    
-    //Message.
     Message *message = self.messages[indexPath.row];
     
-    //Set message's text.
-    //cell.textLabel.text = message.content;
+    NSString *cellIdentifier;
+    BOOL first;
     
-    NSString* messageUser = message.content;
-    //NSString* messageUser = @"TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2";
-    [cell.messageTextView setText: messageUser];
-
-//    [cell.content setText:messageUser];
-   
-    
-    //Message's datetime.
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat: @"yyyy-mm-dd HH:mm:ss"];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
-    NSString *time = [formatter stringFromDate:message.date];
-    
-    cell.date.text = time;
-    
-    //EDITED.
-    //cell.detailTextLabel.text = [NSString stringWithFormat:@" %@", message.author.name];
-    
-    
-    //Set the size of text view.
-    
-    CGSize textSize = { 260.0, 10000.0 };
-    
-    CGSize sizeOfTextView = [messageUser sizeWithFont:[UIFont boldSystemFontOfSize:12]
-                                    constrainedToSize:textSize
-                                        lineBreakMode:NSLineBreakByWordWrapping];
-    
-    
-    
-    
-    //TODO: Fix this.
-    //[messageUser sizeWithAttributes:<#(NSDictionary *)#>];
-  
-    
-    
-	sizeOfTextView.width += (padding/2)*4;
-    sizeOfTextView.height += (padding/2);
-    
-    //Set the size of background image view.
-    
-    CGSize sizeOfBackImgView;
-    
-    //Set a fixed width.
-    sizeOfBackImgView.width = 200.0f;
-    sizeOfBackImgView.height = sizeOfTextView.height + padding/2;
-    
-    
-    // Left/Right bubble
-    UIImage *userImage = nil;
-    
-    //Set the font and the size of the text of messages.
-    [cell.messageTextView setFont:[UIFont fontWithName:@"Helvetica Neue" size:12]];
-
-    if(indexPath.row%2 == 0)
-    {
-        
-        //If the message belongs to the user then show this.
-        
-        
-        //Get the user's image.
-        userImage = [UIImage imageNamed:@"avatar_big"];
-        CGSize userImageSize = userImage.size;
-        
-        
-        //Set the size of the user's image view.
-        CGRect dimImgViewNew = cell.userImageButton.frame;
-        
-        
-        
-        dimImgViewNew.origin.x = 0.0;
-       
-        //Set image to image view.
-        //cell.userImageView.image = userImage;
-        [cell.userImageButton setImage:userImage forState:UIControlStateNormal];
-        
-
-        
-        /**
-         
-         UIButton *cameraButton = [[UIButton alloc] init];
-         [cameraButton setBackgroundImage:[UIImage imageNamed:@"camera_icon"] forState:UIControlStateNormal];
-         [cameraButton setFrame:CGRectMake(10.0f, messageViewRect.size.height/4, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
-         [cameraButton addTarget:self
-         action:@selector(addImageToTheChat:)
-         forControlEvents:UIControlEventTouchDown];
-         [self.messageView addSubview:cameraButton];
-         
-         */
-        
-        
-        //Set selector to userImageView.
-//        UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-//        tapped.numberOfTapsRequired = 2;
-//        [cell.userImageView addGestureRecognizer:tapped];
-        
-        
-        
-        
-        //Fit the image to the size of image view.
-        cell.userImageButton.contentMode = UIViewContentModeScaleAspectFit;
-
-        
-        [cell.userImageButton setFrame: CGRectMake(10.0f, 0.0f+10.0f, userImageSize.width/2, userImageSize.height/2)];
-        
-        //Add selector to the user's image.
-        
-        [cell.userImageButton addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        [cell.backgroundImageView setFrame:CGRectMake(30.0f, dimImgViewNew.origin.y*2+10+10.0f, sizeOfBackImgView.width, sizeOfBackImgView.height)];
-        
-        cell.date.textAlignment = NSTextAlignmentLeft;
-        
-        //Set the image as a background in order to be able to set corner radius to the image view.
-        [cell.backgroundImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"messageboxwhite"]]];
-        [cell.backgroundImageView.layer setCornerRadius:8.0f];
-        
-        
-        [cell.messageTextView setFrame:CGRectMake(30.0f+7, dimImgViewNew.origin.y*2+20.0f, sizeOfBackImgView.width-10.0f, sizeOfBackImgView.height)];
-        
-        
-        
-        [cell.timeLabel setText:@"   15:34"];
-        
-
-        //TODO: Decide what message to show.
-    }
-    else
-    {
-        //Otherwise this.
-        userImage = [UIImage imageNamed:@"avatar_big"];
-        CGSize userImageSize = userImage.size;
-        
-        //Set the size of the user's image view.
-        CGRect dimImgViewNew = cell.userImageButton.frame;
-        
-        dimImgViewNew.origin.x = 0.0;
-        
-        
-        //Set image to image view.
-        //cell.userImageView.image = userImage;
-        [cell.userImageButton setImage:userImage forState:UIControlStateNormal];
-        
-
-
-        //Fit the image to the size of image view.
-        cell.userImageButton.contentMode = UIViewContentModeScaleAspectFit;
-        
-        float startOpposite = 50.0;
-        
-        [cell.userImageButton setFrame: CGRectMake(270.0f, 0.0f+10.0f, userImageSize.width/2, userImageSize.height/2)];
-        
-        //Add selector to the user's image.
-        
-        [cell.userImageButton addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        [cell.backgroundImageView setFrame:CGRectMake(30.0f+startOpposite, dimImgViewNew.origin.y*2+10+10.0f, sizeOfBackImgView.width, sizeOfBackImgView.height)];
-        
-        //Set the image as a background in order to be able to set corner radius to the image view.
-        [cell.backgroundImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"messageboxgreen"]]];
-        [cell.backgroundImageView.layer setCornerRadius:8.0f];
-        
-        [cell.messageTextView setFrame:CGRectMake(30.0f+7+startOpposite, dimImgViewNew.origin.y*2+20.0f, sizeOfBackImgView.width-10.0f, sizeOfBackImgView.height)];
-        
-        
-        [cell.timeLabel setText:@"   15:34"];
-        
+    // for the first item
+    if(indexPath.row == 0) {
+        first = YES;
+        cellIdentifier = LeftCellIdentifier;
     }
     
-
+    // for every items following the first one
+    else {
+        Message *previousMessage = self.messages[indexPath.row - 1];
+        
+        // messages follows with author and short time interval
+        if([message followsPreviousMessage:previousMessage]) {
+            first = NO;
+            cellIdentifier = self.currentCellIdentifier;
+        } else {
+            first = YES;
+            
+            // keep same side
+            if(message.author.key == previousMessage.author.key) {
+                cellIdentifier = self.currentCellIdentifier;
+            }
+            // or change the side if different author
+            else {
+                cellIdentifier = ([self.currentCellIdentifier isEqualToString:LeftCellIdentifier]) ? RightCellIdentifier : LeftCellIdentifier;
+            }
+        }
+        
+        //first = NO;
+    }
+    
+    self.currentCellIdentifier = cellIdentifier;
+    
+    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:LeftCellIdentifier forIndexPath:indexPath];
+    
+    [cell updateWithMessage:message first:first];
+    
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Message *message = self.messages[indexPath.row];
+    
+    BOOL first;
+    if(indexPath.row == 0) {
+        first = YES;
+    } else {
+        Message *previousMessage = self.messages[indexPath.row - 1];
+        first = ![message followsPreviousMessage:previousMessage];
+    }
+    
+    return [MessageCell getCellHeightWithContent:message.content first:first];
+}
 
 
-
-// Override to support conditional editing of the table view.
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+//
+////    ChatMessageTableViewCell *cell = (ChatMessageTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier]; //NOTE: Not the same.
+////    
+////    //If the cell is hidden it means that the cell is already created.
+////    if([cell isHidden])
+////    {
+////        return cell;
+////    }
+////    else
+////    {
+////        [cell createElements];
+////    }
+////    
+////
+////    if(cell == nil)
+////    {
+////        cell = [[ChatMessageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+////    }
+//    
+//    cell.accessoryType = UITableViewCellAccessoryNone;
+//    cell.userInteractionEnabled = YES;
+//    
+//    //Message.
+//    Message *message = self.messages[indexPath.row];
+//    
+//    //Set message's text.
+//    //cell.textLabel.text = message.content;
+//    
+//    NSString* messageUser = message.content;
+//    //NSString* messageUser = @"TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2";
+////    [cell.messageTextView setText: messageUser];
+//
+////    [cell.content setText:messageUser];
+//   
+//    
+//    //Message's datetime.
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat: @"yyyy-mm-dd HH:mm:ss"];
+//    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
+//    NSString *time = [formatter stringFromDate:message.date];
+//    
+////    cell.date.text = time;
+//    
+//    //EDITED.
+//    //cell.detailTextLabel.text = [NSString stringWithFormat:@" %@", message.author.name];
+//    
+//    
+//    //Set the size of text view.
+//    
+//    CGSize textSize = { 260.0, 10000.0 };
+//    
+//    CGSize sizeOfTextView = [messageUser sizeWithFont:[UIFont boldSystemFontOfSize:12]
+//                                    constrainedToSize:textSize
+//                                        lineBreakMode:NSLineBreakByWordWrapping];
+//    
+//    
+//    
+//    
+//    //TODO: Fix this.
+//    //[messageUser sizeWithAttributes:<#(NSDictionary *)#>];
+//  
+//    
+//    
+//	sizeOfTextView.width += (padding/2)*4;
+//    sizeOfTextView.height += (padding/2);
+//    
+//    //Set the size of background image view.
+//    
+//    CGSize sizeOfBackImgView;
+//    
+//    //Set a fixed width.
+//    sizeOfBackImgView.width = 200.0f;
+//    sizeOfBackImgView.height = sizeOfTextView.height + padding/2;
+//    
+//    
+//    // Left/Right bubble
+//    UIImage *userImage = nil;
+//    
+//    //Set the font and the size of the text of messages.
+////    [cell.messageTextView setFont:[UIFont fontWithName:@"Helvetica Neue" size:12]];
+//
+////    if(indexPath.row%2 == 0)
+////    {
+////        
+////        //If the message belongs to the user then show this.
+////        
+////        
+////        //Get the user's image.
+////        userImage = [UIImage imageNamed:@"avatar_big"];
+////        CGSize userImageSize = userImage.size;
+////        
+////        
+////        //Set the size of the user's image view.
+////        CGRect dimImgViewNew = cell.userImageButton.frame;
+////        
+////        
+////        
+////        dimImgViewNew.origin.x = 0.0;
+////       
+////        //Set image to image view.
+////        //cell.userImageView.image = userImage;
+////        [cell.userImageButton setImage:userImage forState:UIControlStateNormal];
+////        
+////
+////        
+////        /**
+////         
+////         UIButton *cameraButton = [[UIButton alloc] init];
+////         [cameraButton setBackgroundImage:[UIImage imageNamed:@"camera_icon"] forState:UIControlStateNormal];
+////         [cameraButton setFrame:CGRectMake(10.0f, messageViewRect.size.height/4, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
+////         [cameraButton addTarget:self
+////         action:@selector(addImageToTheChat:)
+////         forControlEvents:UIControlEventTouchDown];
+////         [self.messageView addSubview:cameraButton];
+////         
+////         */
+////        
+////        
+////        //Set selector to userImageView.
+//////        UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+//////        tapped.numberOfTapsRequired = 2;
+//////        [cell.userImageView addGestureRecognizer:tapped];
+////        
+////        
+////        
+////        
+////        //Fit the image to the size of image view.
+////        cell.userImageButton.contentMode = UIViewContentModeScaleAspectFit;
+////
+////        
+////        [cell.userImageButton setFrame: CGRectMake(10.0f, 0.0f+10.0f, userImageSize.width/2, userImageSize.height/2)];
+////        
+////        //Add selector to the user's image.
+////        
+////        [cell.userImageButton addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+////        
+////        
+////        [cell.backgroundImageView setFrame:CGRectMake(30.0f, dimImgViewNew.origin.y*2+10+10.0f, sizeOfBackImgView.width, sizeOfBackImgView.height)];
+////        
+////        cell.date.textAlignment = NSTextAlignmentLeft;
+////        
+////        //Set the image as a background in order to be able to set corner radius to the image view.
+////        [cell.backgroundImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"messageboxwhite"]]];
+////        [cell.backgroundImageView.layer setCornerRadius:8.0f];
+////        
+////        
+////        [cell.messageTextView setFrame:CGRectMake(30.0f+7, dimImgViewNew.origin.y*2+20.0f, sizeOfBackImgView.width-10.0f, sizeOfBackImgView.height)];
+////        
+////        
+////        
+////        [cell.timeLabel setText:@"   15:34"];
+////        
+////
+////        //TODO: Decide what message to show.
+////    }
+////    else
+////    {
+////        //Otherwise this.
+////        userImage = [UIImage imageNamed:@"avatar_big"];
+////        CGSize userImageSize = userImage.size;
+////        
+////        //Set the size of the user's image view.
+////        CGRect dimImgViewNew = cell.userImageButton.frame;
+////        
+////        dimImgViewNew.origin.x = 0.0;
+////        
+////        
+////        //Set image to image view.
+////        //cell.userImageView.image = userImage;
+////        [cell.userImageButton setImage:userImage forState:UIControlStateNormal];
+////        
+////
+////
+////        //Fit the image to the size of image view.
+////        cell.userImageButton.contentMode = UIViewContentModeScaleAspectFit;
+////        
+////        float startOpposite = 50.0;
+////        
+////        [cell.userImageButton setFrame: CGRectMake(270.0f, 0.0f+10.0f, userImageSize.width/2, userImageSize.height/2)];
+////        
+////        //Add selector to the user's image.
+////        
+////        [cell.userImageButton addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+////        
+////        
+////        [cell.backgroundImageView setFrame:CGRectMake(30.0f+startOpposite, dimImgViewNew.origin.y*2+10+10.0f, sizeOfBackImgView.width, sizeOfBackImgView.height)];
+////        
+////        //Set the image as a background in order to be able to set corner radius to the image view.
+////        [cell.backgroundImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"messageboxgreen"]]];
+////        [cell.backgroundImageView.layer setCornerRadius:8.0f];
+////        
+////        [cell.messageTextView setFrame:CGRectMake(30.0f+7+startOpposite, dimImgViewNew.origin.y*2+20.0f, sizeOfBackImgView.width-10.0f, sizeOfBackImgView.height)];
+////        
+////        
+////        [cell.timeLabel setText:@"   15:34"];
+////        
+////    }
+//    
+//
+//    return cell;
+//}
+//
+//
+//
+//
+//// Override to support conditional editing of the table view.
+////- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+////{
+////    // Return NO if you do not want the specified item to be editable.
+////    return YES;
+////}
+//
+//
+///*
+//// Override to support editing the table view.
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
-//    // Return NO if you do not want the specified item to be editable.
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        // Delete the row from the data source
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//    }   
+//    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//    }   
+//}
+//*/
+//
+///*
+//// Override to support rearranging the table view.
+//- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+//{
+//}
+//*/
+//
+///*
+//// Override to support conditional rearranging of the table view.
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Return NO if you do not want the item to be re-orderable.
 //    return YES;
+//}
+//*/
+//
+//#pragma mark - Table view delegate
+//
+//
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Navigation logic may go here. Create and push another view controller.
+//    /*
+//     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+//     // ...
+//     // Pass the selected object to the new view controller.
+//     [self.navigationController pushViewController:detailViewController animated:YES];
+//     */
+//}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    Message *chatMessage = (Message *)[self.messages objectAtIndex:indexPath.row];
+//	NSString *text = chatMessage.content;
+//	CGSize  textSize = { 260.0, 10000.0 };
+//    
+//	CGSize size = [text sizeWithFont:[UIFont boldSystemFontOfSize:14]
+//                   constrainedToSize:textSize
+//                       lineBreakMode:NSLineBreakByWordWrapping];
+//    
+//    // CGSize size = [text boundingRectWithSize:<#(CGSize)#> options:<#(NSStringDrawingOptions)#> attributes:<#(NSDictionary *)#> context:<#(NSStringDrawingContext *)#>]
+//	
+//	size.height += padding;
+//    
+//    //TODO: Change this.
+//	//return size.height+padding+5;
+//    return size.height+padding+50;
 //}
 
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-}
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Message *chatMessage = (Message *)[self.messages objectAtIndex:indexPath.row];
-	NSString *text = chatMessage.content;
-	CGSize  textSize = { 260.0, 10000.0 };
-    
-	CGSize size = [text sizeWithFont:[UIFont boldSystemFontOfSize:14]
-                   constrainedToSize:textSize
-                       lineBreakMode:NSLineBreakByWordWrapping];
-    
-    // CGSize size = [text boundingRectWithSize:<#(CGSize)#> options:<#(NSStringDrawingOptions)#> attributes:<#(NSDictionary *)#> context:<#(NSStringDrawingContext *)#>]
-	
-	size.height += padding;
-    
-    //TODO: Change this.
-	//return size.height+padding+5;
-    return size.height+padding+50;
-}
 
 
 
-- (IBAction)sendButtonClicked:(id)sender
-{
-    if([self.messageTextField.text isEmpty])
-    {
-        return;
-    }
-    
-    Message *message = [[Message alloc] init];
-    message.content = self.messageTextField.text;
-    message.conversation = self.conversation;
-    
-    id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
-    
-    [WebClientHelper showStandardLoaderWithTitle:@"Sending message" forView:view];
-    [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL success) {
-        [WebClientHelper hideStandardLoaderForView:view];
-        
-        if(success) {
-            [self startRequest];
-           // self.messageTextField.text = @"Message:";
-        } else {
-            [WebClientHelper showStandardError];
-        }
-    }];
-}
-
-- (IBAction)tableViewClicked:(id)sender
-{
-    [self hideKeyboardFromTextViewIfNeeded];
-    //keyboardWillHide
- 
-}
 
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch

@@ -11,6 +11,7 @@
 @interface DateFormatterManager : NSObject
 
 @property (strong, nonatomic) NSDateFormatter *fullDateFormatter;
+@property (strong, nonatomic) NSDateFormatter *timeFormatter;
 
 + (DateFormatterManager *)sharedInstance;
 

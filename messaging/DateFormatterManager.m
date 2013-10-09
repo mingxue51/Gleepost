@@ -32,7 +32,10 @@ static DateFormatterManager *instance = nil;
     }
     
     self.fullDateFormatter = [[NSDateFormatter alloc] init];
-    [self.fullDateFormatter setDateFormat:@"dd-MM-yyyy"];
+    [self.fullDateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+    
+    self.timeFormatter = [[NSDateFormatter alloc] init];
+    [self.timeFormatter setDateFormat:@"HH:mm"];
     
     return self;
 }

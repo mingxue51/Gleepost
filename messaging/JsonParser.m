@@ -118,11 +118,18 @@
 
 + (Message *)parseMessageFromJson:(NSDictionary *)json
 {
-    NSLog(@"message %@", json);
+
     Message *message = [[Message alloc] init];
     message.key = [json[@"id"] integerValue];
     message.author = [JsonParser parseUserFromJson:json[@"by"]];
-    message.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
+    
+    //message.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
+    
+    NSDate *date;
+    NSError *error;
+    [[DateFormatterManager sharedInstance].fullDateFormatter getObjectValue:&date forString:json[@"timestamp"] range:nil error:&error];
+    message.date = date;
+    
     message.content = json[@"text"];
     message.seen = [json[@"seen"] boolValue];
     

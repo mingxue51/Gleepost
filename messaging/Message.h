@@ -21,4 +21,6 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) Conversation *conversation;
 
+- (BOOL)followsPreviousMessage:(Message *)message;
+
 @end

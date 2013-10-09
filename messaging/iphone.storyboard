@@ -277,22 +277,126 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" id="CuF-td-RD0">
-                                <rect key="frame" x="0.0" y="67" width="320" height="291"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="366"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="70" id="l3Q-GT-GtB" customClass="ChatMessageTableViewCell">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="70"/>
+                                    <tableViewCell autoresizesSubviews="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LeftCell" rowHeight="57" id="l3Q-GT-GtB" customClass="MessageCell">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="57"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l3Q-GT-GtB" id="dsk-ge-oT1">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                                        <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l3Q-GT-GtB" id="dsk-ge-oT1">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar_big.png" id="aJU-3d-O47">
+                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" id="7i2-Rp-h2a" userLabel="Time view">
+                                                    <rect key="frame" x="146" y="3" width="47" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time_label.png" id="HaF-mB-tP1">
+                                                            <rect key="frame" x="0.0" y="0.0" width="47" height="12"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </imageView>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tvR-NZ-QL0">
+                                                            <rect key="frame" x="2" y="-4" width="42" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <view contentMode="scaleToFill" id="k2I-4f-jVM">
+                                                    <rect key="frame" x="29" y="20" width="281" height="35"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="messageboxwhite.png" id="8z2-fn-jqk">
+                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="35"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </imageView>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6FZ-uw-0GM">
+                                                            <rect key="frame" x="20" y="7" width="261" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="avatarImageView" destination="aJU-3d-O47" id="Nbz-8w-QSh"/>
+                                            <outlet property="messageContentImageView" destination="8z2-fn-jqk" id="vke-8Z-kAa"/>
+                                            <outlet property="messageContentLabel" destination="6FZ-uw-0GM" id="WfB-NK-zjb"/>
+                                            <outlet property="messageContentView" destination="k2I-4f-jVM" id="gfB-fE-5MI"/>
+                                            <outlet property="timeLabel" destination="tvR-NZ-QL0" id="gBr-qn-445"/>
+                                            <outlet property="timeView" destination="7i2-Rp-h2a" id="Han-SO-kIK"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell autoresizesSubviews="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RightCell" rowHeight="57" id="6OG-En-UM0" customClass="MessageCell">
+                                        <rect key="frame" x="0.0" y="79" width="320" height="57"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6OG-En-UM0" id="sg7-6H-ciw">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar_big.png" id="GY7-fW-sLF">
+                                                    <rect key="frame" x="275" y="5" width="40" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" id="zw2-gW-dcm" userLabel="Time view">
+                                                    <rect key="frame" x="146" y="3" width="47" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time_label.png" id="c6G-3z-CaW">
+                                                            <rect key="frame" x="0.0" y="0.0" width="47" height="12"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </imageView>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dEX-5t-h0l">
+                                                            <rect key="frame" x="2" y="-4" width="42" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <view contentMode="scaleToFill" id="3Tq-xW-TLt">
+                                                    <rect key="frame" x="9" y="20" width="281" height="35"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="messageboxgreen.png" id="ZmA-wk-YLf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="35"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        </imageView>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Pr-Xp-b6D">
+                                                            <rect key="frame" x="-20" y="7" width="281" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="p7E-nR-kMk" id="chb-iN-Eon"/>
                                     <outlet property="delegate" destination="p7E-nR-kMk" id="15L-xZ-GZU"/>
+                                    <outletCollection property="gestureRecognizers" destination="rue-AZ-g3z" appends="YES" id="pID-Me-bIL"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -312,9 +416,15 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ltB-QK-87t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+<<<<<<< HEAD
                 <tapGestureRecognizer id="wKf-zS-tcm">
                     <connections>
                         <action selector="tableViewClicked:" destination="p7E-nR-kMk" id="LuM-qQ-hsI"/>
+=======
+                <tapGestureRecognizer id="rue-AZ-g3z">
+                    <connections>
+                        <action selector="tableViewClicked:" destination="p7E-nR-kMk" id="a7Q-hT-cdc"/>
+>>>>>>> Chat message view refactoring with proper interface builder design.
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -816,11 +926,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="avatar_big.png" width="66" height="66"/>
         <image name="chat_tab.png" width="15" height="15"/>
         <image name="contacts_tab.png" width="15" height="19"/>
         <image name="home_tab.png" width="15" height="14"/>
+        <image name="messageboxgreen.png" width="190" height="29"/>
+        <image name="messageboxwhite.png" width="200" height="29"/>
         <image name="new_chat_tab.png" width="15" height="15"/>
         <image name="set_tab.png" width="15" height="14"/>
+        <image name="time_label.png" width="47" height="12"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -90,6 +90,7 @@
 		58DC024F18043F520008993A /* gleepost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC024E18043F520008993A /* gleepost@2x.png */; };
 		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
 		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
+		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
 		8096E4D317C2BA3000C7BF60 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D217C2BA3000C7BF60 /* clock.png */; };
 		8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D417C2BBD800C7BF60 /* navigation_bar.png */; };
 		8096E4D717C2BC9000C7BF60 /* navigation_bar_buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */; };
@@ -274,6 +275,8 @@
 		8056763E1805997B006E058E /* UserNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNetwork.m; sourceTree = "<group>"; };
 		8056764118059DC4006E058E /* LongPollOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollOperation.h; sourceTree = "<group>"; };
 		8056764218059DC4006E058E /* LongPollOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollOperation.m; sourceTree = "<group>"; };
+		805676441805B742006E058E /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
+		805676451805B742006E058E /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		8096E4D217C2BA3000C7BF60 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		8096E4D417C2BBD800C7BF60 /* navigation_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar.png; sourceTree = "<group>"; };
 		8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_buttons.png; sourceTree = "<group>"; };
@@ -651,6 +654,8 @@
 				8096E4EB17C2CBFD00C7BF60 /* CommentCell.m */,
 				8096E4ED17C2CD6F00C7BF60 /* PostCell.h */,
 				8096E4EE17C2CD6F00C7BF60 /* PostCell.m */,
+				805676441805B742006E058E /* MessageCell.h */,
+				805676451805B742006E058E /* MessageCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -1123,6 +1128,7 @@
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
+				805676461805B742006E058E /* MessageCell.m in Sources */,
 				8056764318059DC4006E058E /* LongPollOperation.m in Sources */,
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				80AB897D17C292180053E784 /* NewMessageViewController.m in Sources */,
