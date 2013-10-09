@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+//    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     
     //return YES;
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];

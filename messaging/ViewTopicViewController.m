@@ -33,6 +33,8 @@ const int flexibleResizeLimit = 120;
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 @property (strong, nonatomic) NSMutableArray *messages;
 
+@property (assign, nonatomic) BOOL longPollingRequestRunning;
+
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
 
@@ -45,7 +47,9 @@ const int flexibleResizeLimit = 120;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"View TOPIC");
     
+    self.longPollingRequestRunning = NO;
     
     //Change the format of the navigation bar.
     //[self.navigationController.navigationBar setTranslucent:YES];
@@ -70,8 +74,7 @@ const int flexibleResizeLimit = 120;
     [self.tableView setAllowsSelection:YES];
     [self.tableView setAllowsSelectionDuringEditing:YES];
     
-    NSLog(@"Allows Selection: %d",[self.tableView allowsSelection]);
-    NSLog(@"Allows Selection2: %d",[self.tableView allowsSelectionDuringEditing]);
+
 
     
     self.title = [self.conversation getParticipantsNames];
@@ -107,8 +110,6 @@ const int flexibleResizeLimit = 120;
     
     self.keyboardAppearanceSpaceY = 0;
     
-    [self loadMessages];
-    
     //Resize the text field.
     float height = self.messageTextField.frame.size.height;
     CGRect sizeOfMessageTextField = self.messageTextField.frame;
@@ -118,7 +119,7 @@ const int flexibleResizeLimit = 120;
    // [self initialiseChatElements];
     
     
-    NSLog(@"Message Text Field size: %f : %f", self.messageTextField.frame.origin.x, self.messageTextField.frame.origin.y);
+
     //NSLog(@"View size: %f : %f", self.messageTestView.frame.size.height, self.messageTestView.frame.size.width);
     
     // Uncomment the following line to preserve selection between presentations.
@@ -127,8 +128,7 @@ const int flexibleResizeLimit = 120;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-
-    
+    [self startRequest];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -152,6 +152,12 @@ const int flexibleResizeLimit = 120;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [[WebClient sharedInstance] cancelMessagesLongPolling];
+    self.longPollingRequestRunning = NO;
 }
 
 //-(void) initialiseChatElements
@@ -248,7 +254,18 @@ const int flexibleResizeLimit = 120;
 
 }
 
-- (void)loadMessages
+#pragma mark - Messages management
+
+- (void)addNewMessage:(Message *)message
+{
+    [self.messages addObject:message];
+    [self.tableView reloadData];
+}
+
+
+#pragma mark - Request management
+
+- (void)startRequest
 {
     id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
     
@@ -266,22 +283,37 @@ const int flexibleResizeLimit = 120;
         } else {
             [WebClientHelper showStandardError];
         }
+        
+        if(!self.longPollingRequestRunning) {
+            [self startLongPollingRequest];
+        }
     }];
 }
 
-
-- (void)didReceiveMemoryWarning
+- (void)startLongPollingRequest
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.longPollingRequestRunning = YES;
+    NSLog(@"start long polling request");
+    
+    [[WebClient sharedInstance] longPollNewMessagesWithCallbackBlock:^(BOOL success, Message *message) {
+        NSLog(@"long polling request finish with result %d", success);
+        
+        if(success) {
+            [self addNewMessage:message];
+        }
+        
+        // restart long polling request if has to
+        if(self.longPollingRequestRunning) {
+            [self startLongPollingRequest];
+        }
+    }];
 }
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"ViewTopicViewController : numberOfSectionsInTableView");
-    
     return 1;
 }
 
@@ -289,15 +321,11 @@ const int flexibleResizeLimit = 120;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"ViewTopicViewController : numberOfRowsInSection");
-
     return self.messages.count;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"ViewTopicViewController : willDisplayCell");
-
     [cell setBackgroundColor:[UIColor clearColor]];
 }
 
@@ -307,8 +335,6 @@ const int flexibleResizeLimit = 120;
 static CGFloat padding = 20.0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"ViewTopicViewController : cellForRowAtIndexPath");
-    
     static NSString *CellIdentifier = @"Cell";
     
     //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -343,7 +369,7 @@ static CGFloat padding = 20.0;
     NSString* messageUser = message.content;
     //NSString* messageUser = @"TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2TEST2";
     [cell.messageTextView setText: messageUser];
-    NSLog(@"USER'S MESSAGE: %@",messageUser);
+
 //    [cell.content setText:messageUser];
    
     
@@ -410,10 +436,6 @@ static CGFloat padding = 20.0;
         
         
         dimImgViewNew.origin.x = 0.0;
-        
-        NSLog(@"Size of image: %f : %f",userImageSize.height,userImageSize.width);
-    
-        NSLog(@"Size of cell: %f, %f",cell.frame.size.width, cell.frame.size.height);
        
         //Set image to image view.
         //cell.userImageView.image = userImage;
@@ -564,7 +586,6 @@ static CGFloat padding = 20.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectRowAtIndexPath");
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -575,9 +596,6 @@ static CGFloat padding = 20.0;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    NSLog(@"ViewTopicViewController : heightForRowAtIndexPath");
-    
     Message *chatMessage = (Message *)[self.messages objectAtIndex:indexPath.row];
 	NSString *text = chatMessage.content;
 	CGSize  textSize = { 260.0, 10000.0 };
@@ -615,7 +633,7 @@ static CGFloat padding = 20.0;
         [WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
-            [self loadMessages];
+            [self startRequest];
            // self.messageTextField.text = @"Message:";
         } else {
             [WebClientHelper showStandardError];
@@ -625,8 +643,6 @@ static CGFloat padding = 20.0;
 
 - (IBAction)tableViewClicked:(id)sender
 {
-    NSLog(@"tableViewClicked: %@",[sender description]);
-    
     [self hideKeyboardFromTextViewIfNeeded];
     //keyboardWillHide
  
@@ -635,7 +651,6 @@ static CGFloat padding = 20.0;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    NSLog(@"touch view: %@",touch.view.description);
     if ([touch.view isDescendantOfView:self.tableView])
     {
         
@@ -645,7 +660,6 @@ static CGFloat padding = 20.0;
     }
     
     [self hideKeyboardFromTextViewIfNeeded];
-    NSLog(@"Gesture");
     
     return YES;
 }
@@ -690,26 +704,20 @@ static CGFloat padding = 20.0;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSLog(@"%@",textView.text);
 
     double numberOfLines = self.messageTextField.contentSize.height/self.messageTextField.font.lineHeight;
     
     numberOfLines-=1.0;
     
-    NSLog(@"Number before: %lf", numberOfLines);
     
     numberOfLines -= (double)1.1;
     numberOfLines = ceil(numberOfLines);
     
     int noOfLines = (int) numberOfLines;
-    
-    //NSLog(@"Number of lines: %d",noOfLines);
-    NSLog(@"Number of lines: %d Previous: %d",noOfLines, previousTextViewSize);
 
     //Take the current height of the message view.
     CGRect messageViewSize = self.messageView.frame;
     
-    NSLog(@"Current message view height: %f",messageViewSize.size.height);
     
     /**
         Resize the message view frame size, message text view size to smaller.
@@ -717,8 +725,6 @@ static CGFloat padding = 20.0;
      */
     if(numberOfLines < previousTextViewSize)
     {
-        NSLog(@"Smaller views.");
-        
         [self resizeChatElementsDependingOnText:NO];
         
         
@@ -741,7 +747,6 @@ static CGFloat padding = 20.0;
     }
 
    
-    NSLog(@"Detailed: %lf : %lf",self.messageTextField.contentSize.height, self.messageTextField.font.lineHeight);
 }
 
 /**
@@ -793,7 +798,6 @@ static CGFloat padding = 20.0;
 
 - (void)textViewDidBeginEditing:(UITextView *)textField
 {
-    NSLog(@"textViewDidBeginEditing");
 
     
     
@@ -822,14 +826,12 @@ static CGFloat padding = 20.0;
 
 - (void)textViewDidEndEditing:(UITextView *)textField
 {
-    NSLog(@"textViewDidEndEditing");
     
  //   [textField resignFirstResponder];
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView
 {
-    NSLog(@"textViewShouldBeginEditing");
     // you can create the accessory view programmatically (in code), or from the storyboard
     if (self.messageTextField.inputAccessoryView == nil)
     {
@@ -937,7 +939,6 @@ static CGFloat padding = 20.0;
 - (void)hideKeyboardFromTextViewIfNeeded
 {
     
-    NSLog(@"hideKeyboardFromTextViewIfNeeded %d",[self.messageTestTextView isFirstResponder]);
 //    if([self.messageTestTextView isFirstResponder])
 //    {
 //        [self.messageTestTextView resignFirstResponder];
@@ -983,11 +984,8 @@ static CGFloat padding = 20.0;
     {
         return;
     }
-    NSLog(@"keyboardWillShow");
     
     
-    NSLog(@"Message view dimensions: x:%f y:%f",self.messageView.frame.origin.x,self.messageView.frame.origin.y);
-    NSLog(@"Keyboard Height: %f",[KeyboardHelper keyboardHeight:notification]);
     
     float height = [KeyboardHelper keyboardHeight:notification];
     
@@ -1003,7 +1001,6 @@ static CGFloat padding = 20.0;
 {
    // float height = [KeyboardHelper keyboardHeight:notification];
 
-    NSLog(@"keyboardWillHide");
 
    // float duration = [self keyboardAnimationDurationForNotification:notification];
     
@@ -1039,9 +1036,6 @@ static CGFloat padding = 20.0;
 {
     
     
-    NSLog(@"animateViewWithVerticalMovement");
-    
-    NSLog(@"Animated Duration: %f",duration);
     //0.21
     
     //UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews| UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews
@@ -1050,7 +1044,6 @@ static CGFloat padding = 20.0;
         
         
         //Changes to commit in a view.
-        NSLog(@"Movement: %f",movement);
         
         
         self.messageView.frame = CGRectOffset(self.messageView.frame, 0, movement);

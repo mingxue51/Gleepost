@@ -118,17 +118,17 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Creating post";
     hud.detailsLabelText = @"Please wait few seconds";
-    
-    WebClient *client = [WebClient sharedInstance];
-    [client createTopic:topic callbackBlock:^(BOOL success) {
-        [hud hide:YES];
-        
-        if(success) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            
-        }
-    }];
+//    
+//    WebClient *client = [WebClient sharedInstance];
+//    [client createTopic:topic callbackBlock:^(BOOL success) {
+//        [hud hide:YES];
+//        
+//        if(success) {
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        } else {
+//            
+//        }
+//    }];
 }
 
 

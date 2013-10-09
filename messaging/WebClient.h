@@ -31,6 +31,7 @@
 
 - (void)getMessagesForConversation:(Conversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 - (void)longPollNewMessagesWithCallbackBlock:(void (^)(BOOL success, Message *conversation))callbackBlock;
+- (void)cancelMessagesLongPolling;
 - (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success))callbackBlock;
 
 - (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;

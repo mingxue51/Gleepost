@@ -86,7 +86,6 @@ static WebClient *instance = nil;
         
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error %@", error);
         callbackBlock(NO);
     }];
 }
@@ -109,7 +108,6 @@ static WebClient *instance = nil;
         NSArray *posts = [JsonParser parsePostsFromJson:responseObject];
         callbackBlock(YES, posts);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", error);
         callbackBlock(NO, nil);
     }];
 }
@@ -231,6 +229,11 @@ static WebClient *instance = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];
+}
+
+- (void)cancelMessagesLongPolling
+{
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:@"longpoll"];
 }
 
 
