@@ -10,7 +10,7 @@
 
 @implementation User
 
-@synthesize name=_name;
+@synthesize name=_name, tagline, profileImageUrl, course, network;
 
 
 @end

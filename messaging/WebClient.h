@@ -30,11 +30,13 @@
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 
 - (void)getMessagesForConversation:(Conversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
+- (void)longPollNewMessagesWithCallbackBlock:(void (^)(BOOL success, Message *conversation))callbackBlock;
 - (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success))callbackBlock;
 
 - (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;
 - (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;
 
-- (void)createTopic:(Topic *)topic callbackBlock:(void (^)(BOOL success))callbackBlock;
+
+
 
 @end

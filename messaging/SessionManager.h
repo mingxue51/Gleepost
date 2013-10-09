@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) NSString *token;
+@property (assign, nonatomic) NSInteger key;
 
 + (SessionManager *)sharedInstance;
 

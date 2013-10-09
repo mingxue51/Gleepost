@@ -1,4 +1,4 @@
-//
+    //
 //  WebClient.m
 //  messaging
 //
@@ -22,7 +22,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.7/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.9/";
 
 static WebClient *instance = nil;
 
@@ -70,42 +70,19 @@ static WebClient *instance = nil;
 
 - (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success))callbackBlock
 {
-    //TODO: Crashes with iOS 6.
+    // ios6 temp fix
+    if(!name || !password) {
+        callbackBlock(NO);
+        return;
+    }
+    
     [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        
-        if(!success) {
-            callbackBlock(NO);
-            return;
-        }
-        
-        User *user = [[User alloc] init];
-        user.name = @"Patrick";
        
-        //[self printDic:json];
+        self.sessionManager.key = [json[@"id"] integerValue];
+        self.sessionManager.token = json[@"value"];
         
-        //TODO: just isolate the id and pass it to user.remoteId!!!!
-        
-        //WORKING. Bug when it is prompt to chat with an opponent.
-        user.remoteId = 9;
-        
-        NSLog(@"DICTIONARY:%@",json);
-        
-        
-        NSDictionary* str = [self getFirstElement:json];
-        
-        
-        
-        //NOT WORKS.
-       // user.remoteId = [self parseJsonDictionary: str];
-        
-        
-        self.sessionManager.user = user;
-        self.sessionManager.token = json[@"token"][@"value"];
-        
-        self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", user.remoteId], @"token": self.sessionManager.token};
+        self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.sessionManager.key], @"token": self.sessionManager.token};
         
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -114,85 +91,25 @@ static WebClient *instance = nil;
     }];
 }
 
--(NSDictionary*) getFirstElement:(NSDictionary*) d
-{
-    NSDictionary* second;
-    
-    for(NSString* str in d)
-    {
-        second = [d objectForKey:str];
-        break;
-    }
-
-
-    
-    return second;
-    
-}
-
-
-/**
- 
- Parse the json message and return the id.
- 
- */
--(int) parseJsonDictionary: (NSDictionary*) part
-{
-    NSString* userId;
-    for(NSString* s in part)
-    {
-        NSLog(@"D-> %@",s);
-        userId = [part objectForKey:s];
-        break;
-        
-    }
-    
-    NSLog(@"FINAL ID: %@",userId);
-    
-    return [userId intValue];
-}
-
-
-
--(NSString*) parseMessage: (NSString*)message
-{
-    message = [message substringWithRange:NSMakeRange(2, message.length-3)];
-    
-    NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"\","];
-    return [[message componentsSeparatedByCharactersInSet: doNotWant] componentsJoinedByString: @" "];
-}
-
-
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success))callbackBlock
 {
     [self postPath:@"register" parameters:@{@"user": name, @"pass": password, @"email": email} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        callbackBlock(success);
+        callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error %@", error);
         callbackBlock(NO);
     }];
 }
 
 - (void)getPostsWithCallbackBlock:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
-    [self getPath:@"posts" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        
-        NSLog(@"JSON Dictionary: %@",json);
-        
-        if(!success) {
-            callbackBlock(NO, nil);
-            return;
-        }
-        
-        NSArray *posts = [JsonParser parsePostsFromJson:json[@"posts"]];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.authParameters];
+    
+    [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *posts = [JsonParser parsePostsFromJson:responseObject];
         callbackBlock(YES, posts);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", error);
         callbackBlock(NO, nil);
     }];
 }
@@ -200,15 +117,10 @@ static WebClient *instance = nil;
 - (void)createPost:(Post *)post callbackBlock:(void (^)(BOOL success))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"text", post.content, nil];
-    
-    NSLog(@"POST CONTENT: %@",post.content);
-    
     [params addEntriesFromDictionary:self.authParameters];
     
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *json = (NSDictionary *)responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        callbackBlock(success);
+        callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
     }];
@@ -216,18 +128,13 @@ static WebClient *instance = nil;
 
 - (void)getCommentsForPost:(Post *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.remoteId];
-    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        
-        if(!success) {
-            callbackBlock(NO, nil);
-            return;
-        }
-        
-        NSArray *comments = [JsonParser parseCommentsFromJson:json[@"comments"]];
+    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.key];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.authParameters];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *comments = [JsonParser parseCommentsFromJson:responseObject];
         callbackBlock(YES, comments);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -243,27 +150,19 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.authParameters];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *json = (NSDictionary *)responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        callbackBlock(success);
+        callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
     }];
 }
 
+
+/* CONVERSATIONS */
+
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        
-        if(!success) {
-            callbackBlock(NO, nil);
-            return;
-        }
-        
-        NSArray *conversations = [JsonParser parseConversationsFromJson:json[@"conversations"] ignoringUser:self.sessionManager.user];
+        NSArray *conversations = [JsonParser parseConversationsFromJson:responseObject ignoringUserKey:self.sessionManager.key];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -272,21 +171,18 @@ static WebClient *instance = nil;
 
 - (void)getMessagesForConversation:(Conversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteId];
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.key];
     [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
+        NSArray *messages = [JsonParser parseMessagesFromJson:responseObject];
+//        if(responseObject != (id)[NSNull null] && json.count != 0) {
+//            messages =
+//        } else {
+//            messages = [NSArray array];
+//        }
         
-        if(!success) {
-            callbackBlock(NO, nil);
-            return;
-        }
-        
-        NSArray *messages = [JsonParser parseMessagesFromJson:json[@"conversation"][@"messages"]];
         callbackBlock(YES, messages);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", error);
         callbackBlock(NO, nil);
     }];
 }
@@ -304,31 +200,8 @@ static WebClient *instance = nil;
 - (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *json = (NSDictionary *) responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        
-        if(!success) {
-            callbackBlock(NO, nil);
-            return;
-        }
-        
-        //TODO: Problem from server. There is no conversation element.
-        NSLog(@"CONV:%@",json);
-        
-        Conversation *conversation;
-        @try {
-            conversation = [JsonParser parseConversationFromJson:json[@"conversation"] ignoringUser:self.sessionManager.user];
 
-        }
-        @catch (NSException *exception)
-        {
-            NSLog(@"ERROR: json conversation element does not exist. EXCEPTION: %@",exception);
-        }
-        @finally
-        {
-            
-        }
+        Conversation *conversation = [JsonParser parseConversationFromJson:responseObject ignoringUserKey:self.sessionManager.key];
         
         callbackBlock(YES, conversation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -338,35 +211,42 @@ static WebClient *instance = nil;
 
 - (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversationRemoteId];
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.key];
     
-    NSLog(@"MESSAGE: %@",message.content);
-    
-    
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"text", message.content, nil];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
     [params addEntriesFromDictionary:self.authParameters];
     
-    
-    
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *json = (NSDictionary *)responseObject;
-        BOOL success = [json[@"success"] boolValue];
-        NSLog(@"JSON: %@",json);
-
-        
-        callbackBlock(success);
+        callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
     }];
 }
 
-- (void)createTopic:(Topic *)topic callbackBlock:(void (^)(BOOL success))callbackBlock
+- (void)longPollNewMessagesWithCallbackBlock:(void (^)(BOOL success, Message *conversation))callbackBlock
 {
-    if(ENV_FAKE_API) {
-        callbackBlock(YES);
-        return;
-    }
+    [self getPath:@"longpoll" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        Message *message = [JsonParser parseMessageFromJson:responseObject];
+        callbackBlock(YES, message);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
+
+/* USER */
+
+- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, User *user))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"user/%d", key];
     
+    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        User *user = [JsonParser parseUserFromJson:responseObject];
+        callbackBlock(YES, user);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
 }
 
 

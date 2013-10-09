@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "User.h"
+#import "UserNetwork.h"
 #import "Post.h"
 #import "Comment.h"
 #import "Conversation.h"
@@ -16,13 +17,14 @@
 @interface JsonParser : NSObject
 
 + (User *)parseUserFromJson:(NSDictionary *)json;
++ (UserNetwork *)parseUserNetworkFromJson:(NSDictionary *)json;
 + (Post *)parsePostFromJson:(NSDictionary *)json;
 + (NSArray *)parsePostsFromJson:(NSDictionary *)json;
 + (Comment *)parseCommentFromJson:(NSDictionary *)json;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments;
 
-+ (Conversation *)parseConversationFromJson:(NSDictionary *)json ignoringUser:(User *)userToIgnore;
-+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations ignoringUser:(User *)userToIgnore;
++ (Conversation *)parseConversationFromJson:(NSDictionary *)json ignoringUserKey:(NSInteger)userKeyToIgnore;
++ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations ignoringUserKey:(NSInteger)userKeyToIgnore;
 + (Message *)parseMessageFromJson:(NSDictionary *)json;
 + (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages;
     

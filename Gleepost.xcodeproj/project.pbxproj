@@ -88,6 +88,8 @@
 		58DC024A180437A70008993A /* settings_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0242180437A70008993A /* settings_icon.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
 		58DC024F18043F520008993A /* gleepost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC024E18043F520008993A /* gleepost@2x.png */; };
+		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
+		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
 		8096E4D317C2BA3000C7BF60 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D217C2BA3000C7BF60 /* clock.png */; };
 		8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D417C2BBD800C7BF60 /* navigation_bar.png */; };
 		8096E4D717C2BC9000C7BF60 /* navigation_bar_buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */; };
@@ -140,6 +142,7 @@
 		80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AB899017C2AE700053E784 /* navigation_bar@2x.png */; };
 		80B1735B18056A0700D9669B /* typing_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1735918056A0700D9669B /* typing_bar.png */; };
 		80B1735C18056A0700D9669B /* typing_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1735A18056A0700D9669B /* typing_bar@2x.png */; };
+		80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1735E1805792B00D9669B /* WebClientHelper.m */; };
 		80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C4CAB717CFE24700AFA80C /* RegisterViewController.m */; };
 		80C4CABA17CFE3C400AFA80C /* post_register.json in Resources */ = {isa = PBXBuildFile; fileRef = 80C4CAB917CFE3C400AFA80C /* post_register.json */; };
 		80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C4CABC17CFE65200AFA80C /* ChatViewController.m */; };
@@ -267,6 +270,10 @@
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
 		58DC024E18043F520008993A /* gleepost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gleepost@2x.png"; sourceTree = "<group>"; };
+		8056763D1805997B006E058E /* UserNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNetwork.h; sourceTree = "<group>"; };
+		8056763E1805997B006E058E /* UserNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNetwork.m; sourceTree = "<group>"; };
+		8056764118059DC4006E058E /* LongPollOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollOperation.h; sourceTree = "<group>"; };
+		8056764218059DC4006E058E /* LongPollOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollOperation.m; sourceTree = "<group>"; };
 		8096E4D217C2BA3000C7BF60 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		8096E4D417C2BBD800C7BF60 /* navigation_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar.png; sourceTree = "<group>"; };
 		8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_buttons.png; sourceTree = "<group>"; };
@@ -345,6 +352,8 @@
 		80AB899017C2AE700053E784 /* navigation_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigation_bar@2x.png"; sourceTree = "<group>"; };
 		80B1735918056A0700D9669B /* typing_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typing_bar.png; sourceTree = "<group>"; };
 		80B1735A18056A0700D9669B /* typing_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typing_bar@2x.png"; sourceTree = "<group>"; };
+		80B1735D1805792B00D9669B /* WebClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebClientHelper.h; sourceTree = "<group>"; };
+		80B1735E1805792B00D9669B /* WebClientHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebClientHelper.m; sourceTree = "<group>"; };
 		80C4CAB617CFE24700AFA80C /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		80C4CAB717CFE24700AFA80C /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		80C4CAB917CFE3C400AFA80C /* post_register.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_register.json; sourceTree = "<group>"; };
@@ -618,6 +627,15 @@
 			name = "New Chat Images";
 			sourceTree = "<group>";
 		};
+		8056764018059D78006E058E /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				8056764118059DC4006E058E /* LongPollOperation.h */,
+				8056764218059DC4006E058E /* LongPollOperation.m */,
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
 		8096E4E817C2CBEA00C7BF60 /* Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -703,6 +721,7 @@
 		80AB893E17C26D040053E784 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8056764018059D78006E058E /* Operations */,
 				80E7478517CEA08F001957E5 /* Categories */,
 				8096E4E817C2CBEA00C7BF60 /* Table */,
 				80AB898217C2A0560053E784 /* Helpers */,
@@ -783,6 +802,8 @@
 				80E7478E17CEA93B001957E5 /* Conversation.m */,
 				80E7479017CEA994001957E5 /* Message.h */,
 				80E7479117CEA994001957E5 /* Message.m */,
+				8056763D1805997B006E058E /* UserNetwork.h */,
+				8056763E1805997B006E058E /* UserNetwork.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -812,6 +833,8 @@
 				80AB898417C2A0660053E784 /* KeyboardHelper.m */,
 				80CE307217CE4E4D003007D0 /* JsonParser.h */,
 				80CE307317CE4E4D003007D0 /* JsonParser.m */,
+				80B1735D1805792B00D9669B /* WebClientHelper.h */,
+				80B1735E1805792B00D9669B /* WebClientHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1075,6 +1098,7 @@
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
+				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
@@ -1099,10 +1123,12 @@
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
+				8056764318059DC4006E058E /* LongPollOperation.m in Sources */,
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				80AB897D17C292180053E784 /* NewMessageViewController.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
+				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				8096E4EC17C2CBFD00C7BF60 /* CommentCell.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,

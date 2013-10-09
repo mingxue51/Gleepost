@@ -14,20 +14,38 @@
 + (User *)parseUserFromJson:(NSDictionary *)json
 {
     User *user = [[User alloc] init];
-    user.remoteId = [json[@"id"] integerValue];
+    user.key = [json[@"id"] integerValue];
     user.name = json[@"username"];
     
+    // optional
+    user.tagline = json[@"tagline"];
+    user.profileImageUrl = json[@"profile_image"];
+    user.course = json[@"course"];
+    
+    if(json[@"network"]) {
+        user.network = json[@"network"];
+    }
+    
     return user;
+}
+
++ (UserNetwork *)parseUserNetworkFromJson:(NSDictionary *)json;
+{
+    UserNetwork *userNetwork = [[UserNetwork alloc] init];
+    userNetwork.key = [json[@"id"] integerValue];
+    userNetwork.name = json[@"name"];
+    
+    return userNetwork;
 }
 
 + (Post *)parsePostFromJson:(NSDictionary *)json
 {
     Post *post = [[Post alloc] init];
-    post.remoteId = [json[@"id"] integerValue];
+    post.key = [json[@"id"] integerValue];
     post.user = [JsonParser parseUserFromJson:json[@"by"]];
     post.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
-    post.itemsCount = [json[@"comments"] integerValue];
+    post.commentsCount = [json[@"comments"] integerValue];
     post.socialContent.likes = [json[@"likes"] integerValue];
     post.socialContent.hates = [json[@"hates"] integerValue];
     
@@ -48,7 +66,7 @@
 + (Comment *)parseCommentFromJson:(NSDictionary *)json
 {
     Comment *comment = [[Comment alloc] init];
-    comment.remoteId = [json[@"id"] integerValue];
+    comment.key = [json[@"id"] integerValue];
     comment.user = [JsonParser parseUserFromJson:json[@"by"]];
     comment.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
     comment.content = json[@"text"];
@@ -66,16 +84,20 @@
     return comments;
 }
 
-+ (Conversation *)parseConversationFromJson:(NSDictionary *)json ignoringUser:(User *)userToIgnore
++ (Conversation *)parseConversationFromJson:(NSDictionary *)json ignoringUserKey:(NSInteger)userKeyToIgnore
 {
     Conversation *conversation = [[Conversation alloc] init];
-    conversation.remoteId = [json[@"id"] integerValue];
-    conversation.lastMessage = [JsonParser parseMessageFromJson:json[@"mostRecentMessage"]];
+    conversation.key = [json[@"id"] integerValue];
+    if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
+        conversation.lastMessage = [JsonParser parseMessageFromJson:json[@"mostRecentMessage"]];
+    }
     
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
         User *user = [JsonParser parseUserFromJson:jsonUser];
-        if(userToIgnore && user.remoteId != userToIgnore.remoteId) {
+        
+        // ignore the current user that is obviously included in the conversation
+        if(user.key != userKeyToIgnore) {
             [participants addObject:user];
         }
     }
@@ -84,11 +106,11 @@
     return conversation;
 }
 
-+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations ignoringUser:(User *)userToIgnore
++ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations ignoringUserKey:(NSInteger)userKeyToIgnore
 {
     NSMutableArray *conversations = [NSMutableArray array];
     for(id jsonConversation in jsonConversations) {
-        [conversations addObject:[JsonParser parseConversationFromJson:jsonConversation ignoringUser:userToIgnore]];
+        [conversations addObject:[JsonParser parseConversationFromJson:jsonConversation ignoringUserKey:userKeyToIgnore]];
     }
     
     return conversations;
@@ -96,8 +118,9 @@
 
 + (Message *)parseMessageFromJson:(NSDictionary *)json
 {
+    NSLog(@"message %@", json);
     Message *message = [[Message alloc] init];
-    message.remoteId = [json[@"id"] integerValue];
+    message.key = [json[@"id"] integerValue];
     message.author = [JsonParser parseUserFromJson:json[@"by"]];
     message.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
     message.content = json[@"text"];

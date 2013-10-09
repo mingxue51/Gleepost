@@ -10,6 +10,6 @@
 
 @implementation RemoteEntity
 
-@synthesize remoteId;
+@synthesize key;
 
 @end

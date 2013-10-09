@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AFHTTPRequestOperationLogger.h"
 
 @implementation AppDelegate
 
@@ -16,6 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    
     //return YES;
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
 //    UIViewController *vc = [storyboard instantiateInitialViewController];

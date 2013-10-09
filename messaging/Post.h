@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Thread.h"
 #import "SocialContent.h"
+#import "RemoteEntity.h"
+#import "User.h"
 
-@interface Post : Thread
+@interface Post : RemoteEntity
 
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) SocialContent *socialContent;
+@property (assign, nonatomic) NSInteger commentsCount;
+@property (strong, nonatomic) NSArray *imagesUrls;
+@property (strong, nonatomic) NSDate *date;
+@property (strong, nonatomic) User *user;
 
 @end

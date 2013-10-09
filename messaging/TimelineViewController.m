@@ -10,6 +10,7 @@
 #import "ViewPostViewController.h"
 #import "NewPostViewController.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "MBProgressHUD.h"
 #import "Post.h"
 #import "PostCell.h"
@@ -17,6 +18,7 @@
 #import "NewCommentView.h"
 #import "Social/Social.h"
 #import <Twitter/Twitter.h>
+
 
 //#import "AppDelegate.h"
 
@@ -106,7 +108,10 @@ static BOOL likePushed;
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+    // ios7 only
+    if([self respondsToSelector:@selector(setBackButtonBackgroundImage:forState:barMetrics:)]) {
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+    }
     
     
     //Possible way to change the size of the navigation bar.
@@ -238,33 +243,15 @@ static BOOL likePushed;
 
 - (void)loadPosts
 {
-    NSLog(@"load posts");
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading posts";
-    hud.detailsLabelText = @"Please wait few seconds";
-    
-    WebClient *client = [WebClient sharedInstance];
-    [client getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-        [hud hide:YES];
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.posts = [posts mutableCopy];
-            
-            NSLog(@"POSTS in TimeLineViewController");
-
-            for(Post *p in self.posts)
-            {
-                NSLog(@"%@",p.content);
-            }
-            
             [self.tableView reloadData];
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-                                                            message:@"Check your id or your internet connection dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     }];
 }

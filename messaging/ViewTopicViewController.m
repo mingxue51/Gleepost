@@ -8,6 +8,7 @@
 
 #import "ViewTopicViewController.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "MBProgressHUD.h"
 #import "Message.h"
 #import "KeyboardHelper.h"
@@ -250,29 +251,20 @@ const int flexibleResizeLimit = 120;
 - (void)loadMessages
 {
     id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    hud.labelText = @"Loading messages";
-    hud.detailsLabelText = @"Please wait few seconds";
     
-    WebClient *client = [WebClient sharedInstance];
-    [client getMessagesForConversation:self.conversation withCallbackBlock:^(BOOL success, NSArray *messages) {
-        [hud hide:YES];
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading messages" forView:view];
+    [[WebClient sharedInstance] getMessagesForConversation:self.conversation withCallbackBlock:^(BOOL success, NSArray *messages) {
+        [WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
-            self.messages = [messages mutableCopy];
-            
-            
-//            [self.messages addObjectsFromArray:self.messages];
-//            [self.messages addObjectsFromArray:self.messages];
-            [self.tableView reloadData];
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            // TODO: crashes if array is empty
+            if(messages.count != 0) {
+                self.messages = [messages mutableCopy];
+                [self.tableView reloadData];
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            }
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-                                                            message:@"Check your internet connection, dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     }];
 }
@@ -614,26 +606,19 @@ static CGFloat padding = 20.0;
     
     Message *message = [[Message alloc] init];
     message.content = self.messageTextField.text;
-    message.conversationRemoteId = self.conversation.remoteId;
+    message.conversation = self.conversation;
     
     id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    hud.labelText = @"Sending message";
-    hud.detailsLabelText = @"Please wait few seconds";
     
+    [WebClientHelper showStandardLoaderWithTitle:@"Sending message" forView:view];
     [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL success) {
-        [hud hide:YES];
+        [WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
             [self loadMessages];
            // self.messageTextField.text = @"Message:";
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sending message failed"
-                                                            message:@"Check your internet connection, dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     }];
 }
@@ -1083,8 +1068,9 @@ static CGFloat padding = 20.0;
             self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
         }
         
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
-       
+        if(self.messages.count > 1) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        }
         
         
     } completion:^(BOOL finished) {

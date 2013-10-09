@@ -7,9 +7,14 @@
 //
 
 #import "Message.h"
+#import "Conversation.h"
 
 @implementation Message
 
-@synthesize seen, content, date, author, conversationRemoteId;
+@synthesize seen, content, date, author, conversation;
+
+- (void)toto {
+    Conversation *fuck;
+}
 
 @end

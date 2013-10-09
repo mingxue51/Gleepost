@@ -11,6 +11,7 @@
 #import "SessionManager.h"
 #import "WebClient.h"
 #import "AppDelegate.h"
+#import "WebClientHelper.h"
 
 @interface LoginViewController ()
 
@@ -27,6 +28,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if(DEV) {
+        self.nameTextField.text = @"TestingUser";
+        self.passwordTextField.text = @"TestingPass";
+    }
+    
    // [[self storyboard] se
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
@@ -43,27 +50,16 @@
 
 - (IBAction)loginButtonClick:(id)sender
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Login...";
-    hud.detailsLabelText = @"Please wait";
+    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    WebClient *client = [WebClient sharedInstance];
-    NSLog(@"%@ %@", self.nameTextField.text, self.passwordTextField.text);
-    [client loginWithName:self.nameTextField.text password:self.passwordTextField.text andCallbackBlock:^(BOOL success) {
-        [hud hide:YES];
+    [[WebClient sharedInstance] loginWithName:self.nameTextField.text password:self.passwordTextField.text andCallbackBlock:^(BOOL success) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success)
         {
             [self performSegueWithIdentifier:@"start" sender:self];
-            
-        } else
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login failed"
-                                                            message:@"Check your identifiers or your internet connection, dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+        } else {
+            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
         }
     }];
 }

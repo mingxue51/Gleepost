@@ -11,6 +11,7 @@
 #import "SessionManager.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "UIPlaceHolderTextView.h"
 #import "Post.h"
 
@@ -63,24 +64,20 @@
     Post *post = [[Post alloc] init];
     post.content = self.contentTextView.text;
     post.date = [NSDate date];
-    post.remoteUserId = [SessionManager sharedInstance].user.remoteId;
+    post.key = [SessionManager sharedInstance].user.key;
     
-    NSLog(@"NEW POST: CREATING A POST: %@ - %@ - %d",post.content,post.date,post.remoteUserId);
+    NSLog(@"NEW POST: CREATING A POST: %@ - %@ - %d",post.content,post.date,post.key);
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Creating post";
-    hud.detailsLabelText = @"Please wait few seconds";
-    
-    WebClient *client = [WebClient sharedInstance];
-    
-    [client createPost:post callbackBlock:^(BOOL success) {
-        [hud hide:YES];
+    [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self.view];
+    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             [self dismissViewControllerAnimated:YES completion:^{
                 [self.delegate loadPosts];
             }];
         } else {
+            [WebClientHelper showStandardError];
             [self.contentTextView becomeFirstResponder];
         }
     }];

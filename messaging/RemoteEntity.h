@@ -10,6 +10,6 @@
 
 @interface RemoteEntity : NSObject
 
-@property (assign, nonatomic) NSInteger remoteId;
+@property (assign, nonatomic) NSInteger key;
 
 @end

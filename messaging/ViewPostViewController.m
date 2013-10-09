@@ -8,6 +8,7 @@
 
 #import "ViewPostViewController.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "MBProgressHUD.h"
 #import "Comment.h"
 #import "KeyboardHelper.h"
@@ -360,13 +361,9 @@ static bool firstTime = YES;
 
 - (void)loadComments
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading posts";
-    hud.detailsLabelText = @"Please wait few seconds";
-    
-    WebClient *client = [WebClient sharedInstance];
-    [client getCommentsForPost:self.post withCallbackBlock:^(BOOL success, NSArray *comments) {
-        [hud hide:YES];
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    [[WebClient sharedInstance] getCommentsForPost:self.post withCallbackBlock:^(BOOL success, NSArray *comments) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.comments = [comments mutableCopy];
@@ -408,12 +405,7 @@ static bool firstTime = YES;
             NSLog(@"Reload Data.");
             [self.tableView reloadData];
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-                                                            message:@"Check your id or your internet connection dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     }];
     
@@ -613,25 +605,17 @@ static bool firstTime = YES;
 {
     Comment *comment = [[Comment alloc] init];
     comment.content = self.commentTextField.text;
-    comment.remoteThreadId = self.post.remoteId;
+    comment.remoteThreadId = self.post.key;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Posting comment";
-    hud.detailsLabelText = @"Please wait few seconds";
-    
+    [WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self.view];
     [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
-        [hud hide:YES];
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             [self loadComments];
             self.commentTextField.text = @"";
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Posting comment failed"
-                                                            message:@"Check your internet connection, dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     }];
 }

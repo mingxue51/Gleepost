@@ -9,6 +9,7 @@
 #ifndef messaging_Constants_h
 #define messaging_Constants_h
 
-#define ENV_FAKE_API     YES
+#define ENV_FAKE_API     NO
+#define DEV              YES
 
 #endif
