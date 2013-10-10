@@ -9,8 +9,9 @@
 #import "MessagesViewController.h"
 #import "ViewTopicViewController.h"
 #import "WebClient.h"
-#import "MBProgressHUD.h"
-#import "Conversation.h"
+#import "WebClientHelper.h"
+#import "RemoteConversation.h"
+#import "ConversationManager.h"
 #import "MessageTableViewCell.h"
 
 @interface MessagesViewController ()
@@ -69,28 +70,43 @@
     [self.navigationController.navigationBar insertSubview:bar atIndex:1];
 }
 
+#pragma mark - Conversations
+
 - (void)loadConversations
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading conversations";
-    hud.detailsLabelText = @"Please wait few seconds";
-    
-    WebClient *client = [WebClient sharedInstance];
-    [client getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
-        [hud hide:YES];
-        
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading new conversations" forView:self.view];
+    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
+        [self showConversations:conversations];
+    } remoteCallback:^(BOOL success, NSArray *conversations) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         if(success) {
-            self.conversations = [conversations mutableCopy];
-            [self.tableView reloadData];
+            [self showConversations:conversations];
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-                                                            message:@"Check your internet connection, dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     }];
+    
+//    [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
+//        [hud hide:YES];
+//        
+//        if(success) {
+//            self.conversations = [conversations mutableCopy];
+//            [self.tableView reloadData];
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
+//                                                            message:@"Check your internet connection, dude."
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//            [alert show];
+//        }
+//    }];
+}
+
+- (void)showConversations:(NSArray *)conversations
+{
+    self.conversations = [conversations mutableCopy];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -110,13 +126,13 @@
     static NSString *CellIdentifier = @"Cell";
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Conversation *conversation = self.conversations[indexPath.row];
+    RemoteConversation *conversation = self.conversations[indexPath.row];
     
     
-    cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];
-    cell.content.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];
+//    cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];
+//    cell.content.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];
     cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
-    cell.time.text = [NSString stringWithFormat:@"%@", conversation.lastMessage.date.description];
+//    cell.time.text = [NSString stringWithFormat:@"%@", conversation.lastMessage.date.description];
     
    //cell.textLabel.text = [NSString stringWithFormat:@"Conversation with %@", [conversation getParticipantsNames]];
     //cell.detailTextLabel.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];

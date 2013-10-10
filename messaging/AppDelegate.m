@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
+#import "RemoteMessage.h"
+#import "RemoteConversation.h"
+#import "MessageProcessingOperation.h"
 
 @implementation AppDelegate
 
@@ -17,6 +20,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    if(DEV) {
+//        NSError *error = nil;
+//        NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:@"Gleepost.sqlite"];
+//        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+//    }
+    
+    [MagicalRecord setupCoreDataStackWithStoreNamed:@"Gleepost.sqlite"];
+    
 //    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     
     //return YES;
@@ -77,7 +88,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
+//    [self saveContext];
+    [MagicalRecord cleanUp];
 }
 
 

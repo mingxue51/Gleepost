@@ -56,7 +56,7 @@ float const MessageContentViewPadding = 15;
     // Configure the view for the selected state
 }
 
-- (void)updateWithMessage:(Message *)message first:(BOOL)isFirst
+- (void)updateWithMessage:(RemoteMessage *)message first:(BOOL)isFirst
 {
     if(isFirst) {
         self.timeView.hidden = NO;

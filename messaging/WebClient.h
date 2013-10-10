@@ -13,6 +13,7 @@
 #import "Comment.h"
 #import "Topic.h"
 #import "Conversation.h"
+#import "RemoteConversation.h"
 
 @interface WebClient : AFHTTPClient
 
@@ -30,9 +31,12 @@
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 
 - (void)getMessagesForConversation:(Conversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
+- (void)getLastMessagesForConversation:(RemoteConversation *)conversation withLastMessage:(RemoteMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
+
 - (void)longPollNewMessagesWithCallbackBlock:(void (^)(BOOL success, Message *conversation))callbackBlock;
 - (void)cancelMessagesLongPolling;
-- (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success))callbackBlock;
+- (void)createMessage:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success))callbackBlock;
+- (void)createMessageSynchronously:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
 
 - (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;
 - (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;

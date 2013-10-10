@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="LocalMessage" representedClassName="LocalMessage" syncable="YES">
+        <relationship name="remoteMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteMessage" syncable="YES"/>
+    </entity>
     <entity name="RemoteConversation" representedClassName="RemoteConversation" syncable="YES">
         <attribute name="remoteKey" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="messages" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteMessage" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteMessage" inverseName="conversation" inverseEntity="RemoteMessage" syncable="YES"/>
+        <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteUser" syncable="YES"/>
     </entity>
     <entity name="RemoteMessage" representedClassName="RemoteMessage" syncable="YES">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="remoteKey" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="seen" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="sendStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteUser" syncable="YES"/>
+        <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteConversation" inverseName="messages" inverseEntity="RemoteConversation" syncable="YES"/>
+    </entity>
+    <entity name="RemoteUser" representedClassName="RemoteUser" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteKey" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="RemoteConversation" positionX="153" positionY="36" width="128" height="73"/>
-        <element name="RemoteMessage" positionX="153" positionY="-93" width="128" height="75"/>
+        <element name="RemoteConversation" positionX="585" positionY="9" width="128" height="73"/>
+        <element name="RemoteMessage" positionX="153" positionY="-93" width="128" height="103"/>
+        <element name="RemoteUser" positionX="369" positionY="-18" width="128" height="75"/>
+        <element name="LocalMessage" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

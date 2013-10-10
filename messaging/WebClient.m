@@ -11,6 +11,8 @@
 #import "AFJSONRequestOperation.h"
 #import "SessionManager.h"
 #import "JsonParser.h"
+#import "RemoteParser.h"
+#import "AFJSONRequestOperation.h"
 
 
 @interface WebClient()
@@ -22,7 +24,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.9/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.10/";
 
 static WebClient *instance = nil;
 
@@ -157,14 +159,57 @@ static WebClient *instance = nil;
 
 /* CONVERSATIONS */
 
+//- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
+//{
+//    [self getPath:@"conversations" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSArray *conversations = [JsonParser parseConversationsFromJson:responseObject ignoringUserKey:self.sessionManager.key];
+//        callbackBlock(YES, conversations);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
+
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSArray *conversations = [JsonParser parseConversationsFromJson:responseObject ignoringUserKey:self.sessionManager.key];
+        
+        // delete previous conversations
+        [RemoteConversation MR_truncateAll];
+        
+        // parse and create new ones
+        NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
+        
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];
+}
+
+- (void)getLastMessagesForConversation:(RemoteConversation *)conversation withLastMessage:(RemoteMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.authParameters];
+    
+    if(lastMessage) {
+        [params setObject:lastMessage.remoteKey forKey:@"after"];
+        NSLog(@"after %@", lastMessage.remoteKey);
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", conversation.remoteKey];
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+//        // null resposne
+//        if(responseObject == (id)[NSNull null]) {
+//            callbackBlock(YES, [NSArray array]);
+//            return;
+//        }
+        
+        NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:conversation];
+        callbackBlock(YES, messages);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+
 }
 
 - (void)getMessagesForConversation:(Conversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
@@ -207,19 +252,42 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success))callbackBlock
+// @deprecated
+- (void)createMessage:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.key];
+//    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.key];
+//    
+//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
+//    [params addEntriesFromDictionary:self.authParameters];
+//    
+//    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        callbackBlock(YES);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO);
+//    }];
+}
+
+// Blocking operation
+- (void)createMessageSynchronously:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
     [params addEntriesFromDictionary:self.authParameters];
+
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:params];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        callbackBlock(YES);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO);
-    }];
+    if(error) {
+        callbackBlock(NO, 0);
+    } else {
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+        callbackBlock(YES, [json[@"id"] integerValue]);
+    }
 }
+
 
 - (void)longPollNewMessagesWithCallbackBlock:(void (^)(BOOL success, Message *conversation))callbackBlock
 {

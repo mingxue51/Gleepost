@@ -7,11 +7,18 @@
 //
 
 #import "RemoteMessage.h"
+#import "RemoteConversation.h"
+#import "RemoteUser.h"
 
 
 @implementation RemoteMessage
 
 @dynamic content;
+@dynamic date;
 @dynamic remoteKey;
+@dynamic seen;
+@dynamic sendStatus;
+@dynamic conversation;
+@dynamic author;
 
 @end

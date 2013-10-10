@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Message.h"
+#import "RemoteMessage.h"
 
 @interface MessageCell : UITableViewCell
 
@@ -22,6 +22,6 @@
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst;
 
-- (void)updateWithMessage:(Message *)message first:(BOOL)isFirst;
+- (void)updateWithMessage:(RemoteMessage *)message first:(BOOL)isFirst;
 
 @end
