@@ -84,7 +84,6 @@ float const MessageContentViewPadding = 15;
     CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
     
     CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
-    NSLog(@"content height %f", contentHeight);
     
     return contentHeight;
 }
@@ -98,22 +97,6 @@ float const MessageContentViewPadding = 15;
     height += [MessageCell getContentLabelHeightForContent:content] + MessageContentViewPadding;
     
     return height + FollowingCellPadding;
-    
-    
-//    CGSize expectedLabelSize = [yourString sizeWithFont:yourLabel.font constrainedToSize:maximumLabelSize lineBreakMode:yourLabel.lineBreakMode];
-//    
-//    //adjust the label the the new height.
-//    CGRect newFrame = yourLabel.frame;
-//    newFrame.size.height = expectedLabelSize.height;
-//    yourLabel.frame = newFrame;
-    
-
-    
-//    float restHeight =
-//    
-//    return contentHeight + PaddingBottom;
-    
-//    return 0;
 }
 
 @end

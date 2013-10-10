@@ -18,6 +18,7 @@
 #import "NSString+Utils.h"
 
 #import "Message.h"
+#import "Message+MessageCellLogic.h"
 
 
 const int textViewSizeOfLine = 12;
@@ -39,7 +40,10 @@ const int flexibleResizeLimit = 120;
 
 @property (assign, nonatomic) BOOL longPollingRequestRunning;
 
-@property (strong, nonatomic) NSString  *currentCellIdentifier;
+@property (strong, nonatomic) NSString  *lastCellIdentifier;
+@property (strong, nonatomic) NSMutableArray  *messagesCellIdentifiers;
+@property (assign, nonatomic) NSInteger  lastRow;
+
 
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
@@ -49,6 +53,8 @@ const int flexibleResizeLimit = 120;
 @implementation ViewTopicViewController
 
 @synthesize conversation;
+
+
 
 - (void)viewDidLoad
 {
@@ -97,18 +103,9 @@ const int flexibleResizeLimit = 120;
     CGRect sizeOfMessageTextField = self.messageTextField.frame;
     [self.messageTextField setFrame:CGRectMake(sizeOfMessageTextField.origin.x, sizeOfMessageTextField.origin.y, sizeOfMessageTextField.size.width, height)];
     
+    // init
+    self.messagesCellIdentifiers = [NSMutableArray array];
     
-   // [self initialiseChatElements];
-    
-    
-
-    //NSLog(@"View size: %f : %f", self.messageTestView.frame.size.height, self.messageTestView.frame.size.width);
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self startRequest];
 }
@@ -144,27 +141,43 @@ const int flexibleResizeLimit = 120;
 
 
 
--(void) addContact
-{
-    NSLog(@"Add Contact.");
-}
 
--(void)addImageToTheChat:(id) sender
-{
-    NSLog(@"Camera icon pushed!");
-}
-
--(void)navigateToProfile:(id)sender
-{
-    [self performSegueWithIdentifier:@"view profile" sender:self];
-}
 
 
 #pragma mark - Messages management
 
+- (void)addMesssages:(NSArray *)messages
+{
+    self.messages = [messages mutableCopy];
+    
+    for (int i = 0; i < self.messages.count; i++) {
+        Message *current = self.messages[i];
+        if(i == 0) {
+            [current configureAsFirstMessage];
+        } else {
+            Message *previous = self.messages[i-1];
+            [current configureAsFollowingMessage:previous];
+        }
+    }
+//    for(Message *message in messages) {
+//        messages.content = [NSString stringWithFormat:@"%d - %@", m.author.key, m.content];
+//        //                    m.content = [NSString stringWithFormat:@"%@ SDLKFJ KLSDJF KLSDJF KLSJDF KLJSDF KLJSDF LKJSDF LKJSDF KLJSDF LKJSDF", m.content];
+//        
+//        i++;
+//    }
+
+    [self.tableView reloadData];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+}
+
 - (void)addNewMessage:(Message *)message
 {
-    self.messageTextField.text = @"";
+    if(self.messages.count == 0) {
+        [message configureAsFirstMessage];
+    } else {
+        Message *last = self.messages[self.messages.count - 1];
+        [message configureAsFollowingMessage:last];
+    }
     
     [self.messages addObject:message];
     [self.tableView reloadData];
@@ -173,6 +186,19 @@ const int flexibleResizeLimit = 120;
     if(self.messages.count > 1) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
+}
+
+- (void)createMessageFromForm
+{
+    Message *message = [[Message alloc] init];
+    message.content = self.messageTextField.text;
+    message.conversation = self.conversation;
+    message.author = [[User alloc] init];
+    message.author.key = [SessionManager sharedInstance].key;
+    
+    [self addNewMessage:message];
+    
+    self.messageTextField.text = @"";
 }
 
 
@@ -189,14 +215,7 @@ const int flexibleResizeLimit = 120;
         if(success) {
             // TODO: crashes if array is empty
             if(messages.count != 0) {
-                for(Message *m in messages) {
-                    m.content = [NSString stringWithFormat:@"%d - %@", m.author.key, m.content];
-//                    m.content = [NSString stringWithFormat:@"%@ SDLKFJ KLSDJF KLSDJF KLSJDF KLJSDF KLJSDF LKJSDF LKJSDF KLJSDF LKJSDF", m.content];
-                }
-                
-                self.messages = [messages mutableCopy];
-                [self.tableView reloadData];
-                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                [self addMesssages:messages];
             }
         } else {
             [WebClientHelper showStandardError];
@@ -228,7 +247,7 @@ const int flexibleResizeLimit = 120;
 }
 
 
-#pragma mark - New message
+#pragma mark - Actions
 
 - (IBAction)sendButtonClicked:(id)sender
 {
@@ -237,13 +256,7 @@ const int flexibleResizeLimit = 120;
         return;
     }
     
-    Message *message = [[Message alloc] init];
-    message.content = self.messageTextField.text;
-    message.conversation = self.conversation;
-    message.author = [[User alloc] init];
-    message.author.key = [SessionManager sharedInstance].key;
-    
-    [self addNewMessage:message];
+    [self createMessageFromForm];
     
 //    [self hideKeyboardFromTextViewIfNeeded];
     
@@ -262,12 +275,24 @@ const int flexibleResizeLimit = 120;
 //    }];
 }
 
-
-#pragma mark - Click elements
-
 - (IBAction)tableViewClicked:(id)sender
 {
     [self hideKeyboardFromTextViewIfNeeded];
+}
+
+-(void) addContact
+{
+    NSLog(@"Add Contact.");
+}
+
+-(void)addImageToTheChat:(id) sender
+{
+    NSLog(@"Camera icon pushed!");
+}
+
+-(void)navigateToProfile:(id)sender
+{
+    [self performSegueWithIdentifier:@"view profile" sender:self];
 }
 
 
@@ -287,49 +312,15 @@ const int flexibleResizeLimit = 120;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *LeftCellIdentifier = @"LeftCell";
-    static NSString *RightCellIdentifier = @"RightCell";
-    
     Message *message = self.messages[indexPath.row];
     
-    NSString *cellIdentifier;
-    BOOL first;
-    
-    // for the first item
-    if(indexPath.row == 0) {
-        first = YES;
-        cellIdentifier = LeftCellIdentifier;
+    if(!message.cellIdentifier) {
+        [NSException raise:@"Cell identifier is null" format:@"Row is %d", indexPath.row];
     }
     
-    // for every items following the first one
-    else {
-        Message *previousMessage = self.messages[indexPath.row - 1];
-        
-        // messages follows with author and short time interval
-        if([message followsPreviousMessage:previousMessage]) {
-            first = NO;
-            cellIdentifier = self.currentCellIdentifier;
-        } else {
-            first = YES;
-            
-            // keep same side
-            if(message.author.key == previousMessage.author.key) {
-                cellIdentifier = self.currentCellIdentifier;
-            }
-            // or change the side if different author
-            else {
-                cellIdentifier = ([self.currentCellIdentifier isEqualToString:LeftCellIdentifier]) ? RightCellIdentifier : LeftCellIdentifier;
-            }
-        }
-        
-        //first = NO;
-    }
+    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
     
-    self.currentCellIdentifier = cellIdentifier;
-    
-    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:LeftCellIdentifier forIndexPath:indexPath];
-    
-    [cell updateWithMessage:message first:first];
+    [cell updateWithMessage:message first:message.hasHeader];
     
     return cell;
 }
@@ -338,15 +329,7 @@ const int flexibleResizeLimit = 120;
 {
     Message *message = self.messages[indexPath.row];
     
-    BOOL first;
-    if(indexPath.row == 0) {
-        first = YES;
-    } else {
-        Message *previousMessage = self.messages[indexPath.row - 1];
-        first = ![message followsPreviousMessage:previousMessage];
-    }
-    
-    return [MessageCell getCellHeightWithContent:message.content first:first];
+    return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
 
 

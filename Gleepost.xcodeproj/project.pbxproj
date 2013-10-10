@@ -89,9 +89,12 @@
 		58DC024A180437A70008993A /* settings_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0242180437A70008993A /* settings_icon.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
 		58DC024F18043F520008993A /* gleepost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC024E18043F520008993A /* gleepost@2x.png */; };
+		8026749D1806C5750034334C /* RemoteConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8026749C1806C5750034334C /* RemoteConversation.m */; };
+		802674A01806C5760034334C /* RemoteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8026749F1806C5760034334C /* RemoteMessage.m */; };
 		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
 		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
 		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
+		8073AB341806B9F3000FD0B1 /* Message+MessageCellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */; };
 		8096E4D317C2BA3000C7BF60 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D217C2BA3000C7BF60 /* clock.png */; };
 		8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D417C2BBD800C7BF60 /* navigation_bar.png */; };
 		8096E4D717C2BC9000C7BF60 /* navigation_bar_buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */; };
@@ -274,12 +277,18 @@
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
 		58DC024E18043F520008993A /* gleepost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gleepost@2x.png"; sourceTree = "<group>"; };
+		8026749B1806C5750034334C /* RemoteConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConversation.h; sourceTree = "<group>"; };
+		8026749C1806C5750034334C /* RemoteConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConversation.m; sourceTree = "<group>"; };
+		8026749E1806C5760034334C /* RemoteMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMessage.h; sourceTree = "<group>"; };
+		8026749F1806C5760034334C /* RemoteMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMessage.m; sourceTree = "<group>"; };
 		8056763D1805997B006E058E /* UserNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNetwork.h; sourceTree = "<group>"; };
 		8056763E1805997B006E058E /* UserNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNetwork.m; sourceTree = "<group>"; };
 		8056764118059DC4006E058E /* LongPollOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollOperation.h; sourceTree = "<group>"; };
 		8056764218059DC4006E058E /* LongPollOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollOperation.m; sourceTree = "<group>"; };
 		805676441805B742006E058E /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		805676451805B742006E058E /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
+		8073AB321806B9F3000FD0B1 /* Message+MessageCellLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Message+MessageCellLogic.h"; sourceTree = "<group>"; };
+		8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Message+MessageCellLogic.m"; sourceTree = "<group>"; };
 		8096E4D217C2BA3000C7BF60 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		8096E4D417C2BBD800C7BF60 /* navigation_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar.png; sourceTree = "<group>"; };
 		8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_buttons.png; sourceTree = "<group>"; };
@@ -661,6 +670,17 @@
 			name = Operations;
 			sourceTree = "<group>";
 		};
+		8073AB351806C2DA000FD0B1 /* RemoteModel */ = {
+			isa = PBXGroup;
+			children = (
+				8026749E1806C5760034334C /* RemoteMessage.h */,
+				8026749F1806C5760034334C /* RemoteMessage.m */,
+				8026749B1806C5750034334C /* RemoteConversation.h */,
+				8026749C1806C5750034334C /* RemoteConversation.m */,
+			);
+			name = RemoteModel;
+			sourceTree = "<group>";
+		};
 		8096E4E817C2CBEA00C7BF60 /* Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -748,6 +768,7 @@
 		80AB893E17C26D040053E784 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8073AB351806C2DA000FD0B1 /* RemoteModel */,
 				8056764018059D78006E058E /* Operations */,
 				80E7478517CEA08F001957E5 /* Categories */,
 				8096E4E817C2CBEA00C7BF60 /* Table */,
@@ -922,6 +943,8 @@
 			children = (
 				80E7478617CEA0A5001957E5 /* NSString+Utils.h */,
 				80E7478717CEA0A5001957E5 /* NSString+Utils.m */,
+				8073AB321806B9F3000FD0B1 /* Message+MessageCellLogic.h */,
+				8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1143,9 +1166,12 @@
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
 				80AB896617C27D3D0053E784 /* Thread.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
+				802674A01806C5760034334C /* RemoteMessage.m in Sources */,
 				80AB896E17C2847F0053E784 /* Comment.m in Sources */,
 				585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */,
+				8026749D1806C5750034334C /* RemoteConversation.m in Sources */,
 				80AB897117C2848C0053E784 /* ThreadMessage.m in Sources */,
+				8073AB341806B9F3000FD0B1 /* Message+MessageCellLogic.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
