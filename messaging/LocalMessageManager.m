@@ -60,7 +60,6 @@ static LocalMessageManager *instance = nil;
     // completion block that restart the process if needed
     [operation setCompletionBlock:^{
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            NSLog(@"Message processing operation completion block");
             self.isProcessRunning = NO;
             
             if(self.shouldProcessAgain) {

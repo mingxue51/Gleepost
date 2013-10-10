@@ -196,8 +196,10 @@ const int flexibleResizeLimit = 120;
         [WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
-            NSLog(@"remote messages %d", messages.count);
-            [self showMessages:messages];
+            if(messages) {
+                NSLog(@"remote messages %d", messages.count);
+                [self showMessages:messages];
+            }
         } else {
             [WebClientHelper showStandardError];
         }
@@ -248,6 +250,7 @@ const int flexibleResizeLimit = 120;
     RemoteMessage *message = [RemoteMessage MR_createEntity];
     message.content = self.messageTextField.text;
     message.conversation = self.conversation;
+    message.date = [NSDate date];
     
     [MessageManager saveMessage:message];
     [self showMessage:message];

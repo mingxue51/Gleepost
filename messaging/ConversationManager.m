@@ -18,7 +18,7 @@
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     
     NSArray *localEntities = [RemoteConversation MR_findAll];
     localCallback(localEntities);
@@ -39,14 +39,22 @@
 
 + (void)loadMessagesForConversation:(RemoteConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
 {
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     
     NSArray *localEntities = [RemoteMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
     localCallback(localEntities);
     
+    // find the last message which exists on both client and server
     RemoteMessage *last = nil;
     if(localEntities.count > 0) {
-        last = localEntities[localEntities.count - 1];
+        RemoteMessage *possibleLast;
+        for(int i = 0; i < localEntities.count; i++) {
+            possibleLast = localEntities[i];
+            
+            if(possibleLast.remoteKey && [possibleLast.remoteKey integerValue] != 0) {
+                last = possibleLast;
+            }
+        }
     }
     
     [[WebClient sharedInstance] getLastMessagesForConversation:conversation withLastMessage:last callbackBlock:^(BOOL success, NSArray *messages) {
@@ -55,10 +63,15 @@
             return;
         }
         
-        [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            NSArray *entities = [RemoteMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
-            remoteCallback(YES, entities);
-        }];
+        // update only if new changes from API
+        if(messages.count == 0) {
+            remoteCallback(YES, nil);
+        } else {
+            [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                NSArray *entities = [RemoteMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
+                remoteCallback(YES, entities);
+            }];
+        }
     }];
     
     

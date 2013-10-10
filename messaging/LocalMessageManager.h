@@ -10,6 +10,7 @@
 
 @interface LocalMessageManager : NSObject
 
+- (void)process;
 + (LocalMessageManager *)sharedInstance;
 
 @end

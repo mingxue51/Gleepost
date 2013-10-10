@@ -7,6 +7,7 @@
 //
 
 #import "RemoteMessage.h"
+#import "SendStatus.h"
 
 @interface RemoteMessage (Additions)
 

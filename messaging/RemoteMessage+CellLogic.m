@@ -9,6 +9,8 @@
 #import "RemoteMessage+CellLogic.h"
 #import <objc/runtime.h>
 #import "RemoteMessage+Additions.h"
+#import "SessionManager.h"
+#import "RemoteUser.h"
 
 @implementation RemoteMessage (CellLogic)
 
@@ -58,10 +60,17 @@ NSString * const kMessageRightCell = @"RightCell";
         self.cellIdentifier = message.cellIdentifier;
         self.hasHeader = NO;
     } else {
-        self.cellIdentifier = [RemoteMessage getOppositeCellIdentifierOf:message.cellIdentifier];
+        self.cellIdentifier = [RemoteMessage getCellIdentifierForMessage:self];
         self.hasHeader = YES;
     }
     
+}
+
++ (NSString *)getCellIdentifierForMessage:(RemoteMessage *)message
+{
+    BOOL currentUser = [message.author.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]];
+    
+    return currentUser ? kMessageLeftCell : kMessageRightCell;
 }
 
 + (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier

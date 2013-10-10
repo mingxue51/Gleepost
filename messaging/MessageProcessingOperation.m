@@ -8,7 +8,7 @@
 
 #import "MessageProcessingOperation.h"
 #import "LocalMessage.h"
-#import "RemoteMessage.h"
+#import "RemoteMessage+Additions.h"
 #import "WebClient.h"
 
 @interface MessageProcessingOperation()
@@ -50,12 +50,15 @@
 {
     // blocks until response is delivered
     [[WebClient sharedInstance] createMessageSynchronously:localMessage.remoteMessage callbackBlock:^(BOOL success, NSInteger remoteKey) {
+        NSLog(@"Synchronous message creation response %d with id %d", success, remoteKey);
         
         // message posted with success
         if(success) {
-            localMessage.remoteMessage.sendStatus = [NSNumber numberWithInt:kSensStatusSent];
+            localMessage.remoteMessage.remoteKey = [NSNumber numberWithInteger:remoteKey];
+            localMessage.remoteMessage.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
             [localMessage MR_deleteInContext:self.context];
             [self.context MR_saveToPersistentStoreAndWait];
+        
         }
         
         // error

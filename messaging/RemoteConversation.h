@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSNumber * remoteKey;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *participants;
+@property (nonatomic, retain) RemoteMessage *mostRecentMessage;
 @end
 
 @interface RemoteConversation (CoreDataGeneratedAccessors)

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "SendStatus.h"
 
 @class RemoteConversation, RemoteUser;
 

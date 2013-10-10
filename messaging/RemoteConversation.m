@@ -16,5 +16,6 @@
 @dynamic remoteKey;
 @dynamic messages;
 @dynamic participants;
+@dynamic mostRecentMessage;
 
 @end

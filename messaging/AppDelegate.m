@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
 #import "RemoteMessage.h"
+#import "LocalMessage.h"
 #import "RemoteConversation.h"
 #import "MessageProcessingOperation.h"
 
@@ -21,14 +22,21 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    if(DEV) {
-//        NSError *error = nil;
-//        NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:@"Gleepost.sqlite"];
-//        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+        NSError *error = nil;
+        NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:@"Gleepost.sqlite"];
+        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
 //    }
+    
+
     
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"Gleepost.sqlite"];
     
-//    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    if(DEV) {
+        [LocalMessage MR_truncateAll];
+        [[NSManagedObjectContext MR_context] MR_saveToPersistentStoreAndWait];
+    }
+    
+    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     
     //return YES;
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];

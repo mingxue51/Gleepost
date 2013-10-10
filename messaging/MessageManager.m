@@ -11,6 +11,7 @@
 #import "SendStatus.h"
 #import "RemoteUser.h"
 #import "SessionManager.h"
+#import "LocalMessageManager.h"
 
 @implementation MessageManager
 
@@ -27,7 +28,9 @@
     LocalMessage *localMessage = [LocalMessage MR_createEntity];
     localMessage.remoteMessage = message;
     
-    [[NSManagedObjectContext MR_context] MR_saveToPersistentStoreWithCompletion:nil];
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:nil];
+    
+    [[LocalMessageManager sharedInstance] process];
 }
 
 @end
