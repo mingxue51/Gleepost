@@ -58,7 +58,7 @@ const int flexibleResizeLimit = 120;
     
     self.title = [self.conversation getParticipantsNames];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.translucent = YES;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_background"]];
 
     [self.tableView setBackgroundColor:[UIColor clearColor]];

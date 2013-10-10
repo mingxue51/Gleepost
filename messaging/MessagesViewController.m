@@ -11,6 +11,7 @@
 #import "WebClient.h"
 #import "MBProgressHUD.h"
 #import "Conversation.h"
+#import "MessageTableViewCell.h"
 
 @interface MessagesViewController ()
 
@@ -29,7 +30,9 @@
     NSLog(@"MessagesViewController");
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
     //[self setBackgroundToNavigationBar];
+    
     //Change navigations items' (back arrow, edit etc.) colour.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
@@ -105,12 +108,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     Conversation *conversation = self.conversations[indexPath.row];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"Conversation with %@", [conversation getParticipantsNames]];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];
+    
+    cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];
+    cell.content.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];
+    cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
+    cell.time.text = [NSString stringWithFormat:@"%@", conversation.lastMessage.date.description];
+    
+   //cell.textLabel.text = [NSString stringWithFormat:@"Conversation with %@", [conversation getParticipantsNames]];
+    //cell.detailTextLabel.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];
     
     return cell;
 }

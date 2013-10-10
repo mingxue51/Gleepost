@@ -28,6 +28,7 @@
 		584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CBE7F17F058E100CD756A /* chat_background@2x.png */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		5865813218059DAD005814B4 /* Bubbles.m in Sources */ = {isa = PBXBuildFile; fileRef = 5865813118059DAD005814B4 /* Bubbles.m */; };
+		586581371805F210005814B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586581361805F210005814B4 /* MessageTableViewCell.m */; };
 		586659A417F1A20800A0354E /* chat_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659A317F1A20800A0354E /* chat_background.png */; };
 		586659AC17F1A87700A0354E /* avatar_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659AB17F1A87700A0354E /* avatar_big.png */; };
 		586659B417F1AC2300A0354E /* messageboxgreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659B017F1AC2300A0354E /* messageboxgreen.png */; };
@@ -202,6 +203,8 @@
 		585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageTableViewCell.m; sourceTree = "<group>"; };
 		5865813018059DAD005814B4 /* Bubbles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bubbles.h; sourceTree = "<group>"; };
 		5865813118059DAD005814B4 /* Bubbles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bubbles.m; sourceTree = "<group>"; };
+		586581351805F210005814B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
+		586581361805F210005814B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
 		586659A317F1A20800A0354E /* chat_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat_background.png; sourceTree = "<group>"; };
 		586659AB17F1A87700A0354E /* avatar_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar_big.png; sourceTree = "<group>"; };
 		586659B017F1AC2300A0354E /* messageboxgreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messageboxgreen.png; sourceTree = "<group>"; };
@@ -517,6 +520,17 @@
 			name = "Login Images";
 			sourceTree = "<group>";
 		};
+		586581341805F1D9005814B4 /* Messages Classes */ = {
+			isa = PBXGroup;
+			children = (
+				80AB897217C28C640053E784 /* MessagesViewController.h */,
+				80AB897317C28C640053E784 /* MessagesViewController.m */,
+				586581351805F210005814B4 /* MessageTableViewCell.h */,
+				586581361805F210005814B4 /* MessageTableViewCell.m */,
+			);
+			name = "Messages Classes";
+			sourceTree = "<group>";
+		};
 		586659C117F1F44A00A0354E /* Other Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -752,6 +766,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				586581341805F1D9005814B4 /* Messages Classes */,
 				585DF77417ECABD600FBFC35 /* Chat Classes */,
 				5865812F18059CE0005814B4 /* NewChat Classes */,
 				5841315D17FF0B0500A3278D /* Comment Classes */,
@@ -762,8 +777,6 @@
 				80AB894117C26E610053E784 /* LoginViewController.m */,
 				80AB894317C26E7E0053E784 /* TimelineViewController.h */,
 				80AB894417C26E7E0053E784 /* TimelineViewController.m */,
-				80AB897217C28C640053E784 /* MessagesViewController.h */,
-				80AB897317C28C640053E784 /* MessagesViewController.m */,
 				80AB897B17C292170053E784 /* NewMessageViewController.h */,
 				80AB897C17C292180053E784 /* NewMessageViewController.m */,
 				80C4CAB617CFE24700AFA80C /* RegisterViewController.h */,
@@ -1115,6 +1128,7 @@
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
+				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,
 				582143D517FC5B6D0032ECEB /* TPKeyboardAvoidingScrollView.m in Sources */,
 				80AB894D17C26ECA0053E784 /* SessionManager.m in Sources */,

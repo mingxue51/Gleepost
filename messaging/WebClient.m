@@ -114,9 +114,9 @@ static WebClient *instance = nil;
 
 - (void)createPost:(Post *)post callbackBlock:(void (^)(BOOL success))callbackBlock
 {
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"text", post.content, nil];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.authParameters];
-    
+        
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

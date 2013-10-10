@@ -274,7 +274,11 @@ static BOOL likePushed;
     static NSString *CellIdentifier = @"Cell";
     
 
+    
+    
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+    
 
     
     //Add the user's image to the corresponding cell.
@@ -285,13 +289,16 @@ static BOOL likePushed;
     Post *post = self.posts[indexPath.row];
     
     //Add the user's name.
-    [cell.userName setText:@"Test User"];
+    [cell.userName setText:post.user.name];
     
     //Add the post's time.
-    [cell.postTime setText:@"20 min ago"];
+    [cell.postTime setText:post.date.description];
     
     //Add the post's text content.
-    [cell.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
+//    [cell.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
+    
+    
+    [cell.content setText: post.content];
     
     //Add the main image to the post.
     UIImage *postImage = [UIImage imageNamed:@"post_image"];

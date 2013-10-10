@@ -59,8 +59,7 @@
 {
     [self.contentTextView resignFirstResponder];
     
-    
-    
+
     Post *post = [[Post alloc] init];
     post.content = self.contentTextView.text;
     post.date = [NSDate date];
@@ -69,10 +68,13 @@
     NSLog(@"NEW POST: CREATING A POST: %@ - %@ - %d",post.content,post.date,post.key);
     
     [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self.view];
+    
     [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
+        
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
+            
             [self dismissViewControllerAnimated:YES completion:^{
                 [self.delegate loadPosts];
             }];
