@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -576,7 +576,7 @@
                     <tabBarItem key="tabBarItem" title="Chat" id="lUW-RU-m7m"/>
                     <navigationItem key="navigationItem" title="Chat" id="UuU-vo-kQv"/>
                     <connections>
-                        <segue destination="p7E-nR-kMk" kind="push" identifier="start" id="CJG-WM-cQ7"/>
+                        <segue destination="p7E-nR-kMk" kind="custom" identifier="start" customClass="FadeInCustomSegue" id="CJG-WM-cQ7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rhd-md-A4x" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -973,7 +973,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="CJG-WM-cQ7"/>
         <segue reference="Rdk-3z-tPE"/>
         <segue reference="htZ-EL-79i"/>
     </inferredMetricsTieBreakers>

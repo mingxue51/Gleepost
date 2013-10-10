@@ -10,4 +10,7 @@
 
 @interface ChatViewController : UIViewController
 
+
+- (void)searchForConversationForGroup:(BOOL)group;
+
 @end

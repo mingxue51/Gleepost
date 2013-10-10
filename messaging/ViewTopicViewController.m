@@ -72,6 +72,7 @@ const int flexibleResizeLimit = 120;
     self.navigationController.navigationBar.translucent = YES;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_background"]];
 
+
     [self.tableView setBackgroundColor:[UIColor clearColor]];
 
     [self.messageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]]];
@@ -119,6 +120,9 @@ const int flexibleResizeLimit = 120;
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -129,7 +133,11 @@ const int flexibleResizeLimit = 120;
 
 -(void) viewWillDisappear:(BOOL)animated
 {
+    NSLog(@"ViewTopiController : viewWillDisappear");
     [super viewWillDisappear:animated];
+    
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
     
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];

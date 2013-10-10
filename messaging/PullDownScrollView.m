@@ -86,7 +86,9 @@
     
     if (myscrollView.contentOffset.y < 0 - REFHEIGHT)
     {
-        
+        [_chatViewAnimations performSelector:@selector(navigateToNewRandomChat) withObject:nil afterDelay:5];
+        myscrollView.scrollEnabled = NO;
+      //  [_chatViewAnimations navigateToNewRandomChat];
     }
 }
 

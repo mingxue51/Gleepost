@@ -37,7 +37,7 @@ static BOOL likePushed;
     
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
 
     //Change navigations items' (back arrow, edit etc.) colour.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];

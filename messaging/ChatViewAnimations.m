@@ -98,7 +98,12 @@ const int lowerLimit = 220;
 
 -(void) addArrayToView
 {
-    for(UIImageView *imageView in self.circles)
+    for(UIImageView *imageView in self.bubblesOnTheScreen)
+    {
+        [self addSubview:imageView];
+    }
+    
+    for(UIImageView *imageView in self.bubblesOffTheScreen)
     {
         [self addSubview:imageView];
     }
@@ -125,15 +130,15 @@ static BOOL goBack2 = NO;
     
     NSMutableArray *halfCircleElements = [[NSMutableArray alloc] init];
     
-    for(int i=0; i<self.circles.count; ++i)
+    for(int i=0; i<self.bubblesOnTheScreen.count; ++i)
     {
-        if(i > self.circles.count/2-1)
+        if(i > self.bubblesOnTheScreen.count/2-1)
         {
             break;
         }
         else
         {
-            [halfCircleElements addObject:[self.circles objectAtIndex:i]];
+            [halfCircleElements addObject:[self.bubblesOnTheScreen objectAtIndex:i]];
         }
     }
     
@@ -225,15 +230,15 @@ static BOOL goBack2 = NO;
     
     NSMutableArray *halfCircleElements = [[NSMutableArray alloc] init];
     
-    for(int i=self.circles.count-1; i<self.circles.count; --i)
+    for(int i=self.bubblesOnTheScreen.count-1; i<self.bubblesOnTheScreen.count; --i)
     {
-        if(i < self.circles.count/2)
+        if(i < self.bubblesOnTheScreen.count/2)
         {
             break;
         }
         else
         {
-            [halfCircleElements addObject:[self.circles objectAtIndex:i]];
+            [halfCircleElements addObject:[self.bubblesOnTheScreen objectAtIndex:i]];
         }
     }
     
@@ -327,32 +332,158 @@ static BOOL animateBubbles = YES;
     
     CGSize sizeOfCircleImage = self.centralCircle.frame.size;
     
+    //Animate the on screen bubbles.
+    
     int i=0;
-    for(UIImageView *imageView in self.circles)
+    for(UIImageView *imageView in self.bubblesOnTheScreen)
     {
         animateBubbles = NO;
 
 
-        if(i%2==0)
-        {
-            [self animateBubbleWithDuration:1 delay:0 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
-        }
-        else
-        {
-            [self animateBubbleWithDuration:1 delay:0.5 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
-        }
-        [UIView animateWithDuration:1.7 animations:^{
+//        if(i%2==0)
+//        {
         
-        [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-53, mainCircleFrame.origin.y-50, mainCircleFrame.size.width+100, mainCircleFrame.size.height+100)];
         
+            [self animateBubbleWithDuration:1.5 delay:0 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+//        }
+//        else
+//        {
+//            [self animateBubbleWithDuration:1.5 delay:1.5 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+//        }
+        
+        [UIView animateWithDuration:2.5 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
+            
+            
+            [self.pullDownScrollView setAlpha:0.0];
+            
+        }completion:^(BOOL finished) {
+            
+            
         }];
-        ++i;
         
+        /**
+         
+         [UIView animateWithDuration:1 delay:0 options:(UIViewAnimationOptionCurveEaseIn) animations:^{
+         
+         
+         [self.pullDownScrollView setAlpha:0.0];
+         [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-205, mainCircleFrame.origin.y-190, mainCircleFrame.size.width+400, mainCircleFrame.size.height+400)];
+         
+         
+         }completion:^(BOOL finished) {
+         
+         }];
+         
+         */
+        
+        ++i;
     }
+    
+    
+
+    
+    
+    [UIView animateWithDuration:1.5 delay:0 options:(UIViewAnimationOptionCurveLinear) animations:^{
+        
+        CGRect mainCircleFrame = self.centralCircle.frame;
+        
+        [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-150, mainCircleFrame.origin.y-150, mainCircleFrame.size.width+300, mainCircleFrame.size.height+300)];
+        
+        
+        
+    }completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:1.5 delay:0 options:(UIViewAnimationOptionCurveLinear) animations:^{
+            
+            CGRect mainCircleFrame = self.centralCircle.frame;
+            
+            [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-310, mainCircleFrame.origin.y-300, mainCircleFrame.size.width+600, mainCircleFrame.size.height+600)];
+            
+        }completion:^(BOOL finished) {
+            
+
+            
+//            [UIView animateWithDuration:0.5 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
+//                
+//                CGRect mainCircleFrame = self.centralCircle.frame;
+//                
+//                [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-110, mainCircleFrame.origin.y-100, mainCircleFrame.size.width+200, mainCircleFrame.size.height+200)];
+//                
+//            }completion:^(BOOL finished) {
+//                
+//                
+//                
+//                
+//            }];
+            
+        }];
+
+        
+    }];
+    
+    //Animate the off screen bubbles.
+    
+    for(UIImageView *imageView in self.bubblesOffTheScreen)
+    {
+        [self animateBubbleWithDuration:1.5 delay:10 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+    }
+    
+    
+    
+//    mainCircleFrame = self.centralCircle.frame;
+//    
+//    [UIView animateWithDuration:1.0 delay:1.5 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
+//        
+//        [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-200, mainCircleFrame.origin.y-200, mainCircleFrame.size.width+400, mainCircleFrame.size.height+400)];
+//        
+//        
+//        
+//        
+//    }completion:^(BOOL finished) {
+//        
+//        
+//        
+//        
+//    }];
+    
+    [UIView animateWithDuration:1 animations:^{
+        
+        [self hideBubbles];
+        
+    }];
     
     animationsFinished = YES;
 }
 
+- (void)earthquake:(UIView*)itemView
+{
+    CGFloat t = 4.0;
+    CGAffineTransform leftQuake  = CGAffineTransformTranslate(CGAffineTransformIdentity, t, -t);
+    CGAffineTransform rightQuake = CGAffineTransformTranslate(CGAffineTransformIdentity, -t, t);
+    
+    itemView.transform = leftQuake;  // starting point
+    
+    [UIView beginAnimations:@"earthquake" context:(__bridge void *)(itemView)];
+    [UIView setAnimationRepeatAutoreverses:YES]; // important
+    [UIView setAnimationRepeatCount:4];
+    [UIView setAnimationDuration:0.07];
+    [UIView setAnimationDelay:0.8];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(earthquakeEnded:finished:context:)];
+    
+    itemView.transform = rightQuake; // end here & auto-reverse
+    
+    [UIView commitAnimations];
+}
+
+- (void)earthquakeEnded:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+    if ([finished boolValue])
+    {
+        UIView* item = (__bridge UIView *)context;
+        item.transform = CGAffineTransformIdentity;
+    }
+}
 
 -(void) animateBubbleWithDuration: (float)duration delay: (float)delay imageView: (UIImageView*) imageView sizeOfCircle: (CGSize)circleSize andMainCircleFrameSize: (CGRect)mainCircleFrame
 {
@@ -395,9 +526,9 @@ static BOOL animateBubbles = YES;
 
 -(void) hideBubbles
 {
-    for(UIImageView *imageView in self.circles)
+    for(UIImageView *imageView in self.bubblesOnTheScreen)
     {
-        imageView.hidden = YES;
+        [imageView setAlpha:0.0];
     }
 }
 
@@ -443,13 +574,14 @@ static BOOL animateBubbles = YES;
     
 
     
-    self.circles = [[NSMutableArray alloc] init];
+    self.bubblesOnTheScreen = [[NSMutableArray alloc] init];
+    self.bubblesOffTheScreen = [[NSMutableArray alloc] init];
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOnTheScreen addObject:littleBubble];
+    [self.bubblesOnTheScreen addObject:littleBubble2];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble4];
+    [self.bubblesOnTheScreen addObject:littleBubble5];
     
     
     //Repeat the images and change the positiong of them.
@@ -471,11 +603,11 @@ static BOOL animateBubbles = YES;
     [littleBubble5 setFrame:CGRectMake(250, 80, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOnTheScreen addObject:littleBubble];
+    [self.bubblesOnTheScreen addObject:littleBubble2];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble4];
+    [self.bubblesOnTheScreen addObject:littleBubble5];
     
     
     littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
@@ -494,11 +626,11 @@ static BOOL animateBubbles = YES;
     [littleBubble5 setFrame:CGRectMake(200, 40, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOnTheScreen addObject:littleBubble];
+    [self.bubblesOnTheScreen addObject:littleBubble2];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble4];
+    [self.bubblesOnTheScreen addObject:littleBubble5];
     
     
     littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
@@ -517,26 +649,26 @@ static BOOL animateBubbles = YES;
     [littleBubble5 setFrame:CGRectMake(240, 40, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOnTheScreen addObject:littleBubble];
+    [self.bubblesOnTheScreen addObject:littleBubble2];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble4];
+    [self.bubblesOnTheScreen addObject:littleBubble5];
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(59, 250, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
-    [self.circles addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(98, 79, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
-    [self.circles addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
     
     littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
     [littleBubble3 setFrame:CGRectMake(120, 39, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
     
-    [self.circles addObject:littleBubble3];
+    [self.bubblesOnTheScreen addObject:littleBubble3];
     
     
     //Add not appeard bubbles.
@@ -556,11 +688,11 @@ static BOOL animateBubbles = YES;
     [littleBubble5 setFrame:CGRectMake(200, -250, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOffTheScreen addObject:littleBubble];
+    [self.bubblesOffTheScreen addObject:littleBubble2];
+    [self.bubblesOffTheScreen addObject:littleBubble3];
+    [self.bubblesOffTheScreen addObject:littleBubble4];
+    [self.bubblesOffTheScreen addObject:littleBubble5];
     
     
     littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
@@ -578,11 +710,11 @@ static BOOL animateBubbles = YES;
     littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
     [littleBubble5 setFrame:CGRectMake(-400, -250, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOffTheScreen addObject:littleBubble];
+    [self.bubblesOffTheScreen addObject:littleBubble2];
+    [self.bubblesOffTheScreen addObject:littleBubble3];
+    [self.bubblesOffTheScreen addObject:littleBubble4];
+    [self.bubblesOffTheScreen addObject:littleBubble5];
     
     
     
@@ -601,12 +733,80 @@ static BOOL animateBubbles = YES;
     littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
     [littleBubble5 setFrame:CGRectMake(320, -250, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
     
-    [self.circles addObject:littleBubble];
-    [self.circles addObject:littleBubble2];
-    [self.circles addObject:littleBubble3];
-    [self.circles addObject:littleBubble4];
-    [self.circles addObject:littleBubble5];
+    [self.bubblesOffTheScreen addObject:littleBubble];
+    [self.bubblesOffTheScreen addObject:littleBubble2];
+    [self.bubblesOffTheScreen addObject:littleBubble3];
+    [self.bubblesOffTheScreen addObject:littleBubble4];
+    [self.bubblesOffTheScreen addObject:littleBubble5];
     
+    
+    
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(-200, -200, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(50, -200, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(150, -800, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(200, -600, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(320, -1000, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    [self.bubblesOffTheScreen addObject:littleBubble];
+    [self.bubblesOffTheScreen addObject:littleBubble2];
+    [self.bubblesOffTheScreen addObject:littleBubble3];
+    [self.bubblesOffTheScreen addObject:littleBubble4];
+    [self.bubblesOffTheScreen addObject:littleBubble5];
+    
+    
+    
+    
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(-200, -260, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(50, -260, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(150, -860, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(200, -660, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(320, -1060, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    [self.bubblesOffTheScreen addObject:littleBubble];
+    [self.bubblesOffTheScreen addObject:littleBubble2];
+    [self.bubblesOffTheScreen addObject:littleBubble3];
+    [self.bubblesOffTheScreen addObject:littleBubble4];
+    [self.bubblesOffTheScreen addObject:littleBubble5];
+    
+    
+    littleBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble1"]];
+    [littleBubble setFrame:CGRectMake(-289, -200, [UIImage imageNamed:@"bubble1"].size.width/2, [UIImage imageNamed:@"bubble1"].size.height/2)];
+    
+    littleBubble2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble2"]];
+    [littleBubble2 setFrame:CGRectMake(139, -200, [UIImage imageNamed:@"bubble2"].size.width/2, [UIImage imageNamed:@"bubble2"].size.height/2)];
+    
+    littleBubble3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble3"]];
+    [littleBubble3 setFrame:CGRectMake(239, -800, [UIImage imageNamed:@"bubble3"].size.width/2, [UIImage imageNamed:@"bubble3"].size.height/2)];
+    
+    littleBubble4 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble4"]];
+    [littleBubble4 setFrame:CGRectMake(289, -600, [UIImage imageNamed:@"bubble4"].size.width/2, [UIImage imageNamed:@"bubble4"].size.height/2)];
+    
+    littleBubble5 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bubble5"]];
+    [littleBubble5 setFrame:CGRectMake(409, -1000, [UIImage imageNamed:@"bubble5"].size.width/2, [UIImage imageNamed:@"bubble5"].size.height/2)];
+    
+    [self.bubblesOffTheScreen addObject:littleBubble];
+    [self.bubblesOffTheScreen addObject:littleBubble2];
+    [self.bubblesOffTheScreen addObject:littleBubble3];
+    [self.bubblesOffTheScreen addObject:littleBubble4];
+    [self.bubblesOffTheScreen addObject:littleBubble5];
 }
 
 -(void) setBackgroundImage
@@ -625,20 +825,23 @@ static BOOL animateBubbles = YES;
     [self sendSubviewToBack:backgroundImage];
 }
 
+//TODO: The method is not used.
+//- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat
+//{
+//    CABasicAnimation* rotationAnimation;
+//    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+//    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration ];
+//    rotationAnimation.duration = duration;
+//    rotationAnimation.cumulative = YES;
+//    rotationAnimation.repeatCount = repeat;
+//    
+//    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+//}
 
-- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat
+-(void) navigateToNewRandomChat
 {
-    CABasicAnimation* rotationAnimation;
-    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration ];
-    rotationAnimation.duration = duration;
-    rotationAnimation.cumulative = YES;
-    rotationAnimation.repeatCount = repeat;
-    
-    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+    [self.chatViewController searchForConversationForGroup:NO];
 }
-
-
 
 /*
 // Only override drawRect: if you perform custom drawing.

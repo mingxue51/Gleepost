@@ -30,8 +30,10 @@
     NSLog(@"ChatViewController");
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
-    //[self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
+//    [self.view setBackgroundColor:[UIColor clearColor]];
+    
     [self initialiseAnimationViewToTheViewController];
     [self addGleepostImageToNavigationBar];
     [self addSettingsImageToNavigationBar];
@@ -41,6 +43,8 @@
 {
     NSLog(@"viewDidAppear");
     [super viewDidAppear:animated];
+    
+    
     
     [self initialiseAnimationViewToTheViewController];
 
@@ -63,6 +67,8 @@
             
         }
     }
+    
+    [self initialiseAnimationViewToTheViewControllerWhenDissappearing];
     
 }
 
@@ -95,10 +101,30 @@
     [self.navigationController.navigationBar.topItem setTitleView:imageView];
 }
 
+/**
+ This method used in order to smoothly navigate back to the view controller.
+ 
+ */
+-(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
+{
+    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.chatAnimations.chatViewController = self;
+    self.chatAnimations.tag = 100;
+    
+    self.view = self.chatAnimations;
+}
+
+/**
+ Initialise the animations to the view controller.
+ 
+ */
 -(void) initialiseAnimationViewToTheViewController
 {
     self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.chatAnimations.chatViewController = self;
     self.chatAnimations.tag = 100;
+    
+//    self.view = self.chatAnimations;
     [self.view addSubview:self.chatAnimations];
     [self.view sendSubviewToBack:self.chatAnimations];
     
@@ -135,12 +161,12 @@
 
 - (IBAction)startButtonClicked:(id)sender
 {
-    [self searchForConversationForGroup:NO];
+    //[self searchForConversationForGroup:NO];
 }
 
 - (IBAction)startGroupButtonClicked:(id)sender
 {
-    [self searchForConversationForGroup:YES];
+    //[self searchForConversationForGroup:YES];
 }
 
 - (void)searchForConversationForGroup:(BOOL)group

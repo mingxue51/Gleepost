@@ -110,7 +110,7 @@ static BOOL likePushed;
     
     // ios7 only
     //if([self respondsToSelector:@selector(setBackButtonBackgroundImage:forState:barMetrics:)]) {
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
    // }
     
     
