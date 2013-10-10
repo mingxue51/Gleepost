@@ -136,9 +136,28 @@ const int flexibleResizeLimit = 120;
     NSLog(@"ViewTopiController : viewWillDisappear");
     [super viewWillDisappear:animated];
     
-    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+
     
+    
+    NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
+    UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 1];
+    Class parentVCClass = [parentViewController class];
+    NSString *className = NSStringFromClass(parentVCClass);
+    
+    if([className isEqualToString:@"MessagesViewController"])
+    {
+        NSLog(@"MessageViewController Class");
+        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+    }
+    else
+    {
+        NSLog(@"Other Class");
+        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+    }
+    
+    NSLog(@"Parent View Controller: %@",className);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];

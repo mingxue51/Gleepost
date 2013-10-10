@@ -17,7 +17,7 @@
 @interface MessagesViewController ()
 
 @property (strong, nonatomic) NSMutableArray *conversations;
-@property (strong, nonatomic) Conversation *selectedConversation;
+@property (strong, nonatomic) RemoteConversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
@@ -37,7 +37,6 @@
     //Change navigations items' (back arrow, edit etc.) colour.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -49,6 +48,14 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
      self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+
 }
 
 -(void) setBackgroundToNavigationBar

@@ -30,7 +30,7 @@
         [self.userName setBackgroundColor:[UIColor clearColor]];
         [self.userName setEditable:NO];
         [self.userName setScrollEnabled:NO];
-        [self.userName setSelectable:NO];
+        //[self.userName setSelectable:NO];
         //[self.userName sizeToFit];
         [self.userName setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
         [self.userName setFrame:CGRectMake(65.0f, 0.0f, 100.0f, 30.0f)];
@@ -42,7 +42,7 @@
         [self.postTime setTextColor:[UIColor grayColor]];
         [self.postTime setEditable:NO];
         [self.postTime setScrollEnabled:NO];
-        [self.postTime setSelectable:NO];
+        //[self.postTime setSelectable:NO];
         //[self.postTime sizeToFit];
         [self.postTime setFont:[UIFont fontWithName:@"Helvetica Neue" size:10]];
         [self.postTime setFrame:CGRectMake(65.0f, 15.0f, 100.0f, 30.0f)];
@@ -54,7 +54,7 @@
         [self.content setEditable:NO];
         [self.content setScrollEnabled:NO];
         
-        [self.content setSelectable:NO];
+        //[self.content setSelectable:NO];
         [self.content sizeToFit];
         [self.content setFont:[UIFont fontWithName:@"Helvetica Neue" size:12]];
         [self.content setFrame:CGRectMake(65.0f, 30.0f, 250.0f, 50.0f)];

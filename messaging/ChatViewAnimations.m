@@ -22,7 +22,10 @@ const int lowerLimit = 220;
     self = [super initWithFrame:frame];
     if (self)
     {
-       
+      //  self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gleepost1"]];
+        [self addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gleepost1"]]];
+        
+        
        [self initialiseCircles];
        [self setBackgroundImage];
        [self initialiseScrollView];
@@ -425,7 +428,7 @@ static BOOL animateBubbles = YES;
     
     for(UIImageView *imageView in self.bubblesOffTheScreen)
     {
-        [self animateBubbleWithDuration:1.5 delay:10 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+        [self animateBubbleWithDuration:1.5 delay:2 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
     }
     
     
