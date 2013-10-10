@@ -207,7 +207,9 @@ static WebClient *instance = nil;
         NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:conversation];
         callbackBlock(YES, messages);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, nil);
+        //TODO: TEMP FIX
+        callbackBlock(YES, [NSArray array]);
+        //callbackBlock(NO, nil);
     }];
 
 }
@@ -230,21 +232,21 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
+- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock
 {
     [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
 }
 
-- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
+- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock
 {
     [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
 }
 
-- (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
+- (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-        Conversation *conversation = [JsonParser parseConversationFromJson:responseObject ignoringUserKey:self.sessionManager.key];
+        RemoteConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
         
         callbackBlock(YES, conversation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

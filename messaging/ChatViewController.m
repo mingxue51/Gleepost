@@ -10,11 +10,13 @@
 #import "ViewTopicViewController.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "ChatViewAnimations.h"
+#import "RemoteConversation+Additions.h"
 
 @interface ChatViewController ()
 
-@property (strong, nonatomic) Conversation *conversation;
+@property (strong, nonatomic) RemoteConversation *conversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)startGroupButtonClicked:(id)sender;
@@ -161,38 +163,29 @@
 
 - (IBAction)startButtonClicked:(id)sender
 {
-    //[self searchForConversationForGroup:NO];
+    [self searchForConversationForGroup:NO];
 }
 
 - (IBAction)startGroupButtonClicked:(id)sender
 {
-    //[self searchForConversationForGroup:YES];
+    [self searchForConversationForGroup:YES];
 }
 
 - (void)searchForConversationForGroup:(BOOL)group
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Looking for people";
-    hud.detailsLabelText = @"Please wait few seconds";
-    
+    [WebClientHelper showStandardLoaderWithTitle:@"Looking for people" forView:self.view];
     WebClient *client = [WebClient sharedInstance];
     
-    void(^block)(BOOL success, Conversation *conversation);
-    block = ^(BOOL success, Conversation *conversation) {
-        [hud hide:YES];
+    void(^block)(BOOL success, RemoteConversation *conversation);
+    block = ^(BOOL success, RemoteConversation *conversation) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.conversation = conversation;
-            
-            NSLog(@"PARTICIPANTS:%@",self.conversation.getParticipantsNames);
+            NSLog(@"PARTICIPANTS:%@", self.conversation.getParticipantsNames);
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Conversation failed"
-                                                            message:@"Check your your internet connection, dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [WebClientHelper showStandardError];
         }
     };
     

@@ -38,8 +38,8 @@
 - (void)createMessage:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success))callbackBlock;
 - (void)createMessageSynchronously:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
 
-- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;
-- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;
+- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock;
+- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock;
 
 
 

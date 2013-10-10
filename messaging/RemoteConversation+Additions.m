@@ -7,28 +7,28 @@
 //
 
 #import "RemoteConversation+Additions.h"
+#import "RemoteUser.h"
 
 @implementation RemoteConversation (Additions)
 
 - (NSString *)getParticipantsNames
 {
     NSMutableString *names = [NSMutableString string];
-    return @"Participants";
     
-//    [self.participants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        User *user = obj;
-//        [names appendString:user.name];
-//        
-//        if(self.participants.count != 1 && idx != self.participants.count - 1) {
-//            if(idx == self.participants.count - 2) {
-//                [names appendString:@" and "];
-//            } else {
-//                [names appendString:@", "];
-//            }
-//        }
-//    }];
-//    
-//    return names;
+    [[self.participants allObjects] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        RemoteUser *user = obj;
+        [names appendString:user.name];
+        
+        if(self.participants.count != 1 && idx != self.participants.count - 1) {
+            if(idx == self.participants.count - 2) {
+                [names appendString:@" and "];
+            } else {
+                [names appendString:@", "];
+            }
+        }
+    }];
+    
+    return names;
 }
 
 @end
