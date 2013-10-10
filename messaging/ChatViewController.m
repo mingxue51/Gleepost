@@ -98,7 +98,10 @@
 
 -(void) addGleepostImageToNavigationBar
 {
-    UIImage *image = [UIImage imageNamed:@"GleepostS2"];
+   // UIImageView *workaroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 98, 34)];
+
+    
+    UIImage *image = [UIImage imageNamed:@"Gleepost"];
 //    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     
      UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -108,7 +111,6 @@
     
     NSLog(@"Size of image view: %f : %f", imageView.frame.size.width, imageView.frame.size.height);
     
-   
 
 //    self.navigationController.navigationItem.titleView = imageView;
     self.navigationItem.titleView = imageView;
@@ -117,6 +119,15 @@
     
     //self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:image] autorelease];
     
+    
+    /**
+     
+     UIImageView *workaroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 98, 34)];
+     [workaroundImageView addSubview:navigationImage];
+     self.navigationItem.titleView=workaroundImageView;
+     
+     
+     */
 }
 
 /**
