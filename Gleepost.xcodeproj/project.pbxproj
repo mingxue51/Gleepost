@@ -101,13 +101,13 @@
 		80666C481806DFCB00E4E515 /* RemoteConversation+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C471806DFCB00E4E515 /* RemoteConversation+Additions.m */; };
 		80666C541806E11000E4E515 /* RemoteMessage+CellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C531806E11000E4E515 /* RemoteMessage+CellLogic.m */; };
 		80666C571806E16000E4E515 /* RemoteMessage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C561806E16000E4E515 /* RemoteMessage+Additions.m */; };
-		80666C6C1806F7C700E4E515 /* RemoteConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C6B1806F7C700E4E515 /* RemoteConversation.m */; };
 		80666C6F1806F7C800E4E515 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C6E1806F7C800E4E515 /* LocalMessage.m */; };
 		80666C721806F7C800E4E515 /* RemoteUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C711806F7C800E4E515 /* RemoteUser.m */; };
-		80666C751806F7C800E4E515 /* RemoteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C741806F7C800E4E515 /* RemoteMessage.m */; };
 		80666C781806F7E200E4E515 /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C771806F7E200E4E515 /* MessageManager.m */; };
 		80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */; };
 		80666C7F1806FF4900E4E515 /* LocalMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C7E1806FF4900E4E515 /* LocalMessageManager.m */; };
+		80666C88180729D800E4E515 /* RemoteConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C87180729D800E4E515 /* RemoteConversation.m */; };
+		80666C8B180729D900E4E515 /* RemoteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C8A180729D900E4E515 /* RemoteMessage.m */; };
 		8073AB341806B9F3000FD0B1 /* Message+MessageCellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */; };
 		8096E4D317C2BA3000C7BF60 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D217C2BA3000C7BF60 /* clock.png */; };
 		8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D417C2BBD800C7BF60 /* navigation_bar.png */; };
@@ -313,14 +313,10 @@
 		80666C531806E11000E4E515 /* RemoteMessage+CellLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteMessage+CellLogic.m"; sourceTree = "<group>"; };
 		80666C551806E16000E4E515 /* RemoteMessage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteMessage+Additions.h"; sourceTree = "<group>"; };
 		80666C561806E16000E4E515 /* RemoteMessage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteMessage+Additions.m"; sourceTree = "<group>"; };
-		80666C6A1806F7C700E4E515 /* RemoteConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConversation.h; sourceTree = "<group>"; };
-		80666C6B1806F7C700E4E515 /* RemoteConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConversation.m; sourceTree = "<group>"; };
 		80666C6D1806F7C800E4E515 /* LocalMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalMessage.h; sourceTree = "<group>"; };
 		80666C6E1806F7C800E4E515 /* LocalMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMessage.m; sourceTree = "<group>"; };
 		80666C701806F7C800E4E515 /* RemoteUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteUser.h; sourceTree = "<group>"; };
 		80666C711806F7C800E4E515 /* RemoteUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteUser.m; sourceTree = "<group>"; };
-		80666C731806F7C800E4E515 /* RemoteMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMessage.h; sourceTree = "<group>"; };
-		80666C741806F7C800E4E515 /* RemoteMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMessage.m; sourceTree = "<group>"; };
 		80666C761806F7E200E4E515 /* MessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageManager.h; sourceTree = "<group>"; };
 		80666C771806F7E200E4E515 /* MessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageManager.m; sourceTree = "<group>"; };
 		80666C791806F8AD00E4E515 /* SendStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendStatus.h; sourceTree = "<group>"; };
@@ -328,6 +324,10 @@
 		80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageProcessingOperation.m; sourceTree = "<group>"; };
 		80666C7D1806FF4900E4E515 /* LocalMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalMessageManager.h; sourceTree = "<group>"; };
 		80666C7E1806FF4900E4E515 /* LocalMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMessageManager.m; sourceTree = "<group>"; };
+		80666C86180729D800E4E515 /* RemoteConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConversation.h; sourceTree = "<group>"; };
+		80666C87180729D800E4E515 /* RemoteConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConversation.m; sourceTree = "<group>"; };
+		80666C89180729D900E4E515 /* RemoteMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMessage.h; sourceTree = "<group>"; };
+		80666C8A180729D900E4E515 /* RemoteMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMessage.m; sourceTree = "<group>"; };
 		8073AB321806B9F3000FD0B1 /* Message+MessageCellLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Message+MessageCellLogic.h"; sourceTree = "<group>"; };
 		8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Message+MessageCellLogic.m"; sourceTree = "<group>"; };
 		8096E4D217C2BA3000C7BF60 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
@@ -769,14 +769,14 @@
 			isa = PBXGroup;
 			children = (
 				80666C451806DFB800E4E515 /* Additions */,
-				80666C6A1806F7C700E4E515 /* RemoteConversation.h */,
-				80666C6B1806F7C700E4E515 /* RemoteConversation.m */,
 				80666C701806F7C800E4E515 /* RemoteUser.h */,
 				80666C711806F7C800E4E515 /* RemoteUser.m */,
-				80666C731806F7C800E4E515 /* RemoteMessage.h */,
-				80666C741806F7C800E4E515 /* RemoteMessage.m */,
 				80666C6D1806F7C800E4E515 /* LocalMessage.h */,
 				80666C6E1806F7C800E4E515 /* LocalMessage.m */,
+				80666C86180729D800E4E515 /* RemoteConversation.h */,
+				80666C87180729D800E4E515 /* RemoteConversation.m */,
+				80666C89180729D900E4E515 /* RemoteMessage.h */,
+				80666C8A180729D900E4E515 /* RemoteMessage.m */,
 			);
 			name = RemoteModel;
 			sourceTree = "<group>";
@@ -1256,6 +1256,7 @@
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
 				80666C481806DFCB00E4E515 /* RemoteConversation+Additions.m in Sources */,
+				80666C8B180729D900E4E515 /* RemoteMessage.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
 				80666C781806F7E200E4E515 /* MessageManager.m in Sources */,
@@ -1274,6 +1275,7 @@
 				80666C571806E16000E4E515 /* RemoteMessage+Additions.m in Sources */,
 				80AB895117C26EF20053E784 /* User.m in Sources */,
 				80AB895417C271750053E784 /* Post.m in Sources */,
+				80666C88180729D800E4E515 /* RemoteConversation.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
 				80AB895717C2718C0053E784 /* Topic.m in Sources */,
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
@@ -1298,7 +1300,6 @@
 				8056764318059DC4006E058E /* LongPollOperation.m in Sources */,
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				80AB897D17C292180053E784 /* NewMessageViewController.m in Sources */,
-				80666C6C1806F7C700E4E515 /* RemoteConversation.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
@@ -1313,7 +1314,6 @@
 				80CE307717CE4F0F003007D0 /* RemoteEntity.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
-				80666C751806F7C800E4E515 /* RemoteMessage.m in Sources */,
 				80E7478F17CEA93B001957E5 /* Conversation.m in Sources */,
 				80E7479217CEA994001957E5 /* Message.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,

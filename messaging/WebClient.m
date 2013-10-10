@@ -192,18 +192,10 @@ static WebClient *instance = nil;
     
     if(lastMessage) {
         [params setObject:lastMessage.remoteKey forKey:@"after"];
-        NSLog(@"after %@", lastMessage.remoteKey);
     }
     
     NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", conversation.remoteKey];
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-//        // null resposne
-//        if(responseObject == (id)[NSNull null]) {
-//            callbackBlock(YES, [NSArray array]);
-//            return;
-//        }
-        
         NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:conversation];
         callbackBlock(YES, messages);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -6,6 +6,7 @@
     <entity name="RemoteConversation" representedClassName="RemoteConversation" syncable="YES">
         <attribute name="remoteKey" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteMessage" inverseName="conversation" inverseEntity="RemoteMessage" syncable="YES"/>
+        <relationship name="mostRecentMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RemoteMessage" syncable="YES"/>
         <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RemoteUser" syncable="YES"/>
     </entity>
     <entity name="RemoteMessage" representedClassName="RemoteMessage" syncable="YES">

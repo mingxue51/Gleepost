@@ -8,19 +8,28 @@
 
 #import "RemoteConversation+Additions.h"
 #import "RemoteUser.h"
+#import "SessionManager.h"
 
 @implementation RemoteConversation (Additions)
 
+// Excludes the current user name
 - (NSString *)getParticipantsNames
 {
     NSMutableString *names = [NSMutableString string];
     
+    int count = self.participants.count - 1;
     [[self.participants allObjects] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         RemoteUser *user = obj;
+        
+        // ignore current user
+        if([user.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]]) {
+            return;
+        }
+        
         [names appendString:user.name];
         
-        if(self.participants.count != 1 && idx != self.participants.count - 1) {
-            if(idx == self.participants.count - 2) {
+        if(count != 1 && idx != count - 1) {
+            if(idx == count - 2) {
                 [names appendString:@" and "];
             } else {
                 [names appendString:@", "];

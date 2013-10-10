@@ -8,6 +8,7 @@
 
 #import "RemoteParser.h"
 #import "DateFormatterManager.h"
+#import "SendStatus.h"
 
 @interface RemoteParser()
 
@@ -33,9 +34,15 @@
 
 + (RemoteUser *)parseUserFromJson:(NSDictionary *)json
 {
-    RemoteUser *user = [RemoteUser MR_createEntity];
-    user.remoteKey = json[@"id"];
-    user.name = json[@"username"];
+    NSNumber *key = json[@"id"];
+    RemoteUser *user = [RemoteUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
+    if(!user) {
+        user = [RemoteUser MR_createEntity];
+        user.remoteKey = key;
+        user.name = json[@"username"];
+    }
+    
+
 //    
 //    // optional
 //    user.tagline = json[@"tagline"];
@@ -57,20 +64,16 @@
     RemoteConversation *conversation = [RemoteConversation MR_createEntity];
     conversation.remoteKey = json[@"id"];
     
-//    if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
-//        conversation.lastMessage = [JsonParser parseMessageFromJson:json[@"mostRecentMessage"]];
-//    }
-//    
-//    NSMutableArray *participants = [NSMutableArray array];
-//    for(id jsonUser in json[@"participants"]) {
-//        User *user = [JsonParser parseUserFromJson:jsonUser];
-//        
-//        // ignore the current user that is obviously included in the conversation
-//        if(user.key != userKeyToIgnore) {
-//            [participants addObject:user];
-//        }
-//    }
-//    conversation.participants = participants;
+    if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
+        conversation.mostRecentMessage = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"]];
+    }
+
+    NSMutableArray *participants = [NSMutableArray array];
+    for(id jsonUser in json[@"participants"]) {
+        RemoteUser *user = [RemoteParser parseUserFromJson:jsonUser];
+        [participants addObject:user];
+    }
+    conversation.participants = [NSSet setWithArray:participants];
     
     return conversation;
 }
@@ -90,6 +93,7 @@
 
 + (RemoteMessage *)parseMessageFromJson:(NSDictionary *)json
 {
+    
     RemoteMessage *message = [RemoteMessage MR_createEntity];
     message.remoteKey = json[@"id"];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
@@ -100,6 +104,7 @@
     message.date = date;
     
     message.content = json[@"text"];
+    message.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
 //    message.seen = [json[@"seen"] boolValue];
     
     return message;
