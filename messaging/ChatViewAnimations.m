@@ -419,6 +419,8 @@ static BOOL animateBubbles = YES;
 //                
 //            }];
             
+//            [self hideBubbles];
+            
         }];
 
         
@@ -428,7 +430,7 @@ static BOOL animateBubbles = YES;
     
     for(UIImageView *imageView in self.bubblesOffTheScreen)
     {
-        [self animateBubbleWithDuration:1.5 delay:2 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
+        [self animateBubbleWithDuration:1.5 delay:0.3 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
     }
     
     
@@ -449,11 +451,6 @@ static BOOL animateBubbles = YES;
 //        
 //    }];
     
-    [UIView animateWithDuration:1 animations:^{
-        
-        [self hideBubbles];
-        
-    }];
     
     animationsFinished = YES;
 }
@@ -504,6 +501,7 @@ static BOOL animateBubbles = YES;
        // [self hideBubbles];
         
 
+        [imageView setAlpha:0.0];
         
         /**
          

@@ -95,7 +95,7 @@ const int flexibleResizeLimit = 120;
     //Create a button with the image and create selector for button.
     self.cameraButton = [[UIButton alloc] init];
     [self.cameraButton setBackgroundImage:[UIImage imageNamed:@"camera_icon"] forState:UIControlStateNormal];
-    [self.cameraButton setFrame:CGRectMake(10.0f, messageViewRect.size.height/4, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
+    [self.cameraButton setFrame:CGRectMake(15.0f, messageViewRect.size.height/4, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
     [self.cameraButton addTarget:self
                action:@selector(addImageToTheChat:)
      forControlEvents:UIControlEventTouchDown];
@@ -108,6 +108,7 @@ const int flexibleResizeLimit = 120;
     float height = self.messageTextField.frame.size.height;
     CGRect sizeOfMessageTextField = self.messageTextField.frame;
     [self.messageTextField setFrame:CGRectMake(sizeOfMessageTextField.origin.x, sizeOfMessageTextField.origin.y, sizeOfMessageTextField.size.width, height)];
+    self.messageTextField.layer.cornerRadius = 3;
     
     // init
     self.messagesCellIdentifiers = [NSMutableArray array];

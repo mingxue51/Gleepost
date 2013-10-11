@@ -10,6 +10,8 @@
 
 @interface PopUpMessage : UIView
 
++(PopUpMessage*) showMessageWithSuperView: (UIView*) superView;
+
 @property (strong, nonatomic) NSString* message;
 @property (strong, nonatomic) NSString* title;
 

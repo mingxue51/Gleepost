@@ -101,7 +101,7 @@
    // UIImageView *workaroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 98, 34)];
 
     
-    UIImage *image = [UIImage imageNamed:@"Gleepost"];
+    UIImage *image = [UIImage imageNamed:@"GleepostS"];
 //    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     
      UIImageView *imageView = [[UIImageView alloc] initWithImage:image];

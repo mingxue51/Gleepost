@@ -67,7 +67,7 @@
     {
         if (isDraging && myscrollView.contentOffset.y < 0 - REFHEIGHT)
         {
-            NSLog(@"Animation.");
+            NSLog(@"Animation.");2
             [_chatViewAnimations animateCirclesFancy];
            // isDraging = NO;
         }

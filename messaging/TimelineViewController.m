@@ -18,7 +18,7 @@
 #import "NewCommentView.h"
 #import "Social/Social.h"
 #import <Twitter/Twitter.h>
-
+#import "PopUpMessage.h"
 
 //#import "AppDelegate.h"
 
@@ -245,8 +245,11 @@ static BOOL likePushed;
 - (void)loadPosts
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    
+    
+    
     [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
+       [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.posts = [posts mutableCopy];
