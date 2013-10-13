@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RemoteMessage.h"
+#import "Message.h"
 
 @interface MessageManager : NSObject
 
-+ (void)saveMessage:(RemoteMessage *)message;
++ (void)saveMessage:(Message *)message;
 
 @end

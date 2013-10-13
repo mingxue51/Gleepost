@@ -133,7 +133,7 @@
     static NSString *CellIdentifier = @"Cell";
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    RemoteConversation *conversation = self.conversations[indexPath.row];
+    Conversation *conversation = self.conversations[indexPath.row];
     
     
     cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];

@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "RemoteMessage.h"
+#import "Message.h"
 #import "SendStatus.h"
 
-@interface RemoteMessage (Additions)
+@interface Message (Additions)
 
-- (BOOL)followsPreviousMessage:(RemoteMessage *)message;
+//- (BOOL)followsPreviousMessage:(Message *)message;
 
 @end

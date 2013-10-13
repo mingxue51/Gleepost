@@ -17,13 +17,12 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
-#import "MessageManager.h"
 
-#import "RemoteMessage.h"
+#import "Message.h"
 #import "RemoteMessage+CellLogic.h"
 #import "RemoteMessage+Additions.h"
 #import "RemoteConversation+Additions.h"
-#import "RemoteUser.h"
+#import "User.h"
 
 
 const int textViewSizeOfLine = 12;
@@ -181,11 +180,6 @@ const int flexibleResizeLimit = 120;
 
 - (void)loadMessages
 {
-//    NSArray *en = [RemoteMessage MR_findAll];
-//    NSLog(@"ALL messages %d", en.count);
-//    [RemoteMessage MR_truncateAll];
-//    [[NSManagedObjectContext MR_context] MR_saveToPersistentStoreAndWait];
-
     id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
     
     [WebClientHelper showStandardLoaderWithTitle:@"Loading new messages" forView:view];
@@ -201,6 +195,11 @@ const int flexibleResizeLimit = 120;
                 NSLog(@"remote messages %d", messages.count);
                 [self showMessages:messages];
             }
+            
+            if(!self.longPollingRequestRunning) {
+                //TODO: long polling same user messages handling
+                //[self startLongPollingRequest];
+            }
         } else {
             [WebClientHelper showStandardError];
         }
@@ -212,11 +211,11 @@ const int flexibleResizeLimit = 120;
     self.messages = [messages mutableCopy];
     
     for (int i = 0; i < self.messages.count; i++) {
-        RemoteMessage *current = self.messages[i];
+        Message *current = self.messages[i];
         if(i == 0) {
             [current configureAsFirstMessage];
         } else {
-            RemoteMessage *previous = self.messages[i-1];
+            Message *previous = self.messages[i-1];
             [current configureAsFollowingMessage:previous];
         }
     }
@@ -228,12 +227,12 @@ const int flexibleResizeLimit = 120;
     }
 }
 
-- (void)showMessage:(RemoteMessage *)message
+- (void)showMessage:(Message *)message
 {
     if(self.messages.count == 0) {
         [message configureAsFirstMessage];
     } else {
-        RemoteMessage *last = self.messages[self.messages.count - 1];
+        Message *last = self.messages[self.messages.count - 1];
         [message configureAsFollowingMessage:last];
     }
     
@@ -248,12 +247,15 @@ const int flexibleResizeLimit = 120;
 
 - (void)createMessageFromForm
 {
-    RemoteMessage *message = [RemoteMessage MR_createEntity];
-    message.content = self.messageTextField.text;
-    message.conversation = self.conversation;
-    message.date = [NSDate date];
+    Message *message = [ConversationManager createMessageWithContent:self.messageTextField.text toConversation:self.conversation sendCallback:^(Message *sentMessage, BOOL success) {
+        NSLog(@"MESSAGE %@ sent with success: %d", sentMessage.content, success);
+//        
+//        NSString *status = (success) ? @"sent" : @"error";
+//        sentMessage.content = [NSString stringWithFormat:@"%@ - %@", sentMessage.content, status];
+        [self.tableView reloadData];
+    }];
     
-    [MessageManager saveMessage:message];
+//    message.content = [NSString stringWithFormat:@"%@ - sending...", message.content];
     [self showMessage:message];
     
     self.messageTextField.text = @"";
@@ -267,22 +269,22 @@ const int flexibleResizeLimit = 120;
     id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
     
     [WebClientHelper showStandardLoaderWithTitle:@"Loading messages" forView:view];
-    [[WebClient sharedInstance] getMessagesForConversation:self.conversation withCallbackBlock:^(BOOL success, NSArray *messages) {
-        [WebClientHelper hideStandardLoaderForView:view];
-        
-        if(success) {
-            // TODO: crashes if array is empty
-            if(messages.count != 0) {
-                [self showMessages:messages];
-            }
-        } else {
-            [WebClientHelper showStandardError];
-        }
-        
-        if(!self.longPollingRequestRunning) {
-            [self startLongPollingRequest];
-        }
-    }];
+//    [[WebClient sharedInstance] getMessagesForConversation:self.conversation withCallbackBlock:^(BOOL success, NSArray *messages) {
+//        [WebClientHelper hideStandardLoaderForView:view];
+//        
+//        if(success) {
+//            // TODO: crashes if array is empty
+//            if(messages.count != 0) {
+//                [self showMessages:messages];
+//            }
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//        if(!self.longPollingRequestRunning) {
+//            [self startLongPollingRequest];
+//        }
+//    }];
 }
 
 - (void)startLongPollingRequest
@@ -290,7 +292,7 @@ const int flexibleResizeLimit = 120;
     self.longPollingRequestRunning = YES;
     NSLog(@"start long polling request");
     
-    [[WebClient sharedInstance] longPollNewMessagesWithCallbackBlock:^(BOOL success, Message *message) {
+    [[WebClient sharedInstance] longPollNewMessagesForConversation:self.conversation callbackBlock:^(BOOL success, Message *message) {
         NSLog(@"long polling request finish with result %d", success);
         
         if(success) {
@@ -370,7 +372,7 @@ const int flexibleResizeLimit = 120;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RemoteMessage *message = self.messages[indexPath.row];
+    Message *message = self.messages[indexPath.row];
     
     if(!message.cellIdentifier) {
         [NSException raise:@"Cell identifier is null" format:@"Row is %d", indexPath.row];
@@ -385,7 +387,7 @@ const int flexibleResizeLimit = 120;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RemoteMessage *message = self.messages[indexPath.row];
+    Message *message = self.messages[indexPath.row];
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
 

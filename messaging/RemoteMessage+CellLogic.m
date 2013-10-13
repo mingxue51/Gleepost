@@ -10,9 +10,9 @@
 #import <objc/runtime.h>
 #import "RemoteMessage+Additions.h"
 #import "SessionManager.h"
-#import "RemoteUser.h"
+#import "User.h"
 
-@implementation RemoteMessage (CellLogic)
+@implementation Message (CellLogic)
 
 NSString * const kMessageCellIdentifier = @"kMessageCellIdentifier";
 NSString * const kMessageHasHeader = @"kMessageHasHeader";
@@ -54,19 +54,19 @@ NSString * const kMessageRightCell = @"RightCell";
     self.hasHeader = YES;
 }
 
-- (void)configureAsFollowingMessage:(RemoteMessage *)message
+- (void)configureAsFollowingMessage:(Message *)message
 {
     if([self followsPreviousMessage:message]) {
         self.cellIdentifier = message.cellIdentifier;
         self.hasHeader = NO;
     } else {
-        self.cellIdentifier = [RemoteMessage getCellIdentifierForMessage:self];
+        self.cellIdentifier = [Message getCellIdentifierForMessage:self];
         self.hasHeader = YES;
     }
     
 }
 
-+ (NSString *)getCellIdentifierForMessage:(RemoteMessage *)message
++ (NSString *)getCellIdentifierForMessage:(Message *)message
 {
     BOOL currentUser = [message.author.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]];
     

@@ -8,9 +8,9 @@
 
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
-#import "RemoteMessage.h"
+#import "Message.h"
 #import "LocalMessage.h"
-#import "RemoteConversation.h"
+#import "Conversation.h"
 #import "MessageProcessingOperation.h"
 
 @implementation AppDelegate
@@ -22,9 +22,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    if(DEV) {
-        NSError *error = nil;
-        NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:@"Gleepost.sqlite"];
-        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+//        NSError *error = nil;
+//        NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:@"Gleepost.sqlite"];
+//        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
 //    }
     
 

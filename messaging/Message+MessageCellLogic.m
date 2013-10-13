@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 #import "Message+MessageCellLogic.h"
 
-@implementation Message (MessageCellLogic)
+@implementation OldMessage (MessageCellLogic)
 
 //NSString * const kMessageCellIdentifier = @"kMessageCellIdentifier";
 //NSString * const kMessageHasHeader = @"kMessageHasHeader";

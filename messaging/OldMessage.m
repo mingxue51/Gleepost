@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "Message.h"
-#import "Conversation.h"
+#import "OldMessage.h"
+#import "OldConversation.h"
 
-@implementation Message
+@implementation OldMessage
 
 @synthesize seen, content, date, author, conversation;
 
-- (BOOL)followsPreviousMessage:(Message *)message
+- (BOOL)followsPreviousMessage:(OldMessage *)message
 {
     if(message.author.key != self.author.key) {
         return NO;

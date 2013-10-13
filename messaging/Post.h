@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SocialContent.h"
 #import "RemoteEntity.h"
-#import "User.h"
+#import "OldUser.h"
 
 @interface Post : RemoteEntity
 
@@ -18,6 +18,6 @@
 @property (assign, nonatomic) NSInteger commentsCount;
 @property (strong, nonatomic) NSArray *imagesUrls;
 @property (strong, nonatomic) NSDate *date;
-@property (strong, nonatomic) User *user;
+@property (strong, nonatomic) OldUser *user;
 
 @end

@@ -56,7 +56,7 @@ float const MessageContentViewPadding = 15;
     // Configure the view for the selected state
 }
 
-- (void)updateWithMessage:(RemoteMessage *)message first:(BOOL)isFirst
+- (void)updateWithMessage:(Message *)message first:(BOOL)isFirst
 {
     if(isFirst) {
         self.timeView.hidden = NO;
@@ -77,6 +77,19 @@ float const MessageContentViewPadding = 15;
     self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, self.messageContentView.frame.origin.y, self.messageContentView.frame.size.width, contentHeight + MessageContentViewPadding);
     self.messageContentLabel.frame = CGRectMake(self.messageContentLabel.frame.origin.x, self.messageContentLabel.frame.origin.y, self.messageContentLabel.frame.size.width, contentHeight);
     self.messageContentLabel.text = message.content;
+    
+    
+    switch (message.sendStatusValue) {
+        case kSendStatusLocal:
+            self.messageContentLabel.textColor = [UIColor orangeColor];
+            break;
+        case kSendStatusSent:
+            self.messageContentLabel.textColor = [UIColor greenColor];
+            break;
+        case kSendStatusFailure:
+            self.messageContentLabel.textColor = [UIColor redColor];
+            break;
+    }
 }
 
 + (CGFloat)getContentLabelHeightForContent:(NSString *)content

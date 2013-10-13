@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RemoteMessage.h"
-#import "RemoteConversation.h"
+#import "Message.h"
+#import "Conversation.h"
 
 @interface ConversationManager : NSObject
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
-+ (void)loadMessagesForConversation:(RemoteConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
++ (void)loadMessagesForConversation:(Conversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
++ (Message *)createMessageWithContent:(NSString *)content toConversation:(Conversation *)conversation sendCallback:(void (^)(Message *sentMessage, BOOL success))sendCallback;
 @end

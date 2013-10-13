@@ -10,7 +10,7 @@
 #import "RemoteEntity.h"
 #import "UserNetwork.h"
 
-@interface User : RemoteEntity
+@interface OldUser : RemoteEntity
 
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *tagline;

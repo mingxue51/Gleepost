@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RemoteConversation.h"
+#import "Conversation.h"
 
 
 @interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
@@ -18,7 +18,7 @@
 }
 
 
-@property (strong, nonatomic) RemoteConversation *conversation;
+@property (strong, nonatomic) Conversation *conversation;
 
 
 @end

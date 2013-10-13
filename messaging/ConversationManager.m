@@ -8,11 +8,16 @@
 
 #import "ConversationManager.h"
 
-#import "RemoteConversation.h"
-#import "RemoteMessage.h"
+#import "Conversation.h"
+#import "Message.h"
+#import "User.h"
 
+#import "SessionManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "MessagesSendingProcessor.h"
+
+
 
 @implementation ConversationManager
 
@@ -20,7 +25,7 @@
 {
     NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     
-    NSArray *localEntities = [RemoteConversation MR_findAll];
+    NSArray *localEntities = [Conversation MR_findAll];
     localCallback(localEntities);
     
     [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
@@ -30,32 +35,23 @@
         }
         
         [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            NSArray *entities = [RemoteConversation MR_findAll];
+            NSArray *entities = [Conversation MR_findAll];
             remoteCallback(YES, entities);
         }];
     }];
 }
 
 
-+ (void)loadMessagesForConversation:(RemoteConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
++ (void)loadMessagesForConversation:(Conversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
 {
     NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     
-    NSArray *localEntities = [RemoteMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
+    NSArray *localEntities = [Message MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
     localCallback(localEntities);
     
-    // find the last message which exists on both client and server
-    RemoteMessage *last = nil;
-    if(localEntities.count > 0) {
-        RemoteMessage *possibleLast;
-        for(int i = 0; i < localEntities.count; i++) {
-            possibleLast = localEntities[i];
-            
-            if(possibleLast.remoteKey && [possibleLast.remoteKey integerValue] != 0) {
-                last = possibleLast;
-            }
-        }
-    }
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversation= %@ && remoteKey != nil", conversation];
+    Message *last = [Message MR_findFirstWithPredicate:predicate sortedBy:@"remoteKey" ascending:NO];
+    NSLog(@"last remote message %@ - %@", last.remoteKey, last.content);
     
     [[WebClient sharedInstance] getLastMessagesForConversation:conversation withLastMessage:last callbackBlock:^(BOOL success, NSArray *messages) {
         if(!success) {
@@ -68,15 +64,50 @@
             remoteCallback(YES, nil);
         } else {
             [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                NSArray *entities = [RemoteMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
+                NSArray *entities = [Message MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
                 remoteCallback(YES, entities);
             }];
         }
     }];
-    
-    
-//    NSArray *localEntities = [RemoteConversation MR_findByAttribute:@"remoteKey" withValue:<#(id)#>];
-//    localCallback(localEntities);
 }
+
++ (Message *)createMessageWithContent:(NSString *)content toConversation:(Conversation *)conversation sendCallback:(void (^)(Message *sentMessage, BOOL success))sendCallback
+{
+    __block Message *message = [Message MR_createEntity];
+    message.content = content;
+    message.conversation = conversation;
+    message.date = [NSDate date];
+    
+    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
+    if(!user) {
+        [NSException raise:@"Cannot find current user" format:@"User with session key %d is null in local database", [SessionManager sharedInstance].key];
+    }
+    
+    message.author = user;
+    message.sendStatus = [NSNumber numberWithSendStatus:kSendStatusLocal];
+    
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        NSLog(@"Post message %@ to server", message.content);
+        
+        [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL responseSuccess, NSInteger remoteKey) {
+            NSLog(@"Post to server response: success %d - id %d", responseSuccess, remoteKey);
+            
+            if(responseSuccess) {
+                message.remoteKey = [NSNumber numberWithInteger:remoteKey];
+                message.sendStatusValue = kSendStatusSent;
+            } else {
+                message.sendStatusValue = kSendStatusFailure;
+            }
+            
+            [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL saveSucess, NSError *error) {
+                NSLog(@"Post server response saved with sucess: %d", saveSucess);
+                sendCallback(message, responseSuccess);
+            }];
+        }];
+    }];
+    
+    return message;
+}
+
 
 @end

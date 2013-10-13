@@ -10,4 +10,6 @@
 
 @interface MessageProcessingOperation : NSOperation
 
+@property (strong, nonatomic) NSArray *messages;
+
 @end

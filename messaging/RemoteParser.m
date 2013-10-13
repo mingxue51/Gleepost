@@ -32,12 +32,12 @@
 
 #pragma mark - Users
 
-+ (RemoteUser *)parseUserFromJson:(NSDictionary *)json
++ (User *)parseUserFromJson:(NSDictionary *)json
 {
     NSNumber *key = json[@"id"];
-    RemoteUser *user = [RemoteUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
+    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:key];
     if(!user) {
-        user = [RemoteUser MR_createEntity];
+        user = [User MR_createEntity];
         user.remoteKey = key;
         user.name = json[@"username"];
     }
@@ -59,9 +59,9 @@
 
 #pragma mark - Conversations
 
-+ (RemoteConversation *)parseConversationFromJson:(NSDictionary *)json
++ (Conversation *)parseConversationFromJson:(NSDictionary *)json
 {
-    RemoteConversation *conversation = [RemoteConversation MR_createEntity];
+    Conversation *conversation = [Conversation MR_createEntity];
     conversation.remoteKey = json[@"id"];
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
@@ -70,7 +70,7 @@
 
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
-        RemoteUser *user = [RemoteParser parseUserFromJson:jsonUser];
+        User *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }
     conversation.participants = [NSSet setWithArray:participants];
@@ -91,10 +91,10 @@
 
 #pragma mark - Messages
 
-+ (RemoteMessage *)parseMessageFromJson:(NSDictionary *)json
++ (Message *)parseMessageFromJson:(NSDictionary *)json
 {
     
-    RemoteMessage *message = [RemoteMessage MR_createEntity];
+    Message *message = [Message MR_createEntity];
     message.remoteKey = json[@"id"];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
     
@@ -110,11 +110,11 @@
     return message;
 }
 
-+ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(RemoteConversation *)conversation
++ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(Conversation *)conversation
 {
     NSMutableArray *messages = [NSMutableArray array];
     for(id jsonMessage in jsonMessages) {
-        RemoteMessage *message = [RemoteParser parseMessageFromJson:jsonMessage];
+        Message *message = [RemoteParser parseMessageFromJson:jsonMessage];
         message.conversation = conversation;
         [messages addObject:message];
     }

@@ -1,14 +1,14 @@
-//
-//  RemoteConversation.m
-//  Gleepost
-//
-//  Created by Lukas on 10/10/13.
-//  Copyright (c) 2013 Gleepost. All rights reserved.
-//
-
 #import "Conversation.h"
 #import "User.h"
 #import "SessionManager.h"
+
+
+@interface Conversation ()
+
+// Private interface goes here.
+
+@end
+
 
 @implementation Conversation
 
@@ -28,7 +28,7 @@
         
         [names appendString:user.name];
         
-        if(count != 1 && idx != count - 1) {
+        if(count > 1 && idx != count - 1) {
             if(idx == count - 2) {
                 [names appendString:@" and "];
             } else {

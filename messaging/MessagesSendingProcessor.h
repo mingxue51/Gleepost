@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LocalMessageManager : NSObject
+@interface MessagesSendingProcessor : NSObject
 
-- (void)process;
-+ (LocalMessageManager *)sharedInstance;
+- (void)processMessages;
++ (MessagesSendingProcessor *)sharedInstance;
 
 @end

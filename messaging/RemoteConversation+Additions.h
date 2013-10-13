@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "RemoteConversation.h"
+#import "Conversation.h"
 
-@interface RemoteConversation (Additions)
+@interface Conversation (Additions)
 
-- (NSString *)getParticipantsNames;
+//- (NSString *)getParticipantsNames;
 
 @end

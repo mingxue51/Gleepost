@@ -11,9 +11,9 @@
 
 @implementation JsonParser
 
-+ (User *)parseUserFromJson:(NSDictionary *)json
++ (OldUser *)parseUserFromJson:(NSDictionary *)json
 {
-    User *user = [[User alloc] init];
+    OldUser *user = [[OldUser alloc] init];
     user.key = [json[@"id"] integerValue];
     user.name = json[@"username"];
     
@@ -84,9 +84,9 @@
     return comments;
 }
 
-+ (Conversation *)parseConversationFromJson:(NSDictionary *)json ignoringUserKey:(NSInteger)userKeyToIgnore
++ (OldConversation *)parseConversationFromJson:(NSDictionary *)json ignoringUserKey:(NSInteger)userKeyToIgnore
 {
-    Conversation *conversation = [[Conversation alloc] init];
+    OldConversation *conversation = [[OldConversation alloc] init];
     conversation.key = [json[@"id"] integerValue];
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
         conversation.lastMessage = [JsonParser parseMessageFromJson:json[@"mostRecentMessage"]];
@@ -94,7 +94,7 @@
     
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
-        User *user = [JsonParser parseUserFromJson:jsonUser];
+        OldUser *user = [JsonParser parseUserFromJson:jsonUser];
         
         // ignore the current user that is obviously included in the conversation
         if(user.key != userKeyToIgnore) {
@@ -116,10 +116,10 @@
     return conversations;
 }
 
-+ (Message *)parseMessageFromJson:(NSDictionary *)json
++ (OldMessage *)parseMessageFromJson:(NSDictionary *)json
 {
 
-    Message *message = [[Message alloc] init];
+    OldMessage *message = [[OldMessage alloc] init];
     message.key = [json[@"id"] integerValue];
     message.author = [JsonParser parseUserFromJson:json[@"by"]];
     

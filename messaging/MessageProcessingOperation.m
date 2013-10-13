@@ -7,38 +7,33 @@
 //
 
 #import "MessageProcessingOperation.h"
-#import "LocalMessage.h"
-#import "RemoteMessage+Additions.h"
+#import "Message.h"
 #import "WebClient.h"
 
 @interface MessageProcessingOperation()
-
-@property (assign, nonatomic) BOOL isOperationRunning;
-@property (assign, nonatomic) NSInteger retries;
-@property (strong, nonatomic) NSManagedObjectContext *context;
 
 @end
 
 @implementation MessageProcessingOperation
 
+@synthesize messages;
+
 - (void)main {
     @autoreleasepool {
         NSLog(@"Message processing operation start");
-        NSLog(@"Check local messages");
+        NSLog(@"Check local messages : %d", self.messages.count);
         
-        self.context = [NSManagedObjectContext MR_contextForCurrentThread];
-        
-        NSArray *localMessages = [LocalMessage MR_findAllInContext:self.context];
-        
-        for(LocalMessage *localMessage in localMessages) {
-            NSLog(@"Post message %@", localMessage.remoteMessage.content);
-            self.retries = 0;
+        int retries = 3;
+        for(Message *message in self.messages) {
+            NSLog(@"Post message %@", message.content);
             
-            [self postMessage:localMessage];
-            
-            if(self.retries > 3) {
-                NSLog(@"Abort message processing");
-                break;
+            BOOL success = NO;
+            while (!success && retries > 0) {
+                success = [self postMessage:message];
+                
+                if(!success) {
+                    retries--;
+                }
             }
         }
         
@@ -46,31 +41,24 @@
     }
 }
                    
-- (void)postMessage:(LocalMessage *)localMessage
+- (BOOL)postMessage:(Message *)message
 {
+    __block BOOL response = NO;
+    
     // blocks until response is delivered
-    [[WebClient sharedInstance] createMessageSynchronously:localMessage.remoteMessage callbackBlock:^(BOOL success, NSInteger remoteKey) {
-        NSLog(@"Synchronous message creation response %d with id %d", success, remoteKey);
+    [[WebClient sharedInstance] createMessageSynchronously:message callbackBlock:^(BOOL success, NSInteger remoteKey) {
+        NSLog(@"Synchronous message creation response %d with remote key %d", success, remoteKey);
+        response = success;
         
-        // message posted with success
         if(success) {
-            localMessage.remoteMessage.remoteKey = [NSNumber numberWithInteger:remoteKey];
-            localMessage.remoteMessage.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
-            [localMessage MR_deleteInContext:self.context];
-            [self.context MR_saveToPersistentStoreAndWait];
-        
-        }
-        
-        // error
-        else {
-            self.retries++;
-            
-            // retry 3 times
-            if(self.retries <= 3) {
-                [self postMessage:localMessage];
-            }
+            message.remoteKey = [NSNumber numberWithInteger:remoteKey];
+            message.sendStatus = [NSNumber numberWithSendStatus:kSendStatusSent];
+        } else {
+            message.sendStatus = [NSNumber numberWithSendStatus:kSendStatusFailure];
         }
     }];
+    
+    return response;
 }
 
 @end

@@ -7,21 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RemoteConversation.h"
-#import "RemoteMessage.h"
-#import "RemoteUser.h"
+#import "Conversation.h"
+#import "Message.h"
+#import "User.h"
 
 @interface RemoteParser : NSObject
 
 // user
-+ (RemoteUser *)parseUserFromJson:(NSDictionary *)json;
++ (User *)parseUserFromJson:(NSDictionary *)json;
 
 // conversations
-+ (RemoteConversation *)parseConversationFromJson:(NSDictionary *)json;
++ (Conversation *)parseConversationFromJson:(NSDictionary *)json;
 + (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
 
 // messages
-+ (RemoteMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(RemoteConversation *)conversation;
-+ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(RemoteConversation *)conversation;
++ (Message *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation;
++ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(Conversation *)conversation;
 
 @end

@@ -174,7 +174,7 @@ static WebClient *instance = nil;
     [self getPath:@"conversations" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // delete previous conversations
-        [RemoteConversation MR_truncateAll];
+        [Conversation MR_truncateAll];
         
         // parse and create new ones
         NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
@@ -185,7 +185,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)getLastMessagesForConversation:(RemoteConversation *)conversation withLastMessage:(RemoteMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+- (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(Message *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.authParameters];
@@ -206,7 +206,7 @@ static WebClient *instance = nil;
 
 }
 
-- (void)getMessagesForConversation:(Conversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+- (void)getMessagesForConversation:(OldConversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.key];
     [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -224,21 +224,21 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock
+- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
 {
     [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
 }
 
-- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock
+- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
 {
     [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
 }
 
-- (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, RemoteConversation *conversation))callbackBlock
+- (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-        RemoteConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
+        Conversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
         
         callbackBlock(YES, conversation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -246,23 +246,23 @@ static WebClient *instance = nil;
     }];
 }
 
-// @deprecated
-- (void)createMessage:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success))callbackBlock
+- (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
-//    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.key];
-//    
-//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
-//    [params addEntriesFromDictionary:self.authParameters];
-//    
-//    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        callbackBlock(YES);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO);
-//    }];
+    NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
+    [params addEntriesFromDictionary:self.authParameters];
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *json = responseObject;
+        callbackBlock(YES, [json[@"id"] integerValue]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, 0);
+    }];
 }
 
 // Blocking operation
-- (void)createMessageSynchronously:(RemoteMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
+- (void)createMessageSynchronously:(Message *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
     
@@ -283,10 +283,10 @@ static WebClient *instance = nil;
 }
 
 
-- (void)longPollNewMessagesWithCallbackBlock:(void (^)(BOOL success, Message *conversation))callbackBlock
+- (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, Message *message))callbackBlock
 {
     [self getPath:@"longpoll" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        Message *message = [JsonParser parseMessageFromJson:responseObject];
+        Message *message = [RemoteParser parseMessageFromJson:responseObject forConversation:conversation];
         callbackBlock(YES, message);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -301,13 +301,13 @@ static WebClient *instance = nil;
 
 /* USER */
 
-- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, User *user))callbackBlock
+- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, OldUser *user))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"user/%d", key];
     
     [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        User *user = [JsonParser parseUserFromJson:responseObject];
+        OldUser *user = [JsonParser parseUserFromJson:responseObject];
         callbackBlock(YES, user);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);

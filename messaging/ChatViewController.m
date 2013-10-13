@@ -16,7 +16,7 @@
 
 @interface ChatViewController ()
 
-@property (strong, nonatomic) RemoteConversation *conversation;
+@property (strong, nonatomic) Conversation *conversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)startGroupButtonClicked:(id)sender;
@@ -203,8 +203,8 @@
     [WebClientHelper showStandardLoaderWithTitle:@"Looking for people" forView:self.view];
     WebClient *client = [WebClient sharedInstance];
     
-    void(^block)(BOOL success, RemoteConversation *conversation);
-    block = ^(BOOL success, RemoteConversation *conversation) {
+    void(^block)(BOOL success, Conversation *conversation);
+    block = ^(BOOL success, Conversation *conversation) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {

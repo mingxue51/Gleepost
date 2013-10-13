@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "RemoteMessage.h"
+#import "Message.h"
 
-@interface RemoteMessage (CellLogic)
+@interface Message (CellLogic)
 
 @property (retain, nonatomic) NSString *cellIdentifier;
 @property (assign, nonatomic) BOOL hasHeader;
@@ -17,7 +17,7 @@ extern NSString * const kMessageLeftCell;
 extern NSString * const kMessageRightCell;
 
 - (void)configureAsFirstMessage;
-- (void)configureAsFollowingMessage:(RemoteMessage *)message;
+- (void)configureAsFollowingMessage:(Message *)message;
 + (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier;
 
 @end

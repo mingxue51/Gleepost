@@ -9,15 +9,15 @@
 #import "MessageManager.h"
 #import "LocalMessage.h"
 #import "SendStatus.h"
-#import "RemoteUser.h"
+#import "User.h"
 #import "SessionManager.h"
-#import "LocalMessageManager.h"
+#import "MessagesSendingProcessor.h"
 
 @implementation MessageManager
 
-+ (void)saveMessage:(RemoteMessage *)message
++ (void)saveMessage:(Message *)message
 {
-    RemoteUser *user = [RemoteUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
+    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
     if(!user) {
         [NSException raise:@"Cannot find current user" format:@"User with session key %d is null in local database", [SessionManager sharedInstance].key];
     }
@@ -25,12 +25,8 @@
     message.author = user;
     message.sendStatus = [NSNumber numberWithInt:kSendStatusLocal];
     
-    LocalMessage *localMessage = [LocalMessage MR_createEntity];
-    localMessage.remoteMessage = message;
-    
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:nil];
-    
-    [[LocalMessageManager sharedInstance] process];
+    [[MessagesSendingProcessor sharedInstance] processMessages];
 }
 
 @end

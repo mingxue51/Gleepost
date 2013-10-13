@@ -1,20 +1,14 @@
 //
-//  Conversation.h
-//  messaging
+//  RemoteConversation.h
+//  Gleepost
 //
-//  Created by Lukas on 8/28/13.
+//  Created by Lukas on 10/10/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "RemoteEntity.h"
-#import "User.h"
-#import "Message.h"
+#import "_Conversation.h"
 
-@interface Conversation : RemoteEntity
-
-@property (strong, nonatomic) NSArray *participants;
-@property (strong, nonatomic) Message *lastMessage;
+@interface Conversation : _Conversation
 
 - (NSString *)getParticipantsNames;
 

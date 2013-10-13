@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "User.h"
+#import "OldUser.h"
 
-@implementation User
+@implementation OldUser
 
 @synthesize name=_name, tagline, profileImageUrl, course, network;
 
