@@ -1422,9 +1422,12 @@
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
+<<<<<<< HEAD
 				807C4D13180AF0F6003D67E6 /* _Message.m in Sources */,
 				8096E4EF17C2CD6F00C7BF60 /* PostCell.m in Sources */,
+=======
 				8096E4EF17C2CD6F00C7BF60 /* PostWithoutImageCell.m in Sources */,
+>>>>>>> Campus wall recreated (buggy).
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,

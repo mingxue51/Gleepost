@@ -31,6 +31,8 @@ const int lowerLimit = 220;
        [self initialiseScrollView];
        [self setUpTimers];
         
+        
+        
        animationsFinished = NO;
         
         

@@ -200,7 +200,11 @@
 
 - (void)searchForConversationForGroup:(BOOL)group
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Looking for people" forView:self.view];
+//    [WebClientHelper showStandardLoaderWithTitle:@"Looking for people" forView:self.view];
+    
+    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
+
+    
     WebClient *client = [WebClient sharedInstance];
     
     void(^block)(BOOL success, Conversation *conversation);

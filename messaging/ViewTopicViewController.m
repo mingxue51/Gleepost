@@ -182,7 +182,9 @@ const int flexibleResizeLimit = 120;
 {
     id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
     
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading new messages" forView:view];
+   // [WebClientHelper showStandardLoaderWithTitle:@"Loading new messages" forView:view];
+    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new messages" forView:view];
+    
     [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
         NSLog(@"local messages %d", messages.count);
         [self showMessages:messages];

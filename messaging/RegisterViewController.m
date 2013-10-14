@@ -36,7 +36,7 @@
 
 - (IBAction)registerButtonClick:(id)sender
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withoutSpinning:NO];
     hud.labelText = @"Registration";
     hud.detailsLabelText = @"Please wait few seconds";
     

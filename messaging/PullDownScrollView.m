@@ -8,6 +8,8 @@
 
 #import "PullDownScrollView.h"
 #import "ChatViewAnimations.h"
+#import "WebClientHelper.h"
+
 
 @implementation PullDownScrollView
 @synthesize chatViewAnimations = _chatViewAnimations;
@@ -67,7 +69,7 @@
     {
         if (isDraging && myscrollView.contentOffset.y < 0 - REFHEIGHT)
         {
-            NSLog(@"Animation.");2
+            NSLog(@"Animation.");
             [_chatViewAnimations animateCirclesFancy];
            // isDraging = NO;
         }
@@ -86,13 +88,27 @@
     
     if (myscrollView.contentOffset.y < 0 - REFHEIGHT)
     {
-        [_chatViewAnimations performSelector:@selector(navigateToNewRandomChat) withObject:nil afterDelay:5];
+        //Add message to the user that the system is looking for people.
+
+        [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:2.4];
+        
+        [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:4.5];
+
+        [_chatViewAnimations performSelector:@selector(navigateToNewRandomChat) withObject:nil afterDelay:4.5];
         myscrollView.scrollEnabled = NO;
-      //  [_chatViewAnimations navigateToNewRandomChat];
     }
 }
 
+-(void) startSearchingIndicator
+{
+    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Searching for people..." forView:_chatViewAnimations];
 
+}
+
+-(void) stopSearchingIndicator
+{
+    [WebClientHelper hideStandardLoaderForView:_chatViewAnimations];
+}
 
 - (void)stopLoading
 {

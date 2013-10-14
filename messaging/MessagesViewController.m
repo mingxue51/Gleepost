@@ -137,7 +137,7 @@
     
     
     cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];
-    cell.content.text = [NSString stringWithFormat:@"Last message: %@", conversation.mostRecentMessage.content];
+    cell.content.text = [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.content];
     cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
     cell.time.text = [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.date.description];
     

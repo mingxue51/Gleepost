@@ -13,12 +13,13 @@
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
 #import "Post.h"
-#import "PostCell.h"
+#import "PostWithoutImageCell.h"
 #import "AddCommentViewController.h"
 #import "NewCommentView.h"
 #import "Social/Social.h"
 #import <Twitter/Twitter.h>
 #import "PopUpMessage.h"
+#import "PostWithImageCell.h"
 
 //#import "AppDelegate.h"
 
@@ -26,7 +27,9 @@
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) Post *selectedPost;
+@property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSMutableArray *shownCells;
 
 @end
 static BOOL likePushed;
@@ -164,7 +167,7 @@ static BOOL likePushed;
 
     
     
-    
+    self.postsHeight = [[NSMutableArray alloc] init];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -189,6 +192,12 @@ static BOOL likePushed;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    
+    //Create the array and initialise.
+    self.shownCells = [[NSMutableArray alloc] init];
+    
+
 }
 
 /**
@@ -242,10 +251,11 @@ static BOOL likePushed;
     self.navigationItem.titleView = label;
 }
 
+
+
 - (void)loadPosts
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
-    
     
     
     [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
@@ -253,6 +263,48 @@ static BOOL likePushed;
         
         if(success) {
             self.posts = [posts mutableCopy];
+            
+            
+            for(int i=0; i<self.posts.count; ++i)
+            {
+                NSLog(@"COUNT POSTS: %d",i);
+                [self.shownCells addObject:[NSNumber numberWithBool:NO]];
+            }
+            
+            //TODO: Change this when image is available.
+            //TODO: Add new attribute containsImage in Post class.
+            
+            //TODO: Fix the dynamic calculation of the size.
+//            for(int i=0; i<posts.count; ++i)
+//            {
+//                Post *currentPost = [posts objectAtIndex:i];
+//                float sizeOfText = [PostCell getContentLabelHeightForContent: currentPost.content];
+//                if(i%3 == 0)
+//                {
+//                    //Add height for image.
+//                    
+//                    NSNumber *height = [NSNumber numberWithFloat:(imageSize+fixedLimitHeight+sizeOfText)];
+//                    NSLog(@"Image height: %f",[height floatValue]);
+//                    [self.postsHeight addObject:height];
+//                }
+//                else
+//                {
+//                    NSNumber *height = [NSNumber numberWithFloat:(fixedLimitHeight+sizeOfText)];
+//                    
+//                    if(height.floatValue < lowerPostLimit)
+//                    {
+//                        height = [NSNumber numberWithFloat:(lowerPostLimit+sizeOfText)];
+//                         
+//                    }
+// 
+//                    
+//                    NSLog(@"Text height: %f",[height floatValue]);
+//                    [self.postsHeight addObject:height];
+//
+//                }
+//            }
+            
+            
             [self.tableView reloadData];
         } else {
             [WebClientHelper showStandardError];
@@ -275,22 +327,107 @@ static BOOL likePushed;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    
+    static NSString *CellIdentifierWithImage = @"CellImage";
+    static NSString *CellIdentifierWithoutImage = @"CellText";
 
-    
-    
-    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
+    PostCell *postCell;
+//    PostWithImageCell *imageCell;
+//    UIImage *postImage = [UIImage imageNamed:@"post_image"];
     
+    
+    Post *post = self.posts[indexPath.row];
 
+    if(indexPath.row%3==0)
+    {
+
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+        
+       
+        
+        //Calculate the new position of the elements.
+        
+//        float contentHeight = [PostCell getContentLabelHeightForContent:post.content];
+        
+        NSLog(@"Content PostCell: %@",post.content);
+        
+        //Find the difference between current height and new height.
+//        float difference = contentHeight - postCell.content.frame.size.height;
+        
+
+        [postCell updateWithPostData:post withImage:YES];
+        
+        
+        //Add the main image to the post.
+//        imageCell.mainImage.image = postImage;
+        
+        //TODO: See again the postImage width. Problem.
+//        [imageCell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-18, postImage.size.height-18)];
+        
+       // NSLog(@"Main Image Size: %f", postImage.size.width-18);
+        
+        //Add the social panel over the main image.
+//        [imageCell.socialPanel setFrame:CGRectMake(10.0f, postImage.size.width+12, postImage.size.width-18, 50.0f)];
+        
+        //TODO: Call this method in order to add selectors to buttons.
+//        [self createTheCell:imageCell withPost:post andImage:YES];
+    }
+    else
+    {
+        
+
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+
+        
+        //Find the difference between current height and new height.
+
+        [postCell updateWithPostData:post withImage:NO];
+
+
+        
+        //Find the size of the text of the current post.
+//        float textSize = [PostCell getContentLabelHeightForContent:post.content];
+        
+        //Add the social panel over the main image.
+        //[textCell.socialPanel setFrame:CGRectMake(10.0f, textSize+47, postImage.size.width-18, 50.0f)];
+        
+//        [self createTheCell:textCell withPost:post andImage:NO];
+    }
+    
+    
+//    cell.textLabel.text = post.content;
+//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", post.user.name, [self.dateFormatter stringFromDate:post.date]];
+    
+//    if(indexPath.row%3==0)
+//    {
+//        return imageCell;
+//    }
+//    else
+//    {
+//        return textCell;
+//    }
+    
+    return postCell;
+    
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"willDisplayCell");
+}
+
+-(UITableViewCell*) createTheCell:(PostCell*)cell withPost:(Post*)post andImage:(BOOL)image
+{
     
     //Add the user's image to the corresponding cell.
     UIImage *img = [UIImage imageNamed:@"avatar_big"];
     cell.userImage.image = img;
     cell.userImage.contentMode = UIViewContentModeScaleAspectFit;
-    [cell.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width-15, img.size.height-15)];
-    Post *post = self.posts[indexPath.row];
+    [cell.userImage setFrame:CGRectMake(10.0f, 12.0f, 40.0f, 40.0f)];
+    
+    NSLog(@"Size of the Image View: %f : %f", cell.userImage.frame.size.width, cell.userImage.frame.size.height);
+    
+
     
     //Add the user's name.
     [cell.userName setText:post.user.name];
@@ -299,40 +436,36 @@ static BOOL likePushed;
     [cell.postTime setText:post.date.description];
     
     //Add the post's text content.
-//    [cell.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
-    
-    
     [cell.content setText: post.content];
     
-    //Add the main image to the post.
-    UIImage *postImage = [UIImage imageNamed:@"post_image"];
-    cell.mainImage.image = postImage;
     
-    //TODO: See again the postImage width. Problem.
-    [cell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-20, postImage.size.height)];
-    
-    //Add the social panel over the main image.
-    [cell.socialPanel setFrame:CGRectMake(10.0f, postImage.size.width+30, postImage.size.width-20, 50.0f)];
     
     //Add selector to the buttons.
     [self buttonWithName:@"Like" andSubviews:[cell.socialPanel subviews] withCell:cell];
+    
     
     
     cell.userInteractionEnabled = YES;
     
     [self getInformationAndSetFormatButtons];
     
-//    cell.contentLabel.text = post.content;
-//    cell.dateLabel.text = [self.dateFormatter stringFromDate:post.date];
-//    cell.userLabel.text = post.user.name;
+    //    cell.contentLabel.text = post.content;
+    //    cell.dateLabel.text = [self.dateFormatter stringFromDate:post.date];
+    //    cell.userLabel.text = post.user.name;
     
     cell.backgroundColor = [UIColor whiteColor];
     
     NSLog(@"POST CONTENTS: %@ - %@ - %@",post.content,[self.dateFormatter stringFromDate:post.date], post.user.name);
     
-//    cell.textLabel.text = post.content;
-//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", post.user.name, [self.dateFormatter stringFromDate:post.date]];
     
+    if(image)
+    {
+        
+    }
+    else
+    {
+        
+    }
     return cell;
 }
 
@@ -376,7 +509,14 @@ static BOOL likePushed;
             currentBtn.userInteractionEnabled = YES;
             if([currentBtn.titleLabel.text isEqualToString:@"Like"])
             {
-                [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+                if([cell isKindOfClass:[PostWithImageCell class]])
+                {
+                    [currentBtn addTarget:self action:@selector(likeButtonPushedWithImage:) forControlEvents:UIControlEventTouchUpInside];
+                }
+                else
+                {
+                    [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+                }
                 //[currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchDown];
             }
             else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
@@ -410,7 +550,7 @@ static BOOL likePushed;
     //colour of the image.
     if(likePushed)
     {
-        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
         
@@ -433,6 +573,34 @@ static BOOL likePushed;
 //    //TODO: See if the button is already liked.
 //    [[btn titleLabel] setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]]];
     
+    
+}
+
+
+-(void) likeButtonPushedWithImage:(id)sender
+{
+    NSLog(@"Like Pushed: %d",likePushed);
+    UIButton *btn = (UIButton*) sender;
+    
+    //If like button is pushed then set the pushed variable to NO and change the
+    //colour of the image.
+    if(likePushed)
+    {
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        //Add the thumbs up selected version of image.
+        [btn setImage:[UIImage imageNamed:@"thumbs-up_image"] forState:UIControlStateNormal];
+        
+        
+        likePushed = NO;
+    }
+    else
+    {
+        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        //Add the thumbs up selected version of image.
+        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+        
+        likePushed = YES;
+    }
     
 }
 
@@ -576,15 +744,36 @@ static BOOL likePushed;
 
 #pragma mark - Table view delegate
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedPost = self.posts[indexPath.row];
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 450;
+    //float height = [[self.postsHeight objectAtIndex:indexPath.row] floatValue];
+    
+    //static float imageSize = 300;
+    //static float lowerPostLimit = 115;
+    //static float fixedLimitHeight = 70;
+    
+    Post *currentPost = [self.posts objectAtIndex:indexPath.row];
+    
+    
+    if(indexPath.row%3==0)
+    {
+        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:YES], currentPost.content);
+        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
+    }
+    else
+    {
+        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:NO], currentPost.content);
+        //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
+        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
+    }
 }
 
 

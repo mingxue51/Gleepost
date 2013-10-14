@@ -21,15 +21,16 @@
 @synthesize cellIdentifier;
 
 
-float const FirstCellOtherElementsTotalHeight = 22;
-float const FollowingCellPadding = 7;
-float const MessageContentViewPadding = 15;
+static const float FirstCellOtherElementsTotalHeight = 22;
+static const float FollowingCellPadding = 7;
+static const float MessageContentViewPadding = 15;
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if(!self) {
+    if(!self)
+    {
         return nil;
     }
     

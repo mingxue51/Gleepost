@@ -13,7 +13,15 @@
 
 + (void)showStandardLoaderWithTitle:(NSString *)title forView:(UIView *)view
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES withoutSpinning:NO];
+    hud.labelText = title;
+    hud.detailsLabelText = @"Please wait";
+}
+
+//Added.
++ (void) showStandardLoaderWithoutSpinningAndWithTitle:(NSString*) title forView:(UIView *)view
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES withoutSpinning:YES];
     hud.labelText = title;
     hud.detailsLabelText = @"Please wait";
 }

@@ -22,5 +22,6 @@
 
 
 -(void) setChatViewAnimations:(ChatViewAnimations *)chatViewAnimations;
+-(void) startSearchingIndicator;
 
 @end

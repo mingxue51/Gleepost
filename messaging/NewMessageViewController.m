@@ -115,7 +115,7 @@
     NSArray *users = [NSArray arrayWithObjects:[SessionManager sharedInstance].user, nil];
     topic.users = users;
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withoutSpinning:NO];
     hud.labelText = @"Creating post";
     hud.detailsLabelText = @"Please wait few seconds";
 //    

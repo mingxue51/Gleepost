@@ -7,7 +7,7 @@
 //
 
 #import "ProfileViewController.h"
-#import "PostCell.h"
+#import "PostWithoutImageCell.h"
 #import "Post.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
@@ -80,7 +80,7 @@ static BOOL likePushed;
 - (void)loadPosts
 {
     NSLog(@"load posts");
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withoutSpinning:NO];
     hud.labelText = @"Loading posts";
     hud.detailsLabelText = @"Please wait few seconds";
     
@@ -148,7 +148,7 @@ static BOOL likePushed;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    PostWithoutImageCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     
     //Add the user's image to the corresponding cell.
@@ -169,18 +169,18 @@ static BOOL likePushed;
     
     //Add the main image to the post.
     UIImage *postImage = [UIImage imageNamed:@"post_image"];
-    cell.mainImage.image = postImage;
+ //   cell.mainImage.image = postImage;
     
     //TODO: See again the postImage width. Problem.
-    [cell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-20, postImage.size.height)];
+  //  [cell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-20, postImage.size.height)];
     
     //Add the social panel over the main image.
     [cell.socialPanel setFrame:CGRectMake(10.0f, postImage.size.width+30, postImage.size.width-20, 50.0f)];
     
     //Add selector to the buttons.
     [self buttonWithName:@"Like" andSubviews:[cell.socialPanel subviews] withCell:cell];
-    
-    
+    [self buttonWithName:@"Comment" andSubviews:[cell.socialPanel subviews] withCell:cell];
+    [self buttonWithName:@"Share" andSubviews:[cell.socialPanel subviews] withCell:cell];
     
     cell.userInteractionEnabled = YES;
     
@@ -220,7 +220,7 @@ static BOOL likePushed;
     
 }
 
--(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell
+-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostWithoutImageCell*) cell
 {
     NSLog(@"IN ButtonWithName");
     for(UIView* view in subArray)
@@ -250,6 +250,47 @@ static BOOL likePushed;
     
     return nil;
 }
+
+
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedPost = self.posts[indexPath.row];
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 450;
+}
+
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSLog(@"Modal View Controller");
+    //Hide tabbar.
+    [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    
+    if([segue.identifier isEqualToString:@"view post"])
+    {
+        
+        ViewPostViewController *vc = segue.destinationViewController;
+        vc.post = self.selectedPost;
+        self.selectedPost = nil;
+        
+    } 
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Social panel buttons' selectors
 
 /*
  
@@ -289,41 +330,14 @@ static BOOL likePushed;
     //    [[btn titleLabel] setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]]];
 }
 
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)commentButtonPushed: (id) sender
 {
-    self.selectedPost = self.posts[indexPath.row];
-    [self performSegueWithIdentifier:@"view post" sender:self];
+    NSLog(@"commentButtonPushed");
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)shareButtonPushed: (id) sender
 {
-    return 450;
-}
-
-
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@"Modal View Controller");
-    //Hide tabbar.
-    [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-    
-    if([segue.identifier isEqualToString:@"view post"])
-    {
-        
-        ViewPostViewController *vc = segue.destinationViewController;
-        vc.post = self.selectedPost;
-        self.selectedPost = nil;
-        
-    } 
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSLog(@"shareButtonPushed");
 }
 
 @end
