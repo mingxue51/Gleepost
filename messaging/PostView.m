@@ -31,12 +31,14 @@
     NSLog(@"PostView : Incoming Data: %@",incomingPost.content);
     
     [self.content setText:incomingPost.content];
-//    [self.userName setText:incomingPost.user.name];
+    [self.userName setText:incomingPost.author.name];
     [self.postTime setText:incomingPost.date.description];
     [self.information setText:@"27 likes 3 comments 127 views"];
     
     //TODO: If incoming post not includes image then remove social panel, image and rearrange the view.
     [self enableTextPost];
+    
+
     
     //Add the images.
     [self.mainImage setImage:[UIImage imageNamed:@"post_image"]];

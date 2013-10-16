@@ -1061,7 +1061,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="160" width="320" height="321"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="321"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" alpha="0.39999999999999963" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_profile.png" id="GMr-8I-em4">
@@ -1410,8 +1410,6 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
 </mutableData>
         </image>
         <image name="avatar_big.png" width="66" height="66"/>
-        <image name="avatar_big.png" width="66" height="66"/>
-        <image name="avatar_big.png" width="66" height="66"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="chat_tab.png" width="15" height="15"/>
         <image name="comment.png" width="19" height="17"/>
@@ -1423,16 +1421,12 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <image name="multiplechatimg.png" width="45" height="45"/>
         <image name="new_chat_tab.png" width="15" height="15"/>
         <image name="notification.png" width="64" height="64"/>
-        <image name="notification.png" width="64" height="64"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
         <image name="set_tab.png" width="15" height="14"/>
         <image name="share.png" width="20" height="17"/>
         <image name="share_image.png" width="40" height="34"/>
-        <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
-        <image name="thumbs-up_image.png" width="30" height="31"/>
-        <image name="time_label.png" width="47" height="12"/>
         <image name="time_label.png" width="47" height="12"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1441,8 +1435,8 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="iLI-w2-7l9"/>
-        <segue reference="C5K-bl-yN1"/>
         <segue reference="UFN-Sk-0kH"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="u6W-1W-GCM"/>
     </inferredMetricsTieBreakers>
 </document>

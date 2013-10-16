@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Post.h"
-
+#import "GLPUser.h"
 @interface PostView : UIView
 //@property (strong, nonatomic) IBOutlet UIImageView *userImage;
 
