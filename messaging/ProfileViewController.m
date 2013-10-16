@@ -98,7 +98,7 @@ static BOOL likePushed;
 - (void)loadPosts
 {
     NSLog(@"load posts");
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withoutSpinning:NO];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Loading posts";
     hud.detailsLabelText = @"Please wait few seconds";
     

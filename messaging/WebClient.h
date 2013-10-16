@@ -10,7 +10,6 @@
 #import "AFHTTPClient.h"
 #import "Post.h"
 #import "Comment.h"
-#import "Topic.h"
 #import "Conversation.h"
 #import "Message.h"
 

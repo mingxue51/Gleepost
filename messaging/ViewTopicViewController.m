@@ -225,8 +225,7 @@ const int flexibleResizeLimit = 120;
             }
             
             if(!self.longPollingRequestRunning) {
-                //TODO: long polling same user messages handling
-                //[self startLongPollingRequest];
+                [self startLongPollingRequest];
             }
         } else {
             [WebClientHelper showStandardError];
@@ -276,14 +275,10 @@ const int flexibleResizeLimit = 120;
 - (void)createMessageFromForm
 {
     Message *message = [ConversationManager createMessageWithContent:self.messageTextField.text toConversation:self.conversation sendCallback:^(Message *sentMessage, BOOL success) {
-        NSLog(@"MESSAGE %@ sent with success: %d", sentMessage.content, success);
-//        
-//        NSString *status = (success) ? @"sent" : @"error";
-//        sentMessage.content = [NSString stringWithFormat:@"%@ - %@", sentMessage.content, status];
+        
         [self.tableView reloadData];
     }];
     
-//    message.content = [NSString stringWithFormat:@"%@ - sending...", message.content];
     [self showMessage:message];
     
     self.messageTextField.text = @"";

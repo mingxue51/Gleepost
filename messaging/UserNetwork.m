@@ -1,15 +1,15 @@
+////
+////  UserNetwork.m
+////  Gleepost
+////
+////  Created by Lukas on 10/9/13.
+////  Copyright (c) 2013 Gleepost. All rights reserved.
+////
 //
-//  UserNetwork.m
-//  Gleepost
+//#import "UserNetwork.h"
 //
-//  Created by Lukas on 10/9/13.
-//  Copyright (c) 2013 Gleepost. All rights reserved.
+//@implementation UserNetwork
 //
-
-#import "UserNetwork.h"
-
-@implementation UserNetwork
-
-@synthesize name;
-
-@end
+//@synthesize name;
+//
+//@end

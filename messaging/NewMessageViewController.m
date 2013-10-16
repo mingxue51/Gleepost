@@ -11,7 +11,6 @@
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "UIPlaceHolderTextView.h"
-#import "Topic.h"
 
 
 @interface NewMessageViewController ()
@@ -108,17 +107,17 @@
 
 - (IBAction)sendButtonClick:(id)sender
 {
-    Topic *topic = [[Topic alloc] init];
-    topic.title = self.titleTextField.text;
-    topic.date = [NSDate date];
-    
-    NSArray *users = [NSArray array];//  [NSArray arrayWithObjects:[SessionManager sharedInstance].user, nil];
-    topic.users = users;
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withoutSpinning:NO];
-    hud.labelText = @"Creating post";
-    hud.detailsLabelText = @"Please wait few seconds";
+//    Topic *topic = [[Topic alloc] init];
+//    topic.title = self.titleTextField.text;
+//    topic.date = [NSDate date];
 //    
+//    NSArray *users = [NSArray array];//  [NSArray arrayWithObjects:[SessionManager sharedInstance].user, nil];
+//    topic.users = users;
+//    
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud.labelText = @"Creating post";
+//    hud.detailsLabelText = @"Please wait few seconds";
+//
 //    WebClient *client = [WebClient sharedInstance];
 //    [client createTopic:topic callbackBlock:^(BOOL success) {
 //        [hud hide:YES];

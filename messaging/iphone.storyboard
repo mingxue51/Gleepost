@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -125,7 +125,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="lNV-tW-Jeu">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="FD94E6FA-862F-4D54-B612-D97F32798596" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="79F29DFA-2A3E-4F30-96F1-235C8D46F9A9" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Xrg-UP-Uxg">
@@ -247,7 +247,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="XPU-7W-vve">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="10A62500-9819-4C95-A895-1C540B64AC41" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="CD8CBF85-C59D-44D0-AAD4-A10AED007005" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="k0U-1d-7IX">
@@ -1409,7 +1409,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="10A62500-9819-4C95-A895-1C540B64AC41" width="320" height="460">
+        <image name="79F29DFA-2A3E-4F30-96F1-235C8D46F9A9" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11243,7 +11243,7 @@ CP5GAAj+TQAI/lUACP5iAAj+ZwAI/mkACP5rAAj+cAAI/ngACP57AAj+gAAI/ogACP6LAAj+nQAI/qAA
 CP6lAAAAAAAABAEAAAAAAAAAQgAAAAAAAAAAAAAAAAAI/qc
 </mutableData>
         </image>
-        <image name="FD94E6FA-862F-4D54-B612-D97F32798596" width="320" height="460">
+        <image name="CD8CBF85-C59D-44D0-AAD4-A10AED007005" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -21078,6 +21078,8 @@ CP6lAAAAAAAABAEAAAAAAAAAQgAAAAAAAAAAAAAAAAAI/qc
 </mutableData>
         </image>
         <image name="avatar_big.png" width="66" height="66"/>
+        <image name="avatar_big.png" width="66" height="66"/>
+        <image name="avatar_big.png" width="66" height="66"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="chat_tab.png" width="15" height="15"/>
         <image name="comment.png" width="19" height="17"/>
@@ -21089,12 +21091,16 @@ CP6lAAAAAAAABAEAAAAAAAAAQgAAAAAAAAAAAAAAAAAI/qc
         <image name="multiplechatimg.png" width="45" height="45"/>
         <image name="new_chat_tab.png" width="15" height="15"/>
         <image name="notification.png" width="64" height="64"/>
+        <image name="notification.png" width="64" height="64"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
         <image name="set_tab.png" width="15" height="14"/>
         <image name="share.png" width="20" height="17"/>
         <image name="share_image.png" width="40" height="34"/>
+        <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
+        <image name="thumbs-up_image.png" width="30" height="31"/>
+        <image name="time_label.png" width="47" height="12"/>
         <image name="time_label.png" width="47" height="12"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -21103,8 +21109,8 @@ CP6lAAAAAAAABAEAAAAAAAAAQgAAAAAAAAAAAAAAAAAI/qc
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UFN-Sk-0kH"/>
         <segue reference="iLI-w2-7l9"/>
-        <segue reference="htZ-EL-79i"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="C5K-bl-yN1"/>
     </inferredMetricsTieBreakers>
 </document>

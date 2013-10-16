@@ -36,6 +36,7 @@
 {
     NSNumber *key = json[@"id"];
     User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:key];
+    
     if(!user) {
         user = [User MR_createEntity];
         user.remoteKey = key;
@@ -65,7 +66,7 @@
     conversation.remoteKey = json[@"id"];
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
-        conversation.mostRecentMessage = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"]];
+        conversation.mostRecentMessage = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:conversation];
     }
 
     NSMutableArray *participants = [NSMutableArray array];
@@ -91,12 +92,12 @@
 
 #pragma mark - Messages
 
-+ (Message *)parseMessageFromJson:(NSDictionary *)json
++ (Message *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation
 {
-    
     Message *message = [Message MR_createEntity];
     message.remoteKey = json[@"id"];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
+    message.conversation = conversation;
     
     NSDate *date;
     NSError *error;
@@ -105,7 +106,7 @@
     
     message.content = json[@"text"];
     message.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
-//    message.seen = [json[@"seen"] boolValue];
+    message.seenValue = [json[@"seen"] boolValue];
     
     return message;
 }
@@ -114,12 +115,61 @@
 {
     NSMutableArray *messages = [NSMutableArray array];
     for(id jsonMessage in jsonMessages) {
-        Message *message = [RemoteParser parseMessageFromJson:jsonMessage];
-        message.conversation = conversation;
+        Message *message = [RemoteParser parseMessageFromJson:jsonMessage forConversation:conversation];
         [messages addObject:message];
     }
     
     return messages;
+}
+
+
+#pragma mark - Posts and comments
+
++ (Post *)parsePostFromJson:(NSDictionary *)json
+{
+    Post *post = [Post MR_createEntity];
+    post.remoteKey = json[@"id"];
+    post.author = [RemoteParser parseUserFromJson:json[@"by"]];
+    post.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
+    post.content = json[@"text"];
+    post.commentsCount = json[@"comments"];
+    post.likes = json[@"likes"];
+    post.dislikes = json[@"hates"];
+    
+    return post;
+}
+
++ (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts
+{
+    NSMutableArray *posts = [NSMutableArray array];
+    for(id postJson in jsonPosts) {
+        Post *post = [RemoteParser parsePostFromJson:postJson];
+        [posts addObject:post];
+    }
+    
+    return posts;
+}
+
++ (Comment *)parseCommentFromJson:(NSDictionary *)json forPost:(Post *)post
+{
+    Comment *comment = [Comment MR_createEntity];
+    comment.remoteKey = json[@"id"];
+    comment.author = [RemoteParser parseUserFromJson:json[@"by"]];
+    comment.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
+    comment.content = json[@"text"];
+    comment.post = post;
+    
+    return comment;
+}
+
++ (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(Post *)post
+{
+    NSMutableArray *comments = [NSMutableArray array];
+    for(id jsonComment in jsonComments) {
+        [comments addObject:[RemoteParser parseCommentFromJson:jsonComment forPost:post]];
+    }
+    
+    return comments;
 }
 
 @end

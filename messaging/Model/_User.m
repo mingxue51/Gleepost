@@ -8,6 +8,7 @@ const struct UserAttributes UserAttributes = {
 };
 
 const struct UserRelationships UserRelationships = {
+	.posts = @"posts",
 };
 
 const struct UserFetchedProperties UserFetchedProperties = {
@@ -52,6 +53,10 @@ const struct UserFetchedProperties UserFetchedProperties = {
 
 
 
+
+@dynamic posts;
+
+	
 
 
 

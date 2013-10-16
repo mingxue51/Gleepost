@@ -1,16 +1,16 @@
+////
+////  UserNetwork.h
+////  Gleepost
+////
+////  Created by Lukas on 10/9/13.
+////  Copyright (c) 2013 Gleepost. All rights reserved.
+////
 //
-//  UserNetwork.h
-//  Gleepost
+//#import <Foundation/Foundation.h>
+//#import "RemoteEntity.h"
 //
-//  Created by Lukas on 10/9/13.
-//  Copyright (c) 2013 Gleepost. All rights reserved.
+//@interface UserNetwork : RemoteEntity
 //
-
-#import <Foundation/Foundation.h>
-#import "RemoteEntity.h"
-
-@interface UserNetwork : RemoteEntity
-
-@property (strong, nonatomic) NSString *name;
-
-@end
+//@property (strong, nonatomic) NSString *name;
+//
+//@end

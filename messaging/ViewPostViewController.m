@@ -625,7 +625,7 @@ static bool firstTime = YES;
 {
     Comment *comment = [[Comment alloc] init];
     comment.content = self.commentTextField.text;
-    comment.remoteThreadId = self.post.key;
+    comment.post = self.post;
     
     [WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self.view];
     [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {

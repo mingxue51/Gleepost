@@ -100,7 +100,6 @@
             }
             
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL saveSucess, NSError *error) {
-                NSLog(@"Post server response saved with sucess: %d", saveSucess);
                 sendCallback(message, responseSuccess);
             }];
         }];

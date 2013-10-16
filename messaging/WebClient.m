@@ -51,6 +51,15 @@ static WebClient *instance = nil;
     
     self.sessionManager = [SessionManager sharedInstance];
     
+    [self setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        if (status == AFNetworkReachabilityStatusNotReachable) {
+            [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
+            NSLog(@"Network unavailable");
+        } else {
+            NSLog(@"Network available");
+        }
+    }];
+    
     if(ENV_FAKE_API) {
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return [request.URL.absoluteString hasPrefix:kWebserviceBaseUrl];
@@ -107,7 +116,7 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.authParameters];
     
     [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSArray *posts = [JsonParser parsePostsFromJson:responseObject];
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
         callbackBlock(YES, posts);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -128,13 +137,13 @@ static WebClient *instance = nil;
 
 - (void)getCommentsForPost:(Post *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.key];
+    NSString *path = [NSString stringWithFormat:@"posts/%@/comments", post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.authParameters];
     
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSArray *comments = [JsonParser parseCommentsFromJson:responseObject];
+        NSArray *comments = [RemoteParser parseCommentsFromJson:responseObject forPost:post];
         callbackBlock(YES, comments);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -144,7 +153,7 @@ static WebClient *instance = nil;
 
 - (void)createComment:(Comment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", comment.remoteThreadId];
+    NSString *path = [NSString stringWithFormat:@"posts/%@/comments", comment.post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"text", comment.content, nil];
     [params addEntriesFromDictionary:self.authParameters];
@@ -206,23 +215,23 @@ static WebClient *instance = nil;
 
 }
 
-- (void)getMessagesForConversation:(OldConversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
-{
-    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.key];
-    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSArray *messages = [JsonParser parseMessagesFromJson:responseObject];
-//        if(responseObject != (id)[NSNull null] && json.count != 0) {
-//            messages =
-//        } else {
-//            messages = [NSArray array];
-//        }
-        
-        callbackBlock(YES, messages);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, nil);
-    }];
-}
+//- (void)getMessagesForConversation:(OldConversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+//{
+//    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.key];
+//    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        NSArray *messages = [JsonParser parseMessagesFromJson:responseObject];
+////        if(responseObject != (id)[NSNull null] && json.count != 0) {
+////            messages =
+////        } else {
+////            messages = [NSArray array];
+////        }
+//        
+//        callbackBlock(YES, messages);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
 
 - (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
 {
@@ -287,7 +296,10 @@ static WebClient *instance = nil;
 {
     [self getPath:@"longpoll" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         Message *message = [RemoteParser parseMessageFromJson:responseObject forConversation:conversation];
-        callbackBlock(YES, message);
+        
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            callbackBlock(YES, message);
+        }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];

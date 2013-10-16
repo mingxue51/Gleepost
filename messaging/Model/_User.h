@@ -9,11 +9,13 @@ extern const struct UserAttributes {
 } UserAttributes;
 
 extern const struct UserRelationships {
+	__unsafe_unretained NSString *posts;
 } UserRelationships;
 
 extern const struct UserFetchedProperties {
 } UserFetchedProperties;
 
+@class Post;
 
 
 
@@ -40,6 +42,13 @@ extern const struct UserFetchedProperties {
 
 
 
+@property (nonatomic, strong) Post *posts;
+
+//- (BOOL)validatePosts:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @end
 
@@ -54,6 +63,11 @@ extern const struct UserFetchedProperties {
 - (void)setPrimitiveName:(NSString*)value;
 
 
+
+
+
+- (Post*)primitivePosts;
+- (void)setPrimitivePosts:(Post*)value;
 
 
 @end

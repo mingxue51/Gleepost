@@ -31,10 +31,6 @@
     
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"Gleepost.sqlite"];
     
-    if(DEV) {
-        [LocalMessage MR_truncateAll];
-        [[NSManagedObjectContext MR_context] MR_saveToPersistentStoreAndWait];
-    }
     
     [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     

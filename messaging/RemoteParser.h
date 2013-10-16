@@ -10,6 +10,8 @@
 #import "Conversation.h"
 #import "Message.h"
 #import "User.h"
+#import "Post.h"
+#import "Comment.h"
 
 @interface RemoteParser : NSObject
 
@@ -23,5 +25,11 @@
 // messages
 + (Message *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation;
 + (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(Conversation *)conversation;
+
+// posts and comments
++ (Post *)parsePostFromJson:(NSDictionary *)json;
++ (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts;
++ (Comment *)parseCommentFromJson:(NSDictionary *)json forPost:(Post *)post;
++ (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(Post *)post;
 
 @end
