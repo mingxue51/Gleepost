@@ -76,6 +76,11 @@ static BOOL likePushed;
     self.tabBarController.tabBar.hidden = NO;
     
     
+    
+    //Register nib files in table view.
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 
     
     //self.tabBarController.tabBar.backgroundColor = [UIColor whiteColor];*
@@ -173,6 +178,8 @@ static BOOL likePushed;
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
+
+    
     [self loadPosts];
 
   
@@ -197,6 +204,9 @@ static BOOL likePushed;
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
+    
+    
+
     
 
 }
@@ -328,8 +338,8 @@ static BOOL likePushed;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifierWithImage = @"CellImage";
-    static NSString *CellIdentifierWithoutImage = @"CellText";
+    static NSString *CellIdentifierWithImage = @"ImageCell";
+    static NSString *CellIdentifierWithoutImage = @"TextCell";
 
 
     PostCell *postCell;
