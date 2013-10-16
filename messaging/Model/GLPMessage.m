@@ -1,16 +1,16 @@
-#import "Message.h"
+#import "GLPMessage.h"
 #import "User.h"
 
-@interface Message ()
+@interface GLPMessage ()
 
 // Private interface goes here.
 
 @end
 
 
-@implementation Message
+@implementation GLPMessage
 
-- (BOOL)followsPreviousMessage:(Message *)message
+- (BOOL)followsPreviousMessage:(GLPMessage *)message
 {
     if(![message.author.remoteKey isEqualToNumber:self.author.remoteKey]) {
         return NO;

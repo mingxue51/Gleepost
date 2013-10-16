@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Conversation.h"
-#import "Message.h"
+#import "GLPMessage.h"
 #import "User.h"
 #import "Post.h"
 #import "Comment.h"
@@ -23,7 +23,7 @@
 + (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
 
 // messages
-+ (Message *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation;
++ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation;
 + (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(Conversation *)conversation;
 
 // posts and comments

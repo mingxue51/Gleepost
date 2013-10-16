@@ -15,7 +15,7 @@
 
 @implementation MessageManager
 
-+ (void)saveMessage:(Message *)message
++ (void)saveMessage:(GLPMessage *)message
 {
     User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
     if(!user) {

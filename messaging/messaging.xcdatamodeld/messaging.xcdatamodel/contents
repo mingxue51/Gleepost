@@ -9,11 +9,11 @@
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Post" inverseName="comments" inverseEntity="Post" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="Conversation" parentEntity="WebEntity" syncable="YES">
-        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
-        <relationship name="mostRecentMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GLPMessage" inverseName="conversation" inverseEntity="GLPMessage" syncable="YES"/>
+        <relationship name="mostRecentMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GLPMessage" syncable="YES"/>
         <relationship name="participants" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
     </entity>
-    <entity name="Message" representedClassName="Message" parentEntity="WebEntity" syncable="YES">
+    <entity name="GLPMessage" representedClassName="GLPMessage" parentEntity="WebEntity" syncable="YES">
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="seen" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -39,11 +39,11 @@
         <attribute name="remoteKey" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Conversation" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Message" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLPMessage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
         <element name="User" positionX="0" positionY="0" width="0" height="0"/>
         <element name="WebEntity" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

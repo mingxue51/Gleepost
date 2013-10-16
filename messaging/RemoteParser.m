@@ -92,9 +92,9 @@
 
 #pragma mark - Messages
 
-+ (Message *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation
++ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation
 {
-    Message *message = [Message MR_createEntity];
+    GLPMessage *message = [GLPMessage MR_createEntity];
     message.remoteKey = json[@"id"];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
     message.conversation = conversation;
@@ -115,7 +115,7 @@
 {
     NSMutableArray *messages = [NSMutableArray array];
     for(id jsonMessage in jsonMessages) {
-        Message *message = [RemoteParser parseMessageFromJson:jsonMessage forConversation:conversation];
+        GLPMessage *message = [RemoteParser parseMessageFromJson:jsonMessage forConversation:conversation];
         [messages addObject:message];
     }
     

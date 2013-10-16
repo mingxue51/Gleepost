@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Message.h"
+#import "GLPMessage.h"
 
 @interface MessageCell : UITableViewCell
 
@@ -19,9 +19,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *messageContentImageView;
 
 @property (strong, nonatomic) NSString *cellIdentifier;
+@property (assign, nonatomic) BOOL isLeft;
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst;
 
-- (void)updateWithMessage:(Message *)message first:(BOOL)isFirst;
+- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst;
 
 @end

@@ -9,7 +9,7 @@
 #import "MessagesSendingProcessor.h"
 #import "LocalMessage.h"
 #import "MessageProcessingOperation.h"
-#import "Message.h"
+#import "GLPMessage.h"
 
 @interface MessagesSendingProcessor()
 
@@ -57,7 +57,7 @@ static MessagesSendingProcessor *instance = nil;
     
     NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     
-    NSArray *messages = [Message MR_findByAttribute:@"sendStatus" withValue:[NSNumber numberWithSendStatus:kSendStatusLocal] andOrderBy:@"date" ascending:YES];
+    NSArray *messages = [GLPMessage MR_findByAttribute:@"sendStatus" withValue:[NSNumber numberWithSendStatus:kSendStatusLocal] andOrderBy:@"date" ascending:YES];
     
     if(messages.count == 0) {
         NSLog(@"No message to process, exit");

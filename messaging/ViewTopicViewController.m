@@ -12,13 +12,14 @@
 #import "MessageCell.h"
 
 #import "SessionManager.h"
+#import "AppearanceHelper.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
 
-#import "Message.h"
+#import "GLPMessage.h"
 #import "RemoteMessage+CellLogic.h"
 #import "RemoteMessage+Additions.h"
 #import "RemoteConversation+Additions.h"
@@ -138,16 +139,13 @@ const int flexibleResizeLimit = 120;
     UIButton *btn = (UIButton*) sender;
     
     btn.center = [[[event allTouches] anyObject] locationInView:self.view];
-    
-    NSLog(@"%@", NSStringFromCGPoint(touchPoint));
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -174,13 +172,13 @@ const int flexibleResizeLimit = 120;
     {
         NSLog(@"MessageViewController Class");
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     }
     else
     {
         NSLog(@"Other Class");
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
     }
     
     NSLog(@"Parent View Controller: %@",className);
@@ -238,11 +236,11 @@ const int flexibleResizeLimit = 120;
     self.messages = [messages mutableCopy];
     
     for (int i = 0; i < self.messages.count; i++) {
-        Message *current = self.messages[i];
+        GLPMessage *current = self.messages[i];
         if(i == 0) {
             [current configureAsFirstMessage];
         } else {
-            Message *previous = self.messages[i-1];
+            GLPMessage *previous = self.messages[i-1];
             [current configureAsFollowingMessage:previous];
         }
     }
@@ -254,12 +252,12 @@ const int flexibleResizeLimit = 120;
     }
 }
 
-- (void)showMessage:(Message *)message
+- (void)showMessage:(GLPMessage *)message
 {
     if(self.messages.count == 0) {
         [message configureAsFirstMessage];
     } else {
-        Message *last = self.messages[self.messages.count - 1];
+        GLPMessage *last = self.messages[self.messages.count - 1];
         [message configureAsFollowingMessage:last];
     }
     
@@ -274,7 +272,7 @@ const int flexibleResizeLimit = 120;
 
 - (void)createMessageFromForm
 {
-    Message *message = [ConversationManager createMessageWithContent:self.messageTextField.text toConversation:self.conversation sendCallback:^(Message *sentMessage, BOOL success) {
+    GLPMessage *message = [ConversationManager createMessageWithContent:self.messageTextField.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
         
         [self.tableView reloadData];
     }];
@@ -315,7 +313,7 @@ const int flexibleResizeLimit = 120;
     self.longPollingRequestRunning = YES;
     NSLog(@"start long polling request");
     
-    [[WebClient sharedInstance] longPollNewMessagesForConversation:self.conversation callbackBlock:^(BOOL success, Message *message) {
+    [[WebClient sharedInstance] longPollNewMessagesForConversation:self.conversation callbackBlock:^(BOOL success, GLPMessage *message) {
         NSLog(@"long polling request finish with result %d", success);
         
         if(success) {
@@ -395,7 +393,7 @@ const int flexibleResizeLimit = 120;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Message *message = self.messages[indexPath.row];
+    GLPMessage *message = self.messages[indexPath.row];
     
     if(!message.cellIdentifier) {
         [NSException raise:@"Cell identifier is null" format:@"Row is %d", indexPath.row];
@@ -410,7 +408,7 @@ const int flexibleResizeLimit = 120;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Message *message = self.messages[indexPath.row];
+    GLPMessage *message = self.messages[indexPath.row];
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
 

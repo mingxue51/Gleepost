@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "Message.h"
+#import "GLPMessage.h"
 
-@interface Message (CellLogic)
+@interface GLPMessage (CellLogic)
 
 @property (retain, nonatomic) NSString *cellIdentifier;
 @property (assign, nonatomic) BOOL hasHeader;
@@ -17,7 +17,7 @@ extern NSString * const kMessageLeftCell;
 extern NSString * const kMessageRightCell;
 
 - (void)configureAsFirstMessage;
-- (void)configureAsFollowingMessage:(Message *)message;
+- (void)configureAsFollowingMessage:(GLPMessage *)message;
 + (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier;
 
 @end

@@ -1,23 +1,23 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Message.h instead.
+// Make changes to GLPMessage.h instead.
 
 #import <CoreData/CoreData.h>
 #import "WebEntity.h"
 
-extern const struct MessageAttributes {
+extern const struct GLPMessageAttributes {
 	__unsafe_unretained NSString *content;
 	__unsafe_unretained NSString *date;
 	__unsafe_unretained NSString *seen;
 	__unsafe_unretained NSString *sendStatus;
-} MessageAttributes;
+} GLPMessageAttributes;
 
-extern const struct MessageRelationships {
+extern const struct GLPMessageRelationships {
 	__unsafe_unretained NSString *author;
 	__unsafe_unretained NSString *conversation;
-} MessageRelationships;
+} GLPMessageRelationships;
 
-extern const struct MessageFetchedProperties {
-} MessageFetchedProperties;
+extern const struct GLPMessageFetchedProperties {
+} GLPMessageFetchedProperties;
 
 @class User;
 @class Conversation;
@@ -27,14 +27,14 @@ extern const struct MessageFetchedProperties {
 
 
 
-@interface MessageID : NSManagedObjectID {}
+@interface GLPMessageID : NSManagedObjectID {}
 @end
 
-@interface _Message : WebEntity {}
+@interface _GLPMessage : WebEntity {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (MessageID*)objectID;
+- (GLPMessageID*)objectID;
 
 
 
@@ -105,11 +105,11 @@ extern const struct MessageFetchedProperties {
 
 @end
 
-@interface _Message (CoreDataGeneratedAccessors)
+@interface _GLPMessage (CoreDataGeneratedAccessors)
 
 @end
 
-@interface _Message (CoreDataGeneratedPrimitiveAccessors)
+@interface _GLPMessage (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSString*)primitiveContent;

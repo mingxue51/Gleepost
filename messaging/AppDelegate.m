@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
-#import "Message.h"
+#import "GLPMessage.h"
 #import "LocalMessage.h"
 #import "Conversation.h"
 #import "MessageProcessingOperation.h"

@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "Message.h"
+#import "GLPMessage.h"
 #import "SendStatus.h"
 
-@interface Message (Additions)
+@interface GLPMessage (Additions)
 
 //- (BOOL)followsPreviousMessage:(Message *)message;
 

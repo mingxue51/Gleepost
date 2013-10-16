@@ -9,7 +9,7 @@
 #import "RemoteMessage+Additions.h"
 #import "User.h"
 
-@implementation Message (Additions)
+@implementation GLPMessage (Additions)
 
 //- (BOOL)followsPreviousMessage:(Message *)message
 //{

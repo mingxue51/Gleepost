@@ -12,7 +12,7 @@
 #import "SessionManager.h"
 #import "User.h"
 
-@implementation Message (CellLogic)
+@implementation GLPMessage (CellLogic)
 
 NSString * const kMessageCellIdentifier = @"kMessageCellIdentifier";
 NSString * const kMessageHasHeader = @"kMessageHasHeader";
@@ -54,19 +54,19 @@ NSString * const kMessageRightCell = @"RightCell";
     self.hasHeader = YES;
 }
 
-- (void)configureAsFollowingMessage:(Message *)message
+- (void)configureAsFollowingMessage:(GLPMessage *)message
 {
     if([self followsPreviousMessage:message]) {
         self.cellIdentifier = message.cellIdentifier;
         self.hasHeader = NO;
     } else {
-        self.cellIdentifier = [Message getCellIdentifierForMessage:self];
+        self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
         self.hasHeader = YES;
     }
     
 }
 
-+ (NSString *)getCellIdentifierForMessage:(Message *)message
++ (NSString *)getCellIdentifierForMessage:(GLPMessage *)message
 {
     BOOL currentUser = [message.author.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]];
     

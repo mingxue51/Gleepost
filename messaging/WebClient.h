@@ -11,7 +11,7 @@
 #import "Post.h"
 #import "Comment.h"
 #import "Conversation.h"
-#import "Message.h"
+#import "GLPMessage.h"
 
 @interface WebClient : AFHTTPClient
 
@@ -28,12 +28,12 @@
 
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 
-- (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(Message *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
+- (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 
-- (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, Message *message))callbackBlock;
+- (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock;
 - (void)cancelMessagesLongPolling;
-- (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
-- (void)createMessageSynchronously:(Message *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
+- (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
+- (void)createMessageSynchronously:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
 
 - (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;
 - (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock;

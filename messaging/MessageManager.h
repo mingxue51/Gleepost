@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Message.h"
+#import "GLPMessage.h"
 
 @interface MessageManager : NSObject
 
-+ (void)saveMessage:(Message *)message;
++ (void)saveMessage:(GLPMessage *)message;
 
 @end

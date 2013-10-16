@@ -19,11 +19,14 @@
 @implementation MessageCell
 
 @synthesize cellIdentifier;
+@synthesize isLeft;
 
 
 static const float FirstCellOtherElementsTotalHeight = 22;
 static const float FollowingCellPadding = 7;
 static const float MessageContentViewPadding = 15;
+static const float MessageContentLabelMaxWidth = 241;
+static const float MessageContentLabelPadding = 40;
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -41,13 +44,8 @@ static const float MessageContentViewPadding = 15;
 {
     // store initial positioning values
     self.messageContentViewInitialY = self.messageContentView.frame.origin.y;
-    
-    // round message content background image
-    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
-    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
-    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
-    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+//    self.messageContentLabelInitialWidth = self.messageContentLabel.frame.size.width;
+//    NSLog(@"message init wid %f", self.messageContentLabelInitialWidth);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -57,8 +55,9 @@ static const float MessageContentViewPadding = 15;
     // Configure the view for the selected state
 }
 
-- (void)updateWithMessage:(Message *)message first:(BOOL)isFirst
+- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst
 {
+    // configure header (first) message or not
     if(isFirst) {
         self.timeView.hidden = NO;
         self.avatarImageView.hidden = NO;
@@ -74,11 +73,26 @@ static const float MessageContentViewPadding = 15;
         self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, 0, self.messageContentView.frame.size.width, self.messageContentView.frame.size.height);
     }
     
-    float contentHeight = [MessageCell getContentLabelHeightForContent:message.content];
-    self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, self.messageContentView.frame.origin.y, self.messageContentView.frame.size.width, contentHeight + MessageContentViewPadding);
-    self.messageContentLabel.frame = CGRectMake(self.messageContentLabel.frame.origin.x, self.messageContentLabel.frame.origin.y, self.messageContentLabel.frame.size.width, contentHeight);
-    self.messageContentLabel.text = message.content;
+    // configure width and height based on dynamic label size
+    CGSize contentSize = [MessageCell getContentLabelSizeForContent:message.content];
+    float contentHeight = contentSize.height;
+    float contentWidth = contentSize.width;
     
+    float labelWidthDiff = MessageContentLabelMaxWidth - contentWidth;
+    float labelX, viewX;
+    
+    if(self.isLeft) {
+        labelX = self.messageContentLabel.frame.origin.x;
+        viewX = self.messageContentView.frame.origin.x;
+    } else {
+        labelX = self.messageContentLabel.frame.origin.x + labelWidthDiff;
+        viewX = self.messageContentView.frame.origin.x + labelWidthDiff;
+    }
+    
+    self.messageContentView.frame = CGRectMake(viewX, self.messageContentView.frame.origin.y, contentWidth + MessageContentLabelPadding, contentHeight + MessageContentViewPadding);
+    self.messageContentLabel.frame = CGRectMake(labelX, self.messageContentLabel.frame.origin.y, contentWidth, contentHeight);
+    
+    self.messageContentLabel.text = message.content;
     
     switch (message.sendStatusValue) {
         case kSendStatusLocal:
@@ -91,15 +105,29 @@ static const float MessageContentViewPadding = 15;
             self.messageContentLabel.textColor = [UIColor redColor];
             break;
     }
+    
+    // round message content background image
+    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
+    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
+    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
+    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 }
 
-+ (CGFloat)getContentLabelHeightForContent:(NSString *)content
+//+ (CGFloat)getContentLabelHeightForContent:(NSString *)content
+//{
+//    CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+//    
+//    CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
+//    
+//    return contentHeight;
+//}
+
++ (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
-    CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+    CGSize maximumLabelSize = CGSizeMake(MessageContentLabelMaxWidth, FLT_MAX);
     
-    CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
-    
-    return contentHeight;
+    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
 }
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst
@@ -108,7 +136,7 @@ static const float MessageContentViewPadding = 15;
     float height = (isFirst) ? FirstCellOtherElementsTotalHeight : 0;
     
     // add content label height + message content view padding
-    height += [MessageCell getContentLabelHeightForContent:content] + MessageContentViewPadding;
+    height += [MessageCell getContentLabelSizeForContent:content].height + MessageContentViewPadding;
     
     return height + FollowingCellPadding;
 }

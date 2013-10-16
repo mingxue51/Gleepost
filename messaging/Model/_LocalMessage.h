@@ -14,7 +14,7 @@ extern const struct LocalMessageRelationships {
 extern const struct LocalMessageFetchedProperties {
 } LocalMessageFetchedProperties;
 
-@class Message;
+@class GLPMessage;
 
 
 @interface LocalMessageID : NSManagedObjectID {}
@@ -30,7 +30,7 @@ extern const struct LocalMessageFetchedProperties {
 
 
 
-@property (nonatomic, strong) Message *remoteMessage;
+@property (nonatomic, strong) GLPMessage *remoteMessage;
 
 //- (BOOL)validateRemoteMessage:(id*)value_ error:(NSError**)error_;
 
@@ -48,8 +48,8 @@ extern const struct LocalMessageFetchedProperties {
 
 
 
-- (Message*)primitiveRemoteMessage;
-- (void)setPrimitiveRemoteMessage:(Message*)value;
+- (GLPMessage*)primitiveRemoteMessage;
+- (void)setPrimitiveRemoteMessage:(GLPMessage*)value;
 
 
 @end

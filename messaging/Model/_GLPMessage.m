@@ -1,44 +1,44 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to Message.m instead.
+// Make changes to GLPMessage.m instead.
 
-#import "_Message.h"
+#import "_GLPMessage.h"
 
-const struct MessageAttributes MessageAttributes = {
+const struct GLPMessageAttributes GLPMessageAttributes = {
 	.content = @"content",
 	.date = @"date",
 	.seen = @"seen",
 	.sendStatus = @"sendStatus",
 };
 
-const struct MessageRelationships MessageRelationships = {
+const struct GLPMessageRelationships GLPMessageRelationships = {
 	.author = @"author",
 	.conversation = @"conversation",
 };
 
-const struct MessageFetchedProperties MessageFetchedProperties = {
+const struct GLPMessageFetchedProperties GLPMessageFetchedProperties = {
 };
 
-@implementation MessageID
+@implementation GLPMessageID
 @end
 
-@implementation _Message
+@implementation _GLPMessage
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"GLPMessage" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"Message";
+	return @"GLPMessage";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"Message" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"GLPMessage" inManagedObjectContext:moc_];
 }
 
-- (MessageID*)objectID {
-	return (MessageID*)[super objectID];
+- (GLPMessageID*)objectID {
+	return (GLPMessageID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {

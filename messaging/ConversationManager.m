@@ -9,7 +9,7 @@
 #import "ConversationManager.h"
 
 #import "Conversation.h"
-#import "Message.h"
+#import "GLPMessage.h"
 #import "User.h"
 
 #import "SessionManager.h"
@@ -46,11 +46,11 @@
 {
     NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
     
-    NSArray *localEntities = [Message MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
+    NSArray *localEntities = [GLPMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
     localCallback(localEntities);
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"conversation= %@ && remoteKey != nil", conversation];
-    Message *last = [Message MR_findFirstWithPredicate:predicate sortedBy:@"remoteKey" ascending:NO];
+    GLPMessage *last = [GLPMessage MR_findFirstWithPredicate:predicate sortedBy:@"remoteKey" ascending:NO];
     NSLog(@"last remote message %@ - %@", last.remoteKey, last.content);
     
     [[WebClient sharedInstance] getLastMessagesForConversation:conversation withLastMessage:last callbackBlock:^(BOOL success, NSArray *messages) {
@@ -64,16 +64,16 @@
             remoteCallback(YES, nil);
         } else {
             [context MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                NSArray *entities = [Message MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
+                NSArray *entities = [GLPMessage MR_findByAttribute:@"conversation" withValue:conversation andOrderBy:@"date" ascending:YES];
                 remoteCallback(YES, entities);
             }];
         }
     }];
 }
 
-+ (Message *)createMessageWithContent:(NSString *)content toConversation:(Conversation *)conversation sendCallback:(void (^)(Message *sentMessage, BOOL success))sendCallback
++ (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(Conversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
-    __block Message *message = [Message MR_createEntity];
+    __block GLPMessage *message = [GLPMessage MR_createEntity];
     message.content = content;
     message.conversation = conversation;
     message.date = [NSDate date];

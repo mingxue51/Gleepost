@@ -194,7 +194,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(Message *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+- (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.authParameters];
@@ -255,7 +255,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)createMessage:(Message *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
+- (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
     
@@ -271,7 +271,7 @@ static WebClient *instance = nil;
 }
 
 // Blocking operation
-- (void)createMessageSynchronously:(Message *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
+- (void)createMessageSynchronously:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
     
@@ -292,10 +292,10 @@ static WebClient *instance = nil;
 }
 
 
-- (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, Message *message))callbackBlock
+- (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
 {
     [self getPath:@"longpoll" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        Message *message = [RemoteParser parseMessageFromJson:responseObject forConversation:conversation];
+        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:conversation];
         
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             callbackBlock(YES, message);

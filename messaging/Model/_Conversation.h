@@ -16,8 +16,8 @@ extern const struct ConversationRelationships {
 extern const struct ConversationFetchedProperties {
 } ConversationFetchedProperties;
 
-@class Message;
-@class Message;
+@class GLPMessage;
+@class GLPMessage;
 @class User;
 
 
@@ -41,7 +41,7 @@ extern const struct ConversationFetchedProperties {
 
 
 
-@property (nonatomic, strong) Message *mostRecentMessage;
+@property (nonatomic, strong) GLPMessage *mostRecentMessage;
 
 //- (BOOL)validateMostRecentMessage:(id*)value_ error:(NSError**)error_;
 
@@ -62,8 +62,8 @@ extern const struct ConversationFetchedProperties {
 
 - (void)addMessages:(NSSet*)value_;
 - (void)removeMessages:(NSSet*)value_;
-- (void)addMessagesObject:(Message*)value_;
-- (void)removeMessagesObject:(Message*)value_;
+- (void)addMessagesObject:(GLPMessage*)value_;
+- (void)removeMessagesObject:(GLPMessage*)value_;
 
 - (void)addParticipants:(NSSet*)value_;
 - (void)removeParticipants:(NSSet*)value_;
@@ -81,8 +81,8 @@ extern const struct ConversationFetchedProperties {
 
 
 
-- (Message*)primitiveMostRecentMessage;
-- (void)setPrimitiveMostRecentMessage:(Message*)value;
+- (GLPMessage*)primitiveMostRecentMessage;
+- (void)setPrimitiveMostRecentMessage:(GLPMessage*)value;
 
 
 

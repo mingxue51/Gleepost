@@ -7,7 +7,7 @@
 //
 
 #import "MessageProcessingOperation.h"
-#import "Message.h"
+#import "GLPMessage.h"
 #import "WebClient.h"
 
 @interface MessageProcessingOperation()
@@ -24,7 +24,7 @@
         NSLog(@"Check local messages : %d", self.messages.count);
         
         int retries = 3;
-        for(Message *message in self.messages) {
+        for(GLPMessage *message in self.messages) {
             NSLog(@"Post message %@", message.content);
             
             BOOL success = NO;
@@ -41,7 +41,7 @@
     }
 }
                    
-- (BOOL)postMessage:(Message *)message
+- (BOOL)postMessage:(GLPMessage *)message
 {
     __block BOOL response = NO;
     
