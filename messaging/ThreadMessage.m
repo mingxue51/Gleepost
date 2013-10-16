@@ -10,6 +10,6 @@
 
 @implementation ThreadMessage
 
-@synthesize content, date, remoteThreadId, remoteUserId, user;
+@synthesize content, date, remoteThreadId, remoteUserId;
 
 @end

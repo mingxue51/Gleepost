@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "PostView.h"
 #import "TypeTextView.h"
+#import "Post.h"
 
 @interface ViewPostTableView : UITableView
 
-@property (strong, nonatomic) PostView *headerView;
+@property (strong, nonatomic) IBOutlet PostView *headerView;
 @property (strong, nonatomic) TypeTextView *typeTextView;
 
 -(void) initTableView;

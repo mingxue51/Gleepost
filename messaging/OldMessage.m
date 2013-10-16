@@ -11,13 +11,13 @@
 
 @implementation OldMessage
 
-@synthesize seen, content, date, author, conversation;
+@synthesize seen, content, date, conversation;
 
 - (BOOL)followsPreviousMessage:(OldMessage *)message
 {
-    if(message.author.key != self.author.key) {
-        return NO;
-    }
+//    if(message.author.key != self.author.key) {
+//        return NO;
+//    }
     
 //    NSTimeInterval interval = [self.date timeIntervalSinceDate:message.date];
 //    NSLog(@"time interval %f", interval);

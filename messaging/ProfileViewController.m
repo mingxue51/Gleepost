@@ -7,13 +7,15 @@
 //
 
 #import "ProfileViewController.h"
-#import "PostWithoutImageCell.h"
 #import "Post.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "ViewPostViewController.h"
 #import "NewPostViewController.h"
 #import "ProfileScrollView.h"
+#import "ProfileView.h"
+#import "NotificationsViewController.h"
+#import "PostCell.h"
 
 @interface ProfileViewController ()
 
@@ -23,6 +25,8 @@
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) Post *selectedPost;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
+@property (strong, nonatomic) IBOutlet ProfileView *profileView;
 
 
 @end
@@ -61,13 +65,27 @@ static BOOL likePushed;
     
     //Add the profile image.
     
-    self.postsTableView.tableHeaderView = self.profileScrollView;
+    //self.postsTableView.tableHeaderView = self.profileScrollView;
+    
+    [self.profileView setBackgroundColor:[UIColor blackColor]];
     
     [self.postsTableView setBackgroundColor:[UIColor whiteColor]];
+    
+    //Initialise profile view.
+    
+    [self.profileView initialiseView];
+    
+    [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
+    
 
     [self loadPosts];
     
     NSLog(@"Profile View Controller");
+}
+
+-(void) showNotifications: (id)sender
+{
+    [self performSegueWithIdentifier:@"view profile" sender:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -148,12 +166,15 @@ static BOOL likePushed;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    PostWithoutImageCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     
     //Add the user's image to the corresponding cell.
     UIImage *img = [UIImage imageNamed:@"avatar_big"];
-    cell.userImage.image = img;
+    
+    
+    [cell.userImage setBackgroundImage:img forState:UIControlStateNormal];
+     
     cell.userImage.contentMode = UIViewContentModeScaleAspectFit;
     [cell.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width-15, img.size.height-15)];
     Post *post = self.posts[indexPath.row];
@@ -165,7 +186,7 @@ static BOOL likePushed;
     [cell.postTime setText:@"20 min ago"];
     
     //Add the post's text content.
-    [cell.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
+//    [cell.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
     
     //Add the main image to the post.
     UIImage *postImage = [UIImage imageNamed:@"post_image"];
@@ -192,7 +213,7 @@ static BOOL likePushed;
     
     cell.backgroundColor = [UIColor whiteColor];
     
-    NSLog(@"POST CONTENTS: %@ - %@ - %@",post.content,[self.dateFormatter stringFromDate:post.date], post.user.name);
+//    NSLog(@"POST CONTENTS: %@ - %@ - %@",post.content,[self.dateFormatter stringFromDate:post.date], post.user.name);
     
     //    cell.textLabel.text = post.content;
     //    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", post.user.name, [self.dateFormatter stringFromDate:post.date]];
@@ -220,7 +241,7 @@ static BOOL likePushed;
     
 }
 
--(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostWithoutImageCell*) cell
+-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell
 {
     NSLog(@"IN ButtonWithName");
     for(UIView* view in subArray)
@@ -271,17 +292,23 @@ static BOOL likePushed;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSLog(@"Modal View Controller");
-    //Hide tabbar.
-    [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
     
     if([segue.identifier isEqualToString:@"view post"])
     {
+        //Hide tabbar.
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         ViewPostViewController *vc = segue.destinationViewController;
         vc.post = self.selectedPost;
         self.selectedPost = nil;
         
-    } 
+    }
+    else if([segue.identifier isEqualToString:@"view profile"])
+    {
+        NotificationsViewController *nv = segue.destinationViewController;
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning

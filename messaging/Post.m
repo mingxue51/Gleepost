@@ -10,6 +10,6 @@
 
 @implementation Post
 
-@synthesize content, socialContent, commentsCount, imagesUrls, date, user;
+@synthesize content, socialContent, commentsCount, imagesUrls, date;
 
 @end

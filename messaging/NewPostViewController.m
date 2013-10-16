@@ -63,7 +63,7 @@
     Post *post = [[Post alloc] init];
     post.content = self.contentTextView.text;
     post.date = [NSDate date];
-    post.key = [SessionManager sharedInstance].user.key;
+    post.key = [SessionManager sharedInstance].key;
     
     NSLog(@"NEW POST: CREATING A POST: %@ - %@ - %d",post.content,post.date,post.key);
     

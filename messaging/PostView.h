@@ -7,12 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Post.h"
 
 @interface PostView : UIView
-@property (retain, nonatomic) UIImageView *userImage;
-@property (retain, nonatomic) UITextView *userName;
-@property (retain, nonatomic) UITextView *postTime;
-@property (retain, nonatomic) UITextView *content;
-@property (retain, nonatomic) UIImageView *mainImage;
+//@property (strong, nonatomic) IBOutlet UIImageView *userImage;
+
+@property (strong, nonatomic) IBOutlet UIButton *userImage;
+@property (strong, nonatomic) IBOutlet UILabel *userName;
+@property (strong, nonatomic) IBOutlet UILabel *postTime;
+@property (strong, nonatomic) IBOutlet UILabel *content;
+@property (strong, nonatomic) IBOutlet UIImageView *mainImage;
+
+@property (strong, nonatomic) IBOutlet UILabel *information;
+
+@property (strong, nonatomic) IBOutlet UIButton *likeButton;
+@property (strong, nonatomic) IBOutlet UIButton *shareButton;
+
 @property (retain, nonatomic) UIImageView *socialPanel;
+
+
+
+
+
+-(void) initialiseElementsWithPost:(Post*) incomingPost;
+
 @end

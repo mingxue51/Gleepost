@@ -24,6 +24,8 @@
 #import "RemoteConversation+Additions.h"
 #import "User.h"
 
+#import "CurrentChatButton.h"
+
 
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
@@ -49,6 +51,9 @@ const int flexibleResizeLimit = 120;
 @property (assign, nonatomic) NSInteger  lastRow;
 
 
+@property (strong, nonatomic) IBOutlet CurrentChatButton *currentChat;
+
+
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
 
@@ -69,8 +74,8 @@ const int flexibleResizeLimit = 120;
     self.title = [self.conversation getParticipantsNames];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_background"]];
-
+    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_background"]];
+    //self.view.backgroundColor = [UIColor whiteColor];
 
     [self.tableView setBackgroundColor:[UIColor clearColor]];
 
@@ -114,6 +119,27 @@ const int flexibleResizeLimit = 120;
     
     
     [self loadMessages];
+    
+    
+    //Create and add chat button.
+//    self.currentChat = [[CurrentChatButton alloc] initWithFrame:CGRectMake(290, 50, 40, 40)];
+//    
+//    [self.view addSubview:self.currentChat];
+    
+}
+
+- (IBAction)myAction:(UIButton *)sender forEvent:(UIEvent *)event
+{
+    
+    NSSet *touches = [event touchesForView:sender];
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:sender];
+    
+    UIButton *btn = (UIButton*) sender;
+    
+    btn.center = [[[event allTouches] anyObject] locationInView:self.view];
+    
+    NSLog(@"%@", NSStringFromCGPoint(touchPoint));
 }
 
 -(void) viewWillAppear:(BOOL)animated

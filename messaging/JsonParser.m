@@ -11,23 +11,23 @@
 
 @implementation JsonParser
 
-+ (OldUser *)parseUserFromJson:(NSDictionary *)json
-{
-    OldUser *user = [[OldUser alloc] init];
-    user.key = [json[@"id"] integerValue];
-    user.name = json[@"username"];
-    
-    // optional
-    user.tagline = json[@"tagline"];
-    user.profileImageUrl = json[@"profile_image"];
-    user.course = json[@"course"];
-    
-    if(json[@"network"]) {
-        user.network = json[@"network"];
-    }
-    
-    return user;
-}
+//+ (OldUser *)parseUserFromJson:(NSDictionary *)json
+//{
+//    OldUser *user = [[OldUser alloc] init];
+//    user.key = [json[@"id"] integerValue];
+//    user.name = json[@"username"];
+//    
+//    // optional
+//    user.tagline = json[@"tagline"];
+//    user.profileImageUrl = json[@"profile_image"];
+//    user.course = json[@"course"];
+//    
+//    if(json[@"network"]) {
+//        user.network = json[@"network"];
+//    }
+//    
+//    return user;
+//}
 
 + (UserNetwork *)parseUserNetworkFromJson:(NSDictionary *)json;
 {
@@ -42,7 +42,7 @@
 {
     Post *post = [[Post alloc] init];
     post.key = [json[@"id"] integerValue];
-    post.user = [JsonParser parseUserFromJson:json[@"by"]];
+//    post.user = [JsonParser parseUserFromJson:json[@"by"]];
     post.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
     post.commentsCount = [json[@"comments"] integerValue];
@@ -67,7 +67,7 @@
 {
     Comment *comment = [[Comment alloc] init];
     comment.key = [json[@"id"] integerValue];
-    comment.user = [JsonParser parseUserFromJson:json[@"by"]];
+//    comment.user = [JsonParser parseUserFromJson:json[@"by"]];
     comment.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
     comment.content = json[@"text"];
     
@@ -94,12 +94,12 @@
     
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
-        OldUser *user = [JsonParser parseUserFromJson:jsonUser];
-        
-        // ignore the current user that is obviously included in the conversation
-        if(user.key != userKeyToIgnore) {
-            [participants addObject:user];
-        }
+//        OldUser *user = [JsonParser parseUserFromJson:jsonUser];
+//        
+//        // ignore the current user that is obviously included in the conversation
+//        if(user.key != userKeyToIgnore) {
+//            [participants addObject:user];
+//        }
     }
     conversation.participants = participants;
     
@@ -121,7 +121,7 @@
 
     OldMessage *message = [[OldMessage alloc] init];
     message.key = [json[@"id"] integerValue];
-    message.author = [JsonParser parseUserFromJson:json[@"by"]];
+//    message.author = [JsonParser parseUserFromJson:json[@"by"]];
     
     //message.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
     

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
-#import "OldUser.h"
 #import "Post.h"
 #import "Comment.h"
 #import "Topic.h"

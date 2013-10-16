@@ -10,6 +10,6 @@
 
 @implementation Thread
 
-@synthesize date, user, itemsCount, remoteUserId;
+@synthesize date, itemsCount, remoteUserId;
 
 @end

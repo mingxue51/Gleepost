@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OldUser.h"
 #import "UserNetwork.h"
 #import "Post.h"
 #import "Comment.h"
@@ -16,7 +15,7 @@
 
 @interface JsonParser : NSObject
 
-+ (OldUser *)parseUserFromJson:(NSDictionary *)json;
+//+ (OldUser *)parseUserFromJson:(NSDictionary *)json;
 + (UserNetwork *)parseUserNetworkFromJson:(NSDictionary *)json;
 + (Post *)parsePostFromJson:(NSDictionary *)json;
 + (NSArray *)parsePostsFromJson:(NSDictionary *)json;

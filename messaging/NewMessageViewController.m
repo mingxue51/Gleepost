@@ -112,7 +112,7 @@
     topic.title = self.titleTextField.text;
     topic.date = [NSDate date];
     
-    NSArray *users = [NSArray arrayWithObjects:[SessionManager sharedInstance].user, nil];
+    NSArray *users = [NSArray array];//  [NSArray arrayWithObjects:[SessionManager sharedInstance].user, nil];
     topic.users = users;
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES withoutSpinning:NO];

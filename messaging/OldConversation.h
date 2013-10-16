@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "RemoteEntity.h"
-#import "OldUser.h"
 #import "OldMessage.h"
 
 @interface OldConversation : RemoteEntity

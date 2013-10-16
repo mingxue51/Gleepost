@@ -24,7 +24,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.10/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.11/";
 
 static WebClient *instance = nil;
 
@@ -301,18 +301,18 @@ static WebClient *instance = nil;
 
 /* USER */
 
-- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, OldUser *user))callbackBlock
-{
-    NSString *path = [NSString stringWithFormat:@"user/%d", key];
-    
-    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        OldUser *user = [JsonParser parseUserFromJson:responseObject];
-        callbackBlock(YES, user);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, nil);
-    }];
-}
+//- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, OldUser *user))callbackBlock
+//{
+//    NSString *path = [NSString stringWithFormat:@"user/%d", key];
+//    
+//    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        OldUser *user = [JsonParser parseUserFromJson:responseObject];
+//        callbackBlock(YES, user);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
 
 
 @end

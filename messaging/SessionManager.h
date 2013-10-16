@@ -7,11 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OldUser.h"
 
 @interface SessionManager : NSObject
 
-@property (strong, nonatomic) OldUser *user;
 @property (strong, nonatomic) NSString *token;
 @property (assign, nonatomic) NSInteger key;
 

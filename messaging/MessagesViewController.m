@@ -17,7 +17,7 @@
 @interface MessagesViewController ()
 
 @property (strong, nonatomic) NSMutableArray *conversations;
-@property (strong, nonatomic) RemoteConversation *selectedConversation;
+@property (strong, nonatomic) Conversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end

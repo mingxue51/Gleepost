@@ -11,24 +11,31 @@
 
 @interface PostCell : UITableViewCell
 
-@property (retain, nonatomic) IBOutlet UIImageView *userImage;
+
+//@property (retain, nonatomic) IBOutlet UIImageView *userImage;
+
+@property (retain, nonatomic) IBOutlet UIButton *userImage;
 @property (retain, nonatomic) IBOutlet UILabel *userName;
 @property (retain, nonatomic) IBOutlet UILabel *postTime;
-@property (retain, nonatomic) IBOutlet UITextView *content;
 @property (strong, nonatomic) IBOutlet UIImageView *postImage;
 @property (retain, nonatomic) IBOutlet UIImageView *socialPanel;
 @property (strong, nonatomic) IBOutlet UILabel *informationLabel;
 @property (retain, nonatomic) IBOutlet UIButton *thumpsUpBtn;
 @property (retain, nonatomic) IBOutlet UIButton *commentBtn;
 @property (retain, nonatomic) IBOutlet UIButton *shareBtn;
+@property (strong, nonatomic) IBOutlet UILabel *contentLbl;
 
--(void) updateWithPostData:(Post *)postData withImage:(BOOL)image;
+@property BOOL imageAvailable;
+
 
 +(CGFloat)getContentLabelHeightForContent:(NSString *)content;
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage;
 
 +(NSString*) findTheNeededText: (NSString*)str;
+
+-(void) updateWithPostData:(Post *)postData;
+
 
 
 @end

@@ -49,11 +49,9 @@ static BOOL likePushed;
     //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
     
     self.navigationItem.title = @"View Post";
-    //[self setBackgroundToNavigationBar];
+
     
     
-    
-    NSLog(@"ViewPostViewController");
     
     
     //Set image despite title.
@@ -65,7 +63,10 @@ static BOOL likePushed;
 //    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     //self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.tableView initTableView];
-    [self initHeaderTableView];
+
+
+
+    [self initHeaderTableView: self.post];
     [self initFooterTableView];
     
     //Initialise elements.
@@ -88,6 +89,9 @@ static BOOL likePushed;
     [self.contentLabel sizeToFit];
     
     [self loadComments];
+    
+    
+    
     
     //[self initialiseCommentsHeightArray];
     
@@ -117,34 +121,18 @@ static BOOL likePushed;
  
  */
 
--(void) initHeaderTableView
+-(void) initHeaderTableView: (Post*) incomingPost
 {
     
-    //Add the user's image to the corresponding cell.
-    UIImage *img = [UIImage imageNamed:@"avatar_big"];
-    self.tableView.headerView.userImage.image = img;
-    self.tableView.headerView.userImage.contentMode = UIViewContentModeScaleAspectFit;
-    [self.tableView.headerView.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width-15, img.size.height-15)];
-    //Post *post = self.posts[indexPath.row];
+    //Initialise Post View.
+    [self.tableView.headerView initialiseElementsWithPost:_post];
+
+    //Add selectors to the buttons.
+    [self buttonWithName:@"Like" andSubviews:[self.tableView.headerView subviews]];
     
-    //Add the user's name.
-    [self.tableView.headerView.userName setText:@"Test User"];
     
-    //Add the post's time.
-    [self.tableView.headerView.postTime setText:@"20 min ago"];
-    
-    //Add the post's text content.
-    [self.tableView.headerView.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
-    
-    //Add the main image to the post.
-    UIImage *postImage = [UIImage imageNamed:@"post_image"];
-    self.tableView.headerView.mainImage.image = postImage;
-    
-    //TODO: See again the postImage width. Problem.
-    [self.tableView.headerView.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-20, postImage.size.height)];
-    
-    //Add selector to the buttons.
-    [self buttonWithName:@"Like" andSubviews:[self.tableView.headerView.socialPanel subviews]];
+    [self buttonWithName:@"" andSubviews:[self.tableView.headerView subviews]];
+
 }
 
 #pragma mark - Social panel button methods
@@ -194,9 +182,13 @@ static BOOL likePushed;
             {
                 [currentBtn addTarget:self action:@selector(commentButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
             }
-            else
+            else if([currentBtn.titleLabel.text isEqualToString:@"Share"])
             {
                 [currentBtn addTarget:self action:@selector(shareButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            else
+            {
+                [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
             }
             
             NSLog(@"-> %@", [currentBtn titleLabel].text);
@@ -207,6 +199,12 @@ static BOOL likePushed;
     return nil;
 }
 
+
+-(void)navigateToProfile: (id)sender
+{
+    [self performSegueWithIdentifier:@"view profile" sender:self];
+
+}
 
 -(void)shareButtonPushed: (id)sender
 {
@@ -412,6 +410,28 @@ static bool firstTime = YES;
     //Create an array consisting of height of each corresponding comment.
     
 }
+
+//TODO: Call this only when there is a need to pass data to the segue.
+
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    NSLog(@"Modal View Controller");
+//    //Hide tabbar.
+//    
+//    if([segue.identifier isEqualToString:@"view post"])
+//    {
+//        
+//        ViewPostViewController *vc = segue.destinationViewController;
+//        /**
+//         Forward data of the post the to the view. Or in future just forward the post id
+//         in order to fetch it from the server.
+//         */
+//        
+//        vc.post = self.selectedPost;
+//        
+//        self.selectedPost = nil;
+//    }
+//}
 
 -(float) calculateCommentSize: (NSString*) content
 {
