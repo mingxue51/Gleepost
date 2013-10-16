@@ -108,6 +108,8 @@
     message.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
     message.seenValue = [json[@"seen"] boolValue];
     
+    NSLog(@"message %@ date %@", message.content, message.date);
+    
     return message;
 }
 

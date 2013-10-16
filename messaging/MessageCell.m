@@ -12,7 +12,8 @@
 @interface MessageCell()
 
 @property (assign, nonatomic) float messageContentViewInitialY;
-@property (assign, nonatomic) float initialHeightOfOtherElementsThanContentMessage;
+@property (assign, nonatomic) float initialMessageContentLabelX;
+@property (assign, nonatomic) float initialMessageContentViewX;
 
 @end
 
@@ -46,6 +47,9 @@ static const float MessageContentLabelPadding = 40;
     self.messageContentViewInitialY = self.messageContentView.frame.origin.y;
 //    self.messageContentLabelInitialWidth = self.messageContentLabel.frame.size.width;
 //    NSLog(@"message init wid %f", self.messageContentLabelInitialWidth);
+    
+    self.initialMessageContentLabelX = self.messageContentLabel.frame.origin.x;
+    self.initialMessageContentViewX = self.messageContentView.frame.origin.x;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -79,14 +83,12 @@ static const float MessageContentLabelPadding = 40;
     float contentWidth = contentSize.width;
     
     float labelWidthDiff = MessageContentLabelMaxWidth - contentWidth;
-    float labelX, viewX;
+    float labelX = self.initialMessageContentLabelX;
+    float viewX = self.initialMessageContentViewX;
     
-    if(self.isLeft) {
-        labelX = self.messageContentLabel.frame.origin.x;
-        viewX = self.messageContentView.frame.origin.x;
-    } else {
-        labelX = self.messageContentLabel.frame.origin.x + labelWidthDiff;
-        viewX = self.messageContentView.frame.origin.x + labelWidthDiff;
+    if(!self.isLeft) {
+        labelX += labelWidthDiff;
+        viewX += labelWidthDiff;
     }
     
     self.messageContentView.frame = CGRectMake(viewX, self.messageContentView.frame.origin.y, contentWidth + MessageContentLabelPadding, contentHeight + MessageContentViewPadding);
@@ -94,17 +96,17 @@ static const float MessageContentLabelPadding = 40;
     
     self.messageContentLabel.text = message.content;
     
-    switch (message.sendStatusValue) {
-        case kSendStatusLocal:
-            self.messageContentLabel.textColor = [UIColor orangeColor];
-            break;
-        case kSendStatusSent:
-            self.messageContentLabel.textColor = [UIColor greenColor];
-            break;
-        case kSendStatusFailure:
-            self.messageContentLabel.textColor = [UIColor redColor];
-            break;
-    }
+//    switch (message.sendStatusValue) {
+//        case kSendStatusLocal:
+//            self.messageContentLabel.textColor = [UIColor orangeColor];
+//            break;
+//        case kSendStatusSent:
+//            self.messageContentLabel.textColor = [UIColor greenColor];
+//            break;
+//        case kSendStatusFailure:
+//            self.messageContentLabel.textColor = [UIColor redColor];
+//            break;
+//    }
     
     // round message content background image
     UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);

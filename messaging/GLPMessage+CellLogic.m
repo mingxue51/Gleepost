@@ -50,7 +50,7 @@ NSString * const kMessageRightCell = @"RightCell";
 
 - (void)configureAsFirstMessage
 {
-    self.cellIdentifier = kMessageLeftCell;
+    self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
     self.hasHeader = YES;
 }
 
@@ -68,14 +68,13 @@ NSString * const kMessageRightCell = @"RightCell";
 
 + (NSString *)getCellIdentifierForMessage:(GLPMessage *)message
 {
-    BOOL currentUser = [message.author.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]];
-    
+    BOOL currentUser = [message.author isEqualToWebEntity:[SessionManager sharedInstance].user];
     return currentUser ? kMessageLeftCell : kMessageRightCell;
 }
 
-+ (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier
-{
-    return ([cellIdentifier isEqualToString:kMessageLeftCell]) ? kMessageRightCell : kMessageLeftCell;
-}
+//+ (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier
+//{
+//    return ([cellIdentifier isEqualToString:kMessageLeftCell]) ? kMessageRightCell : kMessageLeftCell;
+//}
 
 @end

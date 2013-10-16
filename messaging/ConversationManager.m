@@ -16,6 +16,7 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "MessagesSendingProcessor.h"
+#import "NSDate+UTC.h"
 
 
 
@@ -76,7 +77,9 @@
     __block GLPMessage *message = [GLPMessage MR_createEntity];
     message.content = content;
     message.conversation = conversation;
-    message.date = [NSDate date];
+    message.date = [NSDate dateInUTC];
+    
+    NSLog(@"message %@ date %@", message.content, message.date);
     
     GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
     if(!user) {

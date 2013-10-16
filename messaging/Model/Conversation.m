@@ -17,6 +17,8 @@
 {
     NSMutableString *names = [NSMutableString string];
     
+    NSLog(@"conversation %@", self.participants);
+    
     int count = self.participants.count - 1;
     [[self.participants allObjects] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         GLPUser *user = obj;
@@ -25,6 +27,8 @@
         if([user.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]]) {
             return;
         }
+        
+        NSLog(@"append %@", user.name);
         
         [names appendString:user.name];
         

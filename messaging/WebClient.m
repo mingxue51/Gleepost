@@ -24,7 +24,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.11/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.12/";
 
 static WebClient *instance = nil;
 
@@ -185,6 +185,8 @@ static WebClient *instance = nil;
         
         // delete previous conversations
         [Conversation MR_truncateAll];
+        
+        NSLog(@"json %@", responseObject);
         
         // parse and create new ones
         NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];

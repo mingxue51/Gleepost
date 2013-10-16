@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "Conversation.h"
+#import "HPGrowingTextView.h"
 
 
-@interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
 {
     int previousTextViewSize;
     CGRect        keyboardSuperFrame; // frame of keyboard when initially displayed

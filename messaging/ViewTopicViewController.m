@@ -31,23 +31,16 @@ const int flexibleResizeLimit = 120;
 
 @interface ViewTopicViewController ()
 
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UITextView *messageTextField;
-@property (retain, nonatomic) IBOutlet UIView *messageView;
-
-//@property (retain, nonatomic) UIView *messageTestView;
-@property (retain, nonatomic) UITextView *messageTestTextView;
-@property (strong, nonatomic) IBOutlet UIButton *sendButton;
-@property (strong, nonatomic) UIButton *cameraButton;
+@property (weak, nonatomic) IBOutlet UIView *formView;
+@property (weak, nonatomic) IBOutlet UITextField *formTextField;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet HPGrowingTextView *formTextView;
 
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @property (assign, nonatomic) BOOL longPollingRequestRunning;
-
-@property (strong, nonatomic) NSString  *lastCellIdentifier;
-@property (strong, nonatomic) NSMutableArray  *messagesCellIdentifiers;
-@property (assign, nonatomic) NSInteger  lastRow;
 
 
 @property (strong, nonatomic) IBOutlet CurrentChatButton *currentChat;
@@ -68,56 +61,26 @@ const int flexibleResizeLimit = 120;
 {
     [super viewDidLoad];
     
+    [self configureNavigationBar];
+    [self configureForm];
+    
     self.longPollingRequestRunning = NO;
-    
-    self.title = [self.conversation getParticipantsNames];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.translucent = YES;
-    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_background"]];
-    //self.view.backgroundColor = [UIColor whiteColor];
 
-    [self.tableView setBackgroundColor:[UIColor clearColor]];
-
-    [self.messageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]]];
+    [self loadMessages];
     
-    
-    //Get the size of the messageView.
-    CGRect messageViewRect = [self.messageView bounds];
-    
-    //Add the plus button to navigation bar.
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(addContact) forControlEvents:UIControlEventTouchUpInside];
-    btnBack.frame = imageView.bounds;
-    [imageView addSubview:btnBack];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-    self.navigationItem.rightBarButtonItem = item;
-    
-    
-    
-    //Create a button with the image and create selector for button.
-    self.cameraButton = [[UIButton alloc] init];
-    [self.cameraButton setBackgroundImage:[UIImage imageNamed:@"camera_icon"] forState:UIControlStateNormal];
-    [self.cameraButton setFrame:CGRectMake(15.0f, messageViewRect.size.height/4, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
-    [self.cameraButton addTarget:self
-               action:@selector(addImageToTheChat:)
-     forControlEvents:UIControlEventTouchDown];
-    [self.messageView addSubview:self.cameraButton];
     
     
     self.keyboardAppearanceSpaceY = 0;
+//    self.formTextView.
     
     //Resize the text field.
-    float height = self.messageTextField.frame.size.height;
-    CGRect sizeOfMessageTextField = self.messageTextField.frame;
-    [self.messageTextField setFrame:CGRectMake(sizeOfMessageTextField.origin.x, sizeOfMessageTextField.origin.y, sizeOfMessageTextField.size.width, height)];
-    self.messageTextField.layer.cornerRadius = 3;
-    
-    // init
-    self.messagesCellIdentifiers = [NSMutableArray array];
+//    float height = self.messageTextField.frame.size.height;
+//    CGRect sizeOfMessageTextField = self.messageTextField.frame;
+//    [self.messageTextField setFrame:CGRectMake(sizeOfMessageTextField.origin.x, sizeOfMessageTextField.origin.y, sizeOfMessageTextField.size.width, height)];
+//    self.messageTextField.layer.cornerRadius = 3;
     
     
-    [self loadMessages];
+
     
     
     //Create and add chat button.
@@ -130,9 +93,9 @@ const int flexibleResizeLimit = 120;
 - (IBAction)myAction:(UIButton *)sender forEvent:(UIEvent *)event
 {
     
-    NSSet *touches = [event touchesForView:sender];
-    UITouch *touch = [touches anyObject];
-    CGPoint touchPoint = [touch locationInView:sender];
+    //NSSet *touches = [event touchesForView:sender];
+    //UITouch *touch = [touches anyObject];
+    //CGPoint touchPoint = [touch locationInView:sender];
     
     UIButton *btn = (UIButton*) sender;
     
@@ -145,9 +108,21 @@ const int flexibleResizeLimit = 120;
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification 
+                                               object:nil];
+    
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     [self.tabBarController.tabBar setHidden:YES];
 
@@ -155,11 +130,7 @@ const int flexibleResizeLimit = 120;
 
 -(void) viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"ViewTopiController : viewWillDisappear");
     [super viewWillDisappear:animated];
-    
-
-    
     
     NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
     UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 1];
@@ -183,7 +154,8 @@ const int flexibleResizeLimit = 120;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 
 }
 
@@ -193,12 +165,51 @@ const int flexibleResizeLimit = 120;
     self.longPollingRequestRunning = NO;
 }
 
+#pragma mark - Init and config
+
+- (void)configureNavigationBar
+{
+    // navigation bar configuration
+    self.title = [self.conversation getParticipantsNames];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.translucent = YES;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self action:@selector(addContact) forControlEvents:UIControlEventTouchUpInside];
+    btnBack.frame = imageView.bounds;
+    [imageView addSubview:btnBack];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    self.navigationItem.rightBarButtonItem = item;
+}
+
+- (void)configureForm
+{
+    self.formView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
+    
+    self.formTextView.isScrollable = NO;
+    self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+	self.formTextView.minNumberOfLines = 1;
+	self.formTextView.maxNumberOfLines = 4;
+	self.formTextView.returnKeyType = UIReturnKeyDefault;
+	self.formTextView.font = [UIFont systemFontOfSize:15.0f];
+	self.formTextView.delegate = self;
+    self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    self.formTextView.backgroundColor = [UIColor whiteColor];
+    self.formTextView.placeholder = @"Your message";
+    
+    // center vertically because textview height varies from ios version to screen
+    CGRect formTextViewFrame = self.formTextView.frame;
+    formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
+    self.formTextView.frame = formTextViewFrame;
+}
+
 
 #pragma mark - Messages management
 
 - (void)loadMessages
 {
-    id view = ([self.messageTextField isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
+    id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
     
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new messages" forView:view];
     
@@ -239,10 +250,7 @@ const int flexibleResizeLimit = 120;
     }
 
     [self.tableView reloadData];
-    
-    if(self.messages.count > 1) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    }
+    [self scrollToTheEndAnimated:YES];
 }
 
 - (void)showMessage:(GLPMessage *)message
@@ -257,22 +265,18 @@ const int flexibleResizeLimit = 120;
     [self.messages addObject:message];
     [self.tableView reloadData];
     
-    // scroll to the last element
-    if(self.messages.count > 1) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
+    [self scrollToTheEndAnimated:YES];
 }
 
 - (void)createMessageFromForm
 {
-    GLPMessage *message = [ConversationManager createMessageWithContent:self.messageTextField.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
-        
+    GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
         [self.tableView reloadData];
     }];
     
     [self showMessage:message];
     
-    self.messageTextField.text = @"";
+    self.formTextView.text = @"";
 }
 
 
@@ -302,8 +306,7 @@ const int flexibleResizeLimit = 120;
 
 - (IBAction)sendButtonClicked:(id)sender
 {
-    if([self.messageTextField.text isEmpty])
-    {
+    if([self.formTextView.text isEmpty]) {
         return;
     }
     
@@ -331,7 +334,7 @@ const int flexibleResizeLimit = 120;
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - Table view
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -364,29 +367,38 @@ const int flexibleResizeLimit = 120;
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+- (void)scrollToTheEndAnimated:(BOOL)animated
 {
-    if ([touch.view isDescendantOfView:self.tableView])
-    {
-        
-        // Don't let selections of auto-complete entries fire the
-        // gesture recognizer
-        return NO;
+    if(self.messages.count > 1) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
-    
-    [self hideKeyboardFromTextViewIfNeeded];
-    
-    return YES;
 }
+
+
+
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+//{
+//    if ([touch.view isDescendantOfView:self.tableView])
+//    {
+//        
+//        // Don't let selections of auto-complete entries fire the
+//        // gesture recognizer
+//        return NO;
+//    }
+//    
+//    [self hideKeyboardFromTextViewIfNeeded];
+//    
+//    return YES;
+//}
 
 
 #pragma mark - Text View delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self performSelector:@selector(sendButtonClicked:) withObject:self];
-    return YES;
-}
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField
+//{
+//    [self performSelector:@selector(sendButtonClicked:) withObject:self];
+//    return YES;
+//}
 
 //- (BOOL)textView:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 //{
@@ -417,52 +429,52 @@ const int flexibleResizeLimit = 120;
 //    return YES;
 //}
 
-- (void)textViewDidChange:(UITextView *)textView
-{
-
-    double numberOfLines = self.messageTextField.contentSize.height/self.messageTextField.font.lineHeight;
-    
-    numberOfLines-=1.0;
-    
-    
-    numberOfLines -= (double)1.1;
-    numberOfLines = ceil(numberOfLines);
-    
-    int noOfLines = (int) numberOfLines;
-
-    //Take the current height of the message view.
-    CGRect messageViewSize = self.messageView.frame;
-    
-    
-    /**
-        Resize the message view frame size, message text view size to smaller.
-        Resize table view to bigger.
-     */
-    if(numberOfLines < previousTextViewSize)
-    {
-        [self resizeChatElementsDependingOnText:NO];
-        
-        
-        previousTextViewSize = noOfLines;
-        
-        return;
-    }
-    
-    /** 
-        If current number of lines is different from the previous one
-        then change the size of chat view and text view.
-        Shrunk the size of the table view.
-     */
-    if(noOfLines != previousTextViewSize && flexibleResizeLimit >= messageViewSize.size.height)
-    {
-        
-        [self resizeChatElementsDependingOnText:YES];
-        
-        previousTextViewSize = noOfLines;
-    }
-
-   
-}
+//- (void)textViewDidChange:(UITextView *)textView
+//{
+//
+//    double numberOfLines = self.messageTextField.contentSize.height/self.messageTextField.font.lineHeight;
+//    
+//    numberOfLines-=1.0;
+//    
+//    
+//    numberOfLines -= (double)1.1;
+//    numberOfLines = ceil(numberOfLines);
+//    
+//    int noOfLines = (int) numberOfLines;
+//
+//    //Take the current height of the message view.
+//    CGRect messageViewSize = self.messageView.frame;
+//    
+//    
+//    /**
+//        Resize the message view frame size, message text view size to smaller.
+//        Resize table view to bigger.
+//     */
+//    if(numberOfLines < previousTextViewSize)
+//    {
+//        [self resizeChatElementsDependingOnText:NO];
+//        
+//        
+//        previousTextViewSize = noOfLines;
+//        
+//        return;
+//    }
+//    
+//    /** 
+//        If current number of lines is different from the previous one
+//        then change the size of chat view and text view.
+//        Shrunk the size of the table view.
+//     */
+//    if(noOfLines != previousTextViewSize && flexibleResizeLimit >= messageViewSize.size.height)
+//    {
+//        
+//        [self resizeChatElementsDependingOnText:YES];
+//        
+//        previousTextViewSize = noOfLines;
+//    }
+//
+//   
+//}
 
 /**
  
@@ -471,93 +483,93 @@ const int flexibleResizeLimit = 120;
  @param bigger If YES then the size should turn to bigger otherwise to smaller.
  
  */
--(void) resizeChatElementsDependingOnText:(BOOL) bigger
-{
-    CGRect messageViewSize = self.messageView.frame;
-    int resizeLevel = textViewSizeOfLine;
-    if(!bigger)
-    {
-        resizeLevel = (-textViewSizeOfLine);
-    }
-    
-    
-    //Change the size of message view.
-    [self.messageView setFrame:CGRectMake(messageViewSize.origin.x, messageViewSize.origin.y-resizeLevel, messageViewSize.size.width, messageViewSize.size.height+resizeLevel)];
-    
-    messageViewSize = self.messageView.frame;
-    
-    CGRect messageTextViewSize = self.messageTextField.frame;
-    
-    messageTextViewSize.size.height += resizeLevel;
-    
-    //Change the size of message text view.
-    [self.messageTextField setFrame:messageTextViewSize];
-    
-    
-    //Change the size of table view.
-    CGRect tableViewFrame = self.tableView.frame;
-    [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y, tableViewFrame.size.width, tableViewFrame.size.height-resizeLevel)];
-    
-    //Scroll down the table view.
-    CGPoint point = self.tableView.contentOffset;
-    [self.tableView setContentOffset:CGPointMake(point.x, point.y+resizeLevel)];
-    
-    //Change the position of send button and camera button.
-    CGRect cameraFrame = self.cameraButton.frame;
-    
-    //TODO: Change the position of send and camera button dynamically.
-    
-    //CGRect sendButtonFrame = self.sendButton.frame;
-    
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textField
-{
-
-    
-    
-    
-    
-
-//    if(self.keyboardAppearanceSpaceY != 0)
+//-(void) resizeChatElementsDependingOnText:(BOOL) bigger
+//{
+//    CGRect messageViewSize = self.messageView.frame;
+//    int resizeLevel = textViewSizeOfLine;
+//    if(!bigger)
 //    {
-//        return;
+//        resizeLevel = (-textViewSizeOfLine);
 //    }
-//    NSLog(@"keyboardWillShow");
 //    
 //    
-//    NSLog(@"Message view dimensions: x:%f y:%f",self.messageView.frame.origin.x,self.messageView.frame.origin.y);
-//    //NSLog(@"Keyboard Height: %f",[KeyboardHelper keyboardHeight:notification]);
+//    //Change the size of message view.
+//    [self.messageView setFrame:CGRectMake(messageViewSize.origin.x, messageViewSize.origin.y-resizeLevel, messageViewSize.size.width, messageViewSize.size.height+resizeLevel)];
 //    
-//    float height = 210;
+//    messageViewSize = self.messageView.frame;
 //    
-//    self.keyboardAppearanceSpaceY = height + 1;
+//    CGRect messageTextViewSize = self.messageTextField.frame;
 //    
-//    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:0.25 andKeyboardHide:NO];
+//    messageTextViewSize.size.height += resizeLevel;
+//    
+//    //Change the size of message text view.
+//    [self.messageTextField setFrame:messageTextViewSize];
+//    
+//    
+//    //Change the size of table view.
+//    CGRect tableViewFrame = self.tableView.frame;
+//    [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y, tableViewFrame.size.width, tableViewFrame.size.height-resizeLevel)];
+//    
+//    //Scroll down the table view.
+//    CGPoint point = self.tableView.contentOffset;
+//    [self.tableView setContentOffset:CGPointMake(point.x, point.y+resizeLevel)];
+//    
+//    //Change the position of send button and camera button.
+//    CGRect cameraFrame = self.cameraButton.frame;
+//    
+//    //TODO: Change the position of send and camera button dynamically.
+//    
+//    //CGRect sendButtonFrame = self.sendButton.frame;
+//    
+//}
 
-    
-    [textField becomeFirstResponder];
-}
+//- (void)textViewDidBeginEditing:(UITextView *)textField
+//{
+//
+//    
+//    
+//    
+//    
+//
+////    if(self.keyboardAppearanceSpaceY != 0)
+////    {
+////        return;
+////    }
+////    NSLog(@"keyboardWillShow");
+////    
+////    
+////    NSLog(@"Message view dimensions: x:%f y:%f",self.messageView.frame.origin.x,self.messageView.frame.origin.y);
+////    //NSLog(@"Keyboard Height: %f",[KeyboardHelper keyboardHeight:notification]);
+////    
+////    float height = 210;
+////    
+////    self.keyboardAppearanceSpaceY = height + 1;
+////    
+////    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:0.25 andKeyboardHide:NO];
+//
+//    
+//    [textField becomeFirstResponder];
+//}
 
-- (void)textViewDidEndEditing:(UITextView *)textField
-{
-    
- //   [textField resignFirstResponder];
-}
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView
-{
-    // you can create the accessory view programmatically (in code), or from the storyboard
-    if (self.messageTextField.inputAccessoryView == nil)
-    {
-        //self.messageTextField.inputAccessoryView = self.messageView;
-        
-//        [self.messageView.inputAccessoryView setFrame:CGRectMake(0, 0, 320.f, 50.f)];
-//        NSLog(@"Accessory View: %f:%f",self.messageView.inputAccessoryView.frame.size.height, self.messageView.inputAccessoryView.frame.size.width);
-    }
-    
-    return YES;
-}
+//- (void)textViewDidEndEditing:(UITextView *)textField
+//{
+//    
+// //   [textField resignFirstResponder];
+//}
+//
+//- (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView
+//{
+//    // you can create the accessory view programmatically (in code), or from the storyboard
+//    if (self.messageTextField.inputAccessoryView == nil)
+//    {
+//        //self.messageTextField.inputAccessoryView = self.messageView;
+//        
+////        [self.messageView.inputAccessoryView setFrame:CGRectMake(0, 0, 320.f, 50.f)];
+////        NSLog(@"Accessory View: %f:%f",self.messageView.inputAccessoryView.frame.size.height, self.messageView.inputAccessoryView.frame.size.width);
+//    }
+//    
+//    return YES;
+//}
 //
 //- (BOOL)textViewShouldEndEditing:(UITextView *)aTextView
 //{
@@ -650,135 +662,208 @@ const int flexibleResizeLimit = 120;
 
 
 
-- (void)hideKeyboardFromTextViewIfNeeded
-{
-    if([self.messageTextField isFirstResponder])
-    {
-        [self.messageTextField resignFirstResponder];
-    }
-}
 
-- (void)applicationDidEnterBackground:(NSNotification *)notification
-{
-    [self hideKeyboardFromTextViewIfNeeded];
-}
-
-
-//- (void)keyboardWillHideOrShow:(NSNotification *)note
+//
+//- (void)applicationDidEnterBackground:(NSNotification *)notification
 //{
-//    NSDictionary *userInfo = note.userInfo;
+//    [self hideKeyboardFromTextViewIfNeeded];
+//}
+//
+//
+////- (void)keyboardWillHideOrShow:(NSNotification *)note
+////{
+////    NSDictionary *userInfo = note.userInfo;
+////    
+////    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+////    NSLog(@"User Info: %f",duration);
+////    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+////    
+////    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+////    CGRect keyboardFrameForTextField = [self.messageView.superview convertRect:keyboardFrame fromView:nil];
+////    
+////    CGRect newTextFieldFrame = self.messageView.frame;
+////    newTextFieldFrame.origin.y = keyboardFrameForTextField.origin.y - newTextFieldFrame.size.height;
+////    
+////    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+////        self.messageView.frame = newTextFieldFrame;
+////    } completion:nil];
+////}
+//
+//
+//
+//- (void)keyboardWillShow:(NSNotification *)notification
+//{
 //    
-//    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-//    NSLog(@"User Info: %f",duration);
-//    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+//    if(self.keyboardAppearanceSpaceY != 0)
+//    {
+//        return;
+//    }
 //    
-//    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    CGRect keyboardFrameForTextField = [self.messageView.superview convertRect:keyboardFrame fromView:nil];
 //    
-//    CGRect newTextFieldFrame = self.messageView.frame;
-//    newTextFieldFrame.origin.y = keyboardFrameForTextField.origin.y - newTextFieldFrame.size.height;
 //    
-//    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
-//        self.messageView.frame = newTextFieldFrame;
-//    } completion:nil];
+//    float height = [KeyboardHelper keyboardHeight:notification];
+//    
+//    self.keyboardAppearanceSpaceY = height;
+//    
+//    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:[KeyboardHelper keyboardAnimationDuration:notification] andKeyboardHide:NO];
+//    
+//
+//    
+//}
+//
+//- (void)keyboardWillHide:(NSNotification *)notification
+//{
+//   // float height = [KeyboardHelper keyboardHeight:notification];
+//
+//
+//   // float duration = [self keyboardAnimationDurationForNotification:notification];
+//    
+//  //  NSLog(@"DURATION: %f",duration);
+//    
+//    [self animateViewWithVerticalMovement:fabs(self.keyboardAppearanceSpaceY) duration:[KeyboardHelper keyboardAnimationDuration:notification] andKeyboardHide:YES];
+//
+//    
+//    self.keyboardAppearanceSpaceY = 0;
+//
+//
+//}
+//
+////- (NSTimeInterval)keyboardAnimationDurationForNotification:(NSNotification*)notification
+////{
+////    NSDictionary* info = [notification userInfo];
+////    NSValue* value = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+////    NSTimeInterval duration = 0;
+////    [value getValue:&duration];
+////    return duration;
+////}
+//
+///**
+// Creates animation in case there is a need for disappearing the keyboard or appearing.
+// 
+// @param movement the distance of the elements' movements.
+// @param duration the duration of the animbation.
+// @param animationOptions animcation options.
+// @param isKeyboardHide true if the method was called in order to hide the keyboard and false if it is called for show the keyboard.
+// 
+// */
+//- (void) animateViewWithVerticalMovement:(float)movement duration:(float)duration andKeyboardHide:(BOOL)isKeyboardHide
+//{
+//    
+//    
+//    //0.21
+//    
+//    //UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews| UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews
+//    
+//    [UIView animateWithDuration:duration-3.0 delay:0 options:(UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveLinear) animations:^{
+//        
+//        
+//        //Changes to commit in a view.
+//        
+//        
+//        self.messageView.frame = CGRectOffset(self.messageView.frame, 0, movement);
+//        
+//        
+//        if(isKeyboardHide)
+//        {
+//            //Set the y position +30 and after -30 in order to create a smoothly representation when the keyboard is going to be hide.
+//            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y+30, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
+//            
+//            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y-30, self.tableView.frame.size.width, self.tableView.frame.size.height);
+//        }
+//        else
+//        {
+//            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
+//        }
+//        
+//        if(self.messages.count > 1) {
+//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
+//        }
+//        
+//        
+//    } completion:^(BOOL finished) {
+//        //Executes when the animation is going to be end.
+//
+//        
+//    }];
 //}
 
 
+#pragma mark - form management
 
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    
-    if(self.keyboardAppearanceSpaceY != 0)
-    {
-        return;
-    }
-    
-    
-    
-    float height = [KeyboardHelper keyboardHeight:notification];
-    
-    self.keyboardAppearanceSpaceY = height;
-    
-    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:[KeyboardHelper keyboardAnimationDuration:notification] andKeyboardHide:NO];
-    
+//Code from Brett Schumann
+- (void)keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
 
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
     
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-   // float height = [KeyboardHelper keyboardHeight:notification];
-
-
-   // float duration = [self keyboardAnimationDurationForNotification:notification];
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-  //  NSLog(@"DURATION: %f",duration);
+	// get a rect for the textView frame
+	CGRect containerFrame = self.formView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
     
-    [self animateViewWithVerticalMovement:fabs(self.keyboardAppearanceSpaceY) duration:[KeyboardHelper keyboardAnimationDuration:notification] andKeyboardHide:YES];
-
+	CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
     
-    self.keyboardAppearanceSpaceY = 0;
-
-
-}
-
-//- (NSTimeInterval)keyboardAnimationDurationForNotification:(NSNotification*)notification
-//{
-//    NSDictionary* info = [notification userInfo];
-//    NSValue* value = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-//    NSTimeInterval duration = 0;
-//    [value getValue:&duration];
-//    return duration;
-//}
-
-/**
- Creates animation in case there is a need for disappearing the keyboard or appearing.
- 
- @param movement the distance of the elements' movements.
- @param duration the duration of the animbation.
- @param animationOptions animcation options.
- @param isKeyboardHide true if the method was called in order to hide the keyboard and false if it is called for show the keyboard.
- 
- */
-- (void) animateViewWithVerticalMovement:(float)movement duration:(float)duration andKeyboardHide:(BOOL)isKeyboardHide
-{
-    
-    
-    //0.21
-    
-    //UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews| UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews
-    
-    [UIView animateWithDuration:duration-3.0 delay:0 options:(UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveLinear) animations:^{
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        self.formView.frame = containerFrame;
+        self.tableView.frame = tableViewFrame;
         
-        
-        //Changes to commit in a view.
-        
-        
-        self.messageView.frame = CGRectOffset(self.messageView.frame, 0, movement);
-        
-        
-        if(isKeyboardHide)
-        {
-            //Set the y position +30 and after -30 in order to create a smoothly representation when the keyboard is going to be hide.
-            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y+30, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
-            
-            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y-30, self.tableView.frame.size.width, self.tableView.frame.size.height);
-        }
-        else
-        {
-            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
-        }
-        
-        if(self.messages.count > 1) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
-        }
-        
+        [self scrollToTheEndAnimated:NO];
         
     } completion:^(BOOL finished) {
-        //Executes when the animation is going to be end.
-
-        
+        [self.tableView setNeedsLayout];
     }];
 }
+
+- (void)keyboardWillHide:(NSNotification *)note{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = self.formView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+    
+	CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        self.formView.frame = containerFrame;
+        self.tableView.frame = tableViewFrame;
+        
+    } completion:^(BOOL finished) {
+        [self.tableView setNeedsLayout];
+    }];
+}
+
+- (void)hideKeyboardFromTextViewIfNeeded
+{
+    if([self.formTextView isFirstResponder]) {
+        [self.formTextView resignFirstResponder];
+    }
+}
+
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+{
+    float diff = (growingTextView.frame.size.height - height);
+    
+	CGRect r = self.formView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+	self.formView.frame = r;
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height += diff;
+    self.tableView.frame = tableViewFrame;
+    
+    [self scrollToTheEndAnimated:NO];
+}
+
 
 @end
