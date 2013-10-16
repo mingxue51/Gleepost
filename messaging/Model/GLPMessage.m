@@ -1,5 +1,5 @@
 #import "GLPMessage.h"
-#import "User.h"
+#import "GLPUser.h"
 
 @interface GLPMessage ()
 

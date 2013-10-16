@@ -21,7 +21,7 @@
 
 #import "GLPMessage.h"
 #import "GLPMessage+CellLogic.h"
-#import "User.h"
+#import "GLPUser.h"
 
 #import "CurrentChatButton.h"
 

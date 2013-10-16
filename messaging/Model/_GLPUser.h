@@ -1,32 +1,32 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to User.h instead.
+// Make changes to GLPUser.h instead.
 
 #import <CoreData/CoreData.h>
 #import "WebEntity.h"
 
-extern const struct UserAttributes {
+extern const struct GLPUserAttributes {
 	__unsafe_unretained NSString *name;
-} UserAttributes;
+} GLPUserAttributes;
 
-extern const struct UserRelationships {
+extern const struct GLPUserRelationships {
 	__unsafe_unretained NSString *posts;
-} UserRelationships;
+} GLPUserRelationships;
 
-extern const struct UserFetchedProperties {
-} UserFetchedProperties;
+extern const struct GLPUserFetchedProperties {
+} GLPUserFetchedProperties;
 
 @class Post;
 
 
 
-@interface UserID : NSManagedObjectID {}
+@interface GLPUserID : NSManagedObjectID {}
 @end
 
-@interface _User : WebEntity {}
+@interface _GLPUser : WebEntity {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (UserID*)objectID;
+- (GLPUserID*)objectID;
 
 
 
@@ -52,11 +52,11 @@ extern const struct UserFetchedProperties {
 
 @end
 
-@interface _User (CoreDataGeneratedAccessors)
+@interface _GLPUser (CoreDataGeneratedAccessors)
 
 @end
 
-@interface _User (CoreDataGeneratedPrimitiveAccessors)
+@interface _GLPUser (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSString*)primitiveName;

@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 #import "GLPMessage+CellLogic.h"
 #import "SessionManager.h"
-#import "User.h"
+#import "GLPUser.h"
 
 @implementation GLPMessage (CellLogic)
 

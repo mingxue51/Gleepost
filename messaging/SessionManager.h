@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "User.h"
+#import "GLPUser.h"
 
 @interface SessionManager : NSObject
 
 @property (strong, nonatomic) NSString *token;
 @property (assign, nonatomic) NSInteger key;
-@property (strong, nonatomic) User *user;
+@property (strong, nonatomic) GLPUser *user;
 
 + (SessionManager *)sharedInstance;
 

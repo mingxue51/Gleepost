@@ -19,7 +19,7 @@ extern const struct GLPMessageRelationships {
 extern const struct GLPMessageFetchedProperties {
 } GLPMessageFetchedProperties;
 
-@class User;
+@class GLPUser;
 @class Conversation;
 
 
@@ -88,7 +88,7 @@ extern const struct GLPMessageFetchedProperties {
 
 
 
-@property (nonatomic, strong) User *author;
+@property (nonatomic, strong) GLPUser *author;
 
 //- (BOOL)validateAuthor:(id*)value_ error:(NSError**)error_;
 
@@ -143,8 +143,8 @@ extern const struct GLPMessageFetchedProperties {
 
 
 
-- (User*)primitiveAuthor;
-- (void)setPrimitiveAuthor:(User*)value;
+- (GLPUser*)primitiveAuthor;
+- (void)setPrimitiveAuthor:(GLPUser*)value;
 
 
 

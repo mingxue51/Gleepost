@@ -10,7 +10,7 @@
 
 #import "Conversation.h"
 #import "GLPMessage.h"
-#import "User.h"
+#import "GLPUser.h"
 
 #import "SessionManager.h"
 #import "WebClient.h"
@@ -78,7 +78,7 @@
     message.conversation = conversation;
     message.date = [NSDate date];
     
-    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
+    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
     if(!user) {
         [NSException raise:@"Cannot find current user" format:@"User with session key %d is null in local database", [SessionManager sharedInstance].key];
     }

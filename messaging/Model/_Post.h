@@ -21,7 +21,7 @@ extern const struct PostRelationships {
 extern const struct PostFetchedProperties {
 } PostFetchedProperties;
 
-@class User;
+@class GLPUser;
 @class Comment;
 
 
@@ -116,7 +116,7 @@ extern const struct PostFetchedProperties {
 
 
 
-@property (nonatomic, strong) User *author;
+@property (nonatomic, strong) GLPUser *author;
 
 //- (BOOL)validateAuthor:(id*)value_ error:(NSError**)error_;
 
@@ -191,8 +191,8 @@ extern const struct PostFetchedProperties {
 
 
 
-- (User*)primitiveAuthor;
-- (void)setPrimitiveAuthor:(User*)value;
+- (GLPUser*)primitiveAuthor;
+- (void)setPrimitiveAuthor:(GLPUser*)value;
 
 
 

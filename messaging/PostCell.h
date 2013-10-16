@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Post.h"
-#import "User.h"
+#import "GLPUser.h"
 
 @interface PostCell : UITableViewCell
 

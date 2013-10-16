@@ -1,14 +1,14 @@
-#import "User.h"
+#import "GLPUser.h"
 
 
-@interface User ()
+@interface GLPUser ()
 
 // Private interface goes here.
 
 @end
 
 
-@implementation User
+@implementation GLPUser
 
 // Custom logic goes here.
 

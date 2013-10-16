@@ -32,13 +32,13 @@
 
 #pragma mark - Users
 
-+ (User *)parseUserFromJson:(NSDictionary *)json
++ (GLPUser *)parseUserFromJson:(NSDictionary *)json
 {
     NSNumber *key = json[@"id"];
-    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:key];
+    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
     
     if(!user) {
-        user = [User MR_createEntity];
+        user = [GLPUser MR_createEntity];
         user.remoteKey = key;
         user.name = json[@"username"];
     }
@@ -71,7 +71,7 @@
 
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
-        User *user = [RemoteParser parseUserFromJson:jsonUser];
+        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }
     conversation.participants = [NSSet setWithArray:participants];

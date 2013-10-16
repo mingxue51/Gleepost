@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "Conversation.h"
 #import "GLPMessage.h"
-#import "User.h"
+#import "GLPUser.h"
 #import "Post.h"
 #import "Comment.h"
 
 @interface RemoteParser : NSObject
 
 // user
-+ (User *)parseUserFromJson:(NSDictionary *)json;
++ (GLPUser *)parseUserFromJson:(NSDictionary *)json;
 
 // conversations
 + (Conversation *)parseConversationFromJson:(NSDictionary *)json;

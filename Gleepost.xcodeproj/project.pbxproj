@@ -135,12 +135,11 @@
 		8073AB341806B9F3000FD0B1 /* Message+MessageCellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */; };
 		807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4CFE180AF0F6003D67E6 /* _Conversation.m */; };
 		807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D00180AF0F6003D67E6 /* _LocalMessage.m */; };
-		807C4D14180AF0F6003D67E6 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D04180AF0F6003D67E6 /* _User.m */; };
 		807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D06180AF0F6003D67E6 /* _WebEntity.m */; };
 		807C4D16180AF0F6003D67E6 /* Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D08180AF0F6003D67E6 /* Conversation.m */; };
 		807C4D17180AF0F6003D67E6 /* LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D0A180AF0F6003D67E6 /* LocalMessage.m */; };
 		807C4D18180AF0F6003D67E6 /* GLPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D0C180AF0F6003D67E6 /* GLPMessage.m */; };
-		807C4D19180AF0F6003D67E6 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D0E180AF0F6003D67E6 /* User.m */; };
+		807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D0E180AF0F6003D67E6 /* GLPUser.m */; };
 		807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D10180AF0F6003D67E6 /* WebEntity.m */; };
 		807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807C4D1B180B2D15003D67E6 /* SystemConfiguration.framework */; };
 		8087E42D180EC02E00938264 /* _Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E426180EC02E00938264 /* _Comment.m */; };
@@ -149,6 +148,7 @@
 		8087E430180EC02E00938264 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E42C180EC02E00938264 /* Post.m */; };
 		8087E433180ED6F700938264 /* _GLPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E432180ED6F700938264 /* _GLPMessage.m */; };
 		8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E435180ED90F00938264 /* AppearanceHelper.m */; };
+		8087E439180EEAAA00938264 /* _GLPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E438180EEAAA00938264 /* _GLPUser.m */; };
 		8096E4D317C2BA3000C7BF60 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D217C2BA3000C7BF60 /* clock.png */; };
 		8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D417C2BBD800C7BF60 /* navigation_bar.png */; };
 		8096E4D717C2BC9000C7BF60 /* navigation_bar_buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */; };
@@ -373,8 +373,6 @@
 		807C4CFE180AF0F6003D67E6 /* _Conversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Conversation.m; sourceTree = "<group>"; };
 		807C4CFF180AF0F6003D67E6 /* _LocalMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _LocalMessage.h; sourceTree = "<group>"; };
 		807C4D00180AF0F6003D67E6 /* _LocalMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _LocalMessage.m; sourceTree = "<group>"; };
-		807C4D03180AF0F6003D67E6 /* _User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _User.h; sourceTree = "<group>"; };
-		807C4D04180AF0F6003D67E6 /* _User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _User.m; sourceTree = "<group>"; };
 		807C4D05180AF0F6003D67E6 /* _WebEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _WebEntity.h; sourceTree = "<group>"; };
 		807C4D06180AF0F6003D67E6 /* _WebEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _WebEntity.m; sourceTree = "<group>"; };
 		807C4D07180AF0F6003D67E6 /* Conversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Conversation.h; sourceTree = "<group>"; };
@@ -383,8 +381,8 @@
 		807C4D0A180AF0F6003D67E6 /* LocalMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalMessage.m; sourceTree = "<group>"; };
 		807C4D0B180AF0F6003D67E6 /* GLPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessage.h; sourceTree = "<group>"; };
 		807C4D0C180AF0F6003D67E6 /* GLPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessage.m; sourceTree = "<group>"; };
-		807C4D0D180AF0F6003D67E6 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		807C4D0E180AF0F6003D67E6 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		807C4D0D180AF0F6003D67E6 /* GLPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPUser.h; sourceTree = "<group>"; };
+		807C4D0E180AF0F6003D67E6 /* GLPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPUser.m; sourceTree = "<group>"; };
 		807C4D0F180AF0F6003D67E6 /* WebEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebEntity.h; sourceTree = "<group>"; };
 		807C4D10180AF0F6003D67E6 /* WebEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebEntity.m; sourceTree = "<group>"; };
 		807C4D1B180B2D15003D67E6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -400,6 +398,8 @@
 		8087E432180ED6F700938264 /* _GLPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _GLPMessage.m; sourceTree = "<group>"; };
 		8087E434180ED90F00938264 /* AppearanceHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceHelper.h; sourceTree = "<group>"; };
 		8087E435180ED90F00938264 /* AppearanceHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceHelper.m; sourceTree = "<group>"; };
+		8087E437180EEAAA00938264 /* _GLPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _GLPUser.h; sourceTree = "<group>"; };
+		8087E438180EEAAA00938264 /* _GLPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _GLPUser.m; sourceTree = "<group>"; };
 		8096E4D217C2BA3000C7BF60 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		8096E4D417C2BBD800C7BF60 /* navigation_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar.png; sourceTree = "<group>"; };
 		8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_buttons.png; sourceTree = "<group>"; };
@@ -830,32 +830,32 @@
 		807C4CDE180AF08B003D67E6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8087E431180ED6F700938264 /* _GLPMessage.h */,
-				8087E432180ED6F700938264 /* _GLPMessage.m */,
 				8087E425180EC02E00938264 /* _Comment.h */,
 				8087E426180EC02E00938264 /* _Comment.m */,
 				807C4CFD180AF0F6003D67E6 /* _Conversation.h */,
 				807C4CFE180AF0F6003D67E6 /* _Conversation.m */,
+				8087E431180ED6F700938264 /* _GLPMessage.h */,
+				8087E432180ED6F700938264 /* _GLPMessage.m */,
+				8087E437180EEAAA00938264 /* _GLPUser.h */,
+				8087E438180EEAAA00938264 /* _GLPUser.m */,
 				807C4CFF180AF0F6003D67E6 /* _LocalMessage.h */,
 				807C4D00180AF0F6003D67E6 /* _LocalMessage.m */,
 				8087E427180EC02E00938264 /* _Post.h */,
 				8087E428180EC02E00938264 /* _Post.m */,
-				807C4D03180AF0F6003D67E6 /* _User.h */,
-				807C4D04180AF0F6003D67E6 /* _User.m */,
 				807C4D05180AF0F6003D67E6 /* _WebEntity.h */,
 				807C4D06180AF0F6003D67E6 /* _WebEntity.m */,
 				8087E429180EC02E00938264 /* Comment.h */,
 				8087E42A180EC02E00938264 /* Comment.m */,
 				807C4D07180AF0F6003D67E6 /* Conversation.h */,
 				807C4D08180AF0F6003D67E6 /* Conversation.m */,
-				807C4D09180AF0F6003D67E6 /* LocalMessage.h */,
-				807C4D0A180AF0F6003D67E6 /* LocalMessage.m */,
 				807C4D0B180AF0F6003D67E6 /* GLPMessage.h */,
 				807C4D0C180AF0F6003D67E6 /* GLPMessage.m */,
+				807C4D0D180AF0F6003D67E6 /* GLPUser.h */,
+				807C4D0E180AF0F6003D67E6 /* GLPUser.m */,
+				807C4D09180AF0F6003D67E6 /* LocalMessage.h */,
+				807C4D0A180AF0F6003D67E6 /* LocalMessage.m */,
 				8087E42B180EC02E00938264 /* Post.h */,
 				8087E42C180EC02E00938264 /* Post.m */,
-				807C4D0D180AF0F6003D67E6 /* User.h */,
-				807C4D0E180AF0F6003D67E6 /* User.m */,
 				807C4D0F180AF0F6003D67E6 /* WebEntity.h */,
 				807C4D10180AF0F6003D67E6 /* WebEntity.m */,
 			);
@@ -1350,7 +1350,7 @@
 			files = (
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
-				807C4D19180AF0F6003D67E6 /* User.m in Sources */,
+				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
 				80666C781806F7E200E4E515 /* MessageManager.m in Sources */,
@@ -1384,13 +1384,13 @@
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
 				585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */,
 				8073AB341806B9F3000FD0B1 /* Message+MessageCellLogic.m in Sources */,
-				807C4D14180AF0F6003D67E6 /* _User.m in Sources */,
 				8087E42E180EC02E00938264 /* _Post.m in Sources */,
 				807C4D16180AF0F6003D67E6 /* Conversation.m in Sources */,
 				8087E430180EC02E00938264 /* Post.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
+				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
 				805676461805B742006E058E /* MessageCell.m in Sources */,
 				8087E433180ED6F700938264 /* _GLPMessage.m in Sources */,

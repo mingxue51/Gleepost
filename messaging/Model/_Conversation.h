@@ -18,7 +18,7 @@ extern const struct ConversationFetchedProperties {
 
 @class GLPMessage;
 @class GLPMessage;
-@class User;
+@class GLPUser;
 
 
 @interface ConversationID : NSManagedObjectID {}
@@ -67,8 +67,8 @@ extern const struct ConversationFetchedProperties {
 
 - (void)addParticipants:(NSSet*)value_;
 - (void)removeParticipants:(NSSet*)value_;
-- (void)addParticipantsObject:(User*)value_;
-- (void)removeParticipantsObject:(User*)value_;
+- (void)addParticipantsObject:(GLPUser*)value_;
+- (void)removeParticipantsObject:(GLPUser*)value_;
 
 @end
 

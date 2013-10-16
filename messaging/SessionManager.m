@@ -27,10 +27,10 @@ static SessionManager *instance = nil;
 
 - (void)registerUserWithRemoteKey:(NSInteger)remoteKey andToken:(NSString *)token
 {
-    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInteger:remoteKey]];
+    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInteger:remoteKey]];
     
     if(!user) {
-        user = [User MR_createEntity];
+        user = [GLPUser MR_createEntity];
         user.remoteKeyValue = remoteKey;
     }
     

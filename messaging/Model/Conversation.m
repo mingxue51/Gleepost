@@ -1,5 +1,5 @@
 #import "Conversation.h"
-#import "User.h"
+#import "GLPUser.h"
 #import "SessionManager.h"
 
 
@@ -19,7 +19,7 @@
     
     int count = self.participants.count - 1;
     [[self.participants allObjects] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        User *user = obj;
+        GLPUser *user = obj;
         
         // ignore current user
         if([user.remoteKey isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]]) {

@@ -10,18 +10,6 @@
 
 @implementation WebEntity
 
-- (BOOL)isEqual:(id)other {
-    if (other == self) {
-        return YES;
-    }
-    
-    if (!other || ![other isKindOfClass:[self class]]) {
-        return NO;
-    }
-    
-    return [self isEqualToWebEntity:other];
-}
-
 - (BOOL) isEqualToWebEntity:(WebEntity *)webEntity
 {
     if(self == webEntity) {

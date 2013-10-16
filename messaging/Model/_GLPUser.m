@@ -1,40 +1,40 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to User.m instead.
+// Make changes to GLPUser.m instead.
 
-#import "_User.h"
+#import "_GLPUser.h"
 
-const struct UserAttributes UserAttributes = {
+const struct GLPUserAttributes GLPUserAttributes = {
 	.name = @"name",
 };
 
-const struct UserRelationships UserRelationships = {
+const struct GLPUserRelationships GLPUserRelationships = {
 	.posts = @"posts",
 };
 
-const struct UserFetchedProperties UserFetchedProperties = {
+const struct GLPUserFetchedProperties GLPUserFetchedProperties = {
 };
 
-@implementation UserID
+@implementation GLPUserID
 @end
 
-@implementation _User
+@implementation _GLPUser
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"GLPUser" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"User";
+	return @"GLPUser";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"User" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"GLPUser" inManagedObjectContext:moc_];
 }
 
-- (UserID*)objectID {
-	return (UserID*)[super objectID];
+- (GLPUserID*)objectID {
+	return (GLPUserID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {

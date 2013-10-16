@@ -19,7 +19,7 @@ extern const struct CommentRelationships {
 extern const struct CommentFetchedProperties {
 } CommentFetchedProperties;
 
-@class User;
+@class GLPUser;
 @class Post;
 
 
@@ -88,7 +88,7 @@ extern const struct CommentFetchedProperties {
 
 
 
-@property (nonatomic, strong) User *author;
+@property (nonatomic, strong) GLPUser *author;
 
 //- (BOOL)validateAuthor:(id*)value_ error:(NSError**)error_;
 
@@ -143,8 +143,8 @@ extern const struct CommentFetchedProperties {
 
 
 
-- (User*)primitiveAuthor;
-- (void)setPrimitiveAuthor:(User*)value;
+- (GLPUser*)primitiveAuthor;
+- (void)setPrimitiveAuthor:(GLPUser*)value;
 
 
 
