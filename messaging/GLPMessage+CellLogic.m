@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "RemoteMessage+CellLogic.h"
+
 #import <objc/runtime.h>
-#import "RemoteMessage+Additions.h"
+#import "GLPMessage+CellLogic.h"
 #import "SessionManager.h"
 #import "User.h"
 

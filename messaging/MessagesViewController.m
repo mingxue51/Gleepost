@@ -10,7 +10,6 @@
 #import "ViewTopicViewController.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
-#import "RemoteConversation+Additions.h"
 #import "ConversationManager.h"
 #import "MessageTableViewCell.h"
 
@@ -141,9 +140,9 @@
     
     
     cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];
-    cell.content.text = [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.content];
+    cell.content.text = (conversation.mostRecentMessage) ? [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.content] : @"";
     cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
-    cell.time.text = [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.date.description];
+    cell.time.text = (conversation.mostRecentMessage) ? [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.date.description] : @"";
     
    //cell.textLabel.text = [NSString stringWithFormat:@"Conversation with %@", [conversation getParticipantsNames]];
     //cell.detailTextLabel.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];

@@ -128,9 +128,7 @@
 		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
 		80666C401806D45700E4E515 /* ConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C3F1806D45700E4E515 /* ConversationManager.m */; };
 		80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C431806DA7A00E4E515 /* RemoteParser.m */; };
-		80666C481806DFCB00E4E515 /* RemoteConversation+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C471806DFCB00E4E515 /* RemoteConversation+Additions.m */; };
-		80666C541806E11000E4E515 /* RemoteMessage+CellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C531806E11000E4E515 /* RemoteMessage+CellLogic.m */; };
-		80666C571806E16000E4E515 /* RemoteMessage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C561806E16000E4E515 /* RemoteMessage+Additions.m */; };
+		80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C531806E11000E4E515 /* GLPMessage+CellLogic.m */; };
 		80666C781806F7E200E4E515 /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C771806F7E200E4E515 /* MessageManager.m */; };
 		80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */; };
 		80666C7F1806FF4900E4E515 /* MessagesSendingProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */; };
@@ -360,12 +358,8 @@
 		80666C3F1806D45700E4E515 /* ConversationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationManager.m; sourceTree = "<group>"; };
 		80666C421806DA7A00E4E515 /* RemoteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteParser.h; sourceTree = "<group>"; };
 		80666C431806DA7A00E4E515 /* RemoteParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteParser.m; sourceTree = "<group>"; };
-		80666C461806DFCB00E4E515 /* RemoteConversation+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteConversation+Additions.h"; sourceTree = "<group>"; };
-		80666C471806DFCB00E4E515 /* RemoteConversation+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteConversation+Additions.m"; sourceTree = "<group>"; };
-		80666C521806E11000E4E515 /* RemoteMessage+CellLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteMessage+CellLogic.h"; sourceTree = "<group>"; };
-		80666C531806E11000E4E515 /* RemoteMessage+CellLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteMessage+CellLogic.m"; sourceTree = "<group>"; };
-		80666C551806E16000E4E515 /* RemoteMessage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteMessage+Additions.h"; sourceTree = "<group>"; };
-		80666C561806E16000E4E515 /* RemoteMessage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RemoteMessage+Additions.m"; sourceTree = "<group>"; };
+		80666C521806E11000E4E515 /* GLPMessage+CellLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLPMessage+CellLogic.h"; sourceTree = "<group>"; };
+		80666C531806E11000E4E515 /* GLPMessage+CellLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLPMessage+CellLogic.m"; sourceTree = "<group>"; };
 		80666C761806F7E200E4E515 /* MessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageManager.h; sourceTree = "<group>"; };
 		80666C771806F7E200E4E515 /* MessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageManager.m; sourceTree = "<group>"; };
 		80666C791806F8AD00E4E515 /* SendStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SendStatus.h; sourceTree = "<group>"; };
@@ -833,26 +827,6 @@
 			name = Parser;
 			sourceTree = "<group>";
 		};
-		80666C451806DFB800E4E515 /* Additions */ = {
-			isa = PBXGroup;
-			children = (
-				80666C461806DFCB00E4E515 /* RemoteConversation+Additions.h */,
-				80666C471806DFCB00E4E515 /* RemoteConversation+Additions.m */,
-				80666C551806E16000E4E515 /* RemoteMessage+Additions.h */,
-				80666C561806E16000E4E515 /* RemoteMessage+Additions.m */,
-			);
-			name = Additions;
-			sourceTree = "<group>";
-		};
-		8073AB351806C2DA000FD0B1 /* RemoteModel */ = {
-			isa = PBXGroup;
-			children = (
-				80D2D0D8180ACEEC007FB020 /* Gen */,
-				80666C451806DFB800E4E515 /* Additions */,
-			);
-			name = RemoteModel;
-			sourceTree = "<group>";
-		};
 		807C4CDE180AF08B003D67E6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -985,7 +959,6 @@
 				80666C411806DA6D00E4E515 /* Parser */,
 				80666C3C1806D40D00E4E515 /* DAO */,
 				58808EF31806F4C100E415C1 /* Animations */,
-				8073AB351806C2DA000FD0B1 /* RemoteModel */,
 				8056764018059D78006E058E /* Operations */,
 				80E7478517CEA08F001957E5 /* Categories */,
 				8096E4E817C2CBEA00C7BF60 /* Table */,
@@ -1123,13 +1096,6 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
-		80D2D0D8180ACEEC007FB020 /* Gen */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Gen;
-			sourceTree = "<group>";
-		};
 		80DDAA6017CE5CBD0034C0EF /* Fake API */ = {
 			isa = PBXGroup;
 			children = (
@@ -1155,8 +1121,8 @@
 				80E7478717CEA0A5001957E5 /* NSString+Utils.m */,
 				8073AB321806B9F3000FD0B1 /* Message+MessageCellLogic.h */,
 				8073AB331806B9F3000FD0B1 /* Message+MessageCellLogic.m */,
-				80666C521806E11000E4E515 /* RemoteMessage+CellLogic.h */,
-				80666C531806E11000E4E515 /* RemoteMessage+CellLogic.m */,
+				80666C521806E11000E4E515 /* GLPMessage+CellLogic.h */,
+				80666C531806E11000E4E515 /* GLPMessage+CellLogic.m */,
 				80D2D0C9180ACD30007FB020 /* NSNumber+Enums.h */,
 				80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */,
 			);
@@ -1385,7 +1351,6 @@
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
 				807C4D19180AF0F6003D67E6 /* User.m in Sources */,
-				80666C481806DFCB00E4E515 /* RemoteConversation+Additions.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
 				80666C781806F7E200E4E515 /* MessageManager.m in Sources */,
@@ -1403,7 +1368,6 @@
 				582143D517FC5B6D0032ECEB /* TPKeyboardAvoidingScrollView.m in Sources */,
 				80666C7F1806FF4900E4E515 /* MessagesSendingProcessor.m in Sources */,
 				80AB894D17C26ECA0053E784 /* SessionManager.m in Sources */,
-				80666C571806E16000E4E515 /* RemoteMessage+Additions.m in Sources */,
 				58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
 				807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */,
@@ -1455,7 +1419,7 @@
 				589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */,
 				587EA4A417F9C4A0005B3286 /* ContactUserCell.m in Sources */,
 				80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */,
-				80666C541806E11000E4E515 /* RemoteMessage+CellLogic.m in Sources */,
+				80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */,
 				58B1161D180D8491000E9555 /* ProfileView.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,

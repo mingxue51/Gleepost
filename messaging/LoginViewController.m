@@ -37,8 +37,13 @@
     [self setBackground];
     
     if(DEV) {
-        self.nameTextField.text = @"TestingUser";
-        self.passwordTextField.text = @"TestingPass";
+        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+            self.nameTextField.text = @"Fingolfin";
+            self.passwordTextField.text = @"ihatemorgoth";
+        } else {
+            self.nameTextField.text = @"TestingUser";
+            self.passwordTextField.text = @"TestingPass";
+        }
     }
     
     

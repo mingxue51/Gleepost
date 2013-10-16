@@ -90,7 +90,7 @@ static const float MessageContentLabelPadding = 40;
     }
     
     self.messageContentView.frame = CGRectMake(viewX, self.messageContentView.frame.origin.y, contentWidth + MessageContentLabelPadding, contentHeight + MessageContentViewPadding);
-    self.messageContentLabel.frame = CGRectMake(labelX, self.messageContentLabel.frame.origin.y, contentWidth, contentHeight);
+    self.messageContentLabel.frame = CGRectMake(self.messageContentLabel.frame.origin.x, self.messageContentLabel.frame.origin.y, contentWidth, contentHeight);
     
     self.messageContentLabel.text = message.content;
     
@@ -113,15 +113,6 @@ static const float MessageContentLabelPadding = 40;
     self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 }
-
-//+ (CGFloat)getContentLabelHeightForContent:(NSString *)content
-//{
-//    CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
-//    
-//    CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
-//    
-//    return contentHeight;
-//}
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {

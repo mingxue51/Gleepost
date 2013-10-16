@@ -11,6 +11,7 @@
 @implementation SessionManager
 
 @synthesize token, key;
+@synthesize user = _user;
 
 static SessionManager *instance = nil;
 
@@ -22,6 +23,19 @@ static SessionManager *instance = nil;
     });
     
     return instance;
+}
+
+- (void)registerUserWithRemoteKey:(NSInteger)remoteKey andToken:(NSString *)token
+{
+    User *user = [User MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInteger:remoteKey]];
+    
+    if(!user) {
+        user = [User MR_createEntity];
+        user.remoteKeyValue = remoteKey;
+    }
+    
+    self.user = user;
+    self.token = token;
 }
 
 @end

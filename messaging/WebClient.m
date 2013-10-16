@@ -91,7 +91,8 @@ static WebClient *instance = nil;
         NSDictionary *json = (NSDictionary *) responseObject;
        
         self.sessionManager.key = [json[@"id"] integerValue];
-        self.sessionManager.token = json[@"value"];
+        
+        [self.sessionManager registerUserWithRemoteKey:[json[@"id"] integerValue] andToken:json[@"value"]];
         
         self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.sessionManager.key], @"token": self.sessionManager.token};
         

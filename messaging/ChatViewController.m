@@ -12,7 +12,6 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "ChatViewAnimations.h"
-#import "RemoteConversation+Additions.h"
 
 @interface ChatViewController ()
 
