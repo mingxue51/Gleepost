@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Post.h"
+#import "User.h"
 
 @interface PostCell : UITableViewCell
 
@@ -18,7 +19,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *userName;
 @property (retain, nonatomic) IBOutlet UILabel *postTime;
 @property (strong, nonatomic) IBOutlet UIImageView *postImage;
-@property (retain, nonatomic) IBOutlet UIImageView *socialPanel;
+@property (retain, nonatomic) IBOutlet UIView *socialPanel;
 @property (strong, nonatomic) IBOutlet UILabel *informationLabel;
 @property (retain, nonatomic) IBOutlet UIButton *thumpsUpBtn;
 @property (retain, nonatomic) IBOutlet UIButton *commentBtn;

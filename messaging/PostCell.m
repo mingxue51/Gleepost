@@ -8,6 +8,7 @@
 
 #import "PostCell.h"
 
+
 @implementation PostCell
 
 static const float FirstCellOtherElementsTotalHeight = 22;
@@ -26,11 +27,23 @@ static const float StandardImageCellHeight = 400;
         
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
         [self.contentView addSubview:lineView];
-
+        
+        
+        NSLog(@"initWithCoder : like button");
+        
+        
+        [self.contentView bringSubviewToFront:self.socialPanel];
+        [self.contentView sendSubviewToBack:self.postImage];
+        
+        //Send to back the social panel.
+        [self.socialPanel bringSubviewToFront:self.thumpsUpBtn];
+        
     }
     
     return self;
 }
+
+
 
 
 -(void) updateWithPostData:(Post *)postData
@@ -41,12 +54,11 @@ static const float StandardImageCellHeight = 400;
     //NSLog(@"Height of Text View: %f",self.content.frame.size.height);
     
     //Add the user's image.
-//    [self.userImage setImage:[UIImage imageNamed:@"avatar_big"]];
     
     [self.userImage setBackgroundImage:[UIImage imageNamed:@"avatar_big"] forState: UIControlStateNormal];
     
     //Add the user's name.
-//    [self.userName setText:postData.user.name];
+    [self.userName setText:postData.author.name];
     
     //Add the post's time.
     [self.postTime setText:postData.date.description];

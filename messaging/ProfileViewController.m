@@ -39,6 +39,10 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
+    
+    
+    
+    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
@@ -70,6 +74,12 @@ static BOOL likePushed;
     [self.profileView setBackgroundColor:[UIColor blackColor]];
     
     [self.postsTableView setBackgroundColor:[UIColor whiteColor]];
+    
+    [self.postsTableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    
+    [self.postsTableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
+    
+    
     
     //Initialise profile view.
     
@@ -165,53 +175,77 @@ static BOOL likePushed;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *ImageCellIdentifier = @"ImageCell";
+    static NSString *TextCellIdentifier = @"TextCell";
     
+    PostCell *cell;
     
-    //Add the user's image to the corresponding cell.
-    UIImage *img = [UIImage imageNamed:@"avatar_big"];
-    
-    
-    [cell.userImage setBackgroundImage:img forState:UIControlStateNormal];
-     
-    cell.userImage.contentMode = UIViewContentModeScaleAspectFit;
-    [cell.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width-15, img.size.height-15)];
     Post *post = self.posts[indexPath.row];
     
-    //Add the user's name.
-    [cell.userName setText:@"Test User"];
+    if(indexPath.row%3==0)
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:ImageCellIdentifier forIndexPath:indexPath];
+    }
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:TextCellIdentifier forIndexPath:indexPath];
+    }
     
-    //Add the post's time.
-    [cell.postTime setText:@"20 min ago"];
     
-    //Add the post's text content.
-//    [cell.content setText:@"Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Contesont Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content "];
-    
-    //Add the main image to the post.
-    UIImage *postImage = [UIImage imageNamed:@"post_image"];
- //   cell.mainImage.image = postImage;
-    
-    //TODO: See again the postImage width. Problem.
-  //  [cell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-20, postImage.size.height)];
-    
-    //Add the social panel over the main image.
-    [cell.socialPanel setFrame:CGRectMake(10.0f, postImage.size.width+30, postImage.size.width-20, 50.0f)];
+    [cell updateWithPostData:post];
+
+//    NSLog(@"Username: %@",post.author.name);
+//    
+//    
+//    //Add the user's name.
+//    [cell.userName setText: post.author.name];
+//    
+//    
+//    //Add the post's time.
+//    [cell.postTime setText:post.date.description];
+//    
+//    
+//    
+//    //Add the user's image to the corresponding cell.
+//    UIImage *img = [UIImage imageNamed:@"avatar_big"];
+//    
+//    
+//    [cell.userImage setBackgroundImage:img forState:UIControlStateNormal];
+//    
+//    
+////
+////    cell.userImage.contentMode = UIViewContentModeScaleAspectFit;
+////    [cell.userImage setFrame:CGRectMake(10.0f, 0.0f+10.0f, img.size.width-15, img.size.height-15)];
+////
+////    
+//
+//    
+//    //Add the post's text content.
+//    [cell.contentLbl setText:post.content];
+//
+//    //Add the main image to the post.
+//    UIImage *postImage = [UIImage imageNamed:@"post_image"];
+//    
+//    cell.postImage.image = postImage;
+//
+//    //TODO: See again the postImage width. Problem.
+//  //  [cell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-20, postImage.size.height)];
+
     
     //Add selector to the buttons.
-    [self buttonWithName:@"Like" andSubviews:[cell.socialPanel subviews] withCell:cell];
-    [self buttonWithName:@"Comment" andSubviews:[cell.socialPanel subviews] withCell:cell];
-    [self buttonWithName:@"Share" andSubviews:[cell.socialPanel subviews] withCell:cell];
-    
-    cell.userInteractionEnabled = YES;
-    
-    [self getInformationAndSetFormatButtons];
-    
-    //    cell.contentLabel.text = post.content;
-    //    cell.dateLabel.text = [self.dateFormatter stringFromDate:post.date];
-    //    cell.userLabel.text = post.user.name;
-    
-    cell.backgroundColor = [UIColor whiteColor];
+    [self buttonWithName:@"Like" andSubviews:[cell.contentView subviews] withCell:cell];
+    [self buttonWithName:@"Comment" andSubviews:[cell.contentView subviews] withCell:cell];
+    [self buttonWithName:@"Share" andSubviews:[cell.contentView subviews] withCell:cell];
+//
+//    cell.userInteractionEnabled = YES;
+//    
+//    [self getInformationAndSetFormatButtons];
+//    
+//    //    cell.contentLabel.text = post.content;
+//    //    cell.dateLabel.text = [self.dateFormatter stringFromDate:post.date];
+//    //    cell.userLabel.text = post.user.name;
+//    
+//    cell.backgroundColor = [UIColor whiteColor];
     
 //    NSLog(@"POST CONTENTS: %@ - %@ - %@",post.content,[self.dateFormatter stringFromDate:post.date], post.user.name);
     
@@ -284,7 +318,28 @@ static BOOL likePushed;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 450;
+    
+    Post *currentPost = [self.posts objectAtIndex:indexPath.row];
+    
+    
+    if(indexPath.row%3==0)
+    {
+        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:YES], currentPost.content);
+        //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
+        //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
+        
+        return 415;
+        
+    }
+    else
+    {
+        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:NO], currentPost.content);
+        //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
+        
+        //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
+        
+        return 156;
+    }
 }
 
 
