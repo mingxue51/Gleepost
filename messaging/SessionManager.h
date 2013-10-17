@@ -11,9 +11,8 @@
 
 @interface SessionManager : NSObject
 
-@property (strong, nonatomic) NSString *token;
-@property (assign, nonatomic) NSInteger key;
-@property (strong, nonatomic) GLPUser *user;
+@property (readonly, strong, nonatomic) NSString *token;
+@property (readonly, strong, nonatomic) GLPUser *user;
 
 @property (readonly, strong, nonatomic) NSDictionary *authParameters;
 

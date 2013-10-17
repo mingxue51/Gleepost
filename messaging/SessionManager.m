@@ -13,6 +13,8 @@
 
 @interface SessionManager()
 
+@property (strong, nonatomic) NSString *token;
+@property (strong, nonatomic) GLPUser *user;
 @property (strong, nonatomic) NSString *dataPlistPath;
 @property (strong, nonatomic) NSMutableDictionary *data;
 
@@ -23,7 +25,7 @@
 
 @implementation SessionManager
 
-@synthesize token = _token, key;
+@synthesize token = _token;
 @synthesize user = _user;
 @synthesize authParameters = _authParameters;
 
@@ -118,8 +120,10 @@ static SessionManager *instance = nil;
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
         if([self isSessionValid]) {
+            [DatabaseManager createDatabase];
             self.user = [UserManager getUserForRemoteKey:[self.data[@"user.remoteKey"] integerValue]];
             self.token = self.data[@"user.token"];
+            self.authParameters = @{@"id": [NSString stringWithFormat:@"%@", self.user.remoteKey], @"token": self.token};
         } else { // clean expired session
             [self cleanSession];
         }

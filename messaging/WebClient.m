@@ -17,7 +17,6 @@
 
 @interface WebClient()
 
-@property (strong, nonatomic) NSDictionary *authParameters;
 @property (strong, nonatomic) SessionManager *sessionManager;
 
 @end
@@ -89,21 +88,12 @@ static WebClient *instance = nil;
     
     [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = (NSDictionary *) responseObject;
-        NSLog(@"login %@", responseObject);
-       
-        self.sessionManager.key = [json[@"id"] integerValue];
         
         NSInteger remoteKey = [json[@"id"] integerValue];
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
-        if(!expirationDate) {
-            expirationDate = [NSDate date];
-        }
-        
         [self.sessionManager registerUserWithRemoteKey:remoteKey token:token andExpirationDate:expirationDate];
-        
-        self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.sessionManager.key], @"token": self.sessionManager.token};
         
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -123,7 +113,7 @@ static WebClient *instance = nil;
 - (void)getPostsWithCallbackBlock:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
@@ -136,7 +126,7 @@ static WebClient *instance = nil;
 - (void)createPost:(Post *)post callbackBlock:(void (^)(BOOL success))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
         
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         callbackBlock(YES);
@@ -150,7 +140,7 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"posts/%@/comments", post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *comments = [RemoteParser parseCommentsFromJson:responseObject forPost:post];
@@ -166,7 +156,7 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"posts/%@/comments", comment.post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"text", comment.content, nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         callbackBlock(YES);
@@ -190,7 +180,7 @@ static WebClient *instance = nil;
 
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
-    [self getPath:@"conversations" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // delete previous conversations
         [Conversation MR_truncateAll];
@@ -209,7 +199,7 @@ static WebClient *instance = nil;
 - (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     if(lastMessage) {
         [params setObject:lastMessage.remoteKey forKey:@"after"];
@@ -257,7 +247,7 @@ static WebClient *instance = nil;
 
 - (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
 {
-    [self postPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         Conversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
         
@@ -272,7 +262,7 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = responseObject;
@@ -288,7 +278,7 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
-    [params addEntriesFromDictionary:self.authParameters];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
 
     NSURLResponse *response = nil;
     NSError *error = nil;
@@ -306,7 +296,7 @@ static WebClient *instance = nil;
 
 - (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
 {
-    [self getPath:@"longpoll" parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:conversation];
         
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {

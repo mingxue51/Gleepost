@@ -12,6 +12,7 @@
 #import "GLPMessage.h"
 #import "GLPUser.h"
 
+#import "UserManager.h"
 #import "SessionManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
@@ -80,13 +81,8 @@
     message.date = [NSDate dateInUTC];
     
     NSLog(@"message %@ date %@", message.content, message.date);
-    
-    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInt:[SessionManager sharedInstance].key]];
-    if(!user) {
-        [NSException raise:@"Cannot find current user" format:@"User with session key %d is null in local database", [SessionManager sharedInstance].key];
-    }
-    
-    message.author = user;
+
+    message.author = [SessionManager sharedInstance].user;
     message.sendStatus = [NSNumber numberWithSendStatus:kSendStatusLocal];
     
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {

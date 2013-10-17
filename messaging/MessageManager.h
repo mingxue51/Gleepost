@@ -1,16 +1,16 @@
+////
+////  MessageManager.h
+////  Gleepost
+////
+////  Created by Lukas on 10/10/13.
+////  Copyright (c) 2013 Gleepost. All rights reserved.
+////
 //
-//  MessageManager.h
-//  Gleepost
+//#import <Foundation/Foundation.h>
+//#import "GLPMessage.h"
 //
-//  Created by Lukas on 10/10/13.
-//  Copyright (c) 2013 Gleepost. All rights reserved.
+//@interface MessageManager : NSObject
 //
-
-#import <Foundation/Foundation.h>
-#import "GLPMessage.h"
-
-@interface MessageManager : NSObject
-
-+ (void)saveMessage:(GLPMessage *)message;
-
-@end
+//+ (void)saveMessage:(GLPMessage *)message;
+//
+//@end
