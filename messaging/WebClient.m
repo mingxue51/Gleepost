@@ -97,6 +97,10 @@ static WebClient *instance = nil;
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
+        if(!expirationDate) {
+            expirationDate = [NSDate date];
+        }
+        
         [self.sessionManager registerUserWithRemoteKey:remoteKey token:token andExpirationDate:expirationDate];
         
         self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.sessionManager.key], @"token": self.sessionManager.token};
