@@ -32,4 +32,7 @@
 + (Comment *)parseCommentFromJson:(NSDictionary *)json forPost:(Post *)post;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(Post *)post;
 
+// commons
++ (NSDate *)parseDateFromString:(NSString *)string;
+
 @end

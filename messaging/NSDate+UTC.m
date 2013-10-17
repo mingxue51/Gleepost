@@ -13,9 +13,18 @@
 + (NSDate *)dateInUTC
 {
     NSDate *localDate = [NSDate date];
-    NSTimeZone *tz = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    NSInteger seconds = [tz secondsFromGMTForDate: localDate];
-    return [NSDate dateWithTimeInterval: seconds sinceDate: localDate];
+    NSTimeZone *timezone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = timezone;
+    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    
+    NSString *utcDateString = [formatter stringFromDate:localDate];
+    NSDate *utcDate = [formatter dateFromString:utcDateString];
+    
+    NSLog(@"utc date string %@", utcDateString);
+    NSLog(@"utc date %@", utcDate);
+
+    return utcDate;
 }
 
 @end

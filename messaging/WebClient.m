@@ -89,10 +89,15 @@ static WebClient *instance = nil;
     
     [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = (NSDictionary *) responseObject;
+        NSLog(@"login %@", responseObject);
        
         self.sessionManager.key = [json[@"id"] integerValue];
         
-        [self.sessionManager registerUserWithRemoteKey:[json[@"id"] integerValue] andToken:json[@"value"]];
+        NSInteger remoteKey = [json[@"id"] integerValue];
+        NSString *token = json[@"value"];
+        NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
+        
+        [self.sessionManager registerUserWithRemoteKey:remoteKey token:token andExpirationDate:expirationDate];
         
         self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.sessionManager.key], @"token": self.sessionManager.token};
         

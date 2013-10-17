@@ -15,8 +15,11 @@
 @property (assign, nonatomic) NSInteger key;
 @property (strong, nonatomic) GLPUser *user;
 
+@property (readonly, strong, nonatomic) NSDictionary *authParameters;
+
 + (SessionManager *)sharedInstance;
 
-- (void)registerUserWithRemoteKey:(NSInteger)remoteKey andToken:(NSString *)token;
+- (void)registerUserWithRemoteKey:(NSInteger)remoteKey token:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
+- (BOOL)isSessionValid;
 
 @end

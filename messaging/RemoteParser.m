@@ -7,7 +7,7 @@
 //
 
 #import "RemoteParser.h"
-#import "DateFormatterManager.h"
+#import "DateFormatterHelper.h"
 #import "SendStatus.h"
 
 @interface RemoteParser()
@@ -18,17 +18,8 @@
 
 @implementation RemoteParser
 
-- (id)init
-{
-    self = [super init];
-    if(!self) {
-        return nil;
-    }
-    
-    self.context = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    return self;
-}
+static NSDateFormatter *dateFormatter = nil;
+
 
 #pragma mark - Users
 
@@ -98,12 +89,7 @@
     message.remoteKey = json[@"id"];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
     message.conversation = conversation;
-    
-    NSDate *date;
-    NSError *error;
-    [[DateFormatterManager sharedInstance].fullDateFormatter getObjectValue:&date forString:json[@"timestamp"] range:nil error:&error];
-    message.date = date;
-    
+    message.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     message.content = json[@"text"];
     message.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
     message.seenValue = [json[@"seen"] boolValue];
@@ -132,7 +118,7 @@
     Post *post = [Post MR_createEntity];
     post.remoteKey = json[@"id"];
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
-    post.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
+    post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
     post.commentsCount = json[@"comments"];
     post.likes = json[@"likes"];
@@ -157,7 +143,7 @@
     Comment *comment = [Comment MR_createEntity];
     comment.remoteKey = json[@"id"];
     comment.author = [RemoteParser parseUserFromJson:json[@"by"]];
-    comment.date = [[DateFormatterManager sharedInstance].fullDateFormatter dateFromString:json[@"timestamp"]];
+    comment.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     comment.content = json[@"text"];
     comment.post = post;
     
@@ -172,6 +158,29 @@
     }
     
     return comments;
+}
+
+
+#pragma mark - Commons
+
++ (NSDateFormatter *)getDateFormatter
+{
+    if(!dateFormatter) {
+        dateFormatter = [DateFormatterHelper createRemoteDateFormatter];
+    }
+    
+    return dateFormatter;
+}
+
++ (NSDate *)parseDateFromString:(NSString *)string
+{
+    NSDate *date;
+    NSError *error;
+    [[self getDateFormatter] getObjectValue:&date forString:string range:nil error:&error];
+    
+    NSLog(@"Remote date parsed %@ for string %@", date, string);
+    
+    return date;
 }
 
 @end

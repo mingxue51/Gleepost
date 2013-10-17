@@ -11,6 +11,7 @@
 @implementation DateFormatterManager
 
 @synthesize fullDateFormatter;
+@synthesize timeFormatter;
 
 static DateFormatterManager *instance = nil;
 
@@ -38,6 +39,13 @@ static DateFormatterManager *instance = nil;
     [self.timeFormatter setDateFormat:@"HH:mm"];
     
     return self;
+}
+
++ (NSDateFormatter *)createDefaultDateFormatter
+{
+    NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    return f;
 }
 
 @end

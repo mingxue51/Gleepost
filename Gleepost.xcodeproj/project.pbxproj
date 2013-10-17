@@ -227,6 +227,11 @@
 		80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */; };
 		80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6117CE5CD80034C0EF /* post_login.json */; };
 		80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6317CE77D70034C0EF /* get_posts.json */; };
+		80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF32180FD159009E17BD /* DatabaseManager.m */; };
+		80DDDF36180FD799009E17BD /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF35180FD799009E17BD /* LoginManager.m */; };
+		80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */; };
+		80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF3B180FE00A009E17BD /* UserManager.m */; };
+		80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */; };
 		80E7478217CE958B001957E5 /* post_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478117CE958B001957E5 /* post_posts.json */; };
 		80E7478417CE9F4C001957E5 /* get_comments.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478317CE9F4C001957E5 /* get_comments.json */; };
 		80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7478717CEA0A5001957E5 /* NSString+Utils.m */; };
@@ -526,6 +531,16 @@
 		80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Enums.m"; sourceTree = "<group>"; };
 		80DDAA6117CE5CD80034C0EF /* post_login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_login.json; sourceTree = "<group>"; };
 		80DDAA6317CE77D70034C0EF /* get_posts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_posts.json; sourceTree = "<group>"; };
+		80DDDF31180FD159009E17BD /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
+		80DDDF32180FD159009E17BD /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
+		80DDDF34180FD799009E17BD /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
+		80DDDF35180FD799009E17BD /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
+		80DDDF37180FDCC8009E17BD /* DateFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateFormatterHelper.h; sourceTree = "<group>"; };
+		80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateFormatterHelper.m; sourceTree = "<group>"; };
+		80DDDF3A180FE00A009E17BD /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		80DDDF3B180FE00A009E17BD /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		80DDDF40180FEAC4009E17BD /* GLPNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNavigationController.h; sourceTree = "<group>"; };
+		80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNavigationController.m; sourceTree = "<group>"; };
 		80E7478117CE958B001957E5 /* post_posts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_posts.json; sourceTree = "<group>"; };
 		80E7478317CE9F4C001957E5 /* get_comments.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_comments.json; sourceTree = "<group>"; };
 		80E7478617CEA0A5001957E5 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
@@ -1087,6 +1102,10 @@
 				80AB894417C26E7E0053E784 /* TimelineViewController.m */,
 				80AB897B17C292170053E784 /* NewMessageViewController.h */,
 				80AB897C17C292180053E784 /* NewMessageViewController.m */,
+				80C4CAB617CFE24700AFA80C /* RegisterViewController.h */,
+				80C4CAB717CFE24700AFA80C /* RegisterViewController.m */,
+				80DDDF40180FEAC4009E17BD /* GLPNavigationController.h */,
+				80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1110,6 +1129,12 @@
 				80CE307C17CE5092003007D0 /* DateFormatterManager.m */,
 				80666C7D1806FF4900E4E515 /* MessagesSendingProcessor.h */,
 				80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */,
+				80DDDF31180FD159009E17BD /* DatabaseManager.h */,
+				80DDDF32180FD159009E17BD /* DatabaseManager.m */,
+				80DDDF34180FD799009E17BD /* LoginManager.h */,
+				80DDDF35180FD799009E17BD /* LoginManager.m */,
+				80DDDF3A180FE00A009E17BD /* UserManager.h */,
+				80DDDF3B180FE00A009E17BD /* UserManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -1153,6 +1178,8 @@
 				80B1735E1805792B00D9669B /* WebClientHelper.m */,
 				8087E434180ED90F00938264 /* AppearanceHelper.h */,
 				8087E435180ED90F00938264 /* AppearanceHelper.m */,
+				80DDDF37180FDCC8009E17BD /* DateFormatterHelper.h */,
+				80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1502,6 +1529,7 @@
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
 				80666C401806D45700E4E515 /* ConversationManager.m in Sources */,
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
+				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
 				807C4D17180AF0F6003D67E6 /* LocalMessage.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
 				585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */,
@@ -1529,11 +1557,14 @@
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
+				80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */,
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
+				80DDDF36180FD799009E17BD /* LoginManager.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
+				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
@@ -1545,6 +1576,7 @@
 				80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */,
 				58B1161D180D8491000E9555 /* ProfileView.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
+				80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */,
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
@@ -1654,6 +1686,7 @@
 				PRODUCT_NAME = Gleepost;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E570BD6C-8B18-4AE4-9E91-5AF573659485";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1673,6 +1706,7 @@
 				PRODUCT_NAME = Gleepost;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E570BD6C-8B18-4AE4-9E91-5AF573659485";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
