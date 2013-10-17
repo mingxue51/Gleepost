@@ -14,6 +14,7 @@
 #import "WebClientHelper.h"
 #import "UIPlaceHolderTextView.h"
 #import "Post.h"
+#import "AppearanceHelper.h"
 
 @interface NewPostViewController ()
 
@@ -34,7 +35,11 @@
     [super viewDidLoad];
     
     self.tabBarController.tabBar.hidden = NO;
-    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
+    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    
+    //Not working.
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    
     [self.simpleNavBar setTranslucent:YES];
     [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 60.f)];
    
@@ -81,4 +86,37 @@
         }
     }];
 }
+- (IBAction)addImage:(id)sender
+{
+    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+	picker.delegate = self;
+    
+//	if((UIButton *) sender == choosePhotoBtn) {
+		picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+//	} else {
+//		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//	}
+    
+    
+	//[self presentModalViewController:picker animated:YES];
+    
+    [self presentViewController:picker animated:YES completion:^{
+        
+    }];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
+       
+    }];
+    
+	self.uploadedImage.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+}
+
+
+
+
+
 @end

@@ -12,6 +12,8 @@
 @interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) Post *post;
+//TODO: Remove after the integration of image posts.
+@property int selectedIndex;
 
 -(float) calculateCommentSize: (NSString*) content;
 

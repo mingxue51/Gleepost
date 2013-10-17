@@ -30,6 +30,9 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
 
+//TODO: Remove after the integration of image posts.
+@property int selectedIndex;
+
 @end
 static BOOL likePushed;
 
@@ -533,7 +536,7 @@ static BOOL likePushed;
 
 -(void)navigateToProfile:(id)sender
 {
-    [self performSegueWithIdentifier:@"view profile" sender:self];
+    [self performSegueWithIdentifier:@"view private profile" sender:self];
 }
 
 -(void) likeButtonPushedWithImage:(id)sender
@@ -701,6 +704,7 @@ static BOOL likePushed;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedPost = self.posts[indexPath.row];
+    self.selectedIndex = indexPath.row;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
@@ -744,6 +748,15 @@ static BOOL likePushed;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    
+    
+    //        if([view isKindOfClass:[UIButton class]])
+
+    if([sender isKindOfClass:[PostCell class]])
+    {
+        NSLog(@"THIS CLASS!");
+    }
+    
     if([segue.identifier isEqualToString:@"view post"])
     {
         
@@ -754,6 +767,8 @@ static BOOL likePushed;
          */
         
         vc.post = self.selectedPost;
+        vc.selectedIndex = self.selectedIndex;
+    
         
         self.selectedPost = nil;
         

@@ -12,6 +12,7 @@
 #import "WebClient.h"
 #import "AppDelegate.h"
 #import "WebClientHelper.h"
+#import "AppearanceHelper.h"
 
 @interface LoginViewController ()
 
@@ -32,7 +33,15 @@
     
     //Change the colour format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
+    
+    
+    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+
+    
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
+    
+    
     
     [self setBackground];
     
@@ -45,6 +54,12 @@
             self.passwordTextField.text = @"TestingPass";
         }
     }
+    
+    
+    //Change the height of text filed.
+//    CGRect frameRect = _nameTextField.frame;
+//    frameRect.size.height = 200;
+//    _nameTextField.frame = frameRect;
     
     
     

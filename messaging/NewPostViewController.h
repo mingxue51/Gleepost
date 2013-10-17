@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
 
-@interface NewPostViewController : UIViewController
+@interface NewPostViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) TimelineViewController *delegate;
 @property (strong, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
+@property (strong, nonatomic) IBOutlet UIImageView *uploadedImage;
+
+- (IBAction)addImage:(id)sender;
 
 @end

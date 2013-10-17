@@ -15,6 +15,7 @@
 #import "CommentCell.h"
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
+#import "PostCell.h"
 
 @interface ViewPostViewController ()
 
@@ -26,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet ViewPostTableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 @property (weak, nonatomic) IBOutlet UITextField *commentTextField;
+
+
 
 - (IBAction)addCommentButtonClick:(id)sender;
 
@@ -50,7 +53,12 @@ static BOOL likePushed;
     
     self.navigationItem.title = @"View Post";
 
+    //Register cells.
     
+    //Register nib files in table view.
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
     
@@ -449,37 +457,74 @@ static bool firstTime = YES;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-    
-    return self.comments.count;
+    //Add 1 in order to create another cell for post.
+    return self.comments.count+1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"cellForRowAtIndexPath");
     
-    static NSString *CellIdentifier = @"CommentCell";
-    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifierWithImage = @"ImageCell";
+    static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierComment = @"CommentCell";
     
-    [cell createElements];
+    PostCell *postViewCell;
     
-    Comment *comment = self.comments[indexPath.row];
+    CommentCell *cell;
     
-    //Set comment's content.
-    cell.contentTextView.text = comment.content;
+    if(indexPath.row == 0)
+    {
+        if(self.selectedIndex%3==0)
+        {
+            //If image.
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+            
+        }
+        else
+        {
+            //If text.
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+        }
+        
+        [postViewCell updateWithPostData:self.post];
+        
     
-    //Set user's image.
-    UIImage *img = [UIImage imageNamed:@"avatar_big"];
-    cell.userImageView.image = img;
-    cell.userImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [cell.userImageView setFrame:CGRectMake(5.0f, 10.0f, img.size.width-25, img.size.height-25)];
+        
+        return postViewCell;
+
+    }
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
+        
+        [cell createElements];
+        
+        Comment *comment = self.comments[indexPath.row];
+        
+        NSLog(@"COMMENT! :%@",comment.content);
+        
+        //Set comment's content.
+        cell.contentTextView.text = comment.content;
+        
+        //Set user's image.
+        UIImage *img = [UIImage imageNamed:@"avatar_big"];
+        cell.userImageView.image = img;
+        cell.userImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [cell.userImageView setFrame:CGRectMake(5.0f, 10.0f, img.size.width-25, img.size.height-25)];
+        
+        
+        //Set user's name.
+        [cell.userNameLabel setText:@"User Name"];
+        
+        //Set post's time.
+        [cell.postDateLabel setText:@"2 minutes ago"];
+        
+        return cell;
+    }
     
     
-    //Set user's name.
-    [cell.userNameLabel setText:@"User Name"];
     
-    //Set post's time.
-    [cell.postDateLabel setText:@"2 minutes ago"];
     
     
 
@@ -488,7 +533,7 @@ static bool firstTime = YES;
 //    cell.textLabel.text = comment.content;
 //    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", comment.user.name, [self.dateFormatter stringFromDate:comment.date]];
     
-    return cell;
+    
 }
 
 /*
@@ -545,9 +590,9 @@ static bool firstTime = YES;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
+    //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
     
-    return height;
+    return 400;
 }
 
 #pragma mark - Keyboard methods

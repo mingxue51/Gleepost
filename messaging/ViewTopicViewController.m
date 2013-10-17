@@ -330,7 +330,9 @@ const int flexibleResizeLimit = 120;
 
 -(void)navigateToProfile:(id)sender
 {
-    [self performSegueWithIdentifier:@"view profile" sender:self];
+//    [self performSegueWithIdentifier:@"view profile" sender:self];
+    [self performSegueWithIdentifier:@"view private profile" sender:self];
+
 }
 
 
