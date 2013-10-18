@@ -36,10 +36,10 @@
     
     
 
-    self.typeTextView = [[TypeTextView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    //self.typeTextView = [[TypeTextView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
     
     
-    self.tableFooterView = self.typeTextView;
+    //self.tableFooterView = self.typeTextView;
     
     
     //Set table view's colour.

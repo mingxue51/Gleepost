@@ -12,11 +12,15 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "ChatViewAnimations.h"
+#import "NSMutableArray+QueueAdditions.h"
+
 
 @interface ChatViewController ()
 
 @property (strong, nonatomic) Conversation *conversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
+@property (strong, nonatomic) NSMutableArray *liveConversations;
+
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)startGroupButtonClicked:(id)sender;
 
@@ -28,26 +32,75 @@
 {
     [super viewDidLoad];
     
+    self.liveConversations = [[NSMutableArray alloc] init];
+    
     NSLog(@"ChatViewController");
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-//    [self.view setBackgroundColor:[UIColor clearColor]];
+    [self.view setBackgroundColor:[UIColor clearColor]];
     
-    [self initialiseAnimationViewToTheViewController];
     [self addGleepostImageToNavigationBar];
     [self addSettingsImageToNavigationBar];
+    
+    [self initialiseAnimationViewToTheViewController];
+
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    NSLog(@"viewDidAppear");
+    
     [super viewDidAppear:animated];
+
+
     
     
+    NSLog(@"viewDidAppear");
+    NSLog(@"Current conversation: %@",[self.conversation getParticipantsNames]);
+    
+    if([self.conversation getParticipantsNames] != nil)
+    {
+        
+        for(Conversation *c in self.liveConversations)
+        {
+            NSLog(@"Current Conversation: %@", [c getParticipantsNames]);
+            
+            if([[self.conversation getParticipantsNames] isEqualToString:[c getParticipantsNames]])
+            {
+                
+            }
+            else
+            {
+
+            }
+        
+        }
+        
+    }
+    
+    if([self.conversation getParticipantsNames] != nil)
+    {
+        //If there are already 3 conversations, then delete the oldest.
+        if(self.liveConversations.count == 3)
+        {
+            [self.liveConversations dequeue];
+        }
+        
+        
+        //Add conversation to array.
+        [self.liveConversations enqueue:self.conversation];
+    }
+    
+
     
     [self initialiseAnimationViewToTheViewController];
+
+    
+    
+    
+    
+    
 
 }
 
@@ -57,6 +110,7 @@
     
     [super viewDidDisappear:animated];
 
+    //[self.chatAnimations initialiseBubbles];
     
     //Clear the sub view chatAnimations.
     for (UIView *subView in self.view.subviews)
@@ -135,11 +189,19 @@
  */
 -(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
 {
-    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    self.chatAnimations.chatViewController = self;
-    self.chatAnimations.tag = 100;
-    
+    [ChatViewAnimations setLiveChat:NO];
+
+//    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    self.chatAnimations.chatViewController = self;
+//    self.chatAnimations.tag = 100;
+//    
+//    [self.chatAnimations refreshLiveConversations: self.liveConversations];
+//    
     self.view = self.chatAnimations;
+    
+    //[self.chatAnimations refreshLiveConversations: self.liveConversations];
+
+    
 }
 
 /**
@@ -148,9 +210,19 @@
  */
 -(void) initialiseAnimationViewToTheViewController
 {
+    //[ChatViewAnimations setLiveChat:YES];
+    
     self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
+
+    [self.chatAnimations refreshLiveConversations:self.liveConversations];
+    
     self.chatAnimations.chatViewController = self;
     self.chatAnimations.tag = 100;
+    
+    NSLog(@"CONVERSATIONS: %@", self.liveConversations);
+
+    
     
 //    self.view = self.chatAnimations;
     [self.view addSubview:self.chatAnimations];

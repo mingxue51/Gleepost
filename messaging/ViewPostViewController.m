@@ -26,7 +26,9 @@
 
 @property (weak, nonatomic) IBOutlet ViewPostTableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *contentLabel;
-@property (weak, nonatomic) IBOutlet UITextField *commentTextField;
+@property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
+@property (strong, nonatomic) IBOutlet UIView *commentFormView;
+
 
 
 
@@ -96,6 +98,8 @@ static BOOL likePushed;
     self.contentLabel.text = self.post.content;
     [self.contentLabel sizeToFit];
     
+    [self configureForm];
+    
     [self loadComments];
     
     
@@ -115,6 +119,30 @@ static BOOL likePushed;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+#pragma mark - Init and config
+- (void)configureForm
+{
+    self.commentFormView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
+    
+    self.commentGrowingTextView.isScrollable = NO;
+    self.commentGrowingTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+	self.commentGrowingTextView.minNumberOfLines = 1;
+	self.commentGrowingTextView.maxNumberOfLines = 4;
+	self.commentGrowingTextView.returnKeyType = UIReturnKeyDefault;
+	self.commentGrowingTextView.font = [UIFont systemFontOfSize:15.0f];
+	self.commentGrowingTextView.delegate = self;
+    self.commentGrowingTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    self.commentGrowingTextView.backgroundColor = [UIColor whiteColor];
+    self.commentGrowingTextView.placeholder = @"Your message";
+    
+    // center vertically because textview height varies from ios version to screen
+    CGRect formTextViewFrame = self.commentGrowingTextView.frame;
+    formTextViewFrame.origin.y = (self.commentFormView.frame.size.height - self.commentGrowingTextView.frame.size.height) / 2;
+    self.commentGrowingTextView.frame = formTextViewFrame;
+}
+
+
 
 #pragma mark - Initialise header and footer
 
@@ -315,9 +343,14 @@ static BOOL likePushed;
 
 - (IBAction)addCommentButtonClick:(id)sender
 {
-    if([self.commentTextField isFirstResponder])
+//    if([self.commentGrowingTextView isFirstResponder])
+//    {
+//        [self.commentGrowingTextView resignFirstResponder];
+//    }
+    
+    if([self.commentGrowingTextView.text isEmpty])
     {
-        [self.commentTextField resignFirstResponder];
+        return;
     }
     
     
@@ -368,6 +401,8 @@ static bool firstTime = YES;
 - (void)loadComments
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    
+    
     [[WebClient sharedInstance] getCommentsForPost:self.post withCallbackBlock:^(BOOL success, NSArray *comments) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
@@ -458,6 +493,7 @@ static bool firstTime = YES;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //Add 1 in order to create another cell for post.
+    NSLog(@"Number of comments: %d", self.comments.count);
     return self.comments.count+1;
 }
 
@@ -500,7 +536,7 @@ static bool firstTime = YES;
         
         [cell createElements];
         
-        Comment *comment = self.comments[indexPath.row];
+        Comment *comment = self.comments[indexPath.row-1];
         
         NSLog(@"COMMENT! :%@",comment.content);
         
@@ -575,6 +611,11 @@ static bool firstTime = YES;
 }
 */
 
+
+#pragma mark - form management
+
+//TODO: Add the appropriate methods.
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -599,8 +640,14 @@ static bool firstTime = YES;
 
 - (void)hideKeyboardFromTextViewIfNeeded
 {
-    if(self.commentTextField.isFirstResponder) {
-        [self.commentTextField resignFirstResponder];
+//    if(self.commentTextField.isFirstResponder) {
+//        [self.commentTextField resignFirstResponder];
+//    }
+//    
+    
+    if(self.commentGrowingTextView.isFirstResponder)
+    {
+        [self.commentGrowingTextView resignFirstResponder];
     }
     
     if(self.tableView.typeTextView.footerTextView.isFirstResponder)
@@ -653,23 +700,23 @@ static bool firstTime = YES;
 }
 
 
-#pragma mark - Text view delegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    
-    if(![self.commentTextField.text isEmpty]) {
-        [self postComment];
-    }
-    
-    return YES;
-}
+//#pragma mark - Text view delegate
+//
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField
+//{
+//    [textField resignFirstResponder];
+//    
+//    if(![self.commentTextField.text isEmpty]) {
+//        [self postComment];
+//    }
+//    
+//    return YES;
+//}
 
 - (void)postComment
 {
     Comment *comment = [[Comment alloc] init];
-    comment.content = self.commentTextField.text;
+    comment.content = self.commentGrowingTextView.text;
     comment.post = self.post;
     
     [WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self.view];
@@ -678,7 +725,7 @@ static bool firstTime = YES;
         
         if(success) {
             [self loadComments];
-            self.commentTextField.text = @"";
+            self.commentGrowingTextView.text = @"";
         } else {
             [WebClientHelper showStandardError];
         }

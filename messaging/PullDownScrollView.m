@@ -39,7 +39,7 @@
     CGSize sizeOfCircleImage = pullDownImage.size;
     self.pullDownImageView = [[UIImageView alloc] initWithImage:pullDownImage];
     
-    [self.pullDownImageView setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/4), (self.frame.size.height/2)-(sizeOfCircleImage.height/2.5), sizeOfCircleImage.width/2, sizeOfCircleImage.height/2)];
+    [self.pullDownImageView setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/4), (self.frame.size.height/2)-(sizeOfCircleImage.height/4), sizeOfCircleImage.width/2, sizeOfCircleImage.height/2)];
     
     isLoading = false;
     

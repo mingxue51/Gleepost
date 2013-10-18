@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Post.h"
+#import "HPGrowingTextView.h"
 
-@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate>
+@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
 
 @property (strong, nonatomic) Post *post;
 //TODO: Remove after the integration of image posts.
