@@ -8,22 +8,93 @@
 
 #import "DatabaseManager.h"
 
+@interface DatabaseManager()
+
+@property (assign, nonatomic) BOOL exists;
+@property (strong, nonatomic) NSString *path;
+
+@end
+
 @implementation DatabaseManager
 
-NSString * const GLPDatabaseName = @"Gleepost.sqlite";
+@synthesize database = _database;
 
-+ (void)createDatabase
+NSString * const GLPDatabaseName = @"Gleepost2.sqlite";
+
+static DatabaseManager *instance = nil;
+
++ (DatabaseManager *)sharedInstance
 {
-    [MagicalRecord setupCoreDataStackWithStoreNamed:@"Gleepost.sqlite"];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[DatabaseManager alloc] init];
+    });
+    
+    return instance;
 }
 
-+ (void)dropDatabase
+- (id)init
 {
-    [MagicalRecord cleanUp];
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
     
-    NSError *error = nil;
-    NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:GLPDatabaseName];
-    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsPath = [paths objectAtIndex:0];
+    self.path = [docsPath stringByAppendingPathComponent:GLPDatabaseName];
+    
+    self.exists = [[NSFileManager defaultManager] fileExistsAtPath:self.path];
+    
+    return self;
+}
+
+- (void)initDatabase
+{
+    self.database = [FMDatabase databaseWithPath:self.path];
+    [self.database open];
+    
+    if(!self.exists) {
+        NSLog(@"create database");
+        // user
+        [self.database executeUpdate:@"create table users ( \
+         key integer primary key autoincrement, \
+         remoteKey integer, \
+         name text);"];
+        
+        // conversation
+        [self.database executeUpdate:@"create table conversations ( \
+         key integer primary key autoincrement, \
+         remoteKey integer, \
+         lastMessage text, \
+         lastUpdate integer, \
+         title text);"];
+        
+        // message
+        [self.database executeUpdate:@"create table messages ( \
+         key integer primary key autoincrement, \
+         remoteKey integer, \
+         date integer, \
+         content text, \
+         sendStatus integer, \
+         author_key integer, \
+         conversation_key integer);"];
+        
+        self.exists = YES;
+    }
+}
+
+- (void)dropDatabase
+{
+    [self closeDatabaseIfNeed];
+    [[NSFileManager defaultManager] removeItemAtPath:self.path error:nil];
+}
+
+- (void)closeDatabaseIfNeed
+{
+    if(self.database.open) {
+        [self.database close];
+    }
 }
 
 @end

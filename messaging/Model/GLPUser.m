@@ -10,7 +10,9 @@
 
 @implementation GLPUser
 
-// Custom logic goes here.
+NSString * const GLPUserNameColumn = @"name";
+
+@synthesize name = _name;
 
 
 @end

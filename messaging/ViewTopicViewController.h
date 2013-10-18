@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Conversation.h"
+#import "GLPConversation.h"
 #import "HPGrowingTextView.h"
 
 
@@ -19,7 +19,7 @@
 }
 
 
-@property (strong, nonatomic) Conversation *conversation;
+@property (strong, nonatomic) GLPConversation *conversation;
 
 
 @end

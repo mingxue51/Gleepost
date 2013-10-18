@@ -25,6 +25,13 @@
     return f;
 }
 
++ (NSDateFormatter *)createRemoteDateFormatterWithNanoSeconds
+{
+    NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSZ";
+    return f;
+}
+
 + (NSDateFormatter *)createTimeDateFormatter
 {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];

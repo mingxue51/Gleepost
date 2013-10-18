@@ -16,7 +16,7 @@
 @interface MessagesViewController ()
 
 @property (strong, nonatomic) NSMutableArray *conversations;
-@property (strong, nonatomic) Conversation *selectedConversation;
+@property (strong, nonatomic) GLPConversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
@@ -136,16 +136,13 @@
     static NSString *CellIdentifier = @"Cell";
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Conversation *conversation = self.conversations[indexPath.row];
+    GLPConversation *conversation = self.conversations[indexPath.row];
     
     
-    cell.userName.text = [NSString stringWithFormat:@"%@", [conversation getParticipantsNames]];
-    cell.content.text = (conversation.mostRecentMessage) ? [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.content] : @"";
+    cell.userName.text = conversation.title;
+    cell.content.text = (conversation.lastMessage) ? conversation.lastMessage : @"";
     cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
-    cell.time.text = (conversation.mostRecentMessage) ? [NSString stringWithFormat:@"%@", conversation.mostRecentMessage.date.description] : @"";
-    
-   //cell.textLabel.text = [NSString stringWithFormat:@"Conversation with %@", [conversation getParticipantsNames]];
-    //cell.detailTextLabel.text = [NSString stringWithFormat:@"Last message: %@", conversation.lastMessage.content];
+    cell.time.text = (conversation.lastUpdate) ? conversation.lastUpdate.description : @"";
     
     return cell;
 }

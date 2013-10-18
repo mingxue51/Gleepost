@@ -1,5 +1,9 @@
-#import "_GLPUser.h"
+#import "GLPEntity.h"
 
-@interface GLPUser : _GLPUser {}
+@interface GLPUser : GLPEntity
+
+extern NSString * const GLPUserNameColumn;
+
+@property (strong, nonatomic) NSString *name;
 
 @end

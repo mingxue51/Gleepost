@@ -3,16 +3,23 @@
 
 @interface GLPMessage ()
 
-// Private interface goes here.
+
 
 @end
 
 
 @implementation GLPMessage
 
+@synthesize seen;
+@synthesize sendStatus;
+@synthesize content = _content;
+@synthesize date = _date;
+@synthesize author = _author;
+@synthesize conversation = _conversation;
+
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {
-    if(![message.author.remoteKey isEqualToNumber:self.author.remoteKey]) {
+    if(message.author.remoteKey != self.author.remoteKey) {
         return NO;
     }
     

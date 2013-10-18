@@ -4,6 +4,7 @@ pod 'AFHTTPRequestOperationLogger',	'~> 0.10.0'
 pod 'MBProgressHUD', '~> 0.8'
 pod 'OHHTTPStubs', '2.0.0'
 pod 'MagicalRecord', '2.2'
+pod 'FMDB', '2.1'
 
 post_install do |installer|
   installer.project.targets.each do |target|

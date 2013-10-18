@@ -7,13 +7,15 @@
 //
 
 #import "MessageCell.h"
-#import "DateFormatterManager.h"
+#import "DateFormatterHelper.h"
 
 @interface MessageCell()
 
 @property (assign, nonatomic) float messageContentViewInitialY;
 @property (assign, nonatomic) float initialMessageContentLabelX;
 @property (assign, nonatomic) float initialMessageContentViewX;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -27,16 +29,17 @@ static const float FirstCellOtherElementsTotalHeight = 22;
 static const float FollowingCellPadding = 7;
 static const float MessageContentViewPadding = 15;
 static const float MessageContentLabelMaxWidth = 241;
-static const float MessageContentLabelPadding = 40;
+static const float MessageContentLabelPadding = 12; // horizontal padding
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if(!self)
-    {
+    if(!self) {
         return nil;
     }
+    
+    self.dateFormatter = [DateFormatterHelper createTimeDateFormatter];
     
     return self;
 }
@@ -45,18 +48,11 @@ static const float MessageContentLabelPadding = 40;
 {
     // store initial positioning values
     self.messageContentViewInitialY = self.messageContentView.frame.origin.y;
-//    self.messageContentLabelInitialWidth = self.messageContentLabel.frame.size.width;
-//    NSLog(@"message init wid %f", self.messageContentLabelInitialWidth);
-    
     self.initialMessageContentLabelX = self.messageContentLabel.frame.origin.x;
     self.initialMessageContentViewX = self.messageContentView.frame.origin.x;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    
+//    UIImage *image = [self.messageContentImageView.image resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
+//    self.messageContentImageView.image = image;
 }
 
 - (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst
@@ -65,7 +61,8 @@ static const float MessageContentLabelPadding = 40;
     if(isFirst) {
         self.timeView.hidden = NO;
         self.avatarImageView.hidden = NO;
-        self.timeLabel.text = [[DateFormatterManager sharedInstance].timeFormatter stringFromDate:message.date];
+//        NSLog(@"format date for time %@", message.date);
+        self.timeLabel.text = [self.dateFormatter stringFromDate:message.date];
         
         // move the content view at its initial position
         self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, self.messageContentViewInitialY, self.messageContentView.frame.size.width, self.messageContentView.frame.size.height);
@@ -109,11 +106,11 @@ static const float MessageContentLabelPadding = 40;
 //    }
     
     // round message content background image
-    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
-    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
-    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
-    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+//    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
+//    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
+//    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
+//    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

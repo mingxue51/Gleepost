@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Conversation.h"
+#import "GLPConversation.h"
 #import "GLPMessage.h"
 #import "GLPUser.h"
-#import "Post.h"
-#import "Comment.h"
+#import "GLPPost.h"
+#import "GLPComment.h"
 
 @interface RemoteParser : NSObject
 
@@ -19,18 +19,19 @@
 + (GLPUser *)parseUserFromJson:(NSDictionary *)json;
 
 // conversations
-+ (Conversation *)parseConversationFromJson:(NSDictionary *)json;
++ (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;
 + (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
 
 // messages
-+ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation;
-+ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(Conversation *)conversation;
++ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation;
++ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(GLPConversation *)conversation;
++ (GLPMessage *)parseMessageFromLongPollJson:(NSDictionary *)json;
 
 // posts and comments
-+ (Post *)parsePostFromJson:(NSDictionary *)json;
++ (GLPPost *)parsePostFromJson:(NSDictionary *)json;
 + (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts;
-+ (Comment *)parseCommentFromJson:(NSDictionary *)json forPost:(Post *)post;
-+ (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(Post *)post;
++ (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post;
++ (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
 
 // commons
 + (NSDate *)parseDateFromString:(NSString *)string;

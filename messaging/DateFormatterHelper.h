@@ -12,6 +12,7 @@
 
 + (NSDateFormatter *)createDefaultDateFormatter;
 + (NSDateFormatter *)createRemoteDateFormatter;
++ (NSDateFormatter *)createRemoteDateFormatterWithNanoSeconds;
 + (NSDateFormatter *)createTimeDateFormatter;
 
 @end

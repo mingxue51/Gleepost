@@ -12,6 +12,7 @@
 #import "LocalMessage.h"
 #import "Conversation.h"
 #import "MessageProcessingOperation.h"
+#import "DatabaseManager.h"
 #import "SessionManager.h"
 
 @implementation AppDelegate
@@ -19,6 +20,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [DatabaseManager sharedInstance];
+    
     [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

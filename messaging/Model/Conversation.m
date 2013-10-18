@@ -17,23 +17,24 @@
 {
     NSMutableString *names = [NSMutableString string];
     
-    int count = self.participants.count - 1;
-    [[self.participants allObjects] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        GLPUser *user = obj;
-        
-        // ignore current user
-        if([user isEqualToWebEntity:[SessionManager sharedInstance].user]) {
-            return;
+    if(self.participants.count < 2) {
+        return @"Invalid conversation";
+    }
+    
+    NSMutableArray *filteredParticipants = [NSMutableArray arrayWithCapacity:self.participants.count - 1];
+    
+    for(GLPUser *user in self.participants) {
+        if(![user isEqualToEntity:[SessionManager sharedInstance].user]) {
+            [filteredParticipants addObject:user];
         }
-            
-//            isEqualToNumber:[NSNumber numberWithInteger:[SessionManager sharedInstance].key]]) {
-//            return;
-//        }
-        
+    }
+    
+    [filteredParticipants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        GLPUser *user = obj;
         [names appendString:user.name];
         
-        if(count > 1 && idx != count - 1) {
-            if(idx == count - 2) {
+        if(filteredParticipants.count > 1 && idx != filteredParticipants.count - 1) {
+            if(idx == filteredParticipants.count - 2) {
                 [names appendString:@" and "];
             } else {
                 [names appendString:@", "];

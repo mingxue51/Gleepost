@@ -11,6 +11,7 @@
 
 #import "MessageCell.h"
 
+#import "GLPMessageDao.h"
 #import "SessionManager.h"
 #import "AppearanceHelper.h"
 #import "WebClient.h"
@@ -120,10 +121,6 @@ const int flexibleResizeLimit = 120;
                                                object:nil];
     
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
     [self.tabBarController.tabBar setHidden:YES];
 
 }
@@ -154,8 +151,6 @@ const int flexibleResizeLimit = 120;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 
 }
 
@@ -170,7 +165,7 @@ const int flexibleResizeLimit = 120;
 - (void)configureNavigationBar
 {
     // navigation bar configuration
-    self.title = [self.conversation getParticipantsNames];
+    self.title = self.conversation.title;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
@@ -214,7 +209,6 @@ const int flexibleResizeLimit = 120;
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new messages" forView:view];
     
     [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
-        NSLog(@"local messages %d", messages.count);
         [self showMessages:messages];
         
     } remoteCallback:^(BOOL success, NSArray *messages) {
@@ -222,7 +216,6 @@ const int flexibleResizeLimit = 120;
         
         if(success) {
             if(messages) {
-                NSLog(@"remote messages %d", messages.count);
                 [self showMessages:messages];
             }
             
@@ -292,6 +285,7 @@ const int flexibleResizeLimit = 120;
         
         if(success) {
             [self showMessage:message];
+            [GLPMessageDao save:message];
         }
         
         // restart long polling request if has to

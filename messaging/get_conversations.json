@@ -1,28 +1,18 @@
-{
-    "success":true,
-    "conversations":
-        [
-            {
-                "participants":
-                    [
-                        {"id":9, "username":"Patrick"},
-                        {"id":23, "username":"PeterGatsby"}
-                    ],
-              "mostRecentMessage": {
-                    "id":1234214,
-                    "by":{"id":9, "username":"Patrick"},
-                    "text":"asl? ;)",
-                    "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC",
-                    "seen":false
-                },
-            },
-            {
-                "participants": [
-                           {"id":99999, "username":"Lukas"},
-                           {"id":232515, "username":"Ling"} 
-                           ], 
-            "mostRecentMessage": {"id":123512624,
-         "by":{"id":99999, "username":"Lukas"}, "text":"idk lol", "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC", "seen":false}
-            } 
-         ]
-}
+ [
+    {"id":1,
+    "participants": [
+                   {"id":9, "username":"Lukas"},
+                   {"id":23, "username":"PeterGatsby"}
+                   ],
+    "mostRecentMessage": {"id":1234214, "by":{"id":9, "username":"Lukas"}, "text":"asl? ;)", "timestamp":"2013-09-05T13:09:38Z", "seen":false},
+  },
+  {
+  "id":2,
+  "participants":
+    [
+        {"id":9, "username":"Lukas"},
+        {"id":232515, "username":"Ling"}
+     ],
+  "mostRecentMessage": {"id":123512624, "by":{"id":9, "username":"Lukas"}, "text":"idk lol", "timestamp":"2013-09-05T12:09:38Z", "seen":false}
+  }
+  ]

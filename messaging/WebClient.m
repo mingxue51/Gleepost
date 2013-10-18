@@ -89,11 +89,18 @@ static WebClient *instance = nil;
     [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = (NSDictionary *) responseObject;
         
-        NSInteger remoteKey = [json[@"id"] integerValue];
+        GLPUser *user = [[GLPUser alloc] init];
+        user.remoteKey = [json[@"id"] integerValue];
+        user.name = name;
+
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
-        [self.sessionManager registerUserWithRemoteKey:remoteKey token:token andExpirationDate:expirationDate];
+        NSAssert(user.remoteKey != 0, @"");
+        NSAssert(token, @"");
+        NSAssert(expirationDate, @"");
+        
+        [self.sessionManager registerUser:(GLPUser *)user withToken:token andExpirationDate:expirationDate];
         
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -124,7 +131,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)createPost:(Post *)post callbackBlock:(void (^)(BOOL success))callbackBlock
+- (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -136,9 +143,9 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)getCommentsForPost:(Post *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
+- (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%@/comments", post.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -152,9 +159,9 @@ static WebClient *instance = nil;
 
 }
 
-- (void)createComment:(Comment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock
+- (void)createComment:(GLPComment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%@/comments", comment.post.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", comment.post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"text", comment.content, nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -183,36 +190,29 @@ static WebClient *instance = nil;
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        // delete previous conversations
-        [Conversation MR_truncateAll];
-        
-        NSLog(@"json %@", responseObject);
-        
-        // parse and create new ones
         NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
-        
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];
 }
 
-- (void)getLastMessagesForConversation:(Conversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+- (void)getLastMessagesForConversation:(GLPConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     if(lastMessage) {
-        [params setObject:lastMessage.remoteKey forKey:@"after"];
+        [params setObject:[NSNumber numberWithInteger:lastMessage.remoteKey] forKey:@"after"];
     }
     
-    NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", conversation.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteKey];
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:conversation];
         callbackBlock(YES, messages);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //TODO: TEMP FIX
-        callbackBlock(YES, [NSArray array]);
+        callbackBlock(YES, nil);
         //callbackBlock(NO, nil);
     }];
 
@@ -236,21 +236,21 @@ static WebClient *instance = nil;
 //    }];
 //}
 
-- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
+- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
 {
     [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
 }
 
-- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
+- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
 {
     [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
 }
 
-- (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, Conversation *conversation))callbackBlock
+- (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-        Conversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
+        GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
         
         callbackBlock(YES, conversation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -260,7 +260,7 @@ static WebClient *instance = nil;
 
 - (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -276,7 +276,7 @@ static WebClient *instance = nil;
 // Blocking operation
 - (void)createMessageSynchronously:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"conversations/%@/messages", message.conversation.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -295,18 +295,46 @@ static WebClient *instance = nil;
 }
 
 
-- (void)longPollNewMessagesForConversation:(Conversation *)conversation callbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
+- (void)longPollNewMessagesForConversation:(GLPConversation *)conversation callbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
 {
     [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:conversation];
+        NSLog(@"long poll %@", responseObject);
         
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            callbackBlock(YES, message);
-        }];
+        GLPMessage *message = [RemoteParser parseMessageFromLongPollJson:responseObject];
+        callbackBlock(YES, message);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];
 }
+
+//- (void)longPollNewMessageCallbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
+//{
+//    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"long poll %@", responseObject);
+//        NSDictionary *json = responseObject;
+//        
+//        NSNumber *remoteKey = json[@"conversation_id"];
+//        Conversation *conversation = [GLPConversation MR_findFirstByAttribute:@"remoteKey" withValue:remoteKey];
+//        
+//        if(!conversation) {
+//            [NSException raise:@"Long poll conversation not found" format:@"Conversation with remote key %@", remoteKey];
+//        }
+//        
+//        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
+//        
+//        
+//        if(!message.date) {
+//            message.date = [NSDate date];
+//        }
+//        
+//        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+//            callbackBlock(YES, message);
+//        }];
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
+
 
 - (void)cancelMessagesLongPolling
 {

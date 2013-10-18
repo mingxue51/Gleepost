@@ -18,7 +18,7 @@
 
 + (SessionManager *)sharedInstance;
 
-- (void)registerUserWithRemoteKey:(NSInteger)remoteKey token:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
+- (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
 - (BOOL)isSessionValid;
 
 @end

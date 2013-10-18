@@ -19,20 +19,21 @@
 @implementation RemoteParser
 
 static NSDateFormatter *dateFormatter = nil;
-
+static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 #pragma mark - Users
 
 + (GLPUser *)parseUserFromJson:(NSDictionary *)json
 {
-    NSNumber *key = json[@"id"];
-    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
+    GLPUser *user = [[GLPUser alloc] init];
+    user.remoteKey = [json[@"id"] integerValue];
+    user.name = json[@"username"];
     
-    if(!user) {
-        user = [GLPUser MR_createEntity];
-        user.remoteKey = key;
-        user.name = json[@"username"];
-    }
+//    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
+//    
+//    if(!user) {
+//
+//    }
     
 
 //    
@@ -51,13 +52,15 @@ static NSDateFormatter *dateFormatter = nil;
 
 #pragma mark - Conversations
 
-+ (Conversation *)parseConversationFromJson:(NSDictionary *)json
++ (GLPConversation *)parseConversationFromJson:(NSDictionary *)json
 {
-    Conversation *conversation = [Conversation MR_createEntity];
-    conversation.remoteKey = json[@"id"];
+    GLPConversation *conversation = [[GLPConversation alloc] init];
+    conversation.remoteKey = [json[@"id"] integerValue];
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
-        conversation.mostRecentMessage = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:conversation];
+        GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
+        conversation.lastMessage = message.content;
+        conversation.lastUpdate = message.date;
     }
 
     NSMutableArray *participants = [NSMutableArray array];
@@ -65,7 +68,7 @@ static NSDateFormatter *dateFormatter = nil;
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }
-    conversation.participants = [NSSet setWithArray:participants];
+    [conversation setTitleFromParticipants:participants];
     
     return conversation;
 }
@@ -83,23 +86,21 @@ static NSDateFormatter *dateFormatter = nil;
 
 #pragma mark - Messages
 
-+ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(Conversation *)conversation
++ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation
 {
-    GLPMessage *message = [GLPMessage MR_createEntity];
-    message.remoteKey = json[@"id"];
+    GLPMessage *message = [[GLPMessage alloc] init];
+    message.remoteKey = [json[@"id"] integerValue];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
     message.conversation = conversation;
     message.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     message.content = json[@"text"];
-    message.sendStatus = [NSNumber numberWithInt:kSendStatusSent];
-    message.seenValue = [json[@"seen"] boolValue];
-    
-    NSLog(@"message %@ date %@", message.content, message.date);
+    message.sendStatus = kSendStatusSent;
+    message.seen = [json[@"seen"] boolValue];
     
     return message;
 }
 
-+ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(Conversation *)conversation
++ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(GLPConversation *)conversation
 {
     NSMutableArray *messages = [NSMutableArray array];
     for(id jsonMessage in jsonMessages) {
@@ -110,19 +111,30 @@ static NSDateFormatter *dateFormatter = nil;
     return messages;
 }
 
++ (GLPMessage *)parseMessageFromLongPollJson:(NSDictionary *)json
+{
+    GLPMessage *message = [RemoteParser parseMessageFromJson:json forConversation:nil];
+    message.conversation = [[GLPConversation alloc] init];
+    message.conversation.remoteKey = [json[@"conversation_id"] integerValue];
+    
+    return message;
+}
+
 
 #pragma mark - Posts and comments
 
-+ (Post *)parsePostFromJson:(NSDictionary *)json
++ (GLPPost *)parsePostFromJson:(NSDictionary *)json
 {
-    Post *post = [Post MR_createEntity];
-    post.remoteKey = json[@"id"];
+    GLPPost *post = [[GLPPost alloc] init];
+    post.remoteKey = [json[@"id"] integerValue];
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
-    post.commentsCount = json[@"comments"];
-    post.likes = json[@"likes"];
-    post.dislikes = json[@"hates"];
+    post.commentsCount = [json[@"comments"] integerValue];
+    post.likes = [json[@"likes"] integerValue];
+    post.dislikes = [json[@"hates"] integerValue];
+    
+    // should work.. or not!
     post.imagesUrls = json[@"images"];
     
     return post;
@@ -132,17 +144,17 @@ static NSDateFormatter *dateFormatter = nil;
 {
     NSMutableArray *posts = [NSMutableArray array];
     for(id postJson in jsonPosts) {
-        Post *post = [RemoteParser parsePostFromJson:postJson];
+        GLPPost *post = [RemoteParser parsePostFromJson:postJson];
         [posts addObject:post];
     }
     
     return posts;
 }
 
-+ (Comment *)parseCommentFromJson:(NSDictionary *)json forPost:(Post *)post
++ (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post
 {
-    Comment *comment = [Comment MR_createEntity];
-    comment.remoteKey = json[@"id"];
+    GLPComment *comment = [[GLPComment alloc] init];
+    comment.remoteKey = [json[@"id"] integerValue];
     comment.author = [RemoteParser parseUserFromJson:json[@"by"]];
     comment.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     comment.content = json[@"text"];
@@ -151,7 +163,7 @@ static NSDateFormatter *dateFormatter = nil;
     return comment;
 }
 
-+ (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(Post *)post
++ (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post
 {
     NSMutableArray *comments = [NSMutableArray array];
     for(id jsonComment in jsonComments) {
@@ -173,13 +185,45 @@ static NSDateFormatter *dateFormatter = nil;
     return dateFormatter;
 }
 
-+ (NSDate *)parseDateFromString:(NSString *)string
++ (NSDateFormatter *)getDateFormatterWithNanoSeconds
+{
+    if(!dateFormatterWithNanoSeconds) {
+        dateFormatterWithNanoSeconds = [DateFormatterHelper createRemoteDateFormatterWithNanoSeconds];
+    }
+    
+    return dateFormatterWithNanoSeconds;
+}
+
++ (NSDate *)parseDateWithoutNanoSecondsFromString:(NSString *)string
 {
     NSDate *date;
     NSError *error;
-    [[self getDateFormatter] getObjectValue:&date forString:string range:nil error:&error];
     
-    NSLog(@"Remote date parsed %@ for string %@", date, string);
+    [[RemoteParser getDateFormatter] getObjectValue:&date forString:string range:nil error:&error];
+    
+    return date;
+}
+
++ (NSDate *)parseDateWithNanoSecondsFromString:(NSString *)string
+{
+    NSDate *date;
+    NSError *error;
+    
+    [[RemoteParser getDateFormatterWithNanoSeconds] getObjectValue:&date forString:string range:nil error:&error];
+    
+    return date;
+}
+
++ (NSDate *)parseDateFromString:(NSString *)string
+{
+    NSDate *date = [RemoteParser parseDateWithoutNanoSecondsFromString:string];
+
+    if(!date) {
+        date = [RemoteParser parseDateWithNanoSecondsFromString:string];
+    }
+    
+    NSLog(@"Date %@", string);
+    NSAssert(date, @"Parsed date null", @"String value %@", string);
     
     return date;
 }

@@ -1,22 +1,6 @@
-{
-    "success":true,
-    "conversation":
-    {
-        "participants":
-        [
-         {"id":9, "username":"Patrick11"},
-         {"id":23, "username":"PeterGatsby11"}
-         ],
-        "messages":
-        [
-         {
-         "id":1234214,
-         "by": {"id":9, "username":"Patrick11"},
-         "text":"asl? ;)",
-         "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC",
-         "seen":false},
-         {"id":1234214, "by":{"id":23, "username":"PeterGatsby"}, "text":"asl? ;)", "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC", "seen":false},
-         {"id":1234214, "by":{"id":23, "username":"PeterGatsby"}, "text":"asl? ;)", "timestamp":"2013-08-25 12:50:51.174460521 +0000 UTC", "seen":false}
-         ]
-    }
-}
+[
+                 {"id":1234214,
+                 "by":{"id":23, "username":"PeterGatsby"}, "text":"asl? ;)", "timestamp":"2013-09-05T13:09:38Z", "seen":false},
+                 {"id":1234215, "by":{"id":23, "username":"PeterGatsby"}, "text":"asl? 2 ;)", "timestamp":"2013-09-05T12:09:38Z", "seen":false},
+                 {"id":1234216, "by":{"id":9, "username":"Lukas"}, "text":"asl? 3 ;)", "timestamp":"2013-09-05T11:09:38Z", "seen":false}
+                 ]

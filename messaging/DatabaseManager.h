@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMDatabase.h"
 
 @interface DatabaseManager : NSObject
 
-+ (void)createDatabase;
-+ (void)dropDatabase;
+@property (strong, nonatomic) FMDatabase *database;
+
++ (DatabaseManager *)sharedInstance;
+
+- (void)initDatabase;
+- (void)dropDatabase;
+- (void)closeDatabaseIfNeed;
 
 @end

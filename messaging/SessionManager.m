@@ -10,6 +10,7 @@
 #import "DatabaseManager.h"
 #import "UserManager.h"
 #import "DateFormatterHelper.h"
+#import "GLPUserDao.h"
 
 @interface SessionManager()
 
@@ -59,23 +60,24 @@ static SessionManager *instance = nil;
     return self;
 }
 
-- (void)registerUserWithRemoteKey:(NSInteger)remoteKey token:(NSString *)token andExpirationDate:(NSDate *)expirationDate
+- (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate
 {
-    if(self.user) {
-        [NSException raise:@"Invalid register new user while another already exists" format:@"User %@", self.user];
-    }
-    
+    NSAssert(!self.user, @"An user is already registered in the session");
+
     // (drop previous if need and) create database
-    [DatabaseManager dropDatabase];
-    [DatabaseManager createDatabase];
+    [[DatabaseManager sharedInstance] dropDatabase];
+    [[DatabaseManager sharedInstance] initDatabase];
     
     // configure session
-    self.user = [UserManager getOrCreateUserForRemoteKey:remoteKey];
+    [GLPUserDao save:user];
+    
+    self.user = user;
     self.token = token;
-    self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", remoteKey], @"token": token};
+    self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", user.remoteKey], @"token": token};
     
     // save session
-    self.data[@"user.remoteKey"] = self.user.remoteKey;
+    self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
+    self.data[@"user.name"] = self.user.name;
     self.data[@"user.token"] = self.token;
     self.data[@"user.expirationDate"] = [[DateFormatterHelper createDefaultDateFormatter] stringFromDate:expirationDate];
     
@@ -96,7 +98,7 @@ static SessionManager *instance = nil;
 - (void)logout
 {
     [self cleanSession];
-    [DatabaseManager dropDatabase];
+    [[DatabaseManager sharedInstance] dropDatabase];
 }
 
 - (BOOL)isSessionValid
@@ -120,10 +122,12 @@ static SessionManager *instance = nil;
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
         if([self isSessionValid]) {
-            [DatabaseManager createDatabase];
-            self.user = [UserManager getUserForRemoteKey:[self.data[@"user.remoteKey"] integerValue]];
+            [[DatabaseManager sharedInstance] initDatabase];
+            self.user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue]];
+            NSAssert(self.user, @"User from valid session must exist in database");
+            
             self.token = self.data[@"user.token"];
-            self.authParameters = @{@"id": [NSString stringWithFormat:@"%@", self.user.remoteKey], @"token": self.token};
+            self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
         } else { // clean expired session
             [self cleanSession];
         }

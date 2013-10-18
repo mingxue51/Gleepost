@@ -13,11 +13,11 @@
 #import "WebClientHelper.h"
 #import "ChatViewAnimations.h"
 #import "NSMutableArray+QueueAdditions.h"
-
+#import "GLPConversation.h"
 
 @interface ChatViewController ()
 
-@property (strong, nonatomic) Conversation *conversation;
+@property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
 @property (strong, nonatomic) NSMutableArray *liveConversations;
 
@@ -56,18 +56,18 @@
     
 
     NSLog(@"viewDidAppear");
-    NSLog(@"Current conversation: %@",[self.conversation getParticipantsNames]);
+    NSLog(@"Current conversation: %@", self.conversation.title);
     
     
     
-    if([self.conversation getParticipantsNames] != nil)
+    if(self.conversation.title != nil)
     {
         
-        for(Conversation *c in self.liveConversations)
+        for(GLPConversation *c in self.liveConversations)
         {
-            NSLog(@"Current Conversation: %@", [c getParticipantsNames]);
+            NSLog(@"Current Conversation: %@", c.title);
             
-            if([[self.conversation getParticipantsNames] isEqualToString:[c getParticipantsNames]])
+            if([self.conversation.title isEqualToString:c.title])
             {
                 
             }
@@ -81,7 +81,7 @@
     }
     
     //Save the current conversation.
-    if([self.conversation getParticipantsNames] != nil)
+    if(self.conversation.title != nil)
     {
         //If there are already 3 conversations, then delete the oldest.
         if(self.liveConversations.count == 3)
@@ -280,13 +280,12 @@
     
     WebClient *client = [WebClient sharedInstance];
     
-    void(^block)(BOOL success, Conversation *conversation);
-    block = ^(BOOL success, Conversation *conversation) {
+    void(^block)(BOOL success, GLPConversation *conversation);
+    block = ^(BOOL success, GLPConversation *conversation) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.conversation = conversation;
-            NSLog(@"PARTICIPANTS:%@", self.conversation.getParticipantsNames);
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardError];
