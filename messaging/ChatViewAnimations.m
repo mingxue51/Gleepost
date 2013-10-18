@@ -34,6 +34,34 @@ static BOOL initLiveChats;
     initLiveChats = boolValue;
 }
 
+//+(id) initAnimations
+//{
+//    if(!self)
+//    {
+//        return self;
+//    }
+//    
+//    //Initialise animation elements.
+//    
+//    
+//    
+//    return self;
+//}
+
+-(void) initAnimations
+{
+    //Remove all suviews and initialise all again.
+    
+    
+    [self initialiseCircles];
+
+    [self initialiseLiveConversationBubbles];
+
+    [self setBackgroundImage];
+    [self initialiseScrollView];
+    [self setUpTimers];
+}
+
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -93,6 +121,12 @@ static BOOL initLiveChats;
 }
 
 
+-(void) refreshStateElements
+{
+    
+}
+
+
 -(void) initialiseBubbles
 {
     [self initialiseCircles];
@@ -106,14 +140,12 @@ static BOOL initLiveChats;
 
 /**
  Refresh live conversations bubbles.
- 
  */
 -(void) refreshLiveConversations: (NSMutableArray*) liveConversationsArray
 {
     NSLog(@"ChatViewAnimations : refreshLiveConversations");
-    
+        
     self.liveConversations = liveConversationsArray;
-    
     
     //Take the buttons views.
     
@@ -121,16 +153,40 @@ static BOOL initLiveChats;
     
     NSMutableArray *currentButtons = [[NSMutableArray alloc] init];
     
+    int in1=0;
+    
     for(UIView* view in allSubviews)
     {
         if([view isKindOfClass:[UIButton class]])
         {
             [currentButtons addObject:view];
+            
+            NSLog(@"LiveConversations array: %d", liveConversationsArray.count);
+
+            if(liveConversationsArray.count>in1)
+            {
+                
+                UIButton *current =(UIButton*) view;
+                
+                //Add opponents profile image.
+                
+                [liveConversationsArray objectAtIndex:in1];
+
+                [current setBackgroundImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
+                
+                //Add selector to button.
+                [current addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchDown];
+                
+                [self bringSubviewToFront:current];
+                
+            }
+
+            ++in1;
         }
     }
     
     int i=0;
-    for(Conversation* conv in self.liveConversations)
+    for(Conversation* conv in liveConversationsArray)
     {
         
         /**
@@ -147,7 +203,7 @@ static BOOL initLiveChats;
         
         UIButton *currentButton = [currentButtons objectAtIndex:i];
         
-        [currentButton setBackgroundImage:[UIImage imageNamed:@"pic2"] forState:UIControlStateNormal];
+        [currentButton setBackgroundImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
         
         
        // UIButton *convButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 40, 40)];
@@ -178,6 +234,11 @@ static BOOL initLiveChats;
 //    }
 //    
     NSLog(@"Buttons: %@",self.bubblesPeople);
+}
+
+-(void) navigateToChat: (id) sender
+{
+    NSLog(@"Navigate to chat");
 }
 
 
@@ -260,77 +321,6 @@ static BOOL initLiveChats;
 }
 
 
-/**
- Initialise people bubbles and add them to the view hidden.
- */
--(void)viewConversationsBubbles
-{
-    self.bubblesPeople = [[NSMutableArray alloc] init];
-    
-  
-    for(Conversation* conv in self.liveConversations)
-    {
-        UIButton *convButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 40, 40)];
-        
-        [convButton setImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
-        
-        
-        //Add selector to each button in order to navigate to appropriate chat.
-        
-        
-        
-        [self.bubblesPeople addObject:convButton];
-    }
-    
-//    
-//    UIButton *conversationButton = [[UIButton alloc] initWithImage:[UIImage imageNamed:@"pic1"]];
-//    
-//    [conversationButton setFrame:CGRectMake(80, 90, [UIImage imageNamed:@"bubble1"].size.width, [UIImage imageNamed:@"pic1"].size.height)];
-//
-//    imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    
-//    [self.bubblesPeople addObject:imageView];
-    
-    
-//    //Add second person.
-//    
-//    imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic2"]];
-//    
-//    [imageView setFrame:CGRectMake(80, 90, [UIImage imageNamed:@"bubble1"].size.width, [UIImage imageNamed:@"pic1"].size.height)];
-//    
-//    imageView.contentMode = UIViewContentModeScaleAspectFit;
-//
-//    [self.bubblesPeople addObject:imageView];
-//    
-//    //Add third person.
-//    
-//    
-//    imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pic3"]];
-//    
-//    [imageView setFrame:CGRectMake(80, 90, [UIImage imageNamed:@"bubble1"].size.width, [UIImage imageNamed:@"pic3"].size.height)];
-//    
-//    imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    
-//    [self.bubblesPeople addObject:imageView];
-//    
-    
-    
-    //destination 0,0
-    
-    
-    
-    //Add the people bubbles to screen but hidden.
-    
-    for(UIButton* btnView in self.bubblesPeople)
-    {
-//        imgView.hidden = YES;
-        [self addSubview:btnView];
-    }
-    
-}
-
-
-
 -(void) removeElements
 {
     animateBubbles = YES;
@@ -351,17 +341,11 @@ static BOOL initLiveChats;
 -(void) initialiseCircles
 {
 
-
- 
-    
     UIImage *centralCircleImage = [UIImage imageNamed:@"lightbublle"] ;
     self.centralCircle = [[UIImageView alloc] initWithImage:centralCircleImage highlightedImage:nil];
     CGSize sizeOfCircleImage = centralCircleImage.size;
     
-    NSLog(@"Size of view: %f:%f", self.frame.size.width, self.frame.size.height);
-    
     [self.centralCircle setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/7.5), sizeOfCircleImage.width/3.5, sizeOfCircleImage.height/3.5)];
-    
     
     
     
@@ -394,8 +378,6 @@ static BOOL initLiveChats;
     
     self.timer2 = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(animateCircles2:) userInfo:nil repeats:YES];
     [self.timer2 fire];
-    
-  
     
 }
 
@@ -466,14 +448,6 @@ static BOOL goBack2 = NO;
                 {
                     [imageView setFrame: CGRectMake(imageView.frame.origin.x+rX,imageView.frame.origin.y-rY , imageView.image.size.width/2, imageView.image.size.height/2)];
                 }
-                //NSLog(@"Rand: %d : %d",rX, rY);
-                
-                //imageView.center = CGPointMake(imageView.center.x-rX, imageView.center.y+rY);
-                 //= ;
-                //imageView.transform = CGAffineTransformRotate(imageView.transform, 30);
-                
-//                prevRandomX = rX;
-//                prevRandomY = rY;
                 
             }
             else
@@ -514,14 +488,7 @@ static BOOL goBack2 = NO;
                     [imageView setFrame: CGRectMake(imageView.frame.origin.x-rX,imageView.frame.origin.y+rY , imageView.image.size.width/2, imageView.image.size.height/2)];
 
                 }
-                
-//
-               // NSLog(@"Pre random X: %d Pre random Y: %d",rX, rY);
-                
-                //imageView.center = CGPointMake(imageView.center.x+rX,imageView.center.x-rY);
-                
-                
-               // imageView.layer.
+
             }
             
              
@@ -659,17 +626,8 @@ static BOOL animateBubbles = YES;
     {
         animateBubbles = NO;
 
+        [self animateBubbleWithDuration:1.5 delay:0 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
 
-//        if(i%2==0)
-//        {
-        
-        
-            [self animateBubbleWithDuration:1.5 delay:0 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
-//        }
-//        else
-//        {
-//            [self animateBubbleWithDuration:1.5 delay:1.5 imageView:imageView sizeOfCircle:sizeOfCircleImage andMainCircleFrameSize:mainCircleFrame];
-//        }
         
         [UIView animateWithDuration:2.5 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
             
@@ -699,15 +657,6 @@ static BOOL animateBubbles = YES;
         ++i;
     }
     
-//    i = 0;
-//    //Show and animate the peoples' bubbles.
-//    for(UIImageView* imgView in self.bubblesPeople)
-//    {
-//        [self animatePersonBubbleWithDuration:1.5 delay:0.5 personImageView:imgView newPosition:CGPointMake(i, 50)];
-//        
-//        i+=100;
-//    }
-    
 
     
     //Resize central circle.
@@ -729,22 +678,6 @@ static BOOL animateBubbles = YES;
             
         }completion:^(BOOL finished) {
             
-
-            
-//            [UIView animateWithDuration:0.5 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
-//                
-//                CGRect mainCircleFrame = self.centralCircle.frame;
-//                
-//                [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-110, mainCircleFrame.origin.y-100, mainCircleFrame.size.width+200, mainCircleFrame.size.height+200)];
-//                
-//            }completion:^(BOOL finished) {
-//                
-//                
-//                
-//                
-//            }];
-            
-//            [self hideBubbles];
             
         }];
 
@@ -759,22 +692,6 @@ static BOOL animateBubbles = YES;
     }
     
     
-    
-//    mainCircleFrame = self.centralCircle.frame;
-//    
-//    [UIView animateWithDuration:1.0 delay:1.5 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
-//        
-//        [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-200, mainCircleFrame.origin.y-200, mainCircleFrame.size.width+400, mainCircleFrame.size.height+400)];
-//        
-//        
-//        
-//        
-//    }completion:^(BOOL finished) {
-//        
-//        
-//        
-//        
-//    }];
     
     
     animationsFinished = YES;
@@ -845,32 +762,12 @@ static BOOL animateBubbles = YES;
         
 
 
-        //(self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/4.5)
     }completion:^(BOOL finished) {
         
-       // [self hideBubbles];
         
 
         [imageView setAlpha:0.0];
         
-        /**
-         
-         [UIView animateWithDuration:0.5 animations:^{
-         
-         [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-1.7, mainCircleFrame.origin.y-1.5, mainCircleFrame.size.width+5, mainCircleFrame.size.height+5)];
-         
-         
-         } completion:^(BOOL finished) {
-         
-         }];
-         
-         */
-        
-        
-        
-        //            [self.timer1 invalidate];
-        //
-        //            [self.timer2 invalidate];
     }];
 
 }

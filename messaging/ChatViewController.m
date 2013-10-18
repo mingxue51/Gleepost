@@ -53,11 +53,12 @@
     
     [super viewDidAppear:animated];
 
+    
 
-    
-    
     NSLog(@"viewDidAppear");
     NSLog(@"Current conversation: %@",[self.conversation getParticipantsNames]);
+    
+    
     
     if([self.conversation getParticipantsNames] != nil)
     {
@@ -79,6 +80,7 @@
         
     }
     
+    //Save the current conversation.
     if([self.conversation getParticipantsNames] != nil)
     {
         //If there are already 3 conversations, then delete the oldest.
@@ -92,15 +94,7 @@
         [self.liveConversations enqueue:self.conversation];
     }
     
-
-    
     [self initialiseAnimationViewToTheViewController];
-
-    
-    
-    
-    
-    
 
 }
 
@@ -123,8 +117,71 @@
         }
     }
     
-    [self initialiseAnimationViewToTheViewControllerWhenDissappearing];
+//    [self initialiseAnimationViewToTheViewControllerWhenDissappearing];
     
+    [self.chatAnimations initAnimations];
+    
+}
+
+/**
+ This method used in order to smoothly navigate back to the view controller.
+ 
+ */
+-(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
+{
+    [ChatViewAnimations setLiveChat:NO];
+    
+    //    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    //    self.chatAnimations.chatViewController = self;
+    //    self.chatAnimations.tag = 100;
+    //
+    //    [self.chatAnimations refreshLiveConversations: self.liveConversations];
+    //
+    self.view = self.chatAnimations;
+    
+    //[self.chatAnimations refreshLiveConversations: self.liveConversations];
+    
+    
+}
+
+/**
+ Initialise the animations to the view controller.
+ 
+ */
+-(void) initialiseAnimationViewToTheViewController
+{
+    NSLog(@"initialiseAnimationViewToTheViewController");
+    
+    //[ChatViewAnimations setLiveChat:YES];
+    
+    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
+    
+    NSLog(@"CONVERSATIONS: %@", self.liveConversations);
+
+    
+    [self.chatAnimations refreshLiveConversations:self.liveConversations];
+    
+    self.chatAnimations.chatViewController = self;
+    self.chatAnimations.tag = 100;
+    
+    
+    
+    
+    //    self.view = self.chatAnimations;
+    [self.view addSubview:self.chatAnimations];
+    [self.view sendSubviewToBack:self.chatAnimations];
+    
+    //    UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
+    //
+    //    UIImageView *backgroundImage = [[UIImageView alloc] init];
+    //
+    //    [backgroundImage setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    //
+    //    backgroundImage.image = newChatImage;
+    //
+    //    [self.view addSubview:backgroundImage];
+    //    [self.view sendSubviewToBack:backgroundImage];
 }
 
 
@@ -183,62 +240,7 @@
      */
 }
 
-/**
- This method used in order to smoothly navigate back to the view controller.
- 
- */
--(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
-{
-    [ChatViewAnimations setLiveChat:NO];
 
-//    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    self.chatAnimations.chatViewController = self;
-//    self.chatAnimations.tag = 100;
-//    
-//    [self.chatAnimations refreshLiveConversations: self.liveConversations];
-//    
-    self.view = self.chatAnimations;
-    
-    //[self.chatAnimations refreshLiveConversations: self.liveConversations];
-
-    
-}
-
-/**
- Initialise the animations to the view controller.
- 
- */
--(void) initialiseAnimationViewToTheViewController
-{
-    //[ChatViewAnimations setLiveChat:YES];
-    
-    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
-
-    [self.chatAnimations refreshLiveConversations:self.liveConversations];
-    
-    self.chatAnimations.chatViewController = self;
-    self.chatAnimations.tag = 100;
-    
-    NSLog(@"CONVERSATIONS: %@", self.liveConversations);
-
-    
-    
-//    self.view = self.chatAnimations;
-    [self.view addSubview:self.chatAnimations];
-    [self.view sendSubviewToBack:self.chatAnimations];
-    
-//    UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
-//    
-//    UIImageView *backgroundImage = [[UIImageView alloc] init];
-//    
-//    [backgroundImage setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    
-//    backgroundImage.image = newChatImage;
-//    
-//    [self.view addSubview:backgroundImage];
-//    [self.view sendSubviewToBack:backgroundImage];
-}
 
 -(void) setBackgroundToNavigationBar
 {

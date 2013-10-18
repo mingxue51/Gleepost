@@ -125,7 +125,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="lNV-tW-Jeu">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="17C4CAB4-7C04-42C8-9458-E8F78538FE21" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="68FD0DD3-0291-4000-A443-0CC3DA3D6F61" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Xrg-UP-Uxg">
@@ -1414,6 +1414,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactCell" id="HF9-lB-hPp" customClass="ContactUserCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
@@ -1599,7 +1600,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="17C4CAB4-7C04-42C8-9458-E8F78538FE21" width="15" height="16">
+        <image name="68FD0DD3-0291-4000-A443-0CC3DA3D6F61" width="15" height="16">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -1653,7 +1654,7 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <segue reference="sAu-s2-hfG"/>
         <segue reference="UFN-Sk-0kH"/>
         <segue reference="Jle-n7-Gmg"/>
+        <segue reference="45e-Ih-rfu"/>
         <segue reference="htZ-EL-79i"/>
-        <segue reference="u6W-1W-GCM"/>
     </inferredMetricsTieBreakers>
 </document>

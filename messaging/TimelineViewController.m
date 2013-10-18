@@ -350,6 +350,8 @@ static BOOL likePushed;
     
     //TODO: Add to Post datatype a boolean like.
     Post *post = self.posts[indexPath.row];
+    
+    NSLog(@"Image URL: %@", post.imagesUrls);
 
     if(indexPath.row%3==0)
     {

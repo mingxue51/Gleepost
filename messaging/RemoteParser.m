@@ -123,6 +123,7 @@ static NSDateFormatter *dateFormatter = nil;
     post.commentsCount = json[@"comments"];
     post.likes = json[@"likes"];
     post.dislikes = json[@"hates"];
+    post.imagesUrls = json[@"images"];
     
     return post;
 }

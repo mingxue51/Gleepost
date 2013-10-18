@@ -44,40 +44,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-//    UIColor *barColour = [UIColor colorWithRed:0.13f green:0.14f blue:0.15f alpha:1.00f];
-//    UIView *colourView = [[UIView alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 64.f)];
-//    colourView.opaque = NO;
-//    colourView.alpha = .7f;
-//    colourView.backgroundColor = barColour;
-//    self.navigationController.navigationBar.barTintColor = barColour;
-//    [self.navigationController.navigationBar.layer insertSublayer:colourView.layer atIndex:1];
-//    UIImage *img = [UIImage imageNamed:@"navigationbar_4"];
-//     NSLog(@"Image: Height: %f, Width: %f, ",img.size.height, img.size.width);
-//    
-//    
-//    
-//    
-//    UIImageView *imgView = [[UIImageView alloc] init];
-//    
-//    imgView.image = img;
-//    
-//    [imgView setFrame:CGRectMake(0.f, -20.f, 320.f, 40.f)];
-//    
-//   // NSLog(@"Image After: Height: %f, Width: %f, ",imgView.image.size.height, imgView.image.size.width);
-//
-//   // img = [self resizeImageToSize:CGSizeMake(320.f, 80.f) withImage:img];
-//    NSLog(@"Image: Height: %f, Width: %f, ",img.size.height, img.size.width);
-//
-//    
-//    UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 60.f)];
-//    
-//   
-//    
-//    [bar setBackgroundColor:[UIColor clearColor]];
-//    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
-//    [bar setTranslucent:YES];
-//
-    
     //Add samples users.
     self.users = [[NSMutableArray alloc] init];
     [self.users addObject:@"TestUser1"];
@@ -97,10 +63,7 @@
     
     [self categoriseUsersByLetter];
     [self.contactsTableView reloadData];
-    //[self.navigationController.navigationBar setBackgroundColor:[UIColor whiteColor]];
-    
-    //[self.navigationController.navigationBar insertSubview:imgView atIndex:0];
-    //[self.navigationController.navigationBar insertSubview:bar atIndex:1];
+
 }
 
 -(void) categoriseUsersByLetter
@@ -356,21 +319,21 @@
     [self performSegueWithIdentifier:@"view profile" sender:self];
 }
 
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    //Hide tabbar.
-   // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-    
-    if([segue.identifier isEqualToString:@"view profile"])
-    {
-        
-        ProfileViewController *pvc = segue.destinationViewController;
-        //TODO: Pass any information to the ProfileViewController.
-        
-        
-    }
-}
+//Call this when there is a need to pass elements to the next controller.
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    //Hide tabbar.
+//   // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+//    
+//    if([segue.identifier isEqualToString:@"view profile"])
+//    {
+//        
+//        ProfileViewController *pvc = segue.destinationViewController;
+//        //TODO: Pass any information to the ProfileViewController.
+//        
+//        
+//    }
+//}
 
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 //{
