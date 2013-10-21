@@ -8,7 +8,7 @@
 
 #import "GLPTestViewController.h"
 #import "GLPTestCell.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+JMImageCache.h"
 
 @interface GLPTestViewController ()
 
@@ -68,7 +68,7 @@
     static NSString *CellIdentifier = @"Cell";
     GLPTestCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    [cell.imageView setImageWithURL:self.test[indexPath.row] placeholderImage:[UIImage imageNamed:@"default_user"]];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:self.test[indexPath.row]] placeholder:[UIImage imageNamed:@"default_user_image"]];
     
     
     return cell;
