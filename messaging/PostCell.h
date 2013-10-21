@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Post.h"
 #import "GLPUser.h"
+#import "GLPPost.h"
 
 @interface PostCell : UITableViewCell
 
@@ -35,7 +35,9 @@
 
 +(NSString*) findTheNeededText: (NSString*)str;
 
--(void) updateWithPostData:(Post *)postData;
+//-(void) updateWithPostData:(GLPPost *)postData andUserData:(GLPUser*)user;
+
+-(void) updateWithPostData:(GLPPost *)postData;
 
 
 

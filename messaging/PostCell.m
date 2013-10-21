@@ -7,6 +7,8 @@
 //
 
 #import "PostCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 @implementation PostCell
@@ -23,6 +25,18 @@ static const float StandardImageCellHeight = 400;
     
     if(self)
     {
+        //Change the user's button shape to circle.
+        /**
+         button.clipsToBounds = YES;
+         
+         button.layer.cornerRadius = 20;//half of the width
+         button.layer.borderColor=[UIColor redColor].CGColor;
+         button.layer.borderWidth=2.0f;
+         */
+        
+
+        
+        
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
         
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
@@ -46,16 +60,71 @@ static const float StandardImageCellHeight = 400;
 
 
 
--(void) updateWithPostData:(Post *)postData
+-(void) updateWithPostData:(GLPPost *)postData
 {
     //Set image to the image view.
-    [self.postImage setImage:[UIImage imageNamed:@"post_image"]];
+    //[self.postImage setImage:[UIImage imageNamed:@"post_image"]];
     
     //NSLog(@"Height of Text View: %f",self.content.frame.size.height);
     
-    //Add the user's image.
     
-    [self.userImage setBackgroundImage:[UIImage imageNamed:@"avatar_big"] forState: UIControlStateNormal];
+    NSURL *url;
+
+    for(NSString* str in postData.imagesUrls)
+    {
+        url = [NSURL URLWithString:str];
+        break;
+    }
+    
+    
+
+    //[self fetchImagePostFromServer:url];
+    
+    UIImage *userImage;
+    
+    //Add the default image.
+    userImage = [UIImage imageNamed:@"default_user"];
+    
+    // Here we use the new provided setImageWithURL: method to load the web image
+    [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
+    
+    
+    NSURL *userImageUrl;
+    
+//    NSLog(@"Image in post cell: %@", user.profileImageUrl);
+//    
+//    if(user.profileImageUrl!=NULL)
+//    {
+//        //Add the image comes from server.
+//        //userImageUrl = postData.author.imageUrl;
+//        userImageUrl = [NSURL URLWithString:user.profileImageUrl];
+//        
+//        UIImageView *userImageImageView = [[UIImageView alloc] init];
+//        
+//        [userImageImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
+//         {
+//             NSLog(@"Downloading...");
+//         }
+//          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+//         {
+//             [self.userImage setBackgroundImage:image forState: UIControlStateNormal];
+//
+//         }];
+//        
+////        [self.userImage setBackgroundImage:userImageImageView.image forState: UIControlStateNormal];
+//    }
+//    else
+//    {
+
+        
+        //Add the user's image.
+        [self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
+//    }
+    
+    self.userImage.clipsToBounds = YES;
+    
+    self.userImage.layer.cornerRadius = 20;
+    
     
     //Add the user's name.
     [self.userName setText:postData.author.name];
@@ -86,6 +155,19 @@ static const float StandardImageCellHeight = 400;
     
     
 
+}
+
+-(void) fetchImagePostFromServer:(NSURL*)url
+{
+    //Fetch post image from the server.
+    [self.postImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
+     {
+         //NSLog(@"Downloading...");
+     }
+     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+     {
+         self.postImage.image = image;
+     }];
 }
 
 static const float firstContentTextViewHeight = 60;

@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Post.h"
+#import "GLPPost.h"
 #import "HPGrowingTextView.h"
 
 @interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
 
-@property (strong, nonatomic) Post *post;
+@property (strong, nonatomic) GLPPost *post;
 //TODO: Remove after the integration of image posts.
 @property int selectedIndex;
 

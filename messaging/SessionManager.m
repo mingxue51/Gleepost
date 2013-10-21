@@ -116,6 +116,8 @@ static SessionManager *instance = nil;
     return NO;
 }
 
+//TODO: Here there is a problem.
+
 - (void)loadData
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {

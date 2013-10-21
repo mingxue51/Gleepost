@@ -19,12 +19,16 @@
 #import <Twitter/Twitter.h>
 #import "PopUpMessage.h"
 #import "PostWithImageCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 //#import "AppDelegate.h"
 
 @interface TimelineViewController ()
 
 @property (strong, nonatomic) NSMutableArray *posts;
+@property (strong, nonatomic) NSMutableArray *usersImages;
+@property (strong, nonatomic) NSMutableArray *postsImages;
+@property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) Post *selectedPost;
 @property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -182,6 +186,11 @@ static BOOL likePushed;
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
 
+    self.users = [[NSMutableArray alloc] init];
+    
+    
+    self.usersImages = [[NSMutableArray alloc] init];
+    self.postsImages = [[NSMutableArray alloc] init];
     
     [self loadPosts];
 
@@ -265,7 +274,34 @@ static BOOL likePushed;
     self.navigationItem.titleView = label;
 }
 
-
+/**
+ Fetches the post's user from the server and set to the corresponding cell its contents.
+ 
+ @param post the corresponding post.
+ @param postCell the instance of the cell.
+ 
+ */
+//-(void) userWithPost:(GLPPost*) post andPostCell:(PostCell*)postCell
+//{
+//    [[WebClient sharedInstance] getUserWithKey:post.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(success)
+//        {
+//            NSLog(@"User Image URL: %@",user.profileImageUrl);
+//            [postCell updateWithPostData:post andUserData:user];
+//            
+//            [self.users addObject:user];
+//        }
+//        else
+//        {
+//            NSLog(@"Not Success: %d",success);
+//            [postCell updateWithPostData:post andUserData:nil];
+//            
+//        }
+//        
+//        
+//    }];
+//}
 
 - (void)loadPosts
 {
@@ -279,11 +315,17 @@ static BOOL likePushed;
             self.posts = [posts mutableCopy];
             
             
-            for(int i=0; i<self.posts.count; ++i)
-            {
-                NSLog(@"COUNT POSTS: %d",i);
-                [self.shownCells addObject:[NSNumber numberWithBool:NO]];
-            }
+//            for(GLPPost *p in self.posts)
+//            {
+//                UIImageView *imgView = [[UIImageView alloc] init];
+//                
+//                [imgView setImageWithURL:[NSURL URLWithString:[p.imagesUrls objectAtIndex:0] placeholderImage:[UIImage imageNamed:nil]];
+//            }
+            
+
+
+            
+
             
             //TODO: Change this when image is available.
             //TODO: Add new attribute containsImage in Post class.
@@ -317,13 +359,88 @@ static BOOL likePushed;
 //
 //                }
 //            }
+            //[self loadUsersImagesAndReloadTable];
             
             
             [self.tableView reloadData];
+            
         } else {
             [WebClientHelper showStandardError];
         }
     }];
+}
+
+-(void) loadPostsImages
+{
+    for(GLPPost* currentPost in self.posts)
+    {
+        UIImageView* userImage = [[UIImageView alloc] init];
+
+        NSURL * url = [NSURL URLWithString:[currentPost.imagesUrls objectAtIndex:0]];
+
+        //Fetch post image from the server.
+        [userImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
+         {
+             //NSLog(@"Downloading...");
+         }
+                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+         {
+             [self.postsImages addObject:image];
+         }];
+    }
+}
+
+-(void) loadUsersImagesAndReloadTable
+{
+    
+    for(GLPPost* currentPost in self.posts)
+    {
+        [[WebClient sharedInstance] getUserWithKey:currentPost.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+            
+            if(success)
+            {
+                NSLog(@"Load User Image URL: %@",user.profileImageUrl);
+                
+                //[self.users addObject:user];
+                
+                UIImageView* userImage = [[UIImageView alloc] init];
+                
+                NSURL * url = [NSURL URLWithString:user.profileImageUrl];
+                
+                //Fetch post image from the server.
+                [userImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
+                 {
+                     //NSLog(@"Downloading...");
+                 }
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+                 {
+                     [self.usersImages addObject:image];
+                     
+
+                 }];
+                
+               
+            }
+            else
+            {
+                NSLog(@"Not Success: %d User: %@",success, user);
+                
+            }
+            
+            
+            
+        }];
+        
+        NSLog(@"Users Images: %@",self.usersImages);
+
+    }
+    
+    [self.tableView reloadData];
+
+
+    
+    
+   
 }
 
 #pragma mark - Table view data source
@@ -349,40 +466,22 @@ static BOOL likePushed;
 
     
     //TODO: Add to Post datatype a boolean like.
-    Post *post = self.posts[indexPath.row];
+    GLPPost *post = self.posts[indexPath.row];
     
-    NSLog(@"Image URL: %@", post.imagesUrls);
 
-    if(indexPath.row%3==0)
+//    GLPUser *user = self.users[indexPath.row];
+    
+
+    
+
+
+    
+    if([post imagePost])
     {
 
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
-       
         postCell.imageAvailable = YES;
-        
-        //Calculate the new position of the elements.
-        
-//        float contentHeight = [PostCell getContentLabelHeightForContent:post.content];
-        
-        
-        //Find the difference between current height and new height.
-//        float difference = contentHeight - postCell.content.frame.size.height;
-        
-
-        //[postCell updateWithPostData:post withImage:YES];
-        
-        
-        //Add the main image to the post.
-//        imageCell.mainImage.image = postImage;
-        
-        //TODO: See again the postImage width. Problem.
-//        [imageCell.mainImage setFrame:CGRectMake(10.0f, 80.0f, postImage.size.width-18, postImage.size.height-18)];
-        
-        
-        //Add the social panel over the main image.
-//        [imageCell.socialPanel setFrame:CGRectMake(10.0f, postImage.size.width+12, postImage.size.width-18, 50.0f)];
-        
 
     }
     else
@@ -393,26 +492,16 @@ static BOOL likePushed;
 
         postCell.imageAvailable = NO;
         
-        //Find the difference between current height and new height.
-
-        //[postCell updateWithPostData:post withImage:NO];
-
-
-        
-        //Find the size of the text of the current post.
-//        float textSize = [PostCell getContentLabelHeightForContent:post.content];
-        
-        //Add the social panel over the main image.
-        //[textCell.socialPanel setFrame:CGRectMake(10.0f, textSize+47, postImage.size.width-18, 50.0f)];
-        
-//        [self createTheCell:textCell withPost:post andImage:NO];
     }
     
     
     //TODO: For each post take the status of the button like. (Obviously from the server).
     //TODO: In updateWithPostData information take the status of the like button.
     
-     [postCell updateWithPostData:post];
+    //NSLog(@"Image URL: %@", user.profileImageUrl);
+
+    
+    
     
     //Add selector to the buttons.
     [self buttonWithName:@"Like" andSubviews:[postCell.contentView subviews] withCell:postCell];
@@ -420,12 +509,29 @@ static BOOL likePushed;
     [self buttonWithName:@"Comment" andSubviews:[postCell.contentView subviews] withCell:postCell];
     [self buttonWithName:@"Share" andSubviews:[postCell.contentView subviews] withCell:postCell];
     [self buttonWithName:@"" andSubviews:[postCell.contentView subviews] withCell:postCell];
+    
+    
+    //For each post try to fetch users' details.
+    NSLog(@"User Remote Key: %d",post.author.remoteKey);
+    
+    
+    
+    [postCell updateWithPostData:post];
+
+    
+    //[self userWithPost:post andPostCell:postCell];
+    
+    
+   
  
     
     
     return postCell;
     
 }
+
+
+
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -719,10 +825,10 @@ static BOOL likePushed;
     //static float lowerPostLimit = 115;
     //static float fixedLimitHeight = 70;
     
-    Post *currentPost = [self.posts objectAtIndex:indexPath.row];
+    GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
     
     
-    if(indexPath.row%3==0)
+    if([currentPost imagePost])
     {
         NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:YES], currentPost.content);
         //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];

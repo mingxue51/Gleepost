@@ -76,7 +76,7 @@ static BOOL likePushed;
 
 
 
-    [self initHeaderTableView: self.post];
+    //[self initHeaderTableView: self.post];
     [self initFooterTableView];
     
     //Initialise elements.
@@ -120,6 +120,8 @@ static BOOL likePushed;
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+
+
 #pragma mark - Init and config
 - (void)configureForm
 {
@@ -157,19 +159,19 @@ static BOOL likePushed;
  
  */
 
--(void) initHeaderTableView: (Post*) incomingPost
-{
-    
-    //Initialise Post View.
-    [self.tableView.headerView initialiseElementsWithPost:_post];
-
-    //Add selectors to the buttons.
-    [self buttonWithName:@"Like" andSubviews:[self.tableView.headerView subviews]];
-    
-    
-    [self buttonWithName:@"" andSubviews:[self.tableView.headerView subviews]];
-
-}
+//-(void) initHeaderTableView: (Post*) incomingPost
+//{
+//    
+//    //Initialise Post View.
+//    [self.tableView.headerView initialiseElementsWithPost:_post];
+//
+//    //Add selectors to the buttons.
+//    [self buttonWithName:@"Like" andSubviews:[self.tableView.headerView subviews]];
+//    
+//    
+//    [self buttonWithName:@"" andSubviews:[self.tableView.headerView subviews]];
+//
+//}
 
 #pragma mark - Social panel button methods
 
@@ -398,6 +400,36 @@ static bool firstTime = YES;
     }
 }
 
+
+/**
+ Fetches the post's user from the server and set to the corresponding cell its contents.
+ 
+ @param post the corresponding post.
+ @param postCell the instance of the cell.
+ 
+ */
+//-(void) userWithPost:(GLPPost*) post andPostCell:(PostCell*)postCell
+//{
+//    [[WebClient sharedInstance] getUserWithKey:self.post.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(success)
+//        {
+//            NSLog(@"User Image URL: %@",user.profileImageUrl);
+//            [postCell updateWithPostData:self.post andUserData:user];
+//            
+//            //[self.users addObject:user];
+//        }
+//        else
+//        {
+//            NSLog(@"Not Success: %d",success);
+//            [postCell updateWithPostData:self.post andUserData:nil];
+//            
+//        }
+//        
+//        
+//    }];
+//}
+
 - (void)loadComments
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
@@ -523,7 +555,31 @@ static bool firstTime = YES;
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         }
         
-        [postViewCell updateWithPostData:self.post];
+        
+//        [[WebClient sharedInstance] getUserWithKey:self.post.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//            
+//            if(success)
+//            {
+//                NSLog(@"User Image URL: %@",user.profileImageUrl);
+//                [postViewCell updateWithPostData:self.post andUserData:user];
+//                
+//                //[self.users addObject:user];
+//            }
+//            else
+//            {
+//                NSLog(@"Not Success: %d",success);
+//                [postViewCell updateWithPostData:self.post andUserData:nil];
+//                
+//            }
+//            
+//            
+//        }];
+        
+        
+//        [postViewCell updateWithPostData:self.post];
+        
+        
+       // [self userWithPost:self.post andPostCell:postViewCell];
         
     
         
@@ -571,6 +627,8 @@ static bool firstTime = YES;
     
     
 }
+
+
 
 /*
 // Override to support conditional editing of the table view.

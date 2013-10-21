@@ -33,6 +33,8 @@
 		583B9FE317F3676A00B4BEE3 /* set_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE117F3676A00B4BEE3 /* set_tab.png */; };
 		583B9FE417F3676A00B4BEE3 /* set_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */; };
 		583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583C725D17EF2E5600820761 /* MessageBox2small.png */; };
+		583EAB7518119402003D68B3 /* default_user_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7418119402003D68B3 /* default_user_image.png */; };
+		583EAB7918119688003D68B3 /* add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7818119688003D68B3 /* add_contact.png */; };
 		5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315817FEDD8500A3278D /* AddCommentViewController.m */; };
 		5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315B17FEE97D00A3278D /* NewCommentView.m */; };
 		5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315F17FF0B4900A3278D /* ChatPanelView.m */; };
@@ -53,7 +55,6 @@
 		584332A4180F324200BD9F74 /* profilebackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A1180F324200BD9F74 /* profilebackground.png */; };
 		584332A5180F324200BD9F74 /* profilepicture.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A2180F324200BD9F74 /* profilepicture.png */; };
 		584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A3180F324200BD9F74 /* unlock_the_profile.png */; };
-		584332A8180F336900BD9F74 /* AddContact_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A7180F336900BD9F74 /* AddContact_button.png */; };
 		584332AA180F343200BD9F74 /* bottom_background_private_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A9180F343200BD9F74 /* bottom_background_private_profile.png */; };
 		584332AC180F347F00BD9F74 /* Name.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332AB180F347F00BD9F74 /* Name.png */; };
 		584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906BE17FDA26E0045B65D /* ViewPostTableView.m */; };
@@ -286,6 +287,8 @@
 		583B9FE117F3676A00B4BEE3 /* set_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = set_tab.png; sourceTree = "<group>"; };
 		583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_tab@2x.png"; sourceTree = "<group>"; };
 		583C725D17EF2E5600820761 /* MessageBox2small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageBox2small.png; sourceTree = "<group>"; };
+		583EAB7418119402003D68B3 /* default_user_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image.png; sourceTree = "<group>"; };
+		583EAB7818119688003D68B3 /* add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact.png; sourceTree = "<group>"; };
 		5841315717FEDD8500A3278D /* AddCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCommentViewController.h; sourceTree = "<group>"; };
 		5841315817FEDD8500A3278D /* AddCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCommentViewController.m; sourceTree = "<group>"; };
 		5841315A17FEE97D00A3278D /* NewCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCommentView.h; sourceTree = "<group>"; };
@@ -312,7 +315,6 @@
 		584332A1180F324200BD9F74 /* profilebackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilebackground.png; sourceTree = "<group>"; };
 		584332A2180F324200BD9F74 /* profilepicture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilepicture.png; sourceTree = "<group>"; };
 		584332A3180F324200BD9F74 /* unlock_the_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlock_the_profile.png; sourceTree = "<group>"; };
-		584332A7180F336900BD9F74 /* AddContact_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddContact_button.png; sourceTree = "<group>"; };
 		584332A9180F343200BD9F74 /* bottom_background_private_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_background_private_profile.png; sourceTree = "<group>"; };
 		584332AB180F347F00BD9F74 /* Name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Name.png; sourceTree = "<group>"; };
 		584906BD17FDA26E0045B65D /* ViewPostTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPostTableView.h; sourceTree = "<group>"; };
@@ -660,6 +662,14 @@
 			name = "External Code";
 			sourceTree = "<group>";
 		};
+		583EAB711811867C003D68B3 /* User Images */ = {
+			isa = PBXGroup;
+			children = (
+				583EAB7418119402003D68B3 /* default_user_image.png */,
+			);
+			name = "User Images";
+			sourceTree = "<group>";
+		};
 		5841315D17FF0B0500A3278D /* Comment Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -836,6 +846,7 @@
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
+				583EAB711811867C003D68B3 /* User Images */,
 				58433295180F17E400BD9F74 /* Register Images */,
 				586581331805E316005814B4 /* Login Images */,
 				581C9C4418047E1B00279256 /* Icons */,
@@ -896,12 +907,12 @@
 		5898328F17F8AD2B008CB807 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				583EAB7818119688003D68B3 /* add_contact.png */,
 				584332A1180F324200BD9F74 /* profilebackground.png */,
 				584332A2180F324200BD9F74 /* profilepicture.png */,
 				5898329217F8ED54008CB807 /* background_profile.png */,
 				58B1161E180D89A9000E9555 /* profile_image_frame.png */,
 				584332A3180F324200BD9F74 /* unlock_the_profile.png */,
-				584332A7180F336900BD9F74 /* AddContact_button.png */,
 				584332A9180F343200BD9F74 /* bottom_background_private_profile.png */,
 				584332AB180F347F00BD9F74 /* Name.png */,
 			);
@@ -1420,7 +1431,7 @@
 				ORGANIZATIONNAME = Gleepost;
 				TargetAttributes = {
 					80AB891617C267F50053E784 = {
-						DevelopmentTeam = WRZQ6LY578;
+						DevelopmentTeam = CS4642C8H6;
 					};
 				};
 			};
@@ -1474,7 +1485,6 @@
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,
 				5895B3D417F4C8840040535D /* navigationbar_4@2x.png in Resources */,
 				584332AC180F347F00BD9F74 /* Name.png in Resources */,
-				584332A8180F336900BD9F74 /* AddContact_button.png in Resources */,
 				5898329317F8ED54008CB807 /* background_profile.png in Resources */,
 				8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */,
 				5895B3DB17F5D7730040535D /* thumbs-up_pushed.png in Resources */,
@@ -1532,6 +1542,7 @@
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
 				5895B3D017F4B0590040535D /* navigationbar@2x.png in Resources */,
+				583EAB7918119688003D68B3 /* add_contact.png in Resources */,
 				5880103718101327008C170F /* pic2.png in Resources */,
 				586659FD17F2203E00A0354E /* contacts_tab@2x.png in Resources */,
 				80E7478417CE9F4C001957E5 /* get_comments.json in Resources */,
@@ -1567,6 +1578,7 @@
 				587D23C917EA195D00E0DDFF /* new_chat_tab.png in Resources */,
 				80B1735B18056A0700D9669B /* typing_bar1.png in Resources */,
 				58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */,
+				583EAB7518119402003D68B3 /* default_user_image.png in Resources */,
 				587D23CA17EA195D00E0DDFF /* chat_tab.png in Resources */,
 				587D23CB17EA195D00E0DDFF /* share.png in Resources */,
 				587D23CD17EA195D00E0DDFF /* home_tab.png in Resources */,
@@ -1840,7 +1852,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = Gleepost;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E570BD6C-8B18-4AE4-9E91-5AF573659485";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1860,7 +1872,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = Gleepost;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E570BD6C-8B18-4AE4-9E91-5AF573659485";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

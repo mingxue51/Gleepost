@@ -18,4 +18,13 @@
 @synthesize author;
 @synthesize imagesUrls;
 
+-(BOOL) imagePost
+{
+    if (imagesUrls == nil || [imagesUrls count] == 0)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
 @end

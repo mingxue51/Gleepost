@@ -65,7 +65,7 @@
     [self.contentTextView resignFirstResponder];
     
 
-    Post *post = [[Post alloc] init];
+    GLPPost *post = [[GLPPost alloc] init];
     post.content = self.contentTextView.text;
     post.date = [NSDate date];
     

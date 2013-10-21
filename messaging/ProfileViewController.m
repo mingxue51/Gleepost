@@ -192,7 +192,7 @@ static BOOL likePushed;
     }
     
     
-    [cell updateWithPostData:post];
+   // [cell updateWithPostData:post];
 
 //    NSLog(@"Username: %@",post.author.name);
 //    

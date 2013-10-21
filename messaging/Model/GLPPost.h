@@ -18,5 +18,6 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
+-(BOOL) imagePost;
 
 @end

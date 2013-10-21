@@ -28,6 +28,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     GLPUser *user = [[GLPUser alloc] init];
     user.remoteKey = [json[@"id"] integerValue];
     user.name = json[@"username"];
+    //user.imageUrl = [NSURL URLWithString:json[@"profile_image"]];
+    //NSLog(@"User's image URL: %@", json[@"profile_image"]);
     
 //    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
 //    
@@ -39,7 +41,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    
 //    // optional
 //    user.tagline = json[@"tagline"];
-//    user.profileImageUrl = json[@"profile_image"];
+    user.profileImageUrl = json[@"profile_image"];
+    NSLog(@"User's image URL: %@", json[@"profile_image"]);
+    NSLog(@"User's course: %@",json[@"course"]);
+    
 //    user.course = json[@"course"];
 //    
 //    if(json[@"network"]) {
@@ -134,8 +139,36 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.likes = [json[@"likes"] integerValue];
     post.dislikes = [json[@"hates"] integerValue];
     
+    NSLog(@"Posts JSON: %@",json);
+    
     // should work.. or not!
-    post.imagesUrls = json[@"images"];
+    //post.imagesUrls = json[@"images"];
+    
+    NSArray *jsonArray = json[@"images"];
+    NSLog(@"jsonArray: %@",jsonArray);
+    
+    if(jsonArray == (id)[NSNull null])
+    {
+        post.imagesUrls = nil;
+    }
+    else
+    {
+        if(jsonArray.count > 0)
+        {
+            NSMutableArray *imagesUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
+            
+            for(NSString *url in jsonArray)
+            {
+                [imagesUrls addObject:url];
+            }
+            post.imagesUrls = imagesUrls;
+        } else
+        {
+            post.imagesUrls = [NSArray array];
+        }
+    }
+    
+
     
     return post;
 }

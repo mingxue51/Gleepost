@@ -344,18 +344,53 @@ static WebClient *instance = nil;
 
 /* USER */
 
-//- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, OldUser *user))callbackBlock
+- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"user/%d", key];
+    
+    NSLog(@"USER: %@",path);
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
+        NSLog(@"Callback User: %@",user.name);
+        callbackBlock(YES, user);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
+/**
+- (void)getPostsWithCallbackBlock:(void (^)(BOOL success, NSArray *posts))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+        NSLog(@"PARAMS: %@", params);
+        callbackBlock(YES, posts);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+*/
+ 
+
+
+//- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock
 //{
 //    NSString *path = [NSString stringWithFormat:@"user/%d", key];
 //    
-//    [self getPath:path parameters:self.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //        
-//        OldUser *user = [JsonParser parseUserFromJson:responseObject];
+//        GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
 //        callbackBlock(YES, user);
 //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //        callbackBlock(NO, nil);
 //    }];
 //}
+
 
 
 @end
