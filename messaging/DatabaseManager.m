@@ -77,6 +77,8 @@ static DatabaseManager *instance = nil;
          date integer, \
          content text, \
          sendStatus integer, \
+         seen integer, \
+         displayOrder integer autoincrement, \
          author_key integer, \
          conversation_key integer);"];
         

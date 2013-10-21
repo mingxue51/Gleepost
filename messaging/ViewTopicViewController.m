@@ -219,9 +219,9 @@ const int flexibleResizeLimit = 120;
                 [self showMessages:messages];
             }
             
-            if(!self.longPollingRequestRunning) {
-                [self startLongPollingRequest];
-            }
+//            if(!self.longPollingRequestRunning) {
+//                [self startLongPollingRequest];
+//            }
         } else {
             [WebClientHelper showStandardError];
         }
@@ -275,25 +275,25 @@ const int flexibleResizeLimit = 120;
 
 #pragma mark - Request management
 
-- (void)startLongPollingRequest
-{
-    self.longPollingRequestRunning = YES;
-    NSLog(@"start long polling request");
-    
-    [[WebClient sharedInstance] longPollNewMessagesForConversation:self.conversation callbackBlock:^(BOOL success, GLPMessage *message) {
-        NSLog(@"long polling request finish with result %d", success);
-        
-        if(success) {
-            [self showMessage:message];
-            [GLPMessageDao save:message];
-        }
-        
-        // restart long polling request if has to
-        if(self.longPollingRequestRunning) {
-            [self startLongPollingRequest];
-        }
-    }];
-}
+//- (void)startLongPollingRequest
+//{
+//    self.longPollingRequestRunning = YES;
+//    NSLog(@"start long polling request");
+//    
+//    [[WebClient sharedInstance] longPollNewMessagesForConversation:self.conversation callbackBlock:^(BOOL success, GLPMessage *message) {
+//        NSLog(@"long polling request finish with result %d", success);
+//        
+//        if(success) {
+//            [self showMessage:message];
+//            [GLPMessageDao save:message];
+//        }
+//        
+//        // restart long polling request if has to
+//        if(self.longPollingRequestRunning) {
+//            [self startLongPollingRequest];
+//        }
+//    }];
+//}
 
 
 #pragma mark - Actions

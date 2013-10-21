@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
+#import "GLPLongPollManager.h"
 
 @interface LoginViewController ()
 
@@ -101,8 +102,9 @@
     [[WebClient sharedInstance] loginWithName:self.nameTextField.text password:self.passwordTextField.text andCallbackBlock:^(BOOL success) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
-        if(success)
-        {
+        if(success) {
+            [[GLPLongPollManager sharedInstance] startLongPoll];
+            
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];

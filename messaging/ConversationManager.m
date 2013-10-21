@@ -52,14 +52,14 @@
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
     
-    GLPMessage *last = nil;
-    for (int i = localEntities.count - 1; i >= 0; i--) {
-        GLPMessage *message = localEntities[i];
-        if(message.remoteKey != 0) {
-            last = message;
-            break;
-        }
-    }
+    GLPMessage *last = [GLPMessageDao findLastRemoteAndSeenForConversation:conversation];
+//    for (int i = localEntities.count - 1; i >= 0; i--) {
+//        GLPMessage *message = localEntities[i];
+//        if(message.remoteKey != 0) {
+//            last = message;
+//            break;
+//        }
+//    }
     
     NSLog(@"last local message synch with remote: %d - %@", last.remoteKey, last.content);
     
@@ -97,7 +97,7 @@
     message.author = [SessionManager sharedInstance].user;
     message.sendStatus = kSendStatusLocal;
     
-    [GLPMessageDao save:message];
+    [GLPMessageDao save:message isNew:YES];
     
     NSLog(@"Post message %@ to server", message.content);
     

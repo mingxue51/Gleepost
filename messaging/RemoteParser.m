@@ -169,6 +169,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
 
+//    
+//    NSArray *jsonArray = json[@"images"];
+//    
+//    if(jsonArray.count > 0) {
+//        NSMutableArray *imagesUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
+//        for(NSString *url in jsonArray) {
+//            [imagesUrls addObject:url];
+//        }
+//        post.imagesUrls = imagesUrls;
+//    } else {
+//        post.imagesUrls = [NSArray array];
+//    }
+    
+    
     
     return post;
 }

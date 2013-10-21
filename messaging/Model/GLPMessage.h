@@ -10,6 +10,7 @@
 @interface GLPMessage : GLPEntity
 
 @property (assign, nonatomic) BOOL seen;
+@property (assign, nonatomic) NSInteger displayOrder;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSDate *date;

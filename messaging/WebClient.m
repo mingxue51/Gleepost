@@ -307,33 +307,22 @@ static WebClient *instance = nil;
     }];
 }
 
-//- (void)longPollNewMessageCallbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
-//{
-//    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"long poll %@", responseObject);
-//        NSDictionary *json = responseObject;
-//        
-//        NSNumber *remoteKey = json[@"conversation_id"];
-//        Conversation *conversation = [GLPConversation MR_findFirstByAttribute:@"remoteKey" withValue:remoteKey];
-//        
-//        if(!conversation) {
-//            [NSException raise:@"Long poll conversation not found" format:@"Conversation with remote key %@", remoteKey];
-//        }
-//        
-//        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
-//        
-//        
-//        if(!message.date) {
-//            message.date = [NSDate date];
-//        }
-//        
-//        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-//            callbackBlock(YES, message);
-//        }];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO, nil);
-//    }];
-//}
+- (void)longPollNewMessageCallbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
+{
+    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"long poll %@", responseObject);
+        NSDictionary *json = responseObject;
+        
+        //TODO: conversation
+        NSInteger remoteKey = [json[@"conversation_id"] integerValue];
+        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
+        
+        callbackBlock(YES, message);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
 
 
 - (void)cancelMessagesLongPolling

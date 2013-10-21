@@ -14,7 +14,11 @@
 
 + (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation;
 + (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation afterInsertingNewMessages:(NSArray *)newMessages;
-+ (void)save:(GLPMessage *)entity;
++ (GLPMessage *)findLastRemoteAndSeenForConversation:(GLPConversation *)conversation;
+
++ (void)save:(GLPMessage *)entity isNew:(BOOL)isNew;
 + (void)update:(GLPMessage *)entity;
+
++ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message;
 
 @end

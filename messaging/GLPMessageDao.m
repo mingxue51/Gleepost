@@ -10,6 +10,7 @@
 #import "FMResultSet.h"
 #import "GLPMessageDaoParser.h"
 #import "DatabaseManager.h"
+#import "GLPConversationDao.h"
 
 @implementation GLPMessageDao
 
@@ -25,11 +26,44 @@
     return result;
 }
 
++ (NSArray *)findAllOrderByDisplayDateForConversation:(GLPConversation *)conversation
+{
+    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayDate ASC", conversation.remoteKey];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    while ([resultSet next]) {
+        [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet]];
+    }
+    
+    return result;
+}
+
++ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation
+{
+    [[DatabaseManager sharedInstance].database beginTransaction];
+    
+    // remove
+    
+    for(GLPMessage *message in newMessages) {
+        [GLPMessageDao save:message isNew:YES];
+    }
+    
+    NSArray *result = [GLPMessageDao findAllOrderByDateForConversation:conversation];
+    
+    [[DatabaseManager sharedInstance].database commit];
+    
+    return result;
+
+}
+
 + (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation afterInsertingNewMessages:(NSArray *)newMessages
 {
     [[DatabaseManager sharedInstance].database beginTransaction];
+    
+    // remove 
+    
     for(GLPMessage *message in newMessages) {
-        [GLPMessageDao save:message];
+        [GLPMessageDao save:message isNew:YES];
     }
     
     NSArray *result = [GLPMessageDao findAllOrderByDateForConversation:conversation];
@@ -39,16 +73,39 @@
     return result;
 }
 
-+ (void)save:(GLPMessage *)entity
++ (GLPMessage *)findLastRemoteAndSeenForConversation:(GLPConversation *)conversation
+{
+    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where remote_key!=0 AND seen=1 AND conversation_key=%d order by remote_key DESC", conversation.remoteKey];
+    
+    if(![resultSet next]) {
+        return nil;
+    }
+    
+    return [GLPMessageDaoParser createFromResultSet:resultSet];
+}
+
++ (void)save:(GLPMessage *)entity isNew:(BOOL)isNew
 {
     int date = [entity.date timeIntervalSince1970];
-    [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
-            entity.remoteKey,
-            entity.content,
-            date,
-            entity.sendStatus,
-            entity.author.remoteKey,
-            entity.conversation.remoteKey];
+    
+    if(isNew) {
+        [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
+                entity.remoteKey,
+                entity.content,
+                date,
+                entity.sendStatus,
+                entity.author.remoteKey,
+                entity.conversation.remoteKey];
+    } else {
+        [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
+         entity.remoteKey,
+         entity.content,
+         date,
+         entity.sendStatus,
+         -entity.remoteKey,
+         entity.author.remoteKey,
+         entity.conversation.remoteKey];
+    }
     
     entity.key = [[DatabaseManager sharedInstance].database lastInsertRowId];
 }
@@ -59,14 +116,28 @@
     
     int date = [entity.date timeIntervalSince1970];
     
-    [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, author_key=%d, conversation_key=%d where key=%d",
+    [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, seen=%d, author_key=%d, conversation_key=%d where key=%d",
      entity.remoteKey,
      entity.content,
      date,
      entity.sendStatus,
+     entity.seen,
      entity.author.remoteKey,
      entity.conversation.remoteKey,
      entity.key];
+}
+
++ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message
+{
+    [[DatabaseManager sharedInstance].database beginTransaction];
+
+    GLPConversation *existingConversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey];
+    if(!existingConversation) {
+        [GLPConversationDao save:message.conversation];
+    }
+    
+    [GLPMessageDao save:message isNew:YES];
+    [[DatabaseManager sharedInstance].database commit];
 }
 
 @end
