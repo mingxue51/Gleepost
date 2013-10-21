@@ -166,6 +166,7 @@
 		80666C781806F7E200E4E515 /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C771806F7E200E4E515 /* MessageManager.m */; };
 		80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */; };
 		80666C7F1806FF4900E4E515 /* MessagesSendingProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */; };
+		8067E6CC18152AA800A343EF /* GLPLongPollManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8067E6CB18152AA800A343EF /* GLPLongPollManager.m */; };
 		807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4CFE180AF0F6003D67E6 /* _Conversation.m */; };
 		807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D00180AF0F6003D67E6 /* _LocalMessage.m */; };
 		807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D06180AF0F6003D67E6 /* _WebEntity.m */; };
@@ -227,6 +228,8 @@
 		80B1735B18056A0700D9669B /* typing_bar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1735918056A0700D9669B /* typing_bar1.png */; };
 		80B1735C18056A0700D9669B /* typing_bar1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1735A18056A0700D9669B /* typing_bar1@2x.png */; };
 		80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1735E1805792B00D9669B /* WebClientHelper.m */; };
+		80B64A941815628E000AA151 /* GLPTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B64A931815628E000AA151 /* GLPTestViewController.m */; };
+		80B64A9718156321000AA151 /* GLPTestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B64A9618156321000AA151 /* GLPTestCell.m */; };
 		80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C4CAB717CFE24700AFA80C /* RegisterViewController.m */; };
 		80C4CABA17CFE3C400AFA80C /* post_register.json in Resources */ = {isa = PBXBuildFile; fileRef = 80C4CAB917CFE3C400AFA80C /* post_register.json */; };
 		80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C4CABC17CFE65200AFA80C /* ChatViewController.m */; };
@@ -459,6 +462,8 @@
 		80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageProcessingOperation.m; sourceTree = "<group>"; };
 		80666C7D1806FF4900E4E515 /* MessagesSendingProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesSendingProcessor.h; sourceTree = "<group>"; };
 		80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesSendingProcessor.m; sourceTree = "<group>"; };
+		8067E6CA18152AA800A343EF /* GLPLongPollManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLongPollManager.h; sourceTree = "<group>"; };
+		8067E6CB18152AA800A343EF /* GLPLongPollManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLongPollManager.m; sourceTree = "<group>"; };
 		807C4CFD180AF0F6003D67E6 /* _Conversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Conversation.h; sourceTree = "<group>"; };
 		807C4CFE180AF0F6003D67E6 /* _Conversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Conversation.m; sourceTree = "<group>"; };
 		807C4CFF180AF0F6003D67E6 /* _LocalMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _LocalMessage.h; sourceTree = "<group>"; };
@@ -554,6 +559,10 @@
 		80B1735A18056A0700D9669B /* typing_bar1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typing_bar1@2x.png"; sourceTree = "<group>"; };
 		80B1735D1805792B00D9669B /* WebClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebClientHelper.h; sourceTree = "<group>"; };
 		80B1735E1805792B00D9669B /* WebClientHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebClientHelper.m; sourceTree = "<group>"; };
+		80B64A921815628E000AA151 /* GLPTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTestViewController.h; sourceTree = "<group>"; };
+		80B64A931815628E000AA151 /* GLPTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTestViewController.m; sourceTree = "<group>"; };
+		80B64A9518156321000AA151 /* GLPTestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTestCell.h; sourceTree = "<group>"; };
+		80B64A9618156321000AA151 /* GLPTestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTestCell.m; sourceTree = "<group>"; };
 		80C4CAB617CFE24700AFA80C /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		80C4CAB717CFE24700AFA80C /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		80C4CAB917CFE3C400AFA80C /* post_register.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_register.json; sourceTree = "<group>"; };
@@ -1180,6 +1189,10 @@
 				80AB894A17C26EC10053E784 /* Manager */,
 				80AB894617C26E930053E784 /* Webservice */,
 				80AB896B17C283AF0053E784 /* Constants.h */,
+				80B64A921815628E000AA151 /* GLPTestViewController.h */,
+				80B64A931815628E000AA151 /* GLPTestViewController.m */,
+				80B64A9518156321000AA151 /* GLPTestCell.h */,
+				80B64A9618156321000AA151 /* GLPTestCell.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1233,6 +1246,8 @@
 				80DDDF35180FD799009E17BD /* LoginManager.m */,
 				80DDDF3A180FE00A009E17BD /* UserManager.h */,
 				80DDDF3B180FE00A009E17BD /* UserManager.m */,
+				8067E6CA18152AA800A343EF /* GLPLongPollManager.h */,
+				8067E6CB18152AA800A343EF /* GLPLongPollManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -1660,6 +1675,7 @@
 				80666C781806F7E200E4E515 /* MessageManager.m in Sources */,
 				80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */,
 				80C8BA69181043D5004F70DB /* GLPConversationDao.m in Sources */,
+				8067E6CC18152AA800A343EF /* GLPLongPollManager.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
@@ -1680,6 +1696,7 @@
 				80AB894D17C26ECA0053E784 /* SessionManager.m in Sources */,
 				58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
+				80B64A941815628E000AA151 /* GLPTestViewController.m in Sources */,
 				807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */,
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
@@ -1717,6 +1734,7 @@
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
+				80B64A9718156321000AA151 /* GLPTestCell.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
 				80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */,
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
@@ -1851,8 +1869,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E570BD6C-8B18-4AE4-9E91-5AF573659485";
+				PROVISIONING_PROFILE = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1871,8 +1889,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E570BD6C-8B18-4AE4-9E91-5AF573659485";
+				PROVISIONING_PROFILE = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
