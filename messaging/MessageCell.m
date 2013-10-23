@@ -8,6 +8,7 @@
 
 #import "MessageCell.h"
 #import "DateFormatterHelper.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MessageCell()
 
@@ -16,6 +17,8 @@
 @property (assign, nonatomic) float initialMessageContentViewX;
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
+@property (assign, nonatomic) BOOL isBackgroundRounded;
 
 @end
 
@@ -39,6 +42,7 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
         return nil;
     }
     
+    self.isBackgroundRounded = NO;
     self.dateFormatter = [DateFormatterHelper createTimeDateFormatter];
     
     return self;
@@ -53,6 +57,8 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
     
 //    UIImage *image = [self.messageContentImageView.image resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
 //    self.messageContentImageView.image = image;
+    
+
 }
 
 - (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst
@@ -93,6 +99,9 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
     
     self.messageContentLabel.text = message.content;
     
+    self.messageContentImageView.layer.masksToBounds = YES;
+    self.messageContentImageView.layer.cornerRadius = 8.0;
+    
 //    switch (message.sendStatusValue) {
 //        case kSendStatusLocal:
 //            self.messageContentLabel.textColor = [UIColor orangeColor];
@@ -106,11 +115,14 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
 //    }
     
     // round message content background image
-    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
-    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:20.0] addClip];
-    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
-    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+//    if(!self.isBackgroundRounded) {
+//        self.isBackgroundRounded = YES;
+//    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
+//    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
+//    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
+//    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    }
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
