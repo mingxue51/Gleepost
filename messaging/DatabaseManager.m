@@ -12,12 +12,13 @@
 
 @property (assign, nonatomic) BOOL exists;
 @property (strong, nonatomic) NSString *path;
+@property (strong, nonatomic) FMDatabaseQueue *databaseQueue;
 
 @end
 
 @implementation DatabaseManager
 
-@synthesize database = _database;
+@synthesize databaseQueue=_databaseQueue;
 
 NSString * const GLPDatabaseName = @"Gleepost2.sqlite";
 
@@ -31,6 +32,20 @@ static DatabaseManager *instance = nil;
     });
     
     return instance;
+}
+
++ (void)transaction:(void (^)(FMDatabase *db, BOOL *rollback))block
+{
+    [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        block(db, rollback);
+    }];
+}
+
++ (void)run:(void (^)(FMDatabase *db))block
+{
+    [[DatabaseManager sharedInstance].databaseQueue inDatabase:^(FMDatabase *db) {
+        block(db);
+    }];
 }
 
 - (id)init
@@ -51,52 +66,51 @@ static DatabaseManager *instance = nil;
 
 - (void)initDatabase
 {
-    self.database = [FMDatabase databaseWithPath:self.path];
-    [self.database open];
+//    self.database = [FMDatabase databaseWithPath:self.path];
+//    [self.database open];
+    
+    self.databaseQueue = [FMDatabaseQueue databaseQueueWithPath:self.path];
     
     if(!self.exists) {
-        NSLog(@"create database");
-        // user
-        [self.database executeUpdate:@"create table users ( \
-         key integer primary key autoincrement, \
-         remoteKey integer, \
-         name text);"];
-        
-        // conversation
-        [self.database executeUpdate:@"create table conversations ( \
-         key integer primary key autoincrement, \
-         remoteKey integer, \
-         lastMessage text, \
-         lastUpdate integer, \
-         title text);"];
-        
-        // message
-        [self.database executeUpdate:@"create table messages ( \
-         key integer primary key autoincrement, \
-         remoteKey integer, \
-         date integer, \
-         content text, \
-         sendStatus integer, \
-         seen integer, \
-         displayOrder integer, \
-         author_key integer, \
-         conversation_key integer);"];
-        
-        self.exists = YES;
+        [self.databaseQueue inDatabase:^(FMDatabase *db) {
+            NSLog(@"create database");
+            
+            // user
+            [db executeUpdate:@"create table users ( \
+             key integer primary key autoincrement, \
+             remoteKey integer, \
+             name text);"];
+            
+            // conversation
+            [db executeUpdate:@"create table conversations ( \
+             key integer primary key autoincrement, \
+             remoteKey integer, \
+             lastMessage text, \
+             lastUpdate integer, \
+             title text, \
+             notificationsCount integer);"];
+            
+            // message
+            [db executeUpdate:@"create table messages ( \
+             key integer primary key autoincrement, \
+             remoteKey integer, \
+             date integer, \
+             content text, \
+             sendStatus integer, \
+             seen integer, \
+             displayOrder integer, \
+             author_key integer, \
+             conversation_key integer);"];
+            
+            self.exists = YES;
+        }];
     }
 }
 
 - (void)dropDatabase
 {
-    [self closeDatabaseIfNeed];
     [[NSFileManager defaultManager] removeItemAtPath:self.path error:nil];
 }
 
-- (void)closeDatabaseIfNeed
-{
-    if(self.database.open) {
-        [self.database close];
-    }
-}
 
 @end

@@ -8,15 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
 
 @interface DatabaseManager : NSObject
 
-@property (strong, nonatomic) FMDatabase *database;
+@property (readonly, strong, nonatomic) FMDatabaseQueue *databaseQueue;
 
 + (DatabaseManager *)sharedInstance;
++ (void)run:(void (^)(FMDatabase *db))block;
++ (void)transaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
 - (void)initDatabase;
 - (void)dropDatabase;
-- (void)closeDatabaseIfNeed;
 
 @end

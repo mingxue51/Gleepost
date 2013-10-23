@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPUser.h"
+#import "FMDatabase.h"
 
 @interface GLPUserDao : NSObject
 
 + (GLPUser *)findByRemoteKey:(NSInteger)remoteKey;
++ (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
 + (void)save:(GLPUser *)entity;
 
 @end

@@ -10,6 +10,8 @@
 #import "WebClient.h"
 #import "GLPConversationDao.h"
 #import "GLPMessageDao.h"
+#import "ConversationManager.h"
+#import "DatabaseManager.h"
 
 @interface LongPollOperation()
 
@@ -46,15 +48,7 @@
         
         if(success) {
             NSLog(@"New message from long poll request: %@", message.content);
-            
-            GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey];
-            if(!existingMessage) {
-                [GLPMessageDao saveNewMessageWithPossiblyNewConversation:message];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
-                
-            } else {
-                NSLog(@"Insert message that already exists with the remote key %d : %@", message.remoteKey, message.content);
-            }
+            [ConversationManager saveMessageFromLongpoll:message];
         } else {
             NSLog(@"Long poll request finished without result, restart");
         }

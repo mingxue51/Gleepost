@@ -17,7 +17,7 @@
 @synthesize messages = _messages;
 @synthesize participants = _participants;
 @synthesize title = _title;
-//@synthesize participantsNames = _participantsNames;
+@synthesize notificationsCount = _notificationsCount;
 
 - (void)setTitleFromParticipants:(NSArray *)participants
 {

@@ -8,20 +8,22 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
 #import "GLPMessage.h"
+
 
 @interface GLPMessageDao : NSObject
 
 + (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey;
-+ (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation;
-+ (GLPMessage *)findLastRemoteAndSeenForConversation:(GLPConversation *)conversation;
++ (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
++ (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 
-+ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation;
++ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 
-+ (void)save:(GLPMessage *)entity;
-+ (void)saveOld:(GLPMessage *)entity;
-+ (void)update:(GLPMessage *)entity;
++ (void)save:(GLPMessage *)entity db:(FMDatabase *)db;
+//+ (void)saveOld:(GLPMessage *)entity;
++ (void)update:(GLPMessage *)entity db:(FMDatabase *)db;
 
-+ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message;
++ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
 
 @end

@@ -13,7 +13,7 @@
 
 @implementation GLPMessageDaoParser
 
-+ (void)parseResultSet:(FMResultSet *)resultSet into:(GLPMessage *)entity
++ (void)parseResultSet:(FMResultSet *)resultSet into:(GLPMessage *)entity db:(FMDatabase *)db
 {
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
@@ -21,14 +21,14 @@
     entity.date = [resultSet dateForColumn:@"date"];
     entity.sendStatus = [resultSet intForColumn:@"sendStatus"];
     
-    entity.conversation = [GLPConversationDao findByRemoteKey:[resultSet intForColumn:@"conversation_key"]];
-    entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"]];
+    entity.conversation = [GLPConversationDao findByRemoteKey:[resultSet intForColumn:@"conversation_key"] db:db];
+    entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
 }
 
-+ (GLPMessage *)createFromResultSet:(FMResultSet *)resultSet
++ (GLPMessage *)createFromResultSet:(FMResultSet *)resultSet db:(FMDatabase *)db
 {
     GLPMessage *entity = [[GLPMessage alloc] init];
-    [GLPMessageDaoParser parseResultSet:resultSet into:entity];
+    [GLPMessageDaoParser parseResultSet:resultSet into:entity db:db];
     
     return entity;
 }

@@ -15,20 +15,35 @@
 
 + (GLPUser *)findByRemoteKey:(NSInteger)remoteKey
 {
-    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from users where remoteKey=%d limit 1", remoteKey];
+    __block GLPUser *user = nil;
+    
+    [[DatabaseManager sharedInstance].databaseQueue inDatabase:^(FMDatabase *db) {
+        user = [GLPUserDao findByRemoteKey:remoteKey db:db];
+    }];
+    
+    return user;
+}
+
++ (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where remoteKey=%d limit 1", remoteKey];
+    
+    GLPUser *user = nil;
     
     if([resultSet next]) {
-        return [GLPUserDaoParser createUserFromResultSet:resultSet];
+        user = [GLPUserDaoParser createUserFromResultSet:resultSet];
     }
     
-    return nil;
+    return user;
 }
 
 + (void)save:(GLPUser *)entity
 {
-    [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into users(remoteKey, name) values(%d, %@)", entity.remoteKey, entity.name];
-
-    entity.key = [[DatabaseManager sharedInstance].database lastInsertRowId];
+    [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdateWithFormat:@"insert into users(remoteKey, name) values(%d, %@)", entity.remoteKey, entity.name];
+        
+        entity.key = [db lastInsertRowId];
+    }];
 }
 
 @end

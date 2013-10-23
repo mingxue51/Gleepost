@@ -20,8 +20,8 @@
 @property (strong, nonatomic) NSArray *messages;
 @property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
+@property (assign, nonatomic) NSInteger *notificationsCount;
 
-//- (NSString *)getParticipantsNames;
 - (void)setTitleFromParticipants:(NSArray *)participants;
 
 @end

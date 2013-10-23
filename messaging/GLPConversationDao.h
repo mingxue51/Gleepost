@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPConversation.h"
+#import "FMDatabase.h"
 
 @interface GLPConversationDao : NSObject
 
 + (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
-+ (NSArray *)findAllOrderByDate;
-+ (void)save:(GLPConversation *)entity;
-+ (void)replaceAllConversationsWith:(NSArray *)conversations;
++ (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
++ (NSArray *)findAllOrderByDate:(FMDatabase *)db;
++ (void)save:(GLPConversation *)entity db:(FMDatabase *)db;
++ (void)deleteAll:(FMDatabase *)db;
 
 @end

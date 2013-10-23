@@ -18,6 +18,7 @@
 #import "WebClientHelper.h"
 #import "MessagesSendingProcessor.h"
 #import "NSDate+UTC.h"
+#import "DatabaseManager.h"
 
 
 
@@ -25,11 +26,13 @@
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
-    NSLog(@"load conversations");
+    NSLog(@"Load conversations");
     
-    NSArray *localEntities = [GLPConversationDao findAllOrderByDate];
-    localCallback(localEntities);
-    NSLog(@"local conversations %d", localEntities.count);
+    [DatabaseManager run:^(FMDatabase *db) {
+        NSArray *localEntities = [GLPConversationDao findAllOrderByDate:db];
+        localCallback(localEntities);
+        NSLog(@"Load local conversations %d", localEntities.count);
+    }];
     
     [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
         if(!success) {
@@ -37,9 +40,15 @@
             return;
         }
         
-        [GLPConversationDao replaceAllConversationsWith:conversations];
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            [GLPConversationDao deleteAll:db];
+            for(GLPConversation *conversation in conversations) {
+                [GLPConversationDao save:conversation db:db];
+            }
+        }];
+        
         remoteCallback(YES, conversations);
-        NSLog(@"remote conversations %d", conversations.count);
+        NSLog(@"Load remote conversations %d", conversations.count);
     }];
 }
 
@@ -48,14 +57,13 @@
 {
     NSLog(@"load messages for conversation %d", conversation.remoteKey);
     
-    NSArray *localEntities = [GLPMessageDao findLastMessagesForConversation:conversation];
+    __block NSArray *localEntities = nil;
+    [DatabaseManager run:^(FMDatabase *db) {
+        localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+    }];
+    
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
-    
-//    if(localEntities.count > 0) {
-//    NSLog(@"first %@", [localEntities[0] content]);
-//    NSLog(@"last %@", [localEntities[localEntities.count - 1] content]);
-//    }
     
     GLPMessage *last = nil;
     for (int i = localEntities.count - 1; i >= 0; i--) {
@@ -86,9 +94,17 @@
         messages = [[messages reverseObjectEnumerator] allObjects];
         
         // all messages, including the new ones
-        NSArray *allMessages = [GLPMessageDao insertNewMessages:messages andFindAllForConversation:conversation];
-        remoteCallback(YES, allMessages);
+        __block NSArray *allMessages = nil;
         
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            for(GLPMessage *message in messages) {
+                [GLPMessageDao save:message db:db];
+            }
+            
+            allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+        }];
+        
+        remoteCallback(YES, allMessages);
         NSLog(@"final messages %d", allMessages.count);
     }];
 }
@@ -103,7 +119,9 @@
     message.sendStatus = kSendStatusLocal;
     message.seen = YES;
     
-    [GLPMessageDao save:message];
+    [DatabaseManager run:^(FMDatabase *db) {
+        [GLPMessageDao save:message db:db];
+    }];
     
     NSLog(@"Post message %@ to server", message.content);
     
@@ -117,11 +135,46 @@
             message.sendStatus = kSendStatusFailure;
         }
         
-        [GLPMessageDao update:message];
+        [DatabaseManager run:^(FMDatabase *db) {
+            [GLPMessageDao update:message db:db];
+        }];
+        
         sendCallback(message, responseSuccess);
     }];
 
     return message;
+}
+
++ (void)saveMessageFromLongpoll:(GLPMessage *)message
+{
+    __block BOOL success = NO;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        // check message not already exists = long poll own message
+        GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey db:db];
+        if(existingMessage) {
+            NSLog(@"Insert message that already exists with the remote key %d : %@", message.remoteKey, message.content);
+            return;
+        }
+        
+        GLPConversation *existingConversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
+        
+        if(existingConversation) {
+            message.conversation = existingConversation;
+            NSLog(@"existing conversation %d", existingConversation.remoteKey);
+        } else {
+            [GLPConversationDao save:message.conversation db:db];
+            //TODO: check works properly
+        }
+        
+        [GLPMessageDao save:message db:db];
+        success = YES;
+    }];
+    
+    if(success) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+    }
 }
 
 @end

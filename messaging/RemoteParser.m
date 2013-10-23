@@ -35,7 +35,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     NSDictionary* network = json[@"network"];
     
-    NSLog(@"Whole Network: %@", network);
+//    NSLog(@"Whole Network: %@", network);
     
     
     
@@ -62,8 +62,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    // optional
 //    user.tagline = json[@"tagline"];
     user.profileImageUrl = json[@"profile_image"];
-    NSLog(@"User's image URL: %@", json[@"profile_image"]);
-    NSLog(@"User's course: %@",json[@"course"]);
+//    NSLog(@"User's image URL: %@", json[@"profile_image"]);
+//    NSLog(@"User's course: %@",json[@"course"]);
     
 //    user.course = json[@"course"];
 //    
@@ -185,8 +185,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.dislikes = [json[@"hates"] integerValue];
     
 
-    NSLog(@"Posts JSON: %@",json);
-    NSLog(@"User's image JSON: %@",post.author.profileImageUrl);
+//    NSLog(@"Posts JSON: %@",json);
+//    NSLog(@"User's image JSON: %@",post.author.profileImageUrl);
     
     // should work.. or not!
     //post.imagesUrls = json[@"images"];
