@@ -48,18 +48,23 @@
 {
     NSLog(@"load messages for conversation %d", conversation.remoteKey);
     
-    NSArray *localEntities = [GLPMessageDao findAllOrderByDateForConversation:conversation];
+    NSArray *localEntities = [GLPMessageDao findLastMessagesForConversation:conversation];
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
     
-    GLPMessage *last = [GLPMessageDao findLastRemoteAndSeenForConversation:conversation];
-//    for (int i = localEntities.count - 1; i >= 0; i--) {
-//        GLPMessage *message = localEntities[i];
-//        if(message.remoteKey != 0) {
-//            last = message;
-//            break;
-//        }
+//    if(localEntities.count > 0) {
+//    NSLog(@"first %@", [localEntities[0] content]);
+//    NSLog(@"last %@", [localEntities[localEntities.count - 1] content]);
 //    }
+    
+    GLPMessage *last = nil;
+    for (int i = localEntities.count - 1; i >= 0; i--) {
+        GLPMessage *message = localEntities[i];
+        if(message.remoteKey != 0) {
+            last = message;
+            break;
+        }
+    }
     
     NSLog(@"last local message synch with remote: %d - %@", last.remoteKey, last.content);
     
@@ -77,8 +82,11 @@
         
         NSLog(@"new remote messages %d", messages.count);
         
+        // reverse order
+        messages = [[messages reverseObjectEnumerator] allObjects];
+        
         // all messages, including the new ones
-        NSArray *allMessages = [GLPMessageDao findAllOrderByDateForConversation:conversation afterInsertingNewMessages:messages];
+        NSArray *allMessages = [GLPMessageDao insertNewMessages:messages andFindAllForConversation:conversation];
         remoteCallback(YES, allMessages);
         
         NSLog(@"final messages %d", allMessages.count);
@@ -91,13 +99,10 @@
     message.content = content;
     message.conversation = conversation;
     message.date = [NSDate dateInUTC];
-    
-    NSLog(@"message %@ date %@", message.content, message.date);
-
     message.author = [SessionManager sharedInstance].user;
     message.sendStatus = kSendStatusLocal;
     
-    [GLPMessageDao save:message isNew:YES];
+    [GLPMessageDao save:message];
     
     NSLog(@"Post message %@ to server", message.content);
     
@@ -117,12 +122,5 @@
 
     return message;
 }
-
-//+ (Conversation *)getOrCreateConversationForRemoteKey:(NSInteger)remoteKey
-//{
-//    Conversation *conversation = [Conversation MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInteger:remoteKey]];
-//    
-//    
-//}
 
 @end

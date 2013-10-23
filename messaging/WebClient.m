@@ -23,7 +23,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.12/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.13/";
 
 static WebClient *instance = nil;
 
@@ -124,7 +124,6 @@ static WebClient *instance = nil;
     
     [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
-        NSLog(@"PARAMS: %@", params);
         callbackBlock(YES, posts);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -314,8 +313,11 @@ static WebClient *instance = nil;
         NSDictionary *json = responseObject;
         
         //TODO: conversation
-        NSInteger remoteKey = [json[@"conversation_id"] integerValue];
+        GLPConversation *conversation = [[GLPConversation alloc] init];
+        conversation.remoteKey = [json[@"conversation_id"] integerValue];
+        conversation.title = json[@"by"][@"username"];
         GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
+        message.conversation = conversation;
         
         callbackBlock(YES, message);
 

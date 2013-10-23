@@ -14,16 +14,16 @@
 
 @implementation GLPMessageDao
 
-+ (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation
++ (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation
 {
-    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where conversation_key=%d order by date ASC", conversation.remoteKey];
+    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayOrder DESC limit 20", conversation.remoteKey];
     
     NSMutableArray *result = [NSMutableArray array];
     while ([resultSet next]) {
         [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet]];
     }
     
-    return result;
+    return [[result reverseObjectEnumerator] allObjects];
 }
 
 + (NSArray *)findAllOrderByDisplayDateForConversation:(GLPConversation *)conversation
@@ -42,13 +42,11 @@
 {
     [[DatabaseManager sharedInstance].database beginTransaction];
     
-    // remove
-    
     for(GLPMessage *message in newMessages) {
-        [GLPMessageDao save:message isNew:YES];
+        [GLPMessageDao save:message];
     }
     
-    NSArray *result = [GLPMessageDao findAllOrderByDateForConversation:conversation];
+    NSArray *result = [GLPMessageDao findLastMessagesForConversation:conversation];
     
     [[DatabaseManager sharedInstance].database commit];
     
@@ -56,21 +54,32 @@
 
 }
 
-+ (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation afterInsertingNewMessages:(NSArray *)newMessages
+//+ (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation afterInsertingNewMessages:(NSArray *)newMessages
+//{
+//    [[DatabaseManager sharedInstance].database beginTransaction];
+//    
+//    // remove 
+//    
+//    for(GLPMessage *message in newMessages) {
+//        [GLPMessageDao save:message];
+//    }
+//    
+//    NSArray *result = [GLPMessageDao findAllOrderByDateForConversation:conversation];
+//    
+//    [[DatabaseManager sharedInstance].database commit];
+//    
+//    return result;
+//}
+
++ (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey
 {
-    [[DatabaseManager sharedInstance].database beginTransaction];
+    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where remoteKey=%d", remoteKey];
     
-    // remove 
-    
-    for(GLPMessage *message in newMessages) {
-        [GLPMessageDao save:message isNew:YES];
+    if(![resultSet next]) {
+        return nil;
     }
     
-    NSArray *result = [GLPMessageDao findAllOrderByDateForConversation:conversation];
-    
-    [[DatabaseManager sharedInstance].database commit];
-    
-    return result;
+    return [GLPMessageDaoParser createFromResultSet:resultSet];
 }
 
 + (GLPMessage *)findLastRemoteAndSeenForConversation:(GLPConversation *)conversation
@@ -84,29 +93,33 @@
     return [GLPMessageDaoParser createFromResultSet:resultSet];
 }
 
-+ (void)save:(GLPMessage *)entity isNew:(BOOL)isNew
++ (void)save:(GLPMessage *)entity
 {
     int date = [entity.date timeIntervalSince1970];
     
-    if(isNew) {
-        [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
-                entity.remoteKey,
-                entity.content,
-                date,
-                entity.sendStatus,
-                entity.author.remoteKey,
-                entity.conversation.remoteKey];
-    } else {
-        [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
-         entity.remoteKey,
-         entity.content,
-         date,
-         entity.sendStatus,
-         -entity.remoteKey,
-         entity.author.remoteKey,
-         entity.conversation.remoteKey];
-    }
+    [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, (SELECT IFNULL(MAX(key), 0) + 1 FROM messages), %d, %d)",
+            entity.remoteKey,
+            entity.content,
+            date,
+            entity.sendStatus,
+            entity.author.remoteKey,
+            entity.conversation.remoteKey];
     
+    entity.key = [[DatabaseManager sharedInstance].database lastInsertRowId];
+}
+
++ (void)saveOld:(GLPMessage *)entity
+{
+    int date = [entity.date timeIntervalSince1970];
+    [[DatabaseManager sharedInstance].database executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
+     entity.remoteKey,
+     entity.content,
+     date,
+     entity.sendStatus,
+     -1,
+     entity.author.remoteKey,
+     entity.conversation.remoteKey];
+
     entity.key = [[DatabaseManager sharedInstance].database lastInsertRowId];
 }
 
@@ -132,11 +145,15 @@
     [[DatabaseManager sharedInstance].database beginTransaction];
 
     GLPConversation *existingConversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey];
-    if(!existingConversation) {
+    if(existingConversation) {
+        message.conversation = existingConversation;
+        NSLog(@"existing conversation %d", existingConversation.remoteKey);
+    } else {
         [GLPConversationDao save:message.conversation];
+        //TODO: check works properly
     }
     
-    [GLPMessageDao save:message isNew:YES];
+    [GLPMessageDao save:message];
     [[DatabaseManager sharedInstance].database commit];
 }
 

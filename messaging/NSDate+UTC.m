@@ -20,9 +20,6 @@
     
     NSString *utcDateString = [formatter stringFromDate:localDate];
     NSDate *utcDate = [formatter dateFromString:utcDateString];
-    
-    NSLog(@"utc date string %@", utcDateString);
-    NSLog(@"utc date %@", utcDate);
 
     return utcDate;
 }

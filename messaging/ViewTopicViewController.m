@@ -120,6 +120,8 @@ const int flexibleResizeLimit = 120;
                                                  name:UIKeyboardWillHideNotification 
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:@"GLPNewMessage" object:nil];
+    
     
     [self.tabBarController.tabBar setHidden:YES];
 
@@ -244,6 +246,14 @@ const int flexibleResizeLimit = 120;
 
     [self.tableView reloadData];
     [self scrollToTheEndAnimated:YES];
+}
+
+- (void)showMessageFromNotification:(NSNotification *)notification
+{
+    GLPMessage *message = [notification userInfo][@"message"];
+    NSLog(@"Show message from notification %@", message);
+    
+    [self showMessage:message];
 }
 
 - (void)showMessage:(GLPMessage *)message

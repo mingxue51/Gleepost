@@ -42,8 +42,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    // optional
 //    user.tagline = json[@"tagline"];
     user.profileImageUrl = json[@"profile_image"];
-    NSLog(@"User's image URL: %@", json[@"profile_image"]);
-    NSLog(@"User's course: %@",json[@"course"]);
     
 //    user.course = json[@"course"];
 //    
@@ -139,13 +137,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.likes = [json[@"likes"] integerValue];
     post.dislikes = [json[@"hates"] integerValue];
     
-    NSLog(@"Posts JSON: %@",json);
-    
-    // should work.. or not!
-    //post.imagesUrls = json[@"images"];
     
     NSArray *jsonArray = json[@"images"];
-    NSLog(@"jsonArray: %@",jsonArray);
     
     if(jsonArray == (id)[NSNull null])
     {
@@ -269,7 +262,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         date = [RemoteParser parseDateWithNanoSecondsFromString:string];
     }
     
-    NSLog(@"Date %@", string);
     NSAssert(date, @"Parsed date null", @"String value %@", string);
     
     return date;

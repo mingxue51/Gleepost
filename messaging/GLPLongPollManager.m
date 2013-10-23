@@ -8,11 +8,13 @@
 
 #import "GLPLongPollManager.h"
 #import "LongPollOperation.h"
+#import "WebClient.h"
 
 @interface GLPLongPollManager()
 
 @property (strong, nonatomic) NSOperationQueue *queue;
 @property (assign, nonatomic) BOOL isOperationRunning;
+@property (strong, nonatomic) LongPollOperation *longPollOperation;
 
 @end
 
@@ -52,19 +54,23 @@ static GLPLongPollManager *instance = nil;
     
     self.isOperationRunning = YES;
     
-    LongPollOperation *operation = [[LongPollOperation alloc] init];
-    [operation setCompletionBlock:^{
+    __unsafe_unretained typeof(self) self_ = self;
+    self.longPollOperation = [[LongPollOperation alloc] init];
+    [self.longPollOperation setCompletionBlock:^{
         NSLog(@"Long poll operation finished");
-        self.isOperationRunning = NO;
+        self_.isOperationRunning = NO;
     }];
     
-    [self.queue addOperation:operation];
+    [self.queue addOperation:self.longPollOperation];
     NSLog(@"Start long poll operation");
 }
 
 - (void)stopLongPoll
 {
-    [self.queue cancelAllOperations];
+    [self.longPollOperation cancel];
+//    [self.queue cancelAllOperations];
+//    [[WebClient sharedInstance] cancelAllHTTPOperationsWithMethod:@"GET" path:@"longpoll"];
+    //[[[WebClient sharedInstance] operationQueue] cancelAllOperations];
     NSLog(@"Stop long poll operation");
 }
 

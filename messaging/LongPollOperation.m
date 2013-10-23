@@ -22,7 +22,7 @@
 - (void)main {
     @autoreleasepool {
         self.isRequestRunning = NO;
-
+        [self startRequest];
     }
 }
 
@@ -33,20 +33,29 @@
         return;
     }
     
-    if(self.isCancelled) {
+    if([self isCancelled]) {
         NSLog(@"Long poll operation cancelled");
         return;
     }
+    
+    NSLog(@"Start long poll request");
     
     self.isRequestRunning = YES;
     
     [[WebClient sharedInstance] longPollNewMessageCallbackBlock:^(BOOL success, GLPMessage *message) {
         
         if(success) {
-            NSLog(@"New message from long poll: %@", message.content);
-            [GLPMessageDao saveNewMessageWithPossiblyNewConversation:message];
+            NSLog(@"New message from long poll request: %@", message.content);
+            
+            GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey];
+            if(!existingMessage) {
+                [GLPMessageDao saveNewMessageWithPossiblyNewConversation:message];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+            } else {
+                NSLog(@"Insert message that already exists with the remote key %d : %@", message.remoteKey, message.content);
+            }
         } else {
-            NSLog(@"Long poll finished without result, restart");
+            NSLog(@"Long poll request finished without result, restart");
         }
         
         self.isRequestRunning = NO;

@@ -12,11 +12,14 @@
 
 @interface GLPMessageDao : NSObject
 
-+ (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation;
-+ (NSArray *)findAllOrderByDateForConversation:(GLPConversation *)conversation afterInsertingNewMessages:(NSArray *)newMessages;
++ (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey;
++ (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation;
 + (GLPMessage *)findLastRemoteAndSeenForConversation:(GLPConversation *)conversation;
 
-+ (void)save:(GLPMessage *)entity isNew:(BOOL)isNew;
++ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation;
+
++ (void)save:(GLPMessage *)entity;
++ (void)saveOld:(GLPMessage *)entity;
 + (void)update:(GLPMessage *)entity;
 
 + (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message;
