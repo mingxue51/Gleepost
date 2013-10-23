@@ -101,6 +101,7 @@
     message.date = [NSDate dateInUTC];
     message.author = [SessionManager sharedInstance].user;
     message.sendStatus = kSendStatusLocal;
+    message.seen = YES;
     
     [GLPMessageDao save:message];
     
