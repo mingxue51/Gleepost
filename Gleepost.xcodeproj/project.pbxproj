@@ -66,6 +66,9 @@
 		584F38521817DE8900A1B742 /* message_box_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38511817DE8900A1B742 /* message_box_1.png */; };
 		584F38561817EBC500A1B742 /* yourchatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38541817EBC500A1B742 /* yourchatbubble4.png */; };
 		584F38581817EC9500A1B742 /* mychatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38571817EC9500A1B742 /* mychatbubble4.png */; };
+		584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38591817F4E500A1B742 /* multipleusersicon.png */; };
+		584F385C1817F50B00A1B742 /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385B1817F50B00A1B742 /* default_group_image.png */; };
+		584F385E1817F52000A1B742 /* timebar2_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385D1817F52000A1B742 /* timebar2_1.png */; };
 		585C7CD61816887B00173C38 /* UIBlackFadeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD51816887B00173C38 /* UIBlackFadeView.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585C7CDB181695AD00173C38 /* timebar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 585C7CDA181695AD00173C38 /* timebar2.png */; };
@@ -100,7 +103,6 @@
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
 		5875FC7A18158E8A0047BA9E /* darklayover.png in Resources */ = {isa = PBXBuildFile; fileRef = 5875FC7818158E8A0047BA9E /* darklayover.png */; };
 		5875FC7B18158E8A0047BA9E /* delivered.png in Resources */ = {isa = PBXBuildFile; fileRef = 5875FC7918158E8A0047BA9E /* delivered.png */; };
-		5875FC7D18158EAF0047BA9E /* multipleusersicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5875FC7C18158EAF0047BA9E /* multipleusersicon.png */; };
 		5875FC7F18158FFB0047BA9E /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 5875FC7E18158FFB0047BA9E /* default_group_image.png */; };
 		587D23C517EA195D00E0DDFF /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23B417EA195D00E0DDFF /* comment.png */; };
 		587D23C617EA195D00E0DDFF /* +.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23B517EA195D00E0DDFF /* +.png */; };
@@ -348,6 +350,9 @@
 		584F38511817DE8900A1B742 /* message_box_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = message_box_1.png; path = "../../Gleepost Data/NewChating/message_box_1.png"; sourceTree = "<group>"; };
 		584F38541817EBC500A1B742 /* yourchatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yourchatbubble4.png; path = "../../Gleepost Data/NewChating/yourchatbubble4.png"; sourceTree = "<group>"; };
 		584F38571817EC9500A1B742 /* mychatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mychatbubble4.png; path = "../../Gleepost Data/NewChating/mychatbubble4.png"; sourceTree = "<group>"; };
+		584F38591817F4E500A1B742 /* multipleusersicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multipleusersicon.png; sourceTree = "<group>"; };
+		584F385B1817F50B00A1B742 /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_group_image.png; sourceTree = "<group>"; };
+		584F385D1817F52000A1B742 /* timebar2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timebar2_1.png; sourceTree = "<group>"; };
 		585C7CD41816887B00173C38 /* UIBlackFadeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBlackFadeView.h; sourceTree = "<group>"; };
 		585C7CD51816887B00173C38 /* UIBlackFadeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBlackFadeView.m; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
@@ -389,7 +394,6 @@
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
 		5875FC7818158E8A0047BA9E /* darklayover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darklayover.png; path = "../../Gleepost Data/NewChating/darklayover.png"; sourceTree = "<group>"; };
 		5875FC7918158E8A0047BA9E /* delivered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delivered.png; path = "../../Gleepost Data/NewChating/delivered.png"; sourceTree = "<group>"; };
-		5875FC7C18158EAF0047BA9E /* multipleusersicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multipleusersicon.png; path = "../../Gleepost Data/NewChating/multipleusersicon.png"; sourceTree = "<group>"; };
 		5875FC7E18158FFB0047BA9E /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_group_image.png; path = "../../Gleepost Data/default_group_image.png"; sourceTree = "<group>"; };
 		587D23B417EA195D00E0DDFF /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
 		587D23B517EA195D00E0DDFF /* +.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+.png"; sourceTree = "<group>"; };
@@ -780,6 +784,9 @@
 		585DF77317ECA70C00FBFC35 /* Chat Images */ = {
 			isa = PBXGroup;
 			children = (
+				584F385D1817F52000A1B742 /* timebar2_1.png */,
+				584F385B1817F50B00A1B742 /* default_group_image.png */,
+				584F38591817F4E500A1B742 /* multipleusersicon.png */,
 				584F38571817EC9500A1B742 /* mychatbubble4.png */,
 				584F38541817EBC500A1B742 /* yourchatbubble4.png */,
 				584F38511817DE8900A1B742 /* message_box_1.png */,
@@ -801,7 +808,6 @@
 				58A122AF17ECC8F300E2AB4B /* MessageBox2.png */,
 				5875FC7818158E8A0047BA9E /* darklayover.png */,
 				5875FC7918158E8A0047BA9E /* delivered.png */,
-				5875FC7C18158EAF0047BA9E /* multipleusersicon.png */,
 				58D30BEA1815CED0006346F8 /* timebar1.png */,
 				58D30BEB1815CED0006346F8 /* timebar2_1.png */,
 				585C7CDA181695AD00173C38 /* timebar2.png */,
@@ -1540,7 +1546,6 @@
 				80AB898D17C2ACA40053E784 /* MYRIADAT.TTF in Resources */,
 				80AB898F17C2ADA60053E784 /* line.png in Resources */,
 				58DC023A1804379A0008993A /* new_chat_background.png in Resources */,
-				5875FC7D18158EAF0047BA9E /* multipleusersicon.png in Resources */,
 				58DC0244180437A70008993A /* bubble2.png in Resources */,
 				80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */,
 				5843328D180F069800BD9F74 /* loginwithfacebookclick.png in Resources */,
@@ -1554,6 +1559,7 @@
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,
 				5895B3D417F4C8840040535D /* navigationbar_4@2x.png in Resources */,
 				584332AC180F347F00BD9F74 /* Name.png in Resources */,
+				584F385C1817F50B00A1B742 /* default_group_image.png in Resources */,
 				5898329317F8ED54008CB807 /* background_profile.png in Resources */,
 				8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */,
 				5895B3DB17F5D7730040535D /* thumbs-up_pushed.png in Resources */,
@@ -1603,6 +1609,7 @@
 				8096E4F317C2D00F00C7BF60 /* navigation_select.png in Resources */,
 				5843329D180F200B00BD9F74 /* avatar.png in Resources */,
 				5817733318073C8C004ED744 /* GleepostS@2x.png in Resources */,
+				584F385E1817F52000A1B742 /* timebar2_1.png in Resources */,
 				586659C017F1B35F00A0354E /* camera_icon.png in Resources */,
 				5875FC7B18158E8A0047BA9E /* delivered.png in Resources */,
 				805E1557180EF3E700705B1C /* avatar_big.png in Resources */,
@@ -1664,6 +1671,7 @@
 				58DC024A180437A70008993A /* settings_icon.png in Resources */,
 				586659FF17F2214300A0354E /* tabbar@2x.png in Resources */,
 				5843328B180F069800BD9F74 /* Gleepost_main.png in Resources */,
+				584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */,
 				587D23CE17EA195D00E0DDFF /* img.png in Resources */,
 				583B9FE317F3676A00B4BEE3 /* set_tab.png in Resources */,
 				587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */,
