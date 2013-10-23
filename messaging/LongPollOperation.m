@@ -51,6 +51,7 @@
             if(!existingMessage) {
                 [GLPMessageDao saveNewMessageWithPossiblyNewConversation:message];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+                
             } else {
                 NSLog(@"Insert message that already exists with the remote key %d : %@", message.remoteKey, message.content);
             }

@@ -125,7 +125,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="lNV-tW-Jeu">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="1E925E8C-720A-4634-8FFB-1B159D4B5F57" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="B57D1D62-C1FA-4040-A20D-894D2312CEEF" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Xrg-UP-Uxg">
@@ -248,7 +248,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="XPU-7W-vve">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="20605084-A613-4B80-92E0-89000049B9A8" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="C6CE61A9-6CEE-4D9D-A03E-EF67DB86FC39" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="k0U-1d-7IX">
@@ -885,7 +885,7 @@
         <scene sceneID="4na-1o-QCI">
             <objects>
                 <navigationController definesPresentationContext="YES" id="cfX-Wb-77k" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Messages" image="chat_tab.png" id="H0j-Wz-sWb"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Messages" image="chat_tab.png" id="H0j-Wz-sWb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="DQu-6o-oiM">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -903,7 +903,7 @@
         <scene sceneID="OUI-su-CjG">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Mum-dy-WxM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="NewChat" image="new_chat_tab.png" id="u1A-Qv-3bB"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="NewChat" image="new_chat_tab.png" id="u1A-Qv-3bB"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="jKh-Xr-Cjo">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1349,7 +1349,7 @@
         <scene sceneID="Zeb-oB-v8D">
             <objects>
                 <navigationController definesPresentationContext="YES" id="6si-v1-awl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" image="set_tab.png" id="mk5-Fz-dnk"/>
+                    <tabBarItem key="tabBarItem" tag="4" title="Profile" image="set_tab.png" id="mk5-Fz-dnk"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="LgP-AE-5yh">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1368,15 +1368,15 @@
             <objects>
                 <viewController id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="64" width="320" height="321"/>
+                                    <rect key="frame" x="0.0" y="45" width="320" height="321"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" alpha="0.39999999999999963" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_profile.png" id="GMr-8I-em4">
@@ -1596,7 +1596,7 @@
         <scene sceneID="SEo-vv-EHO">
             <objects>
                 <navigationController definesPresentationContext="YES" id="nPe-gR-zdL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Contacts" image="contacts_tab.png" id="jH4-pF-r6f"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="Contacts" image="contacts_tab.png" id="jH4-pF-r6f"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="JFZ-5E-qD0">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1669,7 +1669,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="qVA-DP-A0A">
             <objects>
-                <tabBarController storyboardIdentifier="MainTabBarController" definesPresentationContext="YES" id="WY8-qT-L1O" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBarController" definesPresentationContext="YES" id="WY8-qT-L1O" customClass="GLPTabBarController" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="xhQ-mH-L5r">
@@ -1693,7 +1693,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1E925E8C-720A-4634-8FFB-1B159D4B5F57" width="15" height="16">
+        <image name="B57D1D62-C1FA-4040-A20D-894D2312CEEF" width="15" height="16">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -1710,7 +1710,7 @@ AKwAsQC0ALYAuAC6ALwAwwDLANcA2QDbAN0BwAHFAdAB2QHfAeIB6AHxAfYB/gIBAggCEAIdAiICJAIm
 AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
 </mutableData>
         </image>
-        <image name="20605084-A613-4B80-92E0-89000049B9A8" width="15" height="16">
+        <image name="C6CE61A9-6CEE-4D9D-A03E-EF67DB86FC39" width="15" height="16">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -1763,10 +1763,10 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="htZ-EL-79i"/>
-        <segue reference="Rdk-3z-tPE"/>
-        <segue reference="CJG-WM-cQ7"/>
         <segue reference="sAu-s2-hfG"/>
+        <segue reference="CJG-WM-cQ7"/>
         <segue reference="Jle-n7-Gmg"/>
+        <segue reference="FkJ-3g-qCP"/>
+        <segue reference="htZ-EL-79i"/>
     </inferredMetricsTieBreakers>
 </document>

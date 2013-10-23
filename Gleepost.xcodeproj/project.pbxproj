@@ -268,6 +268,7 @@
 		80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C8BA74181049BA004F70DB /* GLPMessageDao.m */; };
 		80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307317CE4E4D003007D0 /* JsonParser.m */; };
 		80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307C17CE5092003007D0 /* DateFormatterManager.m */; };
+		80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */; };
 		80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */; };
 		80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6117CE5CD80034C0EF /* post_login.json */; };
 		80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6317CE77D70034C0EF /* get_posts.json */; };
@@ -633,6 +634,8 @@
 		80CE307317CE4E4D003007D0 /* JsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonParser.m; sourceTree = "<group>"; };
 		80CE307B17CE5092003007D0 /* DateFormatterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateFormatterManager.h; sourceTree = "<group>"; };
 		80CE307C17CE5092003007D0 /* DateFormatterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateFormatterManager.m; sourceTree = "<group>"; };
+		80D1472C1817DE4500F7E3DD /* GLPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTabBarController.h; sourceTree = "<group>"; };
+		80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTabBarController.m; sourceTree = "<group>"; };
 		80D2D0C9180ACD30007FB020 /* NSNumber+Enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Enums.h"; sourceTree = "<group>"; };
 		80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Enums.m"; sourceTree = "<group>"; };
 		80DDAA6117CE5CD80034C0EF /* post_login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_login.json; sourceTree = "<group>"; };
@@ -1218,27 +1221,27 @@
 		80AB893E17C26D040053E784 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				80C8BA4B18102AEE004F70DB /* Dao */,
-				80112B91180F039C006A35AA /* TextView */,
-				807C4CDE180AF08B003D67E6 /* Model */,
-				80AB893F17C26E540053E784 /* Controllers */,
-				80666C411806DA6D00E4E515 /* Parser */,
-				80666C3C1806D40D00E4E515 /* DAO */,
 				58808EF31806F4C100E415C1 /* Animations */,
-				8056764018059D78006E058E /* Operations */,
 				80E7478517CEA08F001957E5 /* Categories */,
-				8096E4E817C2CBEA00C7BF60 /* Table */,
-				80AB898217C2A0560053E784 /* Helpers */,
-				80AB897E17C2954B0053E784 /* Libs */,
-				80AB896717C2806B0053E784 /* Views */,
-				80AB894E17C26EE80053E784 /* OldModel */,
-				80AB894A17C26EC10053E784 /* Manager */,
-				80AB894617C26E930053E784 /* Webservice */,
 				80AB896B17C283AF0053E784 /* Constants.h */,
-				80B64A921815628E000AA151 /* GLPTestViewController.h */,
-				80B64A931815628E000AA151 /* GLPTestViewController.m */,
+				80AB893F17C26E540053E784 /* Controllers */,
+				80C8BA4B18102AEE004F70DB /* Dao */,
+				80666C3C1806D40D00E4E515 /* DAO */,
 				80B64A9518156321000AA151 /* GLPTestCell.h */,
 				80B64A9618156321000AA151 /* GLPTestCell.m */,
+				80B64A921815628E000AA151 /* GLPTestViewController.h */,
+				80B64A931815628E000AA151 /* GLPTestViewController.m */,
+				80AB898217C2A0560053E784 /* Helpers */,
+				80AB897E17C2954B0053E784 /* Libs */,
+				80AB894A17C26EC10053E784 /* Manager */,
+				807C4CDE180AF08B003D67E6 /* Model */,
+				80AB894E17C26EE80053E784 /* OldModel */,
+				8056764018059D78006E058E /* Operations */,
+				80666C411806DA6D00E4E515 /* Parser */,
+				8096E4E817C2CBEA00C7BF60 /* Table */,
+				80112B91180F039C006A35AA /* TextView */,
+				80AB896717C2806B0053E784 /* Views */,
+				80AB894617C26E930053E784 /* Webservice */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1263,6 +1266,8 @@
 				80C4CAB717CFE24700AFA80C /* RegisterViewController.m */,
 				80DDDF40180FEAC4009E17BD /* GLPNavigationController.h */,
 				80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */,
+				80D1472C1817DE4500F7E3DD /* GLPTabBarController.h */,
+				80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1721,6 +1726,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */,
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
