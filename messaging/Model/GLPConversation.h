@@ -18,7 +18,7 @@
 @property (strong, nonatomic) NSString *lastMessage;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *messages;
-//@property (strong, nonatomic) NSArray *participants;
+@property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
 
 //- (NSString *)getParticipantsNames;

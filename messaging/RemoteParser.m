@@ -28,8 +28,16 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     GLPUser *user = [[GLPUser alloc] init];
     user.remoteKey = [json[@"id"] integerValue];
     user.name = json[@"username"];
-    //user.imageUrl = [NSURL URLWithString:json[@"profile_image"]];
-    //NSLog(@"User's image URL: %@", json[@"profile_image"]);
+    user.course = json[@"course"];
+    user.personalMessage = json[@"tagline"];
+    user.profileImageUrl = json[@"profile_image"];
+
+    
+    NSDictionary* network = json[@"network"];
+    
+    NSLog(@"Whole Network: %@", network);
+    
+    
     
 //    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
 //    
@@ -37,11 +45,25 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //
 //    }
     
+    if(json[@"network"] != nil)
+    {
+        NSArray *networkMessages = [self parseNetworkUser:json[@"network"]];
+        
+        user.networkId = [[networkMessages objectAtIndex:0] integerValue];
+        
+        user.networkName = [networkMessages objectAtIndex:1];
+        
+        NSLog(@"Network id: %d, Network Name: %@", user.networkId, user.networkName);
+    }
+    
 
-//    
+
+//
 //    // optional
 //    user.tagline = json[@"tagline"];
     user.profileImageUrl = json[@"profile_image"];
+    NSLog(@"User's image URL: %@", json[@"profile_image"]);
+    NSLog(@"User's course: %@",json[@"course"]);
     
 //    user.course = json[@"course"];
 //    
@@ -50,6 +72,22 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    }
     
     return user;
+}
+
++(NSArray*)parseNetworkUser:(NSDictionary *)json
+{
+    NSMutableArray *networkContent = [[NSMutableArray alloc] init];
+    
+//    for(id jsonUser in json[@"network"])
+//    {
+//        NSLog(@"Network: %@",jsonUser);
+    
+    [networkContent addObject:json[@"id"]];
+    [networkContent addObject:json[@"name"]];
+    
+//    }
+    
+    return networkContent;
 }
 
 
@@ -66,11 +104,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         conversation.lastUpdate = message.date;
     }
 
+
+    
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
+        
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }
+    
+    
+    
+    conversation.author = [participants objectAtIndex:0];
+
+    
     [conversation setTitleFromParticipants:participants];
     
     return conversation;
@@ -137,6 +184,12 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.likes = [json[@"likes"] integerValue];
     post.dislikes = [json[@"hates"] integerValue];
     
+
+    NSLog(@"Posts JSON: %@",json);
+    NSLog(@"User's image JSON: %@",post.author.profileImageUrl);
+    
+    // should work.. or not!
+    //post.imagesUrls = json[@"images"];
     
     NSArray *jsonArray = json[@"images"];
     

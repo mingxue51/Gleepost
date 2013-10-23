@@ -26,9 +26,21 @@
 
 #import "CurrentChatButton.h"
 
+#import <QuartzCore/QuartzCore.h>
+
+#import "LiveChatsView.h"
+
 
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
+const int limitTimeBar = 3600;
+double timingBarCurrentWidth;
+double resizeFactor;
+//double resizeFactor = 0.016;
+
+float currentTime = 450;
+CGRect firstTimingBarSize;
+float timeInterval = 0.1;
 
 @interface ViewTopicViewController ()
 
@@ -46,6 +58,14 @@ const int flexibleResizeLimit = 120;
 
 @property (strong, nonatomic) IBOutlet CurrentChatButton *currentChat;
 
+@property (strong, nonatomic) LiveChatsView *liveChatsView;
+
+/** Timing panel. */
+@property (strong, nonatomic) IBOutlet UIImageView *timingBar;
+@property (strong, nonatomic) IBOutlet UIImageView *backTimingBar;
+
+@property (strong, nonatomic) NSTimer *timer1;
+
 
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
@@ -57,13 +77,23 @@ const int flexibleResizeLimit = 120;
 @synthesize conversation;
 
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self configureNavigationBar];
     [self configureForm];
+    
+    if(self.randomChat)
+    {
+       [self configureTimeBar];
+    }
+    else
+    {
+        [self hideTimeBarAndMaximizeTableView];
+    }
+    
+    
     
     self.longPollingRequestRunning = NO;
 
@@ -90,6 +120,54 @@ const int flexibleResizeLimit = 120;
 //    [self.view addSubview:self.currentChat];
     
 }
+
+-(void) hideTimeBarAndMaximizeTableView
+{
+    self.timingBar.hidden = YES;
+    self.backTimingBar.hidden = YES;
+    CGRect tableViewFrame = self.tableView.frame;
+    
+    [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y-7, tableViewFrame.size.width, tableViewFrame.size.height+8)];
+}
+
+-(void) configureTimeBar
+{
+    timingBarCurrentWidth = 320;
+
+    //Calculate the resizing factor.
+    [self calculateTheResizingFactor];
+    
+    firstTimingBarSize = self.timingBar.frame;
+    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(animateTimeBar:) userInfo:nil repeats:YES];
+    [self.timer1 fire];
+}
+
+-(void)calculateTheResizingFactor
+{
+    double firstElement = currentTime/timeInterval;
+    
+    resizeFactor = timingBarCurrentWidth/firstElement;
+    
+}
+
+-(void) animateTimeBar: (id)sender
+{
+    //Calculate how many points needs to resize the timing bar.
+    float currentWidth = self.timingBar.frame.size.width;
+    timingBarCurrentWidth = timingBarCurrentWidth - resizeFactor;
+    
+    [self.timingBar setFrame:CGRectMake(firstTimingBarSize.origin.x, firstTimingBarSize.origin.y, timingBarCurrentWidth, firstTimingBarSize.size.height)];
+    
+    currentTime-=0.1;
+    
+    NSLog(@"Current Time: %f : %f",currentTime, timingBarCurrentWidth);
+    
+    
+    //Shrink the timing bar.
+    
+    
+}
+
 
 - (IBAction)myAction:(UIButton *)sender forEvent:(UIEvent *)event
 {
@@ -160,6 +238,8 @@ const int flexibleResizeLimit = 120;
 {
     [[WebClient sharedInstance] cancelMessagesLongPolling];
     self.longPollingRequestRunning = NO;
+    [self.timer1 invalidate];
+
 }
 
 #pragma mark - Init and config
@@ -171,9 +251,11 @@ const int flexibleResizeLimit = 120;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"multipleusersicon"]];
+    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 30, 30)];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(addContact) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
     btnBack.frame = imageView.bounds;
     [imageView addSubview:btnBack];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
@@ -182,7 +264,7 @@ const int flexibleResizeLimit = 120;
 
 - (void)configureForm
 {
-    self.formView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
+    //self.formView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
     
     self.formTextView.isScrollable = NO;
     self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -192,6 +274,7 @@ const int flexibleResizeLimit = 120;
 	self.formTextView.font = [UIFont systemFontOfSize:15.0f];
 	self.formTextView.delegate = self;
     self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    
     self.formTextView.backgroundColor = [UIColor whiteColor];
     self.formTextView.placeholder = @"Your message";
     
@@ -199,6 +282,9 @@ const int flexibleResizeLimit = 120;
     CGRect formTextViewFrame = self.formTextView.frame;
     formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
     self.formTextView.frame = formTextViewFrame;
+    
+    //yourTextViewName.layer.cornerRadius = kCornerRadius;
+    self.formTextView.layer.cornerRadius = 5;
 }
 
 
@@ -320,14 +406,22 @@ const int flexibleResizeLimit = 120;
 - (IBAction)tableViewClicked:(id)sender
 {
     [self hideKeyboardFromTextViewIfNeeded];
+    
+    //Hide the live chats bubble if exist.
+    [self.liveChatsView removeView];
 }
 
--(void) addContact
+-(void) navigateToChat: (id)sender
 {
-    NSLog(@"Add Contact.");
+    if(![LiveChatsView visible])
+    {
+        self.liveChatsView = [LiveChatsView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+        [LiveChatsView setVisibility:YES];
+    }
+
 }
 
--(void)addImageToTheChat:(id) sender
+-(void)addImageToTheChat: (id)sender
 {
     NSLog(@"Camera icon pushed!");
 }

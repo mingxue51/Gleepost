@@ -53,11 +53,12 @@
     
     [super viewDidAppear:animated];
 
-    
+    BOOL conversationExist = NO;
 
     NSLog(@"viewDidAppear");
     NSLog(@"Current conversation: %@", self.conversation.title);
-    
+    NSLog(@"CONVERSATIONS: %@", self.liveConversations);
+
     
     
     if(self.conversation.title != nil)
@@ -84,14 +85,34 @@
     if(self.conversation.title != nil)
     {
         //If there are already 3 conversations, then delete the oldest.
-        if(self.liveConversations.count == 3)
+        //TODO: Bug here fix this. It should check this after new conversation detected.
+
+        
+        //Avoid adding the same conversation.
+        for(GLPConversation *c in self.liveConversations)
+        {
+            if([self.conversation.description isEqualToString:c.description])
+            {
+                //Don't do anything.
+                conversationExist = YES;
+                break;
+            }
+            
+        }
+        
+        if((self.liveConversations.count == 3) && (!conversationExist))
         {
             [self.liveConversations dequeue];
         }
         
+        if(!conversationExist)
+        {
+            //Add conversation to array.
+            [self.liveConversations enqueue:self.conversation];
+        }
         
-        //Add conversation to array.
-        [self.liveConversations enqueue:self.conversation];
+        NSLog(@"Conversation Description: %@",self.conversation.description);
+        
     }
     
     [self initialiseAnimationViewToTheViewController];
@@ -157,7 +178,6 @@
     self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
     
-    NSLog(@"CONVERSATIONS: %@", self.liveConversations);
 
     
     [self.chatAnimations refreshLiveConversations:self.liveConversations];
@@ -286,6 +306,7 @@
         
         if(success) {
             self.conversation = conversation;
+            self.newChat = YES;
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardError];
@@ -299,13 +320,32 @@
     }
 }
 
+-(void)navigateToLiveChatWithIndex: (int)index
+{
+    self.newChat = NO;
+    self.conversation = [self.liveConversations objectAtIndex:index];
+    [self performSegueWithIdentifier:@"start" sender:self];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"start"])
     {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        ViewTopicViewController *vc = segue.destinationViewController;
-        vc.conversation = self.conversation;
+        if(self.newChat)
+        {
+            [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+            ViewTopicViewController *vc = segue.destinationViewController;
+            vc.randomChat = YES;
+            vc.conversation = self.conversation;
+        }
+        else
+        {
+            [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+            ViewTopicViewController *vc = segue.destinationViewController;
+            vc.randomChat = YES;
+            vc.conversation = self.conversation;
+        }
+
     }
 }
 @end

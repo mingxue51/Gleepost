@@ -34,7 +34,7 @@ static const float StandardImageCellHeight = 400;
          button.layer.borderWidth=2.0f;
          */
         
-
+        self.userImageImageView = [[UIImageView alloc] init];
         
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
@@ -83,16 +83,48 @@ static const float StandardImageCellHeight = 400;
     UIImage *userImage;
     
     //Add the default image.
-    userImage = [UIImage imageNamed:@"default_user"];
+    userImage = [UIImage imageNamed:@"default_user_image"];
     
     // Here we use the new provided setImageWithURL: method to load the web image
     [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
     
     
-    NSURL *userImageUrl;
+    NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
+   // UIImageView *userImageImageView = [[UIImageView alloc] init];
+
     
-//    NSLog(@"Image in post cell: %@", user.profileImageUrl);
-//    
+   // NSLog(@"Image in post cell: %@", postData.author.profileImageUrl);
+    NSLog(@"Image in post cell: %@ : %@", postData.author.profileImageUrl, postData.author.name);
+
+    
+    if([postData.author.profileImageUrl isEqualToString:@""])
+    {
+        NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
+//        [self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
+        [self.userImageView setImage:userImage];
+    }
+    else
+    {
+        
+        [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
+        
+        
+
+        
+        
+//        [self.userImage setBackgroundImage:self.userImageImageView.image forState: UIControlStateNormal];
+        
+        
+    }
+    self.userImageView.clipsToBounds = YES;
+    
+    self.userImageView.layer.cornerRadius = 20;
+    
+
+    //Add to the user's tag's image view the user id.
+    self.userImageImageView.tag = postData.author.remoteKey;
+    
+//
 //    if(user.profileImageUrl!=NULL)
 //    {
 //        //Add the image comes from server.
@@ -118,12 +150,8 @@ static const float StandardImageCellHeight = 400;
 
         
         //Add the user's image.
-        [self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
+        //[self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
 //    }
-    
-    self.userImage.clipsToBounds = YES;
-    
-    self.userImage.layer.cornerRadius = 20;
     
     
     //Add the user's name.
@@ -157,18 +185,7 @@ static const float StandardImageCellHeight = 400;
 
 }
 
--(void) fetchImagePostFromServer:(NSURL*)url
-{
-    //Fetch post image from the server.
-    [self.postImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
-     {
-         //NSLog(@"Downloading...");
-     }
-     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
-     {
-         self.postImage.image = image;
-     }];
-}
+
 
 static const float firstContentTextViewHeight = 60;
 static const float firstImagePosition = 110;

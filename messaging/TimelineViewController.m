@@ -30,6 +30,7 @@
 @property (strong, nonatomic) NSMutableArray *postsImages;
 @property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) Post *selectedPost;
+@property (strong, nonatomic) GLPUser *selectedUser;
 @property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
@@ -224,9 +225,7 @@ static BOOL likePushed;
 }
 
 /**
- 
  Not used.
- 
  */
 -(void) setBackgroundToNavigationBar
 {
@@ -515,6 +514,15 @@ static BOOL likePushed;
     NSLog(@"User Remote Key: %d",post.author.remoteKey);
     
     
+    /**
+     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+     [tap setNumberOfTapsRequired:1];
+     [yourImageView addGestureRecognizer: tap];
+     */
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+    [tap setNumberOfTapsRequired:1];
+    [postCell.userImageView addGestureRecognizer:tap];
     
     [postCell updateWithPostData:post];
 
@@ -530,6 +538,10 @@ static BOOL likePushed;
     
 }
 
+-(void) imageViewTabbed: (id) sender
+{
+    NSLog(@"imageViewTabbed");
+}
 
 
 
@@ -601,8 +613,6 @@ static BOOL likePushed;
             {
                 [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
             }
-            
-            NSLog(@"-> %@", [currentBtn titleLabel].text);
         }
     }
     
@@ -611,9 +621,7 @@ static BOOL likePushed;
 }
 
 /*
- 
  When like button is pushed turn it to our application's custom colour.
- 
  */
 -(void)likeButtonPushed: (id) sender
 {
@@ -644,6 +652,12 @@ static BOOL likePushed;
 
 -(void)navigateToProfile:(id)sender
 {
+    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *incomingView = (UIImageView*)incomingUser.view;
+    
+    NSLog(@"Image Tag: %d",incomingView.tag);
+    
     [self performSegueWithIdentifier:@"view private profile" sender:self];
 }
 

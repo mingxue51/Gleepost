@@ -80,6 +80,8 @@ static BOOL likePushed;
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
+   
+    
     
     //Initialise profile view.
     

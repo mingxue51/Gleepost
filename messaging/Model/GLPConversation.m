@@ -15,13 +15,16 @@
 @synthesize author = _author;
 @synthesize lastMessage = _lastMessage;
 @synthesize messages = _messages;
-//@synthesize participants = _participants;
+@synthesize participants = _participants;
 @synthesize title = _title;
 //@synthesize participantsNames = _participantsNames;
 
 - (void)setTitleFromParticipants:(NSArray *)participants
 {
     NSAssert(participants.count > 1, @"");
+    
+    
+    _participants = participants;
     
     NSMutableString *names = [NSMutableString string];
     

@@ -27,9 +27,9 @@
 
 static const float FirstCellOtherElementsTotalHeight = 22;
 static const float FollowingCellPadding = 7;
-static const float MessageContentViewPadding = 15;
+static const float MessageContentViewPadding = 10;  //15 before.
 static const float MessageContentLabelMaxWidth = 241;
-static const float MessageContentLabelPadding = 12; // horizontal padding
+static const float MessageContentLabelPadding = 20; // horizontal padding 12
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -106,11 +106,11 @@ static const float MessageContentLabelPadding = 12; // horizontal padding
 //    }
     
     // round message content background image
-//    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
-//    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
-//    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
-//    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
+    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
+    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:20.0] addClip];
+    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
+    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

@@ -15,7 +15,7 @@
 
 //@property (retain, nonatomic) IBOutlet UIImageView *userImage;
 
-@property (retain, nonatomic) IBOutlet UIButton *userImage;
+@property (retain, nonatomic) IBOutlet UIImageView *userImageView;
 @property (retain, nonatomic) IBOutlet UILabel *userName;
 @property (retain, nonatomic) IBOutlet UILabel *postTime;
 @property (strong, nonatomic) IBOutlet UIImageView *postImage;
@@ -25,6 +25,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *commentBtn;
 @property (retain, nonatomic) IBOutlet UIButton *shareBtn;
 @property (strong, nonatomic) IBOutlet UILabel *contentLbl;
+@property (strong, nonatomic) UIImageView *userImageImageView;
 
 @property BOOL imageAvailable;
 

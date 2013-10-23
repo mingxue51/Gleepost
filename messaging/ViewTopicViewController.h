@@ -20,6 +20,6 @@
 
 
 @property (strong, nonatomic) GLPConversation *conversation;
-
+@property BOOL randomChat;
 
 @end

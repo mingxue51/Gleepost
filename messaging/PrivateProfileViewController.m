@@ -7,9 +7,16 @@
 //
 
 #import "PrivateProfileViewController.h"
+#import "GLPUser.h"
+
 
 @interface PrivateProfileViewController ()
+@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
+@property (strong, nonatomic) IBOutlet UILabel *networkName;
+@property (strong, nonatomic) IBOutlet UILabel *userName;
+@property (strong, nonatomic) IBOutlet UILabel *personalMessage;
 
+@property (strong, nonatomic) GLPUser *profileUser;
 @end
 
 @implementation PrivateProfileViewController
@@ -26,7 +33,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+    
+}
+
+-(void)loadUserDetails
+{
+    
 }
 
 - (void)didReceiveMemoryWarning

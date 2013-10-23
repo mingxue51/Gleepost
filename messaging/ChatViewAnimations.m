@@ -7,7 +7,10 @@
 //
 
 #import "ChatViewAnimations.h"
-#import "Conversation.h"
+#import "GLPConversation.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
+
 
 const int higherLimit = 50;
 const int lowerLimit = 220;
@@ -147,6 +150,7 @@ static BOOL initLiveChats;
         
     self.liveConversations = liveConversationsArray;
     
+    
     //Take the buttons views.
     
     NSArray *allSubviews = self.subviews;
@@ -172,7 +176,8 @@ static BOOL initLiveChats;
                 
                 [liveConversationsArray objectAtIndex:in1];
 
-                [current setBackgroundImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
+                
+                [current setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
                 
                 //Add selector to button.
                 [current addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchDown];
@@ -186,7 +191,7 @@ static BOOL initLiveChats;
     }
     
     int i=0;
-    for(Conversation* conv in liveConversationsArray)
+    for(GLPConversation* conv in liveConversationsArray)
     {
         
         /**
@@ -203,7 +208,27 @@ static BOOL initLiveChats;
         
         UIButton *currentButton = [currentButtons objectAtIndex:i];
         
-        [currentButton setBackgroundImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
+        GLPUser *currentOpponent = [conv.participants objectAtIndex:0];
+        
+        
+        if([currentOpponent.profileImageUrl isEqualToString:@""])
+        {
+            NSLog(@"Current oponent URL: %@",currentOpponent.profileImageUrl);
+            [currentButton setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
+
+        }
+        else
+        {
+            UIImageView *imageView = [[UIImageView alloc] init];
+            
+            
+            
+            //Add the real user's image.
+            [imageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
+            [currentButton setBackgroundImage:imageView.image forState:UIControlStateNormal];
+
+        }
+        
         
         
        // UIButton *convButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 40, 40)];
@@ -236,9 +261,42 @@ static BOOL initLiveChats;
     NSLog(@"Buttons: %@",self.bubblesPeople);
 }
 
+
+/**
+ Find the three live chat buttons and return them in an array.
+ 
+ @return an array of UIButtons.
+ 
+ */
+-(NSMutableArray*) findTheThreeLiveButtonsChats
+{
+    
+    NSArray *allSubviews = self.subviews;
+
+    NSMutableArray* buttons = [[NSMutableArray alloc] init];
+    
+    for(UIView* view in allSubviews)
+    {
+        if(view.tag == 10 || view.tag == 20 || view.tag == 30)
+        {
+            [buttons addObject:(UIButton*)view];
+        }
+    }
+    
+    return buttons;
+}
+
 -(void) navigateToChat: (id) sender
 {
+    UIButton *btn = (UIButton*) sender;
+    
+    NSLog(@"Button with tag: %d",btn.tag);
+    
     NSLog(@"Navigate to chat");
+    
+    
+    [self.chatViewController navigateToLiveChatWithIndex:(btn.tag/10)-1];
+
 }
 
 
@@ -255,6 +313,7 @@ static BOOL initLiveChats;
     {
         UIButton *convButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
+        convButton.tag = (i+1)*10;
         
         if(i == 0)
         {
@@ -616,6 +675,24 @@ static BOOL animateBubbles = YES;
 //    {
 //        return;
 //    }
+    
+    //Dissappear the live chat users' buttons.
+    NSMutableArray* liveButtons = [self findTheThreeLiveButtonsChats];
+
+    
+    for(UIButton* btn in liveButtons)
+    {
+        [UIView animateWithDuration:1.7 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
+            
+            
+            [btn setAlpha:0.0];
+            
+        }completion:^(BOOL finished) {
+            
+            
+        }];
+    }
+    
     
     CGSize sizeOfCircleImage = self.centralCircle.frame.size;
     

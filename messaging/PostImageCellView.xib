@@ -17,7 +17,7 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="FJI-B7-pDB">
                         <rect key="frame" x="10" y="100" width="300" height="300"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" patternImage="4C106B3F-3B24-452A-8DA9-454B06E78A44" colorSpace="pattern"/>
+                        <color key="backgroundColor" patternImage="C0DBC24C-A18A-484C-9CD4-E86CB17E6A9B" colorSpace="pattern"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fa2-fh-Hdm">
@@ -26,13 +26,6 @@
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="e9g-u3-5wO">
-                        <rect key="frame" x="10" y="10" width="40" height="40"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                    </button>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PostTime" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hhr-9g-GwX">
                         <rect key="frame" x="60" y="24" width="236" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -81,6 +74,10 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PGO-to-l0y">
+                        <rect key="frame" x="10" y="10" width="40" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
@@ -91,13 +88,13 @@
                 <outlet property="postTime" destination="hhr-9g-GwX" id="AIm-I6-IkB"/>
                 <outlet property="shareBtn" destination="ruE-aW-7co" id="2EP-d4-WhQ"/>
                 <outlet property="thumpsUpBtn" destination="hTD-mn-1Zb" id="B26-sf-h1A"/>
-                <outlet property="userImage" destination="e9g-u3-5wO" id="Eyt-NO-053"/>
+                <outlet property="userImageView" destination="PGO-to-l0y" id="RRX-jH-sc7"/>
                 <outlet property="userName" destination="LuD-N8-hDP" id="oGg-M3-vqQ"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="4C106B3F-3B24-452A-8DA9-454B06E78A44" width="320" height="460">
+        <image name="C0DBC24C-A18A-484C-9CD4-E86CB17E6A9B" width="320" height="460">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

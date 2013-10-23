@@ -138,10 +138,27 @@
     
     GLPConversation *conversation = self.conversations[indexPath.row];
     
+    if(conversation.participants.count > 2)
+    {
+        cell.userImage.image = [UIImage imageNamed:@"default_group_image"];
+    }
+    else
+    {
+        //TODO: Add the opponent's image.
+        //Find the logged in user and add the opponents image.
+        NSLog(@"Conversation Participants: %@",[conversation.participants objectAtIndex:0]);
+        
+        cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
+        NSLog(@"Conversation Author: %@", conversation.author.profileImageUrl);
+    }
     
     cell.userName.text = conversation.title;
     cell.content.text = (conversation.lastMessage) ? conversation.lastMessage : @"";
-    cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
+//    cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
+    
+    //    [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
+
+   // cell.userImage.image = conve
     cell.time.text = (conversation.lastUpdate) ? conversation.lastUpdate.description : @"";
     
     return cell;
@@ -201,6 +218,7 @@
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         ViewTopicViewController *vc = segue.destinationViewController;
+        vc.randomChat = NO;
         vc.conversation = self.selectedConversation;
         self.selectedConversation = nil;
 
