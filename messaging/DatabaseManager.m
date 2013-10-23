@@ -88,7 +88,7 @@ static DatabaseManager *instance = nil;
              lastMessage text, \
              lastUpdate integer, \
              title text, \
-             notificationsCount integer);"];
+             unread integer);"];
             
             // message
             [db executeUpdate:@"create table messages ( \

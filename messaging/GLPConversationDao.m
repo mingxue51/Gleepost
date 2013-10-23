@@ -52,12 +52,12 @@
 {
     int date = [entity.lastUpdate timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into conversations(remoteKey, lastMessage, lastUpdate, title, notificationsCount) values(%d, %@, %d, %@, %d)",
+    [db executeUpdateWithFormat:@"insert into conversations(remoteKey, lastMessage, lastUpdate, title, unread) values(%d, %@, %d, %@, %d)",
      entity.remoteKey,
      entity.lastMessage,
      date,
      entity.title,
-     entity.notificationsCount];
+     entity.hasUnreadMessages];
     
     entity.key = [db lastInsertRowId];
 }

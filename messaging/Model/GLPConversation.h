@@ -20,7 +20,7 @@
 @property (strong, nonatomic) NSArray *messages;
 @property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
-@property (assign, nonatomic) NSInteger *notificationsCount;
+@property (assign, nonatomic) BOOL hasUnreadMessages;
 
 - (void)setTitleFromParticipants:(NSArray *)participants;
 
