@@ -16,6 +16,7 @@
 + (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
 + (NSArray *)findAllOrderByDate:(FMDatabase *)db;
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db;
++ (void)update:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)deleteAll:(FMDatabase *)db;
 
 @end

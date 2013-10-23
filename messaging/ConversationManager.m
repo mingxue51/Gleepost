@@ -24,6 +24,16 @@
 
 @implementation ConversationManager
 
++ (NSArray *)getLocalConversations
+{
+    __block NSArray *conversations = nil;
+    [DatabaseManager run:^(FMDatabase *db) {
+        conversations = [GLPConversationDao findAllOrderByDate:db];
+    }];
+    
+    return conversations;
+}
+
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
     NSLog(@"Load conversations");
@@ -119,8 +129,13 @@
     message.sendStatus = kSendStatusLocal;
     message.seen = YES;
     
-    [DatabaseManager run:^(FMDatabase *db) {
+    conversation.lastUpdate = message.date;
+    conversation.lastMessage = message.content;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPMessageDao save:message db:db];
+        NSLog(@"update conversion %d %d", conversation.key, conversation.remoteKey);
+        [GLPConversationDao update:conversation db:db];
     }];
     
     NSLog(@"Post message %@ to server", message.content);
@@ -158,14 +173,19 @@
             return;
         }
         
-        GLPConversation *existingConversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
+        GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
         
-        if(existingConversation) {
-            message.conversation = existingConversation;
-            NSLog(@"existing conversation %d", existingConversation.remoteKey);
+        if(!conversation) {
+            conversation = message.conversation;
+        }
+        
+        conversation.lastMessage = message.content;
+        conversation.lastUpdate = message.date;
+
+        if(conversation.key == 0) {
+            [GLPConversationDao save:conversation db:db];
         } else {
-            [GLPConversationDao save:message.conversation db:db];
-            //TODO: check works properly
+            [GLPConversationDao update:conversation db:db];
         }
         
         [GLPMessageDao save:message db:db];

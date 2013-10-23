@@ -62,6 +62,21 @@
     entity.key = [db lastInsertRowId];
 }
 
++ (void)update:(GLPConversation *)entity db:(FMDatabase *)db
+{
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
+    
+    int date = [entity.lastUpdate timeIntervalSince1970];
+    
+    [db executeUpdateWithFormat:@"update conversations set remoteKey=%d, lastMessage=%@, lastUpdate=%d, title=%@, unread=%d where key=%d",
+     entity.remoteKey,
+     entity.lastMessage,
+     date,
+     entity.title,
+     entity.hasUnreadMessages,
+     entity.key];
+}
+
 + (void)deleteAll:(FMDatabase *)db
 {
     [db executeUpdate:@"delete from conversations"];

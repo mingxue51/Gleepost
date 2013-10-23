@@ -312,10 +312,10 @@ static WebClient *instance = nil;
         NSLog(@"long poll %@", responseObject);
         NSDictionary *json = responseObject;
         
-        //TODO: conversation
         GLPConversation *conversation = [[GLPConversation alloc] init];
         conversation.remoteKey = [json[@"conversation_id"] integerValue];
         conversation.title = json[@"by"][@"username"];
+        
         GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
         message.conversation = conversation;
         
