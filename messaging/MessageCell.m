@@ -9,6 +9,8 @@
 #import "MessageCell.h"
 #import "DateFormatterHelper.h"
 #import <QuartzCore/QuartzCore.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "WebClient.h"
 
 @interface MessageCell()
 
@@ -63,7 +65,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 - (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier
 {
-    NSLog(@"format date for time %@ and Author: %@ and Content: %@, NAME: %@, PROFILE IMAGE: %@", message.date, message.author.name, message.content, message.conversation.author.name, message.conversation.author.profileImageUrl);
+    NSLog(@"format date for time %@ and Author: %@ and Content: %@, NAME: %@, Author Remote Key: %d", message.date, message.author.name, message.content, message.conversation.author.name, message.author.remoteKey);
 
     // configure header (first) message or not
     if(isFirst) {
@@ -110,6 +112,45 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
         [self.messageContentImageView.layer setBorderWidth: 1.25];
     }
     
+    //Fetch user's details.
+    [[WebClient sharedInstance] getUserWithKey:message.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
+            
+
+            
+            self.avatarImageView.clipsToBounds = YES;
+            
+            self.avatarImageView.layer.cornerRadius = 20;
+            
+            
+            
+            if([user.profileImageUrl isEqualToString:@""])
+            {
+                //Set default image.
+                [self.avatarImageView setImage:[UIImage imageNamed:@"default_user_image"]];
+            }
+            else
+            {
+                
+                //Fetch the image from the server and add it to the image view.
+                [self.avatarImageView setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+            }
+        }
+        else
+        {
+            NSLog(@"Not Success: %d User: %@",success, user);
+            
+        }
+        
+        
+        
+    }];
+    
+    
+    //Add user's image.
     
 
     

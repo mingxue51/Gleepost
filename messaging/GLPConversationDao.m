@@ -64,7 +64,8 @@
 
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db
 {
-    NSAssert(entity.key != 0, @"Cannot update entity without key");
+    //TODO: Changed.
+    NSAssert(entity.remoteKey != 0, @"Cannot update entity without key");
     
     int date = [entity.lastUpdate timeIntervalSince1970];
     

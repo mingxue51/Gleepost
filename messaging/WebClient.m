@@ -245,6 +245,9 @@ static WebClient *instance = nil;
     [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
 }
 
+/**
+ Create a new conversation.
+ */
 - (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
