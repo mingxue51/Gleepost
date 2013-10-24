@@ -64,7 +64,7 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         conversation.hasUnreadMessages = NO;
-        [GLPConversationDao update:conversation db:db];
+        [GLPConversationDao updateUnread:conversation db:db];
     }];
 }
 
