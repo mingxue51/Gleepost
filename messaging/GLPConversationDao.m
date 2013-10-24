@@ -79,7 +79,7 @@
 
 + (void)updateUnread:(GLPConversation *)entity db:(FMDatabase *)db
 {
-    NSAssert(entity.key != 0, @"Cannot update entity without key");
+    NSAssert(entity.remoteKey != 0, @"Cannot update entity without key");
     
     [db executeUpdateWithFormat:@"update conversations set unread=%d where key=%d",
      entity.hasUnreadMessages,

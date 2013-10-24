@@ -154,6 +154,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(GLPConversation *)conversation
 {
+    
     NSMutableArray *messages = [NSMutableArray array];
     for(id jsonMessage in jsonMessages) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:jsonMessage forConversation:conversation];

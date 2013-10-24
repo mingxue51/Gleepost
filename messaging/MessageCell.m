@@ -63,7 +63,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 - (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier
 {
-    NSLog(@"format date for time %@ and Author: %@ and Content: %@", message.date, message.author.name, message.content);
+    NSLog(@"format date for time %@ and Author: %@ and Content: %@, NAME: %@, PROFILE IMAGE: %@", message.date, message.author.name, message.content, message.conversation.author.name, message.conversation.author.profileImageUrl);
 
     // configure header (first) message or not
     if(isFirst) {

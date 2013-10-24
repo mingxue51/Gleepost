@@ -1625,16 +1625,11 @@
     </scenes>
     <resources>
         <image name="Gleepost_main.png" width="406" height="212"/>
-        <image name="Gleepost_main.png" width="406" height="212"/>
-        <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="add_contact.png" width="304" height="105"/>
         <image name="avatar.png" width="162" height="162"/>
         <image name="avatar_big.png" width="66" height="66"/>
-        <image name="avatar_big.png" width="66" height="66"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
-        <image name="camera_icon.png" width="24" height="19"/>
-        <image name="camera_icon.png" width="24" height="19"/>
         <image name="camera_icon.png" width="24" height="19"/>
         <image name="chat_tab.png" width="15" height="15"/>
         <image name="comment.png" width="19" height="17"/>
@@ -1646,8 +1641,6 @@
         <image name="mychatbubble4.png" width="477" height="67"/>
         <image name="new_chat_tab.png" width="15" height="15"/>
         <image name="next.png" width="200" height="76"/>
-        <image name="next.png" width="200" height="76"/>
-        <image name="notification.png" width="64" height="64"/>
         <image name="notification.png" width="64" height="64"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
         <image name="profilebackground.png" width="642" height="705"/>
@@ -1656,7 +1649,6 @@
         <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
-        <image name="time_label.png" width="47" height="12"/>
         <image name="time_label.png" width="47" height="12"/>
         <image name="timebar1.png" width="639" height="10"/>
         <image name="timebar2.png" width="396" height="14"/>
