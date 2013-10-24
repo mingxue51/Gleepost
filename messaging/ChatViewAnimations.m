@@ -9,6 +9,7 @@
 #import "ChatViewAnimations.h"
 #import "GLPConversation.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 
@@ -229,6 +230,9 @@ static BOOL initLiveChats;
 
         }
         
+        [[currentButton layer] setBorderWidth:2.0f];
+        [[currentButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+        
         
         
        // UIButton *convButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 40, 40)];
@@ -314,6 +318,11 @@ static BOOL initLiveChats;
         UIButton *convButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
         convButton.tag = (i+1)*10;
+        
+        convButton.clipsToBounds = YES;
+        
+        convButton.layer.cornerRadius = 25;
+        
         
         if(i == 0)
         {

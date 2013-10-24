@@ -307,6 +307,7 @@
         if(success) {
             self.conversation = conversation;
             self.newChat = YES;
+            NSLog(@"New Conversation: %@", conversation.author.name);
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardError];

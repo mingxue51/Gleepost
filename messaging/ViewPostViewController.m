@@ -10,12 +10,14 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
-#import "Comment.h"
+#import "GLPComment.h"
 #import "KeyboardHelper.h"
 #import "CommentCell.h"
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
 #import "PostCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @interface ViewPostViewController ()
 
@@ -125,7 +127,7 @@ static BOOL likePushed;
 #pragma mark - Init and config
 - (void)configureForm
 {
-    self.commentFormView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
+    //self.commentFormView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
     
     self.commentGrowingTextView.isScrollable = NO;
     self.commentGrowingTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -136,12 +138,14 @@ static BOOL likePushed;
 	self.commentGrowingTextView.delegate = self;
     self.commentGrowingTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     self.commentGrowingTextView.backgroundColor = [UIColor whiteColor];
-    self.commentGrowingTextView.placeholder = @"Your message";
+    self.commentGrowingTextView.placeholder = @"Your comment";
     
     // center vertically because textview height varies from ios version to screen
     CGRect formTextViewFrame = self.commentGrowingTextView.frame;
     formTextViewFrame.origin.y = (self.commentFormView.frame.size.height - self.commentGrowingTextView.frame.size.height) / 2;
     self.commentGrowingTextView.frame = formTextViewFrame;
+    
+    self.commentGrowingTextView.layer.cornerRadius = 5;
 }
 
 
@@ -442,7 +446,7 @@ static bool firstTime = YES;
             self.comments = [comments mutableCopy];
             
             //Add height for each comment.
-            for(Comment *cmt in self.comments)
+            for(GLPComment *cmt in self.comments)
             {
                 NSString *commentContent = cmt.content;
                 
@@ -543,7 +547,7 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
-        if(self.selectedIndex%3==0)
+        if(_post.imagesUrls.count>0)
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
@@ -555,6 +559,7 @@ static bool firstTime = YES;
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         }
         
+        [postViewCell updateWithPostData:_post];
         
 //        [[WebClient sharedInstance] getUserWithKey:self.post.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
 //            
@@ -588,29 +593,61 @@ static bool firstTime = YES;
     }
     else
     {
+        //TODO: Fix cell by removing the dynamic data generation.
+        
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
         
         [cell createElements];
         
-        Comment *comment = self.comments[indexPath.row-1];
+        GLPComment *comment = self.comments[indexPath.row-1];
         
-        NSLog(@"COMMENT! :%@",comment.content);
+        NSLog(@"Comment Author: %@",comment.author);
         
         //Set comment's content.
         cell.contentTextView.text = comment.content;
         
-        //Set user's image.
-        UIImage *img = [UIImage imageNamed:@"avatar_big"];
-        cell.userImageView.image = img;
-        cell.userImageView.contentMode = UIViewContentModeScaleAspectFit;
-        [cell.userImageView setFrame:CGRectMake(5.0f, 10.0f, img.size.width-25, img.size.height-25)];
+        /**
+        
+         if([postData.author.profileImageUrl isEqualToString:@""])
+         {
+         NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
+         //        [self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
+         [self.userImageView setImage:userImage];
+         }
+         else
+         {
+         
+         [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
+         
+         
+         
+         }
+         
+         */
+        
+        if([comment.author.profileImageUrl isEqualToString:@""])
+        {
+            //Set user's image.
+            UIImage *img = [UIImage imageNamed:@"default_user_image"];
+            cell.userImageView.image = img;
+            cell.userImageView.contentMode = UIViewContentModeScaleAspectFit;
+            [cell.userImageView setFrame:CGRectMake(5.0f, 10.0f, img.size.width-25, img.size.height-25)];
+        }
+        else
+        {
+            NSLog(@"UserImageView: %@",comment.author.profileImageUrl);
+            [cell.userImageView setImageWithURL:[NSURL URLWithString:comment.author.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+
+        }
+        
+
         
         
         //Set user's name.
-        [cell.userNameLabel setText:@"User Name"];
+        [cell.userNameLabel setText:comment.author.name];
         
         //Set post's time.
-        [cell.postDateLabel setText:@"2 minutes ago"];
+        [cell.postDateLabel setText:comment.date.description];
         
         return cell;
     }
@@ -691,7 +728,7 @@ static bool firstTime = YES;
 {
     //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
     
-    return 400;
+    return 100;
 }
 
 #pragma mark - Keyboard methods
@@ -773,7 +810,7 @@ static bool firstTime = YES;
 
 - (void)postComment
 {
-    Comment *comment = [[Comment alloc] init];
+    GLPComment *comment = [[GLPComment alloc] init];
     comment.content = self.commentGrowingTextView.text;
     comment.post = self.post;
     

@@ -59,7 +59,9 @@
             
             [self.profileHeadInformation setText:currentUser.networkName];
             
-            if(currentUser.profileImageUrl == nil)
+            
+            
+            if([currentUser.profileImageUrl isEqualToString:@""])
             {
                 //Set default image.
                 [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];

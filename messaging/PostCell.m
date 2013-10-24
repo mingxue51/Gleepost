@@ -119,10 +119,9 @@ static const float StandardImageCellHeight = 400;
     self.userImageView.clipsToBounds = YES;
     
     self.userImageView.layer.cornerRadius = 20;
-    
-
+        
     //Add to the user's tag's image view the user id.
-    self.userImageImageView.tag = postData.author.remoteKey;
+    self.userImageView.tag = postData.author.remoteKey;
     
 //
 //    if(user.profileImageUrl!=NULL)

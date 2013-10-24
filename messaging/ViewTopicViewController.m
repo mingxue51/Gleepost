@@ -36,7 +36,6 @@ const int flexibleResizeLimit = 120;
 const int limitTimeBar = 3600;
 double timingBarCurrentWidth;
 double resizeFactor;
-//double resizeFactor = 0.016;
 
 float currentTime = 450;
 CGRect firstTimingBarSize;
@@ -284,7 +283,6 @@ float timeInterval = 0.1;
     formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
     self.formTextView.frame = formTextViewFrame;
     
-    //yourTextViewName.layer.cornerRadius = kCornerRadius;
     self.formTextView.layer.cornerRadius = 5;
 }
 
@@ -323,6 +321,7 @@ float timeInterval = 0.1;
     
     for (int i = 0; i < self.messages.count; i++) {
         GLPMessage *current = self.messages[i];
+        NSLog(@"Current message: %@", current);
         if(i == 0) {
             [current configureAsFirstMessage];
         } else {
@@ -338,7 +337,7 @@ float timeInterval = 0.1;
 - (void)showMessageFromNotification:(NSNotification *)notification
 {
     GLPMessage *message = [notification userInfo][@"message"];
-    NSLog(@"Show message from notification %@", message);
+    NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
     
     [self showMessage:message];
 }
@@ -361,6 +360,7 @@ float timeInterval = 0.1;
 - (void)createMessageFromForm
 {
     GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
+        
         [self.tableView reloadData];
     }];
     
@@ -457,7 +457,7 @@ float timeInterval = 0.1;
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
     
-    [cell updateWithMessage:message first:message.hasHeader];
+    [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier];
     
     return cell;
 }

@@ -23,7 +23,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.13/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.14/";
 
 static WebClient *instance = nil;
 

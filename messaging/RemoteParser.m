@@ -106,7 +106,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 
     
-    NSMutableArray *participants = [NSMutableArray array];
+   // NSMutableArray *participants = [NSMutableArray array];
+    NSMutableArray *participants = [[NSMutableArray alloc] init];
+
     for(id jsonUser in json[@"participants"]) {
         
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];

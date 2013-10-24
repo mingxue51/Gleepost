@@ -10,4 +10,6 @@
 
 @interface PrivateProfileViewController : UIViewController
 
+@property int selectedUserId;
+
 @end

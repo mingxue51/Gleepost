@@ -32,4 +32,9 @@
     return YES;
 }
 
+-(NSString*) description
+{
+    return [NSString stringWithFormat:@"Author: %@", self.author];
+}
+
 @end

@@ -32,7 +32,7 @@ static const float FirstCellOtherElementsTotalHeight = 22;
 static const float FollowingCellPadding = 7;
 static const float MessageContentViewPadding = 10;  //15 before.
 static const float MessageContentLabelMaxWidth = 241;
-static const float MessageContentLabelPadding = 20; // horizontal padding 12
+static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -61,15 +61,15 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
 
 }
 
-- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst
+- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier
 {
+    NSLog(@"format date for time %@ and Author: %@ and Content: %@", message.date, message.author.name, message.content);
+
     // configure header (first) message or not
     if(isFirst) {
         self.timeView.hidden = NO;
         self.avatarImageView.hidden = NO;
-//        NSLog(@"format date for time %@", message.date);
         self.timeLabel.text = [self.dateFormatter stringFromDate:message.date];
-        
         // move the content view at its initial position
         self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, self.messageContentViewInitialY, self.messageContentView.frame.size.width, self.messageContentView.frame.size.height);
     } else {
@@ -99,8 +99,20 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
     
     self.messageContentLabel.text = message.content;
     
+    
     self.messageContentImageView.layer.masksToBounds = YES;
-    self.messageContentImageView.layer.cornerRadius = 8.0;
+    self.messageContentImageView.layer.cornerRadius = 12.5;
+    
+    
+    if([identifier isEqualToString:@"LeftCell"])
+    {
+        [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:76.0/255.0 green:183.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
+        [self.messageContentImageView.layer setBorderWidth: 1.25];
+    }
+    
+    
+
+    
     
 //    switch (message.sendStatusValue) {
 //        case kSendStatusLocal:
@@ -115,10 +127,11 @@ static const float MessageContentLabelPadding = 20; // horizontal padding 12
 //    }
     
     // round message content background image
-//    if(!self.isBackgroundRounded) {
+//    if(!self.isBackgroundRounded)
+//    {
 //        self.isBackgroundRounded = YES;
 //    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
-//    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:8.0] addClip];
+//    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:10.0] addClip];
 //    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
 //    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
 //    UIGraphicsEndImageContext();

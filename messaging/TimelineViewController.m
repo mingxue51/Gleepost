@@ -20,6 +20,7 @@
 #import "PopUpMessage.h"
 #import "PostWithImageCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "PrivateProfileViewController.h"
 
 //#import "AppDelegate.h"
 
@@ -29,11 +30,12 @@
 @property (strong, nonatomic) NSMutableArray *usersImages;
 @property (strong, nonatomic) NSMutableArray *postsImages;
 @property (strong, nonatomic) NSMutableArray *users;
-@property (strong, nonatomic) Post *selectedPost;
+@property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) GLPUser *selectedUser;
 @property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
+@property int selectedUserId;
 
 //TODO: Remove after the integration of image posts.
 @property int selectedIndex;
@@ -547,7 +549,6 @@ static BOOL likePushed;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"willDisplayCell");
 }
 
 
@@ -625,7 +626,6 @@ static BOOL likePushed;
  */
 -(void)likeButtonPushed: (id) sender
 {
-    NSLog(@"Like Pushed: %d",likePushed);
     UIButton *btn = (UIButton*) sender;
 
     //If like button is pushed then set the pushed variable to NO and change the
@@ -655,8 +655,8 @@ static BOOL likePushed;
     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
     
     UIImageView *incomingView = (UIImageView*)incomingUser.view;
-    
-    NSLog(@"Image Tag: %d",incomingView.tag);
+        
+    self.selectedUserId = incomingView.tag;
     
     [self performSegueWithIdentifier:@"view private profile" sender:self];
 }
@@ -913,11 +913,18 @@ static BOOL likePushed;
         
         AddCommentViewController *addComment = segue.destinationViewController;
         
-        
-        
         addComment.delegate = self;
         
     }
+    else if([segue.identifier isEqualToString:@"view private profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
+        
+        PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        
+        privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+
 }
 
 @end

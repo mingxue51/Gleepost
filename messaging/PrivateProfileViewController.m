@@ -8,6 +8,8 @@
 
 #import "PrivateProfileViewController.h"
 #import "GLPUser.h"
+#import "WebClient.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 
 @interface PrivateProfileViewController ()
@@ -19,27 +21,65 @@
 @property (strong, nonatomic) GLPUser *profileUser;
 @end
 
+
 @implementation PrivateProfileViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self loadAndSetUserDetails];
     
     
 }
 
--(void)loadUserDetails
+
+
+-(void)loadAndSetUserDetails
 {
-    
+    [[WebClient sharedInstance] getUserWithKey:self.selectedUserId callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
+       
+            
+            
+            
+            [self.userName setText:user.name];
+            
+            [self.networkName setText:user.networkName];
+            
+            [self.personalMessage setText:user.personalMessage];
+            
+            self.profileImage.clipsToBounds = YES;
+            
+            self.profileImage.layer.cornerRadius = 60;
+            
+            
+            
+            if([user.profileImageUrl isEqualToString:@""])
+            {
+                //Set default image.
+                [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+            }
+            else
+            {
+                
+                //Fetch the image from the server and add it to the image view.
+                [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+            }
+        }
+        else
+        {
+            NSLog(@"Not Success: %d User: %@",success, user);
+            
+        }
+        
+        
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning
