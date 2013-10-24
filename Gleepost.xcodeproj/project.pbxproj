@@ -155,6 +155,7 @@
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
+		8050249C181932C600F5337F /* conversation_new_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8050249B181932C600F5337F /* conversation_new_notification.png */; };
 		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
 		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
 		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
@@ -460,6 +461,7 @@
 		80112B96180F03B9006A35AA /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		80112B99180F2494006A35AA /* NSDate+UTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+UTC.h"; sourceTree = "<group>"; };
 		80112B9A180F2494006A35AA /* NSDate+UTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+UTC.m"; sourceTree = "<group>"; };
+		8050249B181932C600F5337F /* conversation_new_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conversation_new_notification.png; sourceTree = "<group>"; };
 		8056763D1805997B006E058E /* UserNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNetwork.h; sourceTree = "<group>"; };
 		8056763E1805997B006E058E /* UserNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNetwork.m; sourceTree = "<group>"; };
 		8056764118059DC4006E058E /* LongPollOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollOperation.h; sourceTree = "<group>"; };
@@ -1042,6 +1044,14 @@
 			name = HPGrowingTextView;
 			sourceTree = "<group>";
 		};
+		8050249A181932BB00F5337F /* Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				8050249B181932C600F5337F /* conversation_new_notification.png */,
+			);
+			name = Conversations;
+			sourceTree = "<group>";
+		};
 		8056764018059D78006E058E /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1364,6 +1374,7 @@
 		80AB898717C2AAF70053E784 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8050249A181932BB00F5337F /* Conversations */,
 				80C8BA441810196B004F70DB /* ChatView */,
 				8096E4E617C2CA6800C7BF60 /* pic.png */,
 				8096E4F017C2D00F00C7BF60 /* navigation_fullblack.png */,
@@ -1541,6 +1552,7 @@
 				8096E4D317C2BA3000C7BF60 /* clock.png in Resources */,
 				58808EFA1807012D00E415C1 /* navigationbar2.png in Resources */,
 				5880103818101327008C170F /* pic3.png in Resources */,
+				8050249C181932C600F5337F /* conversation_new_notification.png in Resources */,
 				5895B3DC17F5D7730040535D /* thumbs-up_pushed@2x.png in Resources */,
 				58433299180F181700BD9F74 /* email.png in Resources */,
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,

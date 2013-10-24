@@ -52,11 +52,15 @@
      self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
--(void) viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     if(self.needsReloadConversations) {
         [self reloadLocalConversations];
     }
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
     
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
@@ -131,7 +135,7 @@
 
 - (void)updateConversationsFromNotification:(NSNotification *)notification
 {
-    
+    [self reloadLocalConversations];
 }
 
 
@@ -176,6 +180,12 @@
 
    // cell.userImage.image = conve
     cell.time.text = (conversation.lastUpdate) ? conversation.lastUpdate.description : @"";
+    
+    if(conversation.hasUnreadMessages) {
+        cell.unreadImageView.hidden = NO;
+    } else {
+        cell.unreadImageView.hidden = YES;
+    }
     
     return cell;
 }

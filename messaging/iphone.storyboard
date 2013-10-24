@@ -125,7 +125,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="lNV-tW-Jeu">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="B4E0BED8-2402-4346-9BA0-DBAD0C7373D9" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="6624EB1F-930F-44DF-9759-BC1DFA0D8228" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Xrg-UP-Uxg">
@@ -248,7 +248,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="XPU-7W-vve">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="C1C3533C-941B-4B60-BE6C-66301A00DE7A" colorSpace="pattern"/>
+                                            <color key="backgroundColor" patternImage="B98E64F3-1892-402A-B173-0EE5406532A6" colorSpace="pattern"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="k0U-1d-7IX">
@@ -515,11 +515,16 @@
                                             <color key="textColor" red="0.72429049744897966" green="0.72429049744897966" blue="0.72429049744897966" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conversation_new_notification.png" id="sRM-rh-Bxi">
+                                            <rect key="frame" x="284" y="29" width="25" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="content" destination="OyA-vT-oZB" id="wG5-7r-tFj"/>
                                     <outlet property="time" destination="IZG-Nn-vX3" id="2wx-9q-ulc"/>
+                                    <outlet property="unreadImageView" destination="sRM-rh-Bxi" id="iSj-9Y-f39"/>
                                     <outlet property="userImage" destination="rP3-fx-cp0" id="YCI-Zc-6Dq"/>
                                     <outlet property="userName" destination="wAt-zH-YqC" id="jD1-gu-6SC"/>
                                 </connections>
@@ -1693,7 +1698,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="B4E0BED8-2402-4346-9BA0-DBAD0C7373D9" width="15" height="16">
+        <image name="6624EB1F-930F-44DF-9759-BC1DFA0D8228" width="15" height="16">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -1710,7 +1715,7 @@ AKwAsQC0ALYAuAC6ALwAwwDLANcA2QDbAN0BwAHFAdAB2QHfAeIB6AHxAfYB/gIBAggCEAIdAiICJAIm
 AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
 </mutableData>
         </image>
-        <image name="C1C3533C-941B-4B60-BE6C-66301A00DE7A" width="15" height="16">
+        <image name="B98E64F3-1892-402A-B173-0EE5406532A6" width="15" height="16">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -1738,6 +1743,7 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <image name="comment.png" width="19" height="17"/>
         <image name="comment_image.png" width="39" height="34"/>
         <image name="contacts_tab.png" width="15" height="19"/>
+        <image name="conversation_new_notification.png" width="45" height="26"/>
         <image name="home_tab.png" width="15" height="14"/>
         <image name="loginwithfacebook.png" width="422" height="80"/>
         <image name="mychatbubble4.png" width="477" height="67"/>
@@ -1763,10 +1769,10 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="sAu-s2-hfG"/>
-        <segue reference="CJG-WM-cQ7"/>
-        <segue reference="Jle-n7-Gmg"/>
         <segue reference="FkJ-3g-qCP"/>
+        <segue reference="sAu-s2-hfG"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="Jle-n7-Gmg"/>
         <segue reference="htZ-EL-79i"/>
     </inferredMetricsTieBreakers>
 </document>

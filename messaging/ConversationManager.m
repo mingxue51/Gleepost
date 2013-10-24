@@ -38,11 +38,9 @@
 {
     NSLog(@"Load conversations");
     
-    [DatabaseManager run:^(FMDatabase *db) {
-        NSArray *localEntities = [GLPConversationDao findAllOrderByDate:db];
-        localCallback(localEntities);
-        NSLog(@"Load local conversations %d", localEntities.count);
-    }];
+    NSArray *localEntities = [ConversationManager getLocalConversations];
+    localCallback(localEntities);
+    NSLog(@"Load local conversations %d", localEntities.count);
     
     [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
         if(!success) {
@@ -59,6 +57,14 @@
         
         remoteCallback(YES, conversations);
         NSLog(@"Load remote conversations %d", conversations.count);
+    }];
+}
+
++ (void)markConversationRead:(GLPConversation *)conversation
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        conversation.hasUnreadMessages = NO;
+        [GLPConversationDao update:conversation db:db];
     }];
 }
 
@@ -181,6 +187,7 @@
         
         conversation.lastMessage = message.content;
         conversation.lastUpdate = message.date;
+        conversation.hasUnreadMessages = YES;
 
         if(conversation.key == 0) {
             [GLPConversationDao save:conversation db:db];
