@@ -10,9 +10,10 @@
 
 @interface MessageTableViewCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *content;
-@property (strong, nonatomic) IBOutlet UIImageView *userImage;
-@property (strong, nonatomic) IBOutlet UILabel *time;
-@property (strong, nonatomic) IBOutlet UILabel *userName;
+@property (weak, nonatomic) IBOutlet UILabel *content;
+@property (weak, nonatomic) IBOutlet UIImageView *userImage;
+@property (weak, nonatomic) IBOutlet UILabel *time;
+@property (weak, nonatomic) IBOutlet UILabel *userName;
+@property (weak, nonatomic) IBOutlet UIImageView *unreadImageView;
 
 @end

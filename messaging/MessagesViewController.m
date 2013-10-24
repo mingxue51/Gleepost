@@ -19,6 +19,8 @@
 @property (strong, nonatomic) GLPConversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
+@property (assign, nonatomic) BOOL needsReloadConversations;
+
 @end
 
 @implementation MessagesViewController
@@ -40,6 +42,7 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
+    self.needsReloadConversations = NO;
     [self loadConversations];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -49,8 +52,16 @@
      self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    if(self.needsReloadConversations) {
+        [self reloadLocalConversations];
+    }
+}
+
 -(void) viewDidAppear:(BOOL)animated
 {
+    
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
     UIImage *image = [UIImage imageNamed:@"navigationbar2"];
@@ -59,6 +70,16 @@
     } else {
         [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
+    
+    // reload the local conversations next time the VC appears
+    self.needsReloadConversations = YES;
 }
 
 -(void) setBackgroundToNavigationBar
@@ -95,22 +116,6 @@
             [WebClientHelper showStandardError];
         }
     }];
-    
-//    [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
-//        [hud hide:YES];
-//        
-//        if(success) {
-//            self.conversations = [conversations mutableCopy];
-//            [self.tableView reloadData];
-//        } else {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-//                                                            message:@"Check your internet connection, dude."
-//                                                           delegate:nil
-//                                                  cancelButtonTitle:@"OK"
-//                                                  otherButtonTitles:nil];
-//            [alert show];
-//        }
-//    }];
 }
 
 - (void)showConversations:(NSArray *)conversations
@@ -118,6 +123,21 @@
     self.conversations = [conversations mutableCopy];
     [self.tableView reloadData];
 }
+
+- (void)reloadLocalConversations
+{
+    NSArray *localConversations = [ConversationManager getLocalConversations];
+    [self showConversations:localConversations];
+}
+
+
+#pragma mark - Notifications
+
+- (void)updateConversationsFromNotification:(NSNotification *)notification
+{
+    [self reloadLocalConversations];
+}
+
 
 #pragma mark - Table view data source
 
@@ -160,6 +180,12 @@
 
    // cell.userImage.image = conve
     cell.time.text = (conversation.lastUpdate) ? conversation.lastUpdate.description : @"";
+    
+    if(conversation.hasUnreadMessages) {
+        cell.unreadImageView.hidden = NO;
+    } else {
+        cell.unreadImageView.hidden = YES;
+    }
     
     return cell;
 }

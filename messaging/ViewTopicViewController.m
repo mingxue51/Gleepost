@@ -305,14 +305,13 @@ float timeInterval = 0.1;
             if(messages) {
                 [self showMessages:messages];
             }
-            
-//            if(!self.longPollingRequestRunning) {
-//                [self startLongPollingRequest];
-//            }
         } else {
             [WebClientHelper showStandardError];
         }
     }];
+    
+    // conversation has no more unread messages
+    [ConversationManager markConversationRead:self.conversation];
 }
 
 - (void)showMessages:(NSArray *)messages
@@ -340,6 +339,9 @@ float timeInterval = 0.1;
     NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
     
     [self showMessage:message];
+    
+    // conversation has no more unread messages
+    [ConversationManager markConversationRead:self.conversation];
 }
 
 - (void)showMessage:(GLPMessage *)message
