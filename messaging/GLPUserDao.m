@@ -40,7 +40,7 @@
 + (void)save:(GLPUser *)entity
 {
     [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        [db executeUpdateWithFormat:@"insert into users(remoteKey, name) values(%d, %@)", entity.remoteKey, entity.name];
+        [db executeUpdateWithFormat:@"insert into users(remoteKey, name, image_url, course, network_id, network_name, tagline) values(%d, %@, %@, %@, %d, %@, %@)", entity.remoteKey, entity.name, entity.profileImageUrl, entity.course, entity.networkId, entity.networkName, entity.personalMessage];
         
         entity.key = [db lastInsertRowId];
     }];

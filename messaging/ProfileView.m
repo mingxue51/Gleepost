@@ -40,49 +40,68 @@
     [self sendSubviewToBack:self.back];
     
     //Get data from server and complete them in UIView.
-    __block GLPUser* currentUser = [[SessionManager sharedInstance] user];
+    GLPUser* currentUser = [[SessionManager sharedInstance] user];
     
     NSLog(@"Remote Key: %d", currentUser.remoteKey);
-    
-
     
     self.profileImage.clipsToBounds = YES;
     
     self.profileImage.layer.cornerRadius = 60;
     
-    [[WebClient sharedInstance] getUserWithKey:currentUser.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+    
+    //Not need to request. Take all the data from Session Manager.
+    
+    [self.profileHeadInformation setText:currentUser.networkName];
+    
+    
+    
+    if([currentUser.profileImageUrl isEqualToString:@""])
+    {
+        //Set default image.
+        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+        NSLog(@"Profile User name: %@", currentUser.profileImageUrl);
+    }
+    else
+    {
         
-        if(success)
-        {
-            NSLog(@"Load User Image URL: %@",user.profileImageUrl);
-            currentUser = user;
-            
-            [self.profileHeadInformation setText:currentUser.networkName];
-            
-            
-            
-            if([currentUser.profileImageUrl isEqualToString:@""])
-            {
-                //Set default image.
-                [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
-                NSLog(@"Profile User name: %@", currentUser.profileImageUrl);
-            }
-            else
-            {
+        //Fetch the image from the server and add it to the image view.
+        [self.profileImage setImageWithURL:[NSURL URLWithString:currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
+    }
+    
 
-                //Fetch the image from the server and add it to the image view.
-                [self.profileImage setImageWithURL:[NSURL URLWithString:currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
-            }
-        }
-        else
-        {
-            NSLog(@"Not Success: %d User: %@",success, user);
-            
-        }
-        
-        
-        
-    }];
+//    [[WebClient sharedInstance] getUserWithKey:currentUser.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(success)
+//        {
+//            NSLog(@"Load User Image URL: %@",user.profileImageUrl);
+//            currentUser = user;
+//            
+//            [self.profileHeadInformation setText:currentUser.networkName];
+//            
+//            
+//            
+//            if([currentUser.profileImageUrl isEqualToString:@""])
+//            {
+//                //Set default image.
+//                [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+//                NSLog(@"Profile User name: %@", currentUser.profileImageUrl);
+//            }
+//            else
+//            {
+//
+//                //Fetch the image from the server and add it to the image view.
+//                [self.profileImage setImageWithURL:[NSURL URLWithString:currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
+//            }
+//        }
+//        else
+//        {
+//            NSLog(@"Not Success: %d User: %@",success, user);
+//            
+//        }
+//        
+//        
+//        
+//    }];
     
     
 

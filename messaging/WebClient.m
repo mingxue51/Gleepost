@@ -13,7 +13,7 @@
 #import "JsonParser.h"
 #import "RemoteParser.h"
 #import "AFJSONRequestOperation.h"
-
+#import "GLPUserDao.h"
 
 @interface WebClient()
 
@@ -89,9 +89,15 @@ static WebClient *instance = nil;
     [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = (NSDictionary *) responseObject;
         
+
+        
+        
         GLPUser *user = [[GLPUser alloc] init];
         user.remoteKey = [json[@"id"] integerValue];
         user.name = name;
+        
+
+        
 
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];

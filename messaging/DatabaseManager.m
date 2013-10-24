@@ -79,7 +79,12 @@ static DatabaseManager *instance = nil;
             [db executeUpdate:@"create table users ( \
              key integer primary key autoincrement, \
              remoteKey integer, \
-             name text);"];
+             name text, \
+             image_url text, \
+             course text, \
+             network_id integer, \
+             network_name text, \
+             tagline text);"];
             
             // conversation
             [db executeUpdate:@"create table conversations ( \

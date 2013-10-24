@@ -11,6 +11,7 @@
 #import "UserManager.h"
 #import "DateFormatterHelper.h"
 #import "GLPUserDao.h"
+#import "WebClient.h"
 
 @interface SessionManager()
 
@@ -68,8 +69,27 @@ static SessionManager *instance = nil;
     [[DatabaseManager sharedInstance] dropDatabase];
     [[DatabaseManager sharedInstance] initDatabase];
     
-    // configure session
-    [GLPUserDao save:user];
+    //TODO: See again if this is a good style of programming.
+    //Request and get all the user's details.
+    //Request all the user's data from server.
+    [[WebClient sharedInstance] getUserWithKey:user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            NSLog(@"User's details: %@",user);
+            // configure session
+            [GLPUserDao save:user];
+            [[SessionManager sharedInstance] setUser:user];
+        }
+        else
+        {
+            NSLog(@"USER DETAILS ERROR.");
+        }
+        
+        
+    }];
+    
+
     
     self.user = user;
     self.token = token;
@@ -118,6 +138,9 @@ static SessionManager *instance = nil;
 
 //TODO: Here there is a problem.
 
+/**
+ Load existing data from database.
+ */
 - (void)loadData
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {

@@ -3,6 +3,13 @@
 @interface GLPUser : GLPEntity
 
 extern NSString * const GLPUserNameColumn;
+extern NSString * const GLPUserProfileImageColumn;
+extern NSString * const GLPUserCourseColumn;
+extern NSString * const GLPUserNetworkIdColumn;
+extern NSString * const GLPUserNetworkNameColumn;
+extern NSString * const GLPUserPersonalMessageColumn;
+
+
 
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *profileImageUrl;

@@ -11,6 +11,11 @@
 @implementation GLPUser
 
 NSString * const GLPUserNameColumn = @"name";
+NSString * const GLPUserProfileImageColumn = @"image_url";
+NSString * const GLPUserCourseColumn = @"course";
+NSString * const GLPUserNetworkIdColumn = @"network_id";
+NSString * const GLPUserNetworkNameColumn = @"network_name";
+NSString * const GLPUserPersonalMessageColumn = @"tagline";
 
 @synthesize name = _name;
 
