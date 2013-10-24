@@ -125,7 +125,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="lNV-tW-Jeu">
                                             <rect key="frame" x="10" y="100" width="300" height="300"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="6FA81868-81AA-48B5-BE7B-3E66CB35569F" colorSpace="pattern"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Xrg-UP-Uxg">
@@ -222,84 +222,9 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.54376594387755106" green="0.54376594387755106" blue="0.54376594387755106" alpha="1" colorSpace="calibratedRGB"/>
-                                <view key="tableHeaderView" contentMode="scaleToFill" id="esp-TU-VDf" customClass="PostView">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PostTime" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qzw-qI-BUd">
-                                            <rect key="frame" x="60" y="20" width="234" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="otf-Hc-kiw">
-                                            <rect key="frame" x="60" y="40" width="250" height="56"/>
-                                            <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="juf-t5-7qg">
-                                            <rect key="frame" x="60" y="6" width="234" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="XPU-7W-vve">
-                                            <rect key="frame" x="10" y="100" width="300" height="300"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" patternImage="E248C918-A03A-480B-B4D2-9AF18A227397" colorSpace="pattern"/>
-                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="k0U-1d-7IX">
-                                            <rect key="frame" x="10" y="352" width="300" height="48"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lC9-3X-vKw">
-                                            <rect key="frame" x="20" y="353" width="218" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4Uu-cq-kri">
-                                            <rect key="frame" x="213" y="374" width="87" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Share" image="share_image.png">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bFa-k8-gVs">
-                                            <rect key="frame" x="20" y="374" width="71" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Like" image="thumbs-up_image.png">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JjG-If-yPJ">
-                                            <rect key="frame" x="10" y="10" width="40" height="40"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <connections>
-                                        <outlet property="content" destination="otf-Hc-kiw" id="h4l-Os-OGN"/>
-                                        <outlet property="information" destination="lC9-3X-vKw" id="3wJ-Rv-VgZ"/>
-                                        <outlet property="likeButton" destination="bFa-k8-gVs" id="OcD-8g-rZV"/>
-                                        <outlet property="mainImage" destination="XPU-7W-vve" id="I9G-Fs-4Au"/>
-                                        <outlet property="postTime" destination="Qzw-qI-BUd" id="VU2-cS-ibs"/>
-                                        <outlet property="shareButton" destination="4Uu-cq-kri" id="lvr-jv-ijF"/>
-                                        <outlet property="userImage" destination="JjG-If-yPJ" id="oTF-Go-7On"/>
-                                        <outlet property="userName" destination="juf-t5-7qg" id="8Sg-2g-pjq"/>
-                                    </connections>
-                                </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="none" indentationWidth="10" reuseIdentifier="CellText" rowHeight="49" id="OEj-TO-kqx">
-                                        <rect key="frame" x="0.0" y="422" width="320" height="49"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="49"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OEj-TO-kqx" id="b7s-tR-baM">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -307,7 +232,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="none" indentationWidth="10" reuseIdentifier="CellImage" rowHeight="49" id="Cj4-Ds-JIL">
-                                        <rect key="frame" x="0.0" y="471" width="320" height="49"/>
+                                        <rect key="frame" x="0.0" y="71" width="320" height="49"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cj4-Ds-JIL" id="OR8-Fv-nzY">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -315,7 +240,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="none" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="49" id="TD8-D2-B1y" customClass="CommentCell">
-                                        <rect key="frame" x="0.0" y="520" width="320" height="49"/>
+                                        <rect key="frame" x="0.0" y="120" width="320" height="49"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TD8-D2-B1y" id="0ZD-11-9s8">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -806,11 +731,11 @@
             <objects>
                 <viewController id="IeS-PS-HdN" customClass="PrivateProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hYb-hd-deC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottom_background_private_profile.png" id="yH7-0j-vId">
-                                <rect key="frame" x="0.0" y="320" width="320" height="225"/>
+                                <rect key="frame" x="0.0" y="320" width="320" height="161"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profilebackground.png" id="f7p-xL-qoL">
@@ -1374,11 +1299,11 @@
             <objects>
                 <viewController id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
@@ -1699,40 +1624,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="6FA81868-81AA-48B5-BE7B-3E66CB35569F" width="15" height="16">
-            <mutableData key="keyedArchiveRepresentation">
-YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
-GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
-V05TQ29sb3KAAoAMEiTAAACAA4AKWHsxNSwgMTZ90hUKFhhaTlMub2JqZWN0c6EXgASACdIVChoYohsc
-gAWABoAJEAXTIAohIiMkV05TLmJhc2VbTlMucmVsYXRpdmWAAIAIgAdfEOBmaWxlOi8vbG9jYWxob3N0
-L0FwcGxpY2F0aW9ucy9YY29kZS5hcHAvQ29udGVudHMvRGV2ZWxvcGVyL1BsYXRmb3Jtcy9pUGhvbmVT
-aW11bGF0b3IucGxhdGZvcm0vRGV2ZWxvcGVyL0xpYnJhcnkvWGNvZGUvUHJpdmF0ZVBsdWdJbnMvSURF
-SW50ZXJmYWNlQnVpbGRlckNvY29hVG91Y2hJbnRlZ3JhdGlvbi5pZGVwbHVnaW4vQ29udGVudHMvUmVz
-b3VyY2VzL0lCVUlNaXNzaW5nSW1hZ2UudGlmZtInKCkqWiRjbGFzc25hbWVYJGNsYXNzZXNVTlNVUkyi
-KyxVTlNVUkxYTlNPYmplY3TSJyguL1dOU0FycmF5oi4s0zEyCjM0NVdOU1doaXRlXE5TQ29sb3JTcGFj
-ZUQwIDAAEAOAC9InKDc4V05TQ29sb3KiNyzSJyg6O1dOU0ltYWdlojosXxAPTlNLZXllZEFyY2hpdmVy
-0T4/VHJvb3SAAQAIABEAGgAjAC0AMgA3AEUASwBWAF0AZABxAHgAgACCAIQAiQCLAI0AlgCbAKYAqACq
-AKwAsQC0ALYAuAC6ALwAwwDLANcA2QDbAN0BwAHFAdAB2QHfAeIB6AHxAfYB/gIBAggCEAIdAiICJAIm
-AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
-</mutableData>
-        </image>
-        <image name="E248C918-A03A-480B-B4D2-9AF18A227397" width="15" height="16">
-            <mutableData key="keyedArchiveRepresentation">
-YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
-GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
-V05TQ29sb3KAAoAMEiTAAACAA4AKWHsxNSwgMTZ90hUKFhhaTlMub2JqZWN0c6EXgASACdIVChoYohsc
-gAWABoAJEAXTIAohIiMkV05TLmJhc2VbTlMucmVsYXRpdmWAAIAIgAdfEOBmaWxlOi8vbG9jYWxob3N0
-L0FwcGxpY2F0aW9ucy9YY29kZS5hcHAvQ29udGVudHMvRGV2ZWxvcGVyL1BsYXRmb3Jtcy9pUGhvbmVT
-aW11bGF0b3IucGxhdGZvcm0vRGV2ZWxvcGVyL0xpYnJhcnkvWGNvZGUvUHJpdmF0ZVBsdWdJbnMvSURF
-SW50ZXJmYWNlQnVpbGRlckNvY29hVG91Y2hJbnRlZ3JhdGlvbi5pZGVwbHVnaW4vQ29udGVudHMvUmVz
-b3VyY2VzL0lCVUlNaXNzaW5nSW1hZ2UudGlmZtInKCkqWiRjbGFzc25hbWVYJGNsYXNzZXNVTlNVUkyi
-KyxVTlNVUkxYTlNPYmplY3TSJyguL1dOU0FycmF5oi4s0zEyCjM0NVdOU1doaXRlXE5TQ29sb3JTcGFj
-ZUQwIDAAEAOAC9InKDc4V05TQ29sb3KiNyzSJyg6O1dOU0ltYWdlojosXxAPTlNLZXllZEFyY2hpdmVy
-0T4/VHJvb3SAAQAIABEAGgAjAC0AMgA3AEUASwBWAF0AZABxAHgAgACCAIQAiQCLAI0AlgCbAKYAqACq
-AKwAsQC0ALYAuAC6ALwAwwDLANcA2QDbAN0BwAHFAdAB2QHfAeIB6AHxAfYB/gIBAggCEAIdAiICJAIm
-AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
-</mutableData>
-        </image>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
@@ -1763,9 +1654,7 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <image name="set_tab.png" width="15" height="14"/>
         <image name="share.png" width="20" height="17"/>
         <image name="share_image.png" width="40" height="34"/>
-        <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
-        <image name="thumbs-up_image.png" width="30" height="31"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
         <image name="time_label.png" width="47" height="12"/>
         <image name="time_label.png" width="47" height="12"/>
@@ -1779,10 +1668,10 @@ AisCMwI2AjsCQwJGAlgCWwJgAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAmI
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="htZ-EL-79i"/>
-        <segue reference="Rdk-3z-tPE"/>
-        <segue reference="UFN-Sk-0kH"/>
         <segue reference="sAu-s2-hfG"/>
-        <segue reference="Jle-n7-Gmg"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="cKp-Du-pjd"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="iLI-w2-7l9"/>
     </inferredMetricsTieBreakers>
 </document>
