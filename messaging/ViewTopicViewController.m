@@ -320,6 +320,13 @@ float timeInterval = 0.1;
     
     for (int i = 0; i < self.messages.count; i++) {
         GLPMessage *current = self.messages[i];
+        
+        //Added.
+        //Find user depenting message.
+//        GLPUser* user = [ConversationManager loadUserWithMessageId:current.key];
+//        
+//        NSLog(@"User for message: %@ : Message: %@",user,current.content);
+        
         NSLog(@"Current message: %@", current);
         if(i == 0) {
             [current configureAsFirstMessage];

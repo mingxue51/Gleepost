@@ -12,6 +12,7 @@
 #import "GLPUser.h"
 #import "GLPPost.h"
 #import "GLPComment.h"
+#import "GLPContact.h"
 
 @interface RemoteParser : NSObject
 
@@ -33,7 +34,12 @@
 + (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
 
+// contacts
++ (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;
+
 // commons
 + (NSDate *)parseDateFromString:(NSString *)string;
+
+
 
 @end

@@ -26,4 +26,5 @@
 
 + (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
 
++(GLPUser *)findUserByMessageKey:(NSInteger)messageKey db:(FMDatabase *)db;
 @end

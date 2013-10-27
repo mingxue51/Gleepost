@@ -34,6 +34,19 @@
     
 }
 
+- (IBAction)addContact:(id)sender
+{
+    [[WebClient sharedInstance] addContact:self.profileUser.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Change the button style.
+            NSLog(@"Request has been sent to the user.");
+        }
+        
+        
+    }];
+}
 
 
 -(void)loadAndSetUserDetails
@@ -44,8 +57,6 @@
         {
             NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
        
-            
-            
             
             [self.userName setText:user.name];
             

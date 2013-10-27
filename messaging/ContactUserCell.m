@@ -17,7 +17,7 @@
     
     if(self)
     {
-        [self createElements];
+        //[self createElements];
     }
     
     return self;
@@ -28,13 +28,13 @@
 {
     NSLog(@"Create Elements");
     
-    //Create and add user's profile image.
-    self.profileImageUser = [[UIButton alloc] initWithFrame:CGRectMake(10.f, 2.f, 40.f, 40.f)];
-    [self.contentView addSubview:self.profileImageUser];
-    
-    //Create and add user's name.
-    self.nameUser = [[UILabel alloc] initWithFrame:CGRectMake(60.f, 0.f, 280.f, 40.f)];
-    [self.contentView addSubview:self.nameUser];
+//    //Create and add user's profile image.
+//    self.profileImageUser = [[UIButton alloc] initWithFrame:CGRectMake(10.f, 2.f, 40.f, 40.f)];
+//    [self.contentView addSubview:self.profileImageUser];
+//    
+//    //Create and add user's name.
+//    self.nameUser = [[UILabel alloc] initWithFrame:CGRectMake(60.f, 0.f, 280.f, 40.f)];
+//    [self.contentView addSubview:self.nameUser];
 }
 
 @end

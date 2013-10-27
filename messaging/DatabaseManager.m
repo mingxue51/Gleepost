@@ -107,6 +107,16 @@ static DatabaseManager *instance = nil;
              author_key integer, \
              conversation_key integer);"];
             
+            // conversation participants
+            [db executeUpdate:@"create table conversations_participants ( \
+             user_key integer, \
+             conversation_key integer);"];
+            
+            // message participants
+            [db executeUpdate:@"create table messages_participants ( \
+             user_key integer, \
+             message_key integer);"];
+            
             self.exists = YES;
         }];
     }

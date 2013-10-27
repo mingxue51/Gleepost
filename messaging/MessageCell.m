@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WebClient.h"
+#import "ConversationManager.h"
 
 @interface MessageCell()
 
@@ -112,42 +113,75 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
         [self.messageContentImageView.layer setBorderWidth: 1.25];
     }
     
-    //Fetch user's details.
-    [[WebClient sharedInstance] getUserWithKey:message.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-        
-        if(success)
-        {
-            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
-            
+    //Fetch user's details from database.
+    GLPUser* user = [ConversationManager loadUserWithMessageId:message.key];
+    NSLog(@"User for message: %@ : Message: %@",user,message.content);
 
-            
-            self.avatarImageView.clipsToBounds = YES;
-            
-            self.avatarImageView.layer.cornerRadius = 20;
-            
-            
-            
-            if([user.profileImageUrl isEqualToString:@""])
-            {
-                //Set default image.
-                [self.avatarImageView setImage:[UIImage imageNamed:@"default_user_image"]];
-            }
-            else
-            {
-                
-                //Fetch the image from the server and add it to the image view.
-                [self.avatarImageView setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
-            }
+    
+    NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
+    
+    self.avatarImageView.clipsToBounds = YES;
+    
+    self.avatarImageView.layer.cornerRadius = 20;
+
+    if(self.avatarImageView.image == nil)
+    {
+        NSLog(@"Add image.");
+        if([user.profileImageUrl isEqualToString:@""])
+        {
+            //Set default image.
+            [self.avatarImageView setImage:[UIImage imageNamed:@"default_user_image"]];
         }
         else
         {
-            NSLog(@"Not Success: %d User: %@",success, user);
             
+            //Fetch the image from the server and add it to the image view.
+            [self.avatarImageView setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
         }
-        
-        
-        
-    }];
+    }
+    else
+    {
+        NSLog(@"Don't do anything.");
+    }
+
+    
+    
+    //Fetch user's details from server.
+//    [[WebClient sharedInstance] getUserWithKey:message.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(success)
+//        {
+//            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
+//            
+//
+//            
+//            self.avatarImageView.clipsToBounds = YES;
+//            
+//            self.avatarImageView.layer.cornerRadius = 20;
+//            
+//            
+//            
+//            if([user.profileImageUrl isEqualToString:@""])
+//            {
+//                //Set default image.
+//                [self.avatarImageView setImage:[UIImage imageNamed:@"default_user_image"]];
+//            }
+//            else
+//            {
+//                
+//                //Fetch the image from the server and add it to the image view.
+//                [self.avatarImageView setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+//            }
+//        }
+//        else
+//        {
+//            NSLog(@"Not Success: %d User: %@",success, user);
+//            
+//        }
+//        
+//        
+//        
+//    }];
     
     
     //Add user's image.

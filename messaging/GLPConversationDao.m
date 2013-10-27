@@ -10,6 +10,8 @@
 #import "DatabaseManager.h"
 #import "GLPConversationDaoParser.h"
 #import "FMResultSet.h"
+#import "GLPUserDao.h"
+#import "GLPConversationParticipantsDao.h"
 
 @implementation GLPConversationDao
 
@@ -60,6 +62,39 @@
      entity.hasUnreadMessages];
     
     entity.key = [db lastInsertRowId];
+    
+    //TODO: Added.
+    //Insert a participant if not exist.
+    for(GLPUser *user in entity.participants)
+    {
+        NSLog(@"Participant id: %d With conversation id: %d", user.remoteKey, entity.key);
+       
+        [GLPConversationDao insertConversationParticipantIfNotExist:entity.key withUserId: [GLPUserDao saveIfNotExist:user db:db] andDb:db];
+    }
+    
+    //Insert participants and conversation id in conversation participants table if are not exist.
+    
+    
+    
+    //TODO: Do this after inserting the users into database.
+    //Save each conversation and users.
+    for(GLPUser *user in entity.participants)
+    {
+        NSLog(@"Participant id: %d With conversation id: %d", user.remoteKey, entity.key);
+    }
+    
+}
+
++ (void)insertConversationParticipantIfNotExist: (int)conversationId withUserId: (int)userId andDb:(FMDatabase* )db
+{
+    //If participant is not exist, add the conversation, participant id pairs.
+    int convId = [GLPConversationParticipantsDao findByParticipantKey:userId db:db];
+    
+    if(convId == -1)
+    {
+        [db executeUpdateWithFormat:@"insert into conversations_participants(user_key, conversation_key) values(%d, %d)", userId, conversationId];
+    }
+    
 }
 
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db

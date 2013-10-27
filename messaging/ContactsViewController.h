@@ -10,6 +10,6 @@
 
 @interface ContactsViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) NSMutableArray *sections;
 
 @end

@@ -9,6 +9,10 @@
 #import "ContactsViewController.h"
 #import "ContactUserCell.h"
 #import "ProfileViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "WebClient.h"
+#import "SessionManager.h"
+#import "WebClientHelper.h"
 
 
 @interface ContactsViewController ()
@@ -16,6 +20,7 @@
 @property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) NSMutableDictionary *categorisedUsers;
 @property (strong, nonatomic) IBOutlet UITableView *contactsTableView;
+@property (strong, nonatomic) NSArray *panelSections;
 
 @end
 
@@ -36,7 +41,7 @@
     
     //Init categorised users dictionary.
     self.categorisedUsers = [[NSMutableDictionary alloc] init];
-    
+    NSLog(@"Contacts View Controller : viewDidLoad");
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -46,9 +51,9 @@
     
     //Add samples users.
     self.users = [[NSMutableArray alloc] init];
-    [self.users addObject:@"TestUser1"];
-    [self.users addObject:@"SamplesUser1"];
-    [self.users addObject:@"TestUser2"];
+//    [self.users addObject:@"TestUser1"];
+//    [self.users addObject:@"SampleUser1"];
+//    [self.users addObject:@"TestUser2"];
 
     
     //self.navigationController.navigationBar = bar;
@@ -58,17 +63,60 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
-    self.sections = [NSArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+    self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+    
+    self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
     
-    [self categoriseUsersByLetter];
-    [self.contactsTableView reloadData];
+    
 
+    
+    [self loadContacts];
+
+}
+
+-(void) clearUselessSections
+{
+    BOOL sectionFound = NO;
+    NSMutableArray *deletedSections = [[NSMutableArray alloc] init];
+
+    for(NSString* letter in self.sections)
+    {
+        for(NSString* userName in self.users)
+        {
+            //Get the first letter of the user.
+            NSString* firstLetter = [userName substringWithRange: NSMakeRange(0, 1)];
+            //NSLog(@"PREVIOUS USER NAME: %@ With letter: %@",userName, letter);
+            
+            if([firstLetter caseInsensitiveCompare:letter] == NSOrderedSame)
+            {
+                sectionFound = YES;
+            }
+        }
+        
+        //Delete a section if it is not necessary.
+        if(!sectionFound)
+        {
+            [deletedSections addObject:letter];
+        }
+        else
+        {
+            sectionFound = NO;
+        }
+    }
+    
+    //Remove sections.
+    for(NSString* letter in deletedSections)
+    {
+        [self.sections removeObject:letter];
+    }
 }
 
 -(void) categoriseUsersByLetter
 {
     int indexOfLetter = 0;
+    BOOL sectionFound = NO;
+    NSMutableArray *deletedSections = [[NSMutableArray alloc] init];
     //NSNumber* indexOfLetter = [[NSNumber alloc] initWithInt:0];
     
     for(NSString* letter in self.sections)
@@ -81,6 +129,7 @@
 
             if([firstLetter caseInsensitiveCompare:letter] == NSOrderedSame)
             {
+                sectionFound = YES;
                 NSLog(@"USER NAME: %@ With letter: %@",userName, letter);
                 
                 //Check if the dictonary has previous elements in the current key.
@@ -101,9 +150,26 @@
                 
             }
         }
+        
+        //Delete a section if it is not necessary.
+        if(!sectionFound)
+        {
+            [deletedSections addObject:letter];
+        }
+        else
+        {
+            sectionFound = NO;
+        }
     
         ++indexOfLetter;
     }
+    
+    //Remove sections.
+    for(NSString* letter in deletedSections)
+    {
+        [self.sections removeObject:letter];
+    }
+    NSLog(@"SECTIONS ARRAY: %@", self.sections);
     
     NSLog(@"Dictionary: %@",[self categorisedUsers]);
 }
@@ -185,17 +251,50 @@
 
 }
 
+#pragma mark - Client methods
+
+-(void) loadContacts
+{
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+
+    
+    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+      
+        [WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            //Store contacts into an array.
+            NSLog(@"Contacts loaded successfully.");
+            
+            self.users = contacts.mutableCopy;
+            
+            [self clearUselessSections];
+            [self categoriseUsersByLetter];
+            [self.contactsTableView reloadData];
+            
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
+        }
+
+        
+    }];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 26;
+    return self.sections.count;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-    return self.sections;
+    return self.panelSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
@@ -243,16 +342,26 @@
     //NSMutableArray *currentUsers = [self.categorisedUsers objectAtIndex:indexPath.row];
     
     NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
+    NSLog(@"CATEGORISED USERS: %@", self.categorisedUsers);
     
+    NSLog(@"Index Path Section: %d with row: %d", indexPath.section, indexPath.row);
     
     [cell.nameUser setText: [currentUsers objectAtIndex:indexPath.row]];
 
     
  //   [cell.profileImageUser setImage:[UIImage imageNamed:@"avatar_big"]];
     
-    [cell.profileImageUser setBackgroundImage:[UIImage imageNamed:@"avatar_big"] forState:UIControlStateNormal];
+    cell.profileImageUser.clipsToBounds = YES;
     
-    [cell.profileImageUser addTarget:self action:@selector(navigateToProfileContact:) forControlEvents:UIControlEventTouchUpInside];
+    cell.profileImageUser.layer.cornerRadius = 20;
+    
+    [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image"]];
+    
+    
+    
+//    [cell.profileImageUser setBackgroundImage:[UIImage imageNamed:@"avatar_big"] forState:UIControlStateNormal];
+//    
+//    [cell.profileImageUser addTarget:self action:@selector(navigateToProfileContact:) forControlEvents:UIControlEventTouchUpInside];
 
     
     

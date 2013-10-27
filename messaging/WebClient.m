@@ -378,19 +378,49 @@ static WebClient *instance = nil;
  
 
 
-//- (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock
+//- (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success))callbackBlock
 //{
-//    NSString *path = [NSString stringWithFormat:@"user/%d", key];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
+//    [params addEntriesFromDictionary:self.sessionManager.authParameters];
 //    
-//    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
-//        callbackBlock(YES, user);
+//    [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        callbackBlock(YES);
 //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO, nil);
+//        callbackBlock(NO);
 //    }];
 //}
 
+//id, token, user
+-(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",contactRemoteKey], @"user", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:@"contacts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO);
+    }];
+}
 
+
+
+#pragma mark - Contacts
+
+-(void) getContactsWithCallbackBlock:(void (^)(BOOL success, NSArray *contacts))callbackBlock
+{
+    NSString* path = [NSString stringWithFormat:@"contacts"];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *contacts = [RemoteParser parseContactsFromJson:responseObject];
+        callbackBlock(YES, contacts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
 
 @end

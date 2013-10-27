@@ -19,7 +19,7 @@
 #import "MessagesSendingProcessor.h"
 #import "NSDate+UTC.h"
 #import "DatabaseManager.h"
-
+#import "GLPConversationParticipantsDao.h"
 
 
 @implementation ConversationManager
@@ -32,6 +32,18 @@
     }];
     
     return conversations;
+}
+
++(GLPUser* )loadUserWithMessageId: (int)messageId
+{
+    __block GLPUser* currentUser = nil;
+    
+    [DatabaseManager run:^(FMDatabase *db) {
+        currentUser = [GLPMessageDao findUserByMessageKey:messageId db:db];
+    }];
+    
+    return currentUser;
+    
 }
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
@@ -50,6 +62,8 @@
         
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             [GLPConversationDao deleteAll:db];
+            //Added.
+            [GLPConversationParticipantsDao deleteAll:db];
             for(GLPConversation *conversation in conversations) {
                 [GLPConversationDao save:conversation db:db];
             }

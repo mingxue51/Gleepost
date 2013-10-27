@@ -11,6 +11,8 @@
 #import "GLPMessageDaoParser.h"
 #import "DatabaseManager.h"
 #import "GLPConversationDao.h"
+#import "GLPUserDaoParser.h"
+#import "GLPUserDao.h"
 
 @implementation GLPMessageDao
 
@@ -105,6 +107,28 @@
     return [GLPMessageDaoParser createFromResultSet:resultSet db:db];
 }
 
+/**
+ Added.
+ */
+
++(GLPUser *)findUserByMessageKey:(NSInteger)messageKey db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages_participants where message_key=%d", messageKey];
+    
+    if(![resultSet next]) {
+        return nil;
+    }
+    
+    int userId = [resultSet intForColumn:@"user_key"];
+    
+    //Get user using id.
+    GLPUser* urs = [GLPUserDao findByKey:userId db:db];
+    
+//    GLPUser* urs = [GLPUserDaoParser createUserFromResultSet:resultSet];
+    
+    return urs;
+}
+
 //+ (GLPMessage *)findLastRemoteAndSeenForConversation:(GLPConversation *)conversation
 //{
 //    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where remote_key!=0 AND seen=1 AND conversation_key=%d order by remote_key DESC", conversation.remoteKey];
@@ -135,7 +159,21 @@
      entity.author.remoteKey,
      entity.conversation.remoteKey];
     
+    
     entity.key = [db lastInsertRowId];
+    
+    //Fetch user's id.
+    GLPUser *user = [GLPUserDao findByRemoteKey:entity.author.remoteKey db:db];
+    
+    //Insert into message participants the message and user (local) id.
+    if([db executeUpdateWithFormat:@"insert into messages_participants (user_key, message_key) values(%d, %d)",user.key ,entity.key])
+    {
+        NSLog(@"Executed.");
+    }
+    else
+    {
+        NSLog(@"Error inserting message per user.");
+    }
 }
 
 //+ (void)saveOld:(GLPMessage *)entity

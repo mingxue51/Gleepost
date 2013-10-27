@@ -637,7 +637,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar_big.png" id="GY7-fW-sLF">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="GY7-fW-sLF">
                                                     <rect key="frame" x="280" y="9" width="40" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
@@ -796,6 +796,9 @@
                                 <state key="normal" image="add_contact.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="addContact:" destination="IeS-PS-HdN" eventType="touchUpInside" id="T72-vU-q5V"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -816,7 +819,7 @@
         <scene sceneID="4na-1o-QCI">
             <objects>
                 <navigationController definesPresentationContext="YES" id="cfX-Wb-77k" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="Messages" image="chat_tab.png" id="H0j-Wz-sWb"/>
+                    <tabBarItem key="tabBarItem" title="Messages" image="chat_tab.png" id="H0j-Wz-sWb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="DQu-6o-oiM">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1299,11 +1302,11 @@
             <objects>
                 <viewController id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
@@ -1434,19 +1437,35 @@
         <scene sceneID="ozd-vh-bGg">
             <objects>
                 <tableViewController id="29g-P3-71n" customClass="ContactsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="u2T-TE-5Mf">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="48" sectionHeaderHeight="22" sectionFooterHeight="22" id="u2T-TE-5Mf">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactCell" id="HF9-lB-hPp" customClass="ContactUserCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactCell" rowHeight="48" id="HF9-lB-hPp" customClass="ContactUserCell">
+                                <rect key="frame" x="0.0" y="22" width="320" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HF9-lB-hPp" id="6sj-U2-8zU">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="IvA-wv-c4g">
+                                            <rect key="frame" x="11" y="4" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ISc-me-Zme">
+                                            <rect key="frame" x="59" y="11" width="241" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nameUser" destination="ISc-me-Zme" id="uTn-PS-dYE"/>
+                                    <outlet property="profileImageUser" destination="IvA-wv-c4g" id="Xt0-Cb-yaz"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1627,24 +1646,23 @@
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="add_contact.png" width="304" height="105"/>
         <image name="avatar.png" width="162" height="162"/>
-        <image name="avatar_big.png" width="66" height="66"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
         <image name="camera_icon.png" width="24" height="19"/>
-        <image name="chat_tab.png" width="15" height="15"/>
+        <image name="chat_tab.png" width="16" height="16"/>
         <image name="comment.png" width="19" height="17"/>
         <image name="comment_image.png" width="39" height="34"/>
-        <image name="contacts_tab.png" width="15" height="19"/>
+        <image name="contacts_tab.png" width="12" height="15"/>
         <image name="conversation_new_notification.png" width="45" height="26"/>
         <image name="home_tab.png" width="15" height="14"/>
         <image name="loginwithfacebook.png" width="422" height="80"/>
         <image name="mychatbubble4.png" width="477" height="67"/>
-        <image name="new_chat_tab.png" width="15" height="15"/>
+        <image name="new_chat_tab.png" width="16" height="16"/>
         <image name="next.png" width="200" height="76"/>
         <image name="notification.png" width="64" height="64"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
         <image name="profilebackground.png" width="642" height="705"/>
-        <image name="set_tab.png" width="15" height="14"/>
+        <image name="set_tab.png" width="13" height="12"/>
         <image name="share.png" width="20" height="17"/>
         <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
@@ -1661,8 +1679,8 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="sAu-s2-hfG"/>
+        <segue reference="FkJ-3g-qCP"/>
         <segue reference="UFN-Sk-0kH"/>
-        <segue reference="Rdk-3z-tPE"/>
         <segue reference="Jle-n7-Gmg"/>
         <segue reference="C5K-bl-yN1"/>
     </inferredMetricsTieBreakers>

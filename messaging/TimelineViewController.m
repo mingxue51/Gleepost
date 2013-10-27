@@ -100,7 +100,17 @@ static BOOL likePushed;
     //Set the white colour to selected tab.
     UIColor *tabColour = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]];
     self.tabBarController.tabBar.tintColor = tabColour;
+    
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    
+    
+
+    
+    
+    
+//    
+//    [[UITabBar appearance] setTintColor:[UIColor blackColor]]; // for unselected items that are gray
+//    [[UITabBar appearance] setSelectedImageTintColor:[UIColor greenColor]]; // for selected items that are green
     
     //Change navigations items' (back arrow, edit etc.) colour.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -225,6 +235,8 @@ static BOOL likePushed;
     
 
 }
+
+
 
 /**
  Not used.

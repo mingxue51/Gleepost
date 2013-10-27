@@ -11,10 +11,10 @@
 @interface ContactUserCell : UITableViewCell
 
 /** User's profile image. */
-@property (retain, nonatomic) UIButton *profileImageUser;
+@property (retain, nonatomic) IBOutlet UIImageView *profileImageUser;
 
 /** User's name. */
-@property (retain, nonatomic) UILabel *nameUser;
+@property (retain, nonatomic) IBOutlet UILabel *nameUser;
 
 
 /** Creates the elements of the cell. */

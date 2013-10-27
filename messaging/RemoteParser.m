@@ -10,6 +10,8 @@
 #import "DateFormatterHelper.h"
 #import "SendStatus.h"
 
+
+
 @interface RemoteParser()
 
 @property (strong, nonatomic) NSManagedObjectContext *context;
@@ -61,7 +63,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //
 //    // optional
 //    user.tagline = json[@"tagline"];
-    user.profileImageUrl = json[@"profile_image"];
+    //user.profileImageUrl = json[@"profile_image"];
 //    NSLog(@"User's image URL: %@", json[@"profile_image"]);
 //    NSLog(@"User's course: %@",json[@"course"]);
     
@@ -269,6 +271,46 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return comments;
 }
 
+#pragma mark - Contacts
+
++ (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts
+{
+    NSMutableArray *contacts = [NSMutableArray array];
+    
+    for (id contactJson in jsonContacts)
+    {
+        [contacts addObject:[RemoteParser parseContactFromJson:contactJson]];
+    }
+    
+    return contacts;
+}
+
++(GLPContact* )parseContactFromJson:(NSDictionary*) json
+{
+    GLPContact *contact = [[GLPContact alloc] init];
+    
+    contact.user.remoteKey = [json[@"id"] integerValue];
+    contact.user.name = json[@"username"];
+    contact.youConfirmed = [json[@"you_confirmed"] boolValue];
+    contact.theyConfirmed = [json[@"they_confirmed"] boolValue];
+    
+    return contact;
+}
+
+
+/***
+ 
+ + (GLPUser *)parseUserFromJson:(NSDictionary *)json
+ {
+ GLPUser *user = [[GLPUser alloc] init];
+ user.remoteKey = [json[@"id"] integerValue];
+ user.name = json[@"username"];
+ user.course = json[@"course"];
+ user.personalMessage = json[@"tagline"];
+ user.profileImageUrl = json[@"profile_image"];
+
+ 
+ */
 
 #pragma mark - Commons
 
