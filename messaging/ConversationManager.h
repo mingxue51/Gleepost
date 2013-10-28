@@ -23,4 +23,6 @@
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
 + (void)saveMessageFromLongpoll:(GLPMessage *)message;
 +(GLPUser* )loadUserWithMessageId: (int)messageId;
+
++(GLPUser* )userWithConversationId:(int)conversationId;
 @end

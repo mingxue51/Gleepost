@@ -63,13 +63,18 @@
     
     entity.key = [db lastInsertRowId];
     
+    GLPUser *opponentUser = [entity.participants objectAtIndex:0];
+    
+    [GLPConversationDao insertConversationParticipantIfNotExist:entity.key withUserId: [GLPUserDao saveIfNotExist:opponentUser db:db] andDb:db];
+
+    
+    
     //TODO: Added.
     //Insert a participant if not exist.
     for(GLPUser *user in entity.participants)
     {
         NSLog(@"Participant id: %d With conversation id: %d", user.remoteKey, entity.key);
        
-        [GLPConversationDao insertConversationParticipantIfNotExist:entity.key withUserId: [GLPUserDao saveIfNotExist:user db:db] andDb:db];
     }
     
     //Insert participants and conversation id in conversation participants table if are not exist.

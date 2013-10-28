@@ -13,7 +13,7 @@
 #import "ConversationManager.h"
 #import "MessageTableViewCell.h"
 #import "NSDate+TimeAgo.h"
-
+#import <SDWebImage/UIImageView+WebCache.h>
 
 
 @interface MessagesViewController ()
@@ -58,7 +58,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     if(self.needsReloadConversations) {
-        [self reloadLocalConversations];
+        //[self reloadLocalConversations];
     }
 }
 
@@ -164,18 +164,33 @@
     if(conversation.participants.count > 2)
     {
         cell.userImage.image = [UIImage imageNamed:@"default_group_image"];
+        cell.userName.text = @"Group Chat";
     }
     else
     {
+        GLPUser *opponentUser = [ConversationManager userWithConversationId:conversation.key];
+        
+        if(opponentUser.profileImageUrl == nil || [opponentUser.profileImageUrl isEqualToString:@""])
+        {
+            cell.userImage.image = [UIImage imageNamed:@"default_user_image"];
+        }
+        else
+        {
+            [cell.userImage setImageWithURL:[NSURL URLWithString:opponentUser.profileImageUrl] placeholderImage:nil];
+        }
+        
+        cell.userImage.clipsToBounds = YES;
+        
+        cell.userImage.layer.cornerRadius = 20;
+        
+        
+        cell.userName.text = conversation.title;
+
+        
         //TODO: Add the opponent's image.
         //Find the logged in user and add the opponents image.
-        NSLog(@"Conversation Participants: %@",[conversation.participants objectAtIndex:0]);
-        
-        cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
-        NSLog(@"Conversation Author: %@", conversation.author.profileImageUrl);
     }
     
-    cell.userName.text = conversation.title;
     cell.content.text = (conversation.lastMessage) ? conversation.lastMessage : @"";
 //    cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
     
@@ -184,6 +199,8 @@
    // cell.userImage.image = conve
     
     NSDate *currentDate = conversation.lastUpdate;
+    
+    NSLog(@"CONVERSATION USER DETAILS: %@", [ConversationManager userWithConversationId:conversation.key]);
     
     NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
     

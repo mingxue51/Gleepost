@@ -20,7 +20,7 @@
 #import "NSDate+UTC.h"
 #import "DatabaseManager.h"
 #import "GLPConversationParticipantsDao.h"
-
+#import "GLPUserDao.h"
 
 @implementation ConversationManager
 
@@ -64,7 +64,8 @@
             [GLPConversationDao deleteAll:db];
             //Added.
             [GLPConversationParticipantsDao deleteAll:db];
-            for(GLPConversation *conversation in conversations) {
+            for(GLPConversation *conversation in conversations)
+            {
                 [GLPConversationDao save:conversation db:db];
             }
         }];
@@ -178,6 +179,24 @@
     }];
 
     return message;
+}
+
++(GLPUser* )userWithConversationId:(int)conversationId
+{
+    __block GLPUser *user;
+    //Get user id.
+    [DatabaseManager run:^(FMDatabase *db) {
+        
+        int userKey;
+        userKey = [GLPConversationParticipantsDao findByConversationKey:conversationId db:db];
+        //Find user's details.
+        user = [GLPUserDao findByKey:userKey db:db];
+
+    }];
+    
+    
+    return user;
+
 }
 
 + (void)saveMessageFromLongpoll:(GLPMessage *)message

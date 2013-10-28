@@ -19,6 +19,11 @@
 @synthesize title = _title;
 @synthesize hasUnreadMessages = _hasUnreadMessages;
 
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"Author: %@",_author];
+}
+
 - (void)setTitleFromParticipants:(NSArray *)participants
 {
     NSAssert(participants.count > 1, @"");
