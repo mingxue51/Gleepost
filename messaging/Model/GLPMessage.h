@@ -3,6 +3,7 @@
 #import "SendStatus.h"
 #import "NSNumber+Enums.h"
 #import "GLPConversation.h"
+#import "GLPLiveConversation.h"
 
 //@class GLPConversation;
 @class GLPUser;
@@ -16,6 +17,7 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) GLPConversation *conversation;
+@property (strong, nonatomic) GLPLiveConversation *liveConversation;
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message;
 

@@ -11,7 +11,12 @@
 
 @interface GLPContact : GLPEntity
 
+
 @property (strong, nonatomic) GLPUser *user;
 @property BOOL youConfirmed;
 @property BOOL theyConfirmed;
+
+
+-(id)initWithUserName:(NSString*)name profileImage:(NSString*)img youConfirmed:(BOOL)you andTheyConfirmed:(BOOL)they;
+
 @end

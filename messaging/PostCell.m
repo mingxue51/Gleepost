@@ -9,7 +9,7 @@
 #import "PostCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import "NSDate+TimeAgo.h"
 
 @implementation PostCell
 
@@ -109,9 +109,6 @@ static const float StandardImageCellHeight = 400;
         [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
         
         
-
-        
-        
 //        [self.userImage setBackgroundImage:self.userImageImageView.image forState: UIControlStateNormal];
         
         
@@ -156,8 +153,10 @@ static const float StandardImageCellHeight = 400;
     //Add the user's name.
     [self.userName setText:postData.author.name];
     
+    NSDate *currentDate = postData.date;
+    
     //Add the post's time.
-    [self.postTime setText:postData.date.description];
+    [self.postTime setText:[currentDate timeAgo]];
     
     
     //Add text to information label.

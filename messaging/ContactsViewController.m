@@ -13,11 +13,13 @@
 #import "WebClient.h"
 #import "SessionManager.h"
 #import "WebClientHelper.h"
+#import "GLPContact.h"
 
 
 @interface ContactsViewController ()
 
 @property (strong, nonatomic) NSMutableArray *users;
+@property (strong, nonatomic) NSMutableArray *usersStr;
 @property (strong, nonatomic) NSMutableDictionary *categorisedUsers;
 @property (strong, nonatomic) IBOutlet UITableView *contactsTableView;
 @property (strong, nonatomic) NSArray *panelSections;
@@ -51,6 +53,7 @@
     
     //Add samples users.
     self.users = [[NSMutableArray alloc] init];
+    self.usersStr = [[NSMutableArray alloc] init];
 //    [self.users addObject:@"TestUser1"];
 //    [self.users addObject:@"SampleUser1"];
 //    [self.users addObject:@"TestUser2"];
@@ -63,7 +66,7 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
-    self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+    //self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
     self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
@@ -82,8 +85,9 @@
 
     for(NSString* letter in self.sections)
     {
-        for(NSString* userName in self.users)
+        for(GLPContact* contact in self.users)
         {
+            NSString* userName = contact.user.name;
             //Get the first letter of the user.
             NSString* firstLetter = [userName substringWithRange: NSMakeRange(0, 1)];
             //NSLog(@"PREVIOUS USER NAME: %@ With letter: %@",userName, letter);
@@ -121,12 +125,13 @@
     
     for(NSString* letter in self.sections)
     {
-        for(NSString* userName in self.users)
+        for(GLPContact* contact in self.users)
         {
+            NSString* userName = contact.user.name;
             //Get the first letter of the user.
             NSString* firstLetter = [userName substringWithRange: NSMakeRange(0, 1)];
             //NSLog(@"PREVIOUS USER NAME: %@ With letter: %@",userName, letter);
-
+            
             if([firstLetter caseInsensitiveCompare:letter] == NSOrderedSame)
             {
                 sectionFound = YES;
@@ -172,6 +177,29 @@
     NSLog(@"SECTIONS ARRAY: %@", self.sections);
     
     NSLog(@"Dictionary: %@",[self categorisedUsers]);
+}
+
+/**
+ Find the confirmed contacts and add them to the user's array in order to push them to contacts' table view.
+ 
+ @param contactsFromServer 
+                            contacts from server.
+ 
+ */
+-(void)findConfirmedContacts:(NSArray*) contactsFromServer
+{
+    //Created for test purposes.
+//    GLPContact* c = [[GLPContact alloc] initWithUserName:@"Test" profileImage:@"" youConfirmed:YES andTheyConfirmed:YES];
+//    [self.users addObject:c];
+//    [self.usersStr addObject:c.user.name];
+    for(GLPContact* contact in contactsFromServer)
+    {
+        if(contact.theyConfirmed)
+        {
+            [self.users addObject:contact];
+            [self.usersStr addObject:contact.user.name];
+        }
+    }
 }
 
 /**
@@ -268,11 +296,18 @@
             //Store contacts into an array.
             NSLog(@"Contacts loaded successfully.");
             
-            self.users = contacts.mutableCopy;
+            [self findConfirmedContacts:contacts.mutableCopy];
             
-            [self clearUselessSections];
-            [self categoriseUsersByLetter];
-            [self.contactsTableView reloadData];
+            if(self.users.count>0)
+            {
+                self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+                [self clearUselessSections];
+
+                [self categoriseUsersByLetter];
+                [self.contactsTableView reloadData];
+            }
+            
+//            self.users = contacts.mutableCopy;
             
         }
         else
@@ -313,7 +348,7 @@
 {
     // Return the number of rows in the section.
     
-    NSArray *sectionArray = [self.users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.sections objectAtIndex:section]]];
+    NSArray *sectionArray = [self.usersStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.sections objectAtIndex:section]]];
     
     NSLog(@"Current Section: %d",[sectionArray count]);
     return [sectionArray count];

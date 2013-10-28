@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GLPConversation.h"
 #import "HPGrowingTextView.h"
+#import "GLPLiveConversation.h"
 
 
 @interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
@@ -20,6 +21,9 @@
 
 
 @property (strong, nonatomic) GLPConversation *conversation;
+@property (strong, nonatomic) GLPLiveConversation *liveConversation;
 @property BOOL randomChat;
+
+-(void)loadElements;
 
 @end

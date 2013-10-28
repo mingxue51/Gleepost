@@ -14,10 +14,13 @@
 #import "ChatViewAnimations.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import "GLPConversation.h"
+#import "GLPLiveConversation.h"
+#import "LiveConversationManager.h"
 
 @interface ChatViewController ()
 
 @property (strong, nonatomic) GLPConversation *conversation;
+@property (strong, nonatomic) GLPLiveConversation *liveConversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
 @property (strong, nonatomic) NSMutableArray *liveConversations;
 
@@ -41,10 +44,15 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
     [self.view setBackgroundColor:[UIColor clearColor]];
     
+    
+    
     [self addGleepostImageToNavigationBar];
     [self addSettingsImageToNavigationBar];
     
-    [self initialiseAnimationViewToTheViewController];
+    //[self initialiseAnimationViewToTheViewController];
+    
+    //Load live conversations from database.
+    [self loadLiveConversations];
 
 }
 
@@ -64,7 +72,7 @@
     if(self.conversation.title != nil)
     {
         
-        for(GLPConversation *c in self.liveConversations)
+        for(GLPLiveConversation *c in self.liveConversations)
         {
             NSLog(@"Current Conversation: %@", c.title);
             
@@ -89,9 +97,9 @@
 
         
         //Avoid adding the same conversation.
-        for(GLPConversation *c in self.liveConversations)
+        for(GLPLiveConversation *c in self.liveConversations)
         {
-            if([self.conversation.description isEqualToString:c.description])
+            if(self.conversation.remoteKey == c.remoteKey)
             {
                 //Don't do anything.
                 conversationExist = YES;
@@ -103,12 +111,19 @@
         if((self.liveConversations.count == 3) && (!conversationExist))
         {
             [self.liveConversations dequeue];
+            //Delete conversation with id.
         }
         
         if(!conversationExist)
         {
+            //Convert conversation to live conversation.
+            GLPLiveConversation *liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
+            
             //Add conversation to array.
-            [self.liveConversations enqueue:self.conversation];
+            [self.liveConversations enqueue:liveConv];
+            
+            //Add new conversation to database.
+            [self addNewConversationToDb];
         }
         
         NSLog(@"Conversation Description: %@",self.conversation.description);
@@ -117,6 +132,37 @@
     
     [self initialiseAnimationViewToTheViewController];
 
+}
+
+-(void)loadLiveConversations
+{
+    [LiveConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
+        
+        for(GLPLiveConversation *c in conversations)
+        {
+            //TODO: If the chat expires don't enqueue and delete it.
+            
+//            GLPConversation *conversation = [[GLPConversation alloc] init];
+//            
+//            conversation.author = c.author;
+//            conversation.lastUpdate = c.lastUpdate;
+//            conversation.messages = c.messages;
+//            conversation.participants = c.participants;
+//            conversation.title = c.title;
+//            conversation.hasUnreadMessages = c.hasUnreadMessages;
+//            
+            
+            [self.liveConversations enqueue:c];
+        }
+        
+    } remoteCallback:^(BOOL success, NSArray *conversations) {
+        
+    }];
+}
+
+-(void)getLiveConversations
+{
+    
 }
 
 -(void) viewDidDisappear:(BOOL)animated
@@ -306,7 +352,10 @@
         
         if(success) {
             self.conversation = conversation;
+            self.liveConversation = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
             self.newChat = YES;
+
+            
             NSLog(@"New Conversation: %@", conversation.author.name);
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
@@ -321,10 +370,18 @@
     }
 }
 
+-(void) addNewConversationToDb
+{
+    
+    GLPLiveConversation* liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
+    
+    [LiveConversationManager addLiveConversation:liveConv];
+}
+
 -(void)navigateToLiveChatWithIndex: (int)index
 {
     self.newChat = NO;
-    self.conversation = [self.liveConversations objectAtIndex:index];
+    self.liveConversation = [self.liveConversations objectAtIndex:index];
     [self performSegueWithIdentifier:@"start" sender:self];
 }
 
@@ -332,20 +389,20 @@
 {
     if([segue.identifier isEqualToString:@"start"])
     {
-        if(self.newChat)
-        {
+//        if(self.newChat)
+//        {
             [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
             ViewTopicViewController *vc = segue.destinationViewController;
             vc.randomChat = YES;
-            vc.conversation = self.conversation;
-        }
-        else
-        {
-            [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-            ViewTopicViewController *vc = segue.destinationViewController;
-            vc.randomChat = YES;
-            vc.conversation = self.conversation;
-        }
+            vc.liveConversation = self.liveConversation;
+  //      }
+//        else
+//        {
+//            [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+//            ViewTopicViewController *vc = segue.destinationViewController;
+//            vc.randomChat = YES;
+//            vc.conversation = self.conversation;
+//        }
 
     }
 }

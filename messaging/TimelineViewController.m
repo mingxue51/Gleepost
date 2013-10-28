@@ -449,10 +449,6 @@ static BOOL likePushed;
     }
     
     [self.tableView reloadData];
-
-
-    
-    
    
 }
 
@@ -483,10 +479,6 @@ static BOOL likePushed;
     
 
 //    GLPUser *user = self.users[indexPath.row];
-    
-
-    
-
 
     
     if([post imagePost])
@@ -665,7 +657,7 @@ static BOOL likePushed;
 -(void)navigateToProfile:(id)sender
 {
     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
-    
+
     UIImageView *incomingView = (UIImageView*)incomingUser.view;
         
     self.selectedUserId = incomingView.tag;

@@ -8,7 +8,9 @@
 
 #import "LiveChatsView.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "LiveConversationManager.h"
+#import "GLPLiveConversation.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 //
 // NewPathWithRoundRect
@@ -63,6 +65,15 @@
 //	return path;
 //}
 
+@interface LiveChatsView ()
+
+@property (strong, nonatomic) NSArray* liveChats;
+@property (strong, nonatomic) NSArray *imageViews;
+@property (assign, nonatomic) int selectedLiveConversationId;
+
+
+@end
+
 @implementation LiveChatsView
 
 static BOOL visibility;
@@ -73,31 +84,138 @@ static BOOL visibility;
     if (self)
     {
         NSLog(@"Initialise live chats view.");
-        UIButton *chat1 = [[UIButton alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
-        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [chat1 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
-        [chat1 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:chat1];
         
-        UIButton *chat2 = [[UIButton alloc] initWithFrame:CGRectMake(12.5, 72.5, 45, 45)];
-        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [chat2 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
-        [chat2 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:chat2];
         
-        UIButton *chat3 = [[UIButton alloc] initWithFrame:CGRectMake(72.5, 72.5, 45, 45)];
-        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [chat3 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
-        [chat3 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:chat3];
         
+        UIImageView *chatImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
+        [chatImageView1 setImage:[UIImage imageNamed:@"userchangeimg"]];
+        [chatImageView1 setUserInteractionEnabled:YES];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+        [tap setNumberOfTapsRequired:1];
+        [chatImageView1 addGestureRecognizer:tap];
+        
+        [self addSubview:chatImageView1];
+        
+        
+//        UIButton *chat1 = [[UIButton alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
+//        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        [chat1 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
+//        [chat1 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:chat1];
+        
+        UIImageView *chatImageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(12.5, 72.5, 45, 45)];
+        [chatImageView2 setImage:[UIImage imageNamed:@"userchangeimg"]];
+        [chatImageView2 setUserInteractionEnabled:YES];
+        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+        [tap setNumberOfTapsRequired:1];
+        [chatImageView2 addGestureRecognizer:tap];
+        
+        [self addSubview:chatImageView2];
+        
+        
+//        UIButton *chat2 = [[UIButton alloc] initWithFrame:CGRectMake(12.5, 72.5, 45, 45)];
+//        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        [chat2 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
+//        [chat2 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:chat2];
+        
+        UIImageView *chatImageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(72.5, 72.5, 45, 45)];
+        [chatImageView3 setImage:[UIImage imageNamed:@"userchangeimg"]];
+        [chatImageView3 setUserInteractionEnabled:YES];
+        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+        [tap setNumberOfTapsRequired:1];
+        [chatImageView3 addGestureRecognizer:tap];
+        
+        [self addSubview:chatImageView3];
+        
+//        UIButton *chat3 = [[UIButton alloc] initWithFrame:CGRectMake(72.5, 72.5, 45, 45)];
+//        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        [chat3 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
+//        [chat3 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:chat3];
+        
+        self.imageViews = [[NSArray alloc] initWithObjects:chatImageView1, chatImageView2, chatImageView3, nil];
+        
+        
+        [self loadLiveChats];
+        [self setLiveChatsToView];
     }
     return self;
 }
 
+-(void)setLiveChatsToView
+{
+    int i = 0;
+    for(GLPLiveConversation *c in self.liveChats)
+    {
+        UIImageView *imgView = [self.imageViews objectAtIndex:i];
+        
+        imgView.clipsToBounds = YES;
+        imgView.layer.cornerRadius = 23;
+        [imgView setTag:c.remoteKey];
+        
+        if([c.author.profileImageUrl isEqualToString:@""] || c.author.profileImageUrl == nil)
+        {
+            [imgView setImage:[UIImage imageNamed:@"default_user_image"]];
+        }
+        else
+        {
+            [imgView setImageWithURL:[NSURL URLWithString:c.author.profileImageUrl] placeholderImage:nil];
+        }
+        
+        
+        ++i;
+    }
+}
+
+-(void)loadLiveChats
+{
+    self.liveChats = [LiveConversationManager getLocalConversations];
+
+}
+
+-(GLPLiveConversation*)liveConversationWithRemoteKey:(int)remoteKey
+{
+    for (GLPLiveConversation *c in self.liveChats)
+    {
+        if(remoteKey == c.remoteKey)
+        {
+            return c;
+        }
+    }
+    
+    return nil;
+}
+
 -(void) navigateToChat: (id)sender
 {
-    [self removeView];
+    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *incomingView = (UIImageView*)incomingUser.view;
+    
+    if(incomingView.tag == 0)
+    {
+        //Don't do anything.
+        [self removeView];
+    }
+    else
+    {
+        self.selectedLiveConversationId = incomingView.tag;
+        
+        //Navigate to conversation.
+//        ViewTopicViewController *viewController = (ViewTopicViewController*)[[UIStoryboard storyboardWithName:@"iphone" bundle:NULL] instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+//        
+        self.viewTopic.liveConversation = [self liveConversationWithRemoteKey:incomingView.tag];
+        self.viewTopic.randomChat = YES;
+        [self.viewTopic loadElements];
+        [self removeView];
+
+        
+//        [self.viewTopic presentViewController:viewController animated:NO completion:^{
+//            
+//        }];
+
+    }
 }
 
 

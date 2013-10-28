@@ -124,6 +124,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     [conversation setTitleFromParticipants:participants];
     
+    NSLog(@"NEW CONVERSATION: %@", json);
+    
     return conversation;
 }
 
@@ -137,7 +139,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return conversations;
 }
 
-
+//TODO: Shrink two different type of messages methods to one type. Use inheritance in live conversation and conversation.
 #pragma mark - Messages
 
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation
@@ -165,6 +167,34 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     return messages;
 }
+
++ (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forLiveConversation:(GLPLiveConversation *)conversation
+{
+    GLPMessage *message = [[GLPMessage alloc] init];
+    message.remoteKey = [json[@"id"] integerValue];
+    message.author = [RemoteParser parseUserFromJson:json[@"by"]];
+    message.liveConversation = conversation;
+    message.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
+    message.content = json[@"text"];
+    message.sendStatus = kSendStatusSent;
+    message.seen = [json[@"seen"] boolValue];
+    
+    return message;
+}
+
++ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forLiveConversation:(GLPLiveConversation *)conversation
+{
+    
+    NSMutableArray *messages = [NSMutableArray array];
+    for(id jsonMessage in jsonMessages) {
+        GLPMessage *message = [RemoteParser parseMessageFromJson:jsonMessage forLiveConversation:conversation];
+        [messages addObject:message];
+    }
+    
+    return messages;
+}
+
+
 
 + (GLPMessage *)parseMessageFromLongPollJson:(NSDictionary *)json
 {
@@ -275,6 +305,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts
 {
+    NSLog(@"Load Contacts JSON: %@", jsonContacts);
+    
     NSMutableArray *contacts = [NSMutableArray array];
     
     for (id contactJson in jsonContacts)

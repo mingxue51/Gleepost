@@ -7,6 +7,7 @@ pod 'MagicalRecord', '2.2'
 pod 'FMDB', '2.1'
 pod 'SDWebImage', '3.5'
 pod 'JMImageCache', '0.4.0'
+pod 'NSDate+TimeAgo'
 
 post_install do |installer|
   installer.project.targets.each do |target|

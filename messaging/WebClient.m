@@ -223,6 +223,27 @@ static WebClient *instance = nil;
 
 }
 
+- (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    if(lastMessage) {
+        [params setObject:[NSNumber numberWithInteger:lastMessage.remoteKey] forKey:@"after"];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteKey];
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forLiveConversation:conversation];
+        callbackBlock(YES, messages);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //TODO: TEMP FIX
+        callbackBlock(YES, nil);
+        //callbackBlock(NO, nil);
+    }];
+    
+}
+
 //- (void)getMessagesForConversation:(OldConversation *)conversation withCallbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 //{
 //    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.key];
@@ -395,6 +416,8 @@ static WebClient *instance = nil;
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",contactRemoteKey], @"user", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    NSLog(@"Contact PARAMS: %@", params);
     
     [self postPath:@"contacts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

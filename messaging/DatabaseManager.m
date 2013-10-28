@@ -95,6 +95,16 @@ static DatabaseManager *instance = nil;
              title text, \
              unread integer);"];
             
+            
+            // live conversations
+            [db executeUpdate:@"create table live_conversations ( \
+             key integer primary key autoincrement, \
+             remoteKey integer, \
+             lastUpdate integer, \
+             title text, \
+             unread integer, \
+             timeStarted integer);"];
+            
             // message
             [db executeUpdate:@"create table messages ( \
              key integer primary key autoincrement, \

@@ -7,7 +7,7 @@
 //
 
 #import "ChatViewAnimations.h"
-#import "GLPConversation.h"
+#import "GLPLiveConversation.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -156,32 +156,38 @@ static BOOL initLiveChats;
     
     NSArray *allSubviews = self.subviews;
     
-    NSMutableArray *currentButtons = [[NSMutableArray alloc] init];
+    NSMutableArray *currentImageViews = [[NSMutableArray alloc] init];
     
     int in1=0;
     
     for(UIView* view in allSubviews)
     {
-        if([view isKindOfClass:[UIButton class]])
+        if(view.tag == 10 || view.tag == 20 || view.tag == 30)
         {
-            [currentButtons addObject:view];
+            [currentImageViews addObject:view];
             
             NSLog(@"LiveConversations array: %d", liveConversationsArray.count);
 
             if(liveConversationsArray.count>in1)
             {
                 
-                UIButton *current =(UIButton*) view;
+                UIImageView *current =(UIImageView*) view;
                 
                 //Add opponents profile image.
                 
                 [liveConversationsArray objectAtIndex:in1];
 
                 
-                [current setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
+                //[current setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
+                [current setImage:[UIImage imageNamed:@"default_user_image"]];
                 
                 //Add selector to button.
-                [current addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchDown];
+                //[current addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchDown];
+                [current setUserInteractionEnabled:YES];
+                
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+                [tap setNumberOfTapsRequired:1];
+                [current addGestureRecognizer:tap];
                 
                 [self bringSubviewToFront:current];
                 
@@ -192,46 +198,35 @@ static BOOL initLiveChats;
     }
     
     int i=0;
-    for(GLPConversation* conv in liveConversationsArray)
+    for(GLPLiveConversation* conv in liveConversationsArray)
     {
         
-        /**
-         
-         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-         [button addTarget:self
-         action:@selector(buttonClicked:)
-         forControlEvents:UIControlEventTouchDown];
-         [button setTitle:@"Button" forState:UIControlStateNormal];
-         button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-         [self.view addSubview:button];
-         
-         */
         
-        UIButton *currentButton = [currentButtons objectAtIndex:i];
+        UIImageView *currentImageView = [currentImageViews objectAtIndex:i];
         
         GLPUser *currentOpponent = [conv.participants objectAtIndex:0];
         
-        
-        if([currentOpponent.profileImageUrl isEqualToString:@""])
+        NSLog(@"Current oponent URL: %@",currentOpponent.profileImageUrl);
+
+        if([currentOpponent.profileImageUrl isEqualToString:@""] || currentOpponent.profileImageUrl == nil)
         {
-            NSLog(@"Current oponent URL: %@",currentOpponent.profileImageUrl);
-            [currentButton setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
+            //[currentButton setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
+            [currentImageView setImage:[UIImage imageNamed:@"default_user_image"]];
 
         }
         else
         {
-            UIImageView *imageView = [[UIImageView alloc] init];
-            
-            
+//            UIImageView *imageView = [[UIImageView alloc] init];
             
             //Add the real user's image.
-            [imageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
-            [currentButton setBackgroundImage:imageView.image forState:UIControlStateNormal];
+            //[imageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
+            [currentImageView setImageWithURL:[NSURL URLWithString:conv.author.profileImageUrl] placeholderImage:nil];
+            //[currentButton setBackgroundImage:imageView.image forState:UIControlStateNormal];
 
         }
         
-        [[currentButton layer] setBorderWidth:2.0f];
-        [[currentButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+        [[currentImageView layer] setBorderWidth:2.0f];
+        [[currentImageView layer] setBorderColor:[UIColor whiteColor].CGColor];
         
         
         
@@ -283,7 +278,7 @@ static BOOL initLiveChats;
     {
         if(view.tag == 10 || view.tag == 20 || view.tag == 30)
         {
-            [buttons addObject:(UIButton*)view];
+            [buttons addObject:(UIImageView*)view];
         }
     }
     
@@ -292,14 +287,28 @@ static BOOL initLiveChats;
 
 -(void) navigateToChat: (id) sender
 {
-    UIButton *btn = (UIButton*) sender;
+    //UIButton *btn = (UIButton*) sender;
     
-    NSLog(@"Button with tag: %d",btn.tag);
+    
+    /**
+     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+     
+     UIImageView *incomingView = (UIImageView*)incomingUser.view;
+     
+     self.selectedUserId = incomingView.tag;
+     
+     */
+    
+    UITapGestureRecognizer *incomingGesture = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *imageView = (UIImageView*) incomingGesture.view;
+    
+    NSLog(@"Button with tag: %d",imageView.tag);
     
     NSLog(@"Navigate to chat");
     
     
-    [self.chatViewController navigateToLiveChatWithIndex:(btn.tag/10)-1];
+    [self.chatViewController navigateToLiveChatWithIndex:(imageView.tag/10)-1];
 
 }
 
@@ -315,27 +324,29 @@ static BOOL initLiveChats;
     
     for(int i = 0; i<3; ++i)
     {
-        UIButton *convButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        //UIButton *convButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         
-        convButton.tag = (i+1)*10;
+        UIImageView *convImageView = [[UIImageView alloc] init];
         
-        convButton.clipsToBounds = YES;
+        convImageView.tag = (i+1)*10;
         
-        convButton.layer.cornerRadius = 25;
+        convImageView.clipsToBounds = YES;
+        
+        convImageView.layer.cornerRadius = 25;
         
         
         if(i == 0)
         {
-            convButton.frame = CGRectMake(60+i*80, 135, 50, 50);
+            convImageView.frame = CGRectMake(60+i*80, 135, 50, 50);
         }
         else if(i == 1)
         {
-            convButton.frame = CGRectMake(135, 115, 50, 50);
+            convImageView.frame = CGRectMake(135, 115, 50, 50);
 
         }
         else
         {
-            convButton.frame = CGRectMake(210, 135, 50, 50);
+            convImageView.frame = CGRectMake(210, 135, 50, 50);
 
         }
         
@@ -350,13 +361,14 @@ static BOOL initLiveChats;
 //        }
 //        else
 //        {
-            [convButton setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d",holderName,i+1]] forState:UIControlStateNormal];
+            //[convButton setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d",holderName,i+1]] forState:UIControlStateNormal];
+        [convImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d",holderName,i+1]]];
 //        }
         
         
-        [self addSubview:convButton];
+        [self addSubview:convImageView];
         
-        [self bringSubviewToFront:convButton];
+        [self bringSubviewToFront:convImageView];
     }
     
     
@@ -689,7 +701,7 @@ static BOOL animateBubbles = YES;
     NSMutableArray* liveButtons = [self findTheThreeLiveButtonsChats];
 
     
-    for(UIButton* btn in liveButtons)
+    for(UIImageView* btn in liveButtons)
     {
         [UIView animateWithDuration:1.7 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
             

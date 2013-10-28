@@ -19,6 +19,7 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
+#import "LiveConversationManager.h"
 
 #import "GLPMessage.h"
 #import "GLPMessage+CellLogic.h"
@@ -80,12 +81,19 @@ float timeInterval = 0.1;
 {
     [super viewDidLoad];
     
+    [self loadElements];
+    
+}
+
+
+-(void) loadElements
+{
     [self configureNavigationBar];
     [self configureForm];
     
     if(self.randomChat)
     {
-       [self configureTimeBar];
+        [self configureTimeBar];
     }
     else
     {
@@ -95,29 +103,37 @@ float timeInterval = 0.1;
     
     
     self.longPollingRequestRunning = NO;
-
-    [self loadMessages];
+    
+    if(!self.randomChat)
+    {
+        [self loadMessages];
+    }
+    else
+    {
+        //Load live messages.
+        [self loadLiveMessages];
+    }
+    
     
     
     
     self.keyboardAppearanceSpaceY = 0;
-//    self.formTextView.
+    //    self.formTextView.
     
     //Resize the text field.
-//    float height = self.messageTextField.frame.size.height;
-//    CGRect sizeOfMessageTextField = self.messageTextField.frame;
-//    [self.messageTextField setFrame:CGRectMake(sizeOfMessageTextField.origin.x, sizeOfMessageTextField.origin.y, sizeOfMessageTextField.size.width, height)];
-//    self.messageTextField.layer.cornerRadius = 3;
+    //    float height = self.messageTextField.frame.size.height;
+    //    CGRect sizeOfMessageTextField = self.messageTextField.frame;
+    //    [self.messageTextField setFrame:CGRectMake(sizeOfMessageTextField.origin.x, sizeOfMessageTextField.origin.y, sizeOfMessageTextField.size.width, height)];
+    //    self.messageTextField.layer.cornerRadius = 3;
     
     
-
+    
     
     
     //Create and add chat button.
-//    self.currentChat = [[CurrentChatButton alloc] initWithFrame:CGRectMake(290, 50, 40, 40)];
-//    
-//    [self.view addSubview:self.currentChat];
-    
+    //    self.currentChat = [[CurrentChatButton alloc] initWithFrame:CGRectMake(290, 50, 40, 40)];
+    //
+    //    [self.view addSubview:self.currentChat];
 }
 
 -(void) hideTimeBarAndMaximizeTableView
@@ -247,7 +263,14 @@ float timeInterval = 0.1;
 - (void)configureNavigationBar
 {
     // navigation bar configuration
-    self.title = self.conversation.title;
+    if(self.randomChat)
+    {
+        self.title = self.liveConversation.title;
+    }
+    else
+    {
+        self.title = self.conversation.title;
+    }
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
@@ -314,6 +337,7 @@ float timeInterval = 0.1;
     [ConversationManager markConversationRead:self.conversation];
 }
 
+
 - (void)showMessages:(NSArray *)messages
 {
     self.messages = [messages mutableCopy];
@@ -338,6 +362,34 @@ float timeInterval = 0.1;
 
     [self.tableView reloadData];
     [self scrollToTheEndAnimated:YES];
+}
+
+
+-(void)loadLiveMessages
+{
+    id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
+
+    
+    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
+    
+    [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
+        [self showMessages:messages];
+        
+    } remoteCallback:^(BOOL success, NSArray *messages) {
+        [WebClientHelper hideStandardLoaderForView:view];
+        
+        if(success) {
+            if(messages) {
+                [self showMessages:messages];
+            }
+        } else {
+            [WebClientHelper showStandardError];
+        }
+    }];
+    
+    // conversation has no more unread messages
+    //[ConversationManager markConversationRead:self.conversation];
+    
 }
 
 - (void)showMessageFromNotification:(NSNotification *)notification
@@ -368,14 +420,30 @@ float timeInterval = 0.1;
 
 - (void)createMessageFromForm
 {
-    GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
+    if(!self.randomChat)
+    {
+        GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
+            
+            [self.tableView reloadData];
+        }];
         
-        [self.tableView reloadData];
-    }];
+        [self showMessage:message];
+        
+        self.formTextView.text = @"";
+    }
+    else
+    {
+        GLPMessage *message = [LiveConversationManager createMessageWithContent:self.formTextView.text toLiveConversation:self.liveConversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
+            
+            [self.tableView reloadData];
+        }];
+        
+        [self showMessage:message];
+        
+        self.formTextView.text = @"";
+    }
     
-    [self showMessage:message];
-    
-    self.formTextView.text = @"";
+
 }
 
 
@@ -426,7 +494,15 @@ float timeInterval = 0.1;
     if(![LiveChatsView visible])
     {
         self.liveChatsView = [LiveChatsView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+        self.liveChatsView.viewTopic = self;
         [LiveChatsView setVisibility:YES];
+    }
+    else
+    {
+        [self.liveChatsView removeView];
+        [LiveChatsView setVisibility:NO];
+        
+
     }
 
 }

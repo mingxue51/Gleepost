@@ -12,6 +12,7 @@
 #import "GLPComment.h"
 #import "GLPConversation.h"
 #import "GLPMessage.h"
+#import "GLPLiveConversation.h"
 
 @interface WebClient : AFHTTPClient
 
@@ -43,4 +44,6 @@
 -(void) getContactsWithCallbackBlock:(void (^)(BOOL success, NSArray *contacts))callbackBlock;
 
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
+
+- (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 @end

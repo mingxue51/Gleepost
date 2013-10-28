@@ -9,12 +9,17 @@
 #import "GLPLongPollManager.h"
 #import "LongPollOperation.h"
 #import "WebClient.h"
+#import "LongPollContactsOperation.h"
 
 @interface GLPLongPollManager()
 
 @property (strong, nonatomic) NSOperationQueue *queue;
 @property (assign, nonatomic) BOOL isOperationRunning;
 @property (strong, nonatomic) LongPollOperation *longPollOperation;
+
+//Added.
+//@property (strong, nonatomic) LongPollContactsOperation *longPollContactOperation;
+//@property (assign, nonatomic) BOOL isContactsOperationRunning;
 
 @end
 
@@ -42,6 +47,8 @@ static GLPLongPollManager *instance = nil;
     self.queue = [[NSOperationQueue alloc] init];
     self.isOperationRunning = NO;
     
+   // self.isContactsOperationRunning = NO;
+    
     return self;
 }
 
@@ -62,12 +69,27 @@ static GLPLongPollManager *instance = nil;
     }];
     
     [self.queue addOperation:self.longPollOperation];
+    
+    
+    //Added.
+//    self.isContactsOperationRunning = YES;
+//    
+//    self.longPollContactOperation = [[LongPollContactsOperation alloc] init];
+//    [self.longPollContactOperation setCompletionBlock:^{
+//        NSLog(@"Long poll operation finished");
+//        self_.isContactsOperationRunning = NO;
+//    }];
+//    
+//    [self.queue addOperation:self.longPollContactOperation];
+    
     NSLog(@"Start long poll operation");
 }
 
 - (void)stopLongPoll
 {
     [self.longPollOperation cancel];
+    
+//    [self.longPollContactOperation cancel];
 //    [self.queue cancelAllOperations];
 //    [[WebClient sharedInstance] cancelAllHTTPOperationsWithMethod:@"GET" path:@"longpoll"];
     //[[[WebClient sharedInstance] operationQueue] cancelAllOperations];

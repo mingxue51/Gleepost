@@ -10,6 +10,7 @@
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
 #import "GLPMessage.h"
+#import "GLPLiveConversation.h"
 
 
 @interface GLPMessageDao : NSObject
@@ -27,4 +28,6 @@
 + (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
 
 +(GLPUser *)findUserByMessageKey:(NSInteger)messageKey db:(FMDatabase *)db;
+
++ (NSArray *)findLastMessagesForLiveConversation:(GLPLiveConversation *)conversation db:(FMDatabase *)db;
 @end

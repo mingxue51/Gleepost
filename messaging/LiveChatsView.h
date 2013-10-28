@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewTopicViewController.h"
 
 @interface LiveChatsView : UIView
+
+@property (weak, nonatomic) ViewTopicViewController *viewTopic;
 
 + (id)loadingViewInView:(UIView *)aSuperview;
 - (void)removeView;

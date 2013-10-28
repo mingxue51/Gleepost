@@ -26,6 +26,7 @@
 // messages
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation;
 + (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forConversation:(GLPConversation *)conversation;
++ (NSArray *)parseMessagesFromJson:(NSArray *)jsonMessages forLiveConversation:(GLPLiveConversation *)conversation;
 + (GLPMessage *)parseMessageFromLongPollJson:(NSDictionary *)json;
 
 // posts and comments

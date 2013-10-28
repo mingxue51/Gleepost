@@ -12,6 +12,9 @@
 #import "WebClientHelper.h"
 #import "ConversationManager.h"
 #import "MessageTableViewCell.h"
+#import "NSDate+TimeAgo.h"
+
+
 
 @interface MessagesViewController ()
 
@@ -179,7 +182,12 @@
     //    [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
 
    // cell.userImage.image = conve
-    cell.time.text = (conversation.lastUpdate) ? conversation.lastUpdate.description : @"";
+    
+    NSDate *currentDate = conversation.lastUpdate;
+    
+    NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
+    
+    cell.time.text = (conversation.lastMessage) ? [currentDate timeAgo] : @"";
     
     if(conversation.hasUnreadMessages) {
         cell.unreadImageView.hidden = NO;

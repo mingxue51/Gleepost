@@ -40,6 +40,20 @@
     return [[result reverseObjectEnumerator] allObjects];
 }
 
+
++ (NSArray *)findLastMessagesForLiveConversation:(GLPLiveConversation *)conversation db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayOrder DESC limit 20", conversation.remoteKey];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet db:db]];
+    }
+    
+    return [[result reverseObjectEnumerator] allObjects];
+}
+
 //+ (NSArray *)findAllOrderByDisplayDateForConversation:(GLPConversation *)conversation
 //{
 //    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayDate ASC", conversation.remoteKey];
@@ -151,13 +165,28 @@
 {
     int date = [entity.date timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, (SELECT IFNULL(MAX(key), 0) + 1 FROM messages), %d, %d)",
-     entity.remoteKey,
-     entity.content,
-     date,
-     entity.sendStatus,
-     entity.author.remoteKey,
-     entity.conversation.remoteKey];
+    if(entity.conversation == nil)
+    {
+        [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, (SELECT IFNULL(MAX(key), 0) + 1 FROM messages), %d, %d)",
+         entity.remoteKey,
+         entity.content,
+         date,
+         entity.sendStatus,
+         entity.author.remoteKey,
+         entity.liveConversation.remoteKey];
+    }
+    else
+    {
+        [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, displayOrder, author_key, conversation_key) values(%d, %@, %d, %d, (SELECT IFNULL(MAX(key), 0) + 1 FROM messages), %d, %d)",
+         entity.remoteKey,
+         entity.content,
+         date,
+         entity.sendStatus,
+         entity.author.remoteKey,
+         entity.conversation.remoteKey];
+    }
+    
+
     
     
     entity.key = [db lastInsertRowId];
@@ -197,15 +226,32 @@
     
     int date = [entity.date timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, seen=%d, author_key=%d, conversation_key=%d where key=%d",
-     entity.remoteKey,
-     entity.content,
-     date,
-     entity.sendStatus,
-     entity.seen,
-     entity.author.remoteKey,
-     entity.conversation.remoteKey,
-     entity.key];
+    if(entity.conversation == nil)
+    {
+        [db executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, seen=%d, author_key=%d, conversation_key=%d where key=%d",
+         entity.remoteKey,
+         entity.content,
+         date,
+         entity.sendStatus,
+         entity.seen,
+         entity.author.remoteKey,
+         entity.liveConversation.remoteKey,
+         entity.key];
+    }
+    else
+    {
+        [db executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, seen=%d, author_key=%d, conversation_key=%d where key=%d",
+         entity.remoteKey,
+         entity.content,
+         date,
+         entity.sendStatus,
+         entity.seen,
+         entity.author.remoteKey,
+         entity.conversation.remoteKey,
+         entity.key];
+    }
+    
+
 }
 
 
