@@ -18,6 +18,7 @@
 @synthesize participants = _participants;
 @synthesize title = _title;
 @synthesize hasUnreadMessages = _hasUnreadMessages;
+@synthesize isGroup = _isGroup;
 
 -(NSString*)description
 {

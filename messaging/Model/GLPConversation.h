@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL hasUnreadMessages;
+@property (assign, nonatomic) BOOL isGroup;
 
 - (void)setTitleFromParticipants:(NSArray *)participants;
 

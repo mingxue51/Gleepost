@@ -93,7 +93,8 @@ static DatabaseManager *instance = nil;
              lastMessage text, \
              lastUpdate integer, \
              title text, \
-             unread integer);"];
+             unread integer, \
+             isGroup integer);"];
             
             
             // live conversations

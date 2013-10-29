@@ -1083,6 +1083,13 @@
 			name = HPGrowingTextView;
 			sourceTree = "<group>";
 		};
+		803B607C181FD77200A178EB /* Conversations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Conversations;
+			sourceTree = "<group>";
+		};
 		8050249A181932BB00F5337F /* Conversations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1303,6 +1310,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				803B607C181FD77200A178EB /* Conversations */,
 				58433284180F02E500BD9F74 /* Login Register Classes */,
 				58B865CF180D9DD200BB18AF /* Notifications */,
 				586581341805F1D9005814B4 /* Messages Classes */,

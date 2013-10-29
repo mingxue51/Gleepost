@@ -105,26 +105,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         conversation.lastMessage = message.content;
         conversation.lastUpdate = message.date;
     }
-
-
     
-   // NSMutableArray *participants = [NSMutableArray array];
-    NSMutableArray *participants = [[NSMutableArray alloc] init];
+    NSMutableArray *participants = [NSMutableArray array];
 
     for(id jsonUser in json[@"participants"]) {
-        
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }
     
-    
+    conversation.isGroup = (participants.count > 0) ? YES : NO;
     
     conversation.author = [participants objectAtIndex:0];
-
-    
     [conversation setTitleFromParticipants:participants];
-    
-    NSLog(@"NEW CONVERSATION: %@", json);
     
     return conversation;
 }

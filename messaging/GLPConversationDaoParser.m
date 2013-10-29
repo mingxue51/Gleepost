@@ -20,6 +20,8 @@
     entity.lastMessage = [resultSet stringForColumn:@"lastMessage"];
     entity.title = [resultSet stringForColumn:@"title"];
     entity.hasUnreadMessages = [resultSet boolForColumn:@"unread"];
+    entity.isGroup = [resultSet boolForColumn:@"isGroup"];
+    
     // get participants from json id
 //    NSMutableArray *participants = [NSMutableArray array];
 //    NSArray *participantsKeys = [[resultSet stringForColumn:@"participants"] componentsSeparatedByString:@","];

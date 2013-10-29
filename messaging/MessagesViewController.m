@@ -14,6 +14,7 @@
 #import "MessageTableViewCell.h"
 #import "NSDate+TimeAgo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "ODRefreshControl.h"
 
 
 @interface MessagesViewController ()
@@ -24,6 +25,10 @@
 
 @property (assign, nonatomic) BOOL needsReloadConversations;
 
+@property (strong, nonatomic) UIView *loadingView;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
+@property (assign, nonatomic) BOOL isFullScreenLoading;
+
 @end
 
 @implementation MessagesViewController
@@ -32,33 +37,21 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"MessagesViewController");
-    //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    //[self setBackgroundToNavigationBar];
-    
-    //Change navigations items' (back arrow, edit etc.) colour.
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
+    [self createNavigationBar];
+    [self createRefresh];
+    [self createFullScreenLoading];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     self.needsReloadConversations = NO;
     [self loadConversations];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     if(self.needsReloadConversations) {
-        //[self reloadLocalConversations];
+        [self reloadLocalConversations];
     }
 }
 
@@ -85,6 +78,48 @@
     self.needsReloadConversations = YES;
 }
 
+#pragma mark - Init
+
+- (void)createNavigationBar
+{
+    //Change the format of the navigation bar.
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    //[self setBackgroundToNavigationBar];
+    
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)createRefresh
+{
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to refresh"];
+    [self.refreshControl addTarget:self action:@selector(loadConversations) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)createFullScreenLoading
+{
+    self.loadingView = [[UIView alloc] initWithFrame:self.tableView.frame];
+    self.loadingView.backgroundColor = [UIColor whiteColor];
+    
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityIndicatorView.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
+    self.activityIndicatorView.center = self.loadingView.center;
+    [self.loadingView addSubview:self.activityIndicatorView];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, self.loadingView.center.y + self.activityIndicatorView.frame.size.height - 10, self.loadingView.frame.size.width, 40)];
+    label.text = @"Loading conversations";
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor grayColor];
+    [self.loadingView addSubview:label];
+    
+    self.isFullScreenLoading = NO;
+}
+
+
+
 -(void) setBackgroundToNavigationBar
 {
     UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
@@ -108,11 +143,15 @@
 
 - (void)loadConversations
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading new conversations" forView:self.view];
+    [self startLoading];
+    
     [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
-        [self showConversations:conversations];
+        if(conversations.count > 0) {
+            [self showConversations:conversations];
+        }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
+        [self stopLoading];
+        
         if(success) {
             [self showConversations:conversations];
         } else {
@@ -139,6 +178,51 @@
 - (void)updateConversationsFromNotification:(NSNotification *)notification
 {
     [self reloadLocalConversations];
+}
+
+
+#pragma mark - Refresh
+
+- (void)startLoading
+{
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Loading conversations"];
+    [self.refreshControl beginRefreshing];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+//    if(self.conversations.count == 0) {
+//        self.isFullScreenLoading = YES;
+//        
+//        [[[[UIApplication sharedApplication] delegate] window] addSubview:self.loadingView];
+//        [self.activityIndicatorView startAnimating];
+//    }
+}
+
+//- (void)stopFullScreenLoading
+//{
+//    self.isFullScreenLoading = NO;
+//    
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.loadingView.alpha = 0;
+//    } completion:^(BOOL finished) {
+//        [self.loadingView removeFromSuperview];
+//        [self.activityIndicatorView stopAnimating];
+//    }];
+//}
+
+- (void)stopLoading
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MMM d, h:mm a"];
+    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter stringFromDate:[NSDate date]]];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+    [self.refreshControl endRefreshing];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+//    if(self.isFullScreenLoading) {
+//        [self stopFullScreenLoading];
+//    }
 }
 
 
@@ -200,9 +284,9 @@
     
     NSDate *currentDate = conversation.lastUpdate;
     
-    NSLog(@"CONVERSATION USER DETAILS: %@", [ConversationManager userWithConversationId:conversation.key]);
-    
-    NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
+//    NSLog(@"CONVERSATION USER DETAILS: %@", [ConversationManager userWithConversationId:conversation.key]);
+//    
+//    NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
     
     cell.time.text = (conversation.lastMessage) ? [currentDate timeAgo] : @"";
     
