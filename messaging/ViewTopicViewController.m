@@ -10,6 +10,7 @@
 #import "ProfileViewController.h"
 
 #import "MessageCell.h"
+#import "GLPLoadingCell.h"
 
 #import "GLPMessageDao.h"
 #import "SessionManager.h"
@@ -287,8 +288,6 @@ float timeInterval = 0.1;
 
 - (void)configureForm
 {
-    //self.formView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
-    
     self.formTextView.isScrollable = NO;
     self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
 	self.formTextView.minNumberOfLines = 1;
@@ -529,15 +528,21 @@ float timeInterval = 0.1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.messages.count;
+    return self.messages.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GLPMessage *message = self.messages[indexPath.row];
+    if(indexPath.row == 0) {
+        GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
+        [loadingCell.activityIndicatorView startAnimating];
+        return loadingCell;
+    }
+    
+    GLPMessage *message = self.messages[indexPath.row - 1];
     
     if(!message.cellIdentifier) {
-        [NSException raise:@"Cell identifier is null" format:@"Row is %d", indexPath.row];
+        [NSException raise:@"Cell identifier is null" format:@"Row is %d", indexPath.row - 1];
     }
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
@@ -549,7 +554,11 @@ float timeInterval = 0.1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GLPMessage *message = self.messages[indexPath.row];
+    if(indexPath.row == 0) {
+        return kGLPLoadingCellHeight;
+    }
+    
+    GLPMessage *message = self.messages[indexPath.row - 1];
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
 
