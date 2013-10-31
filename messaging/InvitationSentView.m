@@ -12,6 +12,30 @@
 
 
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        CGRect screenSizeVar = [self screenSize];
+        
+        UIImageView *invitationSent = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"send"]];
+        
+        invitationSent.frame = CGRectMake(35, 200, 250, 140);
+        
+        [self addSubview:invitationSent];
+        
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelPushed:)];
+        [tap setNumberOfTapsRequired:1];
+        [self addGestureRecognizer:tap];
+        
+        [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(cancelPushed:) userInfo:nil repeats:NO];
+    }
+    
+    return self;
+}
+
 
 -(CGPathRef) newPathWithRoundRect: (CGRect) rect withCorner: (CGFloat) cornerRadius
 {
@@ -60,18 +84,6 @@
 	
 	return path;
 }
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        CGRect screenSizeVar = [self screenSize];
-    }
-    
-    return self;
-}
-
 
 
 -(CGRect) screenSize

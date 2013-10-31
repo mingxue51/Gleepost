@@ -15,6 +15,8 @@
 #import "UIPlaceHolderTextView.h"
 #import "Post.h"
 #import "AppearanceHelper.h"
+#import "FileUploader.h"
+#import "SessionManager.h"
 
 @interface NewPostViewController ()
 
@@ -44,9 +46,11 @@
     [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 60.f)];
    
     //Change the colour of the status bar.
-    [self setNeedsStatusBarAppearanceUpdate];
+   // [self setNeedsStatusBarAppearanceUpdate];
     
     [self.contentTextView becomeFirstResponder];
+    
+    self.imagePosted = NO;
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
@@ -68,7 +72,7 @@
     GLPPost *post = [[GLPPost alloc] init];
     post.content = self.contentTextView.text;
     post.date = [NSDate date];
-    
+
     [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self.view];
     
     [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
@@ -85,7 +89,77 @@
             [self.contentTextView becomeFirstResponder];
         }
     }];
+    
+    
+    if(self.imagePosted)
+    {
+        
+        NSData* imageData = UIImagePNGRepresentation([UIImage imageNamed:@"avatar_big"]);
+        
+        NSString* type = [self contentTypeForImageData:imageData];
+        
+        [[WebClient sharedInstance] uploadImage:imageData ForPost:post callbackBlock:^(BOOL success) {
+            
+            if(success)
+            {
+                NSLog(@"IMAGE UPLOADED");
+            }
+            else
+            {
+                NSLog(@"ERROR");
+            }
+
+           
+        }];
+
+    
+        
+        
+//        FileUploader *uploader = [[FileUploader alloc] initWithHostName:@"gleepost.com/api/v0.15" customHeaderFields:nil];
+//        
+//        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//        [params addEntriesFromDictionary:[SessionManager sharedInstance].authParameters];
+//        
+//        MKNetworkOperation *senderOperation = [uploader postDataToServer:nil path:@"upload?id=2395&token=11d1c9bff46468ba31b2fa856928af62eb3538f4be4e312d60f3db195da6f840"];
+//        
+//        [senderOperation addData:UIImagePNGRepresentation(self.uploadedImage.image) forKey:[NSString stringWithFormat:@"%d",post.remoteKey] mimeType:@"image/png" fileName:@"test.png"];
+//        
+//        [senderOperation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+//            NSLog(@"IMAGE UPLOADED!");
+//            
+//            
+//        } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+//            NSLog(@"ERROR IMAGE UPLOADER!");
+//
+//        }];
+//        
+//        [uploader enqueueOperation:senderOperation];
+    
+    }
+    
 }
+
+- (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+    
+    switch (c) {
+        case 0xFF:
+            return @"image/jpeg";
+        case 0x89:
+            return @"image/png";
+        case 0x47:
+            return @"image/gif";
+        case 0x49:
+            break;
+        case 0x42:
+            return @"image/bmp";
+        case 0x4D:
+            return @"image/tiff";
+    }
+    return nil;
+}
+
 - (IBAction)addImage:(id)sender
 {
     UIImagePickerController * picker = [[UIImagePickerController alloc] init];
@@ -111,7 +185,7 @@
     [picker dismissViewControllerAnimated:YES completion:^{
        
     }];
-    
+    self.imagePosted = YES;
 	self.uploadedImage.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 }
 

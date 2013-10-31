@@ -42,7 +42,8 @@
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-    [self.view setBackgroundColor:[UIColor clearColor]];
+    //[self.view setBackgroundColor:[UIColor whiteColor]];
+    
     
     
     
@@ -74,7 +75,7 @@
         
         for(GLPLiveConversation *c in self.liveConversations)
         {
-            NSLog(@"Current Conversation: %@", c.title);
+            NSLog(@"Current Conversation: %d", c.key);
             
             if([self.conversation.title isEqualToString:c.title])
             {
@@ -110,8 +111,12 @@
         
         if((self.liveConversations.count == 3) && (!conversationExist))
         {
+            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:2];
             [self.liveConversations dequeue];
-            //Delete conversation with id.
+            //Delete conversation with key from database.
+            [self deleteConversationFromDbWithKey:liveConv.key];
+            //[self loadLiveConversations];
+            
         }
         
         if(!conversationExist)
@@ -167,26 +172,30 @@
 
 -(void) viewDidDisappear:(BOOL)animated
 {
-    NSLog(@"viewDidDisappear");
     
     [super viewDidDisappear:animated];
+    
+    NSLog(@"viewDidDisappear");
+
 
     //[self.chatAnimations initialiseBubbles];
     
     //Clear the sub view chatAnimations.
-    for (UIView *subView in self.view.subviews)
-    {
-        if (subView.tag == 100)
-        {
-            [(ChatViewAnimations*)subView removeElements];
-            [subView removeFromSuperview];
-            
-        }
-    }
+//    for (UIView *subView in self.view.subviews)
+//    {
+//        if (subView.tag == 100)
+//        {
+//            [(ChatViewAnimations*)subView removeElements];
+//            [subView removeFromSuperview];
+//            
+//        }
+//    }
     
-//    [self initialiseAnimationViewToTheViewControllerWhenDissappearing];
+    //[self initialiseAnimationViewToTheViewControllerWhenDissappearing];
     
-    [self.chatAnimations initAnimations];
+//    [self.chatAnimations initAnimations];
+    [self initialiseAnimationViewToTheViewController];
+    
     
 }
 
@@ -196,17 +205,15 @@
  */
 -(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
 {
-    [ChatViewAnimations setLiveChat:NO];
+//    [ChatViewAnimations setLiveChat:NO];
+    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.chatAnimations.chatViewController = self;
+//    self.chatAnimations.tag = 100;
     
-    //    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    //    self.chatAnimations.chatViewController = self;
-    //    self.chatAnimations.tag = 100;
-    //
-    //    [self.chatAnimations refreshLiveConversations: self.liveConversations];
-    //
+    [self.chatAnimations refreshLiveConversations: self.liveConversations];
+    
     self.view = self.chatAnimations;
     
-    //[self.chatAnimations refreshLiveConversations: self.liveConversations];
     
     
 }
@@ -219,8 +226,19 @@
 {
     NSLog(@"initialiseAnimationViewToTheViewController");
     
-    //[ChatViewAnimations setLiveChat:YES];
     
+    for (UIView *subView in self.view.subviews)
+    {
+        if (subView.tag == 100)
+        {
+            [(ChatViewAnimations*)subView removeElements];
+            [subView removeFromSuperview];
+            
+        }
+    }
+    
+    //[ChatViewAnimations setLiveChat:YES];
+
     self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
     
@@ -376,6 +394,11 @@
     GLPLiveConversation* liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
     
     [LiveConversationManager addLiveConversation:liveConv];
+}
+
+-(void)deleteConversationFromDbWithKey:(int)key
+{
+    [LiveConversationManager removeLiveConversationWithKey:key];
 }
 
 -(void)navigateToLiveChatWithIndex: (int)index

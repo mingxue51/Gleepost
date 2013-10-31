@@ -10,5 +10,6 @@
 
 @interface FinalRegisterViewController : UIViewController  <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
+@property (strong, nonatomic) NSArray *eMailPass;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
-
+#import "GLPPost.h"
 
 @interface NewCommentView : UIView <UITextViewDelegate>
 {
@@ -16,10 +16,14 @@
 }
 
 @property (strong, nonatomic) TimelineViewController* delegate;
+@property (strong, nonatomic) GLPPost *post;
+@property (strong, nonatomic) UIImageView *keyboardBackground;
+@property (strong, nonatomic) UITextView *commentTextView;
 
 + (id)loadingViewInView:(UIView *)aSuperview;
 - (void)removeView;
 -(void) cancelPushed: (id)sender;
+- (void)keyboardWillShow:(NSNotification *)note;
 
 
 @end

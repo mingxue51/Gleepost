@@ -16,7 +16,7 @@
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
 #import "PostCell.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+
 
 
 @interface ViewPostViewController ()
@@ -64,6 +64,11 @@ static BOOL likePushed;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
+    
+    //Register nib files in table view.
+    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
+    
+//    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
     //Set image despite title.
@@ -539,7 +544,7 @@ static bool firstTime = YES;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
-    static NSString *CellIdentifierComment = @"CommentCell";
+    static NSString *CellIdentifierComment = @"CommentTextCell";
     
     PostCell *postViewCell;
     
@@ -547,6 +552,8 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
+      
+        
         if(_post.imagesUrls.count>0)
         {
             //If image.
@@ -558,33 +565,8 @@ static bool firstTime = YES;
             //If text.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         }
-        
+        postViewCell.isViewPost = YES;
         [postViewCell updateWithPostData:_post];
-        
-//        [[WebClient sharedInstance] getUserWithKey:self.post.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-//            
-//            if(success)
-//            {
-//                NSLog(@"User Image URL: %@",user.profileImageUrl);
-//                [postViewCell updateWithPostData:self.post andUserData:user];
-//                
-//                //[self.users addObject:user];
-//            }
-//            else
-//            {
-//                NSLog(@"Not Success: %d",success);
-//                [postViewCell updateWithPostData:self.post andUserData:nil];
-//                
-//            }
-//            
-//            
-//        }];
-        
-        
-//        [postViewCell updateWithPostData:self.post];
-        
-        
-       // [self userWithPost:self.post andPostCell:postViewCell];
         
     
         
@@ -597,72 +579,16 @@ static bool firstTime = YES;
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
         
-        [cell createElements];
         
         GLPComment *comment = self.comments[indexPath.row-1];
         
         NSLog(@"Comment Author: %@",comment.author);
         
-        //Set comment's content.
-        cell.contentTextView.text = comment.content;
+        [cell setComment:comment];
         
-        /**
-        
-         if([postData.author.profileImageUrl isEqualToString:@""])
-         {
-         NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
-         //        [self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
-         [self.userImageView setImage:userImage];
-         }
-         else
-         {
-         
-         [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
-         
-         
-         
-         }
-         
-         */
-        
-        if([comment.author.profileImageUrl isEqualToString:@""])
-        {
-            //Set user's image.
-            UIImage *img = [UIImage imageNamed:@"default_user_image"];
-            cell.userImageView.image = img;
-            cell.userImageView.contentMode = UIViewContentModeScaleAspectFit;
-            [cell.userImageView setFrame:CGRectMake(5.0f, 10.0f, img.size.width-25, img.size.height-25)];
-        }
-        else
-        {
-            NSLog(@"UserImageView: %@",comment.author.profileImageUrl);
-            [cell.userImageView setImageWithURL:[NSURL URLWithString:comment.author.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
-
-        }
-        
-
-        
-        
-        //Set user's name.
-        [cell.userNameLabel setText:comment.author.name];
-        
-        //Set post's time.
-        [cell.postDateLabel setText:comment.date.description];
         
         return cell;
     }
-    
-    
-    
-    
-    
-
-    //cell.userImageView.image = [UIImage imageNamed:@"avatar_big"];
-    
-//    cell.textLabel.text = comment.content;
-//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", comment.user.name, [self.dateFormatter stringFromDate:comment.date]];
-    
-    
 }
 
 
@@ -728,7 +654,25 @@ static bool firstTime = YES;
 {
     //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
     
-    return 100;
+    if(indexPath.row>0)
+    {
+        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
+        NSLog(@"INDEX: %d", indexPath.row);
+        return [CommentCell getCellHeightWithContent:comment.content image:NO];
+    }
+    else
+    {
+        if([self.post imagePost])
+        {
+            return [PostCell getCellHeightWithContent:self.post.content image:YES];
+        }
+        else
+        {
+            return [PostCell getCellHeightWithContent:self.post.content image:NO];
+        }
+        //return 200;
+    }
+    
 }
 
 #pragma mark - Keyboard methods

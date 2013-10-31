@@ -168,14 +168,7 @@ static BOOL likePushed;
 //    [item.target addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
 //    self.navigationItem.rightBarButtonItem = item;
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    btnBack.frame = imageView.bounds;
-    [imageView addSubview:btnBack];
-    
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-    self.navigationItem.rightBarButtonItem = item;
+    [self setPlusButtonToNavigationBar];
     
     //self.tableView.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"background.png"]];
     
@@ -205,7 +198,6 @@ static BOOL likePushed;
     self.usersImages = [[NSMutableArray alloc] init];
     self.postsImages = [[NSMutableArray alloc] init];
     
-    [self loadPosts];
 
   
     //TODO: Here may there is a problem.
@@ -229,11 +221,33 @@ static BOOL likePushed;
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
-    
-    
+
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self loadPosts];
 
     
+}
 
+-(void) setPlusButtonToNavigationBar
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
+    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 30.0, 30.0);
+    
+    
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    btnBack.frame = imageView.bounds;
+    [imageView addSubview:btnBack];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    
+    
+    
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 
@@ -504,16 +518,13 @@ static BOOL likePushed;
     //TODO: In updateWithPostData information take the status of the like button.
     
     //NSLog(@"Image URL: %@", user.profileImageUrl);
-
-    
-    
     
     //Add selector to the buttons.
-    [self buttonWithName:@"Like" andSubviews:[postCell.contentView subviews] withCell:postCell];
+    [self buttonWithName:@"Like" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
     
-    [self buttonWithName:@"Comment" andSubviews:[postCell.contentView subviews] withCell:postCell];
-    [self buttonWithName:@"Share" andSubviews:[postCell.contentView subviews] withCell:postCell];
-    [self buttonWithName:@"" andSubviews:[postCell.contentView subviews] withCell:postCell];
+    [self buttonWithName:@"Comment" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
+    [self buttonWithName:@"Share" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
+    [self buttonWithName:@"" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
     
     
     //For each post try to fetch users' details.
@@ -534,10 +545,6 @@ static BOOL likePushed;
 
     
     //[self userWithPost:post andPostCell:postCell];
-    
-    
-   
- 
     
     
     return postCell;
@@ -585,7 +592,7 @@ static BOOL likePushed;
  @param cell current cell.
  
  */
--(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell
+-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
 {
     NSLog(@"IN ButtonWithName");
     for(UIView* view in subArray)
@@ -608,6 +615,7 @@ static BOOL likePushed;
             }
             else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
             {
+                currentBtn.tag = postIndex;
                 [currentBtn addTarget:self action:@selector(commentButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
             }
             else if([currentBtn.titleLabel.text isEqualToString:@"Share"])
@@ -697,32 +705,17 @@ static BOOL likePushed;
  */
 -(void)commentButtonPushed: (id)sender
 {
+    UIButton *btn = (UIButton*)sender;
+    
+    NSLog(@"Button Title: %@ With tag: %d",btn.titleLabel.text, btn.tag);
+    
     //Hide navigation bar.
     [self.navigationItem setTitle:@"New Comment"];
     self.navigationItem.rightBarButtonItem = nil;
     
     NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+    loadingView.post = self.posts[btn.tag];
     loadingView.delegate = self;
-    
-}
-
-/**
- Called by NewCommentView in order to hide view and retrieve the previous ViewController
- */
--(void) removeComment
-{
-    //Add the right title.
-    [self.navigationItem setTitle:@"Campus Wall"];
-    
-    //Add the add button back.
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    btnBack.frame = imageView.bounds;
-    [imageView addSubview:btnBack];
-    
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-    self.navigationItem.rightBarButtonItem = item;
     
 }
 
@@ -848,20 +841,23 @@ static BOOL likePushed;
     
     if([currentPost imagePost])
     {
-        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:YES], currentPost.content);
+        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
         //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
+        //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
         return 415;
+
 
     }
     else
     {
-        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:NO], currentPost.content);
+        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
         
 //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
         
+        //return [PostCell getCellHeightWithContent:currentPost.content image:NO];
         return 156;
     }
 }

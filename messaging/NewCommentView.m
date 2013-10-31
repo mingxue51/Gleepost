@@ -9,6 +9,10 @@
 #import "NewCommentView.h"
 #import "ChatPanelView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "GLPComment.h"
+#import "SessionManager.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
 
 //
 // NewPathWithRoundRect
@@ -73,6 +77,23 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
         CGRect screenSizeVar = [self screenSize];
         
         
+        [self initialiseNotifications];
+        
+        self.keyboardBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, screenSizeVar.size.height-216.0, 640.0, 250.0)];
+        
+        [self.keyboardBackground setBackgroundColor:[UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:1.0]];
+        
+        [self.keyboardBackground setAlpha:0.0];
+        [self addSubview:self.keyboardBackground];
+        
+        //[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(showKeyboardEffect:) userInfo:nil repeats:NO];
+        
+        //[self showKeyboardEffect];
+        //[self hideKeyboardEffect];
+        [self showKeyboardEffectFirst];
+        [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(showKeyboardEffect:) userInfo:nil repeats:YES];
+
+        [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(hideKeyboardEffect:) userInfo:nil repeats:YES];
         
         //Add cancel button.
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
@@ -88,28 +109,142 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
         NSLog(@"textViewHeight: %f",textViewHeight);
         
         //Add text view.
-        UITextView *commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 70.0f, 300, textViewHeight)];
-        [commentTextView setBackgroundColor:[UIColor clearColor]];
-        [commentTextView setTextColor:[UIColor whiteColor]];
-        [commentTextView setFont:[UIFont fontWithName:@"Helvetica Neue" size:18.0]];
-        commentTextView.delegate = self;
-        [self addSubview:commentTextView];
+        self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 70.0f, 300, textViewHeight)];
+        [self.commentTextView setBackgroundColor:[UIColor clearColor]];
+        [self.commentTextView setTextColor:[UIColor whiteColor]];
+        [self.commentTextView setFont:[UIFont fontWithName:@"Helvetica Neue" size:18.0]];
+        self.commentTextView.delegate = self;
+        [self addSubview:self.commentTextView];
         
         
         //Create gesture for text view.
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapRecognized:)];
         singleTap.numberOfTapsRequired = 1;
-        [commentTextView addGestureRecognizer:singleTap];
+        [self.commentTextView addGestureRecognizer:singleTap];
         
         //Add comment panel.
         ChatPanelView *chatPanelView = [[ChatPanelView alloc] initWithFrame:CGRectMake(0, textViewHeight+80, 320, 50)];
         
+        [chatPanelView.commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
+        
         [self addSubview:chatPanelView];
         
         
-        [commentTextView becomeFirstResponder];
+        [self.commentTextView becomeFirstResponder];
     }
     return self;
+}
+
+
+-(void)postComment:(id)sender
+{
+    if([self.commentTextView.text isEqualToString:@""])
+    {
+        //Don't do anything.
+    }
+    else
+    {
+        NSLog(@"Post Comment.");
+        GLPComment *newComment = [[GLPComment alloc] init];
+        NSLog(@"Comment Post: %@",self.post);
+        
+        newComment.content = self.commentTextView.text;
+        newComment.date = [NSDate date];
+        newComment.author = [SessionManager sharedInstance].user;
+        newComment.post = self.post;
+        
+        [WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self];
+        [[WebClient sharedInstance] createComment:newComment callbackBlock:^(BOOL success) {
+            [WebClientHelper hideStandardLoaderForView:self];
+            
+            if(success) {
+                [self cancelPushed:nil];
+
+            } else {
+                [WebClientHelper showStandardError];
+            }
+        }];
+        
+    }
+}
+
+//-(void)postComment:(GLPComment*)comment
+//{
+//    
+//}
+
+-(void)showKeyboardEffectFirst
+{
+    [UIView animateKeyframesWithDuration:1.0 delay:0.0 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionBeginFromCurrentState) animations:^{
+        
+        [self.keyboardBackground setAlpha:1.0];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void) showKeyboardEffect:(id)sender
+{
+    [UIView animateKeyframesWithDuration:2.0 delay:0.0 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionBeginFromCurrentState) animations:^{
+        
+        [self.keyboardBackground setAlpha:1.0];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
+
+-(void)hideKeyboardEffect :(id)sender
+{
+    [UIView animateKeyframesWithDuration:2.0 delay:0.0 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionBeginFromCurrentState) animations:^{
+        
+        [self.keyboardBackground setAlpha:0.0];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)initialiseNotifications
+{
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)note
+{
+    CGRect screenSizeVar = [self screenSize];
+    
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self convertRect:keyboardBounds toView:nil];
+    
+	// get a rect for the textView frame
+
+
+
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+
+        
+    } completion:^(BOOL finished) {
+
+
+        
+        
+    }];
 }
 
 -(CGRect) screenSize
@@ -125,10 +260,14 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 -(void) cancelPushed: (id)sender
 {
     NSLog(@"Cancel Pushed");
-    [self.delegate removeComment];
+    [self.delegate setPlusButtonToNavigationBar];
     
     UIView *superView = [self superview];
 	[super removeFromSuperview];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
+
+    
     
     // Set up the animation
 	CATransition *animation = [CATransition animation];
@@ -243,7 +382,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	   
 	CGContextRef context = UIGraphicsGetCurrentContext();
     
-	const CGFloat BACKGROUND_OPACITY = 0.5;
+	const CGFloat BACKGROUND_OPACITY = 0.67;
 	CGContextSetRGBFillColor(context, 0, 0, 0, BACKGROUND_OPACITY);
 	CGContextAddPath(context, roundRectPath);
 	CGContextFillPath(context);
@@ -318,8 +457,19 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
     
     if([commentTextView.text isEqualToString:@""])
     {
+        [UIView animateKeyframesWithDuration:0.001 delay:0.0 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionBeginFromCurrentState) animations:^{
+            
+            [self.keyboardBackground setAlpha:0.0];
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+        
         NSLog(@"Close");
         [self cancelPushed:nil];
+        
+
+        
     }
     else
     {

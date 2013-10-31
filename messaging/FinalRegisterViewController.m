@@ -10,6 +10,10 @@
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "GCPlaceholderTextView.h"
+#import "WebClientHelper.h"
+#import "WebClient.h"
+#import "LoginViewController.h"
+#import "GLPLongPollManager.h"
 
 @interface FinalRegisterViewController ()
 
@@ -84,6 +88,56 @@
 
 }
 
+#pragma mark - Server requests
+
+- (IBAction)registerUser:(id)sender
+{
+    //TODO: Set user image as a requirement.
+    
+    if([self areTheDetailsValid])
+    {
+        //Request to server to register user.
+        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text, self.userLastNameTextView.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responceMessage) {
+            
+            if(success)
+            {
+                //Navigate to home.
+                NSLog(@"User register successful.");
+                [self loginUser];
+
+            }
+            else
+            {
+                NSLog(@"User not registered.");
+                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responceMessage];
+            }
+            
+        }];
+        
+        
+    }
+    else
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your details if are valid."];
+    }
+}
+
+-(void)loginUser
+{
+    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
+    
+    [[WebClient sharedInstance] loginWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text,self.userLastNameTextView.text] password:self.eMailPass[1] andCallbackBlock:^(BOOL success) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
+        
+        if(success) {
+            [[GLPLongPollManager sharedInstance] startLongPoll];
+            
+            [self performSegueWithIdentifier:@"start" sender:self];
+        } else {
+            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
+        }
+    }];
+}
 
 -(void) setBackground
 {
@@ -162,6 +216,14 @@
     }];
     
 	[self.addImageButton setBackgroundImage:[info objectForKey:@"UIImagePickerControllerOriginalImage"] forState:UIControlStateNormal];
+}
+
+#pragma mark - Other methods
+
+
+-(BOOL)areTheDetailsValid
+{
+    return (![self.userNameTextView.text isEqualToString:@""] && ![self.userLastNameTextView.text isEqualToString:@""] && ![self.genderTextView.text isEqualToString:@""]);
 }
 
 @end

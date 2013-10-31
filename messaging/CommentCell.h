@@ -7,19 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GLPComment.h"
 
 @interface CommentCell : UITableViewCell
 
-@property (strong, nonatomic) UITextView *contentTextView;
-@property (strong, nonatomic) UIImageView *userImageView;
-@property (strong, nonatomic) UILabel *userNameLabel;
-@property (strong, nonatomic) UILabel *postDateLabel;
+@property (strong, nonatomic) IBOutlet UILabel *contentLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *userImageView;
+@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *postDateLabel;
 @property (strong, nonatomic) UIView *socialPanelView;
 @property (strong, nonatomic) UIButton *likeButtonButton;
 @property (readwrite, assign) float height;
 
--(void) createElements;
-
-
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
+-(void)setCellHeight:(NSString*)content;
+-(void)setComment:(GLPComment*)comment;
 @end

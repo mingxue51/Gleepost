@@ -9,8 +9,12 @@
 #import "GLPEntity.h"
 #import "GLPUser.h"
 
+
+
 @interface GLPContact : GLPEntity
 
+extern NSString * const GLPContactTheyConfirmed;
+extern NSString * const GLPContactYouConfirmed;
 
 @property (strong, nonatomic) GLPUser *user;
 @property BOOL youConfirmed;

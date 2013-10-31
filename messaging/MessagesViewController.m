@@ -14,8 +14,6 @@
 #import "MessageTableViewCell.h"
 #import "NSDate+TimeAgo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "ODRefreshControl.h"
-
 
 @interface MessagesViewController ()
 
@@ -342,6 +340,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     self.selectedConversation = self.conversations[indexPath.row];
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }

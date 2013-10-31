@@ -8,6 +8,7 @@ pod 'FMDB', '2.1'
 pod 'SDWebImage', '3.5'
 pod 'JMImageCache', '0.4.0'
 pod 'NSDate+TimeAgo'
+pod 'MKNetworkKit'
 
 post_install do |installer|
   installer.project.targets.each do |target|

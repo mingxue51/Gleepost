@@ -17,6 +17,7 @@ NSString * const GLPUserNetworkIdColumn = @"network_id";
 NSString * const GLPUserNetworkNameColumn = @"network_name";
 NSString * const GLPUserPersonalMessageColumn = @"tagline";
 
+
 @synthesize name = _name;
 
 

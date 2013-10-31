@@ -66,7 +66,8 @@ static SessionManager *instance = nil;
     NSAssert(!self.user, @"An user is already registered in the session");
 
     // (drop previous if need and) create database
-    [[DatabaseManager sharedInstance] dropDatabase];
+    //TODO: Comment out this code.
+    //[[DatabaseManager sharedInstance] dropDatabase];
     [[DatabaseManager sharedInstance] initDatabase];
     
     //TODO: See again if this is a good style of programming.
@@ -110,15 +111,18 @@ static SessionManager *instance = nil;
     self.token = nil;
     self.authParameters = nil;
     
-    [self.data removeAllObjects];
-    [self saveData];
+ 
+//    [self.data removeAllObjects];
+//
+//    [self saveData];
+    
 }
 
 
 - (void)logout
 {
     [self cleanSession];
-    [[DatabaseManager sharedInstance] dropDatabase];
+    //[[DatabaseManager sharedInstance] dropDatabase];
 }
 
 - (BOOL)isSessionValid

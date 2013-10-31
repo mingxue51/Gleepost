@@ -299,7 +299,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     NSLog(@"Load Contacts JSON: %@", jsonContacts);
     
-    NSMutableArray *contacts = [NSMutableArray array];
+    NSMutableArray *contacts = [[NSMutableArray alloc] init];
     
     for (id contactJson in jsonContacts)
     {
@@ -313,7 +313,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     GLPContact *contact = [[GLPContact alloc] init];
     
-    contact.user.remoteKey = [json[@"id"] integerValue];
+    contact.user = [[GLPUser alloc] init];
+    
+    
+    contact.remoteKey = [json[@"id"] integerValue];
     contact.user.name = json[@"username"];
     contact.youConfirmed = [json[@"you_confirmed"] boolValue];
     contact.theyConfirmed = [json[@"they_confirmed"] boolValue];
@@ -387,6 +390,24 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     NSAssert(date, @"Parsed date null", @"String value %@", string);
     
     return date;
+}
+
++(NSString*)parseRegisterErrorMessage:(NSString*)error
+{
+    //NSLog(@"ERRORS: %@  %@  %@  %@  %@  %@  %@ ",error.domain, error.userInfo, error.localizedDescription, error.localizedRecoveryOptions, error.localizedRecoverySuggestion, error.localizedFailureReason, error.recoveryAttempter);
+    
+    if ([error rangeOfString:@"Username or email"].location == NSNotFound)
+    {
+        return @"Short password typed";
+    }
+    else
+    {
+        return @"Username or email address already taken";
+    }
+    
+//    NSLog(@"Suggested error: %@", error);
+//    
+//    return error.description;
 }
 
 @end

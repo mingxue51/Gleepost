@@ -8,7 +8,14 @@
 
 #import "GLPContact.h"
 
+
+
 @implementation GLPContact
+
+NSString * const GLPContactTheyConfirmed = @"they_confirmed";
+NSString * const GLPContactYouConfirmed = @"you_confirmed";
+
+
 -(id)initWithUserName:(NSString*)name profileImage:(NSString*)img youConfirmed:(BOOL)you andTheyConfirmed:(BOOL)they
 {
     self = [super init];

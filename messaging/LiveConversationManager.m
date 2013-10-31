@@ -168,6 +168,16 @@
     }];
 }
 
++(void)removeLiveConversationWithKey:(int)key
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        BOOL deleted = [GLPLiveConversationDao deleteLiveConversationWithId:key db:db];
+        NSLog(@"Liveconversation Deleted: %d",deleted);
+        
+    }];
+}
+
 //TODO: Needs to add other methods for messages management.
 
 @end

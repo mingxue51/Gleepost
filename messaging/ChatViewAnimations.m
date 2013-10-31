@@ -470,25 +470,25 @@ static BOOL goBack2 = NO;
     //TODO: Add iOS7 effect on bubbles.
     
     // Set vertical effect
-    UIInterpolatingMotionEffect *verticalMotionEffect =
-    [[UIInterpolatingMotionEffect alloc]
-     initWithKeyPath:@"center.y"
-     type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    verticalMotionEffect.minimumRelativeValue = @(-10);
-    verticalMotionEffect.maximumRelativeValue = @(10);
-    
-    
-    // Set horizontal effect
-    UIInterpolatingMotionEffect *horizontalMotionEffect =
-    [[UIInterpolatingMotionEffect alloc]
-     initWithKeyPath:@"center.x"
-     type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    horizontalMotionEffect.minimumRelativeValue = @(-10);
-    horizontalMotionEffect.maximumRelativeValue = @(10);
-    
-    // Create group to combine both
-    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
-    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+//    UIInterpolatingMotionEffect *verticalMotionEffect =
+//    [[UIInterpolatingMotionEffect alloc]
+//     initWithKeyPath:@"center.y"
+//     type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+//    verticalMotionEffect.minimumRelativeValue = @(-10);
+//    verticalMotionEffect.maximumRelativeValue = @(10);
+//    
+//    
+//    // Set horizontal effect
+//    UIInterpolatingMotionEffect *horizontalMotionEffect =
+//    [[UIInterpolatingMotionEffect alloc]
+//     initWithKeyPath:@"center.x"
+//     type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+//    horizontalMotionEffect.minimumRelativeValue = @(-10);
+//    horizontalMotionEffect.maximumRelativeValue = @(10);
+//    
+//    // Create group to combine both
+//    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+//    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
     
     // Add both effects to your view
 //    [self addMotionEffect:group];
@@ -516,7 +516,7 @@ static BOOL goBack2 = NO;
             
             if(goBack)
             {
-                [imageView addMotionEffect:group];
+                //[imageView addMotionEffect:group];
                 
                 int rX = rand() % 20;
                 int rY = rand() % 20;

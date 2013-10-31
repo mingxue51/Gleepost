@@ -13,8 +13,9 @@
 
 @interface GLPLiveConversationDao : NSObject
 
-+ (void)save:(GLPLiveConversation *)entity db:(FMDatabase *)db;
 + (NSArray *)findAllOrderByDate:(FMDatabase *)db;
 + (void)update:(GLPLiveConversation *)entity db:(FMDatabase *)db;
++ (void)save:(GLPLiveConversation *)entity db:(FMDatabase *)db;
++(BOOL)deleteLiveConversationWithId:(int)conversationId db:(FMDatabase* )db;
 
 @end

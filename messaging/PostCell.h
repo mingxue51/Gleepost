@@ -15,24 +15,28 @@
 
 //@property (retain, nonatomic) IBOutlet UIImageView *userImage;
 
-@property (retain, nonatomic) IBOutlet UIImageView *userImageView;
-@property (retain, nonatomic) IBOutlet UILabel *userName;
-@property (retain, nonatomic) IBOutlet UILabel *postTime;
-@property (strong, nonatomic) IBOutlet UIImageView *postImage;
-@property (retain, nonatomic) IBOutlet UIView *socialPanel;
-@property (strong, nonatomic) IBOutlet UILabel *informationLabel;
-@property (retain, nonatomic) IBOutlet UIButton *thumpsUpBtn;
-@property (retain, nonatomic) IBOutlet UIButton *commentBtn;
-@property (retain, nonatomic) IBOutlet UIButton *shareBtn;
-@property (strong, nonatomic) IBOutlet UILabel *contentLbl;
-@property (strong, nonatomic) UIImageView *userImageImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+@property (weak, nonatomic) IBOutlet UILabel *userName;
+@property (weak, nonatomic) IBOutlet UILabel *postTime;
+@property (weak, nonatomic) IBOutlet UIImageView *postImage;
+@property (weak, nonatomic) IBOutlet UIView *socialPanel;
+@property (weak, nonatomic) IBOutlet UILabel *informationLabel;
+@property (weak, nonatomic) IBOutlet UIButton *thumpsUpBtn;
+@property (weak, nonatomic) IBOutlet UIButton *commentBtn;
+@property (weak, nonatomic) IBOutlet UIButton *shareBtn;
+@property (weak, nonatomic) IBOutlet UILabel *contentLbl;
+@property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
+@property (weak, nonatomic) UIImageView *userImageImageView;
 
+
+
+@property BOOL isViewPost;
 @property BOOL imageAvailable;
 
 
-+(CGFloat)getContentLabelHeightForContent:(NSString *)content;
-
-+ (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage;
+//+(CGFloat)getContentLabelHeightForContent:(NSString *)content;
+//
+//+ (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage;
 
 +(NSString*) findTheNeededText: (NSString*)str;
 
@@ -40,6 +44,7 @@
 
 -(void) updateWithPostData:(GLPPost *)postData;
 
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
 
 
 @end

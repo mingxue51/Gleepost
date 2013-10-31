@@ -11,6 +11,10 @@
 #import "MBProgressHUD.h"
 #import "AppearanceHelper.h"
 #import "GCPlaceholderTextView.h"
+#import "FinalRegisterViewController.h"
+#import "WebClientHelper.h"
+#import "ValidFields.h"
+
 
 @interface RegisterViewController ()
 
@@ -67,7 +71,34 @@
 
 - (IBAction)finalRegistrationForm:(id)sender
 {
-    [self performSegueWithIdentifier:@"final registration" sender:self];
+    
+    //Check if e-mail and password are valid.
+    if([self areDetailsValid])
+    {
+        [self performSegueWithIdentifier:@"final registration" sender:self];
+    }
+    else
+    {
+        NSLog(@"Details not valid.");
+        
+        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your e-mail or your password."];
+
+        
+    }
+    
+    //TODO: Check if e-mail is a valid university e-mail.
+    
+    
+    
+
+    
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    FinalRegisterViewController *finalRegistrationForm = segue.destinationViewController;
+    
+    finalRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextView.text, self.passwordTextView.text, nil];
 }
 
 -(void) setBackground
@@ -134,4 +165,14 @@
         [self.passwordTextField resignFirstResponder];
     }
 }
+
+#pragma mark - Other methods
+
+-(BOOL)areDetailsValid
+{
+    return ([ValidFields NSStringIsValidEmail:self.emailTextView.text] && ![self.passwordTextView.text isEqualToString:@""]);
+}
+
+
+
 @end

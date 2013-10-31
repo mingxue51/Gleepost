@@ -14,7 +14,6 @@
 @implementation PostCell
 
 static const float FirstCellOtherElementsTotalHeight = 22;
-static const float FollowingCellPadding = 7;
 static const float MessageContentViewPadding = 15;
 static const float StandardTextCellHeight = 140;
 static const float StandardImageCellHeight = 400;
@@ -33,6 +32,8 @@ static const float StandardImageCellHeight = 400;
          button.layer.borderColor=[UIColor redColor].CGColor;
          button.layer.borderWidth=2.0f;
          */
+        
+        self.isViewPost = NO;
         
         self.userImageImageView = [[UIImageView alloc] init];
         
@@ -58,21 +59,29 @@ static const float StandardImageCellHeight = 400;
 }
 
 
-
+static const float FixedSizeOfTextCell = 130;
+static const float FixedSizeOfImageCell = 400;
+static const float FollowingCellPadding = 7;
+static const float PostContentViewPadding = 10;  //15 before.
+static const float PostContentLabelMaxWidth = 250;
 
 -(void) updateWithPostData:(GLPPost *)postData
 {
+    self.imageAvailable = NO;
+
+    NSLog(@"updateWithPostData");
+    
     //Set image to the image view.
     //[self.postImage setImage:[UIImage imageNamed:@"post_image"]];
     
     //NSLog(@"Height of Text View: %f",self.content.frame.size.height);
-    
     
     NSURL *url;
 
     for(NSString* str in postData.imagesUrls)
     {
         url = [NSURL URLWithString:str];
+        self.imageAvailable = YES;
         break;
     }
     
@@ -178,12 +187,103 @@ static const float StandardImageCellHeight = 400;
 //    }
     
 //    NSLog(@"Needed text for content: %@ -> %@",postData.content,[PostCell findTheNeededText:postData.content]);
-    
-    
 
 }
 
++ (CGSize)getContentLabelSizeForContent:(NSString *)content
+{
+    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
+    
+    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
+}
 
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage
+{
+    // initial height
+    float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
+    
+    // add content label height + message content view padding
+    height += [PostCell getContentLabelSizeForContent:content].height + PostContentViewPadding;
+    
+    return height + FollowingCellPadding;
+}
+
+static float bottomMargin = 50.0;
+
+-(void)layoutSubviews
+{
+    NSLog(@"layoutSubviews");
+    
+    if(self.isViewPost)
+    {
+        CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
+        
+        
+        CGRect frameSize = self.contentLbl.frame;
+        
+        CGRect buttonFrameSize = self.thumpsUpBtn.frame;
+
+        
+
+        
+        NSLog(@"Frame Size before: %f : %f",frameSize.size.width, frameSize.size.height);
+        
+        float heightSize = contentSize.height;
+        
+        
+        if(self.imageAvailable)
+        {
+            
+            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
+            
+            frameSize = self.contentLbl.frame;
+            
+            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
+            
+            //Move all views below content label.
+            frameSize = self.postImage.frame;
+            
+            CGRect socialFrame = self.socialPanel.frame;
+            
+            //self.postImage.frame = CGRectMake(frameSize.origin.x, self.frame.size.height-(frameSize.size.height+50.0), frameSize.size.width, frameSize.size.height);
+            
+            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+50.0), socialFrame.size.width, socialFrame.size.height);
+            
+            
+//            
+//            self.thumpsUpBtn.frame = CGRectMake(buttonFrameSize.origin.x, self.frame.size.height-(buttonFrameSize.size.height+50.0), buttonFrameSize.size.width, buttonFrameSize.size.height);
+//            
+//            self.commentBtn.frame = CGRectMake(self.commentBtn.frame.origin.x, self.frame.size.height-(buttonFrameSize.size.height+50.0), self.commentBtn.frame.size.width, self.commentBtn.frame.size.height);
+//            
+//            self.shareBtn.frame = CGRectMake(self.shareBtn.frame.origin.x, self.frame.size.height-(buttonFrameSize.size.height+50.0), self.shareBtn.frame.size.width, self.shareBtn.frame.size.height);
+//            
+//            
+//            self.buttonsBack.frame = CGRectMake(self.buttonsBack.frame.origin.x, self.frame.size.height-(self.buttonsBack.frame.size.height+50.0) ,self.buttonsBack.frame.size.width , self.buttonsBack.frame.size.height);
+//
+//            
+//            self.informationLabel.frame = CGRectMake(inforFrame.origin.x, self.frame.size.height-(inforFrame.size.height+73.0) , inforFrame.size.width, inforFrame.size.height);
+        }
+        else
+        {
+            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
+
+            
+            if([self.contentLbl.text isEqualToString:@""])
+            {
+                return;
+            }
+            CGRect socialFrame = self.socialPanel.frame;
+            
+            //self.postImage.frame = CGRectMake(frameSize.origin.x, self.frame.size.height-(frameSize.size.height+50.0), frameSize.size.width, frameSize.size.height);
+            
+            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+30.0), socialFrame.size.width, socialFrame.size.height);
+
+            
+        }
+        
+
+    }
+}
 
 static const float firstContentTextViewHeight = 60;
 static const float firstImagePosition = 110;
@@ -410,11 +510,6 @@ static const float contentTextViewLimit = 100;
 
 
 
-- (void)layoutSubviews
-{
-    NSLog(@"TableViewCell : layoutSubviews");
-    
-}
 
 //static float heightOfALine = 14.31;
 static float heightOfALine = 14.31;
@@ -459,14 +554,14 @@ static int noOfLetters = 41;
     return nil;
 }
 
-+(float) numberOfLinesUsingString: (NSString*)str
-{
-    float height = [PostCell getContentLabelHeightForContent:str];
-    
-    float numberOfLines = height/heightOfALine;
-    
-    return numberOfLines;
-}
+//+(float) numberOfLinesUsingString: (NSString*)str
+//{
+//    float height = [PostCell getContentLabelHeightForContent:str];
+//    
+//    float numberOfLines = height/heightOfALine;
+//    
+//    return numberOfLines;
+//}
 
 
 /**
@@ -501,153 +596,32 @@ static int noOfLetters = 41;
     
 }
 
-//-(void) createElements
+
+//+ (CGFloat)getContentLabelHeightForContent:(NSString *)content
 //{
-//    //TODO: Set selectable was added in iOS 7 and later.
+//    CGSize maximumLabelSize = CGSizeMake(236, 60);
 //    
-//    //User Image.
-//    self.userImage = [[UIImageView alloc] init];
-//    [self.userImage sizeToFit];
-//    [self.contentView addSubview:self.userImage];
+//    CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
 //    
-//    //User Name.
-//    self.userName = [[UITextView alloc] init];
-//    [self.userName setBackgroundColor:[UIColor clearColor]];
-//    [self.userName setEditable:NO];
-//    [self.userName setScrollEnabled:NO];
-//    //[self.userName setSelectable:NO];
-//    //[self.userName sizeToFit];
-//    [self.userName setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
-//    [self.userName setFrame:CGRectMake(54.0f, 2.0f, 100.0f, 30.0f)];
-//    [self.contentView addSubview:self.userName];
+//   //  NSLog(@"ONE LINE!\n%@",content);
+//  //  NSLog(@"Content Height:%f",contentHeight);
 //    
-//    //Post Time.
-//    self.postTime = [[UITextView alloc] init];
-//    [self.postTime setBackgroundColor:[UIColor clearColor]];
-//    [self.postTime setTextColor:[UIColor grayColor]];
-//    [self.postTime setEditable:NO];
-//    [self.postTime setScrollEnabled:NO];
-//    // [self.postTime setSelectable:NO];
-//    //[self.postTime sizeToFit];
-//    [self.postTime setFont:[UIFont fontWithName:@"Helvetica Neue" size:10]];
-//    [self.postTime setFrame:CGRectMake(54.0f, 18.0f, 100.0f, 30.0f)];
-//    [self.contentView addSubview:self.postTime];
-//    
-//    //Content.
-//    self.content = [[UITextView alloc] init];
-//    [self.content setBackgroundColor:[UIColor clearColor]];
-//    [self.content setEditable:NO];
-//    [self.content setScrollEnabled:NO];
-//    
-//    //   [self.content setSelectable:NO];
-//    [self.content sizeToFit];
-//    [self.content setFont:[UIFont fontWithName:@"Helvetica Neue" size:12]];
-//    [self.content setFrame:CGRectMake(54.0f, 31.0f, 250.0f, 50.0f)];
-//    [self.contentView addSubview:self.content];
-//    
-//    
-//
-//    
-//    //Social Panel.
-//    self.socialPanel = [[UIImageView alloc] init];
-//    self.socialPanel.userInteractionEnabled = YES;
-//    UIColor *backColour = [UIColor colorWithWhite:1.0f alpha:0.5f];
-//    [self.socialPanel setBackgroundColor:backColour];
-//    
-//    //Add a post's information text view.
-//    UITextView *information = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 300.0f, 20.0f)];
-//    information.userInteractionEnabled = NO;
-//    [information setBackgroundColor:[UIColor clearColor]];
-//    [information setText:@"27 likes 3 commends 127 views"];
-//    
-//    [self.socialPanel addSubview:information];
-//    
-//    //Add thumbs-up button.
-//    self.thumpsUpBtn = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 2.0f, 100.0f, 50.0f)];
-//    [self.thumpsUpBtn setTitle:@"Like" forState:UIControlStateNormal];
-//    [self.thumpsUpBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
-////    [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-//
-//    
-//    CGSize btnSize = [[self.thumpsUpBtn titleForState:UIControlStateNormal] sizeWithFont:self.thumpsUpBtn.titleLabel.font];
-//    [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up_image"] forState:UIControlStateNormal];
-//    
-//    self.thumpsUpBtn.userInteractionEnabled = YES;
-//    
-//    [self.thumpsUpBtn setImageEdgeInsets:UIEdgeInsetsMake(10.f, 0, 0, btnSize.width+20)];
-//    [self.thumpsUpBtn setTitleEdgeInsets: UIEdgeInsetsMake(10.f, 0, 0, self.thumpsUpBtn.imageView.image.size.width + 10)];
-//    
-//    
-//    //Add comment button.
-//    self.commentBtn = [[UIButton alloc] initWithFrame:CGRectMake(110.0f, 5.0f, 110.0f, 50.0f)];
-//    [self.commentBtn setTitle:@"Comment" forState:UIControlStateNormal];
-//    [self.commentBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
-//    btnSize = [[self.commentBtn titleForState:UIControlStateNormal] sizeWithFont:self.commentBtn.titleLabel.font];
-//    [self.commentBtn setImage:[UIImage imageNamed:@"comment_image"] forState:UIControlStateNormal];
-////    [self.commentBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-//
-//    
-//    self.commentBtn.userInteractionEnabled = YES;
-//    
-//    [self.commentBtn setImageEdgeInsets:UIEdgeInsetsMake(10.f, 0, 0, btnSize.width+20)];
-//    [self.commentBtn setTitleEdgeInsets: UIEdgeInsetsMake(10.f, 0, 0, self.commentBtn.imageView.image.size.width)];
-//    
-//    
-//    //Add share button.
-//    self.shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(200.0f, 0.0f, 100.0f, 50.0f)];
-//    [self.shareBtn setTitle:@"Share" forState:UIControlStateNormal];
-//    [self.shareBtn.titleLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
-//    btnSize = [[self.shareBtn titleForState:UIControlStateNormal] sizeWithFont:self.shareBtn.titleLabel.font];
-//    [self.shareBtn setImage:[UIImage imageNamed:@"share_image"] forState:UIControlStateNormal];
-////    [self.shareBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-//
-//    self.shareBtn.userInteractionEnabled = YES;
-//    
-//    [self.shareBtn setImageEdgeInsets:UIEdgeInsetsMake(14.f, 0, 0, btnSize.width-43)];
-//    [self.shareBtn setTitleEdgeInsets: UIEdgeInsetsMake(18.f, 0, 0, self.shareBtn.imageView.image.size.width-40)];
-//    
-//    
-//    [self.socialPanel insertSubview:self.shareBtn aboveSubview:self.socialPanel];
-//    
-//    [self.socialPanel insertSubview:self.commentBtn aboveSubview:self.socialPanel];
-//    
-//    [self.socialPanel insertSubview:self.thumpsUpBtn aboveSubview:self.socialPanel];
-//    
-//    [self.contentView addSubview:self.socialPanel];
-//    
-//    
-//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
-//    
-//    lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-//    [self.contentView addSubview:lineView];
-//
+//    return contentHeight;
 //}
-
-+ (CGFloat)getContentLabelHeightForContent:(NSString *)content
-{
-    CGSize maximumLabelSize = CGSizeMake(236, 60);
-    
-    CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
-    
-   //  NSLog(@"ONE LINE!\n%@",content);
-  //  NSLog(@"Content Height:%f",contentHeight);
-    
-    return contentHeight;
-}
-
-+ (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage
-{
-    // initial height
-    //float height = (isFirst) ? FirstCellOtherElementsTotalHeight : 0;
-    
-    float height = containsImage?StandardImageCellHeight:StandardTextCellHeight;
-
-    
-    // add content label height + message content view padding
-    height += [PostCell getContentLabelHeightForContent:content] + MessageContentViewPadding;
-    
-    return height + FollowingCellPadding;
-}
+//
+//+ (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage
+//{
+//    // initial height
+//    //float height = (isFirst) ? FirstCellOtherElementsTotalHeight : 0;
+//    
+//    float height = containsImage?StandardImageCellHeight:StandardTextCellHeight;
+//
+//    
+//    // add content label height + message content view padding
+//    height += [PostCell getContentLabelHeightForContent:content] + MessageContentViewPadding;
+//    
+//    return height + FollowingCellPadding;
+//}
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

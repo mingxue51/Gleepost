@@ -8,6 +8,7 @@
 
 #import "GLPUserDaoParser.h"
 #import "GLPEntityDaoParser.h"
+#import "GLPUser.h"
 
 @implementation GLPUserDaoParser
 

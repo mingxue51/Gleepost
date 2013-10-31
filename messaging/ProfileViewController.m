@@ -7,7 +7,7 @@
 //
 
 #import "ProfileViewController.h"
-#import "Post.h"
+#import "GLPPost.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "ViewPostViewController.h"
@@ -16,6 +16,8 @@
 #import "ProfileView.h"
 #import "NotificationsViewController.h"
 #import "PostCell.h"
+#import "LoginRegisterViewController.h"
+#import "SessionManager.h"
 
 @interface ProfileViewController ()
 
@@ -23,7 +25,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *postsTableView;
 
 @property (strong, nonatomic) NSMutableArray *posts;
-@property (strong, nonatomic) Post *selectedPost;
+@property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) IBOutlet ProfileView *profileView;
@@ -80,6 +82,7 @@ static BOOL likePushed;
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
+    [self addLogoutNavigationButton];
    
     
     
@@ -93,6 +96,35 @@ static BOOL likePushed;
     [self loadPosts];
     
     NSLog(@"Profile View Controller");
+}
+
+-(void)addLogoutNavigationButton
+{
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 80.0, 30.0);
+    
+    
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack setTitle:@"Logout" forState:UIControlStateNormal];
+    
+    btnBack.frame = imageView.bounds;
+    [imageView addSubview:btnBack];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    
+    
+    self.navigationItem.rightBarButtonItem = item;
+}
+
+-(void)logout:(id)sender
+{
+    NSLog(@"Logout");
+    [[SessionManager sharedInstance] logout];
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self performSegueWithIdentifier:@"start" sender:self];
+
 }
 
 -(void) showNotifications: (id)sender
@@ -123,7 +155,7 @@ static BOOL likePushed;
             
             NSLog(@"POSTS in TimeLineViewController");
             
-            for(Post *p in self.posts)
+            for(GLPPost *p in self.posts)
             {
                 NSLog(@"%@",p.content);
             }
@@ -182,9 +214,9 @@ static BOOL likePushed;
     
     PostCell *cell;
     
-    Post *post = self.posts[indexPath.row];
+    GLPPost *post = self.posts[indexPath.row];
     
-    if(indexPath.row%3==0)
+    if([post imagePost])
     {
         cell = [tableView dequeueReusableCellWithIdentifier:ImageCellIdentifier forIndexPath:indexPath];
     }
@@ -193,7 +225,7 @@ static BOOL likePushed;
         cell = [tableView dequeueReusableCellWithIdentifier:TextCellIdentifier forIndexPath:indexPath];
     }
     
-    
+    [cell updateWithPostData:post];
    // [cell updateWithPostData:post];
 
 //    NSLog(@"Username: %@",post.author.name);
@@ -321,12 +353,12 @@ static BOOL likePushed;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    Post *currentPost = [self.posts objectAtIndex:indexPath.row];
+    GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
     
     
-    if(indexPath.row%3==0)
+    if([currentPost imagePost])
     {
-        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:YES], currentPost.content);
+        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
         //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
@@ -335,7 +367,7 @@ static BOOL likePushed;
     }
     else
     {
-        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content andImage:NO], currentPost.content);
+        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
         
         //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
@@ -364,6 +396,15 @@ static BOOL likePushed;
     else if([segue.identifier isEqualToString:@"view profile"])
     {
         NotificationsViewController *nv = segue.destinationViewController;
+        
+    }
+    else if([segue.identifier isEqualToString:@"start"])
+    {
+        //Hide tabbar.
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        LoginRegisterViewController *loginRegisterViewController = segue.destinationViewController;
+        
         
     }
 }

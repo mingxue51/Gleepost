@@ -12,13 +12,14 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "InvitationSentView.h"
 #import "WebClientHelper.h"
-#import "GLPContact.h"
+#import "ContactsManager.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
 @property (strong, nonatomic) IBOutlet UILabel *networkName;
 @property (strong, nonatomic) IBOutlet UILabel *userName;
 @property (strong, nonatomic) IBOutlet UILabel *personalMessage;
+@property (weak, nonatomic) IBOutlet UIButton *addUserButton;
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -33,26 +34,47 @@
 {
     [super viewDidLoad];
     
+    
+    
     //Check if the user is already in contacts.
-    
     //If yes show the regular profie view (unlocked).
-    
-    //If no, check in database if the user is already requested.
-    
-    //If yes change the button of add user to user requested.
-    
-    //If not show the private profile view as is.
-    
-    [self loadAndSetUserDetails];
-    
-    if([self isUserRequested])
+    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
     {
-        //Add the image that is requested and remove add contact button.
+        NSLog(@"PrivateProfileViewController : Unlock Profile.");
+    }
+    else
+    {
+        //If no, check in database if the user is already requested.
         
+        //If yes change the button of add user to user already requested.
+        
+        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
+        {
+            NSLog(@"PrivateProfileViewController : User already requested by you.");
+            UIImage *img = [UIImage imageNamed:@"invitesent"];
+            [self.addUserButton setImage:img forState:UIControlStateNormal];
+            [self.addUserButton setEnabled:NO];
+
+            
+        }
+        else
+        {
+            //If not show the private profile view as is.
+            NSLog(@"PrivateProfileViewController : Private profile as is.");
+        }
     }
     
     
     
+    
+    
+    [self loadAndSetUserDetails];
+    
+//    if([self isUserRequested])
+//    {
+//        //Add the image that is requested and remove add contact button.
+//        
+//    }
     
 }
 
@@ -73,6 +95,7 @@
         else
         {
             NSLog(@"Failed to send to the user.");
+            //This section of code should never be reached.
         }
         
         

@@ -17,6 +17,8 @@ extern NSString * const GLPUserPersonalMessageColumn;
 @property (strong, nonatomic) NSString *networkName;
 @property int networkId;
 @property (strong, nonatomic) NSString *personalMessage;
+
+
 //TODO: In the future add all the elements.
 
 @end

@@ -194,7 +194,7 @@
 //    [self.usersStr addObject:c.user.name];
     for(GLPContact* contact in contactsFromServer)
     {
-        if(contact.theyConfirmed)
+        if(contact.youConfirmed)
         {
             [self.users addObject:contact];
             [self.usersStr addObject:contact.user.name];
@@ -283,7 +283,7 @@
 
 -(void) loadContacts
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
 
     
     [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {

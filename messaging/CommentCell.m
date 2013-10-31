@@ -7,10 +7,22 @@
 //
 
 #import "CommentCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "NSDate+TimeAgo.h"
+#import <QuartzCore/QuartzCore.h>
+
 
 @interface CommentCell()
 
 @end
+
+
+static const float FixedSizeOfTextCell = 50;
+static const float FollowingCellPadding = 7;
+static const float CommentContentViewPadding = 10;  //15 before.
+static const float CommentContentLabelMaxWidth = 250;
+
+
 
 @implementation CommentCell
 
@@ -25,92 +37,71 @@
     return self;
 }
 
--(void) createElements
+-(void)setCellHeight:(NSString*)content
 {
-    [self setBackgroundColor:[UIColor clearColor]];
+    CGRect cellFrame = self.contentLabel.frame;
     
-    UIImageView *back = [[UIImageView alloc] init];
-    //[back setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.1]];
-    [back setBackgroundColor: [UIColor whiteColor]];
-    self.backgroundView = back;
+    float heightSize = [CommentCell getContentLabelSizeForContent:content].height;
     
-    //self.backgroundColor = [UIColor colorWithRed:199 green:199 blue:199 alpha:1.0];
-    
-    //Create and add user's image.
-    self.userImageView = [[UIImageView alloc] init];
-    [self.userImageView sizeToFit];
-    
-    [self.contentView addSubview:self.userImageView];
-    
-    //Create and add user's comment.
-    self.contentTextView = [[UITextView alloc] initWithFrame:CGRectMake(56.0f, 30.0f, 240.f, 80.f)];
-    [self.contentTextView setBackgroundColor:[UIColor clearColor]];
-    [self.contentTextView setEditable:NO];
-    [self.contentTextView setSelectable:YES];
-    [self.contentTextView setFont:[UIFont fontWithName:@"Helvetica Neue" size:12]];
-    
-    [self.contentView addSubview:self.contentTextView];
+    [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
+}
+
+-(void)setComment:(GLPComment*)comment
+{
+    [self setCellHeight:comment.content];
     
     
-    //Create and add user's name.
-    self.userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60.0f, 10.0f, 200.f, 20.f)];
-    [self.userNameLabel setBackgroundColor:[UIColor clearColor]];
-    [self.userNameLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:13]];
-    
-    [self.contentView addSubview:self.userNameLabel];
-    
-    
-    //Create and add time comment was posted.
-    self.postDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(60.0f, 20.0f, 200.f, 20.f)];
-    [self.postDateLabel setBackgroundColor:[UIColor clearColor]];
-    [self.postDateLabel setTextColor:[UIColor grayColor]];
-    [self.postDateLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:9]];
-    
-    [self.contentView addSubview:self.postDateLabel];
+    //Set comment's content.
+    self.contentLabel.text = comment.content;
     
     
     
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+    if([comment.author.profileImageUrl isEqualToString:@""])
+    {
+        //Set user's image.
+        UIImage *img = [UIImage imageNamed:@"default_user_image"];
+        self.userImageView.image = img;
+        self.userImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self.userImageView setFrame:CGRectMake(5.0f, 10.0f, 40.0f, 40.0f)];
+    }
+    else
+    {
+        NSLog(@"UserImageView: %@",comment.author.profileImageUrl);
+        [self.userImageView setImageWithURL:[NSURL URLWithString:comment.author.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+        
+    }
+    self.userImageView.clipsToBounds = YES;
     
-    lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-    [self.contentView addSubview:lineView];
-    
-    
-//    [self.contentView setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+400)];
-    
-    //Create and add social panel.
-//    self.socialPanelView = [[UIView alloc] initWithFrame:CGRectMake(5, 80.0f, 310.f, 20.f)];
-//    [self.socialPanelView setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
-//    
-//    [self.contentView addSubview:self.socialPanelView];
-    
-    //Add the like button on the bottom.
-//    self.likeButtonButton = [[UIButton alloc] initWithFrame:CGRectMake(70.f, 60.0f, 100.f, 50.f)];
-//    [self.likeButtonButton setTitle:@"Like" forState:UIControlStateNormal];
-//    [self.likeButtonButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
-//    
-//    
-//    CGSize btnSize = [[self.likeButtonButton titleForState:UIControlStateNormal] sizeWithFont:self.likeButtonButton.titleLabel.font];
-//    [self.likeButtonButton setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
-//    
-//    self.likeButtonButton.userInteractionEnabled = YES;
-//    
-//    [self.likeButtonButton setImageEdgeInsets:UIEdgeInsetsMake(10.f, 0, 0, btnSize.width+20)];
-//    [self.likeButtonButton setTitleEdgeInsets: UIEdgeInsetsMake(10.f, 0, 0, self.likeButtonButton.imageView.image.size.width + 10)];
+    self.userImageView.layer.cornerRadius = 20;
     
     
-    [self.contentView addSubview:self.likeButtonButton];
+    //Set user's name.
+    [self.userNameLabel setText:comment.author.name];
+    
+    NSDate *currentDate = comment.date;
+    
+    //Set post's time.
+    [self.postDateLabel setText:[currentDate timeAgo]];
+}
+
+-(void)layoutSubviews
+{
+    CGSize contentSize = [CommentCell getContentLabelSizeForContent:self.contentLabel.text];
     
     
-  
+    CGRect frameSize = self.contentLabel.frame;
     
+    NSLog(@"Frame Size before: %f : %f",frameSize.size.width, frameSize.size.height);
     
+    float heightSize = contentSize.height;
     
+    self.contentLabel.frame = CGRectMake(self.contentLabel.frame.origin.x, self.contentLabel.frame.origin.y, self.contentLabel.frame.size.width, contentSize.height);
     
+
     
+    frameSize = self.contentLabel.frame;
     
-    //Set custom image when the cell is pressed.
-    //self.selectedBackgroundView = [[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"cell_pressed.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]];
+    NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
 
 }
 
@@ -119,6 +110,25 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+
++ (CGSize)getContentLabelSizeForContent:(NSString *)content
+{
+    CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
+    
+    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
+}
+
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage
+{
+    // initial height
+    float height = (isImage) ? 0 : FixedSizeOfTextCell;
+    
+    // add content label height + message content view padding
+    height += [CommentCell getContentLabelSizeForContent:content].height + CommentContentViewPadding;
+    
+    return height + FollowingCellPadding;
 }
 
 @end

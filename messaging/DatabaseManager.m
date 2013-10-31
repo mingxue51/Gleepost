@@ -86,6 +86,12 @@ static DatabaseManager *instance = nil;
              network_name text, \
              tagline text);"];
             
+            // contacts
+            [db executeUpdate:@"create table contacts ( \
+             remoteKey integer primary key, \
+             you_confirmed interger, \
+             they_confirmed integer);"];
+            
             // conversation
             [db executeUpdate:@"create table conversations ( \
              key integer primary key autoincrement, \

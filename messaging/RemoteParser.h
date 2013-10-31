@@ -41,6 +41,5 @@
 // commons
 + (NSDate *)parseDateFromString:(NSString *)string;
 
-
-
++(NSString*)parseRegisterErrorMessage:(NSString*)error;
 @end

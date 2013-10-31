@@ -14,6 +14,6 @@
 -(void)likeButtonPushed: (id)sender;
 -(void)commentButtonPushed: (id)sender;
 -(void)shareButtonPushed: (id)sender;
--(void) removeComment;
+-(void) setPlusButtonToNavigationBar;
 
 @end
