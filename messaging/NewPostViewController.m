@@ -73,70 +73,66 @@
     post.content = self.contentTextView.text;
     post.date = [NSDate date];
 
+    
+    
+    if(self.imagePosted)
+    {
+        
+        NSData* imageData = UIImagePNGRepresentation(self.uploadedImage.image);
+        imageData = UIImagePNGRepresentation([UIImage imageNamed:@"GleepostS"]);
+        
+        [[WebClient sharedInstance] uploadImage:imageData ForPost:post callbackBlock:^(BOOL success, NSString* response) {
+            
+            if(success)
+            {
+                NSLog(@"IMAGE UPLOADED. URL: %@",response);
+                
+                post.imagesUrls = [[NSArray alloc] initWithObjects:response, nil];
+                
+                [WebClientHelper showStandardErrorWithTitle:@"Image uploaded successfully" andContent:[NSString stringWithFormat:@"Url: %@",response]];
+
+                
+                //[self createPost:post];
+                
+            }
+            else
+            {
+                NSLog(@"ERROR");
+                [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+
+            }
+        }];
+
+    }
+    else
+    {
+        [self createPost:post];
+    }
+    
+}
+
+-(void)createPost:(GLPPost*)post
+{
     [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self.view];
     
     [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
         
         [WebClientHelper hideStandardLoaderForView:self.view];
         
-        if(success) {
+        if(success)
+        {
             
             [self dismissViewControllerAnimated:YES completion:^{
                 [self.delegate loadPosts];
             }];
-        } else {
+            
+        } else
+        {
             [WebClientHelper showStandardError];
             [self.contentTextView becomeFirstResponder];
         }
     }];
-    
-    
-    if(self.imagePosted)
-    {
-        
-        NSData* imageData = UIImagePNGRepresentation([UIImage imageNamed:@"avatar_big"]);
-        
-        NSString* type = [self contentTypeForImageData:imageData];
-        
-        [[WebClient sharedInstance] uploadImage:imageData ForPost:post callbackBlock:^(BOOL success) {
-            
-            if(success)
-            {
-                NSLog(@"IMAGE UPLOADED");
-            }
-            else
-            {
-                NSLog(@"ERROR");
-            }
 
-           
-        }];
-
-    
-        
-        
-//        FileUploader *uploader = [[FileUploader alloc] initWithHostName:@"gleepost.com/api/v0.15" customHeaderFields:nil];
-//        
-//        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-//        [params addEntriesFromDictionary:[SessionManager sharedInstance].authParameters];
-//        
-//        MKNetworkOperation *senderOperation = [uploader postDataToServer:nil path:@"upload?id=2395&token=11d1c9bff46468ba31b2fa856928af62eb3538f4be4e312d60f3db195da6f840"];
-//        
-//        [senderOperation addData:UIImagePNGRepresentation(self.uploadedImage.image) forKey:[NSString stringWithFormat:@"%d",post.remoteKey] mimeType:@"image/png" fileName:@"test.png"];
-//        
-//        [senderOperation addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-//            NSLog(@"IMAGE UPLOADED!");
-//            
-//            
-//        } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
-//            NSLog(@"ERROR IMAGE UPLOADER!");
-//
-//        }];
-//        
-//        [uploader enqueueOperation:senderOperation];
-    
-    }
-    
 }
 
 - (NSString *)contentTypeForImageData:(NSData *)data {

@@ -410,4 +410,22 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    return error.description;
 }
 
+#pragma mark - Images
+
++(NSString*)parseImageUrl:(NSString*)url
+{
+    
+    NSData *data = [url dataUsingEncoding:NSUTF8StringEncoding];
+    id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    
+    return json[@"url"];
+}
+
++(int)parsePostIdFromJson:(NSDictionary*)json
+{
+    NSLog(@"POST ID: %@",json[@"id"]);
+    
+    return [json[@"id"] integerValue];
+}
+
 @end

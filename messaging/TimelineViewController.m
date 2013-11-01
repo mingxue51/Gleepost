@@ -332,11 +332,11 @@ static BOOL likePushed;
 
 - (void)loadPosts
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
     
     [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-       [WebClientHelper hideStandardLoaderForView:self.view];
+      // [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.posts = [posts mutableCopy];

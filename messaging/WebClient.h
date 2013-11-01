@@ -47,5 +47,9 @@
 
 - (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 
--(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success)) callbackBlock;
+
+-(void)uploadImageWithImage:(NSData*)image;
+
+-(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock;
+
 @end

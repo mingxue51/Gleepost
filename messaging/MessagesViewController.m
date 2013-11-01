@@ -210,10 +210,10 @@
 
 - (void)stopLoading
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MMM d, h:mm a"];
-    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter stringFromDate:[NSDate date]]];
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"MMM d, h:mm a"];
+//    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter stringFromDate:[NSDate date]]];
+//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
     [self.refreshControl endRefreshing];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

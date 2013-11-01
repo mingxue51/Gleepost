@@ -11,6 +11,8 @@
 
 @interface NotificationsViewController ()
 
+@property(strong, nonatomic) NSArray *notifications;
+
 @end
 
 @implementation NotificationsViewController
@@ -30,6 +32,15 @@
 
     
     [self setTitle:@"Notifications"];
+    
+    
+    self.notifications = [[NSArray alloc] initWithObjects:@"Notification1",@"Notification2", nil];
+    
+    //Register nib files in table view.
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"ActionNotificationCell" bundle:nil] forCellReuseIdentifier:@"ActionCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"SimpleNotificationCell" bundle:nil] forCellReuseIdentifier:@"SimpleCell"];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -54,13 +65,29 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //Number of current notifications.
-    return 2;
+    return self.notifications.count;
 }
+
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *ActionCellIdentifier = @"ActionCell";
+    static NSString *SimpleCellIdentifier = @"SimpleCell";
+    
+    NotificationCell *cell;
+    
+    if(indexPath.row % 2 == 0)
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:ActionCellIdentifier forIndexPath:indexPath];
+    }
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:SimpleCellIdentifier forIndexPath:indexPath];
+    }
+    
+    
+    
     
     
     
@@ -75,6 +102,19 @@
 {
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row % 2 == 0)
+    {
+        return 105;
+    }
+    else
+    {
+        return 85;
+    }
+}
+
 
 /*
 // Override to support conditional editing of the table view.

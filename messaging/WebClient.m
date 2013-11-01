@@ -159,6 +159,10 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
         
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        //Get the post id. If user has ulpoaded an image execute the createImagePost method.
+        [RemoteParser parsePostIdFromJson:responseObject];
+        
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
@@ -466,160 +470,51 @@ static WebClient *instance = nil;
 #pragma mark - Image
 
 
-//AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//NSDictionary *parameters = @{@"foo": @"bar"};
-//NSURL *filePath = [NSURL fileURLWithPath:@"file://path/to/image.png"];
-//[manager POST:@"http://example.com/resources.json" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//    [formData appendPartWithFileURL:filePath name:@"image" error:nil];
-//} success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//    NSLog(@"Success: %@", responseObject);
-//} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//    NSLog(@"Error: %@", error);
-//}];
-
-
--(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success)) callbackBlock
+-(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"upload"];
-
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
-    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    
-
-    
-    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:path parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData){
-        
-        
-        [formData appendPartWithFormData:image name:@"Image"];
-        //[formData appendPartWithFileData:image name:[NSString stringWithFormat:@"file"] fileName:[NSString stringWithFormat:@"avatar_big.png"] mimeType:@"image/png"];
-        
-    }];
-    
-	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"!!!Response object: %@",responseObject);
-
-    
-        callbackBlock(YES);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"Failure: %@",error.description);
-
-        callbackBlock(NO);
-    }];
-    
-    [self enqueueHTTPRequestOperation:operation];
-    
-    
-    
-    
-//    [self postPath:path parameters:params withImage:image success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        NSLog(@"!!!Response object: %@",responseObject);
-//        
-//        callbackBlock(YES);
-//
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Failure: %@",error.description);
-//        
-//        callbackBlock(NO);
-//
-//    }];
-    
-    
-    
-    
-
-    /**__block int i = 0;
-    
-    NSString *path = [NSString stringWithFormat:@"upload"];
-    
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    
-    AFHTTPClient *client= [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"https://gleepost.com/api/v0.15/"]];
+
 
     
-      NSMutableURLRequest *request = [client multipartFormRequestWithMethod:@"POST" path:path parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-       //[formData appendPartWithFileData: image name:@"image" fileName:@"temp.png" mimeType:@"image/png"];
-          
-//          NSData *imageData = UIImageJPEGRepresentation(image,0.5);
-          [formData appendPartWithFileData:image name:[NSString stringWithFormat:@"file%d",i ] fileName:[NSString stringWithFormat:@"abc%d.jpg",i ] mimeType:@"image/png"];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kWebserviceBaseUrl]];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        
+        [formData appendPartWithFileData:image name:@"image" fileName:[NSString stringWithFormat:@"post_%d_image.png",post.remoteKey] mimeType:@"image/png"];
+    }];
 
-   }];
     
+   [request setTimeoutInterval:300];
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    // if you want progress updates as it's uploading, uncomment the following:
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+         NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+     }];
     
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"response: %@",responseObject);
+        
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+
+        
+        callbackBlock(YES, response);
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"RESPONSE ERROR: %@", error.description);
+        callbackBlock(NO, nil);
         
     }];
     
     
-    [operation start]; **/
-    
-    ////////////////
-    
-//    NSString *path = [NSString stringWithFormat:@"upload"];
-//    
-//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
-//    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-//    
-//   // NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:keyParameter, @"keyName", nil];
-//    
-//    AFHTTPClient *client= [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"https://gleepost.com/api/v0.15/"]];
-//    
-//    NSMutableURLRequest *request = [client multipartFormRequestWithMethod:@"POST" path:path parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-//        
-//        [formData appendPartWithFileData: image name:@"image" fileName:@"temp.png" mimeType:@"image/png"];
-//        
-//    }];
-//    
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-//     {
-//         NSDictionary *jsons = [NSJSONSerialization JSONObjectWithData:responseObject options:kNilOptions error:nil];
-//         NSLog(@"response: %@",jsons);
-//         
-//     }
-//      failure:^(AFHTTPRequestOperation *operation, NSError *error)
-//     {
-//         if([operation.response statusCode] == 403)
-//         {
-//             NSLog(@"Upload Failed");
-//             return;
-//         }
-//         NSLog(@"error: %@", [operation error]);
-//         
-//     }];
-//    
-//    [operation start];
-
-    
-    
-    
-    
-    
-   // NSString *path = [NSString stringWithFormat:@"upload"];
-    
-//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
-//    //params[@"id"] = [NSString stringWithFormat:@"%d",post.remoteKey];
-//    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    
-//    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
+    [httpClient enqueueHTTPRequestOperation:operation];
     
 }
 
@@ -638,23 +533,6 @@ static WebClient *instance = nil;
 	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     [self enqueueHTTPRequestOperation:operation];
 }
-
-    
-//-(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success)) callbackBlock
-//{
-//    NSString *path = [NSString stringWithFormat:@"upload"];
-//    
-//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
-//    //params[@"id"] = [NSString stringWithFormat:@"%d",post.remoteKey];
-//    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-//    
-//    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        callbackBlock(YES);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO);
-//    }];
-//}
 
 
 @end

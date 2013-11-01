@@ -151,13 +151,24 @@ static BOOL likePushed;
         [hud hide:YES];
         
         if(success) {
+            
+            NSMutableArray *removePosts = [[NSMutableArray alloc] init];
             self.posts = [posts mutableCopy];
             
             NSLog(@"POSTS in TimeLineViewController");
             
             for(GLPPost *p in self.posts)
             {
+                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+                {
+                    [removePosts addObject:p];
+                }
                 NSLog(@"%@",p.content);
+            }
+            
+            for(GLPPost *p in removePosts)
+            {
+                [self.posts removeObject:p];
             }
             
             [self.postsTableView reloadData];

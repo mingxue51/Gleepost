@@ -19,6 +19,12 @@
     return self;
 }
 
+
+-(void)updateWithData
+{
+    
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];

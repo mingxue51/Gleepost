@@ -91,6 +91,10 @@
 		584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 584CF66618227BA700EFABB8 /* GLPContactDaoParser.m */; };
 		584CF66A18227E3200EFABB8 /* GLPContactDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 584CF66918227E3200EFABB8 /* GLPContactDao.m */; };
 		584CF66D182289B500EFABB8 /* ContactsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584CF66C182289B500EFABB8 /* ContactsManager.m */; };
+		584CF66F1823017B00EFABB8 /* ActionNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584CF66E1823017B00EFABB8 /* ActionNotificationCell.xib */; };
+		584CF6711823019900EFABB8 /* SimpleNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584CF6701823019900EFABB8 /* SimpleNotificationCell.xib */; };
+		584CF675182303FC00EFABB8 /* accept_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CF673182303FC00EFABB8 /* accept_contact.png */; };
+		584CF676182303FC00EFABB8 /* ignore_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CF674182303FC00EFABB8 /* ignore_contact.png */; };
 		584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38591817F4E500A1B742 /* multipleusersicon.png */; };
 		584F385C1817F50B00A1B742 /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385B1817F50B00A1B742 /* default_group_image.png */; };
 		584F38621818094A00A1B742 /* mychatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38611818094A00A1B742 /* mychatbubble4.png */; };
@@ -410,6 +414,10 @@
 		584CF66918227E3200EFABB8 /* GLPContactDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPContactDao.m; sourceTree = "<group>"; };
 		584CF66B182289B500EFABB8 /* ContactsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsManager.h; sourceTree = "<group>"; };
 		584CF66C182289B500EFABB8 /* ContactsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsManager.m; sourceTree = "<group>"; };
+		584CF66E1823017B00EFABB8 /* ActionNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionNotificationCell.xib; sourceTree = "<group>"; };
+		584CF6701823019900EFABB8 /* SimpleNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleNotificationCell.xib; sourceTree = "<group>"; };
+		584CF673182303FC00EFABB8 /* accept_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_contact.png; sourceTree = "<group>"; };
+		584CF674182303FC00EFABB8 /* ignore_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ignore_contact.png; sourceTree = "<group>"; };
 		584F38511817DE8900A1B742 /* message_box_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = message_box_1.png; path = "../../Gleepost Data/NewChating/message_box_1.png"; sourceTree = "<group>"; };
 		584F38591817F4E500A1B742 /* multipleusersicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multipleusersicon.png; sourceTree = "<group>"; };
 		584F385B1817F50B00A1B742 /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_group_image.png; sourceTree = "<group>"; };
@@ -845,6 +853,15 @@
 			name = "Post Classes";
 			sourceTree = "<group>";
 		};
+		584CF672182303B500EFABB8 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				584CF673182303FC00EFABB8 /* accept_contact.png */,
+				584CF674182303FC00EFABB8 /* ignore_contact.png */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
 		585DF77317ECA70C00FBFC35 /* Chat Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -972,6 +989,7 @@
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
+				584CF672182303B500EFABB8 /* Notifications */,
 				583EAB711811867C003D68B3 /* User Images */,
 				58433295180F17E400BD9F74 /* Register Images */,
 				586581331805E316005814B4 /* Login Images */,
@@ -1078,6 +1096,8 @@
 			children = (
 				58B865DD180D9F4800BB18AF /* NotificationsViewController.h */,
 				58B865DE180D9F4800BB18AF /* NotificationsViewController.m */,
+				584CF66E1823017B00EFABB8 /* ActionNotificationCell.xib */,
+				584CF6701823019900EFABB8 /* SimpleNotificationCell.xib */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -1737,6 +1757,7 @@
 				58DC0245180437A70008993A /* bubble3.png in Resources */,
 				80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */,
 				80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */,
+				584CF675182303FC00EFABB8 /* accept_contact.png in Resources */,
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
 				805E1558180EF3E700705B1C /* notification.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
@@ -1785,13 +1806,16 @@
 				587D23CD17EA195D00E0DDFF /* home_tab_small.png in Resources */,
 				58DB02A818105C86001C021A /* blackholder1.png in Resources */,
 				5895B3D617F58B720040535D /* navigationbar_4.png in Resources */,
+				584CF6711823019900EFABB8 /* SimpleNotificationCell.xib in Resources */,
 				58DC024A180437A70008993A /* settings_icon.png in Resources */,
+				584CF66F1823017B00EFABB8 /* ActionNotificationCell.xib in Resources */,
 				586659FF17F2214300A0354E /* tabbar@2x.png in Resources */,
 				5843328B180F069800BD9F74 /* Gleepost_main.png in Resources */,
 				584C1EF2181ACBCA00862E81 /* newchat3.png in Resources */,
 				5893BA0518200CA50003589E /* notificationicon.png in Resources */,
 				584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */,
 				587D23CE17EA195D00E0DDFF /* img.png in Resources */,
+				584CF676182303FC00EFABB8 /* ignore_contact.png in Resources */,
 				583B9FE317F3676A00B4BEE3 /* set_tab_small.png in Resources */,
 				587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */,
 				587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */,

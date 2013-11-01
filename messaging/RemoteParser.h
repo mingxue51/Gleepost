@@ -42,4 +42,9 @@
 + (NSDate *)parseDateFromString:(NSString *)string;
 
 +(NSString*)parseRegisterErrorMessage:(NSString*)error;
+
+// images
++(NSString*)parseImageUrl:(NSDictionary*)url;
++(int)parsePostIdFromJson:(NSDictionary*)json;
+
 @end
