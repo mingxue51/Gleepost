@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "TimelineViewController.h"
+#import "FDTakeController.h"
 
-@interface NewPostViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate>
 
 @property (weak, nonatomic) TimelineViewController *delegate;
 @property (strong, nonatomic) IBOutlet UINavigationBar *simpleNavBar;

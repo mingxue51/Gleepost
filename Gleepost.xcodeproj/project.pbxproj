@@ -25,7 +25,6 @@
 		580A639018184CAB00AC8009 /* default_user_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image.png */; };
 		58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D681821013200B76E5D /* CFNetwork.framework */; };
 		58143D6B1821014C00B76E5D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D6A1821014C00B76E5D /* Security.framework */; };
-		58143D6E1821025500B76E5D /* FileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58143D6D1821025500B76E5D /* FileUploader.m */; };
 		58143D7018212AE900B76E5D /* +_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58143D6F18212AE900B76E5D /* +_old.png */; };
 		58143D72182169A400B76E5D /* +_old2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58143D71182169A400B76E5D /* +_old2.png */; };
 		58143D74182170C000B76E5D /* +.png in Resources */ = {isa = PBXBuildFile; fileRef = 58143D73182170BF00B76E5D /* +.png */; };
@@ -318,8 +317,6 @@
 		580A638F18184CAB00AC8009 /* default_user_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image.png; sourceTree = "<group>"; };
 		58143D681821013200B76E5D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		58143D6A1821014C00B76E5D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		58143D6C1821025500B76E5D /* FileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUploader.h; sourceTree = "<group>"; };
-		58143D6D1821025500B76E5D /* FileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUploader.m; sourceTree = "<group>"; };
 		58143D6F18212AE900B76E5D /* +_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+_old.png"; sourceTree = "<group>"; };
 		58143D71182169A400B76E5D /* +_old2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+_old2.png"; sourceTree = "<group>"; };
 		58143D73182170BF00B76E5D /* +.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+.png"; sourceTree = "<group>"; };
@@ -847,8 +844,6 @@
 				584906C417FDE8710045B65D /* GCPlaceholderTextView.m */,
 				584906C617FDEE4C0045B65D /* TypeTextView.h */,
 				584906C717FDEE4C0045B65D /* TypeTextView.m */,
-				58143D6C1821025500B76E5D /* FileUploader.h */,
-				58143D6D1821025500B76E5D /* FileUploader.m */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
@@ -1974,7 +1969,6 @@
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
-				58143D6E1821025500B76E5D /* FileUploader.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,

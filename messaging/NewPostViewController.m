@@ -15,12 +15,14 @@
 #import "UIPlaceHolderTextView.h"
 #import "Post.h"
 #import "AppearanceHelper.h"
-#import "FileUploader.h"
 #import "SessionManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface NewPostViewController ()
 
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
+@property (strong, nonatomic) FDTakeController *fdTakeController;
+
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)cancelButtonClick:(id)sender;
@@ -50,7 +52,20 @@
     
     [self.contentTextView becomeFirstResponder];
     
+
+
+    
     self.imagePosted = NO;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.fdTakeController = [[FDTakeController alloc] init];
+    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
+    self.fdTakeController.delegate = self;
+    
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
@@ -77,11 +92,32 @@
     
     if(self.imagePosted)
     {
+         NSData* imageData = UIImagePNGRepresentation(self.uploadedImage.image);
+        NSLog(@"Image size before: %d",imageData.length);
+
         
-        NSData* imageData = UIImagePNGRepresentation(self.uploadedImage.image);
-        imageData = UIImagePNGRepresentation([UIImage imageNamed:@"GleepostS"]);
+        //Resize image before uploading.
+//        CGSize newSize = CGSizeMake(300, 300);
+//        UIGraphicsBeginImageContext(newSize);
+//        [self.uploadedImage.image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+//        UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
         
-        [[WebClient sharedInstance] uploadImage:imageData ForPost:post callbackBlock:^(BOOL success, NSString* response) {
+        UIImage* imageToUpload = [self resizeImage:[self.uploadedImage image] WithSize:CGSizeMake(300, 300)];
+        
+        imageData = UIImagePNGRepresentation(imageToUpload);
+        
+        NSLog(@"Image size after: %d",imageData.length);
+        
+        int userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
+        
+        [WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+
+        
+        [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:userRemoteKey callbackBlock:^(BOOL success, NSString* response) {
+            
+            [WebClientHelper hideStandardLoaderForView:self.view];
+
             
             if(success)
             {
@@ -89,10 +125,10 @@
                 
                 post.imagesUrls = [[NSArray alloc] initWithObjects:response, nil];
                 
-                [WebClientHelper showStandardErrorWithTitle:@"Image uploaded successfully" andContent:[NSString stringWithFormat:@"Url: %@",response]];
+                //[WebClientHelper showStandardErrorWithTitle:@"Image uploaded successfully" andContent:[NSString stringWithFormat:@"Url: %@",response]];
 
                 
-                //[self createPost:post];
+                [self createPost:post];
                 
             }
             else
@@ -106,9 +142,20 @@
     }
     else
     {
+        post.imagesUrls = nil;
         [self createPost:post];
     }
     
+}
+
+-(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return imageToUpload;
 }
 
 -(void)createPost:(GLPPost*)post
@@ -156,34 +203,52 @@
     return nil;
 }
 
-- (IBAction)addImage:(id)sender
+
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
-    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
+    self.imagePosted = YES;
     
-//	if((UIButton *) sender == choosePhotoBtn) {
-		picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-//	} else {
-//		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//	}
-    
-    
-	//[self presentModalViewController:picker animated:YES];
-    
-    [self presentViewController:picker animated:YES completion:^{
-        
-    }];
+    self.uploadedImage.image = photo;
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+
+- (IBAction)addImage:(id)sender
 {
     
-    [picker dismissViewControllerAnimated:YES completion:^{
-       
-    }];
-    self.imagePosted = YES;
-	self.uploadedImage.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    
+    
+    //////////////////////////////
+    
+//    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+//	picker.delegate = self;
+//    
+//  
+//    
+//    
+////	if((UIButton *) sender == choosePhotoBtn) {
+////		picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+////	} else {
+//		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+////	}
+//    
+//    
+//	//[self presentModalViewController:picker animated:YES];
+//    
+//    [self presentViewController:picker animated:YES completion:^{
+//        
+//    }];
 }
+
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+//{
+//    
+//    [picker dismissViewControllerAnimated:YES completion:^{
+//       
+//    }];
+//    self.imagePosted = YES;
+//	self.uploadedImage.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+//}
 
 
 

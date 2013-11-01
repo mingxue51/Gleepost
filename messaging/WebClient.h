@@ -50,6 +50,6 @@
 
 -(void)uploadImageWithImage:(NSData*)image;
 
--(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock;
+-(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock;
 
 @end

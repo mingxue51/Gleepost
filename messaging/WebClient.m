@@ -161,13 +161,38 @@ static WebClient *instance = nil;
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         //Get the post id. If user has ulpoaded an image execute the createImagePost method.
-        [RemoteParser parsePostIdFromJson:responseObject];
+        int postRemoteKey = [RemoteParser parsePostIdFromJson:responseObject];
         
-        callbackBlock(YES);
+        if(post.imagesUrls!=nil)
+        {
+            //Create image post.
+            [self uploadImage:[post.imagesUrls objectAtIndex:0] withPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
+               
+                if(success)
+                {
+                    NSLog(@"Image posted!");
+                    
+                    callbackBlock(YES);
+                }
+                else
+                {
+                    callbackBlock(NO);
+                }
+                
+                
+            }];
+        }
+        else
+        {
+            callbackBlock(YES);
+        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
     }];
 }
+
+//-(void)upload
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
@@ -419,19 +444,6 @@ static WebClient *instance = nil;
 */
  
 
-
-//- (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success))callbackBlock
-//{
-//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
-//    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-//    
-//    [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        callbackBlock(YES);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO);
-//    }];
-//}
-
 //id, token, user
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
 {
@@ -470,7 +482,26 @@ static WebClient *instance = nil;
 #pragma mark - Image
 
 
--(void)uploadImage:(NSData*)image ForPost:(GLPPost *)post callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
+-(void)uploadImage:(NSString *)url withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^)(BOOL))callbackBlock
+{
+    NSString* path = [NSString stringWithFormat:@"posts/%d/images",postRemoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:url, @"url", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Post with image posted: %@",responseObject);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO);
+    }];
+}
+
+-(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
 {
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
@@ -481,7 +512,7 @@ static WebClient *instance = nil;
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kWebserviceBaseUrl]];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         
-        [formData appendPartWithFileData:image name:@"image" fileName:[NSString stringWithFormat:@"post_%d_image.png",post.remoteKey] mimeType:@"image/png"];
+        [formData appendPartWithFileData:image name:@"image" fileName:[NSString stringWithFormat:@"user_id_%d_image.png",userRemoteKey] mimeType:@"image/png"];
     }];
 
     
