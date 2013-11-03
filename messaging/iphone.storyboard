@@ -199,7 +199,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="C5K-bl-yN1"/>
-                        <segue destination="Pdc-xo-P59" kind="modal" identifier="new post" modalTransitionStyle="coverVertical" id="iqr-av-18g"/>
+                        <segue destination="Pdc-xo-P59" kind="modal" identifier="new post" id="iqr-av-18g"/>
                         <segue destination="qhx-Fz-PME" kind="modal" identifier="new comment" modalTransitionStyle="coverVertical" id="g6d-Or-dA0"/>
                         <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="iLI-w2-7l9"/>
                         <segue destination="IeS-PS-HdN" kind="push" identifier="view private profile" id="cKp-Du-pjd"/>
@@ -305,33 +305,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="8b1-UT-so4">
-                                <rect key="frame" x="20" y="108" width="282" height="163"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="xQ9-fx-Znm" customClass="UIPlaceHolderTextView">
-                                        <rect key="frame" x="1" y="1" width="280" height="161"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Text of the new post"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ad0-y7-gdE">
-                                        <rect key="frame" x="1" y="3" width="24" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="camera_icon.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="addImage:" destination="Pdc-xo-P59" eventType="touchUpInside" id="b42-Yv-KY3"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="xQ9-fx-Znm" customClass="UIPlaceHolderTextView">
+                                <rect key="frame" x="0.0" y="65" width="320" height="202"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Text of the new post"/>
+                                </userDefinedRuntimeAttributes>
+                            </textView>
                             <navigationBar contentMode="scaleToFill" barStyle="black" id="zv2-o0-Fnh">
                                 <rect key="frame" x="0.0" y="21" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -352,18 +336,33 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="N7G-gu-HRo">
-                                <rect key="frame" x="41" y="279" width="240" height="128"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ad0-y7-gdE">
+                                <rect key="frame" x="230" y="70" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.37179007800000002" green="0.93857621170000005" blue="0.75154740200000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
+                                <state key="normal" image="avatar.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addImage:" destination="Pdc-xo-P59" eventType="touchUpInside" id="b42-Yv-KY3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KTQ-Yl-sVM">
+                                <rect key="frame" x="264" y="229" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <state key="normal" title="Post">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postButtonClick:" destination="Pdc-xo-P59" eventType="touchUpInside" id="LdX-cb-LM5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="contentTextView" destination="xQ9-fx-Znm" id="Ovc-YV-tDo"/>
                         <outlet property="simpleNavBar" destination="zv2-o0-Fnh" id="fFo-3E-mrp"/>
-                        <outlet property="uploadedImage" destination="N7G-gu-HRo" id="ESY-rX-1cx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3e3-Ln-DsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1641,10 +1640,14 @@
     </scenes>
     <resources>
         <image name="Gleepost_main.png" width="406" height="212"/>
+        <image name="Gleepost_main.png" width="406" height="212"/>
+        <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="add_contact.png" width="304" height="105"/>
+        <image name="avatar.png" width="162" height="162"/>
         <image name="avatar.png" width="162" height="162"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
+        <image name="camera_icon.png" width="24" height="19"/>
         <image name="camera_icon.png" width="24" height="19"/>
         <image name="chat_tab.png" width="16" height="16"/>
         <image name="comment.png" width="19" height="17"/>
@@ -1656,6 +1659,8 @@
         <image name="mychatbubble4.png" width="477" height="67"/>
         <image name="new_chat_tab.png" width="16" height="16"/>
         <image name="next.png" width="200" height="76"/>
+        <image name="next.png" width="200" height="76"/>
+        <image name="notificationicon.png" width="70" height="70"/>
         <image name="notificationicon.png" width="70" height="70"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
         <image name="profilebackground.png" width="642" height="705"/>
@@ -1664,6 +1669,7 @@
         <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
+        <image name="time_label.png" width="47" height="12"/>
         <image name="time_label.png" width="47" height="12"/>
         <image name="timebar1.png" width="639" height="10"/>
         <image name="timebar2.png" width="396" height="14"/>

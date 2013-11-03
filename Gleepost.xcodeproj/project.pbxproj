@@ -51,6 +51,7 @@
 		583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583C725D17EF2E5600820761 /* MessageBox2small.png */; };
 		583EAB7518119402003D68B3 /* default_user_image_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7418119402003D68B3 /* default_user_image_old.png */; };
 		583EAB7918119688003D68B3 /* add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7818119688003D68B3 /* add_contact.png */; };
+		58406AFE1823FCBE0032353E /* NewPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58406AFD1823FCBE0032353E /* NewPostView.m */; };
 		5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315817FEDD8500A3278D /* AddCommentViewController.m */; };
 		5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315B17FEE97D00A3278D /* NewCommentView.m */; };
 		5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315F17FF0B4900A3278D /* ChatPanelView.m */; };
@@ -98,6 +99,8 @@
 		584F385C1817F50B00A1B742 /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385B1817F50B00A1B742 /* default_group_image.png */; };
 		584F38621818094A00A1B742 /* mychatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38611818094A00A1B742 /* mychatbubble4.png */; };
 		584F3864181809A700A1B742 /* yourchatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F3863181809A700A1B742 /* yourchatbubble4.png */; };
+		5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */; };
+		5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5DA18258FB800AA9103 /* TransitionDelegate.m */; };
 		585C7CD61816887B00173C38 /* UIBlackFadeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD51816887B00173C38 /* UIBlackFadeView.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
@@ -358,6 +361,8 @@
 		583C725D17EF2E5600820761 /* MessageBox2small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageBox2small.png; sourceTree = "<group>"; };
 		583EAB7418119402003D68B3 /* default_user_image_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image_old.png; sourceTree = "<group>"; };
 		583EAB7818119688003D68B3 /* add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact.png; sourceTree = "<group>"; };
+		58406AFC1823FCBE0032353E /* NewPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostView.h; sourceTree = "<group>"; };
+		58406AFD1823FCBE0032353E /* NewPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostView.m; sourceTree = "<group>"; };
 		5841315717FEDD8500A3278D /* AddCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCommentViewController.h; sourceTree = "<group>"; };
 		5841315817FEDD8500A3278D /* AddCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCommentViewController.m; sourceTree = "<group>"; };
 		5841315A17FEE97D00A3278D /* NewCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCommentView.h; sourceTree = "<group>"; };
@@ -420,6 +425,10 @@
 		584F385B1817F50B00A1B742 /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_group_image.png; sourceTree = "<group>"; };
 		584F38611818094A00A1B742 /* mychatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mychatbubble4.png; sourceTree = "<group>"; };
 		584F3863181809A700A1B742 /* yourchatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yourchatbubble4.png; sourceTree = "<group>"; };
+		5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
+		5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
+		5851B5D918258FB800AA9103 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
+		5851B5DA18258FB800AA9103 /* TransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegate.m; sourceTree = "<group>"; };
 		585C7CD41816887B00173C38 /* UIBlackFadeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBlackFadeView.h; sourceTree = "<group>"; };
 		585C7CD51816887B00173C38 /* UIBlackFadeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBlackFadeView.m; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
@@ -828,6 +837,7 @@
 		584906B917FD945F0045B65D /* Post Classes */ = {
 			isa = PBXGroup;
 			children = (
+				5851B5D618258ECE00AA9103 /* Transition Delegate */,
 				58080B79180EBB6500C4DB83 /* PostImageCellView.xib */,
 				58433282180ED55900BD9F74 /* PostTextCellView.xib */,
 				5841315717FEDD8500A3278D /* AddCommentViewController.h */,
@@ -844,6 +854,8 @@
 				584906C417FDE8710045B65D /* GCPlaceholderTextView.m */,
 				584906C617FDEE4C0045B65D /* TypeTextView.h */,
 				584906C717FDEE4C0045B65D /* TypeTextView.m */,
+				58406AFC1823FCBE0032353E /* NewPostView.h */,
+				58406AFD1823FCBE0032353E /* NewPostView.m */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
@@ -855,6 +867,17 @@
 				584CF674182303FC00EFABB8 /* ignore_contact.png */,
 			);
 			name = Notifications;
+			sourceTree = "<group>";
+		};
+		5851B5D618258ECE00AA9103 /* Transition Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */,
+				5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */,
+				5851B5D918258FB800AA9103 /* TransitionDelegate.h */,
+				5851B5DA18258FB800AA9103 /* TransitionDelegate.m */,
+			);
+			name = "Transition Delegate";
 			sourceTree = "<group>";
 		};
 		585DF77317ECA70C00FBFC35 /* Chat Images */ = {
@@ -1895,6 +1918,7 @@
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */,
+				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				58365F79181A86B200AF3F1C /* GLPConversationParticipantsDao.m in Sources */,
@@ -1924,6 +1948,7 @@
 				581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */,
 				585C7CD61816887B00173C38 /* UIBlackFadeView.m in Sources */,
 				807C4D17180AF0F6003D67E6 /* LocalMessage.m in Sources */,
+				5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
 				5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */,
 				585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */,
@@ -1963,6 +1988,7 @@
 				80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */,
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
+				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
 				80DDDF36180FD799009E17BD /* LoginManager.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,

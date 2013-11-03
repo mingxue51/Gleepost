@@ -15,5 +15,6 @@
 -(void)commentButtonPushed: (id)sender;
 -(void)shareButtonPushed: (id)sender;
 -(void) setPlusButtonToNavigationBar;
+-(void)setNavigationBarName;
 
 @end

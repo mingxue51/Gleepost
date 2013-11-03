@@ -22,6 +22,7 @@
 
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
+@property (weak, nonatomic) IBOutlet UIButton *addImageButton;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -37,20 +38,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+//    self.view.opaque = YES;
+//    self.view.backgroundColor = [UIColor blackColor];
+    
+    //Add background image view.
+    
+    
+//    self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
+
+    
+    if(!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7"))
+    {
+        //If iOS 6 add transparent black UIImageView.
+        UIImageView *imageViewBlack = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.contentTextView.frame.size.height+50)];
+        
+        imageViewBlack.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+        
+        [self.view addSubview:imageViewBlack];
+        [self.view sendSubviewToBack:imageViewBlack];
+    }
+
+    
     
     self.tabBarController.tabBar.hidden = NO;
     [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    //[self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
+    
     
     //Not working.
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
     [self.simpleNavBar setTranslucent:YES];
-    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 60.f)];
+    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
    
     //Change the colour of the status bar.
    // [self setNeedsStatusBarAppearanceUpdate];
     
     [self.contentTextView becomeFirstResponder];
+    
+    
     
 
 
@@ -66,6 +93,24 @@
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
     
+    [self formatBackground];
+}
+
+
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
+
+}
+
+
+-(void)formatBackground
+{
+//    [self.view setBackgroundColor:[UIColor clearColor]];
+//    [self.view setAlpha:0.5];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
@@ -76,6 +121,8 @@
 
 - (IBAction)cancelButtonClick:(id)sender
 {
+    [self.delegate setNavigationBarName];
+    [self.delegate setPlusButtonToNavigationBar];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -207,8 +254,9 @@
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
     self.imagePosted = YES;
-    
-    self.uploadedImage.image = photo;
+    [self.addImageButton setImage:photo forState:UIControlStateNormal];
+    [self.contentTextView becomeFirstResponder];
+
 }
 
 

@@ -97,8 +97,6 @@
 
 -(void) cancelPushed: (id)sender
 {
-    NSLog(@"Cancel Pushed");
-    
     UIView *superView = [self superview];
 	[super removeFromSuperview];
     

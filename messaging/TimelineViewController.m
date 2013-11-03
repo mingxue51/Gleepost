@@ -21,6 +21,9 @@
 #import "PostWithImageCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PrivateProfileViewController.h"
+#import "NewPostView.h"
+#import "TransitionDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 //#import "AppDelegate.h"
 
@@ -35,6 +38,9 @@
 @property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
+@property (strong, nonatomic) NewPostView *postView;
+@property (strong, nonatomic) TransitionDelegate *transitionController;
+
 @property int selectedUserId;
 
 //TODO: Remove after the integration of image posts.
@@ -221,6 +227,8 @@ static BOOL likePushed;
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
+    
+    self.transitionController = [[TransitionDelegate alloc] init];
 
 }
 
@@ -231,6 +239,8 @@ static BOOL likePushed;
 
     
 }
+
+#pragma mark - Initialise navigation bar
 
 -(void) setPlusButtonToNavigationBar
 {
@@ -250,7 +260,17 @@ static BOOL likePushed;
     self.navigationItem.rightBarButtonItem = item;
 }
 
+-(void)setNavigationBarName
+{
+    [self.navigationItem setTitle:@"Campus Wall"];
+}
 
+
+-(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
+{
+    [self.navigationItem setTitle:newTitle];
+    self.navigationItem.rightBarButtonItem = nil;
+}
 
 /**
  Not used.
@@ -329,6 +349,8 @@ static BOOL likePushed;
 //        
 //    }];
 //}
+
+#pragma mark - Client methods
 
 - (void)loadPosts
 {
@@ -710,8 +732,7 @@ static BOOL likePushed;
     NSLog(@"Button Title: %@ With tag: %d",btn.titleLabel.text, btn.tag);
     
     //Hide navigation bar.
-    [self.navigationItem setTitle:@"New Comment"];
-    self.navigationItem.rightBarButtonItem = nil;
+    [self hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
     
     NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
     loadingView.post = self.posts[btn.tag];
@@ -862,10 +883,98 @@ static BOOL likePushed;
     }
 }
 
-
 - (void)newPostButtonClick
 {
-    [self performSegueWithIdentifier:@"new post" sender:self];
+    
+//    if(![NewPostView visible])
+//    {
+//        self.postView = [NewPostView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+//        self.postView.delegate = self;
+//    }
+//    else
+//    {
+//        [self.postView cancelPushed:nil];
+//    }
+
+
+    
+    
+    
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7"))
+    {
+        //If iOS7
+        
+        //Hide navigation items and add NewPostViewController's items.
+        [self hideNavigationBarAndButtonWithNewTitle:@"New Post"];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+        vc.delegate = self;
+        [vc setTransitioningDelegate:self.transitionController];
+        vc.modalPresentationStyle= UIModalPresentationCustom;
+        [self.view setBackgroundColor:[UIColor whiteColor]];
+        [self presentViewController:vc animated:YES completion:nil];
+    }
+    else
+    {
+        
+        //If iOS6
+        
+        NSLog(@"Modal View iOS 6");
+        
+        /**
+            Takes screenshot from the current view controller to bring the sense of the transparency after the load
+            of the NewPostViewController.
+         */
+        UIGraphicsBeginImageContext(self.view.window.bounds.size);
+        [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        
+       // vc.view.backgroundColor = [UIColor clearColor];
+        vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
+        self.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewController:vc animated:YES completion:nil];
+        
+        /**
+         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"SecondViewController"];
+         vc.view.backgroundColor = [UIColor clearColor];
+         self.modalPresentationStyle = UIModalPresentationCurrentContext;
+         [self presentViewController:vc animated:NO completion:nil];
+         
+         */
+        
+//        self.modalPresentationStyle = UIModalPresentationFullScreen;
+//
+        
+//        presenterViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+//        [presenterViewController presentViewController:loginViewController animated:YES completion:NULL];
+        
+        //[self performSegueWithIdentifier:@"new post" sender:self];
+
+    }
+
+    
+    
+
+}
+
+- (UIImage *)screenshot:(CGRect)cropRect
+{
+    UIGraphicsBeginImageContext(cropRect.size);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(ctx, -cropRect.origin.x, -cropRect.origin.y - [[UIApplication sharedApplication] statusBarFrame].size.height);
+    [self.view.window.layer renderInContext:ctx];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -898,7 +1007,19 @@ static BOOL likePushed;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
 
+        //TODO: See how to present from view controller.
+
+        
         NewPostViewController *vc = segue.destinationViewController;
+
+        self.modalPresentationStyle = UIModalPresentationCurrentContext;
+        
+        
+        
+//        self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        //[self presentViewController:vc animated:NO completion:nil];
+        
+        
         //UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
         
         //[self.navigationController presentModalViewController:navController animated:YES];
