@@ -13,9 +13,6 @@
 @interface LoginRegisterViewController ()
 
 
-
-
-
 @end
 
 @implementation LoginRegisterViewController

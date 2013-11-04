@@ -7,6 +7,7 @@
 //
 
 #import "AppearanceHelper.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation AppearanceHelper
 
@@ -20,4 +21,25 @@
     }
 }
 
+
+//TODO: Fix this working with iOS 6.
++ (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName
+{
+    UIImage *image = [UIImage imageNamed:imageName];
+    
+    UIColor *barColour = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+    
+    UIView *colourView = [[UIView alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 64.f)];
+    colourView.opaque = NO;
+    colourView.alpha = .67f;
+    colourView.backgroundColor = [UIColor colorWithPatternImage:image];
+    
+    contoller.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+    
+    
+    [contoller.navigationController.navigationBar.layer insertSublayer:colourView.layer atIndex:1];
+    
+
+    [contoller.navigationController.navigationBar setTranslucent:YES];
+}
 @end

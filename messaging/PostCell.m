@@ -35,8 +35,6 @@ static const float StandardImageCellHeight = 400;
         
         self.isViewPost = NO;
         
-        self.userImageImageView = [[UIImageView alloc] init];
-        
         
         UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
         
@@ -52,6 +50,9 @@ static const float StandardImageCellHeight = 400;
         
         //Send to back the social panel.
         [self.socialPanel bringSubviewToFront:self.thumpsUpBtn];
+        
+        
+
         
     }
     
@@ -122,9 +123,10 @@ static const float PostContentLabelMaxWidth = 250;
         
         
     }
-    self.userImageView.clipsToBounds = YES;
+    [self setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
+
     
-    self.userImageView.layer.cornerRadius = 20;
+    //self.userImageView.layer.cornerRadius = 23;
         
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
@@ -190,11 +192,22 @@ static const float PostContentLabelMaxWidth = 250;
 
 }
 
+-(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
+{
+    roundedView.clipsToBounds = YES;
+
+    CGPoint saveCenter = roundedView.center;
+    CGRect newFrame = CGRectMake(roundedView.frame.origin.x, roundedView.frame.origin.y, newSize, newSize);
+    roundedView.frame = newFrame;
+    roundedView.layer.cornerRadius = newSize / 2.0;
+    roundedView.center = saveCenter;
+}
+
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
     CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     
-    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
+    return [content sizeWithFont: [UIFont systemFontOfSize:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
 }
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage
@@ -230,11 +243,12 @@ static float bottomMargin = 50.0;
         
         float heightSize = contentSize.height;
         
-        
+        [self.contentLbl setNumberOfLines:0];
+
         if(self.imageAvailable)
         {
             
-            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
+            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+5, self.contentLbl.frame.size.width, contentSize.height);
             
             frameSize = self.contentLbl.frame;
             
@@ -266,6 +280,11 @@ static float bottomMargin = 50.0;
         else
         {
             self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
+
+            NSLog(@"Frame Size after: %f : %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height);
+            
+            
+
 
             
             if([self.contentLbl.text isEqualToString:@""])

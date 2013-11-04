@@ -75,12 +75,8 @@
     //Change the colour of the status bar.
    // [self setNeedsStatusBarAppearanceUpdate];
     
-    [self.contentTextView becomeFirstResponder];
     
-    
-    
-
-
+    self.uploadedImage = [[UIImageView alloc] init];
     
     self.imagePosted = NO;
 }
@@ -92,6 +88,8 @@
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
+    
+    [self.contentTextView becomeFirstResponder];
     
     [self formatBackground];
 }
@@ -128,6 +126,11 @@
 
 - (IBAction)postButtonClick:(id)sender
 {
+    
+    [self.delegate setNavigationBarName];
+    [self.delegate setPlusButtonToNavigationBar];
+    
+    
     [self.contentTextView resignFirstResponder];
     
 
@@ -158,12 +161,12 @@
         
         int userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
         
-        [WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+        //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
 
         
         [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:userRemoteKey callbackBlock:^(BOOL success, NSString* response) {
             
-            [WebClientHelper hideStandardLoaderForView:self.view];
+           //[WebClientHelper hideStandardLoaderForView:self.view];
 
             
             if(success)
@@ -250,12 +253,14 @@
     return nil;
 }
 
+#pragma mark - FDTakeController delegate
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
     self.imagePosted = YES;
+    self.uploadedImage.image = photo;
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
-    [self.contentTextView becomeFirstResponder];
+   // [self.contentTextView becomeFirstResponder];
 
 }
 
@@ -264,7 +269,8 @@
 {
     
     [self.fdTakeController takePhotoOrChooseFromLibrary];
-    
+    //[self.contentTextView becomeFirstResponder];
+
     
     //////////////////////////////
     

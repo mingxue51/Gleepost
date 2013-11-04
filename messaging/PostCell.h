@@ -26,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
-@property (weak, nonatomic) UIImageView *userImageImageView;
 
 
 

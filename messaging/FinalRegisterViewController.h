@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FDTakeController.h"
 
-@interface FinalRegisterViewController : UIViewController  <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface FinalRegisterViewController : UIViewController  <UINavigationControllerDelegate, FDTakeDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 @property (strong, nonatomic) NSArray *eMailPass;
 

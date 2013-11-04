@@ -123,20 +123,21 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responceMessage))callbackBlock
+- (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
 {
     [self postPath:@"register" parameters:@{@"user": name, @"pass": password, @"email": email} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"Response during registration: %@", responseObject);
+        int remotekey = [RemoteParser parseIdFromJson:responseObject];
         
-        callbackBlock(YES, responseObject);
+        callbackBlock(YES, responseObject, remotekey);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
        NSLog(@"ERROR DURING REGISTRATION: %@", [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion]);
         
         NSString *errorMessage = [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion];
         
-        callbackBlock(NO, errorMessage);
+        callbackBlock(NO, errorMessage, -1);
     }];
 }
 
@@ -161,7 +162,7 @@ static WebClient *instance = nil;
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         //Get the post id. If user has ulpoaded an image execute the createImagePost method.
-        int postRemoteKey = [RemoteParser parsePostIdFromJson:responseObject];
+        int postRemoteKey = [RemoteParser parseIdFromJson:responseObject];
         
         if(post.imagesUrls!=nil)
         {
@@ -512,6 +513,24 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)uploadImageToProfileUser:(NSString *)url callbackBlock:(void (^)(BOOL))callbackBlock
+{
+    NSString* path = [NSString stringWithFormat:@"profile/profile_image"];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:url, @"url", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"ERROR UPLOAD IMAGE FOR PROFILE: %@", error.description);
+        callbackBlock(NO);
+    }];
+}
+
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
 {
     
@@ -560,21 +579,21 @@ static WebClient *instance = nil;
     
 }
 
-- (void)postPath:(NSString *)path parameters:(NSDictionary *)parameters withImage:(NSData*)image success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
-{
-	//NSURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
-   // AFHTTPClient *client= [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"https://gleepost.com/api/v0.15/"]];
-
-    
-    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:path parameters:parameters constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-
-        [formData appendPartWithFileData:image name:[NSString stringWithFormat:@"file"] fileName:[NSString stringWithFormat:@"abc.png"] mimeType:@"image/png"];
-        
-    }];
-    
-	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
-    [self enqueueHTTPRequestOperation:operation];
-}
+//- (void)postPath:(NSString *)path parameters:(NSDictionary *)parameters withImage:(NSData*)image success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+//{
+//	//NSURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
+//   // AFHTTPClient *client= [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"https://gleepost.com/api/v0.15/"]];
+//
+//    
+//    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:path parameters:parameters constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+//
+//        [formData appendPartWithFileData:image name:[NSString stringWithFormat:@"file"] fileName:[NSString stringWithFormat:@"abc.png"] mimeType:@"image/png"];
+//        
+//    }];
+//    
+//	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
+//    [self enqueueHTTPRequestOperation:operation];
+//}
 
 
 @end

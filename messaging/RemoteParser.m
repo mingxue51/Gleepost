@@ -421,7 +421,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return json[@"url"];
 }
 
-+(int)parsePostIdFromJson:(NSDictionary*)json
++(int)parseIdFromJson:(NSDictionary*)json
 {
     //NSLog(@"POST ID: %@",json[@"id"]);
     

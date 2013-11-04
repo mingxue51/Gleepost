@@ -142,13 +142,13 @@ static BOOL likePushed;
 - (void)loadPosts
 {
     NSLog(@"load posts");
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading posts";
-    hud.detailsLabelText = @"Please wait few seconds";
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud.labelText = @"Loading posts";
+//    hud.detailsLabelText = @"Please wait few seconds";
     
     WebClient *client = [WebClient sharedInstance];
     [client getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-        [hud hide:YES];
+        //[hud hide:YES];
         
         if(success) {
             

@@ -14,7 +14,7 @@
 #import "SessionManager.h"
 #import "WebClientHelper.h"
 #import "GLPContact.h"
-
+#import "AppearanceHelper.h"
 
 @interface ContactsViewController ()
 
@@ -62,9 +62,12 @@
     //self.navigationController.navigationBar = bar;
     
     //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
+//    [self.navigationController.navigationBar setTranslucent:YES];
+//    
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+
     
     //self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
@@ -283,12 +286,12 @@
 
 -(void) loadContacts
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
+   // [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
 
     
     [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
       
-        [WebClientHelper hideStandardLoaderForView:self.view];
+       // [WebClientHelper hideStandardLoaderForView:self.view];
         
         
         if(success)

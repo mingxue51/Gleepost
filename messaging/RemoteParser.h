@@ -45,6 +45,6 @@
 
 // images
 +(NSString*)parseImageUrl:(NSDictionary*)url;
-+(int)parsePostIdFromJson:(NSDictionary*)json;
++(int)parseIdFromJson:(NSDictionary*)json;
 
 @end

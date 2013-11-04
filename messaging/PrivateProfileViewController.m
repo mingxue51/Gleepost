@@ -97,8 +97,6 @@
             NSLog(@"Failed to send to the user.");
             //This section of code should never be reached.
         }
-        
-        
     }];
 }
 
@@ -154,9 +152,7 @@
             
             [self.personalMessage setText:user.personalMessage];
             
-            self.profileImage.clipsToBounds = YES;
-            
-            self.profileImage.layer.cornerRadius = 60;
+            [self setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
             
             
             
@@ -181,6 +177,17 @@
         
         
     }];
+}
+
+-(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
+{
+    roundedView.clipsToBounds = YES;
+    
+    CGPoint saveCenter = roundedView.center;
+    CGRect newFrame = CGRectMake(roundedView.frame.origin.x, roundedView.frame.origin.y, newSize, newSize);
+    roundedView.frame = newFrame;
+    roundedView.layer.cornerRadius = newSize / 2.0;
+    roundedView.center = saveCenter;
 }
 
 - (void)didReceiveMemoryWarning

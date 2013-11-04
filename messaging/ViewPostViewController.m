@@ -319,7 +319,6 @@ static BOOL likePushed;
  */
 -(void)likeButtonPushed: (id)sender
 {
-    NSLog(@"Like Pushed: %d",likePushed);
     UIButton *btn = (UIButton*) sender;
     
     //If like button is pushed then set the pushed variable to NO and change the
@@ -359,6 +358,9 @@ static BOOL likePushed;
 //        [self.commentGrowingTextView resignFirstResponder];
 //    }
     
+    //Post the comment.
+    [self postComment];
+    
     if([self.commentGrowingTextView.text isEmpty])
     {
         return;
@@ -367,8 +369,7 @@ static BOOL likePushed;
     
     [self hideKeyboardFromTextViewIfNeeded];
     
-    //Post the comment.
-    //[self postComment];
+    
 }
 
 
@@ -441,11 +442,11 @@ static bool firstTime = YES;
 
 - (void)loadComments
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
     
     [[WebClient sharedInstance] getCommentsForPost:self.post withCallbackBlock:^(BOOL success, NSArray *comments) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
+        //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             self.comments = [comments mutableCopy];
@@ -552,8 +553,6 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
-      
-        
         if(_post.imagesUrls.count>0)
         {
             //If image.
@@ -758,9 +757,9 @@ static bool firstTime = YES;
     comment.content = self.commentGrowingTextView.text;
     comment.post = self.post;
     
-    [WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self.view];
+    //[WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self.view];
     [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
+        //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             [self loadComments];

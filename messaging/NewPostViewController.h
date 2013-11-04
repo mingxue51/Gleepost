@@ -14,7 +14,7 @@
 
 @property (weak, nonatomic) TimelineViewController *delegate;
 @property (strong, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
-@property (strong, nonatomic) IBOutlet UIImageView *uploadedImage;
+@property (strong, nonatomic) UIImageView *uploadedImage;
 @property BOOL imagePosted;
 - (IBAction)addImage:(id)sender;
 

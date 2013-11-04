@@ -17,9 +17,12 @@
 
 @interface FinalRegisterViewController ()
 
-@property (strong, nonatomic) IBOutlet GCPlaceholderTextView *userNameTextView;
-@property (strong, nonatomic) IBOutlet GCPlaceholderTextView *genderTextView;
-@property (strong, nonatomic) IBOutlet GCPlaceholderTextView *userLastNameTextView;
+@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *userNameTextView;
+@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *genderTextView;
+@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *userLastNameTextView;
+@property (strong, nonatomic) FDTakeController *fdTakeController;
+@property (strong, nonatomic) UIImage *profileImage;
+
 - (IBAction)pickAnImage:(id)sender;
 
 @end
@@ -37,6 +40,11 @@
     
     [self setUpTextViews];
     
+    self.profileImage = nil;
+    
+    self.fdTakeController = [[FDTakeController alloc] init];
+    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
+    self.fdTakeController.delegate = self;
     
 
 }
@@ -97,13 +105,17 @@
     if([self areTheDetailsValid])
     {
         //Request to server to register user.
-        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text, self.userLastNameTextView.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responceMessage) {
+        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text, self.userLastNameTextView.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responceMessage, int remoteKey) {
             
             if(success)
             {
                 //Navigate to home.
-                NSLog(@"User register successful.");
+                NSLog(@"User register successful with romote Key: %d", remoteKey);
                 [self loginUser];
+                
+                //Upload image and set it to user's profile.
+                [self uploadImageWithUserRemoteKey:remoteKey];
+                
 
             }
             else
@@ -122,6 +134,69 @@
     }
 }
 
+-(void)uploadImageWithUserRemoteKey:(int)remoteKey
+{
+    UIImage* imageToUpload = [self resizeImage:self.profileImage WithSize:CGSizeMake(124, 124)];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    NSLog(@"Image register image size: %d",imageData.length);
+    
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        //[WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            //Set image to user's profile.
+
+            [self setImageToUserProfile:response];
+            
+        }
+        else
+        {
+            NSLog(@"ERROR");
+            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            
+        }
+    }];
+}
+
+-(void)setImageToUserProfile:(NSString*)url
+{
+    NSLog(@"READY TO ADD IMAGE TO USER WITH URL: %@",url);
+    
+    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            
+        }
+        else
+        {
+            NSLog(@"ERROR: Not able to register image fro profile.");
+        }
+    }];
+}
+
+
+-(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return imageToUpload;
+}
+
 -(void)loginUser
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
@@ -131,6 +206,9 @@
         
         if(success) {
             [[GLPLongPollManager sharedInstance] startLongPoll];
+            
+            //Set image to user's profile.
+            
             
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
@@ -190,40 +268,51 @@
 
 - (IBAction)pickAnImage:(id)sender
 {
-    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
     
-    //	if((UIButton *) sender == choosePhotoBtn) {
-    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    //	} else {
-    //		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    //	}
-    
-    
-	//[self presentModalViewController:picker animated:YES];
-    
-    [self presentViewController:picker animated:YES completion:^{
-        
-    }];
+//    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
+//	picker.delegate = self;
+//    
+//    //	if((UIButton *) sender == choosePhotoBtn) {
+//    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+//    //	} else {
+//    //		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//    //	}
+//    
+//    
+//	//[self presentModalViewController:picker animated:YES];
+//    
+//    [self presentViewController:picker animated:YES completion:^{
+//        
+//    }];
 }
 
+#pragma mark - FDTakeController delegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
+    [self.addImageButton setImage:photo forState:UIControlStateNormal];
+    self.profileImage = photo;
     
-    [picker dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-    
-	[self.addImageButton setBackgroundImage:[info objectForKey:@"UIImagePickerControllerOriginalImage"] forState:UIControlStateNormal];
 }
+
+
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+//{
+//    
+//    [picker dismissViewControllerAnimated:YES completion:^{
+//        
+//    }];
+//    
+//	[self.addImageButton setBackgroundImage:[info objectForKey:@"UIImagePickerControllerOriginalImage"] forState:UIControlStateNormal];
+//}
 
 #pragma mark - Other methods
 
 
 -(BOOL)areTheDetailsValid
 {
-    return (![self.userNameTextView.text isEqualToString:@""] && ![self.userLastNameTextView.text isEqualToString:@""] && ![self.genderTextView.text isEqualToString:@""]);
+    return (![self.userNameTextView.text isEqualToString:@""] && ![self.userLastNameTextView.text isEqualToString:@""] && ![self.genderTextView.text isEqualToString:@""] && (self.profileImage!=nil));
 }
 
 @end

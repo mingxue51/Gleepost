@@ -316,13 +316,13 @@ float timeInterval = 0.1;
 {
     id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
     
-    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new messages" forView:view];
+    //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new messages" forView:view];
     
     [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
         [self showMessages:messages];
         
     } remoteCallback:^(BOOL success, NSArray *messages) {
-        [WebClientHelper hideStandardLoaderForView:view];
+        //[WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
             if(messages) {
@@ -367,13 +367,13 @@ float timeInterval = 0.1;
     id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
 
     
-    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
+    //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
     
     [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
         [self showMessages:messages];
         
     } remoteCallback:^(BOOL success, NSArray *messages) {
-        [WebClientHelper hideStandardLoaderForView:view];
+        //[WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
             if(messages) {

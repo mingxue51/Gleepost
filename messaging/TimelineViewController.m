@@ -24,8 +24,7 @@
 #import "NewPostView.h"
 #import "TransitionDelegate.h"
 #import <QuartzCore/QuartzCore.h>
-
-//#import "AppDelegate.h"
+#import "AppearanceHelper.h"
 
 @interface TimelineViewController ()
 
@@ -56,6 +55,42 @@ static BOOL likePushed;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImage *image = [UIImage imageNamed:@"navigationbar2"];
+
+    
+   // [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+
+//    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
+//        [self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+//    } else {
+//        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+//    }
+    
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+    
+    //[self.navigationController.navigationBar setTranslucent:YES];
+//    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+
+    
+    
+    //UIColor *barColour = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+//    UIColor *barColour = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:1.0];
+//    
+////    
+//    UIView *colourView = [[UIView alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 64.f)];
+//    colourView.opaque = YES;
+//    colourView.alpha = 1.0f;
+//
+//    colourView.backgroundColor = [UIColor colorWithPatternImage:image];
+//    
+//    self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+//    
+//    
+//    [self.navigationController.navigationBar.layer insertSublayer:colourView.layer atIndex:1];
+    
+    
+
     
     
     // NOT WORKING.
@@ -119,16 +154,9 @@ static BOOL likePushed;
 //    [[UITabBar appearance] setSelectedImageTintColor:[UIColor greenColor]]; // for selected items that are green
     
     //Change navigations items' (back arrow, edit etc.) colour.
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+   // self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    
-    //Access items of tabBarController.
- //   NSArray *items = [self.tabBarController.tabBar items];
-    
-//    UITabBarItem *item1 = [items objectAtIndex:0];
-//    [item1 setTitle:@"TEST"];
-    //[item1 ]
-    
+
     
     
      
@@ -138,19 +166,13 @@ static BOOL likePushed;
 //    [[UITabBar appearance] setSelectionIndicatorImage:[UIImage imageNamed:@"navigation_select.png"]];
     
     
-    //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
+
     
     // ios7 only
 //    if([self respondsToSelector:@selector(setBackButtonBackgroundImage:forState:barMetrics:)])
 //    {
 
-    UIImage *image = [UIImage imageNamed:@"navigationbar2"];
-    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
-        [self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-    } else {
-        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-    }
+
     
     
     //Possible way to change the size of the navigation bar.
@@ -232,6 +254,29 @@ static BOOL likePushed;
 
 }
 
+- (UIImage*) blur:(UIImage*)theImage
+{
+    // create our blurred image
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CIImage *inputImage = [CIImage imageWithCGImage:theImage.CGImage];
+    
+    // setting up Gaussian Blur (we could use one of many filters offered by Core Image)
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setValue:inputImage forKey:kCIInputImageKey];
+    [filter setValue:[NSNumber numberWithFloat:15.0f] forKey:@"inputRadius"];
+    CIImage *result = [filter valueForKey:kCIOutputImageKey];
+    
+    // CIGaussianBlur has a tendency to shrink the image a little,
+    // this ensures it matches up exactly to the bounds of our original image
+    CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
+    
+    return [UIImage imageWithCGImage:cgImage];
+    
+    // if you need scaling
+    // return [[self class] scaleIfNeeded:cgImage];
+}
+
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -277,6 +322,12 @@ static BOOL likePushed;
  */
 -(void) setBackgroundToNavigationBar
 {
+
+    
+    
+    
+    
+    
     UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
     
     
@@ -292,9 +343,6 @@ static BOOL likePushed;
     
     [self.navigationController.navigationBar insertSubview:bar atIndex:0];
     
-    NSArray *arrayView = [self.navigationController.navigationBar subviews];
-    
-    NSLog(@"Views: %@", arrayView);
 }
 
 /*
@@ -448,8 +496,6 @@ static BOOL likePushed;
             
             if(success)
             {
-                NSLog(@"Load User Image URL: %@",user.profileImageUrl);
-                
                 //[self.users addObject:user];
                 
                 UIImageView* userImage = [[UIImageView alloc] init];
@@ -480,7 +526,6 @@ static BOOL likePushed;
             
         }];
         
-        NSLog(@"Users Images: %@",self.usersImages);
 
     }
     
@@ -497,7 +542,6 @@ static BOOL likePushed;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"Post Size: %d", self.posts.count);
     return self.posts.count;
 }
 
@@ -539,7 +583,6 @@ static BOOL likePushed;
     //TODO: For each post take the status of the button like. (Obviously from the server).
     //TODO: In updateWithPostData information take the status of the like button.
     
-    //NSLog(@"Image URL: %@", user.profileImageUrl);
     
     //Add selector to the buttons.
     [self buttonWithName:@"Like" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
@@ -552,12 +595,7 @@ static BOOL likePushed;
     //For each post try to fetch users' details.
     NSLog(@"User Remote Key: %d",post.author.remoteKey);
     
-    
-    /**
-     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-     [tap setNumberOfTapsRequired:1];
-     [yourImageView addGestureRecognizer: tap];
-     */
+
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
     [tap setNumberOfTapsRequired:1];
@@ -565,9 +603,7 @@ static BOOL likePushed;
     
     [postCell updateWithPostData:post];
 
-    
-    //[self userWithPost:post andPostCell:postCell];
-    
+
     
     return postCell;
     
@@ -633,7 +669,6 @@ static BOOL likePushed;
                 {
                     [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
                 }
-                //[currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchDown];
             }
             else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
             {
@@ -729,8 +764,6 @@ static BOOL likePushed;
 {
     UIButton *btn = (UIButton*)sender;
     
-    NSLog(@"Button Title: %@ With tag: %d",btn.titleLabel.text, btn.tag);
-    
     //Hide navigation bar.
     [self hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
     
@@ -742,8 +775,6 @@ static BOOL likePushed;
 
 -(void)shareButtonPushed: (id)sender
 {
-    NSLog(@"Share Pushed");
- 
     NSArray *items = @[[NSString stringWithFormat:@"%@",@"Share1"],[NSURL URLWithString:@"http://www.google.com"]];
 
     UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
@@ -985,7 +1016,6 @@ static BOOL likePushed;
 
     if([sender isKindOfClass:[PostCell class]])
     {
-        NSLog(@"THIS CLASS!");
     }
     
     if([segue.identifier isEqualToString:@"view post"])

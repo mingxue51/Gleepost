@@ -14,6 +14,7 @@
 #import "MessageTableViewCell.h"
 #import "NSDate+TimeAgo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "AppearanceHelper.h"
 
 @interface MessagesViewController ()
 
@@ -35,6 +36,8 @@
 {
     [super viewDidLoad];
     
+
+    
     [self createNavigationBar];
     [self createRefresh];
     [self createFullScreenLoading];
@@ -44,6 +47,9 @@
     
     self.needsReloadConversations = NO;
     [self loadConversations];
+    
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,12 +64,12 @@
     
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
-    UIImage *image = [UIImage imageNamed:@"navigationbar2"];
-    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
-        [self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-    } else {
-        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-    }
+//    UIImage *image = [UIImage imageNamed:@"navigationbar2"];
+//    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
+//        [self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+//    } else {
+//        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+//    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
 }
@@ -81,11 +87,16 @@
 - (void)createNavigationBar
 {
     //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    //[self setBackgroundToNavigationBar];
+//    [self.navigationController.navigationBar setTranslucent:YES];
+//    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+//    
+//    
+//    
+//    //[self setBackgroundToNavigationBar];
+//    
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
