@@ -40,6 +40,18 @@
     return [[result reverseObjectEnumerator] allObjects];
 }
 
++ (NSArray *)findPreviousMessagesBefore:(GLPMessage *)message db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d and displayOrder < %d order by displayOrder DESC limit 20", message.conversation.remoteKey, message.displayOrder];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet db:db]];
+    }
+    
+    return [[result reverseObjectEnumerator] allObjects];
+}
 
 + (NSArray *)findLastMessagesForLiveConversation:(GLPLiveConversation *)conversation db:(FMDatabase *)db
 {

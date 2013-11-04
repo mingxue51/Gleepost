@@ -66,7 +66,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 - (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier
 {
-    NSLog(@"format date for time %@ and Author: %@ and Content: %@, NAME: %@, Author Remote Key: %d", message.date, message.author.name, message.content, message.conversation.author.name, message.author.remoteKey);
+    
 
     // configure header (first) message or not
     if(isFirst) {
@@ -114,11 +114,9 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     }
     
     //Fetch user's details from database.
-    GLPUser* user = [ConversationManager loadUserWithMessageId:message.key];
-    NSLog(@"User for message: %@ : Message: %@",user,message.content);
+    // This is wrong, never call any heavy operation in drawing methods
+    GLPUser* user = nil;// [ConversationManager loadUserWithMessageId:message.key];
 
-    
-    NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
     
     self.avatarImageView.clipsToBounds = YES;
     
@@ -126,7 +124,6 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
     if(self.avatarImageView.image == nil)
     {
-        NSLog(@"Add image.");
         if([user.profileImageUrl isEqualToString:@""])
         {
             //Set default image.
@@ -141,7 +138,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     }
     else
     {
-        NSLog(@"Don't do anything.");
+        
     }
 
     

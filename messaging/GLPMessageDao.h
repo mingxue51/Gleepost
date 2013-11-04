@@ -17,7 +17,9 @@
 
 + (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey;
 + (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
+
 + (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
++ (NSArray *)findPreviousMessagesBefore:(GLPMessage *)message db:(FMDatabase *)db;
 
 + (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 

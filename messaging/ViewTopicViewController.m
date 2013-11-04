@@ -54,7 +54,9 @@ float timeInterval = 0.1;
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 @property (strong, nonatomic) NSMutableArray *messages;
 
-@property (assign, nonatomic) BOOL longPollingRequestRunning;
+@property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
+@property (assign, nonatomic) BOOL tableViewInScrolling;
+@property (assign, nonatomic) BOOL tableViewDisplayedLoadingCell;
 
 
 @property (strong, nonatomic) IBOutlet CurrentChatButton *currentChat;
@@ -82,8 +84,11 @@ float timeInterval = 0.1;
 {
     [super viewDidLoad];
     
-    [self loadElements];
+    // various control init
+    self.loadingCellStatus = kGLPLoadingCellStatusInit;
+    self.tableViewDisplayedLoadingCell = NO;
     
+    [self loadElements];
 }
 
 
@@ -103,7 +108,6 @@ float timeInterval = 0.1;
     
     
     
-    self.longPollingRequestRunning = NO;
     
     if(!self.randomChat)
     {
@@ -253,10 +257,7 @@ float timeInterval = 0.1;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [[WebClient sharedInstance] cancelMessagesLongPolling];
-    self.longPollingRequestRunning = NO;
     [self.timer1 invalidate];
-
 }
 
 #pragma mark - Init and config
@@ -341,16 +342,16 @@ float timeInterval = 0.1;
 {
     self.messages = [messages mutableCopy];
     
+    [self configureMessagesDisplay];
+    [self.tableView reloadData];
+    [self scrollToTheEndAnimated:YES];
+}
+
+- (void)configureMessagesDisplay
+{
     for (int i = 0; i < self.messages.count; i++) {
         GLPMessage *current = self.messages[i];
         
-        //Added.
-        //Find user depenting message.
-//        GLPUser* user = [ConversationManager loadUserWithMessageId:current.key];
-//        
-//        NSLog(@"User for message: %@ : Message: %@",user,current.content);
-        
-        NSLog(@"Current message: %@", current);
         if(i == 0) {
             [current configureAsFirstMessage];
         } else {
@@ -358,9 +359,6 @@ float timeInterval = 0.1;
             [current configureAsFollowingMessage:previous];
         }
     }
-
-    [self.tableView reloadData];
-    [self scrollToTheEndAnimated:YES];
 }
 
 
@@ -448,6 +446,52 @@ float timeInterval = 0.1;
 
 #pragma mark - Request management
 
+- (void)startLoadingPreviousMessages
+{
+    if(self.messages.count == 0) {
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        return;
+    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        NSLog(@"Previous messages loading already in progress, don't run twice");
+        return;
+    }
+    
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    
+    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
+        
+        if(success) {
+//            for(GLPMessage *m in messages) {
+//                NSLog(@"message %d - %@ - %@", m.remoteKey, m.date, m.content);
+//            }
+            
+            self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+//            if(remains) {
+//                self.loadingCellStatus = kGLPLoadingCellStatusInit;
+//            } else { // no more loading, remove the loading cell
+//                self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+//            }
+            
+            if(messages.count > 0) {
+                [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
+                [self configureMessagesDisplay];
+                [self updateTableWithNewRowCount:messages.count];
+            } else {
+                [self reloadLoadingCell];
+            }
+            
+
+        } else {
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
+            [self reloadLoadingCell];
+        }
+        
+        
+    }];
+}
+
 //- (void)startLongPollingRequest
 //{
 //    self.longPollingRequestRunning = YES;
@@ -521,6 +565,46 @@ float timeInterval = 0.1;
 
 #pragma mark - Table view
 
+-(void) updateTableWithNewRowCount : (int) rowCount
+{
+    //Save the tableview content offset
+    CGPoint tableViewOffset = [self.tableView contentOffset];
+    
+    //Turn of animations for the update block
+    //to get the effect of adding rows on top of TableView
+    [UIView setAnimationsEnabled:NO];
+    
+//    [self.tableView beginUpdates];
+    
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    
+    int heightForNewRows = 0;
+    
+    for (NSInteger i = 0; i < rowCount; i++) {
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        [rowsInsertIndexPath addObject:tempIndexPath];
+
+        heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+    }
+
+    [self.tableView reloadData];
+//    [self reloadLoadingCell];
+//    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationNone];
+    
+    tableViewOffset.y += heightForNewRows;
+    
+//    [self.tableView endUpdates];
+    
+    [UIView setAnimationsEnabled:YES];
+    
+    [self.tableView setContentOffset:tableViewOffset animated:NO];
+}
+
+- (void)reloadLoadingCell
+{
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -535,14 +619,15 @@ float timeInterval = 0.1;
 {
     if(indexPath.row == 0) {
         GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
-        [loadingCell.activityIndicatorView startAnimating];
+        [loadingCell updateWithStatus:self.loadingCellStatus];
         return loadingCell;
     }
     
-    GLPMessage *message = self.messages[indexPath.row - 1];
+    int row = indexPath.row - 1;
+    GLPMessage *message = self.messages[row];
     
     if(!message.cellIdentifier) {
-        [NSException raise:@"Cell identifier is null" format:@"Row is %d", indexPath.row - 1];
+        [NSException raise:@"Cell identifier is null" format:@"Row is %d", row];
     }
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
@@ -555,12 +640,36 @@ float timeInterval = 0.1;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0) {
-        return kGLPLoadingCellHeight;
+        NSLog(@"hei %d", self.loadingCellStatus);
+        return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
-    GLPMessage *message = self.messages[indexPath.row - 1];
+    int row = indexPath.row - 1;
+    GLPMessage *message = self.messages[row];
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
+        NSLog(@"Load previous cell");
+        if(self.tableViewInScrolling) {
+            self.tableViewDisplayedLoadingCell = YES;
+        } else {
+            [self startLoadingPreviousMessages];
+        }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusError) {
+        NSLog(@"error reload");
+        self.loadingCellStatus = kGLPLoadingCellStatusInit;
+        [self reloadLoadingCell];
+    }
+}
+
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
 {
@@ -568,6 +677,29 @@ float timeInterval = 0.1;
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 }
+
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.tableViewInScrolling = YES;
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    self.tableViewInScrolling = NO;
+    
+    if(self.tableViewDisplayedLoadingCell) {
+        NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+        
+        if(firstVisibleIndexPath.row == 0) {
+            [self startLoadingPreviousMessages];
+        }
+        
+        self.tableViewDisplayedLoadingCell = NO;
+    }
+}
+
 
 
 
@@ -985,7 +1117,6 @@ float timeInterval = 0.1;
 
 #pragma mark - form management
 
-//Code from Brett Schumann
 - (void)keyboardWillShow:(NSNotification *)note{
     // get keyboard size and loctaion
 	CGRect keyboardBounds;

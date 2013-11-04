@@ -20,6 +20,8 @@
 + (void)markConversationRead:(GLPConversation *)conversation;
 
 + (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
++ (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback;
+
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
 + (void)saveMessageFromLongpoll:(GLPMessage *)message;
 +(GLPUser* )loadUserWithMessageId: (int)messageId;

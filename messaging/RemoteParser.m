@@ -55,7 +55,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         
         user.networkName = [networkMessages objectAtIndex:1];
         
-        NSLog(@"Network id: %d, Network Name: %@", user.networkId, user.networkName);
+        //NSLog(@"Network id: %d, Network Name: %@", user.networkId, user.networkName);
     }
     
 
@@ -297,7 +297,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts
 {
-    NSLog(@"Load Contacts JSON: %@", jsonContacts);
+//    NSLog(@"Load Contacts JSON: %@", jsonContacts);
     
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
     
@@ -423,7 +423,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 +(int)parsePostIdFromJson:(NSDictionary*)json
 {
-    NSLog(@"POST ID: %@",json[@"id"]);
+    //NSLog(@"POST ID: %@",json[@"id"]);
     
     return [json[@"id"] integerValue];
 }

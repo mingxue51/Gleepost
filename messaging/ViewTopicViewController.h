@@ -12,7 +12,7 @@
 #import "GLPLiveConversation.h"
 
 
-@interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
+@interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate>
 {
     int previousTextViewSize;
     CGRect        keyboardSuperFrame; // frame of keyboard when initially displayed

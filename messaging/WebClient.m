@@ -269,6 +269,23 @@ static WebClient *instance = nil;
 
 }
 
+- (void)getPreviousMessagesBefore:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:message.remoteKey], @"before", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:message.conversation];
+        callbackBlock(YES, messages);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //TODO: TEMP FIX
+        callbackBlock(YES, nil);
+        //callbackBlock(NO, nil);
+    }];
+    
+}
+
 - (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
@@ -415,12 +432,10 @@ static WebClient *instance = nil;
 {
     NSString *path = [NSString stringWithFormat:@"user/%d", key];
     
-    NSLog(@"USER: %@",path);
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
-        NSLog(@"Callback User: %@",user.name);
         callbackBlock(YES, user);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -449,8 +464,6 @@ static WebClient *instance = nil;
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",contactRemoteKey], @"user", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    
-    NSLog(@"Contact PARAMS: %@", params);
     
     [self postPath:@"contacts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -491,8 +504,6 @@ static WebClient *instance = nil;
     
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSLog(@"Post with image posted: %@",responseObject);
         
         callbackBlock(YES);
         

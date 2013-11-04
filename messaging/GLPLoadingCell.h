@@ -8,10 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    kGLPLoadingCellStatusInit,
+    kGLPLoadingCellStatusLoading,
+    kGLPLoadingCellStatusError,
+    kGLPLoadingCellStatusSuccess,
+    kGLPLoadingCellStatusFinished,
+} GLPLoadingCellStatus;
+
 @interface GLPLoadingCell : UITableViewCell
 
-@property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
+
 
 extern float const kGLPLoadingCellHeight;
+
+- (void)show;
+- (void)updateWithStatus:(GLPLoadingCellStatus)status;
 
 @end
