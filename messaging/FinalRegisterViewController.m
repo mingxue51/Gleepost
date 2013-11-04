@@ -14,6 +14,7 @@
 #import "WebClient.h"
 #import "LoginViewController.h"
 #import "GLPLongPollManager.h"
+#import "SessionManager.h"
 
 @interface FinalRegisterViewController ()
 
@@ -110,13 +111,8 @@
             if(success)
             {
                 //Navigate to home.
-                NSLog(@"User register successful with romote Key: %d", remoteKey);
+                NSLog(@"User register successful with remote Key: %d", remoteKey);
                 [self loginUser];
-                
-                //Upload image and set it to user's profile.
-                [self uploadImageWithUserRemoteKey:remoteKey];
-                
-
             }
             else
             {
@@ -134,7 +130,7 @@
     }
 }
 
--(void)uploadImageWithUserRemoteKey:(int)remoteKey
+-(void)uploadImageAndSetUserImageWithUserRemoteKey:(int)remoteKey
 {
     UIImage* imageToUpload = [self resizeImage:self.profileImage WithSize:CGSizeMake(124, 124)];
     
@@ -159,6 +155,8 @@
 
             [self setImageToUserProfile:response];
             
+            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
         }
         else
         {
@@ -177,11 +175,11 @@
         
         if(success)
         {
-            
+            NSLog(@"NEW PROFILE IMAGE UPLOADED");
         }
         else
         {
-            NSLog(@"ERROR: Not able to register image fro profile.");
+            NSLog(@"ERROR: Not able to register image for profile.");
         }
     }];
 }
@@ -208,7 +206,8 @@
             [[GLPLongPollManager sharedInstance] startLongPoll];
             
             //Set image to user's profile.
-            
+            //Upload image and set it to user's profile.
+            [self uploadImageAndSetUserImageWithUserRemoteKey:0];
             
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {

@@ -99,6 +99,7 @@ static SessionManager *instance = nil;
     // save session
     self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
     self.data[@"user.name"] = self.user.name;
+//    self.data[@"user.profileImage"] = self.user.profileImageUrl;
     self.data[@"user.token"] = self.token;
     self.data[@"user.expirationDate"] = [[DateFormatterHelper createDefaultDateFormatter] stringFromDate:expirationDate];
     
@@ -112,9 +113,9 @@ static SessionManager *instance = nil;
     self.authParameters = nil;
     
  
-//    [self.data removeAllObjects];
-//
-//    [self saveData];
+    [self.data removeAllObjects];
+
+    [self saveData];
     
 }
 

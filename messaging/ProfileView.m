@@ -50,7 +50,6 @@
     
     
     //Not need to request. Take all the data from Session Manager.
-    
     [self.profileHeadInformation setText:currentUser.networkName];
     
     
@@ -67,6 +66,8 @@
         //Fetch the image from the server and add it to the image view.
         [self.profileImage setImageWithURL:[NSURL URLWithString:currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
     }
+    
+
     
 
 //    [[WebClient sharedInstance] getUserWithKey:currentUser.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {

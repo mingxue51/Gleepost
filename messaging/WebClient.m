@@ -520,8 +520,11 @@ static WebClient *instance = nil;
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:url, @"url", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
+    NSLog(@"PARAMS BEFORE SETTING AN IMAGE: %@", params);
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
         
         callbackBlock(YES);
         

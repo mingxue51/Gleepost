@@ -18,6 +18,7 @@
 #import "PostCell.h"
 #import "LoginRegisterViewController.h"
 #import "SessionManager.h"
+#import "WebClientHelper.h"
 
 @interface ProfileViewController ()
 
@@ -29,6 +30,9 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) IBOutlet ProfileView *profileView;
+
+@property (strong, nonatomic) FDTakeController *fdTakeController;
+@property (strong, nonatomic) UIImage *uploadedImage;
 
 
 @end
@@ -77,6 +81,12 @@ static BOOL likePushed;
     
     [self.postsTableView setBackgroundColor:[UIColor whiteColor]];
     
+    //Add selector to profile image view.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.profileView.profileImage setUserInteractionEnabled:YES];
+    [self.profileView.profileImage addGestureRecognizer:tap];
+    
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
@@ -84,7 +94,10 @@ static BOOL likePushed;
     
     [self addLogoutNavigationButton];
    
-    
+    //Used for change the profile image.
+    self.fdTakeController = [[FDTakeController alloc] init];
+    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
+    self.fdTakeController.delegate = self;
     
     //Initialise profile view.
     
@@ -98,33 +111,148 @@ static BOOL likePushed;
     NSLog(@"Profile View Controller");
 }
 
+
+-(void)changeProfileImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+
+}
+
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+{
+    self.uploadedImage = photo;
+    [self.profileView.profileImage setImage:photo];
+    
+    //Communicate with server to change the image.
+    [self uploadImageAndSetUserImageWithUserRemoteKey];
+    
+    
+}
+
+
+
 -(void)addLogoutNavigationButton
 {
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 80.0, 30.0);
-    
+    UIImage *settingsIcon = [UIImage imageNamed:@"settings_icon"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:settingsIcon];
+    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, settingsIcon.size.width, settingsIcon.size.height)];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
-    [btnBack setTitle:@"Logout" forState:UIControlStateNormal];
+    [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
+    [btnBack setFrame:CGRectMake(0, 0, 20, 20)];
     
-    btnBack.frame = imageView.bounds;
-    [imageView addSubview:btnBack];
-    
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
-    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
     self.navigationItem.rightBarButtonItem = item;
 }
 
+#pragma mark - Client
+
+-(void)uploadImageAndSetUserImageWithUserRemoteKey
+{
+    UIImage* imageToUpload = [self resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    NSLog(@"Image register image size: %d",imageData.length);
+    
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        //[WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            //Set image to user's profile.
+            
+            [self setImageToUserProfile:response];
+            
+            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+        }
+        else
+        {
+            NSLog(@"ERROR");
+            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            
+        }
+    }];
+}
+
+-(void)setImageToUserProfile:(NSString*)url
+{
+    NSLog(@"READY TO ADD IMAGE TO USER WITH URL: %@",url);
+    
+    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            NSLog(@"NEW PROFILE IMAGE UPLOADED");
+        }
+        else
+        {
+            NSLog(@"ERROR: Not able to register image for profile.");
+        }
+    }];
+}
+
+-(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return imageToUpload;
+}
+
 -(void)logout:(id)sender
 {
-    NSLog(@"Logout");
-    [[SessionManager sharedInstance] logout];
-    [self.navigationController popViewControllerAnimated:YES];
-//    [self.navigationController popToRootViewControllerAnimated:YES];
-    [self performSegueWithIdentifier:@"start" sender:self];
+    //Pop up a bottom menu.
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
 
+    [actionSheet showInView:self.view];
+
+}
+
+#pragma mark - Action Sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)
+    {
+        [[SessionManager sharedInstance] logout];
+        [self.navigationController popViewControllerAnimated:YES];
+        [self performSegueWithIdentifier:@"start" sender:self];
+    }
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *subview in actionSheet.subviews)
+    {
+        if ([subview isKindOfClass:[UIButton class]])
+        {
+            UIButton *btn = (UIButton*)subview;
+            
+            if([btn.titleLabel.text isEqualToString:@"Cancel"])
+            {
+                btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+
+            }
+            else
+            {
+                btn.titleLabel.textColor = [UIColor lightGrayColor];
+            }
+        }
+    }
 }
 
 -(void) showNotifications: (id)sender

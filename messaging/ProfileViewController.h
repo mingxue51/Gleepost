@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FDTakeController.h"
 
-@interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate>
 
 
 @end
