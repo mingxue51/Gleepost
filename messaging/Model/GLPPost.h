@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
+@property (strong, nonatomic) UIImage *tempImage;
+@property (assign, nonatomic) BOOL liked;
 -(BOOL) imagePost;
 
 @end

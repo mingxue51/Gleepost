@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
     </dependencies>
     <scenes>
         <!--Timeline View Controller - Campus Wall-->
@@ -203,6 +203,7 @@
                         <segue destination="qhx-Fz-PME" kind="modal" identifier="new comment" modalTransitionStyle="coverVertical" id="g6d-Or-dA0"/>
                         <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="iLI-w2-7l9"/>
                         <segue destination="IeS-PS-HdN" kind="push" identifier="view private profile" id="cKp-Du-pjd"/>
+                        <segue destination="pZK-Ya-BDg" kind="modal" identifier="show image" customClass="FadeInCustomSegue" modalTransitionStyle="crossDissolve" id="6Mq-lQ-Lwk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9g7-c9-ph7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -369,6 +370,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3e3-Ln-DsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1307" y="-2309"/>
+        </scene>
+        <!--View Post Image View Controller-->
+        <scene sceneID="NXk-0p-tTp">
+            <objects>
+                <viewController storyboardIdentifier="ViewPostImage" id="pZK-Ya-BDg" customClass="ViewPostImageViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qV6-qJ-wNx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="FeK-kC-el4">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="yXP-10-6Q5" appends="YES" id="YIl-fQ-IEe"/>
+                                </connections>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="S10-eA-au5">
+                                <rect key="frame" x="20" y="26" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="goBack:" destination="pZK-Ya-BDg" eventType="touchUpInside" id="gjG-nc-sxS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="viewImage" destination="FeK-kC-el4" id="4b4-Yp-q6J"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wm9-4I-IhF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="yXP-10-6Q5">
+                    <connections>
+                        <action selector="goBack:" destination="pZK-Ya-BDg" id="uMN-Yv-zN8"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="657" y="-2634"/>
         </scene>
         <!--Add Comment View Controller-->
         <scene sceneID="lf3-ch-FK3">
@@ -577,7 +620,7 @@
                                                     <rect key="frame" x="146" y="3" width="47" height="12"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time_label.png" id="HaF-mB-tP1">
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="HaF-mB-tP1">
                                                             <rect key="frame" x="0.0" y="0.0" width="47" height="12"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </imageView>
@@ -585,6 +628,7 @@
                                                             <rect key="frame" x="2" y="-4" width="42" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <color key="textColor" red="0.29411764705882354" green="0.81568627450980391" blue="0.82352941176470584" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -639,7 +683,7 @@
                                                     <rect key="frame" x="146" y="3" width="47" height="12"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="time_label.png" id="c6G-3z-CaW">
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="c6G-3z-CaW">
                                                             <rect key="frame" x="0.0" y="0.0" width="47" height="12"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </imageView>
@@ -647,6 +691,7 @@
                                                             <rect key="frame" x="2" y="-4" width="42" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            <color key="textColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -725,11 +770,11 @@
             <objects>
                 <viewController id="IeS-PS-HdN" customClass="PrivateProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hYb-hd-deC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottom_background_private_profile.png" id="yH7-0j-vId">
-                                <rect key="frame" x="0.0" y="320" width="320" height="161"/>
+                                <rect key="frame" x="0.0" y="320" width="320" height="225"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profilebackground.png" id="f7p-xL-qoL">
@@ -911,7 +956,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ArR-bC-RZ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="598" y="-2613"/>
+            <point key="canvasLocation" x="587" y="-3264"/>
         </scene>
         <!--Chat View Controller - Chat-->
         <scene sceneID="3ge-kZ-632">
@@ -930,7 +975,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rhd-md-A4x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="92" y="-2613"/>
+            <point key="canvasLocation" x="32" y="-2593"/>
         </scene>
         <!--Navigation Controller - Home-->
         <scene sceneID="qnx-IM-TRR">
@@ -1665,7 +1710,6 @@
         <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
-        <image name="time_label.png" width="47" height="12"/>
         <image name="timebar1.png" width="639" height="10"/>
         <image name="timebar2.png" width="396" height="14"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
@@ -1676,11 +1720,11 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="iLI-w2-7l9"/>
+        <segue reference="u6W-1W-GCM"/>
+        <segue reference="C5K-bl-yN1"/>
         <segue reference="FQd-EB-Shi"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="cKp-Du-pjd"/>
-        <segue reference="htZ-EL-79i"/>
+        <segue reference="3ZQ-Ax-jzZ"/>
+        <segue reference="CJG-WM-cQ7"/>
+        <segue reference="Jle-n7-Gmg"/>
     </inferredMetricsTieBreakers>
 </document>

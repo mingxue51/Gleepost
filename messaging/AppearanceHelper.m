@@ -27,14 +27,17 @@
 {
     UIImage *image = [UIImage imageNamed:imageName];
     
-    UIColor *barColour = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+    UIColor *barColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+
+    
+    //UIColor *barColour = [UIColor colorWithRed:27.0/255.0 green:198.0/255.0 blue:220.0/255.0 alpha:1];
     
     UIView *colourView = [[UIView alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 64.f)];
     colourView.opaque = NO;
-    colourView.alpha = .67f;
-    colourView.backgroundColor = [UIColor colorWithPatternImage:image];
+    colourView.alpha = .4f;
+    colourView.backgroundColor = barColour;
     
-    contoller.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+    contoller.navigationController.navigationBar.barTintColor = barColour;
     
     
     [contoller.navigationController.navigationBar.layer insertSublayer:colourView.layer atIndex:1];

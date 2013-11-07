@@ -1,4 +1,4 @@
-//
+ //
 //  TimelineViewController.m
 //  messaging
 //
@@ -12,7 +12,6 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
-#import "Post.h"
 #import "AddCommentViewController.h"
 #import "NewCommentView.h"
 #import "Social/Social.h"
@@ -25,6 +24,8 @@
 #import "TransitionDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppearanceHelper.h"
+#import "ViewPostImageViewController.h"
+#import "TransitionDelegateViewImage.h"
 
 @interface TimelineViewController ()
 
@@ -39,6 +40,8 @@
 @property (strong, nonatomic) NSMutableArray *shownCells;
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegate *transitionController;
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+@property (strong, nonatomic) UIImage *imageToBeView;
 
 @property int selectedUserId;
 
@@ -56,21 +59,14 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
-    UIImage *image = [UIImage imageNamed:@"navigationbar2"];
+    
+    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
-    
-   // [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
-
-//    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
-//        [self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-//    } else {
-//        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-//    }
-    
-    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
-    
-    //[self.navigationController.navigationBar setTranslucent:YES];
-//    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setTranslucent:YES];
 
     
     
@@ -139,7 +135,9 @@ static BOOL likePushed;
     //self.tabBarController.tabBar.selectedImageTintColor = [UIColor whiteColor];
     
     //Set the white colour to selected tab.
-    UIColor *tabColour = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]];
+    //UIColor *tabColour = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]];
+    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    
     self.tabBarController.tabBar.tintColor = tabColour;
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
@@ -251,6 +249,22 @@ static BOOL likePushed;
     self.shownCells = [[NSMutableArray alloc] init];
     
     self.transitionController = [[TransitionDelegate alloc] init];
+    
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+
+    //Initialise.
+    self.readyToReloadPosts = YES;
+
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if(self.readyToReloadPosts)
+    {
+        [self loadPosts];
+    }
 
 }
 
@@ -277,13 +291,7 @@ static BOOL likePushed;
 }
 
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self loadPosts];
 
-    
-}
 
 #pragma mark - Initialise navigation bar
 
@@ -322,12 +330,6 @@ static BOOL likePushed;
  */
 -(void) setBackgroundToNavigationBar
 {
-
-    
-    
-    
-    
-    
     UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
     
     
@@ -533,6 +535,35 @@ static BOOL likePushed;
    
 }
 
+-(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
+{
+    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            NSLog(@"Like for post %d succeed.",postRemoteKey);
+        }
+        else
+        {
+            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+        }
+        
+        
+    }];
+}
+
+#pragma mark - New post methods
+
+-(void)addNewPost:(GLPPost*)post
+{
+    post.imagesUrls = [NSArray arrayWithObjects:@"uploading...", nil];
+    
+    //[self.posts addObject:post];
+    [self.posts insertObject:post atIndex:0];
+    [self.tableView reloadData];
+    
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -567,6 +598,11 @@ static BOOL likePushed;
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
         postCell.imageAvailable = YES;
+        
+//        if(post.tempImage != nil)
+//        {
+//
+//        }
 
     }
     else
@@ -591,21 +627,48 @@ static BOOL likePushed;
     [self buttonWithName:@"Share" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
     [self buttonWithName:@"" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
     
-    
-    //For each post try to fetch users' details.
-    NSLog(@"User Remote Key: %d",post.author.remoteKey);
-    
 
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
     [tap setNumberOfTapsRequired:1];
     [postCell.userImageView addGestureRecognizer:tap];
     
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [postCell.postImage addGestureRecognizer:tap];
+    
+
+
+    
+    
     [postCell updateWithPostData:post];
 
 
     
     return postCell;
+    
+}
+
+-(void)showFullPostImage:(id)sender
+{
+    
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    
+    self.imageToBeView = clickedImageView.image;
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = clickedImageView.image;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
     
 }
 
@@ -652,7 +715,6 @@ static BOOL likePushed;
  */
 -(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
 {
-    NSLog(@"IN ButtonWithName");
     for(UIView* view in subArray)
     {
         if([view isKindOfClass:[UIButton class]])
@@ -661,14 +723,12 @@ static BOOL likePushed;
             currentBtn.userInteractionEnabled = YES;
             if([currentBtn.titleLabel.text isEqualToString:@"Like"])
             {
-                if(cell.imageAvailable)
-                {
-                    [currentBtn addTarget:self action:@selector(likeButtonPushedWithImage:) forControlEvents:UIControlEventTouchUpInside];
-                }
-                else
-                {
+                currentBtn.tag = postIndex;
+
+                    //[currentBtn addTarget:self action:@selector(likeButtonPushedWithImage:) forControlEvents:UIControlEventTouchUpInside];
+
                     [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-                }
+                
             }
             else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
             {
@@ -699,14 +759,17 @@ static BOOL likePushed;
 
     //If like button is pushed then set the pushed variable to NO and change the
     //colour of the image.
-    if(likePushed)
+    if([[self.posts objectAtIndex:btn.tag] liked])
     {
         [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
         
+        [[self.posts objectAtIndex:btn.tag] setLiked:NO];
         
-        likePushed = NO;
+        //Change the like status and send to server the change.
+        [self postLike:NO withPostRemoteKey:[[self.posts objectAtIndex:btn.tag] remoteKey]];
     }
     else
     {
@@ -714,7 +777,12 @@ static BOOL likePushed;
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
         
-        likePushed = YES;
+        
+       [[self.posts objectAtIndex:btn.tag] setLiked:YES];
+        
+        //Change the like status and send to server the change.
+        [self postLike:YES withPostRemoteKey:[[self.posts objectAtIndex:btn.tag] remoteKey]];
+
     }
     
 }
@@ -730,32 +798,32 @@ static BOOL likePushed;
     [self performSegueWithIdentifier:@"view private profile" sender:self];
 }
 
--(void) likeButtonPushedWithImage:(id)sender
-{
-    NSLog(@"Like Pushed: %d",likePushed);
-    UIButton *btn = (UIButton*) sender;
-    
-    //If like button is pushed then set the pushed variable to NO and change the
-    //colour of the image.
-    if(likePushed)
-    {
-        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up_image"] forState:UIControlStateNormal];
-        
-        
-        likePushed = NO;
-    }
-    else
-    {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
-        
-        likePushed = YES;
-    }
-    
-}
+//-(void) likeButtonPushedWithImage:(id)sender
+//{
+//    NSLog(@"Like Pushed: %d",likePushed);
+//    UIButton *btn = (UIButton*) sender;
+//    
+//    //If like button is pushed then set the pushed variable to NO and change the
+//    //colour of the image.
+//    if(likePushed)
+//    {
+//        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        //Add the thumbs up selected version of image.
+//        [btn setImage:[UIImage imageNamed:@"thumbs-up_image"] forState:UIControlStateNormal];
+//        
+//        
+//        likePushed = NO;
+//    }
+//    else
+//    {
+//        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+//        //Add the thumbs up selected version of image.
+//        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+//        
+//        likePushed = YES;
+//    }
+//    
+//}
 
 /**
  Navigates to a modal view to let user to add a comment.
@@ -893,7 +961,7 @@ static BOOL likePushed;
     
     if([currentPost imagePost])
     {
-        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
+        //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
         //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
@@ -904,7 +972,7 @@ static BOOL likePushed;
     }
     else
     {
-        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
+        //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
         
 //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
@@ -1074,6 +1142,16 @@ static BOOL likePushed;
         PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if([segue.identifier isEqualToString:@"show image"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ViewPostImageViewController *viewPostImageViewController = segue.destinationViewController;
+        
+        viewPostImageViewController.image = self.imageToBeView;
+        
+        
     }
 
 }

@@ -44,11 +44,7 @@ static BOOL likePushed;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
-    
-    
-    
+
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
@@ -106,30 +102,17 @@ static BOOL likePushed;
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
 
-    [self loadPosts];
     
     NSLog(@"Profile View Controller");
 }
 
-
--(void)changeProfileImage:(id)sender
+-(void)viewDidAppear:(BOOL)animated
 {
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    [super viewDidAppear:animated];
+    
+    [self loadPosts];
 
 }
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
-{
-    self.uploadedImage = photo;
-    [self.profileView.profileImage setImage:photo];
-    
-    //Communicate with server to change the image.
-    [self uploadImageAndSetUserImageWithUserRemoteKey];
-    
-    
-}
-
-
 
 -(void)addLogoutNavigationButton
 {
@@ -147,7 +130,74 @@ static BOOL likePushed;
     self.navigationItem.rightBarButtonItem = item;
 }
 
+#pragma mark - FDTakeController delegate
+
+-(void)changeProfileImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+
+}
+
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+{
+    self.uploadedImage = photo;
+    [self.profileView.profileImage setImage:photo];
+    
+    //Communicate with server to change the image.
+    [self uploadImageAndSetUserImageWithUserRemoteKey];
+    
+    [self loadPosts];
+    
+}
+
+
 #pragma mark - Client
+
+
+- (void)loadPosts
+{
+    NSLog(@"load posts");
+    //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    //    hud.labelText = @"Loading posts";
+    //    hud.detailsLabelText = @"Please wait few seconds";
+    
+    WebClient *client = [WebClient sharedInstance];
+    [client getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+        //[hud hide:YES];
+        
+        if(success) {
+            
+            NSMutableArray *removePosts = [[NSMutableArray alloc] init];
+            self.posts = [posts mutableCopy];
+            
+            NSLog(@"POSTS in TimeLineViewController");
+            
+            for(GLPPost *p in self.posts)
+            {
+                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+                {
+                    [removePosts addObject:p];
+                }
+                NSLog(@"%@",p.content);
+            }
+            
+            for(GLPPost *p in removePosts)
+            {
+                [self.posts removeObject:p];
+            }
+            
+            [self.postsTableView reloadData];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
+                                                            message:@"Check your id or your internet connection dude."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+    }];
+}
+
 
 -(void)uploadImageAndSetUserImageWithUserRemoteKey
 {
@@ -174,7 +224,9 @@ static BOOL likePushed;
             
             [self setImageToUserProfile:response];
             
-            [[SessionManager sharedInstance]user].profileImageUrl = response;
+//            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+            [[SessionManager sharedInstance] updateUserWithUrl:response];
             
         }
         else
@@ -267,49 +319,8 @@ static BOOL likePushed;
     [super viewDidLayoutSubviews];
 }
 
-- (void)loadPosts
-{
-    NSLog(@"load posts");
-//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    hud.labelText = @"Loading posts";
-//    hud.detailsLabelText = @"Please wait few seconds";
-    
-    WebClient *client = [WebClient sharedInstance];
-    [client getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-        //[hud hide:YES];
-        
-        if(success) {
-            
-            NSMutableArray *removePosts = [[NSMutableArray alloc] init];
-            self.posts = [posts mutableCopy];
-            
-            NSLog(@"POSTS in TimeLineViewController");
-            
-            for(GLPPost *p in self.posts)
-            {
-                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
-                {
-                    [removePosts addObject:p];
-                }
-                NSLog(@"%@",p.content);
-            }
-            
-            for(GLPPost *p in removePosts)
-            {
-                [self.posts removeObject:p];
-            }
-            
-            [self.postsTableView reloadData];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-                                                            message:@"Check your id or your internet connection dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-    }];
-}
+
+
 
 //TODO: Create delegates and datasource for table view.
 
@@ -450,7 +461,6 @@ static BOOL likePushed;
 
 -(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell
 {
-    NSLog(@"IN ButtonWithName");
     for(UIView* view in subArray)
     {
         if([view isKindOfClass:[UIButton class]])

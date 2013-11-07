@@ -206,7 +206,8 @@ float timeInterval = 0.1;
     [super viewWillAppear:animated];
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    
+    [self.navigationController.navigationBar setTranslucent:YES];
+
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -632,7 +633,7 @@ float timeInterval = 0.1;
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
     
-    [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier];
+    [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier andParticipants:self.patricipants];
     
     return cell;
 }

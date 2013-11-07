@@ -27,4 +27,7 @@
 +(GLPUser* )loadUserWithMessageId: (int)messageId;
 
 +(GLPUser* )userWithConversationId:(int)conversationId;
+
++(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback;
+
 @end

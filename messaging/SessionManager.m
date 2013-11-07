@@ -61,6 +61,13 @@ static SessionManager *instance = nil;
     return self;
 }
 
+-(void)updateUserWithUrl:(NSString*)url
+{
+    self.user.profileImageUrl = url;
+    
+    [GLPUserDao update:self.user];
+}
+
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate
 {
     NSAssert(!self.user, @"An user is already registered in the session");

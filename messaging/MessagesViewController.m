@@ -15,6 +15,7 @@
 #import "NSDate+TimeAgo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "AppearanceHelper.h"
+#import "ShapeFormatterHelper.h"
 
 @interface MessagesViewController ()
 
@@ -37,7 +38,6 @@
     [super viewDidLoad];
     
 
-    
     [self createNavigationBar];
     [self createRefresh];
     [self createFullScreenLoading];
@@ -48,13 +48,17 @@
     self.needsReloadConversations = NO;
     [self loadConversations];
     
-    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setTranslucent:YES];
+
 
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if(self.needsReloadConversations) {
+    if(self.needsReloadConversations)
+    {
         [self reloadLocalConversations];
     }
 }
@@ -132,8 +136,6 @@
 -(void) setBackgroundToNavigationBar
 {
     UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
-    
-    
     
     [bar setBackgroundColor:[UIColor clearColor]];
     [bar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
@@ -261,6 +263,8 @@
     }
     else
     {
+        
+        //TODO: Change this. Bad approach.
         GLPUser *opponentUser = [ConversationManager userWithConversationId:conversation.key];
         
         if(opponentUser.profileImageUrl == nil || [opponentUser.profileImageUrl isEqualToString:@""])
@@ -272,10 +276,7 @@
             [cell.userImage setImageWithURL:[NSURL URLWithString:opponentUser.profileImageUrl] placeholderImage:nil];
         }
         
-        cell.userImage.clipsToBounds = YES;
-        
-        cell.userImage.layer.cornerRadius = 20;
-        
+        [ShapeFormatterHelper setRoundedView:cell.userImage toDiameter:cell.userImage.frame.size.height];
         
         cell.userName.text = conversation.title;
 
@@ -366,7 +367,18 @@
         ViewTopicViewController *vc = segue.destinationViewController;
         vc.randomChat = NO;
         vc.conversation = self.selectedConversation;
-        self.selectedConversation = nil;
+        
+        //Fetch the participants.
+        [ConversationManager usersWithConversationId:self.selectedConversation.key callback:^(BOOL success, NSArray *participants) {
+           
+            NSLog(@"Participants id: %@", participants);
+            vc.patricipants = participants;
+            
+        }];
+        
+        //vc.patricipants = [[NSArray alloc] initWithObjects:<#(id), ...#>, nil];
+        
+        //self.selectedConversation = nil;
 
     }
     

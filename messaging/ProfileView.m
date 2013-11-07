@@ -10,7 +10,7 @@
 #import "SessionManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WebClient.h"
-
+#import "ShapeFormatterHelper.h"
 
 
 @interface ProfileView ()
@@ -32,10 +32,6 @@
 
 -(void) initialiseView
 {
-    NSLog(@"View Called");
-
-    
-    
     [self setBackgroundColor:[UIColor clearColor]];
     [self sendSubviewToBack:self.back];
     
@@ -44,10 +40,8 @@
     
     NSLog(@"Remote Key: %d", currentUser.remoteKey);
     
-    self.profileImage.clipsToBounds = YES;
     
-    self.profileImage.layer.cornerRadius = 60;
-    
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
     
     //Not need to request. Take all the data from Session Manager.
     [self.profileHeadInformation setText:currentUser.networkName];
@@ -68,41 +62,6 @@
     }
     
 
-    
-
-//    [[WebClient sharedInstance] getUserWithKey:currentUser.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-//        
-//        if(success)
-//        {
-//            NSLog(@"Load User Image URL: %@",user.profileImageUrl);
-//            currentUser = user;
-//            
-//            [self.profileHeadInformation setText:currentUser.networkName];
-//            
-//            
-//            
-//            if([currentUser.profileImageUrl isEqualToString:@""])
-//            {
-//                //Set default image.
-//                [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
-//                NSLog(@"Profile User name: %@", currentUser.profileImageUrl);
-//            }
-//            else
-//            {
-//
-//                //Fetch the image from the server and add it to the image view.
-//                [self.profileImage setImageWithURL:[NSURL URLWithString:currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
-//            }
-//        }
-//        else
-//        {
-//            NSLog(@"Not Success: %d User: %@",success, user);
-//            
-//        }
-//        
-//        
-//        
-//    }];
     
     
 

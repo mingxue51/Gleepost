@@ -12,6 +12,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WebClient.h"
 #import "ConversationManager.h"
+#import "SessionManager.h"
+#import "ShapeFormatterHelper.h"
 
 @interface MessageCell()
 
@@ -64,7 +66,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 }
 
-- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier
+- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier andParticipants:(NSArray*)participants
 {
     
 
@@ -106,21 +108,28 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     self.messageContentImageView.layer.masksToBounds = YES;
     self.messageContentImageView.layer.cornerRadius = 12.5;
     
+    GLPUser* user = nil;
     
     if([identifier isEqualToString:@"LeftCell"])
     {
         [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:76.0/255.0 green:183.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
         [self.messageContentImageView.layer setBorderWidth: 1.25];
+        
+        user = [[SessionManager sharedInstance]user];
+    }
+    else
+    {
+        //At the moment just take the image of the first participant.
+        user = [participants objectAtIndex:0];
     }
     
     //Fetch user's details from database.
     // This is wrong, never call any heavy operation in drawing methods
-    GLPUser* user = nil;// [ConversationManager loadUserWithMessageId:message.key];
+   // [ConversationManager loadUserWithMessageId:message.key];
+    
 
     
-    self.avatarImageView.clipsToBounds = YES;
-    
-    self.avatarImageView.layer.cornerRadius = 20;
+    [ShapeFormatterHelper setRoundedView:self.avatarImageView toDiameter:self.avatarImageView.frame.size.height];
 
     if(self.avatarImageView.image == nil)
     {

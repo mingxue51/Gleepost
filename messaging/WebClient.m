@@ -24,7 +24,7 @@
 
 @implementation WebClient
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.16/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.18/";
 
 static WebClient *instance = nil;
 
@@ -141,6 +141,8 @@ static WebClient *instance = nil;
     }];
 }
 
+#pragma mark - Posts
+
 - (void)getPostsWithCallbackBlock:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
@@ -225,6 +227,24 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)postLike:(BOOL)like forPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%d/likes", postRemoteKey];
+    
+    NSString* liked = [NSString stringWithFormat:@"%@",(like?@"true":@"false")];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys: liked, @"liked", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"RESPONSE FROM LIKE:%@",responseObject);
+        
+        callbackBlock(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO);
+    }];
+}
 
 /* CONVERSATIONS */
 
@@ -237,6 +257,8 @@ static WebClient *instance = nil;
 //        callbackBlock(NO, nil);
 //    }];
 //}
+
+#pragma mark - Conversations
 
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
@@ -428,6 +450,8 @@ static WebClient *instance = nil;
 
 
 /* USER */
+
+#pragma mark - User
 
 - (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock
 {

@@ -28,7 +28,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
 
 
-
 @property BOOL isViewPost;
 @property BOOL imageAvailable;
 

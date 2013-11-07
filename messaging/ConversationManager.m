@@ -280,6 +280,30 @@
 
 }
 
+//+ (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback
+
+
++(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback
+{
+    /**
+     __block NSArray *localEntities = nil;
+     [DatabaseManager run:^(FMDatabase *db) {
+     localEntities = [GLPMessageDao findPreviousMessagesBefore:message db:db];
+     }];
+     */
+    
+    __block NSArray *localEntities = nil;
+    [DatabaseManager run:^(FMDatabase *db) {
+        localEntities = [GLPConversationParticipantsDao participants:conversationId db:db];
+        
+        //Fetch users' details.
+        
+        
+        
+        callback(YES, localEntities);
+    }];
+}
+
 + (void)saveMessageFromLongpoll:(GLPMessage *)message
 {
     __block BOOL success = NO;

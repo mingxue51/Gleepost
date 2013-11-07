@@ -109,4 +109,19 @@
     }];
 }
 
++(void)update:(GLPUser*)entity
+{
+    [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [db executeUpdateWithFormat:@"update users set name=%@, image_url=%@, course=%@, network_id=%d, network_name=%@, tagline=%@ where remoteKey=%d",
+         entity.name,
+         entity.profileImageUrl,
+         entity.course,
+         entity.networkId,
+         entity.networkName,
+         entity.personalMessage,
+         entity.remoteKey];
+    }];
+}
+
 @end

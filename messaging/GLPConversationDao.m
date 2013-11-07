@@ -12,6 +12,7 @@
 #import "FMResultSet.h"
 #import "GLPUserDao.h"
 #import "GLPConversationParticipantsDao.h"
+#import "SessionManager.h"
 
 @implementation GLPConversationDao
 
@@ -64,7 +65,16 @@
     
     entity.key = [db lastInsertRowId];
     
-    GLPUser *opponentUser = [entity.participants objectAtIndex:0];
+    GLPUser *opponentUser = nil;
+    
+    for(GLPUser *user in entity.participants)
+    {
+        if(user.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+        {
+            opponentUser = user;
+        }
+    }
+    
     
     [GLPConversationDao insertConversationParticipantIfNotExist:entity.key withUserId: [GLPUserDao saveIfNotExist:opponentUser db:db] andDb:db];
 

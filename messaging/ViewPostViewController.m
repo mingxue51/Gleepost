@@ -213,7 +213,6 @@ static BOOL likePushed;
  */
 -(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray
 {
-    NSLog(@"IN ButtonWithName");
     for(UIView* view in subArray)
     {
         if([view isKindOfClass:[UIButton class]])

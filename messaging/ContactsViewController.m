@@ -66,7 +66,11 @@
 //    
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
-    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+   // [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
+
+    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setTranslucent:YES];
 
     
     //self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];

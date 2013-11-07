@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+@property (strong, nonatomic) GLPPost *sendPost;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -38,6 +39,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self.contentTextView becomeFirstResponder];
+    
+    
+    //Initialise post.
+    self.sendPost = [[GLPPost alloc] init];
 
 //    self.view.opaque = YES;
 //    self.view.backgroundColor = [UIColor blackColor];
@@ -79,17 +86,19 @@
     self.uploadedImage = [[UIImageView alloc] init];
     
     self.imagePosted = NO;
+    self.imageReady = NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
+    [self.contentTextView becomeFirstResponder];
+
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
     
-    [self.contentTextView becomeFirstResponder];
     
     [self formatBackground];
 }
@@ -134,69 +143,116 @@
     [self.contentTextView resignFirstResponder];
     
 
-    GLPPost *post = [[GLPPost alloc] init];
-    post.content = self.contentTextView.text;
-    post.date = [NSDate date];
+    //GLPPost *post = [[GLPPost alloc] init];
+    self.sendPost.content = self.contentTextView.text;
+    self.sendPost.date = [NSDate date];
+    self.sendPost.author = [[SessionManager sharedInstance]user];
+//    self.sendPost.imagesUrls = [NSArray arrayWithObjects:@"uploading...", nil];
+    self.sendPost.tempImage = self.uploadedImage.image;
 
+    //Deactivate the load posts from server.
+    self.delegate.readyToReloadPosts = NO;
     
+    
+    
+
+    //Dismiss View Controller.
+    [self dismissViewControllerAnimated:YES completion:^{
+        //[self.delegate loadPosts];
+        //Show updated campus wall.
+        [self.delegate addNewPost:self.sendPost];
+    }];
+    
+    //Create the post asychronously.
     
     if(self.imagePosted)
     {
-         NSData* imageData = UIImagePNGRepresentation(self.uploadedImage.image);
-        NSLog(@"Image size before: %d",imageData.length);
+        //Block until ready.
+        
+        //[NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(tryUploadImage:) userInfo:nil repeats:YES];
+        
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        
+        dispatch_async(queue, ^{
+           
+            
+            while (TRUE)
+            {
+                
+                if (self.imageReady)
+                {
+                    NSLog(@"Ready to create post with images urls %@", self.sendPost.imagesUrls[0]);
+                    // the condition is reached
+                     [self createPost:self.sendPost];
+                    
+                    break;
+                }
+                
+
+                
+                // adapt this value in microseconds.
+                usleep(10000);
+            }
+        });
+        
+
+         //NSData* imageData = UIImagePNGRepresentation(self.uploadedImage.image);
+        //NSLog(@"Image size before: %d",imageData.length);
 
         
         //Resize image before uploading.
-//        CGSize newSize = CGSizeMake(300, 300);
-//        UIGraphicsBeginImageContext(newSize);
-//        [self.uploadedImage.image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-//        UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
-        
-        UIImage* imageToUpload = [self resizeImage:[self.uploadedImage image] WithSize:CGSizeMake(300, 300)];
-        
-        imageData = UIImagePNGRepresentation(imageToUpload);
-        
-        NSLog(@"Image size after: %d",imageData.length);
-        
-        int userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
-        
-        //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
 
         
-        [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:userRemoteKey callbackBlock:^(BOOL success, NSString* response) {
-            
-           //[WebClientHelper hideStandardLoaderForView:self.view];
-
-            
-            if(success)
-            {
-                NSLog(@"IMAGE UPLOADED. URL: %@",response);
-                
-                post.imagesUrls = [[NSArray alloc] initWithObjects:response, nil];
-                
-                //[WebClientHelper showStandardErrorWithTitle:@"Image uploaded successfully" andContent:[NSString stringWithFormat:@"Url: %@",response]];
-
-                
-                [self createPost:post];
-                
-            }
-            else
-            {
-                NSLog(@"ERROR");
-                [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
-
-            }
-        }];
+        //UIImage* imageToUpload = [self resizeImage:[self.uploadedImage image] WithSize:CGSizeMake(300, 300)];
+        
+//        NSData *imageData = UIImagePNGRepresentation(self.uploadedImage.image);
+//        
+//        NSLog(@"Image size after: %d",imageData.length);
+//        
+//        int userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
+//        
+//        [WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+//
+//        
+//        [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:userRemoteKey callbackBlock:^(BOOL success, NSString* response) {
+//            
+//            [WebClientHelper hideStandardLoaderForView:self.view];
+//
+//            
+//            if(success)
+//            {
+//                NSLog(@"IMAGE UPLOADED. URL: %@",response);
+//                
+//                post.imagesUrls = [[NSArray alloc] initWithObjects:response, nil];
+//                
+//                //[WebClientHelper showStandardErrorWithTitle:@"Image uploaded successfully" andContent:[NSString stringWithFormat:@"Url: %@",response]];
+//
+//                
+//                [self createPost:post];
+//                
+//            }
+//            else
+//            {
+//                NSLog(@"ERROR");
+//                [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+//
+//            }
+//        }];
 
     }
     else
     {
-        post.imagesUrls = nil;
-        [self createPost:post];
+        self.sendPost.imagesUrls = nil;
+        [self createPost:self.sendPost];
     }
     
+
+
+    
 }
+
+#pragma mark - Formating image
+
 
 -(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
 {
@@ -206,6 +262,71 @@
     UIGraphicsEndImageContext();
     
     return imageToUpload;
+}
+
+-(UIImage*)resizeImage:(UIImage*)image
+{
+    if(image.size.height <= 300 || image.size.width <=300)
+    {
+        return image;
+    }
+    
+//    [self resizeImage:image WithSize:CGRectMake(0, 0, image.size.width, <#CGFloat height#>)]
+    
+    return nil;
+}
+
+-(UIImage*)rectImage:(UIImage*)largeImage withRect:(CGRect)cropRect
+{
+    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
+    // or use the UIImage wherever you like
+    //UIImage *finalImage = [UIImage imageWithCGImage:imageRef];
+    UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
+    
+    //[UIImageView setImage:[UIImage imageWithCGImage:imageRef]];
+    CGImageRelease(imageRef);
+
+    return finalImage;
+}
+
+-(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width
+{
+    float oldWidth = sourceImage.size.width;
+    float scaleFactor = i_width / oldWidth;
+    
+    float newHeight = sourceImage.size.height * scaleFactor;
+    //float newWidth = oldWidth * scaleFactor;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(i_width, newHeight));
+    [sourceImage drawInRect:CGRectMake(0, 0, i_width, newHeight)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+-(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToHeight: (float) finalHeight
+{
+    float oldHeight = sourceImage.size.height;
+    float scaleFactor = finalHeight / oldHeight;
+    
+    float newWidth = sourceImage.size.width * scaleFactor;
+    //float newWidth = oldWidth * scaleFactor;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(newWidth, finalHeight));
+    [sourceImage drawInRect:CGRectMake(0, 0, newWidth, finalHeight)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+-(float)calculateCenterX:(float)imageWidth
+{
+    if(imageWidth <= 300)
+    {
+        return 0;
+    }
+    
+    return ((imageWidth-300)/2);
 }
 
 -(void)createPost:(GLPPost*)post
@@ -218,58 +339,132 @@
         
         if(success)
         {
-            
-            [self dismissViewControllerAnimated:YES completion:^{
-                [self.delegate loadPosts];
-            }];
+            NSLog(@"Post created successfully in delegate: %@.",self.delegate);
+            //Active again the functionality of loading posts.
+            self.delegate.readyToReloadPosts = YES;
+//            [self dismissViewControllerAnimated:YES completion:^{
+//                [self.delegate loadPosts];
+//            }];
             
         } else
         {
-            [WebClientHelper showStandardError];
+//            [WebClientHelper showStandardError];
+            [WebClientHelper showStandardErrorWithTitle:@"Problem posting" andContent:@"Check your internet connection"];
             [self.contentTextView becomeFirstResponder];
         }
     }];
 
 }
 
-- (NSString *)contentTypeForImageData:(NSData *)data {
-    uint8_t c;
-    [data getBytes:&c length:1];
-    
-    switch (c) {
-        case 0xFF:
-            return @"image/jpeg";
-        case 0x89:
-            return @"image/png";
-        case 0x47:
-            return @"image/gif";
-        case 0x49:
-            break;
-        case 0x42:
-            return @"image/bmp";
-        case 0x4D:
-            return @"image/tiff";
-    }
-    return nil;
-}
+
 
 #pragma mark - FDTakeController delegate
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
     self.imagePosted = YES;
-    self.uploadedImage.image = photo;
+
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
-   // [self.contentTextView becomeFirstResponder];
+
+    
+    //Compress image and set it in uploaded image.
+//    NSData* imageData = UIImagePNGRepresentation(photo);
+//    NSLog(@"Image size before: %d",imageData.length);
+//    NSData *imageData;
+//    
+//    //Resize image before uploading.
+////    UIImage* imageToUpload = [self resizeImage:photo WithSize:CGSizeMake(300, 300)];
+//    
+//    UIImage *imageToUpload = [self imageWithImage:photo scaledToHeight:640];
+//    
+//    //imageToUpload = [self rectImage:photo withRect:CGRectMake([self calculateCenterX:photo.size.width], [self calculateCenterX:photo.size.height], 300, 300)];
+//    
+//    self.uploadedImage.image = imageToUpload;
+//    
+//    [self.addImageButton setImage:self.uploadedImage.image forState:UIControlStateNormal];
+//    
+//    
+//    
+//    
+//    //Upload the image in the background.
+//    
+//    imageData = UIImagePNGRepresentation(self.uploadedImage.image);
+//    
+//    NSLog(@"Image size after: %d",imageData.length);
+//    
+//    int userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_async(queue, ^{
+        
+        
+        NSData *imageData;
+        
+        //Resize image before uploading.
+        //    UIImage* imageToUpload = [self resizeImage:photo WithSize:CGSizeMake(300, 300)];
+        
+        UIImage *imageToUpload = [self imageWithImage:photo scaledToHeight:640];
+        
+        //imageToUpload = [self rectImage:photo withRect:CGRectMake([self calculateCenterX:photo.size.width], [self calculateCenterX:photo.size.height], 300, 300)];
+        
+        self.uploadedImage.image = imageToUpload;
+        
+//        [self.addImageButton setImage:self.uploadedImage.image forState:UIControlStateNormal];
+        
+        
+        
+        
+        //Upload the image in the background.
+        
+        imageData = UIImagePNGRepresentation(self.uploadedImage.image);
+        
+        NSLog(@"Image size after: %d",imageData.length);
+        
+        int userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
+        
+        
+        [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:userRemoteKey callbackBlock:^(BOOL success, NSString* response) {
+            
+            //[WebClientHelper hideStandardLoaderForView:self.view];
+            
+            
+            if(success)
+            {
+                NSLog(@"IMAGE UPLOADED. URL: %@",response);
+                
+                self.sendPost.imagesUrls = [[NSArray alloc] initWithObjects:response, nil];
+                
+                self.imageReady = YES;
+                
+                //[WebClientHelper showStandardErrorWithTitle:@"Image uploaded successfully" andContent:[NSString stringWithFormat:@"Url: %@",response]];
+                
+            }
+            else
+            {
+                NSLog(@"ERROR Uploading the image.");
+                [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+                
+            }
+        }];
+        
+        
+    });
+    
+
 
 }
 
 
+
+
+
 - (IBAction)addImage:(id)sender
 {
-    
+
     [self.fdTakeController takePhotoOrChooseFromLibrary];
-    //[self.contentTextView becomeFirstResponder];
 
     
     //////////////////////////////
@@ -304,7 +499,26 @@
 //	self.uploadedImage.image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
 //}
 
-
+- (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
+    
+    switch (c) {
+        case 0xFF:
+            return @"image/jpeg";
+        case 0x89:
+            return @"image/png";
+        case 0x47:
+            return @"image/gif";
+        case 0x49:
+            break;
+        case 0x42:
+            return @"image/bmp";
+        case 0x4D:
+            return @"image/tiff";
+    }
+    return nil;
+}
 
 
 

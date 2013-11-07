@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
 @property (strong, nonatomic) UIImageView *uploadedImage;
 @property BOOL imagePosted;
+@property BOOL imageReady;
 - (IBAction)addImage:(id)sender;
 
 @end

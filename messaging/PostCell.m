@@ -10,6 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "NSDate+TimeAgo.h"
+#import "ShapeFormatterHelper.h"
 
 @implementation PostCell
 
@@ -70,14 +71,17 @@ static const float PostContentLabelMaxWidth = 250;
 {
     self.imageAvailable = NO;
 
-    NSLog(@"updateWithPostData");
+    //Change the mode of the post imageview.
+    //self.postImage.contentMode = UIViewContentModeScaleAspectFill;
+   // self.postImage.autoresizingMask = (UIViewAutoresizingNone);
+    
     
     //Set image to the image view.
     //[self.postImage setImage:[UIImage imageNamed:@"post_image"]];
     
     //NSLog(@"Height of Text View: %f",self.content.frame.size.height);
     
-    NSURL *url;
+    NSURL *url = nil;
 
     for(NSString* str in postData.imagesUrls)
     {
@@ -95,16 +99,32 @@ static const float PostContentLabelMaxWidth = 250;
     //Add the default image.
     userImage = [UIImage imageNamed:@"default_user_image"];
     
-    // Here we use the new provided setImageWithURL: method to load the web image
-    [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
+    UIImageView *inImageView = [[UIImageView alloc]init];
+    [inImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
+
     
+    if(url!=nil && postData.tempImage==nil)
+    {
+        // Here we use the new provided setImageWithURL: method to load the web image
+        [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
+        
+        //[self.postImage setImage:[self rectImage:self.postImage.image withRect:CGRectMake(0, 0, 300, 300)]];
+    }
+
+    
+    if(postData.tempImage != nil)
+    {
+        //Set live image.
+        [self.postImage setImage:postData.tempImage];
+    }
+    
+
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
    // UIImageView *userImageImageView = [[UIImageView alloc] init];
 
     
-   // NSLog(@"Image in post cell: %@", postData.author.profileImageUrl);
-    NSLog(@"Image in post cell: %@ : %@", postData.author.profileImageUrl, postData.author.name);
+   // NSLog(@"Image in post cell: %@ : %@", postData.author.profileImageUrl, postData.author.name);
 
     
     if([postData.author.profileImageUrl isEqualToString:@""])
@@ -121,13 +141,12 @@ static const float PostContentLabelMaxWidth = 250;
         
 //        [self.userImage setBackgroundImage:self.userImageImageView.image forState: UIControlStateNormal];
         
-        
     }
-    [self setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
 
     
-    //self.userImageView.layer.cornerRadius = 23;
-        
+    [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
+
+    
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
     
@@ -171,11 +190,8 @@ static const float PostContentLabelMaxWidth = 250;
     
     
     //Add text to information label.
-    [self.informationLabel setText:@"27 likes 3 comments 127 views"];
+    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views",postData.likes, postData.commentsCount, postData.remoteKey]];
     
-   // NSString* newText = [PostCell findTheNeededText:postData.content];
-    
-    //NSLog(@"New Text: %@",newText);
 
 //    if(newText == nil)
 //    {
@@ -189,18 +205,36 @@ static const float PostContentLabelMaxWidth = 250;
 //    }
     
 //    NSLog(@"Needed text for content: %@ -> %@",postData.content,[PostCell findTheNeededText:postData.content]);
+    
+    
+    //Set like button status.
+    if(postData.liked)
+    {
+        [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        //Add the thumbs up selected version of image.
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        //Add the thumbs up selected version of image.
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+        
+    }
 
 }
 
--(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
+-(UIImage*)rectImage:(UIImage*)largeImage withRect:(CGRect)cropRect
 {
-    roundedView.clipsToBounds = YES;
-
-    CGPoint saveCenter = roundedView.center;
-    CGRect newFrame = CGRectMake(roundedView.frame.origin.x, roundedView.frame.origin.y, newSize, newSize);
-    roundedView.frame = newFrame;
-    roundedView.layer.cornerRadius = newSize / 2.0;
-    roundedView.center = saveCenter;
+    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
+    // or use the UIImage wherever you like
+    //UIImage *finalImage = [UIImage imageWithCGImage:imageRef];
+    UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
+    
+    //[UIImageView setImage:[UIImage imageWithCGImage:imageRef]];
+    CGImageRelease(imageRef);
+    
+    return finalImage;
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

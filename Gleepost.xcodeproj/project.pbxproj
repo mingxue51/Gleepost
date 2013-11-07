@@ -168,6 +168,9 @@
 		58B1161F180D89A9000E9555 /* profile_image_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1161E180D89A9000E9555 /* profile_image_frame.png */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
 		58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865E1180DA2B100BB18AF /* NotificationCell.m */; };
+		58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */; };
+		58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */; };
+		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
 		58DB02871810391F001C021A /* NSMutableArray+QueueAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DB02861810391F001C021A /* NSMutableArray+QueueAdditions.m */; };
 		58DB02A818105C86001C021A /* blackholder1.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DB02A518105C85001C021A /* blackholder1.png */; };
 		58DB02A918105C86001C021A /* blackholder2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DB02A618105C86001C021A /* blackholder2.png */; };
@@ -185,6 +188,7 @@
 		58DC0249180437A70008993A /* pull_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0241180437A70008993A /* pull_down_button.png */; };
 		58DC024A180437A70008993A /* settings_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0242180437A70008993A /* settings_icon.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
+		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
@@ -512,6 +516,12 @@
 		58B865E0180DA2B100BB18AF /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		58B865E1180DA2B100BB18AF /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		58D30BEA1815CED0006346F8 /* timebar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar1.png; path = "../../Gleepost Data/NewChating/timebar1.png"; sourceTree = "<group>"; };
+		58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPostImageViewController.h; sourceTree = "<group>"; };
+		58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPostImageViewController.m; sourceTree = "<group>"; };
+		58D3D733182ADB4200DE2925 /* AnimatedTransitioningViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioningViewImage.h; sourceTree = "<group>"; };
+		58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewImage.m; sourceTree = "<group>"; };
+		58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewImage.h; sourceTree = "<group>"; };
+		58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewImage.m; sourceTree = "<group>"; };
 		58DB02851810391F001C021A /* NSMutableArray+QueueAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+QueueAdditions.h"; sourceTree = "<group>"; };
 		58DB02861810391F001C021A /* NSMutableArray+QueueAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+QueueAdditions.m"; sourceTree = "<group>"; };
 		58DB02A518105C85001C021A /* blackholder1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackholder1.png; sourceTree = "<group>"; };
@@ -531,6 +541,8 @@
 		58DC0242180437A70008993A /* settings_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_icon.png; sourceTree = "<group>"; };
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
+		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
+		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
 		80112B93180F03B9006A35AA /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		80112B94180F03B9006A35AA /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		80112B95180F03B9006A35AA /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -826,7 +838,8 @@
 		584906B917FD945F0045B65D /* Post Classes */ = {
 			isa = PBXGroup;
 			children = (
-				5851B5D618258ECE00AA9103 /* Transition Delegate */,
+				58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */,
+				5851B5D618258ECE00AA9103 /* Transition Delegate New Post */,
 				58080B79180EBB6500C4DB83 /* PostImageCellView.xib */,
 				58433282180ED55900BD9F74 /* PostTextCellView.xib */,
 				5841315717FEDD8500A3278D /* AddCommentViewController.h */,
@@ -845,6 +858,8 @@
 				584906C717FDEE4C0045B65D /* TypeTextView.m */,
 				58406AFC1823FCBE0032353E /* NewPostView.h */,
 				58406AFD1823FCBE0032353E /* NewPostView.m */,
+				58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */,
+				58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
@@ -858,7 +873,7 @@
 			name = Notifications;
 			sourceTree = "<group>";
 		};
-		5851B5D618258ECE00AA9103 /* Transition Delegate */ = {
+		5851B5D618258ECE00AA9103 /* Transition Delegate New Post */ = {
 			isa = PBXGroup;
 			children = (
 				5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */,
@@ -866,7 +881,7 @@
 				5851B5D918258FB800AA9103 /* TransitionDelegate.h */,
 				5851B5DA18258FB800AA9103 /* TransitionDelegate.m */,
 			);
-			name = "Transition Delegate";
+			name = "Transition Delegate New Post";
 			sourceTree = "<group>";
 		};
 		585DF77317ECA70C00FBFC35 /* Chat Images */ = {
@@ -1104,6 +1119,17 @@
 				584CF6701823019900EFABB8 /* SimpleNotificationCell.xib */,
 			);
 			name = Notifications;
+			sourceTree = "<group>";
+		};
+		58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */ = {
+			isa = PBXGroup;
+			children = (
+				58D3D733182ADB4200DE2925 /* AnimatedTransitioningViewImage.h */,
+				58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */,
+				58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */,
+				58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */,
+			);
+			name = "Transition Delegate View Image Post";
 			sourceTree = "<group>";
 		};
 		58DC02381804377D0008993A /* New Chat Images */ = {
@@ -1479,6 +1505,8 @@
 				8087E435180ED90F00938264 /* AppearanceHelper.m */,
 				80DDDF37180FDCC8009E17BD /* DateFormatterHelper.h */,
 				80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */,
+				58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */,
+				58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1884,6 +1912,7 @@
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
+				58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				58DB02871810391F001C021A /* NSMutableArray+QueueAdditions.m in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
@@ -1899,6 +1928,7 @@
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
+				58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */,
 				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
@@ -1964,6 +1994,7 @@
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
+				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
 				80B64A9718156321000AA151 /* GLPTestCell.m in Sources */,
 				58143D771821762600B76E5D /* ValidFields.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
@@ -1982,6 +2013,7 @@
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
 				80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
+				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,
@@ -2098,15 +2130,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: O Oyerinde (QUGTM6RP5C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "554FC43C-9E48-4688-AA6B-31C10A2524A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "554FC43C-9E48-4688-AA6B-31C10A2524A5";
+				PROVISIONING_PROFILE = "719C360E-7EAB-4FE4-8AC8-7E5BF56F0A5B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "719C360E-7EAB-4FE4-8AC8-7E5BF56F0A5B";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2118,15 +2150,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: O Oyerinde (QUGTM6RP5C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "554FC43C-9E48-4688-AA6B-31C10A2524A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "554FC43C-9E48-4688-AA6B-31C10A2524A5";
+				PROVISIONING_PROFILE = "719C360E-7EAB-4FE4-8AC8-7E5BF56F0A5B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "719C360E-7EAB-4FE4-8AC8-7E5BF56F0A5B";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
