@@ -16,6 +16,21 @@
 @synthesize date = _date;
 @synthesize author = _author;
 @synthesize conversation = _conversation;
+@synthesize isOld = _isOld;
+
+- (id)init
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+
+    // default values
+    self.isOld = NO;
+    self.sendStatus = kSendStatusLocal;
+    
+    return self;
+}
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {

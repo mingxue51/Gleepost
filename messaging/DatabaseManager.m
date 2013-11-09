@@ -37,6 +37,9 @@ static DatabaseManager *instance = nil;
 + (void)transaction:(void (^)(FMDatabase *db, BOOL *rollback))block
 {
     [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        db.traceExecution = NO;
+        db.logsErrors = YES;
+
         block(db, rollback);
     }];
 }
@@ -44,6 +47,9 @@ static DatabaseManager *instance = nil;
 + (void)run:(void (^)(FMDatabase *db))block
 {
     [[DatabaseManager sharedInstance].databaseQueue inDatabase:^(FMDatabase *db) {
+        db.traceExecution = NO;
+        db.logsErrors = YES;
+        
         block(db);
     }];
 }
@@ -78,7 +84,7 @@ static DatabaseManager *instance = nil;
             // user
             [db executeUpdate:@"create table users ( \
              key integer primary key autoincrement, \
-             remoteKey integer, \
+             remoteKey integer unique not null, \
              name text, \
              image_url text, \
              course text, \
@@ -95,7 +101,7 @@ static DatabaseManager *instance = nil;
             // conversation
             [db executeUpdate:@"create table conversations ( \
              key integer primary key autoincrement, \
-             remoteKey integer, \
+             remoteKey integer unique not null, \
              lastMessage text, \
              lastUpdate integer, \
              title text, \
@@ -106,7 +112,7 @@ static DatabaseManager *instance = nil;
             // live conversations
             [db executeUpdate:@"create table live_conversations ( \
              key integer primary key autoincrement, \
-             remoteKey integer, \
+             remoteKey integer unique not null, \
              lastUpdate integer, \
              title text, \
              unread integer, \
@@ -115,12 +121,12 @@ static DatabaseManager *instance = nil;
             // message
             [db executeUpdate:@"create table messages ( \
              key integer primary key autoincrement, \
-             remoteKey integer, \
+             remoteKey integer unique not null, \
              date integer, \
              content text, \
              sendStatus integer, \
              seen integer, \
-             displayOrder integer, \
+             isOld integer, \
              author_key integer, \
              conversation_key integer);"];
             

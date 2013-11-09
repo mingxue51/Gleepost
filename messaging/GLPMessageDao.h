@@ -21,13 +21,13 @@
 + (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 + (NSArray *)findPreviousMessagesBefore:(GLPMessage *)message db:(FMDatabase *)db;
 
-+ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
+//+ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 
 + (void)save:(GLPMessage *)entity db:(FMDatabase *)db;
 //+ (void)saveOld:(GLPMessage *)entity;
 + (void)update:(GLPMessage *)entity db:(FMDatabase *)db;
 
-+ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
+//+ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
 
 +(GLPUser *)findUserByMessageKey:(NSInteger)messageKey db:(FMDatabase *)db;
 

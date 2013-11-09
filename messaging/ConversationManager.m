@@ -24,6 +24,8 @@
 
 @implementation ConversationManager
 
+int const NumberMaxOfMessagesLoaded = 20;
+
 + (NSArray *)getLocalConversations
 {
     __block NSArray *conversations = nil;
@@ -96,6 +98,13 @@
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
     
+    // do not load from remote if already enough local messages
+    // but still notify empty successful remote response in order to termine the remote loading in VC
+    if(localEntities.count >= NumberMaxOfMessagesLoaded) {
+        remoteCallback(YES, nil);
+        return;
+    }
+    
     GLPMessage *last = nil;
     for (int i = localEntities.count - 1; i >= 0; i--) {
         GLPMessage *message = localEntities[i];
@@ -152,7 +161,13 @@
     NSLog(@"local previous messages %d", localEntities.count);
     
     if(localEntities.count > 0) {
-        callback(YES, NO, localEntities);
+        // delay for infime ms because fuck ios development
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            callback(YES, YES, localEntities);
+        });
+        
         return;
     }
     
@@ -166,10 +181,17 @@
             }
             
             NSLog(@"previous messages from web %d", messages.count);
-            BOOL remains = messages.count == 20;
+            BOOL remains = messages.count == NumberMaxOfMessagesLoaded;
             
             // reverse order
             messages = [[messages reverseObjectEnumerator] allObjects];
+            
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for(GLPMessage *message in messages) {
+                    message.isOld = YES;
+                    [GLPMessageDao save:message db:db];
+                }
+            }];
             
             callback(YES, remains, messages);
         }];

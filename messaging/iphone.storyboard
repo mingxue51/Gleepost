@@ -551,11 +551,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timebar2.png" id="VQ0-BK-iFZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VQ0-BK-iFZ">
                                 <rect key="frame" x="1" y="60" width="320" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timebar1.png" id="EF8-mi-dgr">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="EF8-mi-dgr">
                                 <rect key="frame" x="0.0" y="64" width="320" height="7"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -1343,11 +1343,11 @@
             <objects>
                 <viewController id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
@@ -1712,6 +1712,7 @@
         <image name="thumbs-up_image.png" width="30" height="31"/>
         <image name="timebar1.png" width="639" height="10"/>
         <image name="timebar2.png" width="396" height="14"/>
+        <image name="time_label.png" width="47" height="12"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1725,6 +1726,11 @@
         <segue reference="FQd-EB-Shi"/>
         <segue reference="3ZQ-Ax-jzZ"/>
         <segue reference="CJG-WM-cQ7"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="FQd-EB-Shi"/>
+        <segue reference="3ZQ-Ax-jzZ"/>
+        <segue reference="Rdk-3z-tPE"/>
+        <segue reference="C5K-bl-yN1"/>
         <segue reference="Jle-n7-Gmg"/>
     </inferredMetricsTieBreakers>
 </document>

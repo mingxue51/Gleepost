@@ -312,6 +312,7 @@
 		80E7478A17CEA2C4001957E5 /* post_comments.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478917CEA2C4001957E5 /* post_comments.json */; };
 		80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478B17CEA7CB001957E5 /* get_conversations.json */; };
 		80E7479417CEAED7001957E5 /* get_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7479317CEAED7001957E5 /* get_messages.json */; };
+		80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80F316D21828129700DE6884 /* CoreImage.framework */; };
 		D23E342C04344F0B93695525 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D6C24A4DFC4BA5B92AFE98 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -741,6 +742,7 @@
 		80E7478917CEA2C4001957E5 /* post_comments.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_comments.json; sourceTree = "<group>"; };
 		80E7478B17CEA7CB001957E5 /* get_conversations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_conversations.json; sourceTree = "<group>"; };
 		80E7479317CEAED7001957E5 /* get_messages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_messages.json; sourceTree = "<group>"; };
+		80F316D21828129700DE6884 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		82D6C24A4DFC4BA5B92AFE98 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF972496B7AD4044B85FE95E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -750,6 +752,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */,
 				58143D6B1821014C00B76E5D /* Security.framework in Frameworks */,
 				807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */,
 				58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */,
@@ -1330,6 +1333,7 @@
 		80AB891917C267F50053E784 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80F316D21828129700DE6884 /* CoreImage.framework */,
 				58143D6A1821014C00B76E5D /* Security.framework */,
 				58143D681821013200B76E5D /* CFNetwork.framework */,
 				80C8BA4C181030BF004F70DB /* libsqlite3.0.dylib */,

@@ -32,7 +32,6 @@
 
 #import "LiveChatsView.h"
 
-
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
 const int limitTimeBar = 3600;
@@ -85,7 +84,7 @@ float timeInterval = 0.1;
     [super viewDidLoad];
     
     // various control init
-    self.loadingCellStatus = kGLPLoadingCellStatusInit;
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.tableViewDisplayedLoadingCell = NO;
     
     [self loadElements];
@@ -315,10 +314,6 @@ float timeInterval = 0.1;
 
 - (void)loadMessages
 {
-    id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
-    
-    //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new messages" forView:view];
-    
     [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
         [self showMessages:messages];
         
@@ -328,10 +323,13 @@ float timeInterval = 0.1;
         if(success) {
             if(messages) {
                 [self showMessages:messages];
+                self.loadingCellStatus = (messages.count == NumberMaxOfMessagesLoaded) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             }
         } else {
             [WebClientHelper showStandardError];
         }
+        
+        self.loadingCellStatus = kGLPLoadingCellStatusInit;
     }];
     
     // conversation has no more unread messages
@@ -345,7 +343,7 @@ float timeInterval = 0.1;
     
     [self configureMessagesDisplay];
     [self.tableView reloadData];
-    [self scrollToTheEndAnimated:YES];
+    [self scrollToTheEndAnimated:NO];
 }
 
 - (void)configureMessagesDisplay
@@ -460,6 +458,7 @@ float timeInterval = 0.1;
     }
     
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    self.tableView.userInteractionEnabled = NO;
     
     [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
         
@@ -469,11 +468,6 @@ float timeInterval = 0.1;
 //            }
             
             self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-//            if(remains) {
-//                self.loadingCellStatus = kGLPLoadingCellStatusInit;
-//            } else { // no more loading, remove the loading cell
-//                self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-//            }
             
             if(messages.count > 0) {
                 [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
@@ -483,15 +477,18 @@ float timeInterval = 0.1;
                 [self reloadLoadingCell];
             }
             
+            
+            
 
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self reloadLoadingCell];
         }
         
-        
+        self.tableView.userInteractionEnabled = YES;
     }];
 }
+
 
 //- (void)startLongPollingRequest
 //{
@@ -569,10 +566,9 @@ float timeInterval = 0.1;
 -(void) updateTableWithNewRowCount : (int) rowCount
 {
     //Save the tableview content offset
+
     CGPoint tableViewOffset = [self.tableView contentOffset];
     
-    //Turn of animations for the update block
-    //to get the effect of adding rows on top of TableView
     [UIView setAnimationsEnabled:NO];
     
 //    [self.tableView beginUpdates];
@@ -588,17 +584,18 @@ float timeInterval = 0.1;
         heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
     }
 
-    [self.tableView reloadData];
+
 //    [self reloadLoadingCell];
 //    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationNone];
     
     tableViewOffset.y += heightForNewRows;
     
-//    [self.tableView endUpdates];
+    [self.tableView reloadData];
+    [self.tableView setContentOffset:tableViewOffset animated:NO];
     
     [UIView setAnimationsEnabled:YES];
     
-    [self.tableView setContentOffset:tableViewOffset animated:NO];
+
 }
 
 - (void)reloadLoadingCell
@@ -641,7 +638,6 @@ float timeInterval = 0.1;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0) {
-        NSLog(@"hei %d", self.loadingCellStatus);
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
@@ -654,6 +650,8 @@ float timeInterval = 0.1;
 {
     if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
         NSLog(@"Load previous cell");
+        
+        // tableview in scrolling, delay the loading when scroll is finished
         if(self.tableViewInScrolling) {
             self.tableViewDisplayedLoadingCell = YES;
         } else {
@@ -665,7 +663,6 @@ float timeInterval = 0.1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusError) {
-        NSLog(@"error reload");
         self.loadingCellStatus = kGLPLoadingCellStatusInit;
         [self reloadLoadingCell];
     }
@@ -680,6 +677,7 @@ float timeInterval = 0.1;
 }
 
 
+#pragma mark - Scroll
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {

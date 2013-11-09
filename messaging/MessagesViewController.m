@@ -263,9 +263,8 @@
     }
     else
     {
-        
-        //TODO: Change this. Bad approach.
-        GLPUser *opponentUser = [ConversationManager userWithConversationId:conversation.key];
+        //todo: dont do this
+        GLPUser *opponentUser = nil;// [ConversationManager userWithConversationId:conversation.key];
         
         if(opponentUser.profileImageUrl == nil || [opponentUser.profileImageUrl isEqualToString:@""])
         {

@@ -11,6 +11,7 @@
 @interface GLPMessage : GLPEntity
 
 @property (assign, nonatomic) BOOL seen;
+@property (assign, nonatomic) BOOL isOld;
 @property (assign, nonatomic) NSInteger displayOrder;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) NSString *content;

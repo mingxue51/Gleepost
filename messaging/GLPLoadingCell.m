@@ -65,10 +65,9 @@ float const kGLPLoadingCellHeight = 40;
 
 - (void)updateWithStatus:(GLPLoadingCellStatus)status
 {
-    NSLog(@"update status %d", status);
-    
     switch (status) {
         case kGLPLoadingCellStatusInit:
+        case kGLPLoadingCellStatusLoading: // same as init but only for animaation purpose
             [self startLoading];
             break;
         case kGLPLoadingCellStatusError:
@@ -77,6 +76,8 @@ float const kGLPLoadingCellHeight = 40;
             break;
         case kGLPLoadingCellStatusFinished:
             [self finishLoading];
+            break;
+        case kGLPLoadingCellStatusSuccess:
             break;
     }
 }

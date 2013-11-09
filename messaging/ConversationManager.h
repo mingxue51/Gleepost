@@ -14,6 +14,7 @@
 
 @interface ConversationManager : NSObject
 
+extern int const NumberMaxOfMessagesLoaded;
 
 + (NSArray *)getLocalConversations;
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
