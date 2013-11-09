@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
@@ -1710,9 +1710,6 @@
         <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
         <image name="thumbs-up_image.png" width="30" height="31"/>
-        <image name="timebar1.png" width="639" height="10"/>
-        <image name="timebar2.png" width="396" height="14"/>
-        <image name="time_label.png" width="47" height="12"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1721,16 +1718,11 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="u6W-1W-GCM"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="FQd-EB-Shi"/>
-        <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="CJG-WM-cQ7"/>
+        <segue reference="Jle-n7-Gmg"/>
         <segue reference="UFN-Sk-0kH"/>
         <segue reference="FQd-EB-Shi"/>
         <segue reference="3ZQ-Ax-jzZ"/>
         <segue reference="Rdk-3z-tPE"/>
         <segue reference="C5K-bl-yN1"/>
-        <segue reference="Jle-n7-Gmg"/>
     </inferredMetricsTieBreakers>
 </document>
