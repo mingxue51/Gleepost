@@ -86,6 +86,7 @@ float timeInterval = 0.1;
     // various control init
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.tableViewDisplayedLoadingCell = NO;
+    self.tableViewInScrolling = NO;
     
     [self loadElements];
 }

@@ -8,7 +8,7 @@
         <!--Timeline View Controller - Campus Wall-->
         <scene sceneID="lmt-qG-jWu">
             <objects>
-                <tableViewController id="dVx-sR-2uM" customClass="TimelineViewController" sceneMemberID="viewController">
+                <tableViewController id="dVx-sR-2uM" customClass="GLPTimelineViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="300" sectionHeaderHeight="22" sectionFooterHeight="22" id="TGO-Ce-vPE">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -189,6 +189,14 @@
                                     <outlet property="userImage" destination="0ey-Ek-LX9" id="f4u-Du-Q7p"/>
                                     <outlet property="userName" destination="V5i-IF-Wrz" id="fri-nF-tL4"/>
                                 </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LoadingCell" rowHeight="40" id="LL5-cV-If5" customClass="GLPLoadingCell">
+                                <rect key="frame" x="0.0" y="590" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LL5-cV-If5" id="3WO-jB-hUo">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
@@ -770,11 +778,11 @@
             <objects>
                 <viewController id="IeS-PS-HdN" customClass="PrivateProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hYb-hd-deC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bottom_background_private_profile.png" id="yH7-0j-vId">
-                                <rect key="frame" x="0.0" y="320" width="320" height="225"/>
+                                <rect key="frame" x="0.0" y="320" width="320" height="161"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profilebackground.png" id="f7p-xL-qoL">
@@ -1343,11 +1351,11 @@
             <objects>
                 <viewController id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
@@ -1718,11 +1726,11 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Jle-n7-Gmg"/>
-        <segue reference="UFN-Sk-0kH"/>
         <segue reference="FQd-EB-Shi"/>
         <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="Rdk-3z-tPE"/>
+        <segue reference="iLI-w2-7l9"/>
         <segue reference="C5K-bl-yN1"/>
+        <segue reference="cKp-Du-pjd"/>
+        <segue reference="UFN-Sk-0kH"/>
     </inferredMetricsTieBreakers>
 </document>
