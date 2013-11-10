@@ -140,6 +140,17 @@ static DatabaseManager *instance = nil;
              user_key integer, \
              message_key integer);"];
             
+            // post
+            [db executeUpdate:@"create table posts ( \
+             key integer primary key autoincrement, \
+             remoteKey integer unique not null, \
+             date integer, \
+             content text, \
+             likes integer, \
+             dislikes integer, \
+             comments integer, \
+             author_key integer);"];
+            
             self.exists = YES;
         }];
     }

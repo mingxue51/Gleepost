@@ -27,9 +27,6 @@
         [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet db:db]];
     }
     
-    
-    NSLog(@"after result set");
-    
     return [[result reverseObjectEnumerator] allObjects]; // reverse order so that the most recent message is at the end
 }
 
