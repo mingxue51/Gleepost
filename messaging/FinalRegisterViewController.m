@@ -15,6 +15,7 @@
 #import "LoginViewController.h"
 #import "GLPLongPollManager.h"
 #import "SessionManager.h"
+#import "ImageFormatterHelper.h"
 
 @interface FinalRegisterViewController ()
 
@@ -47,6 +48,11 @@
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
     
+    
+    //Add gesture to select image view.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickAnImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.addImageView addGestureRecognizer:tap];
 
 }
 
@@ -132,7 +138,8 @@
 
 -(void)uploadImageAndSetUserImageWithUserRemoteKey:(int)remoteKey
 {
-    UIImage* imageToUpload = [self resizeImage:self.profileImage WithSize:CGSizeMake(124, 124)];
+    //UIImage* imageToUpload = [self resizeImage:self.profileImage WithSize:CGSizeMake(124, 124)];
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.profileImage scaledToHeight:320];
     
     NSData *imageData = UIImagePNGRepresentation(imageToUpload);
     
@@ -184,16 +191,6 @@
     }];
 }
 
-
--(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
-{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return imageToUpload;
-}
 
 -(void)loginUser
 {
@@ -290,8 +287,8 @@
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
-    [self.addImageButton setImage:photo forState:UIControlStateNormal];
     self.profileImage = photo;
+    [self.addImageView setImage:photo];
     
 }
 

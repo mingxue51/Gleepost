@@ -101,7 +101,6 @@
     }
     else
     {
-        NSLog(@"Post Comment.");
         GLPComment *newComment = [[GLPComment alloc] init];
         NSLog(@"Comment Post: %@",self.post);
         
@@ -109,13 +108,13 @@
         newComment.date = [NSDate date];
         newComment.author = [SessionManager sharedInstance].user;
         newComment.post = self.post;
-        
-        [WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self];
+        [self cancelPushed:nil];
+
+        //[WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self];
         [[WebClient sharedInstance] createComment:newComment callbackBlock:^(BOOL success) {
-            [WebClientHelper hideStandardLoaderForView:self];
+            //[WebClientHelper hideStandardLoaderForView:self];
             
             if(success) {
-                [self cancelPushed:nil];
 
             } else {
                 [WebClientHelper showStandardError];
@@ -216,22 +215,27 @@
 
 -(void) cancelPushed: (id)sender
 {
-    NSLog(@"Cancel Pushed");
     [self.delegate setPlusButtonToNavigationBar];
     [self.delegate setNavigationBarName];
     
     UIView *superView = [self superview];
 	[super removeFromSuperview];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
-
+    if(!sender)
+    {
+        [self.delegate navigateToViewPostFromCommentWithIndex:self.postIndex];
+    }
     
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     
     // Set up the animation
 	CATransition *animation = [CATransition animation];
 	[animation setType:kCATransitionFade];
 	
 	[[superView layer] addAnimation:animation forKey:@"layerAnimation"];
+    
+
 }
 
 

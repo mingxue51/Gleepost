@@ -156,7 +156,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success))callbackBlock
+- (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -175,11 +175,11 @@ static WebClient *instance = nil;
                 {
                     NSLog(@"Image posted!");
                     
-                    callbackBlock(YES);
+                    callbackBlock(YES,postRemoteKey);
                 }
                 else
                 {
-                    callbackBlock(NO);
+                    callbackBlock(NO, -1);
                 }
                 
                 
@@ -187,11 +187,11 @@ static WebClient *instance = nil;
         }
         else
         {
-            callbackBlock(YES);
+            callbackBlock(YES, postRemoteKey);
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO);
+        callbackBlock(NO, -1);
     }];
 }
 

@@ -17,6 +17,7 @@
 #import "AppearanceHelper.h"
 #import "SessionManager.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ImageFormatterHelper.h"
 
 @interface NewPostViewController ()
 
@@ -188,8 +189,7 @@ static dispatch_queue_t myQueue;
                 {
                     NSLog(@"Ready to create post with images urls %@", self.sendPost.imagesUrls[0]);
                     // the condition is reached
-                     [self createPost:self.sendPost];
-                    
+                    [self createPost:self.sendPost];
                     break;
                 }
                 
@@ -256,97 +256,23 @@ static dispatch_queue_t myQueue;
     
 }
 
-#pragma mark - Formating image
-
-
--(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
-{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return imageToUpload;
-}
-
--(UIImage*)resizeImage:(UIImage*)image
-{
-    if(image.size.height <= 300 || image.size.width <=300)
-    {
-        return image;
-    }
-    
-//    [self resizeImage:image WithSize:CGRectMake(0, 0, image.size.width, <#CGFloat height#>)]
-    
-    return nil;
-}
-
--(UIImage*)rectImage:(UIImage*)largeImage withRect:(CGRect)cropRect
-{
-    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
-    // or use the UIImage wherever you like
-    //UIImage *finalImage = [UIImage imageWithCGImage:imageRef];
-    UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
-    
-    //[UIImageView setImage:[UIImage imageWithCGImage:imageRef]];
-    CGImageRelease(imageRef);
-
-    return finalImage;
-}
-
--(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width
-{
-    float oldWidth = sourceImage.size.width;
-    float scaleFactor = i_width / oldWidth;
-    
-    float newHeight = sourceImage.size.height * scaleFactor;
-    //float newWidth = oldWidth * scaleFactor;
-    
-    UIGraphicsBeginImageContext(CGSizeMake(i_width, newHeight));
-    [sourceImage drawInRect:CGRectMake(0, 0, i_width, newHeight)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
--(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToHeight: (float) finalHeight
-{
-    float oldHeight = sourceImage.size.height;
-    float scaleFactor = finalHeight / oldHeight;
-    
-    float newWidth = sourceImage.size.width * scaleFactor;
-    //float newWidth = oldWidth * scaleFactor;
-    
-    UIGraphicsBeginImageContext(CGSizeMake(newWidth, finalHeight));
-    [sourceImage drawInRect:CGRectMake(0, 0, newWidth, finalHeight)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
--(float)calculateCenterX:(float)imageWidth
-{
-    if(imageWidth <= 300)
-    {
-        return 0;
-    }
-    
-    return ((imageWidth-300)/2);
-}
 
 -(void)createPost:(GLPPost*)post
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self.view];
     
-    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
+    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
         
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success)
         {
-            NSLog(@"Post created successfully in delegate: %@.",self.delegate);
+            NSLog(@"Post created successfully in delegate with remote key: %@ : %d.",self.delegate, remoteKey);
             //Active again the functionality of loading posts.
+            self.sendPost.remoteKey = remoteKey;
             self.delegate.readyToReloadPosts = YES;
+            [self.delegate saveNewPostToDatabase:self.sendPost];
+
 //            [self dismissViewControllerAnimated:YES completion:^{
 //                [self.delegate loadPosts];
 //            }];
@@ -412,7 +338,7 @@ static dispatch_queue_t myQueue;
         //Resize image before uploading.
         //    UIImage* imageToUpload = [self resizeImage:photo WithSize:CGSizeMake(300, 300)];
         
-        UIImage *imageToUpload = [self imageWithImage:photo scaledToHeight:640];
+        UIImage *imageToUpload = [ImageFormatterHelper imageWithImage:photo scaledToHeight:640];
         
         //imageToUpload = [self rectImage:photo withRect:CGRectMake([self calculateCenterX:photo.size.width], [self calculateCenterX:photo.size.height], 300, 300)];
         

@@ -26,15 +26,21 @@ static const float CommentContentLabelMaxWidth = 250;
 
 @implementation CommentCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-        [self setBackgroundColor:[UIColor blackColor]];
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
+    {
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+        
+        lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
+        [self.contentView addSubview:lineView];
     }
+    
     return self;
+
 }
 
 -(void)setCellHeight:(NSString*)content
@@ -86,6 +92,10 @@ static const float CommentContentLabelMaxWidth = 250;
 
 -(void)layoutSubviews
 {
+    
+    
+    
+    
     CGSize contentSize = [CommentCell getContentLabelSizeForContent:self.contentLabel.text];
     
     
@@ -102,6 +112,9 @@ static const float CommentContentLabelMaxWidth = 250;
     frameSize = self.contentLabel.frame;
     
     NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
+    
+    
+
 
 }
 

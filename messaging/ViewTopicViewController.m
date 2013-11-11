@@ -31,6 +31,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "LiveChatsView.h"
+#import "ContactsHelper.h"
+#import "ProfileViewController.h"
 
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
@@ -70,6 +72,8 @@ float timeInterval = 0.1;
 
 @property (strong, nonatomic) UIView *oldTitleView;
 
+@property (assign, nonatomic) int selectedUserId;
+
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
 
@@ -106,9 +110,6 @@ float timeInterval = 0.1;
     {
         [self hideTimeBarAndMaximizeTableView];
     }
-    
-    
-    
     
     if(!self.randomChat)
     {
@@ -238,18 +239,14 @@ float timeInterval = 0.1;
     
     if([className isEqualToString:@"ChatViewController"])
     {
-        NSLog(@"ChatViewController Class");
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
         [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
     }
     else
     {
-        NSLog(@"Other Class");
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
         [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     }
-    
-    NSLog(@"Parent View Controller: %@",className);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -277,12 +274,15 @@ float timeInterval = 0.1;
     {
         self.title = self.liveConversation.title;
         [titleLabel setTitle:self.liveConversation.title forState:UIControlStateNormal];
+        titleLabel.tag = [[self.participants objectAtIndex:0] remoteKey];
+
 
     }
     else
     {
         self.title = self.conversation.title;
         [titleLabel setTitle:self.conversation.title forState:UIControlStateNormal];
+        titleLabel.tag = [[self.participants objectAtIndex:0] remoteKey];
 
 
     }
@@ -291,6 +291,7 @@ float timeInterval = 0.1;
     titleLabel.frame = CGRectMake(0, 0, 70, 44);
     [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleLabel;
+    
     
     
 //    [self.navigationItem.titleView setUserInteractionEnabled:YES];
@@ -585,9 +586,45 @@ float timeInterval = 0.1;
 
 -(void)navigateToProfile:(id)sender
 {
-//    [self performSegueWithIdentifier:@"view profile" sender:self];
-    NSLog(@"Navigate to Profile.");
-    [self performSegueWithIdentifier:@"view private prof" sender:self];
+    
+    if([sender isKindOfClass:[UITapGestureRecognizer class]])
+    {
+        UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+        
+        UIImageView *incomingView = (UIImageView*)incomingUser.view;
+        
+        self.selectedUserId = incomingView.tag;
+   
+    }
+    else if([sender isKindOfClass:[UIButton class]])
+    {
+        UIButton *userButton = (UIButton*)sender;
+        
+        self.selectedUserId = userButton.tag;
+        
+    }
+    
+    
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    {
+        self.selectedUserId = -1;
+        //Navigate to profile view controller.
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+        
+        
+    }
+    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    {
+        //Navigate to profile view controller.
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        //Navigate to private view controller.
+        
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
 
 }
 
@@ -660,6 +697,11 @@ float timeInterval = 0.1;
     }
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
+    
+    //Add touch gesture to avatar image view.
+     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+     [tap setNumberOfTapsRequired:1];
+     [cell.avatarImageView addGestureRecognizer:tap];
     
     [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier andParticipants:self.participants];
     
@@ -734,31 +776,51 @@ float timeInterval = 0.1;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     
-    if([segue.identifier isEqualToString:@"view private prof"])
+    if([segue.identifier isEqualToString:@"view private profile"])
     {
         
         PrivateProfileViewController *ppvc = segue.destinationViewController;
         
-        if(self.participants.count == 0)
+//        if(self.participants.count == 0)
+//        {
+//            NSArray *participants = self.liveConversation.participants;
+//            
+//            for(GLPUser *participant in participants)
+//            {
+//                if(participant.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+//                {
+//                    ppvc.selectedUserId = participant.remoteKey;
+//                }
+//            }
+//            
+//            
+//            //ppvc.selectedUserId = ;
+//        }
+//        else
+//        {
+//            ppvc.selectedUserId = [[self.participants objectAtIndex:0] remoteKey];
+//        }
+        
+        
+        ppvc.selectedUserId = self.selectedUserId;
+        
+    }
+    else if([segue.identifier isEqualToString:@"view profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ProfileViewController *profileViewController = segue.destinationViewController;
+        
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        if(self.selectedUserId == -1)
         {
-            NSArray *participants = self.liveConversation.participants;
-            
-            for(GLPUser *participant in participants)
-            {
-                if(participant.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
-                {
-                    ppvc.selectedUserId = participant.remoteKey;
-                }
-            }
-            
-            
-            //ppvc.selectedUserId = ;
-        }
-        else
-        {
-            ppvc.selectedUserId = [[self.participants objectAtIndex:0] remoteKey];
+            incomingUser = nil;
         }
         
+        profileViewController.incomingUser = incomingUser;
     }
 }
 

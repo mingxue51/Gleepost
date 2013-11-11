@@ -15,5 +15,5 @@ extern NSInteger const kGLPNumberOfPosts;
 
 + (void)loadPostsWithCallback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 + (void)loadPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
-
++(void)saveNewPost:(GLPPost*)post;
 @end

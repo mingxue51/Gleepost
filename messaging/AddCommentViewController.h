@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TimelineViewController.h"
+#import "GLPTimelineViewController.h"
 
 @interface AddCommentViewController : UIViewController
 
-@property (weak, nonatomic) TimelineViewController *delegate;
+@property (weak, nonatomic) GLPTimelineViewController *delegate;
 @end

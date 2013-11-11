@@ -28,6 +28,9 @@
 #import "TransitionDelegateViewImage.h"
 #import "GLPPostManager.h"
 #import "GLPLoadingCell.h"
+#import "SessionManager.h"
+#import "ContactsHelper.h"
+#import "ProfileViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -54,6 +57,8 @@
 
 //TODO: Remove after the integration of image posts.
 @property int selectedIndex;
+
+//TODO: For testing purposes.
 
 
 @end
@@ -244,6 +249,8 @@ static BOOL likePushed;
 
 - (void)loadPosts
 {
+    
+    
     [GLPPostManager loadPostsWithCallback:^(BOOL success, BOOL remain, NSArray *posts) {
         if(success) {
             self.posts = [posts mutableCopy];
@@ -283,10 +290,17 @@ static BOOL likePushed;
 {
     post.imagesUrls = [NSArray arrayWithObjects:@"uploading...", nil];
     
-    //[self.posts addObject:post];
+
+    
     [self.posts insertObject:post atIndex:0];
     [self.tableView reloadData];
     
+}
+
+-(void)saveNewPostToDatabase:(GLPPost*)post
+{
+    //Save post to database.
+    [GLPPostManager saveNewPost:post];
 }
 
 #pragma mark - Table view
@@ -370,10 +384,6 @@ static BOOL likePushed;
     [tap setNumberOfTapsRequired:1];
     [postCell.postImage addGestureRecognizer:tap];
     
-    
-    
-    
-    
     [postCell updateWithPostData:post];
     
     
@@ -393,6 +403,7 @@ static BOOL likePushed;
     self.selectedIndex = indexPath.row;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
+
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -581,17 +592,90 @@ static BOOL likePushed;
     
 }
 
+//-(void)navigateToProfile:(id)sender
+//{
+//    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+//    
+//    UIImageView *incomingView = (UIImageView*)incomingUser.view;
+//    
+//    self.selectedUserId = incomingView.tag;
+//    
+//    [self performSegueWithIdentifier:@"view private profile" sender:self];
+//}
+
 -(void)navigateToProfile:(id)sender
 {
     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
     
     UIImageView *incomingView = (UIImageView*)incomingUser.view;
     
+    //Decide where to navigate. Private or open.
+    
+    
     self.selectedUserId = incomingView.tag;
     
-    [self performSegueWithIdentifier:@"view private profile" sender:self];
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    {
+        self.selectedUserId = -1;
+        //Navigate to profile view controller.
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    {
+        //Navigate to profile view controller.
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        //Navigate to private view controller.
+        
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+    
 }
 
+/**
+ If YES navigate to real profile, if no to private profile.
+ */
+//-(BOOL)navigateToUnlockedProfile
+//{
+//    //Check if the user is already in contacts.
+//    //If yes show the regular profie view (unlocked).
+//    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
+//    {
+//        NSLog(@"PrivateProfileViewController : Unlock Profile.");
+//        
+//        return YES;
+//    }
+//    else
+//    {
+//        //If no, check in database if the user is already requested.
+//        
+//        //If yes change the button of add user to user already requested.
+//        
+//        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
+//        {
+//            NSLog(@"PrivateProfileViewController : User already requested by you.");
+//            //            UIImage *img = [UIImage imageNamed:@"invitesent"];
+//            //            [self.addUserButton setImage:img forState:UIControlStateNormal];
+//            //            [self.addUserButton setEnabled:NO];
+//            //
+//            //For now just navigate to the unlocked profile.
+//            
+//            return YES;
+//            
+//        }
+//        else
+//        {
+//            //If not show the private profile view as is.
+//            NSLog(@"PrivateProfileViewController : Private profile as is.");
+//            
+//            return NO;
+//        }
+//    }
+//}
 
 /**
  Navigates to a modal view to let user to add a comment.
@@ -605,8 +689,15 @@ static BOOL likePushed;
     
     NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
     loadingView.post = self.posts[btn.tag];
+    loadingView.postIndex = btn.tag;
     loadingView.delegate = self;
     
+}
+
+-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
+{
+    self.selectedPost = self.posts[postIndex];
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 -(void)shareButtonPushed: (id)sender
@@ -749,31 +840,16 @@ static BOOL likePushed;
     
 }
 
-- (UIImage *)screenshot:(CGRect)cropRect
-{
-    UIGraphicsBeginImageContext(cropRect.size);
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(ctx, -cropRect.origin.x, -cropRect.origin.y - [[UIApplication sharedApplication] statusBarFrame].size.height);
-    [self.view.window.layer renderInContext:ctx];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
-    
-    //        if([view isKindOfClass:[UIButton class]])
-    
     if([sender isKindOfClass:[PostCell class]])
     {
     }
     
     if([segue.identifier isEqualToString:@"view post"])
     {
-        
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
         ViewPostViewController *vc = segue.destinationViewController;
         /**
          Forward data of the post the to the view. Or in future just forward the post id
@@ -837,6 +913,23 @@ static BOOL likePushed;
         viewPostImageViewController.image = self.imageToBeView;
         
         
+    }
+    else if([segue.identifier isEqualToString:@"view profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ProfileViewController *profileViewController = segue.destinationViewController;
+        
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        if(self.selectedUserId == -1)
+        {
+            incomingUser = nil;
+        }
+        
+        profileViewController.incomingUser = incomingUser;
     }
     
 }

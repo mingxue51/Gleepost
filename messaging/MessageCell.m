@@ -116,12 +116,21 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
         [self.messageContentImageView.layer setBorderWidth: 1.25];
         
         user = [[SessionManager sharedInstance]user];
+        
+        //Add tag to the avatar image view the user's remote key.
+        self.avatarImageView.tag = user.remoteKey;
+
     }
     else
     {
         //At the moment just take the image of the first participant.
         user = [participants objectAtIndex:0];
+        
+        //Add tag to the avatar image view the user's remote key.
+        self.avatarImageView.tag = user.remoteKey;
     }
+    
+
     
     //Fetch user's details from database.
     // This is wrong, never call any heavy operation in drawing methods

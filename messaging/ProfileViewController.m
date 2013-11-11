@@ -21,6 +21,7 @@
 #import "WebClientHelper.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
+#import "ImageFormatterHelper.h"
 
 @interface ProfileViewController ()
 
@@ -243,7 +244,9 @@ static BOOL likePushed;
 
 -(void)uploadImageAndSetUserImageWithUserRemoteKey
 {
-    UIImage* imageToUpload = [self resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
+   // UIImage* imageToUpload = [Image resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
+    
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
     
     NSData *imageData = UIImagePNGRepresentation(imageToUpload);
     
@@ -295,16 +298,6 @@ static BOOL likePushed;
             NSLog(@"ERROR: Not able to register image for profile.");
         }
     }];
-}
-
--(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
-{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return imageToUpload;
 }
 
 -(void)logout:(id)sender

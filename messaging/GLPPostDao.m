@@ -64,7 +64,7 @@
 {
     int date = [entity.date timeIntervalSince1970];
 
-    [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, author_key) values(%d, %@, %d, %d, %d, %d, %d)",
+    BOOL postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, author_key) values(%d, %@, %d, %d, %d, %d, %d)",
      entity.remoteKey,
      entity.content,
      date,
@@ -75,6 +75,8 @@
     
     entity.key = [db lastInsertRowId];
     
+    NSLog(@"Post Saved: %d",postSaved);
+     
     //Insert images
     for(NSString* imageUrl in entity.imagesUrls)
     {

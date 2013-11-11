@@ -231,23 +231,23 @@ static BOOL visibility = NO;
 
 -(void)createPost:(GLPPost*)post
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self];
-    
-    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
-        
-        [WebClientHelper hideStandardLoaderForView:self];
-        
-        if(success)
-        {
-            
-            [self removeView];
-        } else
-        {
-            [WebClientHelper showStandardError];
-            [self.commentTextView becomeFirstResponder];
-        }
-    }];
-    
+//    [WebClientHelper showStandardLoaderWithTitle:@"Creating post" forView:self];
+//    
+//    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success) {
+//        
+//        [WebClientHelper hideStandardLoaderForView:self];
+//        
+//        if(success)
+//        {
+//            
+//            [self removeView];
+//        } else
+//        {
+//            [WebClientHelper showStandardError];
+//            [self.commentTextView becomeFirstResponder];
+//        }
+//    }];
+//    
 }
 -(void) cancelPushed: (id)sender
 {

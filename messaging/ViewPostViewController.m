@@ -673,6 +673,7 @@ static bool firstTime = YES;
     
 }
 
+
 #pragma mark - Keyboard methods
 
 - (void)hideKeyboardFromTextViewIfNeeded
