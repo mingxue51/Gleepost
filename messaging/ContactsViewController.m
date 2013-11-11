@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSMutableDictionary *categorisedUsers;
 @property (strong, nonatomic) IBOutlet UITableView *contactsTableView;
 @property (strong, nonatomic) NSArray *panelSections;
+@property (assign, nonatomic) int selectedUserId;
 
 @end
 
@@ -54,32 +55,17 @@
     //Add samples users.
     self.users = [[NSMutableArray alloc] init];
     self.usersStr = [[NSMutableArray alloc] init];
-//    [self.users addObject:@"TestUser1"];
-//    [self.users addObject:@"SampleUser1"];
-//    [self.users addObject:@"TestUser2"];
 
     
-    //self.navigationController.navigationBar = bar;
     
     //Change the format of the navigation bar.
-//    [self.navigationController.navigationBar setTranslucent:YES];
-//    
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    
-   // [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
-
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
-    
-    //self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-    
+
     self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
-    
-    
-
     
     [self loadContacts];
 
@@ -142,7 +128,6 @@
             if([firstLetter caseInsensitiveCompare:letter] == NSOrderedSame)
             {
                 sectionFound = YES;
-                NSLog(@"USER NAME: %@ With letter: %@",userName, letter);
                 
                 //Check if the dictonary has previous elements in the current key.
                 NSMutableArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt:indexOfLetter]];
@@ -150,12 +135,12 @@
                 if(currentUsers == nil)
                 {
                     currentUsers = [[NSMutableArray alloc] init];
-                    [currentUsers addObject:userName];
+                    [currentUsers addObject:contact];
                 }
                 else
                 {
                     //Add the user to the existing section.
-                    [currentUsers addObject:userName];
+                    [currentUsers addObject:contact];
                 }
                 
                 [self.categorisedUsers setObject:currentUsers forKey:[NSNumber numberWithInt:indexOfLetter]];
@@ -181,9 +166,6 @@
     {
         [self.sections removeObject:letter];
     }
-    NSLog(@"SECTIONS ARRAY: %@", self.sections);
-    
-    NSLog(@"Dictionary: %@",[self categorisedUsers]);
 }
 
 /**
@@ -196,9 +178,7 @@
 -(void)findConfirmedContacts:(NSArray*) contactsFromServer
 {
     //Created for test purposes.
-//    GLPContact* c = [[GLPContact alloc] initWithUserName:@"Test" profileImage:@"" youConfirmed:YES andTheyConfirmed:YES];
-//    [self.users addObject:c];
-//    [self.usersStr addObject:c.user.name];
+
     for(GLPContact* contact in contactsFromServer)
     {
         if(contact.youConfirmed)
@@ -341,8 +321,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
 {
-    NSLog(@"Index: %d",index);
-    
     return index;
 }
 
@@ -357,7 +335,6 @@
     
     NSArray *sectionArray = [self.usersStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.sections objectAtIndex:section]]];
     
-    NSLog(@"Current Section: %d",[sectionArray count]);
     return [sectionArray count];
 }
 
@@ -384,11 +361,10 @@
     //NSMutableArray *currentUsers = [self.categorisedUsers objectAtIndex:indexPath.row];
     
     NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
-    NSLog(@"CATEGORISED USERS: %@", self.categorisedUsers);
     
-    NSLog(@"Index Path Section: %d with row: %d", indexPath.section, indexPath.row);
+    GLPContact *currentContact = [currentUsers objectAtIndex:indexPath.row];
     
-    [cell.nameUser setText: [currentUsers objectAtIndex:indexPath.row]];
+    [cell.nameUser setText: currentContact.user.name];
 
     
  //   [cell.profileImageUser setImage:[UIImage imageNamed:@"avatar_big"]];
@@ -404,13 +380,6 @@
 //    [cell.profileImageUser setBackgroundImage:[UIImage imageNamed:@"avatar_big"] forState:UIControlStateNormal];
 //    
 //    [cell.profileImageUser addTarget:self action:@selector(navigateToProfileContact:) forControlEvents:UIControlEventTouchUpInside];
-
-    
-    
-    NSLog(@"User Name: %@ Index path: %d Section: %d",cell.nameUser.text, indexPath.row, indexPath.section);
-    
-    
-    
     
     return cell;
 }
@@ -466,25 +435,34 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
     
-    //self.selectedPost = self.posts[indexPath.row];
+    NSLog(@"INDEX PATH: %d",indexPath.row);
+    
+    NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
+    
+    
+    
+    self.selectedUserId = [[currentUsers objectAtIndex:indexPath.row] remoteKey];
+    
     [self performSegueWithIdentifier:@"view profile" sender:self];
 }
 
 //Call this when there is a need to pass elements to the next controller.
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    //Hide tabbar.
-//   // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-//    
-//    if([segue.identifier isEqualToString:@"view profile"])
-//    {
-//        
-//        ProfileViewController *pvc = segue.destinationViewController;
-//        //TODO: Pass any information to the ProfileViewController.
-//        
-//        
-//    }
-//}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    //Hide tabbar.
+   // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    
+    if([segue.identifier isEqualToString:@"view profile"])
+    {
+        
+        ProfileViewController *pvc = segue.destinationViewController;
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        incomingUser.remoteKey = self.selectedUserId;
+        pvc.incomingUser = incomingUser;
+        
+        
+    }
+}
 
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 //{

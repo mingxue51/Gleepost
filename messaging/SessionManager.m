@@ -130,7 +130,7 @@ static SessionManager *instance = nil;
 - (void)logout
 {
     [self cleanSession];
-    //[[DatabaseManager sharedInstance] dropDatabase];
+    [[DatabaseManager sharedInstance] dropDatabase];
 }
 
 - (BOOL)isSessionValid

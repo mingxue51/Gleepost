@@ -8,6 +8,9 @@
 
 #import "GLPLiveConversationDao.h"
 #import "GLPLiveConversationDaoParser.h"
+#import "SessionManager.h"
+#import "GLPLiveUserDao.h"
+#import "GLPLiveConversationParticipantsDao.h"
 
 @implementation GLPLiveConversationDao
 
@@ -39,6 +42,33 @@
      entity.timeStarted];
     
     entity.key = [db lastInsertRowId];
+    
+    GLPUser *opponentUser = nil;
+    
+    for(GLPUser *user in entity.participants)
+    {
+        if(user.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+        {
+            opponentUser = user;
+        }
+    }
+    
+    
+    [GLPLiveConversationDao insertConversationParticipantIfNotExist:entity.key withUserId: [GLPLiveUserDao saveIfNotExist:opponentUser db:db] andDb:db];
+
+}
+
++ (void)insertConversationParticipantIfNotExist: (int)conversationId withUserId: (int)userId andDb:(FMDatabase* )db
+{
+    //If participant is not exist, add the conversation, participant id pairs.
+    int convId = [GLPLiveConversationParticipantsDao findByParticipantKey:userId db:db];
+    
+    if(convId == -1)
+    {
+        BOOL success = [db executeUpdateWithFormat:@"insert into live_conversations_participants(live_user_key, live_conversation_key) values(%d, %d)", userId, conversationId];
+        NSLog(@"Success: %d",success);
+    }
+    
 }
 
 +(BOOL)deleteLiveConversationWithId:(int)conversationId db:(FMDatabase* )db

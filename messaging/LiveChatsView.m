@@ -136,9 +136,8 @@ static BOOL visibility;
         
         self.imageViews = [[NSArray alloc] initWithObjects:chatImageView1, chatImageView2, chatImageView3, nil];
         
-        
-        [self loadLiveChats];
-        [self setLiveChatsToView];
+        //TODO: Fix this. Always fetcing data from database.
+        [self loadLiveConversations];
     }
     return self;
 }
@@ -168,10 +167,20 @@ static BOOL visibility;
     }
 }
 
--(void)loadLiveChats
-{
-    self.liveChats = [LiveConversationManager getLocalConversations];
 
+
+
+-(void)loadLiveConversations
+{
+    [LiveConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
+        
+        self.liveChats = conversations;
+        [self setLiveChatsToView];
+
+        
+    } remoteCallback:^(BOOL success, NSArray *conversations) {
+        
+    }];
 }
 
 -(GLPLiveConversation*)liveConversationWithRemoteKey:(int)remoteKey

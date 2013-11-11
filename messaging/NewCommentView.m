@@ -44,7 +44,10 @@
         [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(hideKeyboardEffect:) userInfo:nil repeats:YES];
         
         //Add cancel button.
+        //UIBarButtonItem *cB = [[UIBarButtonItem alloc] init];
+        
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
+        
         [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         [cancelButton addTarget:self action:@selector(cancelPushed:) forControlEvents:UIControlEventTouchDown];
@@ -70,12 +73,18 @@
         singleTap.numberOfTapsRequired = 1;
         [self.commentTextView addGestureRecognizer:singleTap];
         
-        //Add comment panel.
-        ChatPanelView *chatPanelView = [[ChatPanelView alloc] initWithFrame:CGRectMake(0, textViewHeight+80, 320, 50)];
+        //Add comment button.
+        UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 25, 60, 30)];
+        [commentButton setTitle:@"Post" forState:UIControlStateNormal];
         
-        [chatPanelView.commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
+        [commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
         
-        [self addSubview:chatPanelView];
+        [self addSubview:commentButton];
+//        ChatPanelView *chatPanelView = [[ChatPanelView alloc] initWithFrame:CGRectMake(0, textViewHeight+80, 320, 50)];
+//        
+//        [chatPanelView.commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
+//        
+//        [self addSubview:chatPanelView];
         
         
         [self.commentTextView becomeFirstResponder];

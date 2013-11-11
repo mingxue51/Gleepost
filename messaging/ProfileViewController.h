@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
+#import "GLPUser.h"
 
 @interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate>
 
+@property (strong, nonatomic) GLPUser* incomingUser;
 
 @end

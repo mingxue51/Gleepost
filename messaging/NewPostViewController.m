@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
 @property (strong, nonatomic) GLPPost *sendPost;
 
+
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)cancelButtonClick:(id)sender;
@@ -34,12 +35,16 @@
 
 @implementation NewPostViewController
 
+static dispatch_queue_t myQueue;
+
 @synthesize delegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+    myQueue = dispatch_queue_create("My Queue",NULL);
+    
     [self.contentTextView becomeFirstResponder];
     
     
@@ -360,7 +365,7 @@
 
 #pragma mark - FDTakeController delegate
 
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
 {
     self.imagePosted = YES;
 
@@ -396,9 +401,10 @@
     
     //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
     
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    dispatch_async(queue, ^{
+    //dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_async(myQueue, ^{
         
         
         NSData *imageData;

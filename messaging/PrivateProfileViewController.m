@@ -13,6 +13,9 @@
 #import "InvitationSentView.h"
 #import "WebClientHelper.h"
 #import "ContactsManager.h"
+#import "AppearanceHelper.h"
+#import "ViewPostImageViewController.h"
+#import "TransitionDelegateViewImage.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -23,6 +26,8 @@
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+
 @end
 
 
@@ -34,7 +39,10 @@
 {
     [super viewDidLoad];
     
-    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+
     
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).
@@ -51,9 +59,12 @@
         if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
         {
             NSLog(@"PrivateProfileViewController : User already requested by you.");
-            UIImage *img = [UIImage imageNamed:@"invitesent"];
-            [self.addUserButton setImage:img forState:UIControlStateNormal];
-            [self.addUserButton setEnabled:NO];
+//            UIImage *img = [UIImage imageNamed:@"invitesent"];
+//            [self.addUserButton setImage:img forState:UIControlStateNormal];
+//            [self.addUserButton setEnabled:NO];
+//            
+            //For now just navigate to the unlocked profile.
+
 
             
         }
@@ -66,7 +77,7 @@
     
     
     
-    
+    [self formatProfileView];
     
     [self loadAndSetUserDetails];
     
@@ -76,6 +87,12 @@
 //        
 //    }
     
+}
+
+-(void)formatProfileView
+{
+    [[self.profileImage layer] setBorderWidth:6.0f];
+    [[self.profileImage layer] setBorderColor:[UIColor colorWithRed:243.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0].CGColor];
 }
 
 - (IBAction)addContact:(id)sender
@@ -144,9 +161,10 @@
         {
             NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
        
+            
             self.profileUser = user;
             
-            [self.userName setText:user.name];
+            self.title = user.name;
             
             [self.networkName setText:user.networkName];
             
@@ -166,6 +184,10 @@
                 
                 //Fetch the image from the server and add it to the image view.
                 [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+                
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
+                [tap setNumberOfTapsRequired:1];
+                [self.profileImage addGestureRecognizer:tap];
             }
         }
         else
@@ -177,6 +199,24 @@
         
         
     }];
+}
+
+-(void)showFullProfileImage:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = clickedImageView.image;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 -(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;

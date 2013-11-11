@@ -17,5 +17,7 @@
 + (void)loadMessagesForLiveConversation:(GLPLiveConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
 + (GLPMessage *)createMessageWithContent:(NSString *)content toLiveConversation:(GLPLiveConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
 +(void)removeLiveConversationWithKey:(int)key;
++(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback;
++(void)liveUsersWithLiveConversations:(NSArray*)liveConversations callback:(void (^) (BOOL success, NSArray *liveConerstions))callback;
 
 @end

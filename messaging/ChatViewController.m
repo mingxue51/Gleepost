@@ -23,6 +23,7 @@
 @property (strong, nonatomic) GLPLiveConversation *liveConversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
 @property (strong, nonatomic) NSMutableArray *liveConversations;
+@property (assign, nonatomic) BOOL searchForConversation;
 
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)startGroupButtonClicked:(id)sender;
@@ -37,14 +38,11 @@
     
     self.liveConversations = [[NSMutableArray alloc] init];
     
-    NSLog(@"ChatViewController");
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
     //[self.view setBackgroundColor:[UIColor whiteColor]];
-    
-    
     
     
     [self addGleepostImageToNavigationBar];
@@ -62,11 +60,10 @@
     
     [super viewDidAppear:animated];
 
-    BOOL conversationExist = NO;
+    self.searchForConversation = NO;
 
-    NSLog(@"viewDidAppear");
-    NSLog(@"Current conversation: %@", self.conversation.title);
-    NSLog(@"CONVERSATIONS: %@", self.liveConversations);
+    
+    BOOL conversationExist = NO;
 
     
     
@@ -109,26 +106,29 @@
             
         }
         
-        if((self.liveConversations.count == 3) && (!conversationExist))
-        {
-            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:2];
-            [self.liveConversations dequeue];
-            //Delete conversation with key from database.
-            [self deleteConversationFromDbWithKey:liveConv.key];
-            //[self loadLiveConversations];
-            
-        }
+//        if((self.liveConversations.count == 3) && (!conversationExist))
+//        {
+//            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:0];
+//            [self.liveConversations dequeue];
+//            
+//            //Delete conversation with key from database.
+//            [self deleteConversationFromDbWithKey:liveConv.key];
+//            //[self loadLiveConversations];
+//            
+//        }
         
         if(!conversationExist)
         {
             //Convert conversation to live conversation.
             GLPLiveConversation *liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
             
+
+            //Add new conversation to database.
+            [self addNewConversationToDb:liveConv];
+            
+            
             //Add conversation to array.
             [self.liveConversations enqueue:liveConv];
-            
-            //Add new conversation to database.
-            [self addNewConversationToDb];
         }
         
         NSLog(@"Conversation Description: %@",self.conversation.description);
@@ -159,6 +159,16 @@
             
             [self.liveConversations enqueue:c];
         }
+        
+        //Load participants for conversations.
+        [LiveConversationManager liveUsersWithLiveConversations:self.liveConversations callback:^(BOOL success, NSArray *liveParticipantsConversations) {
+            
+            if(success)
+            {
+                self.liveConversations = liveParticipantsConversations.mutableCopy;
+            }
+            
+        }];
         
     } remoteCallback:^(BOOL success, NSArray *conversations) {
         
@@ -359,6 +369,8 @@
 {
 //    [WebClientHelper showStandardLoaderWithTitle:@"Looking for people" forView:self.view];
     
+    self.searchForConversation = YES;
+    
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
 
     
@@ -388,10 +400,10 @@
     }
 }
 
--(void) addNewConversationToDb
+-(void) addNewConversationToDb:(GLPLiveConversation*)liveConv
 {
     
-    GLPLiveConversation* liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
+//    GLPLiveConversation* liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
     
     [LiveConversationManager addLiveConversation:liveConv];
 }
@@ -414,10 +426,36 @@
     {
 //        if(self.newChat)
 //        {
-            [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-            ViewTopicViewController *vc = segue.destinationViewController;
-            vc.randomChat = YES;
-            vc.liveConversation = self.liveConversation;
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        
+        if((self.liveConversations.count == 3) && (self.searchForConversation))
+        {
+            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:0];
+            [self.liveConversations dequeue];
+            
+            //Delete conversation with key from database.
+            [self deleteConversationFromDbWithKey:liveConv.key];
+            
+            self.searchForConversation = NO;
+            //[self loadLiveConversations];
+            
+        }
+
+        
+        /////
+        
+        ViewTopicViewController *vc = segue.destinationViewController;
+        vc.randomChat = YES;
+        vc.liveConversation = self.liveConversation;
+        
+        //Fetch the participants.
+        [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
+            
+            NSLog(@"Participants id: %@", participants);
+            vc.participants = participants;
+            
+        }];
   //      }
 //        else
 //        {

@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPUser.h"
 
 @interface ProfileView : UIView
-@property (strong, nonatomic) IBOutlet UIImageView* back;
-@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
-@property (strong, nonatomic) IBOutlet UISwitch *busyFreeSwitch;
-@property (strong, nonatomic) IBOutlet UIButton *notificationsButton;
-@property (strong, nonatomic) IBOutlet UILabel *profileHeadInformation;
+@property (weak, nonatomic) IBOutlet UIImageView* back;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UISwitch *busyFreeSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *notificationsButton;
+@property (weak, nonatomic) IBOutlet UILabel *profileHeadInformation;
+@property (weak, nonatomic) IBOutlet UILabel *busyFreeLabel;
 
--(void) initialiseView;
+-(void) initialiseView:(GLPUser*)incomingUser;
 
 @end

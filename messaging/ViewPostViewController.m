@@ -702,7 +702,9 @@ static bool firstTime = YES;
         return;
     }
     
-    float height = [KeyboardHelper keyboardHeight:notification] - 49;
+//    float height = [KeyboardHelper keyboardHeight:notification] - 49;
+    float height = [KeyboardHelper keyboardHeight:notification];
+
     self.keyboardAppearanceSpaceY = height;
     
     [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:[KeyboardHelper keyboardAnimationDuration:notification] andAnimationOptions:[KeyboardHelper keyboardAnimationOptions:notification]];

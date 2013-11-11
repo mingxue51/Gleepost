@@ -19,6 +19,8 @@
 #import "LoginRegisterViewController.h"
 #import "SessionManager.h"
 #import "WebClientHelper.h"
+#import "ViewPostImageViewController.h"
+#import "TransitionDelegateViewImage.h"
 
 @interface ProfileViewController ()
 
@@ -33,6 +35,8 @@
 
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIImage *uploadedImage;
+
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 
 @end
@@ -52,7 +56,7 @@ static BOOL likePushed;
     //Change navigations items' (back arrow, edit etc.) colour.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
-    
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     
     self.profileScrollView = [[ProfileScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 350)];
@@ -77,11 +81,25 @@ static BOOL likePushed;
     
     [self.postsTableView setBackgroundColor:[UIColor whiteColor]];
     
-    //Add selector to profile image view.
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [self.profileView.profileImage setUserInteractionEnabled:YES];
-    [self.profileView.profileImage addGestureRecognizer:tap];
+    //If the user is the current user.
+    if(self.incomingUser == nil)
+    {
+        //Add selector to profile image view.
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
+        [tap setNumberOfTapsRequired:1];
+        [self.profileView.profileImage setUserInteractionEnabled:YES];
+        [self.profileView.profileImage addGestureRecognizer:tap];
+    }
+    else
+    {
+        //Add the ability of viewing the image.
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
+        [tap setNumberOfTapsRequired:1];
+        [self.profileView.profileImage setUserInteractionEnabled:YES];
+
+        [self.profileView.profileImage addGestureRecognizer:tap];
+    }
+
     
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
@@ -97,13 +115,12 @@ static BOOL likePushed;
     
     //Initialise profile view.
     
-    [self.profileView initialiseView];
+    [self.profileView initialiseView:self.incomingUser];
     
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
 
     
-    NSLog(@"Profile View Controller");
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -112,6 +129,24 @@ static BOOL likePushed;
     
     [self loadPosts];
 
+}
+
+-(void)showFullProfileImage:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = clickedImageView.image;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 -(void)addLogoutNavigationButton
@@ -170,15 +205,22 @@ static BOOL likePushed;
             NSMutableArray *removePosts = [[NSMutableArray alloc] init];
             self.posts = [posts mutableCopy];
             
-            NSLog(@"POSTS in TimeLineViewController");
-            
             for(GLPPost *p in self.posts)
             {
-                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+                if(self.incomingUser == nil)
                 {
-                    [removePosts addObject:p];
+                    if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+                    {
+                        [removePosts addObject:p];
+                    }
                 }
-                NSLog(@"%@",p.content);
+                else
+                {
+                    if(p.author.remoteKey != self.incomingUser.remoteKey)
+                    {
+                        [removePosts addObject:p];
+                    }
+                }
             }
             
             for(GLPPost *p in removePosts)

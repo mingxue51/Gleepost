@@ -7,7 +7,7 @@
 //
 
 #import "ViewTopicViewController.h"
-#import "ProfileViewController.h"
+#import "PrivateProfileViewController.h"
 
 #import "MessageCell.h"
 #import "GLPLoadingCell.h"
@@ -68,6 +68,7 @@ float timeInterval = 0.1;
 
 @property (strong, nonatomic) NSTimer *timer1;
 
+@property (strong, nonatomic) UIView *oldTitleView;
 
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
@@ -180,7 +181,7 @@ float timeInterval = 0.1;
     
     currentTime-=0.1;
     
-    NSLog(@"Current Time: %f : %f",currentTime, timingBarCurrentWidth);
+    //NSLog(@"Current Time: %f : %f",currentTime, timingBarCurrentWidth);
     
     
     //Shrink the timing bar.
@@ -235,17 +236,17 @@ float timeInterval = 0.1;
     Class parentVCClass = [parentViewController class];
     NSString *className = NSStringFromClass(parentVCClass);
     
-    if([className isEqualToString:@"MessagesViewController"])
+    if([className isEqualToString:@"ChatViewController"])
     {
-        NSLog(@"MessageViewController Class");
+        NSLog(@"ChatViewController Class");
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
     }
     else
     {
         NSLog(@"Other Class");
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     }
     
     NSLog(@"Parent View Controller: %@",className);
@@ -265,15 +266,42 @@ float timeInterval = 0.1;
 
 - (void)configureNavigationBar
 {
+    
+    //Create a button instead of using the default title view for recognising gestures.
+    UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+
+    
     // navigation bar configuration
     if(self.randomChat)
     {
         self.title = self.liveConversation.title;
+        [titleLabel setTitle:self.liveConversation.title forState:UIControlStateNormal];
+
     }
     else
     {
         self.title = self.conversation.title;
+        [titleLabel setTitle:self.conversation.title forState:UIControlStateNormal];
+
+
     }
+    
+    //Set navigation to profile selector.
+    titleLabel.frame = CGRectMake(0, 0, 70, 44);
+    [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = titleLabel;
+    
+    
+//    [self.navigationItem.titleView setUserInteractionEnabled:YES];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+//    [tap setNumberOfTapsRequired:1];
+//    [self.navigationItem.titleView addGestureRecognizer:tap];
+    
+    NSLog(@"Navigation title view: %@",self.navigationItem.titleView);
+    
+    
+    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
@@ -531,6 +559,7 @@ float timeInterval = 0.1;
     [self.liveChatsView removeView];
 }
 
+
 -(void) navigateToChat: (id)sender
 {
     if(![LiveChatsView visible])
@@ -557,7 +586,8 @@ float timeInterval = 0.1;
 -(void)navigateToProfile:(id)sender
 {
 //    [self performSegueWithIdentifier:@"view profile" sender:self];
-    [self performSegueWithIdentifier:@"view private profile" sender:self];
+    NSLog(@"Navigate to Profile.");
+    [self performSegueWithIdentifier:@"view private prof" sender:self];
 
 }
 
@@ -631,7 +661,7 @@ float timeInterval = 0.1;
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
     
-    [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier andParticipants:self.patricipants];
+    [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier andParticipants:self.participants];
     
     return cell;
 }
@@ -701,7 +731,36 @@ float timeInterval = 0.1;
 }
 
 
-
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    
+    if([segue.identifier isEqualToString:@"view private prof"])
+    {
+        
+        PrivateProfileViewController *ppvc = segue.destinationViewController;
+        
+        if(self.participants.count == 0)
+        {
+            NSArray *participants = self.liveConversation.participants;
+            
+            for(GLPUser *participant in participants)
+            {
+                if(participant.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+                {
+                    ppvc.selectedUserId = participant.remoteKey;
+                }
+            }
+            
+            
+            //ppvc.selectedUserId = ;
+        }
+        else
+        {
+            ppvc.selectedUserId = [[self.participants objectAtIndex:0] remoteKey];
+        }
+        
+    }
+}
 
 //- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 //{

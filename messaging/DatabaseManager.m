@@ -118,6 +118,22 @@ static DatabaseManager *instance = nil;
              unread integer, \
              timeStarted integer);"];
             
+            // live conversations participants
+            [db executeUpdate:@"create table live_conversations_participants ( \
+             live_user_key integer, \
+             live_conversation_key integer);"];
+            
+            // live users
+            [db executeUpdate:@"create table live_users ( \
+             key integer primary key autoincrement, \
+             remoteKey integer, \
+             name text, \
+             image_url text, \
+             course text, \
+             network_id integer, \
+             network_name text, \
+             tagline text);"];
+            
             // message
             [db executeUpdate:@"create table messages ( \
              key integer primary key autoincrement, \
@@ -151,6 +167,11 @@ static DatabaseManager *instance = nil;
              comments integer, \
              author_key integer);"];
             
+            // post images
+            [db executeUpdate:@"create table post_images ( \
+             post_remote_key integer, \
+             image_url text);"];
+            
             self.exists = YES;
         }];
     }
@@ -159,6 +180,7 @@ static DatabaseManager *instance = nil;
 - (void)dropDatabase
 {
     [[NSFileManager defaultManager] removeItemAtPath:self.path error:nil];
+    self.exists = NO;
 }
 
 

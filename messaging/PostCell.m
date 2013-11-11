@@ -259,8 +259,6 @@ static float bottomMargin = 50.0;
 
 -(void)layoutSubviews
 {
-    NSLog(@"layoutSubviews");
-    
     if(self.isViewPost)
     {
         CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];

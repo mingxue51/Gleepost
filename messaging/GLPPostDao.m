@@ -10,6 +10,8 @@
 #import "FMResultSet.h"
 #import "GLPPostManager.h"
 #import "GLPPostDaoParser.h"
+#import "GLPUserDao.h"
+#import "DatabaseManager.h"
 
 @implementation GLPPostDao
 
@@ -21,6 +23,21 @@
     
     while ([resultSet next]) {
         [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    //Fetch post images from database.
+    for(GLPPost *currentPost in result)
+    {
+        FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select image_url from post_images where post_remote_key=%d",currentPost.remoteKey];
+        
+        NSMutableArray *imagesUrl = [NSMutableArray array];
+        
+        while ([imagesResultSet next])
+        {
+            [imagesUrl addObject:[imagesResultSet stringForColumn:@"image_url"]];
+            
+            currentPost.imagesUrls = [imagesUrl mutableCopy];
+        }
     }
     
     return result;
@@ -57,6 +74,17 @@
      entity.author.remoteKey];
     
     entity.key = [db lastInsertRowId];
+    
+    //Insert images
+    for(NSString* imageUrl in entity.imagesUrls)
+    {
+        [db executeUpdateWithFormat:@"insert into post_images (post_remote_key, image_url) values(%d, %@)",
+         entity.remoteKey,
+         imageUrl];
+    }
+    
+    //Save the author.
+    [GLPUserDao saveIfNotExist:entity.author db:db];
 }
 
 @end

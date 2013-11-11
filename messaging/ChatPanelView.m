@@ -15,13 +15,13 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self setBackgroundColor:[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5]];
+        [self setBackgroundColor:[UIColor clearColor]];
         
         //Create and add comment button.
         self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [self.commentButton setFrame:CGRectMake(260.0, 5.0f, 50.0, 30.0)];
         [self.commentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.commentButton setTitle:@"Post" forState:UIControlStateNormal];
+        [self.commentButton setTitle:@"Comment" forState:UIControlStateNormal];
         
         [self addSubview:self.commentButton];
         
@@ -30,7 +30,7 @@
         [self.cameraButton setBackgroundImage:[UIImage imageNamed:@"camera_icon"] forState:UIControlStateNormal];
         [self.cameraButton setFrame:CGRectMake(10.0f, 10.0f, [UIImage imageNamed:@"camera_icon"].size.width, [UIImage imageNamed:@"camera_icon"].size.height)];
         
-        [self addSubview:self.cameraButton];
+        //[self addSubview:self.cameraButton];
     }
     return self;
 }

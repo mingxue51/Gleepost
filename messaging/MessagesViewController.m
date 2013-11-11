@@ -100,6 +100,7 @@
 //    
 //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
 
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -371,7 +372,7 @@
         [ConversationManager usersWithConversationId:self.selectedConversation.key callback:^(BOOL success, NSArray *participants) {
            
             NSLog(@"Participants id: %@", participants);
-            vc.patricipants = participants;
+            vc.participants = participants;
             
         }];
         

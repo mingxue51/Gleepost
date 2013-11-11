@@ -12,6 +12,7 @@
 #import "WebClient.h"
 #import "NSDate+UTC.h"
 #import "SessionManager.h"
+#import "GLPLiveConversationParticipantsDao.h"
 
 @implementation LiveConversationManager
 
@@ -158,6 +159,38 @@
     return message;
 }
 
++(void)liveUsersWithLiveConversations:(NSArray*)liveConversations callback:(void (^) (BOOL success, NSArray *liveParticipantsConversations))callback
+{
+    __block NSArray *localEntities = nil;
+    [DatabaseManager run:^(FMDatabase *db) {
+        
+        for(GLPLiveConversation *liveConversation in liveConversations)
+        {
+            localEntities = [GLPLiveConversationParticipantsDao participants:liveConversation.key db:db];
+            
+            liveConversation.participants = localEntities;
+
+        }
+        
+        //Fetch users' details.
+        
+        
+        callback(YES,liveConversations);
+    }];
+}
+
++(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback
+{
+    __block NSArray *localEntities = nil;
+    [DatabaseManager run:^(FMDatabase *db) {
+        localEntities = [GLPLiveConversationParticipantsDao participants:conversationId db:db];
+        
+        //Fetch users' details.
+        
+        
+        callback(YES, localEntities);
+    }];
+}
 
 +(void) addLiveConversation:(GLPLiveConversation*)newConversation
 {
@@ -172,9 +205,7 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        BOOL deleted = [GLPLiveConversationDao deleteLiveConversationWithId:key db:db];
-        NSLog(@"Liveconversation Deleted: %d",deleted);
-        
+        [GLPLiveConversationDao deleteLiveConversationWithId:key db:db];
     }];
 }
 

@@ -47,6 +47,14 @@ static ContactsManager *instance = nil;
     
 }
 
+/**
+ Return YES if the user with the remoteKey is contact with the current user.
+ 
+ @param remoteKey user remote key.
+ 
+ @return YES if the user is contact, otherwise NO.
+ 
+ */
 -(BOOL)isUserContactWithId:(int)remoteKey
 {
     for(GLPContact* contact in self.contacts)
@@ -66,7 +74,7 @@ static ContactsManager *instance = nil;
 {
     GLPContact* contact = [self contactWithRemoteKey:remoteKey];
     
-    return contact.youConfirmed;
+    return (contact.youConfirmed || contact.theyConfirmed);
 }
 
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey

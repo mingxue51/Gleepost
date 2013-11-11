@@ -220,7 +220,10 @@ static BOOL initLiveChats;
             
             //Add the real user's image.
             //[imageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
-            [currentImageView setImageWithURL:[NSURL URLWithString:conv.author.profileImageUrl] placeholderImage:nil];
+            
+//            [currentImageView setImageWithURL:[NSURL URLWithString:conv.author.profileImageUrl] placeholderImage:nil];
+            [currentImageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
+
             //[currentButton setBackgroundImage:imageView.image forState:UIControlStateNormal];
 
         }
