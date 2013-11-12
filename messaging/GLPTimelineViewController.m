@@ -31,6 +31,7 @@
 #import "SessionManager.h"
 #import "ContactsHelper.h"
 #import "ProfileViewController.h"
+#import "TSMessage.h"
 
 @interface GLPTimelineViewController ()
 
@@ -50,8 +51,7 @@
 
 // bottom table view loading
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
-@property (assign, nonatomic) BOOL tableViewInScrolling;
-@property (assign, nonatomic) BOOL tableViewDisplayedLoadingCell;
+@property (assign, nonatomic) BOOL isLoading;
 
 @property int selectedUserId;
 
@@ -95,10 +95,9 @@ static BOOL likePushed;
     //Initialise.
     self.readyToReloadPosts = YES;
     
-    // bottom table view loading init controls
+    // loading related controls
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    self.tableViewDisplayedLoadingCell = NO;
-    self.tableViewInScrolling = NO;
+    self.isLoading = NO;
     
     [self loadPosts];
 }
@@ -133,6 +132,11 @@ static BOOL likePushed;
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
+
+    // refresh control
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to refresh"];
+    [self.refreshControl addTarget:self action:@selector(loadEarlierPosts) forControlEvents:UIControlEventValueChanged];
 }
 
 
@@ -245,22 +249,112 @@ static BOOL likePushed;
 
 - (void)loadPosts
 {
+    if(self.isLoading) {
+        return;
+    }
+    
+    [self startLoading];
+    
     [GLPPostManager loadPostsAfter:nil callback:^(BOOL success, BOOL remain, NSArray *posts) {
+        [self stopLoading];
+        
         if(success) {
             self.posts = [posts mutableCopy];
             
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
         } else {
-            [WebClientHelper showStandardError];
-            
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
         }
     }];
 }
 
+- (void)loadEarlierPosts
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    // if there is no current posts, just load posts
+    if(self.posts.count == 0) {
+        [self loadPosts];
+        return;
+    }
+    
+    [self startLoading];
+    
+    [GLPPostManager loadPostsBefore:self.posts[0] callback:^(BOOL success, BOOL remain, NSArray *posts) {
+        [self stopLoading];
+        
+        if(!success) {
+            [self showLoadingError:@"Failed to load new posts"];
+            return;
+        }
+        
+        if(posts.count > 0) {
+            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+            
+            NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+            for(int i = 0; i < posts.count; i++) {
+                [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            }
+            
+            [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }];
+}
 
+- (void)loadPreviousPosts
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    if(self.posts.count == 0) {
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        return;
+    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return;
+    }
+    
+    [self startLoading];
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    
+    [GLPPostManager loadPostsAfter:[self.posts lastObject] callback:^(BOOL success, BOOL remain, NSArray *posts) {
+        [self stopLoading];
+        
+        if(!success) {
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
+            [self reloadLoadingCell];
+            return;
+        }
+        
+        self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+        
+        if(posts.count > 0) {
+            int firstInsertRow = self.posts.count;
+            
+            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
+            
+            NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+            for(int i = firstInsertRow; i < self.posts.count; i++) {
+                [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            }
+            
+            // update table view with showing new rows and updating the loading row
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:firstInsertRow inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView endUpdates];
+            
+        } else {
+            [self reloadLoadingCell];
+        }
+    }];
+}
 
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
 {
@@ -283,7 +377,7 @@ static BOOL likePushed;
 {
     post.imagesUrls = [NSArray arrayWithObjects:@"uploading...", nil];
     
-
+    
     
     [self.posts insertObject:post atIndex:0];
     [self.tableView reloadData];
@@ -296,51 +390,33 @@ static BOOL likePushed;
     [GLPPostManager saveNewPost:post];
 }
 
-- (void)loadPreviousPosts
+
+#pragma mark - Request management
+
+- (void)startLoading
 {
-    if(self.posts.count == 0) {
-        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-        return;
-    }
+    self.isLoading = YES;
     
-    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
-        NSLog(@"Previous posts loading already in progress, don't run twice");
-        return;
-    }
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing timeline"];
+    [self.refreshControl beginRefreshing];
     
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    
-    [GLPPostManager loadPostsAfter:[self.posts lastObject] callback:^(BOOL success, BOOL remain, NSArray *posts) {
-        if(success) {
-            //            for(GLPMessage *m in messages) {
-            //                NSLog(@"message %d - %@ - %@", m.remoteKey, m.date, m.content);
-            //            }
-            
-            self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-            
-            if(posts.count > 0) {
-                int firstInsertRow = self.posts.count;
-                
-                [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
-                
-                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-                for(int i = firstInsertRow; i < self.posts.count; i++) {
-                    [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                }
-                
-                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationTop];
-                
-            } else {
-                [self reloadLoadingCell];
-            }
-            
-        } else {
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-            [self reloadLoadingCell];
-        }
- 
-    }];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
+
+- (void)stopLoading
+{
+    self.isLoading = NO;
+    
+    [self.refreshControl endRefreshing];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)showLoadingError:(NSString *)message
+{
+    [TSMessage showNotificationInViewController:self title:@"Loading failed" subtitle:message type:TSMessageNotificationTypeError];
+}
+
 
 #pragma mark - Table view
 
@@ -487,16 +563,33 @@ static BOOL likePushed;
 {
     if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
         NSLog(@"Load previous posts cell activated");
-        
         [self loadPreviousPosts];
-        
-//        // tableview in scrolling, delay the loading when scroll is finished
-//        if(self.tableViewInScrolling) {
-//            self.tableViewDisplayedLoadingCell = YES;
-//        } else {
-//            [self startLoadingPreviousMessages];
-//        }
     }
+}
+
+-(void) updateTableWithNewRowCount:(int)rowCount
+{
+    CGPoint tableViewOffset = [self.tableView contentOffset];
+    
+    [UIView setAnimationsEnabled:NO];
+    
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    
+    int heightForNewRows = 0;
+    
+    for (NSInteger i = 0; i < rowCount; i++) {
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        [rowsInsertIndexPath addObject:tempIndexPath];
+        
+        heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+    }
+    
+    tableViewOffset.y += heightForNewRows;
+    
+    [self.tableView reloadData];
+    [self.tableView setContentOffset:tableViewOffset animated:NO];
+    
+    [UIView setAnimationsEnabled:YES];
 }
 
 - (void)reloadLoadingCell

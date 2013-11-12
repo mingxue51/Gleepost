@@ -16,6 +16,48 @@
 
 NSInteger const kGLPNumberOfPosts = 20;
 
++ (void)loadPostsBefore:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
+{
+    NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
+    
+    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+        if(!success) {
+            callback(NO, NO, nil);
+            return;
+        }
+        
+        // take only new posts
+        NSMutableArray *newPosts = [NSMutableArray array];
+        for (GLPPost *newPost in posts) {
+            if(newPost.remoteKey == post.remoteKey) {
+                break;
+            }
+            
+            [newPosts addObject:newPost];
+        }
+        
+        //[newPosts addObject:post]; // comment / uncomment for debug reasons
+        
+        NSLog(@"remote posts %d", newPosts.count);
+        
+        if(!newPosts || newPosts.count == 0) {
+            callback(YES, NO, nil);
+            return;
+        }
+        
+        // only new posts loaded, means it may remain some
+        BOOL remain = newPosts.count == posts.count;
+        
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            for (GLPPost *newPost in newPosts) {
+                [GLPPostDao save:newPost inDb:db];
+            }
+        }];
+        
+        callback(YES, remain, newPosts);
+    }];
+}
+
 + (void)loadPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
     NSLog(@"load posts after %d - %@", post.remoteKey, post.content);
@@ -28,11 +70,17 @@ NSInteger const kGLPNumberOfPosts = 20;
     NSLog(@"local posts %d", localEntities.count);
     
     if(localEntities.count > 0) {
-        callback(YES, YES, localEntities);
+        // delay for infime ms because fuck ios development
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            callback(YES, YES, localEntities);
+        });
+
         return;
     }
     
-    [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:post callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, NO, nil);
             return;
@@ -59,7 +107,7 @@ NSInteger const kGLPNumberOfPosts = 20;
 
 +(void)getNewPostsAndSaveToDatabaseWithOldPosts:(NSArray*)localEntities
 {
-    [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
         
         NSArray *newEntities = [[NSArray alloc] init];
         
@@ -84,7 +132,7 @@ NSInteger const kGLPNumberOfPosts = 20;
     [DatabaseManager run:^(FMDatabase *db) {
         localEntities = [GLPPostDao findLastPostsInDb:db];
         
-        [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+        [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
             
             if(success)
             {

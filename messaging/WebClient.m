@@ -28,7 +28,7 @@
 
 @synthesize isNetworkAvailable;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.18/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.19/";
 
 static WebClient *instance = nil;
 
@@ -85,7 +85,6 @@ static WebClient *instance = nil;
 - (void)updateNetworkAvailableStatus:(AFNetworkReachabilityStatus) status
 {
     BOOL available = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
-    NSLog(@"Update network available status: %d", available);
     
     // update the status if it changed
     // or always update if it's the first time
@@ -96,7 +95,7 @@ static WebClient *instance = nil;
         // spread the notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNetworkStatusUpdate" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:self.isNetworkAvailable] forKey:@"status"]];
         
-        NSLog(@"Network available status: %d", self.isNetworkAvailable);
+        NSLog(@"Network status changed, currently available: %d", self.isNetworkAvailable);
     }
 }
 
@@ -155,12 +154,15 @@ static WebClient *instance = nil;
     }];
 }
 
+
 #pragma mark - Posts
 
-- (void)getPostsWithCallbackBlock:(void (^)(BOOL success, NSArray *posts))callbackBlock
+- (void)getPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
-    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    if(post) {
+        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+    }
     
     [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
@@ -471,7 +473,23 @@ static WebClient *instance = nil;
     if(error) {
         callback(NO, nil);
     } else {
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+        error = nil;
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
+        // this may happen but im not sure why
+        if(error) {
+            NSLog(@"Error parsing json response to dictionary: %@", error.localizedDescription);
+            callback(NO, nil);
+            return;
+        }
+        
+        // this should not happen
+        if(!json) {
+            NSLog(@"Json response to dictionary is null");
+            callback(NO, nil);
+            return;
+        }
+        
         NSLog(@"Long poll response: %@", json);
         
         GLPConversation *conversation = [[GLPConversation alloc] init];

@@ -198,8 +198,7 @@ static BOOL likePushed;
     //    hud.detailsLabelText = @"Please wait few seconds";
     
     WebClient *client = [WebClient sharedInstance];
-    [client getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-        //[hud hide:YES];
+    [client getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
         
         if(success) {
             

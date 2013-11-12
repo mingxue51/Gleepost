@@ -409,7 +409,7 @@ static BOOL likePushed;
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
     
-    [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
       // [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {

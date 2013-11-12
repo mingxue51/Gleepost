@@ -1333,7 +1333,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="46" width="320" height="321"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="321"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" alpha="0.39999999999999963" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_profile.png" id="GMr-8I-em4">
@@ -1422,7 +1422,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="300" id="JFH-dq-puo" customClass="PostWithoutImageCell">
-                                        <rect key="frame" x="0.0" y="435" width="320" height="300"/>
+                                        <rect key="frame" x="0.0" y="371" width="320" height="300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JFH-dq-puo" id="d56-fn-9Xx">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>

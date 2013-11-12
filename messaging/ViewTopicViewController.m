@@ -493,10 +493,6 @@ float timeInterval = 0.1;
     [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
         
         if(success) {
-//            for(GLPMessage *m in messages) {
-//                NSLog(@"message %d - %@ - %@", m.remoteKey, m.date, m.content);
-//            }
-            
             self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             
             if(messages.count > 0) {
@@ -506,10 +502,6 @@ float timeInterval = 0.1;
             } else {
                 [self reloadLoadingCell];
             }
-            
-            
-            
-
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self reloadLoadingCell];

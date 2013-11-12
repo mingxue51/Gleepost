@@ -201,40 +201,13 @@
     [self.refreshControl beginRefreshing];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-//    if(self.conversations.count == 0) {
-//        self.isFullScreenLoading = YES;
-//        
-//        [[[[UIApplication sharedApplication] delegate] window] addSubview:self.loadingView];
-//        [self.activityIndicatorView startAnimating];
-//    }
 }
-
-//- (void)stopFullScreenLoading
-//{
-//    self.isFullScreenLoading = NO;
-//    
-//    [UIView animateWithDuration:0.5 animations:^{
-//        self.loadingView.alpha = 0;
-//    } completion:^(BOOL finished) {
-//        [self.loadingView removeFromSuperview];
-//        [self.activityIndicatorView stopAnimating];
-//    }];
-//}
 
 - (void)stopLoading
 {
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"MMM d, h:mm a"];
-//    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter stringFromDate:[NSDate date]]];
-//    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
     [self.refreshControl endRefreshing];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-//    if(self.isFullScreenLoading) {
-//        [self stopFullScreenLoading];
-//    }
 }
 
 
