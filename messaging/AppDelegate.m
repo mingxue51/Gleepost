@@ -21,8 +21,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [DatabaseManager sharedInstance];
-    
     [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -81,9 +79,21 @@
 {
     // Saves changes in the application's managed object context before the application terminates.
 //    [self saveContext];
-    [MagicalRecord cleanUp];
+//    [MagicalRecord cleanUp];
 }
 
+
+# pragma mark - Push
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"Push token registered: %@", deviceToken);
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Fail to register to push, error: %@", error);
+}
 
 
 
@@ -178,9 +188,9 @@
 #pragma mark - Application's Documents directory
 
 // Returns the URL to the application's Documents directory.
-- (NSURL *)applicationDocumentsDirectory
-{
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
+//- (NSURL *)applicationDocumentsDirectory
+//{
+//    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+//}
 
 @end

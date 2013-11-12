@@ -87,39 +87,27 @@ static WebClient *instance = nil;
     
 }
 
-- (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success))callbackBlock
+- (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate))callbackBlock
 {
     // ios6 temp fix
     if(!name || !password) {
-        callbackBlock(NO);
+        callbackBlock(NO, nil, nil, nil);
         return;
     }
     
     [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = (NSDictionary *) responseObject;
         
-
-        
-        
         GLPUser *user = [[GLPUser alloc] init];
         user.remoteKey = [json[@"id"] integerValue];
         user.name = name;
-        
-
-        
 
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
-        NSAssert(user.remoteKey != 0, @"");
-        NSAssert(token, @"");
-        NSAssert(expirationDate, @"");
-        
-        [self.sessionManager registerUser:(GLPUser *)user withToken:token andExpirationDate:expirationDate];
-        
-        callbackBlock(YES);
+        callbackBlock(YES, user, token, expirationDate);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO);
+        callbackBlock(NO, nil, nil, nil);
     }];
 }
 

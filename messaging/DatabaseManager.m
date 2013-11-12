@@ -18,8 +18,6 @@
 
 @implementation DatabaseManager
 
-@synthesize databaseQueue=_databaseQueue;
-
 NSString * const GLPDatabaseName = @"Gleepost2.sqlite";
 
 static DatabaseManager *instance = nil;
@@ -71,10 +69,7 @@ static DatabaseManager *instance = nil;
 }
 
 - (void)initDatabase
-{
-//    self.database = [FMDatabase databaseWithPath:self.path];
-//    [self.database open];
-    
+{    
     self.databaseQueue = [FMDatabaseQueue databaseQueueWithPath:self.path];
     
     if(!self.exists) {

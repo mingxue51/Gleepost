@@ -20,7 +20,7 @@
 {
     __block GLPConversation *conversation;
     
-    [[DatabaseManager sharedInstance].databaseQueue inDatabase:^(FMDatabase *db) {
+    [DatabaseManager run:^(FMDatabase *db) {
         conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
     }];
     

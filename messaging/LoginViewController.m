@@ -13,9 +13,7 @@
 #import "AppDelegate.h"
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
-#import "GLPLongPollManager.h"
-#import "GLPContact.h"
-#import "GLPContactDao.h"
+#import "GLPLoginManager.h"
 
 @interface LoginViewController ()
 
@@ -102,48 +100,14 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [[WebClient sharedInstance] loginWithName:self.nameTextField.text password:self.passwordTextField.text andCallbackBlock:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:self.nameTextField.text andPassword:self.passwordTextField.text callback:^(BOOL success) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
-            [[GLPLongPollManager sharedInstance] startLongPoll];
-            
-            //Load contacts and add them to the database.
-            [self loadContactsAndSaveToDatabase];
-            
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
         }
-    }];
-}
-
-
--(void) loadContactsAndSaveToDatabase
-{
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
-    
-    
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
-        
-        [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        
-        if(success)
-        {
-            //GLPUser *user = [[SessionManager sharedInstance] user];
-            
-            for(GLPContact *contact in contacts)
-            {
-                [GLPContactDao save:contact];
-            }
-        }
-        else
-        {
-            [WebClientHelper showStandardError];
-        }
-        
-        
     }];
 }
 
@@ -167,11 +131,6 @@
     if([self.passwordTextField isFirstResponder]) {
         [self.passwordTextField resignFirstResponder];
     }
-}
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@"prepareForSegue");
 }
 
 @end

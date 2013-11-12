@@ -134,7 +134,7 @@
 
 + (void)save:(GLPMessage *)entity
 {
-    [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPMessageDao save:entity db:db];
     }];
 }

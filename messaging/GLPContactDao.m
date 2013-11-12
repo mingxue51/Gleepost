@@ -16,7 +16,7 @@
 {
     __block GLPContact *contact = nil;
     
-    [[DatabaseManager sharedInstance].databaseQueue inDatabase:^(FMDatabase *db) {
+    [DatabaseManager run:^(FMDatabase *db) {
         contact = [GLPContactDao findByRemoteKey:remoteKey db:db];
     }];
     
@@ -56,7 +56,7 @@
 {
     __block NSArray *contacts = nil;
     
-    [[DatabaseManager sharedInstance].databaseQueue inDatabase:^(FMDatabase *db) {
+    [DatabaseManager run:^(FMDatabase *db) {
         contacts = [GLPContactDao loadContactsFromDb:db];
     }];
     
@@ -65,9 +65,7 @@
 
 + (void)save:(GLPContact *)entity
 {
-    [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         BOOL saved = [db executeUpdateWithFormat:@"insert into contacts(remoteKey, you_confirmed, they_confirmed) values(%d, %d, %d)", entity.remoteKey, entity.youConfirmed, entity.theyConfirmed];
         NSLog(@"Contact Saved status: %d.",saved);
 //        entity.key = [db lastInsertRowId];

@@ -16,6 +16,7 @@
 #import "GLPLongPollManager.h"
 #import "SessionManager.h"
 #import "ImageFormatterHelper.h"
+#import "GLPLoginManager.h"
 
 @interface FinalRegisterViewController ()
 
@@ -196,16 +197,11 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [[WebClient sharedInstance] loginWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text,self.userLastNameTextView.text] password:self.eMailPass[1] andCallbackBlock:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text,self.userLastNameTextView.text] andPassword:self.eMailPass[1] callback:^(BOOL success) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
-            [[GLPLongPollManager sharedInstance] startLongPoll];
-            
-            //Set image to user's profile.
-            //Upload image and set it to user's profile.
             [self uploadImageAndSetUserImageWithUserRemoteKey:0];
-            
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];

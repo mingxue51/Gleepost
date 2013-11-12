@@ -12,8 +12,6 @@
 
 @interface DatabaseManager : NSObject
 
-@property (readonly, strong, nonatomic) FMDatabaseQueue *databaseQueue;
-
 + (DatabaseManager *)sharedInstance;
 + (void)run:(void (^)(FMDatabase *db))block;
 + (void)transaction:(void (^)(FMDatabase *db, BOOL *rollback))block;

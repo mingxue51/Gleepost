@@ -52,9 +52,6 @@
 		583EAB7518119402003D68B3 /* default_user_image_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7418119402003D68B3 /* default_user_image_old.png */; };
 		583EAB7918119688003D68B3 /* add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7818119688003D68B3 /* add_contact.png */; };
 		58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403531182FF5FB00499488 /* GLPTimelineViewController.m */; };
-		58403535182FF89F00499488 /* GLPPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403534182FF89F00499488 /* GLPPostManager.m */; };
-		58403538182FF8BE00499488 /* GLPPostDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403537182FF8BE00499488 /* GLPPostDaoParser.m */; };
-		5840353B182FF8C900499488 /* GLPPostDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5840353A182FF8C900499488 /* GLPPostDao.m */; };
 		58406AFE1823FCBE0032353E /* NewPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58406AFD1823FCBE0032353E /* NewPostView.m */; };
 		5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315817FEDD8500A3278D /* AddCommentViewController.m */; };
 		5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315B17FEE97D00A3278D /* NewCommentView.m */; };
@@ -202,6 +199,9 @@
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
 		803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803B6084181FFE8A00A178EB /* GLPLoadingCell.m */; };
 		8050249C181932C600F5337F /* conversation_new_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8050249B181932C600F5337F /* conversation_new_notification.png */; };
+		805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358C8182EF1CC00579079 /* GLPPostManager.m */; };
+		805358CC182EF37600579079 /* GLPPostDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358CB182EF37600579079 /* GLPPostDao.m */; };
+		805358CF182EF41000579079 /* GLPPostDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358CE182EF41000579079 /* GLPPostDaoParser.m */; };
 		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
 		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
 		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
@@ -310,7 +310,7 @@
 		80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6117CE5CD80034C0EF /* post_login.json */; };
 		80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6317CE77D70034C0EF /* get_posts.json */; };
 		80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF32180FD159009E17BD /* DatabaseManager.m */; };
-		80DDDF36180FD799009E17BD /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF35180FD799009E17BD /* LoginManager.m */; };
+		80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF35180FD799009E17BD /* GLPLoginManager.m */; };
 		80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */; };
 		80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF3B180FE00A009E17BD /* UserManager.m */; };
 		80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */; };
@@ -374,10 +374,6 @@
 		58403531182FF5FB00499488 /* GLPTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTimelineViewController.m; sourceTree = "<group>"; };
 		58403533182FF89F00499488 /* GLPPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostManager.h; sourceTree = "<group>"; };
 		58403534182FF89F00499488 /* GLPPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostManager.m; sourceTree = "<group>"; };
-		58403536182FF8BE00499488 /* GLPPostDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostDaoParser.h; sourceTree = "<group>"; };
-		58403537182FF8BE00499488 /* GLPPostDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostDaoParser.m; sourceTree = "<group>"; };
-		58403539182FF8C900499488 /* GLPPostDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostDao.h; sourceTree = "<group>"; };
-		5840353A182FF8C900499488 /* GLPPostDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostDao.m; sourceTree = "<group>"; };
 		58406AFC1823FCBE0032353E /* NewPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostView.h; sourceTree = "<group>"; };
 		58406AFD1823FCBE0032353E /* NewPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostView.m; sourceTree = "<group>"; };
 		5841315717FEDD8500A3278D /* AddCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCommentViewController.h; sourceTree = "<group>"; };
@@ -577,6 +573,14 @@
 		803B6083181FFE8A00A178EB /* GLPLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCell.h; sourceTree = "<group>"; };
 		803B6084181FFE8A00A178EB /* GLPLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadingCell.m; sourceTree = "<group>"; };
 		8050249B181932C600F5337F /* conversation_new_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conversation_new_notification.png; sourceTree = "<group>"; };
+		805358C4182EEEC700579079 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
+		805358C5182EEEC700579079 /* GLPTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTimelineViewController.m; sourceTree = "<group>"; };
+		805358C7182EF1CC00579079 /* GLPPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostManager.h; sourceTree = "<group>"; };
+		805358C8182EF1CC00579079 /* GLPPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostManager.m; sourceTree = "<group>"; };
+		805358CA182EF37600579079 /* GLPPostDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostDao.h; sourceTree = "<group>"; };
+		805358CB182EF37600579079 /* GLPPostDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostDao.m; sourceTree = "<group>"; };
+		805358CD182EF41000579079 /* GLPPostDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostDaoParser.h; sourceTree = "<group>"; };
+		805358CE182EF41000579079 /* GLPPostDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostDaoParser.m; sourceTree = "<group>"; };
 		8056763D1805997B006E058E /* UserNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNetwork.h; sourceTree = "<group>"; };
 		8056763E1805997B006E058E /* UserNetwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNetwork.m; sourceTree = "<group>"; };
 		8056764118059DC4006E058E /* LongPollOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollOperation.h; sourceTree = "<group>"; };
@@ -751,8 +755,8 @@
 		80DDAA6317CE77D70034C0EF /* get_posts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_posts.json; sourceTree = "<group>"; };
 		80DDDF31180FD159009E17BD /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
 		80DDDF32180FD159009E17BD /* DatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
-		80DDDF34180FD799009E17BD /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
-		80DDDF35180FD799009E17BD /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
+		80DDDF34180FD799009E17BD /* GLPLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoginManager.h; sourceTree = "<group>"; };
+		80DDDF35180FD799009E17BD /* GLPLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoginManager.m; sourceTree = "<group>"; };
 		80DDDF37180FDCC8009E17BD /* DateFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateFormatterHelper.h; sourceTree = "<group>"; };
 		80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateFormatterHelper.m; sourceTree = "<group>"; };
 		80DDDF3A180FE00A009E17BD /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
@@ -1220,6 +1224,15 @@
 			name = Conversations;
 			sourceTree = "<group>";
 		};
+		805358C3182EEEAC00579079 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				805358C4182EEEC700579079 /* GLPTimelineViewController.h */,
+				805358C5182EEEC700579079 /* GLPTimelineViewController.m */,
+			);
+			name = Posts;
+			sourceTree = "<group>";
+		};
 		8056764018059D78006E058E /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1244,6 +1257,8 @@
 				581AAF07181D9E9D00F091A9 /* NotificationsManager.m */,
 				5828D7B7181EAAFC002D71F9 /* LiveConversationManager.h */,
 				5828D7B8181EAAFC002D71F9 /* LiveConversationManager.m */,
+				805358C7182EF1CC00579079 /* GLPPostManager.h */,
+				805358C8182EF1CC00579079 /* GLPPostManager.m */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1429,6 +1444,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				805358C3182EEEAC00579079 /* Posts */,
 				803B607C181FD77200A178EB /* Conversations */,
 				58433284180F02E500BD9F74 /* Login Register Classes */,
 				58B865CF180D9DD200BB18AF /* Notifications */,
@@ -1474,8 +1490,8 @@
 				80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */,
 				80DDDF31180FD159009E17BD /* DatabaseManager.h */,
 				80DDDF32180FD159009E17BD /* DatabaseManager.m */,
-				80DDDF34180FD799009E17BD /* LoginManager.h */,
-				80DDDF35180FD799009E17BD /* LoginManager.m */,
+				80DDDF34180FD799009E17BD /* GLPLoginManager.h */,
+				80DDDF35180FD799009E17BD /* GLPLoginManager.m */,
 				80DDDF3A180FE00A009E17BD /* UserManager.h */,
 				80DDDF3B180FE00A009E17BD /* UserManager.m */,
 				8067E6CA18152AA800A343EF /* GLPLongPollManager.h */,
@@ -1611,8 +1627,8 @@
 				589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */,
 				589EFD9D182D38CA00EBEB2E /* GLPLiveUserDao.h */,
 				589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */,
-				58403539182FF8C900499488 /* GLPPostDao.h */,
-				5840353A182FF8C900499488 /* GLPPostDao.m */,
+				805358CA182EF37600579079 /* GLPPostDao.h */,
+				805358CB182EF37600579079 /* GLPPostDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -1634,8 +1650,8 @@
 				80C8BA71181048E9004F70DB /* GLPMessageDaoParser.m */,
 				5828D7AE181E9B5E002D71F9 /* GLPLiveConversationDaoParser.h */,
 				5828D7AF181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m */,
-				58403536182FF8BE00499488 /* GLPPostDaoParser.h */,
-				58403537182FF8BE00499488 /* GLPPostDaoParser.m */,
+				805358CD182EF41000579079 /* GLPPostDaoParser.h */,
+				805358CE182EF41000579079 /* GLPPostDaoParser.m */,
 			);
 			name = DaoParser;
 			sourceTree = "<group>";
@@ -1947,6 +1963,7 @@
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
+				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
 				58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
@@ -1976,7 +1993,6 @@
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				80C8BA591810340E004F70DB /* GLPUserDao.m in Sources */,
 				58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */,
-				5840353B182FF8C900499488 /* GLPPostDao.m in Sources */,
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,
 				582143D517FC5B6D0032ECEB /* TPKeyboardAvoidingScrollView.m in Sources */,
 				80666C7F1806FF4900E4E515 /* MessagesSendingProcessor.m in Sources */,
@@ -2012,6 +2028,7 @@
 				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
 				581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */,
+				805358CC182EF37600579079 /* GLPPostDao.m in Sources */,
 				5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */,
 				805676461805B742006E058E /* MessageCell.m in Sources */,
 				8087E433180ED6F700938264 /* _GLPMessage.m in Sources */,
@@ -2031,7 +2048,6 @@
 				8096E4EC17C2CBFD00C7BF60 /* CommentCell.m in Sources */,
 				584CF66A18227E3200EFABB8 /* GLPContactDao.m in Sources */,
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
-				58403538182FF8BE00499488 /* GLPPostDaoParser.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
@@ -2043,8 +2059,7 @@
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
-				58403535182FF89F00499488 /* GLPPostManager.m in Sources */,
-				80DDDF36180FD799009E17BD /* LoginManager.m in Sources */,
+				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
@@ -2070,6 +2085,7 @@
 				80C8BA5318103248004F70DB /* GLPConversation.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */,
+				805358CF182EF41000579079 /* GLPPostDaoParser.m in Sources */,
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,

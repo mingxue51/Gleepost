@@ -61,43 +61,11 @@ static SessionManager *instance = nil;
     return self;
 }
 
--(void)updateUserWithUrl:(NSString*)url
-{
-    self.user.profileImageUrl = url;
-    
-    [GLPUserDao update:self.user];
-}
-
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate
 {
     NSAssert(!self.user, @"An user is already registered in the session");
 
-    // (drop previous if need and) create database
-    //TODO: Comment out this code.
-    //[[DatabaseManager sharedInstance] dropDatabase];
     [[DatabaseManager sharedInstance] initDatabase];
-    
-    //TODO: See again if this is a good style of programming.
-    //Request and get all the user's details.
-    //Request all the user's data from server.
-    [[WebClient sharedInstance] getUserWithKey:user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-        
-        if(success)
-        {
-            NSLog(@"User's details: %@",user);
-            // configure session
-            [GLPUserDao save:user];
-            [[SessionManager sharedInstance] setUser:user];
-        }
-        else
-        {
-            NSLog(@"USER DETAILS ERROR.");
-        }
-        
-        
-    }];
-    
-
     
     self.user = user;
     self.token = token;
@@ -106,7 +74,6 @@ static SessionManager *instance = nil;
     // save session
     self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
     self.data[@"user.name"] = self.user.name;
-//    self.data[@"user.profileImage"] = self.user.profileImageUrl;
     self.data[@"user.token"] = self.token;
     self.data[@"user.expirationDate"] = [[DateFormatterHelper createDefaultDateFormatter] stringFromDate:expirationDate];
     
@@ -119,11 +86,8 @@ static SessionManager *instance = nil;
     self.token = nil;
     self.authParameters = nil;
     
- 
     [self.data removeAllObjects];
-
     [self saveData];
-    
 }
 
 
@@ -148,13 +112,9 @@ static SessionManager *instance = nil;
     return NO;
 }
 
-//TODO: Here there is a problem.
-
-/**
- Load existing data from database.
- */
 - (void)loadData
 {
+    // load dictionnary data from saved file or create new one
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
@@ -167,6 +127,7 @@ static SessionManager *instance = nil;
             self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
         } else { // clean expired session
             [self cleanSession];
+            [[DatabaseManager sharedInstance] dropDatabase];
         }
         
     } else {
