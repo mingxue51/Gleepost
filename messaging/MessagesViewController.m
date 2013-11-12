@@ -109,7 +109,6 @@
 - (void)createRefresh
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to refresh"];
     [self.refreshControl addTarget:self action:@selector(loadConversations) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -197,16 +196,13 @@
 
 - (void)startLoading
 {
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Loading conversations"];
     [self.refreshControl beginRefreshing];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 - (void)stopLoading
 {
     [self.refreshControl endRefreshing];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

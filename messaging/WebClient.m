@@ -461,36 +461,12 @@ static WebClient *instance = nil;
 // Blocking operation
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback
 {
-    NSLog(@"Start synchronous long poll request...");
-    
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSMutableURLRequest *request = [self requestWithMethod:@"GET" path:@"longpoll" parameters:self.sessionManager.authParameters];
-    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-    NSLog(@"Synchronous long poll request finished with result: %d", error ? NO : YES);
-    
-    if(error) {
-        callback(NO, nil);
-    } else {
-        error = nil;
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        
-        // this may happen but im not sure why
-        if(error) {
-            NSLog(@"Error parsing json response to dictionary: %@", error.localizedDescription);
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" callback:^(BOOL success, NSDictionary *json) {
+       
+        if(!success) {
             callback(NO, nil);
             return;
         }
-        
-        // this should not happen
-        if(!json) {
-            NSLog(@"Json response to dictionary is null");
-            callback(NO, nil);
-            return;
-        }
-        
-        NSLog(@"Long poll response: %@", json);
         
         GLPConversation *conversation = [[GLPConversation alloc] init];
         conversation.remoteKey = [json[@"conversation_id"] integerValue];
@@ -500,7 +476,7 @@ static WebClient *instance = nil;
         message.conversation = conversation;
         
         callback(YES, message);
-    }
+    }];
 }
 
 
@@ -661,21 +637,58 @@ static WebClient *instance = nil;
     
 }
 
-//- (void)postPath:(NSString *)path parameters:(NSDictionary *)parameters withImage:(NSData*)image success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
-//{
-//	//NSURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
-//   // AFHTTPClient *client= [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"https://gleepost.com/api/v0.15/"]];
-//
-//    
-//    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:path parameters:parameters constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-//
-//        [formData appendPartWithFileData:image name:[NSString stringWithFormat:@"file"] fileName:[NSString stringWithFormat:@"abc.png"] mimeType:@"image/png"];
-//        
-//    }];
-//    
-//	AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
-//    [self enqueueHTTPRequestOperation:operation];
-//}
 
+#pragma mark - Notifications
+
+//TODO: define notification type
+-(void)synchronousGetNotificationsLongPoll:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callback: (void (^)(BOOL success, NSString *response))callback
+{
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" callback:^(BOOL success, NSDictionary *json) {
+        if(!success) {
+            callback(NO, nil);
+            return;
+        }
+    }];
+}
+
+
+#pragma mark - Utils
+
+- (void)executeSynchronousRequestWithMethod:(NSString *)method path:(NSString *)path callback:(void (^)(BOOL success, NSDictionary *json))callback
+{
+    NSLog(@"Start synchronous request %@ - %@...", method, path);
+    
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:self.sessionManager.authParameters];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSLog(@"Synchronous %@ - %@ finished with result: %d", method, path, error ? NO : YES);
+    
+    if(error) {
+        callback(NO, nil);
+        return;
+    }
+    
+    error = nil;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    // this may happen but im not sure why
+    if(error) {
+        NSString* content = [NSString stringWithUTF8String:[data bytes]];
+        NSLog(@"Error parsing json response to dictionary: %@ - Problematic content: %@", error.localizedDescription, content);
+        callback(NO, nil);
+        return;
+    }
+    
+    // this should not happen
+    if(!json) {
+        NSLog(@"Json response to dictionary is null");
+        callback(NO, nil);
+        return;
+    }
+    
+    callback(YES, json);
+}
 
 @end
