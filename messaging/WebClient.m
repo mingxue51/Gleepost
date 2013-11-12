@@ -478,7 +478,8 @@ static WebClient *instance = nil;
         
         // this may happen but im not sure why
         if(error) {
-            NSLog(@"Error parsing json response to dictionary: %@", error.localizedDescription);
+            NSString* content = [NSString stringWithUTF8String:[data bytes]];
+            NSLog(@"Error parsing json response to dictionary: %@ - Problematic content: %@", error.localizedDescription, content);
             callback(NO, nil);
             return;
         }
@@ -660,6 +661,56 @@ static WebClient *instance = nil;
     [httpClient enqueueHTTPRequestOperation:operation];
     
 }
+
+
+#pragma mark - Notifications
+
+-(void)synchronousGetNotificationsLongPoll:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callback
+{
+    NSLog(@"Start synchronous get notifications request...");
+    
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSMutableURLRequest *request = [self requestWithMethod:@"GET" path:@"notifications" parameters:self.sessionManager.authParameters];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSLog(@"Synchronous get notifications request finished with result: %d", error ? NO : YES);
+    
+    if(error) {
+        callback(NO, nil);
+        return;
+    }
+    
+    error = nil;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    
+    // this may happen but im not sure why
+    if(error) {
+        NSString* content = [NSString stringWithUTF8String:[data bytes]];
+        NSLog(@"Error parsing json response to dictionary: %@ - Problematic content: %@", error.localizedDescription, content);
+        callback(NO, nil);
+        return;
+    }
+    
+    // this should not happen
+    if(!json) {
+        NSLog(@"Json response to dictionary is null");
+        callback(NO, nil);
+        return;
+    }
+    
+    NSLog(@"Long poll response: %@", json);
+    
+    GLPConversation *conversation = [[GLPConversation alloc] init];
+    conversation.remoteKey = [json[@"conversation_id"] integerValue];
+    conversation.title = json[@"by"][@"username"];
+    
+    GLPMessage *message = [RemoteParser parseMessageFromJson:json forConversation:nil];
+    message.conversation = conversation;
+    
+    callback(YES, message);
+}
+
 
 //- (void)postPath:(NSString *)path parameters:(NSDictionary *)parameters withImage:(NSData*)image success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 //{

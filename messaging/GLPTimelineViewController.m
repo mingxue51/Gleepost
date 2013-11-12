@@ -52,6 +52,7 @@
 // bottom table view loading
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 @property (assign, nonatomic) BOOL isLoading;
+@property (assign, nonatomic) BOOL firstLoadSuccessful;
 
 @property int selectedUserId;
 
@@ -98,6 +99,7 @@ static BOOL likePushed;
     // loading related controls
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.isLoading = NO;
+    self.firstLoadSuccessful = NO;
     
     [self loadPosts];
 }
@@ -105,6 +107,11 @@ static BOOL likePushed;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    //TODO: make it nicer with regular refreshing and avoid too frequent refreshing
+    if(self.firstLoadSuccessful) {
+        [self loadEarlierPostsAndSaveScrollingState:YES];
+    }
 }
 
 #pragma mark - Init config
@@ -135,8 +142,7 @@ static BOOL likePushed;
 
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to refresh"];
-    [self.refreshControl addTarget:self action:@selector(loadEarlierPosts) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
 }
 
 
@@ -263,6 +269,8 @@ static BOOL likePushed;
             
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
+            
+            self.firstLoadSuccessful = YES;
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
@@ -270,7 +278,12 @@ static BOOL likePushed;
     }];
 }
 
-- (void)loadEarlierPosts
+- (void)loadEarlierPostsFromPullToRefresh
+{
+    [self loadEarlierPostsAndSaveScrollingState:NO];
+}
+
+- (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
 {
     if(self.isLoading) {
         return;
@@ -295,12 +308,37 @@ static BOOL likePushed;
         if(posts.count > 0) {
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
-            NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-            for(int i = 0; i < posts.count; i++) {
-                [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            // update table view and keep the scrolling state
+            if(saveScrollingState) {
+                CGPoint tableViewOffset = [self.tableView contentOffset];
+                [UIView setAnimationsEnabled:NO];
+                
+                int heightForNewRows = 0;
+                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                for (NSInteger i = 0; i < posts.count; i++) {
+                    NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [rowsInsertIndexPath addObject:tempIndexPath];
+                    
+                    heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+                }
+                
+                tableViewOffset.y += heightForNewRows;
+                
+                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                [self.tableView setContentOffset:tableViewOffset animated:NO];
+                
+                [UIView setAnimationsEnabled:YES];
             }
             
-            [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+            // or scroll to the top
+            else {
+                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                for(int i = 0; i < posts.count; i++) {
+                    [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                }
+                
+                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+            }
         }
     }];
 }
@@ -397,9 +435,7 @@ static BOOL likePushed;
 {
     self.isLoading = YES;
     
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing timeline"];
     [self.refreshControl beginRefreshing];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
@@ -408,7 +444,6 @@ static BOOL likePushed;
     self.isLoading = NO;
     
     [self.refreshControl endRefreshing];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
