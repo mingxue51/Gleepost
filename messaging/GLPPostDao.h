@@ -13,7 +13,7 @@
 @interface GLPPostDao : NSObject
 
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db;
-+ (NSArray *)findLastPostsBefore:(GLPPost *)post inDb:(FMDatabase *)db;
++ (NSArray *)findLastPostsAfter:(GLPPost *)post inDb:(FMDatabase *)db;
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db;
 
 @end

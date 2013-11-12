@@ -10,4 +10,7 @@
 
 @interface LongPollOperation : NSOperation
 
+- (void)shouldStop;
+- (BOOL)shouldNotStop;
+
 @end

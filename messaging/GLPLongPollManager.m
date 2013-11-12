@@ -47,16 +47,43 @@ static GLPLongPollManager *instance = nil;
     self.queue = [[NSOperationQueue alloc] init];
     self.isOperationRunning = NO;
     
-   // self.isContactsOperationRunning = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
     
     return self;
 }
 
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    NSLog(@"Long poll manager network status update: %d", isNetwork);
+
+    if(isNetwork) {
+        [self startLongPoll];
+    } else {
+        [self stopLongPoll];
+    }
+}
+
 - (void)startLongPoll
 {
-    if(self.isOperationRunning) {
-        NSLog(@"Long poll operation already running");
+    if(![WebClient sharedInstance].isNetworkAvailable) {
+        NSLog(@"Does not start long poll operation because network is not available");
         return;
+    }
+    
+    if(self.isOperationRunning) {
+        // operation is alreay running
+        // maybe it was requested to stop, but did not have to time execute
+        // thus, cancel the stop request
+        BOOL willContinue = [self.longPollOperation shouldNotStop];
+        
+        // request will continue
+        if(willContinue) {
+            NSLog(@"Long poll operation already running, and will continue to run");
+            return;
+        }
+        
+        // otherwise the request stop or will stop, so we recreate new one
     }
     
     self.isOperationRunning = YES;
@@ -70,30 +97,16 @@ static GLPLongPollManager *instance = nil;
     
     [self.queue addOperation:self.longPollOperation];
     
-    
-    //Added.
-//    self.isContactsOperationRunning = YES;
-//    
-//    self.longPollContactOperation = [[LongPollContactsOperation alloc] init];
-//    [self.longPollContactOperation setCompletionBlock:^{
-//        NSLog(@"Long poll operation finished");
-//        self_.isContactsOperationRunning = NO;
-//    }];
-//    
-//    [self.queue addOperation:self.longPollContactOperation];
-    
     NSLog(@"Start long poll operation");
 }
 
 - (void)stopLongPoll
 {
-    [self.longPollOperation cancel];
-    
-//    [self.longPollContactOperation cancel];
-//    [self.queue cancelAllOperations];
-//    [[WebClient sharedInstance] cancelAllHTTPOperationsWithMethod:@"GET" path:@"longpoll"];
-    //[[[WebClient sharedInstance] operationQueue] cancelAllOperations];
-    NSLog(@"Stop long poll operation");
+    // request to stop the request
+    // however, it may not stop if request is processing
+    [self.longPollOperation shouldStop];
+
+    NSLog(@"Request to stop long poll operation");
 }
 
 @end

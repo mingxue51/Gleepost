@@ -20,9 +20,13 @@
 
 @property (strong, nonatomic) SessionManager *sessionManager;
 
+@property (assign, nonatomic) BOOL networkStatusEvaluated; // controls if the network available status has been evaluated at least once
+
 @end
 
 @implementation WebClient
+
+@synthesize isNetworkAvailable;
 
 static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.18/";
 
@@ -45,19 +49,18 @@ static WebClient *instance = nil;
         return nil;
     }
     
+    self.networkStatusEvaluated = NO;
+    self.isNetworkAvailable = NO;
+    
     [self setParameterEncoding:AFFormURLParameterEncoding];
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     [self setDefaultHeader:@"Accept" value:@"application/json"];
     
     self.sessionManager = [SessionManager sharedInstance];
     
+    __unsafe_unretained typeof(self) self_ = self;
     [self setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        if (status == AFNetworkReachabilityStatusNotReachable) {
-            [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
-            NSLog(@"Network unavailable");
-        } else {
-            NSLog(@"Network available");
-        }
+        [self_ updateNetworkAvailableStatus:status];
     }];
     
     if(ENV_FAKE_API) {
@@ -77,6 +80,29 @@ static WebClient *instance = nil;
     }
     
     return self;
+}
+
+- (void)updateNetworkAvailableStatus:(AFNetworkReachabilityStatus) status
+{
+    BOOL available = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
+    NSLog(@"Update network available status: %d", available);
+    
+    // update the status if it changed
+    // or always update if it's the first time
+    if(self.isNetworkAvailable != available || !self.networkStatusEvaluated) {
+        self.networkStatusEvaluated = YES;
+        self.isNetworkAvailable = available;
+        
+        // spread the notification
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNetworkStatusUpdate" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:self.isNetworkAvailable] forKey:@"status"]];
+        
+        NSLog(@"Network available status: %d", self.isNetworkAvailable);
+    }
+}
+
+- (void)activate
+{
+    [self updateNetworkAvailableStatus:self.networkReachabilityStatus];
 }
 
 -(void)logout
@@ -410,30 +436,53 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)longPollNewMessageCallbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
+//- (void)longPollNewMessageCallbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
+//{
+//    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"long poll %@", responseObject);
+//        NSDictionary *json = responseObject;
+//        
+//        GLPConversation *conversation = [[GLPConversation alloc] init];
+//        conversation.remoteKey = [json[@"conversation_id"] integerValue];
+//        conversation.title = json[@"by"][@"username"];
+//        
+//        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
+//        message.conversation = conversation;
+//        
+//        callbackBlock(YES, message);
+//
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
+
+// Blocking operation
+- (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback
 {
-    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"long poll %@", responseObject);
-        NSDictionary *json = responseObject;
+    NSLog(@"Start synchronous long poll request...");
+    
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSMutableURLRequest *request = [self requestWithMethod:@"GET" path:@"longpoll" parameters:self.sessionManager.authParameters];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    NSLog(@"Synchronous long poll request finished with result: %d", error ? NO : YES);
+    
+    if(error) {
+        callback(NO, nil);
+    } else {
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+        NSLog(@"Long poll response: %@", json);
         
         GLPConversation *conversation = [[GLPConversation alloc] init];
         conversation.remoteKey = [json[@"conversation_id"] integerValue];
         conversation.title = json[@"by"][@"username"];
         
-        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
+        GLPMessage *message = [RemoteParser parseMessageFromJson:json forConversation:nil];
         message.conversation = conversation;
         
-        callbackBlock(YES, message);
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, nil);
-    }];
-}
-
-
-- (void)cancelMessagesLongPolling
-{
-    [self cancelAllHTTPOperationsWithMethod:@"GET" path:@"longpoll"];
+        callback(YES, message);
+    }
 }
 
 

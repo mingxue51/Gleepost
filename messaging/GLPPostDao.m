@@ -43,7 +43,7 @@
     return result;
 }
 
-+ (NSArray *)findLastPostsBefore:(GLPPost *)post inDb:(FMDatabase *)db
++ (NSArray *)findLastPostsAfter:(GLPPost *)post inDb:(FMDatabase *)db
 {
     if(!post) {
         return [GLPPostDao findLastPostsInDb:db];

@@ -16,29 +16,20 @@
 
 NSInteger const kGLPNumberOfPosts = 20;
 
-+ (void)loadPostsWithCallback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
++ (void)loadPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
+    NSLog(@"load posts after %d - %@", post.remoteKey, post.content);
+    
     __block NSArray *localEntities = nil;
     [DatabaseManager run:^(FMDatabase *db) {
-        localEntities = [GLPPostDao findLastPostsInDb:db];
+        localEntities = post ? [GLPPostDao findLastPostsAfter:post inDb:db] : [GLPPostDao findLastPostsInDb:db];
     }];
     
     NSLog(@"local posts %d", localEntities.count);
     
-    if(localEntities.count > 0)
-    {
-        //Call to get new posts from server.
-
-        
-        //[GLPPostManager getNewPostsAndSaveToDatabaseWithOldPosts:localEntities];
-        
-        
-        
-        
-        
+    if(localEntities.count > 0) {
         callback(YES, YES, localEntities);
         return;
-
     }
     
     [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
@@ -214,33 +205,6 @@ NSInteger const kGLPNumberOfPosts = 20;
        
         [GLPPostDao save:post inDb:db];
        
-    }];
-}
-
-+ (void)loadPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
-{
-    NSLog(@"load posts before %d - %@", post.key, post.content);
-    
-    __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
-        localEntities = [GLPPostDao findLastPostsBefore:post inDb:db];
-    }];
-    
-    NSLog(@"local posts %d", localEntities.count);
-    
-    if(localEntities.count > 0) {
-        callback(YES, YES, localEntities);
-        return;
-    }
-    
-    [[WebClient sharedInstance] getPostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-        if(!success) {
-            callback(NO, NO, nil);
-            return;
-        }
-        
-        
-        
     }];
 }
 

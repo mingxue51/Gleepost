@@ -8,13 +8,9 @@
 
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
-#import "GLPMessage.h"
-#import "LocalMessage.h"
-#import "Conversation.h"
-#import "MessageProcessingOperation.h"
-#import "DatabaseManager.h"
 #import "SessionManager.h"
 #import "GLPLongPollManager.h"
+#import "WebClient.h"
 
 @implementation AppDelegate
 
@@ -72,6 +68,10 @@
     if([[SessionManager sharedInstance] isSessionValid]) {
         [[GLPLongPollManager sharedInstance] startLongPoll];
     }
+    
+    // activate or reactivate web client
+    [[WebClient sharedInstance] activate];
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

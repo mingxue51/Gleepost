@@ -361,6 +361,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSDate *)parseDateWithoutNanoSecondsFromString:(NSString *)string
 {
+    if(!string) {
+        return nil;
+    }
+    
     NSDate *date;
     NSError *error;
     
@@ -371,6 +375,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSDate *)parseDateWithNanoSecondsFromString:(NSString *)string
 {
+    if(!string) {
+        return nil;
+    }
+    
     NSDate *date;
     NSError *error;
     
