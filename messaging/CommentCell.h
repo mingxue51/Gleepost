@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPComment.h"
+#import "ViewPostViewController.h"
 
 @interface CommentCell : UITableViewCell
 
@@ -18,6 +19,7 @@
 @property (strong, nonatomic) UIView *socialPanelView;
 @property (strong, nonatomic) UIButton *likeButtonButton;
 @property (readwrite, assign) float height;
+@property (weak, nonatomic) ViewPostViewController *delegate;
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
 -(void)setCellHeight:(NSString*)content;

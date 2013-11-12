@@ -11,6 +11,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSDate+TimeAgo.h"
 #import "ShapeFormatterHelper.h"
+#import "ViewPostViewController.h"
+#import "WebClient.h"
+
+@interface PostCell()
+
+@property (strong, nonatomic) GLPPost *post;
+
+@end
 
 @implementation PostCell
 
@@ -43,15 +51,14 @@ static const float StandardImageCellHeight = 400;
         [self.contentView addSubview:lineView];
         
         
-        NSLog(@"initWithCoder : like button");
         
-        
-        [self.contentView bringSubviewToFront:self.socialPanel];
-        [self.contentView sendSubviewToBack:self.postImage];
-        
-        //Send to back the social panel.
-        [self.socialPanel bringSubviewToFront:self.thumpsUpBtn];
-        
+//        [self.contentView bringSubviewToFront:self.socialPanel];
+//        [self.contentView sendSubviewToBack:self.postImage];
+//        
+//        //Send to back the social panel.
+//        [self.socialPanel bringSubviewToFront:self.thumpsUpBtn];
+//        [self.socialPanel bringSubviewToFront:self.shareBtn];
+
         
 
         
@@ -61,7 +68,7 @@ static const float StandardImageCellHeight = 400;
 }
 
 
-static const float FixedSizeOfTextCell = 130;
+static const float FixedSizeOfTextCell = 80; //110 before.
 static const float FixedSizeOfImageCell = 400;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before.
@@ -69,6 +76,8 @@ static const float PostContentLabelMaxWidth = 250;
 
 -(void) updateWithPostData:(GLPPost *)postData
 {
+    self.post = postData;
+    
     self.imageAvailable = NO;
 
     //Change the mode of the post imageview.
@@ -221,6 +230,9 @@ static const float PostContentLabelMaxWidth = 250;
         [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
         
     }
+    
+
+
 
 }
 
@@ -241,7 +253,7 @@ static const float PostContentLabelMaxWidth = 250;
 {
     CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     
-    return [content sizeWithFont: [UIFont systemFontOfSize:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
+    return [content sizeWithFont: [UIFont systemFontOfSize:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage
@@ -255,12 +267,19 @@ static const float PostContentLabelMaxWidth = 250;
     return height + FollowingCellPadding;
 }
 
-static float bottomMargin = 50.0;
 
 -(void)layoutSubviews
 {
     if(self.isViewPost)
     {
+        self.contentView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
+
+        //Hide and disable comment button.
+        [self.commentBtn setHidden:YES];
+        [self.commentBtn setUserInteractionEnabled:NO];
+        
+        
+        
         CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
         
         
@@ -311,29 +330,153 @@ static float bottomMargin = 50.0;
         }
         else
         {
-            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
-
-            NSLog(@"Frame Size after: %f : %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height);
             
+                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
             
-
-
+                
+                NSLog(@"Frame Size after: %f : %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height);
+                
+                if([self.contentLbl.text isEqualToString:@""])
+                {
+                    return;
+                }
+                
+                CGRect socialFrame = self.socialPanel.frame;
+                
+                
+                
+                self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
             
-            if([self.contentLbl.text isEqualToString:@""])
+            if(contentSize.height < 20)
             {
-                return;
+                [self.contentLbl setFrame:CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+10, self.contentLbl.frame.size.width, contentSize.height)];
             }
-            CGRect socialFrame = self.socialPanel.frame;
             
-            //self.postImage.frame = CGRectMake(frameSize.origin.x, self.frame.size.height-(frameSize.size.height+50.0), frameSize.size.width, frameSize.size.height);
-            
-            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+30.0), socialFrame.size.width, socialFrame.size.height);
 
-            
         }
         
 
     }
+
+}
+
+#pragma - mark Delegate methods.
+
+- (IBAction)likePost:(id)sender
+{
+    NSLog(@"likePost.");
+    
+    UIButton *btn = (UIButton*) sender;
+    
+    //If like button is pushed then set the pushed variable to NO and change the
+    //colour of the image.
+    if([self.post liked])
+    {
+        [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        
+        //Add the thumbs up selected version of image.
+        [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+        
+        [self.post setLiked:NO];
+        
+        //Change the like status and send to server the change.
+        [self postLike:NO withPostRemoteKey:[self.post remoteKey]];
+    }
+    else
+    {
+        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        //Add the thumbs up selected version of image.
+        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+        
+        
+        [self.post setLiked:YES];
+        
+        //Change the like status and send to server the change.
+        [self postLike:YES withPostRemoteKey:[self.post remoteKey]];
+        
+    }
+}
+
+-(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
+{
+    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            NSLog(@"Like for post %d succeed.",postRemoteKey);
+        }
+        else
+        {
+            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+        }
+        
+        
+    }];
+}
+
+- (IBAction)commentPost:(id)sender
+{
+    NSLog(@"commentPost.");
+
+}
+
+- (IBAction)sharePost:(id)sender
+{
+    NSLog(@"sharePost.");
+    NSArray *items = @[[NSString stringWithFormat:@"%@",@"Share1"],[NSURL URLWithString:@"http://www.google.com"]];
+    
+    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    
+    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    
+    /**
+     NSString *const UIActivityTypePostToFacebook;
+     NSString *const UIActivityTypePostToTwitter;
+     NSString *const UIActivityTypePostToWeibo;
+     NSString *const UIActivityTypeMessage;
+     NSString *const UIActivityTypeMail;
+     NSString *const UIActivityTypePrint;
+     NSString *const UIActivityTypeCopyToPasteboard;
+     NSString *const UIActivityTypeAssignToContact;
+     NSString *const UIActivityTypeSaveToCameraRoll;
+     NSString *const UIActivityTypeAddToReadingList;
+     NSString *const UIActivityTypePostToFlickr;
+     NSString *const UIActivityTypePostToVimeo;
+     NSString *const UIActivityTypePostToTencentWeibo;
+     NSString *const UIActivityTypeAirDrop;
+     */
+    /**
+     NSArray * activityItems = @[[NSString stringWithFormat:@"Some initial text."], [NSURL URLWithString:@"http://www.google.com"]];
+     NSArray * applicationActivities = nil;
+     NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePostToWeibo, UIActivityTypePrint, UIActivityTypeMessage];
+     
+     UIActivityViewController * activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:applicationActivities];
+     activityController.excludedActivityTypes = excludeActivities;
+     
+     */
+    
+    //   SLComposeViewController *t;
+    
+    //SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    
+    //    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    //    {
+    //        // Device is able to send a Twitter message
+    //        NSLog(@"Able to use twitter.");
+    //
+    //    }
+    
+    //    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    //    {
+    //        // Device is able to send a Twitter message
+    //        NSLog(@"Able to use facebook.");
+    //
+    //    }
+    
+    shareItems.excludedActivityTypes = excludeActivities;
+    
+    [self.delegate presentViewController:shareItems animated:YES completion:nil];
+
 }
 
 static const float firstContentTextViewHeight = 60;
@@ -638,12 +781,6 @@ static int noOfLetters = 41;
     {
         view.frame = CGRectMake(view.frame.origin.x, y, view.frame.size.width, view.frame.size.height);
     }
-    
-}
-
-
--(void) updateLocationElements
-{
     
 }
 

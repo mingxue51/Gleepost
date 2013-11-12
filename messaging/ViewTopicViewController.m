@@ -274,7 +274,7 @@ float timeInterval = 0.1;
     {
         self.title = self.liveConversation.title;
         [titleLabel setTitle:self.liveConversation.title forState:UIControlStateNormal];
-        titleLabel.tag = [[self.participants objectAtIndex:0] remoteKey];
+        titleLabel.tag = [[self.liveConversation.participants objectAtIndex:0] remoteKey];
 
 
     }

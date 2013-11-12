@@ -17,5 +17,8 @@
 -(BOOL)isUserContactWithId:(int)remoteKey;
 -(BOOL)isContactWithIdRequested:(int)remoteKey;
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey;
+-(void)saveNewContact:(GLPContact*)contact;
+-(void)refreshFromDatabase;
+//-(void)refreshContacts;
 
 @end

@@ -10,7 +10,9 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NSDate+TimeAgo.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "SessionManager.h"
+#import "ContactsHelper.h"
+#import "ShapeFormatterHelper.h"
 
 @interface CommentCell()
 
@@ -37,10 +39,49 @@ static const float CommentContentLabelMaxWidth = 250;
         
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
         [self.contentView addSubview:lineView];
+        
+        
+
     }
     
     return self;
 
+}
+
+#pragma mark - Delegate methods
+
+-(void)navigateToProfile:(id)sender
+{
+    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *incomingView = (UIImageView*)incomingUser.view;
+    
+    //Decide where to navigate. Private or open.
+    
+    
+    self.delegate.selectedUserId = incomingView.tag;
+    
+    if((self.delegate.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    {
+        self.delegate.selectedUserId = -1;
+        //Navigate to profile view controller.
+        
+        [self.delegate performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.delegate.selectedUserId])
+    {
+        //Navigate to profile view controller.
+        
+        [self.delegate performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        //Navigate to private view controller.
+        
+        [self.delegate performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+    
+    
 }
 
 -(void)setCellHeight:(NSString*)content
@@ -54,6 +95,10 @@ static const float CommentContentLabelMaxWidth = 250;
 
 -(void)setComment:(GLPComment*)comment
 {
+    //Add user's remote key as an image tag.
+    self.userImageView.tag = comment.author.remoteKey;
+    
+    
     [self setCellHeight:comment.content];
     
     
@@ -76,9 +121,7 @@ static const float CommentContentLabelMaxWidth = 250;
         [self.userImageView setImageWithURL:[NSURL URLWithString:comment.author.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
         
     }
-    self.userImageView.clipsToBounds = YES;
-    
-    self.userImageView.layer.cornerRadius = 20;
+
     
     
     //Set user's name.
@@ -88,7 +131,17 @@ static const float CommentContentLabelMaxWidth = 250;
     
     //Set post's time.
     [self.postDateLabel setText:[currentDate timeAgo]];
+    
+    
+    //Add touch gesture to profile image.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.userImageView addGestureRecognizer:tap];
+    
+    //Set circle the user's image.
+    [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
 }
+
 
 -(void)layoutSubviews
 {

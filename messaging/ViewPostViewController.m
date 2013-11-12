@@ -16,8 +16,10 @@
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
 #import "PostCell.h"
-
-
+#import "PrivateProfileViewController.h"
+#import "ProfileViewController.h"
+#import "SessionManager.h"
+#import "ContactsHelper.h"
 
 @interface ViewPostViewController ()
 
@@ -82,9 +84,6 @@ static BOOL likePushed;
     [self.tableView initTableView];
 
 
-
-    //[self initHeaderTableView: self.post];
-    [self initFooterTableView];
     
     //Initialise elements.
     self.commentsHeight = [[NSMutableArray alloc] init];
@@ -127,6 +126,14 @@ static BOOL likePushed;
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
 
 
 #pragma mark - Init and config
@@ -151,36 +158,10 @@ static BOOL likePushed;
     self.commentGrowingTextView.frame = formTextViewFrame;
     
     self.commentGrowingTextView.layer.cornerRadius = 5;
+    
 }
 
 
-
-#pragma mark - Initialise header and footer
-
--(void) initFooterTableView
-{
-    self.tableView.typeTextView.footerTextView.delegate = self;
-}
-
-/**
- 
- Initialises the header view. A UIView presenting the current post.
- 
- */
-
-//-(void) initHeaderTableView: (Post*) incomingPost
-//{
-//    
-//    //Initialise Post View.
-//    [self.tableView.headerView initialiseElementsWithPost:_post];
-//
-//    //Add selectors to the buttons.
-//    [self buttonWithName:@"Like" andSubviews:[self.tableView.headerView subviews]];
-//    
-//    
-//    [self buttonWithName:@"" andSubviews:[self.tableView.headerView subviews]];
-//
-//}
 
 #pragma mark - Social panel button methods
 
@@ -209,9 +190,10 @@ static BOOL likePushed;
  
  @param buttonName title of the button.
  @param subviews of the social panel.
+ @param cell current cell.
  
  */
--(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray
+-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
 {
     for(UIView* view in subArray)
     {
@@ -221,23 +203,15 @@ static BOOL likePushed;
             currentBtn.userInteractionEnabled = YES;
             if([currentBtn.titleLabel.text isEqualToString:@"Like"])
             {
+                currentBtn.tag = postIndex;
+                
                 [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-                //[currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchDown];
-            }
-            else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
-            {
-                [currentBtn addTarget:self action:@selector(commentButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            else if([currentBtn.titleLabel.text isEqualToString:@"Share"])
-            {
-                [currentBtn addTarget:self action:@selector(shareButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+                
             }
             else
             {
                 [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
             }
-            
-            NSLog(@"-> %@", [currentBtn titleLabel].text);
         }
     }
     
@@ -245,110 +219,43 @@ static BOOL likePushed;
     return nil;
 }
 
+-(void)likeButtonPushed:(id)sender
+{
+    NSLog(@"LIKE BUTTON!");
+}
 
+//TODO: Implement this in post cell.
 -(void)navigateToProfile: (id)sender
 {
-    [self performSegueWithIdentifier:@"view profile" sender:self];
-
-}
-
--(void)shareButtonPushed: (id)sender
-{
-    NSLog(@"Share Pushed");
+    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
     
-    NSArray *items = @[[NSString stringWithFormat:@"%@",@"Share1"],[NSURL URLWithString:@"http://www.google.com"]];
+    UIImageView *incomingView = (UIImageView*)incomingUser.view;
     
-    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    //Decide where to navigate. Private or open.
+    self.selectedUserId = incomingView.tag;
     
-    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
-    
-    /**
-     NSString *const UIActivityTypePostToFacebook;
-     NSString *const UIActivityTypePostToTwitter;
-     NSString *const UIActivityTypePostToWeibo;
-     NSString *const UIActivityTypeMessage;
-     NSString *const UIActivityTypeMail;
-     NSString *const UIActivityTypePrint;
-     NSString *const UIActivityTypeCopyToPasteboard;
-     NSString *const UIActivityTypeAssignToContact;
-     NSString *const UIActivityTypeSaveToCameraRoll;
-     NSString *const UIActivityTypeAddToReadingList;
-     NSString *const UIActivityTypePostToFlickr;
-     NSString *const UIActivityTypePostToVimeo;
-     NSString *const UIActivityTypePostToTencentWeibo;
-     NSString *const UIActivityTypeAirDrop;
-     */
-    /**
-     NSArray * activityItems = @[[NSString stringWithFormat:@"Some initial text."], [NSURL URLWithString:@"http://www.google.com"]];
-     NSArray * applicationActivities = nil;
-     NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePostToWeibo, UIActivityTypePrint, UIActivityTypeMessage];
-     
-     UIActivityViewController * activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:applicationActivities];
-     activityController.excludedActivityTypes = excludeActivities;
-     
-     */
-    
-    //   SLComposeViewController *t;
-    
-    //SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    
-    //    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-    //    {
-    //        // Device is able to send a Twitter message
-    //        NSLog(@"Able to use twitter.");
-    //
-    //    }
-    
-    //    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    //    {
-    //        // Device is able to send a Twitter message
-    //        NSLog(@"Able to use facebook.");
-    //
-    //    }
-    
-    shareItems.excludedActivityTypes = excludeActivities;
-    
-    [self presentViewController:shareItems animated:YES completion:nil];
-}
-
-/*
- 
- When like button is pushed turn it to our application's custom colour.
- 
- */
--(void)likeButtonPushed: (id)sender
-{
-    UIButton *btn = (UIButton*) sender;
-    
-    //If like button is pushed then set the pushed variable to NO and change the
-    //colour of the image.
-    if(likePushed)
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
     {
-        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+        self.selectedUserId = -1;
+        //Navigate to profile view controller.
         
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    {
+        //Navigate to profile view controller.
         
-        likePushed = NO;
+        [self performSegueWithIdentifier:@"view profile" sender:self];
     }
     else
     {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+        //Navigate to private view controller.
         
-        likePushed = YES;
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
     
-    
-    
-    // [btn setBackgroundImage:[UIImage imageNamed:@"navigationbar"] forState:UIControlStateNormal];
-    //
-    //    //TODO: See if the button is already liked.
-    //    [[btn titleLabel] setTintColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]]];
-    
-    
 }
+
 
 - (IBAction)addCommentButtonClick:(id)sender
 {
@@ -517,12 +424,6 @@ static bool firstTime = YES;
 //    }
 //}
 
--(float) calculateCommentSize: (NSString*) content
-{
-    
-    //Return default.
-    return 70.0;
-}
 
 #pragma mark - Table view data source
 
@@ -539,9 +440,7 @@ static bool firstTime = YES;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"cellForRowAtIndexPath");
-    
+{    
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
@@ -563,6 +462,22 @@ static bool firstTime = YES;
             //If text.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         }
+        
+        postViewCell.delegate = self;
+        
+        //Add touch gestures to like and share buttons.
+//        [self buttonWithName:@"Like" andSubviews:[postViewCell.socialPanel subviews] withCell:postViewCell andPostIndex:indexPath.row];
+//        
+//        [self buttonWithName:@"Comment" andSubviews:[postViewCell.socialPanel subviews] withCell:postViewCell andPostIndex:indexPath.row];
+//        [self buttonWithName:@"" andSubviews:[postViewCell.socialPanel subviews] withCell:postViewCell andPostIndex:indexPath.row];
+        
+        
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+        [tap setNumberOfTapsRequired:1];
+        [postViewCell.userImageView addGestureRecognizer:tap];
+        
+        
         postViewCell.isViewPost = YES;
         [postViewCell updateWithPostData:_post];
         
@@ -577,6 +492,7 @@ static bool firstTime = YES;
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
         
+        cell.delegate = self;
         
         GLPComment *comment = self.comments[indexPath.row-1];
         
@@ -589,6 +505,43 @@ static bool firstTime = YES;
     }
 }
 
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
+    
+    if(indexPath.row>0)
+    {
+        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
+        return [CommentCell getCellHeightWithContent:comment.content image:NO];
+    }
+    else
+    {
+        if([self.post imagePost])
+        {
+            return [PostCell getCellHeightWithContent:self.post.content image:YES];
+        }
+        else
+        {
+            return [PostCell getCellHeightWithContent:self.post.content image:NO];
+        }
+        //return 200;
+    }
+    
+}
 
 
 /*
@@ -631,91 +584,155 @@ static bool firstTime = YES;
 */
 
 
-#pragma mark - form management
+#pragma mark - Form management
 
-//TODO: Add the appropriate methods.
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+- (void)keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+	// get a rect for the textView frame
+	CGRect containerFrame = self.commentFormView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    
+	CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        self.commentFormView.frame = containerFrame;
+        self.tableView.frame = tableViewFrame;
+        
+        [self scrollToTheEndAnimated:NO];
+        
+    } completion:^(BOOL finished) {
+        [self.tableView setNeedsLayout];
+    }];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)keyboardWillHide:(NSNotification *)note{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = self.commentFormView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+    
+	CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        self.commentFormView.frame = containerFrame;
+        self.tableView.frame = tableViewFrame;
+        
+    } completion:^(BOOL finished) {
+        [self.tableView setNeedsLayout];
+    }];
+}
+
+- (void)hideKeyboardFromTextViewIfNeeded
 {
-    //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
-    
-    if(indexPath.row>0)
-    {
-        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
-        NSLog(@"INDEX: %d", indexPath.row);
-        return [CommentCell getCellHeightWithContent:comment.content image:NO];
+    if([self.commentGrowingTextView isFirstResponder]) {
+        [self.commentGrowingTextView resignFirstResponder];
     }
-    else
-    {
-        if([self.post imagePost])
-        {
-            return [PostCell getCellHeightWithContent:self.post.content image:YES];
-        }
-        else
-        {
-            return [PostCell getCellHeightWithContent:self.post.content image:NO];
-        }
-        //return 200;
-    }
+}
+
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+{
+    float diff = (growingTextView.frame.size.height - height);
     
+	CGRect r = self.commentFormView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+	self.commentFormView.frame = r;
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height += diff;
+    self.tableView.frame = tableViewFrame;
+
+    
+    [self scrollToTheEndAnimated:NO];
+}
+
+
+
+- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView
+{
+    if(self.comments.count == 0)
+    {
+        CGPoint origin = growingTextView.frame.origin;
+        CGPoint point = [growingTextView.superview convertPoint:origin toView:self.tableView];
+        float navBarHeight = self.navigationController.navigationBar.frame.size.height;
+        CGPoint offset = self.tableView.contentOffset;
+        // Adjust the below value as you need
+        offset.y += (point.y - navBarHeight);
+        [self.tableView setContentOffset:offset animated:NO];
+    }
+}
+
+- (void)scrollToTheEndAnimated:(BOOL)animated
+{
+//    if(self.comments.count > 0)
+//    {
+    
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+//    }
+//    else
+//    {
+//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+//    }
 }
 
 
 #pragma mark - Keyboard methods
 
-- (void)hideKeyboardFromTextViewIfNeeded
-{
-//    if(self.commentTextField.isFirstResponder) {
-//        [self.commentTextField resignFirstResponder];
+//- (void)hideKeyboardFromTextViewIfNeeded
+//{
+////    if(self.commentTextField.isFirstResponder) {
+////        [self.commentTextField resignFirstResponder];
+////    }
+////    
+//    
+//    if(self.commentGrowingTextView.isFirstResponder)
+//    {
+//        [self.commentGrowingTextView resignFirstResponder];
 //    }
 //    
-    
-    if(self.commentGrowingTextView.isFirstResponder)
-    {
-        [self.commentGrowingTextView resignFirstResponder];
-    }
-    
-    if(self.tableView.typeTextView.footerTextView.isFirstResponder)
-    {
-        [self.tableView.typeTextView.footerTextView resignFirstResponder];
-        
-        //Clear footer text view.
-        self.tableView.typeTextView.footerTextView.text = @"Add comment...";
-    }
-}
+//    if(self.tableView.typeTextView.footerTextView.isFirstResponder)
+//    {
+//        [self.tableView.typeTextView.footerTextView resignFirstResponder];
+//        
+//        //Clear footer text view.
+//        self.tableView.typeTextView.footerTextView.text = @"Add comment...";
+//    }
+//}
 
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    if(self.keyboardAppearanceSpaceY != 0) {
-        return;
-    }
-    
-//    float height = [KeyboardHelper keyboardHeight:notification] - 49;
-    float height = [KeyboardHelper keyboardHeight:notification];
+//- (void)keyboardWillShow:(NSNotification *)notification
+//{
+//    if(self.keyboardAppearanceSpaceY != 0) {
+//        return;
+//    }
+//    
+////    float height = [KeyboardHelper keyboardHeight:notification] - 49;
+//    float height = [KeyboardHelper keyboardHeight:notification];
+//
+//    self.keyboardAppearanceSpaceY = height;
+//    
+//    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:[KeyboardHelper keyboardAnimationDuration:notification] andAnimationOptions:[KeyboardHelper keyboardAnimationOptions:notification]];
+//}
 
-    self.keyboardAppearanceSpaceY = height;
-    
-    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:[KeyboardHelper keyboardAnimationDuration:notification] andAnimationOptions:[KeyboardHelper keyboardAnimationOptions:notification]];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    [self animateViewWithVerticalMovement:fabs(self.keyboardAppearanceSpaceY) duration:[KeyboardHelper keyboardAnimationDuration:notification] andAnimationOptions:[KeyboardHelper keyboardAnimationOptions:notification]];
-    self.keyboardAppearanceSpaceY = 0;
-}
+//- (void)keyboardWillHide:(NSNotification *)notification
+//{
+//    [self animateViewWithVerticalMovement:fabs(self.keyboardAppearanceSpaceY) duration:[KeyboardHelper keyboardAnimationDuration:notification] andAnimationOptions:[KeyboardHelper keyboardAnimationOptions:notification]];
+//    self.keyboardAppearanceSpaceY = 0;
+//}
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
@@ -777,21 +794,34 @@ static bool firstTime = YES;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
-#pragma mark - footer TextView delegate
-
--(BOOL) textViewShouldBeginEditing:(UITextView *)textView
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSLog(@"textViewShouldBeginEditing");
-//    self.tableView.textInputMode.footerTextView.textColor = [UIColor blackColor];
-    
-    self.tableView.typeTextView.footerTextView.textColor = [UIColor blackColor];
-    return YES;
+    if([segue.identifier isEqualToString:@"view private profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
+        
+        PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        
+        privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if([segue.identifier isEqualToString:@"view profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ProfileViewController *profileViewController = segue.destinationViewController;
+        
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        if(self.selectedUserId == -1)
+        {
+            incomingUser = nil;
+        }
+        
+        profileViewController.incomingUser = incomingUser;
+    }
 }
-
-
-
-
 
 
 @end

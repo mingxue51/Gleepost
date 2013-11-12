@@ -16,6 +16,8 @@
  */
 +(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
 {
+    [[ContactsManager sharedInstance] refreshFromDatabase];
+    
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).
     if([[ContactsManager sharedInstance] isUserContactWithId:selectedId])
