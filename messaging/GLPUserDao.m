@@ -95,8 +95,6 @@
 //    }
     
     
-    
-    
     return usr.key;
 }
 
@@ -107,6 +105,14 @@
         
         entity.key = [db lastInsertRowId];
     }];
+}
+
++(void)saveOrUpdate
+{
+    //If the user exist update.
+    
+    //If the user not exist add user.
+    
 }
 
 +(void)update:(GLPUser*)entity

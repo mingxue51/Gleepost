@@ -9,6 +9,7 @@
 #import "GLPConversationParticipantsDao.h"
 #import "FMResultSet.h"
 #import "GLPUserDao.h"
+#import "DatabaseManager.h"
 
 @implementation GLPConversationParticipantsDao
 
@@ -43,6 +44,21 @@
     
     return partId;
 }
+
++(NSArray*)participants:(NSInteger)conversationKey
+{
+    
+    __block NSArray* participants = [[NSArray alloc] init];
+    
+    [DatabaseManager run:^(FMDatabase *db) {
+        
+        participants = [GLPConversationParticipantsDao participants:conversationKey db:db];
+        
+    }];
+    
+    return participants;
+}
+
 
 +(NSArray*)participants:(NSInteger)conversationKey db:(FMDatabase*)db
 {

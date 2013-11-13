@@ -13,5 +13,6 @@
 + (NSInteger)findByParticipantKey:(NSInteger)participantLocalKey db:(FMDatabase *)db;
 +(NSInteger)findByConversationKey:(NSInteger)conversationKey db:(FMDatabase*)db;
 +(NSArray*)participants:(NSInteger)conversationKey db:(FMDatabase*)db;
++(NSArray*)participants:(NSInteger)conversationKey;
 + (void)deleteAll:(FMDatabase *)db;
 @end

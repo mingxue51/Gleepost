@@ -50,8 +50,6 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
-    NSLog(@"Load conversations");
-    
     NSArray *localEntities = [ConversationManager getLocalConversations];
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);

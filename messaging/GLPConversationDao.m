@@ -51,9 +51,23 @@
     return result;
 }
 
+/**
+ sqlite> SELECT Name, Day FROM Customers AS C JOIN Reservations
+ ...> AS R ON C.CustomerId=R.CustomerId;
+ */
++(void)findUsersWithConversations:(NSArray*)conversations
+{
+//    [db executeUpdateWithFormat:@"select * from users as u join users as u on ",];
+}
+
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db
 {
     int date = [entity.lastUpdate timeIntervalSince1970];
+    
+    if(entity.remoteKey == 1198)
+    {
+        NSLog(@"Entity: %@",entity);
+    }
     
     [db executeUpdateWithFormat:@"insert into conversations(remoteKey, lastMessage, lastUpdate, title, unread, isGroup) values(%d, %@, %d, %@, %d, %d)",
      entity.remoteKey,
@@ -106,10 +120,12 @@
     //If participant is not exist, add the conversation, participant id pairs.
     int convId = [GLPConversationParticipantsDao findByParticipantKey:userId db:db];
     
-    if(convId == -1)
-    {
+
+    
+//    if(convId == -1)
+//    {
         [db executeUpdateWithFormat:@"insert into conversations_participants(user_key, conversation_key) values(%d, %d)", userId, conversationId];
-    }
+//    }
     
 }
 

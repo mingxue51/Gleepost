@@ -52,7 +52,10 @@
 //todo: put somewhere else
 + (NSArray *)findLastMessagesForLiveConversation:(GLPLiveConversation *)conversation db:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayOrder DESC limit 20", conversation.remoteKey];
+//    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayOrder DESC limit 20", conversation.remoteKey];
+    
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by isOld, key DESC limit %d", conversation.remoteKey, NumberMaxOfMessagesLoaded];
+
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -146,13 +149,17 @@
     //todo: need to refactor this
     if(entity.conversation == nil)
     {
-        [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d)",
+        BOOL executed = [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, isOld, conversation_key) values(%d, %@, %d, %d, %d, %d, %d)",
          entity.remoteKey,
          entity.content,
          date,
          entity.sendStatus,
          entity.author.remoteKey,
+         entity.isOld,
          entity.liveConversation.remoteKey];
+        
+        NSLog(@"EXECUTED: %d",executed);
+
     }
     else
     {
@@ -164,7 +171,9 @@
          entity.isOld,
          entity.author.remoteKey,
          entity.conversation.remoteKey];
+        
     }
+    
     
 
     

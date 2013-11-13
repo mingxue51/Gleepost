@@ -113,7 +113,12 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         [participants addObject:user];
     }
     
-    conversation.isGroup = (participants.count > 0) ? YES : NO;
+    NSLog(@"PARTICIPANTS: %@",participants);
+    
+    //conversation.isGroup = (participants.count > 0) ? YES : NO;
+    
+    conversation.isGroup = (participants.count > 2) ? YES : NO;
+
     
     conversation.author = [participants objectAtIndex:0];
     [conversation setTitleFromParticipants:participants];

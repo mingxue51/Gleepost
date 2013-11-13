@@ -83,9 +83,6 @@ static BOOL visibility;
     self = [super initWithFrame:frame];
     if (self)
     {
-        NSLog(@"Initialise live chats view.");
-        
-        
         
         UIImageView *chatImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
         [chatImageView1 setImage:[UIImage imageNamed:@"userchangeimg"]];
@@ -147,19 +144,23 @@ static BOOL visibility;
     int i = 0;
     for(GLPLiveConversation *c in self.liveChats)
     {
+        
+        GLPUser *currentParticipant = [c.participants objectAtIndex:0];
+
+        
         UIImageView *imgView = [self.imageViews objectAtIndex:i];
         
         imgView.clipsToBounds = YES;
         imgView.layer.cornerRadius = 23;
         [imgView setTag:c.remoteKey];
         
-        if([c.author.profileImageUrl isEqualToString:@""] || c.author.profileImageUrl == nil)
+        if([currentParticipant.profileImageUrl isEqualToString:@""] || currentParticipant.profileImageUrl == nil)
         {
             [imgView setImage:[UIImage imageNamed:@"default_user_image"]];
         }
         else
         {
-            [imgView setImageWithURL:[NSURL URLWithString:c.author.profileImageUrl] placeholderImage:nil];
+            [imgView setImageWithURL:[NSURL URLWithString:currentParticipant.profileImageUrl] placeholderImage:nil];
         }
         
         
@@ -175,6 +176,18 @@ static BOOL visibility;
     [LiveConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
         
         self.liveChats = conversations;
+        
+        //Load participants for conversations.
+        [LiveConversationManager liveUsersWithLiveConversations:self.liveChats callback:^(BOOL success, NSArray *liveParticipantsConversations) {
+            
+            if(success)
+            {
+                self.liveChats = liveParticipantsConversations.mutableCopy;
+            }
+            
+        }];
+        
+        
         [self setLiveChatsToView];
 
         

@@ -16,6 +16,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "AppearanceHelper.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPConversationParticipantsDao.h"
 
 @interface MessagesViewController ()
 
@@ -158,13 +159,29 @@
     
     [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
         if(conversations.count > 0) {
+            
+            //Find paricipants.
+            for(GLPConversation* conv in conversations)
+            {
+                NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
+                conv.participants = part;
+            }
+            
             [self showConversations:conversations];
+            
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
         [self stopLoading];
+    
+        //Find paricipants.
+        for(GLPConversation* conv in conversations)
+        {
+            NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
+            conv.participants = part;
+        }
         
         if(success) {
-            [self showConversations:conversations];
+            [self showConversations: conversations];
         } else {
             [WebClientHelper showStandardError];
         }
@@ -180,6 +197,13 @@
 - (void)reloadLocalConversations
 {
     NSArray *localConversations = [ConversationManager getLocalConversations];
+    
+    for(GLPConversation* conv in localConversations)
+    {
+        NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
+        conv.participants = part;
+    }
+    
     [self showConversations:localConversations];
 }
 
@@ -226,7 +250,7 @@
     
     GLPConversation *conversation = self.conversations[indexPath.row];
     
-    if(conversation.participants.count > 2)
+    if(conversation.isGroup)
     {
         cell.userImage.image = [UIImage imageNamed:@"default_group_image"];
         cell.userName.text = @"Group Chat";
@@ -234,7 +258,7 @@
     else
     {
         //todo: dont do this
-        GLPUser *opponentUser = nil;// [ConversationManager userWithConversationId:conversation.key];
+        GLPUser *opponentUser = [conversation.participants objectAtIndex:0];
         
         if(opponentUser.profileImageUrl == nil || [opponentUser.profileImageUrl isEqualToString:@""])
         {
