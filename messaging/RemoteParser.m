@@ -323,6 +323,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     contact.remoteKey = [json[@"id"] integerValue];
     contact.user.name = json[@"username"];
+    contact.user.profileImageUrl = json[@"profile_image"];
     contact.youConfirmed = [json[@"you_confirmed"] boolValue];
     contact.theyConfirmed = [json[@"they_confirmed"] boolValue];
     

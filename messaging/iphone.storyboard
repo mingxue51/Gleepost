@@ -1334,7 +1334,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="46" width="320" height="321"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="321"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" alpha="0.39999999999999963" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_profile.png" id="GMr-8I-em4">
@@ -1361,6 +1361,9 @@
                                             <rect key="frame" x="251" y="205" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="onTintColor" red="0.29411764705882354" green="0.80000000000000004" blue="0.82352941176470584" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="setBusyStatus:" destination="HaH-y9-QMH" eventType="valueChanged" id="qc8-bm-WZK"/>
+                                            </connections>
                                         </switch>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Busy        Free" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="77o-m0-3ih">
                                             <rect key="frame" x="238" y="237" width="78" height="21"/>
@@ -1698,7 +1701,7 @@
         <segue reference="FQd-EB-Shi"/>
         <segue reference="3ZQ-Ax-jzZ"/>
         <segue reference="u6W-1W-GCM"/>
-        <segue reference="C5K-bl-yN1"/>
+        <segue reference="htZ-EL-79i"/>
         <segue reference="aau-5Z-5Pa"/>
         <segue reference="UFN-Sk-0kH"/>
         <segue reference="6Mq-lQ-Lwk"/>

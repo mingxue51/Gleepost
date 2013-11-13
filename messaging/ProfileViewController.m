@@ -185,6 +185,19 @@ static BOOL likePushed;
     [self loadPosts];
     
 }
+- (IBAction)setBusyStatus:(id)sender
+{
+    UISwitch *s = (UISwitch*)sender;
+    
+    
+    [[WebClient sharedInstance] setBusyStatus:!s.isOn callbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            //Do something.
+        }
+    }];
+}
 
 
 #pragma mark - Client

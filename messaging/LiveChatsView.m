@@ -83,9 +83,11 @@ static BOOL visibility;
     self = [super initWithFrame:frame];
     if (self)
     {
+
+
         
         UIImageView *chatImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
-        [chatImageView1 setImage:[UIImage imageNamed:@"userchangeimg"]];
+        [chatImageView1 setImage:[UIImage imageNamed:@"whiteholder1"]];
         [chatImageView1 setUserInteractionEnabled:YES];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
         [tap setNumberOfTapsRequired:1];
@@ -101,7 +103,7 @@ static BOOL visibility;
 //        [self addSubview:chat1];
         
         UIImageView *chatImageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(12.5, 72.5, 45, 45)];
-        [chatImageView2 setImage:[UIImage imageNamed:@"userchangeimg"]];
+        [chatImageView2 setImage:[UIImage imageNamed:@"whiteholder2"]];
         [chatImageView2 setUserInteractionEnabled:YES];
         tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
         [tap setNumberOfTapsRequired:1];
@@ -117,7 +119,7 @@ static BOOL visibility;
 //        [self addSubview:chat2];
         
         UIImageView *chatImageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(72.5, 72.5, 45, 45)];
-        [chatImageView3 setImage:[UIImage imageNamed:@"userchangeimg"]];
+        [chatImageView3 setImage:[UIImage imageNamed:@"whiteholder3"]];
         [chatImageView3 setUserInteractionEnabled:YES];
         tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
         [tap setNumberOfTapsRequired:1];
@@ -162,13 +164,13 @@ static BOOL visibility;
         {
             [imgView setImageWithURL:[NSURL URLWithString:currentParticipant.profileImageUrl] placeholderImage:nil];
         }
+        [[imgView layer] setBorderWidth:2.0f];
+        [[imgView layer] setBorderColor:[UIColor whiteColor].CGColor];
         
         
         ++i;
     }
 }
-
-
 
 
 -(void)loadLiveConversations

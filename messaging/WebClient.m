@@ -515,7 +515,6 @@ static WebClient *instance = nil;
 */
  
 
-//id, token, user
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",contactRemoteKey], @"user", nil];
@@ -531,6 +530,19 @@ static WebClient *instance = nil;
 }
 
 
+-(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%@",(busy)?@"true":@"false"], @"status", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:@"profile/busy" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO);
+    }];
+}
 
 #pragma mark - Contacts
 

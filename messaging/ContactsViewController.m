@@ -16,6 +16,8 @@
 #import "GLPContact.h"
 #import "AppearanceHelper.h"
 #import "ShapeFormatterHelper.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @interface ContactsViewController ()
 
@@ -290,8 +292,6 @@
         if(success)
         {
             //Store contacts into an array.
-            NSLog(@"Contacts loaded successfully.");
-            
             
             [self findConfirmedContacts:contacts.mutableCopy];
             
@@ -363,10 +363,14 @@
     
     [ShapeFormatterHelper setRoundedView:cell.profileImageUser toDiameter:cell.profileImageUser.frame.size.height];
 
-    
-    [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image"]];
-    
-
+    if([currentContact.user.profileImageUrl isEqualToString:@""])
+    {
+        [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image"]];
+    }
+    else
+    {
+        [cell.profileImageUser setImageWithURL:[NSURL URLWithString:currentContact.user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+    }
     
     return cell;
 }

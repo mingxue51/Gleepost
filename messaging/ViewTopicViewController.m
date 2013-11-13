@@ -252,11 +252,15 @@ float timeInterval = 0.1;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
 
+    //Hide live chats view.
+    [self.liveChatsView removeView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self.timer1 invalidate];
+    
+
 }
 
 #pragma mark - Init and config

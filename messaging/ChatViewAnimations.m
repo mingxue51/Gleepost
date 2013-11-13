@@ -22,11 +22,6 @@ const int lowerLimit = 220;
 
 static BOOL initLiveChats;
 
-//+(void)initialize {
-//    if (self == [ChatViewAnimations class]) {
-//        initLiveChats =
-//    }
-//}
 
 +(BOOL) showLiveChat
 {
