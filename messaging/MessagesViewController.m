@@ -291,7 +291,7 @@
 //    
 //    NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
     
-    cell.time.text = (conversation.lastMessage) ? [currentDate timeAgo] : @"";
+    cell.time.text = [currentDate timeAgo];
     
     if(conversation.hasUnreadMessages) {
         cell.unreadImageView.hidden = NO;

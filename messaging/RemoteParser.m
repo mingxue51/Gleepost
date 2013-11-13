@@ -103,8 +103,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
         conversation.lastMessage = message.content;
-        conversation.lastUpdate = message.date;
     }
+    
+    conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
+    NSLog(@"last up %d - %@", conversation.remoteKey, conversation.lastUpdate);
     
     NSMutableArray *participants = [NSMutableArray array];
 
@@ -113,7 +115,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         [participants addObject:user];
     }
     
-    NSLog(@"PARTICIPANTS: %@",participants);
+    //NSLog(@"PARTICIPANTS: %@",participants);
     
     //conversation.isGroup = (participants.count > 0) ? YES : NO;
     

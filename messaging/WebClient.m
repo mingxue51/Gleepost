@@ -28,7 +28,7 @@
 
 @synthesize isNetworkAvailable;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.19/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.20/";
 
 static WebClient *instance = nil;
 
