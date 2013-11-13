@@ -8,6 +8,7 @@
 
 #import "GLPNotificationDao.h"
 #import "GLPNotificationDaoParser.h"
+#import "FMDatabaseAdditions.h"
 
 
 @implementation GLPNotificationDao
@@ -46,6 +47,11 @@
                       entity.user.remoteKey];
     
     entity.key = [db lastInsertRowId];
+}
+
++ (NSInteger)countUnreadNotificationsInDb:(FMDatabase *)db
+{
+    return [db intForQuery:@"select count(key) from notifications where seen = 0"];
 }
 
 @end

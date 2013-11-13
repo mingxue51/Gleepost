@@ -70,6 +70,16 @@
     }];
 }
 
++ (NSInteger)getNotificationsCount
+{
+    __block int count = 0;
+    [DatabaseManager run:^(FMDatabase *db) {
+        count = [GLPNotificationDao countUnreadNotificationsInDb:db];
+    }];
+    
+    return count;
+}
+
 + (void)saveNotifications:(NSArray *)notifications
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {

@@ -17,6 +17,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *profileHeadInformation;
 @property (weak, nonatomic) IBOutlet UILabel *busyFreeLabel;
 
+@property (weak, nonatomic) IBOutlet UIImageView *notificationNewBubbleImageView;
+@property (weak, nonatomic) IBOutlet UILabel *notificationNewBubbleLabel;
+
 -(void) initialiseView:(GLPUser*)incomingUser;
+- (void)showNotificationsBubble:(int)count;
+- (void)hideNotificationsBubble;
 
 @end

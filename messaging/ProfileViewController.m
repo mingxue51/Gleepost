@@ -22,6 +22,7 @@
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ImageFormatterHelper.h"
+#import "GLPNotificationManager.h"
 
 @interface ProfileViewController ()
 
@@ -38,6 +39,8 @@
 @property (strong, nonatomic) UIImage *uploadedImage;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+
+@property (assign, nonatomic) NSInteger unreadNotificationsCount;
 
 
 @end
@@ -120,17 +123,49 @@ static BOOL likePushed;
     
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
+    self.unreadNotificationsCount = 0;
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
+    // count unread notifications
+    self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
+    [self updateNotificationsBubble];
+    
     [self loadPosts];
 
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+}
+
+- (void)updateNotificationsBubble
+{
+    if(self.unreadNotificationsCount > 0) {
+        [self.profileView showNotificationsBubble:self.unreadNotificationsCount];
+    } else {
+        [self.profileView hideNotificationsBubble];
+    }
+}
+
+- (void)incrementNotificationsCount:(NSNotification *)notification
+{
+    self.unreadNotificationsCount += [notification.userInfo[@"count"] intValue];
+    [self updateNotificationsBubble];
+}
+
 
 -(void)showFullProfileImage:(id)sender
 {

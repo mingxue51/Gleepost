@@ -389,6 +389,9 @@ static WebClient *instance = nil;
     }];
 }
 
+
+#pragma mark - Messages
+
 - (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
@@ -438,33 +441,19 @@ static WebClient *instance = nil;
     }];
 }
 
-//- (void)longPollNewMessageCallbackBlock:(void (^)(BOOL success, GLPMessage *message))callbackBlock
-//{
-//    [self getPath:@"longpoll" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"long poll %@", responseObject);
-//        NSDictionary *json = responseObject;
-//        
-//        GLPConversation *conversation = [[GLPConversation alloc] init];
-//        conversation.remoteKey = [json[@"conversation_id"] integerValue];
-//        conversation.title = json[@"by"][@"username"];
-//        
-//        GLPMessage *message = [RemoteParser parseMessageFromJson:responseObject forConversation:nil];
-//        message.conversation = conversation;
-//        
-//        callbackBlock(YES, message);
-//
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO, nil);
-//    }];
-//}
-
 // Blocking operation
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback
 {
     [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" callback:^(BOOL success, id json) {
-       
+        
         if(!success) {
             callback(NO, nil);
+            return;
+        }
+        
+        // empty response
+        if(!json[@"conversation_id"]) {
+            callback(YES, nil);
             return;
         }
         
