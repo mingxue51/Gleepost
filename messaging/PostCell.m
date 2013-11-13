@@ -158,7 +158,7 @@ static const float PostContentLabelMaxWidth = 250;
     
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
-    NSLog(@"User name: %@ with remote key: %d", postData.author.name, postData.author.remoteKey);
+    //NSLog(@"User name: %@ with remote key: %d", postData.author.name, postData.author.remoteKey);
 //
 //    if(user.profileImageUrl!=NULL)
 //    {

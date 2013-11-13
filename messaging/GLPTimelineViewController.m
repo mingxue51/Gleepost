@@ -32,6 +32,7 @@
 #import "ContactsHelper.h"
 #import "ProfileViewController.h"
 #import "TSMessage.h"
+#import "GLPNewElementsIndicatorView.h"
 
 @interface GLPTimelineViewController ()
 
@@ -49,10 +50,22 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
-// bottom table view loading
+// cron controls
+@property (assign, nonatomic) BOOL isReloadingCronRunning;
+@property (assign, nonatomic) BOOL shouldReloadingCronRun;
+
+//  table view controls
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 @property (assign, nonatomic) BOOL isLoading;
 @property (assign, nonatomic) BOOL firstLoadSuccessful;
+@property (assign, nonatomic) BOOL tableViewInScrolling;
+@property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
+
+// Not need because we use performselector which areis deprioritized during scrolling
+@property (assign, nonatomic) BOOL shouldLoadNewPostsAfterScrolling;
+@property (assign, nonatomic) int postsNewRowsCountToInsertAfterScrolling;
+
+@property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 
 @property int selectedUserId;
 
@@ -74,6 +87,7 @@ static BOOL likePushed;
     
     [self configAppearance];
     [self configTableView];
+    [self configNewElementsIndicatorView];
     
     self.postsHeight = [[NSMutableArray alloc] init];
     
@@ -100,6 +114,13 @@ static BOOL likePushed;
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.isLoading = NO;
     self.firstLoadSuccessful = NO;
+    self.tableViewInScrolling = NO;
+    self.insertedNewRowsCount = 0;
+    self.shouldLoadNewPostsAfterScrolling = NO;
+    self.postsNewRowsCountToInsertAfterScrolling = 0;
+    
+    self.isReloadingCronRunning = NO;
+    self.shouldReloadingCronRun = NO;
     
     [self loadPosts];
 }
@@ -108,10 +129,20 @@ static BOOL likePushed;
 {
     [super viewDidAppear:animated];
     
-    //TODO: make it nicer with regular refreshing and avoid too frequent refreshing
     if(self.firstLoadSuccessful) {
-        [self loadEarlierPostsAndSaveScrollingState:YES];
+        [self startReloadingCronImmediately:YES];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // hide new element visual indicator if needed
+    [self hideNewElementsIndicatorView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self stopReloadingCron];
 }
 
 #pragma mark - Init config
@@ -143,6 +174,16 @@ static BOOL likePushed;
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)configNewElementsIndicatorView
+{
+    self.elementsIndicatorView = [[GLPNewElementsIndicatorView alloc] initWithDelegate:self];
+    self.elementsIndicatorView.hidden = YES;
+    self.elementsIndicatorView.center = self.navigationController.view.center;
+    CGRectSetY(self.elementsIndicatorView, 80); //TODO: something better than arbitrary value
+    
+    [self.navigationController.view addSubview:self.elementsIndicatorView];
 }
 
 
@@ -271,6 +312,7 @@ static BOOL likePushed;
             [self.tableView reloadData];
             
             self.firstLoadSuccessful = YES;
+            [self startReloadingCronImmediately:NO];
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
@@ -281,6 +323,11 @@ static BOOL likePushed;
 - (void)loadEarlierPostsFromPullToRefresh
 {
     [self loadEarlierPostsAndSaveScrollingState:NO];
+}
+
+- (void)loadEarlierPostsFromCron
+{
+    [self loadEarlierPostsAndSaveScrollingState:YES];
 }
 
 - (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
@@ -310,24 +357,20 @@ static BOOL likePushed;
             
             // update table view and keep the scrolling state
             if(saveScrollingState) {
-                CGPoint tableViewOffset = [self.tableView contentOffset];
-                [UIView setAnimationsEnabled:NO];
+                // delay the update if user is in scrolling state
+                // Not need because we use performselector which areis deprioritized during scrolling
+//                if(self.tableViewInScrolling) {
+//                    self.shouldLoadNewPostsAfterScrolling = YES;
+//                    self.postsNewRowsCountToInsertAfterScrolling += posts.count; // add new posts count to possibly non 0 count, if scrolling is still enabled after two reloads for instance
+//                } else {
+//                    [self updateTableViewWithNewPosts:posts.count];
+//                }
                 
-                int heightForNewRows = 0;
-                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-                for (NSInteger i = 0; i < posts.count; i++) {
-                    NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                    [rowsInsertIndexPath addObject:tempIndexPath];
-                    
-                    heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
-                }
+                // do not care about the user is in scrolling state, see commented code below
+                [self updateTableViewWithNewPosts:posts.count];
                 
-                tableViewOffset.y += heightForNewRows;
-                
-                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView setContentOffset:tableViewOffset animated:NO];
-                
-                [UIView setAnimationsEnabled:YES];
+                // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
+                self.insertedNewRowsCount += posts.count;
             }
             
             // or scroll to the top
@@ -431,6 +474,50 @@ static BOOL likePushed;
 
 #pragma mark - Request management
 
+- (void)startReloadingCronImmediately:(BOOL)immediately
+{
+    if(self.isReloadingCronRunning) {
+        NSLog(@"Reloading cron already running");
+        return;
+    }
+    
+    NSLog(@"Start reloading cron, immediately: %d", immediately);
+    
+    self.isReloadingCronRunning = YES;
+    self.shouldReloadingCronRun = YES;
+    
+    [self executeReloadingCron:[NSNumber numberWithBool:immediately]];
+}
+
+- (void)stopReloadingCron
+{
+//    // try to stop it if it runs
+//    self.shouldReloadingCronRun = NO;
+    
+    // or cancel performSelector:afterDelay: call
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(executeReloadingCron:) object:[NSNumber numberWithBool:YES]];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(executeReloadingCron:) object:[NSNumber numberWithBool:NO]];
+    
+    self.isReloadingCronRunning = NO;
+    
+    NSLog(@"Stop reloading cron");
+}
+
+- (void)executeReloadingCron:(id)immediatelyObject
+{
+    NSLog(@"Execute reloading cron, immediately: %@", immediatelyObject);
+    
+    BOOL immediately = [immediatelyObject boolValue];
+    
+    // sometimes we may want to pass one time interval because reloading
+    // when we start the reloading cron after a successful initial loading for instance
+    if(immediately) {
+        [self loadEarlierPostsAndSaveScrollingState:YES];
+    }
+    
+    [self performSelector:@selector(executeReloadingCron:) withObject:[NSNumber numberWithBool:YES] afterDelay:RELOAD_POSTS_INTERVAL_S];
+}
+
 - (void)startLoading
 {
     self.isLoading = YES;
@@ -454,6 +541,34 @@ static BOOL likePushed;
 
 
 #pragma mark - Table view
+
+- (void)updateTableViewWithNewPosts:(int)count
+{
+    CGPoint tableViewOffset = [self.tableView contentOffset];
+    [UIView setAnimationsEnabled:NO];
+    
+    int heightForNewRows = 0;
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < count; i++) {
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        [rowsInsertIndexPath addObject:tempIndexPath];
+        
+        heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+    }
+    
+    tableViewOffset.y += heightForNewRows;
+    
+    [self.tableView setContentOffset:tableViewOffset animated:NO];
+    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    
+    [UIView setAnimationsEnabled:YES];
+    
+    // display the new elements indicator if we are not on top
+    NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+    if(firstVisibleIndexPath.row != 0) {
+        [self showNewElementsIndicatorView];
+    }
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -596,6 +711,14 @@ static BOOL likePushed;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // hide the new elements indicator if needed when we are on top
+    if(!self.elementsIndicatorView.hidden && (indexPath.row == 0 || indexPath.row < self.insertedNewRowsCount)) {
+        NSLog(@"HIDE %d - %d", indexPath.row, self.insertedNewRowsCount);
+        
+        self.insertedNewRowsCount = 0; // reset the count
+        [self hideNewElementsIndicatorView];
+    }
+    
     if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
         NSLog(@"Load previous posts cell activated");
         [self loadPreviousPosts];
@@ -633,6 +756,74 @@ static BOOL likePushed;
 }
 
 
+#pragma mark - Scroll
+// Not need because we use performselector which areis deprioritized during scrolling
+
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+//    self.tableViewInScrolling = YES;
+//}
+//
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    self.tableViewInScrolling = NO;
+//    
+//    // rows waiting to be inserted
+//    if(self.shouldLoadNewPostsAfterScrolling) {
+//        [self updateTableViewWithNewPosts:self.postsNewRowsCountToInsertAfterScrolling];
+//        
+//        // reset the control values
+//        self.shouldLoadNewPostsAfterScrolling = NO;
+//        self.postsNewRowsCountToInsertAfterScrolling = 0;
+//    }
+//}
+
+
+#pragma mark - GLPNewElementsIndicatorView
+
+- (void)showNewElementsIndicatorView
+{
+    if(!self.elementsIndicatorView.hidden) {
+        return;
+    }
+    
+    self.elementsIndicatorView.alpha = 0;
+    self.elementsIndicatorView.hidden = NO;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.elementsIndicatorView.alpha = 1;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)hideNewElementsIndicatorView
+{
+    if(self.elementsIndicatorView.hidden) {
+        return;
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.elementsIndicatorView.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.elementsIndicatorView.hidden = YES;
+    }];
+}
+
+// from GLPNewElementsIndicatorViewDelegate
+- (void)newElementsIndicatorViewPushed
+{
+    [self hideNewElementsIndicatorView];
+    
+    // we never know, that would be a stupid crash
+    if(self.posts.count > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
+
+
+#pragma mark - Other stuff
 
 -(void)showFullPostImage:(id)sender
 {

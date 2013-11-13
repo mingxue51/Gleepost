@@ -46,7 +46,7 @@
     }];
     
     // sleep for some times
-    [NSThread sleepForTimeInterval:30];
+    [NSThread sleepForTimeInterval:RELOAD_NOTIFICATIONS_INTERVAL_S];
     
     [self startRequest];
 }

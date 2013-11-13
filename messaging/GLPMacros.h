@@ -57,6 +57,12 @@ y, \
 v.frame.size.width, \
 v.frame.size.height)
 
+#define CGRectSetXY(v, x, y) \
+v.frame = CGRectMake(x, \
+y, \
+v.frame.size.width, \
+v.frame.size.height)
+
 #define CGRectSetW(v, w) \
 v.frame = CGRectMake(v.frame.origin.x, \
 v.frame.origin.y, \

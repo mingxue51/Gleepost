@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPpost.h"
+#import "GLPNewElementsIndicatorView.h"
 
-@interface GLPTimelineViewController : UITableViewController
+@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate>
 
 @property BOOL readyToReloadPosts;
 

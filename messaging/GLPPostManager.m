@@ -36,7 +36,7 @@ NSInteger const kGLPNumberOfPosts = 20;
             [newPosts addObject:newPost];
         }
         
-        // [newPosts addObject:post]; // comment / uncomment for debug reasons
+        //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
         
         NSLog(@"remote posts %d", newPosts.count);
         

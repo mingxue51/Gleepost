@@ -304,6 +304,10 @@
 		80B2A421183380CF002AB1F0 /* GLPNotificationDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B2A420183380CF002AB1F0 /* GLPNotificationDaoParser.m */; };
 		80B2A4251833824F002AB1F0 /* GLPNotificationDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B2A4241833824F002AB1F0 /* GLPNotificationDao.m */; };
 		80B2A42818338613002AB1F0 /* GLPGetNotificationsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B2A42718338613002AB1F0 /* GLPGetNotificationsOperation.m */; };
+		80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */; };
+		80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B2A42F1833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png */; };
+		80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B2A4301833C8C7002AB1F0 /* timeline_new_post_indicator_background.png */; };
+		80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B2A4341833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m */; };
 		80B64A941815628E000AA151 /* GLPTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B64A931815628E000AA151 /* GLPTestViewController.m */; };
 		80B64A9718156321000AA151 /* GLPTestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B64A9618156321000AA151 /* GLPTestCell.m */; };
 		80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C4CAB717CFE24700AFA80C /* RegisterViewController.m */; };
@@ -761,6 +765,11 @@
 		80B2A42618338613002AB1F0 /* GLPGetNotificationsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGetNotificationsOperation.h; sourceTree = "<group>"; };
 		80B2A42718338613002AB1F0 /* GLPGetNotificationsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGetNotificationsOperation.m; sourceTree = "<group>"; };
 		80B2A42B1833A2F8002AB1F0 /* GLPMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLPMacros.h; sourceTree = "<group>"; };
+		80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPNewElementsIndicatorView.xib; sourceTree = "<group>"; };
+		80B2A42F1833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timeline_new_post_indicator_arrow.png; sourceTree = "<group>"; };
+		80B2A4301833C8C7002AB1F0 /* timeline_new_post_indicator_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timeline_new_post_indicator_background.png; sourceTree = "<group>"; };
+		80B2A4331833C9DF002AB1F0 /* GLPNewElementsIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNewElementsIndicatorView.h; sourceTree = "<group>"; };
+		80B2A4341833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNewElementsIndicatorView.m; sourceTree = "<group>"; };
 		80B64A921815628E000AA151 /* GLPTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTestViewController.h; sourceTree = "<group>"; };
 		80B64A931815628E000AA151 /* GLPTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTestViewController.m; sourceTree = "<group>"; };
 		80B64A9518156321000AA151 /* GLPTestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTestCell.h; sourceTree = "<group>"; };
@@ -1669,6 +1678,8 @@
 			children = (
 				80AB896817C2808A0053E784 /* UIPlaceHolderTextView.h */,
 				80AB896917C2808A0053E784 /* UIPlaceHolderTextView.m */,
+				80B2A4331833C9DF002AB1F0 /* GLPNewElementsIndicatorView.h */,
+				80B2A4341833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1726,6 +1737,7 @@
 		80AB898717C2AAF70053E784 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				80B2A42E1833C8A6002AB1F0 /* Timeline */,
 				8050249A181932BB00F5337F /* Conversations */,
 				80C8BA441810196B004F70DB /* ChatView */,
 				8096E4E617C2CA6800C7BF60 /* pic.png */,
@@ -1752,6 +1764,7 @@
 			isa = PBXGroup;
 			children = (
 				584CF66E1823017B00EFABB8 /* GLPNotificationCell.xib */,
+				80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -1762,6 +1775,15 @@
 				80B2A42B1833A2F8002AB1F0 /* GLPMacros.h */,
 			);
 			name = Macros;
+			sourceTree = "<group>";
+		};
+		80B2A42E1833C8A6002AB1F0 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				80B2A42F1833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png */,
+				80B2A4301833C8C7002AB1F0 /* timeline_new_post_indicator_background.png */,
+			);
+			name = Timeline;
 			sourceTree = "<group>";
 		};
 		80C8BA441810196B004F70DB /* ChatView */ = {
@@ -1947,6 +1969,7 @@
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
 				8096E4D317C2BA3000C7BF60 /* clock.png in Resources */,
 				58808EFA1807012D00E415C1 /* navigationbar2.png in Resources */,
+				80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */,
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
 				5880103818101327008C170F /* pic3.png in Resources */,
 				8050249C181932C600F5337F /* conversation_new_notification.png in Resources */,
@@ -2021,6 +2044,7 @@
 				584CF675182303FC00EFABB8 /* accept_contact.png in Resources */,
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
 				805E1558180EF3E700705B1C /* notification.png in Resources */,
+				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
 				5894632118182C8700331B2D /* default_user_image_old2.png in Resources */,
@@ -2068,6 +2092,7 @@
 				80B1735B18056A0700D9669B /* typing_bar1.png in Resources */,
 				58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */,
 				583EAB7518119402003D68B3 /* default_user_image_old.png in Resources */,
+				80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */,
 				587D23CA17EA195D00E0DDFF /* chat_tab_small.png in Resources */,
 				587D23CB17EA195D00E0DDFF /* share.png in Resources */,
 				587D23CD17EA195D00E0DDFF /* home_tab_small.png in Resources */,
@@ -2244,6 +2269,7 @@
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
+				80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */,
 				80B64A9718156321000AA151 /* GLPTestCell.m in Sources */,
 				58143D771821762600B76E5D /* ValidFields.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
