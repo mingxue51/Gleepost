@@ -10,9 +10,41 @@
 
 @implementation GLPNotification
 
+@synthesize seen=_seen;
 @synthesize postRemoteKey;
 @synthesize notificationType;
 @synthesize user;
 @synthesize date;
+
+- (id)init
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+    
+    _seen = NO;
+    
+    return self;
+}
+
+- (BOOL)hasAction
+{
+    return self.notificationType == kGLPNotificationTypeAddedYou;
+}
+
+- (NSString *)notificationTypeDescription
+{
+    switch (self.notificationType) {
+        case kGLPNotificationTypeAcceptedYou:
+            return [NSString stringWithFormat:@"Contact invite from %@", self.user.name];
+        case kGLPNotificationTypeCommented:
+            return [NSString stringWithFormat:@"Comment from %@", self.user.name];
+        case kGLPNotificationTypeLiked:
+            return [NSString stringWithFormat:@"Like from %@", self.user.name];
+        default:
+            return @"Notification";
+    }
+}
 
 @end

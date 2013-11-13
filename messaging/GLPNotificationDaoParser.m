@@ -20,6 +20,7 @@
     entity.notificationType = [resultSet intForColumn:@"notification_type"];
     entity.date = [resultSet dateForColumn:@"date"];
     entity.postRemoteKey = [resultSet intForColumn:@"post_remote_key"];
+    entity.seen = [resultSet boolForColumn:@"seen"];
     
     entity.user = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"user_remote_key"] db:db];
 }

@@ -10,7 +10,7 @@
 #import "WebClient.h"
 #import "DatabaseManager.h"
 #import "GLPNotification.h"
-#import "GLPNotificationDao.h"
+#import "GLPNotificationManager.h"
 
 @interface GLPGetNotificationsOperation()
 
@@ -38,11 +38,7 @@
             NSLog(@"New notifications from get notifications request: %d", notifications.count);
             
             if(notifications.count > 0) {
-                [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                    for(GLPNotification *notification in notifications) {
-                        [GLPNotificationDao save:notification inDb:db];
-                    }
-                }];
+                [GLPNotificationManager saveNotifications:notifications];
             }
         }
     }];

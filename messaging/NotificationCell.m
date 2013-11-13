@@ -10,26 +10,62 @@
 
 @implementation NotificationCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
+NSString * const kGLPNotificationCell = @"GLPNotificationCell";
 
+float const kButtonsViewHeight = 40;
+float const kContentLabelMaxWidth = 240;
+float const kViewTopPadding = 10;
+float const kViewBottomPadding = 10;
+float const kContentLabelBottomMargin = 7;
 
--(void)updateWithData
+- (void)awakeFromNib
 {
     
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)updateWithNotification:(GLPNotification *)notification
 {
-    [super setSelected:selected animated:animated];
+    // configure elements' frames
+    CGSize contentSize = [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]];
+    float contentHeight = contentSize.height;
 
-    // Configure the view for the selected state
+    CGRectSetH(self.contentLabel, contentHeight);
+    CGRectSetY(self.time, self.contentLabel.frame.origin.y + contentHeight + kContentLabelBottomMargin);
+
+    if([notification hasAction]) {
+        self.buttonsView.hidden = NO;
+        CGRectSetY(self.buttonsView, self.time.frame.origin.y + self.time.frame.size.height);
+        CGRectSetH(self.contentView, self.buttonsView.frame.origin.y + self.buttonsView.frame.size.height + kViewBottomPadding);
+    } else {
+        self.buttonsView.hidden = YES;
+        CGRectSetH(self.contentView, self.time.frame.origin.y + self.time.frame.size.height + kViewBottomPadding);
+    }
+    
+    self.contentLabel.text = [notification notificationTypeDescription];
+    self.time.text = [notification.date description];
+}
+
++ (CGSize)getContentLabelSizeForContent:(NSString *)content
+{
+    CGSize maximumLabelSize = CGSizeMake(kContentLabelMaxWidth, FLT_MAX);
+    
+    return [content sizeWithFont: [UIFont systemFontOfSize:16.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+}
+
++ (CGFloat)getCellHeightForNotification:(GLPNotification *)notification
+{
+    // initial height with all heights and margins of other elements
+    float height = kViewTopPadding + kViewBottomPadding + kContentLabelBottomMargin;
+    
+    // dynamic label
+    height += [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]].height;
+    
+    // buttons view height
+    if([notification hasAction]) {
+        height += kButtonsViewHeight;
+    }
+    
+    return height;
 }
 
 @end

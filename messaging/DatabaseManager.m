@@ -173,6 +173,7 @@ static DatabaseManager *instance = nil;
             [db executeUpdate:@"create table notifications ( \
              key integer primary key autoincrement, \
              remoteKey integer unique not null, \
+             seen integer, \
              date integer, \
              type integer, \
              post_remote_key integer, \

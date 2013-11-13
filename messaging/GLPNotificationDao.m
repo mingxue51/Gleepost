@@ -25,11 +25,20 @@
     return result;
 }
 
++ (void)updateSeenStatus:(GLPNotification *)entity inDb:(FMDatabase *)db
+{
+    NSAssert(entity.key != 0, @"Update entity without key");
+    
+    [db executeUpdateWithFormat:@"update notifications set seen=%d where key=%d",
+        entity.seen,
+        entity.key];
+}
+
 + (void)save:(GLPNotification *)entity inDb:(FMDatabase *)db
 {
     int date = [entity.date timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into posts (remoteKey, notification_type, date, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, notification_type, date, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d)",
                       entity.remoteKey,
                       entity.notificationType,
                       date,

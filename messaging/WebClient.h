@@ -13,6 +13,7 @@
 #import "GLPConversation.h"
 #import "GLPMessage.h"
 #import "GLPLiveConversation.h"
+#import "GLPNotification.h"
 
 @interface WebClient : AFHTTPClient
 
@@ -60,5 +61,6 @@
 
 // notifications
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
+- (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback;
 
 @end

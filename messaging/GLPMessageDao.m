@@ -188,7 +188,7 @@
 
 + (void)update:(GLPMessage *)entity db:(FMDatabase *)db
 {
-    NSAssert(entity.remoteKey != 0, @"Cannot update entity without key");
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
     
     int date = [entity.date timeIntervalSince1970];
     

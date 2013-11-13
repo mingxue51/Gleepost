@@ -653,6 +653,20 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:notification.remoteKey] forKey:@"seen"];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self putPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *notifications = [RemoteParser parseNotificationsFromJson:responseObject];
+        callback(YES, notifications);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
+
+
 
 #pragma mark - Utils
 

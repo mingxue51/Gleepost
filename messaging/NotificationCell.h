@@ -7,22 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPNotification.h"
 
 @interface NotificationCell : UITableViewCell
 
+extern NSString * const kGLPNotificationCell;
+
 @property (weak, nonatomic) IBOutlet UILabel *title;
-
-@property (weak, nonatomic) IBOutlet UILabel *content;
-
+@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *time;
-
 @property (weak, nonatomic) IBOutlet UIImageView *image;
-
+@property (weak, nonatomic) IBOutlet UIView *buttonsView;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
-
 @property (weak, nonatomic) IBOutlet UIButton *ignoreButton;
 
++ (CGSize)getContentLabelSizeForContent:(NSString *)content;
++ (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;
 
--(void)updateWithData;
+- (void)updateWithNotification:(GLPNotification *)notification;
 
 @end

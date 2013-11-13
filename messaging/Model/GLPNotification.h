@@ -20,7 +20,11 @@ typedef enum {
 
 @property (assign, nonatomic) NSInteger postRemoteKey;
 @property (assign, nonatomic) GLPNotificationType notificationType;
+@property (assign, nonatomic) BOOL seen;
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *user;
+
+- (BOOL)hasAction;
+- (NSString *)notificationTypeDescription;
 
 @end

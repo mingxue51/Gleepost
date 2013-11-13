@@ -8,54 +8,92 @@
 
 #import "NotificationsViewController.h"
 #import "NotificationCell.h"
+#import "GLPNotificationManager.h"
 
 @interface NotificationsViewController ()
 
-@property(strong, nonatomic) NSArray *notifications;
+@property(strong, nonatomic) NSMutableArray *notifications;
 
 @end
 
 @implementation NotificationsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = @"Notifications";
+    
+    self.notifications = [NSMutableArray array];
 
-    
-    [self setTitle:@"Notifications"];
-    
-    
-    self.notifications = [[NSArray alloc] initWithObjects:@"Notification1",@"Notification2", nil];
-    
-    //Register nib files in table view.
-
-    [self.tableView registerNib:[UINib nibWithNibName:@"ActionNotificationCell" bundle:nil] forCellReuseIdentifier:@"ActionCell"];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"SimpleNotificationCell" bundle:nil] forCellReuseIdentifier:@"SimpleCell"];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self configTableView];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self loadNotifications];
 }
 
-#pragma mark - Table view data source
+- (void)configTableView
+{
+    [self.tableView registerNib:[UINib nibWithNibName:kGLPNotificationCell bundle:nil] forCellReuseIdentifier:kGLPNotificationCell];
+}
+
+
+#pragma mark - Notifications
+
+- (void)loadNotifications
+{
+    [GLPNotificationManager loadNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+        if(success && notifications.count > 0) {
+            // add notifications
+            [self addNewNotifications:notifications];
+            
+            // and mark them read
+            [self markNotificationsRead];
+        }
+    }];
+}
+
+- (void)addNewNotifications:(NSArray *)notifications
+{
+    // just reload in case of empty table
+    if(self.notifications.count == 0) {
+        self.notifications = [notifications mutableCopy];
+        [self.tableView reloadData];
+        return;
+    }
+    
+    // otherwise add at the top
+    [self.notifications insertObjects:notifications atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, notifications.count)]];
+    
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    for(int i = 0; i < notifications.count; i++) {
+        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)markNotificationsRead
+{
+    [GLPNotificationManager markNotificationsRead:self.notifications callback:^(BOOL success, NSArray *notifications) {
+        
+        NSLog(@"Notifications mark as read success: %d - new notifications: %d", success, notifications.count);
+        
+        if(success && notifications.count > 0) {
+            // add new notifications
+            [self addNewNotifications:notifications];
+            
+            // and restart the function to mark new notifications read as well
+            [self markNotificationsRead];
+        }
+    }];
+}
+
+
+#pragma mark - Table view
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -64,39 +102,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //Number of current notifications.
     return self.notifications.count;
 }
 
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *ActionCellIdentifier = @"ActionCell";
-    static NSString *SimpleCellIdentifier = @"SimpleCell";
+    NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPNotificationCell forIndexPath:indexPath];
     
-    NotificationCell *cell;
-    
-    if(indexPath.row % 2 == 0)
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:ActionCellIdentifier forIndexPath:indexPath];
-    }
-    else
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:SimpleCellIdentifier forIndexPath:indexPath];
-    }
-    
-    
-    
-    
-    
+    GLPNotification *notification = self.notifications[indexPath.row];
+    [cell updateWithNotification:notification];
     
     return cell;
 }
-
-
-#pragma mark - Table view delegate
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -105,14 +122,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row % 2 == 0)
-    {
-        return 105;
-    }
-    else
-    {
-        return 85;
-    }
+    GLPNotification *notification = self.notifications[indexPath.row];
+    return [NotificationCell getCellHeightForNotification:notification];
 }
 
 
