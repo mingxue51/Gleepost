@@ -39,6 +39,8 @@
             
             if(notifications.count > 0) {
                 [GLPNotificationManager saveNotifications:notifications];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewNotifications" object:nil userInfo:nil];
             }
         }
     }];

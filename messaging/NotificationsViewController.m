@@ -12,7 +12,9 @@
 
 @interface NotificationsViewController ()
 
-@property(strong, nonatomic) NSMutableArray *notifications;
+@property (assign, nonatomic) BOOL inLoading;
+@property (assign, nonatomic) BOOL shouldReload;
+@property (strong, nonatomic) NSMutableArray *notifications;
 
 @end
 
@@ -25,6 +27,10 @@
     
     self.title = @"Notifications";
     
+    // controls for not having two loading in parallel, and programming a reload if needed
+    self.inLoading = NO;
+    self.shouldReload = NO;
+    
     self.notifications = [NSMutableArray array];
 
     [self configTableView];
@@ -33,6 +39,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self loadNotifications];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewNotifications" object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
 }
 
 - (void)configTableView
@@ -45,6 +58,14 @@
 
 - (void)loadNotifications
 {
+    if(self.inLoading) {
+        self.shouldReload = YES;
+        NSLog(@"Load notifications already in loading, programming new reload");
+        return;
+    }
+    
+    self.inLoading = YES;
+    
     [GLPNotificationManager loadNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
         if(success && notifications.count > 0) {
             // add notifications
@@ -52,6 +73,14 @@
             
             // and mark them read
             [self markNotificationsRead];
+        }
+        
+        self.inLoading = NO;
+        
+        // reload if asked
+        if(self.shouldReload) {
+            self.shouldReload = NO;
+            [self loadNotifications];
         }
     }];
 }
@@ -90,6 +119,12 @@
             [self markNotificationsRead];
         }
     }];
+}
+
+- (void)reloadNotifications:(NSNotification *)notification
+{
+    NSLog(@"Reload notification received from background processor");
+    [self loadNotifications];
 }
 
 
