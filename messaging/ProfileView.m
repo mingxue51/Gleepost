@@ -29,8 +29,23 @@
         // Initialization code
         self.currentUser = nil;
         
+        [self hideNotificationsBubble];
+        
     }
     return self;
+}
+
+- (void)showNotificationsBubble:(int)count
+{
+    self.notificationNewBubbleImageView.hidden = NO;
+    self.notificationNewBubbleLabel.hidden = NO;
+    self.notificationNewBubbleLabel.text = [NSString stringWithFormat:@"%d", count];
+}
+
+- (void)hideNotificationsBubble
+{
+    self.notificationNewBubbleImageView.hidden = YES;
+    self.notificationNewBubbleLabel.hidden = YES;
 }
 
 -(void) initialiseView:(GLPUser*)incomingUser
