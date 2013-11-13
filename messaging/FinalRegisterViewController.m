@@ -13,7 +13,6 @@
 #import "WebClientHelper.h"
 #import "WebClient.h"
 #import "LoginViewController.h"
-#import "GLPLongPollManager.h"
 #import "SessionManager.h"
 #import "ImageFormatterHelper.h"
 #import "GLPLoginManager.h"

@@ -436,4 +436,29 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return [json[@"id"] integerValue];
 }
 
+
+#pragma mark - Notifications
+
++ (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json
+{
+    GLPNotification *notification = [[GLPNotification alloc] init];
+    notification.remoteKey = [json[@"id"] integerValue];
+    notification.postRemoteKey = (json[@"post"] && json[@"post"] != [NSNull null]) ? [json[@"post"] intValue] : 0;
+    notification.date = [RemoteParser parseDateFromString:json[@"time"]];
+    notification.user = [RemoteParser parseUserFromJson:json[@"by"]];
+    
+    return notification;
+}
+
++ (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations
+{
+    NSMutableArray *items = [NSMutableArray array];
+    for(id item in items) {
+        [items addObject:[RemoteParser parseNotificationFromJson:item]];
+    }
+    
+    return items;
+}
+
+
 @end

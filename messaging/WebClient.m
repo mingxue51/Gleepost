@@ -461,7 +461,7 @@ static WebClient *instance = nil;
 // Blocking operation
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback
 {
-    [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" callback:^(BOOL success, NSDictionary *json) {
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" callback:^(BOOL success, id json) {
        
         if(!success) {
             callback(NO, nil);
@@ -640,21 +640,23 @@ static WebClient *instance = nil;
 
 #pragma mark - Notifications
 
-//TODO: define notification type
--(void)synchronousGetNotificationsLongPoll:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callback: (void (^)(BOOL success, NSString *response))callback
+-(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
-    [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" callback:^(BOOL success, NSDictionary *json) {
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" callback:^(BOOL success, id json) {
         if(!success) {
             callback(NO, nil);
             return;
         }
+        
+        NSArray *items = [RemoteParser parseNotificationsFromJson:json];
+        callback(YES, items);
     }];
 }
 
 
 #pragma mark - Utils
 
-- (void)executeSynchronousRequestWithMethod:(NSString *)method path:(NSString *)path callback:(void (^)(BOOL success, NSDictionary *json))callback
+- (void)executeSynchronousRequestWithMethod:(NSString *)method path:(NSString *)path callback:(void (^)(BOOL success, id json))callback
 {
     NSLog(@"Start synchronous request %@ - %@...", method, path);
     

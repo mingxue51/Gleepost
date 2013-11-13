@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GLPLongPollManager : NSObject
+@interface GLPBackgroundRequestsManager : NSObject
 
-+ (GLPLongPollManager *)sharedInstance;
-- (void)startLongPoll;
-- (void)stopLongPoll;
++ (GLPBackgroundRequestsManager *)sharedInstance;
+
+- (void)startAll;
+- (void)stopAll;
 
 @end

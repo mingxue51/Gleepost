@@ -5,6 +5,8 @@
 //  Created by Lukas on 10/17/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+//  Note on DB scheme:
+//  Foreign keys are always created using remote keys fields
 
 #import "DatabaseManager.h"
 
@@ -166,6 +168,15 @@ static DatabaseManager *instance = nil;
             [db executeUpdate:@"create table post_images ( \
              post_remote_key integer, \
              image_url text);"];
+            
+            // notifications
+            [db executeUpdate:@"create table notifications ( \
+             key integer primary key autoincrement, \
+             remoteKey integer unique not null, \
+             date integer, \
+             type integer, \
+             post_remote_key integer, \
+             user_remote_key integer);"];
             
             self.exists = YES;
         }];

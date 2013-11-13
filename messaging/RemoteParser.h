@@ -13,6 +13,7 @@
 #import "GLPPost.h"
 #import "GLPComment.h"
 #import "GLPContact.h"
+#import "GLPNotification.h"
 
 @interface RemoteParser : NSObject
 
@@ -46,5 +47,9 @@
 // images
 +(NSString*)parseImageUrl:(NSDictionary*)url;
 +(int)parseIdFromJson:(NSDictionary*)json;
+
+// notifications
++ (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json;
++ (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations;
 
 @end

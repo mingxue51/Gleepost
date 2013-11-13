@@ -6,32 +6,34 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "GLPLongPollManager.h"
+#import "GLPBackgroundRequestsManager.h"
 #import "LongPollOperation.h"
 #import "WebClient.h"
 #import "LongPollContactsOperation.h"
+#import "GLPGetNotificationsOperation.h"
 
-@interface GLPLongPollManager()
+@interface GLPBackgroundRequestsManager()
 
 @property (strong, nonatomic) NSOperationQueue *queue;
-@property (assign, nonatomic) BOOL isOperationRunning;
-@property (strong, nonatomic) LongPollOperation *longPollOperation;
+@property (strong, nonatomic) NSOperationQueue *notificationsQueue;
 
-//Added.
-//@property (strong, nonatomic) LongPollContactsOperation *longPollContactOperation;
-//@property (assign, nonatomic) BOOL isContactsOperationRunning;
+@property (assign, nonatomic) BOOL isOperationRunning;
+@property (assign, nonatomic) BOOL isNotificationOperationRunning;
+
+@property (strong, nonatomic) LongPollOperation *longPollOperation;
+@property (strong, nonatomic) GLPGetNotificationsOperation *getNotificationsOperation;
 
 @end
 
-@implementation GLPLongPollManager
+@implementation GLPBackgroundRequestsManager
 
-static GLPLongPollManager *instance = nil;
+static GLPBackgroundRequestsManager *instance = nil;
 
-+ (GLPLongPollManager *)sharedInstance
++ (GLPBackgroundRequestsManager *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[GLPLongPollManager alloc] init];
+        instance = [[GLPBackgroundRequestsManager alloc] init];
     });
     
     return instance;
@@ -45,6 +47,7 @@ static GLPLongPollManager *instance = nil;
     }
     
     self.queue = [[NSOperationQueue alloc] init];
+    self.notificationsQueue = [[NSOperationQueue alloc] init];
     self.isOperationRunning = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
@@ -55,14 +58,29 @@ static GLPLongPollManager *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    NSLog(@"Long poll manager network status update: %d", isNetwork);
+    NSLog(@"Background requests manager network status update: %d", isNetwork);
 
     if(isNetwork) {
-        [self startLongPoll];
+        [self startAll];
     } else {
-        [self stopLongPoll];
+        [self stopAll];
     }
 }
+
+- (void)startAll
+{
+    [self startLongPoll];
+    [self startGetNotifications];
+}
+
+- (void)stopAll
+{
+    [self stopLongPoll];
+    [self stopGetNotifications];
+}
+
+
+#pragma mark - Long poll
 
 - (void)startLongPoll
 {
@@ -107,6 +125,41 @@ static GLPLongPollManager *instance = nil;
     [self.longPollOperation shouldStop];
 
     NSLog(@"Request to stop long poll operation");
+}
+
+
+#pragma mark - Notifications
+
+- (void)startGetNotifications
+{
+    if(![WebClient sharedInstance].isNetworkAvailable) {
+        NSLog(@"Does not start get notifications operation because network is not available");
+        return;
+    }
+    
+    if(self.isNotificationOperationRunning) {
+        return;
+    }
+    
+    self.isNotificationOperationRunning = YES;
+    
+    __unsafe_unretained typeof(self) self_ = self;
+    self.getNotificationsOperation = [[GLPGetNotificationsOperation alloc] init];
+    [self.getNotificationsOperation setCompletionBlock:^{
+        NSLog(@"Get notifications operation finished");
+        self_.isNotificationOperationRunning = NO;
+    }];
+    
+    [self.queue addOperation:self.getNotificationsOperation];
+    
+    NSLog(@"Start get notifications operation");
+}
+
+- (void)stopGetNotifications
+{
+    [self.getNotificationsOperation cancel];
+    self.isNotificationOperationRunning = NO;
+    NSLog(@"Request to stop get notifications operation");
 }
 
 @end

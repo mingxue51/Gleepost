@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
 #import "SessionManager.h"
-#import "GLPLongPollManager.h"
+#import "GLPBackgroundRequestsManager.h"
 #import "WebClient.h"
 
 @implementation AppDelegate
@@ -43,7 +43,7 @@
     NSLog(@"Application will become inactive");
     
     if([[SessionManager sharedInstance] isSessionValid]) {
-        [[GLPLongPollManager sharedInstance] stopLongPoll];
+        [[GLPBackgroundRequestsManager sharedInstance] stopAll];
     }
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -66,7 +66,7 @@
     NSLog(@"Application active");
     
     if([[SessionManager sharedInstance] isSessionValid]) {
-        [[GLPLongPollManager sharedInstance] startLongPoll];
+        [[GLPBackgroundRequestsManager sharedInstance] startAll];
     }
     
     // activate or reactivate web client

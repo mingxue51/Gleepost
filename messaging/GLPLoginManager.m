@@ -8,7 +8,7 @@
 
 #import "GLPLoginManager.h"
 #import "WebClient.h"
-#import "GLPLongPollManager.h"
+#import "GLPBackgroundRequestsManager.h"
 #import "SessionManager.h"
 #import "GLPContactDao.h"
 #import "GLPUserDao.h"
@@ -56,7 +56,7 @@
                 }
             }];
             
-            [[GLPLongPollManager sharedInstance] startLongPoll];
+            [[GLPBackgroundRequestsManager sharedInstance] startAll];
             
             callback(YES);
         }];
