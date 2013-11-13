@@ -544,10 +544,10 @@
             </objects>
             <point key="canvasLocation" x="2038" y="1859"/>
         </scene>
-        <!--View Topic View Controller-->
+        <!--View Topic View Controller - ViewTopicViewController-->
         <scene sceneID="etG-PG-ZFM">
             <objects>
-                <viewController storyboardIdentifier="ViewTopicViewController" id="p7E-nR-kMk" customClass="ViewTopicViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewTopicViewController" title="ViewTopicViewController" id="p7E-nR-kMk" customClass="ViewTopicViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LAc-ph-K7S">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1326,11 +1326,11 @@
             <objects>
                 <viewController id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
@@ -1698,12 +1698,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="htZ-EL-79i"/>
+        <segue reference="Rdk-3z-tPE"/>
+        <segue reference="UFN-Sk-0kH"/>
         <segue reference="FQd-EB-Shi"/>
         <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="u6W-1W-GCM"/>
-        <segue reference="htZ-EL-79i"/>
-        <segue reference="aau-5Z-5Pa"/>
-        <segue reference="UFN-Sk-0kH"/>
         <segue reference="6Mq-lQ-Lwk"/>
+        <segue reference="Jle-n7-Gmg"/>
     </inferredMetricsTieBreakers>
 </document>

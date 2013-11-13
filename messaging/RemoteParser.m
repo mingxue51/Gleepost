@@ -35,18 +35,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     user.profileImageUrl = json[@"profile_image"];
 
     
-    NSDictionary* network = json[@"network"];
-    
-//    NSLog(@"Whole Network: %@", network);
-    
-    
-    
-//    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:key];
-//    
-//    if(!user) {
-//
-//    }
-    
     if(json[@"network"] != nil)
     {
         NSArray *networkMessages = [self parseNetworkUser:json[@"network"]];
@@ -54,24 +42,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         user.networkId = [[networkMessages objectAtIndex:0] integerValue];
         
         user.networkName = [networkMessages objectAtIndex:1];
-        
-        //NSLog(@"Network id: %d, Network Name: %@", user.networkId, user.networkName);
     }
-    
-
-
-//
-//    // optional
-//    user.tagline = json[@"tagline"];
-    //user.profileImageUrl = json[@"profile_image"];
-//    NSLog(@"User's image URL: %@", json[@"profile_image"]);
-//    NSLog(@"User's course: %@",json[@"course"]);
-    
-//    user.course = json[@"course"];
-//    
-//    if(json[@"network"]) {
-//        user.network = json[@"network"];
-//    }
     
     return user;
 }
@@ -106,7 +77,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
-    NSLog(@"last up %d - %@", conversation.remoteKey, conversation.lastUpdate);
     
     NSMutableArray *participants = [NSMutableArray array];
 
@@ -114,10 +84,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }
-    
-    //NSLog(@"PARTICIPANTS: %@",participants);
-    
-    //conversation.isGroup = (participants.count > 0) ? YES : NO;
     
     conversation.isGroup = (participants.count > 2) ? YES : NO;
 

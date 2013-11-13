@@ -68,7 +68,6 @@ static BOOL initLiveChats;
     self = [super initWithFrame:frame];
     if (self)
     {
-      //  self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gleepost1"]];
         [self addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gleepost1"]]];
         
         [self initialiseCircles];
@@ -84,37 +83,9 @@ static BOOL initLiveChats;
         [self setBackgroundImage];
         [self initialiseScrollView];
         [self setUpTimers];
-
-        
-        
         
        animationsFinished = NO;
-        
-        
-
-        
-        
-       // littleBubble.frame = CGRectMake(20, 20, 20, 20);
-        
-//        self.cirlcles = [[NSArray alloc] initWithObjects:littleBubble, nil];
-        
-//        UIImageView *animations = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 500)];
-//        
-//        
-//        animations.animationImages = self.cirlcles;
-//        
-//        
-//        
-//        
-//        [self addSubview:animations];
-//        
-        
-        
-       
-        
-       // [self addSubview:littleBubble];
-        
-       // [self runSpinAnimationOnView:littleBubble duration:30 rotations:100 repeat:100];
+  
     }
     return self;
 }
@@ -168,11 +139,9 @@ static BOOL initLiveChats;
                 [liveConversationsArray objectAtIndex:in1];
 
                 
-                //[current setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
                 [current setImage:[UIImage imageNamed:@"default_user_image"]];
                 
                 //Add selector to button.
-                //[current addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchDown];
                 [current setUserInteractionEnabled:YES];
                 
                 [ShapeFormatterHelper setRoundedView:current toDiameter:current.frame.size.height];
@@ -203,57 +172,22 @@ static BOOL initLiveChats;
 
         if([currentOpponent.profileImageUrl isEqualToString:@""] || currentOpponent.profileImageUrl == nil)
         {
-            //[currentButton setBackgroundImage:[UIImage imageNamed:@"default_user_image"] forState:UIControlStateNormal];
             [currentImageView setImage:[UIImage imageNamed:@"default_user_image"]];
-
         }
         else
         {
-//            UIImageView *imageView = [[UIImageView alloc] init];
             
             //Add the real user's image.
-            //[imageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
-            
-//            [currentImageView setImageWithURL:[NSURL URLWithString:conv.author.profileImageUrl] placeholderImage:nil];
             [currentImageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
-
-            //[currentButton setBackgroundImage:imageView.image forState:UIControlStateNormal];
 
         }
         
         [[currentImageView layer] setBorderWidth:2.0f];
         [[currentImageView layer] setBorderColor:[UIColor whiteColor].CGColor];
         
-        
-        
-       // UIButton *convButton = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 40, 40)];
-        
-//        UIButton *convButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        convButton.frame = CGRectMake(50, 50, 40, 40);
-//        
-//        //[convButton setImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
-//        
-//        [convButton setBackgroundImage:[UIImage imageNamed:@"pic2"] forState:UIControlStateNormal];
-        //Add selector to each button in order to navigate to appropriate chat.
-        
-        
-        
-//        [self.bubblesPeople addObject:convButton];
-//        [self addSubview: convButton];
-        
         ++i;
     }
     
-    
-    //Add the people bubbles to screen but hidden.
-    
-//    for(UIButton* btnView in self.bubblesPeople)
-//    {
-//        //        imgView.hidden = YES;
-//        [self addSubview:btnView];
-//    }
-//    
-    NSLog(@"Buttons: %@",self.bubblesPeople);
 }
 
 
@@ -283,17 +217,6 @@ static BOOL initLiveChats;
 
 -(void) navigateToChat: (id) sender
 {
-    //UIButton *btn = (UIButton*) sender;
-    
-    
-    /**
-     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
-     
-     UIImageView *incomingView = (UIImageView*)incomingUser.view;
-     
-     self.selectedUserId = incomingView.tag;
-     
-     */
     
     UITapGestureRecognizer *incomingGesture = (UITapGestureRecognizer*) sender;
     
@@ -320,8 +243,6 @@ static BOOL initLiveChats;
     
     for(int i = 0; i<3; ++i)
     {
-        //UIButton *convButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        
         UIImageView *convImageView = [[UIImageView alloc] init];
         
         convImageView.tag = (i+1)*10;
@@ -343,55 +264,14 @@ static BOOL initLiveChats;
             convImageView.frame = CGRectMake(210, 135, 50, 50);
 
         }
-        
-        //[convButton setImage:[UIImage imageNamed:@"pic1"] forState:UIControlStateNormal];
-        
-       // Conversation *current = [liveConversationsArray objectAtIndex:i];
-        
-//        if(liveConversationsArray.count != 0)
-//        {
-//            [convButton setBackgroundImage:[UIImage imageNamed:@"pic2"] forState:UIControlStateNormal];
-//
-//        }
-//        else
-//        {
-            //[convButton setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d",holderName,i+1]] forState:UIControlStateNormal];
+
         [convImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d",holderName,i+1]]];
-//        }
         
         
         [self addSubview:convImageView];
         
         [self bringSubviewToFront:convImageView];
     }
-    
-    
-    //Add the conversations if there exist.
-    
-    
-//    NSArray *allSubviews = self.subviews;
-//    
-//    NSMutableArray *currentButtons = [[NSMutableArray alloc] init];
-//    
-//    for(UIView* view in allSubviews)
-//    {
-//        if([view isKindOfClass:[UIButton class]])
-//        {
-//            [currentButtons addObject:view];
-//        }
-//    }
-//    
-//    int i=0;
-//    
-//    for(Conversation *c in liveConversationsArray)
-//    {
-//        UIButton *currentButton = [currentButtons objectAtIndex:i];
-//        
-//        [currentButton setBackgroundImage:[UIImage imageNamed:@"pic2"] forState:UIControlStateNormal];
-//        
-//        ++i;
-//    }
-    
 }
 
 
@@ -405,7 +285,6 @@ static BOOL initLiveChats;
 {
     self.pullDownScrollView = [[PullDownScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     [self.pullDownScrollView setChatViewAnimations:self];
-    
     
     [self addSubview:self.pullDownScrollView];
 }
@@ -548,8 +427,6 @@ static BOOL goBack2 = NO;
                  
                  */
                 
-//                int r = rand() % 10;
-                
                 int rX = rand() % 20;
                 int rY = rand() % 20;
                 
@@ -614,7 +491,6 @@ static BOOL goBack2 = NO;
                     [imageView setFrame: CGRectMake(imageView.frame.origin.x+rX,imageView.frame.origin.y-rY , imageView.image.size.width/2, imageView.image.size.height/2)];
                 }
                 
-                //NSLog(@"Rand: %d : %d",rX, rY);
                 
             }
             else
@@ -629,8 +505,6 @@ static BOOL goBack2 = NO;
                 {
                     [imageView setFrame: CGRectMake(imageView.frame.origin.x-rX,imageView.frame.origin.y+rY , imageView.image.size.width/2, imageView.image.size.height/2)];
                 }
-                //
-               // NSLog(@"Pre random X: %d Pre random Y: %d",rX, rY);
             }
             
             
@@ -1183,13 +1057,14 @@ static BOOL animateBubbles = YES;
     [self.chatViewController searchForConversationForGroup:NO];
 }
 
-/*
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
+    NSLog(@"drawRect");
 }
-*/
+
 
 @end

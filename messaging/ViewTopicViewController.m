@@ -241,11 +241,14 @@ float timeInterval = 0.1;
     {
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
         [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+        [self.tabBarController.tabBar setHidden:NO];
     }
     else
     {
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
         [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+
+        
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];

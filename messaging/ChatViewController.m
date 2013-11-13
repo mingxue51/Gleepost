@@ -57,8 +57,10 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    
+
     [super viewDidAppear:animated];
+
+
 
     self.searchForConversation = NO;
 
@@ -415,9 +417,27 @@
 
 -(void)navigateToLiveChatWithIndex: (int)index
 {
-    self.newChat = NO;
-    self.liveConversation = [self.liveConversations objectAtIndex:index];
-    [self performSegueWithIdentifier:@"start" sender:self];
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewTopicViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+    
+    
+    vc.randomChat = YES;
+    vc.liveConversation = [self.liveConversations objectAtIndex:index];
+    
+    
+    
+    //Fetch the participants.
+    [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
+        
+        NSLog(@"Participants id: %@", participants);
+        vc.participants = participants;
+    }];
+    
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
