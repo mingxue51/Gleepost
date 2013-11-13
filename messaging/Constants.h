@@ -14,5 +14,6 @@
 
 #define RELOAD_POSTS_INTERVAL_S             60
 #define RELOAD_NOTIFICATIONS_INTERVAL_S     30
+#define LONGPOLL_ERROR_TIME_INTERVAL_S      5
 
 #endif

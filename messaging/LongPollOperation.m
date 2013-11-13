@@ -56,12 +56,30 @@
     
     self.isRequestRunning = YES;
     
+    // take the time before starting the request
+    __block int timeMillis = CFAbsoluteTimeGetCurrent();
+    
     [[WebClient sharedInstance] synchronousLongPollWithCallback:^(BOOL success, GLPMessage *message) {
+        NSLog(@"Long poll request finish with success: %d", success);
+        
         if(success) {
-            NSLog(@"New message from long poll request: %@", message.content);
-            [ConversationManager saveMessageFromLongpoll:message];
+            // add message if any
+            if(message) {
+                [ConversationManager saveMessageFromLongpoll:message];
+                NSLog(@"New message from long poll request: %@", message.content);
+            }
         } else {
-            NSLog(@"Long poll request finished without result, restart");
+            // in case of error, check the time interval between starting the request
+            // wait at least some sec between each errors
+            // in the future, it would be better to increment progressively that time
+            float interval = (CFAbsoluteTimeGetCurrent() - timeMillis) / 1000;
+            
+            if(interval <= LONGPOLL_ERROR_TIME_INTERVAL_S) {
+                int sleep = LONGPOLL_ERROR_TIME_INTERVAL_S - interval;
+                NSLog(@"Long poll request error responses too close, wait around %d seconds before next request", sleep);
+                
+                [NSThread sleepForTimeInterval:sleep];
+            }
         }
         
         self.isRequestRunning = NO;
