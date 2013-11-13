@@ -15,6 +15,7 @@
 #import "WebClientHelper.h"
 #import "GLPContact.h"
 #import "AppearanceHelper.h"
+#import "ShapeFormatterHelper.h"
 
 @interface ContactsViewController ()
 
@@ -65,10 +66,14 @@
 
 
     self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-    
+
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
     [self loadContacts];
-
 }
 
 -(void) clearUselessSections
@@ -179,6 +184,9 @@
 {
     //Created for test purposes.
 
+    [self.users removeAllObjects];
+    [self.usersStr removeAllObjects];
+    
     for(GLPContact* contact in contactsFromServer)
     {
         if(contact.youConfirmed)
@@ -273,6 +281,7 @@
    // [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
 
     
+    
     [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
       
        // [WebClientHelper hideStandardLoaderForView:self.view];
@@ -282,6 +291,7 @@
         {
             //Store contacts into an array.
             NSLog(@"Contacts loaded successfully.");
+            
             
             [self findConfirmedContacts:contacts.mutableCopy];
             
@@ -344,22 +354,6 @@
     ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     
-//    if (cell == nil)
-//    {
-		//cell = [[ContactUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//	}
-    
-    
-    //cell = [[ContactUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    
-    //[cell test];
-    
-    //PostCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    //[cell createElements];
-    
-    //[cell.nameUser setText: [self.users objectAtIndex:indexPath.row]];
-    //NSMutableArray *currentUsers = [self.categorisedUsers objectAtIndex:indexPath.row];
-    
     NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
     
     GLPContact *currentContact = [currentUsers objectAtIndex:indexPath.row];
@@ -367,19 +361,12 @@
     [cell.nameUser setText: currentContact.user.name];
 
     
- //   [cell.profileImageUser setImage:[UIImage imageNamed:@"avatar_big"]];
-    
-    cell.profileImageUser.clipsToBounds = YES;
-    
-    cell.profileImageUser.layer.cornerRadius = 20;
+    [ShapeFormatterHelper setRoundedView:cell.profileImageUser toDiameter:cell.profileImageUser.frame.size.height];
+
     
     [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image"]];
     
-    
-    
-//    [cell.profileImageUser setBackgroundImage:[UIImage imageNamed:@"avatar_big"] forState:UIControlStateNormal];
-//    
-//    [cell.profileImageUser addTarget:self action:@selector(navigateToProfileContact:) forControlEvents:UIControlEventTouchUpInside];
+
     
     return cell;
 }

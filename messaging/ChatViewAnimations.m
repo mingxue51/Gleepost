@@ -10,7 +10,7 @@
 #import "GLPLiveConversation.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import "ShapeFormatterHelper.h"
 
 
 const int higherLimit = 50;
@@ -125,11 +125,6 @@ static BOOL initLiveChats;
 }
 
 
--(void) refreshStateElements
-{
-    
-}
-
 
 -(void) initialiseBubbles
 {
@@ -184,6 +179,9 @@ static BOOL initLiveChats;
                 //Add selector to button.
                 //[current addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchDown];
                 [current setUserInteractionEnabled:YES];
+                
+                [ShapeFormatterHelper setRoundedView:current toDiameter:current.frame.size.height];
+
                 
                 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
                 [tap setNumberOfTapsRequired:1];
@@ -332,10 +330,8 @@ static BOOL initLiveChats;
         UIImageView *convImageView = [[UIImageView alloc] init];
         
         convImageView.tag = (i+1)*10;
-        
-        convImageView.clipsToBounds = YES;
-        
-        convImageView.layer.cornerRadius = 25;
+
+        [ShapeFormatterHelper setRoundedView:convImageView toDiameter:convImageView.frame.size.height];
         
         
         if(i == 0)

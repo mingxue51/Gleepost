@@ -27,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
 
+@property (weak, nonatomic) UIViewController *delegate;
+
 
 @property BOOL isViewPost;
 @property BOOL imageAvailable;

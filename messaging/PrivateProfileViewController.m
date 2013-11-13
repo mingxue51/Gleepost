@@ -16,6 +16,7 @@
 #import "AppearanceHelper.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
+#import "ContactsManager.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -108,6 +109,12 @@
             
             self.invitationSentView = [InvitationSentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
             self.invitationSentView.delegate = self;
+            
+            
+            GLPContact *contact = [[GLPContact alloc] initWithUserName:self.profileUser.name profileImage:self.profileUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
+            //Save contact to database.
+            [[ContactsManager sharedInstance] saveNewContact:contact];
+
         }
         else
         {

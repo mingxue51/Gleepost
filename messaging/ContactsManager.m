@@ -7,6 +7,8 @@
 //
 
 #import "ContactsManager.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
 
 @implementation ContactsManager
 
@@ -36,9 +38,47 @@ static ContactsManager *instance = nil;
     return self;
 }
 
--(void)refreshContacts
+-(void)saveNewContact:(GLPContact*)contact
+{
+    [GLPContactDao save:contact];
+}
+
+-(void)refreshFromDatabase
 {
     [self loadContacts];
+}
+
+-(void)refreshContacts
+{
+    //Load contacts from server and update database.
+    
+    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+        
+        if(success)
+        {
+            //Store contacts into an array.
+            NSLog(@"Contacts loaded successfully.");
+            
+            self.contacts = contacts;
+
+            //[self deleteTable];
+            
+            for(GLPContact *c in contacts)
+            {
+                [GLPContactDao save:c];
+            }
+            
+            
+            //            self.users = contacts.mutableCopy;
+            
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
+        }
+        
+        
+    }];
 }
 
 -(void)loadContacts
@@ -89,5 +129,10 @@ static ContactsManager *instance = nil;
     
     return nil;
 }
+
+//-(void)deleteTable
+//{
+//    [GLPContactDao deleteTable];
+//}
 
 @end

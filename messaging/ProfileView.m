@@ -69,9 +69,7 @@
 }
 
 -(void)setUserDetails
-{
-    NSLog(@"Remote Key: %d",  self.currentUser.remoteKey);
-    
+{    
     
     [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
     
