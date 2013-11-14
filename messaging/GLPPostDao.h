@@ -14,6 +14,9 @@
 
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db;
 + (NSArray *)findLastPostsAfter:(GLPPost *)post inDb:(FMDatabase *)db;
++ (NSArray *)findAllPostsBefore:(GLPPost *)post inDb:(FMDatabase *)db;
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db;
++ (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db;
++ (void)deleteAllInDb:(FMDatabase *)db;
 
 @end

@@ -17,6 +17,19 @@
 @synthesize date;
 @synthesize author;
 @synthesize imagesUrls;
+@synthesize sendStatus=_sendStatus;
+
+- (id)init
+{
+    self = [super init];
+    if(!self) {
+        return self;
+    }
+    
+    _sendStatus = kSendStatusLocal;
+    
+    return self;
+}
 
 -(BOOL) imagePost
 {

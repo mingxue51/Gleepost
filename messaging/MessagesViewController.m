@@ -104,7 +104,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
 
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)createRefresh

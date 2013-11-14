@@ -8,6 +8,7 @@
 
 #import "GLPEntity.h"
 #import "GLPUser.h"
+#import "SendStatus.h"
 
 @interface GLPPost : GLPEntity
 
@@ -20,6 +21,8 @@
 @property (strong, nonatomic) NSArray *imagesUrls;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (assign, nonatomic) BOOL liked;
+@property (assign, nonatomic) SendStatus sendStatus;
+
 -(BOOL) imagePost;
 
 @end

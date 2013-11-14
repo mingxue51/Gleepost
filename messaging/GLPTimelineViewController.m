@@ -122,7 +122,7 @@ static BOOL likePushed;
     self.isReloadingCronRunning = NO;
     self.shouldReloadingCronRun = NO;
     
-    [self loadPosts];
+    [self loadInitialPosts];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -294,7 +294,7 @@ static BOOL likePushed;
 
 #pragma mark - Posts
 
-- (void)loadPosts
+- (void)loadInitialPosts
 {
     if(self.isLoading) {
         return;
@@ -302,11 +302,14 @@ static BOOL likePushed;
     
     [self startLoading];
     
-    [GLPPostManager loadPostsAfter:nil callback:^(BOOL success, BOOL remain, NSArray *posts) {
-        [self stopLoading];
+    [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
+        // show temp local results
+        self.posts = [localPosts mutableCopy];
+        [self.tableView reloadData];
         
+    } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         if(success) {
-            self.posts = [posts mutableCopy];
+            self.posts = [remotePosts mutableCopy];
             
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
@@ -317,6 +320,8 @@ static BOOL likePushed;
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
         }
+        
+        [self stopLoading];
     }];
 }
 
@@ -336,15 +341,22 @@ static BOOL likePushed;
         return;
     }
     
-    // if there is no current posts, just load posts
-    if(self.posts.count == 0) {
-        [self loadPosts];
-        return;
+    // take the last remote post
+    GLPPost *remotePost = nil;
+    
+    if(self.posts.count > 0) {
+        // first is the most recent
+        for(GLPPost *p in self.posts) {
+            if(p.remoteKey != 0) {
+                remotePost = p;
+                break;
+            }
+        }
     }
     
     [self startLoading];
     
-    [GLPPostManager loadPostsBefore:self.posts[0] callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadRemotePostsBefore:remotePost callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
         
         if(!success) {
@@ -375,12 +387,7 @@ static BOOL likePushed;
             
             // or scroll to the top
             else {
-                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-                for(int i = 0; i < posts.count; i++) {
-                    [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                }
-                
-                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
             }
         }
     }];
@@ -404,7 +411,7 @@ static BOOL likePushed;
     [self startLoading];
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     
-    [GLPPostManager loadPostsAfter:[self.posts lastObject] callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadPreviousPostsAfter:[self.posts lastObject] callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
         
         if(!success) {
@@ -437,6 +444,30 @@ static BOOL likePushed;
     }];
 }
 
+- (void)reloadNewLocalPosts
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    self.isLoading = YES;
+    
+    // get the last post if exists
+    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    [GLPPostManager loadLocalPostsBefore:post callback:^(NSArray *posts) {
+        if(!posts || posts.count == 0) {
+            return;
+        }
+        
+        [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+        
+        [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+        
+        self.isLoading = NO;
+    }];
+}
+
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
 {
     [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
@@ -452,23 +483,6 @@ static BOOL likePushed;
         
         
     }];
-}
-
--(void)addNewPost:(GLPPost*)post
-{
-    post.imagesUrls = [NSArray arrayWithObjects:@"uploading...", nil];
-    
-    
-    
-    [self.posts insertObject:post atIndex:0];
-    [self.tableView reloadData];
-    
-}
-
--(void)saveNewPostToDatabase:(GLPPost*)post
-{
-    //Save post to database.
-    [GLPPostManager saveNewPost:post];
 }
 
 
@@ -541,6 +555,16 @@ static BOOL likePushed;
 
 
 #pragma mark - Table view
+
+- (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
+{
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    for(int i = 0; i < count; i++) {
+        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+}
 
 - (void)updateTableViewWithNewPosts:(int)count
 {
