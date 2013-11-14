@@ -52,7 +52,7 @@
     
     // get posts where date < post submit date if post is local
     // otherwise get where remoteKey < post key
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey = 0) or (remoteKey != 0 and remoteKey < %d) order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -71,7 +71,7 @@
     
     // get posts where date < post submit date if post is local
     // otherwise get where remoteKey < post key
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date > %d and remoteKey = 0) or (remoteKey != 0 and remoteKey > %d) order by date desc, remoteKey desc", post.date, post.remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date > %d and remoteKey is null) or (remoteKey is not null and remoteKey > %d) order by date desc, remoteKey desc", post.date, post.remoteKey];
     
     NSMutableArray *result = [NSMutableArray array];
     
