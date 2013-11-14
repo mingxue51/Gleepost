@@ -13,7 +13,10 @@
 
 extern NSInteger const kGLPNumberOfPosts;
 
-+ (void)loadPostsBefore:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
-+ (void)loadPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
-+(void)saveNewPost:(GLPPost*)post;
++ (void)loadInitialPostsWithLocalCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback;
++ (void)loadLocalPostsBefore:(GLPPost *)post callback:(void (^)(NSArray *posts))callback;
++ (void)loadRemotePostsBefore:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
++ (void)loadPreviousPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
++ (void)createLocalPost:(GLPPost*)post;
++ (void)updatePostAfterSending:(GLPPost *)post;
 @end

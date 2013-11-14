@@ -156,12 +156,13 @@ static DatabaseManager *instance = nil;
             // post
             [db executeUpdate:@"create table posts ( \
              key integer primary key autoincrement, \
-             remoteKey integer unique not null, \
+             remoteKey integer unique, \
              date integer, \
              content text, \
              likes integer, \
              dislikes integer, \
              comments integer, \
+             sendStatus integer, \
              author_key integer);"];
             
             // post images

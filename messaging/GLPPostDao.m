@@ -17,7 +17,8 @@
 
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts order by remoteKey desc limit %d", kGLPNumberOfPosts];
+    // order by date, and if date is similar, second ordering by remoteKey
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -49,7 +50,28 @@
         return [GLPPostDao findLastPostsInDb:db];
     }
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where remoteKey < %d order by remoteKey desc limit %d", post.remoteKey, kGLPNumberOfPosts];
+    // get posts where date < post submit date if post is local
+    // otherwise get where remoteKey < post key
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey = 0) or (remoteKey != 0 and remoteKey < %d) order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
++ (NSArray *)findAllPostsBefore:(GLPPost *)post inDb:(FMDatabase *)db
+{
+    if(!post) {
+        return [GLPPostDao findLastPostsInDb:db];
+    }
+    
+    // get posts where date < post submit date if post is local
+    // otherwise get where remoteKey < post key
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date > %d and remoteKey = 0) or (remoteKey != 0 and remoteKey > %d) order by date desc, remoteKey desc", post.date, post.remoteKey];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -63,19 +85,33 @@
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     int date = [entity.date timeIntervalSince1970];
-
-    BOOL postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, author_key) values(%d, %@, %d, %d, %d, %d, %d)",
-     entity.remoteKey,
-     entity.content,
-     date,
-     entity.likes,
-     entity.dislikes,
-     entity.commentsCount,
-     entity.author.remoteKey];
+    
+    BOOL postSaved;
+    
+    if(entity.remoteKey == 0) {
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key) values(%@, %d, %d, %d, %d, %d, %d)",
+                     entity.content,
+                     date,
+                     entity.likes,
+                     entity.dislikes,
+                     entity.commentsCount,
+                     entity.sendStatus,
+                     entity.author.remoteKey];
+    } else {
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key) values(%d, %@, %d, %d, %d, %d, %d, %d)",
+                     entity.remoteKey,
+                     entity.content,
+                     date,
+                     entity.likes,
+                     entity.dislikes,
+                     entity.commentsCount,
+                     entity.sendStatus,
+                     entity.author.remoteKey];
+    }
     
     entity.key = [db lastInsertRowId];
     
-    NSLog(@"Post Saved: %d",postSaved);
+    
      
     //Insert images
     for(NSString* imageUrl in entity.imagesUrls)
@@ -87,6 +123,28 @@
     
     //Save the author.
     [GLPUserDao saveIfNotExist:entity.author db:db];
+}
+
++ (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
+{
+    NSAssert(entity.key != 0, @"Update entity without key");
+    
+    if(entity.remoteKey != 0) {
+        [db executeUpdateWithFormat:@"update posts set remoteKey=%d, sendStatus=%d where key=%d",
+         entity.remoteKey,
+         entity.sendStatus,
+         entity.key];
+    } else {
+        [db executeUpdateWithFormat:@"update posts set sendStatus=%d where key=%d",
+         entity.sendStatus,
+         entity.key];
+    }
+}
+
++ (void)deleteAllInDb:(FMDatabase *)db
+{
+    [db executeQuery:@"delete from posts"];
+    [db executeQuery:@"delete from post_images"];
 }
 
 @end
