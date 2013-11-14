@@ -564,6 +564,7 @@ static BOOL likePushed;
     }
     
     [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    [self scrollToTheTop];
 }
 
 - (void)updateTableViewWithNewPosts:(int)count
@@ -779,6 +780,14 @@ static BOOL likePushed;
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.posts.count inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
+- (void)scrollToTheTop
+{
+    // we never know, that would be a stupid crash
+    if(self.posts.count > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
 
 #pragma mark - Scroll
 // Not need because we use performselector which areis deprioritized during scrolling
@@ -839,10 +848,7 @@ static BOOL likePushed;
 {
     [self hideNewElementsIndicatorView];
     
-    // we never know, that would be a stupid crash
-    if(self.posts.count > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
+    [self scrollToTheTop];
 }
 
 
