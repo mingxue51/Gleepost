@@ -9,6 +9,7 @@
 #import "ContactsManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "DatabaseManager.h"
 
 @implementation ContactsManager
 
@@ -40,7 +41,9 @@ static ContactsManager *instance = nil;
 
 -(void)saveNewContact:(GLPContact*)contact
 {
-    [GLPContactDao save:contact];
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPContactDao save:contact inDb:db];
+    }];
 }
 
 -(void)refreshFromDatabase
@@ -63,10 +66,13 @@ static ContactsManager *instance = nil;
 
             //[self deleteTable];
             
-            for(GLPContact *c in contacts)
-            {
-                [GLPContactDao save:c];
-            }
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for(GLPContact *c in contacts) {
+                    [GLPContactDao save:c inDb:db];
+                }
+            }];
+            
+
             
             
             //            self.users = contacts.mutableCopy;

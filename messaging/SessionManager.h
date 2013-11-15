@@ -20,6 +20,6 @@
 
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
 - (BOOL)isSessionValid;
-- (void)logout;
--(void)updateUserWithUrl:(NSString*)url;
+- (void)cleanSession;
+
 @end

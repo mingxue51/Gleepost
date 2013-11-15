@@ -13,6 +13,7 @@
 #import "GLPContactDao.h"
 #import "GLPUserDao.h"
 #import "GLPContact.h"
+#import "DatabaseManager.h"
 
 @implementation GLPLoginManager
 
@@ -38,29 +39,41 @@
                 return;
             }
             
-            [GLPUserDao save:user];
-            
-            // create session
-            [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
-            
             // load contacts
             //TODO: find better way
             [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
                 if(!success) {
-                    NSLog(@"Failed to load contacts");
+                    callback(NO);
                     return;
                 }
                 
-                for(GLPContact *contact in contacts) {
-                    [GLPContactDao save:contact];
-                }
+                NSLog(@"LOGIN USER %@ - %d", user.name, user.remoteKey);
+                
+                [[DatabaseManager sharedInstance] initDatabase];
+                
+                [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                    [GLPUserDao save:user inDb:db];
+                    
+                    for(GLPContact *contact in contacts) {
+                        [GLPContactDao save:contact inDb:db];
+                    }
+                }];
+                
+                // create session
+                [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+                
+                [[GLPBackgroundRequestsManager sharedInstance] startAll];
+                
+                callback(YES);
             }];
-            
-            [[GLPBackgroundRequestsManager sharedInstance] startAll];
-            
-            callback(YES);
         }];
     }];
+}
+
++ (void)logout
+{
+    [[SessionManager sharedInstance] cleanSession];
+    [[DatabaseManager sharedInstance] dropDatabase];
 }
 
 @end

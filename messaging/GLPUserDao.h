@@ -14,7 +14,7 @@
 
 + (GLPUser *)findByRemoteKey:(NSInteger)remoteKey;
 + (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
-+ (void)save:(GLPUser *)entity;
++ (void)save:(GLPUser *)entity inDb:(FMDatabase *)db;
 + (int)saveIfNotExist:(GLPUser*)entity db:(FMDatabase *)db;
 + (GLPUser *)findByKey:(NSInteger)key db:(FMDatabase *)db;
 +(void)update:(GLPUser*)entity;
