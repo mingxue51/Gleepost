@@ -17,3 +17,8 @@
 #define LONGPOLL_ERROR_TIME_INTERVAL_S      5
 
 #endif
+
+
+// Google Analytics Constants
+#warning TODO: Dummy value for GAI Track ID. Replace it with actual value
+#define GLP_GAI_TRACK_ID                    @"UA-45783766-1"

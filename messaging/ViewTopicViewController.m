@@ -33,6 +33,7 @@
 #import "LiveChatsView.h"
 #import "ContactsHelper.h"
 #import "ProfileViewController.h"
+#import "UIViewController+GAI.h"
 
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
@@ -226,6 +227,12 @@ float timeInterval = 0.1;
     
     [self.tabBarController.tabBar setHidden:YES];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void) viewWillDisappear:(BOOL)animated

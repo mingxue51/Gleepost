@@ -14,6 +14,7 @@
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
 #import "GLPLoginManager.h"
+#import "UIViewController+GAI.h"
 
 @interface LoginViewController ()
 
@@ -70,6 +71,12 @@
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
   //  [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void) setBackground

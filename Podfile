@@ -10,6 +10,7 @@ pod 'JMImageCache', '0.4.0'
 pod 'NSDate+TimeAgo'
 pod 'MKNetworkKit'
 pod 'FDTake', '0.1'
+pod 'GoogleAnalytics-iOS-SDK', '3.0.2'
 
 post_install do |installer|
   installer.project.targets.each do |target|

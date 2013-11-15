@@ -16,6 +16,7 @@
 #import "GLPConversation.h"
 #import "GLPLiveConversation.h"
 #import "LiveConversationManager.h"
+#import "UIViewController+GAI.h"
 
 @interface ChatViewController ()
 
@@ -139,6 +140,7 @@
     
     [self initialiseAnimationViewToTheViewController];
 
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void)loadLiveConversations

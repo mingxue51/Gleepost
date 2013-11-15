@@ -17,6 +17,7 @@
 #import "AppearanceHelper.h"
 #import "ShapeFormatterHelper.h"
 #import "GLPConversationParticipantsDao.h"
+#import "UIViewController+GAI.h"
 
 @interface MessagesViewController ()
 
@@ -66,6 +67,7 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
     
@@ -77,6 +79,8 @@
 //    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

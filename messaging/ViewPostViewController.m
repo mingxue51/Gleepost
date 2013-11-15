@@ -20,6 +20,7 @@
 #import "ProfileViewController.h"
 #import "SessionManager.h"
 #import "ContactsHelper.h"
+#import "UIViewController+GAI.h"
 
 @interface ViewPostViewController ()
 
@@ -124,6 +125,12 @@ static BOOL likePushed;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

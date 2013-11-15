@@ -14,6 +14,7 @@
 #import "FinalRegisterViewController.h"
 #import "WebClientHelper.h"
 #import "ValidFields.h"
+#import "UIViewController+GAI.h"
 
 
 @interface RegisterViewController ()
@@ -51,6 +52,12 @@
 
     
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void)setUpTextViews

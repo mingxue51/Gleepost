@@ -33,6 +33,7 @@
 #import "ProfileViewController.h"
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
+#import "UIViewController+GAI.h"
 
 @interface GLPTimelineViewController ()
 
@@ -132,6 +133,8 @@ static BOOL likePushed;
     if(self.firstLoadSuccessful) {
         [self startReloadingCronImmediately:YES];
     }
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

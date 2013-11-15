@@ -17,6 +17,7 @@
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
+#import "UIViewController+GAI.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -88,6 +89,12 @@
 //        
 //    }
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void)formatProfileView

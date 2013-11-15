@@ -16,6 +16,7 @@
 #import "SessionManager.h"
 #import "ImageFormatterHelper.h"
 #import "GLPLoginManager.h"
+#import "UIViewController+GAI.h"
 
 @interface FinalRegisterViewController ()
 
@@ -54,6 +55,12 @@
     [tap setNumberOfTapsRequired:1];
     [self.addImageView addGestureRecognizer:tap];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void)setUpTextViews

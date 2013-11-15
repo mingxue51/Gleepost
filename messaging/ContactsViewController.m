@@ -17,6 +17,7 @@
 #import "AppearanceHelper.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIViewController+GAI.h"
 
 
 @interface ContactsViewController ()
@@ -76,6 +77,8 @@
     [super viewDidAppear:animated];
     
     [self loadContacts];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
 }
 
 -(void) clearUselessSections
