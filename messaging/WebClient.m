@@ -104,13 +104,7 @@ static WebClient *instance = nil;
     [self updateNetworkAvailableStatus:self.networkReachabilityStatus];
 }
 
--(void)logout
-{
-    [[SessionManager sharedInstance] logout];
-    
-    //Navigate to the first page of the app.
-    
-}
+
 
 - (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate))callbackBlock
 {

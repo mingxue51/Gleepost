@@ -64,8 +64,6 @@ static SessionManager *instance = nil;
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate
 {
     NSAssert(!self.user, @"An user is already registered in the session");
-
-    [[DatabaseManager sharedInstance] initDatabase];
     
     self.user = user;
     self.token = token;
@@ -87,14 +85,7 @@ static SessionManager *instance = nil;
     self.authParameters = nil;
     
     [self.data removeAllObjects];
-    [self saveData];
-}
-
-
-- (void)logout
-{
-    [self cleanSession];
-    [[DatabaseManager sharedInstance] dropDatabase];
+    [[NSFileManager defaultManager] removeItemAtPath:self.dataPlistPath error:nil];
 }
 
 - (BOOL)isSessionValid

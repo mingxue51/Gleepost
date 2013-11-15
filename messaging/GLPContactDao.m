@@ -63,14 +63,10 @@
     return contacts;
 }
 
-+ (void)save:(GLPContact *)entity
++ (void)save:(GLPContact *)entity inDb:(FMDatabase *)db
 {
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        BOOL saved = [db executeUpdateWithFormat:@"insert into contacts(remoteKey, you_confirmed, they_confirmed) values(%d, %d, %d)", entity.remoteKey, entity.youConfirmed, entity.theyConfirmed];
-        NSLog(@"Contact Saved status: %d.",saved);
-//        entity.key = [db lastInsertRowId];
-    }];
-
+    [db executeUpdateWithFormat:@"insert into contacts(remoteKey, you_confirmed, they_confirmed) values(%d, %d, %d)", entity.remoteKey, entity.youConfirmed, entity.theyConfirmed];
+    entity.key = [db lastInsertRowId];
 }
 
 +(void)deleteTable

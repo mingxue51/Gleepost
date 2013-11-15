@@ -18,6 +18,7 @@
 #import "PostCell.h"
 #import "LoginRegisterViewController.h"
 #import "SessionManager.h"
+#import "GLPLoginManager.h"
 #import "WebClientHelper.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
@@ -318,7 +319,8 @@ static BOOL likePushed;
             
 //            [[SessionManager sharedInstance]user].profileImageUrl = response;
             
-            [[SessionManager sharedInstance] updateUserWithUrl:response];
+            //TODO: This is wrong
+            //[[SessionManager sharedInstance] updateUserWithUrl:response];
             
         }
         else
@@ -362,7 +364,7 @@ static BOOL likePushed;
 {
     if(buttonIndex == 0)
     {
-        [[SessionManager sharedInstance] logout];
+        [GLPLoginManager logout];
         [self.navigationController popViewControllerAnimated:YES];
         [self performSegueWithIdentifier:@"start" sender:self];
     }
