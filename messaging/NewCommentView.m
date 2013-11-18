@@ -215,15 +215,15 @@
 
 -(void) cancelPushed: (id)sender
 {
-    [self.delegate setPlusButtonToNavigationBar];
-    [self.delegate setNavigationBarName];
+    [self.timeLineDelegate setPlusButtonToNavigationBar];
+    [self.timeLineDelegate setNavigationBarName];
     
     UIView *superView = [self superview];
 	[super removeFromSuperview];
     
     if(!sender)
     {
-        [self.delegate navigateToViewPostFromCommentWithIndex:self.postIndex];
+        [self.timeLineDelegate navigateToViewPostFromCommentWithIndex:self.postIndex];
     }
     
     

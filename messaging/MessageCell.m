@@ -123,11 +123,19 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     }
     else
     {
+
+
         //At the moment just take the image of the first participant.
-        user = [participants objectAtIndex:0];
         
-        //Add tag to the avatar image view the user's remote key.
-        self.avatarImageView.tag = user.remoteKey;
+        if(participants.count != 0)
+        {
+            //TODO: Change the methodology taking the participants.
+            user = [participants objectAtIndex:0];
+            
+            //Add tag to the avatar image view the user's remote key.
+            self.avatarImageView.tag = user.remoteKey;
+        }
+        
     }
     
 

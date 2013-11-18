@@ -13,6 +13,7 @@
 #import "ShapeFormatterHelper.h"
 #import "ViewPostViewController.h"
 #import "WebClient.h"
+#import "NewCommentView.h"
 
 @interface PostCell()
 
@@ -236,18 +237,6 @@ static const float PostContentLabelMaxWidth = 250;
 
 }
 
--(UIImage*)rectImage:(UIImage*)largeImage withRect:(CGRect)cropRect
-{
-    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
-    // or use the UIImage wherever you like
-    //UIImage *finalImage = [UIImage imageWithCGImage:imageRef];
-    UIImage *finalImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
-    
-    //[UIImageView setImage:[UIImage imageWithCGImage:imageRef]];
-    CGImageRelease(imageRef);
-    
-    return finalImage;
-}
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
@@ -416,14 +405,22 @@ static const float PostContentLabelMaxWidth = 250;
 
 - (IBAction)commentPost:(id)sender
 {
-    NSLog(@"commentPost.");
+    NSLog(@"commentPost");
+    
+    //Hide navigation bar.
+//    [self.delegate hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
+//    
+//    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+//    loadingView.post = self.post;
+//    loadingView.postIndex = btn.tag;
+//    loadingView.profileDelegate = self.delegate;
 
 }
 
 - (IBAction)sharePost:(id)sender
 {
     NSLog(@"sharePost.");
-    NSArray *items = @[[NSString stringWithFormat:@"%@",@"Share1"],[NSURL URLWithString:@"http://www.google.com"]];
+    NSArray *items = @[[NSString stringWithFormat:@"%@",@"Share1"],[NSURL URLWithString:@"http://www.gleepost.com"]];
     
     UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     

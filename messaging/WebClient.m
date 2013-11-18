@@ -410,7 +410,16 @@ static WebClient *instance = nil;
 
 - (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
+    NSString *path = nil;
+    
+    if(!message.conversation)
+    {
+        path = [NSString stringWithFormat:@"conversations/%d/messages", message.liveConversation.remoteKey];
+    }
+    else
+    {
+        path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
+    }
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];

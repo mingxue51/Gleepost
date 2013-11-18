@@ -392,6 +392,7 @@
 		5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationDao.m; sourceTree = "<group>"; };
 		5828D7B7181EAAFC002D71F9 /* LiveConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveConversationManager.h; sourceTree = "<group>"; };
 		5828D7B8181EAAFC002D71F9 /* LiveConversationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveConversationManager.m; sourceTree = "<group>"; };
+		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
 		58365F77181A86B200AF3F1C /* GLPConversationParticipantsDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationParticipantsDao.h; sourceTree = "<group>"; };
 		58365F78181A86B200AF3F1C /* GLPConversationParticipantsDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationParticipantsDao.m; sourceTree = "<group>"; };
 		583B9FE117F3676A00B4BEE3 /* set_tab_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = set_tab_small.png; sourceTree = "<group>"; };
@@ -900,6 +901,7 @@
 				5841315B17FEE97D00A3278D /* NewCommentView.m */,
 				5841315E17FF0B4900A3278D /* ChatPanelView.h */,
 				5841315F17FF0B4900A3278D /* ChatPanelView.m */,
+				583076F6183A75580044A4FE /* NewCommentDelegate.h */,
 			);
 			name = "Comment Classes";
 			sourceTree = "<group>";

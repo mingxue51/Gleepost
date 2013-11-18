@@ -463,6 +463,9 @@ static BOOL likePushed;
         cell = [tableView dequeueReusableCellWithIdentifier:TextCellIdentifier forIndexPath:indexPath];
     }
     
+    //Set this class as delegate.
+    cell.delegate = self;
+    
     [cell updateWithPostData:post];
    // [cell updateWithPostData:post];
 

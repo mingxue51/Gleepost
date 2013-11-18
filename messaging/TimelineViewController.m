@@ -900,7 +900,7 @@ static BOOL likePushed;
     
     NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
     loadingView.post = self.posts[btn.tag];
-    loadingView.delegate = self;
+    //loadingView.delegate = self;
     
 }
 
