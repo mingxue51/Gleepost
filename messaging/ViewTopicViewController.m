@@ -411,7 +411,7 @@ float timeInterval = 0.1;
 
 -(void)loadLiveMessages
 {
-    id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
+    //id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
 
     
     //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];

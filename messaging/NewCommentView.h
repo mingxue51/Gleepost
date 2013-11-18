@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPTimelineViewController.h"
+#import "ProfileViewController.h"
 #import "GLPPost.h"
 
 @interface NewCommentView : UIView <UITextViewDelegate>
@@ -15,7 +16,8 @@
     float keyboardHeight;
 }
 
-@property (strong, nonatomic) GLPTimelineViewController* delegate;
+@property (weak, nonatomic) GLPTimelineViewController *timeLineDelegate;
+@property (weak, nonatomic) ProfileViewController *profileDelegate;
 @property (strong, nonatomic) GLPPost *post;
 @property (strong, nonatomic) UIImageView *keyboardBackground;
 @property (strong, nonatomic) UITextView *commentTextView;

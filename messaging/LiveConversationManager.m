@@ -187,6 +187,7 @@
     return newConversations;
 }
 
+
 + (void)loadMessagesForLiveConversation:(GLPLiveConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
 {
     NSLog(@"load messages for conversation %d", conversation.remoteKey);

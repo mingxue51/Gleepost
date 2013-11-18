@@ -48,8 +48,7 @@
     [self addGleepostImageToNavigationBar];
     //[self addSettingsImageToNavigationBar];
     
-    //Load live conversations from database.
-    [self loadLiveConversations];
+
 
 }
 
@@ -58,7 +57,9 @@
 {
 
     [super viewWillAppear:animated];
-
+    
+    //Load live conversations from database.
+    [self loadLiveConversations];
 
     self.searchForConversation = NO;
 
@@ -118,6 +119,9 @@
 
 -(void)loadLiveConversations
 {
+    //Remove all the elements from the LiveConversations array.
+    [self.liveConversations removeAllObjects];
+    
     [LiveConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
         
         for(GLPLiveConversation *c in conversations)
@@ -410,15 +414,25 @@
     vc.liveConversation = [self.liveConversations objectAtIndex:index];
     
     
-    
-    //Fetch the participants.
-    [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
-        
-        vc.participants = participants;
-    }];
+    if(vc.liveConversation.participants.count == 0)
+    {
+        //Fetch the participants.
+        [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
+            
+            vc.participants = participants;
+            
+        }];
+    }
+    else
+    {
+        vc.participants = vc.liveConversation.participants;
+    }
     
 
+    
     [self.navigationController pushViewController:vc animated:YES];
+
+
     
 
 }
