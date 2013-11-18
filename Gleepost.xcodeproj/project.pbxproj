@@ -174,7 +174,6 @@
 		58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */; };
 		58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */; };
 		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
-		58D847EA1831636300297B96 /* ContactsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D847E91831636300297B96 /* ContactsHelper.m */; };
 		58DB02871810391F001C021A /* NSMutableArray+QueueAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DB02861810391F001C021A /* NSMutableArray+QueueAdditions.m */; };
 		58DB02A818105C86001C021A /* blackholder1.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DB02A518105C85001C021A /* blackholder1.png */; };
 		58DB02A918105C86001C021A /* blackholder2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DB02A618105C86001C021A /* blackholder2.png */; };
@@ -571,8 +570,6 @@
 		58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewImage.m; sourceTree = "<group>"; };
 		58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewImage.h; sourceTree = "<group>"; };
 		58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewImage.m; sourceTree = "<group>"; };
-		58D847E81831636300297B96 /* ContactsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsHelper.h; sourceTree = "<group>"; };
-		58D847E91831636300297B96 /* ContactsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsHelper.m; sourceTree = "<group>"; };
 		58DB02851810391F001C021A /* NSMutableArray+QueueAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+QueueAdditions.h"; sourceTree = "<group>"; };
 		58DB02861810391F001C021A /* NSMutableArray+QueueAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+QueueAdditions.m"; sourceTree = "<group>"; };
 		58DB02A518105C85001C021A /* blackholder1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackholder1.png; sourceTree = "<group>"; };
@@ -1728,8 +1725,6 @@
 				58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */,
 				585EDAE9183106DC008D29F6 /* ImageFormatterHelper.h */,
 				585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */,
-				58D847E81831636300297B96 /* ContactsHelper.h */,
-				58D847E91831636300297B96 /* ContactsHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1951,7 +1946,7 @@
 				ORGANIZATIONNAME = Gleepost;
 				TargetAttributes = {
 					80AB891617C267F50053E784 = {
-						DevelopmentTeam = CS4642C8H6;
+						DevelopmentTeam = X99AUPHK24;
 					};
 				};
 			};
@@ -2296,7 +2291,6 @@
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
-				58D847EA1831636300297B96 /* ContactsHelper.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */,
@@ -2450,15 +2444,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: O Oyerinde (QUGTM6RP5C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Silouanos Nicolaou (DKMY49E8DL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DB59156D-8EF3-41D3-A57C-09C74D07DE75";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C2139BEA-8237-45F3-8B29-FF6FFB942E4F";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2470,15 +2464,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: O Oyerinde (QUGTM6RP5C)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Silouanos Nicolaou (DKMY49E8DL)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "6285F2BD-9D08-47FE-BA7F-6DB90C172499";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6285F2BD-9D08-47FE-BA7F-6DB90C172499";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C2139BEA-8237-45F3-8B29-FF6FFB942E4F";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -194,7 +194,7 @@
     
     for(GLPContact* contact in contactsFromServer)
     {
-        if(contact.youConfirmed)
+        if(contact.youConfirmed && contact.theyConfirmed)
         {
             [self.users addObject:contact];
             [self.usersStr addObject:contact.user.name];

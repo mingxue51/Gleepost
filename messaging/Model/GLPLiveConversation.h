@@ -23,5 +23,8 @@
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL hasUnreadMessages;
 @property (assign, nonatomic) BOOL isLiveConversation;
+@property (assign, nonatomic) NSDate *expiry;
+
+- (void)setTitleFromParticipants:(NSArray *)participants;
 
 @end

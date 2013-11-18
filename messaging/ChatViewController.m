@@ -56,11 +56,11 @@
 
 }
 
--(void) viewDidAppear:(BOOL)animated
+
+-(void) viewWillAppear:(BOOL)animated
 {
 
-    [super viewDidAppear:animated];
-
+    [super viewWillAppear:animated];
 
 
     self.searchForConversation = NO;
@@ -70,25 +70,25 @@
 
     
     
-    if(self.conversation.title != nil)
-    {
-        
-        for(GLPLiveConversation *c in self.liveConversations)
-        {
-            NSLog(@"Current Conversation: %d", c.key);
-            
-            if([self.conversation.title isEqualToString:c.title])
-            {
-                
-            }
-            else
-            {
-
-            }
-        
-        }
-        
-    }
+//    if(self.conversation.title != nil)
+//    {
+//        
+//        for(GLPLiveConversation *c in self.liveConversations)
+//        {
+//            NSLog(@"Current Conversation: %d", c.key);
+//            
+//            if([self.conversation.title isEqualToString:c.title])
+//            {
+//                
+//            }
+//            else
+//            {
+//
+//            }
+//        
+//        }
+//        
+//    }
     
     //Save the current conversation.
     if(self.conversation.title != nil)
@@ -174,7 +174,45 @@
             
         }];
         
-    } remoteCallback:^(BOOL success, NSArray *conversations) {
+    } remoteCallback:^(BOOL success,BOOL newConversations, NSArray *conversations) {
+        
+        if(newConversations)
+        {
+//            //Add new conversations to the list and refresh.
+//            for(int i = 0; i<conversations.count; ++i)
+//            {
+//                [self.liveConversations dequeue];
+//            }
+//            
+//            for(GLPLiveConversation *c in conversations)
+//            {
+//                [self.liveConversations enqueue:c];
+//            }
+//
+            [self.liveConversations removeAllObjects];
+            
+            for(GLPLiveConversation *c in conversations)
+            {
+                //TODO: If the chat expires don't enqueue and delete it.
+                
+                GLPUser *par = [c.participants objectAtIndex:1];
+                
+                c.participants = [[NSArray alloc] initWithObjects:par, nil];
+                
+                [self.liveConversations enqueue:c];
+            }
+            
+            
+            [self initialiseAnimationViewToTheViewController];
+
+        }
+        else
+        {
+            //Don't do anything.
+            NSLog(@"No new conversations.");
+        }
+        
+        NSLog(@"New Conversations %@", conversations);
         
     }];
 }
@@ -436,7 +474,7 @@
         vc.participants = participants;
     }];
     
-    
+
     [self.navigationController pushViewController:vc animated:YES];
     
 

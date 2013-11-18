@@ -21,6 +21,7 @@
 #import "SessionManager.h"
 #import "ContactsHelper.h"
 #import "UIViewController+GAI.h"
+#import "ContactsManager.h"
 
 @interface ViewPostViewController ()
 
@@ -248,7 +249,7 @@ static BOOL likePushed;
         
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
         //Navigate to profile view controller.
         

@@ -29,7 +29,7 @@
 #import "GLPPostManager.h"
 #import "GLPLoadingCell.h"
 #import "SessionManager.h"
-#import "ContactsHelper.h"
+#import "ContactsManager.h"
 #import "ProfileViewController.h"
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
@@ -989,36 +989,25 @@ static BOOL likePushed;
     
 }
 
-//-(void)navigateToProfile:(id)sender
-//{
-//    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
-//    
-//    UIImageView *incomingView = (UIImageView*)incomingUser.view;
-//    
-//    self.selectedUserId = incomingView.tag;
-//    
-//    [self performSegueWithIdentifier:@"view private profile" sender:self];
-//}
-
 -(void)navigateToProfile:(id)sender
 {
     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
     
     UIImageView *incomingView = (UIImageView*)incomingUser.view;
     
-    //Decide where to navigate. Private or open.
-    
+    //Decide where to navigate. Private or open profile.
     
     self.selectedUserId = incomingView.tag;
     
     if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
     {
         self.selectedUserId = -1;
+        
         //Navigate to profile view controller.
         
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
         //Navigate to profile view controller.
         

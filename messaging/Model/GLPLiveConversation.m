@@ -7,6 +7,7 @@
 //
 
 #import "GLPLiveConversation.h"
+#import "SessionManager.h"
 
 @implementation GLPLiveConversation
 
@@ -30,5 +31,37 @@
     }
     
     return self;
+}
+
+- (void)setTitleFromParticipants:(NSArray *)participants
+{
+    NSAssert(participants.count > 1, @"");
+    
+    
+    _participants = participants;
+    
+    NSMutableString *names = [NSMutableString string];
+    
+    NSMutableArray *filteredParticipants = [NSMutableArray arrayWithCapacity:participants.count - 1];
+    for(GLPUser *user in participants) {
+        if(![user isEqualToEntity:[SessionManager sharedInstance].user]) {
+            [filteredParticipants addObject:user];
+        }
+    }
+    
+    [filteredParticipants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        GLPUser *user = obj;
+        [names appendString:user.name];
+        
+        if(filteredParticipants.count > 1 && idx != filteredParticipants.count - 1) {
+            if(idx == filteredParticipants.count - 2) {
+                [names appendString:@" and "];
+            } else {
+                [names appendString:@", "];
+            }
+        }
+    }];
+    
+    self.title = names;
 }
 @end

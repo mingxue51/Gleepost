@@ -23,6 +23,8 @@
 // conversations
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;
 + (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
++ (NSArray *)parseLiveConversationsFromJson:(NSArray *)jsonConversations;
++(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations;
 
 // messages
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation;

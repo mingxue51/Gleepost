@@ -94,14 +94,164 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return conversation;
 }
 
++(NSMutableArray*)findRegularConversations:(NSArray*)allConversations
+{
+    NSMutableArray *finalConversations = [[NSMutableArray alloc] init];
+    
+    for(id jsonConversation in allConversations)
+    {
+        if(jsonConversation[@"expiry"]==nil)
+        {
+            [finalConversations addObject:jsonConversation];
+        }
+    }
+    
+    return finalConversations;
+}
+
 + (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations
 {
+    //Separate regular conversations from live conversations.
+    
+    NSMutableArray *jsonRegularConversations = [RemoteParser findRegularConversations:jsonConversations];
+ 
     NSMutableArray *conversations = [NSMutableArray array];
-    for(id jsonConversation in jsonConversations) {
+
+    
+    for(id jsonConversation in jsonRegularConversations)
+    {
         [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
     }
     
     return conversations;
+
+    
+//    NSMutableArray *conversations = [NSMutableArray array];
+//    for(id jsonConversation in jsonConversations) {
+//        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+//    }
+//    
+//    return conversations;
+}
+
+#pragma mark - Live conversations
+
++ (GLPLiveConversation *)parseLiveConversationFromJson:(NSDictionary *)json
+{
+    GLPLiveConversation *conversation = [[GLPLiveConversation alloc] init];
+    conversation.remoteKey = [json[@"id"] integerValue];
+    
+//    if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
+//        GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
+//        conversation.lastMessage = message.content;
+//    }
+    
+    conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
+    
+    NSMutableArray *participants = [NSMutableArray array];
+    
+    for(id jsonUser in json[@"participants"]) {
+        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
+        [participants addObject:user];
+    }
+    
+    conversation.participants = participants;
+    
+    NSDictionary *expired = json[@"expiry"];
+    
+    conversation.timeStarted = [RemoteParser parseDateFromString:expired[@"time"]];
+    
+    
+    [conversation setTitleFromParticipants:participants];
+
+    
+    conversation.author = [participants objectAtIndex:0];
+    //[conversation setTitleFromParticipants:participants];
+    
+    return conversation;
+}
+
++(NSMutableArray*)findLiveConversations:(NSArray*)allConversations
+{
+    NSMutableArray *finalConversations = [[NSMutableArray alloc] init];
+    
+    for(id jsonConversation in allConversations)
+    {
+        if(jsonConversation[@"expiry"]!=nil)
+        {
+            [finalConversations addObject:jsonConversation];
+        }
+    }
+    
+    return finalConversations;
+}
++ (NSArray *)parseLiveConversationsFromJson:(NSArray *)jsonConversations
+{
+    //Separate regular conversations from live conversations.
+    
+    NSMutableArray *jsonRegularConversations = [RemoteParser findLiveConversations:jsonConversations];
+    
+    NSMutableArray *conversations = [NSMutableArray array];
+    
+    
+    for(id jsonConversation in jsonRegularConversations)
+    {
+        [conversations addObject:[RemoteParser parseLiveConversationFromJson:jsonConversation]];
+    }
+    
+    return conversations;
+    
+    
+    //    NSMutableArray *conversations = [NSMutableArray array];
+    //    for(id jsonConversation in jsonConversations) {
+    //        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+    //    }
+    //
+    //    return conversations;
+}
+
+/**
+ 
+ TODO: TEST THIS!!!
+ */
++(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations
+{
+    NSMutableArray *lastConversations = [[NSMutableArray alloc] init];
+    
+    //Order conversations by older to newer.
+    
+    NSArray *lastConversationsArray;
+    
+    lastConversationsArray = [liveConversations sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        
+        
+        NSDate *first = [(GLPLiveConversation*)a expiry];
+        NSDate *second = [(GLPLiveConversation*)b expiry];
+        return [first compare:second];
+    }];
+    
+    int i = 0;
+    //Get last three conversations.
+    for(GLPLiveConversation *liveConv in lastConversationsArray)
+    {
+        [lastConversations addObject:liveConv];
+        ++i;
+        if(i==3)
+        {
+            break;
+        }
+    }
+    
+    
+    
+//    for(GLPLiveConversation *liveConversation in liveConversations)
+//    {
+//        for(GLPLiveConversation *liveConversation in liveConversations)
+//        {
+//            
+//        }
+//    }
+    return lastConversations;
 }
 
 //TODO: Shrink two different type of messages methods to one type. Use inheritance in live conversation and conversation.
@@ -320,6 +470,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     if(!dateFormatter) {
         dateFormatter = [DateFormatterHelper createRemoteDateFormatter];
     }
+
     
     return dateFormatter;
 }
@@ -329,6 +480,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     if(!dateFormatterWithNanoSeconds) {
         dateFormatterWithNanoSeconds = [DateFormatterHelper createRemoteDateFormatterWithNanoSeconds];
     }
+    
+    //formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     
     return dateFormatterWithNanoSeconds;
 }

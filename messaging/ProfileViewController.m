@@ -132,6 +132,10 @@ static BOOL likePushed;
 {
     [super viewWillAppear:animated];
     
+    //Added.
+    [self.profileView hideNotificationsBubble];
+
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }
 
