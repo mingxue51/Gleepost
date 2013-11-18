@@ -212,7 +212,7 @@
             NSLog(@"No new conversations.");
         }
         
-        NSLog(@"New Conversations %@", conversations);
+        //NSLog(@"New Conversations %@", conversations);
         
     }];
 }
