@@ -210,10 +210,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     //    return conversations;
 }
 
-/**
- 
- TODO: TEST THIS!!!
- */
+
 +(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations
 {
     NSMutableArray *lastConversations = [[NSMutableArray alloc] init];
@@ -225,9 +222,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     lastConversationsArray = [liveConversations sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
         
         
-        NSDate *first = [(GLPLiveConversation*)a expiry];
-        NSDate *second = [(GLPLiveConversation*)b expiry];
-        return [first compare:second];
+        NSDate *first = [(GLPLiveConversation*)a timeStarted];
+        NSDate *second = [(GLPLiveConversation*)b timeStarted];
+        return [second compare:first];
     }];
     
     int i = 0;
@@ -242,6 +239,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
+    //Reverse order of live conversations.
+    NSArray* reversedArray = [[lastConversations reverseObjectEnumerator] allObjects];
+
+    lastConversations = reversedArray.mutableCopy;
     
     
 //    for(GLPLiveConversation *liveConversation in liveConversations)

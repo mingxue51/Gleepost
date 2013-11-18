@@ -1,4 +1,4 @@
-//
+ //
 //  LiveConversationManager.m
 //  Gleepost
 //
@@ -27,19 +27,33 @@
     return conversations;
 }
 
-+ (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, BOOL newConversations ,NSArray *conversations))remoteCallback
++ (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, BOOL newConversations, NSArray *conversations))remoteCallback
 {
     NSLog(@"Load conversations");
     
     NSArray *localEntities = [LiveConversationManager getLocalConversations];
     localCallback(localEntities);
-    NSLog(@"Load local conversations %d", localEntities.count);
+    
+    //Print local entities.
+    for(GLPLiveConversation* live in localEntities)
+    {
+        NSLog(@"Local Conversation title: %@ with expiry: %@", live.title, live.timeStarted.description);
+
+    }
+    
     
     [[WebClient sharedInstance] getLiveConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
         
         if(!success) {
             remoteCallback(NO, NO ,nil);
             return;
+        }
+        
+        //Print server's entities.
+        for(GLPLiveConversation* live in conversations)
+        {
+            NSLog(@"Server Conversation title: %@ with expiry: %@", live.title, live.timeStarted.description);
+            
         }
         
 //        NSLog(@"Local entities: %@",localEntities);
@@ -310,6 +324,8 @@
             localEntities = [GLPLiveConversationParticipantsDao participants:liveConversation.key db:db];
             
             liveConversation.participants = localEntities;
+            
+            NSAssert(localEntities.count!=0, @"A conversation needs participant.");
 
         }
         

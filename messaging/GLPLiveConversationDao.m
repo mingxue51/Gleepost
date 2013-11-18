@@ -31,7 +31,7 @@
 
 +(NSArray*)findAllOrderByExpiry:(FMDatabase*)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from live_conversations order by timeStarted DESC"];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from live_conversations order by timeStarted ASC"];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -74,16 +74,18 @@
 
 }
 
+
+//TODO: Bad approach. Change this by saving user using remote key.
 + (void)insertConversationParticipantIfNotExist: (int)conversationId withUserId: (int)userId andDb:(FMDatabase* )db
 {
     //If participant is not exist, add the conversation, participant id pairs.
     int convId = [GLPLiveConversationParticipantsDao findByParticipantKey:userId db:db];
     
-    if(convId == -1)
-    {
+//    if(convId == -1)
+//    {
         BOOL success = [db executeUpdateWithFormat:@"insert into live_conversations_participants(live_user_key, live_conversation_key) values(%d, %d)", userId, conversationId];
         NSLog(@"Success: %d",success);
-    }
+//    }
     
 }
 

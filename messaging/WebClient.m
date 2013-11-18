@@ -332,7 +332,7 @@ static WebClient *instance = nil;
         
         NSArray *conversations = [RemoteParser parseLiveConversationsFromJson:responseObject];
         
-        //TODO: Choose the last three conversations and sort them by expiration date.
+        //Choose the last three conversations and sort them by expiration date.
         conversations = [RemoteParser orderAndGetLastThreeConversations:conversations];
         
         callbackBlock(YES, conversations);
