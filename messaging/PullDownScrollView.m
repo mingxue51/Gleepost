@@ -57,25 +57,20 @@
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewWillBeginDragging");
     isDraging = YES;
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)myscrollView
 {
-    NSLog(@"scrollViewDidScroll: %f", myscrollView.contentOffset.y);
-    
     if(!isLoading)
     {
         if (isDraging && myscrollView.contentOffset.y < 0 - REFHEIGHT)
         {
-            NSLog(@"Animation.");
             [_chatViewAnimations animateCirclesFancy];
            // isDraging = NO;
         }
         else
         {
-            NSLog(@"No Animation.");
         }
     }
 
@@ -83,7 +78,6 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)myscrollView willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"scrollViewDidEndDragging");
     isDraging = NO;
     
     if (myscrollView.contentOffset.y < 0 - REFHEIGHT)
@@ -108,16 +102,6 @@
 -(void) stopSearchingIndicator
 {
     [WebClientHelper hideStandardLoaderForView:_chatViewAnimations];
-}
-
-- (void)stopLoading
-{
-    NSLog(@"stopLoading");
-}
-
-- (void)stopLoadingComplete
-{
-    NSLog(@"stopLoadingComplete");
 }
 
 
