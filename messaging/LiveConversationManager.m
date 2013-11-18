@@ -29,17 +29,8 @@
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, BOOL newConversations, NSArray *conversations))remoteCallback
 {
-    NSLog(@"Load conversations");
-    
     NSArray *localEntities = [LiveConversationManager getLocalConversations];
     localCallback(localEntities);
-    
-    //Print local entities.
-    for(GLPLiveConversation* live in localEntities)
-    {
-        NSLog(@"Local Conversation title: %@ with expiry: %@", live.title, live.timeStarted.description);
-
-    }
     
     
     [[WebClient sharedInstance] getLiveConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
@@ -48,17 +39,6 @@
             remoteCallback(NO, NO ,nil);
             return;
         }
-        
-        //Print server's entities.
-        for(GLPLiveConversation* live in conversations)
-        {
-            NSLog(@"Server Conversation title: %@ with expiry: %@", live.title, live.timeStarted.description);
-            
-        }
-        
-//        NSLog(@"Local entities: %@",localEntities);
-//        NSArray *newConversations = [[NSArray alloc]init];
-
 
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             
@@ -73,16 +53,6 @@
         remoteCallback(YES, YES, conversations);
     }];
     
-
-
-    
-//    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//        NSArray *conversations = [[NSMutableArray alloc] init];
-//    
-//        conversations = [GLPLiveConversationDao findAllOrderByDate:db];
-    
-
-//    }];
 }
 
 

@@ -17,6 +17,7 @@
 #import "GLPLiveConversation.h"
 #import "LiveConversationManager.h"
 #import "UIViewController+GAI.h"
+#import "SessionManager.h"
 
 @interface ChatViewController ()
 
@@ -43,13 +44,9 @@
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-    //[self.view setBackgroundColor:[UIColor whiteColor]];
-    
     
     [self addGleepostImageToNavigationBar];
-    [self addSettingsImageToNavigationBar];
-    
-    //[self initialiseAnimationViewToTheViewController];
+    //[self addSettingsImageToNavigationBar];
     
     //Load live conversations from database.
     [self loadLiveConversations];
@@ -68,27 +65,6 @@
     
     BOOL conversationExist = NO;
 
-    
-    
-//    if(self.conversation.title != nil)
-//    {
-//        
-//        for(GLPLiveConversation *c in self.liveConversations)
-//        {
-//            NSLog(@"Current Conversation: %d", c.key);
-//            
-//            if([self.conversation.title isEqualToString:c.title])
-//            {
-//                
-//            }
-//            else
-//            {
-//
-//            }
-//        
-//        }
-//        
-//    }
     
     //Save the current conversation.
     if(self.conversation.title != nil)
@@ -133,9 +109,6 @@
             //Add conversation to array.
             [self.liveConversations enqueue:liveConv];
         }
-        
-        NSLog(@"Conversation Description: %@",self.conversation.description);
-        
     }
     
     [self initialiseAnimationViewToTheViewController];
@@ -195,9 +168,14 @@
             {
                 //TODO: If the chat expires don't enqueue and delete it.
                 
-                GLPUser *par = [c.participants objectAtIndex:1];
-                
-                c.participants = [[NSArray alloc] initWithObjects:par, nil];
+                for(GLPUser *participant in c.participants)
+                {
+                    if(participant.remoteKey != [[[SessionManager sharedInstance]user]remoteKey])
+                    {
+                        c.participants = [[NSArray alloc] initWithObjects:participant, nil];
+                        break;
+                    }
+                }
                 
                 [self.liveConversations enqueue:c];
             }
@@ -209,11 +187,9 @@
         else
         {
             //Don't do anything.
-            NSLog(@"No new conversations.");
         }
         
-        //NSLog(@"New Conversations %@", conversations);
-        
+
     }];
 }
 
@@ -227,8 +203,6 @@
     
     [super viewDidDisappear:animated];
     
-    NSLog(@"viewDidDisappear");
-
 
     //[self.chatAnimations initialiseBubbles];
     
@@ -276,9 +250,6 @@
  */
 -(void) initialiseAnimationViewToTheViewController
 {
-    NSLog(@"initialiseAnimationViewToTheViewController");
-    
-    
     for (UIView *subView in self.view.subviews)
     {
         if (subView.tag == 100)
@@ -344,36 +315,10 @@
 
 -(void) addGleepostImageToNavigationBar
 {
-   // UIImageView *workaroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 98, 34)];
-
-    
     UIImage *image = [UIImage imageNamed:@"GleepostS"];
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     
-     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    
-//    imageView.image = image;
-    NSLog(@"Size of image: %f : %f", image.size.width, image.size.height);
-    
-    NSLog(@"Size of image view: %f : %f", imageView.frame.size.width, imageView.frame.size.height);
-    
-
-//    self.navigationController.navigationItem.titleView = imageView;
     self.navigationItem.titleView = imageView;
-//    [self.navigationController.navigationBar.topItem setTitleView:imageView];
-    
-    
-    //self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:image] autorelease];
-    
-    
-    /**
-     
-     UIImageView *workaroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 98, 34)];
-     [workaroundImageView addSubview:navigationImage];
-     self.navigationItem.titleView=workaroundImageView;
-     
-     
-     */
 }
 
 
@@ -428,7 +373,6 @@
             self.newChat = YES;
 
             
-            NSLog(@"New Conversation: %@", conversation.author.name);
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardError];
@@ -470,7 +414,6 @@
     //Fetch the participants.
     [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
         
-        NSLog(@"Participants id: %@", participants);
         vc.participants = participants;
     }];
     
@@ -512,18 +455,9 @@
         //Fetch the participants.
         [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
             
-            NSLog(@"Participants id: %@", participants);
             vc.participants = participants;
             
         }];
-  //      }
-//        else
-//        {
-//            [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-//            ViewTopicViewController *vc = segue.destinationViewController;
-//            vc.randomChat = YES;
-//            vc.conversation = self.conversation;
-//        }
 
     }
 }
