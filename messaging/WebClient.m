@@ -319,6 +319,28 @@ static WebClient *instance = nil;
     
 }
 
+#pragma mark - Live conversations
+
+/**
+ Find all the live conversations and return only the last three.
+ 
+ */
+
+- (void)getLiveConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
+{
+    [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *conversations = [RemoteParser parseLiveConversationsFromJson:responseObject];
+        
+        //TODO: Choose the last three conversations and sort them by expiration date.
+        conversations = [RemoteParser orderAndGetLastThreeConversations:conversations];
+        
+        callbackBlock(YES, conversations);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
 - (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];

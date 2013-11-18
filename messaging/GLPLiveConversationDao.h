@@ -17,5 +17,6 @@
 + (void)update:(GLPLiveConversation *)entity db:(FMDatabase *)db;
 + (void)save:(GLPLiveConversation *)entity db:(FMDatabase *)db;
 +(BOOL)deleteLiveConversationWithId:(int)conversationId db:(FMDatabase* )db;
-
++ (void)deleteAll:(FMDatabase *)db;
++(NSArray*)findAllOrderByExpiry:(FMDatabase*)db;
 @end

@@ -21,13 +21,13 @@
 {
     __block NSArray *conversations = nil;
     [DatabaseManager run:^(FMDatabase *db) {
-        conversations = [GLPLiveConversationDao findAllOrderByDate:db];
+        conversations = [GLPLiveConversationDao findAllOrderByExpiry:db];
     }];
     
     return conversations;
 }
 
-+ (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
++ (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, BOOL newConversations ,NSArray *conversations))remoteCallback
 {
     NSLog(@"Load conversations");
     
@@ -35,32 +35,173 @@
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);
     
-//    [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
-//        if(!success) {
-//            remoteCallback(NO, nil);
-//            return;
-//        }
-    
-//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//         
-//            for(GLPLiveConversation *conversation in conversations)
-//            {
-//                [GLPLiveConversationDao save:conversation db:db];
-//            }
-//        }];
-    
-    
-    
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        NSArray *conversations = [[NSMutableArray alloc] init];
-    
-        conversations = [GLPLiveConversationDao findAllOrderByDate:db];
-    
-        remoteCallback(YES, conversations);
-        NSLog(@"Load remote conversations %d", conversations.count);
+    [[WebClient sharedInstance] getLiveConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
+        
+        if(!success) {
+            remoteCallback(NO, NO ,nil);
+            return;
+        }
+        
+//        NSLog(@"Local entities: %@",localEntities);
+//        NSArray *newConversations = [[NSArray alloc]init];
+
+
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            
+                [GLPLiveConversationDao deleteAll:db];
+                
+                for(GLPLiveConversation *conversation in conversations)
+                {
+                    [GLPLiveConversationDao save:conversation db:db];
+                }
+        }];
+        
+        remoteCallback(YES, YES, conversations);
     }];
+    
+
+
+    
+//    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//        NSArray *conversations = [[NSMutableArray alloc] init];
+//    
+//        conversations = [GLPLiveConversationDao findAllOrderByDate:db];
+    
+
+//    }];
 }
 
+
+/**
+ //OLD CODE.
+ 
+ 
+ 
+
+
++ (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, BOOL newConversations ,NSArray *conversations))remoteCallback
+{
+    NSLog(@"Load conversations");
+    
+    NSArray *localEntities = [LiveConversationManager getLocalConversations];
+    localCallback(localEntities);
+    NSLog(@"Load local conversations %d", localEntities.count);
+    
+    [[WebClient sharedInstance] getLiveConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
+        
+        if(!success) {
+            remoteCallback(NO, NO ,nil);
+            return;
+        }
+        
+        NSLog(@"Local entities: %@",localEntities);
+        NSArray *newConversations = [[NSArray alloc]init];
+        
+        if(localEntities.count != 0)
+        {
+            newConversations = [LiveConversationManager getNewConversationsWithCurrent:localEntities andNew:conversations];
+        }
+        else
+        {
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                
+                for(GLPLiveConversation *conversation in conversations)
+                {
+                    [GLPLiveConversationDao save:conversation db:db];
+                }
+            }];
+            
+            remoteCallback(YES, NO, newConversations);
+            
+        }
+        
+        
+        if(newConversations.count == 0)
+        {
+            //Don't do anything.
+            remoteCallback(YES, NO, newConversations);
+            
+        }
+        else
+        {
+            //Delete old conversations and add the new to the database.
+            
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                
+                
+                //Delete old conversations.
+                
+                
+                for(int i = 0; i<newConversations.count; ++i)
+                {
+                    GLPLiveConversation *liveConversation = [localEntities objectAtIndex:i];
+                    
+                    [LiveConversationManager removeLiveConversationWithKey:liveConversation.key];
+                }
+                
+                //Add new conversations.
+                
+                for(GLPLiveConversation *conv in newConversations)
+                {
+                    [GLPLiveConversationDao save:conv db:db];
+                }
+                
+                remoteCallback(YES, YES, newConversations);
+                
+                
+                //                [GLPLiveConversationDao deleteAll:db];
+                //
+                //                for(GLPLiveConversation *conversation in conversations)
+                //                {
+                //                    [GLPLiveConversationDao save:conversation db:db];
+                //                }
+            }];
+        }
+        
+        
+        
+        
+        
+    }];
+    
+    //remoteCallback(YES, localEntities);
+    
+    
+    //    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+    //        NSArray *conversations = [[NSMutableArray alloc] init];
+    //    
+    //        conversations = [GLPLiveConversationDao findAllOrderByDate:db];
+    
+    
+    //    }];
+}
+ 
+*/
+
++(NSArray*)getNewConversationsWithCurrent:(NSArray*) currentConversations andNew:(NSArray*)serverConversations
+{
+    NSMutableArray *newConversations = [[NSMutableArray alloc] init];
+    
+    for(int i = 0; i<serverConversations.count; ++i)
+    {
+        GLPLiveConversation *newConv = [serverConversations objectAtIndex:i];
+        GLPLiveConversation *currentConv = [currentConversations objectAtIndex:i];
+        
+        if([[[newConv.participants objectAtIndex:1] name] isEqualToString:[[currentConv.participants objectAtIndex:0] name]])
+        {
+            
+        }
+        else
+        {
+            [newConversations addObject:newConv];
+        }
+    }
+    
+    NSLog(@"getNewConversationsWithCurrent");
+    
+    
+    return newConversations;
+}
 
 + (void)loadMessagesForLiveConversation:(GLPLiveConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
 {
@@ -205,7 +346,9 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        [GLPLiveConversationDao deleteLiveConversationWithId:key db:db];
+        BOOL success = [GLPLiveConversationDao deleteLiveConversationWithId:key db:db];
+        
+        NSLog(@"REMOVED LIVE: %d",success);
     }];
 }
 

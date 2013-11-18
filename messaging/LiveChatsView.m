@@ -193,7 +193,7 @@ static BOOL visibility;
         [self setLiveChatsToView];
 
         
-    } remoteCallback:^(BOOL success, NSArray *conversations) {
+    } remoteCallback:^(BOOL success, BOOL newConversations, NSArray *conversations) {
         
     }];
 }

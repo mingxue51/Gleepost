@@ -60,6 +60,8 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
+        //Find the regular conversations.
+        
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             [GLPConversationDao deleteAll:db];
             //Added.

@@ -13,6 +13,7 @@
 + (NSDateFormatter *)createDefaultDateFormatter
 {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     f.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     return f;
 }
@@ -21,6 +22,8 @@
 + (NSDateFormatter *)createRemoteDateFormatter
 {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+
     f.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
     return f;
 }
@@ -28,6 +31,8 @@
 + (NSDateFormatter *)createRemoteDateFormatterWithNanoSeconds
 {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+
     f.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSZ";
     return f;
 }
@@ -35,6 +40,8 @@
 + (NSDateFormatter *)createTimeDateFormatter
 {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+
     f.dateFormat = @"HH:mm";
     return f;
 }

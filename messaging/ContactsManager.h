@@ -19,6 +19,8 @@
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey;
 -(void)saveNewContact:(GLPContact*)contact;
 -(void)refreshFromDatabase;
+-(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId;
+
 //-(void)refreshContacts;
 
 @end

@@ -427,11 +427,7 @@
             
         }];
         
-        NSLog(@"Close");
-        [self cancelPushed:nil];
-        
-
-        
+        [self cancelPushed:gestureRecognizer];
     }
     else
     {

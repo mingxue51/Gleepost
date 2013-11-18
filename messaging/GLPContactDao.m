@@ -72,7 +72,7 @@
 +(void)deleteTable
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        BOOL saved = [db executeUpdateWithFormat:@"delete from contacts"];
+        [db executeUpdateWithFormat:@"delete from contacts"];
     }];
 }
 

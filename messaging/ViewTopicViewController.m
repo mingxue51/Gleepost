@@ -31,7 +31,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "LiveChatsView.h"
-#import "ContactsHelper.h"
+#import "ContactsManager.h"
 #import "ProfileViewController.h"
 
 const int textViewSizeOfLine = 12;
@@ -94,6 +94,7 @@ float timeInterval = 0.1;
     self.tableViewInScrolling = NO;
     
     [self loadElements];
+    
 }
 
 
@@ -207,8 +208,11 @@ float timeInterval = 0.1;
 {
     [super viewWillAppear:animated];
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+
+    
     [self.navigationController.navigationBar setTranslucent:YES];
+
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
 
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -612,7 +616,7 @@ float timeInterval = 0.1;
         
         
     }
-    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
         //Navigate to profile view controller.
         

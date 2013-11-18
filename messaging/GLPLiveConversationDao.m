@@ -29,17 +29,33 @@
     return result;
 }
 
++(NSArray*)findAllOrderByExpiry:(FMDatabase*)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from live_conversations order by timeStarted DESC"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next])
+    {
+        [result addObject:[GLPLiveConversationDaoParser createFromResultSet:resultSet]];
+    }
+    
+    return result;
+}
+
 
 + (void)save:(GLPLiveConversation *)entity db:(FMDatabase *)db
 {
     int date = [entity.lastUpdate timeIntervalSince1970];
+    
+    int expiryDate = [entity.timeStarted timeIntervalSince1970];
     
     [db executeUpdateWithFormat:@"insert into live_conversations(remoteKey, lastUpdate, title, unread, timeStarted) values(%d, %d, %@, %d, %d)",
      entity.remoteKey,
      date,
      entity.title,
      entity.hasUnreadMessages,
-     entity.timeStarted];
+     expiryDate];
     
     entity.key = [db lastInsertRowId];
     
@@ -73,6 +89,8 @@
 
 +(BOOL)deleteLiveConversationWithId:(int)conversationId db:(FMDatabase* )db
 {
+    
+    
     return [db executeUpdateWithFormat:@"delete from live_conversations where key=%d",conversationId];
 }
 
@@ -95,6 +113,7 @@
 + (void)deleteAll:(FMDatabase *)db
 {
     [db executeUpdate:@"delete from live_conversations"];
+    [db executeUpdate:@"delete from live_conversations_participants"];
 }
 
 @end

@@ -64,11 +64,6 @@
 {
     int date = [entity.lastUpdate timeIntervalSince1970];
     
-    if(entity.remoteKey == 1198)
-    {
-        NSLog(@"Entity: %@",entity);
-    }
-    
     [db executeUpdateWithFormat:@"insert into conversations(remoteKey, lastMessage, lastUpdate, title, unread, isGroup) values(%d, %@, %d, %@, %d, %d)",
      entity.remoteKey,
      entity.lastMessage,

@@ -11,7 +11,7 @@
 #import "NSDate+TimeAgo.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SessionManager.h"
-#import "ContactsHelper.h"
+#import "ContactsManager.h"
 #import "ShapeFormatterHelper.h"
 
 @interface CommentCell()
@@ -68,7 +68,7 @@ static const float CommentContentLabelMaxWidth = 250;
         
         [self.delegate performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([ContactsHelper navigateToUnlockedProfileWithSelectedUserId:self.delegate.selectedUserId])
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.delegate.selectedUserId])
     {
         //Navigate to profile view controller.
         

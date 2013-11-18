@@ -60,13 +60,7 @@
         if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
         {
             NSLog(@"PrivateProfileViewController : User already requested by you.");
-//            UIImage *img = [UIImage imageNamed:@"invitesent"];
-//            [self.addUserButton setImage:img forState:UIControlStateNormal];
-//            [self.addUserButton setEnabled:NO];
-//            
-            //For now just navigate to the unlocked profile.
-
-
+            [self setContactAsRequested];
             
         }
         else
@@ -90,6 +84,13 @@
     
 }
 
+-(void)setContactAsRequested
+{
+    UIImage *img = [UIImage imageNamed:@"invitesent"];
+    [self.addUserButton setImage:img forState:UIControlStateNormal];
+    [self.addUserButton setEnabled:NO];
+}
+
 -(void)formatProfileView
 {
     [[self.profileImage layer] setBorderWidth:6.0f];
@@ -99,8 +100,6 @@
 - (IBAction)addContact:(id)sender
 {
     [[WebClient sharedInstance] addContact:self.selectedUserId callbackBlock:^(BOOL success) {
-        
-        NSLog(@"Profile User: %d", self.selectedUserId);
         
         if(success)
         {
@@ -112,53 +111,57 @@
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.profileUser.name profileImage:self.profileUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
+            
             //Save contact to database.
             [[ContactsManager sharedInstance] saveNewContact:contact];
+            
+            [self setContactAsRequested];
 
         }
         else
         {
             NSLog(@"Failed to send to the user.");
             //This section of code should never be reached.
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
         }
     }];
 }
 
--(BOOL)isUserRequested
-{
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
-        
-        
-        if(success)
-        {
-            //Store contacts into an array.
-            NSLog(@"Contacts loaded successfully.");
-            
-            for(GLPContact *c in contacts)
-            {
-                if(c.youConfirmed)
-                {
-                    if([c.user.name isEqualToString:self.profileUser.name])
-                    {
-                        
-                    }
-                        
-                }
-            }
-
-            
-            //            self.users = contacts.mutableCopy;
-            
-        }
-        else
-        {
-            [WebClientHelper showStandardError];
-        }
-        
-        
-    }];
-    return NO;
-}
+//-(BOOL)isUserRequested
+//{
+//    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+//        
+//        
+//        if(success)
+//        {
+//            //Store contacts into an array.
+//            NSLog(@"Contacts loaded successfully.");
+//            
+//            for(GLPContact *c in contacts)
+//            {
+//                if(c.youConfirmed)
+//                {
+//                    if([c.user.name isEqualToString:self.profileUser.name])
+//                    {
+//                        
+//                    }
+//                        
+//                }
+//            }
+//
+//            
+//            //            self.users = contacts.mutableCopy;
+//            
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//        
+//    }];
+//    return NO;
+//}
 
 -(void)loadAndSetUserDetails
 {
