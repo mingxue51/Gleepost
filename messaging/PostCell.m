@@ -18,7 +18,7 @@
 @interface PostCell()
 
 @property (strong, nonatomic) GLPPost *post;
-
+@property (assign, nonatomic) int postIndex;
 @end
 
 @implementation PostCell
@@ -75,9 +75,10 @@ static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before.
 static const float PostContentLabelMaxWidth = 250;
 
--(void) updateWithPostData:(GLPPost *)postData
+-(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
     self.post = postData;
+    self.postIndex = postIndex;
     
     self.imageAvailable = NO;
 
@@ -405,16 +406,14 @@ static const float PostContentLabelMaxWidth = 250;
 
 - (IBAction)commentPost:(id)sender
 {
-    NSLog(@"commentPost");
-    
     //Hide navigation bar.
-//    [self.delegate hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
-//    
-//    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
-//    loadingView.post = self.post;
-//    loadingView.postIndex = btn.tag;
-//    loadingView.profileDelegate = self.delegate;
-
+    [self.delegate hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
+    
+    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.delegate.view.window.subviews objectAtIndex:0]];
+    
+    loadingView.post = self.post;
+    loadingView.postIndex = self.postIndex;
+    loadingView.profileDelegate = self.delegate;
 }
 
 - (IBAction)sharePost:(id)sender

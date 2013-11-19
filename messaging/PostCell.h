@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GLPUser.h"
 #import "GLPPost.h"
+#import "NewCommentDelegate.h"
 
 @interface PostCell : UITableViewCell
 
@@ -27,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
 
-@property (weak, nonatomic) UIViewController *delegate;
+@property (assign, nonatomic) UIViewController<NewCommentDelegate> *delegate;
 
 
 @property BOOL isViewPost;
@@ -42,7 +43,7 @@
 
 //-(void) updateWithPostData:(GLPPost *)postData andUserData:(GLPUser*)user;
 
--(void) updateWithPostData:(GLPPost *)postData;
+-(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex;
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
 

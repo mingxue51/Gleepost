@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
 #import "HPGrowingTextView.h"
+#import "NewCommentDelegate.h"
 
-@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate>
+@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate>
 
 @property (strong, nonatomic) GLPPost *post;
 //TODO: Remove after the integration of image posts.

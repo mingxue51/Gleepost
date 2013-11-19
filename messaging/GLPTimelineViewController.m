@@ -240,12 +240,6 @@ static BOOL likePushed;
     [self.navigationItem setTitle:@"Campus Wall"];
 }
 
--(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
-{
-    [self.navigationItem setTitle:newTitle];
-    self.navigationItem.rightBarButtonItem = nil;
-}
-
 
 /**
  Not used.
@@ -658,16 +652,6 @@ static BOOL likePushed;
     //TODO: For each post take the status of the button like. (Obviously from the server).
     //TODO: In updateWithPostData information take the status of the like button.
     
-    
-    //Add selector to the buttons.
-    [self buttonWithName:@"Like" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
-    
-    [self buttonWithName:@"Comment" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
-    [self buttonWithName:@"Share" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
-    [self buttonWithName:@"" andSubviews:[postCell.socialPanel subviews] withCell:postCell andPostIndex:indexPath.row];
-    
-    
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
     [tap setNumberOfTapsRequired:1];
     [postCell.userImageView addGestureRecognizer:tap];
@@ -677,12 +661,11 @@ static BOOL likePushed;
     [tap setNumberOfTapsRequired:1];
     [postCell.postImage addGestureRecognizer:tap];
     
-    [postCell updateWithPostData:post];
+    postCell.delegate = self;
     
-    
+    [postCell updateWithPostData:post withPostIndex:indexPath.row];
     
     return postCell;
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -792,7 +775,32 @@ static BOOL likePushed;
 }
 
 
-#pragma mark - Scroll
+
+#pragma mark - New comment delegate
+
+-(void)setPreviousViewToNavigationBar
+{
+    [self setPlusButtonToNavigationBar];
+}
+
+-(void)setPreviousNavigationBarName
+{
+    [self.navigationItem setTitle:@"Campus Wall"];
+}
+
+-(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
+{
+    [self.navigationItem setTitle:newTitle];
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
+{
+    self.selectedPost = self.posts[postIndex];
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
+
 // Not need because we use performselector which areis deprioritized during scrolling
 
 //- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -910,42 +918,43 @@ static BOOL likePushed;
  @param cell current cell.
  
  */
--(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
-{
-    for(UIView* view in subArray)
-    {
-        if([view isKindOfClass:[UIButton class]])
-        {
-            UIButton *currentBtn = (UIButton*)view;
-            currentBtn.userInteractionEnabled = YES;
-            if([currentBtn.titleLabel.text isEqualToString:@"Like"])
-            {
-                currentBtn.tag = postIndex;
-                
-                //[currentBtn addTarget:self action:@selector(likeButtonPushedWithImage:) forControlEvents:UIControlEventTouchUpInside];
-                
-                [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-                
-            }
-            else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
-            {
-                currentBtn.tag = postIndex;
-                [currentBtn addTarget:self action:@selector(commentButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            else if([currentBtn.titleLabel.text isEqualToString:@"Share"])
-            {
-                [currentBtn addTarget:self action:@selector(shareButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            else
-            {
-                [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-            }
-        }
-    }
-    
-    
-    return nil;
-}
+//-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
+//{
+//    for(UIView* view in subArray)
+//    {
+//        if([view isKindOfClass:[UIButton class]])
+//        {
+//            UIButton *currentBtn = (UIButton*)view;
+//            currentBtn.userInteractionEnabled = YES;
+//            if([currentBtn.titleLabel.text isEqualToString:@"Like"])
+//            {
+//                currentBtn.tag = postIndex;
+//
+//                
+//                //[currentBtn addTarget:self action:@selector(likeButtonPushedWithImage:) forControlEvents:UIControlEventTouchUpInside];
+//                
+//                [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+//                
+//            }
+////            else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
+////            {
+////                currentBtn.tag = postIndex;
+////                [currentBtn addTarget:self action:@selector(commentButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+////            }
+//            else if([currentBtn.titleLabel.text isEqualToString:@"Share"])
+//            {
+//                [currentBtn addTarget:self action:@selector(shareButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+//            }
+////            else
+////            {
+////                [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+////            }
+//        }
+//    }
+//    
+//    
+//    return nil;
+//}
 
 /*
  When like button is pushed turn it to our application's custom colour.
@@ -1075,11 +1084,11 @@ static BOOL likePushed;
     
 }
 
--(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
-{
-    self.selectedPost = self.posts[postIndex];
-    [self performSegueWithIdentifier:@"view post" sender:self];
-}
+//-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
+//{
+//    self.selectedPost = self.posts[postIndex];
+//    [self performSegueWithIdentifier:@"view post" sender:self];
+//}
 
 -(void)shareButtonPushed: (id)sender
 {
