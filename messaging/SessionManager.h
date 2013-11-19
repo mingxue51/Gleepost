@@ -21,5 +21,6 @@
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
 - (BOOL)isSessionValid;
 - (void)cleanSession;
+- (void)registerPushToken:(NSData *)token;
 
 @end

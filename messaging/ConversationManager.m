@@ -98,12 +98,12 @@ int const NumberMaxOfMessagesLoaded = 20;
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
     
-    // do not load from remote if already enough local messages
-    // but still notify empty successful remote response in order to termine the remote loading in VC
-    if(localEntities.count >= NumberMaxOfMessagesLoaded) {
-        remoteCallback(YES, nil);
-        return;
-    }
+//    // do not load from remote if already enough local messages
+//    // but still notify empty successful remote response in order to termine the remote loading in VC
+//    if(localEntities.count >= NumberMaxOfMessagesLoaded) {
+//        remoteCallback(YES, nil);
+//        return;
+//    }
     
     GLPMessage *last = nil;
     for (int i = localEntities.count - 1; i >= 0; i--) {

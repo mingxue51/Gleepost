@@ -18,6 +18,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPConversationParticipantsDao.h"
 #import "UIViewController+GAI.h"
+#import "GLPLoadingCell.h"
 
 @interface MessagesViewController ()
 
@@ -25,11 +26,12 @@
 @property (strong, nonatomic) GLPConversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
+// reload conversations when user comes back from chat view, in order to update last message and last update
 @property (assign, nonatomic) BOOL needsReloadConversations;
 
-@property (strong, nonatomic) UIView *loadingView;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
-@property (assign, nonatomic) BOOL isFullScreenLoading;
+
+@property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 
 @end
 
@@ -39,28 +41,27 @@
 {
     [super viewDidLoad];
     
-
     [self createNavigationBar];
-    [self createRefresh];
-    [self createFullScreenLoading];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
-    self.needsReloadConversations = NO;
-    [self loadConversations];
+    [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
     
-    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:@"navigationbar2"];
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
-
+    // various control init
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    self.needsReloadConversations = NO;
+    
+    [self loadConversations];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if(self.needsReloadConversations)
-    {
+    if(self.needsReloadConversations) {
         [self reloadLocalConversations];
     }
 }
@@ -111,31 +112,18 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)createRefresh
+// Create the refresh control
+// Should be called only when the loading cell is hidden because it does not make sense to have both
+// And obviously do not create refresh control twice
+- (void)createRefreshIfNeed
 {
+    if(self.refreshControl) {
+        return;
+    }
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadConversations) forControlEvents:UIControlEventValueChanged];
 }
-
-- (void)createFullScreenLoading
-{
-    self.loadingView = [[UIView alloc] initWithFrame:self.tableView.frame];
-    self.loadingView.backgroundColor = [UIColor whiteColor];
-    
-    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.activityIndicatorView.transform = CGAffineTransformMakeScale(1.2f, 1.2f);
-    self.activityIndicatorView.center = self.loadingView.center;
-    [self.loadingView addSubview:self.activityIndicatorView];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, self.loadingView.center.y + self.activityIndicatorView.frame.size.height - 10, self.loadingView.frame.size.width, 40)];
-    label.text = @"Loading conversations";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [UIColor grayColor];
-    [self.loadingView addSubview:label];
-    
-    self.isFullScreenLoading = NO;
-}
-
 
 
 -(void) setBackgroundToNavigationBar
@@ -155,6 +143,7 @@
     [self.navigationController.navigationBar insertSubview:bar atIndex:1];
 }
 
+
 #pragma mark - Conversations
 
 - (void)loadConversations
@@ -163,7 +152,6 @@
     
     [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
         if(conversations.count > 0) {
-            
             //Find paricipants.
             for(GLPConversation* conv in conversations)
             {
@@ -171,23 +159,35 @@
                 conv.participants = part;
             }
             
-            [self showConversations:conversations];
+            // hide loading cell and add refresh control
+            self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+            [self createRefreshIfNeed];
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             
+            [self showConversations:conversations];
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
         [self stopLoading];
-    
-        //Find paricipants.
-        for(GLPConversation* conv in conversations)
-        {
-            NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-            conv.participants = part;
-        }
         
         if(success) {
+            //Find paricipants.
+            for(GLPConversation* conv in conversations)
+            {
+                NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
+                conv.participants = part;
+            }
+            
+            // hide loading cell and add refresh control
+            self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+            [self createRefreshIfNeed];
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            
             [self showConversations: conversations];
         } else {
-            [WebClientHelper showStandardError];
+            // show loading cell error and do not add refresh control
+            // because loading cell already provides a refresh button
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
+            [self.tableView reloadData];
         }
     }];
 }
@@ -244,11 +244,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.conversations.count;
+    // loading cell or conversations
+    return (self.loadingCellStatus == kGLPLoadingCellStatusFinished) ? self.conversations.count : 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // loading cell in loading or error states
+    if(self.loadingCellStatus != kGLPLoadingCellStatusFinished) {
+        GLPLoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
+        cell.delegate = self;
+        [cell.loadMoreButton setTitle:@"Tap to load conversations" forState:UIControlStateNormal];
+        [cell updateWithStatus:self.loadingCellStatus];
+        return cell;
+    }
+    
     static NSString *CellIdentifier = @"Cell";
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
@@ -306,47 +316,6 @@
     return cell;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-#pragma mark - Table view delegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -355,6 +324,27 @@
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }
 
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(self.loadingCellStatus != kGLPLoadingCellStatusFinished) {
+        return kGLPLoadingCellHeight;
+    }
+    
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+
+#pragma mark - Loading cell
+
+- (void)loadingCellDidReload
+{
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    [self.tableView reloadData];
+    [self loadConversations];
+}
+
+
+#pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

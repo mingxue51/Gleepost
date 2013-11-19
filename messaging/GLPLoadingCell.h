@@ -16,13 +16,26 @@ typedef enum {
     kGLPLoadingCellStatusFinished,
 } GLPLoadingCellStatus;
 
+
+@protocol GLPLoadingCellDelegate
+
+- (void)loadingCellDidReload;
+
+@end
+
+
 @interface GLPLoadingCell : UITableViewCell
 
-
+@property (weak, nonatomic) IBOutlet UIButton *loadMoreButton;
+@property (weak, nonatomic) id<GLPLoadingCellDelegate> delegate;
+@property (assign, nonatomic) BOOL shouldShowError;
 
 extern float const kGLPLoadingCellHeight;
+extern NSString * const kGLPLoadingCellIdentifier;
+extern NSString * const kGLPLoadingCellNibName;
 
-- (void)show;
 - (void)updateWithStatus:(GLPLoadingCellStatus)status;
 
 @end
+
+
