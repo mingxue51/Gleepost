@@ -108,7 +108,6 @@ static BOOL likePushed;
     
     [self configureForm];
     
-    [self loadComments];
     
     
     
@@ -132,6 +131,13 @@ static BOOL likePushed;
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self loadComments];
+    [self.tabBarController.tabBar setHidden:YES];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

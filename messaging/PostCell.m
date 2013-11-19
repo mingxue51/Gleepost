@@ -14,6 +14,8 @@
 #import "ViewPostViewController.h"
 #import "WebClient.h"
 #import "NewCommentView.h"
+#import "GLPPostManager.h"
+
 
 @interface PostCell()
 
@@ -385,6 +387,9 @@ static const float PostContentLabelMaxWidth = 250;
         [self postLike:YES withPostRemoteKey:[self.post remoteKey]];
         
     }
+    
+    //Update post in local database.
+    [GLPPostManager updatePostWithLiked: self.post];
 }
 
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey

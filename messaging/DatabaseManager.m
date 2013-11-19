@@ -163,7 +163,8 @@ static DatabaseManager *instance = nil;
              dislikes integer, \
              comments integer, \
              sendStatus integer, \
-             author_key integer);"];
+             author_key integer, \
+             liked integer);"];
             
             // post images
             [db executeUpdate:@"create table post_images ( \

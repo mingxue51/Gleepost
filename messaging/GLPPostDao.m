@@ -82,6 +82,19 @@
     return result;
 }
 
++(NSArray*)likedPostsInDb:(FMDatabase*)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where liked=1"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     int date = [entity.date timeIntervalSince1970];
@@ -89,16 +102,17 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key) values(%@, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked) values(%@, %d, %d, %d, %d, %d, %d, %d)",
                      entity.content,
                      date,
                      entity.likes,
                      entity.dislikes,
                      entity.commentsCount,
                      entity.sendStatus,
-                     entity.author.remoteKey];
+                     entity.author.remoteKey,
+                     entity.liked];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key) values(%d, %@, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked) values(%d, %@, %d, %d, %d, %d, %d, %d, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -106,7 +120,10 @@
                      entity.dislikes,
                      entity.commentsCount,
                      entity.sendStatus,
-                     entity.author.remoteKey];
+                     entity.author.remoteKey,
+                     entity.liked];
+        
+        NSLog(@"Post saved: %d",postSaved);
     }
     
     entity.key = [db lastInsertRowId];
@@ -123,6 +140,16 @@
     
     //Save the author.
     [GLPUserDao saveIfNotExist:entity.author db:db];
+}
+
+
++(void)updateLikedStatusWithPost:(GLPPost*)entity inDb:(FMDatabase*)db
+{
+    BOOL likedCompleted = [db executeUpdateWithFormat:@"update posts set liked=%d where remoteKey=%d",
+     entity.liked,
+     entity.remoteKey];
+    
+    NSLog(@"Post LIKED. %d",likedCompleted);
 }
 
 + (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db

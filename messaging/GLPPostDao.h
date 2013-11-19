@@ -18,5 +18,7 @@
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db;
 + (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db;
 + (void)deleteAllInDb:(FMDatabase *)db;
++(void)updateLikedStatusWithPost:(GLPPost*)entity inDb:(FMDatabase*)db;
++(NSArray*)likedPostsInDb:(FMDatabase*)db;
 
 @end
