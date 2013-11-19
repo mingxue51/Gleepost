@@ -24,6 +24,7 @@
 #import "TransitionDelegateViewImage.h"
 #import "ImageFormatterHelper.h"
 #import "GLPNotificationManager.h"
+#import "GLPPostManager.h"
 
 @interface ProfileViewController ()
 
@@ -245,52 +246,87 @@ static BOOL likePushed;
 
 - (void)loadPosts
 {
-    NSLog(@"load posts");
     //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     //    hud.labelText = @"Loading posts";
     //    hud.detailsLabelText = @"Please wait few seconds";
     
-    WebClient *client = [WebClient sharedInstance];
-    [client getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
+       
+        NSLog(@"Local Posts Count: %d",posts.count);
         
-        if(success) {
-            
-            NSMutableArray *removePosts = [[NSMutableArray alloc] init];
-            self.posts = [posts mutableCopy];
-            
-            for(GLPPost *p in self.posts)
+        NSMutableArray *removePosts = [[NSMutableArray alloc] init];
+        self.posts = [posts mutableCopy];
+        
+        for(GLPPost *p in self.posts)
+        {
+            if(self.incomingUser == nil)
             {
-                if(self.incomingUser == nil)
+                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
                 {
-                    if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
-                    {
-                        [removePosts addObject:p];
-                    }
-                }
-                else
-                {
-                    if(p.author.remoteKey != self.incomingUser.remoteKey)
-                    {
-                        [removePosts addObject:p];
-                    }
+                    [removePosts addObject:p];
                 }
             }
-            
-            for(GLPPost *p in removePosts)
+            else
             {
-                [self.posts removeObject:p];
+                if(p.author.remoteKey != self.incomingUser.remoteKey)
+                {
+                    [removePosts addObject:p];
+                }
             }
-            
-            [self.postsTableView reloadData];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
-                                                            message:@"Check your id or your internet connection dude."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
         }
+        
+        for(GLPPost *p in removePosts)
+        {
+            [self.posts removeObject:p];
+        }
+        
+        [self.postsTableView reloadData];
     }];
+    
+    
+    
+    
+//    WebClient *client = [WebClient sharedInstance];
+//    [client getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+//        
+//        if(success) {
+//            
+//            NSMutableArray *removePosts = [[NSMutableArray alloc] init];
+//            self.posts = [posts mutableCopy];
+//            
+//            for(GLPPost *p in self.posts)
+//            {
+//                if(self.incomingUser == nil)
+//                {
+//                    if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+//                    {
+//                        [removePosts addObject:p];
+//                    }
+//                }
+//                else
+//                {
+//                    if(p.author.remoteKey != self.incomingUser.remoteKey)
+//                    {
+//                        [removePosts addObject:p];
+//                    }
+//                }
+//            }
+//            
+//            for(GLPPost *p in removePosts)
+//            {
+//                [self.posts removeObject:p];
+//            }
+//            
+//            [self.postsTableView reloadData];
+//        } else {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading failed"
+//                                                            message:@"Check your id or your internet connection dude."
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//            [alert show];
+//        }
+//    }];
 }
 
 

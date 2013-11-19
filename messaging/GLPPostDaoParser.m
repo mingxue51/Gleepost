@@ -22,6 +22,7 @@
     entity.likes = [resultSet intForColumn:@"likes"];
     entity.dislikes = [resultSet intForColumn:@"dislikes"];
     entity.commentsCount = [resultSet intForColumn:@"comments"];
+    entity.liked = [resultSet boolForColumn:@"liked"];
     
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
 }

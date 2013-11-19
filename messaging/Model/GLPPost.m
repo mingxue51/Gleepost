@@ -18,6 +18,7 @@
 @synthesize author;
 @synthesize imagesUrls;
 @synthesize sendStatus=_sendStatus;
+//@synthesize liked=_liked;
 
 - (id)init
 {
@@ -27,6 +28,7 @@
     }
     
     _sendStatus = kSendStatusLocal;
+    //_liked = NO;
     
     return self;
 }

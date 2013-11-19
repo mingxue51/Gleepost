@@ -103,10 +103,24 @@ NSInteger const kGLPNumberOfPosts = 20;
         
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             
+            // get list of posts with liked=YES
+            NSArray* likedPosts = [GLPPostDao likedPostsInDb:db];
+            
             // clean posts table
             [GLPPostDao deleteAllInDb:db];
             
-            for(GLPPost *post in posts) {
+
+            
+            for(GLPPost *post in posts)
+            {
+                NSInteger res = [likedPosts indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+                    return ((GLPPost *)obj).remoteKey == post.remoteKey;
+                }];
+                
+                if(res != NSNotFound) {
+                    post.liked = YES;
+                }
+                
                 [GLPPostDao save:post inDb:db];
             }
         }];
@@ -315,6 +329,14 @@ NSInteger const kGLPNumberOfPosts = 20;
         [GLPPostDao save:post inDb:db];
     }];
 }
+
++(void)updatePostWithLiked:(GLPPost*)post
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao updateLikedStatusWithPost:post inDb:db];
+    }];
+}
+
 
 // update local post to either sent or error
 + (void)updatePostAfterSending:(GLPPost *)post
