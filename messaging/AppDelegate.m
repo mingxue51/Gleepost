@@ -19,6 +19,10 @@
 {
     [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     
+    // register to push notifications
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     
@@ -87,12 +91,13 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"Push token registered: %@", deviceToken);
+	NSLog(@"Push token registered on Apple servers: %@", deviceToken);
+    [[SessionManager sharedInstance] registerPushToken:deviceToken];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
-	NSLog(@"Fail to register to push, error: %@", error);
+	NSLog(@"Fail to register to push on Apple servers, error: %@", error);
 }
 
 

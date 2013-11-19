@@ -48,7 +48,7 @@
     [self setBackground];
     
     if(DEV) {
-        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+        if(ON_DEVICE) {
             self.nameTextField.text = @"Fingolfin";
             self.passwordTextField.text = @"ihatemorgoth";
         } else {
