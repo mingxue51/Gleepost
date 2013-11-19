@@ -69,6 +69,9 @@
 
 @property int selectedUserId;
 
+//Used when there is new comment.
+@property (assign, nonatomic) BOOL commentCreated;
+
 //TODO: Remove after the integration of image posts.
 @property int selectedIndex;
 
@@ -121,6 +124,8 @@ static BOOL likePushed;
     
     self.isReloadingCronRunning = NO;
     self.shouldReloadingCronRun = NO;
+    
+    self.commentCreated = NO;
     
     [self loadInitialPosts];
 }
@@ -217,7 +222,7 @@ static BOOL likePushed;
 -(void) setPlusButtonToNavigationBar
 {
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 30.0, 30.0);
+    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
     
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -794,6 +799,7 @@ static BOOL likePushed;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
     self.selectedPost = self.posts[postIndex];
+    self.commentCreated = YES;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
@@ -1242,6 +1248,8 @@ static BOOL likePushed;
          Forward data of the post the to the view. Or in future just forward the post id
          in order to fetch it from the server.
          */
+        
+        vc.commentJustCreated = self.commentCreated;
         
         vc.post = self.selectedPost;
         vc.selectedIndex = self.selectedIndex;

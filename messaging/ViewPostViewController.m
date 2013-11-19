@@ -24,7 +24,6 @@
 @interface ViewPostViewController ()
 
 @property (strong, nonatomic) NSMutableArray *comments;
-@property (strong, nonatomic) NSMutableArray *commentsHeight;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 
@@ -86,7 +85,7 @@ static BOOL likePushed;
 
     
     //Initialise elements.
-    self.commentsHeight = [[NSMutableArray alloc] init];
+
     
     //Set a selector to the send button.
 //    [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
@@ -125,11 +124,23 @@ static BOOL likePushed;
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if(self.commentJustCreated)
+    {
+        //Scroll to the bottom only when new comment posted.
+        [self scrollToTheEndAnimated:YES];
+    }
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self loadComments];
     [self.tabBarController.tabBar setHidden:YES];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -358,41 +369,12 @@ static bool firstTime = YES;
         if(success) {
             self.comments = [comments mutableCopy];
             
-            //Add height for each comment.
-            for(GLPComment *cmt in self.comments)
-            {
-                NSString *commentContent = cmt.content;
-                
-                CGSize textSize = { 240.0, 10000.0 };
-                
-//                CGSize sizeOfTextView = [commentContent sizeWithFont:[UIFont boldSystemFontOfSize:12]
-//                                                constrainedToSize:textSize
-//                                                    lineBreakMode:NSLineBreakByWordWrapping];
-                
-                UIFont *font = [UIFont boldSystemFontOfSize:12.0];
-                CGSize sizeOfTextView = [commentContent sizeWithFont:font
-                                 constrainedToSize:textSize
-                                     lineBreakMode:NSLineBreakByWordWrapping]; // default mode
-                
-                float numberOfLines = sizeOfTextView.height / font.lineHeight;
-                
-                NSLog(@"Comment-> %f",sizeOfTextView.height*3);
-                
-                if(numberOfLines == 1)
-                {
-                  [self.commentsHeight addObject:[NSNumber numberWithFloat:70.0]];
-                }
-                else
-                {
-                    [self.commentsHeight addObject:[NSNumber numberWithFloat:numberOfLines*30]];
-                }
-                
-                
-                
-            }
-            NSLog(@"HEIGHT: %@",self.commentsHeight);
-            NSLog(@"COMMENTS: %@",self.comments);
-            NSLog(@"Reload Data.");
+            
+            //Reverse the comments' order.
+            NSArray *reversedComments = [[self.comments reverseObjectEnumerator] allObjects];
+            
+            self.comments = reversedComments.mutableCopy;
+   
             [self.tableView reloadData];
         } else {
             [WebClientHelper showStandardError];

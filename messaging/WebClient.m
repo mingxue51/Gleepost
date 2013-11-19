@@ -28,7 +28,7 @@
 
 @synthesize isNetworkAvailable;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.21/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.22/";
 
 static WebClient *instance = nil;
 
@@ -617,7 +617,7 @@ static WebClient *instance = nil;
 
 -(void)uploadImage:(NSData *)imageData callback:(void (^)(BOOL success, NSString *imageUrl))callback
 {
-    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"image" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
         [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"user_id_%d_image.png", self.sessionManager.user.remoteKey] mimeType:@"image/png"];
     }];
@@ -627,7 +627,7 @@ static WebClient *instance = nil;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
     }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

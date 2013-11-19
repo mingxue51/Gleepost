@@ -66,7 +66,7 @@
     {
         if (isDraging && myscrollView.contentOffset.y < 0 - REFHEIGHT)
         {
-            [_chatViewAnimations animateCirclesFancy];
+//            [_chatViewAnimations animateCirclesFancy];
            // isDraging = NO;
         }
         else
@@ -84,11 +84,13 @@
     {
         //Add message to the user that the system is looking for people.
 
-        [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:2.4];
-        
-        [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:4.5];
+        [_chatViewAnimations animateCirclesFancy];
 
-        [_chatViewAnimations performSelector:@selector(navigateToNewRandomChat) withObject:nil afterDelay:4.5];
+        [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:1.4];
+        
+        [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.5];
+
+        [_chatViewAnimations performSelector:@selector(navigateToNewRandomChat) withObject:nil afterDelay:3.5];
         myscrollView.scrollEnabled = NO;
     }
 }
