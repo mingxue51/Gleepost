@@ -325,7 +325,7 @@ float timeInterval = 0.1;
     self.navigationController.navigationBar.translucent = YES;
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"multipleusersicon"]];
-    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 30, 30)];
+    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32, 32)];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];

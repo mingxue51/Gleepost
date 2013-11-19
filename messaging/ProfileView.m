@@ -75,6 +75,8 @@
         
         [self.busyFreeLabel setHidden:YES];
         
+        
+        
         //Fetch user's details from server.
         [self loadUserDetails:self.currentUser];
         

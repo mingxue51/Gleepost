@@ -145,11 +145,9 @@
 
 +(void)updateLikedStatusWithPost:(GLPPost*)entity inDb:(FMDatabase*)db
 {
-    BOOL likedCompleted = [db executeUpdateWithFormat:@"update posts set liked=%d where remoteKey=%d",
+    [db executeUpdateWithFormat:@"update posts set liked=%d where remoteKey=%d",
      entity.liked,
      entity.remoteKey];
-    
-    NSLog(@"Post LIKED. %d",likedCompleted);
 }
 
 + (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db

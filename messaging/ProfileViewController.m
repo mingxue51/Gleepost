@@ -96,6 +96,8 @@ static BOOL likePushed;
         [tap setNumberOfTapsRequired:1];
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
+        [self addLogoutNavigationButton];
+
     }
     else
     {
@@ -105,6 +107,7 @@ static BOOL likePushed;
         [self.profileView.profileImage setUserInteractionEnabled:YES];
 
         [self.profileView.profileImage addGestureRecognizer:tap];
+        
     }
 
     
@@ -113,7 +116,6 @@ static BOOL likePushed;
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
-    [self addLogoutNavigationButton];
    
     //Used for change the profile image.
     self.fdTakeController = [[FDTakeController alloc] init];

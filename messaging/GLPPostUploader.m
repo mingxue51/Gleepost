@@ -68,7 +68,7 @@
 - (void)uploadResizedImage:(NSData *)imageData
 {
     [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
-        NSLog(@"Upload resized image with success: %d", success);
+        NSLog(@"Upload resized image with success: %d with link: %@", success, imageUrl);
         
         //TODO: Show some error
         if(!success) {
