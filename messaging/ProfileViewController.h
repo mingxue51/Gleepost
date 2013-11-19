@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
 #import "GLPUser.h"
+#import "NewCommentDelegate.h"
 
-@interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate>
+@interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate>
 
 @property (strong, nonatomic) GLPUser* incomingUser;
 

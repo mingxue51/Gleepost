@@ -10,8 +10,11 @@
 
 @protocol NewCommentDelegate <NSObject>
 
+@optional
 -(void)setPreviousViewToNavigationBar;
 -(void)setPreviousNavigationBarName;
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle;
+-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
+
 
 @end

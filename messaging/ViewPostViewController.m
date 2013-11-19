@@ -193,36 +193,31 @@ static BOOL likePushed;
  @param cell current cell.
  
  */
--(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
-{
-    for(UIView* view in subArray)
-    {
-        if([view isKindOfClass:[UIButton class]])
-        {
-            UIButton *currentBtn = (UIButton*)view;
-            currentBtn.userInteractionEnabled = YES;
-            if([currentBtn.titleLabel.text isEqualToString:@"Like"])
-            {
-                currentBtn.tag = postIndex;
-                
-                [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-                
-            }
-            else
-            {
-                [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-            }
-        }
-    }
-    
-    
-    return nil;
-}
-
--(void)likeButtonPushed:(id)sender
-{
-    NSLog(@"LIKE BUTTON!");
-}
+//-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
+//{
+//    for(UIView* view in subArray)
+//    {
+//        if([view isKindOfClass:[UIButton class]])
+//        {
+//            UIButton *currentBtn = (UIButton*)view;
+//            currentBtn.userInteractionEnabled = YES;
+//            if([currentBtn.titleLabel.text isEqualToString:@"Like"])
+//            {
+//                currentBtn.tag = postIndex;
+//                
+//                [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
+//                
+//            }
+//            else
+//            {
+//                [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+//            }
+//        }
+//    }
+//    
+//    
+//    return nil;
+//}
 
 //TODO: Implement this in post cell.
 -(void)navigateToProfile: (id)sender
@@ -479,7 +474,7 @@ static bool firstTime = YES;
         
         
         postViewCell.isViewPost = YES;
-        [postViewCell updateWithPostData:_post];
+        [postViewCell updateWithPostData:_post withPostIndex:indexPath.row];
         
     
         

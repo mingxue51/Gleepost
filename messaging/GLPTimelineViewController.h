@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "GLPpost.h"
 #import "GLPNewElementsIndicatorView.h"
+#import "NewCommentDelegate.h"
 
-@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate>
+
+@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate>
 
 @property BOOL readyToReloadPosts;
 

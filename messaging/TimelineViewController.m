@@ -644,7 +644,7 @@ static BOOL likePushed;
 
     
     
-    [postCell updateWithPostData:post];
+    [postCell updateWithPostData:post withPostIndex:indexPath.row];
 
 
     

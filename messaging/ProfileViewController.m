@@ -466,7 +466,7 @@ static BOOL likePushed;
     //Set this class as delegate.
     cell.delegate = self;
     
-    [cell updateWithPostData:post];
+    [cell updateWithPostData:post withPostIndex:indexPath.row];
    // [cell updateWithPostData:post];
 
 //    NSLog(@"Username: %@",post.author.name);
@@ -509,7 +509,7 @@ static BOOL likePushed;
     
     //Add selector to the buttons.
     [self buttonWithName:@"Like" andSubviews:[cell.contentView subviews] withCell:cell];
-    [self buttonWithName:@"Comment" andSubviews:[cell.contentView subviews] withCell:cell];
+    //[self buttonWithName:@"Comment" andSubviews:[cell.contentView subviews] withCell:cell];
     [self buttonWithName:@"Share" andSubviews:[cell.contentView subviews] withCell:cell];
 //
 //    cell.userInteractionEnabled = YES;
@@ -653,6 +653,30 @@ static BOOL likePushed;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - New comment delegate
+
+-(void)setPreviousViewToNavigationBar
+{
+    [self addLogoutNavigationButton];
+}
+
+-(void)setPreviousNavigationBarName
+{
+    [self.navigationItem setTitle:@"Profile"];
+}
+
+-(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
+{
+    [self.navigationItem setTitle:newTitle];
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
+{
+    self.selectedPost = self.posts[postIndex];
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 #pragma mark - Social panel buttons' selectors

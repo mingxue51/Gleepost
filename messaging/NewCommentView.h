@@ -10,6 +10,7 @@
 #import "GLPTimelineViewController.h"
 #import "ProfileViewController.h"
 #import "GLPPost.h"
+#import "NewCommentDelegate.h"
 
 @interface NewCommentView : UIView <UITextViewDelegate>
 {
@@ -17,7 +18,7 @@
 }
 
 @property (weak, nonatomic) GLPTimelineViewController *timeLineDelegate;
-@property (weak, nonatomic) ProfileViewController *profileDelegate;
+@property (weak, nonatomic) UIViewController<NewCommentDelegate> *profileDelegate;
 @property (strong, nonatomic) GLPPost *post;
 @property (strong, nonatomic) UIImageView *keyboardBackground;
 @property (strong, nonatomic) UITextView *commentTextView;
