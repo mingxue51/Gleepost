@@ -54,4 +54,6 @@
 + (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json;
 + (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations;
 
++(BOOL)parseBusyStatus:(NSDictionary*)json;
+
 @end

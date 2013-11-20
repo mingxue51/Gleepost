@@ -51,7 +51,10 @@
 
 - (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
 -(void) getContactsWithCallbackBlock:(void (^)(BOOL success, NSArray *contacts))callbackBlock;
+-(void)acceptContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
+
 -(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock;
+-(void)getBusyStatus:(void (^) (BOOL success, BOOL status))callbackBlock;
 
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
 
