@@ -118,12 +118,11 @@ float timeInterval = 0.1;
         [self configureTimeBar];
         [self loadLiveMessages];
         [self configureNavigationBarButton];
+
     } else {
         [self hideTimeBarAndMaximizeTableView];
         [self loadInitalMessages];
     }
-    
-    
     
     self.keyboardAppearanceSpaceY = 0;
     //    self.formTextView.

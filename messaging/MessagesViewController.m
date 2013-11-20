@@ -79,6 +79,7 @@
 //        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 //    }
     
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
