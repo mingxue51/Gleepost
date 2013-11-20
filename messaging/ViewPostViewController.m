@@ -19,7 +19,6 @@
 #import "PrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
-#import "ContactsHelper.h"
 #import "UIViewController+GAI.h"
 #import "ContactsManager.h"
 

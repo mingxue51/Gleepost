@@ -132,7 +132,6 @@
     NSLog(@"Back class: %@",[campusWallController class]);
     
     [self.navigationController popToViewController:campusWallController animated:YES];
->>>>>>> Set status working. Contacts under construction.
 }
 
 -(void)setContactAsRequested
