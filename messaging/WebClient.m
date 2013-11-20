@@ -303,6 +303,8 @@ static WebClient *instance = nil;
 
 - (void)getLastMessagesForConversation:(GLPConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
+//    [self addLatency];
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
@@ -780,6 +782,18 @@ static WebClient *instance = nil;
     }
     
     callback(YES, json);
+}
+
+
+// DEBUG use only
+// Setting the max concurrent operations to 1 may break other things such as requests running in "background" and in parallel (long polling request for instance)
+- (void)addLatency
+{
+    NSLog(@"WARNING MESSAGE - ADD 2 SEC LATENCY TO REQUEST");
+    [self.operationQueue setMaxConcurrentOperationCount:1];
+    [self.operationQueue addOperationWithBlock:^{
+        [NSThread sleepForTimeInterval:2];
+    }];
 }
 
 @end
