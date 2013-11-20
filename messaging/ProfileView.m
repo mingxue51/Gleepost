@@ -61,6 +61,9 @@
         
         [self setUserDetails];
         
+        //Set user status.
+        [self setBusyStatus];
+        
     }
     else
     {
@@ -83,6 +86,17 @@
     }
 
     
+}
+
+-(void)setBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+       
+        if(success)
+        {
+            [self.busyFreeSwitch setOn:!status];
+        }
+    }];
 }
 
 -(void)setUserDetails

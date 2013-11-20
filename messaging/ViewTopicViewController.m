@@ -106,22 +106,14 @@ float timeInterval = 0.1;
     if(self.randomChat)
     {
         [self configureTimeBar];
+        [self loadLiveMessages];
+        [self configureNavigationBarButton];
     }
     else
     {
         [self hideTimeBarAndMaximizeTableView];
-    }
-    
-    if(!self.randomChat)
-    {
         [self loadMessages];
     }
-    else
-    {
-        //Load live messages.
-        [self loadLiveMessages];
-    }
-    
     
     
     
@@ -148,7 +140,12 @@ float timeInterval = 0.1;
 {
     self.timingBar.hidden = YES;
     self.backTimingBar.hidden = YES;
+    //Remove the live chat button.
+    
+    
     CGRect tableViewFrame = self.tableView.frame;
+    
+    
     
     [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y-7, tableViewFrame.size.width, tableViewFrame.size.height+8)];
 }
@@ -317,6 +314,11 @@ float timeInterval = 0.1;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
+
+}
+
+-(void)configureNavigationBarButton
+{
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"multipleusersicon"]];
     [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32, 32)];
     imageView.contentMode = UIViewContentModeScaleAspectFit;

@@ -1315,6 +1315,9 @@ static BOOL likePushed;
         
         ProfileViewController *profileViewController = segue.destinationViewController;
         
+        profileViewController.isUserJustAccepted = NO;
+
+        
         GLPUser *incomingUser = [[GLPUser alloc] init];
         
         incomingUser.remoteKey = self.selectedUserId;

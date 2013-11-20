@@ -69,10 +69,30 @@
     entity.key = [db lastInsertRowId];
 }
 
+
+/**
+ 
+ [db executeUpdateWithFormat:@"update notifications set seen=%d where key=%d",
+ entity.seen,
+ entity.key];
+
+ */
+
++(void)setContactAsRegularContactWithRemoteKey:(int)remoteKey
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        BOOL s = [db executeUpdateWithFormat:@"update contacts set they_confirmed=1 where remoteKey=%d",remoteKey];
+        NSLog(@"Contact became regular. %d",s);
+        
+    }];
+}
+
 +(void)deleteTable
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        [db executeUpdateWithFormat:@"delete from contacts"];
+        BOOL s = [db executeUpdateWithFormat:@"delete from contacts"];
+        NSLog(@"Table deleted: %d",s);
     }];
 }
 

@@ -16,11 +16,12 @@
 +(ContactsManager*)sharedInstance;
 -(BOOL)isUserContactWithId:(int)remoteKey;
 -(BOOL)isContactWithIdRequested:(int)remoteKey;
+-(BOOL)isContactWithIdRequestedYou:(int)remoteKey;
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey;
 -(void)saveNewContact:(GLPContact*)contact;
 -(void)refreshFromDatabase;
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId;
-
+-(void)contactWithRemoteKeyAccepted:(int)remoteKey;
 //-(void)refreshContacts;
 
 @end

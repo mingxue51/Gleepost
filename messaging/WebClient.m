@@ -543,6 +543,43 @@ static WebClient *instance = nil;
     }];
 }
 
+/**
+ 
+ NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:notification.remoteKey] forKey:@"seen"];
+ [params addEntriesFromDictionary:self.sessionManager.authParameters];
+ 
+ [self putPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+ NSArray *notifications = [RemoteParser parseNotificationsFromJson:responseObject];
+ callback(YES, notifications);
+ } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+ callback(NO, nil);
+ }];
+ */
+-(void)acceptContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@"true" forKey:@"accepted"];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    NSString* path = [NSString stringWithFormat:@"contacts/%d",contactRemoteKey];
+    
+    [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Contact Accepted: %@", responseObject);
+        
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"Problem accepting the contact: %@",error.description);
+        
+        callbackBlock(NO);
+    }];
+    
+    
+}
+
+#pragma mark - Busy free status
 
 -(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock
 {
@@ -556,6 +593,26 @@ static WebClient *instance = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
     }];
+}
+
+-(void)getBusyStatus:(void (^) (BOOL success, BOOL status))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"profile/busy"];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+        //Parse busy status.
+        BOOL busy = [RemoteParser parseBusyStatus:responseObject];
+        
+        callbackBlock(YES,busy);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO,NO);
+
+    }];
+    
 }
 
 #pragma mark - Contacts

@@ -33,6 +33,8 @@ static ContactsManager *instance = nil;
         return nil;
     }
     
+    [self refreshContacts];
+    
     //Load contacts from database.
     [self loadContacts];
     
@@ -64,18 +66,13 @@ static ContactsManager *instance = nil;
             
             self.contacts = contacts;
 
-            //[self deleteTable];
+            [GLPContactDao deleteTable];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 for(GLPContact *c in contacts) {
                     [GLPContactDao save:c inDb:db];
                 }
             }];
-            
-
-            
-            
-            //            self.users = contacts.mutableCopy;
             
         }
         else
@@ -120,7 +117,16 @@ static ContactsManager *instance = nil;
 {
     GLPContact* contact = [self contactWithRemoteKey:remoteKey];
     
+    NSLog(@"You confirmed: %d",contact.youConfirmed);
+    
     return contact.youConfirmed;
+}
+
+-(BOOL)isContactWithIdRequestedYou:(int)remoteKey
+{
+    GLPContact* contact = [self contactWithRemoteKey:remoteKey];
+    
+    return contact.theyConfirmed;
 }
 
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey
@@ -136,11 +142,18 @@ static ContactsManager *instance = nil;
     return nil;
 }
 
+-(void)contactWithRemoteKeyAccepted:(int)remoteKey
+{
+    [GLPContactDao setContactAsRegularContactWithRemoteKey:remoteKey];
+}
+
 /**
  If YES navigate to real profile, if no to private profile.
  */
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
 {
+    [self refreshContacts];
+
     [self refreshFromDatabase];
     
     //Check if the user is already in contacts.

@@ -55,6 +55,27 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
 
+    
+    if(self.isUserJustAccepted)
+    {
+        //Remove the previous view controller.
+        //TODO: Not tested.
+        NSMutableArray *controllers = self.navigationController.viewControllers.mutableCopy;
+        
+        [controllers removeObjectAtIndex:controllers.count-2];
+        
+        [self.navigationController setViewControllers:controllers];
+        
+        //Override back navigation button.
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                       style:UIBarButtonItemStyleDone
+                                                                      target:self
+                                                                      action:@selector(goBackToCampusWall:)];
+        
+        
+        self.navigationItem.leftBarButtonItem = backButton;
+    }
+    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
@@ -128,6 +149,17 @@ static BOOL likePushed;
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
     self.unreadNotificationsCount = 0;
+}
+
+-(void)goBackToCampusWall:(id)sender
+{
+    NSLog(@"GO BACK TO CAMPUS WALL.");
+    
+    UIViewController *campusWallController = [[self.navigationController viewControllers] objectAtIndex:self.navigationController.viewControllers.count-2];
+    
+    NSLog(@"Back class: %@",[campusWallController class]);
+    
+    [self.navigationController popToViewController:campusWallController animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated

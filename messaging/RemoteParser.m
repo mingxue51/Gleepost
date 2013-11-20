@@ -588,5 +588,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return items;
 }
 
+#pragma mark - Busy status
++(BOOL)parseBusyStatus:(NSDictionary*)json
+{
+    return [json[@"busy"] boolValue];
+}
+
 
 @end

@@ -17,6 +17,7 @@
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
+#import "ProfileViewController.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -24,6 +25,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *userName;
 @property (strong, nonatomic) IBOutlet UILabel *personalMessage;
 @property (weak, nonatomic) IBOutlet UIButton *addUserButton;
+@property (weak, nonatomic) IBOutlet UIButton *acceptUserButton;
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -44,6 +46,28 @@
 
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
+
+    //For test purposes.
+    //Remove the previous view controller.
+    //TODO: Not tested.
+    NSMutableArray *controllers = self.navigationController.viewControllers.mutableCopy;
+    
+    [controllers removeObjectAtIndex:controllers.count-2];
+    
+    [self.navigationController setViewControllers:controllers];
+    
+    //Override back navigation button.
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back1"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(goBackToCampusWall:)];
+    
+    self.navigationItem.backBarButtonItem = backButton;
+    
+    
+//    self.navigationItem.leftBarButtonItem = backButton;
+    
+    ////////
     
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).
@@ -63,10 +87,17 @@
             [self setContactAsRequested];
             
         }
+        else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
+        {
+            NSLog(@"PrivateProfileViewController : User requested you.");
+            
+            [self setAcceptRequestButton];
+
+        }
         else
         {
             //If not show the private profile view as is.
-            NSLog(@"PrivateProfileViewController : Private profile as is.");
+            NSLog(@"PrivateProfileViewController : Private profile as is2.");
         }
     }
     
@@ -84,6 +115,17 @@
     
 }
 
+-(void)goBackToCampusWall:(id)sender
+{
+    NSLog(@"GO BACK TO CAMPUS WALL.");
+    
+    UIViewController *campusWallController = [[self.navigationController viewControllers] objectAtIndex:self.navigationController.viewControllers.count-1];
+    
+    NSLog(@"Back class: %@",[campusWallController class]);
+    
+    [self.navigationController popToViewController:campusWallController animated:YES];
+}
+
 -(void)setContactAsRequested
 {
     UIImage *img = [UIImage imageNamed:@"invitesent"];
@@ -91,11 +133,47 @@
     [self.addUserButton setEnabled:NO];
 }
 
+-(void)setAcceptRequestButton
+{
+    [self.addUserButton setHidden:YES];
+    [self.addUserButton setEnabled:NO];
+    [self.acceptUserButton setHidden:NO];
+}
+
 -(void)formatProfileView
 {
     [[self.profileImage layer] setBorderWidth:6.0f];
     [[self.profileImage layer] setBorderColor:[UIColor colorWithRed:243.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0].CGColor];
 }
+
+//Accept contact.
+- (IBAction)acceptContact:(id)sender
+{
+    
+    //If success from server then navigate to unlocked profile.
+    [[WebClient sharedInstance]acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            
+
+            
+            //Navigate to unlock profile.
+            [self performSegueWithIdentifier:@"view profile" sender:self];
+            
+            //Change the status of contact in local database.
+            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
+        }
+        else
+        {
+            //Error message.
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
+
+        }
+        
+    }];
+}
+
 
 - (IBAction)addContact:(id)sender
 {
@@ -245,5 +323,24 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"view profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ProfileViewController *profileViewController = segue.destinationViewController;
+        
+        profileViewController.isUserJustAccepted = YES;
+        
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        profileViewController.incomingUser = incomingUser;
+    }
+}
+
 
 @end
