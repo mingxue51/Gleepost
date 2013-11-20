@@ -59,7 +59,6 @@ float timeInterval = 0.1;
 @property (assign, nonatomic) GLPLoadingCellStatus bottomLoadingCellStatus;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
 @property (assign, nonatomic) BOOL tableViewDisplayedLoadingCell;
-@property (assign, nonatomic) BOOL tableViewDisplayedBottomLoadingCell;
 @property (assign, nonatomic) BOOL inLoading;
 
 
@@ -85,6 +84,7 @@ float timeInterval = 0.1;
 @implementation ViewTopicViewController
 
 @synthesize conversation;
+@synthesize messages=_messages;
 
 
 - (void)viewDidLoad
@@ -99,7 +99,6 @@ float timeInterval = 0.1;
     
     // new messages bottom loading cell
     self.bottomLoadingCellStatus = kGLPLoadingCellStatusInit;
-    self.tableViewDisplayedBottomLoadingCell = NO;
     
     self.inLoading = NO;
     self.tableViewInScrolling = NO;
@@ -365,30 +364,110 @@ float timeInterval = 0.1;
         return;
     }
     
+    NSLog(@"Load initial messages");
     self.inLoading = YES;
     
     [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
         if(messages.count > 0) {
-            // activate the top loading for previous messages
-            self.loadingCellStatus = kGLPLoadingCellStatusInit;
+            self.messages = [messages mutableCopy];
             
-            [self showMessages:messages];
+            [self configureDisplayForMessages:self.messages];
+            [self.tableView reloadData];
+            [self scrollToTheEndAnimated:NO];
         }
-    } remoteCallback:^(BOOL success, NSArray *messages) {
+    } remoteCallback:^(BOOL success, NSArray *newMessages) {
+        NSLog(@"Load initial messages remote callback success %d - new messages %d", success, newMessages.count);
+        
         if(success) {
-            if(messages && messages.count > 0) {
-                [self showMessages:messages];
+            
+            // new messages to insert
+            if(newMessages && newMessages.count > 0) {
                 
-                // keep top loading cell activated or desactivate it if there is no previous results
-                self.loadingCellStatus = (messages.count == NumberMaxOfMessagesLoaded) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+                // there is already messages from local callback, add with animation
+                if(self.messages.count > 0) {
+                    int firstIndex = self.messages.count;
+                    int lastIndex = self.messages.count + newMessages.count - 1;
+                    
+                    // insert messages after existing ones
+                    [self.messages insertObjects:newMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(firstIndex, newMessages.count)]];
+                    
+                    // set to delete the bottom loading cell
+                    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+                    
+                    // configure the display for new messages
+                    // existing messages wont need to change appearance
+                    [self configureDisplayForMessages: self.messages];
+                    
+                    // start updating tableview
+                    [self.tableView beginUpdates];
+                    
+                    // delete the bottom loading cell
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:firstIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // create new indexpaths for new rows starting at the end of existing messages
+                    // at this point we dont have top loading cell
+                    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                    for (NSInteger i = firstIndex; i <= lastIndex; i++) {
+                        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                        [rowsInsertIndexPath addObject:tempIndexPath];
+                    }
+                    
+                    // insert the rows
+                    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.tableView endUpdates];
+                }
+                
+                // no existing messages, so just add the new ones at the beginning
+                else {
+                    self.messages = [newMessages mutableCopy];
+                    
+                    // configure the display
+                    [self configureDisplayForMessages:self.messages];
+                    
+                    // set to delete the bottom loading cell
+                    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+                    
+                    [self.tableView beginUpdates];
+                    
+                    // delete the bottom loading cell
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // create index paths
+                    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                    for (NSInteger i = 0; i < self.messages.count; i++) {
+                        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                        [rowsInsertIndexPath addObject:tempIndexPath];
+                    }
+                    
+                    // insert the rows
+                    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.tableView endUpdates];
+                }
+                
+                // after populating table view, scroll to the last message
+                [self scrollToTheEndAnimated:YES];
             }
+            
+            // no remote messages to insert
+            else {
+                // just remove the bootom loading cell
+                [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
+            }
+                
+            //[self showMessages:messages];
+            
+            // keep top loading cell activated or desactivate it if there is no previous results
+            //                self.loadingCellStatus = (messages.count == NumberMaxOfMessagesLoaded) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            
         } else {
+            // remove the bootom loading cell
+            [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
+            
+            //TODO: show better error
             [WebClientHelper showStandardError];
         }
-        
-        // remove bottom loading cell
-        self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
-        [self.tableView reloadData];
         
         self.inLoading = NO;
     }];
@@ -397,25 +476,121 @@ float timeInterval = 0.1;
     [ConversationManager markConversationRead:self.conversation];
 }
 
-
-- (void)showMessages:(NSArray *)messages
+- (void)loadPreviousMessages
 {
-    self.messages = [messages mutableCopy];
+    //TODO: Reloading delay mechanism
+    if(self.inLoading) {
+        return;
+    }
     
-    [self configureMessagesDisplay];
-    [self.tableView reloadData];
-    [self scrollToTheEndAnimated:NO];
+    NSLog(@"Load previous messages");
+    self.inLoading = YES;
+    
+    //    if(self.messages.count == 0) {
+    //        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+    //        return;
+    //    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        NSLog(@"Previous messages loading already in progress, don't run twice");
+        return;
+    }
+    
+    // show the loading on top loading cell
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    [self reloadLoadingCell];
+    
+    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
+        
+        if(success) {
+            if(messages.count > 0) {
+                // insert messages before existing ones
+                [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
+                
+                // configure the display
+                [self configureDisplayForMessages:self.messages];
+                
+                // insert in the tableview while saving the scrolling state
+                CGPoint tableViewOffset = [self.tableView contentOffset];
+                [UIView setAnimationsEnabled:NO];
+                
+                [self.tableView beginUpdates];
+                
+                // new rows total height for saving the scrolling state
+                int heightForNewRows = 0;
+                
+                // create new indexpaths for new rows starting at 1 because 0 is the top loading cell
+                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                for (NSInteger i = 1; i <= messages.count; i++) {
+                    // index path
+                    NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [rowsInsertIndexPath addObject:tempIndexPath];
+                    
+                    // add the row height
+                    heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+                }
+                
+                // insert the rows
+                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationNone];
+                
+                // reload every other rows because the configuration may changes (which message follows which, etc)
+                NSMutableArray *reloadRowsIndexPaths = [[NSMutableArray alloc] init];
+                for (NSInteger i = messages.count; i < self.messages.count; i++) {
+                    // index path
+                    NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [reloadRowsIndexPaths addObject:rowIndexPath];
+                }
+                [self.tableView reloadRowsAtIndexPaths:reloadRowsIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                
+                // remove the top loading row if need
+                if(!remains) {
+                    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                }
+                // otherwise we keep the loading cell animation and re-init its state
+                else {
+                    self.loadingCellStatus = kGLPLoadingCellStatusInit;
+                }
+                
+                tableViewOffset.y += heightForNewRows;
+                
+                [self.tableView endUpdates];
+                [self.tableView setContentOffset:tableViewOffset animated:NO];
+                [UIView setAnimationsEnabled:YES];
+                
+            } else { // no messages from remote
+                // remove top loading cell
+                self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        } else { // error from remote
+            // show error on top loading cell
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
+            [self reloadLoadingCell];
+        }
+        
+        self.inLoading = NO;
+    }];
 }
 
-- (void)configureMessagesDisplay
+//- (void)showMessages:(NSArray *)messages
+//{
+//    self.messages = [messages mutableCopy];
+//    
+//    [self configureMessagesDisplay];
+//    [self.tableView reloadData];
+//    [self scrollToTheEndAnimated:NO];
+//}
+
+- (void)configureDisplayForMessages:(NSArray *)messages
 {
-    for (int i = 0; i < self.messages.count; i++) {
-        GLPMessage *current = self.messages[i];
+    for (int i = 0; i < messages.count; i++) {
+        GLPMessage *current = messages[i];
         
         if(i == 0) {
             [current configureAsFirstMessage];
         } else {
-            GLPMessage *previous = self.messages[i-1];
+            GLPMessage *previous = messages[i-1];
             [current configureAsFollowingMessage:previous];
         }
     }
@@ -430,14 +605,14 @@ float timeInterval = 0.1;
     //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
     
     [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
-        [self showMessages:messages];
+        //[self showMessages:messages];
         
     } remoteCallback:^(BOOL success, NSArray *messages) {
         //[WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
             if(messages) {
-                [self showMessages:messages];
+                //[self showMessages:messages];
             }
         } else {
             [WebClientHelper showStandardError];
@@ -501,50 +676,6 @@ float timeInterval = 0.1;
     }
     
 
-}
-
-
-#pragma mark - Request management
-
-- (void)startLoadingPreviousMessages
-{
-    //TODO: Reloading delay mechanism
-    if(self.inLoading) {
-        return;
-    }
-    
-    if(self.messages.count == 0) {
-        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-        return;
-    }
-    
-    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
-        NSLog(@"Previous messages loading already in progress, don't run twice");
-        return;
-    }
-    
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    self.tableView.userInteractionEnabled = NO;
-    
-    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
-        
-        if(success) {
-            self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-            
-            if(messages.count > 0) {
-                [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
-                [self configureMessagesDisplay];
-                [self updateTableWithNewRowCount:messages.count];
-            } else {
-                [self reloadLoadingCell];
-            }
-        } else {
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-            [self reloadLoadingCell];
-        }
-        
-        self.tableView.userInteractionEnabled = YES;
-    }];
 }
 
 
@@ -637,6 +768,12 @@ float timeInterval = 0.1;
 
 
 #pragma mark - Table view
+
+- (void)removeBottomLoadingCellWithAnimation:(UITableViewRowAnimation)animation
+{
+    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.messages.count inSection:0]] withRowAnimation:animation];
+}
 
 -(void) updateTableWithNewRowCount:(int)rowCount
 {
@@ -748,24 +885,24 @@ float timeInterval = 0.1;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
-        NSLog(@"Load previous cell");
+        NSLog(@"Display and activate top loading cell");
         
         // tableview in scrolling, delay the loading when scroll is finished
         if(self.tableViewInScrolling) {
             self.tableViewDisplayedLoadingCell = YES;
         } else {
-            [self startLoadingPreviousMessages];
+            [self loadPreviousMessages];
         }
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusError) {
-        self.loadingCellStatus = kGLPLoadingCellStatusInit;
-        [self reloadLoadingCell];
-    }
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusError) {
+//        self.loadingCellStatus = kGLPLoadingCellStatusInit;
+//        [self reloadLoadingCell];
+//    }
+//}
 
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
@@ -845,7 +982,7 @@ float timeInterval = 0.1;
         NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
         
         if(firstVisibleIndexPath.row == 0) {
-            [self startLoadingPreviousMessages];
+            [self loadPreviousMessages];
         }
         
         self.tableViewDisplayedLoadingCell = NO;
@@ -909,9 +1046,8 @@ float timeInterval = 0.1;
 
 - (void)loadingCellDidReload
 {
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    [self reloadLoadingCell];
-    [self startLoadingPreviousMessages];
+    // only the top loading cell can show error so we dont have to determine which loading cell is reloaded
+    [self loadPreviousMessages];
 }
 
 

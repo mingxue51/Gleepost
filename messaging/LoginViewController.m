@@ -48,7 +48,7 @@
     [self setBackground];
     
     if(DEV) {
-        if(ON_DEVICE) {
+        if(!ON_DEVICE) {
             self.nameTextField.text = @"Fingolfin";
             self.passwordTextField.text = @"ihatemorgoth";
         } else {
