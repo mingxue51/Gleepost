@@ -10,9 +10,10 @@
 #import "GLPConversation.h"
 #import "HPGrowingTextView.h"
 #import "GLPLiveConversation.h"
+#import "GLPLoadingCell.h"
 
 
-@interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate>
+@interface ViewTopicViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate, GLPLoadingCellDelegate>
 {
     int previousTextViewSize;
     CGRect        keyboardSuperFrame; // frame of keyboard when initially displayed

@@ -50,7 +50,7 @@ static WebClient *instance = nil;
     }
     
     self.networkStatusEvaluated = NO;
-    self.isNetworkAvailable = NO;
+    self.isNetworkAvailable = NO; // we init with NO and waiting for listener to update the value if the network is up
     
     [self setParameterEncoding:AFFormURLParameterEncoding];
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
@@ -147,6 +147,21 @@ static WebClient *instance = nil;
         callbackBlock(NO, errorMessage, -1);
     }];
 }
+
+- (void)registerPushToken:(NSString *)pushToken callback:(void (^)(BOOL success))callback
+{
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    params[@"type"] = @"ios";
+    params[@"device_id"] = pushToken;
+    
+    [self postPath:@"devices" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"push register response: %@", responseObject);
+        callback(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO);
+    }];
+}
+
 
 
 #pragma mark - Posts
@@ -272,6 +287,11 @@ static WebClient *instance = nil;
 
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
+//    [self.operationQueue setMaxConcurrentOperationCount:1];
+//    [self.operationQueue addOperationWithBlock:^{
+//        [NSThread sleepForTimeInterval:5];
+//    }];
+    
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
@@ -283,6 +303,8 @@ static WebClient *instance = nil;
 
 - (void)getLastMessagesForConversation:(GLPConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
+//    [self addLatency];
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
@@ -470,6 +492,7 @@ static WebClient *instance = nil;
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback
 {
     [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" callback:^(BOOL success, id json) {
+        NSLog(@"long poll response %@", json);
         
         if(!success) {
             callback(NO, nil);
@@ -816,6 +839,18 @@ static WebClient *instance = nil;
     }
     
     callback(YES, json);
+}
+
+
+// DEBUG use only
+// Setting the max concurrent operations to 1 may break other things such as requests running in "background" and in parallel (long polling request for instance)
+- (void)addLatency
+{
+    NSLog(@"WARNING MESSAGE - ADD 2 SEC LATENCY TO REQUEST");
+    [self.operationQueue setMaxConcurrentOperationCount:1];
+    [self.operationQueue addOperationWithBlock:^{
+        [NSThread sleepForTimeInterval:2];
+    }];
 }
 
 @end

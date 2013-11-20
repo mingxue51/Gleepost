@@ -9,6 +9,12 @@
 #ifndef messaging_Constants_h
 #define messaging_Constants_h
 
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#endif
+
+#define ON_DEVICE       !(TARGET_IPHONE_SIMULATOR)
+
 #define ENV_FAKE_API     NO
 #define DEV              YES
 

@@ -10,10 +10,14 @@
 
 @interface GLPLoadingCell()
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (weak, nonatomic) IBOutlet UIView *loadingView;
+@property (weak, nonatomic) IBOutlet UIView *errorView;
+
 @property (assign, nonatomic) GLPLoadingCellStatus loadingStatus;
-@property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
-//@property (strong, nonatomic) UIButton *loadMoreButton;
-@property (strong, nonatomic) UILabel *loadMoreLabel;
+@property (strong, nonatomic) NSString *loadMoreButtonText;
+
+- (IBAction)loadMoreButtonClicked:(id)sender;
 
 @end
 
@@ -21,8 +25,14 @@
 
 @synthesize loadingStatus = _loadingStatus;
 @synthesize activityIndicatorView = _activityIndicatorView;
+@synthesize loadingView=_loadingView;
+@synthesize errorView=_errorView;
+@synthesize delegate=_delegate;
+@synthesize shouldShowError=_shouldShowError;
 
 float const kGLPLoadingCellHeight = 40;
+NSString * const kGLPLoadingCellIdentifier = @"Loading Cell";
+NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -31,36 +41,13 @@ float const kGLPLoadingCellHeight = 40;
         return nil;
     }
     
-    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.activityIndicatorView.center = self.contentView.center;
-    [self.contentView addSubview:self.activityIndicatorView];
-    
-    self.loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)];
-    self.loadMoreLabel.text = @"Load more";
-    self.loadMoreLabel.textColor = [UIColor blackColor];
-    self.loadMoreLabel.font = [UIFont systemFontOfSize:13.0];
-    self.loadMoreLabel.textAlignment = NSTextAlignmentCenter;
-    self.loadMoreLabel.hidden = YES;
-    [self.contentView addSubview:self.loadMoreLabel];
-    
-//    self.loadMoreButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height)];
-//    [self.loadMoreButton setTitle:@"Load more" forState:UIControlStateNormal];
-//    [self.loadMoreButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    self.loadMoreButton.titleLabel.font = [UIFont systemFontOfSize:13.0];
-//    [self.loadMoreButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(loadMoreButtonClicked)]];
-//    self.loadMoreButton.hidden = YES;
-//    [self.contentView addSubview:self.loadMoreButton];
+    _shouldShowError = YES;
+    _loadingView.hidden = YES;
+    _errorView.hidden = YES;
     
     self.loadingStatus = -1;
     
     return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (void)updateWithStatus:(GLPLoadingCellStatus)status
@@ -72,7 +59,11 @@ float const kGLPLoadingCellHeight = 40;
             break;
         case kGLPLoadingCellStatusError:
             [self finishLoading];
-            [self showReload];
+            
+            // show error if it should
+            if(_shouldShowError) {
+                [self showError];
+            }
             break;
         case kGLPLoadingCellStatusFinished:
             [self finishLoading];
@@ -82,41 +73,45 @@ float const kGLPLoadingCellHeight = 40;
     }
 }
 
-- (void)show
-{
-}
-
 - (void)startLoading
 {
-    if(!self.activityIndicatorView.hidden) {
+    if(!_loadingView.hidden) {
         return;
     }
     
-    self.loadMoreLabel.hidden = YES;
-    self.activityIndicatorView.hidden = NO;
-    [self.activityIndicatorView startAnimating];
+    _loadingView.hidden = NO;
+    _errorView.hidden = YES;
+    
+    [_activityIndicatorView startAnimating];
 }
 
 - (void)finishLoading
 {
-    if(self.activityIndicatorView.hidden) {
+    if(_loadingView.hidden) {
         return;
     }
     
-    [self.activityIndicatorView stopAnimating];
-    self.activityIndicatorView.hidden = YES;
+    [_activityIndicatorView stopAnimating];
 }
 
-- (void)showReload
+- (void)showError
 {
-    self.loadMoreLabel.hidden = NO;
+    if(!_errorView.hidden) {
+        return;
+    }
+    
+    _errorView.hidden = NO;
+    _loadingView.hidden = YES;
 }
 
-//- (void)loadMoreButtonClicked
-//{
-//    
-//}
 
-
+- (IBAction)loadMoreButtonClicked:(id)sender
+{
+    if(!_delegate) {
+        return;
+    }
+    
+    [_delegate loadingCellDidReload];
+}
 
 @end

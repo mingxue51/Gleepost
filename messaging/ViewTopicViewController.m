@@ -56,8 +56,10 @@ float timeInterval = 0.1;
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
+@property (assign, nonatomic) GLPLoadingCellStatus bottomLoadingCellStatus;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
 @property (assign, nonatomic) BOOL tableViewDisplayedLoadingCell;
+@property (assign, nonatomic) BOOL inLoading;
 
 
 @property (strong, nonatomic) IBOutlet CurrentChatButton *currentChat;
@@ -82,37 +84,43 @@ float timeInterval = 0.1;
 @implementation ViewTopicViewController
 
 @synthesize conversation;
+@synthesize messages=_messages;
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // various control init
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    [self configureTableView];
+    
+    // previous message top loading cell not displayed at the beginning
+    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
     self.tableViewDisplayedLoadingCell = NO;
+    
+    // new messages bottom loading cell
+    self.bottomLoadingCellStatus = kGLPLoadingCellStatusInit;
+    
+    self.inLoading = NO;
     self.tableViewInScrolling = NO;
     
     [self loadElements];
-    
 }
 
 
 -(void) loadElements
 {
+    //TODO: Why this is here ?
     [self configureNavigationBar];
     [self configureForm];
     
-    if(self.randomChat)
-    {
+    if(self.randomChat) {
         [self configureTimeBar];
         [self loadLiveMessages];
         [self configureNavigationBarButton];
     }
-    else
-    {
+    else {
         [self hideTimeBarAndMaximizeTableView];
-        [self loadMessages];
+        [self loadInitalMessages];
     }
     
     
@@ -300,17 +308,6 @@ float timeInterval = 0.1;
     [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleLabel;
     
-    
-    
-//    [self.navigationItem.titleView setUserInteractionEnabled:YES];
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-//    [tap setNumberOfTapsRequired:1];
-//    [self.navigationItem.titleView addGestureRecognizer:tap];
-    
-    NSLog(@"Navigation title view: %@",self.navigationItem.titleView);
-    
-    
-    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
@@ -352,52 +349,248 @@ float timeInterval = 0.1;
     self.formTextView.layer.cornerRadius = 5;
 }
 
+- (void)configureTableView
+{
+    [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
+}
+
 
 #pragma mark - Messages management
 
-- (void)loadMessages
+// Load messages the first time
+- (void)loadInitalMessages
 {
+    if(self.inLoading) {
+        return;
+    }
+    
+    NSLog(@"Load initial messages");
+    self.inLoading = YES;
+    
     [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
-        [self showMessages:messages];
-        
-    } remoteCallback:^(BOOL success, NSArray *messages) {
-        //[WebClientHelper hideStandardLoaderForView:view];
+        if(messages.count > 0) {
+            self.messages = [messages mutableCopy];
+            
+            [self configureDisplayForMessages:self.messages];
+            [self.tableView reloadData];
+            [self scrollToTheEndAnimated:NO];
+        }
+    } remoteCallback:^(BOOL success, NSArray *newMessages) {
+        NSLog(@"Load initial messages remote callback success %d - new messages %d", success, newMessages.count);
         
         if(success) {
-            if(messages) {
-                [self showMessages:messages];
-                self.loadingCellStatus = (messages.count == NumberMaxOfMessagesLoaded) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            
+            // new messages to insert
+            if(newMessages && newMessages.count > 0) {
+                
+                // there is already messages from local callback, add with animation
+                if(self.messages.count > 0) {
+                    int firstIndex = self.messages.count;
+                    int lastIndex = self.messages.count + newMessages.count - 1;
+                    
+                    // insert messages after existing ones
+                    [self.messages insertObjects:newMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(firstIndex, newMessages.count)]];
+                    
+                    // set to delete the bottom loading cell
+                    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+                    
+                    // configure the display for new messages
+                    // existing messages wont need to change appearance
+                    [self configureDisplayForMessages: self.messages];
+                    
+                    // start updating tableview
+                    [self.tableView beginUpdates];
+                    
+                    // delete the bottom loading cell
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:firstIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // create new indexpaths for new rows starting at the end of existing messages
+                    // at this point we dont have top loading cell
+                    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                    for (NSInteger i = firstIndex; i <= lastIndex; i++) {
+                        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                        [rowsInsertIndexPath addObject:tempIndexPath];
+                    }
+                    
+                    // insert the rows
+                    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.tableView endUpdates];
+                }
+                
+                // no existing messages, so just add the new ones at the beginning
+                else {
+                    self.messages = [newMessages mutableCopy];
+                    
+                    // configure the display
+                    [self configureDisplayForMessages:self.messages];
+                    
+                    // set to delete the bottom loading cell
+                    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+                    
+                    [self.tableView beginUpdates];
+                    
+                    // delete the bottom loading cell
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // create index paths
+                    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                    for (NSInteger i = 0; i < self.messages.count; i++) {
+                        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                        [rowsInsertIndexPath addObject:tempIndexPath];
+                    }
+                    
+                    // insert the rows
+                    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.tableView endUpdates];
+                }
+                
+                // after populating table view, scroll to the last message
+                [self scrollToTheEndAnimated:YES];
             }
+            
+            // no remote messages to insert
+            else {
+                // just remove the bootom loading cell
+                [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
+            }
+                
+            //[self showMessages:messages];
+            
+            // keep top loading cell activated or desactivate it if there is no previous results
+            //                self.loadingCellStatus = (messages.count == NumberMaxOfMessagesLoaded) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            
         } else {
+            // remove the bootom loading cell
+            [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
+            
+            //TODO: show better error
             [WebClientHelper showStandardError];
         }
         
-        self.loadingCellStatus = kGLPLoadingCellStatusInit;
+        self.inLoading = NO;
     }];
     
     // conversation has no more unread messages
     [ConversationManager markConversationRead:self.conversation];
 }
 
-
-- (void)showMessages:(NSArray *)messages
+- (void)loadPreviousMessages
 {
-    self.messages = [messages mutableCopy];
+    //TODO: Reloading delay mechanism
+    if(self.inLoading) {
+        return;
+    }
     
-    [self configureMessagesDisplay];
-    [self.tableView reloadData];
-    [self scrollToTheEndAnimated:NO];
+    NSLog(@"Load previous messages");
+    self.inLoading = YES;
+    
+    //    if(self.messages.count == 0) {
+    //        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+    //        return;
+    //    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        NSLog(@"Previous messages loading already in progress, don't run twice");
+        return;
+    }
+    
+    // show the loading on top loading cell
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    [self reloadLoadingCell];
+    
+    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
+        
+        if(success) {
+            if(messages.count > 0) {
+                // insert messages before existing ones
+                [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
+                
+                // configure the display
+                [self configureDisplayForMessages:self.messages];
+                
+                // insert in the tableview while saving the scrolling state
+                CGPoint tableViewOffset = [self.tableView contentOffset];
+                [UIView setAnimationsEnabled:NO];
+                
+                [self.tableView beginUpdates];
+                
+                // new rows total height for saving the scrolling state
+                int heightForNewRows = 0;
+                
+                // create new indexpaths for new rows starting at 1 because 0 is the top loading cell
+                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                for (NSInteger i = 1; i <= messages.count; i++) {
+                    // index path
+                    NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [rowsInsertIndexPath addObject:tempIndexPath];
+                    
+                    // add the row height
+                    heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+                }
+                
+                // insert the rows
+                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationNone];
+                
+                // reload every other rows because the configuration may changes (which message follows which, etc)
+                NSMutableArray *reloadRowsIndexPaths = [[NSMutableArray alloc] init];
+                for (NSInteger i = messages.count; i < self.messages.count; i++) {
+                    // index path
+                    NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [reloadRowsIndexPaths addObject:rowIndexPath];
+                }
+                [self.tableView reloadRowsAtIndexPaths:reloadRowsIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                
+                // remove the top loading row if need
+                if(!remains) {
+                    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                }
+                // otherwise we keep the loading cell animation and re-init its state
+                else {
+                    self.loadingCellStatus = kGLPLoadingCellStatusInit;
+                }
+                
+                tableViewOffset.y += heightForNewRows;
+                
+                [self.tableView endUpdates];
+                [self.tableView setContentOffset:tableViewOffset animated:NO];
+                [UIView setAnimationsEnabled:YES];
+                
+            } else { // no messages from remote
+                // remove top loading cell
+                self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        } else { // error from remote
+            // show error on top loading cell
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
+            [self reloadLoadingCell];
+        }
+        
+        self.inLoading = NO;
+    }];
 }
 
-- (void)configureMessagesDisplay
+//- (void)showMessages:(NSArray *)messages
+//{
+//    self.messages = [messages mutableCopy];
+//    
+//    [self configureMessagesDisplay];
+//    [self.tableView reloadData];
+//    [self scrollToTheEndAnimated:NO];
+//}
+
+- (void)configureDisplayForMessages:(NSArray *)messages
 {
-    for (int i = 0; i < self.messages.count; i++) {
-        GLPMessage *current = self.messages[i];
+    for (int i = 0; i < messages.count; i++) {
+        GLPMessage *current = messages[i];
         
         if(i == 0) {
             [current configureAsFirstMessage];
         } else {
-            GLPMessage *previous = self.messages[i-1];
+            GLPMessage *previous = messages[i-1];
             [current configureAsFollowingMessage:previous];
         }
     }
@@ -412,14 +605,14 @@ float timeInterval = 0.1;
     //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
     
     [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
-        [self showMessages:messages];
+        //[self showMessages:messages];
         
     } remoteCallback:^(BOOL success, NSArray *messages) {
         //[WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
             if(messages) {
-                [self showMessages:messages];
+                //[self showMessages:messages];
             }
         } else {
             [WebClientHelper showStandardError];
@@ -484,66 +677,6 @@ float timeInterval = 0.1;
     
 
 }
-
-
-#pragma mark - Request management
-
-- (void)startLoadingPreviousMessages
-{
-    if(self.messages.count == 0) {
-        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-        return;
-    }
-    
-    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
-        NSLog(@"Previous messages loading already in progress, don't run twice");
-        return;
-    }
-    
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    self.tableView.userInteractionEnabled = NO;
-    
-    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
-        
-        if(success) {
-            self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-            
-            if(messages.count > 0) {
-                [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
-                [self configureMessagesDisplay];
-                [self updateTableWithNewRowCount:messages.count];
-            } else {
-                [self reloadLoadingCell];
-            }
-        } else {
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-            [self reloadLoadingCell];
-        }
-        
-        self.tableView.userInteractionEnabled = YES;
-    }];
-}
-
-
-//- (void)startLongPollingRequest
-//{
-//    self.longPollingRequestRunning = YES;
-//    NSLog(@"start long polling request");
-//    
-//    [[WebClient sharedInstance] longPollNewMessagesForConversation:self.conversation callbackBlock:^(BOOL success, GLPMessage *message) {
-//        NSLog(@"long polling request finish with result %d", success);
-//        
-//        if(success) {
-//            [self showMessage:message];
-//            [GLPMessageDao save:message];
-//        }
-//        
-//        // restart long polling request if has to
-//        if(self.longPollingRequestRunning) {
-//            [self startLongPollingRequest];
-//        }
-//    }];
-//}
 
 
 #pragma mark - Actions
@@ -636,10 +769,14 @@ float timeInterval = 0.1;
 
 #pragma mark - Table view
 
--(void) updateTableWithNewRowCount : (int) rowCount
+- (void)removeBottomLoadingCellWithAnimation:(UITableViewRowAnimation)animation
 {
-    //Save the tableview content offset
+    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.messages.count inSection:0]] withRowAnimation:animation];
+}
 
+-(void) updateTableWithNewRowCount:(int)rowCount
+{
     CGPoint tableViewOffset = [self.tableView contentOffset];
     
     [UIView setAnimationsEnabled:NO];
@@ -667,8 +804,6 @@ float timeInterval = 0.1;
     [self.tableView setContentOffset:tableViewOffset animated:NO];
     
     [UIView setAnimationsEnabled:YES];
-    
-
 }
 
 - (void)reloadLoadingCell
@@ -683,23 +818,47 @@ float timeInterval = 0.1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.messages.count + 1;
+    int count = self.messages.count;
+    
+    // add top loading cell
+    if([self hasTopLoadingCellRow]) {
+        count++;
+    }
+    
+    // add bottom loading cell
+    if([self hasBottomLoadingCellRow]) {
+        count++;
+    }
+    
+    return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0) {
-        GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
-        [loadingCell updateWithStatus:self.loadingCellStatus];
+    // display one of the loading rows
+    if([self isLoadingCellForIndexPath:indexPath]) {
+        GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
+
+        // top loading cell
+        if([self hasTopLoadingCellRow] && indexPath.row == [self getTopLoadingCellRow]) {
+            [loadingCell updateWithStatus:self.loadingCellStatus];
+            loadingCell.delegate = self;
+            [loadingCell.loadMoreButton setTitle:@"Load more messages" forState:UIControlStateNormal];
+        }
+        
+        // bottom loading cell
+        else if([self hasBottomLoadingCellRow] && indexPath.row == [self getBottomLoadingCellRow]) {
+            [loadingCell updateWithStatus:self.bottomLoadingCellStatus];
+            loadingCell.shouldShowError = NO; // we dont want to show error at the bottom, we will just remove it
+        }
+        
         return loadingCell;
     }
     
-    int row = indexPath.row - 1;
-    GLPMessage *message = self.messages[row];
+    // otherwise display message
+    GLPMessage *message = [self getMessageForIndexPath:indexPath];
     
-    if(!message.cellIdentifier) {
-        [NSException raise:@"Cell identifier is null" format:@"Row is %d", row];
-    }
+    NSAssert(message.cellIdentifier, @"Cell identifier is required but null");
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
     
@@ -715,36 +874,35 @@ float timeInterval = 0.1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0) {
-        return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
+    if([self isLoadingCellForIndexPath:indexPath]) {
+        return kGLPLoadingCellHeight;
     }
     
-    int row = indexPath.row - 1;
-    GLPMessage *message = self.messages[row];
+    GLPMessage *message = [self getMessageForIndexPath:indexPath];
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
-        NSLog(@"Load previous cell");
+        NSLog(@"Display and activate top loading cell");
         
         // tableview in scrolling, delay the loading when scroll is finished
         if(self.tableViewInScrolling) {
             self.tableViewDisplayedLoadingCell = YES;
         } else {
-            [self startLoadingPreviousMessages];
+            [self loadPreviousMessages];
         }
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusError) {
-        self.loadingCellStatus = kGLPLoadingCellStatusInit;
-        [self reloadLoadingCell];
-    }
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusError) {
+//        self.loadingCellStatus = kGLPLoadingCellStatusInit;
+//        [self reloadLoadingCell];
+//    }
+//}
 
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
@@ -752,6 +910,60 @@ float timeInterval = 0.1;
     if(self.messages.count > 1) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
+}
+
+- (int)getTopLoadingCellRow
+{
+    return 0;
+}
+
+// has top cell row only if messages are not empty
+- (BOOL)hasTopLoadingCellRow
+{
+    return self.loadingCellStatus != kGLPLoadingCellStatusFinished && self.messages.count > 0;
+}
+
+- (int)getBottomLoadingCellRow
+{
+    // after the last message
+    int row = self.messages.count;
+    
+    // add +1 if there is a top loading cell row
+    if([self hasTopLoadingCellRow]) {
+        row++;
+    }
+    
+    return row;
+}
+
+- (BOOL)hasBottomLoadingCellRow
+{
+    return self.bottomLoadingCellStatus != kGLPLoadingCellStatusFinished;
+}
+
+- (BOOL)isLoadingCellForIndexPath:(NSIndexPath *)indexPath
+{
+    return ([self hasTopLoadingCellRow] && indexPath.row == [self getTopLoadingCellRow]) ||
+    ([self hasBottomLoadingCellRow] && indexPath.row == [self getBottomLoadingCellRow]);
+}
+
+- (int)getMessageRowForIndexPath:(NSIndexPath *)indexPath
+{
+    int row = indexPath.row;
+    
+    // top loading cell, remove additional 1
+    if([self hasTopLoadingCellRow]) {
+        row--;
+    }
+    
+    NSAssert(row >= 0, @"Message row %d for indexpath %d cannot be negative", row, indexPath.row);
+    
+    return row;
+}
+
+- (GLPMessage *)getMessageForIndexPath:(NSIndexPath *)indexPath
+{
+    return [self.messages objectAtIndex:[self getMessageRowForIndexPath:indexPath]];
 }
 
 
@@ -770,7 +982,7 @@ float timeInterval = 0.1;
         NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
         
         if(firstVisibleIndexPath.row == 0) {
-            [self startLoadingPreviousMessages];
+            [self loadPreviousMessages];
         }
         
         self.tableViewDisplayedLoadingCell = NO;
@@ -829,416 +1041,14 @@ float timeInterval = 0.1;
     }
 }
 
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-//{
-//    if ([touch.view isDescendantOfView:self.tableView])
-//    {
-//        
-//        // Don't let selections of auto-complete entries fire the
-//        // gesture recognizer
-//        return NO;
-//    }
-//    
-//    [self hideKeyboardFromTextViewIfNeeded];
-//    
-//    return YES;
-//}
 
+#pragma mark - Loading Cell Delegate
 
-#pragma mark - Text View delegate
-
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField
-//{
-//    [self performSelector:@selector(sendButtonClicked:) withObject:self];
-//    return YES;
-//}
-
-//- (BOOL)textView:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-//{
-//    NSLog(@"UITextField: %@",textField.text);
-//    
-//    NSLog(@"Text Range Length: %d With Location: %d ",range.length, range.location);
-//    
-//    if(range.location%25 == 0)
-//    {
-//        CGRect frame = self.messageTextField.frame;
-//        frame.size.height = frame.size.height+10;
-//        self.messageTextField.frame = frame;
-//        
-//        CGRect frame2 = self.messageTestTextView.frame;
-//        frame.size.height = frame.size.height+10;
-//        self.messageTestTextView.frame = frame2;
-//    }
-//    
-//    
-//    
-//   // CGSize  textSize = { 260.0, 10000.0 };
-//    
-////    CGSize sizeOfBackImgView =[textField.text sizeWithFont:[UIFont boldSystemFontOfSize:12]
-////                                      constrainedToSize:textSize
-////                                          lineBreakMode:NSLineBreakByWordWrapping];
-//
-//    
-//    return YES;
-//}
-
-//- (void)textViewDidChange:(UITextView *)textView
-//{
-//
-//    double numberOfLines = self.messageTextField.contentSize.height/self.messageTextField.font.lineHeight;
-//    
-//    numberOfLines-=1.0;
-//    
-//    
-//    numberOfLines -= (double)1.1;
-//    numberOfLines = ceil(numberOfLines);
-//    
-//    int noOfLines = (int) numberOfLines;
-//
-//    //Take the current height of the message view.
-//    CGRect messageViewSize = self.messageView.frame;
-//    
-//    
-//    /**
-//        Resize the message view frame size, message text view size to smaller.
-//        Resize table view to bigger.
-//     */
-//    if(numberOfLines < previousTextViewSize)
-//    {
-//        [self resizeChatElementsDependingOnText:NO];
-//        
-//        
-//        previousTextViewSize = noOfLines;
-//        
-//        return;
-//    }
-//    
-//    /** 
-//        If current number of lines is different from the previous one
-//        then change the size of chat view and text view.
-//        Shrunk the size of the table view.
-//     */
-//    if(noOfLines != previousTextViewSize && flexibleResizeLimit >= messageViewSize.size.height)
-//    {
-//        
-//        [self resizeChatElementsDependingOnText:YES];
-//        
-//        previousTextViewSize = noOfLines;
-//    }
-//
-//   
-//}
-
-/**
- 
- Resize chat elements depending on number of lines.
- 
- @param bigger If YES then the size should turn to bigger otherwise to smaller.
- 
- */
-//-(void) resizeChatElementsDependingOnText:(BOOL) bigger
-//{
-//    CGRect messageViewSize = self.messageView.frame;
-//    int resizeLevel = textViewSizeOfLine;
-//    if(!bigger)
-//    {
-//        resizeLevel = (-textViewSizeOfLine);
-//    }
-//    
-//    
-//    //Change the size of message view.
-//    [self.messageView setFrame:CGRectMake(messageViewSize.origin.x, messageViewSize.origin.y-resizeLevel, messageViewSize.size.width, messageViewSize.size.height+resizeLevel)];
-//    
-//    messageViewSize = self.messageView.frame;
-//    
-//    CGRect messageTextViewSize = self.messageTextField.frame;
-//    
-//    messageTextViewSize.size.height += resizeLevel;
-//    
-//    //Change the size of message text view.
-//    [self.messageTextField setFrame:messageTextViewSize];
-//    
-//    
-//    //Change the size of table view.
-//    CGRect tableViewFrame = self.tableView.frame;
-//    [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y, tableViewFrame.size.width, tableViewFrame.size.height-resizeLevel)];
-//    
-//    //Scroll down the table view.
-//    CGPoint point = self.tableView.contentOffset;
-//    [self.tableView setContentOffset:CGPointMake(point.x, point.y+resizeLevel)];
-//    
-//    //Change the position of send button and camera button.
-//    CGRect cameraFrame = self.cameraButton.frame;
-//    
-//    //TODO: Change the position of send and camera button dynamically.
-//    
-//    //CGRect sendButtonFrame = self.sendButton.frame;
-//    
-//}
-
-//- (void)textViewDidBeginEditing:(UITextView *)textField
-//{
-//
-//    
-//    
-//    
-//    
-//
-////    if(self.keyboardAppearanceSpaceY != 0)
-////    {
-////        return;
-////    }
-////    NSLog(@"keyboardWillShow");
-////    
-////    
-////    NSLog(@"Message view dimensions: x:%f y:%f",self.messageView.frame.origin.x,self.messageView.frame.origin.y);
-////    //NSLog(@"Keyboard Height: %f",[KeyboardHelper keyboardHeight:notification]);
-////    
-////    float height = 210;
-////    
-////    self.keyboardAppearanceSpaceY = height + 1;
-////    
-////    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:0.25 andKeyboardHide:NO];
-//
-//    
-//    [textField becomeFirstResponder];
-//}
-
-//- (void)textViewDidEndEditing:(UITextView *)textField
-//{
-//    
-// //   [textField resignFirstResponder];
-//}
-//
-//- (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView
-//{
-//    // you can create the accessory view programmatically (in code), or from the storyboard
-//    if (self.messageTextField.inputAccessoryView == nil)
-//    {
-//        //self.messageTextField.inputAccessoryView = self.messageView;
-//        
-////        [self.messageView.inputAccessoryView setFrame:CGRectMake(0, 0, 320.f, 50.f)];
-////        NSLog(@"Accessory View: %f:%f",self.messageView.inputAccessoryView.frame.size.height, self.messageView.inputAccessoryView.frame.size.width);
-//    }
-//    
-//    return YES;
-//}
-//
-//- (BOOL)textViewShouldEndEditing:(UITextView *)aTextView
-//{
-//    
-//    NSLog(@"textViewShouldEndEditing");
-//    
-//    //[aTextView resignFirstResponder];
-//    //self.navigationItem.rightBarButtonItem = self.editButton;
-//    
-//    return YES;
-//}
-
-
-#pragma mark - Responding to keyboard events
-
-//- (void)keyboardWillShow:(NSNotification *)notification
-//{
-//    
-//    NSLog(@"keyboardWillShow");
-//    
-//    /*
-//     Reduce the size of the text view so that it's not obscured by the keyboard.
-//     Animate the resize so that it's in sync with the appearance of the keyboard.
-//     */
-//    
-//    NSDictionary *userInfo = [notification userInfo];
-//    
-//    // Get the origin of the keyboard when it's displayed.
-//    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-//    
-//    // Get the top of the keyboard as the y coordinate of its origin in self's view's
-//    // coordinate system. The bottom of the text view's frame should align with the top
-//    // of the keyboard's final position.
-//    //
-//    CGRect keyboardRect = [aValue CGRectValue];
-//    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
-//    
-//    CGFloat keyboardTop = keyboardRect.origin.y;
-//    CGRect newTextViewFrame = self.view.bounds;
-//    newTextViewFrame.size.height = keyboardTop - self.view.bounds.origin.y;
-//    
-//    // Get the duration of the animation.
-//    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-//    NSTimeInterval animationDuration;
-//    [animationDurationValue getValue:&animationDuration];
-//
-//    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDuration:animationDuration];
-//    
-//    self.tableView.frame = newTextViewFrame;
-//   
-//    
-//    //Set different y to message view.
-////    CGRect messageViewFrame = self.messageView.frame;
-//    
-////    [self.messageView setFrame:CGRectMake(messageViewFrame.origin.x, messageViewFrame.origin.y+keyboardTop, messageViewFrame.size.width, messageViewFrame.size.height)];
-//    
-//    NSLog(@"newTextViewFrame: %f:%f - %f:%f",newTextViewFrame.size.height, newTextViewFrame.size.width, newTextViewFrame.origin.x, newTextViewFrame.origin.y);
-//    
-//    [UIView commitAnimations];
-//}
-
-
-
-//- (void)keyboardWillHide:(NSNotification *)notification
-//{
-//    
-//    NSLog(@"keyboardWillHide");
-//
-//    
-//    NSDictionary *userInfo = [notification userInfo];
-//    
-//    /*
-//     Restore the size of the text view (fill self's view).
-//     Animate the resize so that it's in sync with the disappearance of the keyboard.
-//     */
-//    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-//    NSTimeInterval animationDuration;
-//    [animationDurationValue getValue:&animationDuration];
-//    
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDuration:animationDuration];
-//    
-//    self.tableView.frame = self.view.bounds;
-//
-//    
-//    [UIView commitAnimations];
-//}
-
-
-
-
-//
-//- (void)applicationDidEnterBackground:(NSNotification *)notification
-//{
-//    [self hideKeyboardFromTextViewIfNeeded];
-//}
-//
-//
-////- (void)keyboardWillHideOrShow:(NSNotification *)note
-////{
-////    NSDictionary *userInfo = note.userInfo;
-////    
-////    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-////    NSLog(@"User Info: %f",duration);
-////    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
-////    
-////    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-////    CGRect keyboardFrameForTextField = [self.messageView.superview convertRect:keyboardFrame fromView:nil];
-////    
-////    CGRect newTextFieldFrame = self.messageView.frame;
-////    newTextFieldFrame.origin.y = keyboardFrameForTextField.origin.y - newTextFieldFrame.size.height;
-////    
-////    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
-////        self.messageView.frame = newTextFieldFrame;
-////    } completion:nil];
-////}
-//
-//
-//
-//- (void)keyboardWillShow:(NSNotification *)notification
-//{
-//    
-//    if(self.keyboardAppearanceSpaceY != 0)
-//    {
-//        return;
-//    }
-//    
-//    
-//    
-//    float height = [KeyboardHelper keyboardHeight:notification];
-//    
-//    self.keyboardAppearanceSpaceY = height;
-//    
-//    [self animateViewWithVerticalMovement:-self.keyboardAppearanceSpaceY duration:[KeyboardHelper keyboardAnimationDuration:notification] andKeyboardHide:NO];
-//    
-//
-//    
-//}
-//
-//- (void)keyboardWillHide:(NSNotification *)notification
-//{
-//   // float height = [KeyboardHelper keyboardHeight:notification];
-//
-//
-//   // float duration = [self keyboardAnimationDurationForNotification:notification];
-//    
-//  //  NSLog(@"DURATION: %f",duration);
-//    
-//    [self animateViewWithVerticalMovement:fabs(self.keyboardAppearanceSpaceY) duration:[KeyboardHelper keyboardAnimationDuration:notification] andKeyboardHide:YES];
-//
-//    
-//    self.keyboardAppearanceSpaceY = 0;
-//
-//
-//}
-//
-////- (NSTimeInterval)keyboardAnimationDurationForNotification:(NSNotification*)notification
-////{
-////    NSDictionary* info = [notification userInfo];
-////    NSValue* value = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-////    NSTimeInterval duration = 0;
-////    [value getValue:&duration];
-////    return duration;
-////}
-//
-///**
-// Creates animation in case there is a need for disappearing the keyboard or appearing.
-// 
-// @param movement the distance of the elements' movements.
-// @param duration the duration of the animbation.
-// @param animationOptions animcation options.
-// @param isKeyboardHide true if the method was called in order to hide the keyboard and false if it is called for show the keyboard.
-// 
-// */
-//- (void) animateViewWithVerticalMovement:(float)movement duration:(float)duration andKeyboardHide:(BOOL)isKeyboardHide
-//{
-//    
-//    
-//    //0.21
-//    
-//    //UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews| UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionLayoutSubviews
-//    
-//    [UIView animateWithDuration:duration-3.0 delay:0 options:(UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionCurveLinear) animations:^{
-//        
-//        
-//        //Changes to commit in a view.
-//        
-//        
-//        self.messageView.frame = CGRectOffset(self.messageView.frame, 0, movement);
-//        
-//        
-//        if(isKeyboardHide)
-//        {
-//            //Set the y position +30 and after -30 in order to create a smoothly representation when the keyboard is going to be hide.
-//            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y+30, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
-//            
-//            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y-30, self.tableView.frame.size.width, self.tableView.frame.size.height);
-//        }
-//        else
-//        {
-//            self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height + (movement));
-//        }
-//        
-//        if(self.messages.count > 1) {
-//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
-//        }
-//        
-//        
-//    } completion:^(BOOL finished) {
-//        //Executes when the animation is going to be end.
-//
-//        
-//    }];
-//}
+- (void)loadingCellDidReload
+{
+    // only the top loading cell can show error so we dont have to determine which loading cell is reloaded
+    [self loadPreviousMessages];
+}
 
 
 #pragma mark - form management

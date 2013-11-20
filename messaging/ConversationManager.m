@@ -98,13 +98,6 @@ int const NumberMaxOfMessagesLoaded = 20;
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
     
-    // do not load from remote if already enough local messages
-    // but still notify empty successful remote response in order to termine the remote loading in VC
-    if(localEntities.count >= NumberMaxOfMessagesLoaded) {
-        remoteCallback(YES, nil);
-        return;
-    }
-    
     GLPMessage *last = nil;
     for (int i = localEntities.count - 1; i >= 0; i--) {
         GLPMessage *message = localEntities[i];
@@ -122,6 +115,24 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
+        // uncomment for debug, simulate responses with at least 1 new remote message
+        if(last) {
+            GLPMessage *m = [[GLPMessage alloc] init];
+            m.content = @"new fake msg 1";
+            m.author = last.author;
+            m.date = [last.date dateByAddingTimeInterval:5];
+            m.conversation = last.conversation;
+            
+            GLPMessage *m2 = [[GLPMessage alloc] init];
+            m2.content = @"new fake msg 2";
+            m2.author = last.author;
+            m2.date = [last.date dateByAddingTimeInterval:10];
+            m2.conversation = last.conversation;
+            messages = @[m, m2];
+            remoteCallback(YES, messages);
+            return;
+        }
+        
         // update only if new changes from API
         if(!messages || messages.count == 0) {
             remoteCallback(YES, nil);
@@ -133,19 +144,18 @@ int const NumberMaxOfMessagesLoaded = 20;
         // reverse order
         messages = [[messages reverseObjectEnumerator] allObjects];
         
-        // all messages, including the new ones
-        __block NSArray *allMessages = nil;
+//        // all messages, including the new ones
+//        __block NSArray *allMessages = nil;
         
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             for(GLPMessage *message in messages) {
                 [GLPMessageDao save:message db:db];
             }
             
-            allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+            //allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
         }];
         
-        remoteCallback(YES, allMessages);
-        NSLog(@"final messages %d", allMessages.count);
+        remoteCallback(YES, messages);
     }];
 }
 

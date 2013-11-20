@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPLoadingCell.h"
 
-@interface MessagesViewController : UITableViewController
+@interface MessagesViewController : UITableViewController <GLPLoadingCellDelegate>
 
 @end

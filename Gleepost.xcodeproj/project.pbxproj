@@ -239,6 +239,8 @@
 		806E3D871832B1960063AACE /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 806E3D721832B1960063AACE /* TSBlurView.m */; };
 		806E3D881832B1960063AACE /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 806E3D741832B1960063AACE /* TSMessageView.m */; };
 		806E3D8D1832B2380063AACE /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 806E3D8C1832B2380063AACE /* HexColor.m */; };
+		8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8073346D183B956200C6D74A /* GLPLoadingCell.xib */; };
+		80733471183BAD3B00C6D74A /* GLPPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80733470183BAD3B00C6D74A /* GLPPushManager.m */; };
 		807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4CFE180AF0F6003D67E6 /* _Conversation.m */; };
 		807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D00180AF0F6003D67E6 /* _LocalMessage.m */; };
 		807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D06180AF0F6003D67E6 /* _WebEntity.m */; };
@@ -663,6 +665,9 @@
 		806E3D741832B1960063AACE /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
 		806E3D8B1832B2380063AACE /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
 		806E3D8C1832B2380063AACE /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
+		8073346D183B956200C6D74A /* GLPLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPLoadingCell.xib; sourceTree = "<group>"; };
+		8073346F183BAD3B00C6D74A /* GLPPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPushManager.h; sourceTree = "<group>"; };
+		80733470183BAD3B00C6D74A /* GLPPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPushManager.m; sourceTree = "<group>"; };
 		807C4CFD180AF0F6003D67E6 /* _Conversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Conversation.h; sourceTree = "<group>"; };
 		807C4CFE180AF0F6003D67E6 /* _Conversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Conversation.m; sourceTree = "<group>"; };
 		807C4CFF180AF0F6003D67E6 /* _LocalMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _LocalMessage.h; sourceTree = "<group>"; };
@@ -1673,6 +1678,8 @@
 				58403534182FF89F00499488 /* GLPPostManager.m */,
 				584CF66B182289B500EFABB8 /* ContactsManager.h */,
 				584CF66C182289B500EFABB8 /* ContactsManager.m */,
+				8073346F183BAD3B00C6D74A /* GLPPushManager.h */,
+				80733470183BAD3B00C6D74A /* GLPPushManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -1778,6 +1785,7 @@
 			children = (
 				584CF66E1823017B00EFABB8 /* GLPNotificationCell.xib */,
 				80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */,
+				8073346D183B956200C6D74A /* GLPLoadingCell.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -2014,6 +2022,7 @@
 				805E1559180EF3E700705B1C /* share_image.png in Resources */,
 				805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */,
 				5843328C180F069800BD9F74 /* loginwithfacebook.png in Resources */,
+				8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */,
 				584C1EF4181ACBCA00862E81 /* contacts_tab@2x.png in Resources */,
 				80C8BA4A18101DF9004F70DB /* other_chat_background.png in Resources */,
 				582840FD180DC0EA000F3CF7 /* multiplechatimg.png in Resources */,
@@ -2195,6 +2204,7 @@
 				80B2A4251833824F002AB1F0 /* GLPNotificationDao.m in Sources */,
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
+				80733471183BAD3B00C6D74A /* GLPPushManager.m in Sources */,
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
@@ -2376,8 +2386,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lukasz Piliszczuk (AKG7P9K4Z3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lukasz Piliszczuk (AKG7P9K4Z3)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2392,7 +2402,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "F26D8843-1A8C-44D9-88A7-61BF79B4EECD";
+				PROVISIONING_PROFILE = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2410,7 +2420,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lukasz Piliszczuk (AKG7P9K4Z3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2419,7 +2429,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "F26D8843-1A8C-44D9-88A7-61BF79B4EECD";
+				PROVISIONING_PROFILE = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2439,8 +2449,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "F35F1C91-2D73-4608-ABD3-C428E273AF70";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F35F1C91-2D73-4608-ABD3-C428E273AF70";
+				PROVISIONING_PROFILE = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2459,8 +2469,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "F35F1C91-2D73-4608-ABD3-C428E273AF70";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F35F1C91-2D73-4608-ABD3-C428E273AF70";
+				PROVISIONING_PROFILE = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
