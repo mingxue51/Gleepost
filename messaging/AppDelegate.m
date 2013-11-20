@@ -119,7 +119,7 @@
     [GAI sharedInstance].dispatchInterval = 20;
     
     // Optional: set Logger to VERBOSE for debug information.
-    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelError];
 }
 
 //- (void)saveContext
