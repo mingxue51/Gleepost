@@ -20,5 +20,4 @@
 
 
 // Google Analytics Constants
-#warning TODO: Dummy value for GAI Track ID. Replace it with actual value
-#define GLP_GAI_TRACK_ID                    @"UA-45783766-1"
+#define GLP_GAI_TRACK_ID                    @"UA-30919790-2"
