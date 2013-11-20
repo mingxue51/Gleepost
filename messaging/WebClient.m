@@ -559,6 +559,8 @@ static WebClient *instance = nil;
     
     [self postPath:@"contacts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        NSLog(@"Contact added with server's response: %@",responseObject);
+        
         callbackBlock(YES);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

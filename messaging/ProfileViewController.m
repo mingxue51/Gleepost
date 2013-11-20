@@ -55,27 +55,6 @@ static BOOL likePushed;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    
-    if(self.isUserJustAccepted)
-    {
-        //Remove the previous view controller.
-        //TODO: Not tested.
-        NSMutableArray *controllers = self.navigationController.viewControllers.mutableCopy;
-        
-        [controllers removeObjectAtIndex:controllers.count-2];
-        
-        [self.navigationController setViewControllers:controllers];
-        
-        //Override back navigation button.
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                       style:UIBarButtonItemStyleDone
-                                                                      target:self
-                                                                      action:@selector(goBackToCampusWall:)];
-        
-        
-        self.navigationItem.leftBarButtonItem = backButton;
-    }
     
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
@@ -91,7 +70,6 @@ static BOOL likePushed;
 
     [self.profileScrollView setBackgroundColor:[UIColor whiteColor]];
 
-    
     
     //Fetch the image from the server and add it as a profile background.
     self.profileScrollView.backgroundImageView.image = [UIImage imageNamed:@"background_profile"];
@@ -145,23 +123,13 @@ static BOOL likePushed;
     
     //Initialise profile view.
     
-    [self.profileView initialiseView:self.incomingUser];
+//    [self.profileView initialiseView:self.incomingUser];
     
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
     self.unreadNotificationsCount = 0;
 }
 
--(void)goBackToCampusWall:(id)sender
-{
-    NSLog(@"GO BACK TO CAMPUS WALL.");
-    
-    UIViewController *campusWallController = [[self.navigationController viewControllers] objectAtIndex:self.navigationController.viewControllers.count-2];
-    
-    NSLog(@"Back class: %@",[campusWallController class]);
-    
-    [self.navigationController popToViewController:campusWallController animated:YES];
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -169,6 +137,8 @@ static BOOL likePushed;
     
     //Added.
     [self.profileView hideNotificationsBubble];
+    
+    [self.profileView initialiseView:self.incomingUser];
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
@@ -189,8 +159,11 @@ static BOOL likePushed;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    
+    [super viewWillDisappear:animated];
+
+    
 }
 
 - (void)updateNotificationsBubble

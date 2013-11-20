@@ -897,7 +897,6 @@ float timeInterval = 0.1;
     }
     else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
-        //Navigate to profile view controller.
         
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }

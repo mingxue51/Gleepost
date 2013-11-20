@@ -17,6 +17,7 @@
 +(NSArray*)loadContacts;
 + (void)save:(GLPContact *)entity inDb:(FMDatabase *)db;
 +(void)deleteTable;
++(void)deleteTableWithDb:(FMDatabase*)db;
 +(void)setContactAsRegularContactWithRemoteKey:(int)remoteKey;
 
 @end

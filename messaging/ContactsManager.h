@@ -19,9 +19,10 @@
 -(BOOL)isContactWithIdRequestedYou:(int)remoteKey;
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey;
 -(void)saveNewContact:(GLPContact*)contact;
--(void)refreshFromDatabase;
+-(void)loadContactsFromDatabase;
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId;
 -(void)contactWithRemoteKeyAccepted:(int)remoteKey;
++ (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback;
 //-(void)refreshContacts;
 
 @end

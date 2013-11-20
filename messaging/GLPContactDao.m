@@ -66,7 +66,6 @@
 + (void)save:(GLPContact *)entity inDb:(FMDatabase *)db
 {
     [db executeUpdateWithFormat:@"insert into contacts(remoteKey, you_confirmed, they_confirmed) values(%d, %d, %d)", entity.remoteKey, entity.youConfirmed, entity.theyConfirmed];
-    entity.key = [db lastInsertRowId];
 }
 
 
@@ -94,6 +93,12 @@
         BOOL s = [db executeUpdateWithFormat:@"delete from contacts"];
         NSLog(@"Table deleted: %d",s);
     }];
+}
+
++(void)deleteTableWithDb:(FMDatabase*)db
+{
+    BOOL s = [db executeUpdateWithFormat:@"delete from contacts"];
+    NSLog(@"Table deleted: %d",s);
 }
 
 @end
