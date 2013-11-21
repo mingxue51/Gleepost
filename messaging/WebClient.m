@@ -789,6 +789,11 @@ static WebClient *instance = nil;
     }];
 }
 
+/**
+ 
+ Mark notifications as read from the current notification and older.
+ 
+ */
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:notification.remoteKey] forKey:@"seen"];

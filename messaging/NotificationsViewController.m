@@ -45,6 +45,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    //self.inLoading = YES;
     [self loadNotifications];
 }
 
@@ -84,10 +85,10 @@
         self.inLoading = NO;
         
         // reload if asked
-        if(self.shouldReload) {
-            self.shouldReload = NO;
-            [self loadNotifications];
-        }
+//        if(self.shouldReload) {
+//            self.shouldReload = NO;
+//            [self loadNotifications];
+//        }
     }];
 }
 
@@ -122,7 +123,7 @@
             [self addNewNotifications:notifications];
             
             // and restart the function to mark new notifications read as well
-            [self markNotificationsRead];
+            //[self markNotificationsRead];
         }
     }];
 }
@@ -164,7 +165,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     GLPNotification *notification = self.notifications[indexPath.row];
-    return [NotificationCell getCellHeightForNotification:notification];
+    
+    
+    if(notification.notificationType == kGLPNotificationTypeAddedYou)
+    {
+        return 91;
+    }
+    else
+    {
+        return 80;
+    }
+    
+//    return [NotificationCell getCellHeightForNotification:notification];
 }
 
 

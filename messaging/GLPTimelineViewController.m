@@ -128,6 +128,9 @@ static BOOL likePushed;
     
     self.commentCreated = NO;
     
+    //TODO: Remove this later.
+    [ContactsManager sharedInstance];
+    
     [self loadInitialPosts];
 }
 

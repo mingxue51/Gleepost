@@ -32,6 +32,8 @@ float const kContentLabelBottomMargin = 7;
     CGRectSetH(self.contentLabel, contentHeight);
     CGRectSetY(self.time, self.contentLabel.frame.origin.y + contentHeight + kContentLabelBottomMargin);
 
+    NSLog(@"Notification: %@, Has action: %d, Type: %d Notification key: %d", notification.notificationTypeDescription, notification.hasAction, notification.notificationType, notification.remoteKey);
+    
     if([notification hasAction]) {
         self.buttonsView.hidden = NO;
         CGRectSetY(self.buttonsView, self.time.frame.origin.y + self.time.frame.size.height);

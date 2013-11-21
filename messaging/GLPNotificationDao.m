@@ -15,8 +15,9 @@
 
 + (NSArray *)findNotificationsForUser:(GLPUser *)user inDb:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where user_remote_key = %d order by remoteKey desc", user.remoteKey];
-    
+    //FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where user_remote_key = %d order by remoteKey desc", user.remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications order by date desc"];
+
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
@@ -39,10 +40,11 @@
 {
     int date = [entity.date timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, notification_type, date, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, seen, date, type, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d, %d)",
                       entity.remoteKey,
+                        entity.seen,
+                        date,
                       entity.notificationType,
-                      date,
                       entity.postRemoteKey,
                       entity.user.remoteKey];
     
@@ -53,5 +55,12 @@
 {
     return [db intForQuery:@"select count(key) from notifications where seen = 0"];
 }
+
++(void)deleteTableWithDb:(FMDatabase*)db
+{
+    BOOL s = [db executeUpdateWithFormat:@"delete from notifications"];
+    NSLog(@"Table notifications deleted: %d",s);
+}
+
 
 @end

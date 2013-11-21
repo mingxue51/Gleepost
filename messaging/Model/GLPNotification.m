@@ -37,13 +37,13 @@
 {
     switch (self.notificationType) {
         case kGLPNotificationTypeAcceptedYou:
-            return [NSString stringWithFormat:@"Contact invite from %@", self.user.name];
+            return [NSString stringWithFormat:@"Contact accepted from %@", self.user.name];
         case kGLPNotificationTypeCommented:
             return [NSString stringWithFormat:@"Comment from %@", self.user.name];
         case kGLPNotificationTypeLiked:
             return [NSString stringWithFormat:@"Like from %@", self.user.name];
         default:
-            return @"Notification";
+            return [NSString stringWithFormat:@"Contact request from %@",self.user.name];
     }
 }
 

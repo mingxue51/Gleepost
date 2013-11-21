@@ -40,6 +40,7 @@
 - (void)updateProfileBadge:(NSNotification *)notification
 {
     self.profileNotificationsCount += [notification.userInfo[@"count"] intValue];
+//    self.profileNotificationsCount+=1;
     [self updateBadgeForIndex:4 count:self.profileNotificationsCount];
 }
 

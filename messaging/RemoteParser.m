@@ -570,18 +570,42 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 + (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json
 {
     GLPNotification *notification = [[GLPNotification alloc] init];
+    NSString* notificationsType = json[@"type"];
+    GLPNotificationType type;
+
+    if([notificationsType isEqualToString:@"accepted_you"])
+    {
+        type = kGLPNotificationTypeAcceptedYou;
+    }
+    else if([notificationsType isEqualToString:@"added_you"])
+    {
+        type = kGLPNotificationTypeAddedYou;
+    }
+    else if([notificationsType isEqualToString:@"commented"])
+    {
+        type = kGLPNotificationTypeCommented;
+    }
+    else if([notificationsType isEqualToString:@"liked"])
+    {
+        type = kGLPNotificationTypeLiked;
+    }
+    
+    notification.notificationType = type;
+    notification.seen = NO;
+    
     notification.remoteKey = [json[@"id"] integerValue];
-    notification.postRemoteKey = (json[@"post"] && json[@"post"] != [NSNull null]) ? [json[@"post"] intValue] : 0;
+    notification.postRemoteKey = (json[@"post"] != [NSNull null]) ? [json[@"post"] intValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
-    notification.user = [RemoteParser parseUserFromJson:json[@"by"]];
+    notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
     
     return notification;
 }
 
-+ (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations
++ (NSArray *)parseNotificationsFromJson:(NSArray *)jsonNotifications
 {
     NSMutableArray *items = [NSMutableArray array];
-    for(id item in items) {
+    for(id item in jsonNotifications) {
+        
         [items addObject:[RemoteParser parseNotificationFromJson:item]];
     }
     

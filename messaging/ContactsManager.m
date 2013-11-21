@@ -58,7 +58,6 @@ static ContactsManager *instance = nil;
         if(success)
         {
             //Store contacts into an array.
-            NSLog(@"Contacts loaded successfully.");
             
             self.contacts = contacts;
 
@@ -113,7 +112,6 @@ static ContactsManager *instance = nil;
 {
     GLPContact* contact = [self contactWithRemoteKey:remoteKey];
     
-    NSLog(@"You confirmed: %d",contact.youConfirmed);
     
     return contact.youConfirmed;
 }
@@ -148,7 +146,6 @@ static ContactsManager *instance = nil;
 {
     NSArray *localEntities = [GLPContactDao loadContacts];
     localCallback(localEntities);
-    NSLog(@"Load local contacts %d", localEntities.count);
     
     
     [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *serverContacts) {
@@ -161,9 +158,6 @@ static ContactsManager *instance = nil;
         
 
             //Store contacts into an array.
-            NSLog(@"Contacts loaded successfully.");
-            
-    
         
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
@@ -196,9 +190,7 @@ static ContactsManager *instance = nil;
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).
     if([[ContactsManager sharedInstance] isUserContactWithId:selectedId])
-    {
-        NSLog(@"PrivateProfileViewController : Unlock Profile.");
-        
+    {        
         return YES;
     }
     else

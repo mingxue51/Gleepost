@@ -12,10 +12,10 @@
 @interface GLPNotification : GLPEntity
 
 typedef enum {
-    kGLPNotificationTypeAddedYou,
-    kGLPNotificationTypeAcceptedYou,
-    kGLPNotificationTypeCommented,
-    kGLPNotificationTypeLiked,
+    kGLPNotificationTypeAddedYou, //0
+    kGLPNotificationTypeAcceptedYou, //1
+    kGLPNotificationTypeCommented, //2
+    kGLPNotificationTypeLiked, //3
 } GLPNotificationType;
 
 @property (assign, nonatomic) NSInteger postRemoteKey;
