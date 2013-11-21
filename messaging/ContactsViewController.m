@@ -18,6 +18,7 @@
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 
 @interface ContactsViewController ()
@@ -79,6 +80,7 @@
     [self loadContacts];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void) clearUselessSections

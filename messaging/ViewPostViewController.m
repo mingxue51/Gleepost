@@ -21,6 +21,7 @@
 #import "SessionManager.h"
 #import "ContactsHelper.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface ViewPostViewController ()
 
@@ -131,6 +132,7 @@ static BOOL likePushed;
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

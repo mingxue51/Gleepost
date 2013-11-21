@@ -18,6 +18,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPConversationParticipantsDao.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface MessagesViewController ()
 
@@ -81,6 +82,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

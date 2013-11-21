@@ -17,6 +17,7 @@
 #import "GLPLiveConversation.h"
 #import "LiveConversationManager.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface ChatViewController ()
 
@@ -141,6 +142,7 @@
     [self initialiseAnimationViewToTheViewController];
 
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)loadLiveConversations

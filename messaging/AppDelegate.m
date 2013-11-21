@@ -15,6 +15,7 @@
 #import "GAIFields.h"
 #import "GAITracker.h"
 #import "GAIDictionaryBuilder.h"
+#import "Flurry.h"
 
 @implementation AppDelegate
 
@@ -23,6 +24,7 @@
 {
     [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     [self setupGoogleAnalytics];
+    [self setupFlurryAnalytics];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
@@ -101,7 +103,7 @@
 }
 
 
-# pragma mark - Setup Google Analytics
+# pragma mark - Setup Analytics
 - (void)setupGoogleAnalytics {
     // Optional: automatically send uncaught exceptions to Google Analytics.
     [GAI sharedInstance].trackUncaughtExceptions = YES;
@@ -111,6 +113,13 @@
     
     // Optional: set Logger to VERBOSE for debug information.
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+}
+
+- (void)setupFlurryAnalytics {
+    [Flurry setCrashReportingEnabled:NO];
+    [Flurry setDebugLogEnabled:YES];
+    
+    [Flurry startSession:FLURRY_API_KEY];
 }
 
 //- (void)saveContext

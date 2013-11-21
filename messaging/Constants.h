@@ -21,3 +21,6 @@
 
 // Google Analytics Constants
 #define GLP_GAI_TRACK_ID                    @"UA-30919790-2"
+
+// Flurry Analytics Constants
+#define FLURRY_API_KEY                      @"4PV5V9P8W43WN3Y8TYGB"
