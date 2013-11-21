@@ -190,6 +190,22 @@ int const NumberMaxOfMessagesLoaded = 20;
                 return;
             }
             
+            // uncomment for debug, simulate responses with at least 1 new remote message
+            GLPMessage *m = [[GLPMessage alloc] init];
+            m.content = @"new prev fake msg 2";
+            m.author = message.author;
+            m.date = [message.date dateByAddingTimeInterval:-15];
+            m.conversation = message.conversation;
+            
+            GLPMessage *m2 = [[GLPMessage alloc] init];
+            m2.content = @"new prev fake msg 1";
+            m2.author = message.author;
+            m2.date = [message.date dateByAddingTimeInterval:-10];
+            m2.conversation = message.conversation;
+            messages = @[m, m2];
+            callback(YES, NO, messages);
+            return;
+            
             NSLog(@"previous messages from web %d", messages.count);
             BOOL remains = messages.count == NumberMaxOfMessagesLoaded;
             
@@ -373,5 +389,6 @@ int const NumberMaxOfMessagesLoaded = 20;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
     }
 }
+
 
 @end

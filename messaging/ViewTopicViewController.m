@@ -113,6 +113,7 @@ float timeInterval = 0.1;
     //TODO: Why this is here ?
     [self configureNavigationBar];
     [self configureForm];
+    self.keyboardAppearanceSpaceY = 0;
     
     if(self.randomChat) {
         [self configureTimeBar];
@@ -124,7 +125,6 @@ float timeInterval = 0.1;
         [self loadInitalMessages];
     }
     
-    self.keyboardAppearanceSpaceY = 0;
     //    self.formTextView.
     
     //Resize the text field.
@@ -460,12 +460,17 @@ float timeInterval = 0.1;
                 // just remove the bootom loading cell
                 [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
             }
+            
+            // if there some messages after the initial loading, maybe there is some previous messages as well
+            // activate the top loading cell
+            if(self.messages.count > 0) {
+                self.loadingCellStatus = kGLPLoadingCellStatusInit;
                 
-            //[self showMessages:messages];
+                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self scrollToTheEndAnimated:NO];
+            }
             
-            // keep top loading cell activated or desactivate it if there is no previous results
-            //                self.loadingCellStatus = (messages.count == NumberMaxOfMessagesLoaded) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-            
+        // error from remote request
         } else {
             // remove the bootom loading cell
             [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
@@ -481,87 +486,100 @@ float timeInterval = 0.1;
     [ConversationManager markConversationRead:self.conversation];
 }
 
+// Activated only when loadInitialMessages is complete
 - (void)loadPreviousMessages
 {
-    //TODO: Reloading delay mechanism
-    if(self.inLoading) {
+    if(self.loadingCellStatus != kGLPLoadingCellStatusInit) {
         return;
     }
     
     NSLog(@"Load previous messages");
-    self.inLoading = YES;
     
-    //    if(self.messages.count == 0) {
-    //        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-    //        return;
-    //    }
-    
-    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
-        NSLog(@"Previous messages loading already in progress, don't run twice");
-        return;
-    }
+
     
     // show the loading on top loading cell
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    [self reloadLoadingCell];
+//    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+//    [self reloadLoadingCell];
     
-    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *messages) {
+    [ConversationManager loadPreviousMessagesBefore:self.messages[0] callback:^(BOOL success, BOOL remains, NSArray *previousMessages) {
         
         if(success) {
-            if(messages.count > 0) {
+            
+            // previous messages to insert
+            if(previousMessages.count > 0) {
+                NSLog(@"before msgs %d - %d", previousMessages.count, self.messages.count);
+                
                 // insert messages before existing ones
-                [self.messages insertObjects:messages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)]];
+                [self.messages insertObjects:previousMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, previousMessages.count)]];
+                
+                NSLog(@"full %d - tableview count %d - %d", self.messages.count, [self.tableView numberOfRowsInSection:0], [self tableView:self.tableView numberOfRowsInSection:0]);
+                
                 
                 // configure the display
                 [self configureDisplayForMessages:self.messages];
                 
-                // insert in the tableview while saving the scrolling state
-                CGPoint tableViewOffset = [self.tableView contentOffset];
-                [UIView setAnimationsEnabled:NO];
+                // re-init or set to delete the top loading cell
+                self.loadingCellStatus = (NO) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
                 
-                [self.tableView beginUpdates];
+                [self updateTableWithNewRowCount:previousMessages.count];
                 
+//                // insert in the tableview while saving the scrolling state
+//                CGPoint tableViewOffset = [self.tableView contentOffset];
+//                [UIView setAnimationsEnabled:NO];
+//                [self.tableView beginUpdates];
+//                
+//                // remove top loading cell if need, otherwise keep it animated
+//                if(self.loadingCellStatus == kGLPLoadingCellStatusFinished) {
+//                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//                }
+//                
                 // new rows total height for saving the scrolling state
-                int heightForNewRows = 0;
-                
-                // create new indexpaths for new rows starting at 1 because 0 is the top loading cell
-                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-                for (NSInteger i = 1; i <= messages.count; i++) {
-                    // index path
-                    NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                    [rowsInsertIndexPath addObject:tempIndexPath];
-                    
-                    // add the row height
-                    heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
-                }
-                
-                // insert the rows
-                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationNone];
-                
-                // reload every other rows because the configuration may changes (which message follows which, etc)
-                NSMutableArray *reloadRowsIndexPaths = [[NSMutableArray alloc] init];
-                for (NSInteger i = messages.count; i < self.messages.count; i++) {
-                    // index path
-                    NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                    [reloadRowsIndexPaths addObject:rowIndexPath];
-                }
-                [self.tableView reloadRowsAtIndexPaths:reloadRowsIndexPaths withRowAnimation:UITableViewRowAnimationNone];
-                
-                // remove the top loading row if need
-                if(!remains) {
-                    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                }
-                // otherwise we keep the loading cell animation and re-init its state
-                else {
-                    self.loadingCellStatus = kGLPLoadingCellStatusInit;
-                }
-                
-                tableViewOffset.y += heightForNewRows;
-                
-                [self.tableView endUpdates];
-                [self.tableView setContentOffset:tableViewOffset animated:NO];
-                [UIView setAnimationsEnabled:YES];
+//                int heightForNewRows = 0;
+//                
+//                // add 1 if the top loading cell is present
+//                int topLoadingCellCount = (self.loadingCellStatus == kGLPLoadingCellStatusFinished) ? 0 : 1;
+//                
+//                // create new indexpaths for new rows starting at 1 because 0 is the top loading cell
+//                NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+//                for (NSInteger i = 0; i < previousMessages.count; i++) {
+//                    // index path
+//                    NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i+topLoadingCellCount inSection:0];
+//                    [rowsInsertIndexPath addObject:tempIndexPath];
+//                    
+//                    // add the row height
+//                    heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+//                    
+//                    NSLog(@"insert %d", tempIndexPath.row);
+//                }
+//                
+//                // insert the rows
+//                [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationNone];
+//                
+//                // reload every other rows because the configuration may changes (which message follows which, etc)
+//                NSMutableArray *reloadRowsIndexPaths = [[NSMutableArray alloc] init];
+//                for (NSInteger i = previousMessages.count; i < self.messages.count; i++) {
+//                    // index path
+//                    NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:i+topLoadingCellCount inSection:0];
+//                    [reloadRowsIndexPaths addObject:rowIndexPath];
+//                    NSLog(@"reload %d", rowIndexPath.row);
+//                }
+////                [self.tableView reloadRowsAtIndexPaths:reloadRowsIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+//                
+//                NSLog(@"msgs %d - %d", self.messages.count, [self tableView:self.tableView numberOfRowsInSection:0]);
+//                
+//                
+//                tableViewOffset.y += heightForNewRows;
+//                
+//                for(int i=0; i < 20; i++) {
+//                    id cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+//                    NSLog(@"%d - %@", i, NSStringFromClass([cell class]));
+//                }
+//                
+//                [self.tableView endUpdates];
+//                [self.tableView setContentOffset:tableViewOffset animated:NO];
+//                [UIView setAnimationsEnabled:YES];
+//                
+//                NSLog(@"msgs %d - %d", self.messages.count, [self tableView:self.tableView numberOfRowsInSection:0]);
                 
             } else { // no messages from remote
                 // remove top loading cell
@@ -573,8 +591,6 @@ float timeInterval = 0.1;
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self reloadLoadingCell];
         }
-        
-        self.inLoading = NO;
     }];
 }
 
@@ -791,9 +807,10 @@ float timeInterval = 0.1;
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
     
     int heightForNewRows = 0;
+    heightForNewRows -= 40;
     
     for (NSInteger i = 0; i < rowCount; i++) {
-        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i+1 inSection:0];
         [rowsInsertIndexPath addObject:tempIndexPath];
 
         heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
@@ -805,8 +822,13 @@ float timeInterval = 0.1;
     
     tableViewOffset.y += heightForNewRows;
     
+    if(tableViewOffset.y < 0) {
+        tableViewOffset.y = 0;
+    }
+    
     [self.tableView reloadData];
     [self.tableView setContentOffset:tableViewOffset animated:NO];
+    
     
     [UIView setAnimationsEnabled:YES];
 }
@@ -891,13 +913,14 @@ float timeInterval = 0.1;
 {
     if(indexPath.row == 0 && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
         NSLog(@"Display and activate top loading cell");
+        [self performSelector:@selector(loadPreviousMessages) withObject:nil];
         
-        // tableview in scrolling, delay the loading when scroll is finished
-        if(self.tableViewInScrolling) {
-            self.tableViewDisplayedLoadingCell = YES;
-        } else {
-            [self loadPreviousMessages];
-        }
+//        // tableview in scrolling, delay the loading when scroll is finished
+//        if(self.tableViewInScrolling) {
+//            self.tableViewDisplayedLoadingCell = YES;
+//        } else {
+//            [self loadPreviousMessages];
+//        }
     }
 }
 
@@ -912,7 +935,7 @@ float timeInterval = 0.1;
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
 {
-    if(self.messages.count > 1) {
+    if(self.messages.count > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 }
