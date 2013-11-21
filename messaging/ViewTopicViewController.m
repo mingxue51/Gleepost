@@ -117,7 +117,7 @@ float timeInterval = 0.1;
     
     if(self.randomChat) {
         [self configureTimeBar];
-        [self loadLiveMessages];
+        [self loadInitialLiveMessages];
         [self configureNavigationBarButton];
 
     } else {
@@ -617,33 +617,156 @@ float timeInterval = 0.1;
     }
 }
 
-
--(void)loadLiveMessages
+//TODO: UGLY DUPLICATION, REFACTOR LIVE CONVERSATION WHEN POSSIBLE
+- (void)loadInitialLiveMessages
 {
-    //id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
-
+    if(self.inLoading) {
+        return;
+    }
     
-    //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
+    NSLog(@"Load initial messages");
+    self.inLoading = YES;
     
     [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
-        //[self showMessages:messages];
-        
-    } remoteCallback:^(BOOL success, NSArray *messages) {
-        //[WebClientHelper hideStandardLoaderForView:view];
+        if(messages.count > 0) {
+            self.messages = [messages mutableCopy];
+            
+            [self configureDisplayForMessages:self.messages];
+            [self.tableView reloadData];
+            [self scrollToTheEndAnimated:NO];
+        }
+    } remoteCallback:^(BOOL success, NSArray *newMessages) {
+        NSLog(@"Load initial messages remote callback success %d - new messages %d", success, newMessages.count);
         
         if(success) {
-            if(messages) {
-                //[self showMessages:messages];
+            
+            // new messages to insert
+            if(newMessages && newMessages.count > 0) {
+                
+                // there is already messages from local callback, add with animation
+                if(self.messages.count > 0) {
+                    int firstIndex = self.messages.count;
+                    int lastIndex = self.messages.count + newMessages.count - 1;
+                    
+                    // insert messages after existing ones
+                    [self.messages insertObjects:newMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(firstIndex, newMessages.count)]];
+                    
+                    // set to delete the bottom loading cell
+                    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+                    
+                    // configure the display for new messages
+                    // existing messages wont need to change appearance
+                    [self configureDisplayForMessages: self.messages];
+                    
+                    // start updating tableview
+                    [self.tableView beginUpdates];
+                    
+                    // delete the bottom loading cell
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:firstIndex inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // create new indexpaths for new rows starting at the end of existing messages
+                    // at this point we dont have top loading cell
+                    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                    for (NSInteger i = firstIndex; i <= lastIndex; i++) {
+                        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                        [rowsInsertIndexPath addObject:tempIndexPath];
+                    }
+                    
+                    // insert the rows
+                    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.tableView endUpdates];
+                }
+                
+                // no existing messages, so just add the new ones at the beginning
+                else {
+                    self.messages = [newMessages mutableCopy];
+                    
+                    // configure the display
+                    [self configureDisplayForMessages:self.messages];
+                    
+                    // set to delete the bottom loading cell
+                    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
+                    
+                    [self.tableView beginUpdates];
+                    
+                    // delete the bottom loading cell
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // create index paths
+                    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+                    for (NSInteger i = 0; i < self.messages.count; i++) {
+                        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                        [rowsInsertIndexPath addObject:tempIndexPath];
+                    }
+                    
+                    // insert the rows
+                    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [self.tableView endUpdates];
+                }
+                
+                // after populating table view, scroll to the last message
+                [self scrollToTheEndAnimated:YES];
             }
+            
+            // no remote messages to insert
+            else {
+                // just remove the bootom loading cell
+                [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
+            }
+            
+            // if there some messages after the initial loading, maybe there is some previous messages as well
+            // activate the top loading cell
+            if(self.messages.count > 0) {
+                self.loadingCellStatus = kGLPLoadingCellStatusInit;
+                
+                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self scrollToTheEndAnimated:NO];
+            }
+            
+            // error from remote request
         } else {
+            // remove the bootom loading cell
+            [self removeBottomLoadingCellWithAnimation:UITableViewRowAnimationFade];
+            
+            //TODO: show better error
             [WebClientHelper showStandardError];
         }
+        
+        self.inLoading = NO;
     }];
     
     // conversation has no more unread messages
-    //[ConversationManager markConversationRead:self.conversation];
-    
+    [ConversationManager markConversationRead:self.conversation];
 }
+
+//-(void)loadLiveMessages
+//{
+//    //id view = ([self.formTextView isFirstResponder]) ? [[UIApplication sharedApplication].windows objectAtIndex:1] : self.view;
+//
+//    
+//    //[WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Loading new live messages" forView:view];
+//    
+//    [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
+//        //[self showMessages:messages];
+//        
+//    } remoteCallback:^(BOOL success, NSArray *messages) {
+//        //[WebClientHelper hideStandardLoaderForView:view];
+//        
+//        if(success) {
+//            if(messages) {
+//                //[self showMessages:messages];
+//            }
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
+//    
+//    // conversation has no more unread messages
+//    //[ConversationManager markConversationRead:self.conversation];
+//    
+//}
 
 - (void)showMessageFromNotification:(NSNotification *)notification
 {
