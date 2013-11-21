@@ -168,8 +168,6 @@
             [self showConversations:conversations];
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
-        [self stopLoading];
-        
         if(success) {
             //Find paricipants.
             for(GLPConversation* conv in conversations)
@@ -185,11 +183,16 @@
             
             [self showConversations: conversations];
         } else {
+            // no local conversations
             // show loading cell error and do not add refresh control
             // because loading cell already provides a refresh button
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-            [self.tableView reloadData];
+            if(self.conversations.count == 0) {
+                self.loadingCellStatus = kGLPLoadingCellStatusError;
+                [self.tableView reloadData];
+            }
         }
+        
+        [self stopLoading];
     }];
 }
 
