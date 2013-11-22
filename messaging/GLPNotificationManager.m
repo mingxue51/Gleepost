@@ -84,7 +84,12 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         //[GLPNotificationDao deleteTableWithDb:db];
-        [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
+        
+        if([GLPNotificationDao countUnreadNotificationsInDb:db]>10)
+        {
+            [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
+        }
+        
         for(GLPNotification *notification in notifications) {
             [GLPNotificationDao save:notification inDb:db];
         }

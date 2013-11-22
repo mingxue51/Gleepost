@@ -34,9 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSLog(@"RegisterViewController");
-    
+        
     //Change the colour format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     

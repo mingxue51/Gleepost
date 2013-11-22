@@ -84,11 +84,17 @@ static SessionManager *instance = nil;
     self.data[@"user.expirationDate"] = [[DateFormatterHelper createDefaultDateFormatter] stringFromDate:expirationDate];
     
     [self saveData];
-    
+
     // register push if ready
     if(_pushToken && !_pushTokenRegistered) {
         [self registerPushOnServer];
     }
+}
+
+-(void)registerUserImage:(NSString*)imageUrl
+{
+    self.user.profileImageUrl = imageUrl;
+    [GLPUserDao updateUserWithRemotKey:self.user.remoteKey andProfileImage:imageUrl];
 }
 
 - (void)cleanSession

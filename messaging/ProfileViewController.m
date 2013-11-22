@@ -108,6 +108,8 @@ static BOOL likePushed;
 
         [self.profileView.profileImage addGestureRecognizer:tap];
         
+        [self setTitle:@"Loading..."];
+                
     }
 
     
@@ -140,7 +142,8 @@ static BOOL likePushed;
     [self.profileView hideNotificationsBubble];
     
     [self.profileView initialiseView:self.incomingUser];
-
+    
+    [self loadUserDetails];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }
@@ -341,6 +344,26 @@ static BOOL likePushed;
 //    }];
 }
 
+-(void)loadUserDetails
+{
+    [[WebClient sharedInstance] getUserWithKey:self.incomingUser.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            [self setTitle:user.name];
+            [self.profileView setUserDetails:user];
+            
+        }
+        else
+        {
+            NSLog(@"Not Success: %d User: %@",success, user);
+            
+        }
+        
+        
+        
+    }];
+}
 
 -(void)uploadImageAndSetUserImageWithUserRemoteKey
 {

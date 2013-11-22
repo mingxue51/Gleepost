@@ -162,6 +162,10 @@
     
     
     GLPNotification *notification = self.notifications[indexPath.row];
+    
+    NSLog(@"Current notification: %@ Seen: %d",notification.notificationTypeDescription, notification.seen);
+    
+
     [cell updateWithNotification:notification withViewController:self];
     
     return cell;

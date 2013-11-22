@@ -119,7 +119,7 @@
     if([self areTheDetailsValid])
     {
         //Request to server to register user.
-        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text, self.userLastNameTextView.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responceMessage, int remoteKey) {
+        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text, self.userLastNameTextView.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responseMessage, int remoteKey) {
             
             if(success)
             {
@@ -130,7 +130,7 @@
             else
             {
                 NSLog(@"User not registered.");
-                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responceMessage];
+                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
             }
             
         }];
@@ -169,7 +169,11 @@
 
             [self setImageToUserProfile:response];
             
-            [[SessionManager sharedInstance]user].profileImageUrl = response;
+//            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+            
+            //Save user's image to database and add to SessionManager.
+            [[SessionManager sharedInstance ] registerUserImage:response];
             
         }
         else

@@ -15,7 +15,6 @@
 
 @interface ProfileView ()
 
-@property(strong, nonatomic) GLPUser* currentUser;
 
 @end
 
@@ -63,12 +62,9 @@
         
         //Set user status.
         [self setBusyStatus];
-        
     }
     else
     {
-         self.currentUser = incomingUser;
-        
         //Remove some elements from the view like notifications etc.
         [self.busyFreeSwitch setHidden:YES];
         [self.notificationsButton setHidden:YES];
@@ -79,13 +75,21 @@
         [self.busyFreeLabel setHidden:YES];
         
         
+        [self.notificationNewBubbleImageView setAlpha:0.0];
+        [self.notificationNewBubbleLabel setAlpha:0.0];
+        
         
         //Fetch user's details from server.
-        [self loadUserDetails:self.currentUser];
+        //[self loadUserDetails:self.currentUser];
         
     }
+}
 
-    
+-(void)setUserDetails:(GLPUser*)incomingUser
+{
+    self.currentUser = incomingUser;
+    [self setUserDetails];
+
 }
 
 -(void)setBusyStatus
@@ -120,6 +124,7 @@
         
         //Fetch the image from the server and add it to the image view.
         [self.profileImage setImageWithURL:[NSURL URLWithString: self.currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
+        
     }
 }
 
@@ -129,9 +134,9 @@
         
         if(success)
         {
+            
             self.currentUser = user;
             
-            [self setUserDetails];
         }
         else
         {

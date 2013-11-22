@@ -31,6 +31,17 @@ float const kContentLabelBottomMargin = 7;
     CGSize contentSize = [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]];
     float contentHeight = contentSize.height;
 
+    if(notification.seen)
+    {
+        //Change the colour of the cell.
+        self.incomingNotification.hidden = YES;
+    }
+    else
+    {
+        self.incomingNotification.hidden = NO;
+    }
+    
+    
     CGRectSetH(self.contentLabel, contentHeight);
     CGRectSetY(self.time, self.contentLabel.frame.origin.y + contentHeight + kContentLabelBottomMargin);
     

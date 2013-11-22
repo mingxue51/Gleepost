@@ -191,6 +191,7 @@
 		58DC0249180437A70008993A /* pull_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0241180437A70008993A /* pull_down_button.png */; };
 		58DC024A180437A70008993A /* settings_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0242180437A70008993A /* settings_icon.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
+		58E4555C1840091B001A5D80 /* GLPLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E4555B1840091B001A5D80 /* GLPLike.m */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
@@ -592,6 +593,8 @@
 		58DC0242180437A70008993A /* settings_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_icon.png; sourceTree = "<group>"; };
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
+		58E4555A1840091B001A5D80 /* GLPLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLike.h; sourceTree = "<group>"; };
+		58E4555B1840091B001A5D80 /* GLPLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLike.m; sourceTree = "<group>"; };
 		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
 		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
 		80112B93180F03B9006A35AA /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
@@ -1492,6 +1495,8 @@
 				5828D7B2181E9DAE002D71F9 /* GLPLiveConversation.m */,
 				80B2A41D18337D8B002AB1F0 /* GLPNotification.h */,
 				80B2A41E18337D8B002AB1F0 /* GLPNotification.m */,
+				58E4555A1840091B001A5D80 /* GLPLike.h */,
+				58E4555B1840091B001A5D80 /* GLPLike.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2310,6 +2315,7 @@
 				807C4D18180AF0F6003D67E6 /* GLPMessage.m in Sources */,
 				8096E4EC17C2CBFD00C7BF60 /* CommentCell.m in Sources */,
 				584CF66A18227E3200EFABB8 /* GLPContactDao.m in Sources */,
+				58E4555C1840091B001A5D80 /* GLPLike.m in Sources */,
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,

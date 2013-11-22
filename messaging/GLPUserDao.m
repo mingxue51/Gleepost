@@ -113,6 +113,17 @@
     
 }
 
++(void)updateUserWithRemotKey:(int)remoteKey andProfileImage:(NSString*)imageUrl
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        BOOL b = [db executeUpdateWithFormat:@"update users set image_url=%@ where remoteKey=%d",
+         imageUrl,
+         remoteKey];
+        
+        NSLog(@"User's image saved with status: %d", b);
+    }];
+}
+
 +(void)update:(GLPUser*)entity
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {

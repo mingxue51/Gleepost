@@ -58,7 +58,13 @@
 
 +(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number
 {
-    BOOL s = [db executeUpdateWithFormat:@"delete from notifications where seen = 1 order by date desc limit=%d",number];
+    
+    /**
+     DELETE FROM ranking WHERE id NOT IN (
+     SELECT id FROM ranking ORDER BY score DESC LIMIT 100);
+     */
+    
+    BOOL s = [db executeUpdateWithFormat:@"delete from notifications where key in (select key from notifications where seen = 1 order by date desc limit %d)",number];
     NSLog(@"Table notifications deleted: %d",s);
 }
 

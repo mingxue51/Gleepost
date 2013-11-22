@@ -187,8 +187,6 @@ static ContactsManager *instance = nil;
 
         
     }];
-    
-    
 }
 
 
@@ -197,9 +195,9 @@ static ContactsManager *instance = nil;
  */
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
 {
-    //[self refreshContacts];
+    [self refreshContacts];
 
-    [self loadContactsFromDatabase];
+    //[self loadContactsFromDatabase];
     
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).

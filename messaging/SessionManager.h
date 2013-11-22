@@ -22,5 +22,6 @@
 - (BOOL)isSessionValid;
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
+-(void)registerUserImage:(NSString*)imageUrl;
 
 @end

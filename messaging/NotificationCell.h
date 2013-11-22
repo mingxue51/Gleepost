@@ -21,6 +21,7 @@ extern NSString * const kGLPNotificationCell;
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 @property (weak, nonatomic) IBOutlet UIButton *ignoreButton;
+@property (weak, nonatomic) IBOutlet UIImageView *incomingNotification;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content;
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;

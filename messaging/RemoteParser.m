@@ -9,7 +9,7 @@
 #import "RemoteParser.h"
 #import "DateFormatterHelper.h"
 #import "SendStatus.h"
-
+#import "GLPLike.h"
 
 
 @interface RemoteParser()
@@ -322,7 +322,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 
-#pragma mark - Posts and comments
+#pragma mark - Posts, comments and likes
 
 + (GLPPost *)parsePostFromJson:(NSDictionary *)json
 {
@@ -414,7 +414,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     
 
-        post.commentsCount = 0;
+    NSArray* comments = [RemoteParser parseCommentsFromJson:json[@"comments"] forPost:post];
+    
+    post.commentsCount = comments.count;
 
     
     //TODO: Parse comments.
@@ -423,8 +425,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     //TODO: Parse likes.
     
-
-    post.likes = 0;
+    NSArray *likes = [RemoteParser parseLikesFromJson:json[@"likes"] forPost:post];
+    post.likes = likes.count;
 
 
     
@@ -488,6 +490,28 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return comments;
+}
+
++(GLPLike *)parseLikeFromJson:(NSDictionary *)json forPost:(GLPPost *)post
+{
+    NSDate *date = [RemoteParser parseDateFromString:json[@"timestamp"]];
+    
+    GLPLike *like = [[GLPLike alloc] initWithUser:[RemoteParser parseUserFromJson:json[@"by"]] withDate:date andPost:post];
+    
+    return like;
+    
+}
+
++(NSArray*)parseLikesFromJson:(NSArray*)jsonLikes forPost:(GLPPost*)post
+{
+    NSMutableArray *likes = [NSMutableArray array];
+    
+    for(id jsonLike in jsonLikes)
+    {
+        [likes addObject: [RemoteParser parseLikeFromJson:jsonLike forPost:post]];
+    }
+    
+    return likes;
 }
 
 #pragma mark - Contacts
