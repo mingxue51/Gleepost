@@ -56,6 +56,7 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
+    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
@@ -179,6 +180,8 @@ static BOOL likePushed;
 {
     self.unreadNotificationsCount += [notification.userInfo[@"count"] intValue];
     [self updateNotificationsBubble];
+    
+
 }
 
 

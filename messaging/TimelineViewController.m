@@ -1160,7 +1160,7 @@ static BOOL likePushed;
          */
         
         vc.post = self.selectedPost;
-        vc.selectedIndex = self.selectedIndex;
+//        vc.selectedIndex = self.selectedIndex;
     
         
         self.selectedPost = nil;

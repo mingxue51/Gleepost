@@ -141,6 +141,20 @@ static ContactsManager *instance = nil;
     [GLPContactDao setContactAsRegularContactWithRemoteKey:remoteKey];
 }
 
+-(void)acceptContact:(int)remoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
+{
+    [[WebClient sharedInstance]acceptContact:remoteKey callbackBlock:^(BOOL success) {
+
+        if(success)
+        {
+            [self contactWithRemoteKeyAccepted:remoteKey];
+            
+            callbackBlock(success);
+        }
+        
+    }];
+}
+
 
 + (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback
 {

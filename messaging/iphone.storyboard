@@ -1584,6 +1584,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="ljb-cf-bYS"/>
+                        <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="fL3-CC-Jbz"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lXs-jN-Rl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1725,12 +1726,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="MWr-28-zFw"/>
-        <segue reference="Jle-n7-Gmg"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="FQd-EB-Shi"/>
+        <segue reference="fL3-CC-Jbz"/>
+        <segue reference="ljb-cf-bYS"/>
         <segue reference="3ZQ-Ax-jzZ"/>
+        <segue reference="FQd-EB-Shi"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="Jle-n7-Gmg"/>
         <segue reference="9uM-3L-Rl2"/>
-        <segue reference="htZ-EL-79i"/>
     </inferredMetricsTieBreakers>
 </document>

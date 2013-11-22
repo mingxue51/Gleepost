@@ -15,7 +15,6 @@
 
 @property (strong, nonatomic) GLPPost *post;
 //TODO: Remove after the integration of image posts.
-@property (assign, nonatomic) int selectedIndex;
 @property (assign, nonatomic) int selectedUserId;
 @property (assign, nonatomic) BOOL commentJustCreated;
 

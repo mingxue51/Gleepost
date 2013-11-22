@@ -37,6 +37,7 @@
 + (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts;
 + (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
++(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json;
 
 // contacts
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;

@@ -82,6 +82,7 @@
     return result;
 }
 
+
 +(NSArray*)likedPostsInDb:(FMDatabase*)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where liked=1"];

@@ -83,8 +83,8 @@
 + (void)saveNotifications:(NSArray *)notifications
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        [GLPNotificationDao deleteTableWithDb:db];
-        
+        //[GLPNotificationDao deleteTableWithDb:db];
+        [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
         for(GLPNotification *notification in notifications) {
             [GLPNotificationDao save:notification inDb:db];
         }

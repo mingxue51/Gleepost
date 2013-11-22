@@ -178,6 +178,24 @@ NSInteger const kGLPNumberOfPosts = 20;
     }];
 }
 
++(void)loadPostWithRemoteKey:(int)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
+{
+    [[WebClient sharedInstance] getPostWithRemoteKey:remoteKey withCallbackBlock:^(BOOL success, GLPPost *post) {
+       
+        if(success)
+        {
+            NSLog(@"Got post with content: %@", post.content);
+            
+            callback(success,post);
+        }
+        else
+        {
+            callback(NO, nil);
+        }
+        
+    }];
+}
+
 //+(void)getNewPostsAndSaveToDatabaseWithOldPosts:(NSArray*)localEntities
 //{
 //    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {

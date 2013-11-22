@@ -9,13 +9,18 @@
 #import "NotificationsViewController.h"
 #import "NotificationCell.h"
 #import "GLPNotificationManager.h"
-
+#import "ContactsManager.h"
+#import "ProfileViewController.h"
+#import "ViewPostViewController.h"
+#import "GLPPostManager.h"
+#import "WebClientHelper.h"
 @interface NotificationsViewController ()
 
 @property (assign, nonatomic) BOOL inLoading;
 @property (assign, nonatomic) BOOL shouldReload;
 @property (strong, nonatomic) NSMutableArray *notifications;
-
+@property (assign, nonatomic) int selectedUserId;
+@property (weak, nonatomic) GLPPost *selectedPost;
 @end
 
 @implementation NotificationsViewController
@@ -46,7 +51,11 @@
 {
     [super viewDidAppear:animated];
     //self.inLoading = YES;
-    [self loadNotifications];
+    
+    if(self.notifications.count == 0)
+    {
+        [self loadNotifications];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -151,15 +160,70 @@
 {
     NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPNotificationCell forIndexPath:indexPath];
     
+    
     GLPNotification *notification = self.notifications[indexPath.row];
-    [cell updateWithNotification:notification];
+    [cell updateWithNotification:notification withViewController:self];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"view post" sender:self];
+    //Depending on kind of notification navigate to the appropriate view.
+    
+    GLPNotification *currentNotification = self.notifications[indexPath.row];
+
+
+    switch (currentNotification.notificationType)
+    {
+        case kGLPNotificationTypeAddedYou:
+            
+            break;
+            
+        case kGLPNotificationTypeAcceptedYou:
+            self.selectedUserId = currentNotification.user.remoteKey;
+            [self performSegueWithIdentifier:@"view profile" sender:self];
+            break;
+            
+        case kGLPNotificationTypeCommented:
+            NSLog(@"Commented.");
+            //View post (navigate to comment).
+
+
+            
+            break;
+            
+        case kGLPNotificationTypeLiked:
+            NSLog(@"Liked.");
+            //View post.
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    if(currentNotification.notificationType == kGLPNotificationTypeCommented || currentNotification.notificationType == kGLPNotificationTypeLiked)
+    {
+        [GLPPostManager loadPostWithRemoteKey:currentNotification.postRemoteKey callback:^(BOOL sucess, GLPPost *post) {
+            
+            
+            if(sucess)
+            {
+                self.selectedPost = post;
+                [self performSegueWithIdentifier:@"view post" sender:self];
+            }
+            else
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+            }
+        }];
+        
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -178,7 +242,33 @@
     
 //    return [NotificationCell getCellHeightForNotification:notification];
 }
+- (void)acceptContact:(id)sender
+{
+    UIButton *acceptButton = (UIButton*)sender;
 
+    //Accept contact in the local database and in server.
+    [[ContactsManager sharedInstance] acceptContact:acceptButton.tag callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Navigate to unlocked profile.
+            
+            NSLog(@"User with remote key %d accepted.", acceptButton.tag);
+            self.selectedUserId = acceptButton.tag;
+            [self performSegueWithIdentifier:@"view profile" sender:self];
+
+        }
+    }];
+}
+
+- (void)ignoreContact:(id)sender
+{
+    UIButton *ignoreButton = (UIButton*)sender;
+    
+    //TODO: Implement that when is implemented by the server side.
+    NSLog(@"User with remote key %d ignored.", ignoreButton.tag);
+    
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -219,16 +309,44 @@
 }
 */
 
-/*
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+     if([segue.identifier isEqualToString:@"view post"])
+     {
+         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+         
+         ViewPostViewController *vc = segue.destinationViewController;
+         /**
+          Forward data of the post the to the view. Or in future just forward the post id
+          in order to fetch it from the server.
+          */
+         
+         vc.commentJustCreated = NO;
+         
+         vc.post = self.selectedPost;
+         
+     }
+     else if([segue.identifier isEqualToString:@"view profile"])
+     {
+         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+         
+         ProfileViewController *profileViewController = segue.destinationViewController;
+         
+         GLPUser *incomingUser = [[GLPUser alloc] init];
+         
+         incomingUser.remoteKey = self.selectedUserId;
+         
+         if(self.selectedUserId == -1)
+         {
+             incomingUser = nil;
+         }
+         
+         profileViewController.incomingUser = incomingUser;
+     }
+ }
 
- */
 
 @end

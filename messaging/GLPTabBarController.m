@@ -40,7 +40,6 @@
 - (void)updateProfileBadge:(NSNotification *)notification
 {
     self.profileNotificationsCount += [notification.userInfo[@"count"] intValue];
-//    self.profileNotificationsCount+=1;
     [self updateBadgeForIndex:4 count:self.profileNotificationsCount];
 }
 
@@ -63,6 +62,7 @@
 - (void)updateBadgeContentForIndex:(int)index count:(int)count
 {
     NSString *badge = self.profileNotificationsCount > 0 ? [NSString stringWithFormat:@"%d", count] : nil;
+    
     [self.tabBar.items[index] setBadgeValue:badge];
 }
 

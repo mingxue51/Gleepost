@@ -331,8 +331,28 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
-    post.commentsCount = [json[@"comments"] integerValue];
-    post.likes = [json[@"likes"] integerValue];
+    
+
+    if([json[@"comments"] isKindOfClass:[NSArray class]])
+    {
+        post.commentsCount = 0;
+
+    }
+    else
+    {
+        post.commentsCount = [json[@"comments"] integerValue];
+    }
+    
+    
+    if([json[@"likes"] isKindOfClass:[NSArray class]] || json[@"likes"] == [NSNull null])
+    {
+        post.likes = 0;
+    }
+    else
+    {
+        post.likes = [json[@"likes"] integerValue];
+    }
+    
     post.dislikes = [json[@"hates"] integerValue];
     
 
@@ -380,6 +400,59 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    }
     
     
+    
+    return post;
+}
+
++(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json
+{
+    GLPPost *post = [[GLPPost alloc] init];
+    post.remoteKey = [json[@"id"] integerValue];
+    post.author = [RemoteParser parseUserFromJson:json[@"by"]];
+    post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
+    post.content = json[@"text"];
+    
+    
+
+        post.commentsCount = 0;
+
+    
+    //TODO: Parse comments.
+    //post.commentsCount = [json[@"comments"] integerValue];
+    
+    
+    //TODO: Parse likes.
+    
+
+    post.likes = 0;
+
+
+    
+    post.dislikes = [json[@"hates"] integerValue];
+    
+    
+    NSArray *jsonArray = json[@"images"];
+    
+    if(jsonArray == (id)[NSNull null])
+    {
+        post.imagesUrls = nil;
+    }
+    else
+    {
+        if(jsonArray.count > 0)
+        {
+            NSMutableArray *imagesUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
+            
+            for(NSString *url in jsonArray)
+            {
+                [imagesUrls addObject:url];
+            }
+            post.imagesUrls = imagesUrls;
+        } else
+        {
+            post.imagesUrls = [NSArray array];
+        }
+    }
     
     return post;
 }

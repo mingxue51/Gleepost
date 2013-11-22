@@ -17,6 +17,7 @@ extern NSInteger const kGLPNumberOfPosts;
 + (void)loadLocalPostsBefore:(GLPPost *)post callback:(void (^)(NSArray *posts))callback;
 + (void)loadRemotePostsBefore:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 + (void)loadPreviousPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
++(void)loadPostWithRemoteKey:(int)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback;
 + (void)createLocalPost:(GLPPost*)post;
 + (void)updatePostAfterSending:(GLPPost *)post;
 +(void)updatePostWithLiked:(GLPPost*)post;

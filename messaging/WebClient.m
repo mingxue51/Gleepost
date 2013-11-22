@@ -220,6 +220,23 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)getPostWithRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%d/", remoteKey];
+    
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        
+        GLPPost *post = [RemoteParser parseIndividualPostFromJson:responseObject];
+        
+        callbackBlock(YES, post);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
 //-(void)upload
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock

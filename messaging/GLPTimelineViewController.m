@@ -1258,7 +1258,7 @@ static BOOL likePushed;
         vc.commentJustCreated = self.commentCreated;
         
         vc.post = self.selectedPost;
-        vc.selectedIndex = self.selectedIndex;
+//        vc.selectedIndex = self.selectedIndex;
         
         
         self.selectedPost = nil;
