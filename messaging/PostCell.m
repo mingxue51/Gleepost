@@ -326,7 +326,7 @@ static const float PostContentLabelMaxWidth = 250;
                 self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
             
                 
-                NSLog(@"Frame Size after: %f : %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height);
+                NSLog(@"Frame Size after: %f : %f X: %f, Y: %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height, self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y);
                 
                 if([self.contentLbl.text isEqualToString:@""])
                 {

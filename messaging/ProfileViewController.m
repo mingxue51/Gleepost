@@ -388,6 +388,9 @@ static BOOL likePushed;
         {
             NSLog(@"IMAGE UPLOADED. URL: %@",response);
             
+            //Change profile image in Session Manager.
+            [[SessionManager sharedInstance] registerUserImage:response];
+            
             //Set image to user's profile.
             
             [self setImageToUserProfile:response];
@@ -416,6 +419,9 @@ static BOOL likePushed;
         if(success)
         {
             NSLog(@"NEW PROFILE IMAGE UPLOADED");
+            
+
+            
         }
         else
         {
