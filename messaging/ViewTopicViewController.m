@@ -743,6 +743,11 @@ float timeInterval = 0.1;
     GLPMessage *message = [notification userInfo][@"message"];
     NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
     
+    if((message.conversation && self.conversation.remoteKey != message.conversation.remoteKey) || (message.liveConversation && self.liveConversation.remoteKey != message.liveConversation.remoteKey)) {
+        NSLog(@"Long poll message is not for the current conversation, ignore");
+        return;
+    }
+    
     [self showMessage:message];
     
     // conversation has no more unread messages

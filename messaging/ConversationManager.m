@@ -322,16 +322,22 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
+        //TODO: this will not work if long poll message for live conversation is received before local database is populated
         GLPLiveConversation *liveConversation = [GLPLiveConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
         
         if(liveConversation) {
+            message.conversation = nil;
+            message.liveConversation = liveConversation;
             liveConversation.lastUpdate = message.date;
             [GLPLiveConversationDao updateLastUpdate:liveConversation db:db];
         } else {
+            
             GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
             
             if(!conversation) {
                 conversation = message.conversation;
+            } else {
+                message.conversation = conversation;
             }
             
             conversation.lastMessage = message.content;
