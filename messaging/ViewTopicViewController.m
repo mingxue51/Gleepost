@@ -112,6 +112,7 @@ float timeInterval = 0.1;
     self.tableViewInScrolling = NO;
 
     self.messages = [NSMutableArray array];
+    [self.tableView reloadData];
 }
 
 -(void) loadElements
