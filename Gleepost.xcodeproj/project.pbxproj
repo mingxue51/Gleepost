@@ -300,6 +300,7 @@
 		80AB898D17C2ACA40053E784 /* MYRIADAT.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 80AB898C17C2ACA40053E784 /* MYRIADAT.TTF */; };
 		80AB898F17C2ADA60053E784 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AB898E17C2ADA60053E784 /* line.png */; };
 		80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AB899017C2AE700053E784 /* navigation_bar@2x.png */; };
+		80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */; };
 		80B1735B18056A0700D9669B /* typing_bar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1735918056A0700D9669B /* typing_bar1.png */; };
 		80B1735C18056A0700D9669B /* typing_bar1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1735A18056A0700D9669B /* typing_bar1@2x.png */; };
 		80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1735E1805792B00D9669B /* WebClientHelper.m */; };
@@ -763,6 +764,8 @@
 		80AB898C17C2ACA40053E784 /* MYRIADAT.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = MYRIADAT.TTF; sourceTree = "<group>"; };
 		80AB898E17C2ADA60053E784 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		80AB899017C2AE700053E784 /* navigation_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigation_bar@2x.png"; sourceTree = "<group>"; };
+		80B01E6A18428BAF00A1BA5F /* NSNotificationCenter+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+Utils.h"; sourceTree = "<group>"; };
+		80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+Utils.m"; sourceTree = "<group>"; };
 		80B1735918056A0700D9669B /* typing_bar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typing_bar1.png; sourceTree = "<group>"; };
 		80B1735A18056A0700D9669B /* typing_bar1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typing_bar1@2x.png"; sourceTree = "<group>"; };
 		80B1735D1805792B00D9669B /* WebClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebClientHelper.h; sourceTree = "<group>"; };
@@ -1915,6 +1918,8 @@
 				80112B99180F2494006A35AA /* NSDate+UTC.h */,
 				80112B9A180F2494006A35AA /* NSDate+UTC.m */,
 				C04613951834E7D500B422A3 /* GoogleAnalytics */,
+				80B01E6A18428BAF00A1BA5F /* NSNotificationCenter+Utils.h */,
+				80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2318,6 +2323,7 @@
 				58E4555C1840091B001A5D80 /* GLPLike.m in Sources */,
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
+				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
@@ -2462,15 +2468,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F35F1C91-2D73-4608-ABD3-C428E273AF70";
+				PROVISIONING_PROFILE = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2482,15 +2488,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F35F1C91-2D73-4608-ABD3-C428E273AF70";
+				PROVISIONING_PROFILE = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2317C1CC-4DC6-4780-BC5A-095A760092B8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

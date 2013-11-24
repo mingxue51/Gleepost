@@ -27,6 +27,6 @@
 @property (strong, nonatomic) GLPLiveConversation *liveConversation;
 @property BOOL randomChat;
 
--(void)loadElements;
+- (void)reloadElements;
 
 @end

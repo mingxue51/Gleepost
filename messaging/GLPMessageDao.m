@@ -147,9 +147,8 @@
     int date = [entity.date timeIntervalSince1970];
     
     //todo: need to refactor this
-    if(entity.conversation == nil)
-    {
-        BOOL executed = [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, isOld, conversation_key) values(%d, %@, %d, %d, %d, %d, %d)",
+    if(entity.conversation == nil) {
+        [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, author_key, isOld, conversation_key) values(%d, %@, %d, %d, %d, %d, %d)",
          entity.remoteKey,
          entity.content,
          date,
@@ -157,12 +156,8 @@
          entity.author.remoteKey,
          entity.isOld,
          entity.liveConversation.remoteKey];
-        
-        NSLog(@"EXECUTED: %d",executed);
-
     }
-    else
-    {
+    else {
         [db executeUpdateWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, isOld, author_key, conversation_key) values(%d, %@, %d, %d, %d, %d, %d)",
          entity.remoteKey,
          entity.content,
@@ -174,25 +169,13 @@
         
     }
     
-    
-
-    
-    
     entity.key = [db lastInsertRowId];
     
     //todo: need to remove this
     //Fetch user's id.
     GLPUser *user = [GLPUserDao findByRemoteKey:entity.author.remoteKey db:db];
     
-    //Insert into message participants the message and user (local) id.
-    if([db executeUpdateWithFormat:@"insert into messages_participants (user_key, message_key) values(%d, %d)",user.key ,entity.key])
-    {
-        //NSLog(@"Executed.");
-    }
-    else
-    {
-        //NSLog(@"Error inserting message per user.");
-    }
+    [db executeUpdateWithFormat:@"insert into messages_participants (user_key, message_key) values(%d, %d)",user.key ,entity.key];
 }
 
 + (void)update:(GLPMessage *)entity db:(FMDatabase *)db
@@ -226,8 +209,6 @@
          entity.conversation.remoteKey,
          entity.key];
     }
-    
-
 }
 
 @end

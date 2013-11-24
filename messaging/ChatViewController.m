@@ -18,6 +18,7 @@
 #import "LiveConversationManager.h"
 #import "UIViewController+GAI.h"
 #import "SessionManager.h"
+#import "DatabaseManager.h"
 
 @interface ChatViewController ()
 
@@ -376,6 +377,9 @@
             self.liveConversation = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
             self.newChat = YES;
 
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                [GLPLiveConversationDao save:self.liveConversation db:db];
+            }];
             
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {

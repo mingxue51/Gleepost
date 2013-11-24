@@ -178,7 +178,7 @@ static BOOL visibility;
 //        
         self.viewTopic.liveConversation = [self liveConversationWithRemoteKey:incomingView.tag];
         self.viewTopic.randomChat = YES;
-        [self.viewTopic loadElements];
+        [self.viewTopic reloadElements];
         [self removeView];
 
         

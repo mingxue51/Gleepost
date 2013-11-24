@@ -12,6 +12,7 @@
 
 #import "GLPConversationDao.h"
 #import "GLPMessageDao.h"
+#import "GLPLiveConversationDao.h"
 #import "UserManager.h"
 #import "SessionManager.h"
 #import "WebClient.h"
@@ -21,6 +22,7 @@
 #import "DatabaseManager.h"
 #import "GLPConversationParticipantsDao.h"
 #import "GLPUserDao.h"
+#import "NSNotificationCenter+Utils.h"
 
 @implementation ConversationManager
 
@@ -116,22 +118,22 @@ int const NumberMaxOfMessagesLoaded = 20;
         }
         
         // uncomment for debug, simulate responses with at least 1 new remote message
-        if(last) {
-            GLPMessage *m = [[GLPMessage alloc] init];
-            m.content = @"new fake msg 1";
-            m.author = last.author;
-            m.date = [last.date dateByAddingTimeInterval:5];
-            m.conversation = last.conversation;
-            
-            GLPMessage *m2 = [[GLPMessage alloc] init];
-            m2.content = @"new fake msg 2";
-            m2.author = last.author;
-            m2.date = [last.date dateByAddingTimeInterval:10];
-            m2.conversation = last.conversation;
-            messages = @[m, m2];
-            remoteCallback(YES, messages);
-            return;
-        }
+//        if(last) {
+//            GLPMessage *m = [[GLPMessage alloc] init];
+//            m.content = @"new fake msg 1";
+//            m.author = last.author;
+//            m.date = [last.date dateByAddingTimeInterval:5];
+//            m.conversation = last.conversation;
+//            
+//            GLPMessage *m2 = [[GLPMessage alloc] init];
+//            m2.content = @"new fake msg 2";
+//            m2.author = last.author;
+//            m2.date = [last.date dateByAddingTimeInterval:10];
+//            m2.conversation = last.conversation;
+//            messages = @[m, m2];
+//            remoteCallback(YES, messages);
+//            return;
+//        }
         
         // update only if new changes from API
         if(!messages || messages.count == 0) {
@@ -191,20 +193,20 @@ int const NumberMaxOfMessagesLoaded = 20;
             }
             
             // uncomment for debug, simulate responses with at least 1 new remote message
-            GLPMessage *m = [[GLPMessage alloc] init];
-            m.content = @"new prev fake msg 2";
-            m.author = message.author;
-            m.date = [message.date dateByAddingTimeInterval:-15];
-            m.conversation = message.conversation;
-            
-            GLPMessage *m2 = [[GLPMessage alloc] init];
-            m2.content = @"new prev fake msg 1";
-            m2.author = message.author;
-            m2.date = [message.date dateByAddingTimeInterval:-10];
-            m2.conversation = message.conversation;
-            messages = @[m, m2];
-            callback(YES, NO, messages);
-            return;
+//            GLPMessage *m = [[GLPMessage alloc] init];
+//            m.content = @"new prev fake msg 2";
+//            m.author = message.author;
+//            m.date = [message.date dateByAddingTimeInterval:-15];
+//            m.conversation = message.conversation;
+//            
+//            GLPMessage *m2 = [[GLPMessage alloc] init];
+//            m2.content = @"new prev fake msg 1";
+//            m2.author = message.author;
+//            m2.date = [message.date dateByAddingTimeInterval:-10];
+//            m2.conversation = message.conversation;
+//            messages = @[m, m2];
+//            callback(YES, NO, messages);
+//            return;
             
             NSLog(@"previous messages from web %d", messages.count);
             BOOL remains = messages.count == NumberMaxOfMessagesLoaded;
@@ -222,51 +224,6 @@ int const NumberMaxOfMessagesLoaded = 20;
             callback(YES, remains, messages);
         }];
     }
-    
-    
-//    
-//    GLPMessage *last = nil;
-//    for (int i = localEntities.count - 1; i >= 0; i--) {
-//        GLPMessage *message = localEntities[i];
-//        if(message.remoteKey != 0) {
-//            last = message;
-//            break;
-//        }
-//    }
-//    
-//    NSLog(@"last local message synch with remote: %d - %@", last.remoteKey, last.content);
-//    
-//    [[WebClient sharedInstance] getLastMessagesForConversation:conversation withLastMessage:last callbackBlock:^(BOOL success, NSArray *messages) {
-//        if(!success) {
-//            remoteCallback(NO, nil);
-//            return;
-//        }
-//        
-//        // update only if new changes from API
-//        if(!messages || messages.count == 0) {
-//            remoteCallback(YES, nil);
-//            return;
-//        }
-//        
-//        NSLog(@"new remote messages %d", messages.count);
-//        
-//        // reverse order
-//        messages = [[messages reverseObjectEnumerator] allObjects];
-//        
-//        // all messages, including the new ones
-//        __block NSArray *allMessages = nil;
-//        
-//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//            for(GLPMessage *message in messages) {
-//                [GLPMessageDao save:message db:db];
-//            }
-//            
-//            allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-//        }];
-//        
-//        remoteCallback(YES, allMessages);
-//        NSLog(@"final messages %d", allMessages.count);
-//    }];
 }
 
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
@@ -365,28 +322,35 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
-        GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
+        GLPLiveConversation *liveConversation = [GLPLiveConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
         
-        if(!conversation) {
-            conversation = message.conversation;
-        }
-        
-        conversation.lastMessage = message.content;
-        conversation.lastUpdate = message.date;
-        conversation.hasUnreadMessages = YES;
-
-        if(conversation.key == 0) {
-            [GLPConversationDao save:conversation db:db];
+        if(liveConversation) {
+            liveConversation.lastUpdate = message.date;
+            [GLPLiveConversationDao updateLastUpdate:liveConversation db:db];
         } else {
-            [GLPConversationDao update:conversation db:db];
+            GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
+            
+            if(!conversation) {
+                conversation = message.conversation;
+            }
+            
+            conversation.lastMessage = message.content;
+            conversation.lastUpdate = message.date;
+            conversation.hasUnreadMessages = YES;
+            
+            if(conversation.key == 0) {
+                [GLPConversationDao save:conversation db:db];
+            } else {
+                [GLPConversationDao update:conversation db:db];
+            }
         }
         
         [GLPMessageDao save:message db:db];
         success = YES;
     }];
     
-    if(success) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+    if(success) {        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
     }
 }
 
