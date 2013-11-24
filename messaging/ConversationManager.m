@@ -312,6 +312,7 @@ int const NumberMaxOfMessagesLoaded = 20;
 + (void)saveMessageFromLongpoll:(GLPMessage *)message
 {
     __block BOOL success = NO;
+    __block BOOL live;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 
@@ -326,11 +327,14 @@ int const NumberMaxOfMessagesLoaded = 20;
         GLPLiveConversation *liveConversation = [GLPLiveConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
         
         if(liveConversation) {
+            live = YES;
+            
             message.conversation = nil;
             message.liveConversation = liveConversation;
             liveConversation.lastUpdate = message.date;
             [GLPLiveConversationDao updateLastUpdate:liveConversation db:db];
         } else {
+            live = NO;
             
             GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
             
@@ -356,7 +360,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
     
     if(success) {        
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message, @"isLive":[NSNumber numberWithBool:live]}];
     }
 }
 
