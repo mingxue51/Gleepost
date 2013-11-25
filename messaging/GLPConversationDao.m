@@ -119,8 +119,10 @@
     
 //    if(convId == -1)
 //    {
-        [db executeUpdateWithFormat:@"insert into conversations_participants(user_key, conversation_key) values(%d, %d)", userId, conversationId];
+        BOOL s = [db executeUpdateWithFormat:@"insert into conversations_participants(user_key, conversation_key) values(%d, %d)", userId, conversationId];
 //    }
+    
+    NSLog(@"Saving conversation participant result: %d",s);
     
 }
 

@@ -110,7 +110,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     GLPUser* user = nil;
     
-    if([identifier isEqualToString:@"LeftCell"])
+    if([identifier isEqualToString:@"RightCell"])
     {
         [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:76.0/255.0 green:183.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
         [self.messageContentImageView.layer setBorderWidth: 1.25];

@@ -506,6 +506,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     NSMutableArray *likes = [NSMutableArray array];
     
+    if(jsonLikes == (id)[NSNull null])
+    {
+        return likes;
+    }
+    
     for(id jsonLike in jsonLikes)
     {
         [likes addObject: [RemoteParser parseLikeFromJson:jsonLike forPost:post]];
@@ -521,6 +526,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    NSLog(@"Load Contacts JSON: %@", jsonContacts);
     
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
+    
     
     for (id contactJson in jsonContacts)
     {

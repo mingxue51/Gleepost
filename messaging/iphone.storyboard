@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -639,8 +639,8 @@
                                                     <rect key="frame" x="45" y="20" width="281" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yourchatbubble4.png" id="8z2-fn-jqk">
-                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="35"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mychatbubble4.png" id="ZmA-wk-YLf">
+                                                            <rect key="frame" x="1" y="0.0" width="285" height="35"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6FZ-uw-0GM">
@@ -662,7 +662,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="avatarImageView" destination="aJU-3d-O47" id="Nbz-8w-QSh"/>
-                                            <outlet property="messageContentImageView" destination="8z2-fn-jqk" id="vke-8Z-kAa"/>
+                                            <outlet property="messageContentImageView" destination="ZmA-wk-YLf" id="Ttn-TJ-tis"/>
                                             <outlet property="messageContentLabel" destination="6FZ-uw-0GM" id="WfB-NK-zjb"/>
                                             <outlet property="messageContentView" destination="k2I-4f-jVM" id="gfB-fE-5MI"/>
                                             <outlet property="timeLabel" destination="tvR-NZ-QL0" id="gBr-qn-445"/>
@@ -702,8 +702,8 @@
                                                     <rect key="frame" x="15" y="20" width="281" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mychatbubble4.png" id="ZmA-wk-YLf">
-                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="35"/>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yourchatbubble4.png" id="8z2-fn-jqk">
+                                                            <rect key="frame" x="-2" y="0.0" width="285" height="35"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Pr-Xp-b6D">
@@ -725,7 +725,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="avatarImageView" destination="GY7-fW-sLF" id="FNR-j5-nGp"/>
-                                            <outlet property="messageContentImageView" destination="ZmA-wk-YLf" id="ddO-f8-rgX"/>
+                                            <outlet property="messageContentImageView" destination="8z2-fn-jqk" id="YgG-hS-SJD"/>
                                             <outlet property="messageContentLabel" destination="6Pr-Xp-b6D" id="x3G-3a-Uaq"/>
                                             <outlet property="messageContentView" destination="3Tq-xW-TLt" id="zpN-f0-Jc4"/>
                                             <outlet property="timeLabel" destination="dEX-5t-h0l" id="GIy-op-0GZ"/>
@@ -1726,12 +1726,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fL3-CC-Jbz"/>
-        <segue reference="ljb-cf-bYS"/>
-        <segue reference="3ZQ-Ax-jzZ"/>
         <segue reference="FQd-EB-Shi"/>
+        <segue reference="3ZQ-Ax-jzZ"/>
+        <segue reference="Rdk-3z-tPE"/>
         <segue reference="UFN-Sk-0kH"/>
         <segue reference="Jle-n7-Gmg"/>
         <segue reference="9uM-3L-Rl2"/>
+        <segue reference="ljb-cf-bYS"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -53,8 +53,8 @@
             self.nameTextField.text = @"Fingolfin";
             self.passwordTextField.text = @"ihatemorgoth";
         } else {
-            self.nameTextField.text = @"Silouanos N";
-            self.passwordTextField.text = @"1234";
+            self.nameTextField.text = @"TestingUser";
+            self.passwordTextField.text = @"TestingPass";
 //            self.nameTextField.text = @"TestingUser";
 //            self.passwordTextField.text = @"TestingPass";
         }

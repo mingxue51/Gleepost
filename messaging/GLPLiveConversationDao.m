@@ -94,7 +94,7 @@
 //    if(convId == -1)
 //    {
         BOOL success = [db executeUpdateWithFormat:@"insert into live_conversations_participants(live_user_key, live_conversation_key) values(%d, %d)", userId, conversationId];
-        NSLog(@"Success: %d",success);
+        NSLog(@"LiveConversationDao insertConversationParticipantIfNotExist: %d",success);
 //    }
     
 }

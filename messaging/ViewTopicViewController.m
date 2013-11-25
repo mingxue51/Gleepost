@@ -979,6 +979,7 @@ float timeInterval = 0.1;
     // otherwise display message
     GLPMessage *message = [self getMessageForIndexPath:indexPath];
     
+    
     NSAssert(message.cellIdentifier, @"Cell identifier is required but null");
     
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];

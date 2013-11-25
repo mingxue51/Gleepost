@@ -206,6 +206,8 @@
 {
     NSArray *localConversations = [ConversationManager getLocalConversations];
     
+    //TODO: Problem here.
+    
     for(GLPConversation* conv in localConversations)
     {
         NSArray* part = [GLPConversationParticipantsDao participants:conv.key];

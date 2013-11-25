@@ -69,7 +69,7 @@ NSString * const kMessageRightCell = @"RightCell";
 + (NSString *)getCellIdentifierForMessage:(GLPMessage *)message
 {
     BOOL currentUser = [message.author isEqualToEntity:[SessionManager sharedInstance].user];
-    return currentUser ? kMessageLeftCell : kMessageRightCell;
+    return currentUser ? kMessageRightCell : kMessageLeftCell;
 }
 
 //+ (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier
