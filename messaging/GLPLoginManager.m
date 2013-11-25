@@ -65,6 +65,7 @@
                 // create session. CHANGED.
                 //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
                 [[SessionManager sharedInstance]user].remoteKey = user.remoteKey;
+                [[SessionManager sharedInstance]user].profileImageUrl = user.profileImageUrl;
                 //Add token.
 //                [[SessionManager sharedInstance] setTokenFromResponse:token];
 //                [[SessionManager sharedInstance] setUserFromResponse:user];
