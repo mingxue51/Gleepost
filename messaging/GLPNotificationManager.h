@@ -14,5 +14,5 @@
 + (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback;
 + (void)saveNotifications:(NSArray *)notifications;
 + (NSInteger)getNotificationsCount;
-
++(NSArray*)cleanNotificationsArray:(NSArray*)incomingNotifications;
 @end

@@ -24,6 +24,71 @@
     callback(YES, localEntities);
 }
 
++(void)loadUnreadnotificationsWithCallback:(void (^) (BOOL success, NSArray *unreadNotifications))callback
+{
+    __block NSArray *localEntities;
+    
+    [DatabaseManager run:^(FMDatabase *db) {
+        localEntities = [GLPNotificationDao findUnreadNotificationsInDb:db];
+    }];
+    
+    callback(YES, localEntities);
+}
+
+
+/**
+ Removes notifications that are already saved and presented in the view controller.
+ 
+ @param incomingNotifications the new notifications from the serer.
+ 
+ @return the new notifications.
+ 
+ */
++(NSArray*)cleanNotificationsArray:(NSArray*)incomingNotifications
+{
+    __block NSMutableArray *finalNotifications = [[NSMutableArray alloc] init];
+    __block NSMutableArray *removeArray = [[NSMutableArray alloc] init];
+    
+    [GLPNotificationManager loadUnreadnotificationsWithCallback:^(BOOL success, NSArray *unreadNotifications) {
+       
+//        NSMutableSet *incomingNotificationsSet = [NSMutableSet setWithArray: incomingNotifications];
+//        NSSet *unreadNotificationsSet = [NSSet setWithArray: unreadNotifications];
+//        [incomingNotificationsSet intersectSet: unreadNotificationsSet];
+//        removeArray = [incomingNotificationsSet allObjects];
+        
+        for(GLPNotification *inN in incomingNotifications)
+        {
+            for(GLPNotification *unN in unreadNotifications)
+            {
+                if(inN.remoteKey == unN.remoteKey)
+                {
+                    [removeArray addObject:unN];
+                }
+            }
+        }
+        
+        
+    }];
+    
+    finalNotifications = incomingNotifications.mutableCopy;
+    
+    for(GLPNotification *n in removeArray)
+    {
+        [incomingNotifications indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            
+            if(((GLPNotification *)obj).remoteKey == n.remoteKey)
+            {
+                [finalNotifications removeObject:(GLPNotification*)obj];
+            }
+            
+            return ((GLPNotification *)obj).remoteKey == n.remoteKey;
+        }];
+        
+    }
+    
+    return finalNotifications;
+}
+
 + (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     NSLog(@"Mark notifications read");

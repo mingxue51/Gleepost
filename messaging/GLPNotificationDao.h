@@ -13,6 +13,7 @@
 @interface GLPNotificationDao : NSObject
 
 + (NSArray *)findNotificationsForUser:(GLPUser *)user inDb:(FMDatabase *)db;
++ (NSArray *)findUnreadNotificationsInDb:(FMDatabase *)db;
 + (void)updateSeenStatus:(GLPNotification *)entity inDb:(FMDatabase *)db;
 + (void)save:(GLPNotification *)entity inDb:(FMDatabase *)db;
 + (NSInteger)countUnreadNotificationsInDb:(FMDatabase *)db;

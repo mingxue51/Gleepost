@@ -27,6 +27,20 @@
     return result;
 }
 
++ (NSArray *)findUnreadNotificationsInDb:(FMDatabase *)db
+{
+    //FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where user_remote_key = %d order by remoteKey desc", user.remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where seen = 0"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPNotificationDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
 + (void)updateSeenStatus:(GLPNotification *)entity inDb:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Update entity without key");
