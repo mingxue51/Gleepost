@@ -542,6 +542,7 @@ static WebClient *instance = nil;
 {
     NSString *path = [NSString stringWithFormat:@"user/%d", key];
     
+    NSLog(@"USER: %@",self.sessionManager.user);
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

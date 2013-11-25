@@ -23,7 +23,7 @@ NSString * const GLPUserPersonalMessageColumn = @"tagline";
 
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"Username: %@, Course: %@, Network: %@ - %d, Image: %@, Message: %@",self.name, self.course, self.networkName, self.networkId, self.profileImageUrl, self.personalMessage];
+    return [NSString stringWithFormat:@"Remote Key: %d, Username: %@, Course: %@, Network: %@ - %d, Image: %@, Message: %@",self.remoteKey, self.name, self.course, self.networkName, self.networkId, self.profileImageUrl, self.personalMessage];
 }
 
 @end

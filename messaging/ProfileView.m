@@ -58,7 +58,7 @@
         //Get data from server and complete them in UIView.
         self.currentUser = [[SessionManager sharedInstance] user];
         
-        [self setUserDetails];
+        //[self setUserDetails];
         
         //Set user status.
         [self setBusyStatus];

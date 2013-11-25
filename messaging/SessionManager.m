@@ -97,6 +97,16 @@ static SessionManager *instance = nil;
     [GLPUserDao updateUserWithRemotKey:self.user.remoteKey andProfileImage:imageUrl];
 }
 
+-(void)setTokenFromResponse:(NSString *)token
+{
+    self.token = token;
+}
+
+-(void)setUserFromResponse:(GLPUser *)user
+{
+    self.user = user;
+}
+
 - (void)cleanSession
 {
     self.user = nil;

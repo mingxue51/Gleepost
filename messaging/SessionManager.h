@@ -23,5 +23,6 @@
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
 -(void)registerUserImage:(NSString*)imageUrl;
-
+-(void)setTokenFromResponse:(NSString *)token;
+-(void)setUserFromResponse:(GLPUser *)user;
 @end

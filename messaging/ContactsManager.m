@@ -64,6 +64,7 @@ static ContactsManager *instance = nil;
             [GLPContactDao deleteTable];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                
                 for(GLPContact *c in contacts) {
                     [GLPContactDao save:c inDb:db];
                 }

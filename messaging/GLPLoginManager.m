@@ -30,6 +30,9 @@
         NSAssert(token, @"User token can't be null");
         NSAssert(expirationDate, @"User expiration date can't be null");
         
+        [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+        
+        
         // fetch additional info
         //TODO: not very nice to chain 3 requests
         [[WebClient sharedInstance] getUserWithKey:user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
@@ -59,8 +62,12 @@
                     }
                 }];
                 
-                // create session
-                [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+                // create session. CHANGED.
+                //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+                [[SessionManager sharedInstance]user].remoteKey = user.remoteKey;
+                //Add token.
+//                [[SessionManager sharedInstance] setTokenFromResponse:token];
+//                [[SessionManager sharedInstance] setUserFromResponse:user];
                 
                 [[GLPBackgroundRequestsManager sharedInstance] startAll];
                 

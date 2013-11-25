@@ -97,6 +97,7 @@ static BOOL likePushed;
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
         [self addLogoutNavigationButton];
+        
 
     }
     else
@@ -142,6 +143,11 @@ static BOOL likePushed;
     [self.profileView hideNotificationsBubble];
     
     [self.profileView initialiseView:self.incomingUser];
+    
+    if(self.incomingUser == nil)
+    {
+        self.incomingUser = [[SessionManager sharedInstance]user];
+    }
     
     [self loadUserDetails];
     
