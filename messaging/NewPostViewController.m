@@ -28,6 +28,7 @@
 
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (assign, nonatomic) BOOL hasImage;
+@property (weak, nonatomic) UIImage *imgToUpload;
 
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
@@ -122,11 +123,20 @@
     [self.delegate setPlusButtonToNavigationBar];
     
     [self.contentTextView resignFirstResponder];
+    [_postUploader uploadImage:self.imgToUpload];
     
-    [_postUploader uploadPostWithContent:self.contentTextView.text hasImage:_hasImage];
+    GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text hasImage:_hasImage];
     
     [self dismissViewControllerAnimated:YES completion:^{
-        [delegate reloadNewLocalPosts];
+        if(_hasImage)
+        {
+            [delegate reloadNewImagePostWithPost:inPost];
+        }
+        else
+        {
+            [delegate reloadNewLocalPosts];
+        }
+        
     }];
 }
 
@@ -138,7 +148,9 @@
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
 
     _hasImage = YES;
-    [_postUploader uploadImage:photo];
+    
+    self.imgToUpload = photo;
+   // [_postUploader uploadImage:photo];
 }
 
 

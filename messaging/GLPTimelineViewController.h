@@ -25,5 +25,6 @@
 -(void) setPlusButtonToNavigationBar;
 -(void)setNavigationBarName;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
+-(void)reloadNewImagePostWithPost:(GLPPost*)inPost;
 
 @end

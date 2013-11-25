@@ -129,6 +129,7 @@ static const float PostContentLabelMaxWidth = 250;
     {
         //Set live image.
         [self.postImage setImage:postData.tempImage];
+//        [self.post.author setName:[]];
     }
     
 

@@ -473,6 +473,27 @@ static BOOL likePushed;
     }];
 }
 
+
+-(void)reloadNewImagePostWithPost:(GLPPost*)inPost
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    self.isLoading = YES;
+    
+//    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *posts = [[NSArray alloc] initWithObjects:inPost, nil];
+    
+    [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+    
+    [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+    
+    
+    self.isLoading = NO;
+}
+
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
 {
     [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {

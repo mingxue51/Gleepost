@@ -144,12 +144,12 @@ static BOOL likePushed;
     
     [self.profileView initialiseView:self.incomingUser];
     
-    if(self.incomingUser == nil)
+    if(self.incomingUser != nil)
     {
-        self.incomingUser = [[SessionManager sharedInstance]user];
+        //self.incomingUser = [[SessionManager sharedInstance]user];
+        [self loadUserDetails];
     }
     
-    [self loadUserDetails];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }

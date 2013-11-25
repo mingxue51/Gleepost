@@ -542,11 +542,11 @@ static WebClient *instance = nil;
 {
     NSString *path = [NSString stringWithFormat:@"user/%d", key];
     
-    NSLog(@"USER: %@",self.sessionManager.user);
-    
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
+        NSLog(@"PROFILE USER: %@",user.profileImageUrl);
+        
         callbackBlock(YES, user);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
