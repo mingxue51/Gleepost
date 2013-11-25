@@ -886,6 +886,7 @@ float timeInterval = 0.1;
 
 - (void)removeBottomLoadingCellWithAnimation:(UITableViewRowAnimation)animation
 {
+    
     self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished;
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.messages.count inSection:0]] withRowAnimation:animation];
 }
