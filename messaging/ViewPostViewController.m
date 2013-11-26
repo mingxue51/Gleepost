@@ -372,6 +372,7 @@ static bool firstTime = YES;
         if(success) {
             self.comments = [comments mutableCopy];
             
+
             
             //Reverse the comments' order.
             NSArray *reversedComments = [[self.comments reverseObjectEnumerator] allObjects];
@@ -767,8 +768,14 @@ static bool firstTime = YES;
         //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
+            
+            //Increase the number of comments to the post.
+            ++self.post.commentsCount;
+            
             [self loadComments];
             self.commentGrowingTextView.text = @"";
+            
+            
         } else {
             [WebClientHelper showStandardError];
         }

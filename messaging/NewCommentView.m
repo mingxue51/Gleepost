@@ -108,6 +108,9 @@
         newComment.date = [NSDate date];
         newComment.author = [SessionManager sharedInstance].user;
         newComment.post = self.post;
+        
+        //TODO: Add comment to local database before start uploading it.
+        
         [self cancelPushed:nil];
 
         //[WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self];
@@ -115,6 +118,8 @@
             //[WebClientHelper hideStandardLoaderForView:self];
             
             if(success) {
+                
+                //TODO: Update comment in local database.
 
             } else {
                 [WebClientHelper showStandardError];
@@ -124,10 +129,6 @@
     }
 }
 
-//-(void)postComment:(GLPComment*)comment
-//{
-//    
-//}
 
 -(void)showKeyboardEffectFirst
 {

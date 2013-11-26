@@ -51,6 +51,7 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
+
 // cron controls
 @property (assign, nonatomic) BOOL isReloadingCronRunning;
 @property (assign, nonatomic) BOOL shouldReloadingCronRun;
@@ -61,6 +62,7 @@
 @property (assign, nonatomic) BOOL firstLoadSuccessful;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
 @property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
+@property (assign, nonatomic) int postIndexToReload;
 
 // Not need because we use performselector which areis deprioritized during scrolling
 @property (assign, nonatomic) BOOL shouldLoadNewPostsAfterScrolling;
@@ -128,6 +130,8 @@ static BOOL likePushed;
     
     self.commentCreated = NO;
     
+    self.postIndexToReload = -1;
+    
     //TODO: Remove this later.
     [ContactsManager sharedInstance];
     
@@ -140,6 +144,14 @@ static BOOL likePushed;
     
     if(self.firstLoadSuccessful) {
         [self startReloadingCronImmediately:YES];
+    }
+    
+
+    if(self.postIndexToReload!=-1)
+    {
+        //Refresh post cell in the table view with index.
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        
     }
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -706,6 +718,7 @@ static BOOL likePushed;
     
     self.selectedPost = self.posts[indexPath.row];
     self.selectedIndex = indexPath.row;
+    self.postIndexToReload = indexPath.row;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
@@ -826,6 +839,12 @@ static BOOL likePushed;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
     self.selectedPost = self.posts[postIndex];
+    self.postIndexToReload = postIndex;
+   
+    ++self.selectedPost.commentsCount;
+
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
     self.commentCreated = YES;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
@@ -1275,6 +1294,8 @@ static BOOL likePushed;
          Forward data of the post the to the view. Or in future just forward the post id
          in order to fetch it from the server.
          */
+        
+//        self.postIndexToReload = 
         
         vc.commentJustCreated = self.commentCreated;
         
