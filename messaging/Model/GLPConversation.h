@@ -1,6 +1,6 @@
 //
 //  GLPConversation.h
-//  Gleepost
+//  ;
 //
 //  Created by Lukas on 10/17/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
@@ -16,13 +16,16 @@
 
 @property (strong, nonatomic) NSDate *lastUpdate;
 @property (strong, nonatomic) NSString *lastMessage;
-@property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *messages;
 @property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL hasUnreadMessages;
 @property (assign, nonatomic) BOOL isGroup;
+@property (assign, nonatomic) BOOL isLive;
 
-- (void)setTitleFromParticipants:(NSArray *)participants;
+- (id)initWithParticipants:(NSArray *)participants;
+- (GLPUser *)getUniqueParticipant;
+- (NSString *)getLastMessageOrDefault;
+- (NSString *)getLastUpdateOrDefault;
 
 @end

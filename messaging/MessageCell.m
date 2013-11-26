@@ -66,10 +66,8 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 }
 
-- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier andParticipants:(NSArray*)participants
+- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst
 {
-    
-
     // configure header (first) message or not
     if(isFirst) {
         self.timeView.hidden = NO;
@@ -104,111 +102,24 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     self.messageContentLabel.text = message.content;
     
-    
     self.messageContentImageView.layer.masksToBounds = YES;
     self.messageContentImageView.layer.cornerRadius = 12.5;
     
-    GLPUser* user = nil;
-    
-    if([identifier isEqualToString:@"RightCell"])
-    {
+    if(!self.isLeft) {
         [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:76.0/255.0 green:183.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
         [self.messageContentImageView.layer setBorderWidth: 1.25];
-        
-        user = [[SessionManager sharedInstance]user];
-        
-        //Add tag to the avatar image view the user's remote key.
-        self.avatarImageView.tag = user.remoteKey;
-
-    }
-    else
-    {
-
-
-        //At the moment just take the image of the first participant.
-        
-        if(participants.count != 0)
-        {
-            //TODO: Change the methodology taking the participants.
-            user = [participants objectAtIndex:0];
-            
-            //Add tag to the avatar image view the user's remote key.
-            self.avatarImageView.tag = user.remoteKey;
-        }
-        
     }
     
-
+    UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image"];
+    if([message.author hasProfilePicture]) {
+            [self.avatarImageView setImageWithURL:[NSURL URLWithString:message.author.profileImageUrl] placeholderImage:defaultProfilePicture];
+    } else {
+        self.avatarImageView.image = defaultProfilePicture;
+    }
     
-    //Fetch user's details from database.
-    // This is wrong, never call any heavy operation in drawing methods
-   // [ConversationManager loadUserWithMessageId:message.key];
-    
-
+    self.avatarImageView.tag = message.author.remoteKey;
     
     [ShapeFormatterHelper setRoundedView:self.avatarImageView toDiameter:self.avatarImageView.frame.size.height];
-
-    if(self.avatarImageView.image == nil)
-    {
-        if([user.profileImageUrl isEqualToString:@""])
-        {
-            //Set default image.
-            [self.avatarImageView setImage:[UIImage imageNamed:@"default_user_image"]];
-        }
-        else
-        {
-            
-            //Fetch the image from the server and add it to the image view.
-            [self.avatarImageView setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
-        }
-    }
-    else
-    {
-        
-    }
-
-    
-    
-    //Fetch user's details from server.
-//    [[WebClient sharedInstance] getUserWithKey:message.author.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-//        
-//        if(success)
-//        {
-//            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
-//            
-//
-//            
-//            self.avatarImageView.clipsToBounds = YES;
-//            
-//            self.avatarImageView.layer.cornerRadius = 20;
-//            
-//            
-//            
-//            if([user.profileImageUrl isEqualToString:@""])
-//            {
-//                //Set default image.
-//                [self.avatarImageView setImage:[UIImage imageNamed:@"default_user_image"]];
-//            }
-//            else
-//            {
-//                
-//                //Fetch the image from the server and add it to the image view.
-//                [self.avatarImageView setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
-//            }
-//        }
-//        else
-//        {
-//            NSLog(@"Not Success: %d User: %@",success, user);
-//            
-//        }
-//        
-//        
-//        
-//    }];
-    
-    
-    //Add user's image.
-    
 
     
     
@@ -222,17 +133,6 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 //        case kSendStatusFailure:
 //            self.messageContentLabel.textColor = [UIColor redColor];
 //            break;
-//    }
-    
-    // round message content background image
-//    if(!self.isBackgroundRounded)
-//    {
-//        self.isBackgroundRounded = YES;
-//    UIGraphicsBeginImageContextWithOptions(self.messageContentImageView.bounds.size, NO, [UIScreen mainScreen].scale);
-//    [[UIBezierPath bezierPathWithRoundedRect:self.messageContentImageView.bounds cornerRadius:10.0] addClip];
-//    [self.messageContentImageView.image drawInRect:self.messageContentImageView.bounds];
-//    self.messageContentImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
 //    }
 }
 

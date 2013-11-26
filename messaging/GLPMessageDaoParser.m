@@ -22,7 +22,6 @@
     entity.sendStatus = [resultSet intForColumn:@"sendStatus"];
     entity.isOld = [resultSet boolForColumn:@"isOld"];
     
-    entity.conversation = [GLPConversationDao findByRemoteKey:[resultSet intForColumn:@"conversation_key"] db:db];
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
 }
 

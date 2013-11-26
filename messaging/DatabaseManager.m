@@ -102,8 +102,10 @@ static DatabaseManager *instance = nil;
              lastMessage text, \
              lastUpdate integer, \
              title text, \
+             participants_keys text, \
              unread integer, \
-             isGroup integer);"];
+             isGroup integer, \
+             isLive integer);"];
             
             
             // live conversations

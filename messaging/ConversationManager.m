@@ -20,7 +20,6 @@
 #import "MessagesSendingProcessor.h"
 #import "NSDate+UTC.h"
 #import "DatabaseManager.h"
-#import "GLPConversationParticipantsDao.h"
 #import "GLPUserDao.h"
 #import "NSNotificationCenter+Utils.h"
 
@@ -32,23 +31,23 @@ int const NumberMaxOfMessagesLoaded = 20;
 {
     __block NSArray *conversations = nil;
     [DatabaseManager run:^(FMDatabase *db) {
-        conversations = [GLPConversationDao findAllOrderByDate:db];
+        conversations = [GLPConversationDao findConversationsOrderByDateFilterByLive:NO inDb:db];
     }];
     
     return conversations;
 }
 
-+(GLPUser* )loadUserWithMessageId: (int)messageId
-{
-    __block GLPUser* currentUser = nil;
-    
-    [DatabaseManager run:^(FMDatabase *db) {
-        currentUser = [GLPMessageDao findUserByMessageKey:messageId db:db];
-    }];
-    
-    return currentUser;
-    
-}
+//+(GLPUser* )loadUserWithMessageId: (int)messageId
+//{
+//    __block GLPUser* currentUser = nil;
+//    
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        currentUser = [GLPMessageDao findUserByMessageKey:messageId db:db];
+//    }];
+//    
+//    return currentUser;
+//    
+//}
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
@@ -56,20 +55,17 @@ int const NumberMaxOfMessagesLoaded = 20;
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);
     
+
+    
     [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
         if(!success) {
             remoteCallback(NO, nil);
             return;
         }
         
-        //Find the regular conversations.
-        
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            [GLPConversationDao deleteAll:db];
-            //Added.
-            [GLPConversationParticipantsDao deleteAll:db];
-            for(GLPConversation *conversation in conversations)
-            {
+            [GLPConversationDao deleteAllNormalConversationsInDb:db];
+            for(GLPConversation *conversation in conversations) {
                 [GLPConversationDao save:conversation db:db];
             }
         }];
@@ -81,9 +77,9 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (void)markConversationRead:(GLPConversation *)conversation
 {
+    conversation.hasUnreadMessages = NO;
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        conversation.hasUnreadMessages = NO;
-        [GLPConversationDao updateUnread:conversation db:db];
+        [GLPConversationDao updateConversationUnreadStatus:conversation db:db];
     }];
 }
 
@@ -267,47 +263,47 @@ int const NumberMaxOfMessagesLoaded = 20;
     return message;
 }
 
-+(GLPUser* )userWithConversationId:(int)conversationId
-{
-    __block GLPUser *user;
-    //Get user id.
-    [DatabaseManager run:^(FMDatabase *db) {
-        
-        int userKey;
-        userKey = [GLPConversationParticipantsDao findByConversationKey:conversationId db:db];
-        //Find user's details.
-        user = [GLPUserDao findByKey:userKey db:db];
-
-    }];
-    
-    
-    return user;
-
-}
+//+(GLPUser* )userWithConversationId:(int)conversationId
+//{
+//    __block GLPUser *user;
+//    //Get user id.
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        
+//        int userKey;
+//        userKey = [GLPConversationParticipantsDao findByConversationKey:conversationId db:db];
+//        //Find user's details.
+//        user = [GLPUserDao findByKey:userKey db:db];
+//
+//    }];
+//    
+//    
+//    return user;
+//
+//}
 
 //+ (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback
 
 
-+(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback
-{
-    /**
-     __block NSArray *localEntities = nil;
-     [DatabaseManager run:^(FMDatabase *db) {
-     localEntities = [GLPMessageDao findPreviousMessagesBefore:message db:db];
-     }];
-     */
-    
-    __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
-        localEntities = [GLPConversationParticipantsDao participants:conversationId db:db];
-        
-        //Fetch users' details.
-        
-        
-        
-        callback(YES, localEntities);
-    }];
-}
+//+(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback
+//{
+//    /**
+//     __block NSArray *localEntities = nil;
+//     [DatabaseManager run:^(FMDatabase *db) {
+//     localEntities = [GLPMessageDao findPreviousMessagesBefore:message db:db];
+//     }];
+//     */
+//    
+//    __block NSArray *localEntities = nil;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = [GLPConversationParticipantsDao participants:conversationId db:db];
+//        
+//        //Fetch users' details.
+//        
+//        
+//        
+//        callback(YES, localEntities);
+//    }];
+//}
 
 + (void)saveMessageFromLongpoll:(GLPMessage *)message
 {

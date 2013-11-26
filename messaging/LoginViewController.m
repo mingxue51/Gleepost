@@ -50,6 +50,10 @@
     
     if(DEV) {
         if(!ON_DEVICE) {
+//            self.nameTextField.text = @"TestingUser";
+//            self.passwordTextField.text = @"TestingPass";
+//            self.nameTextField.text = @"Silouanos N";
+//            self.passwordTextField.text = @"1234";
             self.nameTextField.text = @"Fingolfin";
             self.passwordTextField.text = @"ihatemorgoth";
         } else {

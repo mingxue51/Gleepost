@@ -140,7 +140,13 @@ static SessionManager *instance = nil;
         
         if([self isSessionValid]) {
             [[DatabaseManager sharedInstance] initDatabase];
-            self.user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue]];
+            
+            __block GLPUser *user;
+            [DatabaseManager run:^(FMDatabase *db) {
+                user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue] db:db];
+            }];
+            self.user = user;
+            
             NSAssert(self.user, @"User from valid session must exist in database");
             
             self.token = self.data[@"user.token"];

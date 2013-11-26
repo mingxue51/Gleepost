@@ -990,7 +990,7 @@ float timeInterval = 0.1;
      [tap setNumberOfTapsRequired:1];
      [cell.avatarImageView addGestureRecognizer:tap];
     
-    [cell updateWithMessage:message first:message.hasHeader withIdentifier:message.cellIdentifier andParticipants:self.participants];
+    [cell updateWithMessage:message first:message.hasHeader];
     
     return cell;
 }

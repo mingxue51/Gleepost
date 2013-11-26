@@ -16,7 +16,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "AppearanceHelper.h"
 #import "ShapeFormatterHelper.h"
-#import "GLPConversationParticipantsDao.h"
 #import "UIViewController+GAI.h"
 #import "GLPLoadingCell.h"
 
@@ -153,13 +152,6 @@
     
     [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
         if(conversations.count > 0) {
-            //Find paricipants.
-            for(GLPConversation* conv in conversations)
-            {
-                NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-                conv.participants = part;
-            }
-            
             // hide loading cell and add refresh control
             self.loadingCellStatus = kGLPLoadingCellStatusFinished;
             [self createRefreshIfNeed];
@@ -169,13 +161,6 @@
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
         if(success) {
-            //Find paricipants.
-            for(GLPConversation* conv in conversations)
-            {
-                NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-                conv.participants = part;
-            }
-            
             // hide loading cell and add refresh control
             self.loadingCellStatus = kGLPLoadingCellStatusFinished;
             [self createRefreshIfNeed];
@@ -205,15 +190,6 @@
 - (void)reloadLocalConversations
 {
     NSArray *localConversations = [ConversationManager getLocalConversations];
-    
-    //TODO: Problem here.
-    
-    for(GLPConversation* conv in localConversations)
-    {
-        NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-        conv.participants = part;
-    }
-    
     [self showConversations:localConversations];
 }
 
@@ -265,58 +241,29 @@
         return cell;
     }
     
-    static NSString *CellIdentifier = @"Cell";
-    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     GLPConversation *conversation = self.conversations[indexPath.row];
     
-    if(conversation.isGroup)
-    {
+    cell.userName.text = conversation.title;
+    cell.content.text = [conversation getLastMessageOrDefault];
+    cell.time.text = [conversation getLastUpdateOrDefault];
+    cell.unreadImageView.hidden = !conversation.hasUnreadMessages;
+    
+    // add profile image
+    if(conversation.isGroup) {
         cell.userImage.image = [UIImage imageNamed:@"default_group_image"];
-        cell.userName.text = @"Group Chat";
-    }
-    else
-    {
-        //todo: dont do this
-        GLPUser *opponentUser = [conversation.participants objectAtIndex:0];
-        
-        if(opponentUser.profileImageUrl == nil || [opponentUser.profileImageUrl isEqualToString:@""])
-        {
-            cell.userImage.image = [UIImage imageNamed:@"default_user_image"];
-        }
-        else
-        {
-            [cell.userImage setImageWithURL:[NSURL URLWithString:opponentUser.profileImageUrl] placeholderImage:nil];
+    } else {
+        GLPUser *user = [conversation getUniqueParticipant];
+        UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image"];
+                            
+        if([user hasProfilePicture]) {
+            [cell.userImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:defaultProfilePicture];
+        } else {
+            cell.userImage.image = defaultProfilePicture;
         }
         
         [ShapeFormatterHelper setRoundedView:cell.userImage toDiameter:cell.userImage.frame.size.height];
-        
-        cell.userName.text = conversation.title;
-
-        
-        //TODO: Add the opponent's image.
-        //Find the logged in user and add the opponents image.
-    }
-    
-    cell.content.text = (conversation.lastMessage) ? conversation.lastMessage : @"";
-//    cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
-    
-    //    [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
-
-   // cell.userImage.image = conve
-    
-    NSDate *currentDate = conversation.lastUpdate;
-    
-//    NSLog(@"CONVERSATION USER DETAILS: %@", [ConversationManager userWithConversationId:conversation.key]);
-//    
-//    NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
-    
-    cell.time.text = [currentDate timeAgo];
-    
-    if(conversation.hasUnreadMessages) {
-        cell.unreadImageView.hidden = NO;
-    } else {
-        cell.unreadImageView.hidden = YES;
     }
     
     return cell;
@@ -354,27 +301,12 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"view topic"])
-    {
+    if([segue.identifier isEqualToString:@"view topic"]) {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         ViewTopicViewController *vc = segue.destinationViewController;
         vc.randomChat = NO;
         vc.conversation = self.selectedConversation;
-        
-        //Fetch the participants.
-        [ConversationManager usersWithConversationId:self.selectedConversation.key callback:^(BOOL success, NSArray *participants) {
-           
-            NSLog(@"Participants id: %@", participants);
-            vc.participants = participants;
-            
-        }];
-        
-        //vc.patricipants = [[NSArray alloc] initWithObjects:<#(id), ...#>, nil];
-        
-        //self.selectedConversation = nil;
-
     }
-    
 }
 
 @end

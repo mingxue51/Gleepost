@@ -304,11 +304,6 @@ static WebClient *instance = nil;
 
 - (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
-//    [self.operationQueue setMaxConcurrentOperationCount:1];
-//    [self.operationQueue addOperationWithBlock:^{
-//        [NSThread sleepForTimeInterval:5];
-//    }];
-    
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
@@ -797,6 +792,7 @@ static WebClient *instance = nil;
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" callback:^(BOOL success, id json) {
+        
         if(!success) {
             callback(NO, nil);
             return;

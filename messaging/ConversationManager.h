@@ -25,10 +25,5 @@ extern int const NumberMaxOfMessagesLoaded;
 
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
 + (void)saveMessageFromLongpoll:(GLPMessage *)message;
-+(GLPUser* )loadUserWithMessageId: (int)messageId;
-
-+(GLPUser* )userWithConversationId:(int)conversationId;
-
-+(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback;
 
 @end

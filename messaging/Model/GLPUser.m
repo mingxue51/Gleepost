@@ -10,15 +10,14 @@
 
 @implementation GLPUser
 
-NSString * const GLPUserNameColumn = @"name";
-NSString * const GLPUserProfileImageColumn = @"image_url";
-NSString * const GLPUserCourseColumn = @"course";
-NSString * const GLPUserNetworkIdColumn = @"network_id";
-NSString * const GLPUserNetworkNameColumn = @"network_name";
-NSString * const GLPUserPersonalMessageColumn = @"tagline";
-
 
 @synthesize name = _name;
+@synthesize profileImageUrl=_profileImageUrl;
+
+- (BOOL)hasProfilePicture
+{
+    return _profileImageUrl && ![_profileImageUrl isEqualToString:@""];
+}
 
 
 -(NSString*)description

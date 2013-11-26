@@ -19,7 +19,7 @@
     {
         self.key = conversation.key;
         self.remoteKey = conversation.remoteKey;
-        self.author = conversation.author;
+        self.author = conversation.isGroup ? nil : [conversation getUniqueParticipant]; // temp fix
         self.lastUpdate = conversation.lastUpdate;
         self.messages = conversation.messages;
         self.participants = conversation.participants;

@@ -2,15 +2,6 @@
 
 @interface GLPUser : GLPEntity
 
-extern NSString * const GLPUserNameColumn;
-extern NSString * const GLPUserProfileImageColumn;
-extern NSString * const GLPUserCourseColumn;
-extern NSString * const GLPUserNetworkIdColumn;
-extern NSString * const GLPUserNetworkNameColumn;
-extern NSString * const GLPUserPersonalMessageColumn;
-
-
-
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *profileImageUrl;
 @property (strong, nonatomic) NSString *course;
@@ -18,7 +9,7 @@ extern NSString * const GLPUserPersonalMessageColumn;
 @property int networkId;
 @property (strong, nonatomic) NSString *personalMessage;
 
+- (BOOL)hasProfilePicture;
 
-//TODO: In the future add all the elements.
 
 @end

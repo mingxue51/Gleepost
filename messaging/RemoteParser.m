@@ -68,7 +68,14 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json
 {
-    GLPConversation *conversation = [[GLPConversation alloc] init];
+    // get participants
+    NSMutableArray *participants = [NSMutableArray array];
+    for(id jsonUser in json[@"participants"]) {
+        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
+        [participants addObject:user];
+    }
+    
+    GLPConversation *conversation = [[GLPConversation alloc] initWithParticipants:participants];
     conversation.remoteKey = [json[@"id"] integerValue];
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
@@ -77,19 +84,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
-    
-    NSMutableArray *participants = [NSMutableArray array];
-
-    for(id jsonUser in json[@"participants"]) {
-        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
-        [participants addObject:user];
-    }
-    
-    conversation.isGroup = (participants.count > 2) ? YES : NO;
-
-    
-    conversation.author = [participants objectAtIndex:0];
-    [conversation setTitleFromParticipants:participants];
     
     return conversation;
 }

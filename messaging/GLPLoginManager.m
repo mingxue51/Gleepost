@@ -50,8 +50,6 @@
                     return;
                 }
                 
-                NSLog(@"LOGIN USER %@ - %d", user.name, user.remoteKey);
-                
                 [[DatabaseManager sharedInstance] initDatabase];
                 
                 [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
@@ -80,6 +78,8 @@
 
 + (void)logout
 {
+    [[GLPBackgroundRequestsManager sharedInstance] stopAll];
+    [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
 }
