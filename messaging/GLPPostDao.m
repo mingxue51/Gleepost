@@ -124,7 +124,6 @@
                      entity.author.remoteKey,
                      entity.liked];
         
-        NSLog(@"Post saved: %d",postSaved);
     }
     
     entity.key = [db lastInsertRowId];
@@ -169,8 +168,9 @@
 
 + (void)deleteAllInDb:(FMDatabase *)db
 {
-    [db executeQuery:@"delete from posts"];
-    [db executeQuery:@"delete from post_images"];
+    [db executeUpdateWithFormat:@"delete from posts"];
+    
+    [db executeUpdateWithFormat:@"delete from post_images"];
 }
 
 @end

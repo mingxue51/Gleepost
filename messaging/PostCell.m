@@ -21,6 +21,8 @@
 
 @property (strong, nonatomic) GLPPost *post;
 @property (assign, nonatomic) int postIndex;
+@property (assign, nonatomic) float initialPostContentLabelY;
+
 @end
 
 @implementation PostCell
@@ -53,18 +55,9 @@ static const float StandardImageCellHeight = 400;
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
         [self.contentView addSubview:lineView];
         
-        
-        
-//        [self.contentView bringSubviewToFront:self.socialPanel];
-//        [self.contentView sendSubviewToBack:self.postImage];
-//        
-//        //Send to back the social panel.
-//        [self.socialPanel bringSubviewToFront:self.thumpsUpBtn];
-//        [self.socialPanel bringSubviewToFront:self.shareBtn];
+        self.initialPostContentLabelY = self.frame.origin.y;
 
-        
 
-        
     }
     
     return self;
@@ -236,9 +229,8 @@ static const float PostContentLabelMaxWidth = 250;
         
     }
     
-
-
-
+//    self.contentLbl.layer.borderColor=[UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth=2.0f;
 }
 
 
@@ -272,16 +264,12 @@ static const float PostContentLabelMaxWidth = 250;
         [self.commentBtn setUserInteractionEnabled:NO];
         
         
-        
         CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
         
         
         CGRect frameSize = self.contentLbl.frame;
         
         CGRect buttonFrameSize = self.thumpsUpBtn.frame;
-
-        
-
         
         NSLog(@"Frame Size before: %f : %f",frameSize.size.width, frameSize.size.height);
         
@@ -323,27 +311,27 @@ static const float PostContentLabelMaxWidth = 250;
         }
         else
         {
+            if([self.contentLbl.text isEqualToString:@""])
+            {
+                return;
+            }
             
-                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
+                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height);
             
                 
                 NSLog(@"Frame Size after: %f : %f X: %f, Y: %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height, self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y);
-                
-                if([self.contentLbl.text isEqualToString:@""])
-                {
-                    return;
-                }
+
                 
                 CGRect socialFrame = self.socialPanel.frame;
                 
                 
                 
-                self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
+            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
             
-            if(contentSize.height < 20)
-            {
-                [self.contentLbl setFrame:CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+10, self.contentLbl.frame.size.width, contentSize.height)];
-            }
+//            if(contentSize.height < 20)
+//            {
+//                [self.contentLbl setFrame:CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height)];
+//            }
             
 
         }

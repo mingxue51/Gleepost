@@ -123,7 +123,11 @@
     [self.delegate setPlusButtonToNavigationBar];
     
     [self.contentTextView resignFirstResponder];
-    [_postUploader uploadImage:self.imgToUpload];
+    
+    if(_hasImage)
+    {
+        [_postUploader uploadImage:self.imgToUpload];
+    }
     
     GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text hasImage:_hasImage];
     

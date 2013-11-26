@@ -29,8 +29,19 @@
     _profileNotificationsCount = 0;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    NSLog(@"viewDidAppear Tab bar view controller.");
+}
+
+
+//TODO: BUG: View will appear called multible times.
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:@"GLPNewMessage" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:@"GLPNewNotifications" object:nil];
@@ -38,6 +49,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
 }
@@ -45,7 +58,9 @@
 
 - (void)updateProfileBadge:(NSNotification *)notification
 {
-    self.profileNotificationsCount += [notification.userInfo[@"count"] intValue];
+    //    self.profileNotificationsCount += [notification.userInfo[@"count"] intValue];
+
+    self.profileNotificationsCount = [notification.userInfo[@"count"] intValue];
     [self updateBadgeForIndex:4 count:self.profileNotificationsCount];
 }
 

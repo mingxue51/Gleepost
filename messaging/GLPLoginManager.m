@@ -78,8 +78,12 @@
 
 + (void)logout
 {
+	 //Stop all the operations running in the background.
+
     [[GLPBackgroundRequestsManager sharedInstance] stopAll];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
+    [[GLPBackgroundRequestsManager sharedInstance] stopAll];
+    
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
 }

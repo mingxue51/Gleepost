@@ -406,9 +406,16 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
     
-    
+    NSArray* comments = nil;
 
-    NSArray* comments = [RemoteParser parseCommentsFromJson:json[@"comments"] forPost:post];
+    if(json[@"comments"] == [NSNull null])
+    {
+        post.commentsCount = 0;
+    }
+    else
+    {
+         comments = [RemoteParser parseCommentsFromJson:json[@"comments"] forPost:post];
+    }
     
     post.commentsCount = comments.count;
 
@@ -416,11 +423,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     //TODO: Parse comments.
     //post.commentsCount = [json[@"comments"] integerValue];
     
+    NSArray *likes = nil;
     
     //TODO: Parse likes.
-    
-    NSArray *likes = [RemoteParser parseLikesFromJson:json[@"likes"] forPost:post];
-    post.likes = likes.count;
+    if (json[@"likes"] == [NSNull null])
+    {
+        post.likes = 0;
+    }
+    else
+    {
+        likes = [RemoteParser parseLikesFromJson:json[@"likes"] forPost:post];
+        post.likes = likes.count;
+    }
 
 
     

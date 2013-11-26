@@ -94,22 +94,44 @@
     _post.content = content;
     _post.author = [SessionManager sharedInstance].user;
     
-    
     //    [self uploadFinalPostWithImage:hasImage];
 
     if(hasImage)
     {
+        _post.date = [NSDate date];
         _post.tempImage = self.tempImage;
         _post.imagesUrls = [[NSArray alloc] initWithObjects:@"tempImage", nil];
         
     }
     else
     {
-        [self uploadFinalPostWithImage:hasImage];
+        _post.imagesUrls = nil;
+        //[self uploadFinalPostWithImage:hasImage];
+        [self uploadTextWithPost:_post];
 
     }
     
     return _post;
+}
+
+-(void)uploadTextWithPost:(GLPPost*)post
+{
+    
+    [GLPPostManager createLocalPost:post];
+    
+    
+    // send it to remote
+    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
+        NSLog(@"Upload post with success: %d", success);
+        
+        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        post.remoteKey = success ? remoteKey : 0;
+        
+        [GLPPostManager updatePostAfterSending:post];
+        
+        _postUploaded = success;
+        _postUploading = NO;
+    }];
 }
 
 - (void)uploadFinalPostWithImage:(BOOL)withImage
