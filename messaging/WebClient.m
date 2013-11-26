@@ -302,11 +302,10 @@ static WebClient *instance = nil;
 
 #pragma mark - Conversations
 
-- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
+- (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
+        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:live fromJson:responseObject];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -364,7 +363,7 @@ static WebClient *instance = nil;
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSArray *conversations = [RemoteParser parseLiveConversationsFromJson:responseObject];
+        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:responseObject];
         
         //Choose the last three conversations and sort them by expiration date.
         conversations = [RemoteParser orderAndGetLastThreeConversations:conversations];

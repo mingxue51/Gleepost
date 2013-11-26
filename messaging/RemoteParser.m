@@ -75,7 +75,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         [participants addObject:user];
     }
     
-    GLPConversation *conversation = [[GLPConversation alloc] initWithParticipants:participants];
+    GLPConversation *conversation;
+    
+    // live conversation with expiry block
+    NSDictionary *expiry = json[@"expiry"];
+    if(expiry) {
+        NSDate *expiryDate = [RemoteParser parseDateFromString:expiry[@"time"]];
+        BOOL ended = [expiry[@"ended"] boolValue];
+        conversation = [[GLPConversation alloc] initWithParticipants:participants expiryDate:expiryDate ended:ended];
+    }
+    // normal conversation
+    else {
+        conversation = [[GLPConversation alloc] initWithParticipants:participants];
+    }
+    
     conversation.remoteKey = [json[@"id"] integerValue];
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
@@ -88,7 +101,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return conversation;
 }
 
-+(NSMutableArray*)findRegularConversations:(NSArray*)allConversations
++(NSMutableArray*)parseNormalConversations:(NSArray*)allConversations
 {
     NSMutableArray *finalConversations = [[NSMutableArray alloc] init];
     
@@ -103,29 +116,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return finalConversations;
 }
 
-+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations
++ (NSArray *)parseConversationsFilterByLive:(BOOL)live fromJson:(NSArray *)jsonConversations
 {
-    //Separate regular conversations from live conversations.
-    
-    NSMutableArray *jsonRegularConversations = [RemoteParser findRegularConversations:jsonConversations];
- 
     NSMutableArray *conversations = [NSMutableArray array];
 
-    
-    for(id jsonConversation in jsonRegularConversations)
-    {
-        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+    for(id jsonConversation in jsonConversations) {
+        BOOL filter = (live && jsonConversation[@"expiry"]) || (!live && !jsonConversation[@"expiry"]);
+        if(filter) {
+            [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+        }
     }
     
     return conversations;
-
-    
-//    NSMutableArray *conversations = [NSMutableArray array];
-//    for(id jsonConversation in jsonConversations) {
-//        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
-//    }
-//    
-//    return conversations;
 }
 
 #pragma mark - Live conversations

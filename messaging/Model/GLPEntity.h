@@ -10,9 +10,6 @@
 
 @interface GLPEntity : NSObject
 
-extern NSString * const GLPKeyColumn;
-extern NSString * const GLPRemoteKeyColumn;
-
 @property (assign, nonatomic) NSInteger key;
 @property (assign, nonatomic) NSInteger remoteKey;
 

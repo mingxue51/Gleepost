@@ -13,8 +13,18 @@
 @synthesize key = _key;
 @synthesize remoteKey = _remoteKey;
 
-NSString * const GLPKeyColumn = @"key";
-NSString * const GLPRemoteKeyColumn = @"remoteKey";
+- (id)init
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+    
+    _key = 0;
+    _remoteKey = 0;
+    
+    return self;
+}
 
 - (BOOL) isEqualToEntity:(GLPEntity *)entity
 {
@@ -22,7 +32,11 @@ NSString * const GLPRemoteKeyColumn = @"remoteKey";
         return YES;
     }
     
-    if(self.remoteKey == entity.remoteKey) {
+    if(_key != 0 && _key == entity.key) {
+        return YES;
+    }
+    
+    if(_remoteKey != 0 && _remoteKey == entity.remoteKey) {
         return YES;
     }
     

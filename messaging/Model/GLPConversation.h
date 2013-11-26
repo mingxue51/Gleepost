@@ -23,7 +23,13 @@
 @property (assign, nonatomic) BOOL isGroup;
 @property (assign, nonatomic) BOOL isLive;
 
+// live
+@property (assign, nonatomic) BOOL isEnded;
+@property (assign, nonatomic) NSDate *expiryDate;
+
+
 - (id)initWithParticipants:(NSArray *)participants;
+- (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended;
 - (GLPUser *)getUniqueParticipant;
 - (NSString *)getLastMessageOrDefault;
 - (NSString *)getLastUpdateOrDefault;

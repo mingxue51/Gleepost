@@ -1,18 +1,19 @@
 #import "GLPUser.h"
 
-
-@interface GLPUser ()
-
-// Private interface goes here.
-
-@end
-
-
 @implementation GLPUser
 
-
-@synthesize name = _name;
+@synthesize name=_name;
 @synthesize profileImageUrl=_profileImageUrl;
+
+- (id)init
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+    
+    return self;
+}
 
 - (BOOL)hasProfilePicture
 {

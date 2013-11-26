@@ -55,9 +55,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);
     
-
-    
-    [[WebClient sharedInstance] getConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
+    [[WebClient sharedInstance] getConversationsFilterByLive:NO withCallbackBlock:^(BOOL success, NSArray *conversations) {
         if(!success) {
             remoteCallback(NO, nil);
             return;

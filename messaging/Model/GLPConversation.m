@@ -20,7 +20,10 @@
 @synthesize hasUnreadMessages = _hasUnreadMessages;
 @synthesize isGroup = _isGroup;
 @synthesize isLive = _isLive;
+@synthesize expiryDate=_expiryDate;
+@synthesize isEnded=_isEnded;
 
+// Init conversation from database
 - (id)init
 {
     self = [super init];
@@ -33,6 +36,7 @@
     return self;
 }
 
+// Init new normal conversation
 - (id)initWithParticipants:(NSArray *)participants
 {
     self = [self init];
@@ -55,8 +59,24 @@
     _title = _isGroup ? @"Group chat" : [self getUniqueParticipant].name;
     
     _isLive = NO;
+    _isEnded = NO;
     _hasUnreadMessages = NO;
 
+    return self;
+}
+
+// Init new live conversation
+- (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended
+{
+    self = [self initWithParticipants:participants];
+    if(!self) {
+        return nil;
+    }
+    
+    _isLive = YES;
+    _isEnded = ended;
+    _expiryDate = expiryDate;
+    
     return self;
 }
 
