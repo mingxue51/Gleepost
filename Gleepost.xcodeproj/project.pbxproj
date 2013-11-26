@@ -351,6 +351,7 @@
 		80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478B17CEA7CB001957E5 /* get_conversations.json */; };
 		80E7479417CEAED7001957E5 /* get_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7479317CEAED7001957E5 /* get_messages.json */; };
 		80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80F316D21828129700DE6884 /* CoreImage.framework */; };
+		C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D083183CE2C80001B76E /* UIViewController+Flurry.m */; };
 		C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */ = {isa = PBXBuildFile; fileRef = C04613971834E87000B422A3 /* UIViewController+GAI.m */; };
 		D23E342C04344F0B93695525 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D6C24A4DFC4BA5B92AFE98 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -844,6 +845,8 @@
 		80E7479317CEAED7001957E5 /* get_messages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_messages.json; sourceTree = "<group>"; };
 		80F316D21828129700DE6884 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		82D6C24A4DFC4BA5B92AFE98 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C014D082183CE2C80001B76E /* UIViewController+Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Flurry.h"; sourceTree = "<group>"; };
+		C014D083183CE2C80001B76E /* UIViewController+Flurry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Flurry.m"; sourceTree = "<group>"; };
 		C04613961834E87000B422A3 /* UIViewController+GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GAI.h"; sourceTree = "<group>"; };
 		C04613971834E87000B422A3 /* UIViewController+GAI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GAI.m"; sourceTree = "<group>"; };
 		FF972496B7AD4044B85FE95E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -1905,8 +1908,18 @@
 				C04613951834E7D500B422A3 /* GoogleAnalytics */,
 				80B01E6A18428BAF00A1BA5F /* NSNotificationCenter+Utils.h */,
 				80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */,
+				C014D081183CE2B00001B76E /* Flurry */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		C014D081183CE2B00001B76E /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				C014D082183CE2C80001B76E /* UIViewController+Flurry.h */,
+				C014D083183CE2C80001B76E /* UIViewController+Flurry.m */,
+			);
+			name = Flurry;
 			sourceTree = "<group>";
 		};
 		C04613951834E7D500B422A3 /* GoogleAnalytics */ = {
@@ -2272,6 +2285,7 @@
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
 				581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */,
 				807C4D17180AF0F6003D67E6 /* LocalMessage.m in Sources */,
+				C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */,
 				5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
 				5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */,

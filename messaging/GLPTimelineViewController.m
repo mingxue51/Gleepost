@@ -34,6 +34,7 @@
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface GLPTimelineViewController ()
 
@@ -143,6 +144,7 @@ static BOOL likePushed;
     }
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

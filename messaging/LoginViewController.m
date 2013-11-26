@@ -15,6 +15,7 @@
 #import "AppearanceHelper.h"
 #import "GLPLoginManager.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface LoginViewController ()
 
@@ -83,6 +84,7 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void) setBackground

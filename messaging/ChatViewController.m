@@ -19,6 +19,7 @@
 #import "UIViewController+GAI.h"
 #import "SessionManager.h"
 #import "DatabaseManager.h"
+#import "UIViewController+Flurry.h"
 
 @interface ChatViewController ()
 
@@ -116,6 +117,7 @@
     [self initialiseAnimationViewToTheViewController];
 
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)loadLiveConversations

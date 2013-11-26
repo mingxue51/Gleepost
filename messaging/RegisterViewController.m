@@ -15,6 +15,7 @@
 #import "WebClientHelper.h"
 #import "ValidFields.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 
 @interface RegisterViewController ()
@@ -56,6 +57,7 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)setUpTextViews

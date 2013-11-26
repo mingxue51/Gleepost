@@ -26,6 +26,7 @@
 #import "GLPNotificationManager.h"
 #import "UIViewController+GAI.h"
 #import "GLPPostManager.h"
+#import "UIViewController+Flurry.h"
 
 @interface ProfileViewController ()
 
@@ -165,6 +166,7 @@ static BOOL likePushed;
     [self loadPosts];
 
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

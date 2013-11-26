@@ -19,6 +19,7 @@
 #import "ContactsManager.h"
 #import "UIViewController+GAI.h"
 #import "ProfileViewController.h"
+#import "UIViewController+Flurry.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -95,6 +96,7 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 #pragma mark - UI changes
