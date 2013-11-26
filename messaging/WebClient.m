@@ -28,7 +28,7 @@
 
 @synthesize isNetworkAvailable;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.22/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.23/";
 
 static WebClient *instance = nil;
 
@@ -145,6 +145,28 @@ static WebClient *instance = nil;
         NSString *errorMessage = [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion];
         
         callbackBlock(NO, errorMessage, -1);
+    }];
+}
+
+- (void)registerViaFacebookToken:(NSString *)token
+                  withNilOrEmail:(NSString *)email
+                andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock {
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    parameters[@"token"] = token;
+    if (email) parameters[@"email"] = email;
+    
+    [self postPath:@"fblogin" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Response during FB login: %@", responseObject);
+        int remoteKey = [RemoteParser parseIdFromJson:responseObject];
+        callbackBlock(YES, responseObject, remoteKey);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"ERROR OCCURRED DURING FACEBOOK LOGIN: %@", [RemoteParser parseFBRegisterErrorMessage:error.localizedRecoverySuggestion]);
+        NSString *errorMessage = [RemoteParser parseFBRegisterErrorMessage:error.localizedRecoverySuggestion];
+        callbackBlock(NO, errorMessage, -1);
+        
     }];
 }
 

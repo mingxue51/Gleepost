@@ -12,6 +12,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPUserDao.h"
 #import "WebClient.h"
+#import "GLPFacebookConnect.h"
 
 @interface SessionManager()
 
@@ -99,6 +100,10 @@ static SessionManager *instance = nil;
     
     [self.data removeAllObjects];
     [[NSFileManager defaultManager] removeItemAtPath:self.dataPlistPath error:nil];
+    
+    // closing Facebook active session on clean up
+    #warning TODO: implement FB session closing
+//    [FBSession.activeSession close];
 }
 
 - (BOOL)isSessionValid
@@ -107,10 +112,14 @@ static SessionManager *instance = nil;
     if(self.data[@"user.token"]) {
         NSDate *expirationDate = [[DateFormatterHelper createDefaultDateFormatter] dateFromString:self.data[@"user.expirationDate"]];
         
+        NSLog(@"----- email user authentication");
         // expired
         if([[NSDate date] compare:expirationDate] == NSOrderedAscending) {
             return YES;
         }
+    } else if ([GLPFacebookConnect isFacebookSessionValid]) {
+        NSLog(@"---- FBLogin state active");
+        return YES;
     }
     
     return NO;

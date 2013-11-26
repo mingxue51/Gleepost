@@ -11,6 +11,7 @@ pod 'NSDate+TimeAgo'
 pod 'MKNetworkKit'
 pod 'FDTake', '0.1'
 pod 'GoogleAnalytics-iOS-SDK', '3.0.2'
+pod 'Facebook-iOS-SDK', '3.9.0'
 
 post_install do |installer|
   installer.project.targets.each do |target|

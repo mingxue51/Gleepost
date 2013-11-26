@@ -546,6 +546,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    return error.description;
 }
 
++ (NSString *)parseFBRegisterErrorMessage:(NSString *)error {
+    if ([error rangeOfString:@"unverified"].location == NSNotFound)
+        return @"Facebook user does not have a Gleepost account assciated. Email is required.";
+    else
+        return @"Facebook account is not verified.";
+}
+
 #pragma mark - Images
 
 +(NSString*)parseImageUrl:(NSString*)url

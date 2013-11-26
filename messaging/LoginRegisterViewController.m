@@ -8,15 +8,15 @@
 
 #import "LoginRegisterViewController.h"
 #import "AppearanceHelper.h"
+#import "FBSession.h"
+#import "GLPFacebookConnect.h"
 
 
 @interface LoginRegisterViewController ()
 
-
 @end
 
 @implementation LoginRegisterViewController
-
 
 - (void)viewDidLoad
 {
@@ -32,11 +32,26 @@
     [self setImages];
 }
 
+- (IBAction)loginWithFacebook
+{
+    [GLPFacebookConnect connectWithFacebook];
+//    FBSession *session = [[FBSession alloc] init];
+//    [FBSession setActiveSession:session];
+//    
+//    [session openWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
+//            completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+//                if ([session isOpen]) {
+//                    NSLog(@"-------- Session is open");
+//                } else {
+//                    NSLog(@"----------- Session is not open");
+//                }
+//            }];
+}
+
 - (IBAction)gleepostSignUp:(id)sender
 {
     [self performSegueWithIdentifier:@"register" sender:self];
 }
-
 
 - (IBAction)signIn:(id)sender
 {
