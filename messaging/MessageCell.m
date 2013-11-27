@@ -25,6 +25,8 @@
 
 @property (assign, nonatomic) BOOL isBackgroundRounded;
 
+@property (strong, nonatomic) NSDate *lastTimestampDate;
+
 @end
 
 @implementation MessageCell
@@ -49,6 +51,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     self.isBackgroundRounded = NO;
     self.dateFormatter = [DateFormatterHelper createTimeDateFormatter];
+    
     
     return self;
 }
@@ -134,6 +137,17 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 //            self.messageContentLabel.textColor = [UIColor redColor];
 //            break;
 //    }
+}
+
+/**
+ Returns true if the last time (label was showed) is 5 minutes before new time. 
+ Otherwise returns false so there is no need to show timestamp.
+ 
+ 
+ */
+-(BOOL)showTimestamp
+{
+    
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

@@ -34,7 +34,16 @@
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {
-    if(message.author.remoteKey != self.author.remoteKey) {
+//    if(message.author.remoteKey != self.author.remoteKey) {
+//        return NO;
+//    }
+    
+    
+    NSTimeInterval interval = [self.date timeIntervalSinceDate:message.date];
+    
+    //If the inrerval is more than five minutes the return YES, otherwise NO.
+    if(interval > 300)
+    {
         return NO;
     }
     
@@ -46,6 +55,7 @@
     
     return YES;
 }
+
 
 -(NSString*) description
 {

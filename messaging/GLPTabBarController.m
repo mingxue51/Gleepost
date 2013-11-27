@@ -32,8 +32,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    NSLog(@"viewDidAppear Tab bar view controller.");
 }
 
 
