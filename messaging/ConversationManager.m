@@ -222,18 +222,6 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
-//+ (GLPMessage *)createLiveMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
-//{
-//    __block GLPMessage *message = [[GLPMessage alloc] init];
-//    message.content = content;
-//    message.conversation = conversation;
-//    message.date = [NSDate dateInUTC];
-//    message.author = [SessionManager sharedInstance].user;
-//    message.sendStatus = kSendStatusLocal;
-//    message.seen = YES;
-//
-//}
-
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
     __block GLPMessage *message = [[GLPMessage alloc] init];
@@ -278,55 +266,12 @@ int const NumberMaxOfMessagesLoaded = 20;
     return message;
 }
 
-//+(GLPUser* )userWithConversationId:(int)conversationId
-//{
-//    __block GLPUser *user;
-//    //Get user id.
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        
-//        int userKey;
-//        userKey = [GLPConversationParticipantsDao findByConversationKey:conversationId db:db];
-//        //Find user's details.
-//        user = [GLPUserDao findByKey:userKey db:db];
-//
-//    }];
-//    
-//    
-//    return user;
-//
-//}
-
-//+ (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback
-
-
-//+(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback
-//{
-//    /**
-//     __block NSArray *localEntities = nil;
-//     [DatabaseManager run:^(FMDatabase *db) {
-//     localEntities = [GLPMessageDao findPreviousMessagesBefore:message db:db];
-//     }];
-//     */
-//    
-//    __block NSArray *localEntities = nil;
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        localEntities = [GLPConversationParticipantsDao participants:conversationId db:db];
-//        
-//        //Fetch users' details.
-//        
-//        
-//        
-//        callback(YES, localEntities);
-//    }];
-//}
-
 + (void)saveMessageFromLongpoll:(GLPMessage *)message
 {
     __block BOOL success = NO;
-    __block BOOL live;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-
+        
         // check message not already exists = long poll own message
         GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey db:db];
         if(existingMessage) {
@@ -334,44 +279,25 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
-        //TODO: this will not work if long poll message for live conversation is received before local database is populated
-        GLPLiveConversation *liveConversation = [GLPLiveConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
+        GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
         
-        if(liveConversation) {
-            live = YES;
-            
-            message.conversation = nil;
-            message.liveConversation = liveConversation;
-            liveConversation.lastUpdate = message.date;
-            [GLPLiveConversationDao updateLastUpdate:liveConversation db:db];
-        } else {
-            live = NO;
-            
-            GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
-            
-            if(!conversation) {
-                conversation = message.conversation;
-            } else {
-                message.conversation = conversation;
-            }
-            
-            conversation.lastMessage = message.content;
-            conversation.lastUpdate = message.date;
-            conversation.hasUnreadMessages = YES;
-            
-            if(conversation.key == 0) {
-                [GLPConversationDao save:conversation db:db];
-            } else {
-                [GLPConversationDao update:conversation db:db];
-            }
+        if(!conversation) {
+            NSLog(@"Conversation does not exists, ignore");
+            return;
         }
         
+        conversation.lastMessage = message.content;
+        conversation.lastUpdate = message.date;
+        conversation.hasUnreadMessages = YES;
+        [GLPConversationDao update:conversation db:db];
+        
+        message.conversation = conversation;
         [GLPMessageDao save:message db:db];
         success = YES;
     }];
     
     if(success) {        
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message, @"isLive":[NSNumber numberWithBool:live]}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
     }
 }
 
