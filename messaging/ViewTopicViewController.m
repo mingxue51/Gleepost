@@ -488,7 +488,9 @@ float timeInterval = 0.1;
     }];
     
     // conversation has no more unread messages
-    [ConversationManager markConversationRead:self.conversation];
+    if(!_conversation.isLive) {
+        [ConversationManager markConversationRead:self.conversation];
+    }
 }
 
 //- (void)loadInitialMessages:(BOOL)live
@@ -761,7 +763,9 @@ float timeInterval = 0.1;
     [self showMessage:message];
     
     // conversation has no more unread messages
-    [ConversationManager markConversationRead:self.conversation];
+    if(!_conversation.isLive) {
+        [ConversationManager markConversationRead:self.conversation];
+    }
 }
 
 - (void)showMessage:(GLPMessage *)message
@@ -812,6 +816,7 @@ float timeInterval = 0.1;
 
 -(void) navigateToChat: (id)sender
 {
+    NSLog(@"here cl");
     if(![LiveChatsView visible])
     {
         self.liveChatsView = [LiveChatsView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];

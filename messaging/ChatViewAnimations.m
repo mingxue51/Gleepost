@@ -7,8 +7,10 @@
 //
 
 #import "ChatViewAnimations.h"
+#import "ViewTopicViewController.h"
 #import "GLPConversation.h"
 #import "GLPConversationPictureImageView.h"
+#import "GLPLiveConversationsManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -24,7 +26,6 @@ const int lowerLimit = 220;
 
 @implementation ChatViewAnimations
 
-@synthesize conversations=_conversations;
 @synthesize conversationPictureImageViews=_conversationPictureImageViews;
 
 static BOOL initLiveChats;
@@ -113,12 +114,10 @@ static BOOL initLiveChats;
 /**
  Refresh live conversations bubbles.
  */
--(void) refreshLiveConversations: (NSMutableArray*) liveConversationsArray
+-(void) refreshLiveConversations
 {
-    _conversations = liveConversationsArray;
-    
     int i=0;
-    for(GLPConversation *conv in liveConversationsArray) {
+    for(GLPConversation *conv in [GLPLiveConversationsManager sharedInstance].conversations) {
         GLPConversationPictureImageView *currentImageView = _conversationPictureImageViews[i];
         [currentImageView configureWithConversation:conv];
         
@@ -128,50 +127,26 @@ static BOOL initLiveChats;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
         [tap setNumberOfTapsRequired:1];
         [currentImageView addGestureRecognizer:tap];
+        currentImageView.userInteractionEnabled = YES;
+        [self bringSubviewToFront:currentImageView];
         
         ++i;
     }
 }
 
-
-/**
- Find the three live chat buttons and return them in an array.
- 
- @return an array of UIButtons.
- 
- */
-//-(NSMutableArray*) findTheThreeLiveButtonsChats
-//{
-//    
-//    NSArray *allSubviews = self.subviews;
-//
-//    NSMutableArray* buttons = [[NSMutableArray alloc] init];
-//    
-//    for(UIView* view in allSubviews)
-//    {
-//        if(view.tag == 10 || view.tag == 20 || view.tag == 30)
-//        {
-//            [buttons addObject:(UIImageView*)view];
-//        }
-//    }
-//    
-//    return buttons;
-//}
-
--(void) navigateToChat: (id) sender
+- (void)navigateToChat:(id)sender
 {
     
-    UITapGestureRecognizer *incomingGesture = (UITapGestureRecognizer*) sender;
+    UITapGestureRecognizer *incomingGesture = (UITapGestureRecognizer *) sender;
+    GLPConversationPictureImageView *imageView = (GLPConversationPictureImageView *) incomingGesture.view;
     
-    UIImageView *imageView = (UIImageView*) incomingGesture.view;
-    
-    NSLog(@"Button with tag: %d",imageView.tag);
-    
-    NSLog(@"Navigate to chat");
-    
-    
-    [self.chatViewController navigateToLiveChatWithIndex:(imageView.tag/10)-1];
-
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:imageView.conversationRemoteKey];
+    if(conversation) {
+        ViewTopicViewController *vc = [self.chatViewController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+        vc.conversation = conversation;
+        
+        [self.chatViewController.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
@@ -958,7 +933,7 @@ static BOOL animateBubbles = YES;
 
 -(void) navigateToNewRandomChat
 {
-    [self.chatViewController searchForConversationForGroup:NO];
+    [self.chatViewController searchForConversation];
 }
 
 

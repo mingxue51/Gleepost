@@ -11,6 +11,8 @@
 
 @interface GLPConversationPictureImageView : UIImageView
 
+@property (assign, nonatomic) NSInteger conversationRemoteKey;
+
 - (void)configureWithImage:(UIImage *)image;
 - (void)configureWithConversation:(GLPConversation *)conversation;
 

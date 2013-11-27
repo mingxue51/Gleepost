@@ -10,10 +10,6 @@
 
 @interface ChatViewController : UIViewController
 
-
-@property BOOL newChat;
-
-- (void)searchForConversationForGroup:(BOOL)group;
--(void)navigateToLiveChatWithIndex: (int)index;
+- (void)searchForConversation;
 
 @end

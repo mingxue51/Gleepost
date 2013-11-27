@@ -338,6 +338,7 @@
 		80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */; };
 		80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */; };
 		80DC9AF2184616F000A8E48B /* GLPConversationPictureImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */; };
+		80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */; };
 		80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6117CE5CD80034C0EF /* post_login.json */; };
 		80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6317CE77D70034C0EF /* get_posts.json */; };
 		80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF32180FD159009E17BD /* DatabaseManager.m */; };
@@ -827,6 +828,8 @@
 		80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Enums.m"; sourceTree = "<group>"; };
 		80DC9AF0184616F000A8E48B /* GLPConversationPictureImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationPictureImageView.h; sourceTree = "<group>"; };
 		80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationPictureImageView.m; sourceTree = "<group>"; };
+		80DC9AF3184633FE00A8E48B /* GLPLiveConversationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversationsManager.h; sourceTree = "<group>"; };
+		80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationsManager.m; sourceTree = "<group>"; };
 		80DDAA6117CE5CD80034C0EF /* post_login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_login.json; sourceTree = "<group>"; };
 		80DDAA6317CE77D70034C0EF /* get_posts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_posts.json; sourceTree = "<group>"; };
 		80DDDF31180FD159009E17BD /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
@@ -1684,6 +1687,8 @@
 				584CF66C182289B500EFABB8 /* ContactsManager.m */,
 				8073346F183BAD3B00C6D74A /* GLPPushManager.h */,
 				80733470183BAD3B00C6D74A /* GLPPushManager.m */,
+				80DC9AF3184633FE00A8E48B /* GLPLiveConversationsManager.h */,
+				80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -2314,6 +2319,7 @@
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				80AB897D17C292180053E784 /* NewMessageViewController.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
+				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,

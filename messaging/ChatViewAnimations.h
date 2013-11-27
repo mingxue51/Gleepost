@@ -26,9 +26,8 @@
 @property (strong, nonatomic) NSTimer *timer2;
 @property (strong, nonatomic) ChatViewController *chatViewController;
 
-@property (strong, nonatomic) NSMutableArray *conversations;
 
--(void) refreshLiveConversations: (NSMutableArray*) liveConversationsArray;
+-(void) refreshLiveConversations;
 
 -(void) animateCirclesFancy;
 -(void) removeElements;

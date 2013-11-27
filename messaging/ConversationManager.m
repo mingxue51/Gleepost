@@ -63,6 +63,8 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (void)markConversationRead:(GLPConversation *)conversation
 {
+    NSAssert(!conversation.isLive, @"Cannot update read status for live conversation because they are not persisted in local database");
+    
     conversation.hasUnreadMessages = NO;
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPConversationDao updateConversationUnreadStatus:conversation db:db];
@@ -220,6 +222,18 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
+//+ (GLPMessage *)createLiveMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
+//{
+//    __block GLPMessage *message = [[GLPMessage alloc] init];
+//    message.content = content;
+//    message.conversation = conversation;
+//    message.date = [NSDate dateInUTC];
+//    message.author = [SessionManager sharedInstance].user;
+//    message.sendStatus = kSendStatusLocal;
+//    message.seen = YES;
+//
+//}
+
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
     __block GLPMessage *message = [[GLPMessage alloc] init];
@@ -233,11 +247,12 @@ int const NumberMaxOfMessagesLoaded = 20;
     conversation.lastUpdate = message.date;
     conversation.lastMessage = message.content;
     
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        [GLPMessageDao save:message db:db];
-        NSLog(@"update conversion %d %d", conversation.key, conversation.remoteKey);
-        [GLPConversationDao update:conversation db:db];
-    }];
+    if(!conversation.isLive) {
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            [GLPMessageDao save:message db:db];
+            [GLPConversationDao update:conversation db:db];
+        }];
+    }
     
     NSLog(@"Post message %@ to server", message.content);
     
@@ -251,9 +266,11 @@ int const NumberMaxOfMessagesLoaded = 20;
             message.sendStatus = kSendStatusFailure;
         }
         
-        [DatabaseManager run:^(FMDatabase *db) {
-            [GLPMessageDao update:message db:db];
-        }];
+        if(!conversation.isLive) {
+            [DatabaseManager run:^(FMDatabase *db) {
+                [GLPMessageDao update:message db:db];
+            }];
+        }
         
         sendCallback(message, responseSuccess);
     }];

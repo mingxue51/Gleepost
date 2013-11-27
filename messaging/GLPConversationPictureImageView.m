@@ -12,14 +12,20 @@
 
 @implementation GLPConversationPictureImageView
 
+@synthesize conversationRemoteKey=_conversationRemoteKey;
+
 - (void)configureWithImage:(UIImage *)image
 {
+    _conversationRemoteKey = 0;
+    
     self.image = image;
     [ShapeFormatterHelper setRoundedView:self toDiameter:self.frame.size.height];
 }
 
 - (void)configureWithConversation:(GLPConversation *)conversation
 {
+    _conversationRemoteKey = conversation.remoteKey;
+    
     if(conversation.isGroup) {
         self.image = [UIImage imageNamed:@"default_group_image"];
     } else {

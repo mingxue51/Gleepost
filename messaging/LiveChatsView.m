@@ -7,186 +7,83 @@
 //
 
 #import "LiveChatsView.h"
+#import "GLPLiveConversationsManager.h"
+#import "GLPConversationPictureImageView.h"
 #import <QuartzCore/QuartzCore.h>
-#import "LiveConversationManager.h"
-#import "GLPLiveConversation.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface LiveChatsView ()
 
-@property (strong, nonatomic) NSArray* liveChats;
-@property (strong, nonatomic) NSArray *imageViews;
-@property (assign, nonatomic) int selectedLiveConversationId;
-
+@property (strong, nonatomic) NSMutableArray *conversationPictureImageViews;
 
 @end
 
+
 @implementation LiveChatsView
+
+@synthesize conversationPictureImageViews=_conversationPictureImageViews;
 
 static BOOL visibility;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
-    {
-
-
+    
+    if (self) {
+        _conversationPictureImageViews = [NSMutableArray arrayWithCapacity:3];
         
-        UIImageView *chatImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
-        [chatImageView1 setImage:[UIImage imageNamed:@"whiteholder1"]];
-        [chatImageView1 setUserInteractionEnabled:YES];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
-        [tap setNumberOfTapsRequired:1];
-        [chatImageView1 addGestureRecognizer:tap];
+        [self createConversationPictureWithFrame:CGRectMake(42.5, 12.5, 45, 45) holder:@"whiteholder1"];
+        [self createConversationPictureWithFrame:CGRectMake(12.5, 72.5, 45, 45) holder:@"whiteholder2"];
+        [self createConversationPictureWithFrame:CGRectMake(72.5, 72.5, 45, 45) holder:@"whiteholder3"];
         
-        [self addSubview:chatImageView1];
-        
-        
-//        UIButton *chat1 = [[UIButton alloc] initWithFrame:CGRectMake(42.5, 12.5, 45, 45)];
-//        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        [chat1 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
-//        [chat1 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:chat1];
-        
-        UIImageView *chatImageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(12.5, 72.5, 45, 45)];
-        [chatImageView2 setImage:[UIImage imageNamed:@"whiteholder2"]];
-        [chatImageView2 setUserInteractionEnabled:YES];
-        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
-        [tap setNumberOfTapsRequired:1];
-        [chatImageView2 addGestureRecognizer:tap];
-        
-        [self addSubview:chatImageView2];
-        
-        
-//        UIButton *chat2 = [[UIButton alloc] initWithFrame:CGRectMake(12.5, 72.5, 45, 45)];
-//        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        [chat2 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
-//        [chat2 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:chat2];
-        
-        UIImageView *chatImageView3 = [[UIImageView alloc] initWithFrame:CGRectMake(72.5, 72.5, 45, 45)];
-        [chatImageView3 setImage:[UIImage imageNamed:@"whiteholder3"]];
-        [chatImageView3 setUserInteractionEnabled:YES];
-        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
-        [tap setNumberOfTapsRequired:1];
-        [chatImageView3 addGestureRecognizer:tap];
-        
-        [self addSubview:chatImageView3];
-        
-//        UIButton *chat3 = [[UIButton alloc] initWithFrame:CGRectMake(72.5, 72.5, 45, 45)];
-//        //UIButton *chat1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        [chat3 setBackgroundImage:[UIImage imageNamed:@"userchangeimg"] forState:UIControlStateNormal];
-//        [chat3 addTarget:self action:@selector(navigateToChat:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:chat3];
-        
-        self.imageViews = [[NSArray alloc] initWithObjects:chatImageView1, chatImageView2, chatImageView3, nil];
-        
-        //TODO: Fix this. Always fetcing data from database.
-        [self loadLiveConversations];
+        [self setLiveChatsToView];
     }
     return self;
+}
+
+- (void)createConversationPictureWithFrame:(CGRect)frame holder:(NSString *)holder
+{
+    GLPConversationPictureImageView *imageView = [[GLPConversationPictureImageView alloc] initWithFrame:frame];
+    imageView.image = [UIImage imageNamed:holder];
+    imageView.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+    [imageView addGestureRecognizer:tap];
+    
+    [self addSubview:imageView];
+    [_conversationPictureImageViews addObject:imageView];
 }
 
 -(void)setLiveChatsToView
 {
     int i = 0;
-    for(GLPLiveConversation *c in self.liveChats)
-    {
+    for(GLPConversation *c in [GLPLiveConversationsManager sharedInstance].conversations) {
         
-        GLPUser *currentParticipant = [c.participants objectAtIndex:0];
+        GLPConversationPictureImageView *imageView = _conversationPictureImageViews[i];
+        [imageView configureWithConversation:c];
+        
+        imageView.clipsToBounds = YES;
+        imageView.layer.cornerRadius = 23;
+        
+        [[imageView layer] setBorderWidth:2.0f];
+        [[imageView layer] setBorderColor:[UIColor whiteColor].CGColor];
 
-        
-        UIImageView *imgView = [self.imageViews objectAtIndex:i];
-        
-        imgView.clipsToBounds = YES;
-        imgView.layer.cornerRadius = 23;
-        [imgView setTag:c.remoteKey];
-        
-        if([currentParticipant.profileImageUrl isEqualToString:@""] || currentParticipant.profileImageUrl == nil)
-        {
-            [imgView setImage:[UIImage imageNamed:@"default_user_image"]];
-        }
-        else
-        {
-            [imgView setImageWithURL:[NSURL URLWithString:currentParticipant.profileImageUrl] placeholderImage:nil];
-        }
-        [[imgView layer] setBorderWidth:2.0f];
-        [[imgView layer] setBorderColor:[UIColor whiteColor].CGColor];
-        
-        
         ++i;
     }
-}
-
-
--(void)loadLiveConversations
-{
-    [LiveConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
-        
-        self.liveChats = conversations;
-        
-        //Load participants for conversations.
-        [LiveConversationManager liveUsersWithLiveConversations:self.liveChats callback:^(BOOL success, NSArray *liveParticipantsConversations) {
-            
-            if(success)
-            {
-                self.liveChats = liveParticipantsConversations.mutableCopy;
-            }
-            
-        }];
-        
-        
-        [self setLiveChatsToView];
-
-        
-    } remoteCallback:^(BOOL success, BOOL newConversations, NSArray *conversations) {
-        
-    }];
-}
-
--(GLPConversation *)liveConversationWithRemoteKey:(int)remoteKey
-{
-    for (GLPConversation *c in self.liveChats)
-    {
-        if(remoteKey == c.remoteKey)
-        {
-            return c;
-        }
-    }
-    
-    return nil;
 }
 
 -(void) navigateToChat: (id)sender
 {
     UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+    GLPConversationPictureImageView *imageView = (GLPConversationPictureImageView *)incomingUser.view;
     
-    UIImageView *incomingView = (UIImageView*)incomingUser.view;
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:imageView.conversationRemoteKey];
     
-    if(incomingView.tag == 0)
-    {
-        //Don't do anything.
-        [self removeView];
-    }
-    else
-    {
-        self.selectedLiveConversationId = incomingView.tag;
-        
-        //Navigate to conversation.
-//        ViewTopicViewController *viewController = (ViewTopicViewController*)[[UIStoryboard storyboardWithName:@"iphone" bundle:NULL] instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
-//        
-
-        
-        self.viewTopic.conversation = [self liveConversationWithRemoteKey:incomingView.tag];
+    if(conversation) {
+        self.viewTopic.conversation = conversation;
         [self.viewTopic reloadElements];
         [self removeView];
-
-        
-//        [self.viewTopic presentViewController:viewController animated:NO completion:^{
-//            
-//        }];
-
+    } else {
+        [self removeView];
     }
 }
 
