@@ -16,8 +16,9 @@
 
 extern int const NumberMaxOfMessagesLoaded;
 
-+ (NSArray *)getLocalConversations;
++ (NSArray *)getLocalNormalConversations;
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
++ (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 + (void)markConversationRead:(GLPConversation *)conversation;
 
 + (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;

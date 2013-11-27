@@ -14,8 +14,7 @@
 #import "ChatViewAnimations.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import "GLPConversation.h"
-#import "GLPLiveConversation.h"
-#import "LiveConversationManager.h"
+#import "ConversationManager.h"
 #import "UIViewController+GAI.h"
 #import "SessionManager.h"
 #import "DatabaseManager.h"
@@ -26,7 +25,7 @@
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) GLPLiveConversation *liveConversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
-@property (strong, nonatomic) NSMutableArray *liveConversations;
+@property (strong, nonatomic) NSMutableArray *conversations;
 @property (assign, nonatomic) BOOL searchForConversation;
 
 - (IBAction)startButtonClicked:(id)sender;
@@ -36,11 +35,14 @@
 
 @implementation ChatViewController
 
+@synthesize conversation=_conversation;
+@synthesize conversations=_conversations;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.liveConversations = [[NSMutableArray alloc] init];
+    _conversations = [[NSMutableArray alloc] init];
     
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
@@ -60,59 +62,58 @@
 
     [super viewWillAppear:animated];
     
-    //Load live conversations from database.
     [self loadLiveConversations];
 
     self.searchForConversation = NO;
 
     
-    BOOL conversationExist = NO;
-
-    
-    //Save the current conversation.
-    if(self.conversation.title != nil)
-    {
-        //If there are already 3 conversations, then delete the oldest.
-        //TODO: Bug here fix this. It should check this after new conversation detected.
-
-        
-        //Avoid adding the same conversation.
-        for(GLPLiveConversation *c in self.liveConversations)
-        {
-            if(self.conversation.remoteKey == c.remoteKey)
-            {
-                //Don't do anything.
-                conversationExist = YES;
-                break;
-            }
-            
-        }
-        
-//        if((self.liveConversations.count == 3) && (!conversationExist))
-//        {
-//            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:0];
-//            [self.liveConversations dequeue];
-//            
-//            //Delete conversation with key from database.
-//            [self deleteConversationFromDbWithKey:liveConv.key];
-//            //[self loadLiveConversations];
-//            
-//        }
-        
-        if(!conversationExist)
-        {
-            //Convert conversation to live conversation.
-            GLPLiveConversation *liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
-            
-
-            //Add new conversation to database.
-            [self addNewConversationToDb:liveConv];
-            
-            
-            //Add conversation to array.
-            [self.liveConversations enqueue:liveConv];
-        }
-    }
+//    BOOL conversationExist = NO;
+//
+//    
+////    //Save the current conversation.
+////    if(self.conversation.title != nil)
+////    {
+////        //If there are already 3 conversations, then delete the oldest.
+////        //TODO: Bug here fix this. It should check this after new conversation detected.
+////
+////        
+////        //Avoid adding the same conversation.
+////        for(GLPLiveConversation *c in self.liveConversations)
+////        {
+////            if(self.conversation.remoteKey == c.remoteKey)
+////            {
+////                //Don't do anything.
+////                conversationExist = YES;
+////                break;
+////            }
+////            
+////        }
+////        
+//////        if((self.liveConversations.count == 3) && (!conversationExist))
+//////        {
+//////            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:0];
+//////            [self.liveConversations dequeue];
+//////            
+//////            //Delete conversation with key from database.
+//////            [self deleteConversationFromDbWithKey:liveConv.key];
+//////            //[self loadLiveConversations];
+//////            
+//////        }
+////        
+////        if(!conversationExist)
+////        {
+////            //Convert conversation to live conversation.
+////            GLPLiveConversation *liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
+////            
+////
+////            //Add new conversation to database.
+////            [self addNewConversationToDb:liveConv];
+////            
+////            
+////            //Add conversation to array.
+////            [self.liveConversations enqueue:liveConv];
+////        }
+////    }
     
     [self initialiseAnimationViewToTheViewController];
 
@@ -122,140 +123,52 @@
 
 -(void)loadLiveConversations
 {
-    //Remove all the elements from the LiveConversations array.
-    [self.liveConversations removeAllObjects];
+    [WebClientHelper showStandardLoaderWithTitle:@"Connecting to the live chat" forView:self.view];
     
-    [LiveConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
+    [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
-        for(GLPLiveConversation *c in conversations)
-        {
-            //TODO: If the chat expires don't enqueue and delete it.
-            
-//            GLPConversation *conversation = [[GLPConversation alloc] init];
-//            
-//            conversation.author = c.author;
-//            conversation.lastUpdate = c.lastUpdate;
-//            conversation.messages = c.messages;
-//            conversation.participants = c.participants;
-//            conversation.title = c.title;
-//            conversation.hasUnreadMessages = c.hasUnreadMessages;
-//            
-            
-            [self.liveConversations enqueue:c];
+        if(!success) {
+            [WebClientHelper showStandardErrorWithTitle:@"Connection failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
+            return;
         }
         
-        //Load participants for conversations.
-        [LiveConversationManager liveUsersWithLiveConversations:self.liveConversations callback:^(BOOL success, NSArray *liveParticipantsConversations) {
-            
-            if(success)
-            {
-                self.liveConversations = liveParticipantsConversations.mutableCopy;
-            }
-            
-        }];
-        
-    } remoteCallback:^(BOOL success,BOOL newConversations, NSArray *conversations) {
-        
-        if(newConversations)
-        {
-//            //Add new conversations to the list and refresh.
-//            for(int i = 0; i<conversations.count; ++i)
-//            {
-//                [self.liveConversations dequeue];
-//            }
-//            
-//            for(GLPLiveConversation *c in conversations)
-//            {
-//                [self.liveConversations enqueue:c];
-//            }
-//
-            [self.liveConversations removeAllObjects];
-            
-            for(GLPLiveConversation *c in conversations)
-            {
-                //TODO: If the chat expires don't enqueue and delete it.
-                
-                for(GLPUser *participant in c.participants)
-                {
-                    if(participant.remoteKey != [[[SessionManager sharedInstance]user]remoteKey])
-                    {
-                        c.participants = [[NSArray alloc] initWithObjects:participant, nil];
-                        break;
-                    }
-                }
-                
-                [self.liveConversations enqueue:c];
-            }
-            
-            
-            [self initialiseAnimationViewToTheViewController];
-
-        }
-        else
-        {
-            //Don't do anything.
-        }
-        
-
+        _conversations = [conversations mutableCopy];
+        [self initialiseAnimationViewToTheViewController];
     }];
-}
-
--(void)getLiveConversations
-{
-    
 }
 
 -(void) viewDidDisappear:(BOOL)animated
 {
-    
     [super viewDidDisappear:animated];
     
-
-    //[self.chatAnimations initialiseBubbles];
-    
-    //Clear the sub view chatAnimations.
-//    for (UIView *subView in self.view.subviews)
-//    {
-//        if (subView.tag == 100)
-//        {
-//            [(ChatViewAnimations*)subView removeElements];
-//            [subView removeFromSuperview];
-//            
-//        }
-//    }
-    
-    //[self initialiseAnimationViewToTheViewControllerWhenDissappearing];
-    
-//    [self.chatAnimations initAnimations];
     [self initialiseAnimationViewToTheViewController];
-    
-    
 }
 
 /**
  This method used in order to smoothly navigate back to the view controller.
  
  */
--(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
-{
-//    [ChatViewAnimations setLiveChat:NO];
-    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    self.chatAnimations.chatViewController = self;
-//    self.chatAnimations.tag = 100;
-    
-    [self.chatAnimations refreshLiveConversations: self.liveConversations];
-    
-    self.view = self.chatAnimations;
-    
-    
-    
-}
+//-(void) initialiseAnimationViewToTheViewControllerWhenDissappearing
+//{
+////    [ChatViewAnimations setLiveChat:NO];
+//    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    self.chatAnimations.chatViewController = self;
+////    self.chatAnimations.tag = 100;
+//    
+//    [self.chatAnimations refreshLiveConversations: self.liveConversations];
+//    
+//    self.view = self.chatAnimations;
+//    
+//    
+//    
+//}
 
 /**
  Initialise the animations to the view controller.
  
  */
--(void) initialiseAnimationViewToTheViewController
+- (void)initialiseAnimationViewToTheViewController
 {
     for (UIView *subView in self.view.subviews)
     {
@@ -274,7 +187,7 @@
     
 
     
-    [self.chatAnimations refreshLiveConversations:self.liveConversations];
+    [self.chatAnimations refreshLiveConversations:_conversations];
     
     self.chatAnimations.chatViewController = self;
     self.chatAnimations.tag = 100;
@@ -361,123 +274,57 @@
 
 - (void)searchForConversationForGroup:(BOOL)group
 {
-//    [WebClientHelper showStandardLoaderWithTitle:@"Looking for people" forView:self.view];
-    
     self.searchForConversation = YES;
     
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
 
-    
-    WebClient *client = [WebClient sharedInstance];
-    
-    void(^block)(BOOL success, GLPConversation *conversation);
-    block = ^(BOOL success, GLPConversation *conversation) {
+    [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
-            self.conversation = conversation;
-            self.liveConversation = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
+            _conversation = conversation;
             self.newChat = YES;
-
-            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                [GLPLiveConversationDao save:self.liveConversation db:db];
-            }];
             
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
             [WebClientHelper showStandardError];
         }
-    };
-    
-    if(group) {
-        [client createGroupConversationWithCallbackBlock:block];
-    } else {
-        [client createOneToOneConversationWithCallbackBlock:block];
-    }
-}
-
--(void) addNewConversationToDb:(GLPLiveConversation*)liveConv
-{
-    
-//    GLPLiveConversation* liveConv = [[GLPLiveConversation alloc] initWithConversation:self.conversation];
-    
-    [LiveConversationManager addLiveConversation:liveConv];
-}
-
--(void)deleteConversationFromDbWithKey:(int)key
-{
-    [LiveConversationManager removeLiveConversationWithKey:key];
+    }];
 }
 
 -(void)navigateToLiveChatWithIndex: (int)index
 {
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewTopicViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
-    
-    
-    vc.randomChat = YES;
-    vc.liveConversation = [self.liveConversations objectAtIndex:index];
-    
-    
-    if(vc.liveConversation.participants.count == 0)
-    {
-        //Fetch the participants.
-        [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
-            
-            vc.participants = participants;
-            
-        }];
-    }
-    else
-    {
-        vc.participants = vc.liveConversation.participants;
-    }
-    
-
+    ViewTopicViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+    vc.conversation = _conversations[index];
     
     [self.navigationController pushViewController:vc animated:YES];
-
-
-    
-
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"start"])
     {
-//        if(self.newChat)
-//        {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         
-        if((self.liveConversations.count == 3) && (self.searchForConversation))
-        {
-            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:0];
-            [self.liveConversations dequeue];
-            
-            //Delete conversation with key from database.
-            [self deleteConversationFromDbWithKey:liveConv.key];
-            
-            self.searchForConversation = NO;
-            //[self loadLiveConversations];
-            
-        }
+//        if((self.liveConversations.count == 3) && (self.searchForConversation))
+//        {
+//            GLPLiveConversation *liveConv = [self.liveConversations objectAtIndex:0];
+//            [self.liveConversations dequeue];
+//            
+//            //Delete conversation with key from database.
+//            [self deleteConversationFromDbWithKey:liveConv.key];
+//            
+//            self.searchForConversation = NO;
+//            //[self loadLiveConversations];
+//            
+//        }
 
         
         /////
         
         ViewTopicViewController *vc = segue.destinationViewController;
-        vc.randomChat = YES;
-        vc.liveConversation = self.liveConversation;
-        
-        //Fetch the participants.
-        [LiveConversationManager usersWithConversationId:self.liveConversation.key callback:^(BOOL success, NSArray *participants) {
-            
-            vc.participants = participants;
-            
-        }];
+        vc.conversation = _conversation;
 
     }
 }

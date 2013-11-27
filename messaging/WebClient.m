@@ -413,19 +413,27 @@ static WebClient *instance = nil;
 //    }];
 //}
 
-- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
+//- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
+//{
+//    [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
+//}
+//
+//- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
+//{
+//    [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
+//}
+
+- (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
 {
-    [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
+    [self postPath:@"newconversation" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
+        callback(YES, conversation);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
 }
 
-- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
-{
-    [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
-}
 
-/**
- Create a new conversation.
- */
 - (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

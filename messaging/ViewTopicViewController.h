@@ -22,10 +22,6 @@
 
 
 @property (strong, nonatomic) GLPConversation *conversation;
-//TODO: Remove this array later.
-@property (strong, nonatomic) NSArray *participants;
-@property (strong, nonatomic) GLPLiveConversation *liveConversation;
-@property BOOL randomChat;
 
 - (void)reloadElements;
 

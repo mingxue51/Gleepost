@@ -27,7 +27,7 @@
 
 int const NumberMaxOfMessagesLoaded = 20;
 
-+ (NSArray *)getLocalConversations
++ (NSArray *)getLocalNormalConversations
 {
     __block NSArray *conversations = nil;
     [DatabaseManager run:^(FMDatabase *db) {
@@ -37,21 +37,9 @@ int const NumberMaxOfMessagesLoaded = 20;
     return conversations;
 }
 
-//+(GLPUser* )loadUserWithMessageId: (int)messageId
-//{
-//    __block GLPUser* currentUser = nil;
-//    
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        currentUser = [GLPMessageDao findUserByMessageKey:messageId db:db];
-//    }];
-//    
-//    return currentUser;
-//    
-//}
-
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
-    NSArray *localEntities = [ConversationManager getLocalConversations];
+    NSArray *localEntities = [ConversationManager getLocalNormalConversations];
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);
     
@@ -78,6 +66,18 @@ int const NumberMaxOfMessagesLoaded = 20;
     conversation.hasUnreadMessages = NO;
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPConversationDao updateConversationUnreadStatus:conversation db:db];
+    }];
+}
+
++ (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback
+{
+    [[WebClient sharedInstance] getConversationsFilterByLive:YES withCallbackBlock:^(BOOL success, NSArray *conversations) {
+        if(!success) {
+            callback(NO, nil);
+            return;
+        }
+        
+        callback(YES, conversations);
     }];
 }
 

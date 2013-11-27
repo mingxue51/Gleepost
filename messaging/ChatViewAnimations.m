@@ -7,18 +7,25 @@
 //
 
 #import "ChatViewAnimations.h"
-#import "GLPLiveConversation.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "GLPConversation.h"
+#import "GLPConversationPictureImageView.h"
 #import <QuartzCore/QuartzCore.h>
-#import "ShapeFormatterHelper.h"
 
 
 const int higherLimit = 50;
 const int lowerLimit = 220;
 
 
+@interface ChatViewAnimations()
+
+@property (strong, nonatomic) NSMutableArray *conversationPictureImageViews;
+
+@end
 
 @implementation ChatViewAnimations
+
+@synthesize conversations=_conversations;
+@synthesize conversationPictureImageViews=_conversationPictureImageViews;
 
 static BOOL initLiveChats;
 
@@ -108,86 +115,22 @@ static BOOL initLiveChats;
  */
 -(void) refreshLiveConversations: (NSMutableArray*) liveConversationsArray
 {
-    NSLog(@"ChatViewAnimations : refreshLiveConversations");
-        
-    self.liveConversations = liveConversationsArray;
-    
-    
-    //Take the buttons views.
-    
-    NSArray *allSubviews = self.subviews;
-    
-    NSMutableArray *currentImageViews = [[NSMutableArray alloc] init];
-    
-    int in1=0;
-    
-    for(UIView* view in allSubviews)
-    {
-        if(view.tag == 10 || view.tag == 20 || view.tag == 30)
-        {
-            [currentImageViews addObject:view];
-            
-            NSLog(@"LiveConversations array: %d", liveConversationsArray.count);
-
-            if(liveConversationsArray.count>in1)
-            {
-                
-                UIImageView *current =(UIImageView*) view;
-                
-                //Add opponents profile image.
-                
-                [liveConversationsArray objectAtIndex:in1];
-
-                
-                [current setImage:[UIImage imageNamed:@"default_user_image"]];
-                
-                //Add selector to button.
-                [current setUserInteractionEnabled:YES];
-                
-                [ShapeFormatterHelper setRoundedView:current toDiameter:current.frame.size.height];
-
-                
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
-                [tap setNumberOfTapsRequired:1];
-                [current addGestureRecognizer:tap];
-                
-                [self bringSubviewToFront:current];
-                
-            }
-
-            ++in1;
-        }
-    }
+    _conversations = liveConversationsArray;
     
     int i=0;
-    for(GLPLiveConversation* conv in liveConversationsArray)
-    {
-        
-        
-        UIImageView *currentImageView = [currentImageViews objectAtIndex:i];
-        
-        GLPUser *currentOpponent = [conv.participants objectAtIndex:0];
-        
-        NSLog(@"Current oponent URL: %@",currentOpponent.profileImageUrl);
-
-        if([currentOpponent.profileImageUrl isEqualToString:@""] || currentOpponent.profileImageUrl == nil)
-        {
-            [currentImageView setImage:[UIImage imageNamed:@"default_user_image"]];
-        }
-        else
-        {
-            
-            //Add the real user's image.
-            [currentImageView setImageWithURL:[NSURL URLWithString:currentOpponent.profileImageUrl] placeholderImage:nil];
-
-        }
+    for(GLPConversation *conv in liveConversationsArray) {
+        GLPConversationPictureImageView *currentImageView = _conversationPictureImageViews[i];
+        [currentImageView configureWithConversation:conv];
         
         [[currentImageView layer] setBorderWidth:2.0f];
         [[currentImageView layer] setBorderColor:[UIColor whiteColor].CGColor];
         
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+        [tap setNumberOfTapsRequired:1];
+        [currentImageView addGestureRecognizer:tap];
+        
         ++i;
     }
-    
 }
 
 
@@ -197,23 +140,23 @@ static BOOL initLiveChats;
  @return an array of UIButtons.
  
  */
--(NSMutableArray*) findTheThreeLiveButtonsChats
-{
-    
-    NSArray *allSubviews = self.subviews;
-
-    NSMutableArray* buttons = [[NSMutableArray alloc] init];
-    
-    for(UIView* view in allSubviews)
-    {
-        if(view.tag == 10 || view.tag == 20 || view.tag == 30)
-        {
-            [buttons addObject:(UIImageView*)view];
-        }
-    }
-    
-    return buttons;
-}
+//-(NSMutableArray*) findTheThreeLiveButtonsChats
+//{
+//    
+//    NSArray *allSubviews = self.subviews;
+//
+//    NSMutableArray* buttons = [[NSMutableArray alloc] init];
+//    
+//    for(UIView* view in allSubviews)
+//    {
+//        if(view.tag == 10 || view.tag == 20 || view.tag == 30)
+//        {
+//            [buttons addObject:(UIImageView*)view];
+//        }
+//    }
+//    
+//    return buttons;
+//}
 
 -(void) navigateToChat: (id) sender
 {
@@ -234,43 +177,30 @@ static BOOL initLiveChats;
 
 -(void) initialiseLiveConversationBubbles
 {
-    NSLog(@"initialiseLiveConversationBubbles");
-    
-    //Initialise live conversations people.
     self.bubblesPeople = [[NSMutableArray alloc] init];
+    _conversationPictureImageViews = [[NSMutableArray alloc] init];
     
-    NSString* holderName = @"whiteholder";
-    
-    for(int i = 0; i<3; ++i)
-    {
-        UIImageView *convImageView = [[UIImageView alloc] init];
+    for(int i = 0; i<3; ++i) {
+        GLPConversationPictureImageView *convImageView = [[GLPConversationPictureImageView alloc] init];
         
-        convImageView.tag = (i+1)*10;
-
-        [ShapeFormatterHelper setRoundedView:convImageView toDiameter:convImageView.frame.size.height];
-        
-        
-        if(i == 0)
-        {
-            convImageView.frame = CGRectMake(60+i*80, 135, 50, 50);
+        switch (i) {
+            case 0:
+                convImageView.frame = CGRectMake(60+i*80, 135, 50, 50);
+                break;
+            case 1:
+                convImageView.frame = CGRectMake(135, 115, 50, 50);
+                break;
+            case 2:
+                convImageView.frame = CGRectMake(210, 135, 50, 50);
+                break;
         }
-        else if(i == 1)
-        {
-            convImageView.frame = CGRectMake(135, 115, 50, 50);
-
-        }
-        else
-        {
-            convImageView.frame = CGRectMake(210, 135, 50, 50);
-
-        }
-
-        [convImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d",holderName,i+1]]];
         
+        [convImageView configureWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"whiteholder%d",i+1]]];
         
         [self addSubview:convImageView];
-        
         [self bringSubviewToFront:convImageView];
+        
+        [_conversationPictureImageViews addObject:convImageView];
     }
 }
 
@@ -544,41 +474,15 @@ static BOOL animateBubbles = YES;
     
     CGRect mainCircleFrame = self.centralCircle.frame;
     
-    if(mainCircleFrame.size.width > widthLimit)
-    {
+    if(mainCircleFrame.size.width > widthLimit) {
         return;
     }
     
-    
-//    [UIView animateWithDuration:3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//        
-//                [self.centralCircle setFrame:CGRectMake(mainCircleFrame.origin.x-27, mainCircleFrame.origin.y-25, mainCircleFrame.size.width+50, mainCircleFrame.size.height+50)];
-//        
-//        
-//    } completion:^(BOOL finished) {
-//        
-//    }];
-    
-    
-//    if(!animateBubbles)
-//    {
-//        return;
-//    }
-    
-    //Dissappear the live chat users' buttons.
-    NSMutableArray* liveButtons = [self findTheThreeLiveButtonsChats];
-
-    
-    for(UIImageView* btn in liveButtons)
-    {
+    for(UIImageView* btn in _conversationPictureImageViews) {
         [UIView animateWithDuration:1.7 delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:^{
-            
-            
             [btn setAlpha:0.0];
-            
         }completion:^(BOOL finished) {
-            
-            
+   
         }];
     }
     

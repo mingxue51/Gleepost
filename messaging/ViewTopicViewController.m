@@ -87,7 +87,7 @@ float timeInterval = 0.1;
 
 @implementation ViewTopicViewController
 
-@synthesize conversation;
+@synthesize conversation=_conversation;
 @synthesize messages=_messages;
 @synthesize firstInitialization=_firstInitialization;
 
@@ -99,6 +99,79 @@ float timeInterval = 0.1;
     [self configureTableView];
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController.navigationBar setTranslucent:YES];
+    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:@"GLPNewMessage" object:nil];
+    
+    
+    [self.tabBarController.tabBar setHidden:YES];
+    
+    // reload messages when coming back from other VC
+    [self configureMessages];
+    [self loadElements];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
+    UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 1];
+    Class parentVCClass = [parentViewController class];
+    NSString *className = NSStringFromClass(parentVCClass);
+    
+    if([className isEqualToString:@"ChatViewController"])
+    {
+        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+        [self.tabBarController.tabBar setHidden:NO];
+    }
+    else
+    {
+        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+        
+        
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
+    
+    //Hide live chats view.
+    [self.liveChatsView removeView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self.timer1 invalidate];
+    
+    
+}
 
 - (void)configureMessages
 {
@@ -123,14 +196,14 @@ float timeInterval = 0.1;
     [self configureForm];
     self.keyboardAppearanceSpaceY = 0;
     
-    if(self.randomChat) {
+    if(_conversation.isLive) {
         [self configureTimeBar];
         [self configureNavigationBarButton];
-        [self loadInitialMessages:YES];
     } else {
         [self hideTimeBarAndMaximizeTableView];
-        [self loadInitialMessages:NO];
     }
+    
+    [self loadInitialMessages];
 }
 
 - (void)reloadElements
@@ -175,20 +248,21 @@ float timeInterval = 0.1;
 
 -(void) animateTimeBar: (id)sender
 {
-    //Calculate how many points needs to resize the timing bar.
-    float currentWidth = self.timingBar.frame.size.width;
-    timingBarCurrentWidth = timingBarCurrentWidth - resizeFactor;
-    
-    [self.timingBar setFrame:CGRectMake(firstTimingBarSize.origin.x, firstTimingBarSize.origin.y, timingBarCurrentWidth, firstTimingBarSize.size.height)];
-    
-    currentTime-=0.1;
-    
-    //NSLog(@"Current Time: %f : %f",currentTime, timingBarCurrentWidth);
-    
-    
-    //Shrink the timing bar.
-    
-    
+    //TODO: COMPLETE AND UNCOMMENT
+//    //Calculate how many points needs to resize the timing bar.
+//    float currentWidth = self.timingBar.frame.size.width;
+//    timingBarCurrentWidth = timingBarCurrentWidth - resizeFactor;
+//    
+//    [self.timingBar setFrame:CGRectMake(firstTimingBarSize.origin.x, firstTimingBarSize.origin.y, timingBarCurrentWidth, firstTimingBarSize.size.height)];
+//    
+//    currentTime-=0.1;
+//    
+//    //NSLog(@"Current Time: %f : %f",currentTime, timingBarCurrentWidth);
+//    
+//    
+//    //Shrink the timing bar.
+//    
+//    
 }
 
 
@@ -204,112 +278,26 @@ float timeInterval = 0.1;
     btn.center = [[[event allTouches] anyObject] locationInView:self.view];
 }
 
--(void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.navigationController.navigationBar setTranslucent:YES];
 
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-
-    // keyboard management
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification 
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:@"GLPNewMessage" object:nil];
-    
-    
-    [self.tabBarController.tabBar setHidden:YES];
-
-    // reload messages when coming back from other VC
-    [self configureMessages];
-    [self loadElements];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self sendViewToGAI:NSStringFromClass([self class])];
-    [self sendViewToFlurry:NSStringFromClass([self class])];
-}
-
--(void) viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
-    UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 1];
-    Class parentVCClass = [parentViewController class];
-    NSString *className = NSStringFromClass(parentVCClass);
-    
-    if([className isEqualToString:@"ChatViewController"])
-    {
-        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
-        [self.tabBarController.tabBar setHidden:NO];
-    }
-    else
-    {
-        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-
-        
-    }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
-
-    //Hide live chats view.
-    [self.liveChatsView removeView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [self.timer1 invalidate];
-    
-
-}
 
 #pragma mark - Init and config
 
 - (void)configureNavigationBar
 {
-    
-    //Create a button instead of using the default title view for recognising gestures.
-    UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
-    
+    self.title = _conversation.title;
 
-    
-    // navigation bar configuration
-    if(self.randomChat)
-    {
-        self.title = self.liveConversation.title;
-        [titleLabel setTitle:self.liveConversation.title forState:UIControlStateNormal];
-        titleLabel.tag = [[self.liveConversation.participants objectAtIndex:0] remoteKey];
-
-
+    // navigate to profile through navigation bar for user-to-user conversation
+    if(!_conversation.isGroup) {
+        //Create a button instead of using the default title view for recognising gestures.
+        UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+        [titleLabel setTitle:_conversation.title forState:UIControlStateNormal];
+        titleLabel.tag = [_conversation getUniqueParticipant].remoteKey;
+        
+        //Set navigation to profile selector.
+        titleLabel.frame = CGRectMake(0, 0, 70, 44);
+        [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.titleView = titleLabel;
     }
-    else
-    {
-        self.title = self.conversation.title;
-        [titleLabel setTitle:self.conversation.title forState:UIControlStateNormal];
-        titleLabel.tag = [[self.participants objectAtIndex:0] remoteKey];
-
-
-    }
-    
-    //Set navigation to profile selector.
-    titleLabel.frame = CGRectMake(0, 0, 70, 44);
-    [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.titleView = titleLabel;
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
@@ -484,7 +472,7 @@ float timeInterval = 0.1;
 //    [ConversationManager markConversationRead:self.conversation];
 //}
 
-- (void)loadInitialMessages:(BOOL)live
+- (void)loadInitialMessages
 {
     if(self.inLoading) {
         return;
@@ -493,23 +481,42 @@ float timeInterval = 0.1;
     NSLog(@"Load initial messages");
     self.inLoading = YES;
     
-    if(live) {
-        [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
-            [self loadInitialMessagesLocalCallback:messages];
-        } remoteCallback:^(BOOL success, NSArray *newMessages) {
-            [self loadInitialMessagesRemoteCallback:success newMessages:newMessages];
-        }];
-    } else {
-        [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
-            [self loadInitialMessagesLocalCallback:messages];
-        } remoteCallback:^(BOOL success, NSArray *messages) {
-            [self loadInitialMessagesRemoteCallback:success newMessages:messages];
-        }];
-        
-        // conversation has no more unread messages
-        [ConversationManager markConversationRead:self.conversation];
-    }
+    [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
+        [self loadInitialMessagesLocalCallback:messages];
+    } remoteCallback:^(BOOL success, NSArray *messages) {
+        [self loadInitialMessagesRemoteCallback:success newMessages:messages];
+    }];
+    
+    // conversation has no more unread messages
+    [ConversationManager markConversationRead:self.conversation];
 }
+
+//- (void)loadInitialMessages:(BOOL)live
+//{
+//    if(self.inLoading) {
+//        return;
+//    }
+//    
+//    NSLog(@"Load initial messages");
+//    self.inLoading = YES;
+//    
+//    if(live) {
+//        [LiveConversationManager loadMessagesForLiveConversation:self.liveConversation localCallback:^(NSArray *messages) {
+//            [self loadInitialMessagesLocalCallback:messages];
+//        } remoteCallback:^(BOOL success, NSArray *newMessages) {
+//            [self loadInitialMessagesRemoteCallback:success newMessages:newMessages];
+//        }];
+//    } else {
+//        [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
+//            [self loadInitialMessagesLocalCallback:messages];
+//        } remoteCallback:^(BOOL success, NSArray *messages) {
+//            [self loadInitialMessagesRemoteCallback:success newMessages:messages];
+//        }];
+//        
+//        // conversation has no more unread messages
+//        [ConversationManager markConversationRead:self.conversation];
+//    }
+//}
 
 - (void)loadInitialMessagesLocalCallback:(NSArray *)messages
 {
@@ -746,7 +753,7 @@ float timeInterval = 0.1;
     GLPMessage *message = [notification userInfo][@"message"];
     NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
     
-    if((message.conversation && self.conversation.remoteKey != message.conversation.remoteKey) || (message.liveConversation && self.liveConversation.remoteKey != message.liveConversation.remoteKey)) {
+    if(_conversation.remoteKey != message.conversation.remoteKey) {
         NSLog(@"Long poll message is not for the current conversation, ignore");
         return;
     }
@@ -754,9 +761,7 @@ float timeInterval = 0.1;
     [self showMessage:message];
     
     // conversation has no more unread messages
-    if(self.conversation) {
-        [ConversationManager markConversationRead:self.conversation];
-    }
+    [ConversationManager markConversationRead:self.conversation];
 }
 
 - (void)showMessage:(GLPMessage *)message
@@ -776,24 +781,12 @@ float timeInterval = 0.1;
 
 - (void)createMessageFromForm
 {
-    if(!self.randomChat)
-    {
-        GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
-            [self.tableView reloadData];
-        }];
-        
-        [self showMessage:message];
-        self.formTextView.text = @"";
-    }
-    else
-    {
-        GLPMessage *message = [LiveConversationManager createMessageWithContent:self.formTextView.text toLiveConversation:self.liveConversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
-            [self.tableView reloadData];
-        }];
-        
-        [self showMessage:message];
-        self.formTextView.text = @"";
-    }
+    GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation sendCallback:^(GLPMessage *sentMessage, BOOL success) {
+        [self.tableView reloadData];
+    }];
+    
+    [self showMessage:message];
+    self.formTextView.text = @"";
 }
 
 

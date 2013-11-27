@@ -145,9 +145,9 @@ static BOOL visibility;
     }];
 }
 
--(GLPLiveConversation*)liveConversationWithRemoteKey:(int)remoteKey
+-(GLPConversation *)liveConversationWithRemoteKey:(int)remoteKey
 {
-    for (GLPLiveConversation *c in self.liveChats)
+    for (GLPConversation *c in self.liveChats)
     {
         if(remoteKey == c.remoteKey)
         {
@@ -176,8 +176,9 @@ static BOOL visibility;
         //Navigate to conversation.
 //        ViewTopicViewController *viewController = (ViewTopicViewController*)[[UIStoryboard storyboardWithName:@"iphone" bundle:NULL] instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
 //        
-        self.viewTopic.liveConversation = [self liveConversationWithRemoteKey:incomingView.tag];
-        self.viewTopic.randomChat = YES;
+
+        
+        self.viewTopic.conversation = [self liveConversationWithRemoteKey:incomingView.tag];
         [self.viewTopic reloadElements];
         [self removeView];
 

@@ -12,10 +12,7 @@
 #import "WebClientHelper.h"
 #import "ConversationManager.h"
 #import "MessageTableViewCell.h"
-#import "NSDate+TimeAgo.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "AppearanceHelper.h"
-#import "ShapeFormatterHelper.h"
 #import "UIViewController+GAI.h"
 #import "GLPLoadingCell.h"
 #import "UIViewController+Flurry.h"
@@ -191,7 +188,7 @@
 
 - (void)reloadLocalConversations
 {
-    NSArray *localConversations = [ConversationManager getLocalConversations];
+    NSArray *localConversations = [ConversationManager getLocalNormalConversations];
     [self showConversations:localConversations];
 }
 
@@ -253,20 +250,7 @@
     cell.unreadImageView.hidden = !conversation.hasUnreadMessages;
     
     // add profile image
-    if(conversation.isGroup) {
-        cell.userImage.image = [UIImage imageNamed:@"default_group_image"];
-    } else {
-        GLPUser *user = [conversation getUniqueParticipant];
-        UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image"];
-                            
-        if([user hasProfilePicture]) {
-            [cell.userImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:defaultProfilePicture];
-        } else {
-            cell.userImage.image = defaultProfilePicture;
-        }
-        
-        [ShapeFormatterHelper setRoundedView:cell.userImage toDiameter:cell.userImage.frame.size.height];
-    }
+    [cell.userImage configureWithConversation:conversation];
     
     return cell;
 }
@@ -306,7 +290,6 @@
     if([segue.identifier isEqualToString:@"view topic"]) {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         ViewTopicViewController *vc = segue.destinationViewController;
-        vc.randomChat = NO;
         vc.conversation = self.selectedConversation;
     }
 }

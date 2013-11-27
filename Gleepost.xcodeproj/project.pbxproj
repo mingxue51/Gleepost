@@ -337,6 +337,7 @@
 		80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307C17CE5092003007D0 /* DateFormatterManager.m */; };
 		80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */; };
 		80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */; };
+		80DC9AF2184616F000A8E48B /* GLPConversationPictureImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */; };
 		80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6117CE5CD80034C0EF /* post_login.json */; };
 		80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6317CE77D70034C0EF /* get_posts.json */; };
 		80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF32180FD159009E17BD /* DatabaseManager.m */; };
@@ -824,6 +825,8 @@
 		80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTabBarController.m; sourceTree = "<group>"; };
 		80D2D0C9180ACD30007FB020 /* NSNumber+Enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Enums.h"; sourceTree = "<group>"; };
 		80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Enums.m"; sourceTree = "<group>"; };
+		80DC9AF0184616F000A8E48B /* GLPConversationPictureImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationPictureImageView.h; sourceTree = "<group>"; };
+		80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationPictureImageView.m; sourceTree = "<group>"; };
 		80DDAA6117CE5CD80034C0EF /* post_login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_login.json; sourceTree = "<group>"; };
 		80DDAA6317CE77D70034C0EF /* get_posts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_posts.json; sourceTree = "<group>"; };
 		80DDDF31180FD159009E17BD /* DatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
@@ -1702,6 +1705,8 @@
 				80AB896917C2808A0053E784 /* UIPlaceHolderTextView.m */,
 				80B2A4331833C9DF002AB1F0 /* GLPNewElementsIndicatorView.h */,
 				80B2A4341833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m */,
+				80DC9AF0184616F000A8E48B /* GLPConversationPictureImageView.h */,
+				80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2264,6 +2269,7 @@
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,
 				C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */,
 				582143D517FC5B6D0032ECEB /* TPKeyboardAvoidingScrollView.m in Sources */,
+				80DC9AF2184616F000A8E48B /* GLPConversationPictureImageView.m in Sources */,
 				80666C7F1806FF4900E4E515 /* MessagesSendingProcessor.m in Sources */,
 				5828D7B9181EAAFC002D71F9 /* LiveConversationManager.m in Sources */,
 				80AB894D17C26ECA0053E784 /* SessionManager.m in Sources */,
