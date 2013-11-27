@@ -124,6 +124,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         BOOL filter = (live && jsonConversation[@"expiry"]) || (!live && !jsonConversation[@"expiry"]);
         if(filter) {
             [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+            
+            // no more than 3 live conversations
+            if(live && conversations.count == 3) {
+                break;
+            }
         }
     }
     
