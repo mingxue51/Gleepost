@@ -70,6 +70,11 @@
     return [db intForQuery:@"select count(key) from notifications where seen = 0"];
 }
 
++ (NSInteger)countReadNotificationsInDb:(FMDatabase *)db
+{
+    return [db intForQuery:@"select count(key) from notifications where seen = 1"];
+}
+
 +(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number
 {
     
@@ -79,7 +84,7 @@
      */
     
     BOOL s = [db executeUpdateWithFormat:@"delete from notifications where key in (select key from notifications where seen = 1 order by date desc limit %d)",number];
-    NSLog(@"Table notifications deleted: %d",s);
+    NSLog(@"Some notifications are deleted: %d",s);
 }
 
 +(void)deleteTableWithDb:(FMDatabase*)db

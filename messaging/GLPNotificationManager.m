@@ -148,9 +148,8 @@
 + (void)saveNotifications:(NSArray *)notifications
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        //[GLPNotificationDao deleteTableWithDb:db];
         
-        if([GLPNotificationDao countUnreadNotificationsInDb:db]>10)
+        if([GLPNotificationDao countReadNotificationsInDb:db]>10)
         {
             [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
         }

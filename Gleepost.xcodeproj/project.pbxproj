@@ -45,6 +45,7 @@
 		5828D7B3181E9DAE002D71F9 /* GLPLiveConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B2181E9DAE002D71F9 /* GLPLiveConversation.m */; };
 		5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */; };
 		5828D7B9181EAAFC002D71F9 /* LiveConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B8181EAAFC002D71F9 /* LiveConversationManager.m */; };
+		58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58299EA7184636160045427E /* GLPPostNotificationHelper.m */; };
 		583B9FE317F3676A00B4BEE3 /* set_tab_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE117F3676A00B4BEE3 /* set_tab_small.png */; };
 		583B9FE417F3676A00B4BEE3 /* set_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */; };
 		583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583C725D17EF2E5600820761 /* MessageBox2small.png */; };
@@ -394,6 +395,8 @@
 		5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationDao.m; sourceTree = "<group>"; };
 		5828D7B7181EAAFC002D71F9 /* LiveConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveConversationManager.h; sourceTree = "<group>"; };
 		5828D7B8181EAAFC002D71F9 /* LiveConversationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveConversationManager.m; sourceTree = "<group>"; };
+		58299EA6184636160045427E /* GLPPostNotificationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostNotificationHelper.h; sourceTree = "<group>"; };
+		58299EA7184636160045427E /* GLPPostNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostNotificationHelper.m; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
 		583B9FE117F3676A00B4BEE3 /* set_tab_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = set_tab_small.png; sourceTree = "<group>"; };
 		583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_tab@2x.png"; sourceTree = "<group>"; };
@@ -968,6 +971,8 @@
 				58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */,
 				58403530182FF5FB00499488 /* GLPTimelineViewController.h */,
 				58403531182FF5FB00499488 /* GLPTimelineViewController.m */,
+				58299EA6184636160045427E /* GLPPostNotificationHelper.h */,
+				58299EA7184636160045427E /* GLPPostNotificationHelper.m */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
@@ -2342,6 +2347,7 @@
 				585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */,
 				58B1161D180D8491000E9555 /* ProfileView.m in Sources */,
 				80C8BA5318103248004F70DB /* GLPConversation.m in Sources */,
+				58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				80B2A421183380CF002AB1F0 /* GLPNotificationDaoParser.m in Sources */,
 				80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */,

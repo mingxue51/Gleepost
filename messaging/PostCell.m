@@ -15,6 +15,7 @@
 #import "WebClient.h"
 #import "NewCommentView.h"
 #import "GLPPostManager.h"
+#import "GLPPostNotificationHelper.h"
 
 
 @interface PostCell()
@@ -296,6 +297,8 @@ static const float PostContentLabelMaxWidth = 250;
         
         //Decrease the number of likes.
         --self.post.likes;
+        
+
     }
     else
     {
@@ -318,6 +321,8 @@ static const float PostContentLabelMaxWidth = 250;
     
     //Update post in local database.
     [GLPPostManager updatePostWithLiked: self.post];
+    
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
 }
 
 - (IBAction)commentPost:(id)sender
@@ -388,6 +393,21 @@ static const float PostContentLabelMaxWidth = 250;
     shareItems.excludedActivityTypes = excludeActivities;
     
     [self.delegate presentViewController:shareItems animated:YES completion:nil];
+
+}
+
+/**
+ Sends a post notification to timeline view controller to update dynamically the number of likes.
+ */
+-(void)updateStatusInPost
+{
+    //Inform timeline view controller that number of likes changed.
+//    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.post.remoteKey],@"RemoteKey", [NSNumber numberWithInt:self.post.commentsCount], @"NumberOfComments",[NSNumber numberWithInt:self.post.likes], @"NumberOfLikes", nil];
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:dataDict];
+    
+    
 
 }
 

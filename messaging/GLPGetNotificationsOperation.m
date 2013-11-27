@@ -46,7 +46,7 @@
                 if(finalNotifications.count > 0)
                 {
                     //Don't do anything.
-                    [GLPNotificationManager saveNotifications:notifications];
+                    [GLPNotificationManager saveNotifications:finalNotifications];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
                 }

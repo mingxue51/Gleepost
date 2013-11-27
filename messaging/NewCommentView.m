@@ -13,7 +13,7 @@
 #import "SessionManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
-
+#import "GLPPostManager.h"
 
 @implementation NewCommentView
 
@@ -230,6 +230,9 @@
     
     if(!sender)
     {
+        //Update the number of comments.
+        [GLPPostManager updatePostWithRemoteKey:self.post.remoteKey andNumberOfComments:self.post.commentsCount+1];
+        
         [self.profileDelegate navigateToViewPostFromCommentWithIndex:self.postIndex];
     }
     

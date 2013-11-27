@@ -150,6 +150,15 @@
      entity.remoteKey];
 }
 
++(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db
+{
+    BOOL ex = [db executeUpdateWithFormat:@"update posts set comments=%d where remoteKey=%d",
+     number,
+     remoteKey];
+    
+    NSLog(@"updateCommentStatusWithNumberOfComments: %d",ex);
+}
+
 + (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Update entity without key");

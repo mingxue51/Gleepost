@@ -34,6 +34,7 @@
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "UIViewController+GAI.h"
+#import "GLPPostNotificationHelper.h"
 
 @interface GLPTimelineViewController ()
 
@@ -87,9 +88,23 @@ static BOOL likePushed;
 
 @implementation GLPTimelineViewController
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
+    {
+        [self configNotifications];
+    }
+    
+    return self;
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     [self configAppearance];
     [self configTableView];
@@ -168,6 +183,34 @@ static BOOL likePushed;
     [self stopReloadingCron];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+}
+
+
+#pragma mark - Notifications
+
+/**
+ Updates the number of comments. Called only if number of comments changed in profile view controller or in view post view controller.
+ 
+ @param noticiation the post notification coming from profile view controller.
+ 
+ */
+-(void)updatePostWithRemoteKey:(NSNotification*)notification
+{
+
+    int index = [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
+    
+    if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
+    {
+        //Reload again only this post.
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+
+
+}
+
 #pragma mark - Init config
 
 - (void)configAppearance
@@ -185,6 +228,11 @@ static BOOL likePushed;
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
     
     [self setPlusButtonToNavigationBar];
+}
+
+-(void)configNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
 }
 
 - (void)configTableView
@@ -719,6 +767,7 @@ static BOOL likePushed;
     self.selectedPost = self.posts[indexPath.row];
     self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row;
+    self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 

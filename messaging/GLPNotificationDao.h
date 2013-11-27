@@ -17,6 +17,7 @@
 + (void)updateSeenStatus:(GLPNotification *)entity inDb:(FMDatabase *)db;
 + (void)save:(GLPNotification *)entity inDb:(FMDatabase *)db;
 + (NSInteger)countUnreadNotificationsInDb:(FMDatabase *)db;
++ (NSInteger)countReadNotificationsInDb:(FMDatabase *)db;
 +(void)deleteTableWithDb:(FMDatabase*)db;
 +(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number;
 

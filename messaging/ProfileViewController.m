@@ -26,6 +26,7 @@
 #import "GLPNotificationManager.h"
 #import "UIViewController+GAI.h"
 #import "GLPPostManager.h"
+#import "GLPPostNotificationHelper.h"
 
 @interface ProfileViewController ()
 
@@ -176,6 +177,16 @@ static BOOL likePushed;
     
 }
 
+
+//-(void)updatePostInDatabaseWithRemoteKey:(int)remoteKey withNumberOfComments:(int)number
+//{
+//    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithInt:number], @"NumberOfComments", nil];
+//    
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:dataDict];
+//}
+
 - (void)updateNotificationsBubble
 {
     if(self.unreadNotificationsCount > 0) {
@@ -271,38 +282,65 @@ static BOOL likePushed;
     //    hud.labelText = @"Loading posts";
     //    hud.detailsLabelText = @"Please wait few seconds";
     
-    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
-       
-        NSLog(@"Local Posts Count: %d",posts.count);
+    int userRemoteKey = 0;
+    
+    if(self.incomingUser == nil)
+    {
+        userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
+    }
+    else
+    {
+        userRemoteKey = self.incomingUser.remoteKey;
+    }
+    
+    [GLPPostManager loadRemotePostsForUserRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
         
-        NSMutableArray *removePosts = [[NSMutableArray alloc] init];
-        self.posts = [posts mutableCopy];
-        
-        for(GLPPost *p in self.posts)
+        if(success)
         {
-            if(self.incomingUser == nil)
-            {
-                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
-                {
-                    [removePosts addObject:p];
-                }
-            }
-            else
-            {
-                if(p.author.remoteKey != self.incomingUser.remoteKey)
-                {
-                    [removePosts addObject:p];
-                }
-            }
+            self.posts = [posts mutableCopy];
+
+            [self.postsTableView reloadData];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
         }
         
-        for(GLPPost *p in removePosts)
-        {
-            [self.posts removeObject:p];
-        }
         
-        [self.postsTableView reloadData];
     }];
+    
+//    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
+//       
+//        NSLog(@"Local Posts Count: %d",posts.count);
+//        
+//        NSMutableArray *removePosts = [[NSMutableArray alloc] init];
+//        self.posts = [posts mutableCopy];
+//        
+//        for(GLPPost *p in self.posts)
+//        {
+//            if(self.incomingUser == nil)
+//            {
+//                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+//                {
+//                    [removePosts addObject:p];
+//                }
+//            }
+//            else
+//            {
+//                if(p.author.remoteKey != self.incomingUser.remoteKey)
+//                {
+//                    [removePosts addObject:p];
+//                }
+//            }
+//        }
+//        
+//        for(GLPPost *p in removePosts)
+//        {
+//            [self.posts removeObject:p];
+//        }
+//        
+//        
+//    }];
     
     
     
@@ -681,7 +719,7 @@ static BOOL likePushed;
     
     if([currentPost imagePost])
     {
-        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
+//        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
         //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
@@ -690,7 +728,7 @@ static BOOL likePushed;
     }
     else
     {
-        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
+//        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
         
         //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
@@ -759,6 +797,17 @@ static BOOL likePushed;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
     self.selectedPost = self.posts[postIndex];
+    ++self.selectedPost.commentsCount;
+    
+    //Send push notification to GLPTimelineViewController.
+//    [self updatePostInDatabaseWithRemoteKey:self.selectedPost.remoteKey withNumberOfComments:self.selectedPost.commentsCount];
+    
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated"
+                                                  withObject:self
+                                                   remoteKey:self.selectedPost.remoteKey
+                                               numberOfLikes:self.selectedPost.likes
+                                         andNumberOfComments:self.selectedPost.commentsCount];
+    
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
