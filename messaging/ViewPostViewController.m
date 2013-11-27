@@ -22,6 +22,7 @@
 #import "UIViewController+GAI.h"
 #import "ContactsManager.h"
 #import "UIViewController+Flurry.h"
+#import "GLPPostNotificationHelper.h"
 
 @interface ViewPostViewController ()
 
@@ -154,6 +155,8 @@ static BOOL likePushed;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
+    self.commentJustCreated = NO;
 }
 
 
@@ -374,6 +377,7 @@ static bool firstTime = YES;
         if(success) {
             self.comments = [comments mutableCopy];
             
+
             
             //Reverse the comments' order.
             NSArray *reversedComments = [[self.comments reverseObjectEnumerator] allObjects];
@@ -769,8 +773,22 @@ static bool firstTime = YES;
         //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
+            
+            //Increase the number of comments to the post.
+            ++self.post.commentsCount;
+            
             [self loadComments];
             self.commentGrowingTextView.text = @"";
+            
+            //Notify timeline view controller.
+//            NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.post.remoteKey],@"RemoteKey", [NSNumber numberWithInt:self.post.commentsCount], @"NumberOfComments", nil];
+//            
+//            
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:dataDict];
+            
+            
+            [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
+            
         } else {
             [WebClientHelper showStandardError];
         }
