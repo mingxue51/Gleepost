@@ -12,6 +12,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPUserDao.h"
 #import "WebClient.h"
+#import "GLPThemeManager.h"
 
 @interface SessionManager()
 
@@ -146,6 +147,8 @@ static SessionManager *instance = nil;
                 user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue] db:db];
             }];
             self.user = user;
+            //Set theme depending on the network name.
+            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
             
             NSAssert(self.user, @"User from valid session must exist in database");
             

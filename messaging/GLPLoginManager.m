@@ -14,6 +14,7 @@
 #import "GLPUserDao.h"
 #import "GLPContact.h"
 #import "DatabaseManager.h"
+#import "GLPThemeManager.h"
 
 @implementation GLPLoginManager
 
@@ -59,6 +60,11 @@
                         [GLPContactDao save:contact inDb:db];
                     }
                 }];
+                
+                //Set theme depending on the network name.
+                [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+                
+                NSLog(@"Image for nav bar: %@ and chat background image: %@", [[GLPThemeManager sharedInstance]imageForNavBar], [[GLPThemeManager sharedInstance] imageForChatBackground]);
                 
                 // create session. CHANGED.
                 //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];

@@ -36,6 +36,8 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 
+#import "GLPThemeManager.h"
+
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
 const int limitTimeBar = 3600;
@@ -105,8 +107,11 @@ float timeInterval = 0.1;
     
     [self.navigationController.navigationBar setTranslucent:YES];
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [self configureBackground];
     
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -153,8 +158,8 @@ float timeInterval = 0.1;
     else
     {
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-        
+        //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
         
     }
     
@@ -171,6 +176,14 @@ float timeInterval = 0.1;
     [self.timer1 invalidate];
     
     
+}
+
+-(void)configureBackground
+{
+    
+    [self.view setBackgroundColor: [UIColor colorWithPatternImage: [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]]]];
+    
+    [self.tableView setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)configureMessages

@@ -36,6 +36,7 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
+#import "GLPThemeManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -152,6 +153,8 @@ static BOOL likePushed;
     [ContactsManager sharedInstance];
     
     [self loadInitialPosts];
+    
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -217,17 +220,23 @@ static BOOL likePushed;
 
 - (void)configAppearance
 {
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    NSLog(@"NAVIGATION BAR: %@, Right image: %@", [[GLPThemeManager sharedInstance] imageForNavBar], @"navigationbar2");
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTranslucent:YES];
     
     self.tabBarController.tabBar.hidden = NO;
     
-    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+//    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     self.tabBarController.tabBar.tintColor = tabColour;
     
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    [self.tabBarController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    
+//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
     
     [self setPlusButtonToNavigationBar];
 }

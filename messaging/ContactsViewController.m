@@ -19,7 +19,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
-
+#import "GLPThemeManager.h"
 
 @interface ContactsViewController ()
 
@@ -65,7 +65,8 @@
     
     //Change the format of the navigation bar.
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
 

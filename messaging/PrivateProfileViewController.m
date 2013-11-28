@@ -20,6 +20,7 @@
 #import "UIViewController+GAI.h"
 #import "ProfileViewController.h"
 #import "UIViewController+Flurry.h"
+#import "GLPThemeManager.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -44,7 +45,8 @@
 {
     [super viewDidLoad];
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
 
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 

@@ -16,6 +16,7 @@
 #import "UIViewController+GAI.h"
 #import "GLPLoadingCell.h"
 #import "UIViewController+Flurry.h"
+#import "GLPThemeManager.h"
 
 @interface MessagesViewController ()
 
@@ -46,7 +47,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
     // various control init
