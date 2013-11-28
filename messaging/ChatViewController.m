@@ -41,7 +41,8 @@
     
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
+    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
+    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
     
     [self addGleepostImageToNavigationBar];

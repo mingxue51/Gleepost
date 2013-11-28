@@ -12,7 +12,7 @@
 #import "GLPConversationPictureImageView.h"
 #import "GLPLiveConversationsManager.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "GLPThemeManager.h"
 
 const int higherLimit = 50;
 const int lowerLimit = 220;
@@ -906,8 +906,8 @@ static BOOL animateBubbles = YES;
 {
     self.backgroundColor = [UIColor clearColor];
     
-    UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
-    
+    //UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
+    UIImage *newChatImage = [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]];
     UIImageView *backgroundImage = [[UIImageView alloc] init];
     
     [backgroundImage setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];

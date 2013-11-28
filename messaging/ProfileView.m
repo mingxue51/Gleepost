@@ -11,7 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WebClient.h"
 #import "ShapeFormatterHelper.h"
-
+#import "GLPThemeManager.h"
 
 @interface ProfileView ()
 
@@ -52,7 +52,9 @@
     [self setBackgroundColor:[UIColor clearColor]];
     [self sendSubviewToBack:self.back];
     
-    
+    //Set colour dynamically to switch.
+//    [self.busyFreeSwitch setBackgroundColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+    [self.busyFreeSwitch setOnTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     if(incomingUser == nil)
     {
         //Get data from server and complete them in UIView.

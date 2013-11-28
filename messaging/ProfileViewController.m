@@ -102,8 +102,6 @@ static BOOL likePushed;
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
         [self addLogoutNavigationButton];
-        
-
     }
     else
     {

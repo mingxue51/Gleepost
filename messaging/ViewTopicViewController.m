@@ -181,9 +181,9 @@ float timeInterval = 0.1;
 -(void)configureBackground
 {
     
-    [self.view setBackgroundColor: [UIColor colorWithPatternImage: [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]]]];
+    //[self.view setBackgroundColor: [UIColor colorWithPatternImage: [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]]]];
     
-    [self.tableView setBackgroundColor:[UIColor clearColor]];
+    //[self.tableView setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)configureMessages
