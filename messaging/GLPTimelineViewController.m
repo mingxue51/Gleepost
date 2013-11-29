@@ -221,17 +221,23 @@ static BOOL likePushed;
 - (void)configAppearance
 {
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    NSLog(@"NAVIGATION BAR: %@, Right image: %@", [[GLPThemeManager sharedInstance] imageForNavBar], @"navigationbar2");
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTranslucent:YES];
     
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+    
+    //Set the  colour of navigation bar's title.
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
     self.tabBarController.tabBar.hidden = NO;
     
+    //Set colour of the border navigation bar image. TODO: Set one line image.
+    //[[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"imgbar"]];
+    
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     self.tabBarController.tabBar.tintColor = tabColour;
     
     [self.tabBarController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
@@ -298,20 +304,24 @@ static BOOL likePushed;
 
 -(void) setPlusButtonToNavigationBar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
+    //UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
+    //imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
     
     
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeContactAdd];
     [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    btnBack.frame = imageView.bounds;
-    [imageView addSubview:btnBack];
+    [btnBack setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    //btnBack.frame = imageView.bounds;
+    //[imageView addSubview:btnBack];
     
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newPostButtonClick)];
+    [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-    self.navigationItem.rightBarButtonItem = item;
+    self.navigationItem.rightBarButtonItem = i;
 }
 
 -(void)setNavigationBarName

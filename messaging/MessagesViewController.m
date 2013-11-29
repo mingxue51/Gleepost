@@ -48,7 +48,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
     // various control init
@@ -107,7 +107,11 @@
 //    
 //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    
+//    self.navigationController.navigationBar.tintColor = tabColour;
 
 
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;

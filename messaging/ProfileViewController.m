@@ -64,10 +64,15 @@ static BOOL likePushed;
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
-
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    
     //Change navigations items' (back arrow, edit etc.) colour.
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    
+    self.navigationController.navigationBar.tintColor = tabColour;
 
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     

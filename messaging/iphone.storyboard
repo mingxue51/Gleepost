@@ -853,7 +853,7 @@
         <scene sceneID="4na-1o-QCI">
             <objects>
                 <navigationController definesPresentationContext="YES" id="cfX-Wb-77k" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="Messages" image="chat_tab.png" id="H0j-Wz-sWb"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Messages" image="messages.png" id="H0j-Wz-sWb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="DQu-6o-oiM">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -871,7 +871,7 @@
         <scene sceneID="OUI-su-CjG">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Mum-dy-WxM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="NewChat" image="new_chat_tab.png" id="u1A-Qv-3bB"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="NewChat" image="proximity.png" id="u1A-Qv-3bB"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="jKh-Xr-Cjo">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -975,7 +975,7 @@
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="home_tab.png" id="nOK-XO-YpR"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="home.png" id="nOK-XO-YpR"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="PfA-EO-8dG">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1346,7 +1346,7 @@
         <scene sceneID="Zeb-oB-v8D">
             <objects>
                 <navigationController definesPresentationContext="YES" id="6si-v1-awl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="4" title="Profile" image="set_tab.png" id="mk5-Fz-dnk"/>
+                    <tabBarItem key="tabBarItem" tag="4" title="Profile" image="profile.png" id="mk5-Fz-dnk"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="LgP-AE-5yh">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1365,15 +1365,15 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="64" width="320" height="321"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="321"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" alpha="0.39999999999999963" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background_profile.png" id="GMr-8I-em4">
@@ -1478,7 +1478,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="300" id="JFH-dq-puo" customClass="PostWithoutImageCell">
-                                        <rect key="frame" x="0.0" y="435" width="320" height="300"/>
+                                        <rect key="frame" x="0.0" y="371" width="320" height="300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JFH-dq-puo" id="d56-fn-9Xx">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
@@ -1622,7 +1622,7 @@
         <scene sceneID="SEo-vv-EHO">
             <objects>
                 <navigationController definesPresentationContext="YES" id="nPe-gR-zdL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" title="Contacts" image="contacts_tab.png" id="jH4-pF-r6f"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="Contacts" image="contacts.png" id="jH4-pF-r6f"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="JFZ-5E-qD0">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1726,20 +1726,20 @@
         <image name="avatar.png" width="162" height="162"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
-        <image name="chat_tab.png" width="16" height="16"/>
         <image name="comment.png" width="19" height="17"/>
         <image name="comment_image.png" width="39" height="34"/>
-        <image name="contacts_tab.png" width="12" height="15"/>
+        <image name="contacts.png" width="30" height="30"/>
         <image name="conversation_new_notification.png" width="45" height="26"/>
-        <image name="home_tab.png" width="15" height="14"/>
+        <image name="home.png" width="30" height="30"/>
         <image name="loginwithfacebook.png" width="422" height="80"/>
+        <image name="messages.png" width="30" height="30"/>
         <image name="mychatbubble4.png" width="477" height="67"/>
-        <image name="new_chat_tab.png" width="16" height="16"/>
         <image name="next.png" width="200" height="76"/>
         <image name="notificationicon.png" width="70" height="70"/>
+        <image name="profile.png" width="30" height="30"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
-        <image name="set_tab.png" width="13" height="12"/>
+        <image name="proximity.png" width="30" height="30"/>
         <image name="share.png" width="20" height="17"/>
         <image name="share_image.png" width="40" height="34"/>
         <image name="thumbs-up.png" width="15" height="16"/>
@@ -1755,9 +1755,9 @@
         <segue reference="9uM-3L-Rl2"/>
         <segue reference="Jle-n7-Gmg"/>
         <segue reference="UFN-Sk-0kH"/>
-        <segue reference="FQd-EB-Shi"/>
-        <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="Rdk-3z-tPE"/>
+        <segue reference="tJq-gA-gHE"/>
+        <segue reference="FkJ-3g-qCP"/>
         <segue reference="htZ-EL-79i"/>
+        <segue reference="3ZQ-Ax-jzZ"/>
     </inferredMetricsTieBreakers>
 </document>

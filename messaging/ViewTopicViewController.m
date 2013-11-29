@@ -110,7 +110,7 @@ float timeInterval = 0.1;
     [self configureBackground];
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+
 
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -297,6 +297,8 @@ float timeInterval = 0.1;
 
 - (void)configureNavigationBar
 {
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
     self.title = _conversation.title;
 
     // navigate to profile through navigation bar for user-to-user conversation
@@ -306,13 +308,23 @@ float timeInterval = 0.1;
         [titleLabel setTitle:_conversation.title forState:UIControlStateNormal];
         titleLabel.tag = [_conversation getUniqueParticipant].remoteKey;
         
+        //Set colour to the view.
+        [titleLabel setTitleColor:tabColour forState:UIControlStateNormal];
+        
         //Set navigation to profile selector.
         titleLabel.frame = CGRectMake(0, 0, 70, 44);
         [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.titleView = titleLabel;
     }
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    self.navigationController.navigationBar.tintColor = tabColour;
+    
+    //self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
 
