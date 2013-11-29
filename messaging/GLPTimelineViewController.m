@@ -37,6 +37,7 @@
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPThemeManager.h"
+#import "ImageFormatterHelper.h"
 
 @interface GLPTimelineViewController ()
 
@@ -235,7 +236,7 @@ static BOOL likePushed;
     self.tabBarController.tabBar.hidden = NO;
     
     //Set colour of the border navigation bar image. TODO: Set one line image.
-    //[[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"imgbar"]];
+    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
     
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;

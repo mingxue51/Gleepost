@@ -12,5 +12,5 @@
 @interface ImageFormatterHelper : NSObject
 
 +(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToHeight: (float) finalHeight;
-
++(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour;
 @end

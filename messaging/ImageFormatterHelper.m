@@ -25,7 +25,18 @@
     return newImage;
 }
 
-
++(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour
+{
+    CGSize imageSize = CGSizeMake(320, 1);
+    UIGraphicsBeginImageContextWithOptions(imageSize, YES, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [colour setFill];
+    CGContextFillRect(context, CGRectMake(0, 0, imageSize.width, imageSize.height));
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
 
 
 /** Not used at the moment. **/
@@ -92,6 +103,8 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+
+
 
 -(float)calculateCenterX:(float)imageWidth
 {

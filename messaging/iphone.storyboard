@@ -1447,7 +1447,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mqm-rr-t3a">
                                             <rect key="frame" x="20" y="201" width="40" height="40"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" image="notificationicon.png">
+                                            <state key="normal" image="bell.png">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
@@ -1725,6 +1725,7 @@
         <image name="add_contact.png" width="304" height="105"/>
         <image name="avatar.png" width="162" height="162"/>
         <image name="background_profile.png" width="508" height="368"/>
+        <image name="bell.png" width="30" height="30"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
         <image name="comment.png" width="19" height="17"/>
         <image name="comment_image.png" width="39" height="34"/>

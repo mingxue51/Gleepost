@@ -16,7 +16,7 @@
 #import "NewCommentView.h"
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
-
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface PostCell()
 
@@ -113,7 +113,8 @@ static const float PostContentLabelMaxWidth = 250;
     if(url!=nil && postData.tempImage==nil)
     {
         // Here we use the new provided setImageWithURL: method to load the web image
-        [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
+        [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
     }
 
     
