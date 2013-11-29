@@ -12,6 +12,7 @@
 @interface GLPLoginManager : NSObject
 
 + (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success))callback;
++ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success))callback;
 + (void)logout;
 
 @end

@@ -149,8 +149,8 @@ static WebClient *instance = nil;
 }
 
 - (void)registerViaFacebookToken:(NSString *)token
-                  withNilOrEmail:(NSString *)email
-                andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock {
+                  withEmailOrNil:(NSString *)email
+                andCallbackBlock:(void (^)(BOOL success, NSString* responseObject))callbackBlock {
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     parameters[@"token"] = token;
     if (email) parameters[@"email"] = email;
@@ -158,14 +158,13 @@ static WebClient *instance = nil;
     [self postPath:@"fblogin" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"Response during FB login: %@", responseObject);
-        int remoteKey = [RemoteParser parseIdFromJson:responseObject];
-        callbackBlock(YES, responseObject, remoteKey);
+        callbackBlock(YES, responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        NSLog(@"ERROR OCCURRED DURING FACEBOOK LOGIN: %@", [RemoteParser parseFBRegisterErrorMessage:error.localizedRecoverySuggestion]);
+        NSLog(@"ERROR DURING FACEBOOK REGISTRATION: %@", [RemoteParser parseFBRegisterErrorMessage:error.localizedRecoverySuggestion]);
         NSString *errorMessage = [RemoteParser parseFBRegisterErrorMessage:error.localizedRecoverySuggestion];
-        callbackBlock(NO, errorMessage, -1);
+        callbackBlock(NO, errorMessage);
         
     }];
 }

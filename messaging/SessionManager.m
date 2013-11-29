@@ -102,8 +102,7 @@ static SessionManager *instance = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.dataPlistPath error:nil];
     
     // closing Facebook active session on clean up
-    #warning TODO: implement FB session closing
-//    [FBSession.activeSession close];
+    [[GLPFacebookConnect sharedConnection] logout];
 }
 
 - (BOOL)isSessionValid
@@ -112,14 +111,12 @@ static SessionManager *instance = nil;
     if(self.data[@"user.token"]) {
         NSDate *expirationDate = [[DateFormatterHelper createDefaultDateFormatter] dateFromString:self.data[@"user.expirationDate"]];
         
-        NSLog(@"----- email user authentication");
         // expired
         if([[NSDate date] compare:expirationDate] == NSOrderedAscending) {
             return YES;
         }
-    } else if ([GLPFacebookConnect isFacebookSessionValid]) {
-        NSLog(@"---- FBLogin state active");
-        return YES;
+//    } else if ([[GLPFacebookConnect sharedConnection] isFacebookSessionValid]) {
+//        return YES;
     }
     
     return NO;

@@ -10,7 +10,11 @@
 
 @interface GLPFacebookConnect : NSObject
 
-+ (void)connectWithFacebook;
-+ (BOOL)isFacebookSessionValid;
++ (GLPFacebookConnect *)sharedConnection;
+- (void)openSessionWithEmailOrNil:(NSString *)email completionHandler:(void (^)(BOOL success, NSString *name, NSString *response))completionHandler;
+//- (BOOL)isFacebookSessionValid;
+- (void)handleDidBecomeActive;
+- (BOOL)handleOpenURL:(NSURL *)url;
+- (void)logout;
 
 @end

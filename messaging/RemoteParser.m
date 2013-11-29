@@ -547,10 +547,14 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 + (NSString *)parseFBRegisterErrorMessage:(NSString *)error {
-    if ([error rangeOfString:@"unverified"].location == NSNotFound)
+    if ([error rangeOfString:@"Email required"].location != NSNotFound)
         return @"Facebook user does not have a Gleepost account assciated. Email is required.";
-    else
+    else if ([error rangeOfString:@"unverified"].location != NSNotFound)
         return @"Facebook account is not verified.";
+    else if ([error rangeOfString:@"Invalid email"].location != NSNotFound)
+        return @"Invalid email address entered. Valid university email required.";
+    else
+        return @"Unknown error occured";
 }
 
 #pragma mark - Images

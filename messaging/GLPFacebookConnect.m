@@ -10,59 +10,116 @@
 #import "FBSession.h"
 #import "SessionManager.h"
 #import "FBSessionTokenCachingStrategy.h"
+#import "FBRequestConnection.h"
+#import "FBGraphUser.h"
 #import "WebClient.h"
+
+@interface GLPFacebookConnect () {
+    void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
+    NSString *_universityEmail;
+}
+
+@end
 
 @implementation GLPFacebookConnect
 
-+ (void)connectWithFacebook {
-    NSArray *permissions = @[@"email"];
++ (GLPFacebookConnect *)sharedConnection {
+    static dispatch_once_t once;
+    static GLPFacebookConnect *sharedConnection;
+    dispatch_once(&once, ^{
+        sharedConnection = [[GLPFacebookConnect alloc] init];
+    });
     
+    return sharedConnection;
+}
+
+- (void)openSessionWithEmailOrNil:(NSString *)email completionHandler:(void (^)(BOOL success, NSString *name, NSString *response))completionHandler {
+    _openCompletionHandler = completionHandler;
+    _universityEmail = email;
+    
+    NSArray *permissions = @[@"basic_info"];
     [FBSession openActiveSessionWithReadPermissions:permissions
                                        allowLoginUI:YES
                                   completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                       if (error) {
                                           NSLog(@"FBSession connectWithFacebook failed");
-                                          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"An error occured while logging in through Facebook" delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                                          [alertView show];
+                                          [FBSession.activeSession closeAndClearTokenInformation];
                                       } else {
-                                          NSLog(@"FBSession sessionStateChanged");
-                                          [self sessionStateChanged:session state:status error:error];
+                                          [self sessionStateChanged:session
+                                                              state:status
+                                                              error:error];
                                       }
                                   }];
 }
 
-+ (BOOL)isFacebookSessionValid {
-    return (FBSession.activeSession.state == FBSessionStateOpen);
+//- (BOOL)isFacebookSessionValid {
+//    return (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded);
+//}
+
+- (void)handleDidBecomeActive {
+    [FBSession.activeSession handleDidBecomeActive];
 }
 
-+ (void)sessionStateChanged:(FBSession *)session
+- (BOOL)handleOpenURL:(NSURL *)url {
+    return [FBSession.activeSession handleOpenURL:url];
+}
+
+- (void)logout {
+    _universityEmail = nil;
+    [FBSession.activeSession closeAndClearTokenInformation];
+}
+
+- (void)sessionStateChanged:(FBSession *)session
                       state:(FBSessionState)state
                       error:(NSError *)error {
     switch (state) {
         case FBSessionStateOpen: {
-            #warning TODO: check email id implementation
-            [[WebClient sharedInstance] registerViaFacebookToken:[GLPFacebookConnect facebookLoginToken]
-                                                  withNilOrEmail:nil
-                                                andCallbackBlock:^(BOOL success, NSString *responseObject, int userRemoteKey) {
-                                                    NSLog(@"----- registered via FB");
+            [[WebClient sharedInstance] registerViaFacebookToken:[self facebookLoginToken]
+                                                  withEmailOrNil:_universityEmail
+                                                andCallbackBlock:^(BOOL success, NSString *responseObject) {
+                                                    if (success) {
+                                                        NSLog(@"Facebook registration succesful");
+                                                        
+                                                        // get User's name from Facebook
+                                                        [FBRequestConnection
+                                                         startForMeWithCompletionHandler:^(FBRequestConnection *connection,
+                                                                                           id<FBGraphUser> user,
+                                                                                           NSError *error) {
+                                                             if (!error) {
+                                                                 _openCompletionHandler(YES, user.name, responseObject);
+                                                             } else {
+                                                                 _openCompletionHandler(NO, nil, responseObject);
+                                                             }
+                                                         }];
+                                                    } else {
+                                                        NSLog(@"An error occurred while registering through facebook.");
+                                                        _openCompletionHandler(NO, nil, responseObject);
+                                                    }
                                                 }];
             break;
         }
         case FBSessionStateClosed: {
-            NSLog(@"Facebook login closed");
-            [[SessionManager sharedInstance] cleanSession];
-            break;
+//            [FBSession.activeSession closeAndClearTokenInformation];
+//            NSLog(@"Facebook login closed");
+//            [[SessionManager sharedInstance] cleanSession];
+//            break;
         }
         case FBSessionStateClosedLoginFailed: {
             NSLog(@"Facebook login failed.");
+            break;
+        }
+        case FBSessionStateCreatedTokenLoaded: {
+            NSLog(@"FBSessionStateCreatedTokenLoaded");
+            break;
         }
         default:
             break;
     }
 }
 
-+ (NSString *)facebookLoginToken {
+- (NSString *)facebookLoginToken {
     FBSessionTokenCachingStrategy *tokenCachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
+    NSLog(@"FB Token: %@", [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey]);
     return [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey];
 }
 
