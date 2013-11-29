@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Timeline View Controller - Campus Wall-->
@@ -1013,6 +1013,9 @@
                                 <state key="normal" image="loginwithfacebook.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="loginWithFacebook" destination="vOM-Ty-STp" eventType="touchUpInside" id="yGi-Zh-uMW"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HoV-PH-xCt">
                                 <rect key="frame" x="64" y="322" width="192" height="30"/>
@@ -1721,8 +1724,11 @@
     </scenes>
     <resources>
         <image name="Gleepost_main.png" width="406" height="212"/>
+        <image name="Gleepost_main.png" width="406" height="212"/>
+        <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept_contact.png" width="150" height="60"/>
         <image name="add_contact.png" width="304" height="105"/>
+        <image name="avatar.png" width="162" height="162"/>
         <image name="avatar.png" width="162" height="162"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
@@ -1735,6 +1741,8 @@
         <image name="messages.png" width="30" height="30"/>
         <image name="mychatbubble4.png" width="477" height="67"/>
         <image name="next.png" width="200" height="76"/>
+        <image name="next.png" width="200" height="76"/>
+        <image name="notificationicon.png" width="70" height="70"/>
         <image name="notificationicon.png" width="70" height="70"/>
         <image name="profile.png" width="30" height="30"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
@@ -1752,12 +1760,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="9uM-3L-Rl2"/>
-        <segue reference="Jle-n7-Gmg"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="tJq-gA-gHE"/>
+        <segue reference="sAu-s2-hfG"/>
         <segue reference="FkJ-3g-qCP"/>
+        <segue reference="tJq-gA-gHE"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="Jle-n7-Gmg"/>
+        <segue reference="9uM-3L-Rl2"/>
         <segue reference="htZ-EL-79i"/>
-        <segue reference="3ZQ-Ax-jzZ"/>
     </inferredMetricsTieBreakers>
 </document>
