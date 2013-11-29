@@ -12,7 +12,7 @@
 
 @implementation GLPConversationDaoParser
 
-+ (void)parseResultSet:(FMResultSet *)resultSet into:(GLPConversation *)entity
++ (void)parseResultSet:(FMResultSet *)resultSet into:(GLPConversation *)entity inDb:(FMDatabase *)db
 {
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
@@ -21,30 +21,24 @@
     entity.title = [resultSet stringForColumn:@"title"];
     entity.hasUnreadMessages = [resultSet boolForColumn:@"unread"];
     entity.isGroup = [resultSet boolForColumn:@"isGroup"];
+    entity.isLive = [resultSet boolForColumn:@"isLive"];
     
-    // get participants from json id
-//    NSMutableArray *participants = [NSMutableArray array];
-//    NSArray *participantsKeys = [[resultSet stringForColumn:@"participants"] componentsSeparatedByString:@","];
-//    for(NSString *key in participantsKeys) {
-//        [participants addObject:[GLPUserDao findByRemoteKey:[key integerValue]]];
-//    }
-//    entity.participants = participants;
-    
-    // get participants names
-//    NSMutableArray *participants = [NSMutableArray array];
-//    NSArray *participantsKeys = [[resultSet stringForColumn:@"participants"] componentsSeparatedByString:@","];
-//    for(NSString *key in participantsKeys) {
-//        [participants addObject:[GLPUserDao findByRemoteKey:[key integerValue]]];
-//    }
-//    
-//    entity.participantsNames = [[resultSet stringForColumn:@"participants_names"] componentsSeparatedByString:@","];
+    // get participants
+    NSArray *participantsKeys = [[resultSet stringForColumn:@"participants_keys"] componentsSeparatedByString:@";"];
+    NSMutableArray *participants = [NSMutableArray array];
+    for(NSString *key in participantsKeys) {
+        GLPUser *user = [GLPUserDao findByKey:[key integerValue] db:db];
+        NSAssert(user, @"User from conversation participants must not be null");
+        [participants addObject:user];
+    }
 
+    entity.participants = participants;
 }
 
-+ (GLPConversation *)createFromResultSet:(FMResultSet *)resultSet
++ (GLPConversation *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db
 {
     GLPConversation *entity = [[GLPConversation alloc] init];
-    [GLPConversationDaoParser parseResultSet:resultSet into:entity];
+    [GLPConversationDaoParser parseResultSet:resultSet into:entity inDb:db];
     
     return entity;
 }

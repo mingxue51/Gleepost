@@ -34,6 +34,9 @@
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
+#import "GLPPostNotificationHelper.h"
+#import "GLPThemeManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -51,6 +54,7 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
+
 // cron controls
 @property (assign, nonatomic) BOOL isReloadingCronRunning;
 @property (assign, nonatomic) BOOL shouldReloadingCronRun;
@@ -61,6 +65,7 @@
 @property (assign, nonatomic) BOOL firstLoadSuccessful;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
 @property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
+@property (assign, nonatomic) int postIndexToReload;
 
 // Not need because we use performselector which areis deprioritized during scrolling
 @property (assign, nonatomic) BOOL shouldLoadNewPostsAfterScrolling;
@@ -85,9 +90,23 @@ static BOOL likePushed;
 
 @implementation GLPTimelineViewController
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
+    {
+        [self configNotifications];
+    }
+    
+    return self;
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     [self configAppearance];
     [self configTableView];
@@ -128,7 +147,14 @@ static BOOL likePushed;
     
     self.commentCreated = NO;
     
+    self.postIndexToReload = -1;
+    
+    //TODO: Remove this later.
+    [ContactsManager sharedInstance];
+    
     [self loadInitialPosts];
+    
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -139,7 +165,16 @@ static BOOL likePushed;
         [self startReloadingCronImmediately:YES];
     }
     
+
+    if(self.postIndexToReload!=-1)
+    {
+        //Refresh post cell in the table view with index.
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        
+    }
+    
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -153,23 +188,68 @@ static BOOL likePushed;
     [self stopReloadingCron];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+}
+
+
+#pragma mark - Notifications
+
+/**
+ Updates the number of comments. Called only if number of comments changed in profile view controller or in view post view controller.
+ 
+ @param noticiation the post notification coming from profile view controller.
+ 
+ */
+-(void)updatePostWithRemoteKey:(NSNotification*)notification
+{
+
+    int index = [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
+    
+    if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
+    {
+        //Reload again only this post.
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+
+
+}
+
 #pragma mark - Init config
 
 - (void)configAppearance
 {
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTranslucent:YES];
     
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+    
+    //Set the  colour of navigation bar's title.
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
     self.tabBarController.tabBar.hidden = NO;
     
-    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    //Set colour of the border navigation bar image. TODO: Set one line image.
+    //[[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"imgbar"]];
+    
+//    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    [self.tabBarController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    
+//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
     
     [self setPlusButtonToNavigationBar];
+}
+
+-(void)configNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
 }
 
 - (void)configTableView
@@ -224,20 +304,24 @@ static BOOL likePushed;
 
 -(void) setPlusButtonToNavigationBar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
+    //UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
+    //imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
     
     
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeContactAdd];
     [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    btnBack.frame = imageView.bounds;
-    [imageView addSubview:btnBack];
+    [btnBack setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    //btnBack.frame = imageView.bounds;
+    //[imageView addSubview:btnBack];
     
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newPostButtonClick)];
+    [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-    self.navigationItem.rightBarButtonItem = item;
+    self.navigationItem.rightBarButtonItem = i;
 }
 
 -(void)setNavigationBarName
@@ -470,6 +554,27 @@ static BOOL likePushed;
     }];
 }
 
+
+-(void)reloadNewImagePostWithPost:(GLPPost*)inPost
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    self.isLoading = YES;
+    
+//    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *posts = [[NSArray alloc] initWithObjects:inPost, nil];
+    
+    [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+    
+    [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+    
+    
+    self.isLoading = NO;
+}
+
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
 {
     [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
@@ -682,6 +787,8 @@ static BOOL likePushed;
     
     self.selectedPost = self.posts[indexPath.row];
     self.selectedIndex = indexPath.row;
+    self.postIndexToReload = indexPath.row;
+    self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
@@ -802,6 +909,12 @@ static BOOL likePushed;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
     self.selectedPost = self.posts[postIndex];
+    self.postIndexToReload = postIndex;
+   
+    ++self.selectedPost.commentsCount;
+
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
     self.commentCreated = YES;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
@@ -885,7 +998,7 @@ static BOOL likePushed;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
     vc.image = clickedImageView.image;
-    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     
     [vc setTransitioningDelegate:self.transitionViewImageController];
     vc.modalPresentationStyle= UIModalPresentationCustom;
@@ -1252,10 +1365,12 @@ static BOOL likePushed;
          in order to fetch it from the server.
          */
         
+//        self.postIndexToReload = 
+        
         vc.commentJustCreated = self.commentCreated;
         
         vc.post = self.selectedPost;
-        vc.selectedIndex = self.selectedIndex;
+//        vc.selectedIndex = self.selectedIndex;
         
         
         self.selectedPost = nil;
@@ -1317,9 +1432,6 @@ static BOOL likePushed;
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        profileViewController.isUserJustAccepted = NO;
-
         
         GLPUser *incomingUser = [[GLPUser alloc] init];
         

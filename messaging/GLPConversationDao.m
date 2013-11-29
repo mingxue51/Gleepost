@@ -11,21 +11,10 @@
 #import "GLPConversationDaoParser.h"
 #import "FMResultSet.h"
 #import "GLPUserDao.h"
-#import "GLPConversationParticipantsDao.h"
 #import "SessionManager.h"
+#import "FMDatabaseAdditions.h"
 
 @implementation GLPConversationDao
-
-+ (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey
-{
-    __block GLPConversation *conversation;
-    
-    [DatabaseManager run:^(FMDatabase *db) {
-        conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
-    }];
-    
-    return conversation;
-}
 
 + (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
 {
@@ -35,99 +24,66 @@
         return nil;
     }
     
-    return [GLPConversationDaoParser createFromResultSet:resultSet];
+    return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
 }
 
-+ (NSArray *)findAllOrderByDate:(FMDatabase *)db;
++ (NSArray *)findConversationsOrderByDateFilterByLive:(BOOL)liveConversations inDb:(FMDatabase *)db;
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations order by lastUpdate DESC"];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where isLive=%d order by lastUpdate DESC", liveConversations];
     
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
-        [result addObject:[GLPConversationDaoParser createFromResultSet:resultSet]];
+        [result addObject:[GLPConversationDaoParser createFromResultSet:resultSet inDb:db]];
     }
     
     return result;
 }
 
-/**
- sqlite> SELECT Name, Day FROM Customers AS C JOIN Reservations
- ...> AS R ON C.CustomerId=R.CustomerId;
- */
-+(void)findUsersWithConversations:(NSArray*)conversations
-{
-//    [db executeUpdateWithFormat:@"select * from users as u join users as u on ",];
-}
-
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db
 {
+    // save the users that does not exist
+    // first because we want the key to exists
+    NSMutableArray *keys = [NSMutableArray array];
+    for(GLPUser *user in entity.participants) {
+        int key = user.key;
+        
+        if(key == 0) {
+            GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
+            
+            if(existingUser) {
+                key = existingUser.key;
+            } else {
+                [GLPUserDao save:user inDb:db];
+                key = user.key;
+            }
+        }
+        
+        [keys addObject:[NSNumber numberWithInt:key]];
+    }
+    
     int date = [entity.lastUpdate timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into conversations(remoteKey, lastMessage, lastUpdate, title, unread, isGroup) values(%d, %@, %d, %@, %d, %d)",
+//    NSArray *keys = [entity.participants valueForKeyPath:@"key"];
+    NSString *participants = [keys componentsJoinedByString:@";"];
+
+    
+    [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive) values(%d, %@, %d, %@, %@, %d, %d, %d)",
      entity.remoteKey,
      entity.lastMessage,
      date,
      entity.title,
+     participants,
      entity.hasUnreadMessages,
-     entity.isGroup];
+     entity.isGroup,
+     entity.isLive];
     
     entity.key = [db lastInsertRowId];
-    
-    GLPUser *opponentUser = nil;
-    
-    for(GLPUser *user in entity.participants)
-    {
-        if(user.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
-        {
-            opponentUser = user;
-        }
-    }
-    
-    
-    [GLPConversationDao insertConversationParticipantIfNotExist:entity.key withUserId: [GLPUserDao saveIfNotExist:opponentUser db:db] andDb:db];
-
-    
-    
-    //TODO: Added.
-    //Insert a participant if not exist.
-    for(GLPUser *user in entity.participants)
-    {
-        NSLog(@"Participant id: %d With conversation id: %d", user.remoteKey, entity.key);
-       
-    }
-    
-    //Insert participants and conversation id in conversation participants table if are not exist.
-    
-    
-    
-    //TODO: Do this after inserting the users into database.
-    //Save each conversation and users.
-    for(GLPUser *user in entity.participants)
-    {
-        NSLog(@"Participant id: %d With conversation id: %d", user.remoteKey, entity.key);
-    }
-    
-}
-
-+ (void)insertConversationParticipantIfNotExist: (int)conversationId withUserId: (int)userId andDb:(FMDatabase* )db
-{
-    //If participant is not exist, add the conversation, participant id pairs.
-    int convId = [GLPConversationParticipantsDao findByParticipantKey:userId db:db];
-    
-
-    
-//    if(convId == -1)
-//    {
-        [db executeUpdateWithFormat:@"insert into conversations_participants(user_key, conversation_key) values(%d, %d)", userId, conversationId];
-//    }
-    
 }
 
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db
 {
-    //TODO: Changed.
-    NSAssert(entity.remoteKey != 0, @"Cannot update entity without key");
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
     
     int date = [entity.lastUpdate timeIntervalSince1970];
     
@@ -140,18 +96,18 @@
      entity.key];
 }
 
-+ (void)updateUnread:(GLPConversation *)entity db:(FMDatabase *)db
++ (void)updateConversationUnreadStatus:(GLPConversation *)entity db:(FMDatabase *)db
 {
-    NSAssert(entity.remoteKey != 0, @"Cannot update entity without key");
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
     
     [db executeUpdateWithFormat:@"update conversations set unread=%d where key=%d",
      entity.hasUnreadMessages,
      entity.key];
 }
 
-+ (void)deleteAll:(FMDatabase *)db
++ (void)deleteAllNormalConversationsInDb:(FMDatabase *)db
 {
-    [db executeUpdate:@"delete from conversations"];
+    [db executeUpdate:@"delete from conversations where isLive=0"];
 }
 
 

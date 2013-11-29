@@ -12,8 +12,8 @@
 
 + (void)parseResultSet:(FMResultSet *)resultSet into:(GLPEntity *)entity
 {
-    entity.key = [resultSet intForColumn:GLPKeyColumn];
-    entity.remoteKey = [resultSet intForColumn:GLPRemoteKeyColumn];
+    entity.key = [resultSet intForColumn:@"key"];
+    entity.remoteKey = [resultSet intForColumn:@"remoteKey"];
 }
 
 @end

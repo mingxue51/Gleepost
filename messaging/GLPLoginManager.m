@@ -14,9 +14,9 @@
 #import "GLPUserDao.h"
 #import "GLPContact.h"
 #import "DatabaseManager.h"
+#import "GLPThemeManager.h"
 #import "GLPFacebookConnect.h"
 #import "RemoteParser.h"
-
 
 @implementation GLPLoginManager
 
@@ -54,6 +54,12 @@
 
 + (void)logout
 {
+	 //Stop all the operations running in the background.
+
+    [[GLPBackgroundRequestsManager sharedInstance] stopAll];
+    [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
+    [[GLPBackgroundRequestsManager sharedInstance] stopAll];
+    
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
 }
@@ -79,8 +85,6 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
                 return;
             }
             
-            NSLog(@"LOGIN USER %@ - %d", user.name, user.remoteKey);
-            
             [[DatabaseManager sharedInstance] initDatabase];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
@@ -91,8 +95,18 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
                 }
             }];
             
-            // create session
-//            [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+			//Set theme depending on the network name.
+            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+                
+            NSLog(@"Image for nav bar: %@ and chat background image: %@", [[GLPThemeManager sharedInstance]imageForNavBar], [[GLPThemeManager sharedInstance] imageForChatBackground]);
+                
+            // create session. CHANGED.
+            //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+            [[SessionManager sharedInstance]user].remoteKey = user.remoteKey;
+            [[SessionManager sharedInstance]user].profileImageUrl = user.profileImageUrl;
+            //Add token.
+//           [[SessionManager sharedInstance] setTokenFromResponse:token];
+//           [[SessionManager sharedInstance] setUserFromResponse:user];
             
             [[GLPBackgroundRequestsManager sharedInstance] startAll];
             
@@ -102,4 +116,3 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
 }
 
 @end
-

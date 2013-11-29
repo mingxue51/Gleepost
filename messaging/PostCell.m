@@ -15,12 +15,16 @@
 #import "WebClient.h"
 #import "NewCommentView.h"
 #import "GLPPostManager.h"
+#import "GLPPostNotificationHelper.h"
 
 
 @interface PostCell()
 
 @property (strong, nonatomic) GLPPost *post;
 @property (assign, nonatomic) int postIndex;
+@property (assign, nonatomic) float initialPostContentLabelY;
+@property (assign, nonatomic) float initialPostContentLabelHeight;
+
 @end
 
 @implementation PostCell
@@ -53,18 +57,11 @@ static const float StandardImageCellHeight = 400;
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
         [self.contentView addSubview:lineView];
         
-        
-        
-//        [self.contentView bringSubviewToFront:self.socialPanel];
-//        [self.contentView sendSubviewToBack:self.postImage];
-//        
-//        //Send to back the social panel.
-//        [self.socialPanel bringSubviewToFront:self.thumpsUpBtn];
-//        [self.socialPanel bringSubviewToFront:self.shareBtn];
+        NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
+        self.initialPostContentLabelY = 37;
+        self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
 
-        
 
-        
     }
     
     return self;
@@ -104,9 +101,6 @@ static const float PostContentLabelMaxWidth = 250;
     }
     
     
-
-    //[self fetchImagePostFromServer:url];
-    
     UIImage *userImage;
     
     //Add the default image.
@@ -120,8 +114,6 @@ static const float PostContentLabelMaxWidth = 250;
     {
         // Here we use the new provided setImageWithURL: method to load the web image
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
-        
-        //[self.postImage setImage:[self rectImage:self.postImage.image withRect:CGRectMake(0, 0, 300, 300)]];
     }
 
     
@@ -134,26 +126,17 @@ static const float PostContentLabelMaxWidth = 250;
 
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
-   // UIImageView *userImageImageView = [[UIImageView alloc] init];
-
-    
-   // NSLog(@"Image in post cell: %@ : %@", postData.author.profileImageUrl, postData.author.name);
 
     
     if([postData.author.profileImageUrl isEqualToString:@""])
     {
         NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
-//        [self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
         [self.userImageView setImage:userImage];
     }
     else
     {
         
         [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
-        
-        
-//        [self.userImage setBackgroundImage:self.userImageImageView.image forState: UIControlStateNormal];
-        
     }
 
     
@@ -162,16 +145,7 @@ static const float PostContentLabelMaxWidth = 250;
     
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
-    //NSLog(@"User name: %@ with remote key: %d", postData.author.name, postData.author.remoteKey);
-//
-//    if(user.profileImageUrl!=NULL)
-//    {
-//        //Add the image comes from server.
-//        //userImageUrl = postData.author.imageUrl;
-//        userImageUrl = [NSURL URLWithString:user.profileImageUrl];
-//        
-//        UIImageView *userImageImageView = [[UIImageView alloc] init];
-//        
+
 //        [userImageImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
 //         {
 //             NSLog(@"Downloading...");
@@ -181,16 +155,7 @@ static const float PostContentLabelMaxWidth = 250;
 //             [self.userImage setBackgroundImage:image forState: UIControlStateNormal];
 //
 //         }];
-//        
-////        [self.userImage setBackgroundImage:userImageImageView.image forState: UIControlStateNormal];
-//    }
-//    else
-//    {
 
-        
-        //Add the user's image.
-        //[self.userImage setBackgroundImage:userImage forState: UIControlStateNormal];
-//    }
     
     
     //Add the user's name.
@@ -206,38 +171,33 @@ static const float PostContentLabelMaxWidth = 250;
     [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views",postData.likes, postData.commentsCount, postData.remoteKey]];
     
 
-//    if(newText == nil)
-//    {
-        //Add the post's text content.
-        //[self.content setText: postData.content];
+
     [self.contentLbl setText:postData.content];
-//    }
-//    else
-//    {
-//        [self.content setText: [newText stringByAppendingString:@" . . ."]];
-//    }
-    
-//    NSLog(@"Needed text for content: %@ -> %@",postData.content,[PostCell findTheNeededText:postData.content]);
-    
     
     //Set like button status.
     if(postData.liked)
     {
         [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        
         //Add the thumbs up selected version of image.
         [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
     }
     else
     {
         [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        
         //Add the thumbs up selected version of image.
         [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
         
     }
     
+//    self.contentLbl.layer.borderColor=[UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth=1.0f;
+}
 
-
-
+-(void)refreshInformationLabel
+{
+    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views",self.post.likes, self.post.commentsCount, self.post.remoteKey]];
 }
 
 
@@ -271,21 +231,12 @@ static const float PostContentLabelMaxWidth = 250;
         [self.commentBtn setUserInteractionEnabled:NO];
         
         
-        
         CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
         
         
         CGRect frameSize = self.contentLbl.frame;
         
-        CGRect buttonFrameSize = self.thumpsUpBtn.frame;
-
-        
-
-        
-        NSLog(@"Frame Size before: %f : %f",frameSize.size.width, frameSize.size.height);
-        
-        float heightSize = contentSize.height;
-        
+ 
         [self.contentLbl setNumberOfLines:0];
 
         if(self.imageAvailable)
@@ -295,59 +246,31 @@ static const float PostContentLabelMaxWidth = 250;
             
             frameSize = self.contentLbl.frame;
             
-            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
+//            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
             
             //Move all views below content label.
             frameSize = self.postImage.frame;
             
             CGRect socialFrame = self.socialPanel.frame;
             
-            //self.postImage.frame = CGRectMake(frameSize.origin.x, self.frame.size.height-(frameSize.size.height+50.0), frameSize.size.width, frameSize.size.height);
-            
             self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+50.0), socialFrame.size.width, socialFrame.size.height);
-            
-            
-//            
-//            self.thumpsUpBtn.frame = CGRectMake(buttonFrameSize.origin.x, self.frame.size.height-(buttonFrameSize.size.height+50.0), buttonFrameSize.size.width, buttonFrameSize.size.height);
-//            
-//            self.commentBtn.frame = CGRectMake(self.commentBtn.frame.origin.x, self.frame.size.height-(buttonFrameSize.size.height+50.0), self.commentBtn.frame.size.width, self.commentBtn.frame.size.height);
-//            
-//            self.shareBtn.frame = CGRectMake(self.shareBtn.frame.origin.x, self.frame.size.height-(buttonFrameSize.size.height+50.0), self.shareBtn.frame.size.width, self.shareBtn.frame.size.height);
-//            
-//            
-//            self.buttonsBack.frame = CGRectMake(self.buttonsBack.frame.origin.x, self.frame.size.height-(self.buttonsBack.frame.size.height+50.0) ,self.buttonsBack.frame.size.width , self.buttonsBack.frame.size.height);
-//
-//            
-//            self.informationLabel.frame = CGRectMake(inforFrame.origin.x, self.frame.size.height-(inforFrame.size.height+73.0) , inforFrame.size.width, inforFrame.size.height);
+
         }
         else
         {
-            
-                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y, self.contentLbl.frame.size.width, contentSize.height);
-            
-                
-                NSLog(@"Frame Size after: %f : %f",self.contentLbl.frame.size.width, self.contentLbl.frame.size.height);
-                
-                if([self.contentLbl.text isEqualToString:@""])
-                {
-                    return;
-                }
-                
-                CGRect socialFrame = self.socialPanel.frame;
-                
-                
-                
-                self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
-            
-            if(contentSize.height < 20)
+            if([self.contentLbl.text isEqualToString:@""])
             {
-                [self.contentLbl setFrame:CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+10, self.contentLbl.frame.size.width, contentSize.height)];
+                return;
             }
             
+                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height+self.initialPostContentLabelHeight);
+                
+                CGRect socialFrame = self.socialPanel.frame;
+            
+                
+            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
 
         }
-        
-
     }
 
 }
@@ -356,8 +279,6 @@ static const float PostContentLabelMaxWidth = 250;
 
 - (IBAction)likePost:(id)sender
 {
-    NSLog(@"likePost.");
-    
     UIButton *btn = (UIButton*) sender;
     
     //If like button is pushed then set the pushed variable to NO and change the
@@ -373,6 +294,11 @@ static const float PostContentLabelMaxWidth = 250;
         
         //Change the like status and send to server the change.
         [self postLike:NO withPostRemoteKey:[self.post remoteKey]];
+        
+        //Decrease the number of likes.
+        --self.post.likes;
+        
+
     }
     else
     {
@@ -386,27 +312,17 @@ static const float PostContentLabelMaxWidth = 250;
         //Change the like status and send to server the change.
         [self postLike:YES withPostRemoteKey:[self.post remoteKey]];
         
+        //Increase the number of likes.
+        ++self.post.likes;
     }
+    
+    //Update the UI.
+    [self refreshInformationLabel];
     
     //Update post in local database.
     [GLPPostManager updatePostWithLiked: self.post];
-}
-
--(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
-{
-    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            NSLog(@"Like for post %d succeed.",postRemoteKey);
-        }
-        else
-        {
-            NSLog(@"Like for post %d not succeed.",postRemoteKey);
-        }
-        
-        
-    }];
+    
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
 }
 
 - (IBAction)commentPost:(id)sender
@@ -480,6 +396,41 @@ static const float PostContentLabelMaxWidth = 250;
 
 }
 
+/**
+ Sends a post notification to timeline view controller to update dynamically the number of likes.
+ */
+-(void)updateStatusInPost
+{
+    //Inform timeline view controller that number of likes changed.
+//    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.post.remoteKey],@"RemoteKey", [NSNumber numberWithInt:self.post.commentsCount], @"NumberOfComments",[NSNumber numberWithInt:self.post.likes], @"NumberOfLikes", nil];
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:dataDict];
+    
+    
+
+}
+
+#pragma mark - Client
+
+-(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
+{
+    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            NSLog(@"Like for post %d succeed.",postRemoteKey);
+        }
+        else
+        {
+            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+        }
+        
+        
+    }];
+}
+
+
 static const float firstContentTextViewHeight = 60;
 static const float firstImagePosition = 110;
 
@@ -491,272 +442,6 @@ static const float firstTextButtonsPosition = 99;
 static const float firstTextInformationPosition = 300;
 
 static const float contentTextViewLimit = 100;
-
-//-(void) updateWithPostData:(Post *)postData withImage:(BOOL)image
-//{
-//
-//    NSLog(@"TableViewCell : updateWithPostData");
-//    
-//
-//    
-//    /**
-//     Retain first location values.
-//     */
-//    
-//    if(image)
-//    {
-//        CGRect postImageFrame = self.postImage.frame;
-//        CGRect btnFrame = self.commentBtn.frame;
-//
-//        //Set image to the image view.
-//        [self.postImage setImage:[UIImage imageNamed:@"post_image"]];
-//        
-//        self.postImage.frame = CGRectMake(postImageFrame.origin.x, firstImagePosition, postImageFrame.size.width, postImageFrame.size.height);
-//        
-//        self.commentBtn.frame = CGRectMake(btnFrame.origin.x, firstImageButtonsPosition, btnFrame.size.width, btnFrame.size.height);
-//        
-//        self.thumpsUpBtn.frame = CGRectMake(self.thumpsUpBtn.frame.origin.x, firstImageButtonsPosition, self.thumpsUpBtn.frame.size.width, self.thumpsUpBtn.frame.size.height);
-//
-//        self.shareBtn.frame = CGRectMake(self.shareBtn.frame.origin.x, firstImageButtonsPosition, self.shareBtn.frame.size.width, self.shareBtn.frame.size.height);
-//        
-//        
-//        [self setNewYViewLocationWithView:self.socialPanel andNewYLocation:firstSocialPanelPosition withImage:2];
-//        NSLog(@"Social Panel Position: %f",self.socialPanel.frame.origin.y);
-//
-//        
-//        [self setNewYViewLocationWithView:self.informationLabel andNewYLocation:firstImageInformationPosition withImage:2];
-//        
-//
-//        
-//        NSLog(@"Image\nSocial Panel: %f, Buttons Position: %f, Information Position %f", self.socialPanel.frame.origin.y, self.commentBtn.frame.origin.y, self.informationLabel.frame.origin.y);
-//        
-//    }
-//    else
-//    {
-//        
-//        NSLog(@"Text\nSocial Panel: %f, Buttons Position: %f, Information Position %f", self.socialPanel.frame.origin.y, self.commentBtn.frame.origin.y, self.informationLabel.frame.origin.y);
-//
-//        [self setNewYViewLocationWithView:self.thumpsUpBtn andNewYLocation:firstTextButtonsPosition withImage:2];
-//        
-//        [self setNewYViewLocationWithView:self.commentBtn andNewYLocation:firstTextButtonsPosition withImage:2];
-//
-//        [self setNewYViewLocationWithView:self.shareBtn andNewYLocation:firstTextButtonsPosition withImage:2];
-//        
-//        
-//
-//        
-//        
-//        //TODO: Add the information panel.
-//
-//        
-//    }
-//    
-//    //Set the default size of content's text view.
-//    self.content.frame = CGRectMake(self.content.frame.origin.x, self.content.frame.origin.y, self.content.frame.size.width, firstContentTextViewHeight);
-//    
-//    
-//    /**
-//     Add data to the elements of the cells.
-//     */
-//    
-//    
-//    //Add the user's image.
-//    [self.userImage setImage:[UIImage imageNamed:@"avatar_big"]];
-//    
-//    //Add the user's name.
-//    [self.userName setText:postData.user.name];
-//    
-//    //Add the post's time.
-//    [self.postTime setText:postData.date.description];
-//    
-//    
-//    //Add text to information label.
-//    [self.informationLabel setText:@"27 likes 3 comments 127 views"];
-//    
-//    //NSLog(@"Content: %@\nHeight before: %f",postData.content, self.content.frame.size.height);
-//    
-//    float oldHeight = self.content.frame.size.height;
-//    /**
-//     Resize the elements depending on the content's text view final height.
-//     */
-//    
-//    float contentHeight = [PostCell getContentLabelHeightForContent:postData.content];
-//    
-//    //Find the difference between current height and new height.
-////    float contentDifference = contentHeight - self.content.frame.size.height;
-////    float socialDifference = contentHeight - self.socialPanel.frame.size.height+35;
-////    float buttonsDifference = contentHeight - self.thumpsUpBtn.frame.size.height;
-//    
-//    float difference = contentHeight - oldHeight;
-//    
-//
-//   // NSLog(@"DIFFERENCE: %f", difference);
-//    
-//   // NSLog(@"Height After: %f", contentHeight);
-//   // NSLog(@"Old and New Heights: %f : %f",oldHeight, contentHeight);
-//    
-//    if(difference > 0)
-//    {
-//        
-//        //self.content.frame = CGRectMake(self.content.frame.origin.x, self.content.frame.origin.y, self.content.frame.size.width, contentHeight + MessageContentViewPadding);
-//        
-//        
-//        
-//        //self.content.frame = CGRectMake(self.content.frame.origin.x, self.content.frame.origin.y, self.content.frame.size.width, contentHeight);
-//        
-//        //Relocate the other elements.
-//        CGRect postImageFrame = self.postImage.frame;
-//        CGRect socialPanelFrame = self.socialPanel.frame;
-//        
-//        
-//        float i = [PostCell getCellHeightWithContent:[PostCell findTheNeededText:postData.content] andImage:image];
-//
-//        NSLog(@"I: %f Content: %@",i, postData.content);
-//
-//        
-//        //Remove text that is after three lines.
-//        
-//        //Add the post's text content.
-//        [self.content setText: [[PostCell findTheNeededText:postData.content] stringByAppendingString:@"  . . ."]];
-//        
-//        
-//        //[self setNewYViewLocationWithView:self.postImage andNewYLocation:postImageFrame.origin.y+difference+10 withImage:2];
-//        
-//        //[self setNewYViewLocationWithView:self.socialPanel andNewYLocation:socialPanelFrame.origin.y+difference+45 withImage:2];
-//        
-//
-//        
-////
-//        [self setNewYViewLocationWithView:self.thumpsUpBtn andNewYLocation:i+10 withImage:image];
-////        
-////        
-//        [self setNewYViewLocationWithView:self.commentBtn andNewYLocation:i+10 withImage:image];
-////        
-////        
-//        [self setNewYViewLocationWithView:self.shareBtn andNewYLocation:i+10 withImage:image];
-////
-//        [self setNewYViewLocationWithView:self.informationLabel andNewYLocation:i-7 withImage:image];
-//
-//        if(!image)
-//        {
-//            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(5, self.informationLabel.frame.origin.y, self.contentView.frame.size.width-10, 1)];
-//            
-//            lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.04];
-//            [self.contentView addSubview:lineView];
-//        }
-//        
-//        
-//        return;
-//    }
-//    
-//    self.content.frame = CGRectMake(self.content.frame.origin.x, self.content.frame.origin.y, self.content.frame.size.width, contentHeight + MessageContentViewPadding);
-//
-//    
-//    
-//    //self.content.frame = CGRectMake(self.content.frame.origin.x, self.content.frame.origin.y, self.content.frame.size.width, contentHeight);
-//    
-//    //Relocate the other elements.
-//    CGRect postImageFrame = self.postImage.frame;
-//    CGRect socialPanelFrame = self.socialPanel.frame;
-//    
-//    //Add the post's text content.
-//    [self.content setText: postData.content];
-//    
-//
-//    //self.postImage.frame = CGRectMake(postImageFrame.origin.x, postImageFrame.origin.y+difference, postImageFrame.size.width, postImageFrame.size.height);
-//    
-//    [self setNewYViewLocationWithView:self.postImage andNewYLocation:postImageFrame.origin.y+difference+10 withImage:2];
-//
-//    
-//    
-//    NSLog(@"Buttons Height: %f : %f :%f",self.thumpsUpBtn.frame.origin.y, self.commentBtn.frame.origin.y, self.shareBtn.frame.origin.y);
-//    //[self setNewYViewLocationWithView:self.commentBtn andNewYLocation:self.commentBtn.frame.origin.y+difference+45 withImage:image];
-//
-//    
-//    //[PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO]
-//    //[self setNewYViewLocationWithView:self.thumpsUpBtn andNewYLocation:self.thumpsUpBtn.frame.origin.y+difference+45];
-//    
-//    float i = [PostCell getCellHeightWithContent:[PostCell findTheNeededText:postData.content] andImage:image];
-//    
-//    [self setNewYViewLocationWithView:self.socialPanel andNewYLocation:i-65 withImage:2];
-//
-//    
-//    
-//    [self setNewYViewLocationWithView:self.thumpsUpBtn andNewYLocation:i+10 withImage:image];
-//
-//    
-//    [self setNewYViewLocationWithView:self.commentBtn andNewYLocation:i+10 withImage:image];
-//
-//    
-//    [self setNewYViewLocationWithView:self.shareBtn andNewYLocation:i+10 withImage:image];
-//    
-//    [self setNewYViewLocationWithView:self.informationLabel andNewYLocation:i-10 withImage:image];
-//    
-//    
-//    if(!image)
-//    {
-//        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(5, self.informationLabel.frame.origin.y, self.contentView.frame.size.width-10, 1)];
-//        
-//        lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.04];
-//        [self.contentView addSubview:lineView];
-//    }
-//
-//}
-
-
-
-
-//static float heightOfALine = 14.31;
-static float heightOfALine = 14.31;
-static int noOfLetters = 41;
-
-
-+(NSString*) findTheNeededText: (NSString*)str
-{
-    NSString* finalStr = [[NSString alloc] init];
-    
-    int numberOfLines = 0;
-    for(int i=0; i<str.length; ++i)
-    {
-        //NSLog(@"No of Lines: %f For string: %@\nFinal String: %@", [PostCell numberOfLinesUsingString: [str substringToIndex:i]], str, finalStr);
-        
-        if(i%41==0)
-        {
-            ++numberOfLines;
-        }
-        
-        if(numberOfLines == 3)
-        {
-            return [str substringToIndex:i];
-        }
-        
-//        if([PostCell numberOfLinesUsingString: [str substringToIndex:i]] > 2.5)
-//        {
-//            
-//            //The text reach the limit.
-//            //Return the string.
-//            
-//            //return [finalStr substringToIndex:finalStr.length-20];
-//             return finalStr;
-//        }
-//        else
-//        {
-//            //Append the final string.
-//            finalStr = [str substringToIndex:i];
-//        }
-    }
-    
-    return nil;
-}
-
-//+(float) numberOfLinesUsingString: (NSString*)str
-//{
-//    float height = [PostCell getContentLabelHeightForContent:str];
-//    
-//    float numberOfLines = height/heightOfALine;
-//    
-//    return numberOfLines;
-//}
 
 
 /**

@@ -14,8 +14,9 @@
 
 + (void)parseResultSet:(FMResultSet *)resultSet into:(GLPContact *)entity
 {
-    [GLPEntityDaoParser parseResultSet:resultSet into:entity];
-    
+    //[GLPEntityDaoParser parseResultSet:resultSet into:entity];
+    entity.remoteKey = [resultSet intForColumn:@"remoteKey"];
+
     entity.user = [[GLPUser alloc] init];
     entity.theyConfirmed = [resultSet boolForColumn:GLPContactTheyConfirmed];
     entity.youConfirmed = [resultSet boolForColumn:GLPContactYouConfirmed];

@@ -13,20 +13,9 @@
 
 @implementation GLPUserDao
 
-+ (GLPUser *)findByRemoteKey:(NSInteger)remoteKey
++ (GLPUser *)findByKey:(NSInteger)key db:(FMDatabase *)db
 {
-    __block GLPUser *user = nil;
-    
-    [DatabaseManager run:^(FMDatabase *db) {
-        user = [GLPUserDao findByRemoteKey:remoteKey db:db];
-    }];
-    
-    return user;
-}
-
-+ (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
-{
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where remoteKey=%d limit 1", remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where key=%d limit 1", key];
     
     GLPUser *user = nil;
     
@@ -37,9 +26,9 @@
     return user;
 }
 
-+ (GLPUser *)findByKey:(NSInteger)key db:(FMDatabase *)db
++ (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where key=%d limit 1", key];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where remoteKey=%d limit 1", remoteKey];
     
     GLPUser *user = nil;
     
@@ -111,6 +100,17 @@
     
     //If the user not exist add user.
     
+}
+
++(void)updateUserWithRemotKey:(int)remoteKey andProfileImage:(NSString*)imageUrl
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        BOOL b = [db executeUpdateWithFormat:@"update users set image_url=%@ where remoteKey=%d",
+         imageUrl,
+         remoteKey];
+        
+        NSLog(@"User's image saved with status: %d", b);
+    }];
 }
 
 +(void)update:(GLPUser*)entity

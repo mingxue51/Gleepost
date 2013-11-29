@@ -9,7 +9,7 @@
 #import "RemoteParser.h"
 #import "DateFormatterHelper.h"
 #import "SendStatus.h"
-
+#import "GLPLike.h"
 
 
 @interface RemoteParser()
@@ -68,7 +68,27 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json
 {
-    GLPConversation *conversation = [[GLPConversation alloc] init];
+    // get participants
+    NSMutableArray *participants = [NSMutableArray array];
+    for(id jsonUser in json[@"participants"]) {
+        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
+        [participants addObject:user];
+    }
+    
+    GLPConversation *conversation;
+    
+    // live conversation with expiry block
+    NSDictionary *expiry = json[@"expiry"];
+    if(expiry) {
+        NSDate *expiryDate = [RemoteParser parseDateFromString:expiry[@"time"]];
+        BOOL ended = [expiry[@"ended"] boolValue];
+        conversation = [[GLPConversation alloc] initWithParticipants:participants expiryDate:expiryDate ended:ended];
+    }
+    // normal conversation
+    else {
+        conversation = [[GLPConversation alloc] initWithParticipants:participants];
+    }
+    
     conversation.remoteKey = [json[@"id"] integerValue];
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
@@ -78,23 +98,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
     
-    NSMutableArray *participants = [NSMutableArray array];
-
-    for(id jsonUser in json[@"participants"]) {
-        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
-        [participants addObject:user];
-    }
-    
-    conversation.isGroup = (participants.count > 2) ? YES : NO;
-
-    
-    conversation.author = [participants objectAtIndex:0];
-    [conversation setTitleFromParticipants:participants];
-    
     return conversation;
 }
 
-+(NSMutableArray*)findRegularConversations:(NSArray*)allConversations
++(NSMutableArray*)parseNormalConversations:(NSArray*)allConversations
 {
     NSMutableArray *finalConversations = [[NSMutableArray alloc] init];
     
@@ -109,29 +116,23 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return finalConversations;
 }
 
-+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations
++ (NSArray *)parseConversationsFilterByLive:(BOOL)live fromJson:(NSArray *)jsonConversations
 {
-    //Separate regular conversations from live conversations.
-    
-    NSMutableArray *jsonRegularConversations = [RemoteParser findRegularConversations:jsonConversations];
- 
     NSMutableArray *conversations = [NSMutableArray array];
 
-    
-    for(id jsonConversation in jsonRegularConversations)
-    {
-        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+    for(id jsonConversation in jsonConversations) {
+        BOOL filter = (live && jsonConversation[@"expiry"]) || (!live && !jsonConversation[@"expiry"]);
+        if(filter) {
+            [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+            
+            // no more than 3 live conversations
+            if(live && conversations.count == 3) {
+                break;
+            }
+        }
     }
     
     return conversations;
-
-    
-//    NSMutableArray *conversations = [NSMutableArray array];
-//    for(id jsonConversation in jsonConversations) {
-//        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
-//    }
-//    
-//    return conversations;
 }
 
 #pragma mark - Live conversations
@@ -322,7 +323,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 
-#pragma mark - Posts and comments
+#pragma mark - Posts, comments and likes
 
 + (GLPPost *)parsePostFromJson:(NSDictionary *)json
 {
@@ -331,8 +332,28 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
-    post.commentsCount = [json[@"comments"] integerValue];
-    post.likes = [json[@"likes"] integerValue];
+    
+
+    if([json[@"comments"] isKindOfClass:[NSArray class]])
+    {
+        post.commentsCount = 0;
+
+    }
+    else
+    {
+        post.commentsCount = [json[@"comments"] integerValue];
+    }
+    
+    
+    if([json[@"likes"] isKindOfClass:[NSArray class]] || json[@"likes"] == [NSNull null])
+    {
+        post.likes = 0;
+    }
+    else
+    {
+        post.likes = [json[@"likes"] integerValue];
+    }
+    
     post.dislikes = [json[@"hates"] integerValue];
     
 
@@ -384,6 +405,75 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return post;
 }
 
++(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json
+{
+    GLPPost *post = [[GLPPost alloc] init];
+    post.remoteKey = [json[@"id"] integerValue];
+    post.author = [RemoteParser parseUserFromJson:json[@"by"]];
+    post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
+    post.content = json[@"text"];
+    
+    NSArray* comments = nil;
+
+    if(json[@"comments"] == [NSNull null])
+    {
+        post.commentsCount = 0;
+    }
+    else
+    {
+         comments = [RemoteParser parseCommentsFromJson:json[@"comments"] forPost:post];
+    }
+    
+    post.commentsCount = comments.count;
+
+    
+    //TODO: Parse comments.
+    //post.commentsCount = [json[@"comments"] integerValue];
+    
+    NSArray *likes = nil;
+    
+    //TODO: Parse likes.
+    if (json[@"likes"] == [NSNull null])
+    {
+        post.likes = 0;
+    }
+    else
+    {
+        likes = [RemoteParser parseLikesFromJson:json[@"likes"] forPost:post];
+        post.likes = likes.count;
+    }
+
+
+    
+    post.dislikes = [json[@"hates"] integerValue];
+    
+    
+    NSArray *jsonArray = json[@"images"];
+    
+    if(jsonArray == (id)[NSNull null])
+    {
+        post.imagesUrls = nil;
+    }
+    else
+    {
+        if(jsonArray.count > 0)
+        {
+            NSMutableArray *imagesUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
+            
+            for(NSString *url in jsonArray)
+            {
+                [imagesUrls addObject:url];
+            }
+            post.imagesUrls = imagesUrls;
+        } else
+        {
+            post.imagesUrls = [NSArray array];
+        }
+    }
+    
+    return post;
+}
+
 + (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts
 {
     NSMutableArray *posts = [NSMutableArray array];
@@ -417,6 +507,33 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return comments;
 }
 
++(GLPLike *)parseLikeFromJson:(NSDictionary *)json forPost:(GLPPost *)post
+{
+    NSDate *date = [RemoteParser parseDateFromString:json[@"timestamp"]];
+    
+    GLPLike *like = [[GLPLike alloc] initWithUser:[RemoteParser parseUserFromJson:json[@"by"]] withDate:date andPost:post];
+    
+    return like;
+    
+}
+
++(NSArray*)parseLikesFromJson:(NSArray*)jsonLikes forPost:(GLPPost*)post
+{
+    NSMutableArray *likes = [NSMutableArray array];
+    
+    if(jsonLikes == (id)[NSNull null])
+    {
+        return likes;
+    }
+    
+    for(id jsonLike in jsonLikes)
+    {
+        [likes addObject: [RemoteParser parseLikeFromJson:jsonLike forPost:post]];
+    }
+    
+    return likes;
+}
+
 #pragma mark - Contacts
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts
@@ -424,6 +541,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    NSLog(@"Load Contacts JSON: %@", jsonContacts);
     
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
+    
     
     for (id contactJson in jsonContacts)
     {
@@ -581,18 +699,42 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 + (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json
 {
     GLPNotification *notification = [[GLPNotification alloc] init];
+    NSString* notificationsType = json[@"type"];
+    GLPNotificationType type;
+
+    if([notificationsType isEqualToString:@"accepted_you"])
+    {
+        type = kGLPNotificationTypeAcceptedYou;
+    }
+    else if([notificationsType isEqualToString:@"added_you"])
+    {
+        type = kGLPNotificationTypeAddedYou;
+    }
+    else if([notificationsType isEqualToString:@"commented"])
+    {
+        type = kGLPNotificationTypeCommented;
+    }
+    else if([notificationsType isEqualToString:@"liked"])
+    {
+        type = kGLPNotificationTypeLiked;
+    }
+    
+    notification.notificationType = type;
+    notification.seen = NO;
+    
     notification.remoteKey = [json[@"id"] integerValue];
-    notification.postRemoteKey = (json[@"post"] && json[@"post"] != [NSNull null]) ? [json[@"post"] intValue] : 0;
+    notification.postRemoteKey = (json[@"post"] != [NSNull null]) ? [json[@"post"] intValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
-    notification.user = [RemoteParser parseUserFromJson:json[@"by"]];
+    notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
     
     return notification;
 }
 
-+ (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations
++ (NSArray *)parseNotificationsFromJson:(NSArray *)jsonNotifications
 {
     NSMutableArray *items = [NSMutableArray array];
-    for(id item in items) {
+    for(id item in jsonNotifications) {
+        
         [items addObject:[RemoteParser parseNotificationFromJson:item]];
     }
     

@@ -15,7 +15,22 @@
 
 + (NSArray *)findNotificationsForUser:(GLPUser *)user inDb:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where user_remote_key = %d order by remoteKey desc", user.remoteKey];
+    //FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where user_remote_key = %d order by remoteKey desc", user.remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications order by date desc"];
+
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPNotificationDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
++ (NSArray *)findUnreadNotificationsInDb:(FMDatabase *)db
+{
+    //FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where user_remote_key = %d order by remoteKey desc", user.remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where seen = 0"];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -39,10 +54,11 @@
 {
     int date = [entity.date timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, notification_type, date, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, seen, date, type, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d, %d)",
                       entity.remoteKey,
+                        entity.seen,
+                        date,
                       entity.notificationType,
-                      date,
                       entity.postRemoteKey,
                       entity.user.remoteKey];
     
@@ -53,5 +69,28 @@
 {
     return [db intForQuery:@"select count(key) from notifications where seen = 0"];
 }
+
++ (NSInteger)countReadNotificationsInDb:(FMDatabase *)db
+{
+    return [db intForQuery:@"select count(key) from notifications where seen = 1"];
+}
+
++(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number
+{
+    
+    /**
+     DELETE FROM ranking WHERE id NOT IN (
+     SELECT id FROM ranking ORDER BY score DESC LIMIT 100);
+     */
+    
+    BOOL s = [db executeUpdateWithFormat:@"delete from notifications where key in (select key from notifications where seen = 1 order by date desc limit %d)",number];
+    NSLog(@"Some notifications are deleted: %d",s);
+}
+
++(void)deleteTableWithDb:(FMDatabase*)db
+{
+    [db executeUpdateWithFormat:@"delete from notifications"];
+}
+
 
 @end

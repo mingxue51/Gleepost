@@ -16,8 +16,9 @@
 
 extern int const NumberMaxOfMessagesLoaded;
 
-+ (NSArray *)getLocalConversations;
++ (NSArray *)getLocalNormalConversations;
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
++ (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 + (void)markConversationRead:(GLPConversation *)conversation;
 
 + (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
@@ -25,10 +26,5 @@ extern int const NumberMaxOfMessagesLoaded;
 
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
 + (void)saveMessageFromLongpoll:(GLPMessage *)message;
-+(GLPUser* )loadUserWithMessageId: (int)messageId;
-
-+(GLPUser* )userWithConversationId:(int)conversationId;
-
-+(void)usersWithConversationId:(int)conversationId callback:(void (^)(BOOL success, NSArray *participants))callback;
 
 @end

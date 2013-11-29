@@ -14,6 +14,16 @@
 
 @implementation GLPLiveConversationDao
 
++ (GLPLiveConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from live_conversations where remoteKey=%d limit 1", remoteKey];
+    
+    if(![resultSet next]) {
+        return nil;
+    }
+    
+    return [GLPLiveConversationDaoParser createFromResultSet:resultSet];
+}
 
 + (NSArray *)findAllOrderByDate:(FMDatabase *)db;
 {
@@ -84,7 +94,7 @@
 //    if(convId == -1)
 //    {
         BOOL success = [db executeUpdateWithFormat:@"insert into live_conversations_participants(live_user_key, live_conversation_key) values(%d, %d)", userId, conversationId];
-        NSLog(@"Success: %d",success);
+        NSLog(@"LiveConversationDao insertConversationParticipantIfNotExist: %d",success);
 //    }
     
 }
@@ -98,12 +108,11 @@
 
 + (void)update:(GLPLiveConversation *)entity db:(FMDatabase *)db
 {
-    //TODO: Changed.
-    NSAssert(entity.remoteKey != 0, @"Cannot update entity without key");
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
     
     int date = [entity.lastUpdate timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"update live_conversations set remoteKey=%d, lastMessage=%@, lastUpdate=%d, title=%@, unread=%d, timeStarted=%d where key=%d",
+    [db executeUpdateWithFormat:@"update live_conversations set remoteKey=%d, lastUpdate=%d, title=%@, unread=%d, timeStarted=%d where key=%d",
      entity.remoteKey,
      date,
      entity.title,
@@ -111,6 +120,18 @@
      entity.timeStarted,
      entity.key];
 }
+
++ (void)updateLastUpdate:(GLPLiveConversation *)entity db:(FMDatabase *)db
+{
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
+    
+    int lastUpdate = [entity.lastUpdate timeIntervalSince1970];
+    
+    [db executeUpdateWithFormat:@"update live_conversations set lastUpdate=%d where key=%d",
+     lastUpdate,
+     entity.key];
+}
+
 
 + (void)deleteAll:(FMDatabase *)db
 {

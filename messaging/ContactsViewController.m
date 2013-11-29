@@ -18,7 +18,8 @@
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+GAI.h"
-
+#import "UIViewController+Flurry.h"
+#import "GLPThemeManager.h"
 
 @interface ContactsViewController ()
 
@@ -64,7 +65,12 @@
     
     //Change the format of the navigation bar.
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
     [self.navigationController.navigationBar setTranslucent:YES];
 
 
@@ -79,6 +85,7 @@
     [self loadContacts];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void) clearUselessSections

@@ -14,6 +14,5 @@
 @interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate>
 
 @property (strong, nonatomic) GLPUser* incomingUser;
-@property (assign, nonatomic) BOOL isUserJustAccepted;
 
 @end

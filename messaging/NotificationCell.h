@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPNotification.h"
+#import "NotificationsViewController.h"
 
 @interface NotificationCell : UITableViewCell
 
@@ -20,10 +21,11 @@ extern NSString * const kGLPNotificationCell;
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 @property (weak, nonatomic) IBOutlet UIButton *ignoreButton;
+@property (weak, nonatomic) IBOutlet UIImageView *incomingNotification;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content;
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;
 
-- (void)updateWithNotification:(GLPNotification *)notification;
+- (void)updateWithNotification:(GLPNotification *)notification withViewController:(NotificationsViewController*) controller;
 
 @end

@@ -31,6 +31,10 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="conversation_new_notification.png" translatesAutoresizingMaskIntoConstraints="NO" id="uoH-qy-TED">
+                        <rect key="frame" x="265" y="40" width="55" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HMo-qk-oEd" userLabel="Button view">
                         <rect key="frame" x="71" y="58" width="240" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -60,12 +64,14 @@
                 <outlet property="contentLabel" destination="929-kD-Ex9" id="d9M-Pf-Rmh"/>
                 <outlet property="ignoreButton" destination="A2N-x4-pK2" id="OGd-4y-nTW"/>
                 <outlet property="image" destination="IA8-sF-11N" id="xLp-tx-bjF"/>
+                <outlet property="incomingNotification" destination="uoH-qy-TED" id="OPm-ED-O94"/>
                 <outlet property="time" destination="vW9-AR-KT1" id="8d6-V8-BaB"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
         <image name="accept_contact.png" width="150" height="60"/>
+        <image name="conversation_new_notification.png" width="45" height="26"/>
         <image name="ignore_contact.png" width="150" height="60"/>
         <image name="notificationicon.png" width="70" height="70"/>
     </resources>

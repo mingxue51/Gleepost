@@ -241,6 +241,23 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)getPostWithRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%d/", remoteKey];
+    
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        
+        GLPPost *post = [RemoteParser parseIndividualPostFromJson:responseObject];
+        
+        callbackBlock(YES, post);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
 //-(void)upload
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
@@ -306,16 +323,10 @@ static WebClient *instance = nil;
 
 #pragma mark - Conversations
 
-- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
+- (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
-//    [self.operationQueue setMaxConcurrentOperationCount:1];
-//    [self.operationQueue addOperationWithBlock:^{
-//        [NSThread sleepForTimeInterval:5];
-//    }];
-    
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
+        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:live fromJson:responseObject];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -373,7 +384,7 @@ static WebClient *instance = nil;
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSArray *conversations = [RemoteParser parseLiveConversationsFromJson:responseObject];
+        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:responseObject];
         
         //Choose the last three conversations and sort them by expiration date.
         conversations = [RemoteParser orderAndGetLastThreeConversations:conversations];
@@ -423,19 +434,27 @@ static WebClient *instance = nil;
 //    }];
 //}
 
-- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
+//- (void)createOneToOneConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
+//{
+//    [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
+//}
+//
+//- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
+//{
+//    [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
+//}
+
+- (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
 {
-    [self createConversationWithPath:@"newconversation" andCallbackBlock:callbackBlock];
+    [self postPath:@"newconversation" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
+        callback(YES, conversation);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
 }
 
-- (void)createGroupConversationWithCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
-{
-    [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
-}
 
-/**
- Create a new conversation.
- */
 - (void)createConversationWithPath:(NSString *)path andCallbackBlock:(void (^)(BOOL success, GLPConversation *conversation))callbackBlock
 {
     [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -546,10 +565,11 @@ static WebClient *instance = nil;
 {
     NSString *path = [NSString stringWithFormat:@"user/%d", key];
     
-    
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
+        NSLog(@"PROFILE USER: %@",user.profileImageUrl);
+        
         callbackBlock(YES, user);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
@@ -579,6 +599,8 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self postPath:@"contacts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Contact added with server's response: %@",responseObject);
         
         callbackBlock(YES);
         
@@ -798,6 +820,7 @@ static WebClient *instance = nil;
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" callback:^(BOOL success, id json) {
+        
         if(!success) {
             callback(NO, nil);
             return;
@@ -808,6 +831,11 @@ static WebClient *instance = nil;
     }];
 }
 
+/**
+ 
+ Mark notifications as read from the current notification and older.
+ 
+ */
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:notification.remoteKey] forKey:@"seen"];

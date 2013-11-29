@@ -17,7 +17,7 @@
 {
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
-    entity.notificationType = [resultSet intForColumn:@"notification_type"];
+    entity.notificationType = [resultSet intForColumn:@"type"];
     entity.date = [resultSet dateForColumn:@"date"];
     entity.postRemoteKey = [resultSet intForColumn:@"post_remote_key"];
     entity.seen = [resultSet boolForColumn:@"seen"];

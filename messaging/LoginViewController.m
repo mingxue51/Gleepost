@@ -15,6 +15,7 @@
 #import "AppearanceHelper.h"
 #import "GLPLoginManager.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface LoginViewController ()
 
@@ -50,11 +51,17 @@
     
     if(DEV) {
         if(!ON_DEVICE) {
+//            self.nameTextField.text = @"TestingUser";
+//            self.passwordTextField.text = @"TestingPass";
+//            self.nameTextField.text = @"Silouanos N";
+//            self.passwordTextField.text = @"1234";
             self.nameTextField.text = @"Fingolfin";
             self.passwordTextField.text = @"ihatemorgoth";
         } else {
             self.nameTextField.text = @"TestingUser";
             self.passwordTextField.text = @"TestingPass";
+//            self.nameTextField.text = @"TestingUser";
+//            self.passwordTextField.text = @"TestingPass";
         }
     }
     
@@ -77,6 +84,7 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void) setBackground

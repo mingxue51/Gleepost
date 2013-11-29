@@ -22,8 +22,9 @@
 
 // conversations
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;
-+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
-+ (NSArray *)parseLiveConversationsFromJson:(NSArray *)jsonConversations;
++ (NSArray *)parseConversationsFilterByLive:(BOOL)live fromJson:(NSArray *)jsonConversations;
+//+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
+//+ (NSArray *)parseLiveConversationsFromJson:(NSArray *)jsonConversations;
 +(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations;
 
 // messages
@@ -37,6 +38,7 @@
 + (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts;
 + (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
++(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json;
 
 // contacts
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;

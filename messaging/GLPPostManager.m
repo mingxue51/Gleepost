@@ -30,6 +30,30 @@ NSInteger const kGLPNumberOfPosts = 20;
     callback(localEntities);
 }
 
++(void)loadRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback
+{
+    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+        if(!success) {
+            callback(NO, nil);
+            return;
+        }
+        
+        // take only new posts
+        NSMutableArray *userPosts = [NSMutableArray array];
+        
+        for (GLPPost *newPost in posts)
+        {
+            if(newPost.author.remoteKey == remoteKey)
+            {
+                [userPosts addObject:newPost];
+            }
+            
+        }
+    
+        
+        callback(YES, userPosts);
+    }];
+}
 
 + (void)loadRemotePostsBefore:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
@@ -175,6 +199,24 @@ NSInteger const kGLPNumberOfPosts = 20;
         BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
         
         callback(YES, remains, posts);
+    }];
+}
+
++(void)loadPostWithRemoteKey:(int)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
+{
+    [[WebClient sharedInstance] getPostWithRemoteKey:remoteKey withCallbackBlock:^(BOOL success, GLPPost *post) {
+       
+        if(success)
+        {
+            NSLog(@"Got post with content: %@", post.content);
+            
+            callback(success,post);
+        }
+        else
+        {
+            callback(NO, nil);
+        }
+        
     }];
 }
 
@@ -327,6 +369,13 @@ NSInteger const kGLPNumberOfPosts = 20;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPPostDao save:post inDb:db];
+    }];
+}
+
++(void)updatePostWithRemoteKey:(int)remoteKey andNumberOfComments:(int)numberOfComments
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao updateCommentStatusWithNumberOfComments:numberOfComments andPostRemoteKey:remoteKey inDb:db];
     }];
 }
 

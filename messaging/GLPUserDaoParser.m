@@ -16,12 +16,12 @@
 {
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
-    entity.name = [resultSet stringForColumn:GLPUserNameColumn];
-    entity.profileImageUrl = [resultSet stringForColumn:GLPUserProfileImageColumn];
-    entity.course = [resultSet stringForColumn:GLPUserCourseColumn];
-    entity.networkId = [resultSet intForColumn:GLPUserNetworkIdColumn];
-    entity.networkName = [resultSet stringForColumn:GLPUserNetworkNameColumn];
-    entity.personalMessage = [resultSet stringForColumn:GLPUserPersonalMessageColumn];
+    entity.name = [resultSet stringForColumn:@"name"];
+    entity.profileImageUrl = [resultSet stringForColumn:@"image_url"];
+    entity.course = [resultSet stringForColumn:@"course"];
+    entity.networkId = [resultSet intForColumn:@"network_id"];
+    entity.networkName = [resultSet stringForColumn:@"network_name"];
+    entity.personalMessage = [resultSet stringForColumn:@"tagline"];
 }
 
 + (GLPUser *)createUserFromResultSet:(FMResultSet *)resultSet

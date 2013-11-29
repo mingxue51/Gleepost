@@ -17,12 +17,19 @@
 #import "ImageFormatterHelper.h"
 #import "GLPLoginManager.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 @interface FinalRegisterViewController ()
 
 @property (weak, nonatomic) IBOutlet GCPlaceholderTextView *userNameTextView;
-@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *genderTextView;
 @property (weak, nonatomic) IBOutlet GCPlaceholderTextView *userLastNameTextView;
+@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *genderTextView;
+
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *lastNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *genderTextField;
+
+
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIImage *profileImage;
 
@@ -61,15 +68,45 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)setUpTextViews
 {
+    
+    CGRect textFielFrame = self.nameTextField.frame;
+    textFielFrame.size.height+=5;
+    [self.nameTextField setFrame:textFielFrame];
+    [self.nameTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+    [self.nameTextField setTextColor:[UIColor whiteColor]];
+    self.nameTextField.layer.cornerRadius = 10;
+    self.nameTextField.clipsToBounds = YES;
+    
+    textFielFrame = self.lastNameTextField.frame;
+    textFielFrame.size.height+=5;
+    [self.lastNameTextField setFrame:textFielFrame];
+    [self.lastNameTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+    [self.lastNameTextField setTextColor:[UIColor whiteColor]];
+    self.lastNameTextField.layer.cornerRadius = 10;
+    self.lastNameTextField.clipsToBounds = YES;
+    
+    textFielFrame = self.genderTextField.frame;
+    textFielFrame.size.height+=5;
+    [self.genderTextField setFrame:textFielFrame];
+    [self.genderTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+    [self.genderTextField setTextColor:[UIColor whiteColor]];
+    self.genderTextField.layer.cornerRadius = 10;
+    self.genderTextField.clipsToBounds = YES;
+    
+    
+    
     self.userNameTextView.placeholder = @"First Name";
     self.userNameTextView.textColor = [UIColor whiteColor];
     [self.userNameTextView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_field"]]];
     self.userNameTextView.layer.cornerRadius = 5;
     self.userNameTextView.clipsToBounds = YES;
+    
+    
     
     self.userLastNameTextView.placeholder = @"Last Name";
     self.userLastNameTextView.textColor = [UIColor whiteColor];
@@ -93,6 +130,24 @@
 
 - (void)hideKeyboardIfDisplayed
 {
+    
+    if([self.nameTextField isFirstResponder])
+    {
+        [self.nameTextField resignFirstResponder];
+    }
+    
+    if([self.lastNameTextField isFirstResponder])
+    {
+        [self.lastNameTextField resignFirstResponder];
+    }
+    
+    if([self.genderTextField isFirstResponder])
+    {
+        [self.genderTextField resignFirstResponder];
+    }
+    
+    
+    
     if([self.userNameTextView isFirstResponder])
     {
         [self.userNameTextView resignFirstResponder];
@@ -119,7 +174,7 @@
     if([self areTheDetailsValid])
     {
         //Request to server to register user.
-        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text, self.userLastNameTextView.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responceMessage, int remoteKey) {
+        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.nameTextField.text, self.lastNameTextField.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responseMessage, int remoteKey) {
             
             if(success)
             {
@@ -130,7 +185,7 @@
             else
             {
                 NSLog(@"User not registered.");
-                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responceMessage];
+                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
             }
             
         }];
@@ -169,7 +224,11 @@
 
             [self setImageToUserProfile:response];
             
-            [[SessionManager sharedInstance]user].profileImageUrl = response;
+//            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+            
+            //Save user's image to database and add to SessionManager.
+            [[SessionManager sharedInstance ] registerUserImage:response];
             
         }
         else
@@ -203,7 +262,7 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:[NSString stringWithFormat:@"%@ %@",self.userNameTextView.text,self.userLastNameTextView.text] andPassword:self.eMailPass[1] callback:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:[NSString stringWithFormat:@"%@ %@",self.nameTextField.text,self.lastNameTextField.text] andPassword:self.eMailPass[1] callback:^(BOOL success) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
@@ -310,7 +369,7 @@
 
 -(BOOL)areTheDetailsValid
 {
-    return (![self.userNameTextView.text isEqualToString:@""] && ![self.userLastNameTextView.text isEqualToString:@""] && ![self.genderTextView.text isEqualToString:@""] && (self.profileImage!=nil));
+    return (![self.nameTextField.text isEqualToString:@""] && ![self.lastNameTextField.text isEqualToString:@""] && ![self.genderTextField.text isEqualToString:@""] && (self.profileImage!=nil));
 }
 
 @end

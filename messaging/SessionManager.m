@@ -12,6 +12,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPUserDao.h"
 #import "WebClient.h"
+#import "GLPThemeManager.h"
 #import "GLPFacebookConnect.h"
 
 @interface SessionManager()
@@ -85,11 +86,27 @@ static SessionManager *instance = nil;
     self.data[@"user.expirationDate"] = [[DateFormatterHelper createDefaultDateFormatter] stringFromDate:expirationDate];
     
     [self saveData];
-    
+
     // register push if ready
     if(_pushToken && !_pushTokenRegistered) {
         [self registerPushOnServer];
     }
+}
+
+-(void)registerUserImage:(NSString*)imageUrl
+{
+    self.user.profileImageUrl = imageUrl;
+    [GLPUserDao updateUserWithRemotKey:self.user.remoteKey andProfileImage:imageUrl];
+}
+
+-(void)setTokenFromResponse:(NSString *)token
+{
+    self.token = token;
+}
+
+-(void)setUserFromResponse:(GLPUser *)user
+{
+    self.user = user;
 }
 
 - (void)cleanSession
@@ -115,8 +132,6 @@ static SessionManager *instance = nil;
         if([[NSDate date] compare:expirationDate] == NSOrderedAscending) {
             return YES;
         }
-//    } else if ([[GLPFacebookConnect sharedConnection] isFacebookSessionValid]) {
-//        return YES;
     }
     
     return NO;
@@ -130,7 +145,15 @@ static SessionManager *instance = nil;
         
         if([self isSessionValid]) {
             [[DatabaseManager sharedInstance] initDatabase];
-            self.user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue]];
+            
+            __block GLPUser *user;
+            [DatabaseManager run:^(FMDatabase *db) {
+                user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue] db:db];
+            }];
+            self.user = user;
+            //Set theme depending on the network name.
+            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+            
             NSAssert(self.user, @"User from valid session must exist in database");
             
             self.token = self.data[@"user.token"];

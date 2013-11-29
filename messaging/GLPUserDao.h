@@ -12,10 +12,11 @@
 
 @interface GLPUserDao : NSObject
 
-+ (GLPUser *)findByRemoteKey:(NSInteger)remoteKey;
++ (GLPUser *)findByKey:(NSInteger)key db:(FMDatabase *)db;
 + (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
 + (void)save:(GLPUser *)entity inDb:(FMDatabase *)db;
 + (int)saveIfNotExist:(GLPUser*)entity db:(FMDatabase *)db;
 + (GLPUser *)findByKey:(NSInteger)key db:(FMDatabase *)db;
 +(void)update:(GLPUser*)entity;
++(void)updateUserWithRemotKey:(int)remoteKey andProfileImage:(NSString*)imageUrl;
 @end

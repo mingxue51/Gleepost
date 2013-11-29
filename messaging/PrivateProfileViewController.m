@@ -19,6 +19,8 @@
 #import "ContactsManager.h"
 #import "UIViewController+GAI.h"
 #import "ProfileViewController.h"
+#import "UIViewController+Flurry.h"
+#import "GLPThemeManager.h"
 
 @interface PrivateProfileViewController ()
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
@@ -43,64 +45,39 @@
 {
     [super viewDidLoad];
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
 
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
-
-    //For test purposes.
-    //Remove the previous view controller.
-    //TODO: Not tested.
-    NSMutableArray *controllers = self.navigationController.viewControllers.mutableCopy;
     
-    [controllers removeObjectAtIndex:controllers.count-2];
-    
-    [self.navigationController setViewControllers:controllers];
-    
-    //Override back navigation button.
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back1"
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(goBackToCampusWall:)];
-    
-    self.navigationItem.backBarButtonItem = backButton;
+    [[ContactsManager sharedInstance] loadContactsFromDatabase];
     
     
-//    self.navigationItem.leftBarButtonItem = backButton;
+    //If no, check in database if the user is already requested.
     
-    ////////
+    //If yes change the button of add user to user already requested.
     
-    //Check if the user is already in contacts.
-    //If yes show the regular profie view (unlocked).
-    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
+    if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
     {
-        NSLog(@"PrivateProfileViewController : Unlock Profile.");
+        NSLog(@"PrivateProfileViewController : User already requested by you.");
+        [self setContactAsRequested];
+        
+    }
+    else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
+    {
+        NSLog(@"PrivateProfileViewController : User requested you.");
+        
+        [self setAcceptRequestButton];
+        
     }
     else
     {
-        //If no, check in database if the user is already requested.
-        
-        //If yes change the button of add user to user already requested.
-        
-        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
-        {
-            NSLog(@"PrivateProfileViewController : User already requested by you.");
-            [self setContactAsRequested];
-            
-        }
-        else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
-        {
-            NSLog(@"PrivateProfileViewController : User requested you.");
-            
-            [self setAcceptRequestButton];
-
-        }
-        else
-        {
-            //If not show the private profile view as is.
-            NSLog(@"PrivateProfileViewController : Private profile as is2.");
-        }
+        //If not show the private profile view as is.
+        NSLog(@"PrivateProfileViewController : Private profile as is.");
     }
+
+    
     
     
     
@@ -121,18 +98,10 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
--(void)goBackToCampusWall:(id)sender
-{
-    NSLog(@"GO BACK TO CAMPUS WALL.");
-    
-    UIViewController *campusWallController = [[self.navigationController viewControllers] objectAtIndex:self.navigationController.viewControllers.count-1];
-    
-    NSLog(@"Back class: %@",[campusWallController class]);
-    
-    [self.navigationController popToViewController:campusWallController animated:YES];
-}
+#pragma mark - UI changes
 
 -(void)setContactAsRequested
 {
@@ -148,11 +117,42 @@
     [self.acceptUserButton setHidden:NO];
 }
 
+-(void)showFullProfileImage:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = clickedImageView.image;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+-(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
+{
+    roundedView.clipsToBounds = YES;
+    
+    CGPoint saveCenter = roundedView.center;
+    CGRect newFrame = CGRectMake(roundedView.frame.origin.x, roundedView.frame.origin.y, newSize, newSize);
+    roundedView.frame = newFrame;
+    roundedView.layer.cornerRadius = newSize / 2.0;
+    roundedView.center = saveCenter;
+}
+
 -(void)formatProfileView
 {
     [[self.profileImage layer] setBorderWidth:6.0f];
     [[self.profileImage layer] setBorderColor:[UIColor colorWithRed:243.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0].CGColor];
 }
+
+#pragma mark - Buttons selectors
 
 //Accept contact.
 - (IBAction)acceptContact:(id)sender
@@ -163,11 +163,22 @@
        
         if(success)
         {
-            
-
-            
             //Navigate to unlock profile.
-            [self performSegueWithIdentifier:@"view profile" sender:self];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+            ProfileViewController *pvc = [storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+            
+            GLPUser *incomingUser = [[GLPUser alloc] init];
+            
+            incomingUser.remoteKey = self.selectedUserId;
+            
+            pvc.incomingUser = incomingUser;
+            //Navigate to profile view controller.
+            NSMutableArray *array = [[self.navigationController viewControllers] mutableCopy];
+            
+            NSArray *a = [[NSArray alloc] initWithObjects:[array objectAtIndex:0], pvc, nil];
+            
+            [self.navigationController setViewControllers:a animated:YES];
+            
             
             //Change the status of contact in local database.
             [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
@@ -197,6 +208,7 @@
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.profileUser.name profileImage:self.profileUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
+            contact.remoteKey = self.selectedUserId;
             
             //Save contact to database.
             [[ContactsManager sharedInstance] saveNewContact:contact];
@@ -249,6 +261,8 @@
 //    return NO;
 //}
 
+#pragma mark - Client methods
+
 -(void)loadAndSetUserDetails
 {
     [[WebClient sharedInstance] getUserWithKey:self.selectedUserId callbackBlock:^(BOOL success, GLPUser *user) {
@@ -297,34 +311,7 @@
     }];
 }
 
--(void)showFullProfileImage:(id)sender
-{
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-    
-    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-    
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = clickedImageView.image;
-    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    
-    [vc setTransitioningDelegate:self.transitionViewImageController];
-    vc.modalPresentationStyle= UIModalPresentationCustom;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
-}
 
--(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
-{
-    roundedView.clipsToBounds = YES;
-    
-    CGPoint saveCenter = roundedView.center;
-    CGRect newFrame = CGRectMake(roundedView.frame.origin.x, roundedView.frame.origin.y, newSize, newSize);
-    roundedView.frame = newFrame;
-    roundedView.layer.cornerRadius = newSize / 2.0;
-    roundedView.center = saveCenter;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -339,9 +326,7 @@
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        profileViewController.isUserJustAccepted = YES;
-        
+            
         GLPUser *incomingUser = [[GLPUser alloc] init];
         
         incomingUser.remoteKey = self.selectedUserId;

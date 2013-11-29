@@ -255,12 +255,10 @@
     message.seen = YES;
     
     conversation.lastUpdate = message.date;
-    //conversation.lastMessage = message.content;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPMessageDao save:message db:db];
-        NSLog(@"update conversion %d %d", conversation.key, conversation.remoteKey);
-//        [GLPLiveConversationDao update:conversation db:db];
+        [GLPLiveConversationDao updateLastUpdate:conversation db:db];
     }];
     
     NSLog(@"Post message %@ to server", message.content);

@@ -12,13 +12,11 @@
 #import "WebClientHelper.h"
 #import "ConversationManager.h"
 #import "MessageTableViewCell.h"
-#import "NSDate+TimeAgo.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "AppearanceHelper.h"
-#import "ShapeFormatterHelper.h"
-#import "GLPConversationParticipantsDao.h"
 #import "UIViewController+GAI.h"
 #import "GLPLoadingCell.h"
+#import "UIViewController+Flurry.h"
+#import "GLPThemeManager.h"
 
 @interface MessagesViewController ()
 
@@ -49,7 +47,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
     // various control init
@@ -83,6 +82,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -107,7 +107,11 @@
 //    
 //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    
+//    self.navigationController.navigationBar.tintColor = tabColour;
 
 
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -153,13 +157,6 @@
     
     [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
         if(conversations.count > 0) {
-            //Find paricipants.
-            for(GLPConversation* conv in conversations)
-            {
-                NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-                conv.participants = part;
-            }
-            
             // hide loading cell and add refresh control
             self.loadingCellStatus = kGLPLoadingCellStatusFinished;
             [self createRefreshIfNeed];
@@ -168,16 +165,7 @@
             [self showConversations:conversations];
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
-        [self stopLoading];
-        
         if(success) {
-            //Find paricipants.
-            for(GLPConversation* conv in conversations)
-            {
-                NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-                conv.participants = part;
-            }
-            
             // hide loading cell and add refresh control
             self.loadingCellStatus = kGLPLoadingCellStatusFinished;
             [self createRefreshIfNeed];
@@ -185,11 +173,16 @@
             
             [self showConversations: conversations];
         } else {
+            // no local conversations
             // show loading cell error and do not add refresh control
             // because loading cell already provides a refresh button
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-            [self.tableView reloadData];
+            if(self.conversations.count == 0) {
+                self.loadingCellStatus = kGLPLoadingCellStatusError;
+                [self.tableView reloadData];
+            }
         }
+        
+        [self stopLoading];
     }];
 }
 
@@ -201,14 +194,7 @@
 
 - (void)reloadLocalConversations
 {
-    NSArray *localConversations = [ConversationManager getLocalConversations];
-    
-    for(GLPConversation* conv in localConversations)
-    {
-        NSArray* part = [GLPConversationParticipantsDao participants:conv.key];
-        conv.participants = part;
-    }
-    
+    NSArray *localConversations = [ConversationManager getLocalNormalConversations];
     [self showConversations:localConversations];
 }
 
@@ -260,59 +246,17 @@
         return cell;
     }
     
-    static NSString *CellIdentifier = @"Cell";
-    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     GLPConversation *conversation = self.conversations[indexPath.row];
     
-    if(conversation.isGroup)
-    {
-        cell.userImage.image = [UIImage imageNamed:@"default_group_image"];
-        cell.userName.text = @"Group Chat";
-    }
-    else
-    {
-        //todo: dont do this
-        GLPUser *opponentUser = [conversation.participants objectAtIndex:0];
-        
-        if(opponentUser.profileImageUrl == nil || [opponentUser.profileImageUrl isEqualToString:@""])
-        {
-            cell.userImage.image = [UIImage imageNamed:@"default_user_image"];
-        }
-        else
-        {
-            [cell.userImage setImageWithURL:[NSURL URLWithString:opponentUser.profileImageUrl] placeholderImage:nil];
-        }
-        
-        [ShapeFormatterHelper setRoundedView:cell.userImage toDiameter:cell.userImage.frame.size.height];
-        
-        cell.userName.text = conversation.title;
-
-        
-        //TODO: Add the opponent's image.
-        //Find the logged in user and add the opponents image.
-    }
+    cell.userName.text = conversation.title;
+    cell.content.text = [conversation getLastMessageOrDefault];
+    cell.time.text = [conversation getLastUpdateOrDefault];
+    cell.unreadImageView.hidden = !conversation.hasUnreadMessages;
     
-    cell.content.text = (conversation.lastMessage) ? conversation.lastMessage : @"";
-//    cell.userImage.image = [UIImage imageNamed:@"avatar_big"];
-    
-    //    [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
-
-   // cell.userImage.image = conve
-    
-    NSDate *currentDate = conversation.lastUpdate;
-    
-//    NSLog(@"CONVERSATION USER DETAILS: %@", [ConversationManager userWithConversationId:conversation.key]);
-//    
-//    NSLog(@"User: %@ Last Message: %@",conversation.title, conversation.lastMessage);
-    
-    cell.time.text = [currentDate timeAgo];
-    
-    if(conversation.hasUnreadMessages) {
-        cell.unreadImageView.hidden = NO;
-    } else {
-        cell.unreadImageView.hidden = YES;
-    }
+    // add profile image
+    [cell.userImage configureWithConversation:conversation];
     
     return cell;
 }
@@ -349,27 +293,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"view topic"])
-    {
+    if([segue.identifier isEqualToString:@"view topic"]) {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         ViewTopicViewController *vc = segue.destinationViewController;
-        vc.randomChat = NO;
         vc.conversation = self.selectedConversation;
-        
-        //Fetch the participants.
-        [ConversationManager usersWithConversationId:self.selectedConversation.key callback:^(BOOL success, NSArray *participants) {
-           
-            NSLog(@"Participants id: %@", participants);
-            vc.participants = participants;
-            
-        }];
-        
-        //vc.patricipants = [[NSArray alloc] initWithObjects:<#(id), ...#>, nil];
-        
-        //self.selectedConversation = nil;
-
     }
-    
 }
 
 @end

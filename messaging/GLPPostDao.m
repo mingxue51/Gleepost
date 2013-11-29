@@ -82,6 +82,7 @@
     return result;
 }
 
+
 +(NSArray*)likedPostsInDb:(FMDatabase*)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where liked=1"];
@@ -123,7 +124,6 @@
                      entity.author.remoteKey,
                      entity.liked];
         
-        NSLog(@"Post saved: %d",postSaved);
     }
     
     entity.key = [db lastInsertRowId];
@@ -150,6 +150,15 @@
      entity.remoteKey];
 }
 
++(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db
+{
+    BOOL ex = [db executeUpdateWithFormat:@"update posts set comments=%d where remoteKey=%d",
+     number,
+     remoteKey];
+    
+    NSLog(@"updateCommentStatusWithNumberOfComments: %d",ex);
+}
+
 + (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Update entity without key");
@@ -168,8 +177,9 @@
 
 + (void)deleteAllInDb:(FMDatabase *)db
 {
-    [db executeQuery:@"delete from posts"];
-    [db executeQuery:@"delete from post_images"];
+    [db executeUpdateWithFormat:@"delete from posts"];
+    
+    [db executeUpdateWithFormat:@"delete from post_images"];
 }
 
 @end

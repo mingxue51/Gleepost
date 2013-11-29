@@ -26,6 +26,10 @@
 #import "GLPNotificationManager.h"
 #import "UIViewController+GAI.h"
 #import "GLPPostManager.h"
+#import "UIViewController+Flurry.h"
+#import "GLPPostNotificationHelper.h"
+#import "GLPThemeManager.h"
+#import "AppearanceHelper.h"
 
 @interface ProfileViewController ()
 
@@ -55,34 +59,20 @@ static BOOL likePushed;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     
-    if(self.isUserJustAccepted)
-    {
-        //Remove the previous view controller.
-        //TODO: Not tested.
-        NSMutableArray *controllers = self.navigationController.viewControllers.mutableCopy;
-        
-        [controllers removeObjectAtIndex:controllers.count-2];
-        
-        [self.navigationController setViewControllers:controllers];
-        
-        //Override back navigation button.
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                       style:UIBarButtonItemStyleDone
-                                                                      target:self
-                                                                      action:@selector(goBackToCampusWall:)];
-        
-        
-        self.navigationItem.leftBarButtonItem = backButton;
-    }
     
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    
     //Change navigations items' (back arrow, edit etc.) colour.
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    
+    self.navigationController.navigationBar.tintColor = tabColour;
 
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
@@ -91,7 +81,6 @@ static BOOL likePushed;
 
     [self.profileScrollView setBackgroundColor:[UIColor whiteColor]];
 
-    
     
     //Fetch the image from the server and add it as a profile background.
     self.profileScrollView.backgroundImageView.image = [UIImage imageNamed:@"background_profile"];
@@ -118,7 +107,6 @@ static BOOL likePushed;
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
         [self addLogoutNavigationButton];
-
     }
     else
     {
@@ -129,6 +117,8 @@ static BOOL likePushed;
 
         [self.profileView.profileImage addGestureRecognizer:tap];
         
+        [self setTitle:@"Loading..."];
+                
     }
 
     
@@ -145,23 +135,13 @@ static BOOL likePushed;
     
     //Initialise profile view.
     
-    [self.profileView initialiseView:self.incomingUser];
+//    [self.profileView initialiseView:self.incomingUser];
     
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
     self.unreadNotificationsCount = 0;
 }
 
--(void)goBackToCampusWall:(id)sender
-{
-    NSLog(@"GO BACK TO CAMPUS WALL.");
-    
-    UIViewController *campusWallController = [[self.navigationController viewControllers] objectAtIndex:self.navigationController.viewControllers.count-2];
-    
-    NSLog(@"Back class: %@",[campusWallController class]);
-    
-    [self.navigationController popToViewController:campusWallController animated:YES];
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -169,7 +149,15 @@ static BOOL likePushed;
     
     //Added.
     [self.profileView hideNotificationsBubble];
-
+    
+    [self.profileView initialiseView:self.incomingUser];
+    
+    if(self.incomingUser != nil)
+    {
+        //self.incomingUser = [[SessionManager sharedInstance]user];
+        [self loadUserDetails];
+    }
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }
@@ -185,13 +173,27 @@ static BOOL likePushed;
     [self loadPosts];
 
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    
+    [super viewWillDisappear:animated];
+
+    
 }
+
+
+//-(void)updatePostInDatabaseWithRemoteKey:(int)remoteKey withNumberOfComments:(int)number
+//{
+//    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithInt:number], @"NumberOfComments", nil];
+//    
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:dataDict];
+//}
 
 - (void)updateNotificationsBubble
 {
@@ -206,6 +208,8 @@ static BOOL likePushed;
 {
     self.unreadNotificationsCount += [notification.userInfo[@"count"] intValue];
     [self updateNotificationsBubble];
+    
+
 }
 
 
@@ -286,38 +290,65 @@ static BOOL likePushed;
     //    hud.labelText = @"Loading posts";
     //    hud.detailsLabelText = @"Please wait few seconds";
     
-    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
-       
-        NSLog(@"Local Posts Count: %d",posts.count);
+    int userRemoteKey = 0;
+    
+    if(self.incomingUser == nil)
+    {
+        userRemoteKey = [[SessionManager sharedInstance]user].remoteKey;
+    }
+    else
+    {
+        userRemoteKey = self.incomingUser.remoteKey;
+    }
+    
+    [GLPPostManager loadRemotePostsForUserRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
         
-        NSMutableArray *removePosts = [[NSMutableArray alloc] init];
-        self.posts = [posts mutableCopy];
-        
-        for(GLPPost *p in self.posts)
+        if(success)
         {
-            if(self.incomingUser == nil)
-            {
-                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
-                {
-                    [removePosts addObject:p];
-                }
-            }
-            else
-            {
-                if(p.author.remoteKey != self.incomingUser.remoteKey)
-                {
-                    [removePosts addObject:p];
-                }
-            }
+            self.posts = [posts mutableCopy];
+
+            [self.postsTableView reloadData];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
         }
         
-        for(GLPPost *p in removePosts)
-        {
-            [self.posts removeObject:p];
-        }
         
-        [self.postsTableView reloadData];
     }];
+    
+//    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
+//       
+//        NSLog(@"Local Posts Count: %d",posts.count);
+//        
+//        NSMutableArray *removePosts = [[NSMutableArray alloc] init];
+//        self.posts = [posts mutableCopy];
+//        
+//        for(GLPPost *p in self.posts)
+//        {
+//            if(self.incomingUser == nil)
+//            {
+//                if(p.author.remoteKey != [[SessionManager sharedInstance]user].remoteKey)
+//                {
+//                    [removePosts addObject:p];
+//                }
+//            }
+//            else
+//            {
+//                if(p.author.remoteKey != self.incomingUser.remoteKey)
+//                {
+//                    [removePosts addObject:p];
+//                }
+//            }
+//        }
+//        
+//        for(GLPPost *p in removePosts)
+//        {
+//            [self.posts removeObject:p];
+//        }
+//        
+//        
+//    }];
     
     
     
@@ -365,6 +396,26 @@ static BOOL likePushed;
 //    }];
 }
 
+-(void)loadUserDetails
+{
+    [[WebClient sharedInstance] getUserWithKey:self.incomingUser.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            [self setTitle:user.name];
+            [self.profileView setUserDetails:user];
+            
+        }
+        else
+        {
+            NSLog(@"Not Success: %d User: %@",success, user);
+            
+        }
+        
+        
+        
+    }];
+}
 
 -(void)uploadImageAndSetUserImageWithUserRemoteKey
 {
@@ -388,6 +439,9 @@ static BOOL likePushed;
         if(success)
         {
             NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            //Change profile image in Session Manager.
+            [[SessionManager sharedInstance] registerUserImage:response];
             
             //Set image to user's profile.
             
@@ -417,6 +471,9 @@ static BOOL likePushed;
         if(success)
         {
             NSLog(@"NEW PROFILE IMAGE UPLOADED");
+            
+
+            
         }
         else
         {
@@ -670,7 +727,7 @@ static BOOL likePushed;
     
     if([currentPost imagePost])
     {
-        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
+//        NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
         //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
@@ -679,7 +736,7 @@ static BOOL likePushed;
     }
     else
     {
-        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
+//        NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
         
         //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
@@ -748,6 +805,17 @@ static BOOL likePushed;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
     self.selectedPost = self.posts[postIndex];
+    ++self.selectedPost.commentsCount;
+    
+    //Send push notification to GLPTimelineViewController.
+//    [self updatePostInDatabaseWithRemoteKey:self.selectedPost.remoteKey withNumberOfComments:self.selectedPost.commentsCount];
+    
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated"
+                                                  withObject:self
+                                                   remoteKey:self.selectedPost.remoteKey
+                                               numberOfLikes:self.selectedPost.likes
+                                         andNumberOfComments:self.selectedPost.commentsCount];
+    
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 

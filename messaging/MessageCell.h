@@ -23,6 +23,6 @@
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst;
 
-- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst withIdentifier:(NSString*) identifier andParticipants:(NSArray*)participants;
+- (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst;
 
 @end

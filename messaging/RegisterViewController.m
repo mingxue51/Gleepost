@@ -15,15 +15,15 @@
 #import "WebClientHelper.h"
 #import "ValidFields.h"
 #import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 
 
 @interface RegisterViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (strong, nonatomic) IBOutlet GCPlaceholderTextView *emailTextView;
-@property (strong, nonatomic) IBOutlet GCPlaceholderTextView *passwordTextView;
+@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *emailTextView;
+@property (weak, nonatomic) IBOutlet GCPlaceholderTextView *passwordTextView;
 
 - (IBAction)viewClicked:(id)sender;
 
@@ -34,9 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSLog(@"RegisterViewController");
-    
+        
     //Change the colour format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     
@@ -58,10 +56,31 @@
     [super viewDidAppear:animated];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)setUpTextViews
 {
+    //Change the size of the text field.
+    
+    CGRect textFielFrame = self.emailTextField.frame;
+    textFielFrame.size.height+=5;
+    [self.emailTextField setFrame:textFielFrame];
+    [self.emailTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+    [self.emailTextField setTextColor:[UIColor whiteColor]];
+    self.emailTextField.layer.cornerRadius = 10;
+    self.emailTextField.clipsToBounds = YES;
+    
+    
+    textFielFrame = self.passwordTextField.frame;
+    textFielFrame.size.height+=5;
+    [self.passwordTextField setFrame:textFielFrame];
+    [self.passwordTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+    [self.passwordTextField setTextColor:[UIColor whiteColor]];
+    self.passwordTextField.layer.cornerRadius = 10;
+    self.passwordTextField.clipsToBounds = YES;
+    
+    
     self.emailTextView.placeholder = @"e-mail";
     [self.emailTextView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_field"]]];
     [self.emailTextView setTextColor:[UIColor whiteColor]];
@@ -78,7 +97,6 @@
 
 - (IBAction)finalRegistrationForm:(id)sender
 {
-    
     //Check if e-mail and password are valid.
     if([self areDetailsValid])
     {
@@ -105,7 +123,11 @@
 {
     FinalRegisterViewController *finalRegistrationForm = segue.destinationViewController;
     
-    finalRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextView.text, self.passwordTextView.text, nil];
+    //finalRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextView.text, self.passwordTextView.text, nil];
+    
+    finalRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextField.text, self.passwordTextField.text, nil];
+    
+    
 }
 
 -(void) setBackground
@@ -157,13 +179,6 @@
         [self.passwordTextView resignFirstResponder];
     }
     
-    
-    
-    
-    if([self.nameTextField isFirstResponder]) {
-        [self.nameTextField resignFirstResponder];
-    }
-    
     if([self.emailTextField isFirstResponder]) {
         [self.emailTextField resignFirstResponder];
     }
@@ -177,7 +192,7 @@
 
 -(BOOL)areDetailsValid
 {
-    return ([ValidFields NSStringIsValidEmail:self.emailTextView.text] && ![self.passwordTextView.text isEqualToString:@""]);
+    return ([ValidFields NSStringIsValidEmail:self.emailTextField.text] && ![self.passwordTextField.text isEqualToString:@""]);
 }
 
 

@@ -20,8 +20,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *notificationNewBubbleImageView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationNewBubbleLabel;
 
+@property(weak, nonatomic) GLPUser* currentUser;
+
+
 -(void) initialiseView:(GLPUser*)incomingUser;
 - (void)showNotificationsBubble:(int)count;
 - (void)hideNotificationsBubble;
+-(void)setUserDetails:(GLPUser*)incomingUser;
 
 @end

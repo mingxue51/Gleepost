@@ -33,10 +33,11 @@ static ContactsManager *instance = nil;
         return nil;
     }
     
+    
     [self refreshContacts];
     
     //Load contacts from database.
-    [self loadContacts];
+    [self loadContactsFromDatabase];
     
     return self;
 }
@@ -48,11 +49,6 @@ static ContactsManager *instance = nil;
     }];
 }
 
--(void)refreshFromDatabase
-{
-    [self loadContacts];
-}
-
 -(void)refreshContacts
 {
     //Load contacts from server and update database.
@@ -62,13 +58,13 @@ static ContactsManager *instance = nil;
         if(success)
         {
             //Store contacts into an array.
-            NSLog(@"Contacts loaded successfully.");
             
             self.contacts = contacts;
 
             [GLPContactDao deleteTable];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                
                 for(GLPContact *c in contacts) {
                     [GLPContactDao save:c inDb:db];
                 }
@@ -84,7 +80,7 @@ static ContactsManager *instance = nil;
     }];
 }
 
--(void)loadContacts
+-(void)loadContactsFromDatabase
 {
     self.contacts = [GLPContactDao loadContacts];
     
@@ -93,7 +89,7 @@ static ContactsManager *instance = nil;
 /**
  Return YES if the user with the remoteKey is contact with the current user.
  
- @param remoteKey user remote key.
+ @param remoteKey user remote key.χ
  
  @return YES if the user is contact, otherwise NO.
  
@@ -117,7 +113,6 @@ static ContactsManager *instance = nil;
 {
     GLPContact* contact = [self contactWithRemoteKey:remoteKey];
     
-    NSLog(@"You confirmed: %d",contact.youConfirmed);
     
     return contact.youConfirmed;
 }
@@ -147,6 +142,55 @@ static ContactsManager *instance = nil;
     [GLPContactDao setContactAsRegularContactWithRemoteKey:remoteKey];
 }
 
+-(void)acceptContact:(int)remoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
+{
+    [[WebClient sharedInstance]acceptContact:remoteKey callbackBlock:^(BOOL success) {
+
+        if(success)
+        {
+            [self contactWithRemoteKeyAccepted:remoteKey];
+            
+            callbackBlock(success);
+        }
+        
+    }];
+}
+
+
++ (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback
+{
+    NSArray *localEntities = [GLPContactDao loadContacts];
+    localCallback(localEntities);
+    
+    
+    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *serverContacts) {
+        
+        
+        if(!success) {
+            remoteCallback(NO, nil);
+            return;
+        }
+        
+
+            //Store contacts into an array.
+        
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                
+                [GLPContactDao deleteTableWithDb:db];
+
+                for(GLPContact *c in serverContacts) {
+                    [GLPContactDao save:c inDb:db];
+                }
+            }];
+        
+
+        remoteCallback(YES, serverContacts);
+
+        
+    }];
+}
+
+
 /**
  If YES navigate to real profile, if no to private profile.
  */
@@ -154,14 +198,12 @@ static ContactsManager *instance = nil;
 {
     [self refreshContacts];
 
-    [self refreshFromDatabase];
+    //[self loadContactsFromDatabase];
     
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).
     if([[ContactsManager sharedInstance] isUserContactWithId:selectedId])
-    {
-        NSLog(@"PrivateProfileViewController : Unlock Profile.");
-        
+    {        
         return YES;
     }
     else
@@ -172,21 +214,12 @@ static ContactsManager *instance = nil;
         
         if([[ContactsManager sharedInstance] isContactWithIdRequested:selectedId])
         {
-            NSLog(@"PrivateProfileViewController : User already requested by you.");
-            //            UIImage *img = [UIImage imageNamed:@"invitesent"];
-            //            [self.addUserButton setImage:img forState:UIControlStateNormal];
-            //            [self.addUserButton setEnabled:NO];
-            //
-            //For now just navigate to the unlocked profile.
             
             return NO;
             
         }
         else
         {
-            //If not show the private profile view as is.
-            NSLog(@"PrivateProfileViewController : Private profile as is.");
-            
             return NO;
         }
     }

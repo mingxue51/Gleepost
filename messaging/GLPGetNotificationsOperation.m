@@ -11,6 +11,7 @@
 #import "DatabaseManager.h"
 #import "GLPNotification.h"
 #import "GLPNotificationManager.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface GLPGetNotificationsOperation()
 
@@ -38,10 +39,21 @@
             NSLog(@"New notifications from get notifications request: %d", notifications.count);
             
             if(notifications.count > 0) {
-                [GLPNotificationManager saveNotifications:notifications];
                 
+                //Check if the same notification exist in database and if it is unread. If yes the don't call GLPNewNotifications.
+                NSArray* finalNotifications = [GLPNotificationManager cleanNotificationsArray:notifications];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
+                if(finalNotifications.count > 0)
+                {
+                    //Don't do anything.
+                    [GLPNotificationManager saveNotifications:finalNotifications];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
+                }
+                else
+                {
+
+                }
             }
         }
     }];
