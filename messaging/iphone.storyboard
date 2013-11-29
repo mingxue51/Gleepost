@@ -1724,11 +1724,8 @@
     </scenes>
     <resources>
         <image name="Gleepost_main.png" width="406" height="212"/>
-        <image name="Gleepost_main.png" width="406" height="212"/>
-        <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept_contact.png" width="150" height="60"/>
         <image name="add_contact.png" width="304" height="105"/>
-        <image name="avatar.png" width="162" height="162"/>
         <image name="avatar.png" width="162" height="162"/>
         <image name="background_profile.png" width="508" height="368"/>
         <image name="bottom_background_private_profile.png" width="642" height="314"/>
@@ -1741,8 +1738,6 @@
         <image name="messages.png" width="30" height="30"/>
         <image name="mychatbubble4.png" width="477" height="67"/>
         <image name="next.png" width="200" height="76"/>
-        <image name="next.png" width="200" height="76"/>
-        <image name="notificationicon.png" width="70" height="70"/>
         <image name="notificationicon.png" width="70" height="70"/>
         <image name="profile.png" width="30" height="30"/>
         <image name="profile_image_frame.png" width="262" height="262"/>
