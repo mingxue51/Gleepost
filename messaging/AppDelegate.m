@@ -34,9 +34,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     
-    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
+//    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    
+
     
     UIViewController *initVC;
     if([[SessionManager sharedInstance] isSessionValid]) {

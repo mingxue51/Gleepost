@@ -37,6 +37,11 @@
     //Change the colour format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     
+    //Sets colour to navigation items.
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    //Set the  colour of navigation bar's title.
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
