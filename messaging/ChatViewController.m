@@ -20,6 +20,7 @@
 #import "DatabaseManager.h"
 #import "UIViewController+Flurry.h"
 #import "GLPLiveConversationsManager.h"
+#import "ImageFormatterHelper.h"
 
 @interface ChatViewController ()
 
@@ -45,6 +46,9 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
     
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+
+    
     [self addGleepostImageToNavigationBar];
     //[self addSettingsImageToNavigationBar];
     
@@ -67,10 +71,10 @@
 
 -(void)loadLiveConversations
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Refreshing live chat" forView:self.view];
+    //[WebClientHelper showStandardLoaderWithTitle:@"Refreshing live chat" forView:self.view];
     
     [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
+        //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(!success) {
             [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
@@ -112,8 +116,8 @@
     //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
     
 
-    
-    [self.chatAnimations refreshLiveConversations];
+    //TODO: We are removing the live chats from the NewChat view.
+    //[self.chatAnimations refreshLiveConversations];
     
     self.chatAnimations.chatViewController = self;
     self.chatAnimations.tag = 100;

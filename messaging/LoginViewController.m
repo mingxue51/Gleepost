@@ -40,6 +40,7 @@
     
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+    //[[UINavigationBar appearance] setShadowImage: [[UIImage alloc] init]];
 
     
     

@@ -225,10 +225,12 @@ static BOOL likePushed;
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTranslucent:YES];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    
+    //Sets colour to navigation items.
+    self.navigationController.navigationBar.tintColor = tabColour;
 
     
     //Set the  colour of navigation bar's title.
@@ -236,7 +238,11 @@ static BOOL likePushed;
     self.tabBarController.tabBar.hidden = NO;
     
     //Set colour of the border navigation bar image. TODO: Set one line image.
-    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+//    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+    
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+
+    
     
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;

@@ -74,6 +74,10 @@ static BOOL likePushed;
     
     self.navigationController.navigationBar.tintColor = tabColour;
 
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+
+    
+    
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     

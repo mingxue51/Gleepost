@@ -130,6 +130,7 @@ static BOOL likePushed;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self.tabBarController.tabBar setHidden:YES];
     
     if(self.commentJustCreated)
     {
@@ -145,7 +146,6 @@ static BOOL likePushed;
 {
     [super viewWillAppear:animated];
     [self loadComments];
-    [self.tabBarController.tabBar setHidden:YES];
 
 }
 

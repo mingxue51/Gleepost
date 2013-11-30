@@ -62,7 +62,8 @@ static BOOL initLiveChats;
     
     [self initialiseCircles];
 
-    [self initialiseLiveConversationBubbles];
+    //TODO: We are removing the live chats from the NewChat view.
+    //[self initialiseLiveConversationBubbles];
 
     [self setBackgroundImage];
     [self initialiseScrollView];
@@ -86,7 +87,8 @@ static BOOL initLiveChats;
             //[self initialiseLiveConversationBubbles];
 //        }
         
-        [self initialiseLiveConversationBubbles];
+        //TODO: We are removing the live chats from the NewChat view.
+        //[self initialiseLiveConversationBubbles];
         
         [self setBackgroundImage];
         [self initialiseScrollView];

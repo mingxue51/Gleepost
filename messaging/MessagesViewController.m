@@ -17,12 +17,19 @@
 #import "GLPLoadingCell.h"
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
+#import "ImageFormatterHelper.h"
+#import "GLPLiveConversationsManager.h"
 
 @interface MessagesViewController ()
 
 @property (strong, nonatomic) NSMutableArray *conversations;
 @property (strong, nonatomic) GLPConversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
+//New approach.
+@property (strong, nonatomic) NSArray *sections;
+@property (strong, nonatomic) NSMutableDictionary *categorisedConversations;
+
 
 // reload conversations when user comes back from chat view, in order to update last message and last update
 @property (assign, nonatomic) BOOL needsReloadConversations;
@@ -55,7 +62,16 @@
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.needsReloadConversations = NO;
     
+    //NEW APPROACH.
+    self.categorisedConversations = [[NSMutableDictionary alloc] init];
+    
+    //Initialise two sections: Random Chats and Messages from Contacts.
+    self.sections = [[NSArray alloc] initWithObjects:@"Random Chats", @"Messages from Contacts", nil];
+    
+    [self loadLiveConversations];
+    
     [self loadConversations];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -111,6 +127,9 @@
 
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
     
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+
+    
 //    self.navigationController.navigationBar.tintColor = tabColour;
 
 
@@ -162,6 +181,10 @@
             [self createRefreshIfNeed];
             self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             
+            //ADDED NEW APPROACH.
+            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
+
+            
             [self showConversations:conversations];
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
@@ -170,6 +193,9 @@
             self.loadingCellStatus = kGLPLoadingCellStatusFinished;
             [self createRefreshIfNeed];
             self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            
+            //ADDED NEW APPROACH.
+            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
             
             [self showConversations: conversations];
         } else {
@@ -198,6 +224,24 @@
     [self showConversations:localConversations];
 }
 
+-(void)loadLiveConversations
+{
+    
+    [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
+        
+        if(!success) {
+            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
+            return;
+        }
+        
+        [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
+        [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
+        NSLog(@"CategorisedConversations: %@",self.categorisedConversations);
+
+        [self.tableView reloadData];
+    }];
+    
+}
 
 #pragma mark - Notifications
 
@@ -226,13 +270,45 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return  self.sections.count;
+    //return 1;
+}
+
+/**
+ NEW APPROACH ADDED METHODS.
+ */
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
+{
+    return index;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [self.sections objectAtIndex:section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // loading cell or conversations
-    return (self.loadingCellStatus == kGLPLoadingCellStatusFinished) ? self.conversations.count : 1;
+    //return (self.loadingCellStatus == kGLPLoadingCellStatusFinished) ? self.conversations.count : 1;
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusFinished)
+    {
+        if(section == 0)
+        {
+            //Change to number of live chats.
+            return 3;
+        }
+        else
+        {
+            return self.conversations.count;
+        }
+    }
+    
+    
+    return 1;
+
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -248,7 +324,15 @@
     
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
-    GLPConversation *conversation = self.conversations[indexPath.row];
+    //NEW APPROACH.
+    //Take the array of appropriate section.
+    NSArray *conversations = [self.categorisedConversations objectForKey:[NSNumber numberWithInt:indexPath.section]];
+    
+    GLPConversation *conversation = [conversations objectAtIndex:indexPath.row];
+
+    
+    
+//    GLPConversation *conversation = self.conversations[indexPath.row];
     
     cell.userName.text = conversation.title;
     cell.content.text = [conversation getLastMessageOrDefault];
@@ -265,7 +349,15 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    self.selectedConversation = self.conversations[indexPath.row];
+//    self.selectedConversation = self.conversations[indexPath.row];
+    
+    //NEW APPROACH.
+    NSArray *conversations = [self.categorisedConversations objectForKey:[NSNumber numberWithInt:indexPath.section]];
+    
+    GLPConversation *conversation = [conversations objectAtIndex:indexPath.row];
+    
+    self.selectedConversation = conversation;
+    
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }
 

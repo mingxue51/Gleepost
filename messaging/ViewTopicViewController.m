@@ -126,7 +126,7 @@ float timeInterval = 0.1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:@"GLPNewMessage" object:nil];
     
     
-    [self.tabBarController.tabBar setHidden:YES];
+    //[self.tabBarController.tabBar setHidden:YES];
     
     // reload messages when coming back from other VC
     [self configureMessages];
@@ -135,6 +135,9 @@ float timeInterval = 0.1;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self.tabBarController.tabBar setHidden:YES];
+
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
