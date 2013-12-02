@@ -53,7 +53,6 @@
 		58361C36184CBF6700FEFC49 /* profiletext_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C35184CBF6700FEFC49 /* profiletext_background.png */; };
 		58361C38184CC6F500FEFC49 /* private_profile_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C37184CC6F500FEFC49 /* private_profile_background.png */; };
 		58361C3A184CCAD200FEFC49 /* add_as_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C39184CCAD200FEFC49 /* add_as_contact.png */; };
-		58361C3D184CCC2500FEFC49 /* PrivateProfileImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58361C3C184CCC2500FEFC49 /* PrivateProfileImageView.m */; };
 		58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */; };
 		583B9FE317F3676A00B4BEE3 /* set_tab_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE117F3676A00B4BEE3 /* set_tab_small.png */; };
 		583B9FE417F3676A00B4BEE3 /* set_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */; };
@@ -435,8 +434,6 @@
 		58361C35184CBF6700FEFC49 /* profiletext_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profiletext_background.png; sourceTree = "<group>"; };
 		58361C37184CC6F500FEFC49 /* private_profile_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = private_profile_background.png; sourceTree = "<group>"; };
 		58361C39184CCAD200FEFC49 /* add_as_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_as_contact.png; sourceTree = "<group>"; };
-		58361C3B184CCC2400FEFC49 /* PrivateProfileImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateProfileImageView.h; sourceTree = "<group>"; };
-		58361C3C184CCC2500FEFC49 /* PrivateProfileImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateProfileImageView.m; sourceTree = "<group>"; };
 		58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_background.png; sourceTree = "<group>"; };
 		583B9FE117F3676A00B4BEE3 /* set_tab_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = set_tab_small.png; sourceTree = "<group>"; };
 		583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_tab@2x.png"; sourceTree = "<group>"; };
@@ -1244,8 +1241,6 @@
 				58808EFC1807070D00E415C1 /* FadeInCustomSegue.m */,
 				58361C31184CAE8D00FEFC49 /* ReflectedImageView.h */,
 				58361C32184CAE8D00FEFC49 /* ReflectedImageView.m */,
-				58361C3B184CCC2400FEFC49 /* PrivateProfileImageView.h */,
-				58361C3C184CCC2500FEFC49 /* PrivateProfileImageView.m */,
 			);
 			name = Animations;
 			path = ..;
@@ -2486,7 +2481,6 @@
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
-				58361C3D184CCC2500FEFC49 /* PrivateProfileImageView.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
