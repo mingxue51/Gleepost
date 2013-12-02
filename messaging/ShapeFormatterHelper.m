@@ -22,4 +22,24 @@
     roundedView.center = saveCenter;
 }
 
+
+/**
+ Converts the two top corners of an image view from straight to circles.
+ 
+ @param imageView the incoming image view.
+ @param viewBounds the bounds of the parent view.
+ @param sizeOfCorners the size of the new corners.
+ 
+ */
++(void)createTwoTopCornerRadius:(UIImageView*)imageView withViewBounts:(CGRect)viewBounds andSizeOfCorners:(CGSize)sizeOfCorners
+{
+    UIBezierPath *maskPath;
+    maskPath = [UIBezierPath bezierPathWithRoundedRect:imageView.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:sizeOfCorners];
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = viewBounds;
+    maskLayer.path = maskPath.CGPath;
+    imageView.layer.mask = maskLayer;
+}
+
 @end

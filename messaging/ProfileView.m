@@ -108,11 +108,17 @@
 -(void)setUserDetails
 {    
     
-    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    //[ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.bounds andSizeOfCorners:CGSizeMake(10.0, 10.0)];
     
     //Not need to request. Take all the data from Session Manager.
     [self.profileHeadInformation setText: self.currentUser.networkName];
     
+    [self.course setText:self.currentUser.course];
+    
+    [self.name setText:self.currentUser.name];
+
+    //TODO: self.currentUser.message
     
     
     if([ self.currentUser.profileImageUrl isEqualToString:@""])

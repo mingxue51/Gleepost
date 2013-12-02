@@ -99,6 +99,9 @@ float timeInterval = 0.1;
     [super viewDidLoad];
     
     [self configureTableView];
+    
+    [self loadElements];
+
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -130,7 +133,11 @@ float timeInterval = 0.1;
     
     // reload messages when coming back from other VC
     [self configureMessages];
-    [self loadElements];
+    [self loadInitialMessages];
+
+//    [self loadElements];
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -219,7 +226,7 @@ float timeInterval = 0.1;
         [self hideTimeBarAndMaximizeTableView];
     }
     
-    [self loadInitialMessages];
+//    [self loadInitialMessages];
 }
 
 - (void)reloadElements

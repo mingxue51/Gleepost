@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UISwitch *busyFreeSwitch;
 @property (weak, nonatomic) IBOutlet UIButton *notificationsButton;
 @property (weak, nonatomic) IBOutlet UILabel *profileHeadInformation;
+@property (weak, nonatomic) IBOutlet UILabel *course;
+@property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *busyFreeLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *notificationNewBubbleImageView;
