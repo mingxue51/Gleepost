@@ -13,6 +13,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 
+
 @interface ProfileView ()
 
 
@@ -52,6 +53,9 @@
     [self setBackgroundColor:[UIColor clearColor]];
     [self sendSubviewToBack:self.back];
     
+    
+    
+    
     //Set colour dynamically to switch.
 //    [self.busyFreeSwitch setBackgroundColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     [self.busyFreeSwitch setOnTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
@@ -85,6 +89,8 @@
         //[self loadUserDetails:self.currentUser];
         
     }
+    
+    
 }
 
 -(void)setUserDetails:(GLPUser*)incomingUser
@@ -131,7 +137,16 @@
     {
         
         //Fetch the image from the server and add it to the image view.
-        [self.profileImage setImageWithURL:[NSURL URLWithString: self.currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
+        //[self.profileImage setImageWithURL:[NSURL URLWithString: self.currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil]];
+        
+        //Create the reflection effect.
+        [self.profileImage setImageWithURL:[NSURL URLWithString:self.currentUser.profileImageUrl] placeholderImage:[UIImage imageNamed:nil] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+            //Create the reflection effect.
+            //TODO: Fix that, only add image when the image is loaded.
+            [self.reflectedProfileImage reflectionImageWithImage:self.profileImage.image];
+            
+        }];
         
     }
 }

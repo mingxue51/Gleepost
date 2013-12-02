@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPUser.h"
+#import "ReflectedImageView.h"
 
 @interface ProfileView : UIView
 @property (weak, nonatomic) IBOutlet UIImageView* back;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet ReflectedImageView *reflectedProfileImage;
 @property (weak, nonatomic) IBOutlet UISwitch *busyFreeSwitch;
 @property (weak, nonatomic) IBOutlet UIButton *notificationsButton;
 @property (weak, nonatomic) IBOutlet UILabel *profileHeadInformation;

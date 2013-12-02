@@ -335,7 +335,7 @@
                 
 
                 
-                [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.view.bounds andSizeOfCorners:CGSizeMake(10.0, 10.0)];
+                [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.view.bounds andSizeOfCorners:CGSizeMake(5.0, 5.0)];
                 
                 
 //                UIBezierPath *maskPath;
