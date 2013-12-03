@@ -14,6 +14,7 @@
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
 #import "WebClientHelper.h"
+
 @interface NotificationsViewController ()
 
 @property (assign, nonatomic) BOOL inLoading;
@@ -193,8 +194,6 @@
             NSLog(@"Commented.");
             //View post (navigate to comment).
 
-
-            
             break;
             
         case kGLPNotificationTypeLiked:
@@ -259,6 +258,9 @@
             
             NSLog(@"User with remote key %d accepted.", acceptButton.tag);
             self.selectedUserId = acceptButton.tag;
+            
+            //TODO: Change the cell.
+            
             [self performSegueWithIdentifier:@"view profile" sender:self];
 
         }

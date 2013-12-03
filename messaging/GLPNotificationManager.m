@@ -154,7 +154,8 @@
             [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
         }
         
-        for(GLPNotification *notification in notifications) {
+        for(GLPNotification *notification in notifications)
+        {
             [GLPNotificationDao save:notification inDb:db];
         }
     }];

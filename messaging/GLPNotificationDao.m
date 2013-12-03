@@ -9,6 +9,7 @@
 #import "GLPNotificationDao.h"
 #import "GLPNotificationDaoParser.h"
 #import "FMDatabaseAdditions.h"
+#import "GLPUserDao.h"
 
 
 @implementation GLPNotificationDao
@@ -63,6 +64,10 @@
                       entity.user.remoteKey];
     
     entity.key = [db lastInsertRowId];
+
+    
+    //Add the user to users table.
+    [GLPUserDao saveIfNotExist:entity.user db:db];
 }
 
 + (NSInteger)countUnreadNotificationsInDb:(FMDatabase *)db
