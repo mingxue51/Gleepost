@@ -22,6 +22,8 @@
 @synthesize liveNotificationsCount=_liveNotificationsCount;
 @synthesize profileNotificationsCount=_profileNotificationsCount;
 
+static BOOL isViewDidDisappearCalled = YES;
+
 - (void)viewDidLoad
 {
     _notificationsCount = 0;
@@ -29,10 +31,6 @@
     _profileNotificationsCount = 0;
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
 
 //TODO: BUG: View will appear called multible times.
@@ -40,14 +38,32 @@
 {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:@"GLPNewMessage" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:@"GLPNewNotifications" object:nil];
+
+    if(isViewDidDisappearCalled)
+    {
+        NSLog(@"GLPTabBarController : viewWillAppear");
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:@"GLPNewMessage" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:@"GLPNewNotifications" object:nil];
+        
+        isViewDidDisappearCalled = NO;
+    }
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"GLPTabBarController : viewDidDisappear");
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    NSLog(@"GLPTabBarController : viewWillDisappear");
+    
+    isViewDidDisappearCalled = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];

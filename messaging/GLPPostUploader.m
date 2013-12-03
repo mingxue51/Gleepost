@@ -52,6 +52,13 @@
 
 //TODO: recheck
 //TODO: manage image changes and some stuff like this
+
+/**
+ Resizes and uploads the selected by user image.
+ 
+ @param image The selected image.
+ 
+ */
 - (void)uploadImage:(UIImage *)image
 {
     self.tempImage = image;
@@ -71,6 +78,12 @@
     [[[NSOperationQueue alloc] init] addOperation:operation];
 }
 
+/**
+ Uploads the resized image and returns url of the image.
+ 
+ @param imageData The data of the image.
+ 
+ */
 - (void)uploadResizedImage:(NSData *)imageData
 {
     [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
@@ -88,6 +101,15 @@
     }];
 }
 
+/**
+ Uploads the post with content.
+ 
+ @param content The content of the post.
+ @param hasImage True if the post includes image or false if it is not.
+ 
+ @return a new instance of post.
+ 
+ */
 - (GLPPost*)uploadPostWithContent:(NSString *)content hasImage:(BOOL)hasImage
 {
     _post = [[GLPPost alloc] init];
@@ -114,6 +136,12 @@
     return _post;
 }
 
+/**
+ Uploads the post contains only text.
+ 
+ @param post Post to be uploaded.
+ 
+ */
 -(void)uploadTextWithPost:(GLPPost*)post
 {
     
@@ -134,6 +162,10 @@
     }];
 }
 
+/**
+ Uploads the final image post.
+ 
+ */
 - (void)uploadFinalPostWithImage:(BOOL)withImage
 {
     if(_postUploading) {

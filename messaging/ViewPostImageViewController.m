@@ -16,7 +16,6 @@
 @implementation ViewPostImageViewController
 
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -32,18 +31,30 @@
 }
 - (IBAction)goBack:(id)sender
 {
-//    [self dismissViewControllerAnimated:YES completion:^{
-//
-//    }];
+
+   NSLog(@"CLASS: %@", self.parentViewController);
+    
+    [self.transitioningDelegate animationControllerForDismissedController:self];
+    
     
     [UIView animateWithDuration:0.25 animations:^{
-        self.view.alpha = 0;
-    } completion:^(BOOL b){
-        [self dismissViewControllerAnimated:NO completion:^{
         
+        self.view.alpha = 0;
+        NSLog(@"Dismiss ViewPostImageViewController.");
+        
+    } completion:^(BOOL b){
+
+//        self.view.alpha = 1;
+        [self dismissViewControllerAnimated:NO completion:^{
+            
+            NSLog(@"After Dismiss ViewPostImageViewController.");
+            
         }];
-        self.view.alpha = 1;
     }];
+    
+    
+
+
 }
 
 @end

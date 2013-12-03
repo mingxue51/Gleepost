@@ -131,6 +131,8 @@
     
     GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text hasImage:_hasImage];
     
+    //Dismiss view controller and show immediately the post in the Campus Wall.
+    
     [self dismissViewControllerAnimated:YES completion:^{
         if(_hasImage)
         {

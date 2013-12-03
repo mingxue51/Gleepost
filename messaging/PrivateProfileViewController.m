@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *personalMessage;
 @property (weak, nonatomic) IBOutlet UIButton *addUserButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptUserButton;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfFriends;
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -289,9 +290,6 @@
         
         if(success)
         {
-            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
-       
-            
             self.profileUser = user;
             
             self.title = user.name;

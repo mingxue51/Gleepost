@@ -26,6 +26,7 @@
     ViewPostImageViewController *toVC = (ViewPostImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
+    
     toVC.view.alpha = 0.0;
     
     [inView addSubview:toVC.view];
@@ -59,6 +60,7 @@
 //                         [transitionContext completeTransition:YES];
 //                     }];
 }
+
 
 
 @end
