@@ -76,4 +76,9 @@ static GLPThemeManager *instance = nil;
     return [self.type navbar];
 }
 
+-(NSString*)pullDownButton
+{
+    return [self.type pullDownImage];
+}
+
 @end

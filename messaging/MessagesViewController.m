@@ -27,9 +27,10 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 //New approach.
-@property (strong, nonatomic) NSArray *sections;
+@property (strong, nonatomic) NSMutableArray *sections;
 @property (strong, nonatomic) NSMutableDictionary *categorisedConversations;
 
+@property (strong, nonatomic) NSMutableArray *liveConversations;
 
 // reload conversations when user comes back from chat view, in order to update last message and last update
 @property (assign, nonatomic) BOOL needsReloadConversations;
@@ -38,9 +39,14 @@
 
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 
+
 @end
 
 @implementation MessagesViewController
+
+NSString *const LIVE_CHATS_STR = @"Live chats";
+NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
+
 
 - (void)viewDidLoad
 {
@@ -66,11 +72,9 @@
     self.categorisedConversations = [[NSMutableDictionary alloc] init];
     
     //Initialise two sections: Random Chats and Messages from Contacts.
-    self.sections = [[NSArray alloc] initWithObjects:@"Random Chats", @"Messages from Contacts", nil];
+    self.sections = [[NSMutableArray alloc] init];
     
-    [self loadLiveConversations];
-    
-    [self loadConversations];
+
     
 }
 
@@ -93,7 +97,9 @@
 //    } else {
 //        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 //    }
+    [self loadLiveConversations];
     
+    [self loadConversations];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
     
@@ -215,6 +221,14 @@
 - (void)showConversations:(NSArray *)conversations
 {
     self.conversations = [conversations mutableCopy];
+    
+    if(self.conversations.count != 0)
+    {
+        //Add new section.
+        [self addSectionWithName:CONTACTS_CHATS_STR];
+    }
+
+    
     [self.tableView reloadData];
 }
 
@@ -234,13 +248,39 @@
             return;
         }
         
-        [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
-        [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
-        NSLog(@"CategorisedConversations: %@",self.categorisedConversations);
+        if(conversations.count != 0)
+        {
+            //Add live chats' section in the section array.
+            [self addSectionWithName:LIVE_CHATS_STR];
+            
+            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
+            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
+            [self.tableView reloadData];
+        }
+        
 
-        [self.tableView reloadData];
     }];
     
+}
+
+-(void)addSectionWithName:(NSString*)section
+{
+    for(NSString* s in self.sections)
+    {
+        if([section isEqualToString:s])
+        {
+            return;
+        }
+    }
+    
+    if([section isEqualToString:LIVE_CHATS_STR])
+    {
+        [self.sections setObject:section atIndexedSubscript:0];
+    }
+    else
+    {
+        [self.sections addObject:section];
+    }
 }
 
 #pragma mark - Notifications
@@ -297,7 +337,7 @@
         if(section == 0)
         {
             //Change to number of live chats.
-            return 3;
+            return [GLPLiveConversationsManager sharedInstance].conversations.count;
         }
         else
         {

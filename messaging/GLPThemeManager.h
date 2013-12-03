@@ -16,5 +16,6 @@
 -(NSString*)imageForChatBackground;
 -(NSString*)imageForNavBar;
 -(UIColor*)colorForTabBar;
+-(NSString*)pullDownButton;
 
 @end
