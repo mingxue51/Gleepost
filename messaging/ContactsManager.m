@@ -149,7 +149,7 @@ static ContactsManager *instance = nil;
         if(success)
         {
             [self contactWithRemoteKeyAccepted:remoteKey];
-            
+            [self loadContactsFromDatabase];
             callbackBlock(success);
         }
         

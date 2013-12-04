@@ -8,6 +8,7 @@
 
 #import "NotificationCell.h"
 #import "NSDate+TimeAgo.h"
+#import "ContactsManager.h"
 
 @implementation NotificationCell
 
@@ -46,22 +47,37 @@ float const kContentLabelBottomMargin = 7;
     CGRectSetY(self.time, self.contentLabel.frame.origin.y + contentHeight + kContentLabelBottomMargin);
     
     if([notification hasAction]) {
-        self.buttonsView.hidden = NO;
-        CGRectSetY(self.buttonsView, self.time.frame.origin.y + self.time.frame.size.height);
-        CGRectSetH(self.contentView, self.buttonsView.frame.origin.y + self.buttonsView.frame.size.height + kViewBottomPadding);
-        self.acceptButton.tag = self.ignoreButton.tag = notification.user.remoteKey;
         
-        [self.acceptButton addTarget:controller action:@selector(acceptContact:) forControlEvents:UIControlEventTouchUpInside];
-        [self.ignoreButton addTarget:controller action:@selector(ignoreContact:) forControlEvents:UIControlEventTouchUpInside];
+        //If the user is already in user's contacts list then don't show the buttonsView.
+        if([[ContactsManager sharedInstance] isUserContactWithId:notification.user.remoteKey])
+        {
+            [self setButtonsViewHidden];
+            [notification alreadyContacts];
+        }
+        else
+        {
+            self.buttonsView.hidden = NO;
+            CGRectSetY(self.buttonsView, self.time.frame.origin.y + self.time.frame.size.height);
+            CGRectSetH(self.contentView, self.buttonsView.frame.origin.y + self.buttonsView.frame.size.height + kViewBottomPadding);
+            self.acceptButton.tag = self.ignoreButton.tag = notification.user.remoteKey;
+            
+            [self.acceptButton addTarget:controller action:@selector(acceptContact:) forControlEvents:UIControlEventTouchUpInside];
+            [self.ignoreButton addTarget:controller action:@selector(ignoreContact:) forControlEvents:UIControlEventTouchUpInside];
+        }
 
     } else {
-        self.buttonsView.hidden = YES;
-        CGRectSetH(self.contentView, self.time.frame.origin.y + self.time.frame.size.height + kViewBottomPadding);
+        [self setButtonsViewHidden];
     }
     
     self.contentLabel.text = [notification notificationTypeDescription];
 //    self.time.text = [notification.date description];
     self.time.text = [notification.date timeAgo];
+}
+
+-(void)setButtonsViewHidden
+{
+    self.buttonsView.hidden = YES;
+    CGRectSetH(self.contentView, self.time.frame.origin.y + self.time.frame.size.height + kViewBottomPadding);
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

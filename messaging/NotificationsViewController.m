@@ -259,7 +259,8 @@
             NSLog(@"User with remote key %d accepted.", acceptButton.tag);
             self.selectedUserId = acceptButton.tag;
             
-            //TODO: Change the cell.
+            //Reload data to show the new cell.
+            [self.tableView reloadData];
             
             [self performSegueWithIdentifier:@"view profile" sender:self];
 
@@ -273,6 +274,11 @@
     
     //TODO: Implement that when is implemented by the server side.
     NSLog(@"User with remote key %d ignored.", ignoreButton.tag);
+    
+}
+
+-(void)changeTheCellToAlreadyContactsWithRemoteKey:(int)remoteKey
+{
     
 }
 

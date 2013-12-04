@@ -16,6 +16,7 @@ typedef enum {
     kGLPNotificationTypeAcceptedYou, //1
     kGLPNotificationTypeCommented, //2
     kGLPNotificationTypeLiked, //3
+    kGLPNotificationTypeContacts, //4
 } GLPNotificationType;
 
 @property (assign, nonatomic) NSInteger postRemoteKey;
@@ -26,5 +27,6 @@ typedef enum {
 
 - (BOOL)hasAction;
 - (NSString *)notificationTypeDescription;
+- (void)alreadyContacts;
 
 @end
