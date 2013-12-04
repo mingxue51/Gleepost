@@ -21,6 +21,8 @@
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
+#import "ContactsManager.h"
+
 
 @interface ContactsViewController ()
 
@@ -295,40 +297,48 @@
 
 -(void) loadContacts
 {
-   // [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
 
+    NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
+    
+    self.users = [allContacts objectForKey:@"Contacts"];
+    self.usersStr = [allContacts objectForKey:@"ContactsUserNames"];
+    
+    if(self.users.count>0)
+    {
+        self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+        [self clearUselessSections];
+        
+        [self categoriseUsersByLetter];
+        [self.contactsTableView reloadData];
+    }
     
     
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
-      
-       // [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        
-        if(success)
-        {
-            //Store contacts into an array.
-            
-            [self findConfirmedContacts:contacts.mutableCopy];
-            
-            if(self.users.count>0)
-            {
-                self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-                [self clearUselessSections];
-
-                [self categoriseUsersByLetter];
-                [self.contactsTableView reloadData];
-            }
-            
-//            self.users = contacts.mutableCopy;
-            
-        }
-        else
-        {
-            [WebClientHelper showStandardError];
-        }
-
-        
-    }];
+//    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+//        
+//        if(success)
+//        {
+//            //Store contacts into an array.
+//            [self findConfirmedContacts:contacts.mutableCopy];
+//            
+//            if(self.users.count>0)
+//            {
+//                self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+//                [self clearUselessSections];
+//
+//                [self categoriseUsersByLetter];
+//                [self.contactsTableView reloadData];
+//            }
+//            
+////            self.users = contacts.mutableCopy;
+//            
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//
+//        
+//    }];
 }
 
 #pragma mark - Table view data source

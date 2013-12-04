@@ -187,6 +187,9 @@
             
         case kGLPNotificationTypeAcceptedYou:
             self.selectedUserId = currentNotification.user.remoteKey;
+            //Refresh contacts' data.
+            [[ContactsManager sharedInstance] refreshContacts];
+            
             [self performSegueWithIdentifier:@"view profile" sender:self];
             break;
             
@@ -258,6 +261,9 @@
             
             NSLog(@"User with remote key %d accepted.", acceptButton.tag);
             self.selectedUserId = acceptButton.tag;
+            
+            //For now no need to refresh contacts.
+//            [[ContactsManager sharedInstance] refreshContacts];
             
             //Reload data to show the new cell.
             [self.tableView reloadData];

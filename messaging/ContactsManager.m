@@ -37,7 +37,7 @@ static ContactsManager *instance = nil;
     [self refreshContacts];
     
     //Load contacts from database.
-    [self loadContactsFromDatabase];
+    //[self loadContactsFromDatabase];
     
     return self;
 }
@@ -49,6 +49,9 @@ static ContactsManager *instance = nil;
     }];
 }
 
+/**
+ Load contacts from the server and save them to the Contacts array and to the database.
+ */
 -(void)refreshContacts
 {
     //Load contacts from server and update database.
@@ -58,7 +61,6 @@ static ContactsManager *instance = nil;
         if(success)
         {
             //Store contacts into an array.
-            
             self.contacts = contacts;
 
             [GLPContactDao deleteTable];
@@ -84,6 +86,34 @@ static ContactsManager *instance = nil;
 {
     self.contacts = [GLPContactDao loadContacts];
     
+}
+
+/**
+ Finds the real contacts (accepted from both sides) and return them.
+ 
+ @return dictionary contains an array with confirmed contacts and an array with just users' names.
+ 
+ */
+-(NSDictionary*)findConfirmedContacts
+{
+    NSMutableArray *confirmedContacts = [[NSMutableArray alloc] init];
+    NSMutableArray *confirmedContactsNames = [[NSMutableArray alloc] init];
+    
+    NSMutableDictionary *dictonaryContacts = nil;
+    //Created for test purposes.
+    for(GLPContact* contact in self.contacts)
+    {
+        if(contact.youConfirmed && contact.theyConfirmed)
+        {
+            [confirmedContacts addObject:contact];
+            [confirmedContactsNames addObject:contact.user.name];
+        }
+    }
+    
+    dictonaryContacts = [[NSMutableDictionary alloc] initWithObjects:@[confirmedContacts, confirmedContactsNames] forKeys: @[@"Contacts",@"ContactsUserNames"]];
+    
+    
+    return dictonaryContacts;
 }
 
 /**
@@ -152,6 +182,10 @@ static ContactsManager *instance = nil;
             [self loadContactsFromDatabase];
             callbackBlock(success);
         }
+        else
+        {
+            callbackBlock(NO);
+        }
         
     }];
 }
@@ -196,9 +230,9 @@ static ContactsManager *instance = nil;
  */
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
 {
-    [self refreshContacts];
+    //[self refreshContacts];
 
-    //[self loadContactsFromDatabase];
+    [self loadContactsFromDatabase];
     
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).

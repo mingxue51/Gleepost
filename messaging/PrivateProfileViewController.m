@@ -179,8 +179,8 @@
 - (IBAction)acceptContact:(id)sender
 {
     
-    //If success from server then navigate to unlocked profile.
-    [[WebClient sharedInstance]acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
+    //Accept contact in the local database and in server.
+    [[ContactsManager sharedInstance] acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
        
         if(success)
         {
@@ -193,6 +193,7 @@
             incomingUser.remoteKey = self.selectedUserId;
             
             pvc.incomingUser = incomingUser;
+            
             //Navigate to profile view controller.
             NSMutableArray *array = [[self.navigationController viewControllers] mutableCopy];
             
@@ -202,16 +203,51 @@
             
             
             //Change the status of contact in local database.
-            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
+//            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
         }
         else
         {
             //Error message.
             [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
-
+            
         }
-        
     }];
+    
+    
+    
+//    //If success from server then navigate to unlocked profile.
+//    [[WebClient sharedInstance]acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
+//       
+//        if(success)
+//        {
+//            //Navigate to unlock profile.
+//            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//            ProfileViewController *pvc = [storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+//            
+//            GLPUser *incomingUser = [[GLPUser alloc] init];
+//            
+//            incomingUser.remoteKey = self.selectedUserId;
+//            
+//            pvc.incomingUser = incomingUser;
+//            //Navigate to profile view controller.
+//            NSMutableArray *array = [[self.navigationController viewControllers] mutableCopy];
+//            
+//            NSArray *a = [[NSArray alloc] initWithObjects:[array objectAtIndex:0], pvc, nil];
+//            
+//            [self.navigationController setViewControllers:a animated:YES];
+//            
+//            
+//            //Change the status of contact in local database.
+//            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
+//        }
+//        else
+//        {
+//            //Error message.
+//            [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
+//
+//        }
+//        
+//    }];
 }
 
 

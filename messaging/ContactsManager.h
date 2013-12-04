@@ -24,6 +24,7 @@
 -(void)contactWithRemoteKeyAccepted:(int)remoteKey;
 + (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback;
 -(void)acceptContact:(int)remoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
-//-(void)refreshContacts;
+-(void)refreshContacts;
+-(NSDictionary*)findConfirmedContacts;
 
 @end
