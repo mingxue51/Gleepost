@@ -30,6 +30,10 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPThemeManager.h"
 #import "AppearanceHelper.h"
+#import "PopUpNotificationsViewController.h"
+#import "TransitionDelegateViewNotifications.h"
+
+
 
 @interface ProfileViewController ()
 
@@ -49,6 +53,7 @@
 
 @property (assign, nonatomic) NSInteger unreadNotificationsCount;
 
+@property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
 @end
 
@@ -80,6 +85,7 @@ static BOOL likePushed;
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
+    self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
     
     self.profileScrollView = [[ProfileScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 350)];
 
@@ -248,7 +254,25 @@ static BOOL likePushed;
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-    self.navigationItem.rightBarButtonItem = item;
+    //self.navigationItem.rightBarButtonItem = item;
+    
+    ////
+    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(popUpNotifications:)];
+    [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+    
+    self.navigationItem.rightBarButtonItems = @[item,i];
+}
+
+-(void)popUpNotifications:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    vc.delegate = self;
+    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 #pragma mark - FDTakeController delegate

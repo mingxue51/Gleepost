@@ -26,6 +26,6 @@ extern NSString * const kGLPNotificationCell;
 + (CGSize)getContentLabelSizeForContent:(NSString *)content;
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;
 
-- (void)updateWithNotification:(GLPNotification *)notification withViewController:(NotificationsViewController*) controller;
+- (void)updateWithNotification:(GLPNotification *)notification withViewController:(UIViewController*) controller;
 
 @end

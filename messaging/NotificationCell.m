@@ -26,8 +26,9 @@ float const kContentLabelBottomMargin = 7;
 }
 
 
-- (void)updateWithNotification:(GLPNotification *)notification withViewController:(NotificationsViewController*) controller
-{    
+//- (void)updateWithNotification:(GLPNotification *)notification withViewController:(NotificationsViewController*) controller
+- (void)updateWithNotification:(GLPNotification *)notification withViewController:(UIViewController*) controller
+{
     // configure elements' frames
     CGSize contentSize = [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]];
     float contentHeight = contentSize.height;

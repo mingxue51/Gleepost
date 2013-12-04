@@ -151,7 +151,7 @@ static BOOL likePushed;
     self.postIndexToReload = -1;
     
     //TODO: Remove this later.
-    [ContactsManager sharedInstance];
+    [[ContactsManager sharedInstance] refreshContacts];
     
     [self loadInitialPosts];
     
