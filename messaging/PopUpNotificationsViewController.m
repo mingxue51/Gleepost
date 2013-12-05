@@ -83,7 +83,7 @@
     self.tableView.layer.borderWidth = 0.5;
     self.tableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
-    [self.tableView registerNib:[UINib nibWithNibName:kGLPNotificationCell bundle:nil] forCellReuseIdentifier:kGLPNotificationCell];
+    [self.tableView registerNib:[UINib nibWithNibName:kGLPNotCell bundle:nil] forCellReuseIdentifier:kGLPNotCell];
 }
 
 #pragma mark - Notifications
@@ -174,7 +174,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPNotificationCell forIndexPath:indexPath];
+    NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPNotCell forIndexPath:indexPath];
     
     
     GLPNotification *notification = self.notifications[indexPath.row];

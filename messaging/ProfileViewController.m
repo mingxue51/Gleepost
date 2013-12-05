@@ -245,20 +245,25 @@ static BOOL likePushed;
 -(void)addLogoutNavigationButton
 {
     UIImage *settingsIcon = [UIImage imageNamed:@"settings_icon"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:settingsIcon];
-    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, settingsIcon.size.width, settingsIcon.size.height)];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 20, 20)];
+    [btnBack setFrame:CGRectMake(0, 0, 30, 30)];
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
     //self.navigationItem.rightBarButtonItem = item;
     
-    ////
-    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(popUpNotifications:)];
+    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
+    [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
+
+    ////notifications_button
+//    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(popUpNotifications:)];
+    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithCustomView:notView];
+
+    
     [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
     self.navigationItem.rightBarButtonItems = @[item,i];
@@ -555,7 +560,7 @@ static BOOL likePushed;
 
 -(void) showNotifications: (id)sender
 {
-    [self performSegueWithIdentifier:@"view profile" sender:self];
+    [self performSegueWithIdentifier:@"view notifications" sender:self];
 }
 
 - (void)viewDidLayoutSubviews

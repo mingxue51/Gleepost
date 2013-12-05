@@ -33,6 +33,11 @@
     return self.notificationType == kGLPNotificationTypeAddedYou;
 }
 
+-(BOOL)hasActionNewFriends
+{
+    return self.notificationType == kGLPNotificationTypeAcceptedYou || self.notificationType == kGLPNotificationTypeContacts;
+}
+
 - (NSString *)notificationTypeDescription
 {
     switch (self.notificationType) {
