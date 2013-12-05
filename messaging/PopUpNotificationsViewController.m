@@ -79,6 +79,10 @@
 
 - (void)configTableView
 {
+    //Set border to table view.
+    self.tableView.layer.borderWidth = 0.5;
+    self.tableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
     [self.tableView registerNib:[UINib nibWithNibName:kGLPNotificationCell bundle:nil] forCellReuseIdentifier:kGLPNotificationCell];
 }
 
@@ -200,8 +204,8 @@
             self.selectedUserId = currentNotification.user.remoteKey;
             //Refresh contacts' data.
             [[ContactsManager sharedInstance] refreshContacts];
-            
-            [self performSegueWithIdentifier:@"view profile" sender:self];
+            [self navigateToViewWithName:@"view profile"];
+            //[self performSegueWithIdentifier:@"view profile" sender:self];
             break;
             
         case kGLPNotificationTypeCommented:
@@ -228,7 +232,8 @@
             if(sucess)
             {
                 self.selectedPost = post;
-                [self performSegueWithIdentifier:@"view post" sender:self];
+                [self navigateToViewWithName:@"view post"];
+                //[self performSegueWithIdentifier:@"view post" sender:self];
             }
             else
             {
@@ -280,7 +285,8 @@
             //Reload data to show the new cell.
             [self.tableView reloadData];
             
-            [self performSegueWithIdentifier:@"view profile" sender:self];
+            [self navigateToViewWithName:@"view profile"];
+            //[self performSegueWithIdentifier:@"view profile" sender:self];
             
         }
     }];
@@ -341,41 +347,30 @@
 
 #pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+-(void)navigateToViewWithName:(NSString*)viewController
 {
-    if([segue.identifier isEqualToString:@"view post"])
+    if([viewController isEqualToString:@"view post"])
     {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        ViewPostViewController *vc = segue.destinationViewController;
         /**
          Forward data of the post the to the view. Or in future just forward the post id
          in order to fetch it from the server.
          */
         
-        vc.commentJustCreated = NO;
-        
-        vc.post = self.selectedPost;
-        
+        self.delegate.selectedPost = self.selectedPost;
+
     }
-    else if([segue.identifier isEqualToString:@"view profile"])
+    else
     {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+        self.delegate.selectedUserId = self.selectedUserId;
     }
+
+    [self dismissViewControllerAnimated:NO completion:^{
+    
+        
+        [self.delegate performSegueWithIdentifier:viewController sender:self.delegate];
+        
+        
+    }];
 }
 
 

@@ -7,7 +7,6 @@
 //
 
 #import "ProfileViewController.h"
-#import "GLPPost.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "ViewPostViewController.h"
@@ -41,7 +40,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *postsTableView;
 
 @property (strong, nonatomic) NSMutableArray *posts;
-@property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) IBOutlet ProfileView *profileView;
@@ -175,6 +173,9 @@ static BOOL likePushed;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    //Initialise selected user id with -1 to dinstinguish logged in user from other users' profile.
+    self.selectedUserId = -1;
     
     // count unread notifications
     self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
@@ -792,8 +793,19 @@ static BOOL likePushed;
     }
     else if([segue.identifier isEqualToString:@"view profile"])
     {
-        NotificationsViewController *nv = segue.destinationViewController;
+//        NotificationsViewController *nv = segue.destinationViewController;
+        ProfileViewController *profileViewController = segue.destinationViewController;
         
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        if(self.selectedUserId == -1)
+        {
+            incomingUser = nil;
+        }
+        
+        profileViewController.incomingUser = incomingUser;
     }
     else if([segue.identifier isEqualToString:@"start"])
     {
