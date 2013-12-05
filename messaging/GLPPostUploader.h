@@ -11,5 +11,5 @@
 
 @interface GLPPostUploader : NSObject
 - (void)startUploadingImage:(UIImage *)image;
-- (GLPPost *)uploadPostWithContent:(NSString *)content hasImage:(BOOL)hasImage;
+- (GLPPost *)uploadPostWithContent:(NSString *)content;
 @end

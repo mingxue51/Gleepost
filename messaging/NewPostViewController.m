@@ -18,7 +18,7 @@
 #import "SessionManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ImageFormatterHelper.h"
-#import "GLPPostUploaderOld.h"
+#import "GLPPostUploader.h"
 
 @interface NewPostViewController ()
 
@@ -26,7 +26,7 @@
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
 
-@property (strong, nonatomic) GLPPostUploaderOld *postUploader;
+@property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
 
@@ -72,7 +72,7 @@
     [self.simpleNavBar setTranslucent:YES];
     [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
     
-    _postUploader = [[GLPPostUploaderOld alloc] init];
+    _postUploader = [[GLPPostUploader alloc] init];
     _hasImage = NO;
 }
 
@@ -124,12 +124,7 @@
     
     [self.contentTextView resignFirstResponder];
     
-    if(_hasImage)
-    {
-        [_postUploader uploadImage:self.imgToUpload];
-    }
-    
-    GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text hasImage:_hasImage];
+    GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
     
     //Dismiss view controller and show immediately the post in the Campus Wall.
     
@@ -156,7 +151,7 @@
     _hasImage = YES;
     
     self.imgToUpload = photo;
-   // [_postUploader uploadImage:photo];
+    [_postUploader startUploadingImage:self.imgToUpload];
 }
 
 
