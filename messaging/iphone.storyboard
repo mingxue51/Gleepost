@@ -219,7 +219,7 @@
         <!--View Post View Controller-->
         <scene sceneID="pNu-aO-Cie">
             <objects>
-                <viewController id="Wkk-th-enz" customClass="ViewPostViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewPostViewController" id="Wkk-th-enz" customClass="ViewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j8K-jL-ODz">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1377,7 +1377,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="64" width="320" height="400"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_picture_background.png" id="GMr-8I-em4">
@@ -1497,7 +1497,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="300" id="JFH-dq-puo" customClass="PostWithoutImageCell">
-                                        <rect key="frame" x="0.0" y="514" width="320" height="300"/>
+                                        <rect key="frame" x="0.0" y="450" width="320" height="300"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JFH-dq-puo" id="d56-fn-9Xx">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
@@ -1519,7 +1519,7 @@
                         <outlet property="postsTableView" destination="R75-F3-xQc" id="unp-4J-3gI"/>
                         <outlet property="profileView" destination="k7n-3h-Z7L" id="GJ5-rI-dfT"/>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="htZ-EL-79i"/>
-                        <segue destination="K5s-yF-8db" kind="push" identifier="view profile" id="84B-81-Mjf"/>
+                        <segue destination="K5s-yF-8db" kind="push" identifier="view notifications" id="84B-81-Mjf"/>
                         <segue destination="oTu-PD-f01" kind="modal" identifier="start" customClass="FadeInCustomSegue" modalTransitionStyle="flipHorizontal" id="JXK-Z8-Y8u"/>
                         <segue destination="bSM-Oa-OIz" kind="modal" identifier="PopUpNotifications" id="6ac-rd-Vl9"/>
                     </connections>
@@ -1595,7 +1595,7 @@
                                     <outletCollection property="gestureRecognizers" destination="DcG-Th-AXw" appends="YES" id="box-rc-MJg"/>
                                 </connections>
                             </imageView>
-                            <tableView clipsSubviews="YES" alpha="0.90000000000000002" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VDd-nk-pTw">
+                            <tableView clipsSubviews="YES" alpha="0.90000000000000002" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VDd-nk-pTw">
                                 <rect key="frame" x="20" y="77" width="280" height="375"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1604,8 +1604,8 @@
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="fj2-YK-ZhH" customClass="NotificationCell">
                                         <rect key="frame" x="0.0" y="22" width="280" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fj2-YK-ZhH">
-                                            <rect key="frame" x="0.0" y="0.0" width="280" height="43"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fj2-YK-ZhH" id="mDc-Jf-WVW">
+                                            <rect key="frame" x="0.0" y="0.0" width="280" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1834,12 +1834,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="UFN-Sk-0kH"/>
         <segue reference="tJq-gA-gHE"/>
         <segue reference="n2N-Iw-72J"/>
         <segue reference="a4L-JY-TPZ"/>
         <segue reference="aau-5Z-5Pa"/>
         <segue reference="9uM-3L-Rl2"/>
         <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="UFN-Sk-0kH"/>
     </inferredMetricsTieBreakers>
 </document>

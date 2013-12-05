@@ -7,7 +7,6 @@
 //
 
 #import "ProfileViewController.h"
-#import "GLPPost.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "ViewPostViewController.h"
@@ -32,7 +31,7 @@
 #import "AppearanceHelper.h"
 #import "PopUpNotificationsViewController.h"
 #import "TransitionDelegateViewNotifications.h"
-
+#import "GLPThemeManager.h"
 
 
 @interface ProfileViewController ()
@@ -41,7 +40,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *postsTableView;
 
 @property (strong, nonatomic) NSMutableArray *posts;
-@property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) IBOutlet ProfileView *profileView;
@@ -176,6 +174,9 @@ static BOOL likePushed;
 {
     [super viewDidAppear:animated];
     
+    //Initialise selected user id with -1 to dinstinguish logged in user from other users' profile.
+    self.selectedUserId = -1;
+    
     // count unread notifications
     self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
     [self updateNotificationsBubble];
@@ -244,20 +245,25 @@ static BOOL likePushed;
 -(void)addLogoutNavigationButton
 {
     UIImage *settingsIcon = [UIImage imageNamed:@"settings_icon"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:settingsIcon];
-    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, settingsIcon.size.width, settingsIcon.size.height)];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 20, 20)];
+    [btnBack setFrame:CGRectMake(0, 0, 30, 30)];
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
     //self.navigationItem.rightBarButtonItem = item;
     
-    ////
-    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(popUpNotifications:)];
+    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
+    [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
+
+    ////notifications_button
+//    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(popUpNotifications:)];
+    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithCustomView:notView];
+
+    
     [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
     self.navigationItem.rightBarButtonItems = @[item,i];
@@ -286,7 +292,8 @@ static BOOL likePushed;
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
     self.uploadedImage = photo;
-    [self.profileView.profileImage setImage:photo];
+    //[self.profileView.profileImage setImage:photo];
+    //[self.profileView updateImage:photo];
     
     //Communicate with server to change the image.
     [self uploadImageAndSetUserImageWithUserRemoteKey];
@@ -439,54 +446,7 @@ static BOOL likePushed;
             NSLog(@"Not Success: %d User: %@",success, user);
             
         }
-        
-        
-        
-    }];
-}
 
--(void)uploadImageAndSetUserImageWithUserRemoteKey
-{
-   // UIImage* imageToUpload = [Image resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
-    
-    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
-    
-    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
-    
-    NSLog(@"Image register image size: %d",imageData.length);
-    
-    
-    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
-    
-    
-    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
-        
-        //[WebClientHelper hideStandardLoaderForView:self.view];
-        
-        
-        if(success)
-        {
-            NSLog(@"IMAGE UPLOADED. URL: %@",response);
-            
-            //Change profile image in Session Manager.
-            [[SessionManager sharedInstance] registerUserImage:response];
-            
-            //Set image to user's profile.
-            
-            [self setImageToUserProfile:response];
-            
-//            [[SessionManager sharedInstance]user].profileImageUrl = response;
-            
-            //TODO: This is wrong
-            //[[SessionManager sharedInstance] updateUserWithUrl:response];
-            
-        }
-        else
-        {
-            NSLog(@"ERROR");
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
-            
-        }
     }];
 }
 
@@ -510,12 +470,83 @@ static BOOL likePushed;
     }];
 }
 
+-(void)uploadImageAndSetUserImageWithUserRemoteKey
+{
+    // UIImage* imageToUpload = [Image resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
+    
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    NSLog(@"Image register image size: %d",imageData.length);
+    
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        //[WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            [self updateViewWithNewImage:response];
+            
+            //Change profile image in Session Manager.
+            [[SessionManager sharedInstance] registerUserImage:response];
+            
+            //Set image to user's profile.
+            [self setImageToUserProfile:response];
+            
+            //            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+            //TODO: This is wrong
+            //[[SessionManager sharedInstance] updateUserWithUrl:response];
+            
+        }
+        else
+        {
+            NSLog(@"ERROR");
+            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            
+        }
+    }];
+}
+
+
+
+#pragma mark - Other methods
+
+
+-(void)updateViewWithNewImage:(NSString*)imageUrl
+{
+    //Set new url to current view.
+    [self.profileView updateImageWithUrl: imageUrl];
+    
+    //Update posts in current view.
+    [self refreshPostsWithNewImage:imageUrl];
+    
+}
+
+-(void)refreshPostsWithNewImage:(NSString*)imageUrl
+{
+    for(GLPPost *post in self.posts)
+    {
+        post.author.profileImageUrl = imageUrl;
+    }
+    
+    [self.postsTableView reloadData];
+}
+
 -(void)logout:(id)sender
 {
     //Pop up a bottom menu.
     UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
 
-    [actionSheet showInView:self.view];
+    [actionSheet showInView:[self.view window]];
 
 }
 
@@ -529,6 +560,10 @@ static BOOL likePushed;
         [self.navigationController popViewControllerAnimated:YES];
         [self performSegueWithIdentifier:@"start" sender:self];
     }
+    else
+    {
+        NSLog(@"Cancel");
+    }
 }
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet
@@ -541,8 +576,8 @@ static BOOL likePushed;
             
             if([btn.titleLabel.text isEqualToString:@"Cancel"])
             {
-                btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
-
+                //btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+                btn.titleLabel.textColor = [[GLPThemeManager sharedInstance]colorForTabBar];
             }
             else
             {
@@ -554,14 +589,7 @@ static BOOL likePushed;
 
 -(void) showNotifications: (id)sender
 {
-    [self performSegueWithIdentifier:@"view profile" sender:self];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    NSLog(@"viewDidLayoutSubviews");
-    
-    [super viewDidLayoutSubviews];
+    [self performSegueWithIdentifier:@"view notifications" sender:self];
 }
 
 
@@ -792,8 +820,19 @@ static BOOL likePushed;
     }
     else if([segue.identifier isEqualToString:@"view profile"])
     {
-        NotificationsViewController *nv = segue.destinationViewController;
+//        NotificationsViewController *nv = segue.destinationViewController;
+        ProfileViewController *profileViewController = segue.destinationViewController;
         
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        if(self.selectedUserId == -1)
+        {
+            incomingUser = nil;
+        }
+        
+        profileViewController.incomingUser = incomingUser;
     }
     else if([segue.identifier isEqualToString:@"start"])
     {

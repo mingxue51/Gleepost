@@ -26,6 +26,7 @@ typedef enum {
 @property (strong, nonatomic) GLPUser *user;
 
 - (BOOL)hasAction;
+-(BOOL)hasActionNewFriends;
 - (NSString *)notificationTypeDescription;
 - (void)alreadyContacts;
 
