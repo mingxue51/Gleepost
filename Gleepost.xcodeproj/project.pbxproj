@@ -237,7 +237,6 @@
 		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
 		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
 		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
-		8057E33D1834C11E0089F4D9 /* GLPPostUploaderOld.m in Sources */ = {isa = PBXBuildFile; fileRef = 8057E33C1834C11E0089F4D9 /* GLPPostUploaderOld.m */; };
 		805E1557180EF3E700705B1C /* avatar_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1550180EF3E700705B1C /* avatar_big.png */; };
 		805E1558180EF3E700705B1C /* notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1551180EF3E700705B1C /* notification.png */; };
 		805E1559180EF3E700705B1C /* share_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1552180EF3E700705B1C /* share_image.png */; };
@@ -697,8 +696,6 @@
 		8056764218059DC4006E058E /* LongPollOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollOperation.m; sourceTree = "<group>"; };
 		805676441805B742006E058E /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		805676451805B742006E058E /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
-		8057E33B1834C11E0089F4D9 /* GLPPostUploaderOld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploaderOld.h; sourceTree = "<group>"; };
-		8057E33C1834C11E0089F4D9 /* GLPPostUploaderOld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostUploaderOld.m; sourceTree = "<group>"; };
 		805E1550180EF3E700705B1C /* avatar_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar_big.png; sourceTree = "<group>"; };
 		805E1551180EF3E700705B1C /* notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification.png; sourceTree = "<group>"; };
 		805E1552180EF3E700705B1C /* share_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share_image.png; sourceTree = "<group>"; };
@@ -1511,8 +1508,6 @@
 		8057E33A1834C1040089F4D9 /* Processors */ = {
 			isa = PBXGroup;
 			children = (
-				8057E33B1834C11E0089F4D9 /* GLPPostUploaderOld.h */,
-				8057E33C1834C11E0089F4D9 /* GLPPostUploaderOld.m */,
 				C02120411850AA1200831872 /* GLPPostUploader.h */,
 				C02120421850AA1200831872 /* GLPPostUploader.m */,
 			);
@@ -2498,7 +2493,6 @@
 				582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
-				8057E33D1834C11E0089F4D9 /* GLPPostUploaderOld.m in Sources */,
 				80666C401806D45700E4E515 /* ConversationManager.m in Sources */,
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,

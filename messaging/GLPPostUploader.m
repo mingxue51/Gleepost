@@ -45,7 +45,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 - (void)startUploadingImage:(UIImage *)image {
     _postImage = image;
     _imageStatus = GLPImageStatusUploading;
-    NSLog(@"Image-Uploading has began");
     
     __block NSData *data;
     
@@ -63,7 +62,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 
 - (GLPPost *)uploadPostWithContent:(NSString *)content {
     if (content) {
-        NSLog(@"Post button is pressed");
         _post = [[GLPPost alloc] init];
         _post.content = content;
         _post.author = [SessionManager sharedInstance].user;
@@ -74,15 +72,11 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         }
         
         if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
-            if (_imageStatus == GLPImageStatusUploaded) NSLog(@"image-status is UPLOADED");
-            else if (_imageStatus == GLPImageStatusNone) NSLog(@"image-status is NONE");
             [self createLocalAndUploadPost:_post];
         } else if (_imageStatus == GLPImageStatusUploading) {
-            NSLog(@"image is still UPLOADING");
             __weak GLPPostUploader *weakSelf = self;
             __weak GLPPost *weakPost = _post;
             _uploadContentBlock = ^{
-                NSLog(@"Posting block is executing");
                 [weakSelf createLocalAndUploadPost:weakPost];
             };
         }
@@ -97,10 +91,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     if (imageData) {
         [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
             if (success) {
-                NSLog(@"Image-uploading done with success: YES");
                 _imageStatus    = GLPImageStatusUploaded;
                 _imageURL       = imageUrl;
-                NSLog(@"~~~ with imageURL: %@", imageUrl);
                 
                 if (_uploadContentBlock) _uploadContentBlock();
                 
