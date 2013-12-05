@@ -172,6 +172,25 @@
     }];
 }
 
+-(void)updateImage:(UIImage*)image
+{
+    [self.profileImage setImage:image];
+
+    
+    self.reflectedProfileImage.image = image;
+}
+
+-(void)updateImageWithUrl:(NSString*)url
+{
+    [self.profileImage setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:nil] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        
+        //Create the reflection effect.
+        //TODO: Fix that, only add image when the image is loaded.
+        [self.reflectedProfileImage reflectionImageWithImage:self.profileImage.image];
+        
+    }];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

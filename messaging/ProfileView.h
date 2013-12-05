@@ -31,5 +31,6 @@
 - (void)showNotificationsBubble:(int)count;
 - (void)hideNotificationsBubble;
 -(void)setUserDetails:(GLPUser*)incomingUser;
-
+-(void)updateImage:(UIImage*)image;
+-(void)updateImageWithUrl:(NSString*)url;
 @end
