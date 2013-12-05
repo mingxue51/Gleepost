@@ -145,30 +145,14 @@ static const float CommentContentLabelMaxWidth = 250;
 
 -(void)layoutSubviews
 {
-    
-    
-    
-    
     CGSize contentSize = [CommentCell getContentLabelSizeForContent:self.contentLabel.text];
     
     
     CGRect frameSize = self.contentLabel.frame;
     
-    NSLog(@"Frame Size before: %f : %f",frameSize.size.width, frameSize.size.height);
-    
-    float heightSize = contentSize.height;
-    
     self.contentLabel.frame = CGRectMake(self.contentLabel.frame.origin.x, self.contentLabel.frame.origin.y, self.contentLabel.frame.size.width, contentSize.height);
     
-
-    
     frameSize = self.contentLabel.frame;
-    
-    NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
-    
-    
-
-
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

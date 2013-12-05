@@ -172,13 +172,6 @@
     }];
 }
 
--(void)updateImage:(UIImage*)image
-{
-    [self.profileImage setImage:image];
-
-    
-    self.reflectedProfileImage.image = image;
-}
 
 -(void)updateImageWithUrl:(NSString*)url
 {
