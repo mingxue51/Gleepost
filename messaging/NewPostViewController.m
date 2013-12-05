@@ -19,6 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ImageFormatterHelper.h"
 #import "GLPPostUploader.h"
+#import "NSString+Utils.h"
 
 @interface NewPostViewController ()
 
@@ -119,26 +120,28 @@
 
 - (IBAction)postButtonClick:(id)sender
 {
-    [self.delegate setNavigationBarName];
-    [self.delegate setPlusButtonToNavigationBar];
-    
-    [self.contentTextView resignFirstResponder];
-    
-    GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
-    
-    //Dismiss view controller and show immediately the post in the Campus Wall.
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        if(_hasImage)
-        {
-            [delegate reloadNewImagePostWithPost:inPost];
-        }
-        else
-        {
-            [delegate reloadNewLocalPosts];
-        }
+    if (![NSString isStringEmpty:self.contentTextView.text]) {
+        [self.delegate setNavigationBarName];
+        [self.delegate setPlusButtonToNavigationBar];
         
-    }];
+        [self.contentTextView resignFirstResponder];
+        
+        GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
+        
+        //Dismiss view controller and show immediately the post in the Campus Wall.
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+            if(_hasImage)
+            {
+                [delegate reloadNewImagePostWithPost:inPost];
+            }
+            else
+            {
+                [delegate reloadNewLocalPosts];
+            }
+            
+        }];
+    }
 }
 
 

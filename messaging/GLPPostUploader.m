@@ -62,28 +62,30 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 }
 
 - (GLPPost *)uploadPostWithContent:(NSString *)content {
-    NSLog(@"Post button is pressed");
-    _post = [[GLPPost alloc] init];
-    _post.content = content;
-    _post.author = [SessionManager sharedInstance].user;
-    
-    if (_postImage) {
-        _post.date = [NSDate date];
-        _post.tempImage = _postImage;
-    }
-    
-    if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
-        if (_imageStatus == GLPImageStatusUploaded) NSLog(@"image-status is UPLOADED");
-        else if (_imageStatus == GLPImageStatusNone) NSLog(@"image-status is NONE");
-        [self createLocalAndUploadPost:_post];
-    } else if (_imageStatus == GLPImageStatusUploading) {
-        NSLog(@"image is still UPLOADING");
-        __weak GLPPostUploader *weakSelf = self;
-        __weak GLPPost *weakPost = _post;
-        _uploadContentBlock = ^{
-            NSLog(@"Posting block is executing");
-            [weakSelf createLocalAndUploadPost:weakPost];
-        };
+    if (content) {
+        NSLog(@"Post button is pressed");
+        _post = [[GLPPost alloc] init];
+        _post.content = content;
+        _post.author = [SessionManager sharedInstance].user;
+        
+        if (_postImage) {
+            _post.date = [NSDate date];
+            _post.tempImage = _postImage;
+        }
+        
+        if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
+            if (_imageStatus == GLPImageStatusUploaded) NSLog(@"image-status is UPLOADED");
+            else if (_imageStatus == GLPImageStatusNone) NSLog(@"image-status is NONE");
+            [self createLocalAndUploadPost:_post];
+        } else if (_imageStatus == GLPImageStatusUploading) {
+            NSLog(@"image is still UPLOADING");
+            __weak GLPPostUploader *weakSelf = self;
+            __weak GLPPost *weakPost = _post;
+            _uploadContentBlock = ^{
+                NSLog(@"Posting block is executing");
+                [weakSelf createLocalAndUploadPost:weakPost];
+            };
+        }
     }
     
     return _post;
