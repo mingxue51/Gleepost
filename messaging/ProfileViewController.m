@@ -53,6 +53,9 @@
 
 @property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
+//Notification view.
+@property (strong, nonatomic) UIView *notificationView;
+
 @end
 
 static BOOL likePushed;
@@ -148,6 +151,12 @@ static BOOL likePushed;
     [self.profileView.notificationsButton addTarget:self action:@selector(showNotifications:) forControlEvents:UIControlEventTouchDown];
     
     self.unreadNotificationsCount = 0;
+}
+
+-(void)configureNotificationView
+{
+    self.notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    
 }
 
 

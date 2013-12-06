@@ -53,9 +53,7 @@
     [self setBackgroundColor:[UIColor clearColor]];
     [self sendSubviewToBack:self.back];
     
-    
-    
-    
+
     //Set colour dynamically to switch.
 //    [self.busyFreeSwitch setBackgroundColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     [self.busyFreeSwitch setOnTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
@@ -114,8 +112,17 @@
 -(void)setUserDetails
 {    
     
-    //[ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
-    [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.bounds andSizeOfCorners:CGSizeMake(10.0, 10.0)];
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    [ShapeFormatterHelper setRoundedView:self.reflectedProfileImage toDiameter:self.reflectedProfileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 2.0;
+    self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    
+
+    
+    
+//    [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.bounds andSizeOfCorners:CGSizeMake(10.0, 10.0)];
     
     //Not need to request. Take all the data from Session Manager.
     [self.profileHeadInformation setText: self.currentUser.networkName];

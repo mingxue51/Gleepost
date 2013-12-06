@@ -29,11 +29,18 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet ReflectedImageView *reflectedProfileImage;
 @property (weak, nonatomic) IBOutlet UILabel *networkName;
-@property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UILabel *personalMessage;
+@property (weak, nonatomic) IBOutlet UILabel *userName;
+@property (weak, nonatomic) IBOutlet UILabel *course;
 @property (weak, nonatomic) IBOutlet UIButton *addUserButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptUserButton;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfFriends;
+
+//Image view to create borders around information.
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageViews;
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageView2;
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageView3;
+
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -53,6 +60,8 @@
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
 
+    [self configureInformationBorders];
+    
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
     
@@ -115,7 +124,7 @@
 
 -(void)setContactAsRequested
 {
-    UIImage *img = [UIImage imageNamed:@"invitesent"];
+    UIImage *img = [UIImage imageNamed:@"user-added-temp"];
     [self.addUserButton setImage:img forState:UIControlStateNormal];
     [self.addUserButton setEnabled:NO];
 }
@@ -143,6 +152,21 @@
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+-(void)configureInformationBorders
+{
+    
+    CGColorRef colour = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    
+    [self.borderImageViews.layer setBorderWidth:1.0];
+    [self.borderImageViews.layer setBorderColor:colour];
+    
+    [self.borderImageView2.layer setBorderWidth:1.0];
+    [self.borderImageView2.layer setBorderColor:colour];
+    
+    [self.borderImageView3.layer setBorderWidth:1.0];
+    [self.borderImageView3.layer setBorderColor:colour];
 }
 
 /**
@@ -333,10 +357,16 @@
             
             [self.networkName setText:user.networkName];
             
+            [self.course setText: user.course];
+            
             [self.personalMessage setText:user.personalMessage];
             
-            //[self setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+            [self setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
             
+            self.profileImage.layer.borderWidth = 2.0;
+            self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+            
+            [self setRoundedView:self.reflectedProfileImage toDiameter:self.reflectedProfileImage.frame.size.height];
             
             
             if([user.profileImageUrl isEqualToString:@""])
