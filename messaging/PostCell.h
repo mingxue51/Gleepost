@@ -10,6 +10,7 @@
 #import "GLPUser.h"
 #import "GLPPost.h"
 #import "NewCommentDelegate.h"
+#import "ViewImageDelegate.h"
 
 @interface PostCell : UITableViewCell
 
@@ -28,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
 
-@property (assign, nonatomic) UIViewController<NewCommentDelegate> *delegate;
+@property (assign, nonatomic) UIViewController<NewCommentDelegate, ViewImageDelegate> *delegate;
 
 
 @property BOOL isViewPost;

@@ -192,6 +192,12 @@ static const float PostContentLabelMaxWidth = 250;
         
     }
     
+    
+    //Add selector to post image.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.postImage addGestureRecognizer:tap];
+    
 //    self.contentLbl.layer.borderColor=[UIColor redColor].CGColor;
 //    self.contentLbl.layer.borderWidth=1.0f;
 }
@@ -276,7 +282,7 @@ static const float PostContentLabelMaxWidth = 250;
 
 }
 
-#pragma - mark Delegate methods.
+#pragma - mark Selector methods
 
 - (IBAction)likePost:(id)sender
 {
@@ -298,8 +304,6 @@ static const float PostContentLabelMaxWidth = 250;
         
         //Decrease the number of likes.
         --self.post.likes;
-        
-
     }
     else
     {
@@ -395,6 +399,15 @@ static const float PostContentLabelMaxWidth = 250;
     
     [self.delegate presentViewController:shareItems animated:YES completion:nil];
 
+}
+
+-(void)viewPostImage:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    [self.delegate viewPostImage:clickedImageView.image];
 }
 
 /**

@@ -992,27 +992,41 @@ static BOOL likePushed;
 
 #pragma mark - Other stuff
 
--(void)showFullPostImage:(id)sender
+//-(void)showFullPostImage:(id)sender
+//{
+//    
+//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+//    
+//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+//    
+//    
+//    self.imageToBeView = clickedImageView.image;
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+//    vc.image = clickedImageView.image;
+//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+//    vc.modalPresentationStyle= UIModalPresentationCustom;
+//
+//    [vc setTransitioningDelegate:self.transitionViewImageController];
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:vc animated:YES completion:nil];
+//    
+//}
+
+-(void)viewPostImage:(UIImage*)postImage
 {
-    
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-    
-    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-    
-    
-    self.imageToBeView = clickedImageView.image;
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = clickedImageView.image;
+    vc.image = postImage;
     vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    vc.modalPresentationStyle= UIModalPresentationCustom;
-
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
     [vc setTransitioningDelegate:self.transitionViewImageController];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
-    
 }
 
 

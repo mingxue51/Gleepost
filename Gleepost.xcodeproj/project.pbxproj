@@ -651,6 +651,7 @@
 		58D0E2641850BD7B005879F4 /* accept_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_notification_button.png; sourceTree = "<group>"; };
 		58D0E2671850E06D005879F4 /* notification_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = notification_icon.jpg; sourceTree = "<group>"; };
 		58D0E2691850E29A005879F4 /* settings_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_icon.png; sourceTree = "<group>"; };
+		58D0E26B1850FC24005879F4 /* ViewImageDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewImageDelegate.h; sourceTree = "<group>"; };
 		58D30BEA1815CED0006346F8 /* timebar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar1.png; path = "../../Gleepost Data/NewChating/timebar1.png"; sourceTree = "<group>"; };
 		58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPostImageViewController.h; sourceTree = "<group>"; };
 		58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPostImageViewController.m; sourceTree = "<group>"; };
@@ -1075,6 +1076,7 @@
 				58403531182FF5FB00499488 /* GLPTimelineViewController.m */,
 				58299EA6184636160045427E /* GLPPostNotificationHelper.h */,
 				58299EA7184636160045427E /* GLPPostNotificationHelper.m */,
+				58D0E26B1850FC24005879F4 /* ViewImageDelegate.h */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
