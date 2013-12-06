@@ -60,8 +60,8 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
     
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setTranslucent:YES];
 
     // various control init
@@ -131,9 +131,12 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+    [self.navigationController.navigationBar setShadowImage: [[UIImage alloc]init]];
+
+    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
 
     
 //    self.navigationController.navigationBar.tintColor = tabColour;
