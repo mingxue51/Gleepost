@@ -124,7 +124,7 @@
 
 -(void)setContactAsRequested
 {
-    UIImage *img = [UIImage imageNamed:@"user-added-temp"];
+    UIImage *img = [UIImage imageNamed:@"user-added"];
     [self.addUserButton setImage:img forState:UIControlStateNormal];
     [self.addUserButton setEnabled:NO];
 }

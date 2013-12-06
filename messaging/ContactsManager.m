@@ -105,6 +105,7 @@ static ContactsManager *instance = nil;
     {
         if(contact.youConfirmed && contact.theyConfirmed)
         {
+            //TODO: Bug here. User name is nil.
             [confirmedContacts addObject:contact];
             [confirmedContactsNames addObject:contact.user.name];
         }

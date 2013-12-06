@@ -117,6 +117,10 @@ static BOOL likePushed;
         [tap setNumberOfTapsRequired:1];
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
+        
+        
+        [self.profileView hideAlreadyInContactsImage];
+
         [self addLogoutNavigationButton];
     }
     else
@@ -129,7 +133,8 @@ static BOOL likePushed;
         [self.profileView.profileImage addGestureRecognizer:tap];
         
         [self setTitle:@"Loading..."];
-                
+        
+        
     }
 
     
@@ -275,7 +280,9 @@ static BOOL likePushed;
     
     [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
-    self.navigationItem.rightBarButtonItems = @[item,i];
+    self.navigationItem.rightBarButtonItem = item;
+    
+    self.navigationItem.leftBarButtonItem = i;
 }
 
 -(void)popUpNotifications:(id)sender
