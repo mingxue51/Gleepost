@@ -54,6 +54,9 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     [self createNavigationBar];
     
+
+
+    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
@@ -80,6 +83,9 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    
     if(self.needsReloadConversations) {
         [self reloadLocalConversations];
     }

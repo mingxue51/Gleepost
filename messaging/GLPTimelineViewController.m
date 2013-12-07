@@ -109,7 +109,7 @@ static BOOL likePushed;
     [super viewDidLoad];
     
     
-    [self configAppearance];
+//    [self configAppearance];
     [self configTableView];
     [self configNewElementsIndicatorView];
     
@@ -151,17 +151,25 @@ static BOOL likePushed;
     self.postIndexToReload = -1;
     
     //TODO: Remove this later.
-    [[ContactsManager sharedInstance] refreshContacts];
+    [ContactsManager sharedInstance];
     
     [self loadInitialPosts];
     
 
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configAppearance];
+
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     if(self.firstLoadSuccessful) {
         [self startReloadingCronImmediately:YES];
     }
