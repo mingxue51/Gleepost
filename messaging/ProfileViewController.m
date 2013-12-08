@@ -68,8 +68,10 @@ static BOOL likePushed;
     
     
     //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    //[self.navigationController.navigationBar setTranslucent:YES];
+    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
+    
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     //Change navigations items' (back arrow, edit etc.) colour.
@@ -949,7 +951,7 @@ static BOOL likePushed;
     }
     else
     {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar8"]] forState:UIControlStateNormal];
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
         

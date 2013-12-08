@@ -27,7 +27,7 @@
 {
     UIImage *image = [UIImage imageNamed:imageName];
     
-    UIColor *barColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    UIColor *barColour = [UIColor colorWithRed:0.0/255.0 green:201.0/255.0 blue:201.0/255.0 alpha:1.0];
 
     
     //UIColor *barColour = [UIColor colorWithRed:27.0/255.0 green:198.0/255.0 blue:220.0/255.0 alpha:1];
@@ -40,9 +40,9 @@
     contoller.navigationController.navigationBar.barTintColor = barColour;
     
     
-    [contoller.navigationController.navigationBar.layer insertSublayer:colourView.layer atIndex:1];
+    //[contoller.navigationController.navigationBar.layer insertSublayer:colourView.layer atIndex:1];
     
 
-    [contoller.navigationController.navigationBar setTranslucent:YES];
+    [contoller.navigationController.navigationBar setTranslucent:NO];
 }
 @end

@@ -67,7 +67,10 @@
     
     //Change the format of the navigation bar.
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
+    
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];

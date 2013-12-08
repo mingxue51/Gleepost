@@ -232,6 +232,7 @@ static BOOL likePushed;
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
+    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
     
     [self.navigationController.navigationBar setTranslucent:YES];
     

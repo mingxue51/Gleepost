@@ -56,7 +56,7 @@
 
     //Set colour dynamically to switch.
 //    [self.busyFreeSwitch setBackgroundColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
-    [self.busyFreeSwitch setOnTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+    [self.busyFreeSwitch setOnTintColor:[UIColor colorWithRed:225.00/255.00 green:232.00/255.00 blue:237.00/255.00 alpha:1.0]];
     if(incomingUser == nil)
     {
         //Get data from server and complete them in UIView.
@@ -116,8 +116,8 @@
     
     [ShapeFormatterHelper setRoundedView:self.reflectedProfileImage toDiameter:self.reflectedProfileImage.frame.size.height];
     
-    self.profileImage.layer.borderWidth = 2.0;
-    self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    self.profileImage.layer.borderWidth = 5.0;
+    self.profileImage.layer.borderColor = [UIColor colorWithRed:225.00/255.00 green:232.00/255.00 blue:237.00/255.00 alpha:1.0].CGColor;
     
 
     
