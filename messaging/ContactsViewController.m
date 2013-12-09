@@ -77,7 +77,7 @@
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
-    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTranslucent:NO];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     

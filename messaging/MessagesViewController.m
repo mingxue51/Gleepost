@@ -71,7 +71,7 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setTranslucent:YES];
+    //[self.navigationController.navigationBar setTranslucent:YES];
 
     // various control init
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;

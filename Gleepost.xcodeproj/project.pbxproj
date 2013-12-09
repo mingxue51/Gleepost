@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		1D2F41581854F47400BC10B1 /* default_user_image2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D2F41571854F47400BC10B1 /* default_user_image2.png */; };
-		1D2F415A1855007E00BC10B1 /* navigationbar8.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D2F41591855007E00BC10B1 /* navigationbar8.png */; };
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D681821013200B76E5D /* CFNetwork.framework */; };
@@ -405,8 +403,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1D2F41571854F47400BC10B1 /* default_user_image2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_user_image2.png; path = "../../(IMPORTANT)/Books/Design/(iOS Client)/default_user_image2.png"; sourceTree = "<group>"; };
-		1D2F41591855007E00BC10B1 /* navigationbar8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navigationbar8.png; path = "../../(IMPORTANT)/Books/Design/(iOS Client)/navigationbar8.png"; sourceTree = "<group>"; };
 		58080B79180EBB6500C4DB83 /* PostImageCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageCellView.xib; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		58143D681821013200B76E5D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -1021,7 +1017,6 @@
 		583EAB711811867C003D68B3 /* User Images */ = {
 			isa = PBXGroup;
 			children = (
-				1D2F41571854F47400BC10B1 /* default_user_image2.png */,
 				580A638F18184CAB00AC8009 /* default_user_image3.png */,
 			);
 			name = "User Images";
@@ -1257,7 +1252,6 @@
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
-				1D2F41591855007E00BC10B1 /* navigationbar8.png */,
 				5890D22618482D8600E293DD /* New Tabbar */,
 				5890D20E1847618F00E293DD /* Themes */,
 				584CF672182303B500EFABB8 /* Notifications */,
@@ -2280,7 +2274,6 @@
 				58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */,
 				5843328C180F069800BD9F74 /* loginwithfacebook.png in Resources */,
 				58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */,
-				1D2F415A1855007E00BC10B1 /* navigationbar8.png in Resources */,
 				8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */,
 				584C1EF4181ACBCA00862E81 /* contacts_tab@2x.png in Resources */,
 				80C8BA4A18101DF9004F70DB /* other_chat_background.png in Resources */,
@@ -2349,7 +2342,6 @@
 				584CF675182303FC00EFABB8 /* accept_contact.png in Resources */,
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
 				805E1558180EF3E700705B1C /* notification.png in Resources */,
-				1D2F41581854F47400BC10B1 /* default_user_image2.png in Resources */,
 				586CDFE9185244BD00902F68 /* in-contacts.png in Resources */,
 				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
 				586CDFE118520A9600902F68 /* in-contacts-temp.png in Resources */,
