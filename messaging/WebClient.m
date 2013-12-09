@@ -305,10 +305,51 @@ static WebClient *instance = nil;
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"resp %@", responseObject);
         NSArray *conversations = [RemoteParser parseConversationsFilterByLive:live fromJson:responseObject];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
+    }];
+}
+
+- (void)getConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
+{
+    NSString *path = [NSString stringWithFormat:@"conversations/%d", remoteKey];
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
+        callback(YES, conversation);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
+
+// Synchronous operation
+- (void)synchronousGetConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
+{
+    NSString *path = [NSString stringWithFormat:@"conversations/%d", remoteKey];
+    [self executeSynchronousRequestWithMethod:@"GET" path:path callback:^(BOOL success, id json) {
+        if(!success) {
+            callback(NO, nil);
+            return;
+        }
+        
+        GLPConversation *conversation = [RemoteParser parseConversationFromJson:json];
+        callback(YES, conversation);
+    }];
+}
+
+// Synchronous operation
+- (void)synchronousGetConversationsFilterByLive:(BOOL)live withCallback:(void (^)(BOOL success, NSArray *conversations))callback
+{
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"conversations" callback:^(BOOL success, id json) {
+        if(!success) {
+            callback(NO, nil);
+            return;
+        }
+        
+        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:json];
+        callback(YES, conversations);
     }];
 }
 

@@ -350,7 +350,7 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
         if(section == 0)
         {
             //Change to number of live chats.
-            return [GLPLiveConversationsManager sharedInstance].conversations.count;
+            return [[GLPLiveConversationsManager sharedInstance] conversationsCount];
         }
         else
         {
