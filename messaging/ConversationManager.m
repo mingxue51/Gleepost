@@ -343,6 +343,7 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (void)newMessage:(GLPMessage *)message
 {
+    __block BOOL success = NO;
     
     if(message.conversation.isLive) {
         NSArray *containsMessageArray = [message.conversation.messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", message.remoteKey]];
@@ -352,12 +353,10 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessageForLiveConversation" object:nil userInfo:@{@"message":message}];
+        success = YES;
     }
     
     else {
-        __block BOOL success = NO;
-        
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             // check message not already exists = long poll own message
             GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey db:db];
@@ -369,17 +368,17 @@ int const NumberMaxOfMessagesLoaded = 20;
             message.conversation.lastMessage = message.content;
             message.conversation.lastUpdate = message.date;
             message.conversation.hasUnreadMessages = YES;
+            
             [GLPConversationDao update:message.conversation db:db];
             [GLPMessageDao save:message db:db];
+            
             success = YES;
         }];
-        
-        if(success) {
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessageForRegularConversation" object:nil userInfo:@{@"message":message}];
-        }
-
     }
     
+    if(success) {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+    }
 
 }
 
