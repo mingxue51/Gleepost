@@ -41,6 +41,14 @@
 @property (weak, nonatomic) IBOutlet UIImageView *borderImageView2;
 @property (weak, nonatomic) IBOutlet UIImageView *borderImageView3;
 
+//TabViews.
+@property (weak, nonatomic) IBOutlet UIView *tabView;
+
+@property (weak, nonatomic) UIView *aboutTabView;
+@property (weak, nonatomic) UITableView *postsTabView;
+@property (weak, nonatomic) UITableView *mutualTabView;
+
+
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -61,6 +69,8 @@
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
 
     [self configureInformationBorders];
+    
+    [self configureViews];
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
@@ -124,7 +134,7 @@
 
 -(void)setContactAsRequested
 {
-    UIImage *img = [UIImage imageNamed:@"user-added"];
+    UIImage *img = [UIImage imageNamed:@"pending"];
     [self.addUserButton setImage:img forState:UIControlStateNormal];
     [self.addUserButton setEnabled:NO];
 }
@@ -152,6 +162,25 @@
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+-(void)configureViews
+{
+    self.aboutTabView = [[[NSBundle mainBundle] loadNibNamed:@"AboutProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.aboutTabView.tag = 1;
+    
+    self.postsTabView = [[[NSBundle mainBundle] loadNibNamed:@"PostsProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.postsTabView.tag = 2;
+    
+    self.mutualTabView = [[[NSBundle mainBundle] loadNibNamed:@"MutualProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.mutualTabView.tag = 3;
+    
+    [self.tabView addSubview:self.aboutTabView];
+    [self.tabView addSubview:self.postsTabView];
+    [self.tabView addSubview:self.mutualTabView];
+    
+    self.postsTabView.hidden = YES;
+    self.mutualTabView.hidden = YES;
 }
 
 -(void)configureInformationBorders
@@ -195,6 +224,47 @@
 {
     [[self.profileImage layer] setBorderWidth:6.0f];
     [[self.profileImage layer] setBorderColor:[UIColor colorWithRed:243.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0].CGColor];
+}
+
+#pragma mark - Tab views
+
+- (IBAction)showAboutView:(id)sender
+{
+    [self showTabViewWithTag:1];
+
+}
+
+- (IBAction)showPostsView:(id)sender
+{
+
+    [self showTabViewWithTag:2];
+    
+//    [self.tabView addSubview:self.postsTabView];
+}
+
+- (IBAction)showMutualView:(id)sender
+{
+    [self showTabViewWithTag:3];
+}
+
+-(void)showTabViewWithTag:(int)tag
+{
+    //Clear all views and add posts view.
+    NSArray *subViews = self.tabView.subviews;
+    
+    
+    
+    for(UIView *v in subViews)
+    {
+        if(v.tag != tag)
+        {
+            [v setHidden:YES];
+        }
+        else
+        {
+            [v setHidden:NO];
+        }
+    }
 }
 
 #pragma mark - Buttons selectors

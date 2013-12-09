@@ -146,6 +146,10 @@
     }];
 }
 
+- (IBAction)addImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+}
 
 #pragma mark - FDTakeController delegate
 
@@ -160,10 +164,7 @@
 }
 
 
-- (IBAction)addImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-}
+
 
 
 
