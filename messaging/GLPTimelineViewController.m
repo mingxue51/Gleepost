@@ -38,6 +38,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
+#import "GLPPrivateProfileViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -1176,7 +1177,7 @@ static BOOL likePushed;
     {
         //Navigate to private view controller.
         
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     
 }
@@ -1447,11 +1448,20 @@ static BOOL likePushed;
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if([segue.identifier isEqualToString:@"view new private profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        
+        privateProfileViewController.selectedUserId = self.selectedUserId;
+
     }
     else if([segue.identifier isEqualToString:@"show image"])
     {

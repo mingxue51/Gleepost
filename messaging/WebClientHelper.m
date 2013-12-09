@@ -44,7 +44,7 @@
 + (void)showStandardError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Operation failed"
-                                                    message:@"Check your internet connection, dude"
+                                                    message:@"Please check your internet connection"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
