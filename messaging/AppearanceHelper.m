@@ -21,6 +21,22 @@
     }
 }
 
++(void)setNavigationBarColour:(UIViewController *)controller
+{
+    //75, 208, 210
+    UIColor *barColour = [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
+    
+    [controller.navigationController.navigationBar setBarTintColor: barColour];
+
+}
+
++(void)setNavigationBarFontFor: (UIViewController *)controller
+{
+    [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+    
+//    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
+
+}
 
 //TODO: Fix this working with iOS 6.
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName

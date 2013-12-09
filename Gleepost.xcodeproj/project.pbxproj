@@ -246,6 +246,7 @@
 		58FB7C9E18561722002C6A00 /* locked.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FB7C9D18561722002C6A00 /* locked.png */; };
 		58FB7CA118561860002C6A00 /* ProfileTabViewConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FB7CA018561860002C6A00 /* ProfileTabViewConstants.m */; };
 		58FB7CA318563CC4002C6A00 /* default_user_image2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FB7CA218563CC4002C6A00 /* default_user_image2.png */; };
+		58FB7CA5185649D3002C6A00 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FB7CA4185649D3002C6A00 /* accept.png */; };
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
@@ -718,6 +719,7 @@
 		58FB7C9F18561860002C6A00 /* ProfileTabViewConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTabViewConstants.h; sourceTree = "<group>"; };
 		58FB7CA018561860002C6A00 /* ProfileTabViewConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTabViewConstants.m; sourceTree = "<group>"; };
 		58FB7CA218563CC4002C6A00 /* default_user_image2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image2.png; sourceTree = "<group>"; };
+		58FB7CA4185649D3002C6A00 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
 		80112B93180F03B9006A35AA /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		80112B94180F03B9006A35AA /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		80112B95180F03B9006A35AA /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -1022,6 +1024,7 @@
 		58361C34184CBF3B00FEFC49 /* Profile v2 */ = {
 			isa = PBXGroup;
 			children = (
+				58FB7CA4185649D3002C6A00 /* accept.png */,
 				58FB7C9D18561722002C6A00 /* locked.png */,
 				58FB7C801855FFD5002C6A00 /* pending.png */,
 				58FB7C7E1855FF82002C6A00 /* add-user.png */,
@@ -2458,6 +2461,7 @@
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,
 				584CF66F1823017B00EFABB8 /* GLPNotificationCell.xib in Resources */,
 				586659FF17F2214300A0354E /* tabbar@2x.png in Resources */,
+				58FB7CA5185649D3002C6A00 /* accept.png in Resources */,
 				5843328B180F069800BD9F74 /* Gleepost_main.png in Resources */,
 				584C1EF2181ACBCA00862E81 /* newchat3.png in Resources */,
 				5893BA0518200CA50003589E /* notificationicon.png in Resources */,

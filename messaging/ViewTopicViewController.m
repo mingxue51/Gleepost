@@ -110,6 +110,8 @@ float timeInterval = 0.1;
     
     [self.navigationController.navigationBar setTranslucent:YES];
     
+    [AppearanceHelper setNavigationBarFontFor:self];
+    
     [self configureBackground];
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];

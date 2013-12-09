@@ -69,14 +69,15 @@
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
-    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
+    [AppearanceHelper setNavigationBarColour:self];
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    
+    [AppearanceHelper setNavigationBarFontFor:self];
+
     [self.navigationController.navigationBar setTranslucent:NO];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];

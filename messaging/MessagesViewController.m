@@ -54,9 +54,6 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     [self createNavigationBar];
     
-
-
-    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
@@ -67,8 +64,9 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar8" forBarMetrics:UIBarMetricsDefault];
     
-    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
-    
+    [AppearanceHelper setNavigationBarColour:self];
+    [AppearanceHelper setNavigationBarFontFor:self];
+
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     //[self.navigationController.navigationBar setTranslucent:YES];

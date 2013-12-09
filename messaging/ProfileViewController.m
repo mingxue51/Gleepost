@@ -81,6 +81,9 @@ static BOOL likePushed;
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
+    [AppearanceHelper setNavigationBarFontFor:self];
+
+    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     
@@ -149,10 +152,6 @@ static BOOL likePushed;
         [self.profileView.profileImage addGestureRecognizer:tap];
         
         [self setTitle:@"Loading..."];
-        
-        //
-        
-        
     }
     
 
@@ -181,7 +180,6 @@ static BOOL likePushed;
 -(void)configureNotificationView
 {
     self.notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-    
 }
 
 
@@ -189,8 +187,7 @@ static BOOL likePushed;
 {
     [super viewWillAppear:animated];
     
-
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self];
     
     //Added.
     [self.profileView hideNotificationsBubble];

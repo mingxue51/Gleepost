@@ -243,7 +243,12 @@ static BOOL likePushed;
 
     
     //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+    
+    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
+
+    //[AppearanceHelper setNavigationBarFont];
+    
     self.tabBarController.tabBar.hidden = NO;
     
     //Set colour of the border navigation bar image. TODO: Set one line image.
