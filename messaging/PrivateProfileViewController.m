@@ -29,11 +29,26 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet ReflectedImageView *reflectedProfileImage;
 @property (weak, nonatomic) IBOutlet UILabel *networkName;
-@property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UILabel *personalMessage;
+@property (weak, nonatomic) IBOutlet UILabel *userName;
+@property (weak, nonatomic) IBOutlet UILabel *course;
 @property (weak, nonatomic) IBOutlet UIButton *addUserButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptUserButton;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfFriends;
+
+//Image view to create borders around information.
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageViews;
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageView2;
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageView3;
+
+//TabViews.
+@property (weak, nonatomic) IBOutlet UIView *tabView;
+
+@property (weak, nonatomic) UIView *aboutTabView;
+@property (weak, nonatomic) UITableView *postsTabView;
+@property (weak, nonatomic) UITableView *mutualTabView;
+
+
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -53,6 +68,10 @@
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
 
+//    [self configureInformationBorders];
+    
+    [self configureViews];
+    
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
     
@@ -115,7 +134,7 @@
 
 -(void)setContactAsRequested
 {
-    UIImage *img = [UIImage imageNamed:@"invitesent"];
+    UIImage *img = [UIImage imageNamed:@"pending"];
     [self.addUserButton setImage:img forState:UIControlStateNormal];
     [self.addUserButton setEnabled:NO];
 }
@@ -145,6 +164,40 @@
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+-(void)configureViews
+{
+    self.aboutTabView = [[[NSBundle mainBundle] loadNibNamed:@"AboutProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.aboutTabView.tag = 1;
+    
+    self.postsTabView = [[[NSBundle mainBundle] loadNibNamed:@"PostsProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.postsTabView.tag = 2;
+    
+    self.mutualTabView = [[[NSBundle mainBundle] loadNibNamed:@"MutualProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.mutualTabView.tag = 3;
+    
+    [self.tabView addSubview:self.aboutTabView];
+    [self.tabView addSubview:self.postsTabView];
+    [self.tabView addSubview:self.mutualTabView];
+    
+    self.postsTabView.hidden = YES;
+    self.mutualTabView.hidden = YES;
+}
+
+-(void)configureInformationBorders
+{
+    
+    CGColorRef colour = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    
+    [self.borderImageViews.layer setBorderWidth:1.0];
+    [self.borderImageViews.layer setBorderColor:colour];
+    
+    [self.borderImageView2.layer setBorderWidth:1.0];
+    [self.borderImageView2.layer setBorderColor:colour];
+    
+    [self.borderImageView3.layer setBorderWidth:1.0];
+    [self.borderImageView3.layer setBorderColor:colour];
+}
+
 /**
  
  Convert current image view to circle shape.
@@ -171,6 +224,47 @@
 {
     [[self.profileImage layer] setBorderWidth:6.0f];
     [[self.profileImage layer] setBorderColor:[UIColor colorWithRed:243.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0].CGColor];
+}
+
+#pragma mark - Tab views
+
+- (IBAction)showAboutView:(id)sender
+{
+    [self showTabViewWithTag:1];
+
+}
+
+- (IBAction)showPostsView:(id)sender
+{
+
+    [self showTabViewWithTag:2];
+    
+//    [self.tabView addSubview:self.postsTabView];
+}
+
+- (IBAction)showMutualView:(id)sender
+{
+    [self showTabViewWithTag:3];
+}
+
+-(void)showTabViewWithTag:(int)tag
+{
+    //Clear all views and add posts view.
+    NSArray *subViews = self.tabView.subviews;
+    
+    
+    
+    for(UIView *v in subViews)
+    {
+        if(v.tag != tag)
+        {
+            [v setHidden:YES];
+        }
+        else
+        {
+            [v setHidden:NO];
+        }
+    }
 }
 
 #pragma mark - Buttons selectors
@@ -333,10 +427,16 @@
             
             [self.networkName setText:user.networkName];
             
+            [self.course setText: user.course];
+            
             [self.personalMessage setText:user.personalMessage];
             
-            //[self setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+            [self setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
             
+            self.profileImage.layer.borderWidth = 2.0;
+            self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+            
+            [self setRoundedView:self.reflectedProfileImage toDiameter:self.reflectedProfileImage.frame.size.height];
             
             
             if([user.profileImageUrl isEqualToString:@""])

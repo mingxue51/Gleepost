@@ -38,6 +38,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
+#import "GLPPrivateProfileViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -109,7 +110,7 @@ static BOOL likePushed;
     [super viewDidLoad];
     
     
-    [self configAppearance];
+//    [self configAppearance];
     [self configTableView];
     [self configNewElementsIndicatorView];
     
@@ -151,17 +152,25 @@ static BOOL likePushed;
     self.postIndexToReload = -1;
     
     //TODO: Remove this later.
-    [[ContactsManager sharedInstance] refreshContacts];
+    [ContactsManager sharedInstance];
     
     [self loadInitialPosts];
     
 
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configAppearance];
+
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     if(self.firstLoadSuccessful) {
         [self startReloadingCronImmediately:YES];
     }
@@ -224,6 +233,7 @@ static BOOL likePushed;
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
+    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
     
     [self.navigationController.navigationBar setTranslucent:YES];
     
@@ -234,7 +244,12 @@ static BOOL likePushed;
 
     
     //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+    
+    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
+
+    //[AppearanceHelper setNavigationBarFont];
+    
     self.tabBarController.tabBar.hidden = NO;
     
     //Set colour of the border navigation bar image. TODO: Set one line image.
@@ -1162,7 +1177,7 @@ static BOOL likePushed;
     {
         //Navigate to private view controller.
         
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     
 }
@@ -1433,11 +1448,20 @@ static BOOL likePushed;
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if([segue.identifier isEqualToString:@"view new private profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        
+        privateProfileViewController.selectedUserId = self.selectedUserId;
+
     }
     else if([segue.identifier isEqualToString:@"show image"])
     {

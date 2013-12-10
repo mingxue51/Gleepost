@@ -13,5 +13,5 @@
 @interface PopUpNotificationsViewController : UIViewController <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) ProfileViewController *delegate;
-
+@property (assign, nonatomic) BOOL campusWallView;
 @end

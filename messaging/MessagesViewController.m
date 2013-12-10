@@ -61,8 +61,15 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setTranslucent:YES];
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar8" forBarMetrics:UIBarMetricsDefault];
+    
+    [AppearanceHelper setNavigationBarColour:self];
+    [AppearanceHelper setNavigationBarFontFor:self];
+
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    //[self.navigationController.navigationBar setTranslucent:YES];
 
     // various control init
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
@@ -80,6 +87,9 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    
     if(self.needsReloadConversations) {
         [self reloadLocalConversations];
     }
@@ -131,9 +141,12 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+    [self.navigationController.navigationBar setShadowImage: [[UIImage alloc]init]];
+
+    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
 
     
 //    self.navigationController.navigationBar.tintColor = tabColour;
@@ -337,7 +350,7 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
         if(section == 0)
         {
             //Change to number of live chats.
-            return [GLPLiveConversationsManager sharedInstance].conversations.count;
+            return [[GLPLiveConversationsManager sharedInstance] conversationsCount];
         }
         else
         {

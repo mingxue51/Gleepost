@@ -119,7 +119,7 @@ static BOOL initLiveChats;
 -(void) refreshLiveConversations
 {
     int i=0;
-    for(GLPConversation *conv in [GLPLiveConversationsManager sharedInstance].conversations) {
+    for(GLPConversation *conv in [[GLPLiveConversationsManager sharedInstance] getConversations]) {
         GLPConversationPictureImageView *currentImageView = _conversationPictureImageViews[i];
         [currentImageView configureWithConversation:conv];
         

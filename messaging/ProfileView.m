@@ -53,12 +53,10 @@
     [self setBackgroundColor:[UIColor clearColor]];
     [self sendSubviewToBack:self.back];
     
-    
-    
-    
+
     //Set colour dynamically to switch.
 //    [self.busyFreeSwitch setBackgroundColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
-    [self.busyFreeSwitch setOnTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+    [self.busyFreeSwitch setOnTintColor:[UIColor colorWithRed:225.00/255.00 green:232.00/255.00 blue:237.00/255.00 alpha:1.0]];
     if(incomingUser == nil)
     {
         //Get data from server and complete them in UIView.
@@ -114,8 +112,17 @@
 -(void)setUserDetails
 {    
     
-    //[ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
-    [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.bounds andSizeOfCorners:CGSizeMake(10.0, 10.0)];
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    [ShapeFormatterHelper setRoundedView:self.reflectedProfileImage toDiameter:self.reflectedProfileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 5.0;
+    self.profileImage.layer.borderColor = [UIColor colorWithRed:225.00/255.00 green:232.00/255.00 blue:237.00/255.00 alpha:1.0].CGColor;
+    
+
+    
+    
+//    [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.bounds andSizeOfCorners:CGSizeMake(10.0, 10.0)];
     
     //Not need to request. Take all the data from Session Manager.
     [self.profileHeadInformation setText: self.currentUser.networkName];
@@ -182,6 +189,11 @@
         [self.reflectedProfileImage reflectionImageWithImage:self.profileImage.image];
         
     }];
+}
+
+-(void)hideAlreadyInContactsImage
+{
+    self.alreadyInContacts.hidden = YES;
 }
 
 /*

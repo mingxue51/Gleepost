@@ -29,12 +29,11 @@ static ContactsManager *instance = nil;
 - (id)init
 {
     self = [super init];
-    if(!self) {
-        return nil;
+    
+    if(self)
+    {
+        [self refreshContacts];
     }
-    
-    
-    [self refreshContacts];
     
     //Load contacts from database.
     //[self loadContactsFromDatabase];
@@ -105,6 +104,7 @@ static ContactsManager *instance = nil;
     {
         if(contact.youConfirmed && contact.theyConfirmed)
         {
+            //TODO: Bug here. User name is nil.
             [confirmedContacts addObject:contact];
             [confirmedContactsNames addObject:contact.user.name];
         }

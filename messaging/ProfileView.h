@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *notificationNewBubbleImageView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationNewBubbleLabel;
 
+@property (weak, nonatomic) IBOutlet UIImageView *alreadyInContacts;
+
 @property(weak, nonatomic) GLPUser* currentUser;
 
 
@@ -32,4 +34,5 @@
 - (void)hideNotificationsBubble;
 -(void)setUserDetails:(GLPUser*)incomingUser;
 -(void)updateImageWithUrl:(NSString*)url;
+-(void)hideAlreadyInContactsImage;
 @end

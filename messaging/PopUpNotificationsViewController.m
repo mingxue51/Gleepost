@@ -25,6 +25,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *leftArrow;
+@property (weak, nonatomic) IBOutlet UIImageView *rightArrow;
 
 @end
 
@@ -57,6 +59,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //Change the position of the arrow if needed.
+    if(self.campusWallView)
+    {
+        //Change the position of the arrow.
+        [self.leftArrow setHidden:YES];
+        [self.rightArrow setHidden:NO];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotifications:) name:@"GLPNewNotifications" object:nil];
 }
 

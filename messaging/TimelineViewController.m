@@ -66,6 +66,7 @@ static BOOL likePushed;
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
+    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     [self.navigationController.navigationBar setTranslucent:YES];

@@ -53,6 +53,11 @@
 
 @property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
+//Notification view.
+@property (strong, nonatomic) UIView *notificationView;
+
+@property (assign, nonatomic) BOOL fromCampusWall;
+
 @end
 
 static BOOL likePushed;
@@ -65,19 +70,26 @@ static BOOL likePushed;
     
     
     //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    //[self.navigationController.navigationBar setTranslucent:YES];
+    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     //Change navigations items' (back arrow, edit etc.) colour.
 
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
-    self.navigationController.navigationBar.tintColor = tabColour;
+    [AppearanceHelper setNavigationBarFontFor:self];
 
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+    
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
 
     
     
@@ -106,6 +118,16 @@ static BOOL likePushed;
     
     [self.postsTableView setBackgroundColor:[UIColor whiteColor]];
     
+    //Find out from which view controller this comes.
+    if(self.navigationController.viewControllers.count == 1)
+    {
+        self.fromCampusWall = NO;
+    }
+    else
+    {
+        self.fromCampusWall = YES;
+    }
+    
     //If the user is the current user.
     if(self.incomingUser == nil)
     {
@@ -114,6 +136,10 @@ static BOOL likePushed;
         [tap setNumberOfTapsRequired:1];
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
+        
+        
+        [self.profileView hideAlreadyInContactsImage];
+
         [self addLogoutNavigationButton];
     }
     else
@@ -126,8 +152,9 @@ static BOOL likePushed;
         [self.profileView.profileImage addGestureRecognizer:tap];
         
         [self setTitle:@"Loading..."];
-                
     }
+    
+
 
     
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
@@ -150,10 +177,17 @@ static BOOL likePushed;
     self.unreadNotificationsCount = 0;
 }
 
+-(void)configureNotificationView
+{
+    self.notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [AppearanceHelper setNavigationBarColour:self];
     
     //Added.
     [self.profileView hideNotificationsBubble];
@@ -166,7 +200,11 @@ static BOOL likePushed;
         [self loadUserDetails];
     }
     
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
+
     
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }
 
@@ -185,6 +223,9 @@ static BOOL likePushed;
 
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+    
+
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -251,22 +292,33 @@ static BOOL likePushed;
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
     [btnBack setFrame:CGRectMake(0, 0, 30, 30)];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-    //self.navigationItem.rightBarButtonItem = item;
+
     
     UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
     [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
 
-    ////notifications_button
-//    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(popUpNotifications:)];
-    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithCustomView:notView];
+    UIBarButtonItem *bellButton = [[UIBarButtonItem alloc] initWithCustomView:notView];
 
     
-    [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+    [bellButton setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
-    self.navigationItem.rightBarButtonItems = @[item,i];
+    
+    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
+    
+    if(!self.fromCampusWall)
+    {
+        self.navigationItem.leftBarButtonItem = bellButton;
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    }
+    else
+    {
+        //Add both buttons on the right.
+        self.navigationItem.rightBarButtonItems = @[settingsButton, bellButton];
+    }
+    
 }
 
 -(void)popUpNotifications:(id)sender
@@ -275,6 +327,7 @@ static BOOL likePushed;
     PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     vc.delegate = self;
+    vc.campusWallView = self.fromCampusWall;
     [vc setTransitioningDelegate:self.transitionViewNotificationsController];
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -287,6 +340,11 @@ static BOOL likePushed;
 {
     [self.fdTakeController takePhotoOrChooseFromLibrary];
 
+}
+
+-(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
+{
+//    NSLog(@"Take Con")
 }
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
@@ -927,7 +985,7 @@ static BOOL likePushed;
     }
     else
     {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar8"]] forState:UIControlStateNormal];
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
         

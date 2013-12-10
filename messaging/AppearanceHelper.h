@@ -12,5 +12,7 @@
 
 + (void)setNavigationBarBackgroundImageFor:(UIViewController *)controller imageName:(NSString *)imageName forBarMetrics:(UIBarMetrics)barMetrics;
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName;
++ (void)setNavigationBarColour:(UIViewController *)controller;
++(void)setNavigationBarFontFor: (UIViewController *)controller;
 
 @end
