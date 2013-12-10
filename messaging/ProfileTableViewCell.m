@@ -106,13 +106,13 @@
 
 -(void)setCurrentUserStatusWithUser:(GLPUser *)user
 {
-    [self.inContacts setHidden:NO];
-    [self.addContactButton setHidden:YES];
+
     
     if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
     {
         //TODO: Set in table view contact as in contacts.
-        
+        [self.inContacts setHidden:NO];
+        [self.addContactButton setHidden:YES];
     }
     else
     {
