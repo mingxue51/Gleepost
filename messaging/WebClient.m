@@ -37,6 +37,7 @@ static WebClient *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[WebClient alloc] initWithBaseURL:[NSURL URLWithString:kWebserviceBaseUrl]];
+        instance.defaultSSLPinningMode = AFSSLPinningModeCertificate;
     });
     
     return instance;
