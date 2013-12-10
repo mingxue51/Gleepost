@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ProfileViewController.h"
+#import "GLPProfileViewController.h"
 
 
 @interface PopUpNotificationsViewController : UIViewController <UINavigationControllerDelegate>
 
-@property (weak, nonatomic) ProfileViewController *delegate;
+@property (weak, nonatomic) GLPProfileViewController *delegate;
 @property (assign, nonatomic) BOOL campusWallView;
 @end

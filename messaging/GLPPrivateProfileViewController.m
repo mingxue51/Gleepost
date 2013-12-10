@@ -18,11 +18,14 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 
+
 @interface GLPPrivateProfileViewController ()
+
+
+@property (strong, nonatomic) GLPUser *profileUser;
 
 @property (assign, nonatomic) int numberOfRows;
 
-@property (strong, nonatomic) GLPUser *profileUser;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
@@ -42,7 +45,6 @@
     
     if(self)
     {
-        //Register the 5 cell table views.
     }
     
     return self;
@@ -51,6 +53,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     [self registerTableViewCells];
 
@@ -77,14 +80,14 @@
         if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
         {
             NSLog(@"PrivateProfileViewController : User already requested by you.");
-            [self setContactAsRequested];
+            //[self setContactAsRequested];
             
         }
         else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
         {
             NSLog(@"PrivateProfileViewController : User requested you.");
             
-            [self setAcceptRequestButton];
+            //[self setAcceptRequestButton];
             
         }
         else
@@ -132,6 +135,7 @@
 
 
 }
+
 
 -(void)registerTableViewCells
 {
@@ -194,18 +198,6 @@
     }];
 }
 
-
-#pragma mark - UI Changes
-
--(void)setContactAsRequested
-{
-    
-}
-
--(void)setAcceptRequestButton
-{
-    
-}
 
 #pragma mark - Table view data source
 

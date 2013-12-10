@@ -23,6 +23,13 @@
 /* Begin PBXBuildFile section */
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
+		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
+		580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */; };
+		580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */; };
+		580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */; };
+		580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */; };
+		580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3A1857A52E00A84E0E /* NotificationsView.m */; };
+		580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */; };
 		58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D681821013200B76E5D /* CFNetwork.framework */; };
 		58143D6B1821014C00B76E5D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D6A1821014C00B76E5D /* Security.framework */; };
 		58143D7018212AE900B76E5D /* +_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58143D6F18212AE900B76E5D /* +_old.png */; };
@@ -425,6 +432,18 @@
 /* Begin PBXFileReference section */
 		58080B79180EBB6500C4DB83 /* PostImageCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageCellView.xib; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
+		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
+		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
+		580B8D2E18577E3900A84E0E /* ProfileSettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileSettingsTableViewCell.h; sourceTree = "<group>"; };
+		580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileSettingsTableViewCell.m; sourceTree = "<group>"; };
+		580B8D3118577E5500A84E0E /* ProfileTwoButtonsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTwoButtonsTableViewCell.h; sourceTree = "<group>"; };
+		580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTwoButtonsTableViewCell.m; sourceTree = "<group>"; };
+		580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewTwoButtonsTableViewCell.xib; sourceTree = "<group>"; };
+		580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewSettingsTableViewCell.xib; sourceTree = "<group>"; };
+		580B8D3818579C2700A84E0E /* NSObject_ProfileEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSObject_ProfileEnums.h; sourceTree = "<group>"; };
+		580B8D391857A52E00A84E0E /* NotificationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsView.h; sourceTree = "<group>"; };
+		580B8D3A1857A52E00A84E0E /* NotificationsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsView.m; sourceTree = "<group>"; };
+		580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsUIView.xib; sourceTree = "<group>"; };
 		58143D681821013200B76E5D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		58143D6A1821014C00B76E5D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		58143D6F18212AE900B76E5D /* +_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+_old.png"; sourceTree = "<group>"; };
@@ -1029,6 +1048,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				580B8D3118577E5500A84E0E /* ProfileTwoButtonsTableViewCell.h */,
+				580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */,
+				580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */,
+			);
+			name = "ProfileView Two Buttons";
+			sourceTree = "<group>";
+		};
+		580B8D2D18577E0200A84E0E /* ProfileView Settings */ = {
+			isa = PBXGroup;
+			children = (
+				580B8D2E18577E3900A84E0E /* ProfileSettingsTableViewCell.h */,
+				580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */,
+				580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */,
+			);
+			name = "ProfileView Settings";
+			sourceTree = "<group>";
+		};
 		582143C917FC59E10032ECEB /* External Code */ = {
 			isa = PBXGroup;
 			children = (
@@ -1416,6 +1455,8 @@
 		5898328B17F8A22D008CB807 /* Profile Classes */ = {
 			isa = PBXGroup;
 			children = (
+				580B8D2D18577E0200A84E0E /* ProfileView Settings */,
+				580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */,
 				58FB7CB6185655BB002C6A00 /* ProfileView Mutual */,
 				58FB7CB5185655AD002C6A00 /* ProfileView About */,
 				58FB7CB218565495002C6A00 /* ProfileView Buttons */,
@@ -1433,6 +1474,9 @@
 				581AAF0D181DA88700F091A9 /* InvitationSentView.m */,
 				582CE05918565D820024D065 /* GLPPrivateProfileViewController.h */,
 				582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */,
+				580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */,
+				580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */,
+				580B8D3818579C2700A84E0E /* NSObject_ProfileEnums.h */,
 			);
 			name = "Profile Classes";
 			sourceTree = "<group>";
@@ -1499,6 +1543,9 @@
 				58B865DE180D9F4800BB18AF /* NotificationsViewController.m */,
 				58A67444184F8ED400E3FE45 /* PopUpNotificationsViewController.h */,
 				58A67445184F8ED400E3FE45 /* PopUpNotificationsViewController.m */,
+				580B8D391857A52E00A84E0E /* NotificationsView.h */,
+				580B8D3A1857A52E00A84E0E /* NotificationsView.m */,
+				580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -2426,6 +2473,7 @@
 				584CF662182274EE00EFABB8 /* send.png in Resources */,
 				586458B9180854B700B1B19C /* share@2x.png in Resources */,
 				5843328F180F09C900BD9F74 /* Gleepost2.png in Resources */,
+				580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */,
 				806E3D801832B1960063AACE /* NotificationBackgroundWarning.png in Resources */,
 				583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */,
 				5890D23818482DC300E293DD /* profile@2x.png in Resources */,
@@ -2523,6 +2571,7 @@
 				58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */,
 				5890D23218482DC300E293DD /* contacts@2x.png in Resources */,
 				80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */,
+				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				587D23CA17EA195D00E0DDFF /* chat_tab_small.png in Resources */,
 				587D23CB17EA195D00E0DDFF /* share.png in Resources */,
 				587D23CD17EA195D00E0DDFF /* home_tab_small.png in Resources */,
@@ -2546,6 +2595,7 @@
 				587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */,
 				587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */,
 				587D23D317EA195D00E0DDFF /* tabbarold.png in Resources */,
+				580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */,
 				580A639018184CAB00AC8009 /* default_user_image3.png in Resources */,
 				587D23D417EA195D00E0DDFF /* thumbs-up.png in Resources */,
 				587D23D517EA195D00E0DDFF /* contacts_tab_small.png in Resources */,
@@ -2643,6 +2693,7 @@
 				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
+				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				806E3D881832B1960063AACE /* TSMessageView.m in Sources */,
@@ -2661,6 +2712,7 @@
 				589EFD9C182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m in Sources */,
 				5890D21E1847693600E293DD /* GLPDefaultTheme.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
+				580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */,
 				807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */,
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
@@ -2688,6 +2740,7 @@
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
+				580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
@@ -2716,6 +2769,7 @@
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,
+				580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,

@@ -59,12 +59,29 @@
                         <rect key="frame" x="165" y="185" width="70" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
+                    <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j2W-bx-598">
+                        <rect key="frame" x="251" y="115" width="51" height="31"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="onTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <action selector="setBusyStatus:" destination="vog-EE-Dna" eventType="valueChanged" id="fy8-eH-iJx"/>
+                        </connections>
+                    </switch>
+                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Busy   Free" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uy7-fR-wXy">
+                        <rect key="frame" x="251" y="143" width="59" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="acceptButton" destination="uOP-Pb-4S5" id="v7c-Id-rAy"/>
                 <outlet property="addContactButton" destination="h1k-Hj-OyY" id="Me5-Ao-WUa"/>
+                <outlet property="busyLabel" destination="uy7-fR-wXy" id="Nlg-9F-Ep8"/>
+                <outlet property="busySwitch" destination="j2W-bx-598" id="bvg-Jk-qmq"/>
                 <outlet property="inContacts" destination="IKf-TV-37q" id="u8c-Fh-Zfp"/>
+                <outlet property="messageButton" destination="9Ku-3o-aV6" id="cFq-2z-yUI"/>
                 <outlet property="profileImage" destination="vfr-tr-ebJ" id="XfS-uB-Iju"/>
                 <outlet property="universityLabel" destination="OFz-Vf-2bJ" id="f7k-w3-1Ym"/>
             </connections>

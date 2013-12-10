@@ -13,6 +13,7 @@
 #import "ContactsManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "SessionManager.h"
 
 @interface ProfileTableViewCell ()
 
@@ -20,7 +21,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *universityLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addContactButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
+@property (weak, nonatomic) IBOutlet UIButton *messageButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *inContacts;
+@property (weak, nonatomic) IBOutlet UISwitch *busySwitch;
+@property (weak, nonatomic) IBOutlet UILabel *busyLabel;
 
 @property (strong, nonatomic) GLPUser *currentUser;
 @end
@@ -46,7 +51,7 @@
 //    [self.personalMessage setText:user.personalMessage];
     self.currentUser = user;
     
-    
+
     //Decide which elements to present.
     [self setCurrentUserStatusWithUser:user];
     
@@ -108,27 +113,45 @@
 {
 
     
-    if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
+    if(self.currentUser.remoteKey == [[SessionManager sharedInstance].user remoteKey])
     {
-        //TODO: Set in table view contact as in contacts.
-        [self.inContacts setHidden:NO];
+        //Set only current user's elements.
+        
         [self.addContactButton setHidden:YES];
+        [self.acceptButton setHidden:YES];
+        [self.inContacts setHidden:YES];
+        [self.messageButton setHidden:YES];
+        
+        //Show busy free toggle.
+        [self.busyLabel setHidden:NO];
+        [self.busySwitch setHidden:NO];
+        
+        //Load data for busy switch.
+        [self getBusyStatus];
     }
     else
     {
-        if([[ContactsManager sharedInstance] isContactWithIdRequested:user.remoteKey])
+        if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
         {
-            [self setContactAsRequested];
-        }
-        else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:user.remoteKey])
-        {
-            [self setAcceptRequestButton];
+            //TODO: Set in table view contact as in contacts.
+            [self.inContacts setHidden:NO];
+            [self.addContactButton setHidden:YES];
         }
         else
         {
-            //If not show the private profile view as is.
+            if([[ContactsManager sharedInstance] isContactWithIdRequested:user.remoteKey])
+            {
+                [self setContactAsRequested];
+            }
+            else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:user.remoteKey])
+            {
+                [self setAcceptRequestButton];
+            }
+            else
+            {
+                //If not show the private profile view as is.
+            }
         }
-        
     }
 }
 
@@ -157,6 +180,33 @@
 }
 
 - (IBAction)sendMessage:(id)sender {
+}
+
+#pragma mark - Client
+
+-(void)getBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+        
+        if(success)
+        {
+            [self.busySwitch setOn:!status];
+        }
+    }];
+}
+
+- (IBAction)setBusyStatus:(id)sender
+{
+    UISwitch *s = (UISwitch*)sender;
+    
+    
+    [[WebClient sharedInstance] setBusyStatus:!s.isOn callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Do something.
+        }
+    }];
 }
 
 - (IBAction)addUser:(id)sender
