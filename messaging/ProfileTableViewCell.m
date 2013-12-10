@@ -10,6 +10,9 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "ContactsManager.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
 
 @interface ProfileTableViewCell ()
 
@@ -17,8 +20,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *universityLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addContactButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
+@property (weak, nonatomic) IBOutlet UIImageView *inContacts;
 
-
+@property (strong, nonatomic) GLPUser *currentUser;
 @end
 
 @implementation ProfileTableViewCell
@@ -40,6 +44,11 @@
 //    [self.course setText: user.course];
     
 //    [self.personalMessage setText:user.personalMessage];
+    self.currentUser = user;
+    
+    
+    //Decide which elements to present.
+    [self setCurrentUserStatusWithUser:user];
     
     [self.universityLabel setText:user.networkName];
 
@@ -95,18 +104,92 @@
     }
 }
 
+-(void)setCurrentUserStatusWithUser:(GLPUser *)user
+{
+    [self.inContacts setHidden:NO];
+    [self.addContactButton setHidden:YES];
+    
+    if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
+    {
+        //TODO: Set in table view contact as in contacts.
+        
+    }
+    else
+    {
+        if([[ContactsManager sharedInstance] isContactWithIdRequested:user.remoteKey])
+        {
+            [self setContactAsRequested];
+        }
+        else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:user.remoteKey])
+        {
+            [self setAcceptRequestButton];
+        }
+        else
+        {
+            //If not show the private profile view as is.
+        }
+        
+    }
+}
+
+-(void)setContactAsRequested
+{
+    UIImage *img = [UIImage imageNamed:@"pending"];
+    [self.addContactButton setImage:img forState:UIControlStateNormal];
+    [self.addContactButton setEnabled:NO];
+}
+
+-(void)setAcceptRequestButton
+{
+    [self.addContactButton setHidden:YES];
+    [self.addContactButton setEnabled:NO];
+    [self.acceptButton setHidden:NO];
+}
+
 -(void)showFullProfileImage:(id)sender
 {
     NSLog(@"Show Full Size Image.");
 }
 
-- (IBAction)acceptUser:(id)sender {
+- (IBAction)acceptUser:(id)sender
+{
+    #warning implementation pending.
 }
 
 - (IBAction)sendMessage:(id)sender {
 }
 
-- (IBAction)addUser:(id)sender {
+- (IBAction)addUser:(id)sender
+{
+    [[WebClient sharedInstance] addContact:self.currentUser.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Change the button style.
+            NSLog(@"Request has been sent to the user.");
+            
+            #warning implementation pending.
+
+//            self.invitationSentView = [InvitationSentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+//            self.invitationSentView.delegate = self;
+            
+            
+            GLPContact *contact = [[GLPContact alloc] initWithUserName:self.currentUser.name profileImage:self.currentUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
+            contact.remoteKey = self.currentUser.remoteKey;
+            
+            //Save contact to database.
+            [[ContactsManager sharedInstance] saveNewContact:contact];
+            
+            [self setContactAsRequested];
+            
+        }
+        else
+        {
+            NSLog(@"Failed to send to the user.");
+            //This section of code should never be reached.
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
+        }
+    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

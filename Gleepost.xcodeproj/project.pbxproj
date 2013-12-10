@@ -88,6 +88,7 @@
 		584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C417FDE8710045B65D /* GCPlaceholderTextView.m */; };
 		584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C717FDEE4C0045B65D /* TypeTextView.m */; };
 		58493F3C1827ED1800EE5F1A /* navigationbar2_.png in Resources */ = {isa = PBXBuildFile; fileRef = 58493F3B1827ED1800EE5F1A /* navigationbar2_.png */; };
+		584AD53018576C5A006589BF /* in-contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 584AD52F18576C5A006589BF /* in-contacts.png */; };
 		584C1EEA181AC53600862E81 /* GLPContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 584C1EE9181AC53600862E81 /* GLPContact.m */; };
 		584C1EF0181ACBCA00862E81 /* chat3.png in Resources */ = {isa = PBXBuildFile; fileRef = 584C1EEB181ACBCA00862E81 /* chat3.png */; };
 		584C1EF1181ACBCA00862E81 /* home_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584C1EEC181ACBCA00862E81 /* home_tab@2x.png */; };
@@ -141,7 +142,6 @@
 		586CDFE218520A9600902F68 /* message-user-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDE18520A9600902F68 /* message-user-temp.png */; };
 		586CDFE318520A9600902F68 /* add-user-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDF18520A9600902F68 /* add-user-temp.png */; };
 		586CDFE418520A9600902F68 /* user-added-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE018520A9600902F68 /* user-added-temp.png */; };
-		586CDFE9185244BD00902F68 /* in-contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE5185244BD00902F68 /* in-contacts.png */; };
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
@@ -522,6 +522,7 @@
 		584906C617FDEE4C0045B65D /* TypeTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypeTextView.h; sourceTree = "<group>"; };
 		584906C717FDEE4C0045B65D /* TypeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeTextView.m; sourceTree = "<group>"; };
 		58493F3B1827ED1800EE5F1A /* navigationbar2_.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar2_.png; sourceTree = "<group>"; };
+		584AD52F18576C5A006589BF /* in-contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts.png"; sourceTree = "<group>"; };
 		584C1EE8181AC53600862E81 /* GLPContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPContact.h; sourceTree = "<group>"; };
 		584C1EE9181AC53600862E81 /* GLPContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPContact.m; sourceTree = "<group>"; };
 		584C1EEB181ACBCA00862E81 /* chat3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chat3.png; sourceTree = "<group>"; };
@@ -590,7 +591,6 @@
 		586CDFDE18520A9600902F68 /* message-user-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-user-temp.png"; sourceTree = "<group>"; };
 		586CDFDF18520A9600902F68 /* add-user-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-user-temp.png"; sourceTree = "<group>"; };
 		586CDFE018520A9600902F68 /* user-added-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added-temp.png"; sourceTree = "<group>"; };
-		586CDFE5185244BD00902F68 /* in-contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts.png"; sourceTree = "<group>"; };
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
@@ -1047,12 +1047,12 @@
 		58361C34184CBF3B00FEFC49 /* Profile v2 */ = {
 			isa = PBXGroup;
 			children = (
+				584AD52F18576C5A006589BF /* in-contacts.png */,
 				58FB7CA4185649D3002C6A00 /* accept.png */,
 				58FB7C9D18561722002C6A00 /* locked.png */,
 				58FB7C801855FFD5002C6A00 /* pending.png */,
 				58FB7C7E1855FF82002C6A00 /* add-user.png */,
 				58FB7C7C1855FF0B002C6A00 /* message-user.png */,
-				586CDFE5185244BD00902F68 /* in-contacts.png */,
 				586CDFE6185244BD00902F68 /* user-added.png */,
 				586CDFDD18520A9600902F68 /* in-contacts-temp.png */,
 				586CDFDE18520A9600902F68 /* message-user-temp.png */,
@@ -2368,6 +2368,7 @@
 				5880103818101327008C170F /* pic3.png in Resources */,
 				586CDFE218520A9600902F68 /* message-user-temp.png in Resources */,
 				8050249C181932C600F5337F /* conversation_new_notification.png in Resources */,
+				584AD53018576C5A006589BF /* in-contacts.png in Resources */,
 				5895B3DC17F5D7730040535D /* thumbs-up_pushed@2x.png in Resources */,
 				58433299180F181700BD9F74 /* email.png in Resources */,
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,
@@ -2467,7 +2468,6 @@
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
 				805E1558180EF3E700705B1C /* notification.png in Resources */,
 				58FB7C8E18560D08002C6A00 /* PostsProfileTabView.xib in Resources */,
-				586CDFE9185244BD00902F68 /* in-contacts.png in Resources */,
 				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
 				586CDFE118520A9600902F68 /* in-contacts-temp.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPPrivateProfileViewController.h"
 
 @interface ProfileButtonsTableViewCell : UITableViewCell
+
+@property (readonly, nonatomic) GLPPrivateProfileViewController *delegate;
+
+
+-(void)setDelegate:(GLPPrivateProfileViewController *)delegate;
 
 @end

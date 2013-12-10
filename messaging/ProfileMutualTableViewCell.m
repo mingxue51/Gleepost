@@ -7,6 +7,8 @@
 //
 
 #import "ProfileMutualTableViewCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "ShapeFormatterHelper.h"
 
 @implementation ProfileMutualTableViewCell
 
@@ -17,6 +19,16 @@
         // Initialization code
     }
     return self;
+}
+
+-(void)updateDataWithName:(NSString*)name andImageUrl:(NSString*)url
+{
+    [self.userNameLabel setText:name];
+    
+    [self.profileUserImage setImageWithURL:[NSURL URLWithString:url]];
+    
+    [ShapeFormatterHelper setRoundedView:self.profileUserImage toDiameter:self.profileUserImage.frame.size.height];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

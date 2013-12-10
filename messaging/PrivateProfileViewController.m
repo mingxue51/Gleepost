@@ -100,10 +100,6 @@
         //If not show the private profile view as is.
         NSLog(@"PrivateProfileViewController : Private profile as is.");
     }
-
-    
-    
-    
     
 //    [self formatProfileView];
     
@@ -151,7 +147,6 @@
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-    
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];

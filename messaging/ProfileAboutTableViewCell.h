@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPUser.h"
 
 @interface ProfileAboutTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *lockImageView;
 @property (weak, nonatomic) IBOutlet UILabel *lockLabel;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 
+-(void)updateUserDetails:(GLPUser *)user;
 @end

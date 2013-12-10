@@ -16,6 +16,7 @@
 #import "ProfileMutualTableViewCell.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "GLPPostManager.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -24,6 +25,12 @@
 @property (strong, nonatomic) GLPUser *profileUser;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+
+@property (strong, nonatomic) NSArray *posts;
+
+@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
+
+@property (assign, nonatomic) BOOL contact;
 
 @end
 
@@ -50,30 +57,46 @@
     
     [self initialiseObjects];
     
+    
+   // [self loadPosts];
+    
     //If no, check in database if the user is already requested.
     
     //If yes change the button of add user to user already requested.
     
-    if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
+    //Check if the user is already in contacts.
+    
+    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
     {
-        NSLog(@"PrivateProfileViewController : User already requested by you.");
-        [self setContactAsRequested];
+        //TODO: Set in table view contact as in contacts.
         
-    }
-    else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
-    {
-        NSLog(@"PrivateProfileViewController : User requested you.");
-        
-        [self setAcceptRequestButton];
-        
+        self.contact = YES;
     }
     else
     {
-        //If not show the private profile view as is.
-        NSLog(@"PrivateProfileViewController : Private profile as is.");
+        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
+        {
+            NSLog(@"PrivateProfileViewController : User already requested by you.");
+            [self setContactAsRequested];
+            
+        }
+        else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
+        {
+            NSLog(@"PrivateProfileViewController : User requested you.");
+            
+            [self setAcceptRequestButton];
+            
+        }
+        else
+        {
+            //If not show the private profile view as is.
+            NSLog(@"PrivateProfileViewController : Private profile as is.");
+        }
+        
+        self.contact = NO;
     }
+
     
-    self.navigationItem.title = @"User name";
     
     //Initialise rows with 3 because About cell is presented first.
     self.numberOfRows = 2;
@@ -102,6 +125,10 @@
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     [[ContactsManager sharedInstance] loadContactsFromDatabase];
+    
+    self.selectedTabStatus = kGLPAbout;
+    
+    self.posts = [[NSArray alloc] init];
 
 
 }
@@ -135,12 +162,35 @@
         {
             self.profileUser = user;
             
-            [self.tableView reloadData];
+            self.navigationItem.title = self.profileUser.name;
+
+            [self loadPosts];
+            
+            //[self.tableView reloadData];
         }
         else
         {
             [WebClientHelper showStandardError];
         }
+    }];
+}
+
+- (void)loadPosts
+{
+    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
+        
+        if(success)
+        {
+            self.posts = [posts mutableCopy];
+            
+            [self.tableView reloadData];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
+        }
+        
+        
     }];
 }
 
@@ -166,7 +216,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.numberOfRows;
+    if(self.selectedTabStatus == kGLPMutual)
+    {
+        return self.numberOfRows + 10; /** + Number of mutual friends. */
+    }
+    else if(self.selectedTabStatus == kGLPPosts)
+    {
+        return self.numberOfRows + self.posts.count; /** + Number of user's posts. */
+    }
+    else
+    {
+        return self.numberOfRows + 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -183,8 +244,8 @@
     
     ProfileButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
-    
-    NSLog(@"Index path row: %d",indexPath.row);
+    ProfileAboutTableViewCell *profileAboutView;
+    ProfileMutualTableViewCell *profileMutualView;
     
     if(indexPath.row == 0)
     {
@@ -200,12 +261,59 @@
     {
         buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierButtons forIndexPath:indexPath];
         buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
+        [buttonsView setDelegate:self];
+        
         return buttonsView;
     }
-    else if (indexPath.row == 2)
+    else if (indexPath.row >= 2)
     {
-        //See what to load.
+        if(self.selectedTabStatus == kGLPAbout)
+        {
+            profileAboutView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierAbout forIndexPath:indexPath];
+            
+            if(self.contact)
+            {
+                //Show user's details.
+                [profileAboutView updateUserDetails:self.profileUser];
+            }
+
+            
+            return profileAboutView;
+        }
+        else if(self.selectedTabStatus == kGLPPosts)
+        {
+            if(self.posts.count != 0)
+            {
+                GLPPost *post = self.posts[indexPath.row-2];
+                
+                if([post imagePost])
+                {
+                    postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+                }
+                else
+                {
+                    postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+                }
+                
+                //Set this class as delegate.
+                //TODO: Fix that.
+                //postViewCell.delegate = self;
+                
+                [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
+                
+            }
+            
+            return postViewCell;
+        }
+        else if(self.selectedTabStatus == kGLPMutual)
+        {
+            profileMutualView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierMutual forIndexPath:indexPath];
+            
+            [profileMutualView updateDataWithName:self.profileUser.name andImageUrl:self.profileUser.profileImageUrl];
+            
+            return profileMutualView;
+        }
         
     }
     
@@ -216,14 +324,48 @@
 {
     if(indexPath.row == 0)
     {
-        return 320.0f;
+        return 245.0f;
     }
     else if(indexPath.row == 1)
     {
         return 50.0f;
     }
+    else if(indexPath.row >= 2)
+    {
+        if(self.selectedTabStatus == kGLPAbout)
+        {
+            return 150.0f;
+        }
+        else if (self.selectedTabStatus == kGLPPosts)
+        {
+            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
+            
+            if([currentPost imagePost])
+            {
+                return 415.0f;
+            }
+            else
+            {
+                return 156.0f;
+            }
+        }
+        else
+        {
+            return 70.0f;
+        }
+    }
     
-    return 50.0f;
+    return 70.0f;
+}
+
+
+#pragma  mark - Buttons view methods
+
+-(void)viewSectionWithId:(GLPSelectedTab) selectedTab
+{
+    self.selectedTabStatus = selectedTab;
+    
+    [self.tableView reloadData];
 }
 
 /*

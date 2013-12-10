@@ -9,5 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @interface GLPPrivateProfileViewController : UITableViewController
+
+typedef enum {
+    kGLPAbout,
+    kGLPPosts,
+    kGLPMutual
+    
+}GLPSelectedTab;
+
+
 @property (assign, nonatomic) int selectedUserId;
+
+
+-(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
+
 @end

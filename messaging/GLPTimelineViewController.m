@@ -1169,9 +1169,9 @@ static BOOL likePushed;
     }
     else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
-        //Navigate to profile view controller.
+        //Navigate to private profile view controller.
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     else
     {
