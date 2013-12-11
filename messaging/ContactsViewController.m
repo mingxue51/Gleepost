@@ -479,15 +479,9 @@
     
     if([segue.identifier isEqualToString:@"view profile"])
     {
-        
         GLPPrivateProfileViewController *pvc = segue.destinationViewController;
         
         pvc.selectedUserId = self.selectedUserId;
-//        GLPUser *incomingUser = [[GLPUser alloc] init];
-//        incomingUser.remoteKey = self.selectedUserId;
-//        pvc.incomingUser = incomingUser;
-//        
-        
     }
 }
 

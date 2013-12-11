@@ -28,6 +28,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *busyLabel;
 
 @property (strong, nonatomic) GLPUser *currentUser;
+
+@property (readonly, nonatomic) GLPProfileViewController *delegate;
+
 @end
 
 @implementation ProfileTableViewCell
@@ -52,16 +55,17 @@
     self.currentUser = user;
     
 
-    //Decide which elements to present.
-    [self setCurrentUserStatusWithUser:user];
+
     
     [self.universityLabel setText:user.networkName];
 
     [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
     
-    self.profileImage.layer.borderWidth = 2.0;
-    self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    self.profileImage.layer.borderWidth = 4.0;
+    self.profileImage.layer.borderColor = [UIColor colorWithRed:106.0f/255.0f green:121.0f/255.0f blue:131.0f/255.0f alpha:1.0f].CGColor;
     
+    
+
     
     if([user.profileImageUrl isEqualToString:@""])
     {
@@ -103,10 +107,21 @@
         
         
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
-        [tap setNumberOfTapsRequired:1];
-        [self.profileImage addGestureRecognizer:tap];
+
     }
+    
+    //Decide which elements to present.
+    [self setCurrentUserStatusWithUser:user];
+}
+
+-(void)updateImageWithUrl:(NSString*)url
+{
+    [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
+}
+
+-(void)setDelegate:(GLPProfileViewController *)delegate
+{
+    _delegate = delegate;
 }
 
 -(void)setCurrentUserStatusWithUser:(GLPUser *)user
@@ -128,6 +143,14 @@
         
         //Load data for busy switch.
         [self getBusyStatus];
+        
+        //Add selector to profile image view.
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
+        [tap setNumberOfTapsRequired:1];
+//        [self.profileImage setUserInteractionEnabled:YES];
+        [self.profileImage addGestureRecognizer:tap];
+        
+        
     }
     else
     {
@@ -152,7 +175,17 @@
                 //If not show the private profile view as is.
             }
         }
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
+        [tap setNumberOfTapsRequired:1];
+        [self.profileImage addGestureRecognizer:tap];
+
     }
+}
+
+-(void)changeProfileImage:(id)sender
+{
+    [_delegate changeProfileImage:sender];
 }
 
 -(void)setContactAsRequested

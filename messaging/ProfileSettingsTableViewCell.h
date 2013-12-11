@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPProfileViewController.h"
 
 @interface ProfileSettingsTableViewCell : UITableViewCell
+
+
+-(void)setDelegate:(GLPProfileViewController *)delegate;
+
 
 @end

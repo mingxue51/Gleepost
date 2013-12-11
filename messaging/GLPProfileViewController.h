@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
 #import "NSObject_ProfileEnums.h"
+#import "FDTakeController.h"
 
-@interface GLPProfileViewController : UITableViewController
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate>
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -18,5 +19,7 @@
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)popUpNotifications:(id)sender;
+-(void)logout:(id)sender;
+-(void)changeProfileImage:(id)sender;
 
 @end

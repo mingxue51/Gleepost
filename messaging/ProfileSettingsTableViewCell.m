@@ -8,6 +8,12 @@
 
 #import "ProfileSettingsTableViewCell.h"
 
+@interface ProfileSettingsTableViewCell ()
+
+@property (readonly, nonatomic) GLPProfileViewController *delegate;
+
+@end
+
 @implementation ProfileSettingsTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -17,6 +23,16 @@
         // Initialization code
     }
     return self;
+}
+
+-(void)setDelegate:(GLPProfileViewController *)delegate
+{
+    _delegate = delegate;
+}
+
+- (IBAction)logout:(id)sender
+{
+    [_delegate logout:sender];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

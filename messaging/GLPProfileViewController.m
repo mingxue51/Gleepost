@@ -23,6 +23,10 @@
 #import "ViewPostViewController.h"
 #import "NotificationsView.h"
 #import "GLPNotificationManager.h"
+#import "GLPThemeManager.h"
+#import "GLPLoginManager.h"
+#import "WebClient.h"
+#import "ImageFormatterHelper.h"
 
 @interface GLPProfileViewController ()
 
@@ -38,9 +42,15 @@
 
 @property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
+@property (strong, nonatomic) FDTakeController *fdTakeController;
+
+@property (strong, nonatomic) UIImage *uploadedImage;
+
 @property (strong, nonatomic) NotificationsView *notificationView;
 
 @property (assign, nonatomic) int unreadNotificationsCount;
+
+@property (strong, nonatomic) NSString *profileImageUrl;
 
 @end
 
@@ -76,6 +86,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
     self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
     [self updateNotificationsBubble];
@@ -163,7 +176,7 @@
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
-    self.title = @"Profile";
+    self.title = @"Me";
 }
 -(void)initialiseObjects
 {
@@ -192,6 +205,11 @@
     self.posts = [[NSArray alloc] init];
     
     self.numberOfRows = 2;
+    
+    self.fdTakeController = [[FDTakeController alloc] init];
+    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
+    self.fdTakeController.delegate = self;
+
 }
 
 -(void)registerTableViewCells
@@ -219,9 +237,8 @@
 
 -(void)setUserDetails
 {
-    self.user = [[SessionManager sharedInstance]user];
-    
-    [self loadPosts];
+//    self.user = [[SessionManager sharedInstance]user];
+    [self loadUserData];
 }
 
 
@@ -237,6 +254,12 @@
     {
         [self.notificationView hideNotifications];
     }
+}
+
+-(void)updateViewWithNewImage:(NSString*)imageUrl
+{
+    [self loadUserData];
+    
 }
 
 #pragma mark - Selectors
@@ -264,12 +287,121 @@
 
 -(void)logout:(id)sender
 {
+    //Pop up a bottom menu.
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
+    
+    [actionSheet showInView:[self.view window]];
     
 }
 
 
+#pragma mark - Action Sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)
+    {
+        [GLPLoginManager logout];
+        [self.navigationController popViewControllerAnimated:YES];
+        [self performSegueWithIdentifier:@"start" sender:self];
+    }
+    else
+    {
+        NSLog(@"Cancel");
+    }
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *subview in actionSheet.subviews)
+    {
+        if ([subview isKindOfClass:[UIButton class]])
+        {
+            UIButton *btn = (UIButton*)subview;
+            
+            if([btn.titleLabel.text isEqualToString:@"Cancel"])
+            {
+                //btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+                btn.titleLabel.textColor = [[GLPThemeManager sharedInstance]colorForTabBar];
+            }
+            else
+            {
+                btn.titleLabel.textColor = [UIColor lightGrayColor];
+            }
+        }
+    }
+}
+
+#pragma mark - FDTakeController delegate
+
+-(void)changeProfileImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    
+}
+
+-(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
+{
+    NSLog(@"Take Con");
+}
+
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+{
+    self.uploadedImage = photo;
+    //[self.profileView.profileImage setImage:photo];
+    //[self.profileView updateImage:photo];
+    
+    //Communicate with server to change the image.
+    [self uploadImageAndSetUserImageWithUserRemoteKey];
+    
+    [self loadPosts];
+    
+}
 
 #pragma mark - Client
+
+-(void)uploadImageAndSetUserImageWithUserRemoteKey
+{
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    NSLog(@"Image register image size: %d",imageData.length);
+    
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        //[WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            
+            //Change profile image in Session Manager.
+            [[SessionManager sharedInstance] registerUserImage:response];
+            
+            //Set image to user's profile.
+            [self setImageToUserProfile:response];
+            
+            //            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+            //TODO: This is wrong
+            //[[SessionManager sharedInstance] updateUserWithUrl:response];
+            
+        }
+        else
+        {
+            NSLog(@"ERROR");
+            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            
+        }
+    }];
+}
 
 - (void)loadPosts
 {
@@ -290,6 +422,44 @@
     }];
 }
 
+-(void)setImageToUserProfile:(NSString*)url
+{
+    NSLog(@"READY TO ADD IMAGE TO USER WITH URL: %@",url);
+    
+    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            NSLog(@"NEW PROFILE IMAGE UPLOADED");
+            
+            [self updateViewWithNewImage:url];
+
+        }
+        else
+        {
+            NSLog(@"ERROR: Not able to register image for profile.");
+        }
+    }];
+}
+
+-(void)loadUserData
+{
+    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            self.user = user;
+            
+            [self loadPosts];
+            
+            //[self.tableView reloadData];
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
+        }
+    }];
+}
 
 #pragma mark - Table view data source
 
@@ -330,8 +500,12 @@
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
+        [profileView setDelegate:self];
+
+//        [profileView updateImageWithUrl:self.profileImageUrl];
         [profileView initialiseElementsWithUserDetails:self.user];
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         
         return profileView;
         
@@ -350,6 +524,11 @@
         if(self.selectedTabStatus == kGLPSettings)
         {
             profileSettingsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSettings forIndexPath:indexPath];
+            
+            profileSettingsView.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            [profileSettingsView setDelegate:self];
+            
             
             return profileSettingsView;
         }

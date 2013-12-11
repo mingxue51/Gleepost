@@ -837,7 +837,7 @@ static BOOL likePushed;
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return 415;
+        return 481;
         
         
     }

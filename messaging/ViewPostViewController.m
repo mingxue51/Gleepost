@@ -23,6 +23,9 @@
 #import "ContactsManager.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
+#import "ViewPostImageViewController.h"
+#import "TransitionDelegateViewImage.h"
+
 
 @interface ViewPostViewController ()
 
@@ -35,6 +38,7 @@
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 
 
@@ -110,7 +114,7 @@ static BOOL likePushed;
     
     
     
-    
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     //[self initialiseCommentsHeightArray];
     
@@ -302,6 +306,22 @@ static BOOL likePushed;
 #pragma mark - Other methods
 
 static bool firstTime = YES;
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = postImage;
+    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+
 -(void) setBackgroundToNavigationBar
 {
     if(firstTime)

@@ -38,6 +38,11 @@
 
 }
 
++(void)formatTextWithLabel:(UILabel*)label withSize:(float)size
+{
+    [label setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:size]];
+}
+
 //TODO: Fix this working with iOS 6.
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName
 {

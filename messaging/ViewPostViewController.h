@@ -10,8 +10,10 @@
 #import "GLPPost.h"
 #import "HPGrowingTextView.h"
 #import "NewCommentDelegate.h"
+#import "ViewImageDelegate.h"
 
-@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate>
+
+@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate, ViewImageDelegate>
 
 @property (strong, nonatomic) GLPPost *post;
 //TODO: Remove after the integration of image posts.
@@ -20,5 +22,7 @@
 
 //-(float) calculateCommentSize: (NSString*) content;
 -(void)navigateToProfile: (id)sender;
+-(void)viewPostImage:(UIImage*)postImage;
+
 
 @end

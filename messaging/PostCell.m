@@ -52,7 +52,7 @@ static const float StandardImageCellHeight = 400;
         self.isViewPost = NO;
         
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
         
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
         [self.contentView addSubview:lineView];
@@ -69,7 +69,7 @@ static const float StandardImageCellHeight = 400;
 
 
 static const float FixedSizeOfTextCell = 80; //110 before.
-static const float FixedSizeOfImageCell = 400;
+static const float FixedSizeOfImageCell = 481;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before.
 static const float PostContentLabelMaxWidth = 250;
@@ -181,14 +181,14 @@ static const float PostContentLabelMaxWidth = 250;
         [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
         
         //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"like_active_button"] forState:UIControlStateNormal];
     }
     else
     {
         [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"like_button"] forState:UIControlStateNormal];
         
     }
     
@@ -295,7 +295,7 @@ static const float PostContentLabelMaxWidth = 250;
         [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"like_button"] forState:UIControlStateNormal];
         
         [self.post setLiked:NO];
         
@@ -309,7 +309,7 @@ static const float PostContentLabelMaxWidth = 250;
     {
         [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
         //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"like_active_button"] forState:UIControlStateNormal];
         
         
         [self.post setLiked:YES];
