@@ -7,6 +7,7 @@
 //
 
 #import "ProfileTabViewConstants.h"
+//TODO: Delete all relevant classes if are not used.
 
 float const FRAME_WIDTH = 320.0;
 float const FRAME_HEIGHT = 120.0;

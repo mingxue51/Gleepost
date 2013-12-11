@@ -1,4 +1,4 @@
-//
+ //
 //  ContactsManager.m
 //  Gleepost
 //
@@ -10,6 +10,7 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "DatabaseManager.h"
+#import "GLPUserDao.h"
 
 @implementation ContactsManager
 
@@ -41,11 +42,25 @@ static ContactsManager *instance = nil;
     return self;
 }
 
--(void)saveNewContact:(GLPContact*)contact
+-(void)saveNewContact:(GLPContact*)contact db:(FMDatabase*) db
 {
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+    if(db == nil)
+    {
+        
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+            [GLPContactDao save:contact inDb:db];
+            [GLPUserDao saveIfNotExist:contact.user db:db];
+        }];
+    
+    }
+    else
+    {
         [GLPContactDao save:contact inDb:db];
-    }];
+        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
+    }
+    
+
 }
 
 /**
@@ -67,7 +82,8 @@ static ContactsManager *instance = nil;
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
                 for(GLPContact *c in contacts) {
-                    [GLPContactDao save:c inDb:db];
+                    //[GLPContactDao save:c inDb:db];
+                    [self saveNewContact:c db:db];
                 }
             }];
             

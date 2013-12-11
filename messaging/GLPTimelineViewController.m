@@ -4,7 +4,6 @@
 //
 //  Created by Lukas on 11/9/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
-//
 
 #import "GLPTimelineViewController.h"
 #import "ViewPostViewController.h"
@@ -30,7 +29,7 @@
 #import "GLPLoadingCell.h"
 #import "SessionManager.h"
 #import "ContactsManager.h"
-#import "ProfileViewController.h"
+#import "GLPProfileViewController.h"
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "UIViewController+GAI.h"
@@ -1477,18 +1476,18 @@ static BOOL likePushed;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
+        GLPProfileViewController *profileViewController = segue.destinationViewController;
         
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
     
 }

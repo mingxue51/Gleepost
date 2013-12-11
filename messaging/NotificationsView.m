@@ -14,6 +14,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *notLabel;
 
+@property (readonly, nonatomic) GLPProfileViewController *delegate;
+
+
 @end
 
 @implementation NotificationsView
@@ -29,17 +32,31 @@
     
     return self;
 }
-- (IBAction)showNotifications:(id)sender {
+
+-(void)setDelegate:(GLPProfileViewController *)delegate
+{
+    _delegate = delegate;
+}
+
+- (IBAction)showNotifications:(id)sender
+{
+    [_delegate popUpNotifications:sender];
 }
 
 -(void)updateNotificationsWithNumber:(int)notNumber
 {
+    [self.notImageView setHidden:NO];
     
+    [self.notLabel setHidden:NO];
+    
+    [self.notLabel setText:[NSString stringWithFormat:@"%d",notNumber]];
 }
 
 -(void)hideNotifications
 {
+    [self.notImageView setHidden:YES];
     
+    [self.notLabel setHidden:YES];
 }
 
 /*

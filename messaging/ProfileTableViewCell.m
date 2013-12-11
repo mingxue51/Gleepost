@@ -228,7 +228,7 @@
             contact.remoteKey = self.currentUser.remoteKey;
             
             //Save contact to database.
-            [[ContactsManager sharedInstance] saveNewContact:contact];
+            [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
             
             [self setContactAsRequested];
             

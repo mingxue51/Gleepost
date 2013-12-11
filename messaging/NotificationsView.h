@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPProfileViewController.h"
 
 @interface NotificationsView : UIView
+
+-(void)setDelegate:(GLPProfileViewController *)delegate;
+-(void)updateNotificationsWithNumber:(int)notNumber;
+-(void)hideNotifications;
 
 @end

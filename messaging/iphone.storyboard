@@ -207,10 +207,10 @@
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="C5K-bl-yN1"/>
                         <segue destination="Pdc-xo-P59" kind="modal" identifier="new post" id="iqr-av-18g"/>
                         <segue destination="qhx-Fz-PME" kind="modal" identifier="new comment" modalTransitionStyle="coverVertical" id="g6d-Or-dA0"/>
-                        <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="iLI-w2-7l9"/>
                         <segue destination="IeS-PS-HdN" kind="push" identifier="view private profile" id="cKp-Du-pjd"/>
                         <segue destination="pZK-Ya-BDg" kind="modal" identifier="show image" customClass="FadeInCustomSegue" modalTransitionStyle="crossDissolve" id="6Mq-lQ-Lwk"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view new private profile" id="rCT-Ex-vO8"/>
+                        <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="uet-Cl-mZq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9g7-c9-ph7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1432,12 +1432,12 @@
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="YKT-UL-nou">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YKT-UL-nou" id="I25-ir-dx2">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1484,11 +1484,11 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="496"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
@@ -1640,7 +1640,7 @@
                     <navigationItem key="navigationItem" title="Contacts" id="JK0-T1-yyj"/>
                     <connections>
                         <outlet property="contactsTableView" destination="u2T-TE-5Mf" id="A9j-E7-u38"/>
-                        <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="45e-Ih-rfu"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view profile" id="4IA-qk-kaG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JFZ-mC-Naf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1719,7 +1719,7 @@
             <objects>
                 <tableViewController id="K5s-yF-8db" customClass="NotificationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="81m-l7-dxK">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1910,11 +1910,12 @@
         <segue reference="tJq-gA-gHE"/>
         <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
-        <segue reference="htZ-EL-79i"/>
         <segue reference="3ZQ-Ax-jzZ"/>
-        <segue reference="Txr-8X-v5l"/>
+        <segue reference="4IA-qk-kaG"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="6Mq-lQ-Lwk"/>
+        <segue reference="uet-Cl-mZq"/>
+        <segue reference="cKp-Du-pjd"/>
         <segue reference="UFN-Sk-0kH"/>
-        <segue reference="Jle-n7-Gmg"/>
-        <segue reference="9uM-3L-Rl2"/>
     </inferredMetricsTieBreakers>
 </document>

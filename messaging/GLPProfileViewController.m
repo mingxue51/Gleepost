@@ -22,6 +22,7 @@
 #import "LoginRegisterViewController.h"
 #import "ViewPostViewController.h"
 #import "NotificationsView.h"
+#import "GLPNotificationManager.h"
 
 @interface GLPProfileViewController ()
 
@@ -37,7 +38,9 @@
 
 @property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
-@property (strong, nonatomic) UIView *notificationView;
+@property (strong, nonatomic) NotificationsView *notificationView;
+
+@property (assign, nonatomic) int unreadNotificationsCount;
 
 @end
 
@@ -70,6 +73,24 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
+    [self updateNotificationsBubble];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    
+    [super viewWillDisappear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -89,13 +110,12 @@
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
-    [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
+//    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+//    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
+//    [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     
-    UIBarButtonItem *bellButton = [[UIBarButtonItem alloc] initWithCustomView:notView];
+//    UIBarButtonItem *bellButton = [[UIBarButtonItem alloc] initWithCustomView:notView];
     
     
     //Create the custom bell icon with notification dot.
@@ -105,11 +125,6 @@
     [bellBtn setBackgroundImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
     [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
     
-    
-    UILabel *numberOfNotifications = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 21, 21)];
-    
-    
-    [self.notificationView addSubview:bellBtn];
 
     
     
@@ -124,7 +139,7 @@
     else
     {
         //Add both buttons on the right.
-        self.navigationItem.rightBarButtonItems = @[settingsButton, bellButton];
+        self.navigationItem.rightBarButtonItems = @[settingsButton, [[UIBarButtonItem alloc] initWithCustomView:self.notificationView]];
     }
     
 }
@@ -135,10 +150,10 @@
     [self addNavigationButtons];
     
     //Change the format of the navigation bar.
-    
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
     
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
@@ -152,6 +167,8 @@
 }
 -(void)initialiseObjects
 {
+    self.unreadNotificationsCount = 0;
+    
     //Find out from which view controller this comes.
     if(self.navigationController.viewControllers.count == 1)
     {
@@ -179,7 +196,11 @@
 
 -(void)registerTableViewCells
 {
-    //TODO: Register notification view.
+    //Register notifications' nib file.
+    
+    self.notificationView = [[[NSBundle mainBundle] loadNibNamed:@"NotificationsUIView" owner:self options:nil] objectAtIndex:0];
+    
+    [self.notificationView setDelegate:self];
     
     //Register nib files in table view.
     
@@ -204,6 +225,20 @@
 }
 
 
+#pragma mark - UI methods
+
+-(void)updateNotificationsBubble
+{
+    if(self.unreadNotificationsCount > 0)
+    {
+        [self.notificationView updateNotificationsWithNumber:self.unreadNotificationsCount];
+    }
+    else
+    {
+        [self.notificationView hideNotifications];
+    }
+}
+
 #pragma mark - Selectors
 
 -(void)popUpNotifications:(id)sender
@@ -218,6 +253,14 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
 }
+
+
+-(void)incrementNotificationsCount:(NSNotification *)notification
+{
+    self.unreadNotificationsCount += [notification.userInfo[@"count"] intValue];
+    [self updateNotificationsBubble];
+}
+
 
 -(void)logout:(id)sender
 {
