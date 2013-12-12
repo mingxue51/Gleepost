@@ -17,7 +17,7 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
-
+#import "ViewPostImageViewController.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -198,6 +198,24 @@
     }];
 }
 
+#pragma mark - UI methods
+
+-(void)showFullProfileImage:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = clickedImageView.image;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
 
 #pragma mark - Table view data source
 
@@ -242,6 +260,8 @@
     if(indexPath.row == 0)
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
+        
+        [profileView setPrivateProfileDelegate:self];
         
         [profileView initialiseElementsWithUserDetails:self.profileUser];
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;

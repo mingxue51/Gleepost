@@ -14,6 +14,8 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
+#import "GLPThemeManager.h"
+#import "AppearanceHelper.h"
 
 @implementation NewCommentView
 
@@ -46,9 +48,15 @@
         //Add cancel button.
         //UIBarButtonItem *cB = [[UIBarButtonItem alloc] init];
         
+        UIColor *buttonsColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+        
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
         
+        [cancelButton setTitleColor:buttonsColour forState:UIControlStateNormal];
+        
         [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        
+        [AppearanceHelper formatTextWithLabel:cancelButton.titleLabel withSize:16.0];
         
         [cancelButton addTarget:self action:@selector(cancelPushed:) forControlEvents:UIControlEventTouchDown];
         
@@ -76,6 +84,11 @@
         //Add comment button.
         UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 25, 60, 30)];
         [commentButton setTitle:@"Post" forState:UIControlStateNormal];
+        
+        [commentButton setTitleColor:buttonsColour forState:UIControlStateNormal];
+
+        [AppearanceHelper formatTextWithLabel:commentButton.titleLabel withSize:16.0];
+
         
         [commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
         

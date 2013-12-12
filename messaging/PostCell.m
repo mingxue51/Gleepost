@@ -29,6 +29,9 @@
 
 @implementation PostCell
 
+const float IMAGE_CELL_HEIGHT = 495;
+const float TEXT_CELL_HEIGHT = 170;
+
 static const float FirstCellOtherElementsTotalHeight = 22;
 static const float MessageContentViewPadding = 15;
 static const float StandardTextCellHeight = 140;

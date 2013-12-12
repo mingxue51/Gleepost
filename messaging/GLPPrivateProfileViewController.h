@@ -16,5 +16,6 @@
 
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
+-(void)showFullProfileImage:(id)sender;
 
 @end

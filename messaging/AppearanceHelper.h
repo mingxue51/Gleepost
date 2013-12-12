@@ -14,5 +14,6 @@
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName;
 + (void)setNavigationBarColour:(UIViewController *)controller;
 +(void)setNavigationBarFontFor: (UIViewController *)controller;
++(void)formatTextWithLabel:(UILabel*)label withSize:(float)size;
 
 @end

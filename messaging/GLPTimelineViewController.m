@@ -113,6 +113,9 @@ static BOOL likePushed;
     [self configTableView];
     [self configNewElementsIndicatorView];
     
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor orangeColor], UITextAttributeTextColor, nil]
+                                             forState:UIControlStateNormal];
+    
     self.postsHeight = [[NSMutableArray alloc] init];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -837,7 +840,7 @@ static BOOL likePushed;
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return 481;
+        return IMAGE_CELL_HEIGHT;
         
         
     }
@@ -849,7 +852,7 @@ static BOOL likePushed;
         //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:NO];
-        return 156;
+        return TEXT_CELL_HEIGHT;
     }
 }
 

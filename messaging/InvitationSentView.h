@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PrivateProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 
 @interface InvitationSentView : UIView
 
 
-@property (strong, nonatomic) PrivateProfileViewController* delegate;
+@property (strong, nonatomic) GLPPrivateProfileViewController* delegate;
 
 + (id)loadingViewInView:(UIView *)aSuperview;
 - (void)removeView;

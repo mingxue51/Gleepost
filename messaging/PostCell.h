@@ -14,6 +14,8 @@
 
 @interface PostCell : UITableViewCell
 
+extern const float IMAGE_CELL_HEIGHT;
+extern const float TEXT_CELL_HEIGHT;
 
 //@property (retain, nonatomic) IBOutlet UIImageView *userImage;
 

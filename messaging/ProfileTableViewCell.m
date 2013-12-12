@@ -14,6 +14,8 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "SessionManager.h"
+#import "InvitationSentView.h"
+
 
 @interface ProfileTableViewCell ()
 
@@ -30,6 +32,10 @@
 @property (strong, nonatomic) GLPUser *currentUser;
 
 @property (readonly, nonatomic) GLPProfileViewController *delegate;
+@property (readonly, nonatomic) GLPPrivateProfileViewController *privateProfileDelegate;
+
+@property (strong, nonatomic) InvitationSentView *invitationSentView;
+
 
 @end
 
@@ -124,6 +130,11 @@
     _delegate = delegate;
 }
 
+-(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate
+{
+    _privateProfileDelegate = delegate;
+}
+
 -(void)setCurrentUserStatusWithUser:(GLPUser *)user
 {
 
@@ -176,7 +187,7 @@
             }
         }
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_privateProfileDelegate action:@selector(showFullProfileImage:)];
         [tap setNumberOfTapsRequired:1];
         [self.profileImage addGestureRecognizer:tap];
 
@@ -204,7 +215,7 @@
 
 -(void)showFullProfileImage:(id)sender
 {
-    NSLog(@"Show Full Size Image.");
+    
 }
 
 - (IBAction)acceptUser:(id)sender
@@ -251,10 +262,8 @@
             //Change the button style.
             NSLog(@"Request has been sent to the user.");
             
-            #warning implementation pending.
-
-//            self.invitationSentView = [InvitationSentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
-//            self.invitationSentView.delegate = self;
+            self.invitationSentView = [InvitationSentView loadingViewInView:[_privateProfileDelegate.view.window.subviews objectAtIndex:0]];
+            self.invitationSentView.delegate = _privateProfileDelegate;
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.currentUser.name profileImage:self.currentUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
