@@ -21,11 +21,15 @@
 #import "UIViewController+Flurry.h"
 #import "GLPLiveConversationsManager.h"
 #import "ImageFormatterHelper.h"
+#import "AppearanceHelper.h"
+
 
 @interface ChatViewController ()
 
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
+
+@property (strong, nonatomic) UITabBarItem *chatTabbarItem;
 
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)startGroupButtonClicked:(id)sender;
@@ -52,7 +56,7 @@
     [self addGleepostImageToNavigationBar];
     //[self addSettingsImageToNavigationBar];
     
-
+    [self configTabbar];
 
 }
 
@@ -63,6 +67,7 @@
     
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    [AppearanceHelper setSelectedColourForTabbarItem:self.chatTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
     [self loadLiveConversations];
     
@@ -70,6 +75,13 @@
 
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self initialiseAnimationViewToTheViewController];
 }
 
 -(void)loadLiveConversations
@@ -89,13 +101,14 @@
     }];
 }
 
--(void) viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    [self initialiseAnimationViewToTheViewController];
-}
 
+-(void)configTabbar
+{
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    self.chatTabbarItem = [items objectAtIndex:2];
+    
+}
 
 /**
  Initialise the animations to the view controller.

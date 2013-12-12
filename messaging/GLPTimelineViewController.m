@@ -82,6 +82,8 @@
 //TODO: Remove after the integration of image posts.
 @property int selectedIndex;
 
+@property (strong, nonatomic) UITabBarItem *homeTabbarItem;
+
 //TODO: For testing purposes.
 
 
@@ -111,10 +113,13 @@ static BOOL likePushed;
     
 //    [self configAppearance];
     [self configTableView];
+    [self configTabbarFormat];
+    
     [self configNewElementsIndicatorView];
     
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor orangeColor], UITextAttributeTextColor, nil]
-                                             forState:UIControlStateNormal];
+    
+
+
     
     self.postsHeight = [[NSMutableArray alloc] init];
     
@@ -191,12 +196,23 @@ static BOOL likePushed;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+//    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:self.homeTabbarItem];
+
+    
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
+    
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    
+
+
+    
     [self stopReloadingCron];
 }
 
@@ -264,11 +280,79 @@ static BOOL likePushed;
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
-    [self.tabBarController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+
+//    NSArray *items = self.tabBarController.tabBar.items;
+//    UITabBarItem *i = [items objectAtIndex:0];
+//    
+//    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
     
-//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
+    
+    
+//    [self configTabbarFormat];
+    
     
     [self setPlusButtonToNavigationBar];
+}
+
+-(void)configTabbarFormat
+{
+    // set selected and unselected icons
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    UITabBarItem *item = [items objectAtIndex:0];
+    
+    item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+    item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+    
+    self.homeTabbarItem = item;
+    
+    
+    item = [items objectAtIndex:1];
+    
+    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"message-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    item = [items objectAtIndex:2];
+    
+    item.image = [[UIImage imageNamed:@"proximity-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"proximity-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+
+    
+    item = [items objectAtIndex:3];
+    
+    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"man-7"];
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+
+    
+    item = [items objectAtIndex:4];
+    
+    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+
+    
+
+
+   
+    
+    // this way, the icon gets rendered as it is (thus, it needs to be green in this example)
+//    item0.image = [[UIImage imageNamed:@"contacts.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    
+//    // this icon is used for selected tab and it will get tinted as defined in self.tabBar.tintColor
+//    item0.selectedImage = [UIImage imageNamed:@"contacts.png"];
 }
 
 -(void)configNotifications

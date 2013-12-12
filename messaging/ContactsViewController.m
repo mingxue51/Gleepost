@@ -33,22 +33,18 @@
 @property (strong, nonatomic) NSArray *panelSections;
 @property (assign, nonatomic) int selectedUserId;
 
+@property (strong, nonatomic) UITabBarItem *contactsTabbarItem;
+
 @end
 
 @implementation ContactsViewController
 
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self configTabbar];
+
     
     //Init categorised users dictionary.
     self.categorisedUsers = [[NSMutableDictionary alloc] init];
@@ -95,13 +91,30 @@
 {
     [super viewDidAppear:animated];
     
-    //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+
     
     [self loadContacts];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    
+    [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+}
+
+
+-(void)configTabbar
+{
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    self.contactsTabbarItem = [items objectAtIndex:3];
 }
 
 -(void) clearUselessSections

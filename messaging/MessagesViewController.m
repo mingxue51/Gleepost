@@ -39,6 +39,7 @@
 
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 
+@property (strong, nonatomic) UITabBarItem *messagesTabbarItem;
 
 @end
 
@@ -54,6 +55,8 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     [self createNavigationBar];
     
+    [self configTabbar];
+
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
@@ -90,6 +93,8 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
+    [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    
     if(self.needsReloadConversations) {
         [self reloadLocalConversations];
     }
@@ -113,6 +118,8 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
     
+
+    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -123,6 +130,27 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     // reload the local conversations next time the VC appears
     self.needsReloadConversations = YES;
+    
+    
+
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+
+    [AppearanceHelper setUnselectedColourForTabbarItem:self.messagesTabbarItem];
+
+    
+    [super viewWillDisappear:animated];
+}
+
+-(void)configTabbar
+{
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    self.messagesTabbarItem = [items objectAtIndex:1];
+
 }
 
 #pragma mark - Init

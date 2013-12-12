@@ -43,6 +43,17 @@
     [label setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:size]];
 }
 
++(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item
+{
+    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:115.0f/255.0f green:133.0f/255.0f blue:148.0f/255.0f alpha:1.0f], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+}
+
++(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour
+{
+    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: colour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
+}
+
+
 //TODO: Fix this working with iOS 6.
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName
 {

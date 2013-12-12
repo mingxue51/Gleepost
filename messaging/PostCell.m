@@ -24,12 +24,14 @@
 @property (assign, nonatomic) int postIndex;
 @property (assign, nonatomic) float initialPostContentLabelY;
 @property (assign, nonatomic) float initialPostContentLabelHeight;
+@property (assign, nonatomic) CGRect labelDimensions;
+
 
 @end
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 495;
+const float IMAGE_CELL_HEIGHT = 480;
 const float TEXT_CELL_HEIGHT = 170;
 
 static const float FirstCellOtherElementsTotalHeight = 22;
@@ -51,6 +53,9 @@ static const float StandardImageCellHeight = 400;
          button.layer.borderColor=[UIColor redColor].CGColor;
          button.layer.borderWidth=2.0f;
          */
+        
+        self.labelDimensions = CGRectMake(60.0f, 30.0f, 250.0f, 50.0f);
+
         
         self.isViewPost = NO;
         
@@ -195,14 +200,18 @@ static const float PostContentLabelMaxWidth = 250;
         
     }
     
+    [self.contentLbl setFrame:self.labelDimensions];
+    [self.contentLbl sizeToFit];
+
+    
+//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth = 1.0f;
     
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
-    
-//    self.contentLbl.layer.borderColor=[UIColor redColor].CGColor;
-//    self.contentLbl.layer.borderWidth=1.0f;
+
 }
 
 -(void)refreshInformationLabel

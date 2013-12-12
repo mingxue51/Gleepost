@@ -15,5 +15,8 @@
 + (void)setNavigationBarColour:(UIViewController *)controller;
 +(void)setNavigationBarFontFor: (UIViewController *)controller;
 +(void)formatTextWithLabel:(UILabel*)label withSize:(float)size;
++(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item;
++(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour;
+
 
 @end
