@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ProfileMutualTableViewCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UIImageView *profileUserImage;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+
+-(void)updateDataWithName:(NSString*)name andImageUrl:(NSString*)url;
 
 @end

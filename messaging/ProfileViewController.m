@@ -70,10 +70,6 @@ static BOOL likePushed;
     
     
     //Change the format of the navigation bar.
-    //[self.navigationController.navigationBar setTranslucent:YES];
-    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     //Change navigations items' (back arrow, edit etc.) colour.
 
@@ -88,9 +84,6 @@ static BOOL likePushed;
     
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    
-//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
-
     
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];

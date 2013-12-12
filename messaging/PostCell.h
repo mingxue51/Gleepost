@@ -40,7 +40,7 @@
 //
 //+ (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage;
 
-+(NSString*) findTheNeededText: (NSString*)str;
+//+(NSString*) findTheNeededText: (NSString*)str;
 
 //-(void) updateWithPostData:(GLPPost *)postData andUserData:(GLPUser*)user;
 

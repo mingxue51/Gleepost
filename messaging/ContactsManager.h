@@ -18,7 +18,7 @@
 -(BOOL)isContactWithIdRequested:(int)remoteKey;
 -(BOOL)isContactWithIdRequestedYou:(int)remoteKey;
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey;
--(void)saveNewContact:(GLPContact*)contact;
+-(void)saveNewContact:(GLPContact*)contact db:(FMDatabase *)db;
 -(void)loadContactsFromDatabase;
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId;
 -(void)contactWithRemoteKeyAccepted:(int)remoteKey;

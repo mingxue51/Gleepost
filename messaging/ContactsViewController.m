@@ -8,7 +8,7 @@
 
 #import "ContactsViewController.h"
 #import "ContactUserCell.h"
-#import "ProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WebClient.h"
 #import "SessionManager.h"
@@ -479,13 +479,9 @@
     
     if([segue.identifier isEqualToString:@"view profile"])
     {
+        GLPPrivateProfileViewController *pvc = segue.destinationViewController;
         
-        ProfileViewController *pvc = segue.destinationViewController;
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        incomingUser.remoteKey = self.selectedUserId;
-        pvc.incomingUser = incomingUser;
-        
-        
+        pvc.selectedUserId = self.selectedUserId;
     }
 }
 

@@ -8,6 +8,12 @@
 
 #import "ProfileAboutTableViewCell.h"
 
+@interface ProfileAboutTableViewCell ()
+
+
+
+@end
+
 @implementation ProfileAboutTableViewCell
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -20,6 +26,26 @@
     }
     
     return self;
+}
+
+-(void)updateUserDetails:(GLPUser *)user
+{
+    [self.lockImageView setHidden:YES];
+    [self.lockLabel setHidden:YES];
+    
+    NSString *information = [[NSString alloc] initWithFormat:@"%@\n%@\n%@",user.networkName, user.course ,user.personalMessage];
+    
+    [self.informationLabel setHidden:NO];
+    
+    [self.informationLabel setText:information];
+    
+//    CGSize labelSize = [self.informationLabel.text sizeWithFont:self.informationLabel.font
+//                              constrainedToSize:self.informationLabel.frame.size
+//                                  lineBreakMode:self.informationLabel.lineBreakMode];
+//    
+//    self.informationLabel.frame = CGRectMake(
+//                             self.informationLabel.frame.origin.x, self.informationLabel.frame.origin.y,
+//                             self.informationLabel.frame.size.width, labelSize.height);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSObject_ProfileEnums.h"
 
 @interface GLPPrivateProfileViewController : UITableViewController
+
+
 @property (assign, nonatomic) int selectedUserId;
+
+
+-(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
+
 @end

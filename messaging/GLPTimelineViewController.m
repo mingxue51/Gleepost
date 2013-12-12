@@ -4,7 +4,6 @@
 //
 //  Created by Lukas on 11/9/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
-//
 
 #import "GLPTimelineViewController.h"
 #import "ViewPostViewController.h"
@@ -30,7 +29,7 @@
 #import "GLPLoadingCell.h"
 #import "SessionManager.h"
 #import "ContactsManager.h"
-#import "ProfileViewController.h"
+#import "GLPProfileViewController.h"
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "UIViewController+GAI.h"
@@ -838,7 +837,7 @@ static BOOL likePushed;
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return 415;
+        return 481;
         
         
     }
@@ -1169,9 +1168,9 @@ static BOOL likePushed;
     }
     else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
-        //Navigate to profile view controller.
+        //Navigate to private profile view controller.
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     else
     {
@@ -1477,18 +1476,18 @@ static BOOL likePushed;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
+        GLPProfileViewController *profileViewController = segue.destinationViewController;
         
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
     
 }

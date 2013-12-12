@@ -10,6 +10,10 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "ContactsManager.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
+#import "SessionManager.h"
 
 @interface ProfileTableViewCell ()
 
@@ -17,7 +21,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *universityLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addContactButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
+@property (weak, nonatomic) IBOutlet UIButton *messageButton;
 
+@property (weak, nonatomic) IBOutlet UIImageView *inContacts;
+@property (weak, nonatomic) IBOutlet UISwitch *busySwitch;
+@property (weak, nonatomic) IBOutlet UILabel *busyLabel;
+
+@property (strong, nonatomic) GLPUser *currentUser;
+
+@property (readonly, nonatomic) GLPProfileViewController *delegate;
 
 @end
 
@@ -40,14 +52,20 @@
 //    [self.course setText: user.course];
     
 //    [self.personalMessage setText:user.personalMessage];
+    self.currentUser = user;
+    
+
+
     
     [self.universityLabel setText:user.networkName];
 
     [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
     
-    self.profileImage.layer.borderWidth = 2.0;
-    self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    self.profileImage.layer.borderWidth = 4.0;
+    self.profileImage.layer.borderColor = [UIColor colorWithRed:106.0f/255.0f green:121.0f/255.0f blue:131.0f/255.0f alpha:1.0f].CGColor;
     
+    
+
     
     if([user.profileImageUrl isEqualToString:@""])
     {
@@ -89,10 +107,99 @@
         
         
         
+
+    }
+    
+    //Decide which elements to present.
+    [self setCurrentUserStatusWithUser:user];
+}
+
+-(void)updateImageWithUrl:(NSString*)url
+{
+    [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
+}
+
+-(void)setDelegate:(GLPProfileViewController *)delegate
+{
+    _delegate = delegate;
+}
+
+-(void)setCurrentUserStatusWithUser:(GLPUser *)user
+{
+
+    
+    if(self.currentUser.remoteKey == [[SessionManager sharedInstance].user remoteKey])
+    {
+        //Set only current user's elements.
+        
+        [self.addContactButton setHidden:YES];
+        [self.acceptButton setHidden:YES];
+        [self.inContacts setHidden:YES];
+        [self.messageButton setHidden:YES];
+        
+        //Show busy free toggle.
+        [self.busyLabel setHidden:NO];
+        [self.busySwitch setHidden:NO];
+        
+        //Load data for busy switch.
+        [self getBusyStatus];
+        
+        //Add selector to profile image view.
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
+        [tap setNumberOfTapsRequired:1];
+//        [self.profileImage setUserInteractionEnabled:YES];
+        [self.profileImage addGestureRecognizer:tap];
+        
+        
+    }
+    else
+    {
+        if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
+        {
+            //TODO: Set in table view contact as in contacts.
+            [self.inContacts setHidden:NO];
+            [self.addContactButton setHidden:YES];
+        }
+        else
+        {
+            if([[ContactsManager sharedInstance] isContactWithIdRequested:user.remoteKey])
+            {
+                [self setContactAsRequested];
+            }
+            else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:user.remoteKey])
+            {
+                [self setAcceptRequestButton];
+            }
+            else
+            {
+                //If not show the private profile view as is.
+            }
+        }
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
         [tap setNumberOfTapsRequired:1];
         [self.profileImage addGestureRecognizer:tap];
+
     }
+}
+
+-(void)changeProfileImage:(id)sender
+{
+    [_delegate changeProfileImage:sender];
+}
+
+-(void)setContactAsRequested
+{
+    UIImage *img = [UIImage imageNamed:@"pending"];
+    [self.addContactButton setImage:img forState:UIControlStateNormal];
+    [self.addContactButton setEnabled:NO];
+}
+
+-(void)setAcceptRequestButton
+{
+    [self.addContactButton setHidden:YES];
+    [self.addContactButton setEnabled:NO];
+    [self.acceptButton setHidden:NO];
 }
 
 -(void)showFullProfileImage:(id)sender
@@ -100,13 +207,72 @@
     NSLog(@"Show Full Size Image.");
 }
 
-- (IBAction)acceptUser:(id)sender {
+- (IBAction)acceptUser:(id)sender
+{
+    #warning implementation pending.
 }
 
 - (IBAction)sendMessage:(id)sender {
 }
 
-- (IBAction)addUser:(id)sender {
+#pragma mark - Client
+
+-(void)getBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+        
+        if(success)
+        {
+            [self.busySwitch setOn:!status];
+        }
+    }];
+}
+
+- (IBAction)setBusyStatus:(id)sender
+{
+    UISwitch *s = (UISwitch*)sender;
+    
+    
+    [[WebClient sharedInstance] setBusyStatus:!s.isOn callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Do something.
+        }
+    }];
+}
+
+- (IBAction)addUser:(id)sender
+{
+    [[WebClient sharedInstance] addContact:self.currentUser.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Change the button style.
+            NSLog(@"Request has been sent to the user.");
+            
+            #warning implementation pending.
+
+//            self.invitationSentView = [InvitationSentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
+//            self.invitationSentView.delegate = self;
+            
+            
+            GLPContact *contact = [[GLPContact alloc] initWithUserName:self.currentUser.name profileImage:self.currentUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
+            contact.remoteKey = self.currentUser.remoteKey;
+            
+            //Save contact to database.
+            [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
+            
+            [self setContactAsRequested];
+            
+        }
+        else
+        {
+            NSLog(@"Failed to send to the user.");
+            //This section of code should never be reached.
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
+        }
+    }];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

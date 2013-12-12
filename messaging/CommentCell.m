@@ -19,7 +19,7 @@
 @end
 
 
-static const float FixedSizeOfTextCell = 50;
+static const float FixedSizeOfTextCell = 90;
 static const float FollowingCellPadding = 7;
 static const float CommentContentViewPadding = 10;  //15 before.
 static const float CommentContentLabelMaxWidth = 250;
@@ -35,7 +35,7 @@ static const float CommentContentLabelMaxWidth = 250;
     
     if(self)
     {
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
         
         lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
         [self.contentView addSubview:lineView];
