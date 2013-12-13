@@ -52,6 +52,8 @@
     self.notifications = [NSMutableArray array];
     
     [self configTableView];
+    
+
 
 }
 
@@ -61,12 +63,12 @@
     [super viewWillAppear:animated];
     
     //Change the position of the arrow if needed.
-    if(self.campusWallView)
-    {
-        //Change the position of the arrow.
-        [self.leftArrow setHidden:YES];
-        [self.rightArrow setHidden:NO];
-    }
+//    if(self.campusWallView)
+//    {
+//        //Change the position of the arrow.
+//        [self.leftArrow setHidden:NO];
+//        [self.rightArrow setHidden:YES];
+//    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotifications:) name:@"GLPNewNotifications" object:nil];
 }
@@ -91,8 +93,8 @@
 - (void)configTableView
 {
     //Set border to table view.
-    self.tableView.layer.borderWidth = 0.5;
-    self.tableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    self.tableView.layer.borderWidth = 0.5;
+//    self.tableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     [self.tableView registerNib:[UINib nibWithNibName:kGLPNotCell bundle:nil] forCellReuseIdentifier:kGLPNotCell];
 }
@@ -194,7 +196,7 @@
     
     
     [cell updateWithNotification:notification withViewController:self];
-    
+
     return cell;
 }
 

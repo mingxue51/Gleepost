@@ -53,6 +53,10 @@
     [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: colour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
 }
 
++(UIColor*)colourForNotFocusedItems
+{
+    return [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+}
 
 //TODO: Fix this working with iOS 6.
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName

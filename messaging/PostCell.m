@@ -25,8 +25,9 @@
 @property (assign, nonatomic) float initialPostContentLabelY;
 @property (assign, nonatomic) float initialPostContentLabelHeight;
 @property (assign, nonatomic) CGRect labelDimensions;
+@property (assign, nonatomic) float socialPanelY;
 
-
+@property (strong, nonatomic) UIView *lineView;
 @end
 
 @implementation PostCell
@@ -34,10 +35,6 @@
 const float IMAGE_CELL_HEIGHT = 480;
 const float TEXT_CELL_HEIGHT = 170;
 
-static const float FirstCellOtherElementsTotalHeight = 22;
-static const float MessageContentViewPadding = 15;
-static const float StandardTextCellHeight = 140;
-static const float StandardImageCellHeight = 400;
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -54,33 +51,35 @@ static const float StandardImageCellHeight = 400;
          button.layer.borderWidth=2.0f;
          */
         
+        self.socialPanelY = self.socialPanel.frame.origin.y;
+        
         self.labelDimensions = CGRectMake(60.0f, 30.0f, 250.0f, 50.0f);
 
         
         self.isViewPost = NO;
         
         
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
-        
-        lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-        [self.contentView addSubview:lineView];
+        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
+        //
+        self.lineView.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:0.4];
+        [self.contentView addSubview:self.lineView];
         
         NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
         self.initialPostContentLabelY = 37;
         self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
-
-
     }
     
     return self;
 }
 
 
-static const float FixedSizeOfTextCell = 80; //110 before.
-static const float FixedSizeOfImageCell = 481;
+static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
+static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT-35;
 static const float FollowingCellPadding = 7;
-static const float PostContentViewPadding = 10;  //15 before.
+static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 250;
+static const float FollowingSocialPanel = 40;
+static const float OneLinePadding = 10;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
@@ -93,11 +92,6 @@ static const float PostContentLabelMaxWidth = 250;
     //self.postImage.contentMode = UIViewContentModeScaleAspectFill;
    // self.postImage.autoresizingMask = (UIViewAutoresizingNone);
     
-    
-    //Set image to the image view.
-    //[self.postImage setImage:[UIImage imageNamed:@"post_image"]];
-    
-    //NSLog(@"Height of Text View: %f",self.content.frame.size.height);
     
     NSURL *url = nil;
 
@@ -155,16 +149,6 @@ static const float PostContentLabelMaxWidth = 250;
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
 
-//        [userImageImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
-//         {
-//             NSLog(@"Downloading...");
-//         }
-//          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
-//         {
-//             [self.userImage setBackgroundImage:image forState: UIControlStateNormal];
-//
-//         }];
-
     
     
     //Add the user's name.
@@ -181,7 +165,6 @@ static const float PostContentLabelMaxWidth = 250;
     
 
 
-    [self.contentLbl setText:postData.content];
     
     //Set like button status.
     if(postData.liked)
@@ -200,18 +183,58 @@ static const float PostContentLabelMaxWidth = 250;
         
     }
     
+    if(self.isViewPost)
+    {
+        [self.contentLbl setNumberOfLines:0];
+        
+        //Hide comment button.
+        [self.commentBtn setHidden:YES];
+        
+        
+        self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
+        
+    }
+    [self.contentLbl setText:postData.content];
+
+    
     [self.contentLbl setFrame:self.labelDimensions];
     [self.contentLbl sizeToFit];
+    
+    [self setNewPositionOfSocialPanel];
+    
 
     
 //    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
 //    self.contentLbl.layer.borderWidth = 1.0f;
+    
+//    self.contentView.layer.borderColor = [UIColor redColor].CGColor;
+//    self.contentView.layer.borderWidth = 1.0f;
     
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
 
+}
+
+-(void)setNewPositionOfSocialPanel
+{
+    //Get the new height of the label.
+    float labelHeight = self.contentLbl.frame.size.height;
+    
+    CGRect socialPanelFrame = self.socialPanel.frame;
+    
+    float panelY = labelHeight + FollowingSocialPanel;
+    
+    if(panelY <= 56)
+    {
+        panelY+=OneLinePadding;
+    }
+    
+    socialPanelFrame = CGRectMake(socialPanelFrame.origin.x, panelY, socialPanelFrame.size.width, socialPanelFrame.size.height);
+    
+    self.socialPanel.frame = socialPanelFrame;
+    
 }
 
 -(void)refreshInformationLabel
@@ -223,8 +246,8 @@ static const float PostContentLabelMaxWidth = 250;
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
     CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
-    
-    return [content sizeWithFont: [UIFont systemFontOfSize:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+    //[UIFont systemFontOfSize:13.0]
+    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage
@@ -233,66 +256,70 @@ static const float PostContentLabelMaxWidth = 250;
     float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
     
     // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:content].height + PostContentViewPadding;
+    height += [PostCell getContentLabelSizeForContent:content].height /*+ PostContentViewPadding*/;
     
-    return height + FollowingCellPadding;
+    NSLog(@"Final Height: %f Label size: %f",height, [PostCell getContentLabelSizeForContent:content].height);
+    
+    //return height + FollowingCellPadding;
+    
+    return height;
 }
 
 
--(void)layoutSubviews
-{
-    if(self.isViewPost)
-    {
-        self.contentView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
-
-        //Hide and disable comment button.
-        [self.commentBtn setHidden:YES];
-        [self.commentBtn setUserInteractionEnabled:NO];
-        
-        
-        CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
-        
-        
-        CGRect frameSize = self.contentLbl.frame;
-        
- 
-        [self.contentLbl setNumberOfLines:0];
-
-        if(self.imageAvailable)
-        {
-            
-            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+5, self.contentLbl.frame.size.width, contentSize.height);
-            
-            frameSize = self.contentLbl.frame;
-            
-//            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
-            
-            //Move all views below content label.
-            frameSize = self.postImage.frame;
-            
-            CGRect socialFrame = self.socialPanel.frame;
-            
-            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+50.0), socialFrame.size.width, socialFrame.size.height);
-
-        }
-        else
-        {
-            if([self.contentLbl.text isEqualToString:@""])
-            {
-                return;
-            }
-            
-                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height+self.initialPostContentLabelHeight);
-                
-                CGRect socialFrame = self.socialPanel.frame;
-            
-                
-            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
-
-        }
-    }
-
-}
+//-(void)layoutSubviews
+//{
+//    if(self.isViewPost)
+//    {
+//        self.contentView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
+//
+//        //Hide and disable comment button.
+//        [self.commentBtn setHidden:YES];
+//        [self.commentBtn setUserInteractionEnabled:NO];
+//        
+//        
+//        CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
+//        
+//        
+//        CGRect frameSize = self.contentLbl.frame;
+//        
+// 
+//        [self.contentLbl setNumberOfLines:0];
+//
+//        if(self.imageAvailable)
+//        {
+//            
+//            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+5, self.contentLbl.frame.size.width, contentSize.height);
+//            
+//            frameSize = self.contentLbl.frame;
+//            
+////            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
+//            
+//            //Move all views below content label.
+//            frameSize = self.postImage.frame;
+//            
+//            CGRect socialFrame = self.socialPanel.frame;
+//            
+//            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+50.0), socialFrame.size.width, socialFrame.size.height);
+//
+//        }
+//        else
+//        {
+//            if([self.contentLbl.text isEqualToString:@""])
+//            {
+//                return;
+//            }
+//            
+//                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height+self.initialPostContentLabelHeight);
+//                
+//                CGRect socialFrame = self.socialPanel.frame;
+//            
+//                
+//            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
+//
+//        }
+//    }
+//
+//}
 
 #pragma - mark Selector methods
 

@@ -61,8 +61,12 @@
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
-    if (self) {
+    
+    if (self)
+    {
         // Custom initialization
+//        [self setNeedsStatusBarAppearanceUpdate];
+
     }
     return self;
 }
@@ -75,7 +79,9 @@
     
     [self initialiseObjects];
     
-    [self configureNavigationBar];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+
+//    [self configureNavigationBar];
 
     [self configTabbar];
     
@@ -89,7 +95,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    [self configureNavigationBar];
+
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
@@ -156,24 +163,27 @@
     
     NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
     
-    if(!self.fromCampusWall)
-    {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
-        
-        self.navigationItem.rightBarButtonItem = settingsButton;
-    }
-    else
-    {
-        //Add both buttons on the right.
-        self.navigationItem.rightBarButtonItems = @[settingsButton, [[UIBarButtonItem alloc] initWithCustomView:self.notificationView]];
-    }
+//    if(!self.fromCampusWall)
+//    {
+//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
+//        
+//        self.navigationItem.rightBarButtonItem = settingsButton;
+//    }
+//    else
+//    {
+//        //Add both buttons on the right.
+//        self.navigationItem.rightBarButtonItems = @[settingsButton, [[UIBarButtonItem alloc] initWithCustomView:self.notificationView]];
+//    }
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
 }
 
 -(void)configureNavigationBar
 {
-    
+
     [self addNavigationButtons];
+    
+
     
     //Change the format of the navigation bar.
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
@@ -191,6 +201,9 @@
     
     self.title = @"Me";
 }
+
+
+
 -(void)initialiseObjects
 {
     self.unreadNotificationsCount = 0;
@@ -596,11 +609,11 @@
             
             if([currentPost imagePost])
             {
-                return 415.0f;
+                return IMAGE_CELL_HEIGHT;
             }
             else
             {
-                return 156.0f;
+                return TEXT_CELL_HEIGHT;
             }
         }
     }

@@ -37,8 +37,6 @@
 		58143D74182170C000B76E5D /* +.png in Resources */ = {isa = PBXBuildFile; fileRef = 58143D73182170BF00B76E5D /* +.png */; };
 		58143D771821762600B76E5D /* ValidFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 58143D761821762600B76E5D /* ValidFields.m */; };
 		5817733318073C8C004ED744 /* GleepostS@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5817733218073C8C004ED744 /* GleepostS@2x.png */; };
-		581841BE184901DE0014C091 /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 581841BC184901DE0014C091 /* bell.png */; };
-		581841BF184901DE0014C091 /* bell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 581841BD184901DE0014C091 /* bell@2x.png */; };
 		581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */; };
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
@@ -216,6 +214,7 @@
 		58B1161F180D89A9000E9555 /* profile_image_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1161E180D89A9000E9555 /* profile_image_frame.png */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
 		58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865E1180DA2B100BB18AF /* NotificationCell.m */; };
+		58C09A1B185B2CDD00648EB4 /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C09A1A185B2CDD00648EB4 /* bell.png */; };
 		58D0E2621850BB80005879F4 /* GLPNotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2611850BB80005879F4 /* GLPNotCell.xib */; };
 		58D0E2651850BD7B005879F4 /* ignore_notification_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2631850BD7B005879F4 /* ignore_notification_button.png */; };
 		58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2641850BD7B005879F4 /* accept_notification_button.png */; };
@@ -460,8 +459,6 @@
 		58143D751821762600B76E5D /* ValidFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValidFields.h; sourceTree = "<group>"; };
 		58143D761821762600B76E5D /* ValidFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValidFields.m; sourceTree = "<group>"; };
 		5817733218073C8C004ED744 /* GleepostS@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GleepostS@2x.png"; sourceTree = "<group>"; };
-		581841BC184901DE0014C091 /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
-		581841BD184901DE0014C091 /* bell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bell@2x.png"; sourceTree = "<group>"; };
 		581AAF06181D9E9D00F091A9 /* GLPNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNotificationManager.h; sourceTree = "<group>"; };
 		581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNotificationManager.m; sourceTree = "<group>"; };
 		581AAF09181DA08D00F091A9 /* LongPollContactsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollContactsOperation.h; sourceTree = "<group>"; };
@@ -706,6 +703,7 @@
 		58B865DE180D9F4800BB18AF /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		58B865E0180DA2B100BB18AF /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		58B865E1180DA2B100BB18AF /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
+		58C09A1A185B2CDD00648EB4 /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
 		58D0E2611850BB80005879F4 /* GLPNotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPNotCell.xib; sourceTree = "<group>"; };
 		58D0E2631850BD7B005879F4 /* ignore_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ignore_notification_button.png; sourceTree = "<group>"; };
 		58D0E2641850BD7B005879F4 /* accept_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_notification_button.png; sourceTree = "<group>"; };
@@ -1508,9 +1506,8 @@
 		5898328F17F8AD2B008CB807 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				58C09A1A185B2CDD00648EB4 /* bell.png */,
 				58361C34184CBF3B00FEFC49 /* Profile v2 */,
-				581841BC184901DE0014C091 /* bell.png */,
-				581841BD184901DE0014C091 /* bell@2x.png */,
 				584CF663182274F300EFABB8 /* invitesent.png */,
 				584CF661182274EE00EFABB8 /* send.png */,
 				5893BA0418200CA50003589E /* notificationicon.png */,
@@ -2430,7 +2427,6 @@
 				80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */,
 				5843328D180F069800BD9F74 /* loginwithfacebookclick.png in Resources */,
 				806E3D851832B1960063AACE /* NotificationButtonBackground@2x.png in Resources */,
-				581841BF184901DE0014C091 /* bell@2x.png in Resources */,
 				58FB7C96185614C5002C6A00 /* MutualProfileTabView.xib in Resources */,
 				58A122B017ECC8F300E2AB4B /* MessageBox2.png in Resources */,
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
@@ -2465,6 +2461,7 @@
 				8096E4D917C2BEF400C7BF60 /* new_post.png in Resources */,
 				805E1559180EF3E700705B1C /* share_image.png in Resources */,
 				805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */,
+				58C09A1B185B2CDD00648EB4 /* bell.png in Resources */,
 				5890D23918482DC300E293DD /* proximity.png in Resources */,
 				58FB7CAB18565053002C6A00 /* ProfileViewTableViewCell.xib in Resources */,
 				58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */,
@@ -2557,7 +2554,6 @@
 				586659FD17F2203E00A0354E /* contacts_tab_old@2x.png in Resources */,
 				80E7478417CE9F4C001957E5 /* get_comments.json in Resources */,
 				586659BE17F1B17E00A0354E /* camera_icon@2x.png in Resources */,
-				581841BE184901DE0014C091 /* bell.png in Resources */,
 				80E7478A17CEA2C4001957E5 /* post_comments.json in Resources */,
 				805E155B180EF3E700705B1C /* thumbs-up_image.png in Resources */,
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
@@ -2959,8 +2955,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "1F01743C-6749-4093-8F07-1556C38A2DD9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1F01743C-6749-4093-8F07-1556C38A2DD9";
+				PROVISIONING_PROFILE = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2979,8 +2975,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "1F01743C-6749-4093-8F07-1556C38A2DD9";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1F01743C-6749-4093-8F07-1556C38A2DD9";
+				PROVISIONING_PROFILE = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

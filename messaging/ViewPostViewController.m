@@ -142,6 +142,8 @@ static BOOL likePushed;
         [self scrollToTheEndAnimated:YES];
     }
     
+   // [self loadComments];
+
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -508,8 +510,6 @@ static bool firstTime = YES;
         
         GLPComment *comment = self.comments[indexPath.row-1];
         
-        NSLog(@"Comment Author: %@",comment.author);
-        
         [cell setComment:comment];
         
         
@@ -538,6 +538,11 @@ static bool firstTime = YES;
     if(indexPath.row>0)
     {
         GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
+        
+        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
+        
+        //return 200.0f;
+        
         return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
     else

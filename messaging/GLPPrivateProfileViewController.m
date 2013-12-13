@@ -18,6 +18,8 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "ViewPostImageViewController.h"
+#import "AppearanceHelper.h"
+
 
 @interface GLPPrivateProfileViewController ()
 
@@ -56,9 +58,10 @@
     
     
     [self registerTableViewCells];
-
     
     [self initialiseObjects];
+    
+    [self configureNavigationBar];
     
     
    // [self loadPosts];
@@ -154,6 +157,33 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewAboutTableViewCell" bundle:nil] forCellReuseIdentifier:@"AboutCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewMutualTableViewCell" bundle:nil] forCellReuseIdentifier:@"MutualCell"];
+}
+
+-(void)configureNavigationBar
+{
+//    [self setNeedsStatusBarAppearanceUpdate];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self];
+    
+    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    [AppearanceHelper setNavigationBarFontFor:self];
+    
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+//    self.title = @"Me";
+}
+
+- (UIStatusBarStyle) preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Client methods
@@ -354,11 +384,11 @@
             
             if([currentPost imagePost])
             {
-                return 415.0f;
+                return IMAGE_CELL_HEIGHT;
             }
             else
             {
-                return 156.0f;
+                return TEXT_CELL_HEIGHT;
             }
         }
         else

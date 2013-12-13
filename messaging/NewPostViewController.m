@@ -20,6 +20,7 @@
 #import "ImageFormatterHelper.h"
 #import "GLPPostUploader.h"
 #import "NSString+Utils.h"
+#import "GLPThemeManager.h"
 
 @interface NewPostViewController ()
 
@@ -66,12 +67,10 @@
     }
 
     
-    
     self.tabBarController.tabBar.hidden = NO;
-    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    
-    [self.simpleNavBar setTranslucent:YES];
-    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
+
+    [self configureNavigationBar];
+
     
     _postUploader = [[GLPPostUploader alloc] init];
     _hasImage = NO;
@@ -97,6 +96,26 @@
     [super viewDidDisappear:animated];
     
     [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
+}
+
+
+#pragma mark - Configuration
+
+-(void)configureNavigationBar
+{
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+//    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"chat_background_default"] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
+    
+    [self.simpleNavBar setTranslucent:NO];
+    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
+    self.simpleNavBar.tintColor = tabColour;
+    
+    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+
+    
 }
 
 

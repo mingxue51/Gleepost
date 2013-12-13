@@ -33,7 +33,7 @@
     [self.lockImageView setHidden:YES];
     [self.lockLabel setHidden:YES];
     
-    NSString *information = [[NSString alloc] initWithFormat:@"%@\n%@\n%@",user.networkName, user.course ,user.personalMessage];
+    NSString *information = [[NSString alloc] initWithFormat:@"%@\n%@", user.course ,user.personalMessage];
     
     [self.informationLabel setHidden:NO];
     

@@ -15,7 +15,7 @@
 #import "WebClientHelper.h"
 #import "SessionManager.h"
 #import "InvitationSentView.h"
-
+#import "AppearanceHelper.h"
 
 @interface ProfileTableViewCell ()
 
@@ -68,7 +68,7 @@
     [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
     
     self.profileImage.layer.borderWidth = 4.0;
-    self.profileImage.layer.borderColor = [UIColor colorWithRed:106.0f/255.0f green:121.0f/255.0f blue:131.0f/255.0f alpha:1.0f].CGColor;
+    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
     
     
 
@@ -138,6 +138,7 @@
 -(void)setCurrentUserStatusWithUser:(GLPUser *)user
 {
 
+    CGRect universityLabelFrame = self.universityLabel.frame;
     
     if(self.currentUser.remoteKey == [[SessionManager sharedInstance].user remoteKey])
     {
@@ -160,6 +161,9 @@
         [tap setNumberOfTapsRequired:1];
 //        [self.profileImage setUserInteractionEnabled:YES];
         [self.profileImage addGestureRecognizer:tap];
+        
+        //Change the position of the university label.
+        [self.universityLabel setFrame:CGRectMake(universityLabelFrame.origin.x, 180.0f, universityLabelFrame.size.width, universityLabelFrame.size.height)];
         
         
     }
@@ -190,6 +194,9 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_privateProfileDelegate action:@selector(showFullProfileImage:)];
         [tap setNumberOfTapsRequired:1];
         [self.profileImage addGestureRecognizer:tap];
+        
+        //Change the position of the university label.
+        [self.universityLabel setFrame:CGRectMake(universityLabelFrame.origin.x, 160.0f, universityLabelFrame.size.width, universityLabelFrame.size.height)];
 
     }
 }

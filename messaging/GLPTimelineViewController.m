@@ -210,9 +210,6 @@ static BOOL likePushed;
 - (void)viewDidDisappear:(BOOL)animated
 {
     
-
-
-    
     [self stopReloadingCron];
 }
 
@@ -232,7 +229,6 @@ static BOOL likePushed;
  */
 -(void)updatePostWithRemoteKey:(NSNotification*)notification
 {
-
     int index = [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
     
     if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
@@ -240,14 +236,16 @@ static BOOL likePushed;
         //Reload again only this post.
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
-
-
 }
 
 #pragma mark - Init config
 
 - (void)configAppearance
 {
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
+
+    
+    
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
@@ -273,7 +271,7 @@ static BOOL likePushed;
     //Set colour of the border navigation bar image. TODO: Set one line image.
 //    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
     
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
 
     
     
@@ -827,7 +825,6 @@ static BOOL likePushed;
         [loadingCell updateWithStatus:self.loadingCellStatus];
         return loadingCell;
     }
-    
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
@@ -1474,9 +1471,6 @@ static BOOL likePushed;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([sender isKindOfClass:[PostCell class]])
-    {
-    }
     
     if([segue.identifier isEqualToString:@"view post"])
     {
@@ -1496,7 +1490,7 @@ static BOOL likePushed;
 //        vc.selectedIndex = self.selectedIndex;
         
         
-        self.selectedPost = nil;
+        //self.selectedPost = nil;
         
     } else if([segue.identifier isEqualToString:@"new post"])
     {

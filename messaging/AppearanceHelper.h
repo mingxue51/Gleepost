@@ -17,6 +17,6 @@
 +(void)formatTextWithLabel:(UILabel*)label withSize:(float)size;
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item;
 +(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour;
-
++(UIColor*)colourForNotFocusedItems;
 
 @end

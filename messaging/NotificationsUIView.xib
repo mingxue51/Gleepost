@@ -14,8 +14,11 @@
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dAE-Vx-NRy">
                     <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <state key="normal" image="bell.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="showNotifications:" destination="1" eventType="touchUpInside" id="F7n-MG-NuR"/>
@@ -43,7 +46,7 @@
         </view>
     </objects>
     <resources>
-        <image name="bell.png" width="30" height="30"/>
+        <image name="bell.png" width="60" height="60"/>
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
     </resources>
 </document>
