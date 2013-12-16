@@ -48,7 +48,6 @@ extern const float TEXT_CELL_HEIGHT;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex;
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
-
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
 
 @end

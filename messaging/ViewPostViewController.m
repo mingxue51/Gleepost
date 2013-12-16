@@ -76,6 +76,11 @@ static BOOL likePushed;
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
     
+    
+    //To hide empty cells
+    self.tableView.tableFooterView = [UIView new];
+
+    
 //    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
@@ -549,11 +554,11 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:YES];
+            return [PostCell getCellHeightWithContent:self.post.content image:YES isViewPost:YES];
         }
         else
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:NO];
+            return [PostCell getCellHeightWithContent:self.post.content image:NO isViewPost:YES];
         }
         //return 200;
     }

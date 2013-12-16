@@ -26,14 +26,15 @@
 @property (assign, nonatomic) float initialPostContentLabelHeight;
 @property (assign, nonatomic) CGRect labelDimensions;
 @property (assign, nonatomic) float socialPanelY;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
 
-@property (strong, nonatomic) UIView *lineView;
+//@property (strong, nonatomic) UIView *lineView;
 @end
 
 @implementation PostCell
 
 const float IMAGE_CELL_HEIGHT = 480;
-const float TEXT_CELL_HEIGHT = 170;
+const float TEXT_CELL_HEIGHT = 160;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -59,12 +60,12 @@ const float TEXT_CELL_HEIGHT = 170;
         self.isViewPost = NO;
         
         
-        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
-        //
-        self.lineView.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:0.4];
-        [self.contentView addSubview:self.lineView];
+//        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
+//
+//        self.lineView.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:0.4];
+//        [self.contentView addSubview:self.lineView];
         
-        NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
+//        NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
         self.initialPostContentLabelY = 37;
         self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
     }
@@ -73,13 +74,15 @@ const float TEXT_CELL_HEIGHT = 170;
 }
 
 
-static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
+static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT - 25; //110 before.
 static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT-35;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 250;
 static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
+static const float ThreeLinesLimit = 62.0;
+static const float OneLineText = 16.0;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
@@ -125,8 +128,6 @@ static const float OneLinePadding = 10;
         //Set live image.
         [self.postImage setImage:postData.tempImage];
     }
-    
-
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
 
@@ -183,6 +184,8 @@ static const float OneLinePadding = 10;
         
     }
     
+
+    
     if(self.isViewPost)
     {
         [self.contentLbl setNumberOfLines:0];
@@ -191,24 +194,26 @@ static const float OneLinePadding = 10;
         [self.commentBtn setHidden:YES];
         
         
-        self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
-        
+//        self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
     }
+    
+    
     [self.contentLbl setText:postData.content];
 
     
-    [self.contentLbl setFrame:self.labelDimensions];
-    [self.contentLbl sizeToFit];
+//    [self.contentLbl setFrame:self.labelDimensions];
+//    [self.contentLbl sizeToFit];
     
-    [self setNewPositionOfSocialPanel];
+    //[self setNewPositions];
     
+//    NSLog(@"-> Final Height: %f. Content: %@", self.contentView.frame.size.height, self.contentLbl.text);
 
     
-//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-//    self.contentLbl.layer.borderWidth = 1.0f;
-    
-//    self.contentView.layer.borderColor = [UIColor redColor].CGColor;
-//    self.contentView.layer.borderWidth = 1.0f;
+    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+    self.contentLbl.layer.borderWidth = 0.5f;
+//
+//    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
+//    self.contentView.layer.borderWidth = 0.5f;
     
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
@@ -217,23 +222,55 @@ static const float OneLinePadding = 10;
 
 }
 
--(void)setNewPositionOfSocialPanel
+-(void)setNewPositions
 {
-    //Get the new height of the label.
-    float labelHeight = self.contentLbl.frame.size.height;
+    //Change the height of the label.
+    [self setElement:self.contentLbl size:[PostCell getContentLabelSizeForContent:self.contentLbl.text isViewPost:self.isViewPost]];
     
-    CGRect socialPanelFrame = self.socialPanel.frame;
-    
-    float panelY = labelHeight + FollowingSocialPanel;
-    
-    if(panelY <= 56)
+    if(!self.imageAvailable)
     {
-        panelY+=OneLinePadding;
+        [self.textLabelConstrain setConstant:self.contentLbl.frame.size.height];
     }
     
-    socialPanelFrame = CGRectMake(socialPanelFrame.origin.x, panelY, socialPanelFrame.size.width, socialPanelFrame.size.height);
+    //Change the position of the social view.
+    float socialViewY = self.contentLbl.frame.origin.y + self.contentLbl.frame.size.height + 5;
     
-    self.socialPanel.frame = socialPanelFrame;
+    if(socialViewY < 52)
+    {
+        socialViewY += OneLinePadding;
+    }
+    
+    CGRect socialFrame = self.socialPanel.frame;
+    
+    [self.socialPanel setFrame:CGRectMake(socialFrame.origin.x, socialViewY, socialFrame.size.width, socialFrame.size.height)];
+    
+    //Change the height of the content view.
+    CGRect contentViewFrame = self.contentView.frame;
+    
+    float contentViewH = socialViewY + socialFrame.size.height + FollowingCellPadding;
+    
+//    NSLog(@"ContentViewH: %f Content: %@",contentViewH, self.contentLbl.text);
+    
+    [self.contentView setFrame:CGRectMake(contentViewFrame.origin.x, contentViewFrame.origin.y, contentViewFrame.size.width, contentViewH)];
+    
+    if(!self.imageAvailable)
+    {
+        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
+    }
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+//    if(self.isViewPost)
+//    {
+//        
+//    }
+//    else
+//    {
+        [self setNewPositions];
+//    }
     
 }
 
@@ -243,28 +280,61 @@ static const float OneLinePadding = 10;
 }
 
 
-+ (CGSize)getContentLabelSizeForContent:(NSString *)content
++ (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost
 {
-    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
+//    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     //[UIFont systemFontOfSize:13.0]
-    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:13.0];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){PostContentLabelMaxWidth, CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+    CGSize size = rect.size;
+    
+
+    
+    if(size.height > ThreeLinesLimit && !isViewPost)
+    {
+        return CGSizeMake(size.width, 50);
+    }
+    
+    NSLog(@"STATIC Size: %f, Content: %@",size.height, content);
+
+    //
+    
+    return size;
+//    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage isViewPost:(BOOL)isViewPost
 {
     // initial height
     float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
     
     // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:content].height /*+ PostContentViewPadding*/;
+    height += [PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height /*+ PostContentViewPadding*/;
     
-    NSLog(@"Final Height: %f Label size: %f",height, [PostCell getContentLabelSizeForContent:content].height);
+    //Decrease by 10 points when the text is over one line.
+    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)
+    {
+        height -= 10;
+    }
+    
+//    NSLog(@"Final Height: %f Label size: %f. Content: %@",height, [PostCell getContentLabelSizeForContent:content].height, content);
     
     //return height + FollowingCellPadding;
     
     return height;
 }
 
+-(void)setElement:(UIView*)element size:(CGSize)size
+{
+    [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, size.width, size.height)];
+}
 
 //-(void)layoutSubviews
 //{
@@ -527,7 +597,7 @@ static const float contentTextViewLimit = 100;
 //+ (CGFloat)getContentLabelHeightForContent:(NSString *)content
 //{
 //    CGSize maximumLabelSize = CGSizeMake(236, 60);
-//    
+//
 //    CGFloat contentHeight = [content sizeWithFont: [UIFont systemFontOfSize:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping].height;
 //    
 //   //  NSLog(@"ONE LINE!\n%@",content);

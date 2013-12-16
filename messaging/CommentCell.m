@@ -17,14 +17,14 @@
 @interface CommentCell()
 
 @property (assign, nonatomic) float heightOfCell;
-@property (strong, nonatomic) UIView *lineView;
+//@property (strong, nonatomic) UIView *lineView;
 
 @end
 
 
-static const float FixedSizeOfTextCell = 70; //Before was 90.
-static const float FollowingCellPadding = 7;
-static const float CommentContentViewPadding = 10;  //15 before.
+static const float FixedSizeOfTextCell = 45; //Before was 90.
+static const float FollowingCellPadding = 0;
+static const float CommentContentViewPadding = 0;  //15 before.
 static const float CommentContentLabelMaxWidth = 250;
 
 
@@ -37,10 +37,10 @@ static const float CommentContentLabelMaxWidth = 250;
     
     if(self)
     {
-        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
-        
-        self.lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-        [self.contentView addSubview:self.lineView];
+//        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
+//        
+//        self.lineView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
+//        [self.contentView addSubview:self.lineView];
         
 
     }
@@ -156,7 +156,7 @@ static const float CommentContentLabelMaxWidth = 250;
     [self.contentView setFrame:CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.size.width, self.heightOfCell+heightSize)];
     
     self.contentLabel.numberOfLines = 0;
-    self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
+//    self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
 
     
     NSLog(@"Height size: %f",heightSize);
@@ -220,12 +220,23 @@ static const float CommentContentLabelMaxWidth = 250;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
-    CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
+    //CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
     
     
-   // return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByCharWrapping];
-
-    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:12.0];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){CommentContentLabelMaxWidth, CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+    CGSize size = rect.size;
+    
+    return size;
+    
+   // return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 
 }
 
@@ -236,6 +247,8 @@ static const float CommentContentLabelMaxWidth = 250;
     
     // add content label height + message content view padding
     height += [CommentCell getContentLabelSizeForContent:content].height + CommentContentViewPadding;
+    
+    
     
     return height + FollowingCellPadding;
 }
