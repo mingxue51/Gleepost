@@ -28,6 +28,8 @@
     return self;
 }
 
+
+
 -(void)updateUserDetails:(GLPUser *)user
 {
     [self.lockImageView setHidden:YES];

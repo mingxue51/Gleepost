@@ -224,11 +224,11 @@
             <objects>
                 <viewController storyboardIdentifier="ViewPostViewController" id="Wkk-th-enz" customClass="ViewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j8K-jL-ODz">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="49" sectionHeaderHeight="22" sectionFooterHeight="22" id="vla-0s-5vy" customClass="ViewPostTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="325"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="374"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.85098039219999999" green="0.89411764709999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -250,7 +250,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" id="tQq-qG-efF">
-                                <rect key="frame" x="0.0" y="325" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="374" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="bCz-dv-lej">
@@ -287,8 +287,8 @@
                         <outlet property="commentFormView" destination="tQq-qG-efF" id="7Km-N5-q9z"/>
                         <outlet property="commentGrowingTextView" destination="AtW-Wf-YA7" id="iMp-1F-UFB"/>
                         <outlet property="tableView" destination="vla-0s-5vy" id="TVv-Ij-fqG"/>
-                        <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="u6W-1W-GCM"/>
-                        <segue destination="IeS-PS-HdN" kind="push" identifier="view private profile" id="aau-5Z-5Pa"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="WK7-hw-eyD"/>
+                        <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="J6b-Ty-4qO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8kw-OV-FmS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -748,8 +748,8 @@
                         <outlet property="sendButton" destination="3v9-7h-mSC" id="PtJ-ss-l9Y"/>
                         <outlet property="tableView" destination="CuF-td-RD0" id="Gg4-Ow-Sit"/>
                         <outlet property="timingBar" destination="EF8-mi-dgr" id="sp0-Ot-Ljm"/>
-                        <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="Rdk-3z-tPE"/>
-                        <segue destination="IeS-PS-HdN" kind="push" identifier="view private profile" id="Jle-n7-Gmg"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="woK-8Q-gjw"/>
+                        <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="icH-IF-qcr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ltB-QK-87t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -766,12 +766,12 @@
             <objects>
                 <tableViewController id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vBe-VX-oaK">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vBe-VX-oaK" id="Hze-rW-T5v">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -795,7 +795,7 @@
             <objects>
                 <viewController id="IeS-PS-HdN" customClass="PrivateProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hYb-hd-deC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="XiS-fb-8d5">
@@ -814,7 +814,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="private_profile_background.png" id="pDi-G3-dWg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="GdG-Z4-Lb6">
@@ -929,13 +929,12 @@
                         <outlet property="profileImage" destination="GdG-Z4-Lb6" id="PXV-Tq-CuU"/>
                         <outlet property="reflectedProfileImage" destination="5qX-rW-xbD" id="30c-DO-avu"/>
                         <outlet property="tabView" destination="JVY-YI-yod" id="tBz-K1-rTX"/>
-                        <segue destination="pZK-Ya-BDg" kind="modal" identifier="show image" modalTransitionStyle="crossDissolve" id="9uM-3L-Rl2"/>
                         <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="MWr-28-zFw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PJw-YM-kT7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2422" y="-2352"/>
+            <point key="canvasLocation" x="2342" y="-2351"/>
         </scene>
         <!--Navigation Controller - Messages-->
         <scene sceneID="4na-1o-QCI">
@@ -1429,12 +1428,12 @@
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="YKT-UL-nou">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YKT-UL-nou" id="I25-ir-dx2">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1481,15 +1480,15 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gJD-kh-Kca">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="50" sectionFooterHeight="22" id="R75-F3-xQc">
-                                <rect key="frame" x="0.0" y="-65" width="320" height="496"/>
+                                <rect key="frame" x="0.0" y="-65" width="320" height="545"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="k7n-3h-Z7L" customClass="ProfileView">
-                                    <rect key="frame" x="0.0" y="42" width="320" height="400"/>
+                                    <rect key="frame" x="0.0" y="64" width="320" height="400"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_user_image2.png" id="uo3-5J-vQg">
@@ -1725,7 +1724,7 @@
             <objects>
                 <tableViewController id="K5s-yF-8db" customClass="NotificationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="81m-l7-dxK">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1915,13 +1914,11 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="uet-Cl-mZq"/>
-        <segue reference="FQd-EB-Shi"/>
+        <segue reference="icH-IF-qcr"/>
         <segue reference="UFN-Sk-0kH"/>
-        <segue reference="6Mq-lQ-Lwk"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="rCT-Ex-vO8"/>
-        <segue reference="aau-5Z-5Pa"/>
-        <segue reference="u6W-1W-GCM"/>
+        <segue reference="FQd-EB-Shi"/>
+        <segue reference="MWr-28-zFw"/>
+        <segue reference="woK-8Q-gjw"/>
+        <segue reference="C4C-f3-cdX"/>
     </inferredMetricsTieBreakers>
 </document>

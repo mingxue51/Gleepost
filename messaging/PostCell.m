@@ -95,7 +95,8 @@ static const float OneLineText = 16.0;
     //self.postImage.contentMode = UIViewContentModeScaleAspectFill;
    // self.postImage.autoresizingMask = (UIViewAutoresizingNone);
     
-    
+    [self.contentLbl setText:self.post.content];
+
     NSURL *url = nil;
 
     for(NSString* str in postData.imagesUrls)
@@ -198,7 +199,7 @@ static const float OneLineText = 16.0;
     }
     
     
-    [self.contentLbl setText:postData.content];
+    //[self.contentLbl setText:postData.content];
 
     
 //    [self.contentLbl setFrame:self.labelDimensions];
@@ -219,13 +220,15 @@ static const float OneLineText = 16.0;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
+    
+    
 
 }
 
 -(void)setNewPositions
 {
     //Change the height of the label.
-    [self setElement:self.contentLbl size:[PostCell getContentLabelSizeForContent:self.contentLbl.text isViewPost:self.isViewPost]];
+    [self setElement:self.contentLbl size:[PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost]];
     
     if(!self.imageAvailable)
     {
@@ -263,15 +266,7 @@ static const float OneLineText = 16.0;
 {
     [super layoutSubviews];
     
-//    if(self.isViewPost)
-//    {
-//        
-//    }
-//    else
-//    {
-        [self setNewPositions];
-//    }
-    
+    [self setNewPositions];
 }
 
 -(void)refreshInformationLabel
@@ -333,7 +328,7 @@ static const float OneLineText = 16.0;
 
 -(void)setElement:(UIView*)element size:(CGSize)size
 {
-    [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, size.width, size.height)];
+    [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, PostContentLabelMaxWidth, size.height)];
 }
 
 //-(void)layoutSubviews

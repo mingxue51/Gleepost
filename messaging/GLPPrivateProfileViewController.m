@@ -247,6 +247,12 @@
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+-(void)unlockProfile
+{
+    self.contact = YES;
+    [self.tableView reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

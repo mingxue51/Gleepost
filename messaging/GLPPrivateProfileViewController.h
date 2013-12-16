@@ -17,5 +17,6 @@
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)showFullProfileImage:(id)sender;
+-(void)unlockProfile;
 
 @end

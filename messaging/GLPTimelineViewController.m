@@ -87,6 +87,12 @@
 //TODO: For testing purposes.
 
 
+//Hidden navigation bar.
+@property (assign, nonatomic) CGFloat startContentOffset;
+@property (assign, nonatomic) CGFloat lastContentOffset;
+@property (assign, nonatomic) BOOL hidden;
+
+
 @end
 
 static BOOL likePushed;
@@ -766,6 +772,86 @@ static BOOL likePushed;
     [TSMessage showNotificationInViewController:self title:@"Loading failed" subtitle:message type:TSMessageNotificationTypeError];
 }
 
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
+    //NSLog(@"scrollViewWillBeginDragging: %f", scrollView.contentOffset.y);
+    NSLog(@"scrollViewWillBeginDragging");
+    
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    CGFloat differenceFromStart = self.startContentOffset - currentOffset;
+    CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
+    self. lastContentOffset = currentOffset;
+    
+    
+    
+    if((differenceFromStart) < 0)
+    {
+        // scroll up
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self expand];
+    }
+    else {
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self contract];
+    }
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    [self contract];
+    return YES;
+}
+
+#pragma mark - The Magic!
+
+-(void)expand
+{
+    if(self.hidden)
+    {
+        return;
+    }
+    
+    self.hidden = YES;
+    
+    //[self.tabBarController setTabBarHidden:YES animated:YES];
+    
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:YES];
+}
+
+-(void)contract
+{
+    if(!self.hidden)
+    {
+        return;
+    }
+    
+    self.hidden = NO;
+    
+//    [self.tabBarController setTabBarHidden:NO
+//                                  animated:YES];
+    
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+}
 
 #pragma mark - Table view
 
@@ -1556,8 +1642,6 @@ static BOOL likePushed;
     else if([segue.identifier isEqualToString:@"view profile"])
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        GLPProfileViewController *profileViewController = segue.destinationViewController;
         
 //        GLPUser *incomingUser = [[GLPUser alloc] init];
 //        

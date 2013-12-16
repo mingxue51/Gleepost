@@ -7,7 +7,7 @@
 //
 
 #import "ViewTopicViewController.h"
-#import "PrivateProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 
 #import "MessageCell.h"
 #import "GLPLoadingCell.h"
@@ -32,7 +32,7 @@
 
 #import "LiveChatsView.h"
 #import "ContactsManager.h"
-#import "ProfileViewController.h"
+#import "GLPProfileViewController.h"
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 
@@ -907,7 +907,7 @@ float timeInterval = 0.1;
     else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
     else
     {
@@ -1158,7 +1158,7 @@ float timeInterval = 0.1;
     if([segue.identifier isEqualToString:@"view private profile"])
     {
         
-        PrivateProfileViewController *ppvc = segue.destinationViewController;
+        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
         
 //        if(self.participants.count == 0)
 //        {
@@ -1188,18 +1188,18 @@ float timeInterval = 0.1;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        GLPProfileViewController *profileViewController = segue.destinationViewController;
+//
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
 }
 

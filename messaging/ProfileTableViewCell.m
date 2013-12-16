@@ -16,6 +16,7 @@
 #import "SessionManager.h"
 #import "InvitationSentView.h"
 #import "AppearanceHelper.h"
+#import "ContactsManager.h"
 
 @interface ProfileTableViewCell ()
 
@@ -220,14 +221,30 @@
     [self.acceptButton setHidden:NO];
 }
 
--(void)showFullProfileImage:(id)sender
-{
-    
-}
+#pragma mark - Selectors
 
 - (IBAction)acceptUser:(id)sender
 {
-    #warning implementation pending.
+    //Accept contact in the local database and in server.
+    [[ContactsManager sharedInstance] acceptContact:self.currentUser.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Hide accept button and show contact button.
+            [self.acceptButton setHidden:YES];
+            
+            [self.inContacts setHidden:NO];
+            
+            //Call method in Controller to unlock profile.
+            [_privateProfileDelegate unlockProfile];
+        }
+        else
+        {
+            //Error message.
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
+            
+        }
+    }];
 }
 
 - (IBAction)sendMessage:(id)sender {

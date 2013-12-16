@@ -16,7 +16,7 @@
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
 #import "PostCell.h"
-#import "PrivateProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
 #import "UIViewController+GAI.h"
@@ -276,7 +276,7 @@ static BOOL likePushed;
     {
         //Navigate to profile view controller.
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
     else
     {
@@ -836,7 +836,7 @@ static bool firstTime = YES;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
         
-        PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
     }
@@ -844,18 +844,18 @@ static bool firstTime = YES;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        ProfileViewController *profileViewController = segue.destinationViewController;
+//        
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
 }
 
