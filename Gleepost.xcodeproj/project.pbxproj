@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 11E2FBB2185730DF002EB2FA /* gleepost.cer */; };
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
@@ -437,6 +438,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11E2FBB2185730DF002EB2FA /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
 		58080B79180EBB6500C4DB83 /* PostImageCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageCellView.xib; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
@@ -1062,6 +1064,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11E2FBAF1856FCA9002EB2FA /* SSLCertificates */ = {
+			isa = PBXGroup;
+			children = (
+				11E2FBB2185730DF002EB2FA /* gleepost.cer */,
+			);
+			name = SSLCertificates;
+			path = messaging;
+			sourceTree = "<group>";
+		};
 		580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1927,6 +1938,7 @@
 			isa = PBXGroup;
 			children = (
 				80AB892217C267F50053E784 /* Gleepost */,
+				11E2FBAF1856FCA9002EB2FA /* SSLCertificates */,
 				80AB891917C267F50053E784 /* Frameworks */,
 				80AB891817C267F50053E784 /* Products */,
 				FF972496B7AD4044B85FE95E /* Pods.xcconfig */,
@@ -2476,6 +2488,7 @@
 				58DAD77E1859FBD20016D838 /* man-7@2x.png in Resources */,
 				5893BA031820097C0003589E /* CommentTextCellView.xib in Resources */,
 				58361C3A184CCAD200FEFC49 /* add_as_contact.png in Resources */,
+				11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */,
 				584CF664182274F300EFABB8 /* invitesent.png in Resources */,
 				8096E4DB17C2C37A00C7BF60 /* background.png in Resources */,
 				58DC0243180437A70008993A /* bubble1.png in Resources */,
