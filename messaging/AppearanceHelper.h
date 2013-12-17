@@ -18,5 +18,6 @@
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item;
 +(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour;
 +(UIColor*)colourForNotFocusedItems;
++(UIColor*)defaultGleepostColour;
 
 @end

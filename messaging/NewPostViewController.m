@@ -103,7 +103,7 @@
 
 -(void)configureNavigationBar
 {
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    //UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 
 //    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"chat_background_default"] forBarMetrics:UIBarMetricsDefault];
     
@@ -111,9 +111,9 @@
     
     [self.simpleNavBar setTranslucent:NO];
     [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
-    self.simpleNavBar.tintColor = tabColour;
+    self.simpleNavBar.tintColor = [UIColor whiteColor];
     
-    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Thin" size:20.0f], UITextAttributeFont, nil]];
 
     
 }
@@ -152,7 +152,7 @@
         [self dismissViewControllerAnimated:YES completion:^{
             if(_hasImage)
             {
-                inPost.tempImage = self.imgToUpload;
+//                inPost.tempImage = self.imgToUpload;
                 inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
                 [delegate reloadNewImagePostWithPost:inPost];
             }

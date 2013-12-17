@@ -25,7 +25,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
-
+#import "AppearanceHelper.h"
 
 @interface ViewPostViewController ()
 
@@ -156,6 +156,9 @@ static BOOL likePushed;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self configureNavigationBar];
+    
+    
     [self loadComments];
 
 }
@@ -197,8 +200,26 @@ static BOOL likePushed;
     
 }
 
-
-
+-(void)configureNavigationBar
+{
+    //    [self setNeedsStatusBarAppearanceUpdate];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self];
+    
+    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    [AppearanceHelper setNavigationBarFontFor:self];
+    
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+}
 #pragma mark - Social panel button methods
 
 /**

@@ -50,12 +50,11 @@ NSInteger const kGLPNumberOfPosts = 20;
             
         }
     
-        
         callback(YES, userPosts);
     }];
 }
 
-+ (void)loadRemotePostsBefore:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
++ (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray*)notUploadedPosts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
     NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
     
@@ -68,9 +67,17 @@ NSInteger const kGLPNumberOfPosts = 20;
         // take only new posts
         NSMutableArray *newPosts = [NSMutableArray array];
         for (GLPPost *newPost in posts) {
+            
             if(newPost.remoteKey == post.remoteKey) {
                 break;
             }
+            
+            if([self isPost:newPost containedInArray:notUploadedPosts])
+            {
+                continue;
+            }
+            
+
             
             [newPosts addObject:newPost];
         }
@@ -95,6 +102,19 @@ NSInteger const kGLPNumberOfPosts = 20;
         
         callback(YES, remain, newPosts);
     }];
+}
+
++(BOOL)isPost:(GLPPost*)post containedInArray:(NSArray*)posts
+{
+    for(GLPPost *p in posts)
+    {
+        if([p.content isEqualToString:post.content])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 + (void)loadInitialPostsWithLocalCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback

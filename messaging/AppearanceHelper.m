@@ -53,6 +53,11 @@
     [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: colour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
 }
 
++(UIColor*)defaultGleepostColour
+{
+    return [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
+}
+
 +(UIColor*)colourForNotFocusedItems
 {
     return [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];

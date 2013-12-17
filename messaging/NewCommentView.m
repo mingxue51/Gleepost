@@ -24,6 +24,9 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+        
+        [self configNavigationBar];
+        
         CGRect screenSizeVar = [self screenSize];
         
         
@@ -103,6 +106,28 @@
         [self.commentTextView becomeFirstResponder];
     }
     return self;
+}
+
+
+#pragma mark - Configuration
+
+-(void)configNavigationBar
+{
+    self.profileDelegate.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self.profileDelegate imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self.profileDelegate];
+    
+    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    [self.profileDelegate.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    [AppearanceHelper setNavigationBarFontFor:self.profileDelegate];
+    
+    [self.profileDelegate.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.profileDelegate.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
 }
 
 

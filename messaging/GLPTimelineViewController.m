@@ -123,7 +123,6 @@ static BOOL likePushed;
     
     [self configNewElementsIndicatorView];
     
-    [self configStatusbarBackground];
     
     self.postsHeight = [[NSMutableArray alloc] init];
     
@@ -175,6 +174,9 @@ static BOOL likePushed;
     [super viewWillAppear:animated];
     
     [self configAppearance];
+    
+    [self configStatusbarBackground];
+
 
 }
 
@@ -209,9 +211,10 @@ static BOOL likePushed;
     [self hideNewElementsIndicatorView];
     
     //Show navigation bar.
-    
     [self contract];
     
+    //Hide status bar colour.
+    [self.statusBarView setHidden:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -255,8 +258,6 @@ static BOOL likePushed;
 - (void)configAppearance
 {
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
-
-    
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
@@ -555,9 +556,17 @@ static BOOL likePushed;
     // take the last remote post
     GLPPost *remotePost = nil;
     
+    NSMutableArray *notUploadedPosts = [[NSMutableArray alloc] init];
+    
     if(self.posts.count > 0) {
         // first is the most recent
         for(GLPPost *p in self.posts) {
+            
+            if(p.remoteKey == 0)
+            {
+                [notUploadedPosts addObject:p];
+            }
+            
             if(p.remoteKey != 0) {
                 remotePost = p;
                 break;
@@ -567,7 +576,7 @@ static BOOL likePushed;
     
     [self startLoading];
     
-    [GLPPostManager loadRemotePostsBefore:remotePost callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
         
         if(!success) {
@@ -1121,6 +1130,8 @@ static BOOL likePushed;
 -(void)setPreviousViewToNavigationBar
 {
     [self setPlusButtonToNavigationBar];
+    
+    [self configAppearance];
 }
 
 -(void)setPreviousNavigationBarName
