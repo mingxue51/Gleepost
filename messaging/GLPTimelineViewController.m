@@ -91,7 +91,7 @@
 @property (assign, nonatomic) CGFloat startContentOffset;
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property (assign, nonatomic) BOOL hidden;
-
+@property (strong, nonatomic) UIImageView *statusBarView;
 
 @end
 
@@ -123,9 +123,7 @@ static BOOL likePushed;
     
     [self configNewElementsIndicatorView];
     
-    
-
-
+    [self configStatusbarBackground];
     
     self.postsHeight = [[NSMutableArray alloc] init];
     
@@ -165,7 +163,7 @@ static BOOL likePushed;
     self.postIndexToReload = -1;
     
     //TODO: Remove this later.
-    [ContactsManager sharedInstance];
+    [[ContactsManager sharedInstance] refreshContacts];
     
     [self loadInitialPosts];
     
@@ -210,6 +208,9 @@ static BOOL likePushed;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
+    //Show navigation bar.
+    
+    [self contract];
     
 }
 
@@ -218,6 +219,11 @@ static BOOL likePushed;
     
     [self stopReloadingCron];
 }
+
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return NO;
+//}
 
 -(void)dealloc
 {
@@ -297,6 +303,13 @@ static BOOL likePushed;
     
     
     [self setPlusButtonToNavigationBar];
+}
+
+-(void)configStatusbarBackground
+{
+    self.statusBarView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+    self.statusBarView.backgroundColor=[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
+    [self.navigationController.view addSubview:self.statusBarView];
 }
 
 -(void)configTabbarFormat
@@ -772,8 +785,8 @@ static BOOL likePushed;
     [TSMessage showNotificationInViewController:self title:@"Loading failed" subtitle:message type:TSMessageNotificationTypeError];
 }
 
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
+
+#pragma mark - UIScrollViewDelegate Methods
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -831,7 +844,17 @@ static BOOL likePushed;
     
     self.hidden = YES;
     
-    //[self.tabBarController setTabBarHidden:YES animated:YES];
+//    [self.tabBarController setTabBarHidden:YES animated:YES];
+    
+
+    
+    
+    NSLog(@"Navigation bar elements: %@",self.navigationController.navigationBar.items);
+    
+
+    [self.statusBarView setHidden:NO];
+    
+
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -849,8 +872,22 @@ static BOOL likePushed;
 //    [self.tabBarController setTabBarHidden:NO
 //                                  animated:YES];
     
+    
+    [self.statusBarView setHidden:YES];
+
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
+}
+
+
+-(void)hideNavigationbarElements
+{
+    [self.navigationController.navigationBar setBackgroundColor: [UIColor clearColor]];
+}
+
+-(void)showNavigationbarElements
+{
+    [self configAppearance];
 }
 
 #pragma mark - Table view

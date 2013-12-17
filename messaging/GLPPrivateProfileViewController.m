@@ -413,6 +413,8 @@
 {
     self.selectedTabStatus = selectedTab;
     
+    [self loadAndSetUserDetails];
+    
     [self.tableView reloadData];
 }
 

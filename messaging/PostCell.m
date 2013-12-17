@@ -111,9 +111,6 @@ static const float OneLineText = 16.0;
     
     //Add the default image.
     userImage = [UIImage imageNamed:@"default_user_image"];
-    
-    UIImageView *inImageView = [[UIImageView alloc]init];
-    [inImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:nil]];
 
     
     if(url!=nil && postData.tempImage==nil)
@@ -122,13 +119,12 @@ static const float OneLineText = 16.0;
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
     }
-
-    
-    if(postData.tempImage != nil)
+    else if(postData.tempImage != nil)
     {
         //Set live image.
         [self.postImage setImage:postData.tempImage];
     }
+    
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
 
@@ -210,8 +206,8 @@ static const float OneLineText = 16.0;
 //    NSLog(@"-> Final Height: %f. Content: %@", self.contentView.frame.size.height, self.contentLbl.text);
 
     
-    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-    self.contentLbl.layer.borderWidth = 0.5f;
+//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth = 0.5f;
 //
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
@@ -220,9 +216,6 @@ static const float OneLineText = 16.0;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
-    
-    
-
 }
 
 -(void)setNewPositions

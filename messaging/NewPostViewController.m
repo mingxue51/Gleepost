@@ -152,6 +152,8 @@
         [self dismissViewControllerAnimated:YES completion:^{
             if(_hasImage)
             {
+                inPost.tempImage = self.imgToUpload;
+                inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
                 [delegate reloadNewImagePostWithPost:inPost];
             }
             else

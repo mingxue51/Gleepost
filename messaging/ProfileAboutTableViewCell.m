@@ -22,7 +22,6 @@
     
     if(self)
     {
-        
     }
     
     return self;
@@ -35,9 +34,21 @@
     [self.lockImageView setHidden:YES];
     [self.lockLabel setHidden:YES];
     
-    NSString *information = [[NSString alloc] initWithFormat:@"%@\n%@", user.course ,user.personalMessage];
+    NSMutableString *information = [[NSMutableString alloc] init];
+
+    if(![user.course isEqualToString:@""])
+    {
+        [information appendFormat:@"%@\n",user.course];
+    }
+    
+    if(![user.personalMessage isEqualToString:@""])
+    {
+        [information appendFormat:@"%@",user.personalMessage];
+    }
+    
     
     [self.informationLabel setHidden:NO];
+    
     
     [self.informationLabel setText:information];
     
@@ -48,6 +59,8 @@
 //    self.informationLabel.frame = CGRectMake(
 //                             self.informationLabel.frame.origin.x, self.informationLabel.frame.origin.y,
 //                             self.informationLabel.frame.size.width, labelSize.height);
+    
+    NSLog(@"Label content: %@",self.informationLabel.text);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

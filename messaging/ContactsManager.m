@@ -33,7 +33,7 @@ static ContactsManager *instance = nil;
     
     if(self)
     {
-        [self refreshContacts];
+        //[self refreshContacts];
     }
     
     //Load contacts from database.
