@@ -42,6 +42,8 @@
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
 		581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C9C4218044CD300279256 /* PullDownScrollView.m */; };
+		58204E781862061600702F4F /* GLPPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E771862061600702F4F /* GLPPostOperation.m */; };
+		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
 		582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CB17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m */; };
 		582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CD17FC59F50032ECEB /* TPKeyboardAvoidingTableView.m */; };
 		582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CF17FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
@@ -469,6 +471,10 @@
 		581AAF0D181DA88700F091A9 /* InvitationSentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationSentView.m; sourceTree = "<group>"; };
 		581C9C4118044CD300279256 /* PullDownScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownScrollView.h; sourceTree = "<group>"; };
 		581C9C4218044CD300279256 /* PullDownScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownScrollView.m; sourceTree = "<group>"; };
+		58204E761862061600702F4F /* GLPPostOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperation.h; sourceTree = "<group>"; };
+		58204E771862061600702F4F /* GLPPostOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperation.m; sourceTree = "<group>"; };
+		58204E79186207AF00702F4F /* GLPQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPQueueManager.h; sourceTree = "<group>"; };
+		58204E7A186207AF00702F4F /* GLPQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPQueueManager.m; sourceTree = "<group>"; };
 		582143CA17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
 		582143CB17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
 		582143CC17FC59F50032ECEB /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
@@ -1729,6 +1735,8 @@
 				80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */,
 				80B2A42618338613002AB1F0 /* GLPGetNotificationsOperation.h */,
 				80B2A42718338613002AB1F0 /* GLPGetNotificationsOperation.m */,
+				58204E761862061600702F4F /* GLPPostOperation.h */,
+				58204E771862061600702F4F /* GLPPostOperation.m */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -2094,6 +2102,8 @@
 				80733470183BAD3B00C6D74A /* GLPPushManager.m */,
 				80DC9AF3184633FE00A8E48B /* GLPLiveConversationsManager.h */,
 				80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */,
+				58204E79186207AF00702F4F /* GLPQueueManager.h */,
+				58204E7A186207AF00702F4F /* GLPQueueManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -2797,6 +2807,7 @@
 				80AB897D17C292180053E784 /* NewMessageViewController.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
+				58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
@@ -2830,6 +2841,7 @@
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
+				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,
 				585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,

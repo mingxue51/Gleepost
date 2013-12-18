@@ -253,6 +253,32 @@ static BOOL likePushed;
     }
 }
 
+-(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+    
+    
+    NSLog(@"Result from uploaded post: %@", dict);
+    
+    for(GLPPost* p in self.posts)
+    {
+        if(key == p.key)
+        {
+            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            p.remoteKey = remoteKey;
+            break;
+        }
+    }
+    
+    [self.tableView reloadData];
+    
+
+}
+
 #pragma mark - Init config
 
 - (void)configAppearance
@@ -376,6 +402,9 @@ static BOOL likePushed;
 -(void)configNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    
 }
 
 - (void)configTableView

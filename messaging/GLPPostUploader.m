@@ -12,6 +12,7 @@
 #import "WebClient.h"
 #import "SessionManager.h"
 #import "GLPPostManager.h"
+#import "GLPQueueManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -66,9 +67,14 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         _post.content = content;
         _post.author = [SessionManager sharedInstance].user;
         
+        
         if (_postImage) {
             _post.date = [NSDate date];
             _post.tempImage = _postImage;
+            
+            [GLPPostManager createLocalPost:_post];
+
+            NSLog(@"New Post KEY: %d", _post.key);
         }
         
         if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
@@ -77,7 +83,11 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
             __weak GLPPostUploader *weakSelf = self;
             __weak GLPPost *weakPost = _post;
             _uploadContentBlock = ^{
-                [weakSelf createLocalAndUploadPost:weakPost];
+                
+                [weakSelf assignUrlToPost:weakPost];
+                [[GLPQueueManager sharedInstance] uploadPost:weakPost];
+
+                //[weakSelf createLocalAndUploadPost:weakPost];
             };
         }
     }
@@ -104,6 +114,12 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
             }
         }];
     }
+}
+
+-(void)assignUrlToPost:(GLPPost*)post
+{
+    post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
+    
 }
 
 - (void)createLocalAndUploadPost:(GLPPost *)post {

@@ -21,6 +21,7 @@
 #import "GLPPostUploader.h"
 #import "NSString+Utils.h"
 #import "GLPThemeManager.h"
+#import "GLPPostManager.h"
 
 @interface NewPostViewController ()
 
@@ -147,6 +148,7 @@
         
         GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
         
+
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
         [self dismissViewControllerAnimated:YES completion:^{
