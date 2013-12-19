@@ -290,7 +290,6 @@ static const float OneLineText = 16.0;
         return CGSizeMake(size.width, 50);
     }
     
-    NSLog(@"STATIC Size: %f, Content: %@",size.height, content);
 
     //
     

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "GLPPost.h"
 
+typedef void (^viewCreator)(void);
+
 @protocol PostUploaderDelegate;
 
 
@@ -19,8 +21,11 @@
 @property (nonatomic, readonly, strong) NSIndexPath *campusWallIndexpath;
 @property (nonatomic, readonly, strong) GLPPost *incomingPost;
 
+@property (nonatomic, assign) viewCreator executeUrl;
 
--(id)initWithPost:(GLPPost*)post;
+-(id)initWithPost:(GLPPost*)post andImages:(NSMutableDictionary*)urls;
+-(void)addPostImageUrl:(NSString*)url;
+
 
 @end
 

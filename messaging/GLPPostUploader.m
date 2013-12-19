@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatus   _imageStatus;
     NSString        *_imageURL;
     
+    int uploadKey;
     void (^_uploadContentBlock)();
 }
 
@@ -54,11 +55,43 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         data = UIImagePNGRepresentation(resizedImage);
     }];
     
+    uploadKey = 3;
+    
     [operation setCompletionBlock:^{
         [self uploadResizedImageWithImageData:data];
+//        [[GLPQueueManager sharedInstance]uploadImage:image withId:uploadKey];
+
     }];
     
     [[[NSOperationQueue alloc] init] addOperation:operation];
+}
+
+-(void)uploadImageToQueue:(UIImage*)image
+{
+    _postImage = image;
+    [[GLPQueueManager sharedInstance]uploadImage:image withId:1];
+}
+
+//ADDED.
+-(GLPPost*)uploadPost:(NSString*)content
+{
+    //Add the date to a new post.
+    GLPPost *post = [[GLPPost alloc] init];
+    post.content = content;
+    post.author = [SessionManager sharedInstance].user;
+    
+    //Create a new operation.
+    if(_postImage)
+    {
+        post.date = [NSDate date];
+        post.tempImage = _postImage;
+        
+        [GLPPostManager createLocalPost:post];
+        
+        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
+    }
+    
+    return post;
 }
 
 - (GLPPost *)uploadPostWithContent:(NSString *)content {
@@ -73,19 +106,23 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
             _post.tempImage = _postImage;
             
             [GLPPostManager createLocalPost:_post];
+            
+           // [[GLPQueueManager sharedInstance] uploadPost:_post withId:uploadKey];
 
-            NSLog(@"New Post KEY: %d", _post.key);
         }
         
         if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
+            
             [self createLocalAndUploadPost:_post];
+            
         } else if (_imageStatus == GLPImageStatusUploading) {
+            
             __weak GLPPostUploader *weakSelf = self;
             __weak GLPPost *weakPost = _post;
             _uploadContentBlock = ^{
                 
                 [weakSelf assignUrlToPost:weakPost];
-                [[GLPQueueManager sharedInstance] uploadPost:weakPost];
+                [[GLPQueueManager sharedInstance] uploadPost:weakPost withId:-1];
 
                 //[weakSelf createLocalAndUploadPost:weakPost];
             };

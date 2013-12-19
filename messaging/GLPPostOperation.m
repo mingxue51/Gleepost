@@ -16,6 +16,7 @@
 @property (assign, nonatomic) int incomingRemoteKey;
 @property (strong, nonatomic) NSString *imageUrl;
 @property (assign, nonatomic) int incomingKey;
+@property (strong, nonatomic) NSMutableDictionary *urls;
 
 @end
 
@@ -29,15 +30,37 @@
     
     @autoreleasepool
     {
+        NSLog(@"Images URL: %@",self.urls);
         [self startProcessing];
         
     }
 }
 
+//-(void)start
+//{
+//    // Ensure this operation is not being restarted and that it has not been cancelled
+//    if(self.isFinished || self.isCancelled)
+//    {
+//       
+//        return;
+//    }
+//    
+//    // From this point on, the operation is officially executing--remember, isExecuting
+//    // needs to be KVO compliant!
+//    [self willChangeValueForKey:@"isExecuting"];
+////    self.isExecuting = YES;
+//    [self didChangeValueForKey:@"isExecuting"];
+//}
+
+- (BOOL)isConcurrent
+{
+    return YES;
+}
+
 #pragma mark -
 #pragma mark - Initialisation
 
--(id)initWithPost:(GLPPost*)post
+-(id)initWithPost:(GLPPost*)post andImages:(NSMutableDictionary *)urls
 {
     self = [super init];
     
@@ -45,10 +68,18 @@
     {
 //        self.delegate = delegate; //Not used.
 //        _campusWallIndexpath = indexPath;
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploaded:) name:@"GLPImageUploaded1" object:nil];
+        self.urls = urls;
         _incomingPost = post;
     }
     
     return self;
+}
+
+-(void)addPostImageUrl:(NSString*)url
+{
+    NSLog(@"Add Post Image URL: %@",url);
+    //_incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:url, nil];
 }
 
 #pragma mark -
@@ -67,13 +98,21 @@
                                                                                                                         @"imageUrl":self.imageUrl,
                                                                                                                         @"key":[NSNumber numberWithInt:self.incomingKey]}];
         
+//        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPImageUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:self.incomingRemoteKey],
+//                                                                                                                        @"imageUrl":self.imageUrl,
+//                                                                                                                        @"key":[NSNumber numberWithInt:self.incomingKey]}];
+        
+        
     };
 
+  
     
     NSLog(@"Post uploading task started with post content: %@ and image url: %@.",_incomingPost.content, [_incomingPost.imagesUrls objectAtIndex:0]);
     
-    
+    NSLog(@"URLS: %@",self.urls);
 //    [GLPPostManager createLocalPost:_incomingPost];
+    
+    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
     
     [[WebClient sharedInstance] createPost:_incomingPost callbackBlock:^(BOOL success, int remoteKey) {
         
@@ -86,7 +125,9 @@
         
         self.incomingKey = _incomingPost.key;
         self.incomingRemoteKey = remoteKey;
-        self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
+        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
+        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
+        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
         
         _uploadContentBlock();
         

@@ -146,8 +146,9 @@
         
         [self.contentTextView resignFirstResponder];
         
-        GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
+//        GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
         
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text];
 
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -181,7 +182,8 @@
     _hasImage = YES;
     
     self.imgToUpload = photo;
-    [_postUploader startUploadingImage:self.imgToUpload];
+    [_postUploader uploadImageToQueue:self.imgToUpload];
+    //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
 

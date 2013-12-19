@@ -829,8 +829,7 @@ static BOOL likePushed;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
-    //NSLog(@"scrollViewWillBeginDragging: %f", scrollView.contentOffset.y);
-    NSLog(@"scrollViewWillBeginDragging");
+
     
 }
 
@@ -881,13 +880,6 @@ static BOOL likePushed;
     }
     
     self.hidden = YES;
-    
-//    [self.tabBarController setTabBarHidden:YES animated:YES];
-    
-
-    
-    
-    NSLog(@"Navigation bar elements: %@",self.navigationController.navigationBar.items);
     
 
     [self.statusBarView setHidden:NO];

@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 11E2FBB2185730DF002EB2FA /* gleepost.cer */; };
+		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
@@ -441,6 +442,8 @@
 
 /* Begin PBXFileReference section */
 		11E2FBB2185730DF002EB2FA /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
+		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
+		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
 		58080B79180EBB6500C4DB83 /* PostImageCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageCellView.xib; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
@@ -1737,6 +1740,8 @@
 				80B2A42718338613002AB1F0 /* GLPGetNotificationsOperation.m */,
 				58204E761862061600702F4F /* GLPPostOperation.h */,
 				58204E771862061600702F4F /* GLPPostOperation.m */,
+				58056BEA18632DEA0089EB09 /* GLPImageOperation.h */,
+				58056BEB18632DEA0089EB09 /* GLPImageOperation.m */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -2769,6 +2774,7 @@
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
+				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
 				80AB895D17C277D40053E784 /* NewPostViewController.m in Sources */,
 				582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,

@@ -13,6 +13,7 @@
 
 + (GLPQueueManager *)sharedInstance;
 
--(void)uploadPost:(GLPPost*)post;
+-(void)uploadPost:(GLPPost*)post withId:(int)key;
+-(void)uploadImage:(UIImage*)image withId:(int)key;
 
 @end
