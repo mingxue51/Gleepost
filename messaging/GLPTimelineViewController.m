@@ -274,10 +274,13 @@ static BOOL likePushed;
         }
     }
     
+    
+    
     [self.tableView reloadData];
     
 
 }
+
 
 #pragma mark - Init config
 
@@ -605,7 +608,7 @@ static BOOL likePushed;
     
     [self startLoading];
     
-    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
         
         if(!success) {

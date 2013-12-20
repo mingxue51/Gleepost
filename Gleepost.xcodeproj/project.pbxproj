@@ -251,6 +251,9 @@
 		58DC0248180437A70008993A /* lightbublle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0240180437A70008993A /* lightbublle.png */; };
 		58DC0249180437A70008993A /* pull_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0241180437A70008993A /* pull_down_button.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
+		58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4157186463A900D53723 /* GLPPostOperationManager.m */; };
+		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
+		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
 		58E4555C1840091B001A5D80 /* GLPLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E4555B1840091B001A5D80 /* GLPLike.m */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
 		58FB7C7D1855FF0B002C6A00 /* message-user.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FB7C7C1855FF0B002C6A00 /* message-user.png */; };
@@ -754,6 +757,12 @@
 		58DC0241180437A70008993A /* pull_down_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pull_down_button.png; sourceTree = "<group>"; };
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
+		58DF4156186463A900D53723 /* GLPPostOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperationManager.h; sourceTree = "<group>"; };
+		58DF4157186463A900D53723 /* GLPPostOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperationManager.m; sourceTree = "<group>"; };
+		58DF415C186463E000D53723 /* GLPPostUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploaderManager.h; sourceTree = "<group>"; };
+		58DF415D186463E000D53723 /* GLPPostUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostUploaderManager.m; sourceTree = "<group>"; };
+		58DF415F186463F900D53723 /* GLPImageUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageUploaderManager.h; sourceTree = "<group>"; };
+		58DF4160186463F900D53723 /* GLPImageUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageUploaderManager.m; sourceTree = "<group>"; };
 		58E4555A1840091B001A5D80 /* GLPLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLike.h; sourceTree = "<group>"; };
 		58E4555B1840091B001A5D80 /* GLPLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLike.m; sourceTree = "<group>"; };
 		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
@@ -1626,6 +1635,19 @@
 			name = "New Chat Images";
 			sourceTree = "<group>";
 		};
+		58DF41551864636500D53723 /* Post Uploader Managers */ = {
+			isa = PBXGroup;
+			children = (
+				58DF4156186463A900D53723 /* GLPPostOperationManager.h */,
+				58DF4157186463A900D53723 /* GLPPostOperationManager.m */,
+				58DF415C186463E000D53723 /* GLPPostUploaderManager.h */,
+				58DF415D186463E000D53723 /* GLPPostUploaderManager.m */,
+				58DF415F186463F900D53723 /* GLPImageUploaderManager.h */,
+				58DF4160186463F900D53723 /* GLPImageUploaderManager.m */,
+			);
+			name = "Post Uploader Managers";
+			sourceTree = "<group>";
+		};
 		58FB7C8418560AE0002C6A00 /* Profile Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2083,6 +2105,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58DF41551864636500D53723 /* Post Uploader Managers */,
 				5890D2151847675100E293DD /* Themes */,
 				80666C3D1806D43200E4E515 /* Database */,
 				80AB894B17C26ECA0053E784 /* SessionManager.h */,
@@ -2734,6 +2757,7 @@
 				58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */,
 				584CF66D182289B500EFABB8 /* ContactsManager.m in Sources */,
 				80B2A42818338613002AB1F0 /* GLPGetNotificationsOperation.m in Sources */,
+				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
 				58FB7C9118560D21002C6A00 /* PostsProfileView.m in Sources */,
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
@@ -2801,6 +2825,7 @@
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
+				58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */,
 				581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */,
 				805358CC182EF37600579079 /* GLPPostDao.m in Sources */,
 				5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */,
@@ -2836,6 +2861,7 @@
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
 				80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */,
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
+				58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,

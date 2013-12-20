@@ -10,6 +10,12 @@
 
 @interface GLPImageOperation : NSOperation
 
+//typedef enum
+//{
+//   kImagePending
+//    
+//}GLPImageStatus;
+
 -(id)initWithImage:(UIImage*)image;
 
 @end

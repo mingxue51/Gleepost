@@ -51,6 +51,9 @@
     return self;
 }
 
+
+
+
 #pragma mark - Operational methods
 
 - (void)startUploadingImage

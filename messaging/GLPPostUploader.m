@@ -13,6 +13,7 @@
 #import "SessionManager.h"
 #import "GLPPostManager.h"
 #import "GLPQueueManager.h"
+#import "GLPPostOperationManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -26,6 +27,9 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     UIImage         *_postImage;
     GLPImageStatus   _imageStatus;
     NSString        *_imageURL;
+    
+    //Added.
+    NSDate *timestamp;
     
     int uploadKey;
     void (^_uploadContentBlock)();
@@ -68,8 +72,16 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 
 -(void)uploadImageToQueue:(UIImage*)image
 {
+    timestamp = [NSDate date];
     _postImage = image;
-    [[GLPQueueManager sharedInstance]uploadImage:image withId:1];
+
+    NSLog(@"Timestamp before image uploading: %@",timestamp);
+    
+    [[GLPPostOperationManager sharedInstance] uploadImage:image withTimestamp:timestamp];
+    
+//    [gum uploadImage:image withTimestamp:[NSDate date]];
+    
+//    [[GLPQueueManager sharedInstance]uploadImage:image withId:1];
 }
 
 //ADDED.
@@ -88,7 +100,13 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         [GLPPostManager createLocalPost:post];
         
-        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
+        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
+        
+//        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
+    }
+    else
+    {
+        [self createLocalAndUploadPost:post];
     }
     
     return post;
@@ -113,7 +131,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
             
-            [self createLocalAndUploadPost:_post];
+            
             
         } else if (_imageStatus == GLPImageStatusUploading) {
             
@@ -171,7 +189,10 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
             post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
             post.remoteKey = success ? remoteKey : 0;
             
-            [GLPPostManager updatePostAfterSending:_post];
+            [GLPPostManager updatePostAfterSending:post];
+            
+            //TODO: Communicate with Campus Wall to inform post.
+            
             
             [self cleanUpPost];
         }];

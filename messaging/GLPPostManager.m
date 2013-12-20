@@ -54,7 +54,7 @@ NSInteger const kGLPNumberOfPosts = 20;
     }];
 }
 
-+ (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray*)notUploadedPosts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
++ (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray*)notUploadedPosts andCurrentPosts:(NSArray*)posts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
     NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
     
@@ -72,7 +72,14 @@ NSInteger const kGLPNumberOfPosts = 20;
                 break;
             }
             
-            if([self isPost:newPost containedInArray:notUploadedPosts])
+            if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
+            {
+                continue;
+            }
+            
+            //If newPost is contained to already posted posts then continue.
+            //Avoid duplications.
+            if([GLPPostManager isPost:newPost containedInArray:posts])
             {
                 continue;
             }
@@ -113,9 +120,11 @@ NSInteger const kGLPNumberOfPosts = 20;
             return YES;
         }
     }
+
     
     return NO;
 }
+
 
 + (void)loadInitialPostsWithLocalCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
 {
