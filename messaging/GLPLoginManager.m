@@ -16,7 +16,7 @@
 #import "DatabaseManager.h"
 #import "GLPThemeManager.h"
 #import "ContactsManager.h"
-
+//#import "GLPPostOperationManager.m"
 
 @implementation GLPLoginManager
 
@@ -91,6 +91,7 @@
     [[GLPBackgroundRequestsManager sharedInstance] stopAll];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
     [[GLPBackgroundRequestsManager sharedInstance] stopAll];
+    //[[GLPPostOperationManager sharedInstance] stopTimer];
         
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];

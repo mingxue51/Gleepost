@@ -18,6 +18,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
+
 @interface PostCell()
 
 @property (strong, nonatomic) GLPPost *post;
@@ -27,6 +28,7 @@
 @property (assign, nonatomic) CGRect labelDimensions;
 @property (assign, nonatomic) float socialPanelY;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
+@property (assign, nonatomic) BOOL freshPost;
 
 //@property (strong, nonatomic) UIView *lineView;
 @end
@@ -68,6 +70,9 @@ const float TEXT_CELL_HEIGHT = 160;
 //        NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
         self.initialPostContentLabelY = 37;
         self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
+        
+        
+
     }
     
     return self;
@@ -90,7 +95,12 @@ static const float OneLineText = 16.0;
     self.postIndex = postIndex;
     
     self.imageAvailable = NO;
-
+    [self updateOnlinePost:postData.remoteKey];
+    
+    //Format uploaded indicator.
+    [ShapeFormatterHelper setRoundedView:self.uploadedIndicator toDiameter:self.uploadedIndicator.frame.size.height];
+    
+    
     //Change the mode of the post imageview.
     //self.postImage.contentMode = UIViewContentModeScaleAspectFill;
    // self.postImage.autoresizingMask = (UIViewAutoresizingNone);
@@ -117,7 +127,7 @@ static const float OneLineText = 16.0;
     {
         // Here we use the new provided setImageWithURL: method to load the web image
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
+        //[self setPostOnline:YES];
     }
     else if(postData.tempImage != nil)
     {
@@ -216,6 +226,62 @@ static const float OneLineText = 16.0;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
+}
+
+#pragma mark - Online indicator
+
+-(void)updateOnlinePost:(int)remoteKey
+{
+    if(remoteKey!=0)
+    {
+        [self setPostOnline:YES];
+        [self hideIndicator];
+    }
+    else
+    {
+        [self setPostOnline:NO];
+        [self blinkIndicator];
+    }
+}
+
+-(void)hideIndicator
+{
+    [self.uploadedIndicator setAlpha:1.0];
+
+    
+    [UIView animateWithDuration:2.0 delay:5.0 options:(UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut) animations:^{
+        
+        [self.uploadedIndicator setAlpha:0.0];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+  
+}
+
+-(void)blinkIndicator
+{
+    [self.uploadedIndicator setAlpha:1.0];
+
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat | UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        [self.uploadedIndicator setAlpha:0.0];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)setPostOnline:(BOOL)online
+{
+    if(online)
+    {
+        [self.uploadedIndicator setBackgroundColor:[UIColor greenColor]];
+    }
+    else
+    {
+        [self.uploadedIndicator setBackgroundColor:[UIColor orangeColor]];
+    }
 }
 
 -(void)setNewPositions

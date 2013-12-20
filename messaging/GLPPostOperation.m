@@ -4,7 +4,7 @@
 //
 //  Created by Silouanos on 18/12/2013.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
-//
+// TODO: Class not used.
 
 #import "GLPPostOperation.h"
 #import "NSNotificationCenter+Utils.h"

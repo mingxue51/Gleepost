@@ -97,6 +97,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     {
         post.date = [NSDate date];
         post.tempImage = _postImage;
+        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
         
         [GLPPostManager createLocalPost:post];
         
@@ -131,7 +132,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
             
-            
+            //[self createLocalAndUploadPost:_post];
+
             
         } else if (_imageStatus == GLPImageStatusUploading) {
             

@@ -13,5 +13,5 @@
 + (GLPPostOperationManager *)sharedInstance;
 -(void)uploadImage:(UIImage*)image withTimestamp:(NSDate*)timestamp;
 -(void)setPost:(GLPPost*)post withTimestamp:(NSDate*)timestamp;
-
+-(void)stopTimer;
 @end

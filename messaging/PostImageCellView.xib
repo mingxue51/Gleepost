@@ -93,6 +93,10 @@
                                     <action selector="likePost:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="MAH-nZ-dI9"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dxO-eC-D7E">
+                                <rect key="frame" x="298" y="375" width="10" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -133,6 +137,7 @@
                 <outlet property="shareBtn" destination="ruE-aW-7co" id="2EP-d4-WhQ"/>
                 <outlet property="socialPanel" destination="J0Q-lJ-BI0" id="Zs4-Ai-Bld"/>
                 <outlet property="thumpsUpBtn" destination="hTD-mn-1Zb" id="B26-sf-h1A"/>
+                <outlet property="uploadedIndicator" destination="dxO-eC-D7E" id="xeJ-Xo-cke"/>
                 <outlet property="userImageView" destination="PGO-to-l0y" id="RRX-jH-sc7"/>
                 <outlet property="userName" destination="LuD-N8-hDP" id="oGg-M3-vqQ"/>
             </connections>

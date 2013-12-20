@@ -264,19 +264,25 @@ static BOOL likePushed;
     
     NSLog(@"Result from uploaded post: %@", dict);
     
+    int index = 0;
+    
     for(GLPPost* p in self.posts)
     {
         if(key == p.key)
         {
             p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
             p.remoteKey = remoteKey;
+//            p.tempImage = nil;
             break;
         }
+        ++index;
     }
+
     
     
-    
-    [self.tableView reloadData];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+
+//    [self.tableView reloadData];
     
 
 }

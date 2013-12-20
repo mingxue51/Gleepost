@@ -115,8 +115,6 @@
     self.simpleNavBar.tintColor = [UIColor whiteColor];
     
     [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Thin" size:20.0f], UITextAttributeFont, nil]];
-
-    
 }
 
 
@@ -156,12 +154,13 @@
             if(_hasImage)
             {
 //                inPost.tempImage = self.imgToUpload;
-                inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
+                //inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
                 [delegate reloadNewImagePostWithPost:inPost];
             }
             else
             {
-                [delegate reloadNewLocalPosts];
+                //[delegate reloadNewLocalPosts];
+                [delegate reloadNewImagePostWithPost:inPost];
             }
             
         }];
