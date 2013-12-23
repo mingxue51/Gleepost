@@ -11,11 +11,15 @@
 #import "SessionManager.h"
 #import "GLPBackgroundRequestsManager.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "GAI.h"
 #import "GAIFields.h"
 #import "GAITracker.h"
 #import "GAIDictionaryBuilder.h"
 #import "Flurry.h"
+
+static NSString * const kCustomURLScheme    = @"gleepost";
+static NSString * const kCustomURLHost      = @"verify";
 
 @implementation AppDelegate
 
@@ -107,6 +111,22 @@
 	NSLog(@"Fail to register to push on Apple servers, error: %@", error);
 }
 
+# pragma mark - Handle custom URL Scheme (gleepost://)
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BOOL canHandleURLScheme = NO;
+    
+    if ([[url scheme] isEqualToString:kCustomURLScheme] && [[url host] isEqualToString:kCustomURLHost]) {
+        canHandleURLScheme = YES;
+        // handle custom URL Scheme
+        // segue to registration screen and valid
+        NSLog(@"handle gleepost:// URL scheme");
+    } else {
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL."];
+    }
+    
+    return canHandleURLScheme;
+}
 
 # pragma mark - Setup Analytics
 
