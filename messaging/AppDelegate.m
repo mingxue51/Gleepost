@@ -17,6 +17,8 @@
 #import "GAITracker.h"
 #import "GAIDictionaryBuilder.h"
 #import "Flurry.h"
+#import "NSUserDefaults+GLPAdditions.h"
+#import "GLPLoginManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -118,9 +120,39 @@ static NSString * const kCustomURLHost      = @"verify";
     
     if ([[url scheme] isEqualToString:kCustomURLScheme] && [[url host] isEqualToString:kCustomURLHost]) {
         canHandleURLScheme = YES;
-        // handle custom URL Scheme
-        // segue to registration screen and valid
-        NSLog(@"handle gleepost:// URL scheme");
+        NSLog(@"handle URL : %@", url);
+        
+        NSString *relativePath = [url relativePath];
+        if (relativePath) {
+            NSString *token = [relativePath substringFromIndex:1];
+            __weak AppDelegate *weakSelf = self;
+            
+            [WebClientHelper showStandardLoaderWithTitle:@"Verifying" forView:self.window.rootViewController.view];
+            
+            [[WebClient sharedInstance] verifyUserWithToken:token callback:^(BOOL success) {
+                [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
+                
+                if (success) {
+                    [WebClientHelper showStandardLoaderWithTitle:@"Logging in" forView:self.window.rootViewController.view];
+                    
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    [GLPLoginManager loginWithIdentifier:[userDefaults authParameterName] andPassword:[userDefaults authParameterPass] callback:^(BOOL success) {
+                        [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
+                        
+                        if (success) {
+                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+                            UIViewController *initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+                            
+                            weakSelf.window.rootViewController = initVC;
+                        } else {
+                            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in."];
+                        }
+                    }];
+                } else {
+                    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account."];
+                }
+            }];
+        }
     } else {
         [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL."];
     }

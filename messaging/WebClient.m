@@ -15,6 +15,7 @@
 #import "AFJSONRequestOperation.h"
 #import "GLPUserDao.h"
 #import "AFNetworking.h"
+#import "NSUserDefaults+GLPAdditions.h"
 
 @interface WebClient()
 
@@ -28,7 +29,7 @@
 
 @synthesize isNetworkAvailable;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.23/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.24/";
 
 static WebClient *instance = nil;
 
@@ -131,14 +132,33 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)verifyUserWithToken:(NSString *)token callback:(void (^)(BOOL success))callbackBlock {
+    NSString *postPath = [NSString stringWithFormat:@"verify/%@", token];
+    
+    [self postPath:postPath parameters:Nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        callbackBlock(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO);
+    }];
+}
+
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
 {
+    __weak NSString *weakEmail = email;
+    __weak NSString *weakName  = name;
+    __weak NSString *weakPass  = password;
+    
     [self postPath:@"register" parameters:@{@"user": name, @"pass": password, @"email": email} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"Response during registration: %@", responseObject);
         int remotekey = [RemoteParser parseIdFromJson:responseObject];
         
         callbackBlock(YES, responseObject, remotekey);
+        
+        // saving user info for email verification
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterEmail:weakEmail];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterName:weakName];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterPass:weakPass];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
        NSLog(@"ERROR DURING REGISTRATION: %@", [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion]);
