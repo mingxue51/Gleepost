@@ -99,7 +99,7 @@
     
     //Post ready to be uploaded.
     
-    void (^_uploadContentBlock)(GLPPost*);
+    void (^_uploadImageContentBlock)(GLPPost*);
     
     GLPPost *post = nil;
     
@@ -108,9 +108,9 @@
         post = [_readyPosts objectForKey:timestamp];
         post.imagesUrls = [[NSArray alloc] initWithObjects:url, nil];
         
-        _uploadContentBlock = ^(GLPPost* post){
+        _uploadImageContentBlock = ^(GLPPost* post){
             
-            NSLog(@"Into uploadContentBlock");
+            NSLog(@"Into uploadImageContentBlock");
             
             //Notify GLPTimelineViewController after finish.
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
@@ -143,7 +143,7 @@
         
 //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
         
-        _uploadContentBlock(post);
+        _uploadImageContentBlock(post);
         
         if(success)
         {

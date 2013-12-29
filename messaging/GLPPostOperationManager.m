@@ -68,7 +68,7 @@ static GLPPostOperationManager *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    NSLog(@"Background requests manager network status update: %d", isNetwork);
+    NSLog(@"Background requests manager network status update GLPPost: %d", isNetwork);
     
     self.isNetworkAvailable = isNetwork;
     
@@ -91,8 +91,8 @@ static GLPPostOperationManager *instance = nil;
     NSLog(@"Timer is checking for new posts.");
     
     
-    if(self.isNetworkAvailable)
-    {
+//    if(self.isNetworkAvailable)
+//    {
         for(NSDate* t in [_postUploader pendingPosts])
         {
             NSString *url = [_imageUploader urlWithTimestamp:t];
@@ -114,11 +114,11 @@ static GLPPostOperationManager *instance = nil;
                 //Image not uploaded yet.
             }
         }
-    }
-    else
-    {
-        //Spin.
-    }
+//    }
+//    else
+//    {
+//        //Spin.
+//    }
 }
 
 -(void)uploadImage:(UIImage*)image withTimestamp:(NSDate*)timestamp
