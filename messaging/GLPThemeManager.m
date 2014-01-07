@@ -7,7 +7,6 @@
 //
 
 #import "GLPThemeManager.h"
-#import "GLPTheme.h"
 #import "GLPStanfordTheme.h"
 #import "GLPDefaultTheme.h"
 
@@ -79,6 +78,11 @@ static GLPThemeManager *instance = nil;
 -(NSString*)pullDownButton
 {
     return [self.type pullDownImage];
+}
+
+-(GLPThemeType)themeIdentifier
+{
+    return [self.type identifier];
 }
 
 @end

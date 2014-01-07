@@ -22,6 +22,8 @@
 #import "GLPLiveConversationsManager.h"
 #import "ImageFormatterHelper.h"
 #import "AppearanceHelper.h"
+#import "ChatViewAnimationsStanford.h"
+#import "GLPThemeManager.h"
 
 
 @interface ChatViewController ()
@@ -29,10 +31,14 @@
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) ChatViewAnimations *chatAnimations;
 
+@property (strong, nonatomic) ChatViewAnimationsStanford *chatStanfordAnimations;
+
 @property (strong, nonatomic) UITabBarItem *chatTabbarItem;
 
-- (IBAction)startButtonClicked:(id)sender;
-- (IBAction)startGroupButtonClicked:(id)sender;
+@property (assign, nonatomic) GLPThemeType themeType;
+
+//- (IBAction)startButtonClicked:(id)sender;
+//- (IBAction)startGroupButtonClicked:(id)sender;
 
 @end
 
@@ -57,6 +63,9 @@
     //[self addSettingsImageToNavigationBar];
     
     [self configTabbar];
+    
+    //Get theme type.
+    self.themeType = [[GLPThemeManager sharedInstance] themeIdentifier];
 
 }
 
@@ -120,30 +129,60 @@
     {
         if (subView.tag == 100)
         {
-            [(ChatViewAnimations*)subView removeElements];
-            [subView removeFromSuperview];
-            
+            if(self.themeType == kGLPStanfordTheme)
+            {
+                [(ChatViewAnimationsStanford*)subView removeElements];
+                [subView removeFromSuperview];
+            }
+            else
+            {
+                [(ChatViewAnimations*)subView removeElements];
+                [subView removeFromSuperview];
+            }
         }
     }
     
     //[ChatViewAnimations setLiveChat:YES];
 
-    self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    if(self.themeType == kGLPStanfordTheme)
+    {
+         self.chatStanfordAnimations = [[ChatViewAnimationsStanford alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        
+        self.chatStanfordAnimations.chatViewController = self;
+        self.chatStanfordAnimations.tag = 100;
+        
+        [self.view addSubview:self.chatStanfordAnimations];
+        [self.view sendSubviewToBack:self.chatStanfordAnimations];
+    }
+    else
+    {
+        self.chatAnimations = [[ChatViewAnimations alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        self.chatAnimations.chatViewController = self;
+        self.chatAnimations.tag = 100;
+        
+        [self.view addSubview:self.chatAnimations];
+        [self.view sendSubviewToBack:self.chatAnimations];
+
+
+    }
+   
+    
+    
+    
     //[self.chatAnimations initialiseLiveConversationBubbles: self.liveConversations];
     
 
     //TODO: We are removing the live chats from the NewChat view.
     //[self.chatAnimations refreshLiveConversations];
     
-    self.chatAnimations.chatViewController = self;
-    self.chatAnimations.tag = 100;
     
-    
+
     
     
     //    self.view = self.chatAnimations;
-    [self.view addSubview:self.chatAnimations];
-    [self.view sendSubviewToBack:self.chatAnimations];
+    
+    
+
     
     //    UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
     //
