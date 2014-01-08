@@ -53,7 +53,6 @@
 		582840FD180DC0EA000F3CF7 /* multiplechatimg.png in Resources */ = {isa = PBXBuildFile; fileRef = 582840FC180DC0EA000F3CF7 /* multiplechatimg.png */; };
 		5828D7AD181E94FA002D71F9 /* userchangeimg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5828D7AC181E94FA002D71F9 /* userchangeimg.png */; };
 		5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7AF181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m */; };
-		5828D7B3181E9DAE002D71F9 /* GLPLiveConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B2181E9DAE002D71F9 /* GLPLiveConversation.m */; };
 		5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */; };
 		5828D7B9181EAAFC002D71F9 /* LiveConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B8181EAAFC002D71F9 /* LiveConversationManager.m */; };
 		58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58299EA7184636160045427E /* GLPPostNotificationHelper.m */; };
@@ -323,6 +322,7 @@
 		806E3D871832B1960063AACE /* TSBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 806E3D721832B1960063AACE /* TSBlurView.m */; };
 		806E3D881832B1960063AACE /* TSMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 806E3D741832B1960063AACE /* TSMessageView.m */; };
 		806E3D8D1832B2380063AACE /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 806E3D8C1832B2380063AACE /* HexColor.m */; };
+		80728A52187C68A4008624B8 /* GLPWebSocketEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 80728A51187C68A4008624B8 /* GLPWebSocketEvent.m */; };
 		8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8073346D183B956200C6D74A /* GLPLoadingCell.xib */; };
 		80733471183BAD3B00C6D74A /* GLPPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80733470183BAD3B00C6D74A /* GLPPushManager.m */; };
 		807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4CFE180AF0F6003D67E6 /* _Conversation.m */; };
@@ -430,6 +430,7 @@
 		80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF38180FDCC8009E17BD /* DateFormatterHelper.m */; };
 		80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF3B180FE00A009E17BD /* UserManager.m */; };
 		80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */; };
+		80E396381858D87600391922 /* GLPLiveConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E396371858D87600391922 /* GLPLiveConversation.m */; };
 		80E7478217CE958B001957E5 /* post_posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478117CE958B001957E5 /* post_posts.json */; };
 		80E7478417CE9F4C001957E5 /* get_comments.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478317CE9F4C001957E5 /* get_comments.json */; };
 		80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7478717CEA0A5001957E5 /* NSString+Utils.m */; };
@@ -495,8 +496,6 @@
 		5828D7AC181E94FA002D71F9 /* userchangeimg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userchangeimg.png; sourceTree = "<group>"; };
 		5828D7AE181E9B5E002D71F9 /* GLPLiveConversationDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversationDaoParser.h; sourceTree = "<group>"; };
 		5828D7AF181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationDaoParser.m; sourceTree = "<group>"; };
-		5828D7B1181E9DAE002D71F9 /* GLPLiveConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversation.h; sourceTree = "<group>"; };
-		5828D7B2181E9DAE002D71F9 /* GLPLiveConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversation.m; sourceTree = "<group>"; };
 		5828D7B4181EA682002D71F9 /* GLPLiveConversationDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversationDao.h; sourceTree = "<group>"; };
 		5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationDao.m; sourceTree = "<group>"; };
 		5828D7B7181EAAFC002D71F9 /* LiveConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveConversationManager.h; sourceTree = "<group>"; };
@@ -866,6 +865,8 @@
 		806E3D741832B1960063AACE /* TSMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMessageView.m; sourceTree = "<group>"; };
 		806E3D8B1832B2380063AACE /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColor.h; sourceTree = "<group>"; };
 		806E3D8C1832B2380063AACE /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColor.m; sourceTree = "<group>"; };
+		80728A50187C68A4008624B8 /* GLPWebSocketEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWebSocketEvent.h; sourceTree = "<group>"; };
+		80728A51187C68A4008624B8 /* GLPWebSocketEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPWebSocketEvent.m; sourceTree = "<group>"; };
 		8073346D183B956200C6D74A /* GLPLoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPLoadingCell.xib; sourceTree = "<group>"; };
 		8073346F183BAD3B00C6D74A /* GLPPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPushManager.h; sourceTree = "<group>"; };
 		80733470183BAD3B00C6D74A /* GLPPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPushManager.m; sourceTree = "<group>"; };
@@ -1040,6 +1041,8 @@
 		80DDDF3B180FE00A009E17BD /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		80DDDF40180FEAC4009E17BD /* GLPNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNavigationController.h; sourceTree = "<group>"; };
 		80DDDF41180FEAC4009E17BD /* GLPNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNavigationController.m; sourceTree = "<group>"; };
+		80E396361858D87600391922 /* GLPLiveConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversation.h; sourceTree = "<group>"; };
+		80E396371858D87600391922 /* GLPLiveConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversation.m; sourceTree = "<group>"; };
 		80E7478117CE958B001957E5 /* post_posts.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post_posts.json; sourceTree = "<group>"; };
 		80E7478317CE9F4C001957E5 /* get_comments.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_comments.json; sourceTree = "<group>"; };
 		80E7478617CEA0A5001957E5 /* NSString+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utils.h"; sourceTree = "<group>"; };
@@ -1932,12 +1935,14 @@
 				8087E42C180EC02E00938264 /* Post.m */,
 				807C4D0F180AF0F6003D67E6 /* WebEntity.h */,
 				807C4D10180AF0F6003D67E6 /* WebEntity.m */,
-				5828D7B1181E9DAE002D71F9 /* GLPLiveConversation.h */,
-				5828D7B2181E9DAE002D71F9 /* GLPLiveConversation.m */,
 				80B2A41D18337D8B002AB1F0 /* GLPNotification.h */,
 				80B2A41E18337D8B002AB1F0 /* GLPNotification.m */,
 				58E4555A1840091B001A5D80 /* GLPLike.h */,
 				58E4555B1840091B001A5D80 /* GLPLike.m */,
+				80E396361858D87600391922 /* GLPLiveConversation.h */,
+				80E396371858D87600391922 /* GLPLiveConversation.m */,
+				80728A50187C68A4008624B8 /* GLPWebSocketEvent.h */,
+				80728A51187C68A4008624B8 /* GLPWebSocketEvent.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2809,6 +2814,7 @@
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
 				581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */,
+				80728A52187C68A4008624B8 /* GLPWebSocketEvent.m in Sources */,
 				807C4D17180AF0F6003D67E6 /* LocalMessage.m in Sources */,
 				C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */,
 				5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */,
@@ -2854,6 +2860,7 @@
 				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,
 				580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
+				80E396381858D87600391922 /* GLPLiveConversation.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
 				80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */,
@@ -2904,7 +2911,6 @@
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
-				5828D7B3181E9DAE002D71F9 /* GLPLiveConversation.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

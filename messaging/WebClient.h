@@ -14,8 +14,9 @@
 #import "GLPMessage.h"
 #import "GLPLiveConversation.h"
 #import "GLPNotification.h"
+#import "SRWebSocket.h"
 
-@interface WebClient : AFHTTPClient
+@interface WebClient : AFHTTPClient <SRWebSocketDelegate>
 
 @property (assign, nonatomic) BOOL isNetworkAvailable;
 
@@ -23,9 +24,12 @@
 
 - (void)activate;
 
+// User login
 - (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate))callbackBlock;
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock;
 - (void)registerPushToken:(NSString *)pushToken callback:(void (^)(BOOL success))callback;
+- (void)getUserWithKey:(NSInteger)key authParams:(NSDictionary *)authParams callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
+-(void)getContactsForUser:(GLPUser *)user authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success, NSArray *contacts))callback;
 
 - (void)getPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock;
@@ -50,13 +54,15 @@
 
 - (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
 
+// User
+
+
 - (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
--(void) getContactsWithCallbackBlock:(void (^)(BOOL success, NSArray *contacts))callbackBlock;
 -(void)acceptContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
 
 -(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock;
 -(void)getBusyStatus:(void (^) (BOOL success, BOOL status))callbackBlock;
-
+-(void)getContactsWithCallback:(void (^)(BOOL success, NSArray *contacts))callback;
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
 
 - (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
@@ -71,5 +77,9 @@
 // notifications
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback;
+
+// websocket
+- (void)startWebSocket;
+- (void)stopWebSocket;
 
 @end

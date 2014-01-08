@@ -65,7 +65,7 @@
         if(success) {
             // add message if any
             if(message) {
-                [ConversationManager saveMessageFromLongpoll:message];
+                //[ConversationManager saveMessageFromLongpoll:message];
                 NSLog(@"New message from long poll request: %@", message.content);
             }
         } else {

@@ -267,9 +267,8 @@ int const NumberMaxOfMessagesLoaded = 20;
 }
 
 // Executed in background thread from long poll operation
-+ (void)saveMessageFromLongpoll:(GLPMessage *)message
++ (void)saveMessage:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey
 {
-    int remoteKey = message.conversation.remoteKey;
     __block GLPConversation *conversation = nil;
     
     // check if the conversation exists in live conversations

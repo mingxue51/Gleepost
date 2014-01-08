@@ -70,7 +70,7 @@ static ContactsManager *instance = nil;
 {
     //Load contacts from server and update database.
     
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+    [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *contacts) {
         
         if(success)
         {
@@ -213,7 +213,7 @@ static ContactsManager *instance = nil;
     localCallback(localEntities);
     
     
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *serverContacts) {
+    [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *serverContacts) {
         
         
         if(!success) {

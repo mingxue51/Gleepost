@@ -25,6 +25,6 @@ extern int const NumberMaxOfMessagesLoaded;
 + (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback;
 
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
-+ (void)saveMessageFromLongpoll:(GLPMessage *)message;
++ (void)saveMessage:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey;
 
 @end
