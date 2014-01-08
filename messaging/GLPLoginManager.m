@@ -73,7 +73,7 @@
     }];
     
     [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
-    [[WebClient sharedInstance] startWebSocket];
+    [[WebClient sharedInstance] startWebSocketIfLoggedIn];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }
 

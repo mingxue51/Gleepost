@@ -266,7 +266,8 @@ int const NumberMaxOfMessagesLoaded = 20;
     return message;
 }
 
-// Executed in background thread from long poll operation
+// Save message from websocket event
+// Executed in background
 + (void)saveMessage:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey
 {
     __block GLPConversation *conversation = nil;
@@ -274,74 +275,76 @@ int const NumberMaxOfMessagesLoaded = 20;
     // check if the conversation exists in live conversations
     conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:remoteKey];
     NSLog(@"Conversation is live: %d", conversation != nil);
-
-    // check if the conversation exists in database
-    if(!conversation) {
-        [DatabaseManager run:^(FMDatabase *db) {
-            conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
-        }];
-        NSLog(@"Conversation is normal: %d", conversation != nil);
-        
-        // conversation not exists either in normal or live stack
-        if(!conversation) {
-            NSLog(@"Conversation is neither live or normal, request details");
-            
-            // request more details on conversation
-            [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:remoteKey withCallback:^(BOOL success, GLPConversation *remoteConversation) {
-                if(!success) {
-                    NSLog(@"Cannot get conversation details, abort and ignore the message");
-                    return;
-                }
-                
-                // new live conversation
-                if(remoteConversation.isLive) {
-                    // new live conversation, while we already have 3
-                    if([[GLPLiveConversationsManager sharedInstance] conversationsCount] == 3) {
-                        
-                        // get the 3 live conversations that are defined by the api
-                        [[WebClient sharedInstance] synchronousGetConversationsFilterByLive:YES withCallback:^(BOOL success, NSArray *remoteLiveConversations) {
-                            if(!success) {
-                                NSLog(@"Cannot get live conversation list, abort and ignore the message");
-                                return;
-                            }
-                            
-                            // message conversation must be a part of the 3
-                            NSArray *containsConversationArray = [remoteLiveConversations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", conversation.remoteKey]];
-                            
-                            if(containsConversationArray.count == 0) {
-                                NSLog(@"Message's conversation is not part of the 3 live conversations of the user, abort and ignore the message");
-                                return;
-                            }
-                            
-                            [[GLPLiveConversationsManager sharedInstance] setConversations:[remoteLiveConversations mutableCopy]];
-                        }];
-                    }
-                }
-                
-                // otherwise, new regular conversation
-                else {
-                    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                        [GLPConversationDao save:remoteConversation db:db];
-                    }];
-                }
-                
-                conversation = remoteConversation;
-            }];
-        }
-    }
     
-    if(!conversation) {
-        NSLog(@"Unable to identify the conversation, abort");
+    if(conversation) {
+        [ConversationManager saveMessage:message forConversation:conversation];
         return;
     }
     
-    // valid the conversation into the message
-    message.conversation = conversation;
-    [self newMessage:message];
+    // conversation exists in regular conversation
+    [DatabaseManager run:^(FMDatabase *db) {
+        conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
+    }];
+    NSLog(@"Conversation is normal: %d", conversation != nil);
+    
+    if(conversation) {
+        [ConversationManager saveMessage:message forConversation:conversation];
+        return;
+    }
+    
+    DDLogError(@"Conversation does not exists for message \"%@\", abort", message.content);
+    
+    
+//    NSLog(@"Conversation is neither live or normal, request details");
+//    
+//    // request more details on conversation
+//    [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:remoteKey withCallback:^(BOOL success, GLPConversation *remoteConversation) {
+//        if(!success) {
+//            NSLog(@"Cannot get conversation details, abort and ignore the message");
+//            return;
+//        }
+//        
+//        // new live conversation
+//        if(remoteConversation.isLive) {
+//            // new live conversation, while we already have 3
+//            if([[GLPLiveConversationsManager sharedInstance] conversationsCount] == 3) {
+//                
+//                // get the 3 live conversations that are defined by the api
+//                [[WebClient sharedInstance] synchronousGetConversationsFilterByLive:YES withCallback:^(BOOL success, NSArray *remoteLiveConversations) {
+//                    if(!success) {
+//                        NSLog(@"Cannot get live conversation list, abort and ignore the message");
+//                        return;
+//                    }
+//                    
+//                    // message conversation must be a part of the 3
+//                    NSArray *containsConversationArray = [remoteLiveConversations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", conversation.remoteKey]];
+//                    
+//                    if(containsConversationArray.count == 0) {
+//                        NSLog(@"Message's conversation is not part of the 3 live conversations of the user, abort and ignore the message");
+//                        return;
+//                    }
+//                    
+//                    [[GLPLiveConversationsManager sharedInstance] setConversations:[remoteLiveConversations mutableCopy]];
+//                }];
+//            }
+//        }
+//        
+//        // otherwise, new regular conversation
+//        else {
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                [GLPConversationDao save:remoteConversation db:db];
+//            }];
+//        }
+//        
+//        conversation = remoteConversation;
+//    }];
+
+
 }
 
-+ (void)newMessage:(GLPMessage *)message
++ (void)saveMessage:(GLPMessage *)message forConversation:(GLPConversation *)conversation
 {
+    message.conversation = conversation;
     __block BOOL success = NO;
     
     if(message.conversation.isLive) {
@@ -378,7 +381,22 @@ int const NumberMaxOfMessagesLoaded = 20;
     if(success) {
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
     }
+}
 
+// Save conversation from websocket event
+// Executed in background
++ (void)saveConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"Save conversation with remote key %d", conversation.remoteKey);
+    
+    if(conversation.isLive) {
+        DDLogError(@"Save live conversation, ignore for now");
+    } else {
+        DDLogInfo(@"Save regular conversation");
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            [GLPConversationDao save:conversation db:db];
+        }];
+    }
 }
 
 

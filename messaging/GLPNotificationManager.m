@@ -11,6 +11,7 @@
 #import "DatabaseManager.h"
 #import "SessionManager.h"
 #import "WebClient.h"
+#import "NSNotificationCenter+Utils.h"
 
 @implementation GLPNotificationManager
 
@@ -143,6 +144,19 @@
     }];
     
     return count;
+}
+
+// Save notification from web socket event
+// Executed in background
++ (void)saveNotification:(GLPNotification *)notification
+{
+    DDLogInfo(@"Save notification with remote key %d", notification.remoteKey);
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPNotificationDao save:notification inDb:db];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
 }
 
 + (void)saveNotifications:(NSArray *)notifications

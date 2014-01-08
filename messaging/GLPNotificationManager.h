@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLPNotification.h"
 
 @interface GLPNotificationManager : NSObject
 
 + (void)loadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 + (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback;
-+ (void)saveNotifications:(NSArray *)notifications;
+
 + (NSInteger)getNotificationsCount;
 +(NSArray*)cleanNotificationsArray:(NSArray*)incomingNotifications;
+
++ (void)saveNotification:(GLPNotification *)notification;
++ (void)saveNotifications:(NSArray *)notifications;
+
 @end

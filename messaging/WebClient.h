@@ -79,7 +79,7 @@
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback;
 
 // websocket
-- (void)startWebSocket;
+- (void)startWebSocketIfLoggedIn;
 - (void)stopWebSocket;
 
 @end

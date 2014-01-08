@@ -346,6 +346,7 @@
 		8087E433180ED6F700938264 /* _GLPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E432180ED6F700938264 /* _GLPMessage.m */; };
 		8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E435180ED90F00938264 /* AppearanceHelper.m */; };
 		8087E439180EEAAA00938264 /* _GLPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E438180EEAAA00938264 /* _GLPUser.m */; };
+		808F6B65187D92DB0062FE39 /* GLPWebSocketMessageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 808F6B64187D92DB0062FE39 /* GLPWebSocketMessageProcessor.m */; };
 		8096E4D317C2BA3000C7BF60 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D217C2BA3000C7BF60 /* clock.png */; };
 		8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D417C2BBD800C7BF60 /* navigation_bar.png */; };
 		8096E4D717C2BC9000C7BF60 /* navigation_bar_buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */; };
@@ -912,6 +913,8 @@
 		8087E435180ED90F00938264 /* AppearanceHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceHelper.m; sourceTree = "<group>"; };
 		8087E437180EEAAA00938264 /* _GLPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _GLPUser.h; sourceTree = "<group>"; };
 		8087E438180EEAAA00938264 /* _GLPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _GLPUser.m; sourceTree = "<group>"; };
+		808F6B63187D92DB0062FE39 /* GLPWebSocketMessageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWebSocketMessageProcessor.h; sourceTree = "<group>"; };
+		808F6B64187D92DB0062FE39 /* GLPWebSocketMessageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPWebSocketMessageProcessor.m; sourceTree = "<group>"; };
 		8096E4D217C2BA3000C7BF60 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		8096E4D417C2BBD800C7BF60 /* navigation_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar.png; sourceTree = "<group>"; };
 		8096E4D617C2BC9000C7BF60 /* navigation_bar_buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_buttons.png; sourceTree = "<group>"; };
@@ -1809,6 +1812,8 @@
 			children = (
 				C02120411850AA1200831872 /* GLPPostUploader.h */,
 				C02120421850AA1200831872 /* GLPPostUploader.m */,
+				808F6B63187D92DB0062FE39 /* GLPWebSocketMessageProcessor.h */,
+				808F6B64187D92DB0062FE39 /* GLPWebSocketMessageProcessor.m */,
 			);
 			name = Processors;
 			sourceTree = "<group>";
@@ -2924,6 +2929,7 @@
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
 				5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */,
 				80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */,
+				808F6B65187D92DB0062FE39 /* GLPWebSocketMessageProcessor.m in Sources */,
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,

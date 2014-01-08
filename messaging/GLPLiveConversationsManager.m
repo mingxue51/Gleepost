@@ -11,7 +11,6 @@
 
 @interface GLPLiveConversationsManager()
 
-@property (strong, nonatomic) NSLock *lock;
 @property (strong, nonatomic) NSMutableArray *conversations;
 @property (strong, nonatomic) dispatch_queue_t queue;
 
@@ -21,7 +20,6 @@
 @implementation GLPLiveConversationsManager
 
 @synthesize conversations=_conversations;
-@synthesize lock=_lock;
 @synthesize queue=_queue;
 
 static GLPLiveConversationsManager *instance = nil;
@@ -43,9 +41,7 @@ static GLPLiveConversationsManager *instance = nil;
         return nil;
     }
     
-    _lock = [[NSLock alloc] init];
     _conversations = [NSMutableArray array];
-    
     _queue = dispatch_queue_create("com.gleepost.queue.liveconversation", DISPATCH_QUEUE_SERIAL);
     
     return self;
@@ -55,13 +51,13 @@ static GLPLiveConversationsManager *instance = nil;
 {
     __block GLPConversation *conversation = nil;
     
-    dispatch_async(_queue, ^{
+    [self runOnConversationQueue:^{
         for(GLPConversation *c in _conversations) {
             if(c.remoteKey == remoteKey) {
                 conversation = c;
             }
         }
-    });
+    }];
     
     return conversation;
 }
@@ -70,34 +66,21 @@ static GLPLiveConversationsManager *instance = nil;
 {
     __block NSArray *res = nil;
 
-    dispatch_async(_queue, ^{
+    [self runOnConversationQueue:^{
         res = [_conversations copy];
-    });
+    }];
     
     return res;
 }
 
-- (void)setConversations:(NSMutableArray *)conversations
-{
-    [_lock lock];
-    _conversations = conversations;
-    [_lock unlock];
-}
-
-- (void)enqueue:(GLPConversation *)conversation
-{
-    [_lock lock];
-    [_conversations enqueue:conversation];
-    [_lock unlock];
-}
 
 - (int)conversationsCount
 {
     __block int res = 0;
     
-    dispatch_async(_queue, ^{
+    [self runOnConversationQueue:^{
         res = _conversations.count;
-    });
+    }];
     
     return res;
 }

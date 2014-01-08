@@ -15,8 +15,7 @@
 #import "AFJSONRequestOperation.h"
 #import "GLPUserDao.h"
 #import "AFNetworking.h"
-#import "GLPWebSocketEvent.h"
-#import "ConversationManager.h"
+#import "GLPWebSocketMessageProcessor.h"
 
 @interface WebClient()
 
@@ -99,6 +98,13 @@ static WebClient *instance = nil;
         
         // spread the notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNetworkStatusUpdate" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:self.isNetworkAvailable] forKey:@"status"]];
+        
+        // start / stop the websocket accordly
+        if(available) {
+            [self startWebSocketIfLoggedIn];
+        } else {
+            [self stopWebSocket];
+        }
         
         NSLog(@"Network status changed, currently available: %d", self.isNetworkAvailable);
     }
@@ -937,42 +943,57 @@ static WebClient *instance = nil;
     callback(YES, json);
 }
 
+
 #pragma mark - Web socket
 
-- (void)startWebSocket
+- (void)startWebSocketIfLoggedIn
 {
+    DDLogInfo(@"Start web socket if logged in");
+    
+    if(![self.sessionManager isSessionValid]) {
+        DDLogInfo(@"Start web socket cannot start because session is not valid, try to close web socket");
+        [_webSocket close];
+        return;
+    }
+    
+    if(_webSocket && (_webSocket.readyState == SR_CONNECTING || _webSocket.readyState == SR_OPEN)) {
+        DDLogInfo(@"Start web socket cannot start because web socket is already in opening or opened, abort");
+        return;
+    }
+    
     NSString *url = [NSString stringWithFormat:@"%@ws?id=%d&token=%@", kWebserviceBaseUrl, self.sessionManager.user.remoteKey, self.sessionManager.token];
-    NSLog(@"Init web socket for url: %@", url);
+    NSLog(@"Init web socket with url: %@", url);
     
     _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:url]];
     _webSocket.delegate = self;
+    
     [_webSocket open];
 }
 
 - (void)stopWebSocket
 {
+    DDLogInfo(@"Stop web socket");
+    
+    // web socket not yet initialized
+    if(!_webSocket) {
+        DDLogInfo(@"Stop web socket cannot stop because web socket is nil, abort");
+        return;
+    }
+    
+    if(_webSocket.readyState == SR_CLOSING || _webSocket.readyState == SR_CLOSED) {
+        DDLogInfo(@"Stop web socket cannot stop because web socket already in closing or closed, abort");
+        _webSocket = nil;
+        return;
+    }
+    
     [_webSocket close];
+    _webSocket = nil;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
 {
     NSLog(@"Web socket received response: %@", response);
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-    
-    GLPWebSocketEvent *event = [RemoteParser parseWebSocketEventFromJson:json];
-    
-    switch (event.type) {
-        case kGLPWebSocketEventTypeNewMessage: {
-            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-                GLPMessage *message = [RemoteParser parseMessageFromJson:event.data forConversation:nil];
-                [ConversationManager saveMessage:message forConversationRemoteKey:[event conversationRemoteKeyFromLocation]];
-            }];
-            
-            [[[NSOperationQueue alloc] init] addOperation:operation];
-            
-            break;
-        }
-    }
+    [[GLPWebSocketMessageProcessor sharedInstance] processMessage:response];
 }
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
@@ -992,11 +1013,6 @@ static WebClient *instance = nil;
 
 
 # pragma mark - Helper methods
-
-//- (NSDictionary *)getAuthParamsForUser:(GLPUser *)user
-//{
-//    return @{@"id": user.remoteKey, @"token": user.to}
-//}
 
 // DEBUG use only
 // Setting the max concurrent operations to 1 may break other things such as requests running in "background" and in parallel (long polling request for instance)
