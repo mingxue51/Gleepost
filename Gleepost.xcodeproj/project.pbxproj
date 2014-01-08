@@ -121,6 +121,11 @@
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */; };
+		586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */ = {isa = PBXBuildFile; fileRef = 586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */; };
+		586135B9187C088A008F0EAE /* cloudbig.png in Resources */ = {isa = PBXBuildFile; fileRef = 586135B5187C088A008F0EAE /* cloudbig.png */; };
+		586135BA187C088A008F0EAE /* cloudmedium.png in Resources */ = {isa = PBXBuildFile; fileRef = 586135B6187C088A008F0EAE /* cloudmedium.png */; };
+		586135BB187C088A008F0EAE /* cloudsmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 586135B7187C088A008F0EAE /* cloudsmall.png */; };
+		586135BC187C088A008F0EAE /* stanford_new_chat in Resources */ = {isa = PBXBuildFile; fileRef = 586135B8187C088A008F0EAE /* stanford_new_chat */; };
 		586439CE18115FD6004334CB /* pic1.png in Resources */ = {isa = PBXBuildFile; fileRef = 586439CD18115FD6004334CB /* pic1.png */; };
 		586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586458B0180834AC00B1B19C /* PostWithImageCell.m */; };
 		586458B41808393B00B1B19C /* PostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586458B31808393B00B1B19C /* PostCell.m */; };
@@ -595,6 +600,12 @@
 		585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageTableViewCell.m; sourceTree = "<group>"; };
 		585EDAE9183106DC008D29F6 /* ImageFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFormatterHelper.h; sourceTree = "<group>"; };
 		585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFormatterHelper.m; sourceTree = "<group>"; };
+		586135B1187C0722008F0EAE /* ChatViewAnimationsStanford.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationsStanford.h; sourceTree = "<group>"; };
+		586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationsStanford.m; sourceTree = "<group>"; };
+		586135B5187C088A008F0EAE /* cloudbig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloudbig.png; sourceTree = "<group>"; };
+		586135B6187C088A008F0EAE /* cloudmedium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloudmedium.png; sourceTree = "<group>"; };
+		586135B7187C088A008F0EAE /* cloudsmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloudsmall.png; sourceTree = "<group>"; };
+		586135B8187C088A008F0EAE /* stanford_new_chat */ = {isa = PBXFileReference; lastKnownFileType = file; path = stanford_new_chat; sourceTree = "<group>"; };
 		586439CD18115FD6004334CB /* pic1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pic1.png; sourceTree = "<group>"; };
 		586458AF180834AC00B1B19C /* PostWithImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostWithImageCell.h; sourceTree = "<group>"; };
 		586458B0180834AC00B1B19C /* PostWithImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostWithImageCell.m; sourceTree = "<group>"; };
@@ -1314,9 +1325,30 @@
 			name = "Chat Classes";
 			sourceTree = "<group>";
 		};
+		586135B0187C06CF008F0EAE /* Chat Animations Themes */ = {
+			isa = PBXGroup;
+			children = (
+				586135B1187C0722008F0EAE /* ChatViewAnimationsStanford.h */,
+				586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */,
+			);
+			name = "Chat Animations Themes";
+			sourceTree = "<group>";
+		};
+		586135B4187C07C2008F0EAE /* Stanford */ = {
+			isa = PBXGroup;
+			children = (
+				586135B5187C088A008F0EAE /* cloudbig.png */,
+				586135B6187C088A008F0EAE /* cloudmedium.png */,
+				586135B7187C088A008F0EAE /* cloudsmall.png */,
+				586135B8187C088A008F0EAE /* stanford_new_chat */,
+			);
+			name = Stanford;
+			sourceTree = "<group>";
+		};
 		5865812F18059CE0005814B4 /* NewChat Classes */ = {
 			isa = PBXGroup;
 			children = (
+				586135B0187C06CF008F0EAE /* Chat Animations Themes */,
 				80C4CABB17CFE65200AFA80C /* ChatViewController.h */,
 				80C4CABC17CFE65200AFA80C /* ChatViewController.m */,
 				58DC024B18043DEE0008993A /* ChatViewAnimations.h */,
@@ -1617,6 +1649,7 @@
 		58DC02381804377D0008993A /* New Chat Images */ = {
 			isa = PBXGroup;
 			children = (
+				586135B4187C07C2008F0EAE /* Stanford */,
 				58DC023B180437A70008993A /* bubble1.png */,
 				58DC023C180437A70008993A /* bubble2.png */,
 				58DC023D180437A70008993A /* bubble3.png */,
@@ -2546,6 +2579,7 @@
 				58DAD77C1859FBD20016D838 /* bird-house-7@2x.png in Resources */,
 				584332A4180F324200BD9F74 /* profilebackground.png in Resources */,
 				58FB7C7F1855FF82002C6A00 /* add-user.png in Resources */,
+				586135BA187C088A008F0EAE /* cloudmedium.png in Resources */,
 				586659B617F1AC2300A0354E /* messageboxwhite.png in Resources */,
 				58DB02A918105C86001C021A /* blackholder2.png in Resources */,
 				8096E4DD17C2C61500C7BF60 /* back_button.png in Resources */,
@@ -2652,6 +2686,7 @@
 				587D23C917EA195D00E0DDFF /* new_chat_tab_small.png in Resources */,
 				80B1735B18056A0700D9669B /* typing_bar1.png in Resources */,
 				58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */,
+				586135BC187C088A008F0EAE /* stanford_new_chat in Resources */,
 				80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */,
 				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				587D23CA17EA195D00E0DDFF /* chat_tab_small.png in Resources */,
@@ -2670,9 +2705,11 @@
 				584C1EF2181ACBCA00862E81 /* newchat3.png in Resources */,
 				5893BA0518200CA50003589E /* notificationicon.png in Resources */,
 				584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */,
+				586135B9187C088A008F0EAE /* cloudbig.png in Resources */,
 				58FB7CB818565628002C6A00 /* ProfileViewAboutTableViewCell.xib in Resources */,
 				587D23CE17EA195D00E0DDFF /* img.png in Resources */,
 				584CF676182303FC00EFABB8 /* ignore_contact.png in Resources */,
+				586135BB187C088A008F0EAE /* cloudsmall.png in Resources */,
 				586CDFEA185244BD00902F68 /* user-added.png in Resources */,
 				583B9FE317F3676A00B4BEE3 /* set_tab_small.png in Resources */,
 				587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */,
@@ -2802,6 +2839,7 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
+				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
 				80AB895D17C277D40053E784 /* NewPostViewController.m in Sources */,

@@ -13,5 +13,6 @@
 
 +(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToHeight: (float) finalHeight;
 +(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour;
++(UIImage*)resizeImage:(UIImage*)image withSize:(CGSize)newSize;
 
 @end

@@ -38,6 +38,16 @@
     return image;
 }
 
++(UIImage*)resizeImage:(UIImage*)image withSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
 
 
 /** Not used at the moment. **/
@@ -55,15 +65,7 @@
 }
 
 
--(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
-{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return imageToUpload;
-}
+
 
 -(UIImage*)resizeImage:(UIImage*)image
 {
