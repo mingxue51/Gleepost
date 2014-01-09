@@ -294,7 +294,7 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
             //Add live chats' section in the section array.
             [self addSectionWithName:LIVE_CHATS_STR];
             
-            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
+//            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
             [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
             [self.tableView reloadData];
         }

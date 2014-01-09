@@ -105,7 +105,7 @@
             return;
         }
         
-        [[GLPLiveConversationsManager sharedInstance] setConversations:[conversations mutableCopy]];
+//        [[GLPLiveConversationsManager sharedInstance] setConversations:[conversations mutableCopy]];
         [self initialiseAnimationViewToTheViewController];
     }];
 }
