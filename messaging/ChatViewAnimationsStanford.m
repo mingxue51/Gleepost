@@ -38,7 +38,7 @@ static BOOL goBack = NO;
 
 -(void)setUpTimers
 {
-    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(animateClouds:) userInfo:nil repeats:YES];
+    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(startCloud:) userInfo:nil repeats:YES];
     [self.timer1 fire];
 }
 
@@ -74,11 +74,47 @@ static BOOL goBack = NO;
 {
     for(UIImageView *imageView in self.clouds)
     {
+        [imageView setHidden:YES];
         [self addSubview:imageView];
     }
 }
 
 #pragma mark - Animations
+
+/**
+ Takes reandomly a new cloud and start the animation of the cloud from right to left.
+ */
+-(void)startCloud:(id)sender
+{
+    srand(time(0));
+    
+//    int cCloud = rand() % 3;
+//    UIImageView *selectedCloud = [self.clouds objectAtIndex:cCloud];
+//    
+//    [selectedCloud setFrame: CGRectMake(-100, 100 , selectedCloud.image.size.width/2, selectedCloud.image.size.height/2)];
+
+    
+    UIImageView *selectedCloud = [self generateCloud];
+    
+    [self addSubview:selectedCloud];
+    
+    [selectedCloud setHidden:NO];
+
+    [UIView animateWithDuration:15.0 animations:^{
+        //100
+        [selectedCloud setFrame: CGRectMake(320, selectedCloud.frame.origin.y , selectedCloud.image.size.width/2, selectedCloud.image.size.height/2)];
+
+        
+        
+    } completion:^(BOOL finished) {
+        
+        //[selectedCloud setHidden:YES];
+
+    }];
+    
+//    NSLog(@"Clound random: %d",cCloud);
+
+}
 
 -(void)animateClouds:(id)sender
 {
@@ -124,6 +160,21 @@ static BOOL goBack = NO;
     {
         goBack = YES;
     }
+}
+
+-(UIImageView*)generateCloud
+{
+    srand(time(0));
+    
+    UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudsmall"]];
+    
+    int rY = rand() % 20;
+//    rY-=10;
+    
+    //TODO: Y random. + take random cloud.
+    [cloudSmall setFrame:CGRectMake(-100, 100-rY, [UIImage imageNamed:@"cloudsmall"].size.width/2, [UIImage imageNamed:@"cloudsmall"].size.height/2)];
+
+    return cloudSmall;
 }
 
 

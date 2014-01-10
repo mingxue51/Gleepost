@@ -90,6 +90,10 @@ static GLPLiveConversationsManager *instance = nil;
     dispatch_async(_queue, block);
 }
 
-
+//ADDED.
+-(void)setConversations:(NSMutableArray *)conversations
+{
+    _conversations = conversations;
+}
 
 @end
