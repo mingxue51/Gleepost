@@ -147,6 +147,18 @@
 		58665A0417F32E4200A0354E /* post_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58665A0317F32E4200A0354E /* post_image.png */; };
 		58665A0617F32E5E00A0354E /* post_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58665A0517F32E5E00A0354E /* post_image@2x.png */; };
 		5866F15218841EB6007484CF /* blades_copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15118841EB6007484CF /* blades_copy.png */; };
+		5866F15518844099007484CF /* AnimationDayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5866F15418844099007484CF /* AnimationDayController.m */; };
+		5866F15F18844869007484CF /* background_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15618844868007484CF /* background_night.png */; };
+		5866F16018844869007484CF /* blimp_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15718844868007484CF /* blimp_night.png */; };
+		5866F16118844869007484CF /* cloud1_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15818844868007484CF /* cloud1_night.png */; };
+		5866F16218844869007484CF /* cloud2_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15918844868007484CF /* cloud2_night.png */; };
+		5866F16318844869007484CF /* cloud3_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15A18844868007484CF /* cloud3_night.png */; };
+		5866F16518844869007484CF /* hot_air_balloon_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15C18844869007484CF /* hot_air_balloon_night.png */; };
+		5866F16618844869007484CF /* pole_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15D18844869007484CF /* pole_night.png */; };
+		5866F16718844869007484CF /* sun_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F15E18844869007484CF /* sun_night.png */; };
+		5866F16918844F05007484CF /* blades_night_copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16818844F05007484CF /* blades_night_copy.png */; };
+		5866F16B1884529A007484CF /* hills.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16A1884529A007484CF /* hills.png */; };
+		5866F16D188452F1007484CF /* hills_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16C188452F1007484CF /* hills_night.png */; };
 		586CDFE118520A9600902F68 /* in-contacts-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDD18520A9600902F68 /* in-contacts-temp.png */; };
 		586CDFE218520A9600902F68 /* message-user-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDE18520A9600902F68 /* message-user-temp.png */; };
 		586CDFE318520A9600902F68 /* add-user-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDF18520A9600902F68 /* add-user-temp.png */; };
@@ -256,7 +268,6 @@
 		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
 		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
 		58E3DAB31884053600B9B048 /* blades.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB21884053600B9B048 /* blades.png */; };
-		58E3DAB51884054A00B9B048 /* hills.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB41884054A00B9B048 /* hills.png */; };
 		58E3DAB71884055E00B9B048 /* pole.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB61884055E00B9B048 /* pole.png */; };
 		58E3DABD1884059100B9B048 /* cloud1.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB81884059100B9B048 /* cloud1.png */; };
 		58E3DAC01884059100B9B048 /* cloud2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DABB1884059100B9B048 /* cloud2.png */; };
@@ -639,6 +650,19 @@
 		58665A0317F32E4200A0354E /* post_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = post_image.png; sourceTree = "<group>"; };
 		58665A0517F32E5E00A0354E /* post_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "post_image@2x.png"; sourceTree = "<group>"; };
 		5866F15118841EB6007484CF /* blades_copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blades_copy.png; sourceTree = "<group>"; };
+		5866F15318844099007484CF /* AnimationDayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationDayController.h; sourceTree = "<group>"; };
+		5866F15418844099007484CF /* AnimationDayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationDayController.m; sourceTree = "<group>"; };
+		5866F15618844868007484CF /* background_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_night.png; sourceTree = "<group>"; };
+		5866F15718844868007484CF /* blimp_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blimp_night.png; sourceTree = "<group>"; };
+		5866F15818844868007484CF /* cloud1_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud1_night.png; sourceTree = "<group>"; };
+		5866F15918844868007484CF /* cloud2_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud2_night.png; sourceTree = "<group>"; };
+		5866F15A18844868007484CF /* cloud3_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud3_night.png; sourceTree = "<group>"; };
+		5866F15C18844869007484CF /* hot_air_balloon_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hot_air_balloon_night.png; sourceTree = "<group>"; };
+		5866F15D18844869007484CF /* pole_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pole_night.png; sourceTree = "<group>"; };
+		5866F15E18844869007484CF /* sun_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun_night.png; sourceTree = "<group>"; };
+		5866F16818844F05007484CF /* blades_night_copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blades_night_copy.png; sourceTree = "<group>"; };
+		5866F16A1884529A007484CF /* hills.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hills.png; sourceTree = "<group>"; };
+		5866F16C188452F1007484CF /* hills_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hills_night.png; sourceTree = "<group>"; };
 		586CDFDD18520A9600902F68 /* in-contacts-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts-temp.png"; sourceTree = "<group>"; };
 		586CDFDE18520A9600902F68 /* message-user-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-user-temp.png"; sourceTree = "<group>"; };
 		586CDFDF18520A9600902F68 /* add-user-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-user-temp.png"; sourceTree = "<group>"; };
@@ -779,7 +803,6 @@
 		58DF415F186463F900D53723 /* GLPImageUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageUploaderManager.h; sourceTree = "<group>"; };
 		58DF4160186463F900D53723 /* GLPImageUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageUploaderManager.m; sourceTree = "<group>"; };
 		58E3DAB21884053600B9B048 /* blades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blades.png; sourceTree = "<group>"; };
-		58E3DAB41884054A00B9B048 /* hills.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hills.png; sourceTree = "<group>"; };
 		58E3DAB61884055E00B9B048 /* pole.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pole.png; sourceTree = "<group>"; };
 		58E3DAB81884059100B9B048 /* cloud1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud1.png; sourceTree = "<group>"; };
 		58E3DABB1884059100B9B048 /* cloud2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud2.png; sourceTree = "<group>"; };
@@ -1347,6 +1370,8 @@
 			children = (
 				586135B1187C0722008F0EAE /* ChatViewAnimationsStanford.h */,
 				586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */,
+				5866F15318844099007484CF /* AnimationDayController.h */,
+				5866F15418844099007484CF /* AnimationDayController.m */,
 			);
 			name = "Chat Animations Themes";
 			sourceTree = "<group>";
@@ -1705,7 +1730,6 @@
 				58E3DAB81884059100B9B048 /* cloud1.png */,
 				58E3DABB1884059100B9B048 /* cloud2.png */,
 				58E3DABC1884059100B9B048 /* cloud3.png */,
-				58E3DAB41884054A00B9B048 /* hills.png */,
 				58E3DAC8188405FB00B9B048 /* background_day.png */,
 				58E3DAB61884055E00B9B048 /* pole.png */,
 				58E3DAB21884053600B9B048 /* blades.png */,
@@ -1713,6 +1737,7 @@
 				58E3DAC2188405CC00B9B048 /* hot_air_balloon.png */,
 				58E3DAC4188405DB00B9B048 /* blimp.png */,
 				58E3DAC6188405E600B9B048 /* sun.png */,
+				5866F16A1884529A007484CF /* hills.png */,
 			);
 			name = Day;
 			sourceTree = "<group>";
@@ -1720,6 +1745,16 @@
 		58E3DAB11884050F00B9B048 /* Night */ = {
 			isa = PBXGroup;
 			children = (
+				5866F15618844868007484CF /* background_night.png */,
+				5866F15718844868007484CF /* blimp_night.png */,
+				5866F16818844F05007484CF /* blades_night_copy.png */,
+				5866F15818844868007484CF /* cloud1_night.png */,
+				5866F15918844868007484CF /* cloud2_night.png */,
+				5866F15A18844868007484CF /* cloud3_night.png */,
+				5866F15C18844869007484CF /* hot_air_balloon_night.png */,
+				5866F15D18844869007484CF /* pole_night.png */,
+				5866F15E18844869007484CF /* sun_night.png */,
+				5866F16C188452F1007484CF /* hills_night.png */,
 			);
 			name = Night;
 			sourceTree = "<group>";
@@ -2541,6 +2576,7 @@
 				58143D74182170C000B76E5D /* +.png in Resources */,
 				58143D72182169A400B76E5D /* +_old2.png in Resources */,
 				586CDFE318520A9600902F68 /* add-user-temp.png in Resources */,
+				5866F16D188452F1007484CF /* hills_night.png in Resources */,
 				586458BE1808582000B1B19C /* comment_image@2x.png in Resources */,
 				58D0E2651850BD7B005879F4 /* ignore_notification_button.png in Resources */,
 				806E3D771832B1960063AACE /* NotificationBackgroundError@2x.png in Resources */,
@@ -2559,7 +2595,6 @@
 				806E3D851832B1960063AACE /* NotificationButtonBackground@2x.png in Resources */,
 				58FB7C96185614C5002C6A00 /* MutualProfileTabView.xib in Resources */,
 				58A122B017ECC8F300E2AB4B /* MessageBox2.png in Resources */,
-				58E3DAB51884054A00B9B048 /* hills.png in Resources */,
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
 				8096E4D317C2BA3000C7BF60 /* clock.png in Resources */,
 				58808EFA1807012D00E415C1 /* navigationbar2.png in Resources */,
@@ -2614,6 +2649,7 @@
 				8096E4DB17C2C37A00C7BF60 /* background.png in Resources */,
 				58DC0243180437A70008993A /* bubble1.png in Resources */,
 				80B2A4381833FCF1002AB1F0 /* profile_notifications_icon_new_bubble.png in Resources */,
+				5866F16718844869007484CF /* sun_night.png in Resources */,
 				58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */,
 				58E3DAC01884059100B9B048 /* cloud2.png in Resources */,
 				80B1735C18056A0700D9669B /* typing_bar1@2x.png in Resources */,
@@ -2626,6 +2662,7 @@
 				58E3DAB71884055E00B9B048 /* pole.png in Resources */,
 				58E3DAC9188405FB00B9B048 /* background_day.png in Resources */,
 				584332A4180F324200BD9F74 /* profilebackground.png in Resources */,
+				5866F16B1884529A007484CF /* hills.png in Resources */,
 				58FB7C7F1855FF82002C6A00 /* add-user.png in Resources */,
 				586659B617F1AC2300A0354E /* messageboxwhite.png in Resources */,
 				58DB02A918105C86001C021A /* blackholder2.png in Resources */,
@@ -2660,6 +2697,7 @@
 				58FB7C9E18561722002C6A00 /* locked.png in Resources */,
 				584CBE7E17F0573C00CD756A /* avatar_icon.png in Resources */,
 				8096E4E517C2C88500C7BF60 /* like.png in Resources */,
+				5866F16018844869007484CF /* blimp_night.png in Resources */,
 				8096E4E717C2CA6800C7BF60 /* pic.png in Resources */,
 				8096E4F217C2D00F00C7BF60 /* navigation_fullblack.png in Resources */,
 				584332AA180F343200BD9F74 /* bottom_background_private_profile.png in Resources */,
@@ -2686,8 +2724,11 @@
 				58FB7C8E18560D08002C6A00 /* PostsProfileTabView.xib in Resources */,
 				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
 				586CDFE118520A9600902F68 /* in-contacts-temp.png in Resources */,
+				5866F15F18844869007484CF /* background_night.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
+				5866F16218844869007484CF /* cloud2_night.png in Resources */,
+				5866F16618844869007484CF /* pole_night.png in Resources */,
 				583EAB7918119688003D68B3 /* add_contact.png in Resources */,
 				5880103718101327008C170F /* pic2.png in Resources */,
 				806E3D7E1832B1960063AACE /* NotificationBackgroundSuccessIcon.png in Resources */,
@@ -2744,11 +2785,14 @@
 				587D23CD17EA195D00E0DDFF /* home_tab_small.png in Resources */,
 				58493F3C1827ED1800EE5F1A /* navigationbar2_.png in Resources */,
 				58DB02A818105C86001C021A /* blackholder1.png in Resources */,
+				5866F16918844F05007484CF /* blades_night_copy.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,
 				584CF66F1823017B00EFABB8 /* GLPNotificationCell.xib in Resources */,
 				586659FF17F2214300A0354E /* tabbar@2x.png in Resources */,
+				5866F16318844869007484CF /* cloud3_night.png in Resources */,
+				5866F16118844869007484CF /* cloud1_night.png in Resources */,
 				5891254A1858CF2E000531DE /* like_button.png in Resources */,
 				58FB7CA5185649D3002C6A00 /* accept.png in Resources */,
 				58E3DAC11884059100B9B048 /* cloud3.png in Resources */,
@@ -2765,6 +2809,7 @@
 				587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */,
 				587D23D317EA195D00E0DDFF /* tabbarold.png in Resources */,
 				580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */,
+				5866F16518844869007484CF /* hot_air_balloon_night.png in Resources */,
 				580A639018184CAB00AC8009 /* default_user_image3.png in Resources */,
 				587D23D417EA195D00E0DDFF /* thumbs-up.png in Resources */,
 				587D23D517EA195D00E0DDFF /* contacts_tab_small.png in Resources */,
@@ -2854,6 +2899,7 @@
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
+				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
 				58FB7C8A18560B6B002C6A00 /* AboutProfileView.m in Sources */,

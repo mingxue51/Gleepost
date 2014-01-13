@@ -7,6 +7,7 @@
 //
 
 #import "ChatViewAnimationsStanford.h"
+#import "AnimationDayController.h"
 
 @interface ChatViewAnimationsStanford ()
 
@@ -18,6 +19,8 @@
 @property (strong, nonatomic) UIImageView *windMillPole;
 @property (strong, nonatomic) UIImageView *blimp;
 @property (strong, nonatomic) UIImageView *balloon;
+
+@property (strong, nonatomic) AnimationDayController *dayController;
 
 @end
 
@@ -33,8 +36,10 @@ static BOOL goBack = NO;
     self = [super initWithFrame:frame];
     if (self)
     {
+        self.dayController = [AnimationDayController sharedInstance];
         
-        [self setBackgroundColor:[UIColor colorWithPatternImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:@"background_day"] withSize:frame.size]]];
+        
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:[self.dayController backgroundImage]] withSize:frame.size]]];
 
         [self initObjectsWithFrame:frame];
         
@@ -43,9 +48,6 @@ static BOOL goBack = NO;
         [self startStandardAnimations];
         
         [self addCloudsImages];
-        
-        
-        //[self addCloudsArrayToView];
         
         [self setUpTimers];
         
@@ -56,28 +58,30 @@ static BOOL goBack = NO;
 -(void)initObjectsWithFrame:(CGRect)frame
 {
     self.clouds = [[NSMutableArray alloc] init];
-    self.forground = [[UIImageView alloc] initWithImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:@"hills"] withSize:frame.size]];
     
-    UIImage *sunImage = [UIImage imageNamed:@"sun"];
+    
+    self.forground = [[UIImageView alloc] initWithImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:[self.dayController forground]] withSize:frame.size]];
+    
+    UIImage *sunImage = [UIImage imageNamed:[self.dayController sunMoon]];
     
     self.sunMoon = [[UIImageView alloc] initWithImage:sunImage];
     [self.sunMoon setFrame:CGRectMake(10.0f, 20.0f, sunImage.size.width/2, sunImage.size.height/2)];
     
-    UIImage *windPole = [UIImage imageNamed:@"pole"];
-    UIImage *windBlades = [UIImage imageNamed:@"blades_copy"];
+    UIImage *windPole = [UIImage imageNamed:[self.dayController pole]];
+    UIImage *windBlades = [UIImage imageNamed:[self.dayController blades]];
     
     self.windMillPole = [[UIImageView alloc] initWithImage:windPole];
-    [self.windMillPole setFrame:CGRectMake(280.0f, 350.0f, windPole.size.width/2, windPole.size.height/2)];
+    [self.windMillPole setFrame:CGRectMake(280.0f, 370.0f, windPole.size.width/2, windPole.size.height/2)];
     
     self.windMillBlades = [[UIImageView alloc] initWithImage:windBlades];
-    [self.windMillBlades setFrame:CGRectMake(264.0f, 333.0f, windBlades.size.width/2, windBlades.size.height/2)];
+    [self.windMillBlades setFrame:CGRectMake(264.0f, 353.0f, windBlades.size.width/2, windBlades.size.height/2)];
     
     
-    UIImage *ballonImg = [UIImage imageNamed:@"hot_air_balloon"];
+    UIImage *ballonImg = [UIImage imageNamed:[self.dayController balloon]];
     self.balloon = [[UIImageView alloc] initWithImage:ballonImg];
     [self.balloon setFrame:CGRectMake(230.0f, 100.0f, ballonImg.size.width/2, ballonImg.size.height/2)];
     
-    UIImage *blimpImg = [UIImage imageNamed:@"blimp"];
+    UIImage *blimpImg = [UIImage imageNamed:[self.dayController blimp]];
     self.blimp = [[UIImageView alloc] initWithImage:blimpImg];
     [self.blimp setFrame:CGRectMake(320, 100.0f, blimpImg.size.width/2, blimpImg.size.height/2)];
     
@@ -146,18 +150,18 @@ static BOOL goBack = NO;
 
 -(void)addCloudsImages
 {
-    UIImage *cloud1Img = [UIImage imageNamed:@"cloud1"];
+    UIImage *cloud1Img = [UIImage imageNamed:[self.dayController cloud1]];
     
 //    UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:cloud1Img];
 //    [cloudSmall setFrame:CGRectMake(70, 120, cloud1Img.size.width/2, cloud1Img.size.height/2)];
     
-    UIImage *cloud2Img = [UIImage imageNamed:@"cloud2"];
+    UIImage *cloud2Img = [UIImage imageNamed:[self.dayController cloud2]];
     
 //    UIImageView *cloudMedium = [[UIImageView alloc] initWithImage:cloud2Img];
 //    [cloudMedium setFrame:CGRectMake(10, 40, cloud2Img.size.width/2, cloud2Img.size.height/2)];
 
     
-    UIImage *cloud3Img = [UIImage imageNamed:@"cloud3"];
+    UIImage *cloud3Img = [UIImage imageNamed:[self.dayController cloud3]];
     
 //    UIImageView *cloudBig = [[UIImageView alloc] initWithImage:cloud3Img];
 //    [cloudBig setFrame:CGRectMake(155, 50, cloud3Img.size.width/2, cloud3Img.size.height/2)];
@@ -166,15 +170,6 @@ static BOOL goBack = NO;
     [self.clouds addObject:cloud2Img];
     [self.clouds addObject:cloud3Img];
 
-}
-
--(void)addCloudsArrayToView
-{
-    for(UIImageView *imageView in self.clouds)
-    {
-        [imageView setHidden:YES];
-        [self addSubview:imageView];
-    }
 }
 
 #pragma mark - Animations
