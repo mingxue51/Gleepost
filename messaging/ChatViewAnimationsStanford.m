@@ -8,7 +8,16 @@
 
 #import "ChatViewAnimationsStanford.h"
 
+@interface ChatViewAnimationsStanford ()
 
+//Elements.
+@property (strong, nonatomic) NSMutableArray *clouds;
+@property (strong, nonatomic) UIImageView *forground;
+@property (strong, nonatomic) UIImageView *sunMoon;
+@property (strong, nonatomic) UIImageView *windMillBlades;
+@property (strong, nonatomic) UIImageView *windMillPole;
+
+@end
 
 @implementation ChatViewAnimationsStanford
 
@@ -22,9 +31,15 @@ static BOOL goBack = NO;
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self setBackgroundColor:[UIColor colorWithPatternImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:@"stanford_new_chat"] withSize:frame.size]]];
         
-        [self initObjects];
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:@"background_day"] withSize:frame.size]]];
+
+        
+        [self initObjectsWithFrame:frame];
+        
+        [self addStaticElements];
+        
+        [self startStandardAnimations];
         
         [self addCloudsImages];
         
@@ -34,6 +49,36 @@ static BOOL goBack = NO;
         
     }
     return self;
+}
+
+-(void)initObjectsWithFrame:(CGRect)frame
+{
+    self.clouds = [[NSMutableArray alloc] init];
+    self.forground = [[UIImageView alloc] initWithImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:@"hills"] withSize:frame.size]];
+    
+    UIImage *sunImage = [UIImage imageNamed:@"sun"];
+    
+    self.sunMoon = [[UIImageView alloc] initWithImage:sunImage];
+    [self.sunMoon setFrame:CGRectMake(10.0f, 20.0f, sunImage.size.width/2, sunImage.size.height/2)];
+    
+}
+
+-(void)addStaticElements
+{
+    [self addSubview:self.sunMoon];
+    [self addSubview:self.forground];
+    
+}
+
+-(void)startStandardAnimations
+{
+    [UIView animateWithDuration:3.0f delay:0.0f options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+        
+        [self.sunMoon setFrame:CGRectMake(self.sunMoon.frame.origin.x, self.sunMoon.frame.origin.y, self.sunMoon.frame.size.width-10, self.sunMoon.frame.size.height-10)];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)setUpTimers
@@ -48,10 +93,7 @@ static BOOL goBack = NO;
     self.timer1 = nil;
 }
 
--(void)initObjects
-{
-    self.clouds = [[NSMutableArray alloc] init];
-}
+
 
 -(void)addCloudsImages
 {

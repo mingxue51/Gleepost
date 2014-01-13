@@ -16,7 +16,7 @@
 @property (strong, nonatomic) ChatViewController *chatViewController;
 
 //@property (strong, nonatomic) UIImageView *centralCircle;
-@property (strong, nonatomic) NSMutableArray *clouds;
+
 
 @property (strong, nonatomic) PullDownScrollView *pullDownScrollView;
 @property (strong, nonatomic) NSTimer *timer1;
