@@ -8,6 +8,7 @@
 
 #import "ChatViewAnimationsStanford.h"
 #import "AnimationDayController.h"
+#import "WebClientHelper.h"
 
 @interface ChatViewAnimationsStanford ()
 
@@ -19,6 +20,8 @@
 @property (strong, nonatomic) UIImageView *windMillPole;
 @property (strong, nonatomic) UIImageView *blimp;
 @property (strong, nonatomic) UIImageView *balloon;
+@property (strong, nonatomic) UIButton *searchForPeopleButton;
+@property (strong, nonatomic) UIImageView *bigCircle;
 
 @property (strong, nonatomic) AnimationDayController *dayController;
 
@@ -85,6 +88,22 @@ static BOOL goBack = NO;
     self.blimp = [[UIImageView alloc] initWithImage:blimpImg];
     [self.blimp setFrame:CGRectMake(320, 100.0f, blimpImg.size.width/2, blimpImg.size.height/2)];
     
+    [self.blimp setHidden:YES];
+    
+    
+    self.searchForPeopleButton = [[UIButton alloc] initWithFrame:CGRectMake(130.0f, 390.0f, 60.0f, 60.0f)];
+    [self.searchForPeopleButton addTarget:self action:@selector(searchForNewChat:) forControlEvents:UIControlEventTouchUpInside];
+    
+//    self.searchForPeopleButton.layer.borderColor = [UIColor redColor].CGColor;
+//    self.searchForPeopleButton.layer.borderWidth = 1.0f;
+    
+    
+    UIImage *centralCircleImage = [UIImage imageNamed:@"lightbublle"];
+    self.bigCircle = [[UIImageView alloc] initWithImage:centralCircleImage highlightedImage:nil];
+    CGSize sizeOfCircleImage = centralCircleImage.size;
+    
+    [self.bigCircle setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/7.5), sizeOfCircleImage.width/3.5, sizeOfCircleImage.height/3.5)];
+    
     
     
 }
@@ -98,6 +117,12 @@ static BOOL goBack = NO;
     [self addSubview:self.windMillPole];
     [self addSubview:self.windMillBlades];
     [self addSubview:self.balloon];
+    
+    [self addSubview:self.searchForPeopleButton];
+    
+    //Add circle but hidden.
+    [self.bigCircle setHidden:YES];
+    [self addSubview:self.bigCircle];
 }
 
 -(void)startStandardAnimations
@@ -172,6 +197,36 @@ static BOOL goBack = NO;
 
 }
 
+#pragma mark - Selectors
+
+-(void)searchForNewChat:(id)sender
+{
+    [self searchingAnimations];
+    
+    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:1.4];
+    
+    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.5];
+    
+    [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:3.5];
+    
+}
+
+-(void)navigateToNewRandomChat:(id)sender
+{
+    [self.chatViewController searchForConversation];
+}
+
+-(void) startSearchingIndicator
+{
+    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Searching for people..." forView:self];
+    
+}
+
+-(void) stopSearchingIndicator
+{
+    [WebClientHelper hideStandardLoaderForView:self];
+}
+
 #pragma mark - Animations
 
 - (void) spinWithOptions: (UIViewAnimationOptions) options withView:(UIView*)view {
@@ -193,6 +248,39 @@ static BOOL goBack = NO;
 //                             }
 //                         }
                      }];
+}
+
+-(void)searchingAnimations
+{
+    
+    //Resize central circle.
+    [UIView animateWithDuration:1.5f delay:0 options:(UIViewAnimationOptionCurveLinear) animations:^{
+        
+        CGRect mainCircleFrame = self.bigCircle.frame;
+        
+        [self.bigCircle setHidden:NO];
+        
+        
+        
+        [self.bigCircle setFrame:CGRectMake(mainCircleFrame.origin.x-150, mainCircleFrame.origin.y-150, mainCircleFrame.size.width+300, mainCircleFrame.size.height+300)];
+        
+        
+        
+    }completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:1.5 delay:0 options:(UIViewAnimationOptionCurveLinear) animations:^{
+            
+            CGRect mainCircleFrame = self.bigCircle.frame;
+            
+            [self.bigCircle setFrame:CGRectMake(mainCircleFrame.origin.x-310, mainCircleFrame.origin.y-300, mainCircleFrame.size.width+600, mainCircleFrame.size.height+600)];
+            
+        }completion:^(BOOL finished) {
+            
+            
+        }];
+        
+        
+    }];
 }
 
 - (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations

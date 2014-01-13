@@ -76,7 +76,7 @@ static AnimationDayController *instance = nil;
 
 -(NSString*)sunMoon
 {
-    return self.day ? @"sun" : @"sun_night";
+    return self.day ? @"" : @"sun_night";
 }
 
 -(NSString*)cloud1

@@ -24,5 +24,6 @@
 
 
 -(void)removeElements;
+-(void)navigateToNewRandomChat:(id)sender;
 
 @end
