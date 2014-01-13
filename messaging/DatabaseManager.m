@@ -136,7 +136,7 @@ static DatabaseManager *instance = nil;
             // message
             [db executeUpdate:@"create table messages ( \
              key integer primary key autoincrement, \
-             remoteKey integer unique not null, \
+             remoteKey integer unique, \
              date integer, \
              content text, \
              sendStatus integer, \

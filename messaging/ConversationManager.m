@@ -224,6 +224,8 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
+    DDLogInfo(@"Create message with content %@", content);
+    
     __block GLPMessage *message = [[GLPMessage alloc] init];
     message.content = content;
     message.conversation = conversation;
@@ -238,11 +240,11 @@ int const NumberMaxOfMessagesLoaded = 20;
     if(!conversation.isLive) {
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             [GLPMessageDao save:message db:db];
-            [GLPConversationDao update:conversation db:db];
+            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
         }];
     }
     
-    NSLog(@"Post message %@ to server", message.content);
+    DDLogInfo(@"Post message %@ to server", message.content);
     
     [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL responseSuccess, NSInteger remoteKey) {
         NSLog(@"Post to server response: success %d - id %d", responseSuccess, remoteKey);
@@ -379,7 +381,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
     
     if(success) {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_MESSAGE object:nil userInfo:@{@"message":message}];
     }
 }
 
@@ -391,6 +393,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     
     if(conversation.isLive) {
         DDLogError(@"Save live conversation, ignore for now");
+        //[GLPLiveConversationsManager sharedInstance] a
     } else {
         DDLogInfo(@"Save regular conversation");
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {

@@ -16,6 +16,7 @@
 + (NSArray *)findConversationsOrderByDateFilterByLive:(BOOL)liveConversations inDb:(FMDatabase *)db;
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db;
++ (void)updateConversationLastUpdateAndLastMessage:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)updateConversationUnreadStatus:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)deleteAllNormalConversationsInDb:(FMDatabase *)db;
 
