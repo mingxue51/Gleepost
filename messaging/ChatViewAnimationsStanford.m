@@ -16,6 +16,8 @@
 @property (strong, nonatomic) UIImageView *sunMoon;
 @property (strong, nonatomic) UIImageView *windMillBlades;
 @property (strong, nonatomic) UIImageView *windMillPole;
+@property (strong, nonatomic) UIImageView *blimp;
+@property (strong, nonatomic) UIImageView *balloon;
 
 @end
 
@@ -34,7 +36,6 @@ static BOOL goBack = NO;
         
         [self setBackgroundColor:[UIColor colorWithPatternImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:@"background_day"] withSize:frame.size]]];
 
-        
         [self initObjectsWithFrame:frame];
         
         [self addStaticElements];
@@ -43,7 +44,8 @@ static BOOL goBack = NO;
         
         [self addCloudsImages];
         
-        [self addCloudsArrayToView];
+        
+        //[self addCloudsArrayToView];
         
         [self setUpTimers];
         
@@ -61,13 +63,37 @@ static BOOL goBack = NO;
     self.sunMoon = [[UIImageView alloc] initWithImage:sunImage];
     [self.sunMoon setFrame:CGRectMake(10.0f, 20.0f, sunImage.size.width/2, sunImage.size.height/2)];
     
+    UIImage *windPole = [UIImage imageNamed:@"pole"];
+    UIImage *windBlades = [UIImage imageNamed:@"blades_copy"];
+    
+    self.windMillPole = [[UIImageView alloc] initWithImage:windPole];
+    [self.windMillPole setFrame:CGRectMake(280.0f, 350.0f, windPole.size.width/2, windPole.size.height/2)];
+    
+    self.windMillBlades = [[UIImageView alloc] initWithImage:windBlades];
+    [self.windMillBlades setFrame:CGRectMake(264.0f, 333.0f, windBlades.size.width/2, windBlades.size.height/2)];
+    
+    
+    UIImage *ballonImg = [UIImage imageNamed:@"hot_air_balloon"];
+    self.balloon = [[UIImageView alloc] initWithImage:ballonImg];
+    [self.balloon setFrame:CGRectMake(230.0f, 100.0f, ballonImg.size.width/2, ballonImg.size.height/2)];
+    
+    UIImage *blimpImg = [UIImage imageNamed:@"blimp"];
+    self.blimp = [[UIImageView alloc] initWithImage:blimpImg];
+    [self.blimp setFrame:CGRectMake(320, 100.0f, blimpImg.size.width/2, blimpImg.size.height/2)];
+    
+    
+    
 }
 
 -(void)addStaticElements
 {
     [self addSubview:self.sunMoon];
+    [self addSubview:self.blimp];
+
     [self addSubview:self.forground];
-    
+    [self addSubview:self.windMillPole];
+    [self addSubview:self.windMillBlades];
+    [self addSubview:self.balloon];
 }
 
 -(void)startStandardAnimations
@@ -79,11 +105,34 @@ static BOOL goBack = NO;
     } completion:^(BOOL finished) {
         
     }];
+    
+    //[self spinWithOptions:UIViewAnimationOptionCurveEaseIn withView:self.sunMoon];
+
+    
+    //[self runSpinAnimationOnView:self.windMillBlades duration:4.0f rotations:100.0f];
+    [self spinWithOptions:UIViewAnimationOptionCurveEaseIn withView:self.windMillBlades];
+    
+    [UIView animateWithDuration:5.0f delay:0.0f options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse animations:^{
+        
+        [self.balloon setFrame:CGRectMake(self.balloon.frame.origin.x, self.balloon.frame.origin.y+20, self.balloon.frame.size.width, self.balloon.frame.size.height)];
+        
+    } completion:^(BOOL finished){
+
+    }];
+    
+    [UIView animateWithDuration:20.0f delay:0.0f options:UIViewAnimationOptionRepeat animations:^{
+        
+        [self.blimp setFrame:CGRectMake(self.blimp.frame.origin.x-550, self.blimp.frame.origin.y, self.blimp.frame.size.width, self.blimp.frame.size.height)];
+
+        
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)setUpTimers
 {
-    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(startCloud:) userInfo:nil repeats:YES];
+    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(startCloud:) userInfo:nil repeats:YES];
     [self.timer1 fire];
 }
 
@@ -97,18 +146,25 @@ static BOOL goBack = NO;
 
 -(void)addCloudsImages
 {
-    UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudsmall"]];
-    [cloudSmall setFrame:CGRectMake(70, 120, [UIImage imageNamed:@"cloudsmall"].size.width/2, [UIImage imageNamed:@"cloudsmall"].size.height/2)];
+    UIImage *cloud1Img = [UIImage imageNamed:@"cloud1"];
     
-    UIImageView *cloudMedium = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudmedium"]];
-    [cloudMedium setFrame:CGRectMake(10, 40, [UIImage imageNamed:@"cloudmedium"].size.width/2, [UIImage imageNamed:@"cloudmedium"].size.height/2)];
+//    UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:cloud1Img];
+//    [cloudSmall setFrame:CGRectMake(70, 120, cloud1Img.size.width/2, cloud1Img.size.height/2)];
     
-    UIImageView *cloudBig = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudbig"]];
-    [cloudBig setFrame:CGRectMake(155, 50, [UIImage imageNamed:@"cloudbig"].size.width/2, [UIImage imageNamed:@"cloudbig"].size.height/2)];
+    UIImage *cloud2Img = [UIImage imageNamed:@"cloud2"];
     
-    [self.clouds addObject:cloudSmall];
-    [self.clouds addObject:cloudMedium];
-    [self.clouds addObject:cloudBig];
+//    UIImageView *cloudMedium = [[UIImageView alloc] initWithImage:cloud2Img];
+//    [cloudMedium setFrame:CGRectMake(10, 40, cloud2Img.size.width/2, cloud2Img.size.height/2)];
+
+    
+    UIImage *cloud3Img = [UIImage imageNamed:@"cloud3"];
+    
+//    UIImageView *cloudBig = [[UIImageView alloc] initWithImage:cloud3Img];
+//    [cloudBig setFrame:CGRectMake(155, 50, cloud3Img.size.width/2, cloud3Img.size.height/2)];
+    
+    [self.clouds addObject:cloud1Img];
+    [self.clouds addObject:cloud2Img];
+    [self.clouds addObject:cloud3Img];
 
 }
 
@@ -123,6 +179,42 @@ static BOOL goBack = NO;
 
 #pragma mark - Animations
 
+- (void) spinWithOptions: (UIViewAnimationOptions) options withView:(UIView*)view {
+    // this spin completes 360 degrees every 2 seconds
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: options
+                     animations: ^{
+                         view.transform = CGAffineTransformRotate(view.transform, M_PI / 2);
+                     }
+                     completion: ^(BOOL finished) {
+//                         if (finished) {
+//                             if (animating) {
+//                                 // if flag still set, keep spinning with constant speed
+                                 [self spinWithOptions: UIViewAnimationOptionCurveLinear withView:view];
+//                             } else if (options != UIViewAnimationOptionCurveEaseOut) {
+//                                 // one last spin, with deceleration
+//                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut];
+//                             }
+//                         }
+                     }];
+}
+
+- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations
+{
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0];
+    
+    //[NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration];;
+    rotationAnimation.duration = duration;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = INFINITY;
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+}
+
+
 /**
  Takes reandomly a new cloud and start the animation of the cloud from right to left.
  */
@@ -130,28 +222,17 @@ static BOOL goBack = NO;
 {
     srand(time(0));
     
-//    int cCloud = rand() % 3;
-//    UIImageView *selectedCloud = [self.clouds objectAtIndex:cCloud];
-//    
-//    [selectedCloud setFrame: CGRectMake(-100, 100 , selectedCloud.image.size.width/2, selectedCloud.image.size.height/2)];
-
-    
     UIImageView *selectedCloud = [self generateCloud];
     
     [self addSubview:selectedCloud];
-    
-    [selectedCloud setHidden:NO];
+    [self sendSubviewToBack:selectedCloud];
 
-    [UIView animateWithDuration:15.0 animations:^{
-        //100
-        [selectedCloud setFrame: CGRectMake(320, selectedCloud.frame.origin.y , selectedCloud.image.size.width/2, selectedCloud.image.size.height/2)];
+    [UIView animateWithDuration:30.0 animations:^{
 
-        
+        [selectedCloud setFrame: CGRectMake(-100, selectedCloud.frame.origin.y , selectedCloud.image.size.width/2, selectedCloud.image.size.height/2)];
         
     } completion:^(BOOL finished) {
         
-        //[selectedCloud setHidden:YES];
-
     }];
     
 //    NSLog(@"Clound random: %d",cCloud);
@@ -208,15 +289,23 @@ static BOOL goBack = NO;
 {
     srand(time(0));
     
-    UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudsmall"]];
+    //UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudsmall"]];
     
-    int rY = rand() % 20;
+    int cloudNumber = rand() % 3;
+    
+    UIImageView *currentCloud = nil;
+    
+    
+    currentCloud = [[UIImageView alloc] initWithImage:[self.clouds objectAtIndex:cloudNumber]];
+    
+    int rY = rand() % 400;
+    
+    rY+=10;
 //    rY-=10;
     
-    //TODO: Y random. + take random cloud.
-    [cloudSmall setFrame:CGRectMake(-100, 100-rY, [UIImage imageNamed:@"cloudsmall"].size.width/2, [UIImage imageNamed:@"cloudsmall"].size.height/2)];
+    [currentCloud setFrame:CGRectMake(320, rY, currentCloud.frame.size.width/2, currentCloud.frame.size.height/2)];
 
-    return cloudSmall;
+    return currentCloud;
 }
 
 
