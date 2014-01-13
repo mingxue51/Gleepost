@@ -17,16 +17,17 @@
 
 #define ENV_FAKE_API     NO
 #define DEV              YES
-#define DEBUG            YES
+#define ENV_DEBUG        YES
 
 #define RELOAD_POSTS_INTERVAL_S             60
 #define RELOAD_NOTIFICATIONS_INTERVAL_S     30
 #define LONGPOLL_ERROR_TIME_INTERVAL_S      5
 
 #define GLPNOTIFICATION_NEW_NOTIFICATION            @"GLPNewNotification"
+#define GLPNOTIFICATION_NEW_MESSAGE                 @"GLPNewMessage"
 
 // DDLog
-#ifdef DEBUG
+#ifdef ENV_DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #else
 static const int ddLogLevel = LOG_LEVEL_ERROR;

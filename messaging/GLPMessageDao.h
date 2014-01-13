@@ -24,7 +24,6 @@
 //+ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 
 + (void)save:(GLPMessage *)entity db:(FMDatabase *)db;
-//+ (void)saveOld:(GLPMessage *)entity;
 + (void)update:(GLPMessage *)entity db:(FMDatabase *)db;
 
 //+ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
