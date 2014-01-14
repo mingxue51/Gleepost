@@ -58,8 +58,6 @@ static AnimationDayController *instance = nil;
         self.day = YES;
     }
     
-    NSLog(@"DAY: %d",self.day);
-
 }
 
 #pragma mark - Images' names

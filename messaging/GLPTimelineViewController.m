@@ -38,6 +38,7 @@
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
 #import "GLPPrivateProfileViewController.h"
+#import "GLPPostImageLoader.h"
 
 @interface GLPTimelineViewController ()
 
@@ -116,50 +117,13 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
-    
-//    [self configAppearance];
     [self configTableView];
     [self configTabbarFormat];
     
     [self configNewElementsIndicatorView];
     
+    [self initialiseObjects];
     
-    self.postsHeight = [[NSMutableArray alloc] init];
-    
-    self.dateFormatter = [[NSDateFormatter alloc] init];
-    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    
-    self.users = [[NSMutableArray alloc] init];
-    
-    
-    self.usersImages = [[NSMutableArray alloc] init];
-    self.postsImages = [[NSMutableArray alloc] init];
-    
-    //Create the array and initialise.
-    self.shownCells = [[NSMutableArray alloc] init];
-    
-    self.transitionController = [[TransitionDelegate alloc] init];
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
-    //Initialise.
-    self.readyToReloadPosts = YES;
-    
-    // loading related controls
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    self.isLoading = NO;
-    self.firstLoadSuccessful = NO;
-    self.tableViewInScrolling = NO;
-    self.insertedNewRowsCount = 0;
-    self.shouldLoadNewPostsAfterScrolling = NO;
-    self.postsNewRowsCountToInsertAfterScrolling = 0;
-    
-    self.isReloadingCronRunning = NO;
-    self.shouldReloadingCronRun = NO;
-    
-    self.commentCreated = NO;
-    
-    self.postIndexToReload = -1;
     
     //TODO: Remove this later.
     [[ContactsManager sharedInstance] refreshContacts];
@@ -219,7 +183,6 @@ static BOOL likePushed;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    
     [self stopReloadingCron];
 }
 
@@ -228,9 +191,54 @@ static BOOL likePushed;
 //    return NO;
 //}
 
+-(void)initialiseObjects
+{
+    self.postsHeight = [[NSMutableArray alloc] init];
+    
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    
+    self.users = [[NSMutableArray alloc] init];
+    
+    
+    self.usersImages = [[NSMutableArray alloc] init];
+    self.postsImages = [[NSMutableArray alloc] init];
+    
+    //Create the array and initialise.
+    self.shownCells = [[NSMutableArray alloc] init];
+    
+    self.transitionController = [[TransitionDelegate alloc] init];
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+    
+    //Initialise.
+    self.readyToReloadPosts = YES;
+    
+    // loading related controls
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    self.isLoading = NO;
+    self.firstLoadSuccessful = NO;
+    self.tableViewInScrolling = NO;
+    self.insertedNewRowsCount = 0;
+    self.shouldLoadNewPostsAfterScrolling = NO;
+    self.postsNewRowsCountToInsertAfterScrolling = 0;
+    
+    self.isReloadingCronRunning = NO;
+    self.shouldReloadingCronRun = NO;
+    
+    self.commentCreated = NO;
+    
+    self.postIndexToReload = -1;
+    
+
+}
+
+
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUpladed" object:nil];
 }
 
 
@@ -284,6 +292,17 @@ static BOOL likePushed;
 
 //    [self.tableView reloadData];
     
+
+}
+
+-(void)updateRealImage:(NSNotification*)notification
+{
+    NSLog(@"Notification: %@",[notification userInfo]);
+    
+    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+    {
+        [self.tableView reloadData];
+    }
 
 }
 
@@ -413,6 +432,8 @@ static BOOL likePushed;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUpladed" object:nil];
     
 }
 
@@ -555,12 +576,17 @@ static BOOL likePushed;
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
         self.posts = [localPosts mutableCopy];
+        
+        [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+        
         [self.tableView reloadData];
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         if(success) {
             self.posts = [remotePosts mutableCopy];
             
+            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
             
@@ -625,6 +651,10 @@ static BOOL likePushed;
         if(posts.count > 0) {
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
+            //New methodology of loading images.
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+
+            
             // update table view and keep the scrolling state
             if(saveScrollingState) {
                 // delay the update if user is in scrolling state
@@ -683,6 +713,8 @@ static BOOL likePushed;
         if(posts.count > 0) {
             int firstInsertRow = self.posts.count;
             
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
             
             NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
