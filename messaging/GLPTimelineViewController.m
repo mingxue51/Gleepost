@@ -297,7 +297,7 @@ static BOOL likePushed;
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    NSLog(@"Notification: %@",[notification userInfo]);
+//    NSLog(@"Notification: %@",[notification userInfo]);
     
     if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
     {
@@ -562,7 +562,6 @@ static BOOL likePushed;
 }
 
 
-
 #pragma mark - Posts
 
 - (void)loadInitialPosts
@@ -577,7 +576,7 @@ static BOOL likePushed;
         // show temp local results
         self.posts = [localPosts mutableCopy];
         
-        [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+        //[[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
         [self.tableView reloadData];
         

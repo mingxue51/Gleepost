@@ -151,7 +151,7 @@ static const float OneLineText = 16.0;
     
     if([postData.author.profileImageUrl isEqualToString:@""])
     {
-        NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
+//        NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
         [self.userImageView setImage:userImage];
     }
     else
@@ -327,7 +327,7 @@ static const float OneLineText = 16.0;
     
     if(!self.imageAvailable)
     {
-        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
+//        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
     }
 }
 
