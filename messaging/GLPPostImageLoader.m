@@ -7,7 +7,6 @@
 //
 
 #import "GLPPostImageLoader.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
@@ -27,8 +26,7 @@
 
 @synthesize loadingImages = _loadingImages;
 @synthesize imagesNotStarted = _imagesNotStarted;
-//@synthesize thread1 = _thread1;
-//@synthesize thread2 = _thread2;
+
 
 static GLPPostImageLoader *instance = nil;
 
@@ -50,7 +48,6 @@ static GLPPostImageLoader *instance = nil;
     
     if(self)
     {
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
         _loadingImages = [[NSMutableDictionary alloc] init];
         _imagesNotStarted = [[NSMutableArray alloc] init];
         
@@ -124,9 +121,6 @@ static GLPPostImageLoader *instance = nil;
  */
 -(void)cancelOperations
 {
-//    [_thread1 cancel];
-//    [_thread2 cancel];
-    
     BOOL exist = NO;
     
     //Refill the array with the not finished remote keys.
@@ -143,8 +137,7 @@ static GLPPostImageLoader *instance = nil;
         
         if(!exist)
         {
-            NSLog(@"Not in array: %@",key);
-            [_imagesNotStarted enqueue:key];
+            [_imagesNotStarted insertObject:key atIndex:0];
         }
         else
         {
@@ -194,7 +187,7 @@ static GLPPostImageLoader *instance = nil;
         if(img)
         {
             //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUpladed" object:nil userInfo:@{@"RemoteKey":remoteKey,
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
                                                                                                                                 @"FinalImage":img}];
             
             //Delete the entry from the queue.
@@ -214,20 +207,6 @@ static GLPPostImageLoader *instance = nil;
 
 -(void)startConsume
 {
-    
-//    [t cancel];
-//    if([_thread1 isCancelled])
-//    {
-//        [_thread1 start];
-//        [_thread2 start];
-//    }
-    
-//    _thread1 = [[NSThread alloc] initWithTarget:self selector:@selector(consumeQueue:) object:nil];
-//    _thread2 = [[NSThread alloc] initWithTarget:self selector:@selector(consumeQueue:) object:nil];
-//    
-//    [_thread1 start];
-//    [_thread2 start];
-
     if(self.networkAvailable)
     {
         //If there is network then start threads.

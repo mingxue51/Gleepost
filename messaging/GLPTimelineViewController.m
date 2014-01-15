@@ -39,6 +39,8 @@
 #import "ImageFormatterHelper.h"
 #import "GLPPrivateProfileViewController.h"
 #import "GLPPostImageLoader.h"
+#import "GLPMessagesLoader.h"
+#import "GLPProfileLoader.h"
 
 @interface GLPTimelineViewController ()
 
@@ -127,6 +129,9 @@ static BOOL likePushed;
     
     //TODO: Remove this later.
     [[ContactsManager sharedInstance] refreshContacts];
+    
+    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
+//    [self startLoadingContents];
     
     [self loadInitialPosts];
     
@@ -238,7 +243,7 @@ static BOOL likePushed;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUpladed" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
 }
 
 
@@ -308,6 +313,19 @@ static BOOL likePushed;
 
 
 #pragma mark - Init config
+
+/**
+ Starts loading in the background some basic contents of the app like messages, profiles etc.
+ */
+
+-(void)startLoadingContents:(id)sender
+{
+    
+    [[GLPMessagesLoader sharedInstance] loadLiveConversations];
+    [[GLPMessagesLoader sharedInstance] loadConversations];
+    [[GLPProfileLoader sharedInstance] loadUserData];
+
+}
 
 - (void)configAppearance
 {
@@ -433,7 +451,7 @@ static BOOL likePushed;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUpladed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     
 }
 

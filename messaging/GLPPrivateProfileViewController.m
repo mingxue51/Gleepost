@@ -19,6 +19,8 @@
 #import "GLPPostManager.h"
 #import "ViewPostImageViewController.h"
 #import "AppearanceHelper.h"
+#import "GLPPostNotificationHelper.h"
+#import "GLPPostImageLoader.h"
 
 
 @interface GLPPrivateProfileViewController ()
@@ -112,6 +114,21 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -217,6 +234,8 @@
         {
             self.posts = [posts mutableCopy];
             
+            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+
             [self.tableView reloadData];
         }
         else
@@ -229,6 +248,16 @@
 }
 
 #pragma mark - UI methods
+
+
+-(void)updateRealImage:(NSNotification*)notification
+{
+    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+    {
+        [self.tableView reloadData];
+    }
+    
+}
 
 -(void)showFullProfileImage:(id)sender
 {

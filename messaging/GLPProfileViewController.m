@@ -27,10 +27,16 @@
 #import "GLPLoginManager.h"
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
+#import "GLPPostNotificationHelper.h"
+#import "GLPPostImageLoader.h"
+#import "GLPProfileLoader.h"
+
 
 @interface GLPProfileViewController ()
 
 @property (strong, nonatomic) GLPUser *user;
+
+@property (strong, nonatomic) UIImage *userImage;
 
 @property (assign, nonatomic) int numberOfRows;
 
@@ -107,13 +113,16 @@
     [self updateNotificationsBubble];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+
 
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+
     [super viewWillDisappear:animated];
 }
 
@@ -264,7 +273,10 @@
 -(void)setUserDetails
 {
 //    self.user = [[SessionManager sharedInstance]user];
-    [self loadUserData];
+    
+    [self fetchUserData];
+    
+    //[self loadUserData];
 }
 
 
@@ -280,6 +292,15 @@
     {
         [self.notificationView hideNotifications];
     }
+}
+
+-(void)updateRealImage:(NSNotification*)notification
+{
+    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+    {
+        [self.tableView reloadData];
+    }
+    
 }
 
 -(void)updateViewWithNewImage:(NSString*)imageUrl
@@ -437,6 +458,8 @@
         {
             self.posts = [posts mutableCopy];
             
+            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+            
             [self.tableView reloadData];
         }
         else
@@ -487,6 +510,30 @@
     }];
 }
 
+/**
+ Fetch user data from loader.
+ */
+-(void)fetchUserData
+{
+    NSArray *usersData = [[GLPProfileLoader sharedInstance] userData];
+    
+    if(!usersData)
+    {
+        [self loadUserData];
+    }
+    else
+    {
+        self.user = [usersData objectAtIndex:0];
+        self.userImage = [usersData objectAtIndex:1];
+        [self.tableView reloadData];
+
+        [self loadPosts];
+
+
+    }
+    
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -529,7 +576,14 @@
         [profileView setDelegate:self];
 
 //        [profileView updateImageWithUrl:self.profileImageUrl];
-        [profileView initialiseElementsWithUserDetails:self.user];
+        if(_userImage)
+        {
+            [profileView initialiseElementsWithUserDetails:self.user withImage:self.userImage];
+        }
+        else
+        {
+            [profileView initialiseElementsWithUserDetails:self.user];
+        }
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
         
         

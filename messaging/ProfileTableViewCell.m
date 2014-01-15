@@ -53,6 +53,35 @@
     return self;
 }
 
+-(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
+{
+    self.currentUser = user;
+    
+    [self.universityLabel setText:user.networkName];
+    
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 4.0;
+    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
+    
+    
+    
+    
+    if([user.profileImageUrl isEqualToString:@""])
+    {
+        //Set default image.
+        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+    }
+    else
+    {
+        [self.profileImage setImage:image];
+    }
+    
+    //Decide which elements to present.
+    [self setCurrentUserStatusWithUser:user];
+}
+
+
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user
 {
     
