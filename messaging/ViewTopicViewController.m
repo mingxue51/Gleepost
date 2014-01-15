@@ -128,7 +128,7 @@ float timeInterval = 0.1;
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:@"GLPNewMessage" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
     
     
     //[self.tabBarController.tabBar setHidden:YES];

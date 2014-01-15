@@ -135,45 +135,29 @@
     return urs;
 }
 
-//+ (void)save:(GLPMessage *)entity
-//{
-//    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//        [GLPMessageDao save:entity db:db];
-//    }];
-//}
-
 + (void)save:(GLPMessage *)entity db:(FMDatabase *)db
 {
+    NSAssert(entity.conversation, @"Conversation can't be nil");
+    NSAssert(entity.conversation.remoteKey != 0, @"Conversation can't have nil remoteKey");
+    
+    NSString *sql = @"insert into messages (remoteKey, content, date, sendStatus, isOld, author_key, conversation_key) values(:remoteKey, :content, :date, :sendStatus, :isOld, :author_key, :conversation_key)";
+    
     int date = [entity.date timeIntervalSince1970];
+    NSNumber *remoteKey = (entity.remoteKey == 0) ? nil : [NSNumber numberWithInt:entity.remoteKey];
     
-    NSString *remoteKeyColumn, *remoteKeyValue;
-    if(entity.remoteKey == 0) {
-        remoteKeyColumn = @"";
-        remoteKeyValue = @"";
-    } else {
-        remoteKeyColumn = @"remoteKey, ";
-        remoteKeyValue = [NSString stringWithFormat:@"%d", entity.remoteKey];
-    }
+    NSDictionary *params = @{
+                             @"remoteKey": remoteKey,
+                             @"content": entity.content,
+                             @"date": [NSNumber numberWithInt:date],
+                             @"sendStatus": [NSNumber numberWithInt:entity.sendStatus],
+                             @"seen": [NSNumber numberWithBool:entity.seen],
+                             @"isOld": [NSNumber numberWithBool:entity.isOld],
+                             @"author_key": [NSNumber numberWithInt:entity.author.remoteKey],
+                             @"conversation_key": [NSNumber numberWithInt:entity.conversation.remoteKey]
+                             };
     
-    NSString *sql = entity.remoteKey == 0 ? @"insert into messages (content, date, sendStatus, isOld, author_key, conversation_key) values(%@, %d, %d, %d, %d, %d)" : [NSString stringWithFormat:@"insert into messages (remoteKey, content, date, sendStatus, isOld, author_key, conversation_key) values(%d, %%@, %%d, %%d, %%d, %%d, %%d)", entity.remoteKey];
-    
-    [db executeUpdateWithFormat:sql,
-     remoteKeyValue,
-     entity.remoteKey,
-     entity.content,
-     date,
-     entity.sendStatus,
-     entity.isOld,
-     entity.author.remoteKey,
-     entity.conversation.remoteKey];
-    
+    [db executeUpdate:sql withParameterDictionary:params];
     entity.key = [db lastInsertRowId];
-    
-//    //todo: need to remove this
-//    //Fetch user's id.
-//    GLPUser *user = [GLPUserDao findByRemoteKey:entity.author.remoteKey db:db];
-//    
-//    [db executeUpdateWithFormat:@"insert into messages_participants (user_key, message_key) values(%d, %d)",user.key ,entity.key];
 }
 
 + (void)update:(GLPMessage *)entity db:(FMDatabase *)db
