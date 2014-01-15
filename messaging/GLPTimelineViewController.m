@@ -274,9 +274,6 @@ static BOOL likePushed;
     int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
-    
-    NSLog(@"Result from uploaded post: %@", dict);
-    
     int index = 0;
     
     for(GLPPost* p in self.posts)

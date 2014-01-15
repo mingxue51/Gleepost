@@ -57,7 +57,6 @@ static GLPPostImageLoader *instance = nil;
         
         [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
 
-            NSLog(@"NETWORK: %d",(status == AFNetworkReachabilityStatusNotReachable) ? NO : YES);
             BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
             
             if(currentStatus)
@@ -170,7 +169,7 @@ static GLPPostImageLoader *instance = nil;
             
             mach_port_t machTID = pthread_mach_thread_np(pthread_self());
             
-            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
+//            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
 
        
@@ -181,7 +180,7 @@ static GLPPostImageLoader *instance = nil;
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
-        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
+//        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
         
         
         if(img)

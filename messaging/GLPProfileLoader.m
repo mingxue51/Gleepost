@@ -75,7 +75,7 @@ static GLPProfileLoader *instance = nil;
             
             [NSThread detachNewThreadSelector:@selector(loadImage:) toTarget:self withObject:user.profileImageUrl];
             
-            NSLog(@"User's data loaded: %@",_userDetails);
+//            NSLog(@"User's data loaded: %@",_userDetails);
             
         }
         else
@@ -97,7 +97,6 @@ static GLPProfileLoader *instance = nil;
     
     _userImage = img;
     
-    NSLog(@"User's Image: %@",_userImage);
 }
 
 #pragma mark - Accessors

@@ -13,7 +13,7 @@
 #include "TargetConditionals.h"
 #endif
 
-#define ON_DEVICE       !(TARGET_IPHONE_SIMULATOR)
+
 
 #define ENV_FAKE_API     NO
 #define DEV              YES

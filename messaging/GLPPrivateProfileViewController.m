@@ -84,13 +84,13 @@
     {
         if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
         {
-            NSLog(@"PrivateProfileViewController : User already requested by you.");
+//            NSLog(@"PrivateProfileViewController : User already requested by you.");
             //[self setContactAsRequested];
             
         }
         else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
         {
-            NSLog(@"PrivateProfileViewController : User requested you.");
+//            NSLog(@"PrivateProfileViewController : User requested you.");
             
             //[self setAcceptRequestButton];
             
@@ -98,7 +98,7 @@
         else
         {
             //If not show the private profile view as is.
-            NSLog(@"PrivateProfileViewController : Private profile as is.");
+//            NSLog(@"PrivateProfileViewController : Private profile as is.");
         }
         
         self.contact = NO;

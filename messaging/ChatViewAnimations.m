@@ -441,14 +441,8 @@ static BOOL animateBubbles = YES;
 
     if(!animateBubbles)
     {
-        
-        NSLog(@"Animation Finished");
         return;
-        
     }
-    
-    NSLog(@"Animation Started");
-
     
     CGRect mainCircleFrame = self.centralCircle.frame;
     
