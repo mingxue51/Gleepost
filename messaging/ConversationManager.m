@@ -211,9 +211,9 @@ int const NumberMaxOfMessagesLoaded = 20;
             messages = [[messages reverseObjectEnumerator] allObjects];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                for(GLPMessage *message in messages) {
-                    message.isOld = YES;
-                    [GLPMessageDao save:message db:db];
+                for(GLPMessage *m in messages) {
+                    m.isOld = YES;
+                    [GLPMessageDao save:m db:db];
                 }
             }];
             

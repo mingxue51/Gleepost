@@ -24,7 +24,9 @@
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
-        [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet db:db]];
+        GLPMessage *m = [GLPMessageDaoParser createFromResultSet:resultSet db:db];
+        m.conversation = conversation;
+        [result addObject:m];
     }
     
     return [[result reverseObjectEnumerator] allObjects]; // reverse order so that the most recent message is at the end
