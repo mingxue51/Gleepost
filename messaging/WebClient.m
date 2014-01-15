@@ -316,7 +316,6 @@ static WebClient *instance = nil;
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"resp %@", responseObject);
         NSArray *conversations = [RemoteParser parseConversationsFilterByLive:live fromJson:responseObject];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
