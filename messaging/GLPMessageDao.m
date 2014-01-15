@@ -140,10 +140,10 @@
     NSAssert(entity.conversation, @"Conversation can't be nil");
     NSAssert(entity.conversation.remoteKey != 0, @"Conversation can't have nil remoteKey");
     
-    NSString *sql = @"insert into messages (remoteKey, content, date, sendStatus, isOld, author_key, conversation_key) values(:remoteKey, :content, :date, :sendStatus, :isOld, :author_key, :conversation_key)";
+    NSString *sql = @"insert into messages (remoteKey, content, date, sendStatus, seen, isOld, author_key, conversation_key) values(:remoteKey, :content, :date, :sendStatus, :seen, :isOld, :author_key, :conversation_key)";
     
     int date = [entity.date timeIntervalSince1970];
-    NSNumber *remoteKey = (entity.remoteKey == 0) ? nil : [NSNumber numberWithInt:entity.remoteKey];
+    id remoteKey = (entity.remoteKey == 0) ? [NSNull null] : [NSNumber numberWithInt:entity.remoteKey];
     
     NSDictionary *params = @{
                              @"remoteKey": remoteKey,

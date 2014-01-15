@@ -27,7 +27,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // logging
-    //[[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
     //[DDLog addLogger:[DDASLLogger sharedInstance]];
     
     DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
