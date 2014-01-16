@@ -20,6 +20,8 @@
         _type = kGLPWebSocketEventTypeNewMessage;
     } else if([string isEqualToString:@"new-conversation"]) {
         _type = kGLPWebSocketEventTypeNewConversation;
+    } else if([string isEqualToString:@"ended-conversation"]) {
+        _type = kGLPWebSocketEventTypeEndConversation;
     } else if([string isEqualToString:@"notification"]) {
         _type = kGLPWebSocketEventTypeNotification;
     } else {

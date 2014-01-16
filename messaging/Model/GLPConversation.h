@@ -16,7 +16,7 @@
 
 @property (strong, nonatomic) NSDate *lastUpdate;
 @property (strong, nonatomic) NSString *lastMessage;
-@property (strong, nonatomic) NSArray *messages;
+@property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL hasUnreadMessages;

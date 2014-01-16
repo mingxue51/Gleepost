@@ -13,7 +13,8 @@
 typedef enum {
     kGLPWebSocketEventTypeNewMessage,
     kGLPWebSocketEventTypeNewConversation,
-    kGLPWebSocketEventTypeNotification,
+    kGLPWebSocketEventTypeEndConversation,
+    kGLPWebSocketEventTypeNotification
 } GLPWebSocketEventType;
 
 @property (assign, nonatomic) GLPWebSocketEventType type;

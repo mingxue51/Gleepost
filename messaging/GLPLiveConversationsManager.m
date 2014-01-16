@@ -7,7 +7,8 @@
 //
 
 #import "GLPLiveConversationsManager.h"
-#import "NSMutableArray+QueueAdditions.h"
+//#import "NSMutableArray+QueueAdditions.h"
+#import "WebClient.h"
 
 @interface GLPLiveConversationsManager()
 
@@ -62,16 +63,61 @@ static GLPLiveConversationsManager *instance = nil;
     return conversation;
 }
 
-- (NSArray *)getConversations
+- (void)loadConversationWithCallback:(void (^)(BOOL success, NSArray *conversations))callback
 {
-    __block NSArray *res = nil;
-
-    [self runOnConversationQueue:^{
-        res = [_conversations copy];
+    [[WebClient sharedInstance] getConversationsFilterByLive:YES withCallbackBlock:^(BOOL success, NSArray *conversations) {
+        if(!success) {
+            callback(NO, nil);
+            return;
+        }
+        
+        [self runOnConversationQueue:^{
+            _conversations = [NSMutableArray arrayWithArray:conversations];
+        }];
+        
+        callback(YES, conversations);
     }];
-    
-    return res;
 }
+
+//- (NSArray *)getConversations
+//{
+//    __block NSArray *res = nil;
+//    
+//    [[WebClient sharedInstance] getConversationsFilterByLive:YES withCallbackBlock:^(BOOL success, NSArray *conversations) {
+//        if(!success) {
+//            [self runOnConversationQueue:^{
+//                res = [_conversations copy];
+//            }];
+//            return;
+//        }
+//        
+//        callback(YES, conversations);
+//    }];
+//    
+//    [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
+//        
+//        if(!success) {
+//            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
+//            return;
+//        }
+//        
+//        if(conversations.count != 0)
+//        {
+//            //Add live chats' section in the section array.
+//            //            [self addSectionWithName:LIVE_CHATS_STR];
+//            
+//            //            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
+//            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
+//            [self.tableView reloadData];
+//        }
+//        
+//        
+//    }];
+//
+//
+//    
+//    return res;
+//}
 
 
 - (int)conversationsCount
@@ -85,15 +131,33 @@ static GLPLiveConversationsManager *instance = nil;
     return res;
 }
 
-- (void)runOnConversationQueue:(void (^)())block
+- (void)updateConversation:(GLPConversation *)conversation
 {
-    dispatch_async(_queue, block);
+    dispatch_async(_queue, ^{
+        NSUInteger index = [_conversations indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+            if(((GLPConversation *)obj).remoteKey == conversation.remoteKey) {
+                *stop = YES;
+                return YES;
+            }
+            
+            return NO;
+        }];
+        
+        if(index == NSNotFound) {
+            DDLogError(@"Update live conversation, conversation not found for remote key %d", conversation.remoteKey);
+            return;
+        }
+        
+        [_conversations replaceObjectAtIndex:index withObject:conversation];
+    });
 }
 
-//ADDED.
--(void)setConversations:(NSMutableArray *)conversations
+
+#pragma mark - Helpers
+
+- (void)runOnConversationQueue:(void (^)())block
 {
-    _conversations = conversations;
+    dispatch_sync(_queue, block);
 }
 
 @end

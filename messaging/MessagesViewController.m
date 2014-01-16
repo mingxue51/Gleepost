@@ -304,27 +304,19 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 
 -(void)loadLiveConversations
 {
+    DDLogInfo(@"Load live conversations");
     
-    [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
+    [[GLPLiveConversationsManager sharedInstance] loadConversationWithCallback:^(BOOL success, NSArray *conversations) {
+        DDLogInfo(@"Load live conversations callback with count: %d", conversations.count);
         
-        if(!success) {
-            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
+        if(!success || conversations.count == 0) {
             return;
         }
         
-        if(conversations.count != 0)
-        {
-            //Add live chats' section in the section array.
-//            [self addSectionWithName:LIVE_CHATS_STR];
-            
-//            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
-            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
-            [self.tableView reloadData];
-        }
-        
-
+        [self addSectionWithName:LIVE_CHATS_STR];
+        [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
+        [self.tableView reloadData];
     }];
-    
 }
 
 -(void)addSectionWithName:(NSString*)section
@@ -388,7 +380,6 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return  self.sections.count;
-    //return 1;
 }
 
 /**
