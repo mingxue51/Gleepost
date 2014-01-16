@@ -10,8 +10,6 @@
 
 @interface ProfileSettingsTableViewCell ()
 
-@property (readonly, nonatomic) GLPProfileViewController *delegate;
-
 @end
 
 @implementation ProfileSettingsTableViewCell
@@ -25,14 +23,13 @@
     return self;
 }
 
--(void)setDelegate:(GLPProfileViewController *)delegate
-{
-    _delegate = delegate;
-}
-
 - (IBAction)logout:(id)sender
 {
-    [_delegate logout:sender];
+    [self.delegate logout:sender];
+}
+
+- (IBAction)share:(id)sender {
+    [self.delegate share];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

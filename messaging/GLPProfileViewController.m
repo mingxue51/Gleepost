@@ -28,7 +28,7 @@
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
 
-@interface GLPProfileViewController ()
+@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -310,6 +310,7 @@
     [self updateNotificationsBubble];
 }
 
+#pragma mark - ProfileSettingsTableViewCellDelegate
 
 -(void)logout:(id)sender
 {
@@ -318,6 +319,10 @@
     
     [actionSheet showInView:[self.view window]];
     
+}
+
+- (void)share {
+    // TODO : perform share action
 }
 
 
@@ -553,7 +558,7 @@
             
             profileSettingsView.selectionStyle = UITableViewCellSelectionStyleNone;
 
-            [profileSettingsView setDelegate:self];
+            profileSettingsView.delegate = self;
             
             
             return profileSettingsView;
