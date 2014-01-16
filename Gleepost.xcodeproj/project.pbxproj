@@ -306,6 +306,7 @@
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
 		803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803B6084181FFE8A00A178EB /* GLPLoadingCell.m */; };
+		8047E597188881D600123EB2 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8047E596188881D600123EB2 /* GLPNetworkManager.m */; };
 		8050249C181932C600F5337F /* conversation_new_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8050249B181932C600F5337F /* conversation_new_notification.png */; };
 		805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358C8182EF1CC00579079 /* GLPPostManager.m */; };
 		805358CC182EF37600579079 /* GLPPostDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358CB182EF37600579079 /* GLPPostDao.m */; };
@@ -448,6 +449,7 @@
 		80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307C17CE5092003007D0 /* DateFormatterManager.m */; };
 		80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */; };
 		80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */; };
+		80D3D35118882AB90063FB6E /* GLPNewMessageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D3D35018882AB90063FB6E /* GLPNewMessageProcessor.m */; };
 		80DC9AF2184616F000A8E48B /* GLPConversationPictureImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */; };
 		80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */; };
 		80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */ = {isa = PBXBuildFile; fileRef = 80DDAA6117CE5CD80034C0EF /* post_login.json */; };
@@ -861,6 +863,8 @@
 		80112B9A180F2494006A35AA /* NSDate+UTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+UTC.m"; sourceTree = "<group>"; };
 		803B6083181FFE8A00A178EB /* GLPLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCell.h; sourceTree = "<group>"; };
 		803B6084181FFE8A00A178EB /* GLPLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadingCell.m; sourceTree = "<group>"; };
+		8047E595188881D600123EB2 /* GLPNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNetworkManager.h; sourceTree = "<group>"; };
+		8047E596188881D600123EB2 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
 		8050249B181932C600F5337F /* conversation_new_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conversation_new_notification.png; sourceTree = "<group>"; };
 		805358C4182EEEC700579079 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
 		805358C5182EEEC700579079 /* GLPTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTimelineViewController.m; sourceTree = "<group>"; };
@@ -1085,6 +1089,8 @@
 		80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTabBarController.m; sourceTree = "<group>"; };
 		80D2D0C9180ACD30007FB020 /* NSNumber+Enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Enums.h"; sourceTree = "<group>"; };
 		80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Enums.m"; sourceTree = "<group>"; };
+		80D3D34F18882AB90063FB6E /* GLPNewMessageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNewMessageProcessor.h; sourceTree = "<group>"; };
+		80D3D35018882AB90063FB6E /* GLPNewMessageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNewMessageProcessor.m; sourceTree = "<group>"; };
 		80DC9AF0184616F000A8E48B /* GLPConversationPictureImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationPictureImageView.h; sourceTree = "<group>"; };
 		80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationPictureImageView.m; sourceTree = "<group>"; };
 		80DC9AF3184633FE00A8E48B /* GLPLiveConversationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversationsManager.h; sourceTree = "<group>"; };
@@ -1901,6 +1907,8 @@
 				5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */,
 				5810F0BA18870C740066D4CE /* GLPProfileLoader.h */,
 				5810F0BB18870C740066D4CE /* GLPProfileLoader.m */,
+				80D3D34F18882AB90063FB6E /* GLPNewMessageProcessor.h */,
+				80D3D35018882AB90063FB6E /* GLPNewMessageProcessor.m */,
 			);
 			name = Processors;
 			sourceTree = "<group>";
@@ -2262,6 +2270,8 @@
 				80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */,
 				58204E79186207AF00702F4F /* GLPQueueManager.h */,
 				58204E7A186207AF00702F4F /* GLPQueueManager.m */,
+				8047E595188881D600123EB2 /* GLPNetworkManager.h */,
+				8047E596188881D600123EB2 /* GLPNetworkManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -2950,6 +2960,7 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
+				8047E597188881D600123EB2 /* GLPNetworkManager.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
@@ -3030,6 +3041,7 @@
 				5890D2181847676A00E293DD /* GLPTheme.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
+				80D3D35118882AB90063FB6E /* GLPNewMessageProcessor.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,
 				585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */,

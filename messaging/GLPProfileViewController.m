@@ -30,6 +30,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPPostImageLoader.h"
 #import "GLPProfileLoader.h"
+#import "GLPUserDao.h"
 
 
 @interface GLPProfileViewController ()
@@ -433,7 +434,10 @@
             
             
             //Change profile image in Session Manager.
-            [[SessionManager sharedInstance] registerUserImage:response];
+            //TODO: REFACTOR / FACTORIZE THIS
+            GLPUser *user = [SessionManager sharedInstance].user;
+            user.profileImageUrl = response;
+            [GLPUserDao updateUserWithRemotKey:user.remoteKey andProfileImage:response];
             
             //Set image to user's profile.
             [self setImageToUserProfile:response];

@@ -12,7 +12,7 @@
 @interface GLPLoginManager : NSObject
 
 + (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success))callback;
-+ (void)loginFromExistingSessionUser;
++ (BOOL)performAutoLogin;
 + (void)logout;
 
 @end

@@ -61,6 +61,11 @@ static GLPWebSocketMessageProcessor *instance = nil;
 
 - (void)processMessage:(NSString *)webSocketMessage
 {
+    if([webSocketMessage caseInsensitiveCompare:@"Invalid credentials"] == NSOrderedSame) {
+        DDLogError(@"Web socket connection closed because of invalid credentials");
+        return;
+    }
+    
     GLPWebSocketMessageProcessorOperation *operation = [[GLPWebSocketMessageProcessorOperation alloc] init];
     operation.webSocketMessage = webSocketMessage;
     

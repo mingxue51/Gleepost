@@ -82,9 +82,15 @@ int const NumberMaxOfMessagesLoaded = 20;
     NSLog(@"load messages for conversation %d", conversation.remoteKey);
     
     __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
-        localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-    }];
+    
+    if(conversation.isLive) {
+        localEntities = conversation.messages;
+    } else {
+        [DatabaseManager run:^(FMDatabase *db) {
+            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+        }];
+    }
+
     
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
@@ -138,13 +144,24 @@ int const NumberMaxOfMessagesLoaded = 20;
 //        // all messages, including the new ones
 //        __block NSArray *allMessages = nil;
         
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            for(GLPMessage *message in messages) {
-                [GLPMessageDao save:message db:db];
-            }
-            
-            //allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-        }];
+        GLPMessage *lastMessage = [messages lastObject];
+        conversation.lastMessage = lastMessage.content;
+        conversation.lastUpdate = lastMessage.date;
+        
+        if(conversation.isLive) {
+            [conversation.messages addObjectsFromArray:messages];
+            [[GLPLiveConversationsManager sharedInstance] updateConversation:conversation];
+        } else {
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for(GLPMessage *message in messages) {
+                    [GLPMessageDao save:message db:db];
+                }
+                
+                [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
+                
+                //allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+            }];
+        }
         
         remoteCallback(YES, messages);
     }];

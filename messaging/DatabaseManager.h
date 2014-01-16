@@ -12,6 +12,8 @@
 
 @interface DatabaseManager : NSObject
 
+@property (assign, nonatomic, readonly) BOOL exists;
+
 + (DatabaseManager *)sharedInstance;
 + (void)run:(void (^)(FMDatabase *db))block;
 + (void)transaction:(void (^)(FMDatabase *db, BOOL *rollback))block;

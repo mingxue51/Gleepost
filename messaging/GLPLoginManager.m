@@ -17,6 +17,7 @@
 #import "GLPThemeManager.h"
 #import "ContactsManager.h"
 //#import "GLPPostOperationManager.m"
+#import "GLPNetworkManager.h"
 
 @implementation GLPLoginManager
 
@@ -73,13 +74,46 @@
     }];
     
     [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
-    [[WebClient sharedInstance] startWebSocketIfLoggedIn];
-    [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+    
+    [GLPLoginManager performAfterLoginForUser:user];
 }
 
-+ (void)loginFromExistingSessionUser
++ (BOOL)performAutoLogin
 {
-    //[[WebClient sharedInstance] initWebSocket];
+    if(![DatabaseManager sharedInstance].exists) {
+        return NO;
+    }
+    
+    NSUInteger userRemoteKey = [[SessionManager sharedInstance] validUserRemoteKey];
+    if(userRemoteKey == NSNotFound) {
+        return NO;
+    }
+    
+    [[DatabaseManager sharedInstance] initDatabase];
+    
+    __block GLPUser *user;
+    [DatabaseManager run:^(FMDatabase *db) {
+        user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
+    }];
+    
+    if(!user) {
+        DDLogError(@"User exists in session with remoteKey %d, but not in the database", userRemoteKey);
+        return NO;
+    }
+    
+    [[SessionManager sharedInstance] restoreUser:user];
+    
+    [GLPLoginManager performAfterLoginForUser:user];
+    
+    return YES;
+}
+
++ (void)performAfterLoginForUser:(GLPUser *)user
+{
+    [[GLPNetworkManager sharedInstance] startNetworkOperations];
+    [[WebClient sharedInstance] startWebSocket];
+    
+    [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }
 
 + (void)logout

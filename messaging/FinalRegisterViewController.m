@@ -18,6 +18,7 @@
 #import "GLPLoginManager.h"
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
+#import "GLPUserDao.h"
 
 @interface FinalRegisterViewController ()
 
@@ -228,7 +229,10 @@
             
             
             //Save user's image to database and add to SessionManager.
-            [[SessionManager sharedInstance ] registerUserImage:response];
+            //TODO: REFACTOR / FACTORIZE THIS
+            GLPUser *user = [SessionManager sharedInstance].user;
+            user.profileImageUrl = response;
+            [GLPUserDao updateUserWithRemotKey:user.remoteKey andProfileImage:response];
             
         }
         else
