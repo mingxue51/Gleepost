@@ -83,4 +83,7 @@
 - (void)startWebSocketIfLoggedIn;
 - (void)stopWebSocket;
 
+// invite
+- (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback;
+
 @end

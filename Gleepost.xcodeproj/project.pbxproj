@@ -22,6 +22,9 @@
 
 /* Begin PBXBuildFile section */
 		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
+		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
+		1172680C188805B8008F5391 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172680B188805B8008F5391 /* AddressBook.framework */; };
+		1172680E1888068E008F5391 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172680D1888068E008F5391 /* AddressBookUI.framework */; };
 		11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 11E2FBB2185730DF002EB2FA /* gleepost.cer */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
@@ -473,6 +476,10 @@
 /* Begin PBXFileReference section */
 		11707584186C6DC000F68607 /* NSUserDefaults+GLPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+GLPAdditions.h"; sourceTree = "<group>"; };
 		11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+GLPAdditions.m"; sourceTree = "<group>"; };
+		117268081887F68C008F5391 /* GLPInvitationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPInvitationManager.h; sourceTree = "<group>"; };
+		117268091887F68C008F5391 /* GLPInvitationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPInvitationManager.m; sourceTree = "<group>"; };
+		1172680B188805B8008F5391 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		1172680D1888068E008F5391 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		11E2FBB2185730DF002EB2FA /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
@@ -1123,6 +1130,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1172680E1888068E008F5391 /* AddressBookUI.framework in Frameworks */,
+				1172680C188805B8008F5391 /* AddressBook.framework in Frameworks */,
 				80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */,
 				58143D6B1821014C00B76E5D /* Security.framework in Frameworks */,
 				807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */,
@@ -2114,6 +2123,8 @@
 		80AB891917C267F50053E784 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1172680D1888068E008F5391 /* AddressBookUI.framework */,
+				1172680B188805B8008F5391 /* AddressBook.framework */,
 				80F316D21828129700DE6884 /* CoreImage.framework */,
 				58143D6A1821014C00B76E5D /* Security.framework */,
 				58143D681821013200B76E5D /* CFNetwork.framework */,
@@ -2255,6 +2266,8 @@
 				80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */,
 				58204E79186207AF00702F4F /* GLPQueueManager.h */,
 				58204E7A186207AF00702F4F /* GLPQueueManager.m */,
+				117268081887F68C008F5391 /* GLPInvitationManager.h */,
+				117268091887F68C008F5391 /* GLPInvitationManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -3038,6 +3051,7 @@
 				58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,
 				58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */,
+				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,
 				589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */,

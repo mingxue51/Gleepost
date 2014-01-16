@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
+#import <AddressBookUI/AddressBookUI.h>
 #import "GLPProfileViewController.h"
 #import "GLPUser.h"
 #import "SessionManager.h"
@@ -27,8 +28,9 @@
 #import "GLPLoginManager.h"
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
+#import "GLPInvitationManager.h"
 
-@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate>
+@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, ABPeoplePickerNavigationControllerDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -322,7 +324,60 @@
 }
 
 - (void)invite {
-    // TODO : perform invite action
+    [[GLPInvitationManager sharedInstance] beginFetchingInviteMessage];
+    ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
+    picker.peoplePickerDelegate = self;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+#pragma mark - ABPeoplePickerNavigationControllerDelegate
+
+- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
+      shouldContinueAfterSelectingPerson:(ABRecordRef)person {
+    BOOL shouldContinue = NO;
+    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    
+    if (ABMultiValueGetCount(phoneNumbers) == 0) {  // No phone numbers found
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"No phone number found. Select another contact."];
+    } else if (ABMultiValueGetCount(phoneNumbers) == 1) {   // Single phone number found. Directly initiate SMS
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSString *phoneNumber = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
+            
+            [self sendMessageToPhoneNumber:phoneNumber];
+        }];
+    } else {    // Multiple phone numbers found. Let user select single phone number
+        shouldContinue = YES;
+    }
+    
+    CFRelease(phoneNumbers);
+    
+    return shouldContinue;
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
+      shouldContinueAfterSelectingPerson:(ABRecordRef)person
+                                property:(ABPropertyID)property
+                              identifier:(ABMultiValueIdentifier)identifier {
+    if (property == kABPersonPhoneProperty) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, property);
+            CFIndex index = ABMultiValueGetIndexForIdentifier(phoneNumbers, identifier);
+            NSString *phoneNumber = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneNumbers, index);
+            
+            CFRelease(phoneNumbers);
+            
+            [self sendMessageToPhoneNumber:phoneNumber];
+        }];
+    } else {
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Please select a valid phone number."];
+    }
+    
+    return NO;
 }
 
 
@@ -678,6 +733,13 @@
         
         
     }
+}
+
+#pragma mark - Actions
+
+- (void)sendMessageToPhoneNumber:(NSString *)phoneNumber {
+    // TODO : initialize Message App
+    NSLog(@"Send SMS for number: %@",phoneNumber);
 }
 
 /*
