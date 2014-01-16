@@ -14,5 +14,7 @@
 
 -(void)loadUserData;
 -(NSArray*)userData;
+-(void)loadContactsImages:(NSArray*)contacts;
+-(UIImage*)contactImageWithRemoteKey:(int)remoteKey;
 
 @end

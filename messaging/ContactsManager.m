@@ -11,6 +11,7 @@
 #import "WebClientHelper.h"
 #import "DatabaseManager.h"
 #import "GLPUserDao.h"
+#import "GLPProfileLoader.h"
 
 @implementation ContactsManager
 
@@ -76,7 +77,11 @@ static ContactsManager *instance = nil;
         {
             //Store contacts into an array.
             self.contacts = contacts;
-
+            
+            //Load contacts' images.
+            [[GLPProfileLoader sharedInstance] loadContactsImages:contacts];
+            
+            
             [GLPContactDao deleteTable];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
@@ -102,6 +107,8 @@ static ContactsManager *instance = nil;
     self.contacts = [GLPContactDao loadContacts];
     
 }
+
+#pragma mark - Accessors
 
 /**
  Finds the real contacts (accepted from both sides) and return them.
@@ -181,6 +188,11 @@ static ContactsManager *instance = nil;
     }
     
     return nil;
+}
+
+-(UIImage*)contactImageWithRemoteKey:(int)remoteKey
+{
+    return [[GLPProfileLoader sharedInstance]contactImageWithRemoteKey:remoteKey];
 }
 
 -(void)contactWithRemoteKeyAccepted:(int)remoteKey

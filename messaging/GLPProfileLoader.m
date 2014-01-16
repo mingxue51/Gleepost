@@ -64,19 +64,7 @@ static GLPProfileLoader *instance = nil;
         {
             _userDetails = user;
             
-//            //Load user's image.
-//            
-//            NSURL *imageUrl = [NSURL URLWithString:user.profileImageUrl];
-//            
-//            NSData *data = [NSData dataWithContentsOfURL:imageUrl];
-//            UIImage *img = [[UIImage alloc] initWithData:data];
-//            
-//            _userImage = img;
-            
-            [NSThread detachNewThreadSelector:@selector(loadImage:) toTarget:self withObject:user.profileImageUrl];
-            
-//            NSLog(@"User's data loaded: %@",_userDetails);
-            
+            [NSThread detachNewThreadSelector:@selector(loadImageForUser:) toTarget:self withObject:user.profileImageUrl];
         }
         else
         {
@@ -84,19 +72,52 @@ static GLPProfileLoader *instance = nil;
     }];
 }
 
--(void)loadImage:(id)sender
+-(void)loadImageForUser:(id)sender
 {
     //Load user's image.
     
-    NSString *str = (NSString*)sender;
+//    NSString *str = (NSString*)sender;
+//    
+//    NSURL *imageUrl = [NSURL URLWithString:str];
+//    
+//    NSData *data = [NSData dataWithContentsOfURL:imageUrl];
+//    UIImage *img = [[UIImage alloc] initWithData:data];
     
-    NSURL *imageUrl = [NSURL URLWithString:str];
+    _userImage = [self loadImageWithUrl:(NSString*)sender];
+    
+}
+
+-(void)loadContactsImages:(NSArray*)contacts
+{
+    [NSThread detachNewThreadSelector:@selector(loadImageWithContacts:) toTarget:self withObject:contacts];
+}
+
+-(void)loadImageWithContacts:(id)sender
+{
+    NSArray *contacts = (NSArray*)sender;
+    
+    for(GLPContact *contact in contacts)
+    {
+        UIImage *userImg = [self loadImageWithUrl:contact.user.profileImageUrl];
+        
+        if(userImg)
+        {
+            [_contactsImages setObject:userImg forKey:[NSNumber numberWithInteger:contact.remoteKey]];
+        }
+        
+    }
+}
+
+-(UIImage*)loadImageWithUrl:(NSString*)url
+{
+    
+    NSURL *imageUrl = [NSURL URLWithString:url];
     
     NSData *data = [NSData dataWithContentsOfURL:imageUrl];
     UIImage *img = [[UIImage alloc] initWithData:data];
     
-    _userImage = img;
     
+    return img;
 }
 
 #pragma mark - Accessors
@@ -113,6 +134,11 @@ static GLPProfileLoader *instance = nil;
         
         return userDataArray;
     }
+}
+
+-(UIImage*)contactImageWithRemoteKey:(int)remoteKey
+{
+    return [_contactsImages objectForKey:[NSNumber numberWithInt:remoteKey]];
 }
 
 @end

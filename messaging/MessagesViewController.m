@@ -487,6 +487,19 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return YES - we will be able to delete all rows
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Perform the real delete action here. Note: you may need to check editing style
+    //   if you do not perform delete only.
+    NSLog(@"Deleted row.");
+}
+
 
 #pragma mark - Loading cell
 

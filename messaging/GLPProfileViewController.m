@@ -72,7 +72,6 @@
     {
         // Custom initialization
 //        [self setNeedsStatusBarAppearanceUpdate];
-
     }
     return self;
 }
@@ -389,12 +388,16 @@
 
 -(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
 {
-    NSLog(@"Take Con");
 }
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
     self.uploadedImage = photo;
+    
+    //Set directly the new user's profile image.
+    self.userImage = photo;
+    
+    
     //[self.profileView.profileImage setImage:photo];
     //[self.profileView updateImage:photo];
     

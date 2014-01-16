@@ -27,6 +27,7 @@
 
 
 @property (strong, nonatomic) GLPUser *profileUser;
+@property (strong, nonatomic) UIImage *profileImage;
 
 @property (assign, nonatomic) int numberOfRows;
 
@@ -58,15 +59,7 @@
 {
     [super viewDidLoad];
     
-    
-    [self registerTableViewCells];
-    
-    [self initialiseObjects];
-    
-    [self configureNavigationBar];
-    
-    
-   // [self loadPosts];
+    // [self loadPosts];
     
     //If no, check in database if the user is already requested.
     
@@ -84,13 +77,13 @@
     {
         if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
         {
-//            NSLog(@"PrivateProfileViewController : User already requested by you.");
+            //            NSLog(@"PrivateProfileViewController : User already requested by you.");
             //[self setContactAsRequested];
             
         }
         else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
         {
-//            NSLog(@"PrivateProfileViewController : User requested you.");
+            //            NSLog(@"PrivateProfileViewController : User requested you.");
             
             //[self setAcceptRequestButton];
             
@@ -98,16 +91,22 @@
         else
         {
             //If not show the private profile view as is.
-//            NSLog(@"PrivateProfileViewController : Private profile as is.");
+            //            NSLog(@"PrivateProfileViewController : Private profile as is.");
         }
         
         self.contact = NO;
     }
+    
+    
+    [self registerTableViewCells];
+    
+    [self initialiseObjects];
+    
+    [self configureNavigationBar];
+    
+    
+    
 
-    
-    
-    //Initialise rows with 3 because About cell is presented first.
-    self.numberOfRows = 2;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -142,8 +141,25 @@
 
 -(void)initialiseObjects
 {
-    //Load user's details from server.
-    [self loadAndSetUserDetails];
+    //Initialise rows with 3 because About cell is presented first.
+    self.numberOfRows = 2;
+    
+    
+    self.profileImage = nil;
+    
+    if(self.contact)
+    {
+        //If the user is contact then load data from ContactsManager.
+        [self loadAndSetContactDetails];
+
+    }
+    else
+    {
+        //Load user's details from server.
+        [self loadAndSetUserDetails];
+    }
+    
+
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
@@ -213,9 +229,13 @@
         {
             self.profileUser = user;
             
-            self.navigationItem.title = self.profileUser.name;
 
-            [self loadPosts];
+            if(!self.contact)
+            {
+                self.navigationItem.title = self.profileUser.name;
+
+                [self loadPosts];
+            }
             
             //[self.tableView reloadData];
         }
@@ -224,6 +244,29 @@
             [WebClientHelper showStandardError];
         }
     }];
+}
+
+-(void)loadAndSetContactDetails
+{
+    //Try to load image.
+    self.profileImage = [[ContactsManager sharedInstance]contactImageWithRemoteKey:self.selectedUserId];
+    
+    //If image is nil then load directly from the server.
+    if(!self.profileImage)
+    {
+        [self loadAndSetUserDetails];
+    }
+    else
+    {
+        //self.profileUser = [[ContactsManager sharedInstance] contactWithRemoteKey:self.selectedUserId].user;
+        
+        [self loadAndSetUserDetails];
+        
+        self.navigationItem.title = self.profileUser.name;
+        
+        [self loadPosts];
+    }
+
 }
 
 - (void)loadPosts
@@ -327,8 +370,15 @@
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
         [profileView setPrivateProfileDelegate:self];
+        if(self.profileImage)
+        {
+            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
+        }
+        else
+        {
+            [profileView initialiseElementsWithUserDetails:self.profileUser];
+        }
         
-        [profileView initialiseElementsWithUserDetails:self.profileUser];
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
 
         return profileView;
