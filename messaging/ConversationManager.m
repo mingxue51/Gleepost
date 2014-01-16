@@ -222,7 +222,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
-+ (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
++ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
     DDLogInfo(@"Create message with content %@", content);
     
@@ -244,8 +244,11 @@ int const NumberMaxOfMessagesLoaded = 20;
         }];
     }
     
-    DDLogInfo(@"Post message %@ to server", message.content);
+    // post message to local
+    localCallback(message);
     
+    // post message to server
+    DDLogInfo(@"Post message %@ to server", message.content);
     [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL responseSuccess, NSInteger remoteKey) {
         NSLog(@"Post to server response: success %d - id %d", responseSuccess, remoteKey);
         
@@ -264,8 +267,6 @@ int const NumberMaxOfMessagesLoaded = 20;
         
         sendCallback(message, responseSuccess);
     }];
-
-    return message;
 }
 
 // Save message from websocket event
