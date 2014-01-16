@@ -321,8 +321,8 @@
     
 }
 
-- (void)share {
-    // TODO : perform share action
+- (void)invite {
+    // TODO : perform invite action
 }
 
 

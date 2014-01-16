@@ -28,8 +28,8 @@
     [self.delegate logout:sender];
 }
 
-- (IBAction)share:(id)sender {
-    [self.delegate share];
+- (IBAction)invite:(id)sender {
+    [self.delegate invite];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

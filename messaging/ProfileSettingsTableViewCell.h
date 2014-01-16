@@ -18,5 +18,5 @@
 @protocol ProfileSettingsTableViewCellDelegate <NSObject>
 @optional
 - (void)logout:(id)sender;
-- (void)share;
+- (void)invite;
 @end
