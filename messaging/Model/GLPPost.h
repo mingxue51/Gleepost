@@ -20,6 +20,7 @@
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
 @property (strong, nonatomic) UIImage *tempImage;
+@property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;
 @property (assign, nonatomic) SendStatus sendStatus;
 

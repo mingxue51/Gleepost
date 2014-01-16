@@ -15,11 +15,13 @@
 #import "AFJSONRequestOperation.h"
 #import "GLPUserDao.h"
 #import "AFNetworking.h"
+#import "GLPWebSocketMessageProcessor.h"
 #import "NSUserDefaults+GLPAdditions.h"
 
 @interface WebClient()
 
 @property (strong, nonatomic) SessionManager *sessionManager;
+@property (strong, nonatomic) SRWebSocket *webSocket;
 
 @property (assign, nonatomic) BOOL networkStatusEvaluated; // controls if the network available status has been evaluated at least once
 
@@ -28,6 +30,7 @@
 @implementation WebClient
 
 @synthesize isNetworkAvailable;
+@synthesize webSocket=_webSocket;
 
 static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.24/";
 
@@ -96,6 +99,13 @@ static WebClient *instance = nil;
         
         // spread the notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNetworkStatusUpdate" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:self.isNetworkAvailable] forKey:@"status"]];
+        
+        // start / stop the websocket accordly
+        if(available) {
+            [self startWebSocketIfLoggedIn];
+        } else {
+            [self stopWebSocket];
+        }
         
         NSLog(@"Network status changed, currently available: %d", self.isNetworkAvailable);
     }
@@ -602,6 +612,18 @@ static WebClient *instance = nil;
 
 #pragma mark - User
 
+- (void)getUserWithKey:(NSInteger)key authParams:(NSDictionary *)authParams callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"user/%d", key];
+    
+    [self getPath:path parameters:authParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
+        callbackBlock(YES, user);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
 - (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"user/%d", key];
@@ -724,17 +746,27 @@ static WebClient *instance = nil;
 
 #pragma mark - Contacts
 
--(void) getContactsWithCallbackBlock:(void (^)(BOOL success, NSArray *contacts))callbackBlock
+-(void)getContactsForUser:(GLPUser *)user authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success, NSArray *contacts))callback;
+{
+    NSString* path = [NSString stringWithFormat:@"contacts"];
+    
+    [self getPath:path parameters:authParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *contacts = [RemoteParser parseContactsFromJson:responseObject];
+        callback(YES, contacts);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
+
+-(void)getContactsWithCallback:(void (^)(BOOL success, NSArray *contacts))callback;
 {
     NSString* path = [NSString stringWithFormat:@"contacts"];
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         NSArray *contacts = [RemoteParser parseContactsFromJson:responseObject];
-        callbackBlock(YES, contacts);
-        
+        callback(YES, contacts);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, nil);
+        callback(NO, nil);
     }];
 }
 
@@ -931,6 +963,76 @@ static WebClient *instance = nil;
     callback(YES, json);
 }
 
+
+#pragma mark - Web socket
+
+- (void)startWebSocketIfLoggedIn
+{
+    DDLogInfo(@"Start web socket if logged in");
+    
+    if(![self.sessionManager isSessionValid]) {
+        DDLogInfo(@"Start web socket cannot start because session is not valid, try to close web socket");
+        [_webSocket close];
+        return;
+    }
+    
+    if(_webSocket && (_webSocket.readyState == SR_CONNECTING || _webSocket.readyState == SR_OPEN)) {
+        DDLogInfo(@"Start web socket cannot start because web socket is already in opening or opened, abort");
+        return;
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@ws?id=%d&token=%@", kWebserviceBaseUrl, self.sessionManager.user.remoteKey, self.sessionManager.token];
+    NSLog(@"Init web socket with url: %@", url);
+    
+    _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:url]];
+    _webSocket.delegate = self;
+    
+    [_webSocket open];
+}
+
+- (void)stopWebSocket
+{
+    DDLogInfo(@"Stop web socket");
+    
+    // web socket not yet initialized
+    if(!_webSocket) {
+        DDLogInfo(@"Stop web socket cannot stop because web socket is nil, abort");
+        return;
+    }
+    
+    if(_webSocket.readyState == SR_CLOSING || _webSocket.readyState == SR_CLOSED) {
+        DDLogInfo(@"Stop web socket cannot stop because web socket already in closing or closed, abort");
+        _webSocket = nil;
+        return;
+    }
+    
+    [_webSocket close];
+    _webSocket = nil;
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
+{
+    NSLog(@"Web socket received response: %@", response);
+    [[GLPWebSocketMessageProcessor sharedInstance] processMessage:response];
+}
+
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket
+{
+    NSLog(@"Web socket did open");
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
+{
+    NSLog(@"Web socket did fail with error: %@", error);
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
+{
+    NSLog(@"Web socket did close with code: %d, reason: %@, was clean: %d", code, reason, wasClean);
+}
+
+
+# pragma mark - Helper methods
 
 // DEBUG use only
 // Setting the max concurrent operations to 1 may break other things such as requests running in "background" and in parallel (long polling request for instance)

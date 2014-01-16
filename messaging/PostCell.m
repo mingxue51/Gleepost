@@ -123,16 +123,26 @@ static const float OneLineText = 16.0;
     userImage = [UIImage imageNamed:@"default_user_image"];
 
     
-    if(url!=nil && postData.tempImage==nil)
+    if(url!=nil && postData.tempImage==nil /**added**/ && postData.finalImage!=nil)
     {
         // Here we use the new provided setImageWithURL: method to load the web image
-        [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        //TODO: Removed for now.
+        //[self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        //New approach.
+        [self.postImage setImage:postData.finalImage];
+        
+        
         //[self setPostOnline:YES];
     }
     else if(postData.tempImage != nil)
     {
         //Set live image.
         [self.postImage setImage:postData.tempImage];
+    }
+    else if(postData.finalImage==nil)
+    {
+        [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
     
@@ -141,7 +151,7 @@ static const float OneLineText = 16.0;
     
     if([postData.author.profileImageUrl isEqualToString:@""])
     {
-        NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
+//        NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
         [self.userImageView setImage:userImage];
     }
     else
@@ -317,7 +327,7 @@ static const float OneLineText = 16.0;
     
     if(!self.imageAvailable)
     {
-        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
+//        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
     }
 }
 

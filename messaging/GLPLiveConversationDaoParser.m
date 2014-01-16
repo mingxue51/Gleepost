@@ -16,12 +16,12 @@
 
 + (void)parseResultSet:(FMResultSet *)resultSet into:(GLPLiveConversation *)entity
 {
-    [GLPEntityDaoParser parseResultSet:resultSet into:entity];
-    
-    entity.lastUpdate = [resultSet dateForColumn:@"lastUpdate"];
-    entity.title = [resultSet stringForColumn:@"title"];
-    entity.hasUnreadMessages = [resultSet boolForColumn:@"unread"];
-    entity.timeStarted = [resultSet dateForColumn:@"timeStarted"];
+//    [GLPEntityDaoParser parseResultSet:resultSet into:entity];
+//    
+//    entity.lastUpdate = [resultSet dateForColumn:@"lastUpdate"];
+//    entity.title = [resultSet stringForColumn:@"title"];
+//    entity.hasUnreadMessages = [resultSet boolForColumn:@"unread"];
+//    entity.timeStarted = [resultSet dateForColumn:@"timeStarted"];
 }
 
 + (GLPLiveConversation *)createFromResultSet:(FMResultSet *)resultSet

@@ -11,8 +11,8 @@
 
 @interface GLPLiveConversationsManager()
 
-@property (strong, nonatomic) NSLock *lock;
 @property (strong, nonatomic) NSMutableArray *conversations;
+@property (strong, nonatomic) dispatch_queue_t queue;
 
 @end
 
@@ -20,7 +20,7 @@
 @implementation GLPLiveConversationsManager
 
 @synthesize conversations=_conversations;
-@synthesize lock=_lock;
+@synthesize queue=_queue;
 
 static GLPLiveConversationsManager *instance = nil;
 
@@ -41,56 +41,59 @@ static GLPLiveConversationsManager *instance = nil;
         return nil;
     }
     
-    _lock = [[NSLock alloc] init];
     _conversations = [NSMutableArray array];
+    _queue = dispatch_queue_create("com.gleepost.queue.liveconversation", DISPATCH_QUEUE_SERIAL);
     
     return self;
 }
 
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey
 {
-    [_lock lock];
+    __block GLPConversation *conversation = nil;
     
-    for(GLPConversation *conversation in _conversations) {
-        if(conversation.remoteKey == remoteKey) {
-            return [conversation copy];
+    [self runOnConversationQueue:^{
+        for(GLPConversation *c in _conversations) {
+            if(c.remoteKey == remoteKey) {
+                conversation = c;
+            }
         }
-    }
+    }];
     
-    [_lock unlock];
-    return nil;
+    return conversation;
 }
 
 - (NSArray *)getConversations
 {
-    [_lock lock];
-    NSArray *res = [_conversations copy];
-    [_lock unlock];
+    __block NSArray *res = nil;
+
+    [self runOnConversationQueue:^{
+        res = [_conversations copy];
+    }];
     
     return res;
 }
 
-- (void)setConversations:(NSMutableArray *)conversations
-{
-    [_lock lock];
-    _conversations = conversations;
-    [_lock unlock];
-}
-
-- (void)enqueue:(GLPConversation *)conversation
-{
-    [_lock lock];
-    [_conversations enqueue:conversation];
-    [_lock unlock];
-}
 
 - (int)conversationsCount
 {
-    [_lock lock];
-    int res = _conversations.count;
-    [_lock unlock];
+    __block int res = 0;
+    
+    [self runOnConversationQueue:^{
+        res = _conversations.count;
+    }];
     
     return res;
+}
+
+- (void)runOnConversationQueue:(void (^)())block
+{
+    dispatch_async(_queue, block);
+}
+
+//ADDED.
+-(void)setConversations:(NSMutableArray *)conversations
+{
+    _conversations = conversations;
 }
 
 @end

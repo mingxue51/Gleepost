@@ -12,7 +12,7 @@
 
 + (GLPBackgroundRequestsManager *)sharedInstance;
 
-- (void)startAll;
-- (void)stopAll;
+//- (void)startAll;
+//- (void)stopAll;
 
 @end

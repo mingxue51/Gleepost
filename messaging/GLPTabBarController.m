@@ -37,36 +37,24 @@ static BOOL isViewDidDisappearCalled = YES;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
 
-    if(isViewDidDisappearCalled)
-    {
-        NSLog(@"GLPTabBarController : viewWillAppear");
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:@"GLPNewMessage" object:nil];
+    if(isViewDidDisappearCalled) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:@"GLPNewNotifications" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
         
         isViewDidDisappearCalled = NO;
     }
-
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    NSLog(@"GLPTabBarController : viewDidDisappear");
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    NSLog(@"GLPTabBarController : viewWillDisappear");
-    
     isViewDidDisappearCalled = YES;
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
 }
 
 

@@ -41,6 +41,35 @@ static BOOL initLiveChats;
     initLiveChats = boolValue;
 }
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gleepost1"]]];
+        
+        [self initialiseCircles];
+        
+        //        if([ChatViewAnimations showLiveChat])
+        //        {
+        //            NSLog(@"Live Chat Initialised.");
+        //[self initialiseLiveConversationBubbles];
+        //        }
+        
+        //TODO: We are removing the live chats from the NewChat view.
+        //[self initialiseLiveConversationBubbles];
+        
+        [self setBackgroundImage];
+        [self initialiseScrollView];
+        [self setUpTimers];
+        
+        animationsFinished = NO;
+        
+    }
+    return self;
+}
+
+
 //+(id) initAnimations
 //{
 //    if(!self)
@@ -71,34 +100,6 @@ static BOOL initLiveChats;
 }
 
 
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        [self addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gleepost1"]]];
-        
-        [self initialiseCircles];
-        
-//        if([ChatViewAnimations showLiveChat])
-//        {
-//            NSLog(@"Live Chat Initialised.");
-            //[self initialiseLiveConversationBubbles];
-//        }
-        
-        //TODO: We are removing the live chats from the NewChat view.
-        //[self initialiseLiveConversationBubbles];
-        
-        [self setBackgroundImage];
-        [self initialiseScrollView];
-        [self setUpTimers];
-        
-       animationsFinished = NO;
-  
-    }
-    return self;
-}
 
 
 
@@ -201,7 +202,7 @@ static BOOL initLiveChats;
 -(void) initialiseCircles
 {
 
-    UIImage *centralCircleImage = [UIImage imageNamed:@"lightbublle"] ;
+    UIImage *centralCircleImage = [UIImage imageNamed:@"lightbublle"];
     self.centralCircle = [[UIImageView alloc] initWithImage:centralCircleImage highlightedImage:nil];
     CGSize sizeOfCircleImage = centralCircleImage.size;
     
@@ -306,7 +307,7 @@ static BOOL goBack2 = NO;
                 
                 if([self isImageInTheLimit:imageView.frame.origin.y-rY])
                 {
-                    [imageView setFrame: CGRectMake(imageView.frame.origin.x+rX,imageView.frame.origin.y-rY , imageView.image.size.width/2, imageView.image.size.height/2)];
+                    [imageView setFrame: CGRectMake(imageView.frame.origin.x+rX, imageView.frame.origin.y-rY , imageView.image.size.width/2, imageView.image.size.height/2)];
                 }
                 
             }
