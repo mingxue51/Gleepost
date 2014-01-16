@@ -52,7 +52,6 @@ static GLPPostOperationManager *instance = nil;
     {
         _imageUploader = [[GLPImageUploaderManager alloc] init];
         _postUploader = [[GLPPostUploaderManager alloc] init];
-        //[NSTimer timerWithTimeInterval:3.0f target:self selector:@selector(checkForPostUpload:) userInfo:nil repeats:YES];
         _checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForPostUpload:) userInfo:nil repeats:YES];
         [_checkForUploadingTimer setTolerance:5.0f];
         
@@ -68,7 +67,7 @@ static GLPPostOperationManager *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    NSLog(@"Background requests manager network status update GLPPost: %d", isNetwork);
+    DDLogCInfo(@"Background requests manager network status update GLPPost: %d", isNetwork);
     
     self.isNetworkAvailable = isNetwork;
     
@@ -88,8 +87,6 @@ static GLPPostOperationManager *instance = nil;
 
 -(void)checkForPostUpload:(id)sender
 {
-    NSLog(@"Timer is checking for new posts.");
-    
     
 //    if(self.isNetworkAvailable)
 //    {
@@ -97,11 +94,11 @@ static GLPPostOperationManager *instance = nil;
         {
             NSString *url = [_imageUploader urlWithTimestamp:t];
             
-            NSLog(@"Ready URL: %@",url);
+            DDLogCInfo(@"Ready URL: %@",url);
             
             if(url)
             {
-                NSLog(@"Post ready for upload!");
+                DDLogCInfo(@"Post ready for upload!");
                 
                 //Post ready for uploading.
                 [_postUploader uploadPostWithTimestamp:t andImageUrl:url];

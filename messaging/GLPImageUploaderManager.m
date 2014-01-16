@@ -9,16 +9,26 @@
 #import "GLPImageUploaderManager.h"
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
+#import "NSMutableArray+QueueAdditions.h"
 
 @interface GLPImageUploaderManager ()
 
 @property (strong, nonatomic) NSMutableDictionary *uploadedImages;
+
+@property (strong, nonatomic) NSMutableDictionary *pendingImages;
+@property (strong, nonatomic) NSMutableArray *pendingTimestamps;
+@property (strong, nonatomic) NSTimer *checker;
+@property (assign, nonatomic) BOOL networkAvailable;
+
 
 @end
 
 @implementation GLPImageUploaderManager
 
 @synthesize uploadedImages = _uploadedImages;
+@synthesize pendingImages = _pendingImages;
+@synthesize pendingTimestamps = _pendingTimestamps;
+@synthesize checker = _checker;
 
 const NSString *IMAGE_PENDING = @"PENDING";
 
@@ -30,10 +40,95 @@ const NSString *IMAGE_PENDING = @"PENDING";
     {
         _uploadedImages = [[NSMutableDictionary alloc] init];
         
-        //NSOrderedSame
+        _pendingTimestamps = [[NSMutableArray alloc] init];
+        _pendingImages = [[NSMutableDictionary alloc] init];
+        _checker = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(startUploadImage:) userInfo:nil repeats:YES];
+        [_checker setTolerance:5.0f];
+        
+        [_checker fire];
+        
+        
+        self.networkAvailable = YES;
+        
+        //Called when there is change in status.
+        
+        [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+            
+            BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
+            
+            if(currentStatus)
+            {
+                self.networkAvailable = YES;
+                //[self startConsume];
+                [self cancelOperations];
+
+            }
+            else
+            {
+                self.networkAvailable = NO;
+                //No network.
+                [self cancelOperations];
+            }
+            
+        }];
+
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
+
+        
+                              //NSOrderedSame
     }
     
     return self;
+}
+
+//- (void)updateNetworkStatus:(NSNotification *)notification
+//{
+//    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+//    NSLog(@"GLPImageUploader network status update: %d", isNetwork);
+//    
+//    if(isNetwork)
+//    {
+//        //[self startAll];
+//        
+//    } else
+//    {
+//       // [self stopAll];
+//    }
+//}
+
+#pragma mark - Helpers
+
+/**
+ Cancel the execution of the two threads and refill the array with the
+ images' remote keys that were not finished.
+ 
+ */
+-(void)cancelOperations
+{
+    BOOL exist = NO;
+    
+    //Refill the array with the not finished remote keys.
+    for (NSNumber *key in _pendingImages)
+    {
+        for(NSNumber *arrayKey in _pendingTimestamps)
+        {
+            if([arrayKey compare:key] == NSOrderedSame)
+            {
+                exist = YES;
+                break;
+            }
+        }
+        
+        if(!exist)
+        {
+            [_pendingTimestamps insertObject:key atIndex:0];
+        }
+        else
+        {
+            exist = NO;
+        }
+    }
+    
 }
 
 #pragma mark - Modifiers
@@ -57,11 +152,72 @@ const NSString *IMAGE_PENDING = @"PENDING";
     //Add timestamp to NSDictionary with url as pending.
 //    [_uploadedImages setObject:IMAGE_PENDING forKey:timestamp];
     
+    
+    //Add image and timestamp to the pending NSDictionary.
+    [_pendingImages setObject:image forKey:timestamp];
+    
+    
+    //Add timestamp to NSArray.
+    [_pendingTimestamps enqueue:timestamp];
+    
+    
+    //Start thread if is not started.
+//    if(![_checker isValid])
+//    {
+//        [_checker fire];
+//    }
+    
     //Start uploading the image.
-    [self startUploadingImage:image withTimestamp:timestamp];
+   // [self startUploadingImage:image withTimestamp:timestamp];
     
 }
 
+//NEW METHOD NEW APPROACH.
+- (void)startUploadImage:(id)sender
+{
+    
+    //Consume.
+    
+    if(_pendingTimestamps.count == 0)
+    {
+        //TODO: Pause thread.
+        //[_checker setFireDate:];
+        //DDLogCDebug(@"Queues empty: %@ - %@",_pendingTimestamps, _pendingImages);
+        return;
+    }
+    
+    if(!self.networkAvailable)
+    {
+        [self cancelOperations];
+        
+        return;
+    }
+    
+    
+    NSDate *timestamp = [_pendingTimestamps dequeue];
+    
+   // DDLogCDebug(@"Starting uploading image with timestamp: %@",timestamp);
+
+    
+    UIImage *image = [_pendingImages objectForKey:timestamp];
+    
+    __block NSData *data;
+    
+    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+        
+        UIImage *resizedImage = [ImageFormatterHelper imageWithImage:image scaledToHeight:640];
+        data = UIImagePNGRepresentation(resizedImage);
+        
+    }];
+    
+    [operation setCompletionBlock:^{
+        
+        [self uploadResizedImageWithImageData:data withTimestamp:timestamp];
+        
+    }];
+    
+    [[[NSOperationQueue alloc] init] addOperation:operation];
+}
 
 - (void)startUploadingImage:(UIImage*)image withTimestamp:(NSDate*)timestamp
 {
@@ -111,11 +267,16 @@ const NSString *IMAGE_PENDING = @"PENDING";
                 if(finished)
                 {
 //                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPImageUploaded" object:nil userInfo:@{@"imageUrl":imageUrlSend}];
-                    //Add image url
                     
+                    @synchronized(_pendingImages)
+                    {
+                        [_pendingImages removeObjectForKey:timestamp];
+                    }
+                    
+                    //Add image url
                     [self updateImageToDictionary:imageUrl withTimestamp:timestamp];
                     
-                    NSLog(@"Image url after notify: %@",imageUrlSend);
+                    //NSLog(@"Image url after notify: %@",imageUrlSend);
                     
                 }
                 
@@ -125,6 +286,7 @@ const NSString *IMAGE_PENDING = @"PENDING";
                 //                _imageStatus = GLPImageStatusFailed;
                 
                 NSLog(@"Error occured. Post image cannot be uploaded.");
+                self.networkAvailable = NO;
 #warning TODO: show user an error(?)
             }
         }];

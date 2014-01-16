@@ -528,7 +528,7 @@
     {
         self.user = [usersData objectAtIndex:0];
         self.userImage = [usersData objectAtIndex:1];
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
 
         [self loadPosts];
 

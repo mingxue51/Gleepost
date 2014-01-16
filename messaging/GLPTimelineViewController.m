@@ -318,8 +318,8 @@ static BOOL likePushed;
 -(void)startLoadingContents:(id)sender
 {
     
-    [[GLPMessagesLoader sharedInstance] loadLiveConversations];
-    [[GLPMessagesLoader sharedInstance] loadConversations];
+    //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
+    //[[GLPMessagesLoader sharedInstance] loadConversations];
     [[GLPProfileLoader sharedInstance] loadUserData];
 
 }

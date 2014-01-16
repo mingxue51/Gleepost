@@ -24,6 +24,8 @@
     entity.commentsCount = [resultSet intForColumn:@"comments"];
     entity.liked = [resultSet boolForColumn:@"liked"];
     
+    DDLogCError(@"USER REMOTE KEY: %d",[resultSet intForColumn:@"author_key"]);
+    
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
 }
 
