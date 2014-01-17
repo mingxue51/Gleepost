@@ -7,7 +7,6 @@
 //
 
 #import "ProfileViewController.h"
-#import "GLPPost.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "ViewPostViewController.h"
@@ -30,6 +29,10 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPThemeManager.h"
 #import "AppearanceHelper.h"
+#import "PopUpNotificationsViewController.h"
+#import "TransitionDelegateViewNotifications.h"
+#import "GLPThemeManager.h"
+
 
 @interface ProfileViewController ()
 
@@ -37,7 +40,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *postsTableView;
 
 @property (strong, nonatomic) NSMutableArray *posts;
-@property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) IBOutlet ProfileView *profileView;
@@ -49,6 +51,12 @@
 
 @property (assign, nonatomic) NSInteger unreadNotificationsCount;
 
+@property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
+
+//Notification view.
+@property (strong, nonatomic) UIView *notificationView;
+
+@property (assign, nonatomic) BOOL fromCampusWall;
 
 @end
 
@@ -62,20 +70,25 @@ static BOOL likePushed;
     
     
     //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     //Change navigations items' (back arrow, edit etc.) colour.
 
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
-    self.navigationController.navigationBar.tintColor = tabColour;
+    [AppearanceHelper setNavigationBarFontFor:self];
 
+    
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
+    self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
     
     self.profileScrollView = [[ProfileScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 350)];
 
@@ -98,6 +111,16 @@ static BOOL likePushed;
     
     [self.postsTableView setBackgroundColor:[UIColor whiteColor]];
     
+    //Find out from which view controller this comes.
+    if(self.navigationController.viewControllers.count == 1)
+    {
+        self.fromCampusWall = NO;
+    }
+    else
+    {
+        self.fromCampusWall = YES;
+    }
+    
     //If the user is the current user.
     if(self.incomingUser == nil)
     {
@@ -106,6 +129,10 @@ static BOOL likePushed;
         [tap setNumberOfTapsRequired:1];
         [self.profileView.profileImage setUserInteractionEnabled:YES];
         [self.profileView.profileImage addGestureRecognizer:tap];
+        
+        
+        [self.profileView hideAlreadyInContactsImage];
+
         [self addLogoutNavigationButton];
     }
     else
@@ -118,8 +145,9 @@ static BOOL likePushed;
         [self.profileView.profileImage addGestureRecognizer:tap];
         
         [self setTitle:@"Loading..."];
-                
     }
+    
+
 
     
     [self.postsTableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
@@ -142,10 +170,17 @@ static BOOL likePushed;
     self.unreadNotificationsCount = 0;
 }
 
+-(void)configureNotificationView
+{
+    self.notificationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [AppearanceHelper setNavigationBarColour:self];
     
     //Added.
     [self.profileView hideNotificationsBubble];
@@ -158,13 +193,20 @@ static BOOL likePushed;
         [self loadUserDetails];
     }
     
+    [AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
+
     
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    //Initialise selected user id with -1 to dinstinguish logged in user from other users' profile.
+    self.selectedUserId = -1;
     
     // count unread notifications
     self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
@@ -174,6 +216,9 @@ static BOOL likePushed;
 
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+    
+
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -234,17 +279,52 @@ static BOOL likePushed;
 -(void)addLogoutNavigationButton
 {
     UIImage *settingsIcon = [UIImage imageNamed:@"settings_icon"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:settingsIcon];
-    [imageView setFrame:CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, settingsIcon.size.width, settingsIcon.size.height)];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 20, 20)];
+    [btnBack setFrame:CGRectMake(0, 0, 30, 30)];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-    self.navigationItem.rightBarButtonItem = item;
+
+    
+    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
+    [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
+
+    UIBarButtonItem *bellButton = [[UIBarButtonItem alloc] initWithCustomView:notView];
+
+    
+    [bellButton setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+    
+    
+    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
+    
+    if(!self.fromCampusWall)
+    {
+        self.navigationItem.leftBarButtonItem = bellButton;
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    }
+    else
+    {
+        //Add both buttons on the right.
+        self.navigationItem.rightBarButtonItems = @[settingsButton, bellButton];
+    }
+    
+}
+
+-(void)popUpNotifications:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    vc.delegate = self;
+    vc.campusWallView = self.fromCampusWall;
+    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 #pragma mark - FDTakeController delegate
@@ -255,10 +335,16 @@ static BOOL likePushed;
 
 }
 
+-(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
+{
+//    NSLog(@"Take Con")
+}
+
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
 {
     self.uploadedImage = photo;
-    [self.profileView.profileImage setImage:photo];
+    //[self.profileView.profileImage setImage:photo];
+    //[self.profileView updateImage:photo];
     
     //Communicate with server to change the image.
     [self uploadImageAndSetUserImageWithUserRemoteKey];
@@ -411,54 +497,7 @@ static BOOL likePushed;
             NSLog(@"Not Success: %d User: %@",success, user);
             
         }
-        
-        
-        
-    }];
-}
 
--(void)uploadImageAndSetUserImageWithUserRemoteKey
-{
-   // UIImage* imageToUpload = [Image resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
-    
-    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
-    
-    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
-    
-    NSLog(@"Image register image size: %d",imageData.length);
-    
-    
-    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
-    
-    
-    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
-        
-        //[WebClientHelper hideStandardLoaderForView:self.view];
-        
-        
-        if(success)
-        {
-            NSLog(@"IMAGE UPLOADED. URL: %@",response);
-            
-            //Change profile image in Session Manager.
-            [[SessionManager sharedInstance] registerUserImage:response];
-            
-            //Set image to user's profile.
-            
-            [self setImageToUserProfile:response];
-            
-//            [[SessionManager sharedInstance]user].profileImageUrl = response;
-            
-            //TODO: This is wrong
-            //[[SessionManager sharedInstance] updateUserWithUrl:response];
-            
-        }
-        else
-        {
-            NSLog(@"ERROR");
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
-            
-        }
     }];
 }
 
@@ -482,12 +521,83 @@ static BOOL likePushed;
     }];
 }
 
+-(void)uploadImageAndSetUserImageWithUserRemoteKey
+{
+    // UIImage* imageToUpload = [Image resizeImage:self.uploadedImage WithSize:CGSizeMake(124, 124)];
+    
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    NSLog(@"Image register image size: %d",imageData.length);
+    
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        //[WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            [self updateViewWithNewImage:response];
+            
+            //Change profile image in Session Manager.
+            [[SessionManager sharedInstance] registerUserImage:response];
+            
+            //Set image to user's profile.
+            [self setImageToUserProfile:response];
+            
+            //            [[SessionManager sharedInstance]user].profileImageUrl = response;
+            
+            //TODO: This is wrong
+            //[[SessionManager sharedInstance] updateUserWithUrl:response];
+            
+        }
+        else
+        {
+            NSLog(@"ERROR");
+            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            
+        }
+    }];
+}
+
+
+
+#pragma mark - Other methods
+
+
+-(void)updateViewWithNewImage:(NSString*)imageUrl
+{
+    //Set new url to current view.
+    [self.profileView updateImageWithUrl: imageUrl];
+    
+    //Update posts in current view.
+    [self refreshPostsWithNewImage:imageUrl];
+    
+}
+
+-(void)refreshPostsWithNewImage:(NSString*)imageUrl
+{
+    for(GLPPost *post in self.posts)
+    {
+        post.author.profileImageUrl = imageUrl;
+    }
+    
+    [self.postsTableView reloadData];
+}
+
 -(void)logout:(id)sender
 {
     //Pop up a bottom menu.
     UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
 
-    [actionSheet showInView:self.view];
+    [actionSheet showInView:[self.view window]];
 
 }
 
@@ -501,6 +611,10 @@ static BOOL likePushed;
         [self.navigationController popViewControllerAnimated:YES];
         [self performSegueWithIdentifier:@"start" sender:self];
     }
+    else
+    {
+        NSLog(@"Cancel");
+    }
 }
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet
@@ -513,8 +627,8 @@ static BOOL likePushed;
             
             if([btn.titleLabel.text isEqualToString:@"Cancel"])
             {
-                btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
-
+                //btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+                btn.titleLabel.textColor = [[GLPThemeManager sharedInstance]colorForTabBar];
             }
             else
             {
@@ -526,14 +640,7 @@ static BOOL likePushed;
 
 -(void) showNotifications: (id)sender
 {
-    [self performSegueWithIdentifier:@"view profile" sender:self];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    NSLog(@"viewDidLayoutSubviews");
-    
-    [super viewDidLayoutSubviews];
+    [self performSegueWithIdentifier:@"view notifications" sender:self];
 }
 
 
@@ -764,8 +871,19 @@ static BOOL likePushed;
     }
     else if([segue.identifier isEqualToString:@"view profile"])
     {
-        NotificationsViewController *nv = segue.destinationViewController;
+//        NotificationsViewController *nv = segue.destinationViewController;
+        ProfileViewController *profileViewController = segue.destinationViewController;
         
+        GLPUser *incomingUser = [[GLPUser alloc] init];
+        
+        incomingUser.remoteKey = self.selectedUserId;
+        
+        if(self.selectedUserId == -1)
+        {
+            incomingUser = nil;
+        }
+        
+        profileViewController.incomingUser = incomingUser;
     }
     else if([segue.identifier isEqualToString:@"start"])
     {
@@ -783,6 +901,22 @@ static BOOL likePushed;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - View image delegate
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = postImage;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 
 #pragma mark - New comment delegate
 
@@ -844,7 +978,7 @@ static BOOL likePushed;
     }
     else
     {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar8"]] forState:UIControlStateNormal];
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
         

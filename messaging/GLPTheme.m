@@ -13,8 +13,9 @@
 @synthesize chatBackground = _chatBackground;
 @synthesize navbar = _navbar;
 @synthesize tabbarColour = _tabbarColour;
+@synthesize pullDownImage = _pullDownImage;
 
--(id)initWithIdentifier:(GLPThemeType)identifier chatBackground:(NSString*)chatBackground andNavbarImageName:(NSString*)navBar andTabbarTintColour:(UIColor*)tabbarColour
+-(id)initWithIdentifier:(GLPThemeType)identifier chatBackground:(NSString*)chatBackground navbarImageName:(NSString*)navBar tabbarTintColour:(UIColor*)tabbarColour pullDownImage:(NSString*)pullDownImage
 {
     self = [super init];
     
@@ -24,6 +25,7 @@
         _chatBackground = chatBackground;
         _navbar = navBar;
         _tabbarColour = tabbarColour;
+        _pullDownImage = pullDownImage;
     }
     
     return self;

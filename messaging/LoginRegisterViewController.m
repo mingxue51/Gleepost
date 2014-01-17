@@ -35,6 +35,9 @@ static NSString * const kOkButtonTitle       = @"Ok";
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
     
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    
     
     [self setBackground];
     

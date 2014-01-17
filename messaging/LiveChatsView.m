@@ -56,7 +56,7 @@ static BOOL visibility;
 -(void)setLiveChatsToView
 {
     int i = 0;
-    for(GLPConversation *c in [GLPLiveConversationsManager sharedInstance].conversations) {
+    for(GLPConversation *c in [[GLPLiveConversationsManager sharedInstance] getConversations]) {
         
         GLPConversationPictureImageView *imageView = _conversationPictureImageViews[i];
         [imageView configureWithConversation:c];

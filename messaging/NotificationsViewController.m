@@ -14,6 +14,7 @@
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
 #import "WebClientHelper.h"
+
 @interface NotificationsViewController ()
 
 @property (assign, nonatomic) BOOL inLoading;
@@ -186,6 +187,9 @@
             
         case kGLPNotificationTypeAcceptedYou:
             self.selectedUserId = currentNotification.user.remoteKey;
+            //Refresh contacts' data.
+            [[ContactsManager sharedInstance] refreshContacts];
+            
             [self performSegueWithIdentifier:@"view profile" sender:self];
             break;
             
@@ -193,8 +197,6 @@
             NSLog(@"Commented.");
             //View post (navigate to comment).
 
-
-            
             break;
             
         case kGLPNotificationTypeLiked:
@@ -259,6 +261,13 @@
             
             NSLog(@"User with remote key %d accepted.", acceptButton.tag);
             self.selectedUserId = acceptButton.tag;
+            
+            //For now no need to refresh contacts.
+//            [[ContactsManager sharedInstance] refreshContacts];
+            
+            //Reload data to show the new cell.
+            [self.tableView reloadData];
+            
             [self performSegueWithIdentifier:@"view profile" sender:self];
 
         }
@@ -271,6 +280,11 @@
     
     //TODO: Implement that when is implemented by the server side.
     NSLog(@"User with remote key %d ignored.", ignoreButton.tag);
+    
+}
+
+-(void)changeTheCellToAlreadyContactsWithRemoteKey:(int)remoteKey
+{
     
 }
 

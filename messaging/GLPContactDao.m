@@ -9,6 +9,7 @@
 #import "GLPContactDao.h"
 #import "DatabaseManager.h"
 #import "GLPContactDaoParser.h"
+#import "GLPUserDao.h"
 
 @implementation GLPContactDao
 
@@ -45,7 +46,13 @@
     
     while ([resultSet next])
     {
-        [contacts addObject:[GLPContactDaoParser createContactFromResultSet:resultSet]];
+        GLPContact *currentContact = [GLPContactDaoParser createContactFromResultSet:resultSet];
+        
+        //Load user's details for current contact.
+        currentContact.user = [GLPUserDao findByRemoteKey:currentContact.remoteKey db:db];
+        
+        [contacts addObject: currentContact];
+        
     }
     
     return contacts;

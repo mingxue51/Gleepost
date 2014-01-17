@@ -8,17 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPUser.h"
+#import "ReflectedImageView.h"
 
 @interface ProfileView : UIView
 @property (weak, nonatomic) IBOutlet UIImageView* back;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet ReflectedImageView *reflectedProfileImage;
 @property (weak, nonatomic) IBOutlet UISwitch *busyFreeSwitch;
 @property (weak, nonatomic) IBOutlet UIButton *notificationsButton;
 @property (weak, nonatomic) IBOutlet UILabel *profileHeadInformation;
+@property (weak, nonatomic) IBOutlet UILabel *course;
+@property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *busyFreeLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *notificationNewBubbleImageView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationNewBubbleLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *alreadyInContacts;
 
 @property(weak, nonatomic) GLPUser* currentUser;
 
@@ -27,5 +33,6 @@
 - (void)showNotificationsBubble:(int)count;
 - (void)hideNotificationsBubble;
 -(void)setUserDetails:(GLPUser*)incomingUser;
-
+-(void)updateImageWithUrl:(NSString*)url;
+-(void)hideAlreadyInContactsImage;
 @end

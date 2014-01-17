@@ -9,7 +9,7 @@
 #import "ConversationManager.h"
 
 
-
+#import "GLPLiveConversationsManager.h"
 #import "GLPConversationDao.h"
 #import "GLPMessageDao.h"
 #import "GLPLiveConversationDao.h"
@@ -224,6 +224,8 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
+    DDLogInfo(@"Create message with content %@", content);
+    
     __block GLPMessage *message = [[GLPMessage alloc] init];
     message.content = content;
     message.conversation = conversation;
@@ -238,11 +240,11 @@ int const NumberMaxOfMessagesLoaded = 20;
     if(!conversation.isLive) {
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             [GLPMessageDao save:message db:db];
-            [GLPConversationDao update:conversation db:db];
+            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
         }];
     }
     
-    NSLog(@"Post message %@ to server", message.content);
+    DDLogInfo(@"Post message %@ to server", message.content);
     
     [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL responseSuccess, NSInteger remoteKey) {
         NSLog(@"Post to server response: success %d - id %d", responseSuccess, remoteKey);
@@ -266,38 +268,137 @@ int const NumberMaxOfMessagesLoaded = 20;
     return message;
 }
 
-+ (void)saveMessageFromLongpoll:(GLPMessage *)message
+// Save message from websocket event
+// Executed in background
++ (void)saveMessage:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey
 {
+    __block GLPConversation *conversation = nil;
+    
+    // check if the conversation exists in live conversations
+    conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:remoteKey];
+    NSLog(@"Conversation is live: %d", conversation != nil);
+    
+    if(conversation) {
+        [ConversationManager saveMessage:message forConversation:conversation];
+        return;
+    }
+    
+    // conversation exists in regular conversation
+    [DatabaseManager run:^(FMDatabase *db) {
+        conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
+    }];
+    NSLog(@"Conversation is normal: %d", conversation != nil);
+    
+    if(conversation) {
+        [ConversationManager saveMessage:message forConversation:conversation];
+        return;
+    }
+    
+    DDLogError(@"Conversation does not exists for message \"%@\", abort", message.content);
+    
+    
+//    NSLog(@"Conversation is neither live or normal, request details");
+//    
+//    // request more details on conversation
+//    [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:remoteKey withCallback:^(BOOL success, GLPConversation *remoteConversation) {
+//        if(!success) {
+//            NSLog(@"Cannot get conversation details, abort and ignore the message");
+//            return;
+//        }
+//        
+//        // new live conversation
+//        if(remoteConversation.isLive) {
+//            // new live conversation, while we already have 3
+//            if([[GLPLiveConversationsManager sharedInstance] conversationsCount] == 3) {
+//                
+//                // get the 3 live conversations that are defined by the api
+//                [[WebClient sharedInstance] synchronousGetConversationsFilterByLive:YES withCallback:^(BOOL success, NSArray *remoteLiveConversations) {
+//                    if(!success) {
+//                        NSLog(@"Cannot get live conversation list, abort and ignore the message");
+//                        return;
+//                    }
+//                    
+//                    // message conversation must be a part of the 3
+//                    NSArray *containsConversationArray = [remoteLiveConversations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", conversation.remoteKey]];
+//                    
+//                    if(containsConversationArray.count == 0) {
+//                        NSLog(@"Message's conversation is not part of the 3 live conversations of the user, abort and ignore the message");
+//                        return;
+//                    }
+//                    
+//                    [[GLPLiveConversationsManager sharedInstance] setConversations:[remoteLiveConversations mutableCopy]];
+//                }];
+//            }
+//        }
+//        
+//        // otherwise, new regular conversation
+//        else {
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                [GLPConversationDao save:remoteConversation db:db];
+//            }];
+//        }
+//        
+//        conversation = remoteConversation;
+//    }];
+
+
+}
+
++ (void)saveMessage:(GLPMessage *)message forConversation:(GLPConversation *)conversation
+{
+    message.conversation = conversation;
     __block BOOL success = NO;
     
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+    if(message.conversation.isLive) {
+        NSArray *containsMessageArray = [message.conversation.messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", message.remoteKey]];
         
-        // check message not already exists = long poll own message
-        GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey db:db];
-        if(existingMessage) {
-            NSLog(@"Insert message that already exists with the remote key %d : %@", message.remoteKey, message.content);
+        if(containsMessageArray.count != 0) {
+            NSLog(@"Message for live conversation already present, abort");
             return;
         }
         
-        GLPConversation *conversation = [GLPConversationDao findByRemoteKey:message.conversation.remoteKey db:db];
-        
-        if(!conversation) {
-            NSLog(@"Conversation does not exists, ignore");
-            return;
-        }
-        
-        conversation.lastMessage = message.content;
-        conversation.lastUpdate = message.date;
-        conversation.hasUnreadMessages = YES;
-        [GLPConversationDao update:conversation db:db];
-        
-        message.conversation = conversation;
-        [GLPMessageDao save:message db:db];
         success = YES;
-    }];
+    }
     
-    if(success) {        
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewMessage" object:nil userInfo:@{@"message":message}];
+    else {
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            // check message not already exists = long poll own message
+            GLPMessage *existingMessage = [GLPMessageDao findByRemoteKey:message.remoteKey db:db];
+            if(existingMessage) {
+                NSLog(@"Insert message that already exists with the remote key %d : %@", message.remoteKey, message.content);
+                return;
+            }
+            
+            message.conversation.lastMessage = message.content;
+            message.conversation.lastUpdate = message.date;
+            message.conversation.hasUnreadMessages = YES;
+            
+            [GLPConversationDao update:message.conversation db:db];
+            [GLPMessageDao save:message db:db];
+            
+            success = YES;
+        }];
+    }
+    
+    if(success) {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_MESSAGE object:nil userInfo:@{@"message":message}];
+    }
+}
+
+// Save conversation from websocket event
+// Executed in background
++ (void)saveConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"Save conversation with remote key %d", conversation.remoteKey);
+    
+    if(conversation.isLive) {
+        DDLogError(@"Save live conversation, ignore for now");
+        //[GLPLiveConversationsManager sharedInstance] a
+    } else {
+        DDLogInfo(@"Save regular conversation");
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            [GLPConversationDao save:conversation db:db];
+        }];
     }
 }
 

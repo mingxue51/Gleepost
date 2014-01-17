@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
 #import "SessionManager.h"
+#import "GLPLoginManager.h"
 #import "GLPBackgroundRequestsManager.h"
 #import "WebClient.h"
 #import "GAI.h"
@@ -16,6 +17,9 @@
 #import "GAITracker.h"
 #import "GAIDictionaryBuilder.h"
 #import "Flurry.h"
+#import "DDLog.h"
+#import "DDASLLogger.h"
+#import "DDTTYLogger.h"
 #import "GLPFacebookConnect.h"
 
 @implementation AppDelegate
@@ -23,7 +27,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    // logging
+    //[[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    //[DDLog addLogger:[DDASLLogger sharedInstance]];
+    
+    DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
+    [ttyLogger setColorsEnabled:YES];
+    [DDLog addLogger:ttyLogger];
+    
+    // analytics
     [self setupGoogleAnalytics];
     [self setupFlurryAnalytics];
     
@@ -35,8 +47,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     
-    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
-    //[[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+//    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+
     
     UIViewController *initVC;
     if([[SessionManager sharedInstance] isSessionValid]) {
@@ -53,11 +66,8 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    NSLog(@"Application will become inactive");
-    
-    if([[SessionManager sharedInstance] isSessionValid]) {
-        [[GLPBackgroundRequestsManager sharedInstance] stopAll];
-    }
+    DDLogInfo(@"Application will become inactive");
+    [[WebClient sharedInstance] stopWebSocket];
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -77,13 +87,10 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"Application active");
-    
-    if([[SessionManager sharedInstance] isSessionValid]) {
-        [[GLPBackgroundRequestsManager sharedInstance] startAll];
-    }
+    [[WebClient sharedInstance] startWebSocketIfLoggedIn];
     
     // activate or reactivate web client
-    [[WebClient sharedInstance] activate];
+    //[[WebClient sharedInstance] activate];
     
     [[GLPFacebookConnect sharedConnection] handleDidBecomeActive];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

@@ -9,6 +9,7 @@
 #import "PullDownScrollView.h"
 #import "ChatViewAnimations.h"
 #import "WebClientHelper.h"
+#import "GLPThemeManager.h"
 
 
 @implementation PullDownScrollView
@@ -35,7 +36,9 @@
 
 -(void) initialiseElements
 {
-    UIImage *pullDownImage = [UIImage imageNamed:@"pull_down_button"];
+//    UIImage *pullDownImage = [UIImage imageNamed:@"pull_down_button"];
+    UIImage *pullDownImage = [UIImage imageNamed:[[GLPThemeManager sharedInstance] pullDownButton]];
+    
     CGSize sizeOfCircleImage = pullDownImage.size;
     self.pullDownImageView = [[UIImageView alloc] initWithImage:pullDownImage];
     

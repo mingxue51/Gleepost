@@ -15,6 +15,8 @@
 #import "GLPContact.h"
 #import "DatabaseManager.h"
 #import "GLPThemeManager.h"
+#import "ContactsManager.h"
+//#import "GLPPostOperationManager.m"
 #import "GLPFacebookConnect.h"
 #import "RemoteParser.h"
 
@@ -52,14 +54,33 @@
     });
 }
 
++ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts
+{
+    [[DatabaseManager sharedInstance] initDatabase];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPUserDao save:user inDb:db];
+        
+        for(GLPContact *contact in contacts) {
+            [GLPContactDao save:contact inDb:db];
+        }
+    }];
+    
+    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+    [[WebClient sharedInstance] startWebSocketIfLoggedIn];
+    [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+}
+
++ (void)loginFromExistingSessionUser
+{
+    //[[WebClient sharedInstance] initWebSocket];
+}
+
 + (void)logout
 {
-	 //Stop all the operations running in the background.
-
-    [[GLPBackgroundRequestsManager sharedInstance] stopAll];
+    [[WebClient sharedInstance] stopWebSocket];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
-    [[GLPBackgroundRequestsManager sharedInstance] stopAll];
-    
+
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
 }
@@ -70,7 +91,55 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
     
     // fetch additional info
     //TODO: not very nice to chain 3 requests
-    [[WebClient sharedInstance] getUserWithKey:user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//    [[WebClient sharedInstance] getUserWithKey:user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(!success) {
+//            callback(NO);
+//            return;
+//        }
+//        
+//        // load contacts
+//        //TODO: find better way
+//        [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+//            if(!success) {
+//                callback(NO);
+//                return;
+//            }
+//            
+//            [[DatabaseManager sharedInstance] initDatabase];
+//            
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                [GLPUserDao save:user inDb:db];
+//                
+//                for(GLPContact *contact in contacts) {
+//                    [GLPContactDao save:contact inDb:db];
+//                }
+//            }];
+//            
+//			//Set theme depending on the network name.
+//            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+//                
+//            NSLog(@"Image for nav bar: %@ and chat background image: %@", [[GLPThemeManager sharedInstance]imageForNavBar], [[GLPThemeManager sharedInstance] imageForChatBackground]);
+//                
+//            // create session. CHANGED.
+//            //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+//            [[SessionManager sharedInstance]user].remoteKey = user.remoteKey;
+//            [[SessionManager sharedInstance]user].profileImageUrl = user.profileImageUrl;
+//            //Add token.
+////           [[SessionManager sharedInstance] setTokenFromResponse:token];
+////           [[SessionManager sharedInstance] setUserFromResponse:user];
+//            
+//            [[GLPBackgroundRequestsManager sharedInstance] startAll];
+//            
+//            callback(YES);
+//        }];
+//    }];
+
+    NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
+        
+    // fetch additional info
+    // user details
+    [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
         
         if(!success) {
             callback(NO);
@@ -78,37 +147,14 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
         }
         
         // load contacts
-        //TODO: find better way
-        [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+        [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
+         
             if(!success) {
                 callback(NO);
                 return;
             }
             
-            [[DatabaseManager sharedInstance] initDatabase];
-            
-            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                [GLPUserDao save:user inDb:db];
-                
-                for(GLPContact *contact in contacts) {
-                    [GLPContactDao save:contact inDb:db];
-                }
-            }];
-            
-			//Set theme depending on the network name.
-            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
-                
-            NSLog(@"Image for nav bar: %@ and chat background image: %@", [[GLPThemeManager sharedInstance]imageForNavBar], [[GLPThemeManager sharedInstance] imageForChatBackground]);
-                
-            // create session. CHANGED.
-            //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
-            [[SessionManager sharedInstance]user].remoteKey = user.remoteKey;
-            [[SessionManager sharedInstance]user].profileImageUrl = user.profileImageUrl;
-            //Add token.
-//           [[SessionManager sharedInstance] setTokenFromResponse:token];
-//           [[SessionManager sharedInstance] setUserFromResponse:user];
-            
-            [[GLPBackgroundRequestsManager sharedInstance] startAll];
+            [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
             
             callback(YES);
         }];

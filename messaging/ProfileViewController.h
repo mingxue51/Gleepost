@@ -10,9 +10,12 @@
 #import "FDTakeController.h"
 #import "GLPUser.h"
 #import "NewCommentDelegate.h"
+#import "GLPPost.h"
+#import "ViewImageDelegate.h"
 
-@interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate>
+@interface ProfileViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate>
 
 @property (strong, nonatomic) GLPUser* incomingUser;
-
+@property (strong, nonatomic) GLPPost *selectedPost;
+@property (assign, nonatomic) int selectedUserId;
 @end

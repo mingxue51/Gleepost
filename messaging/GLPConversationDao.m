@@ -96,6 +96,16 @@
      entity.key];
 }
 
++ (void)updateConversationLastUpdateAndLastMessage:(GLPConversation *)entity db:(FMDatabase *)db
+{
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
+    
+    [db executeUpdateWithFormat:@"update conversations set lastMessage=%@, lastUpdate=%d where key=%d",
+     entity.lastMessage,
+     entity.lastUpdate,
+     entity.key];
+}
+
 + (void)updateConversationUnreadStatus:(GLPConversation *)entity db:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Cannot update entity without key");

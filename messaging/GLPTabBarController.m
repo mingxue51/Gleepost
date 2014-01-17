@@ -22,6 +22,8 @@
 @synthesize liveNotificationsCount=_liveNotificationsCount;
 @synthesize profileNotificationsCount=_profileNotificationsCount;
 
+static BOOL isViewDidDisappearCalled = YES;
+
 - (void)viewDidLoad
 {
     _notificationsCount = 0;
@@ -29,28 +31,30 @@
     _profileNotificationsCount = 0;
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
 
 //TODO: BUG: View will appear called multible times.
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:@"GLPNewMessage" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:@"GLPNewNotifications" object:nil];
+
+    if(isViewDidDisappearCalled) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
+        
+        isViewDidDisappearCalled = NO;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    isViewDidDisappearCalled = YES;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
 }
 
 

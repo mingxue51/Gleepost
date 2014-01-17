@@ -11,4 +11,7 @@
 
 @interface MessagesViewController : UITableViewController <GLPLoadingCellDelegate>
 
+extern NSString * const LIVE_CHATS_STR;
+extern NSString * const CONTACTS_CHATS_STR;
+
 @end

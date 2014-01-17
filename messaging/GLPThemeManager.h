@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLPTheme.h"
 
 @interface GLPThemeManager : NSObject
 
@@ -16,5 +17,7 @@
 -(NSString*)imageForChatBackground;
 -(NSString*)imageForNavBar;
 -(UIColor*)colorForTabBar;
+-(NSString*)pullDownButton;
+-(GLPThemeType)themeIdentifier;
 
 @end

@@ -33,6 +33,11 @@
     return self.notificationType == kGLPNotificationTypeAddedYou;
 }
 
+-(BOOL)hasActionNewFriends
+{
+    return self.notificationType == kGLPNotificationTypeAcceptedYou || self.notificationType == kGLPNotificationTypeContacts;
+}
+
 - (NSString *)notificationTypeDescription
 {
     switch (self.notificationType) {
@@ -42,9 +47,16 @@
             return [NSString stringWithFormat:@"Comment from %@", self.user.name];
         case kGLPNotificationTypeLiked:
             return [NSString stringWithFormat:@"Like from %@", self.user.name];
-        default:
+        case kGLPNotificationTypeAddedYou:
             return [NSString stringWithFormat:@"Contact request from %@",self.user.name];
+        default:
+            return [NSString stringWithFormat:@"You are now friends with %@",self.user.name];
     }
+}
+
+-(void)alreadyContacts
+{
+    self.notificationType = kGLPNotificationTypeContacts;
 }
 
 @end

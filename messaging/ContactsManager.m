@@ -1,4 +1,4 @@
-//
+ //
 //  ContactsManager.m
 //  Gleepost
 //
@@ -10,6 +10,7 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "DatabaseManager.h"
+#import "GLPUserDao.h"
 
 @implementation ContactsManager
 
@@ -29,36 +30,51 @@ static ContactsManager *instance = nil;
 - (id)init
 {
     self = [super init];
-    if(!self) {
-        return nil;
+    
+    if(self)
+    {
+        //[self refreshContacts];
     }
     
-    
-    [self refreshContacts];
-    
     //Load contacts from database.
-    [self loadContactsFromDatabase];
+    //[self loadContactsFromDatabase];
     
     return self;
 }
 
--(void)saveNewContact:(GLPContact*)contact
+-(void)saveNewContact:(GLPContact*)contact db:(FMDatabase*) db
 {
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+    if(db == nil)
+    {
+        
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+            [GLPContactDao save:contact inDb:db];
+            [GLPUserDao saveIfNotExist:contact.user db:db];
+        }];
+    
+    }
+    else
+    {
         [GLPContactDao save:contact inDb:db];
-    }];
+        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
+    }
+    
+
 }
 
+/**
+ Load contacts from the server and save them to the Contacts array and to the database.
+ */
 -(void)refreshContacts
 {
     //Load contacts from server and update database.
     
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+    [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *contacts) {
         
         if(success)
         {
             //Store contacts into an array.
-            
             self.contacts = contacts;
 
             [GLPContactDao deleteTable];
@@ -66,7 +82,8 @@ static ContactsManager *instance = nil;
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
                 for(GLPContact *c in contacts) {
-                    [GLPContactDao save:c inDb:db];
+                    //[GLPContactDao save:c inDb:db];
+                    [self saveNewContact:c db:db];
                 }
             }];
             
@@ -84,6 +101,35 @@ static ContactsManager *instance = nil;
 {
     self.contacts = [GLPContactDao loadContacts];
     
+}
+
+/**
+ Finds the real contacts (accepted from both sides) and return them.
+ 
+ @return dictionary contains an array with confirmed contacts and an array with just users' names.
+ 
+ */
+-(NSDictionary*)findConfirmedContacts
+{
+    NSMutableArray *confirmedContacts = [[NSMutableArray alloc] init];
+    NSMutableArray *confirmedContactsNames = [[NSMutableArray alloc] init];
+    
+    NSMutableDictionary *dictonaryContacts = nil;
+    //Created for test purposes.
+    for(GLPContact* contact in self.contacts)
+    {
+        if(contact.youConfirmed && contact.theyConfirmed)
+        {
+            //TODO: Bug here. User name is nil.
+            [confirmedContacts addObject:contact];
+            [confirmedContactsNames addObject:contact.user.name];
+        }
+    }
+    
+    dictonaryContacts = [[NSMutableDictionary alloc] initWithObjects:@[confirmedContacts, confirmedContactsNames] forKeys: @[@"Contacts",@"ContactsUserNames"]];
+    
+    
+    return dictonaryContacts;
 }
 
 /**
@@ -149,8 +195,12 @@ static ContactsManager *instance = nil;
         if(success)
         {
             [self contactWithRemoteKeyAccepted:remoteKey];
-            
+            [self loadContactsFromDatabase];
             callbackBlock(success);
+        }
+        else
+        {
+            callbackBlock(NO);
         }
         
     }];
@@ -163,7 +213,7 @@ static ContactsManager *instance = nil;
     localCallback(localEntities);
     
     
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *serverContacts) {
+    [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *serverContacts) {
         
         
         if(!success) {
@@ -196,9 +246,9 @@ static ContactsManager *instance = nil;
  */
 -(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
 {
-    [self refreshContacts];
+    //[self refreshContacts];
 
-    //[self loadContactsFromDatabase];
+    [self loadContactsFromDatabase];
     
     //Check if the user is already in contacts.
     //If yes show the regular profie view (unlocked).

@@ -13,6 +13,7 @@
 @interface NotificationCell : UITableViewCell
 
 extern NSString * const kGLPNotificationCell;
+extern NSString* const kGLPNotCell;
 
 @property (weak, nonatomic) IBOutlet UILabel *title;
 @property (weak, nonatomic) IBOutlet UILabel *contentLabel;
@@ -22,10 +23,11 @@ extern NSString * const kGLPNotificationCell;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 @property (weak, nonatomic) IBOutlet UIButton *ignoreButton;
 @property (weak, nonatomic) IBOutlet UIImageView *incomingNotification;
+@property (weak, nonatomic) IBOutlet UIImageView *myImage;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content;
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;
 
-- (void)updateWithNotification:(GLPNotification *)notification withViewController:(NotificationsViewController*) controller;
+- (void)updateWithNotification:(GLPNotification *)notification withViewController:(UIViewController*) controller;
 
 @end

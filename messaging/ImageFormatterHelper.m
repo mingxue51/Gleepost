@@ -25,6 +25,28 @@
     return newImage;
 }
 
++(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour
+{
+    CGSize imageSize = CGSizeMake(320, 0.5);
+    UIGraphicsBeginImageContextWithOptions(imageSize, YES, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [colour setFill];
+    CGContextFillRect(context, CGRectMake(0, 0, imageSize.width, imageSize.height));
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
++(UIImage*)resizeImage:(UIImage*)image withSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 
 
 
@@ -43,15 +65,7 @@
 }
 
 
--(UIImage*)resizeImage:(UIImage*)image WithSize:(CGSize)newSize
-{
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* imageToUpload = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return imageToUpload;
-}
+
 
 -(UIImage*)resizeImage:(UIImage*)image
 {
@@ -92,6 +106,8 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+
+
 
 -(float)calculateCenterX:(float)imageWidth
 {

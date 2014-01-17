@@ -12,7 +12,7 @@
 
 -(id)init
 {
-    self = [super initWithIdentifier:kGLPDefaultTheme chatBackground:@"new_chat_background" andNavbarImageName:@"navigationbar2" andTabbarTintColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    self = [super initWithIdentifier:kGLPDefaultTheme chatBackground:@"new_chat_background" navbarImageName:@"navigationbar2" tabbarTintColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0] pullDownImage:@"pull_down_button"];
     
     return  self;
 }

@@ -33,4 +33,7 @@
  */
 +(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey numberOfLikes:(int)likes andNumberOfComments:(int)comments;
 
++(GLPPost*)parsePostImageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts;
+
+
 @end

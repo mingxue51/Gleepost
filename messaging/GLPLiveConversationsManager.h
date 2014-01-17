@@ -11,10 +11,11 @@
 
 @interface GLPLiveConversationsManager : NSObject
 
-@property (strong, nonatomic) NSMutableArray *conversations;
-
 + (GLPLiveConversationsManager *)sharedInstance;
 
+- (int)conversationsCount;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
+- (NSArray *)getConversations;
+- (void)setConversations:(NSMutableArray *)conversations;
 
 @end

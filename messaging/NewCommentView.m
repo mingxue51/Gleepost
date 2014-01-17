@@ -14,6 +14,8 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
+#import "GLPThemeManager.h"
+#import "AppearanceHelper.h"
 
 @implementation NewCommentView
 
@@ -22,6 +24,9 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+        
+        [self configNavigationBar];
+        
         CGRect screenSizeVar = [self screenSize];
         
         
@@ -46,9 +51,15 @@
         //Add cancel button.
         //UIBarButtonItem *cB = [[UIBarButtonItem alloc] init];
         
+        UIColor *buttonsColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+        
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
         
+        [cancelButton setTitleColor:buttonsColour forState:UIControlStateNormal];
+        
         [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        
+        [AppearanceHelper formatTextWithLabel:cancelButton.titleLabel withSize:16.0];
         
         [cancelButton addTarget:self action:@selector(cancelPushed:) forControlEvents:UIControlEventTouchDown];
         
@@ -77,6 +88,11 @@
         UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 25, 60, 30)];
         [commentButton setTitle:@"Post" forState:UIControlStateNormal];
         
+        [commentButton setTitleColor:buttonsColour forState:UIControlStateNormal];
+
+        [AppearanceHelper formatTextWithLabel:commentButton.titleLabel withSize:16.0];
+
+        
         [commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
         
         [self addSubview:commentButton];
@@ -90,6 +106,28 @@
         [self.commentTextView becomeFirstResponder];
     }
     return self;
+}
+
+
+#pragma mark - Configuration
+
+-(void)configNavigationBar
+{
+    self.profileDelegate.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self.profileDelegate imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self.profileDelegate];
+    
+    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    [self.profileDelegate.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    [AppearanceHelper setNavigationBarFontFor:self.profileDelegate];
+    
+    [self.profileDelegate.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.profileDelegate.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
 }
 
 

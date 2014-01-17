@@ -21,14 +21,34 @@
 #import "ProfileViewController.h"
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
+#import "ReflectedImageView.h"
+#import "QuartzCore/CALayer.h"
+#import "ShapeFormatterHelper.h"
 
 @interface PrivateProfileViewController ()
-@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
-@property (strong, nonatomic) IBOutlet UILabel *networkName;
-@property (strong, nonatomic) IBOutlet UILabel *userName;
-@property (strong, nonatomic) IBOutlet UILabel *personalMessage;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet ReflectedImageView *reflectedProfileImage;
+@property (weak, nonatomic) IBOutlet UILabel *networkName;
+@property (weak, nonatomic) IBOutlet UILabel *personalMessage;
+@property (weak, nonatomic) IBOutlet UILabel *userName;
+@property (weak, nonatomic) IBOutlet UILabel *course;
 @property (weak, nonatomic) IBOutlet UIButton *addUserButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptUserButton;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfFriends;
+
+//Image view to create borders around information.
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageViews;
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageView2;
+@property (weak, nonatomic) IBOutlet UIImageView *borderImageView3;
+
+//TabViews.
+@property (weak, nonatomic) IBOutlet UIView *tabView;
+
+@property (weak, nonatomic) UIView *aboutTabView;
+@property (weak, nonatomic) UITableView *postsTabView;
+@property (weak, nonatomic) UITableView *mutualTabView;
+
+
 
 @property (strong, nonatomic) GLPUser *profileUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
@@ -46,8 +66,12 @@
     [super viewDidLoad];
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
 
+//    [self configureInformationBorders];
+    
+    [self configureViews];
+    
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
     
@@ -76,12 +100,8 @@
         //If not show the private profile view as is.
         NSLog(@"PrivateProfileViewController : Private profile as is.");
     }
-
     
-    
-    
-    
-    [self formatProfileView];
+//    [self formatProfileView];
     
     [self loadAndSetUserDetails];
     
@@ -101,11 +121,16 @@
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
+-(void)awakeFromNib
+{
+
+}
+
 #pragma mark - UI changes
 
 -(void)setContactAsRequested
 {
-    UIImage *img = [UIImage imageNamed:@"invitesent"];
+    UIImage *img = [UIImage imageNamed:@"pending"];
     [self.addUserButton setImage:img forState:UIControlStateNormal];
     [self.addUserButton setEnabled:NO];
 }
@@ -123,7 +148,6 @@
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
     vc.image = clickedImageView.image;
@@ -135,6 +159,48 @@
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+-(void)configureViews
+{
+    self.aboutTabView = [[[NSBundle mainBundle] loadNibNamed:@"AboutProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.aboutTabView.tag = 1;
+    
+    self.postsTabView = [[[NSBundle mainBundle] loadNibNamed:@"PostsProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.postsTabView.tag = 2;
+    
+    self.mutualTabView = [[[NSBundle mainBundle] loadNibNamed:@"MutualProfileTabView" owner:self options:nil] objectAtIndex:0];
+    self.mutualTabView.tag = 3;
+    
+    [self.tabView addSubview:self.aboutTabView];
+    [self.tabView addSubview:self.postsTabView];
+    [self.tabView addSubview:self.mutualTabView];
+    
+    self.postsTabView.hidden = YES;
+    self.mutualTabView.hidden = YES;
+}
+
+-(void)configureInformationBorders
+{
+    
+    CGColorRef colour = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+    
+    [self.borderImageViews.layer setBorderWidth:1.0];
+    [self.borderImageViews.layer setBorderColor:colour];
+    
+    [self.borderImageView2.layer setBorderWidth:1.0];
+    [self.borderImageView2.layer setBorderColor:colour];
+    
+    [self.borderImageView3.layer setBorderWidth:1.0];
+    [self.borderImageView3.layer setBorderColor:colour];
+}
+
+/**
+ 
+ Convert current image view to circle shape.
+ 
+ @param roundedView the incoming image view.
+ @param newSize the diameter of the new shape.
+ 
+ */
 -(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
 {
     roundedView.clipsToBounds = YES;
@@ -146,10 +212,54 @@
     roundedView.center = saveCenter;
 }
 
+
+
+
 -(void)formatProfileView
 {
     [[self.profileImage layer] setBorderWidth:6.0f];
     [[self.profileImage layer] setBorderColor:[UIColor colorWithRed:243.0f/255.0f green:242.0f/255.0f blue:242.0f/255.0f alpha:1.0].CGColor];
+}
+
+#pragma mark - Tab views
+
+- (IBAction)showAboutView:(id)sender
+{
+    [self showTabViewWithTag:1];
+
+}
+
+- (IBAction)showPostsView:(id)sender
+{
+
+    [self showTabViewWithTag:2];
+    
+//    [self.tabView addSubview:self.postsTabView];
+}
+
+- (IBAction)showMutualView:(id)sender
+{
+    [self showTabViewWithTag:3];
+}
+
+-(void)showTabViewWithTag:(int)tag
+{
+    //Clear all views and add posts view.
+    NSArray *subViews = self.tabView.subviews;
+    
+    
+    
+    for(UIView *v in subViews)
+    {
+        if(v.tag != tag)
+        {
+            [v setHidden:YES];
+        }
+        else
+        {
+            [v setHidden:NO];
+        }
+    }
 }
 
 #pragma mark - Buttons selectors
@@ -158,8 +268,8 @@
 - (IBAction)acceptContact:(id)sender
 {
     
-    //If success from server then navigate to unlocked profile.
-    [[WebClient sharedInstance]acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
+    //Accept contact in the local database and in server.
+    [[ContactsManager sharedInstance] acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
        
         if(success)
         {
@@ -172,6 +282,7 @@
             incomingUser.remoteKey = self.selectedUserId;
             
             pvc.incomingUser = incomingUser;
+            
             //Navigate to profile view controller.
             NSMutableArray *array = [[self.navigationController viewControllers] mutableCopy];
             
@@ -181,16 +292,51 @@
             
             
             //Change the status of contact in local database.
-            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
+//            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
         }
         else
         {
             //Error message.
             [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
-
+            
         }
-        
     }];
+    
+    
+    
+//    //If success from server then navigate to unlocked profile.
+//    [[WebClient sharedInstance]acceptContact:self.selectedUserId callbackBlock:^(BOOL success) {
+//       
+//        if(success)
+//        {
+//            //Navigate to unlock profile.
+//            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//            ProfileViewController *pvc = [storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+//            
+//            GLPUser *incomingUser = [[GLPUser alloc] init];
+//            
+//            incomingUser.remoteKey = self.selectedUserId;
+//            
+//            pvc.incomingUser = incomingUser;
+//            //Navigate to profile view controller.
+//            NSMutableArray *array = [[self.navigationController viewControllers] mutableCopy];
+//            
+//            NSArray *a = [[NSArray alloc] initWithObjects:[array objectAtIndex:0], pvc, nil];
+//            
+//            [self.navigationController setViewControllers:a animated:YES];
+//            
+//            
+//            //Change the status of contact in local database.
+//            [[ContactsManager sharedInstance] contactWithRemoteKeyAccepted:self.selectedUserId];
+//        }
+//        else
+//        {
+//            //Error message.
+//            [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
+//
+//        }
+//        
+//    }];
 }
 
 
@@ -211,7 +357,8 @@
             contact.remoteKey = self.selectedUserId;
             
             //Save contact to database.
-            [[ContactsManager sharedInstance] saveNewContact:contact];
+            
+            [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
             
             [self setContactAsRequested];
 
@@ -269,19 +416,23 @@
         
         if(success)
         {
-            NSLog(@"Private Profile Load User Image URL: %@",user.profileImageUrl);
-       
-            
             self.profileUser = user;
             
             self.title = user.name;
+            self.userName.text = user.name;
             
             [self.networkName setText:user.networkName];
+            
+            [self.course setText: user.course];
             
             [self.personalMessage setText:user.personalMessage];
             
             [self setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
             
+            self.profileImage.layer.borderWidth = 2.0;
+            self.profileImage.layer.borderColor = [[GLPThemeManager sharedInstance]colorForTabBar].CGColor;
+            
+            [self setRoundedView:self.reflectedProfileImage toDiameter:self.reflectedProfileImage.frame.size.height];
             
             
             if([user.profileImageUrl isEqualToString:@""])
@@ -293,7 +444,41 @@
             {
                 
                 //Fetch the image from the server and add it to the image view.
-                [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+                //[self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+                
+                [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                    
+                    //Create the reflection effect.
+                    //TODO: Fix that, only add image when the image is loaded.
+                    [self.reflectedProfileImage reflectionImageWithImage:self.profileImage.image];
+                    
+                }];
+                
+                //TODO: Create shadow to the image.
+                
+//                self.profileImage.layer.shadowColor = [UIColor blackColor].CGColor;
+//                self.profileImage.layer.shadowOffset = CGSizeMake(-1, 1);
+//                self.profileImage.layer.shadowOpacity = 1;
+//                self.profileImage.layer.shadowRadius = 3.0;
+//                self.profileImage.clipsToBounds = NO;
+                
+                
+
+                
+                [ShapeFormatterHelper createTwoTopCornerRadius:self.profileImage withViewBounts:self.view.bounds andSizeOfCorners:CGSizeMake(5.0, 5.0)];
+                
+                
+//                UIBezierPath *maskPath;
+//                maskPath = [UIBezierPath bezierPathWithRoundedRect:self.profileImage.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(10.0, 10.0)];
+//                
+//                CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//                maskLayer.frame = self.view.bounds;
+//                maskLayer.path = maskPath.CGPath;
+//                self.profileImage.layer.mask = maskLayer;
+                
+
+                
+
                 
                 UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
                 [tap setNumberOfTapsRequired:1];

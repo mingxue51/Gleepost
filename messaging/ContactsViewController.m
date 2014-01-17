@@ -8,7 +8,7 @@
 
 #import "ContactsViewController.h"
 #import "ContactUserCell.h"
-#import "ProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WebClient.h"
 #import "SessionManager.h"
@@ -20,6 +20,9 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
+#import "ImageFormatterHelper.h"
+#import "ContactsManager.h"
+
 
 @interface ContactsViewController ()
 
@@ -30,26 +33,21 @@
 @property (strong, nonatomic) NSArray *panelSections;
 @property (assign, nonatomic) int selectedUserId;
 
+@property (strong, nonatomic) UITabBarItem *contactsTabbarItem;
+
 @end
 
 @implementation ContactsViewController
-
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self configTabbar];
+
+    
     //Init categorised users dictionary.
     self.categorisedUsers = [[NSMutableDictionary alloc] init];
-    NSLog(@"Contacts View Controller : viewDidLoad");
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -66,12 +64,23 @@
     //Change the format of the navigation bar.
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    
+    [AppearanceHelper setNavigationBarColour:self];
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
-    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    [AppearanceHelper setNavigationBarFontFor:self];
+
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+
 
 
     self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
@@ -82,10 +91,30 @@
 {
     [super viewDidAppear:animated];
     
+
+    
     [self loadContacts];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    
+    [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+}
+
+
+-(void)configTabbar
+{
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    self.contactsTabbarItem = [items objectAtIndex:3];
 }
 
 -(void) clearUselessSections
@@ -290,40 +319,48 @@
 
 -(void) loadContacts
 {
-   // [WebClientHelper showStandardLoaderWithTitle:@"Loading contacts" forView:self.view];
 
+    NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
+    
+    self.users = [allContacts objectForKey:@"Contacts"];
+    self.usersStr = [allContacts objectForKey:@"ContactsUserNames"];
+    
+    if(self.users.count>0)
+    {
+        self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+        [self clearUselessSections];
+        
+        [self categoriseUsersByLetter];
+        [self.contactsTableView reloadData];
+    }
     
     
-    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
-      
-       // [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        
-        if(success)
-        {
-            //Store contacts into an array.
-            
-            [self findConfirmedContacts:contacts.mutableCopy];
-            
-            if(self.users.count>0)
-            {
-                self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-                [self clearUselessSections];
-
-                [self categoriseUsersByLetter];
-                [self.contactsTableView reloadData];
-            }
-            
-//            self.users = contacts.mutableCopy;
-            
-        }
-        else
-        {
-            [WebClientHelper showStandardError];
-        }
-
-        
-    }];
+//    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
+//        
+//        if(success)
+//        {
+//            //Store contacts into an array.
+//            [self findConfirmedContacts:contacts.mutableCopy];
+//            
+//            if(self.users.count>0)
+//            {
+//                self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+//                [self clearUselessSections];
+//
+//                [self categoriseUsersByLetter];
+//                [self.contactsTableView reloadData];
+//            }
+//            
+////            self.users = contacts.mutableCopy;
+//            
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//
+//        
+//    }];
 }
 
 #pragma mark - Table view data source
@@ -455,13 +492,9 @@
     
     if([segue.identifier isEqualToString:@"view profile"])
     {
+        GLPPrivateProfileViewController *pvc = segue.destinationViewController;
         
-        ProfileViewController *pvc = segue.destinationViewController;
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        incomingUser.remoteKey = self.selectedUserId;
-        pvc.incomingUser = incomingUser;
-        
-        
+        pvc.selectedUserId = self.selectedUserId;
     }
 }
 

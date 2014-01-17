@@ -139,16 +139,6 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 //    }
 }
 
-/**
- Returns true if the last time (label was showed) is 5 minutes before new time. 
- Otherwise returns false so there is no need to show timestamp.
- 
- 
- */
--(BOOL)showTimestamp
-{
-    
-}
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {

@@ -22,7 +22,8 @@ typedef enum
 @property (strong, readonly) NSString *chatBackground;
 @property (strong, readonly) NSString *navbar;
 @property (strong, readonly) UIColor *tabbarColour;
+@property (strong, readonly) NSString *pullDownImage;
 
--(id)initWithIdentifier:(GLPThemeType)identifier chatBackground:(NSString*)chatBackground andNavbarImageName:(NSString*)navBar andTabbarTintColour:(UIColor*)tabbarColour;
+-(id)initWithIdentifier:(GLPThemeType)identifier chatBackground:(NSString*)chatBackground navbarImageName:(NSString*)navBar tabbarTintColour:(UIColor*)tabbarColour pullDownImage:(NSString*)pullDownImage;
 
 @end

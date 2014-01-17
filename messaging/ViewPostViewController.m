@@ -16,13 +16,16 @@
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
 #import "PostCell.h"
-#import "PrivateProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
 #import "UIViewController+GAI.h"
 #import "ContactsManager.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
+#import "ViewPostImageViewController.h"
+#import "TransitionDelegateViewImage.h"
+#import "AppearanceHelper.h"
 
 @interface ViewPostViewController ()
 
@@ -35,6 +38,7 @@
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 
 
@@ -71,6 +75,11 @@ static BOOL likePushed;
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
+    
+    
+    //To hide empty cells
+    self.tableView.tableFooterView = [UIView new];
+
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
@@ -110,7 +119,7 @@ static BOOL likePushed;
     
     
     
-    
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     //[self initialiseCommentsHeightArray];
     
@@ -130,6 +139,7 @@ static BOOL likePushed;
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self.tabBarController.tabBar setHidden:YES];
     
     if(self.commentJustCreated)
     {
@@ -137,6 +147,8 @@ static BOOL likePushed;
         [self scrollToTheEndAnimated:YES];
     }
     
+   // [self loadComments];
+
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -144,8 +156,10 @@ static BOOL likePushed;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self configureNavigationBar];
+    
+    
     [self loadComments];
-    [self.tabBarController.tabBar setHidden:YES];
 
 }
 
@@ -186,8 +200,26 @@ static BOOL likePushed;
     
 }
 
-
-
+-(void)configureNavigationBar
+{
+    //    [self setNeedsStatusBarAppearanceUpdate];
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self];
+    
+    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    [AppearanceHelper setNavigationBarFontFor:self];
+    
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+}
 #pragma mark - Social panel button methods
 
 /**
@@ -265,7 +297,7 @@ static BOOL likePushed;
     {
         //Navigate to profile view controller.
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
     else
     {
@@ -302,6 +334,22 @@ static BOOL likePushed;
 #pragma mark - Other methods
 
 static bool firstTime = YES;
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = postImage;
+    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+
 -(void) setBackgroundToNavigationBar
 {
     if(firstTime)
@@ -488,8 +536,6 @@ static bool firstTime = YES;
         
         GLPComment *comment = self.comments[indexPath.row-1];
         
-        NSLog(@"Comment Author: %@",comment.author);
-        
         [cell setComment:comment];
         
         
@@ -518,17 +564,22 @@ static bool firstTime = YES;
     if(indexPath.row>0)
     {
         GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
+        
+        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
+        
+        //return 200.0f;
+        
         return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
     else
     {
         if([self.post imagePost])
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:YES];
+            return [PostCell getCellHeightWithContent:self.post.content image:YES isViewPost:YES];
         }
         else
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:NO];
+            return [PostCell getCellHeightWithContent:self.post.content image:NO isViewPost:YES];
         }
         //return 200;
     }
@@ -806,7 +857,7 @@ static bool firstTime = YES;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
         
-        PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
     }
@@ -814,18 +865,18 @@ static bool firstTime = YES;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        ProfileViewController *profileViewController = segue.destinationViewController;
+//        
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
 }
 

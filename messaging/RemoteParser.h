@@ -14,6 +14,7 @@
 #import "GLPComment.h"
 #import "GLPContact.h"
 #import "GLPNotification.h"
+#import "GLPWebSocketEvent.h"
 
 @interface RemoteParser : NSObject
 
@@ -56,6 +57,9 @@
 // notifications
 + (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json;
 + (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations;
+
+// web socket event
++ (GLPWebSocketEvent *)parseWebSocketEventFromJson:(NSDictionary *)json;
 
 +(BOOL)parseBusyStatus:(NSDictionary*)json;
 

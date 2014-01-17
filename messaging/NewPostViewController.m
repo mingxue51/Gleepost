@@ -19,6 +19,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ImageFormatterHelper.h"
 #import "GLPPostUploader.h"
+#import "NSString+Utils.h"
+#import "GLPThemeManager.h"
+#import "GLPPostManager.h"
 
 @interface NewPostViewController ()
 
@@ -65,12 +68,10 @@
     }
 
     
-    
     self.tabBarController.tabBar.hidden = NO;
-    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    
-    [self.simpleNavBar setTranslucent:YES];
-    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
+
+    [self configureNavigationBar];
+
     
     _postUploader = [[GLPPostUploader alloc] init];
     _hasImage = NO;
@@ -99,6 +100,24 @@
 }
 
 
+#pragma mark - Configuration
+
+-(void)configureNavigationBar
+{
+    //UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+//    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"chat_background_default"] forBarMetrics:UIBarMetricsDefault];
+    
+    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
+    
+    [self.simpleNavBar setTranslucent:NO];
+    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
+    self.simpleNavBar.tintColor = [UIColor whiteColor];
+    
+    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Thin" size:20.0f], UITextAttributeFont, nil]];
+}
+
+
 -(void)formatBackground
 {
 //    [self.view setBackgroundColor:[UIColor clearColor]];
@@ -119,31 +138,39 @@
 
 - (IBAction)postButtonClick:(id)sender
 {
-    [self.delegate setNavigationBarName];
-    [self.delegate setPlusButtonToNavigationBar];
-    
-    [self.contentTextView resignFirstResponder];
-    
-    if(_hasImage)
-    {
-        [_postUploader uploadImage:self.imgToUpload];
-    }
-    
-    GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text hasImage:_hasImage];
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        if(_hasImage)
-        {
-            [delegate reloadNewImagePostWithPost:inPost];
-        }
-        else
-        {
-            [delegate reloadNewLocalPosts];
-        }
+    if (![NSString isStringEmpty:self.contentTextView.text]) {
+        [self.delegate setNavigationBarName];
+        [self.delegate setPlusButtonToNavigationBar];
         
-    }];
+        [self.contentTextView resignFirstResponder];
+        
+//        GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
+        
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text];
+
+        //Dismiss view controller and show immediately the post in the Campus Wall.
+        
+        [self dismissViewControllerAnimated:YES completion:^{
+            if(_hasImage)
+            {
+//                inPost.tempImage = self.imgToUpload;
+                //inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
+                [delegate reloadNewImagePostWithPost:inPost];
+            }
+            else
+            {
+                //[delegate reloadNewLocalPosts];
+                [delegate reloadNewImagePostWithPost:inPost];
+            }
+            
+        }];
+    }
 }
 
+- (IBAction)addImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+}
 
 #pragma mark - FDTakeController delegate
 
@@ -154,14 +181,12 @@
     _hasImage = YES;
     
     self.imgToUpload = photo;
-   // [_postUploader uploadImage:photo];
+    [_postUploader uploadImageToQueue:self.imgToUpload];
+    //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
 
-- (IBAction)addImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-}
+
 
 
 

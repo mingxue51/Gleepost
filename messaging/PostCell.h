@@ -10,9 +10,12 @@
 #import "GLPUser.h"
 #import "GLPPost.h"
 #import "NewCommentDelegate.h"
+#import "ViewImageDelegate.h"
 
 @interface PostCell : UITableViewCell
 
+extern const float IMAGE_CELL_HEIGHT;
+extern const float TEXT_CELL_HEIGHT;
 
 //@property (retain, nonatomic) IBOutlet UIImageView *userImage;
 
@@ -27,8 +30,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
+@property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
 
-@property (assign, nonatomic) UIViewController<NewCommentDelegate> *delegate;
+@property (assign, nonatomic) UIViewController<NewCommentDelegate, ViewImageDelegate> *delegate;
 
 
 @property BOOL isViewPost;
@@ -39,13 +43,14 @@
 //
 //+ (CGFloat)getCellHeightWithContent:(NSString *)content andImage:(BOOL)containsImage;
 
-+(NSString*) findTheNeededText: (NSString*)str;
+//+(NSString*) findTheNeededText: (NSString*)str;
 
 //-(void) updateWithPostData:(GLPPost *)postData andUserData:(GLPUser*)user;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex;
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
++ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
 
+-(void)setPostOnline:(BOOL)online;
 
 @end

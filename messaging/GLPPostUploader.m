@@ -2,59 +2,55 @@
 //  GLPPostUploader.m
 //  Gleepost
 //
-//  Created by Lukas on 11/14/13.
+//  Created by Tanmay Khandelwal on 05/12/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
 #import "GLPPostUploader.h"
+#import "GLPPost.h"
 #import "ImageFormatterHelper.h"
 #import "WebClient.h"
-#import "GLPPostManager.h"
 #import "SessionManager.h"
+#import "GLPPostManager.h"
+#import "GLPQueueManager.h"
+#import "GLPPostOperationManager.h"
 
-@interface GLPPostUploader()
+typedef NS_ENUM(NSUInteger, GLPImageStatus) {
+    GLPImageStatusUploaded = 0,
+    GLPImageStatusUploading,
+    GLPImageStatusFailed,
+    GLPImageStatusNone
+};
 
-@property (strong, nonatomic) GLPPost *post;
-@property (strong, nonatomic) NSString *imageUrl;
-@property (strong, nonatomic) UIImage *tempImage;
-@property (assign, nonatomic) BOOL imageUploaded;
-@property (assign, nonatomic) BOOL postUploading;
-@property (assign, nonatomic) BOOL postUploaded;
-@property (assign, nonatomic) BOOL savedLocally;
-
+@interface GLPPostUploader() {
+    GLPPost         *_post;
+    UIImage         *_postImage;
+    GLPImageStatus   _imageStatus;
+    NSString        *_imageURL;
+    
+    //Added.
+    NSDate *timestamp;
+    
+    int uploadKey;
+    void (^_uploadContentBlock)();
+}
 
 @end
 
 @implementation GLPPostUploader
 
-@synthesize post=_post;
-@synthesize imageUrl=_imageUrl;
-@synthesize imageUploaded=_imageUploaded;
-@synthesize postUploaded=_postUploaded;
-@synthesize postUploading=_postUploading;
-@synthesize savedLocally = _savedLocally;
-
 - (id)init
 {
     self = [super init];
-    if(!self) {
-        return nil;
+    if (self) {
+        [self cleanUpPost];
     }
-    
-    _post = [[GLPPost alloc] init];
-    _imageUploaded = NO;
-    _postUploaded = NO;
-    _postUploading = NO;
-    _savedLocally = NO;
-    
     return self;
 }
 
-//TODO: recheck
-//TODO: manage image changes and some stuff like this
-- (void)uploadImage:(UIImage *)image
-{
-    self.tempImage = image;
+- (void)startUploadingImage:(UIImage *)image {
+    _postImage = image;
+    _imageStatus = GLPImageStatusUploading;
     
     __block NSData *data;
     
@@ -63,138 +59,156 @@
         data = UIImagePNGRepresentation(resizedImage);
     }];
     
-    [operation setCompletionBlock:^{
-        [self uploadResizedImage:data];
-    }];
+    uploadKey = 3;
     
+    [operation setCompletionBlock:^{
+        [self uploadResizedImageWithImageData:data];
+//        [[GLPQueueManager sharedInstance]uploadImage:image withId:uploadKey];
+
+    }];
     
     [[[NSOperationQueue alloc] init] addOperation:operation];
 }
 
-- (void)uploadResizedImage:(NSData *)imageData
+-(void)uploadImageToQueue:(UIImage*)image
 {
-    [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
-        NSLog(@"Upload resized image with success: %d with link: %@", success, imageUrl);
-        
-        //TODO: Show some error
-        if(!success) {
-            return;
-        }
-        
-        _imageUrl = imageUrl;
-        _imageUploaded = YES;
-        
-        [self uploadFinalPostWithImage:YES];
-    }];
+    timestamp = [NSDate date];
+    _postImage = image;
+
+    NSLog(@"Timestamp before image uploading: %@",timestamp);
+    
+    [[GLPPostOperationManager sharedInstance] uploadImage:image withTimestamp:timestamp];
+    
+//    [gum uploadImage:image withTimestamp:[NSDate date]];
+    
+//    [[GLPQueueManager sharedInstance]uploadImage:image withId:1];
 }
 
-- (GLPPost*)uploadPostWithContent:(NSString *)content hasImage:(BOOL)hasImage
+//ADDED.
+-(GLPPost*)uploadPost:(NSString*)content
 {
-    _post = [[GLPPost alloc] init];
-    _post.content = content;
-    _post.author = [SessionManager sharedInstance].user;
+    //Add the date to a new post.
+    GLPPost *post = [[GLPPost alloc] init];
+    post.content = content;
+    post.author = [SessionManager sharedInstance].user;
     
-    //    [self uploadFinalPostWithImage:hasImage];
-
-    if(hasImage)
+    //Create a new operation.
+    if(_postImage)
     {
-        _post.date = [NSDate date];
-        _post.tempImage = self.tempImage;
-        _post.imagesUrls = [[NSArray alloc] initWithObjects:@"tempImage", nil];
+        post.date = [NSDate date];
+        post.tempImage = _postImage;
+        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
         
+        [GLPPostManager createLocalPost:post];
+        
+        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
+        
+//        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
     }
     else
     {
-        _post.imagesUrls = nil;
-        //[self uploadFinalPostWithImage:hasImage];
-        [self uploadTextWithPost:_post];
+        [self createLocalAndUploadPost:post];
+    }
+    
+    return post;
+}
 
+- (GLPPost *)uploadPostWithContent:(NSString *)content {
+    if (content) {
+        _post = [[GLPPost alloc] init];
+        _post.content = content;
+        _post.author = [SessionManager sharedInstance].user;
+        
+        
+        if (_postImage) {
+            _post.date = [NSDate date];
+            _post.tempImage = _postImage;
+            
+            [GLPPostManager createLocalPost:_post];
+            
+           // [[GLPQueueManager sharedInstance] uploadPost:_post withId:uploadKey];
+
+        }
+        
+        if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
+            
+            //[self createLocalAndUploadPost:_post];
+
+            
+        } else if (_imageStatus == GLPImageStatusUploading) {
+            
+            __weak GLPPostUploader *weakSelf = self;
+            __weak GLPPost *weakPost = _post;
+            _uploadContentBlock = ^{
+                
+                [weakSelf assignUrlToPost:weakPost];
+                [[GLPQueueManager sharedInstance] uploadPost:weakPost withId:-1];
+
+                //[weakSelf createLocalAndUploadPost:weakPost];
+            };
+        }
     }
     
     return _post;
 }
 
--(void)uploadTextWithPost:(GLPPost*)post
-{
-    
-    [GLPPostManager createLocalPost:post];
-    
-    
-    // send it to remote
-    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-        NSLog(@"Upload post with success: %d", success);
-        
-        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        post.remoteKey = success ? remoteKey : 0;
-        
-        [GLPPostManager updatePostAfterSending:post];
-        
-        _postUploaded = success;
-        _postUploading = NO;
-    }];
+# pragma mark - Uploading
+
+- (void)uploadResizedImageWithImageData:(NSData *)imageData {
+    if (imageData) {
+        [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
+            if (success) {
+                _imageStatus    = GLPImageStatusUploaded;
+                _imageURL       = imageUrl;
+                
+                if (_uploadContentBlock) _uploadContentBlock();
+                
+            } else {
+                _imageStatus = GLPImageStatusFailed;
+                
+                NSLog(@"Error occured. Post image cannot be uploaded.");
+                #warning TODO: show user an error(?)
+            }
+        }];
+    }
 }
 
-- (void)uploadFinalPostWithImage:(BOOL)withImage
+-(void)assignUrlToPost:(GLPPost*)post
 {
-    if(_postUploading) {
-        NSLog(@"Post is already uploading");
-        return;
-    }
+    post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
     
-    if(_postUploaded) {
-        NSLog(@"Post is already uploaded");
-        return;
-    }
-    
-    if(!_post) {
-        NSLog(@"There is no post to upload yet, abort");
-        return;
-    }
-    
-    _postUploading = YES;
-    __block GLPPost *post = _post; // shall we copy there?
-    
-    // post with image
-    
-
-    
-//    if(!_savedLocally)
-//    {
-//        // create local post
-////        [GLPPostManager createLocalPost:post];
-//        _savedLocally = YES;
-//    }
-
-    
-    
-    if(withImage) {
-//        if(!_imageUploaded) {
-//            _postUploading = NO;
-//            NSLog(@"Do not upload post, image upload not finished yet");
-//            return;
-//        }
-        
-        post.imagesUrls = [NSArray arrayWithObject:_imageUrl];
-    }
-
-    
-    [GLPPostManager createLocalPost:post];
-    
-    
-    // send it to remote
-    [[WebClient sharedInstance] createPost:_post callbackBlock:^(BOOL success, int remoteKey) {
-        NSLog(@"Upload post with success: %d", success);
-        
-        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        post.remoteKey = success ? remoteKey : 0;
-        
-        [GLPPostManager updatePostAfterSending:_post];
-        
-        _postUploaded = success;
-        _postUploading = NO;
-    }];
 }
 
+- (void)createLocalAndUploadPost:(GLPPost *)post {
+    if (post) {
+        post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
+        
+        [GLPPostManager createLocalPost:post];
+        
+        [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
+            NSLog(@"Post uploaded with success: %d", success);
+            
+            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            post.remoteKey = success ? remoteKey : 0;
+            
+            [GLPPostManager updatePostAfterSending:post];
+            
+            //TODO: Communicate with Campus Wall to inform post.
+            
+            
+            [self cleanUpPost];
+        }];
+    }
+}
 
+# pragma mark - Clean up
+
+- (void)cleanUpPost {
+    _imageStatus        = GLPImageStatusNone;
+    _imageURL           = nil;
+    _postImage          = nil;
+    _post               = nil;
+    _uploadContentBlock = nil;
+}
 
 @end

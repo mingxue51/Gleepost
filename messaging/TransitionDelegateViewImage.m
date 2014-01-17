@@ -27,14 +27,23 @@
 //    AnimatedTransitioning *controller = [[AnimatedTransitioning alloc]init];
 //    controller.isPresenting = NO;
 //    return controller;
+
+    
+    NSLog(@"animationControllerForDismissedController");
+    
     return nil;
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
+    
+    NSLog(@"interactionControllerForPresentation");
+
     return nil;
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
+    
+    NSLog(@"interactionControllerForDismissal");
     return nil;
 }
 

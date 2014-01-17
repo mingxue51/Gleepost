@@ -139,37 +139,38 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPLiveConversation *)parseLiveConversationFromJson:(NSDictionary *)json
 {
-    GLPLiveConversation *conversation = [[GLPLiveConversation alloc] init];
-    conversation.remoteKey = [json[@"id"] integerValue];
-    
-//    if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
-//        GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
-//        conversation.lastMessage = message.content;
+//    GLPLiveConversation *conversation = [[GLPLiveConversation alloc] init];
+//    conversation.remoteKey = [json[@"id"] integerValue];
+//    
+////    if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
+////        GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
+////        conversation.lastMessage = message.content;
+////    }
+//    
+//    conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
+//    
+//    NSMutableArray *participants = [NSMutableArray array];
+//    
+//    for(id jsonUser in json[@"participants"]) {
+//        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
+//        [participants addObject:user];
 //    }
-    
-    conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
-    
-    NSMutableArray *participants = [NSMutableArray array];
-    
-    for(id jsonUser in json[@"participants"]) {
-        GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
-        [participants addObject:user];
-    }
-    
-    conversation.participants = participants;
-    
-    NSDictionary *expired = json[@"expiry"];
-    
-    conversation.timeStarted = [RemoteParser parseDateFromString:expired[@"time"]];
-    
-    
-    [conversation setTitleFromParticipants:participants];
-
-    
-    conversation.author = [participants objectAtIndex:0];
-    //[conversation setTitleFromParticipants:participants];
-    
-    return conversation;
+//    
+//    conversation.participants = participants;
+//    
+//    NSDictionary *expired = json[@"expiry"];
+//    
+//    conversation.timeStarted = [RemoteParser parseDateFromString:expired[@"time"]];
+//    
+//    
+//    [conversation setTitleFromParticipants:participants];
+//
+//    
+//    conversation.author = [participants objectAtIndex:0];
+//    //[conversation setTitleFromParticipants:participants];
+//    
+//    return conversation;
+    return nil;
 }
 
 +(NSMutableArray*)findLiveConversations:(NSArray*)allConversations
@@ -214,46 +215,47 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 +(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations
 {
-    NSMutableArray *lastConversations = [[NSMutableArray alloc] init];
-    
-    //Order conversations by older to newer.
-    
-    NSArray *lastConversationsArray;
-    
-    lastConversationsArray = [liveConversations sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-        
-        
-        NSDate *first = [(GLPLiveConversation*)a timeStarted];
-        NSDate *second = [(GLPLiveConversation*)b timeStarted];
-        return [second compare:first];
-    }];
-    
-    int i = 0;
-    //Get last three conversations.
-    for(GLPLiveConversation *liveConv in lastConversationsArray)
-    {
-        [lastConversations addObject:liveConv];
-        ++i;
-        if(i==3)
-        {
-            break;
-        }
-    }
-    
-    //Reverse order of live conversations.
-    NSArray* reversedArray = [[lastConversations reverseObjectEnumerator] allObjects];
-
-    lastConversations = reversedArray.mutableCopy;
-    
-    
-//    for(GLPLiveConversation *liveConversation in liveConversations)
+//    NSMutableArray *lastConversations = [[NSMutableArray alloc] init];
+//    
+//    //Order conversations by older to newer.
+//    
+//    NSArray *lastConversationsArray;
+//    
+//    lastConversationsArray = [liveConversations sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+//        
+//        
+//        NSDate *first = [(GLPLiveConversation*)a timeStarted];
+//        NSDate *second = [(GLPLiveConversation*)b timeStarted];
+//        return [second compare:first];
+//    }];
+//    
+//    int i = 0;
+//    //Get last three conversations.
+//    for(GLPLiveConversation *liveConv in lastConversationsArray)
 //    {
-//        for(GLPLiveConversation *liveConversation in liveConversations)
+//        [lastConversations addObject:liveConv];
+//        ++i;
+//        if(i==3)
 //        {
-//            
+//            break;
 //        }
 //    }
-    return lastConversations;
+//    
+//    //Reverse order of live conversations.
+//    NSArray* reversedArray = [[lastConversations reverseObjectEnumerator] allObjects];
+//
+//    lastConversations = reversedArray.mutableCopy;
+//    
+//    
+////    for(GLPLiveConversation *liveConversation in liveConversations)
+////    {
+////        for(GLPLiveConversation *liveConversation in liveConversations)
+////        {
+////            
+////        }
+////    }
+//    return lastConversations;
+    return nil;
 }
 
 //TODO: Shrink two different type of messages methods to one type. Use inheritance in live conversation and conversation.
@@ -559,6 +561,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     
     contact.remoteKey = [json[@"id"] integerValue];
+    contact.user.remoteKey = contact.remoteKey;
     contact.user.name = json[@"username"];
     contact.user.profileImageUrl = json[@"profile_image"];
     contact.youConfirmed = [json[@"you_confirmed"] boolValue];
@@ -741,11 +744,26 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return items;
 }
 
+
+#pragma mark - Web socket event
+
++ (GLPWebSocketEvent *)parseWebSocketEventFromJson:(NSDictionary *)json
+{
+    GLPWebSocketEvent *event = [[GLPWebSocketEvent alloc] init];
+    [event typeFromString:json[@"type"]];
+    event.data = json[@"data"];
+    event.location = json[@"location"];
+    
+    return event;
+}
+
 #pragma mark - Busy status
 +(BOOL)parseBusyStatus:(NSDictionary*)json
 {
     return [json[@"busy"] boolValue];
 }
+
+
 
 
 @end

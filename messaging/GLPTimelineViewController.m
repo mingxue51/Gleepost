@@ -4,7 +4,6 @@
 //
 //  Created by Lukas on 11/9/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
-//
 
 #import "GLPTimelineViewController.h"
 #import "ViewPostViewController.h"
@@ -30,13 +29,16 @@
 #import "GLPLoadingCell.h"
 #import "SessionManager.h"
 #import "ContactsManager.h"
-#import "ProfileViewController.h"
+#import "GLPProfileViewController.h"
 #import "TSMessage.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPThemeManager.h"
+#import "ImageFormatterHelper.h"
+#import "GLPPrivateProfileViewController.h"
+#import "GLPPostImageLoader.h"
 
 @interface GLPTimelineViewController ()
 
@@ -81,8 +83,16 @@
 //TODO: Remove after the integration of image posts.
 @property int selectedIndex;
 
+@property (strong, nonatomic) UITabBarItem *homeTabbarItem;
+
 //TODO: For testing purposes.
 
+
+//Hidden navigation bar.
+@property (assign, nonatomic) CGFloat startContentOffset;
+@property (assign, nonatomic) CGFloat lastContentOffset;
+@property (assign, nonatomic) BOOL hidden;
+@property (strong, nonatomic) UIImageView *statusBarView;
 
 @end
 
@@ -107,11 +117,82 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
-    
-    [self configAppearance];
     [self configTableView];
+    [self configTabbarFormat];
+    
     [self configNewElementsIndicatorView];
     
+    [self initialiseObjects];
+    
+    
+    //TODO: Remove this later.
+    [[ContactsManager sharedInstance] refreshContacts];
+    
+    [self loadInitialPosts];
+    
+
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configAppearance];
+    
+    [self configStatusbarBackground];
+
+
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if(self.firstLoadSuccessful) {
+        [self startReloadingCronImmediately:YES];
+    }
+    
+
+    if(self.postIndexToReload!=-1)
+    {
+        //Refresh post cell in the table view with index.
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        
+    }
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+//    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:self.homeTabbarItem];
+
+    
+    // hide new element visual indicator if needed
+    [self hideNewElementsIndicatorView];
+    
+    //Show navigation bar.
+    [self contract];
+    
+    //Hide status bar colour.
+    [self.statusBarView setHidden:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self stopReloadingCron];
+}
+
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return NO;
+//}
+
+-(void)initialiseObjects
+{
     self.postsHeight = [[NSMutableArray alloc] init];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -149,48 +230,15 @@ static BOOL likePushed;
     
     self.postIndexToReload = -1;
     
-    //TODO: Remove this later.
-    [ContactsManager sharedInstance];
-    
-    [self loadInitialPosts];
-    
 
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if(self.firstLoadSuccessful) {
-        [self startReloadingCronImmediately:YES];
-    }
-    
-
-    if(self.postIndexToReload!=-1)
-    {
-        //Refresh post cell in the table view with index.
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-        
-    }
-    
-    [self sendViewToGAI:NSStringFromClass([self class])];
-    [self sendViewToFlurry:NSStringFromClass([self class])];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    // hide new element visual indicator if needed
-    [self hideNewElementsIndicatorView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [self stopReloadingCron];
-}
 
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUpladed" object:nil];
 }
 
 
@@ -204,7 +252,6 @@ static BOOL likePushed;
  */
 -(void)updatePostWithRemoteKey:(NSNotification*)notification
 {
-
     int index = [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
     
     if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
@@ -212,44 +259,182 @@ static BOOL likePushed;
         //Reload again only this post.
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
+}
 
+-(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+    
+    
+    NSLog(@"Result from uploaded post: %@", dict);
+    
+    int index = 0;
+    
+    for(GLPPost* p in self.posts)
+    {
+        if(key == p.key)
+        {
+            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            p.remoteKey = remoteKey;
+//            p.tempImage = nil;
+            break;
+        }
+        ++index;
+    }
+
+    
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+
+//    [self.tableView reloadData];
+    
 
 }
+
+-(void)updateRealImage:(NSNotification*)notification
+{
+//    NSLog(@"Notification: %@",[notification userInfo]);
+    
+    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+    {
+        [self.tableView reloadData];
+    }
+
+}
+
 
 #pragma mark - Init config
 
 - (void)configAppearance
 {
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
+    
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
+    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTranslucent:YES];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    
+    //Sets colour to navigation items.
+    self.navigationController.navigationBar.tintColor = tabColour;
 
     
     //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+    
+    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
+
+    //[AppearanceHelper setNavigationBarFont];
+    
     self.tabBarController.tabBar.hidden = NO;
     
     //Set colour of the border navigation bar image. TODO: Set one line image.
-    //[[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"imgbar"]];
+//    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+    
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+
+    
     
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
-    [self.tabBarController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+
+//    NSArray *items = self.tabBarController.tabBar.items;
+//    UITabBarItem *i = [items objectAtIndex:0];
+//    
+//    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
     
-//    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
+    
+    
+//    [self configTabbarFormat];
+    
     
     [self setPlusButtonToNavigationBar];
+}
+
+-(void)configStatusbarBackground
+{
+    self.statusBarView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+    self.statusBarView.backgroundColor=[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
+    [self.navigationController.view addSubview:self.statusBarView];
+}
+
+-(void)configTabbarFormat
+{
+    // set selected and unselected icons
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    UITabBarItem *item = [items objectAtIndex:0];
+    
+    item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+    item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+    
+    self.homeTabbarItem = item;
+    
+    
+    item = [items objectAtIndex:1];
+    
+    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"message-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    item = [items objectAtIndex:2];
+    
+    item.image = [[UIImage imageNamed:@"proximity-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"proximity-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+
+    
+    item = [items objectAtIndex:3];
+    
+    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"man-7"];
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+
+    
+    item = [items objectAtIndex:4];
+    
+    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+
+    
+
+
+   
+    
+    // this way, the icon gets rendered as it is (thus, it needs to be green in this example)
+//    item0.image = [[UIImage imageNamed:@"contacts.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    
+//    // this icon is used for selected tab and it will get tinted as defined in self.tabBar.tintColor
+//    item0.selectedImage = [UIImage imageNamed:@"contacts.png"];
 }
 
 -(void)configNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUpladed" object:nil];
+    
 }
 
 - (void)configTableView
@@ -377,7 +562,6 @@ static BOOL likePushed;
 }
 
 
-
 #pragma mark - Posts
 
 - (void)loadInitialPosts
@@ -391,12 +575,17 @@ static BOOL likePushed;
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
         self.posts = [localPosts mutableCopy];
+        
+        //[[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+        
         [self.tableView reloadData];
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         if(success) {
             self.posts = [remotePosts mutableCopy];
             
+            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
             
@@ -430,9 +619,17 @@ static BOOL likePushed;
     // take the last remote post
     GLPPost *remotePost = nil;
     
+    NSMutableArray *notUploadedPosts = [[NSMutableArray alloc] init];
+    
     if(self.posts.count > 0) {
         // first is the most recent
         for(GLPPost *p in self.posts) {
+            
+            if(p.remoteKey == 0)
+            {
+                [notUploadedPosts addObject:p];
+            }
+            
             if(p.remoteKey != 0) {
                 remotePost = p;
                 break;
@@ -442,7 +639,7 @@ static BOOL likePushed;
     
     [self startLoading];
     
-    [GLPPostManager loadRemotePostsBefore:remotePost callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
         
         if(!success) {
@@ -452,6 +649,10 @@ static BOOL likePushed;
         
         if(posts.count > 0) {
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+            
+            //New methodology of loading images.
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+
             
             // update table view and keep the scrolling state
             if(saveScrollingState) {
@@ -511,6 +712,8 @@ static BOOL likePushed;
         if(posts.count > 0) {
             int firstInsertRow = self.posts.count;
             
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
             
             NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
@@ -661,6 +864,102 @@ static BOOL likePushed;
 }
 
 
+#pragma mark - UIScrollViewDelegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
+
+    
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    CGFloat differenceFromStart = self.startContentOffset - currentOffset;
+    CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
+    self. lastContentOffset = currentOffset;
+    
+    
+    
+    if((differenceFromStart) < 0)
+    {
+        // scroll up
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self expand];
+    }
+    else {
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+            [self contract];
+    }
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    [self contract];
+    return YES;
+}
+
+#pragma mark - The Magic!
+
+-(void)expand
+{
+    if(self.hidden)
+    {
+        return;
+    }
+    
+    self.hidden = YES;
+    
+
+    [self.statusBarView setHidden:NO];
+    
+
+    
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:YES];
+}
+
+-(void)contract
+{
+    if(!self.hidden)
+    {
+        return;
+    }
+    
+    self.hidden = NO;
+    
+//    [self.tabBarController setTabBarHidden:NO
+//                                  animated:YES];
+    
+    
+    [self.statusBarView setHidden:YES];
+
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+}
+
+
+-(void)hideNavigationbarElements
+{
+    [self.navigationController.navigationBar setBackgroundColor: [UIColor clearColor]];
+}
+
+-(void)showNavigationbarElements
+{
+    [self configAppearance];
+}
+
 #pragma mark - Table view
 
 - (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
@@ -719,7 +1018,6 @@ static BOOL likePushed;
         [loadingCell updateWithStatus:self.loadingCellStatus];
         return loadingCell;
     }
-    
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
@@ -816,7 +1114,7 @@ static BOOL likePushed;
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return 415;
+        return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
         
         
     }
@@ -828,7 +1126,7 @@ static BOOL likePushed;
         //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:NO];
-        return 156;
+        return TEXT_CELL_HEIGHT;
     }
 }
 
@@ -893,6 +1191,8 @@ static BOOL likePushed;
 -(void)setPreviousViewToNavigationBar
 {
     [self setPlusButtonToNavigationBar];
+    
+    [self configAppearance];
 }
 
 -(void)setPreviousNavigationBarName
@@ -985,26 +1285,41 @@ static BOOL likePushed;
 
 #pragma mark - Other stuff
 
--(void)showFullPostImage:(id)sender
+//-(void)showFullPostImage:(id)sender
+//{
+//    
+//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+//    
+//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+//    
+//    
+//    self.imageToBeView = clickedImageView.image;
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+//    vc.image = clickedImageView.image;
+//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+//    vc.modalPresentationStyle= UIModalPresentationCustom;
+//
+//    [vc setTransitioningDelegate:self.transitionViewImageController];
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:vc animated:YES completion:nil];
+//    
+//}
+
+-(void)viewPostImage:(UIImage*)postImage
 {
-    
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-    
-    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-    
-    
-    self.imageToBeView = clickedImageView.image;
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = clickedImageView.image;
+    vc.image = postImage;
     vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
     
     [vc setTransitioningDelegate:self.transitionViewImageController];
-    vc.modalPresentationStyle= UIModalPresentationCustom;
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
-    
 }
 
 
@@ -1132,15 +1447,15 @@ static BOOL likePushed;
     }
     else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
-        //Navigate to profile view controller.
+        //Navigate to private profile view controller.
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     else
     {
         //Navigate to private view controller.
         
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     
 }
@@ -1351,9 +1666,6 @@ static BOOL likePushed;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([sender isKindOfClass:[PostCell class]])
-    {
-    }
     
     if([segue.identifier isEqualToString:@"view post"])
     {
@@ -1373,7 +1685,7 @@ static BOOL likePushed;
 //        vc.selectedIndex = self.selectedIndex;
         
         
-        self.selectedPost = nil;
+        //self.selectedPost = nil;
         
     } else if([segue.identifier isEqualToString:@"new post"])
     {
@@ -1411,11 +1723,20 @@ static BOOL likePushed;
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:NO];
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if([segue.identifier isEqualToString:@"view new private profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        
+        privateProfileViewController.selectedUserId = self.selectedUserId;
+
     }
     else if([segue.identifier isEqualToString:@"show image"])
     {
@@ -1431,18 +1752,16 @@ static BOOL likePushed;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
     
 }

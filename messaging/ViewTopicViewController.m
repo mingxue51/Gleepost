@@ -7,7 +7,7 @@
 //
 
 #import "ViewTopicViewController.h"
-#import "PrivateProfileViewController.h"
+#import "GLPPrivateProfileViewController.h"
 
 #import "MessageCell.h"
 #import "GLPLoadingCell.h"
@@ -32,7 +32,7 @@
 
 #import "LiveChatsView.h"
 #import "ContactsManager.h"
-#import "ProfileViewController.h"
+#import "GLPProfileViewController.h"
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 
@@ -99,6 +99,9 @@ float timeInterval = 0.1;
     [super viewDidLoad];
     
     [self configureTableView];
+    
+    [self loadElements];
+
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -106,6 +109,8 @@ float timeInterval = 0.1;
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar setTranslucent:YES];
+    
+    [AppearanceHelper setNavigationBarFontFor:self];
     
     [self configureBackground];
     
@@ -126,15 +131,22 @@ float timeInterval = 0.1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:@"GLPNewMessage" object:nil];
     
     
-    [self.tabBarController.tabBar setHidden:YES];
+    //[self.tabBarController.tabBar setHidden:YES];
     
     // reload messages when coming back from other VC
     [self configureMessages];
-    [self loadElements];
+    [self loadInitialMessages];
+
+//    [self loadElements];
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self.tabBarController.tabBar setHidden:YES];
+
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -159,7 +171,7 @@ float timeInterval = 0.1;
     {
         [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
         //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
+        //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
         
     }
     
@@ -216,7 +228,7 @@ float timeInterval = 0.1;
         [self hideTimeBarAndMaximizeTableView];
     }
     
-    [self loadInitialMessages];
+//    [self loadInitialMessages];
 }
 
 - (void)reloadElements
@@ -309,7 +321,7 @@ float timeInterval = 0.1;
         titleLabel.tag = [_conversation getUniqueParticipant].remoteKey;
         
         //Set colour to the view.
-        [titleLabel setTitleColor:tabColour forState:UIControlStateNormal];
+        [titleLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         //Set navigation to profile selector.
         titleLabel.frame = CGRectMake(0, 0, 70, 44);
@@ -317,14 +329,14 @@ float timeInterval = 0.1;
         self.navigationItem.titleView = titleLabel;
     }
     
+
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    //self.navigationController.navigationBar.tintColor = tabColour;
     
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil]];
-    self.navigationController.navigationBar.tintColor = tabColour;
-    
-    //self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = YES;
     
 
@@ -895,7 +907,7 @@ float timeInterval = 0.1;
     else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
     {
         
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
     else
     {
@@ -1146,7 +1158,7 @@ float timeInterval = 0.1;
     if([segue.identifier isEqualToString:@"view private profile"])
     {
         
-        PrivateProfileViewController *ppvc = segue.destinationViewController;
+        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
         
 //        if(self.participants.count == 0)
 //        {
@@ -1176,18 +1188,18 @@ float timeInterval = 0.1;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ProfileViewController *profileViewController = segue.destinationViewController;
-        
-        GLPUser *incomingUser = [[GLPUser alloc] init];
-        
-        incomingUser.remoteKey = self.selectedUserId;
-        
-        if(self.selectedUserId == -1)
-        {
-            incomingUser = nil;
-        }
-        
-        profileViewController.incomingUser = incomingUser;
+//        GLPProfileViewController *profileViewController = segue.destinationViewController;
+//
+//        GLPUser *incomingUser = [[GLPUser alloc] init];
+//        
+//        incomingUser.remoteKey = self.selectedUserId;
+//        
+//        if(self.selectedUserId == -1)
+//        {
+//            incomingUser = nil;
+//        }
+//        
+//        profileViewController.incomingUser = incomingUser;
     }
 }
 
