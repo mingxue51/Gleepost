@@ -1145,7 +1145,7 @@
                     <connections>
                         <segue destination="53d-3j-LO2" kind="push" identifier="login" id="nJP-6w-Ne5"/>
                         <segue destination="KFZ-j2-Eyw" kind="push" identifier="register" id="sAu-s2-hfG"/>
-                        <segue destination="WY8-qT-L1O" kind="modal" modalTransitionStyle="flipHorizontal" id="53L-zf-vsV"/>
+                        <segue destination="WY8-qT-L1O" kind="modal" identifier="start" modalTransitionStyle="flipHorizontal" id="53L-zf-vsV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1rp-B6-kAz" userLabel="First Responder" sceneMemberID="firstResponder"/>
