@@ -19,7 +19,4 @@
 - (void)saveAuthParameterPass:(NSString *)pass;
 - (NSString *)authParameterPass;
 
-- (void)saveInviteMessage:(NSString *)message;
-- (NSString *)inviteMesssage;
-
 @end

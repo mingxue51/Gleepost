@@ -8,13 +8,6 @@
 
 #import "GLPInvitationManager.h"
 #import "WebClient.h"
-#import "NSUserDefaults+GLPAdditions.h"
-
-@interface GLPInvitationManager () {
-    NSString *_inviteMessage;
-}
-
-@end
 
 @implementation GLPInvitationManager
 
@@ -28,19 +21,10 @@
     return invitationManager;
 }
 
-- (void)beginFetchingInviteMessage {
-    _inviteMessage = [[NSUserDefaults standardUserDefaults] inviteMesssage];
-    
+- (void)fetchInviteMessageWithCompletion:(void (^)(BOOL success, NSString *inviteMessage))completion {
     [[WebClient sharedInstance] getInviteMessageWithCallback:^(BOOL success, NSString *inviteMessage) {
-        if (success) {
-            _inviteMessage = inviteMessage;
-            [[NSUserDefaults standardUserDefaults] saveInviteMessage:_inviteMessage];
-        }
+        completion(success, inviteMessage);
     }];
-}
-
-- (NSString *)inviteMessage {
-    return _inviteMessage;
 }
 
 @end

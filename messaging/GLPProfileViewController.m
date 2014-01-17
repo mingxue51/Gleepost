@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import <AddressBookUI/AddressBookUI.h>
+#import <MessageUI/MessageUI.h>
 #import "GLPProfileViewController.h"
 #import "GLPUser.h"
 #import "SessionManager.h"
@@ -30,7 +30,7 @@
 #import "ImageFormatterHelper.h"
 #import "GLPInvitationManager.h"
 
-@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, ABPeoplePickerNavigationControllerDelegate>
+@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -55,6 +55,8 @@
 @property (strong, nonatomic) NSString *profileImageUrl;
 
 @property (strong, nonatomic) UITabBarItem *profileTabbarItem;
+
+@property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
 @end
 
@@ -324,62 +326,17 @@
 }
 
 - (void)invite {
-    [[GLPInvitationManager sharedInstance] beginFetchingInviteMessage];
-    ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
-    picker.peoplePickerDelegate = self;
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:self.view];
     
-    [self presentViewController:picker animated:YES completion:nil];
+    [[GLPInvitationManager sharedInstance] fetchInviteMessageWithCompletion:^(BOOL success, NSString *inviteMessage) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
+        if (success) {
+            [self showMessageViewControllerWithBody:inviteMessage];
+        } else {
+            [WebClientHelper showStandardError];
+        }
+    }];
 }
-
-#pragma mark - ABPeoplePickerNavigationControllerDelegate
-
-- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
-      shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-    BOOL shouldContinue = NO;
-    ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
-    
-    if (ABMultiValueGetCount(phoneNumbers) == 0) {  // No phone numbers found
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"No phone number found. Select another contact."];
-    } else if (ABMultiValueGetCount(phoneNumbers) == 1) {   // Single phone number found. Directly initiate SMS
-        [self dismissViewControllerAnimated:YES completion:^{
-            NSString *phoneNumber = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
-            
-            [self sendMessageToPhoneNumber:phoneNumber];
-        }];
-    } else {    // Multiple phone numbers found. Let user select single phone number
-        shouldContinue = YES;
-    }
-    
-    CFRelease(phoneNumbers);
-    
-    return shouldContinue;
-}
-
-- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
-      shouldContinueAfterSelectingPerson:(ABRecordRef)person
-                                property:(ABPropertyID)property
-                              identifier:(ABMultiValueIdentifier)identifier {
-    if (property == kABPersonPhoneProperty) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, property);
-            CFIndex index = ABMultiValueGetIndexForIdentifier(phoneNumbers, identifier);
-            NSString *phoneNumber = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(phoneNumbers, index);
-            
-            CFRelease(phoneNumbers);
-            
-            [self sendMessageToPhoneNumber:phoneNumber];
-        }];
-    } else {
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Please select a valid phone number."];
-    }
-    
-    return NO;
-}
-
 
 #pragma mark - Action Sheet delegate
 
@@ -737,9 +694,37 @@
 
 #pragma mark - Actions
 
-- (void)sendMessageToPhoneNumber:(NSString *)phoneNumber {
-    // TODO : initialize Message App
-    NSLog(@"Send SMS for number: %@",phoneNumber);
+- (void)showMessageViewControllerWithBody:(NSString *)messageBody {
+    if (![MFMessageComposeViewController canSendText]) {
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
+        return;
+    }
+    
+    self.messageComposeViewController = [[MFMessageComposeViewController alloc] init];
+    self.messageComposeViewController.messageComposeDelegate = self;
+    [self.messageComposeViewController setBody:messageBody];
+    
+    [self presentViewController:self.messageComposeViewController animated:YES completion:nil];
+}
+
+#pragma mark - MFMessageComposeViewControllerDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+    switch (result) {
+        case MessageComposeResultFailed: {
+            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS."];
+            break;
+        }
+        case MessageComposeResultSent: {
+            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully."];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

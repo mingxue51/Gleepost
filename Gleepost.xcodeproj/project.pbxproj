@@ -23,8 +23,6 @@
 /* Begin PBXBuildFile section */
 		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
-		1172680C188805B8008F5391 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172680B188805B8008F5391 /* AddressBook.framework */; };
-		1172680E1888068E008F5391 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172680D1888068E008F5391 /* AddressBookUI.framework */; };
 		11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 11E2FBB2185730DF002EB2FA /* gleepost.cer */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
@@ -1130,14 +1128,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1172680E1888068E008F5391 /* AddressBookUI.framework in Frameworks */,
-				1172680C188805B8008F5391 /* AddressBook.framework in Frameworks */,
+				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
 				80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */,
 				58143D6B1821014C00B76E5D /* Security.framework in Frameworks */,
 				807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */,
 				58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */,
 				80C8BA4D181030BF004F70DB /* libsqlite3.0.dylib in Frameworks */,
-				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
 				5841316217FF2F9C00A3278D /* Twitter.framework in Frameworks */,
 				5898329517F8F111008CB807 /* QuartzCore.framework in Frameworks */,
 				80AB891B17C267F50053E784 /* UIKit.framework in Frameworks */,

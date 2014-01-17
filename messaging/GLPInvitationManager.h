@@ -10,6 +10,5 @@
 
 @interface GLPInvitationManager : NSObject
 + (GLPInvitationManager *)sharedInstance;
-- (void)beginFetchingInviteMessage;
-- (NSString *)inviteMessage;
+- (void)fetchInviteMessageWithCompletion:(void (^)(BOOL success, NSString *inviteMessage))completion;
 @end

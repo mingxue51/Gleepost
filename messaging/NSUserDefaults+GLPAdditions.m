@@ -12,8 +12,6 @@ static NSString * const kGLPAuthParameterEmailKey   = @"kGLPAuthParameterEmailKe
 static NSString * const kGLPAuthParameterNameKey    = @"kGLPAuthParameterNameKey";
 static NSString * const kGLPAuthParameterPassKey    = @"kGLPAuthParameterPassKey";
 
-static NSString * const kGLPInviteMessageKey        = @"kGLPInviteMessageKey";
-
 @implementation NSUserDefaults (GLPAdditions)
 
 - (void)saveAuthParameterEmail:(NSString *)email {
@@ -38,14 +36,6 @@ static NSString * const kGLPInviteMessageKey        = @"kGLPInviteMessageKey";
 
 - (NSString *)authParameterPass {
     return [self objectForKey:kGLPAuthParameterPassKey];
-}
-
-- (void)saveInviteMessage:(NSString *)message {
-    [self setObject:message forKey:kGLPInviteMessageKey];
-}
-
-- (NSString *)inviteMesssage {
-    return [self objectForKey:kGLPInviteMessageKey];
 }
 
 @end
