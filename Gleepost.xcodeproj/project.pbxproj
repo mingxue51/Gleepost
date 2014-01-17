@@ -269,6 +269,7 @@
 		58DC0248180437A70008993A /* lightbublle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0240180437A70008993A /* lightbublle.png */; };
 		58DC0249180437A70008993A /* pull_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0241180437A70008993A /* pull_down_button.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
+		58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DE37D61889967A005DBF74 /* GLPNetworkManager.m */; };
 		58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4157186463A900D53723 /* GLPPostOperationManager.m */; };
 		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
 		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
@@ -308,7 +309,6 @@
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
 		803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803B6084181FFE8A00A178EB /* GLPLoadingCell.m */; };
-		8047E597188881D600123EB2 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8047E596188881D600123EB2 /* GLPNetworkManager.m */; };
 		8050249C181932C600F5337F /* conversation_new_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8050249B181932C600F5337F /* conversation_new_notification.png */; };
 		805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358C8182EF1CC00579079 /* GLPPostManager.m */; };
 		805358CC182EF37600579079 /* GLPPostDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358CB182EF37600579079 /* GLPPostDao.m */; };
@@ -815,6 +815,8 @@
 		58DC0241180437A70008993A /* pull_down_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pull_down_button.png; sourceTree = "<group>"; };
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
+		58DE37D51889967A005DBF74 /* GLPNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNetworkManager.h; sourceTree = "<group>"; };
+		58DE37D61889967A005DBF74 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
 		58DF4156186463A900D53723 /* GLPPostOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperationManager.h; sourceTree = "<group>"; };
 		58DF4157186463A900D53723 /* GLPPostOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperationManager.m; sourceTree = "<group>"; };
 		58DF415C186463E000D53723 /* GLPPostUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploaderManager.h; sourceTree = "<group>"; };
@@ -871,7 +873,6 @@
 		80112B9A180F2494006A35AA /* NSDate+UTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+UTC.m"; sourceTree = "<group>"; };
 		803B6083181FFE8A00A178EB /* GLPLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCell.h; sourceTree = "<group>"; };
 		803B6084181FFE8A00A178EB /* GLPLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadingCell.m; sourceTree = "<group>"; };
-		8047E596188881D600123EB2 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
 		8050249B181932C600F5337F /* conversation_new_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conversation_new_notification.png; sourceTree = "<group>"; };
 		805358C4182EEEC700579079 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
 		805358C5182EEEC700579079 /* GLPTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTimelineViewController.m; sourceTree = "<group>"; };
@@ -2253,6 +2254,8 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58DE37D51889967A005DBF74 /* GLPNetworkManager.h */,
+				58DE37D61889967A005DBF74 /* GLPNetworkManager.m */,
 				58DF41551864636500D53723 /* Post Uploader Managers */,
 				5890D2151847675100E293DD /* Themes */,
 				80666C3D1806D43200E4E515 /* Database */,
@@ -2972,7 +2975,6 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
-				8047E597188881D600123EB2 /* GLPNetworkManager.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
@@ -3066,6 +3068,7 @@
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
+				58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */,
 				58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,
 				58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */,

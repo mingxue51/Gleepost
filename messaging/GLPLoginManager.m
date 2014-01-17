@@ -17,7 +17,7 @@
 #import "GLPThemeManager.h"
 #import "ContactsManager.h"
 //#import "GLPPostOperationManager.m"
-//#import "GLPNetworkManager.h"
+#import "GLPNetworkManager.h"
 
 @implementation GLPLoginManager
 
@@ -110,7 +110,7 @@
 
 + (void)performAfterLoginForUser:(GLPUser *)user
 {
-//    [[GLPNetworkManager sharedInstance] startNetworkOperations];
+    [[GLPNetworkManager sharedInstance] startNetworkOperations];
     [[WebClient sharedInstance] startWebSocket];
     
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];

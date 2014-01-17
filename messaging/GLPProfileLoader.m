@@ -106,6 +106,7 @@ static GLPProfileLoader *instance = nil;
         }
         
     }
+    
 }
 
 -(UIImage*)loadImageWithUrl:(NSString*)url
@@ -136,9 +137,13 @@ static GLPProfileLoader *instance = nil;
     }
 }
 
+
+
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey
 {
-    return [_contactsImages objectForKey:[NSNumber numberWithInt:remoteKey]];
+    UIImage *currentImage = [_contactsImages objectForKey:[NSNumber numberWithInt:remoteKey]];
+    
+    return currentImage;
 }
 
 @end

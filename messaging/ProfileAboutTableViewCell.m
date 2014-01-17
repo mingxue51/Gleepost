@@ -34,6 +34,12 @@
     [self.lockImageView setHidden:YES];
     [self.lockLabel setHidden:YES];
     
+    if(user == nil)
+    {
+        [self initialiseLoadingElements];
+        return;
+    }
+    
     NSMutableString *information = [[NSMutableString alloc] init];
 
     if(![user.course isEqualToString:@""])
@@ -60,7 +66,11 @@
 //                             self.informationLabel.frame.origin.x, self.informationLabel.frame.origin.y,
 //                             self.informationLabel.frame.size.width, labelSize.height);
     
-    NSLog(@"Label content: %@",self.informationLabel.text);
+}
+
+-(void)initialiseLoadingElements
+{
+    [self.informationLabel setText:@"Loading..."];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

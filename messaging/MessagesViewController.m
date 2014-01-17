@@ -85,9 +85,6 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     //Initialise two sections: Random Chats and Messages from Contacts.
     self.sections = [[NSMutableArray alloc] init];
     [self addSectionWithName:LIVE_CHATS_STR];
-    
-
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -58,7 +58,7 @@ static ContactsManager *instance = nil;
     else
     {
         [GLPContactDao save:contact inDb:db];
-        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
+//        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
     }
     
 

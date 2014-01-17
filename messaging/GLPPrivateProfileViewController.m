@@ -30,6 +30,7 @@
 @property (strong, nonatomic) UIImage *profileImage;
 
 @property (assign, nonatomic) int numberOfRows;
+@property (assign, nonatomic) int currentNumberOfRows;
 
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
@@ -103,8 +104,6 @@
     [self initialiseObjects];
     
     [self configureNavigationBar];
-    
-    
     
 
     
@@ -229,14 +228,20 @@
         {
             self.profileUser = user;
             
+            self.navigationItem.title = self.profileUser.name;
 
-            if(!self.contact)
-            {
-                self.navigationItem.title = self.profileUser.name;
-
-                [self loadPosts];
-            }
+//            if(!self.contact)
+//            {
+//
+//                [self loadPosts];
+//            }
             
+            [self loadPosts];
+
+            
+            [self refreshFirstCell];
+//            [self refreshCellViewWithIndex:0];
+//            [self refreshCellViewWithIndex:2];
             //[self.tableView reloadData];
         }
         else
@@ -262,9 +267,6 @@
         
         [self loadAndSetUserDetails];
         
-        self.navigationItem.title = self.profileUser.name;
-        
-        [self loadPosts];
     }
 
 }
@@ -279,7 +281,8 @@
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
 
-            [self.tableView reloadData];
+            //TODO: Removed.
+//            [self.tableView reloadData];
         }
         else
         {
@@ -297,7 +300,8 @@
 {
     if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
     {
-        [self.tableView reloadData];
+        //TODO: Removed.
+//        [self.tableView reloadData];
     }
     
 }
@@ -322,7 +326,7 @@
 -(void)unlockProfile
 {
     self.contact = YES;
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -336,15 +340,18 @@
 {
     if(self.selectedTabStatus == kGLPMutual)
     {
-        return self.numberOfRows + 10; /** + Number of mutual friends. */
+        self.currentNumberOfRows = self.numberOfRows + 10;
+        return self.currentNumberOfRows; /** + Number of mutual friends. */
     }
     else if(self.selectedTabStatus == kGLPPosts)
     {
-        return self.numberOfRows + self.posts.count; /** + Number of user's posts. */
+        self.currentNumberOfRows = self.numberOfRows + self.posts.count;
+        return self.currentNumberOfRows; /** + Number of user's posts. */
     }
     else
     {
-        return self.numberOfRows + 1;
+        self.currentNumberOfRows = self.numberOfRows + 1;
+        return self.currentNumberOfRows;
     }
 }
 
@@ -370,6 +377,7 @@
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
         [profileView setPrivateProfileDelegate:self];
+        
         if(self.profileImage)
         {
             [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
@@ -485,6 +493,39 @@
     return 70.0f;
 }
 
+#pragma mark - Table view refresh methods
+
+-(void)refreshCellViewWithIndex:(const NSUInteger)index
+{
+    
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
+
+-(void)refreshCells
+{
+    NSMutableArray *paths = [[NSMutableArray alloc] init];
+    
+    for(int i = 2; i<self.currentNumberOfRows; ++i)
+    {
+        [paths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+//    [self.tableView beginUpdates];
+    
+    
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithArray:paths.mutableCopy] withRowAnimation:UITableViewRowAnimationFade];
+//    [self.tableView endUpdates];
+}
+
+-(void)refreshFirstCell
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
 
 #pragma  mark - Buttons view methods
 
@@ -492,9 +533,19 @@
 {
     self.selectedTabStatus = selectedTab;
     
-    [self loadAndSetUserDetails];
-    
+    if(self.selectedTabStatus == kGLPMutual)
+    {
+    }
+    else
+    {
+        //[self loadAndSetUserDetails];
+    }
     [self.tableView reloadData];
+
+    
+    
+//    [self refreshCellViewWithIndex:2];
+//    [self.tableView reloadData];
 }
 
 /*

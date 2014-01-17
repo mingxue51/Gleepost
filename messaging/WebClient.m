@@ -630,7 +630,6 @@ static WebClient *instance = nil;
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPUser *user = [RemoteParser parseUserFromJson:responseObject];
-        NSLog(@"PROFILE USER: %@",user.profileImageUrl);
         
         callbackBlock(YES, user);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -1026,7 +1025,10 @@ static WebClient *instance = nil;
 
 #pragma mark - Invite Message
 - (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback {
+    
     [self getPath:@"invite_message" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogCInfo(@"RESPONSE OBJECT: %@",responseObject);
+        
         NSString *message = [RemoteParser parseMessageFromJson:responseObject];
         callback(YES, message);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

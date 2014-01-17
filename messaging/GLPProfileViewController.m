@@ -64,6 +64,8 @@
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
+@property (assign, nonatomic) BOOL isBusy;
+
 @end
 
 @implementation GLPProfileViewController
@@ -173,7 +175,7 @@
 
     
     
-    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
+//    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
     
 //    if(!self.fromCampusWall)
 //    {
@@ -232,9 +234,13 @@
     
     self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
 
+    //Load busy status.
+    [self getBusyStatus];
     
     //Load user's details from server.
     [self setUserDetails];
+    
+    
     
     //self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
@@ -301,7 +307,8 @@
 {
     if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
     {
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
+//        [self refreshFirstCell];
     }
     
 }
@@ -522,6 +529,8 @@
         {
             self.user = user;
             
+            [self refreshFirstCell];
+            
             [self loadPosts];
             
             //[self.tableView reloadData];
@@ -529,6 +538,17 @@
         else
         {
             [WebClientHelper showStandardError];
+        }
+    }];
+}
+
+-(void)getBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+        
+        if(success)
+        {
+            self.isBusy = status;
         }
     }];
 }
@@ -549,10 +569,9 @@
         self.user = [usersData objectAtIndex:0];
         self.userImage = [usersData objectAtIndex:1];
 //        [self.tableView reloadData];
-
+        [self refreshFirstCell];
+        
         [self loadPosts];
-
-
     }
     
 }
@@ -598,6 +617,8 @@
         
         [profileView setDelegate:self];
 
+        profileView.isBusy = self.isBusy;
+
 //        [profileView updateImageWithUrl:self.profileImageUrl];
         if(_userImage)
         {
@@ -607,6 +628,8 @@
         {
             [profileView initialiseElementsWithUserDetails:self.user];
         }
+        
+        
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
         
         
@@ -696,6 +719,22 @@
     }
     
     return 70.0f;
+}
+
+#pragma mark - Table view refresh methods
+
+-(void)refreshCellViewWithIndex:(const NSUInteger)index
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
+
+-(void)refreshFirstCell
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 #pragma  mark - Buttons view methods
