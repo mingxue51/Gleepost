@@ -66,7 +66,7 @@
         }
     }];
     
-    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+//    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
     [[WebClient sharedInstance] startWebSocketIfLoggedIn];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }
@@ -89,51 +89,6 @@
 void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^callback)(BOOL success)) {
     [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
     
-    // fetch additional info
-    //TODO: not very nice to chain 3 requests
-//    [[WebClient sharedInstance] getUserWithKey:user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-//        
-//        if(!success) {
-//            callback(NO);
-//            return;
-//        }
-//        
-//        // load contacts
-//        //TODO: find better way
-//        [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
-//            if(!success) {
-//                callback(NO);
-//                return;
-//            }
-//            
-//            [[DatabaseManager sharedInstance] initDatabase];
-//            
-//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//                [GLPUserDao save:user inDb:db];
-//                
-//                for(GLPContact *contact in contacts) {
-//                    [GLPContactDao save:contact inDb:db];
-//                }
-//            }];
-//            
-//			//Set theme depending on the network name.
-//            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
-//                
-//            NSLog(@"Image for nav bar: %@ and chat background image: %@", [[GLPThemeManager sharedInstance]imageForNavBar], [[GLPThemeManager sharedInstance] imageForChatBackground]);
-//                
-//            // create session. CHANGED.
-//            //[[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
-//            [[SessionManager sharedInstance]user].remoteKey = user.remoteKey;
-//            [[SessionManager sharedInstance]user].profileImageUrl = user.profileImageUrl;
-//            //Add token.
-////           [[SessionManager sharedInstance] setTokenFromResponse:token];
-////           [[SessionManager sharedInstance] setUserFromResponse:user];
-//            
-//            [[GLPBackgroundRequestsManager sharedInstance] startAll];
-//            
-//            callback(YES);
-//        }];
-//    }];
 
     NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
         
@@ -154,7 +109,7 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
                 return;
             }
             
-            [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+            [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
             
             callback(YES);
         }];
