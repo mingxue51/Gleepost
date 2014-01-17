@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "GLPProfileViewController.h"
 
+@protocol ProfileSettingsTableViewCellDelegate;
+
 @interface ProfileSettingsTableViewCell : UITableViewCell
+@property (nonatomic, weak) id <ProfileSettingsTableViewCellDelegate> delegate;
+@end
 
-
--(void)setDelegate:(GLPProfileViewController *)delegate;
-
-
+@protocol ProfileSettingsTableViewCellDelegate <NSObject>
+@optional
+- (void)logout:(id)sender;
+- (void)invite;
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
+#import <MessageUI/MessageUI.h>
 #import "GLPProfileViewController.h"
 #import "GLPUser.h"
 #import "SessionManager.h"
@@ -31,9 +32,9 @@
 #import "GLPPostImageLoader.h"
 #import "GLPProfileLoader.h"
 #import "GLPUserDao.h"
+#import "GLPInvitationManager.h"
 
-
-@interface GLPProfileViewController ()
+@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -60,6 +61,8 @@
 @property (strong, nonatomic) NSString *profileImageUrl;
 
 @property (strong, nonatomic) UITabBarItem *profileTabbarItem;
+
+@property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
 @end
 
@@ -331,6 +334,7 @@
     [self updateNotificationsBubble];
 }
 
+#pragma mark - ProfileSettingsTableViewCellDelegate
 
 -(void)logout:(id)sender
 {
@@ -341,6 +345,18 @@
     
 }
 
+- (void)invite {
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:self.view];
+    
+    [[GLPInvitationManager sharedInstance] fetchInviteMessageWithCompletion:^(BOOL success, NSString *inviteMessage) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
+        if (success) {
+            [self showMessageViewControllerWithBody:inviteMessage];
+        } else {
+            [WebClientHelper showStandardError];
+        }
+    }];
+}
 
 #pragma mark - Action Sheet delegate
 
@@ -614,7 +630,7 @@
             
             profileSettingsView.selectionStyle = UITableViewCellSelectionStyleNone;
 
-            [profileSettingsView setDelegate:self];
+            profileSettingsView.delegate = self;
             
             
             return profileSettingsView;
@@ -733,6 +749,41 @@
         
         
     }
+}
+
+#pragma mark - Actions
+
+- (void)showMessageViewControllerWithBody:(NSString *)messageBody {
+    if (![MFMessageComposeViewController canSendText]) {
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
+        return;
+    }
+    
+    self.messageComposeViewController = [[MFMessageComposeViewController alloc] init];
+    self.messageComposeViewController.messageComposeDelegate = self;
+    [self.messageComposeViewController setBody:messageBody];
+    
+    [self presentViewController:self.messageComposeViewController animated:YES completion:nil];
+}
+
+#pragma mark - MFMessageComposeViewControllerDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+    switch (result) {
+        case MessageComposeResultFailed: {
+            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS."];
+            break;
+        }
+        case MessageComposeResultSent: {
+            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully."];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

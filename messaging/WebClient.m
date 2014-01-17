@@ -16,6 +16,7 @@
 #import "GLPUserDao.h"
 #import "AFNetworking.h"
 #import "GLPWebSocketMessageProcessor.h"
+#import "NSUserDefaults+GLPAdditions.h"
 
 @interface WebClient()
 
@@ -141,14 +142,33 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)verifyUserWithToken:(NSString *)token callback:(void (^)(BOOL success))callbackBlock {
+    NSString *postPath = [NSString stringWithFormat:@"verify/%@", token];
+    
+    [self postPath:postPath parameters:Nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        callbackBlock(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO);
+    }];
+}
+
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
 {
+    __weak NSString *weakEmail = email;
+    __weak NSString *weakName  = name;
+    __weak NSString *weakPass  = password;
+    
     [self postPath:@"register" parameters:@{@"user": name, @"pass": password, @"email": email} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"Response during registration: %@", responseObject);
         int remotekey = [RemoteParser parseIdFromJson:responseObject];
         
         callbackBlock(YES, responseObject, remotekey);
+        
+        // saving user info for email verification
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterEmail:weakEmail];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterName:weakName];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterPass:weakPass];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
        NSLog(@"ERROR DURING REGISTRATION: %@", [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion]);
@@ -1004,6 +1024,15 @@ static WebClient *instance = nil;
     NSLog(@"Web socket did close with code: %d, reason: %@, was clean: %d", code, reason, wasClean);
 }
 
+#pragma mark - Invite Message
+- (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback {
+    [self getPath:@"invite_message" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *message = [RemoteParser parseMessageFromJson:responseObject];
+        callback(YES, message);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
 
 # pragma mark - Helper methods
 

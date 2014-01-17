@@ -326,7 +326,7 @@ static const float OneLineText = 16.0;
     [self.socialPanel setFrame:CGRectMake(socialFrame.origin.x, socialViewY, socialFrame.size.width, socialFrame.size.height)];
     
     //Change the height of the content view.
-    CGRect contentViewFrame = self.contentView.frame;
+    CGRect contentViewFrame = self.contentView.frame;   
     
     float contentViewH = socialViewY + socialFrame.size.height + FollowingCellPadding;
     
