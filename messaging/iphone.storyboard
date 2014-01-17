@@ -1145,6 +1145,7 @@
                     <connections>
                         <segue destination="53d-3j-LO2" kind="push" identifier="login" id="nJP-6w-Ne5"/>
                         <segue destination="KFZ-j2-Eyw" kind="push" identifier="register" id="sAu-s2-hfG"/>
+                        <segue destination="WY8-qT-L1O" kind="modal" modalTransitionStyle="flipHorizontal" id="53L-zf-vsV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1rp-B6-kAz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1916,12 +1917,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="FQd-EB-Shi"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="C4C-f3-cdX"/>
         <segue reference="WK7-hw-eyD"/>
-        <segue reference="CJG-WM-cQ7"/>
+        <segue reference="53L-zf-vsV"/>
         <segue reference="MWr-28-zFw"/>
+        <segue reference="CJG-WM-cQ7"/>
     </inferredMetricsTieBreakers>
 </document>
