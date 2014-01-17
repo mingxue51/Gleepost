@@ -15,7 +15,7 @@
 
 - (int)conversationsCount;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
-- (NSArray *)getConversations;
-- (void)setConversations:(NSMutableArray *)conversations;
+- (void)loadConversationWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
+- (void)updateConversation:(GLPConversation *)conversation;
 
 @end

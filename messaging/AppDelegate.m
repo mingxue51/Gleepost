@@ -20,39 +20,28 @@
 #import "DDLog.h"
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
+#import "GLPNetworkManager.h"
 #import "GLPFacebookConnect.h"
 
 @implementation AppDelegate
 
-
+// hello, boy
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // logging
-    //[[AFHTTPRequestOperationLogger sharedLogger] startLogging];
-    //[DDLog addLogger:[DDASLLogger sharedInstance]];
-    
-    DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
-    [ttyLogger setColorsEnabled:YES];
-    [DDLog addLogger:ttyLogger];
-    
-    // analytics
+    [self setupLogging];
     [self setupGoogleAnalytics];
     [self setupFlurryAnalytics];
+    [self setupPush];
     
-    // register to push notifications
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-    
-    // instanciate storyboard with correct 1st controller
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     
-//    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
 
+    BOOL loggedIn = [GLPLoginManager performAutoLogin];
     
     UIViewController *initVC;
-    if([[SessionManager sharedInstance] isSessionValid]) {
+    if(loggedIn) {
         initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
     } else {
         initVC = [storyboard instantiateInitialViewController];
@@ -68,6 +57,7 @@
 {
     DDLogInfo(@"Application will become inactive");
     [[WebClient sharedInstance] stopWebSocket];
+    [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -86,8 +76,12 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"Application active");
-    [[WebClient sharedInstance] startWebSocketIfLoggedIn];
+    DDLogInfo(@"Application active");
+    
+    if([[SessionManager sharedInstance] isLogged]) {
+        [[WebClient sharedInstance] startWebSocket];
+        [[GLPNetworkManager sharedInstance] startNetworkOperations];
+    }
     
     // activate or reactivate web client
     //[[WebClient sharedInstance] activate];
@@ -103,6 +97,12 @@
 
 
 # pragma mark - Push
+
+- (void)setupPush
+{
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+}
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
@@ -128,6 +128,18 @@
     [Flurry setCrashReportingEnabled:NO];
     [Flurry setDebugLogEnabled:NO];
     [Flurry startSession:FLURRY_API_KEY];
+}
+
+
+# pragma mark - Logging
+- (void)setupLogging
+{
+    [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+    //[DDLog addLogger:[DDASLLogger sharedInstance]];
+    
+    DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
+    [ttyLogger setColorsEnabled:YES];
+    [DDLog addLogger:ttyLogger];
 }
 
 # pragma mark - Facebook login handling

@@ -24,7 +24,7 @@ extern int const NumberMaxOfMessagesLoaded;
 + (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
 + (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback;
 
-+ (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
++ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback;
 
 + (void)saveMessage:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey;
 + (void)saveMessage:(GLPMessage *)message forConversation:(GLPConversation *)conversation;

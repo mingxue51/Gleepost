@@ -31,7 +31,7 @@
         return nil;
     }
     
-    _messages = [NSArray array];
+    _messages = [NSMutableArray array];
     
     return self;
 }

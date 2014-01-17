@@ -119,22 +119,22 @@ static BOOL initLiveChats;
  */
 -(void) refreshLiveConversations
 {
-    int i=0;
-    for(GLPConversation *conv in [[GLPLiveConversationsManager sharedInstance] getConversations]) {
-        GLPConversationPictureImageView *currentImageView = _conversationPictureImageViews[i];
-        [currentImageView configureWithConversation:conv];
-        
-        [[currentImageView layer] setBorderWidth:2.0f];
-        [[currentImageView layer] setBorderColor:[UIColor whiteColor].CGColor];
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
-        [tap setNumberOfTapsRequired:1];
-        [currentImageView addGestureRecognizer:tap];
-        currentImageView.userInteractionEnabled = YES;
-        [self bringSubviewToFront:currentImageView];
-        
-        ++i;
-    }
+//    int i=0;
+//    for(GLPConversation *conv in [[GLPLiveConversationsManager sharedInstance] getConversations]) {
+//        GLPConversationPictureImageView *currentImageView = _conversationPictureImageViews[i];
+//        [currentImageView configureWithConversation:conv];
+//        
+//        [[currentImageView layer] setBorderWidth:2.0f];
+//        [[currentImageView layer] setBorderColor:[UIColor whiteColor].CGColor];
+//        
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChat:)];
+//        [tap setNumberOfTapsRequired:1];
+//        [currentImageView addGestureRecognizer:tap];
+//        currentImageView.userInteractionEnabled = YES;
+//        [self bringSubviewToFront:currentImageView];
+//        
+//        ++i;
+//    }
 }
 
 - (void)navigateToChat:(id)sender
@@ -441,14 +441,8 @@ static BOOL animateBubbles = YES;
 
     if(!animateBubbles)
     {
-        
-        NSLog(@"Animation Finished");
         return;
-        
     }
-    
-    NSLog(@"Animation Started");
-
     
     CGRect mainCircleFrame = self.centralCircle.frame;
     

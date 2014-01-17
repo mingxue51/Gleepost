@@ -26,5 +26,7 @@
 -(void)acceptContact:(int)remoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
 -(void)refreshContacts;
 -(NSDictionary*)findConfirmedContacts;
+-(UIImage*)contactImageWithRemoteKey:(int)remoteKey;
+
 
 @end

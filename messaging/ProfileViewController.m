@@ -32,6 +32,7 @@
 #import "PopUpNotificationsViewController.h"
 #import "TransitionDelegateViewNotifications.h"
 #import "GLPThemeManager.h"
+#import "GLPUserDao.h"
 
 
 @interface ProfileViewController ()
@@ -547,7 +548,10 @@ static BOOL likePushed;
             [self updateViewWithNewImage:response];
             
             //Change profile image in Session Manager.
-            [[SessionManager sharedInstance] registerUserImage:response];
+            //TODO: REFACTOR / FACTORIZE THIS
+            GLPUser *user = [SessionManager sharedInstance].user;
+            user.profileImageUrl = response;
+            [GLPUserDao updateUserWithRemotKey:user.remoteKey andProfileImage:response];
             
             //Set image to user's profile.
             [self setImageToUserProfile:response];

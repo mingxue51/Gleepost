@@ -73,14 +73,7 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback
 {
-    [[WebClient sharedInstance] getConversationsFilterByLive:YES withCallbackBlock:^(BOOL success, NSArray *conversations) {
-        if(!success) {
-            callback(NO, nil);
-            return;
-        }
-        
-        callback(YES, conversations);
-    }];
+    
 }
 
 
@@ -89,9 +82,15 @@ int const NumberMaxOfMessagesLoaded = 20;
     NSLog(@"load messages for conversation %d", conversation.remoteKey);
     
     __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
-        localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-    }];
+    
+    if(conversation.isLive) {
+        localEntities = conversation.messages;
+    } else {
+        [DatabaseManager run:^(FMDatabase *db) {
+            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+        }];
+    }
+
     
     localCallback(localEntities);
     NSLog(@"local messages %d", localEntities.count);
@@ -145,13 +144,24 @@ int const NumberMaxOfMessagesLoaded = 20;
 //        // all messages, including the new ones
 //        __block NSArray *allMessages = nil;
         
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            for(GLPMessage *message in messages) {
-                [GLPMessageDao save:message db:db];
-            }
-            
-            //allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-        }];
+        GLPMessage *lastMessage = [messages lastObject];
+        conversation.lastMessage = lastMessage.content;
+        conversation.lastUpdate = lastMessage.date;
+        
+        if(conversation.isLive) {
+            [conversation.messages addObjectsFromArray:messages];
+            [[GLPLiveConversationsManager sharedInstance] updateConversation:conversation];
+        } else {
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for(GLPMessage *message in messages) {
+                    [GLPMessageDao save:message db:db];
+                }
+                
+                [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
+                
+                //allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+            }];
+        }
         
         remoteCallback(YES, messages);
     }];
@@ -211,9 +221,9 @@ int const NumberMaxOfMessagesLoaded = 20;
             messages = [[messages reverseObjectEnumerator] allObjects];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                for(GLPMessage *message in messages) {
-                    message.isOld = YES;
-                    [GLPMessageDao save:message db:db];
+                for(GLPMessage *m in messages) {
+                    m.isOld = YES;
+                    [GLPMessageDao save:m db:db];
                 }
             }];
             
@@ -222,7 +232,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
-+ (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
++ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
 {
     DDLogInfo(@"Create message with content %@", content);
     
@@ -236,16 +246,22 @@ int const NumberMaxOfMessagesLoaded = 20;
     
     conversation.lastUpdate = message.date;
     conversation.lastMessage = message.content;
+    [conversation.messages addObject:message];
     
-    if(!conversation.isLive) {
+    if(conversation.isLive) {
+        [[GLPLiveConversationsManager sharedInstance] updateConversation:conversation];
+    } else {
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             [GLPMessageDao save:message db:db];
             [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
         }];
     }
     
-    DDLogInfo(@"Post message %@ to server", message.content);
+    // post message to local
+    localCallback(message);
     
+    // post message to server
+    DDLogInfo(@"Post message %@ to server", message.content);
     [[WebClient sharedInstance] createMessage:message callbackBlock:^(BOOL responseSuccess, NSInteger remoteKey) {
         NSLog(@"Post to server response: success %d - id %d", responseSuccess, remoteKey);
         
@@ -264,8 +280,6 @@ int const NumberMaxOfMessagesLoaded = 20;
         
         sendCallback(message, responseSuccess);
     }];
-
-    return message;
 }
 
 // Save message from websocket event
@@ -276,7 +290,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     
     // check if the conversation exists in live conversations
     conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:remoteKey];
-    NSLog(@"Conversation is live: %d", conversation != nil);
+    DDLogInfo(@"Conversation is live: %d", conversation != nil);
     
     if(conversation) {
         [ConversationManager saveMessage:message forConversation:conversation];
@@ -287,7 +301,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     [DatabaseManager run:^(FMDatabase *db) {
         conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
     }];
-    NSLog(@"Conversation is normal: %d", conversation != nil);
+    DDLogInfo(@"Conversation is normal: %d", conversation != nil);
     
     if(conversation) {
         [ConversationManager saveMessage:message forConversation:conversation];

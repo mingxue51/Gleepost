@@ -14,6 +14,7 @@
 @interface ProfileTableViewCell : UITableViewCell
 
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user;
+-(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image;
 -(void)updateImageWithUrl:(NSString*)url;
 -(void)setDelegate:(GLPProfileViewController *)delegate;
 -(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate;

@@ -55,20 +55,20 @@ static BOOL visibility;
 
 -(void)setLiveChatsToView
 {
-    int i = 0;
-    for(GLPConversation *c in [[GLPLiveConversationsManager sharedInstance] getConversations]) {
-        
-        GLPConversationPictureImageView *imageView = _conversationPictureImageViews[i];
-        [imageView configureWithConversation:c];
-        
-        imageView.clipsToBounds = YES;
-        imageView.layer.cornerRadius = 23;
-        
-        [[imageView layer] setBorderWidth:2.0f];
-        [[imageView layer] setBorderColor:[UIColor whiteColor].CGColor];
-
-        ++i;
-    }
+//    int i = 0;
+//    for(GLPConversation *c in [[GLPLiveConversationsManager sharedInstance] getConversations]) {
+//        
+//        GLPConversationPictureImageView *imageView = _conversationPictureImageViews[i];
+//        [imageView configureWithConversation:c];
+//        
+//        imageView.clipsToBounds = YES;
+//        imageView.layer.cornerRadius = 23;
+//        
+//        [[imageView layer] setBorderWidth:2.0f];
+//        [[imageView layer] setBorderColor:[UIColor whiteColor].CGColor];
+//
+//        ++i;
+//    }
 }
 
 -(void) navigateToChat: (id)sender

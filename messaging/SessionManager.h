@@ -20,9 +20,9 @@
 
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
 - (BOOL)isSessionValid;
+- (BOOL)isLogged;
+- (NSUInteger)validUserRemoteKey;
+- (void)restoreUser:(GLPUser *)user;
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
--(void)registerUserImage:(NSString*)imageUrl;
--(void)setTokenFromResponse:(NSString *)token;
--(void)setUserFromResponse:(GLPUser *)user;
 @end

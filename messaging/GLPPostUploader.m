@@ -74,8 +74,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 {
     timestamp = [NSDate date];
     _postImage = image;
-
-    NSLog(@"Timestamp before image uploading: %@",timestamp);
     
     [[GLPPostOperationManager sharedInstance] uploadImage:image withTimestamp:timestamp];
     
@@ -186,7 +184,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         [GLPPostManager createLocalPost:post];
         
         [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-            NSLog(@"Post uploaded with success: %d", success);
             
             post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
             post.remoteKey = success ? remoteKey : 0;

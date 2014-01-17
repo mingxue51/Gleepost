@@ -101,7 +101,7 @@ static WebClient *instance = nil;
         
         // start / stop the websocket accordly
         if(available) {
-            [self startWebSocketIfLoggedIn];
+            [self startWebSocket];
         } else {
             [self stopWebSocket];
         }
@@ -337,7 +337,6 @@ static WebClient *instance = nil;
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"resp %@", responseObject);
         NSArray *conversations = [RemoteParser parseConversationsFilterByLive:live fromJson:responseObject];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -967,15 +966,9 @@ static WebClient *instance = nil;
 
 #pragma mark - Web socket
 
-- (void)startWebSocketIfLoggedIn
+- (void)startWebSocket
 {
-    DDLogInfo(@"Start web socket if logged in");
-    
-    if(![self.sessionManager isSessionValid]) {
-        DDLogInfo(@"Start web socket cannot start because session is not valid, try to close web socket");
-        [_webSocket close];
-        return;
-    }
+    DDLogInfo(@"Start web socket");
     
     if(_webSocket && (_webSocket.readyState == SR_CONNECTING || _webSocket.readyState == SR_OPEN)) {
         DDLogInfo(@"Start web socket cannot start because web socket is already in opening or opened, abort");

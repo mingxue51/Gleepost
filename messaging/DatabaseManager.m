@@ -75,8 +75,8 @@ static DatabaseManager *instance = nil;
     self.databaseQueue = [FMDatabaseQueue databaseQueueWithPath:self.path];
     
     if(!self.exists) {
-        [self.databaseQueue inDatabase:^(FMDatabase *db) {
-            NSLog(@"create database");
+        [self.databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+            DDLogInfo(@"create database");
             
             // user
             [db executeUpdate:@"create table users ( \

@@ -244,8 +244,9 @@ static const float OneLineText = 16.0;
 {
     if(remoteKey!=0)
     {
-        [self setPostOnline:YES];
-        [self hideIndicator];
+//        [self setPostOnline:YES];
+//        [self hideIndicator];
+        [self.uploadedIndicator setAlpha:0.0];
     }
     else
     {

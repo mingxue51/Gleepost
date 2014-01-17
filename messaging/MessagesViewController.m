@@ -19,6 +19,7 @@
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
 #import "GLPLiveConversationsManager.h"
+#import "GLPMessagesLoader.h"
 
 @interface MessagesViewController ()
 
@@ -83,6 +84,7 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     
     //Initialise two sections: Random Chats and Messages from Contacts.
     self.sections = [[NSMutableArray alloc] init];
+    [self addSectionWithName:LIVE_CHATS_STR];
     
 
     
@@ -114,10 +116,13 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 //    }
     [self loadLiveConversations];
     
-    [self loadConversations];
+    [self showReadyConversations:[[GLPMessagesLoader sharedInstance]getConversations]];
+    
+    //[self loadConversations];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLiveConversations:) name:@"GLPPostUpdated" object:nil];
+
 
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -127,7 +132,8 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 - (void)viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+
     // reload the local conversations next time the VC appears
     self.needsReloadConversations = YES;
     
@@ -140,10 +146,12 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 {
 
     [AppearanceHelper setUnselectedColourForTabbarItem:self.messagesTabbarItem];
+    
 
     
     [super viewWillDisappear:animated];
 }
+
 
 -(void)configTabbar
 {
@@ -259,6 +267,21 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     }];
 }
 
+-(void)showReadyConversations:(NSArray*)conversations
+{
+    // hide loading cell and add refresh control
+    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+    [self createRefreshIfNeed];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    
+    //ADDED NEW APPROACH.
+    [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
+    
+    NSLog(@"Categorised Conversations: %@",self.categorisedConversations);
+    
+    [self showConversations:conversations];
+}
+
 - (void)showConversations:(NSArray *)conversations
 {
     self.conversations = [conversations mutableCopy];
@@ -281,27 +304,19 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 
 -(void)loadLiveConversations
 {
+    DDLogInfo(@"Load live conversations");
     
-    [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
+    [[GLPLiveConversationsManager sharedInstance] loadConversationWithCallback:^(BOOL success, NSArray *conversations) {
+        DDLogInfo(@"Load live conversations callback with count: %d", conversations.count);
         
-        if(!success) {
-            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
+        if(!success || conversations.count == 0) {
             return;
         }
         
-        if(conversations.count != 0)
-        {
-            //Add live chats' section in the section array.
-            [self addSectionWithName:LIVE_CHATS_STR];
-            
-//            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
-            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
-            [self.tableView reloadData];
-        }
-        
-
+        [self addSectionWithName:LIVE_CHATS_STR];
+        [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
+        [self.tableView reloadData];
     }];
-    
 }
 
 -(void)addSectionWithName:(NSString*)section
@@ -317,11 +332,15 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     if([section isEqualToString:LIVE_CHATS_STR])
     {
         [self.sections setObject:section atIndexedSubscript:0];
+//        [self.sections insertObject:section atIndex:0];
     }
     else
     {
         [self.sections addObject:section];
+        //[self.sections insertObject:section atIndex:1];
     }
+    
+    NSLog(@"SECTIONS: %@",self.sections);
 }
 
 #pragma mark - Notifications
@@ -329,6 +348,15 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 - (void)updateConversationsFromNotification:(NSNotification *)notification
 {
     [self reloadLocalConversations];
+}
+
+-(void)updateLiveConversations:(NSNotification *)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    NSArray *array = [dict objectForKey:@"Conversations"];
+    
+    NSLog(@"LIVE CHATS ARRAY RECEIVED: %@",array);
 }
 
 
@@ -352,7 +380,6 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return  self.sections.count;
-    //return 1;
 }
 
 /**
@@ -449,6 +476,19 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     }
     
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return YES - we will be able to delete all rows
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Perform the real delete action here. Note: you may need to check editing style
+    //   if you do not perform delete only.
+    NSLog(@"Deleted row.");
 }
 
 

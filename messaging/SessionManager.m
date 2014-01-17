@@ -93,22 +93,6 @@ static SessionManager *instance = nil;
     }
 }
 
--(void)registerUserImage:(NSString*)imageUrl
-{
-    self.user.profileImageUrl = imageUrl;
-    [GLPUserDao updateUserWithRemotKey:self.user.remoteKey andProfileImage:imageUrl];
-}
-
--(void)setTokenFromResponse:(NSString *)token
-{
-    self.token = token;
-}
-
--(void)setUserFromResponse:(GLPUser *)user
-{
-    self.user = user;
-}
-
 - (void)cleanSession
 {
     self.user = nil;
@@ -137,31 +121,52 @@ static SessionManager *instance = nil;
     return NO;
 }
 
+- (BOOL)isLogged
+{
+    return _user != nil;
+}
+
+- (NSUInteger)validUserRemoteKey
+{
+    if(![self isSessionValid] || !self.data[@"user.remoteKey"]) {
+        return NSNotFound;
+    }
+    
+    return [self.data[@"user.remoteKey"] intValue];
+}
+
+- (void)restoreUser:(GLPUser *)user
+{
+    _user = user;
+    _token = self.data[@"user.token"];
+    _authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
+}
+
 - (void)loadData
 {
     // load dictionnary data from saved file or create new one
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
-        if([self isSessionValid]) {
-            [[DatabaseManager sharedInstance] initDatabase];
-            
-            __block GLPUser *user;
-            [DatabaseManager run:^(FMDatabase *db) {
-                user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue] db:db];
-            }];
-            self.user = user;
-            //Set theme depending on the network name.
-            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
-            
-            NSAssert(self.user, @"User from valid session must exist in database");
-            
-            self.token = self.data[@"user.token"];
-            self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
-        } else { // clean expired session
-            [self cleanSession];
-            [[DatabaseManager sharedInstance] dropDatabase];
-        }
+//        if([self isSessionValid]) {
+//            [[DatabaseManager sharedInstance] initDatabase];
+//            
+//            __block GLPUser *user;
+//            [DatabaseManager run:^(FMDatabase *db) {
+//                user = [GLPUserDao findByRemoteKey:[self.data[@"user.remoteKey"] integerValue] db:db];
+//            }];
+//            self.user = user;
+//            //Set theme depending on the network name.
+//            [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+//            
+//            NSAssert(self.user, @"User from valid session must exist in database");
+//            
+//            self.token = self.data[@"user.token"];
+//            self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
+//        } else { // clean expired session
+//            [self cleanSession];
+//            [[DatabaseManager sharedInstance] dropDatabase];
+//        }
         
     } else {
         self.data = [NSMutableDictionary dictionary];

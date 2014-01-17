@@ -13,11 +13,11 @@
 #include "TargetConditionals.h"
 #endif
 
-#define ON_DEVICE       !(TARGET_IPHONE_SIMULATOR)
-
 #define ENV_FAKE_API     NO
 #define DEV              YES
 #define ENV_DEBUG        YES
+
+#define ON_DEVICE       !(TARGET_IPHONE_SIMULATOR)
 
 #define RELOAD_POSTS_INTERVAL_S             60
 #define RELOAD_NOTIFICATIONS_INTERVAL_S     30

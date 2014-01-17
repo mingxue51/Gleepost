@@ -51,12 +51,38 @@ static GLPWebSocketMessageProcessor *instance = nil;
     return self;
 }
 
+- (void)processNewMessage:(GLPMessage *)message
+{
+    GLPNewMessageProcessorOperation *operation = [[GLPNewMessageProcessorOperation alloc] init];
+    operation.message = message;
+    
+    [_queue addOperation:operation];
+}
+
 - (void)processMessage:(NSString *)webSocketMessage
 {
+    if([webSocketMessage caseInsensitiveCompare:@"Invalid credentials"] == NSOrderedSame) {
+        DDLogError(@"Web socket connection closed because of invalid credentials");
+        return;
+    }
+    
     GLPWebSocketMessageProcessorOperation *operation = [[GLPWebSocketMessageProcessorOperation alloc] init];
     operation.webSocketMessage = webSocketMessage;
     
     [_queue addOperation:operation];
+}
+
+@end
+
+
+@implementation GLPNewMessageProcessorOperation
+
+@synthesize message=_message;
+
+- (void)main {
+    @autoreleasepool {
+        
+    }
 }
 
 @end
@@ -82,6 +108,11 @@ static GLPWebSocketMessageProcessor *instance = nil;
             case kGLPWebSocketEventTypeNewConversation: {
                 GLPConversation *conversation = [RemoteParser parseConversationFromJson:event.data];
                 [ConversationManager saveConversation:conversation];
+                break;
+            }
+                
+            case kGLPWebSocketEventTypeEndConversation: {
+                
                 break;
             }
                 

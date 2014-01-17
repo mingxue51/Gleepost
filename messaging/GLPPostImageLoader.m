@@ -7,7 +7,6 @@
 //
 
 #import "GLPPostImageLoader.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
@@ -27,8 +26,7 @@
 
 @synthesize loadingImages = _loadingImages;
 @synthesize imagesNotStarted = _imagesNotStarted;
-//@synthesize thread1 = _thread1;
-//@synthesize thread2 = _thread2;
+
 
 static GLPPostImageLoader *instance = nil;
 
@@ -50,7 +48,6 @@ static GLPPostImageLoader *instance = nil;
     
     if(self)
     {
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
         _loadingImages = [[NSMutableDictionary alloc] init];
         _imagesNotStarted = [[NSMutableArray alloc] init];
         
@@ -60,7 +57,6 @@ static GLPPostImageLoader *instance = nil;
         
         [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
 
-            NSLog(@"NETWORK: %d",(status == AFNetworkReachabilityStatusNotReachable) ? NO : YES);
             BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
             
             if(currentStatus)
@@ -124,9 +120,6 @@ static GLPPostImageLoader *instance = nil;
  */
 -(void)cancelOperations
 {
-//    [_thread1 cancel];
-//    [_thread2 cancel];
-    
     BOOL exist = NO;
     
     //Refill the array with the not finished remote keys.
@@ -143,8 +136,7 @@ static GLPPostImageLoader *instance = nil;
         
         if(!exist)
         {
-            NSLog(@"Not in array: %@",key);
-            [_imagesNotStarted enqueue:key];
+            [_imagesNotStarted insertObject:key atIndex:0];
         }
         else
         {
@@ -177,7 +169,7 @@ static GLPPostImageLoader *instance = nil;
             
             mach_port_t machTID = pthread_mach_thread_np(pthread_self());
             
-            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
+//            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
 
        
@@ -188,13 +180,13 @@ static GLPPostImageLoader *instance = nil;
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
-        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
+//        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
         
         
         if(img)
         {
             //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUpladed" object:nil userInfo:@{@"RemoteKey":remoteKey,
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
                                                                                                                                 @"FinalImage":img}];
             
             //Delete the entry from the queue.
@@ -214,20 +206,6 @@ static GLPPostImageLoader *instance = nil;
 
 -(void)startConsume
 {
-    
-//    [t cancel];
-//    if([_thread1 isCancelled])
-//    {
-//        [_thread1 start];
-//        [_thread2 start];
-//    }
-    
-//    _thread1 = [[NSThread alloc] initWithTarget:self selector:@selector(consumeQueue:) object:nil];
-//    _thread2 = [[NSThread alloc] initWithTarget:self selector:@selector(consumeQueue:) object:nil];
-//    
-//    [_thread1 start];
-//    [_thread2 start];
-
     if(self.networkAvailable)
     {
         //If there is network then start threads.

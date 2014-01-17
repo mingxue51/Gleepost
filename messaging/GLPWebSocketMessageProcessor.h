@@ -7,11 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLPMessage.h"
 
 @interface GLPWebSocketMessageProcessor : NSObject
 
 + (GLPWebSocketMessageProcessor *)sharedInstance;
 - (void)processMessage:(NSString *)webSocketMessage;
+
+@end
+
+
+@interface GLPNewMessageProcessorOperation : NSOperation
+
+@property (strong, nonatomic) GLPMessage *message;
 
 @end
 
