@@ -370,7 +370,6 @@
          */
         
         self.delegate.selectedPost = self.selectedPost;
-
     }
     else
     {

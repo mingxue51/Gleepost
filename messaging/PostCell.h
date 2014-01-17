@@ -53,4 +53,7 @@ extern const float TEXT_CELL_HEIGHT;
 
 -(void)setPostOnline:(BOOL)online;
 
+-(void)postFromNotifications:(BOOL)notifications;
+
+
 @end

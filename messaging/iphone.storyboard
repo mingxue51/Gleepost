@@ -1433,7 +1433,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="YKT-UL-nou">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YKT-UL-nou" id="I25-ir-dx2">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1914,11 +1914,11 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="FQd-EB-Shi"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="C4C-f3-cdX"/>
+        <segue reference="JXK-Z8-Y8u"/>
+        <segue reference="n2N-Iw-72J"/>
+        <segue reference="a4L-JY-TPZ"/>
         <segue reference="WK7-hw-eyD"/>
+        <segue reference="J6b-Ty-4qO"/>
         <segue reference="CJG-WM-cQ7"/>
-        <segue reference="MWr-28-zFw"/>
     </inferredMetricsTieBreakers>
 </document>

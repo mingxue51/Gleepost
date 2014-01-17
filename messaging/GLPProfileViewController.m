@@ -693,9 +693,7 @@
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@"Modal View Controller");
-    
+{    
     
     if([segue.identifier isEqualToString:@"view post"])
     {
@@ -704,6 +702,7 @@
         
         ViewPostViewController *vc = segue.destinationViewController;
         vc.post = self.selectedPost;
+        vc.isViewPostNotifications = YES;
         self.selectedPost = nil;
         
     }

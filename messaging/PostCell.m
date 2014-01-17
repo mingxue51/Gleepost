@@ -29,6 +29,7 @@
 @property (assign, nonatomic) float socialPanelY;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
 @property (assign, nonatomic) BOOL freshPost;
+@property (assign, nonatomic) BOOL isViewPostNotifications;
 
 //@property (strong, nonatomic) UIView *lineView;
 @end
@@ -60,7 +61,7 @@ const float TEXT_CELL_HEIGHT = 160;
 
         
         self.isViewPost = NO;
-        
+        self.isViewPostNotifications = NO;
         
 //        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
 //
@@ -140,9 +141,14 @@ static const float OneLineText = 16.0;
         //Set live image.
         [self.postImage setImage:postData.tempImage];
     }
-    else if(postData.finalImage==nil)
+    else if(postData.finalImage==nil && !self.isViewPostNotifications)
     {
         [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
+    
+    if(self.isViewPostNotifications)
+    {
+        [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
     
@@ -295,6 +301,8 @@ static const float OneLineText = 16.0;
     }
 }
 
+#pragma mark - Accessors
+
 -(void)setNewPositions
 {
     //Change the height of the label.
@@ -330,6 +338,11 @@ static const float OneLineText = 16.0;
     {
 //        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
     }
+}
+
+-(void)postFromNotifications:(BOOL)notifications
+{
+    self.isViewPostNotifications = notifications;
 }
 
 -(void)layoutSubviews
