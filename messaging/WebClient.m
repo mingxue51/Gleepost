@@ -1031,6 +1031,15 @@ static WebClient *instance = nil;
     NSLog(@"Web socket did close with code: %d, reason: %@, was clean: %d", code, reason, wasClean);
 }
 
+#pragma mark - Invite Message
+- (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback {
+    [self getPath:@"invite_message" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *message = [RemoteParser parseMessageFromJson:responseObject];
+        callback(YES, message);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
 
 # pragma mark - Helper methods
 
