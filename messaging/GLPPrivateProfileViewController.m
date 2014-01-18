@@ -240,9 +240,7 @@
 
             
             [self refreshFirstCell];
-//            [self refreshCellViewWithIndex:0];
-//            [self refreshCellViewWithIndex:2];
-            //[self.tableView reloadData];
+
         }
         else
         {
@@ -286,7 +284,7 @@
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
 
             //TODO: Removed.
-//            [self.tableView reloadData];
+            [self.tableView reloadData];
         }
         else
         {

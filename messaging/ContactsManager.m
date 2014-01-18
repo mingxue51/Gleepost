@@ -140,6 +140,29 @@ static ContactsManager *instance = nil;
     return dictonaryContacts;
 }
 
+-(NSDictionary*)findConfirmedContactsTemp:(NSArray*)contactsFromServer
+{
+    NSMutableArray *confirmedContacts = [[NSMutableArray alloc] init];
+    NSMutableArray *confirmedContactsNames = [[NSMutableArray alloc] init];
+    
+    NSMutableDictionary *dictonaryContacts = nil;
+    //Created for test purposes.
+    for(GLPContact* contact in contactsFromServer)
+    {
+        if(contact.youConfirmed && contact.theyConfirmed)
+        {
+            //TODO: Bug here. User is nil.
+            [confirmedContacts addObject:contact];
+            [confirmedContactsNames addObject:contact.user.name];
+        }
+    }
+    
+    dictonaryContacts = [[NSMutableDictionary alloc] initWithObjects:@[confirmedContacts, confirmedContactsNames] forKeys: @[@"Contacts",@"ContactsUserNames"]];
+    
+    
+    return dictonaryContacts;
+}
+
 /**
  Return YES if the user with the remoteKey is contact with the current user.
  
