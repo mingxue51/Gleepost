@@ -54,6 +54,19 @@
     return self;
 }
 
+-(void)initialiseProfileImage:(UIImage*)image
+{
+    [self initialiseLoadingElements];
+
+    
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 4.0;
+    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
+    
+    [self.profileImage setImage:image];
+}
+
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
 {
     if(user == nil)

@@ -18,6 +18,7 @@
 
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user;
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image;
+-(void)initialiseProfileImage:(UIImage*)image;
 -(void)updateImageWithUrl:(NSString*)url;
 -(void)setDelegate:(GLPProfileViewController *)delegate;
 -(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate;

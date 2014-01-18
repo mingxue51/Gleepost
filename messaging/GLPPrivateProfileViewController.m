@@ -162,7 +162,7 @@
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
-    [[ContactsManager sharedInstance] loadContactsFromDatabase];
+    //[[ContactsManager sharedInstance] loadContactsFromDatabase];
     
     self.selectedTabStatus = kGLPAbout;
     
@@ -254,16 +254,20 @@
 -(void)loadAndSetContactDetails
 {
     //Try to load image.
-    self.profileImage = [[ContactsManager sharedInstance]contactImageWithRemoteKey:self.selectedUserId];
+    self.profileImage = [[ContactsManager sharedInstance] contactImageWithRemoteKey:self.selectedUserId];
     
     //If image is nil then load directly from the server.
-    if(!self.profileImage)
+    if(self.profileImage == nil)
     {
         [self loadAndSetUserDetails];
     }
     else
     {
-        //self.profileUser = [[ContactsManager sharedInstance] contactWithRemoteKey:self.selectedUserId].user;
+        GLPUser *notCompletedUser = [[ContactsManager sharedInstance] contactWithRemoteKey:self.selectedUserId].user;
+        
+        self.navigationItem.title = notCompletedUser.name;
+        
+        [self refreshFirstCell];
         
         [self loadAndSetUserDetails];
         
@@ -378,9 +382,13 @@
         
         [profileView setPrivateProfileDelegate:self];
         
-        if(self.profileImage)
+        if(self.profileImage && self.profileUser)
         {
             [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
+        }
+        else if(self.profileImage && !self.profileUser)
+        {
+            [profileView initialiseProfileImage:self.profileImage];
         }
         else
         {

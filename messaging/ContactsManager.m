@@ -104,6 +104,7 @@ static ContactsManager *instance = nil;
 
 -(void)loadContactsFromDatabase
 {
+    //TODO: Problem: Not loading users. Users' details seems are not saving correctly.
     self.contacts = [GLPContactDao loadContacts];
     
 }
@@ -127,7 +128,7 @@ static ContactsManager *instance = nil;
     {
         if(contact.youConfirmed && contact.theyConfirmed)
         {
-            //TODO: Bug here. User name is nil.
+            //TODO: Bug here. User is nil.
             [confirmedContacts addObject:contact];
             [confirmedContactsNames addObject:contact.user.name];
         }
