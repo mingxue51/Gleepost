@@ -38,6 +38,7 @@ NSInteger const kGLPNumberOfPosts = 20;
             return;
         }
         
+        
         // take only new posts
         NSMutableArray *userPosts = [NSMutableArray array];
         

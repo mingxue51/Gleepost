@@ -63,4 +63,7 @@
 
 +(BOOL)parseBusyStatus:(NSDictionary*)json;
 
+// invite message
++ (NSString *)parseMessageFromJson:(NSDictionary *)json;
+
 @end

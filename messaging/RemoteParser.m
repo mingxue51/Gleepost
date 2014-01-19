@@ -762,6 +762,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return [json[@"busy"] boolValue];
 }
 
++ (NSString *)parseMessageFromJson:(NSDictionary *)json {
+    return json[@"message"];
+}
+
 
 
 

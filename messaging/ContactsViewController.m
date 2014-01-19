@@ -320,19 +320,42 @@
 -(void) loadContacts
 {
 
-    NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
-    
-    self.users = [allContacts objectForKey:@"Contacts"];
-    self.usersStr = [allContacts objectForKey:@"ContactsUserNames"];
-    
-    if(self.users.count>0)
-    {
-        self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-        [self clearUselessSections];
+    [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
         
-        [self categoriseUsersByLetter];
-        [self.contactsTableView reloadData];
-    }
+        //TODO: Fix that by adding new entry (username) in the contacts' table.
+        NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
+        
+        if(allContacts != nil)
+        {
+            [self showContacts:allContacts];
+        }
+        
+    } remoteCallback:^(BOOL success, NSArray *contacts) {
+        
+        
+        NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContactsTemp:contacts];
+        
+        [self showContacts:allContacts];
+
+        
+    }];
+    
+    
+//    NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
+//    
+//    
+//    
+//    self.users = [allContacts objectForKey:@"Contacts"];
+//    self.usersStr = [allContacts objectForKey:@"ContactsUserNames"];
+//    
+//    if(self.users.count>0)
+//    {
+//        self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+//        [self clearUselessSections];
+//        
+//        [self categoriseUsersByLetter];
+//        [self.contactsTableView reloadData];
+//    }
     
     
 //    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
@@ -362,6 +385,24 @@
 //        
 //    }];
 }
+
+#pragma mark - UI loaders
+
+-(void)showContacts:(NSDictionary*)categorisedContacts
+{
+    self.users = [categorisedContacts objectForKey:@"Contacts"];
+    self.usersStr = [categorisedContacts objectForKey:@"ContactsUserNames"];
+    
+    if(self.users.count>0)
+    {
+        self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+        [self clearUselessSections];
+        
+        [self categoriseUsersByLetter];
+        [self.contactsTableView reloadData];
+    }
+}
+
 
 #pragma mark - Table view data source
 

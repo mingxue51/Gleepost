@@ -58,7 +58,7 @@ static ContactsManager *instance = nil;
     else
     {
         [GLPContactDao save:contact inDb:db];
-        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
+//        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
     }
     
 
@@ -104,6 +104,7 @@ static ContactsManager *instance = nil;
 
 -(void)loadContactsFromDatabase
 {
+    //TODO: Problem: Not loading users. Users' details seems are not saving correctly.
     self.contacts = [GLPContactDao loadContacts];
     
 }
@@ -127,7 +128,30 @@ static ContactsManager *instance = nil;
     {
         if(contact.youConfirmed && contact.theyConfirmed)
         {
-            //TODO: Bug here. User name is nil.
+            //TODO: Bug here. User is nil.
+            [confirmedContacts addObject:contact];
+            [confirmedContactsNames addObject:contact.user.name];
+        }
+    }
+    
+    dictonaryContacts = [[NSMutableDictionary alloc] initWithObjects:@[confirmedContacts, confirmedContactsNames] forKeys: @[@"Contacts",@"ContactsUserNames"]];
+    
+    
+    return dictonaryContacts;
+}
+
+-(NSDictionary*)findConfirmedContactsTemp:(NSArray*)contactsFromServer
+{
+    NSMutableArray *confirmedContacts = [[NSMutableArray alloc] init];
+    NSMutableArray *confirmedContactsNames = [[NSMutableArray alloc] init];
+    
+    NSMutableDictionary *dictonaryContacts = nil;
+    //Created for test purposes.
+    for(GLPContact* contact in contactsFromServer)
+    {
+        if(contact.youConfirmed && contact.theyConfirmed)
+        {
+            //TODO: Bug here. User is nil.
             [confirmedContacts addObject:contact];
             [confirmedContactsNames addObject:contact.user.name];
         }

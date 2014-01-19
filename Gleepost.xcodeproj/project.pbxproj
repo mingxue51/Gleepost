@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
+		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 11E2FBB2185730DF002EB2FA /* gleepost.cer */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
@@ -161,10 +163,6 @@
 		5866F16918844F05007484CF /* blades_night_copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16818844F05007484CF /* blades_night_copy.png */; };
 		5866F16B1884529A007484CF /* hills.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16A1884529A007484CF /* hills.png */; };
 		5866F16D188452F1007484CF /* hills_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16C188452F1007484CF /* hills_night.png */; };
-		586CDFE118520A9600902F68 /* in-contacts-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDD18520A9600902F68 /* in-contacts-temp.png */; };
-		586CDFE218520A9600902F68 /* message-user-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDE18520A9600902F68 /* message-user-temp.png */; };
-		586CDFE318520A9600902F68 /* add-user-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFDF18520A9600902F68 /* add-user-temp.png */; };
-		586CDFE418520A9600902F68 /* user-added-temp.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE018520A9600902F68 /* user-added-temp.png */; };
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
@@ -267,6 +265,7 @@
 		58DC0248180437A70008993A /* lightbublle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0240180437A70008993A /* lightbublle.png */; };
 		58DC0249180437A70008993A /* pull_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0241180437A70008993A /* pull_down_button.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
+		58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DE37D61889967A005DBF74 /* GLPNetworkManager.m */; };
 		58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4157186463A900D53723 /* GLPPostOperationManager.m */; };
 		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
 		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
@@ -306,7 +305,6 @@
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
 		803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803B6084181FFE8A00A178EB /* GLPLoadingCell.m */; };
-		8047E597188881D600123EB2 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8047E596188881D600123EB2 /* GLPNetworkManager.m */; };
 		8050249C181932C600F5337F /* conversation_new_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8050249B181932C600F5337F /* conversation_new_notification.png */; };
 		805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358C8182EF1CC00579079 /* GLPPostManager.m */; };
 		805358CC182EF37600579079 /* GLPPostDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 805358CB182EF37600579079 /* GLPPostDao.m */; };
@@ -475,6 +473,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11707584186C6DC000F68607 /* NSUserDefaults+GLPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+GLPAdditions.h"; sourceTree = "<group>"; };
+		11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+GLPAdditions.m"; sourceTree = "<group>"; };
+		117268081887F68C008F5391 /* GLPInvitationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPInvitationManager.h; sourceTree = "<group>"; };
+		117268091887F68C008F5391 /* GLPInvitationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPInvitationManager.m; sourceTree = "<group>"; };
+		1172680B188805B8008F5391 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		1172680D1888068E008F5391 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		11E2FBB2185730DF002EB2FA /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
@@ -673,10 +677,6 @@
 		5866F16818844F05007484CF /* blades_night_copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blades_night_copy.png; sourceTree = "<group>"; };
 		5866F16A1884529A007484CF /* hills.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hills.png; sourceTree = "<group>"; };
 		5866F16C188452F1007484CF /* hills_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hills_night.png; sourceTree = "<group>"; };
-		586CDFDD18520A9600902F68 /* in-contacts-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts-temp.png"; sourceTree = "<group>"; };
-		586CDFDE18520A9600902F68 /* message-user-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-user-temp.png"; sourceTree = "<group>"; };
-		586CDFDF18520A9600902F68 /* add-user-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-user-temp.png"; sourceTree = "<group>"; };
-		586CDFE018520A9600902F68 /* user-added-temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added-temp.png"; sourceTree = "<group>"; };
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
@@ -808,6 +808,8 @@
 		58DC0241180437A70008993A /* pull_down_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pull_down_button.png; sourceTree = "<group>"; };
 		58DC024B18043DEE0008993A /* ChatViewAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimations.h; sourceTree = "<group>"; };
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
+		58DE37D51889967A005DBF74 /* GLPNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNetworkManager.h; sourceTree = "<group>"; };
+		58DE37D61889967A005DBF74 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
 		58DF4156186463A900D53723 /* GLPPostOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperationManager.h; sourceTree = "<group>"; };
 		58DF4157186463A900D53723 /* GLPPostOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperationManager.m; sourceTree = "<group>"; };
 		58DF415C186463E000D53723 /* GLPPostUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploaderManager.h; sourceTree = "<group>"; };
@@ -864,8 +866,6 @@
 		80112B9A180F2494006A35AA /* NSDate+UTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+UTC.m"; sourceTree = "<group>"; };
 		803B6083181FFE8A00A178EB /* GLPLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCell.h; sourceTree = "<group>"; };
 		803B6084181FFE8A00A178EB /* GLPLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadingCell.m; sourceTree = "<group>"; };
-		8047E595188881D600123EB2 /* GLPNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNetworkManager.h; sourceTree = "<group>"; };
-		8047E596188881D600123EB2 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
 		8050249B181932C600F5337F /* conversation_new_notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conversation_new_notification.png; sourceTree = "<group>"; };
 		805358C4182EEEC700579079 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
 		805358C5182EEEC700579079 /* GLPTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTimelineViewController.m; sourceTree = "<group>"; };
@@ -1135,6 +1135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
 				80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */,
 				58143D6B1821014C00B76E5D /* Security.framework in Frameworks */,
 				807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */,
@@ -1208,10 +1209,6 @@
 				58FB7C7E1855FF82002C6A00 /* add-user.png */,
 				58FB7C7C1855FF0B002C6A00 /* message-user.png */,
 				586CDFE6185244BD00902F68 /* user-added.png */,
-				586CDFDD18520A9600902F68 /* in-contacts-temp.png */,
-				586CDFDE18520A9600902F68 /* message-user-temp.png */,
-				586CDFDF18520A9600902F68 /* add-user-temp.png */,
-				586CDFE018520A9600902F68 /* user-added-temp.png */,
 				58361C37184CC6F500FEFC49 /* private_profile_background.png */,
 				58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */,
 				58361C35184CBF6700FEFC49 /* profiletext_background.png */,
@@ -2132,6 +2129,8 @@
 		80AB891917C267F50053E784 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1172680D1888068E008F5391 /* AddressBookUI.framework */,
+				1172680B188805B8008F5391 /* AddressBook.framework */,
 				80F316D21828129700DE6884 /* CoreImage.framework */,
 				58143D6A1821014C00B76E5D /* Security.framework */,
 				58143D681821013200B76E5D /* CFNetwork.framework */,
@@ -2246,6 +2245,8 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58DE37D51889967A005DBF74 /* GLPNetworkManager.h */,
+				58DE37D61889967A005DBF74 /* GLPNetworkManager.m */,
 				58DF41551864636500D53723 /* Post Uploader Managers */,
 				5890D2151847675100E293DD /* Themes */,
 				80666C3D1806D43200E4E515 /* Database */,
@@ -2275,8 +2276,8 @@
 				80DC9AF4184633FE00A8E48B /* GLPLiveConversationsManager.m */,
 				58204E79186207AF00702F4F /* GLPQueueManager.h */,
 				58204E7A186207AF00702F4F /* GLPQueueManager.m */,
-				8047E595188881D600123EB2 /* GLPNetworkManager.h */,
-				8047E596188881D600123EB2 /* GLPNetworkManager.m */,
+				117268081887F68C008F5391 /* GLPInvitationManager.h */,
+				117268091887F68C008F5391 /* GLPInvitationManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -2508,6 +2509,8 @@
 				80B01E6A18428BAF00A1BA5F /* NSNotificationCenter+Utils.h */,
 				80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */,
 				C014D081183CE2B00001B76E /* Flurry */,
+				11707584186C6DC000F68607 /* NSUserDefaults+GLPAdditions.h */,
+				11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2594,7 +2597,6 @@
 				589125491858CF2E000531DE /* comment_button.png in Resources */,
 				80AB892F17C267F50053E784 /* Default.png in Resources */,
 				80AB893117C267F50053E784 /* Default@2x.png in Resources */,
-				586CDFE418520A9600902F68 /* user-added-temp.png in Resources */,
 				80AB893317C267F50053E784 /* Default-568h@2x.png in Resources */,
 				58DB02C418107CC8001C021A /* whiteholder1.png in Resources */,
 				58A67453184FAA1100E3FE45 /* arrow_up_gray.png in Resources */,
@@ -2605,7 +2607,6 @@
 				806E3D831832B1960063AACE /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				58143D74182170C000B76E5D /* +.png in Resources */,
 				58143D72182169A400B76E5D /* +_old2.png in Resources */,
-				586CDFE318520A9600902F68 /* add-user-temp.png in Resources */,
 				5866F16D188452F1007484CF /* hills_night.png in Resources */,
 				586458BE1808582000B1B19C /* comment_image@2x.png in Resources */,
 				58D0E2651850BD7B005879F4 /* ignore_notification_button.png in Resources */,
@@ -2633,7 +2634,6 @@
 				5890D23618482DC300E293DD /* messages@2x.png in Resources */,
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
 				5880103818101327008C170F /* pic3.png in Resources */,
-				586CDFE218520A9600902F68 /* message-user-temp.png in Resources */,
 				8050249C181932C600F5337F /* conversation_new_notification.png in Resources */,
 				584AD53018576C5A006589BF /* in-contacts.png in Resources */,
 				5895B3DC17F5D7730040535D /* thumbs-up_pushed@2x.png in Resources */,
@@ -2753,7 +2753,6 @@
 				805E1558180EF3E700705B1C /* notification.png in Resources */,
 				58FB7C8E18560D08002C6A00 /* PostsProfileTabView.xib in Resources */,
 				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
-				586CDFE118520A9600902F68 /* in-contacts-temp.png in Resources */,
 				5866F15F18844869007484CF /* background_night.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
@@ -2965,7 +2964,6 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
-				8047E597188881D600123EB2 /* GLPNetworkManager.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
@@ -3013,6 +3011,7 @@
 				58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
+				11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */,
@@ -3059,9 +3058,11 @@
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
+				58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */,
 				58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,
 				58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */,
+				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,
 				589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */,
@@ -3188,8 +3189,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
+				PROVISIONING_PROFILE = "4DB8F8D0-B2FC-4EA3-A95A-B3DF795957F5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4DB8F8D0-B2FC-4EA3-A95A-B3DF795957F5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3208,8 +3209,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9F2E6DCF-0708-449D-8451-B9792DE9F1FE";
+				PROVISIONING_PROFILE = "4DB8F8D0-B2FC-4EA3-A95A-B3DF795957F5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4DB8F8D0-B2FC-4EA3-A95A-B3DF795957F5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

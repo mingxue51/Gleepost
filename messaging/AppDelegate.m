@@ -12,6 +12,7 @@
 #import "GLPLoginManager.h"
 #import "GLPBackgroundRequestsManager.h"
 #import "WebClient.h"
+#import "WebClientHelper.h"
 #import "GAI.h"
 #import "GAIFields.h"
 #import "GAITracker.h"
@@ -21,7 +22,12 @@
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 #import "GLPNetworkManager.h"
+#import "NSUserDefaults+GLPAdditions.h"
+#import "GLPLoginManager.h"
 #import "GLPFacebookConnect.h"
+
+static NSString * const kCustomURLScheme    = @"gleepost";
+static NSString * const kCustomURLHost      = @"verify";
 
 @implementation AppDelegate
 
@@ -115,6 +121,52 @@
 	NSLog(@"Fail to register to push on Apple servers, error: %@", error);
 }
 
+# pragma mark - Handle custom URL Scheme (gleepost://)
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BOOL canHandleURLScheme = NO;
+    
+    if ([[url scheme] isEqualToString:kCustomURLScheme] && [[url host] isEqualToString:kCustomURLHost]) {
+        canHandleURLScheme = YES;
+        NSLog(@"handle URL : %@", url);
+        
+        NSString *relativePath = [url relativePath];
+        if (relativePath) {
+            NSString *token = [relativePath substringFromIndex:1];
+            __weak AppDelegate *weakSelf = self;
+            
+            [WebClientHelper showStandardLoaderWithTitle:@"Verifying" forView:self.window.rootViewController.view];
+            
+            [[WebClient sharedInstance] verifyUserWithToken:token callback:^(BOOL success) {
+                [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
+                
+                if (success) {
+                    [WebClientHelper showStandardLoaderWithTitle:@"Logging in" forView:self.window.rootViewController.view];
+                    
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    [GLPLoginManager loginWithIdentifier:[userDefaults authParameterName] andPassword:[userDefaults authParameterPass] callback:^(BOOL success) {
+                        [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
+                        
+                        if (success) {
+                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+                            UIViewController *initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+                            
+                            weakSelf.window.rootViewController = initVC;
+                        } else {
+                            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in."];
+                        }
+                    }];
+                } else {
+                    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account."];
+                }
+            }];
+        }
+    } else {
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL."];
+    }
+    
+    return canHandleURLScheme;
+}
 
 # pragma mark - Setup Analytics
 

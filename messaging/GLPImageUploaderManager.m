@@ -71,9 +71,6 @@ const NSString *IMAGE_PENDING = @"PENDING";
             }
             
         }];
-
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
-
         
                               //NSOrderedSame
     }
@@ -81,20 +78,6 @@ const NSString *IMAGE_PENDING = @"PENDING";
     return self;
 }
 
-//- (void)updateNetworkStatus:(NSNotification *)notification
-//{
-//    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-//    NSLog(@"GLPImageUploader network status update: %d", isNetwork);
-//    
-//    if(isNetwork)
-//    {
-//        //[self startAll];
-//        
-//    } else
-//    {
-//       // [self stopAll];
-//    }
-//}
 
 #pragma mark - Helpers
 
@@ -254,19 +237,13 @@ const NSString *IMAGE_PENDING = @"PENDING";
     {
         [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
             if (success) {
-                //                _imageStatus    = GLPImageStatusUploaded;
-                //                _imageURL       = imageUrl;
-                //
-                //                if (_uploadContentBlock) _uploadContentBlock();
-                
-                // NSLog(@"Image url before notify: %@",imageUrl);
+
                 
                 finished = success;
                 imageUrlSend = imageUrl;
                 
                 if(finished)
                 {
-//                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPImageUploaded" object:nil userInfo:@{@"imageUrl":imageUrlSend}];
                     
                     @synchronized(_pendingImages)
                     {
@@ -283,11 +260,8 @@ const NSString *IMAGE_PENDING = @"PENDING";
                 
                 
             } else {
-                //                _imageStatus = GLPImageStatusFailed;
-                
                 NSLog(@"Error occured. Post image cannot be uploaded.");
                 self.networkAvailable = NO;
-#warning TODO: show user an error(?)
             }
         }];
     }

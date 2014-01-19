@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
+#import <MessageUI/MessageUI.h>
 #import "GLPProfileViewController.h"
 #import "GLPUser.h"
 #import "SessionManager.h"
@@ -31,9 +32,9 @@
 #import "GLPPostImageLoader.h"
 #import "GLPProfileLoader.h"
 #import "GLPUserDao.h"
+#import "GLPInvitationManager.h"
 
-
-@interface GLPProfileViewController ()
+@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -60,6 +61,10 @@
 @property (strong, nonatomic) NSString *profileImageUrl;
 
 @property (strong, nonatomic) UITabBarItem *profileTabbarItem;
+
+@property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
+
+@property (assign, nonatomic) BOOL isBusy;
 
 @end
 
@@ -170,7 +175,7 @@
 
     
     
-    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
+//    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
     
 //    if(!self.fromCampusWall)
 //    {
@@ -229,9 +234,13 @@
     
     self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
 
+    //Load busy status.
+    [self getBusyStatus];
     
     //Load user's details from server.
     [self setUserDetails];
+    
+    
     
     //self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
@@ -298,7 +307,8 @@
 {
     if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
     {
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
+//        [self refreshFirstCell];
     }
     
 }
@@ -331,6 +341,7 @@
     [self updateNotificationsBubble];
 }
 
+#pragma mark - ProfileSettingsTableViewCellDelegate
 
 -(void)logout:(id)sender
 {
@@ -341,6 +352,18 @@
     
 }
 
+- (void)invite {
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:self.view];
+    
+    [[GLPInvitationManager sharedInstance] fetchInviteMessageWithCompletion:^(BOOL success, NSString *inviteMessage) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
+        if (success) {
+            [self showMessageViewControllerWithBody:inviteMessage];
+        } else {
+            [WebClientHelper showStandardError];
+        }
+    }];
+}
 
 #pragma mark - Action Sheet delegate
 
@@ -506,6 +529,8 @@
         {
             self.user = user;
             
+            [self refreshFirstCell];
+            
             [self loadPosts];
             
             //[self.tableView reloadData];
@@ -513,6 +538,17 @@
         else
         {
             [WebClientHelper showStandardError];
+        }
+    }];
+}
+
+-(void)getBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+        
+        if(success)
+        {
+            self.isBusy = status;
         }
     }];
 }
@@ -533,10 +569,9 @@
         self.user = [usersData objectAtIndex:0];
         self.userImage = [usersData objectAtIndex:1];
 //        [self.tableView reloadData];
-
+        [self refreshFirstCell];
+        
         [self loadPosts];
-
-
     }
     
 }
@@ -582,6 +617,8 @@
         
         [profileView setDelegate:self];
 
+        profileView.isBusy = self.isBusy;
+
 //        [profileView updateImageWithUrl:self.profileImageUrl];
         if(_userImage)
         {
@@ -591,6 +628,8 @@
         {
             [profileView initialiseElementsWithUserDetails:self.user];
         }
+        
+        
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
         
         
@@ -614,7 +653,7 @@
             
             profileSettingsView.selectionStyle = UITableViewCellSelectionStyleNone;
 
-            [profileSettingsView setDelegate:self];
+            profileSettingsView.delegate = self;
             
             
             return profileSettingsView;
@@ -682,6 +721,22 @@
     return 70.0f;
 }
 
+#pragma mark - Table view refresh methods
+
+-(void)refreshCellViewWithIndex:(const NSUInteger)index
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
+
+-(void)refreshFirstCell
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
+
 #pragma  mark - Buttons view methods
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
@@ -693,9 +748,7 @@
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    NSLog(@"Modal View Controller");
-    
+{    
     
     if([segue.identifier isEqualToString:@"view post"])
     {
@@ -704,6 +757,7 @@
         
         ViewPostViewController *vc = segue.destinationViewController;
         vc.post = self.selectedPost;
+        vc.isViewPostNotifications = YES;
         self.selectedPost = nil;
         
     }
@@ -734,6 +788,41 @@
         
         
     }
+}
+
+#pragma mark - Actions
+
+- (void)showMessageViewControllerWithBody:(NSString *)messageBody {
+    if (![MFMessageComposeViewController canSendText]) {
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
+        return;
+    }
+    
+    self.messageComposeViewController = [[MFMessageComposeViewController alloc] init];
+    self.messageComposeViewController.messageComposeDelegate = self;
+    [self.messageComposeViewController setBody:messageBody];
+    
+    [self presentViewController:self.messageComposeViewController animated:YES completion:nil];
+}
+
+#pragma mark - MFMessageComposeViewControllerDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+    switch (result) {
+        case MessageComposeResultFailed: {
+            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS."];
+            break;
+        }
+        case MessageComposeResultSent: {
+            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully."];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

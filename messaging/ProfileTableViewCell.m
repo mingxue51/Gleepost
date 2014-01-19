@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *busySwitch;
 @property (weak, nonatomic) IBOutlet UILabel *busyLabel;
 
+
 @property (strong, nonatomic) GLPUser *currentUser;
 
 @property (readonly, nonatomic) GLPProfileViewController *delegate;
@@ -53,9 +54,35 @@
     return self;
 }
 
+-(void)initialiseProfileImage:(UIImage*)image
+{
+    [self initialiseLoadingElements];
+
+    
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 4.0;
+    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
+    
+    [self.profileImage setImage:image];
+}
+
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
 {
+    if(user == nil)
+    {
+        [self initialiseLoadingElements];
+        
+        return;
+    }
+    
     self.currentUser = user;
+    
+    [self.busySwitch setOn:!self.isBusy];
+
+    
+    //Decide which elements to present.
+    [self setCurrentUserStatusWithUser:user];
     
     [self.universityLabel setText:user.networkName];
     
@@ -77,8 +104,7 @@
         [self.profileImage setImage:image];
     }
     
-    //Decide which elements to present.
-    [self setCurrentUserStatusWithUser:user];
+
 }
 
 
@@ -88,9 +114,17 @@
 //    [self.course setText: user.course];
     
 //    [self.personalMessage setText:user.personalMessage];
+    
+    if(user == nil)
+    {
+        [self initialiseLoadingElements];
+        
+        return;
+    }
+    
     self.currentUser = user;
     
-
+    [self.busySwitch setOn:!self.isBusy];
 
     
     [self.universityLabel setText:user.networkName];
@@ -106,7 +140,7 @@
     if([user.profileImageUrl isEqualToString:@""])
     {
         //Set default image.
-        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
     else
     {
@@ -150,6 +184,29 @@
     [self setCurrentUserStatusWithUser:user];
 }
 
+-(void)initialiseLoadingElements
+{
+    [self.universityLabel setText:@"Loading..."];
+    
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 4.0;
+    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
+    
+    
+    //Set default image.
+   [self.profileImage setImage:[UIImage imageNamed:@"default_user_image2"]];
+    
+    
+    //Hide all the elements.
+    [self.addContactButton setHidden:YES];
+    [self.acceptButton setHidden:YES];
+    [self.inContacts setHidden:YES];
+    [self.messageButton setHidden:YES];
+    [self.busyLabel setHidden:YES];
+    [self.busySwitch setHidden:YES];
+}
+
 -(void)updateImageWithUrl:(NSString*)url
 {
     [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
@@ -184,7 +241,7 @@
         [self.busySwitch setHidden:NO];
         
         //Load data for busy switch.
-        [self getBusyStatus];
+//        [self getBusyStatus];
         
         //Add selector to profile image view.
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
@@ -281,16 +338,16 @@
 
 #pragma mark - Client
 
--(void)getBusyStatus
-{
-    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
-        
-        if(success)
-        {
-            [self.busySwitch setOn:!status];
-        }
-    }];
-}
+//-(void)getBusyStatus
+//{
+//    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+//        
+//        if(success)
+//        {
+//            [self.busySwitch setOn:!status];
+//        }
+//    }];
+//}
 
 - (IBAction)setBusyStatus:(id)sender
 {

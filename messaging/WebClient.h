@@ -26,6 +26,7 @@
 
 // User login
 - (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate))callbackBlock;
+- (void)verifyUserWithToken:(NSString *)token callback:(void (^)(BOOL success))callbackBlock;
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock;
 - (void)registerViaFacebookToken:(NSString *)token
                   withEmailOrNil:(NSString *)email
@@ -84,5 +85,8 @@
 // websocket
 - (void)startWebSocket;
 - (void)stopWebSocket;
+
+// invite
+- (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback;
 
 @end
