@@ -14,6 +14,7 @@
 
 NSString * const GLPContactTheyConfirmed = @"they_confirmed";
 NSString * const GLPContactYouConfirmed = @"you_confirmed";
+NSString * const GLPContactName = @"name";
 
 
 -(id)initWithUserName:(NSString*)name profileImage:(NSString*)img youConfirmed:(BOOL)you andTheyConfirmed:(BOOL)they

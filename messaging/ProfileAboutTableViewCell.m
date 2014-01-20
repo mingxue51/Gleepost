@@ -42,18 +42,27 @@
     
     NSMutableString *information = [[NSMutableString alloc] init];
 
-    if(![user.course isEqualToString:@""])
+    if(![user.course isEqualToString:@""] && user.course)
     {
+        [self.informationLabel setHidden:NO];
         [information appendFormat:@"%@\n",user.course];
     }
-    
-    if(![user.personalMessage isEqualToString:@""])
+    else
     {
+        [self.informationLabel setHidden:YES];
+    }
+    
+    if(![user.personalMessage isEqualToString:@""]  && user.course)
+    {
+        [self.informationLabel setHidden:NO];
         [information appendFormat:@"%@",user.personalMessage];
+    }
+    else
+    {
+        [self.informationLabel setHidden:YES];
     }
     
     
-    [self.informationLabel setHidden:NO];
     
     
     [self.informationLabel setText:information];

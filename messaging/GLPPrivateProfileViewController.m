@@ -220,33 +220,60 @@
 
 #pragma mark - Client methods
 
+
+//TODO: Load first user from local database and the from server.
+
 -(void)loadAndSetUserDetails
 {
-    [[WebClient sharedInstance] getUserWithKey:self.selectedUserId callbackBlock:^(BOOL success, GLPUser *user) {
+    [[ContactsManager sharedInstance] loadUserWithRemoteKey:self.selectedUserId localCallback:^(BOOL exist, GLPUser *user) {
+        
+        if(exist)
+        {
+            self.profileUser = user;
+            self.navigationItem.title = self.profileUser.name;
+            [self.tableView reloadData];
+        }
+        
+    } remoteCallback:^(BOOL success, GLPUser *user) {
         
         if(success)
         {
             self.profileUser = user;
-            
             self.navigationItem.title = self.profileUser.name;
-
-//            if(!self.contact)
-//            {
-//
-//                [self loadPosts];
-//            }
-            
-            [self loadPosts];
-
-            
-            [self refreshFirstCell];
-
+            [self.tableView reloadData];
         }
         else
         {
             [WebClientHelper showStandardError];
         }
+
     }];
+    
+//    [[WebClient sharedInstance] getUserWithKey:self.selectedUserId callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(success)
+//        {
+//            self.profileUser = user;
+//            
+//            self.navigationItem.title = self.profileUser.name;
+//
+////            if(!self.contact)
+////            {
+////
+////                [self loadPosts];
+////            }
+//            
+//            [self loadPosts];
+//
+//            
+//            [self refreshFirstCell];
+//
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
 }
 
 -(void)loadAndSetContactDetails

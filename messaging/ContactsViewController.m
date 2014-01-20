@@ -91,8 +91,6 @@
 {
     [super viewDidAppear:animated];
     
-
-    
     [self loadContacts];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -129,7 +127,6 @@
             NSString* userName = contact.user.name;
             //Get the first letter of the user.
             NSString* firstLetter = [userName substringWithRange: NSMakeRange(0, 1)];
-            //NSLog(@"PREVIOUS USER NAME: %@ With letter: %@",userName, letter);
             
             if([firstLetter caseInsensitiveCompare:letter] == NSOrderedSame)
             {
@@ -169,8 +166,7 @@
             NSString* userName = contact.user.name;
             //Get the first letter of the user.
             NSString* firstLetter = [userName substringWithRange: NSMakeRange(0, 1)];
-            //NSLog(@"PREVIOUS USER NAME: %@ With letter: %@",userName, letter);
-            
+
             if([firstLetter caseInsensitiveCompare:letter] == NSOrderedSame)
             {
                 sectionFound = YES;
@@ -310,7 +306,6 @@
 
 -(void) navigateToProfileContact: (id)sender
 {
-    NSLog(@"Navigate to profile.");
     [self performSegueWithIdentifier:@"view profile" sender:self];
 
 }
@@ -322,13 +317,12 @@
 
     [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
         
-        //TODO: Fix that by adding new entry (username) in the contacts' table.
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
         
-        if(allContacts != nil)
-        {
+//        if(allContacts != nil)
+//        {
             [self showContacts:allContacts];
-        }
+//        }
         
     } remoteCallback:^(BOOL success, NSArray *contacts) {
         
@@ -513,8 +507,6 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-    
-    NSLog(@"INDEX PATH: %d",indexPath.row);
     
     NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
     

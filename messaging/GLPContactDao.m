@@ -72,7 +72,7 @@
 
 + (void)save:(GLPContact *)entity inDb:(FMDatabase *)db
 {
-    [db executeUpdateWithFormat:@"insert into contacts(remoteKey, you_confirmed, they_confirmed) values(%d, %d, %d)", entity.remoteKey, entity.youConfirmed, entity.theyConfirmed];
+    [db executeUpdateWithFormat:@"insert into contacts(remoteKey, you_confirmed, they_confirmed, name) values(%d, %d, %d, %@)", entity.remoteKey, entity.youConfirmed, entity.theyConfirmed, entity.user.name];
 }
 
 

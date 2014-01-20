@@ -12,6 +12,7 @@
 #import "DatabaseManager.h"
 #import "GLPUserDao.h"
 #import "GLPProfileLoader.h"
+#import "GLPUser.h"
 
 @implementation ContactsManager
 
@@ -58,7 +59,7 @@ static ContactsManager *instance = nil;
     else
     {
         [GLPContactDao save:contact inDb:db];
-//        NSLog(@"New Contact User id: %d",[GLPUserDao saveIfNotExist:contact.user db:db]);
+        [GLPUserDao saveIfNotExist:contact.user db:db];
     }
     
 
@@ -69,10 +70,13 @@ static ContactsManager *instance = nil;
  */
 -(void)refreshContacts
 {
-    //Load contacts from server and update database.
     
-    [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *contacts) {
+    [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
         
+        //Store contacts into an array.
+        self.contacts = contacts;
+        
+    } remoteCallback:^(BOOL success, NSArray *contacts) {
         if(success)
         {
             //Store contacts into an array.
@@ -80,7 +84,6 @@ static ContactsManager *instance = nil;
             
             //Load contacts' images.
             [[GLPProfileLoader sharedInstance] loadContactsImages:contacts];
-            
             
             [GLPContactDao deleteTable];
             
@@ -91,15 +94,44 @@ static ContactsManager *instance = nil;
                     [self saveNewContact:c db:db];
                 }
             }];
-            
         }
         else
         {
             [WebClientHelper showStandardError];
         }
         
-        
     }];
+    
+    //Load contacts from server and update database.
+//    [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *contacts) {
+//        
+//        if(success)
+//        {
+//            //Store contacts into an array.
+//            self.contacts = contacts;
+//            
+//            //Load contacts' images.
+//            [[GLPProfileLoader sharedInstance] loadContactsImages:contacts];
+//            
+//            
+//            [GLPContactDao deleteTable];
+//            
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                
+//                for(GLPContact *c in contacts) {
+//                    //[GLPContactDao save:c inDb:db];
+//                    [self saveNewContact:c db:db];
+//                }
+//            }];
+//            
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//        
+//    }];
 }
 
 -(void)loadContactsFromDatabase
@@ -276,6 +308,42 @@ static ContactsManager *instance = nil;
     }];
 }
 
+-(void)loadUserWithRemoteKey:(int)remoteKey localCallback:(void (^) (BOOL exist, GLPUser *user))localCallback remoteCallback:(void (^) (BOOL success, GLPUser *user))remoteCallback
+{
+    //Load user from local database.
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        GLPUser *currentUser = [GLPUserDao findByRemoteKey:remoteKey db:db];
+        
+        if(currentUser)
+        {
+            localCallback(YES,currentUser);
+        }
+        else
+        {
+            localCallback(NO,currentUser);
+        }
+        
+
+    }];
+    
+    [[WebClient sharedInstance] getUserWithKey:remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(success)
+        {
+            //Update the user in the local database.
+            [GLPUserDao update:user];
+            
+            remoteCallback(success, user);
+            
+        }
+        else
+        {
+            remoteCallback(success, user);
+        }
+        
+    }];
+}
 
 /**
  If YES navigate to real profile, if no to private profile.

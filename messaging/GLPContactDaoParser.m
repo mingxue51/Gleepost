@@ -20,7 +20,7 @@
     entity.user = [[GLPUser alloc] init];
     entity.theyConfirmed = [resultSet boolForColumn:GLPContactTheyConfirmed];
     entity.youConfirmed = [resultSet boolForColumn:GLPContactYouConfirmed];
-    
+    entity.user.name = [resultSet stringForColumn:GLPContactName];
 }
 
 + (GLPContact *)createContactFromResultSet:(FMResultSet *)resultSet

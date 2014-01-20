@@ -93,7 +93,8 @@ static DatabaseManager *instance = nil;
             [db executeUpdate:@"create table contacts ( \
              remoteKey integer primary key, \
              you_confirmed interger, \
-             they_confirmed integer);"];
+             they_confirmed integer, \
+             name text);"];
             
             // conversation
             [db executeUpdate:@"create table conversations ( \

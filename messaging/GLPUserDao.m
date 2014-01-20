@@ -85,7 +85,7 @@
     }
     else
     {
-//        NSLog(@"User with name: %@ and image url: %@ exist.", usr.name, usr.profileImageUrl);
+
     }
     
     //FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where key=%d limit 1", entity.key];

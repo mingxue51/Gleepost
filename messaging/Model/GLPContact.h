@@ -15,6 +15,7 @@
 
 extern NSString * const GLPContactTheyConfirmed;
 extern NSString * const GLPContactYouConfirmed;
+extern NSString * const GLPContactName;
 
 @property (strong, nonatomic) GLPUser *user;
 @property BOOL youConfirmed;
