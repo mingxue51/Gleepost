@@ -10,7 +10,7 @@
 #import "DateFormatterHelper.h"
 #import "SendStatus.h"
 #import "GLPLike.h"
-
+#import "SessionManager.h"
 
 @interface RemoteParser()
 
@@ -29,7 +29,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     GLPUser *user = [[GLPUser alloc] init];
     user.remoteKey = [json[@"id"] integerValue];
-    user.name = json[@"username"];
+    user.name = json[@"name"];
     user.course = json[@"course"];
     user.personalMessage = json[@"tagline"];
     user.profileImageUrl = json[@"profile_image"];
@@ -335,34 +335,28 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.content = json[@"text"];
     
 
-    if([json[@"comments"] isKindOfClass:[NSArray class]])
-    {
-        post.commentsCount = 0;
-
-    }
-    else
-    {
-        post.commentsCount = [json[@"comments"] integerValue];
-    }
+//    if([json[@"comments"] isKindOfClass:[NSArray class]])
+//    {
+//        post.commentsCount = 0;
+//    }
+//    else
+//    {
+        post.commentsCount = [json[@"comment_count"] integerValue];
+//    }
     
     
-    if([json[@"likes"] isKindOfClass:[NSArray class]] || json[@"likes"] == [NSNull null])
-    {
-        post.likes = 0;
-    }
-    else
-    {
-        post.likes = [json[@"likes"] integerValue];
-    }
+//    if([json[@"likes"] isKindOfClass:[NSArray class]] || json[@"likes"] == [NSNull null])
+//    {
+//        post.likes = 0;
+//    }
+//    else
+//    {
+        post.likes = [json[@"like_count"] integerValue];
+//    }
     
     post.dislikes = [json[@"hates"] integerValue];
     
 
-//    NSLog(@"Posts JSON: %@",json);
-//    NSLog(@"User's image JSON: %@",post.author.profileImageUrl);
-    
-    // should work.. or not!
-    //post.imagesUrls = json[@"images"];
     
     NSArray *jsonArray = json[@"images"];
     
@@ -385,6 +379,26 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         {
             post.imagesUrls = [NSArray array];
         }
+    }
+    
+    //Parse users' likes of the post and find if the post is liked by logged in user.
+    NSArray *usersLiked = json[@"likes"];
+    
+    post.liked = NO;
+    
+    for(NSDictionary *userLiked in usersLiked)
+    {
+        
+        NSDictionary *dict = [userLiked objectForKey:@"by"];
+
+        NSNumber *userRemoteKey = [dict objectForKey:@"id"];
+        
+        if([userRemoteKey integerValue] == [[SessionManager sharedInstance]user].remoteKey)
+        {
+            post.liked = YES;
+            break;
+        }
+        
     }
     
 
@@ -561,7 +575,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     contact.remoteKey = [json[@"id"] integerValue];
     contact.user.remoteKey = contact.remoteKey;
-    contact.user.name = json[@"username"];
+    contact.user.name = json[@"name"];
     contact.user.profileImageUrl = json[@"profile_image"];
     contact.youConfirmed = [json[@"you_confirmed"] boolValue];
     contact.theyConfirmed = [json[@"they_confirmed"] boolValue];

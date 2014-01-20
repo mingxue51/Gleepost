@@ -81,8 +81,7 @@
     [self.busySwitch setOn:!self.isBusy];
 
     
-    //Decide which elements to present.
-    [self setCurrentUserStatusWithUser:user];
+
     
     [self.universityLabel setText:user.networkName];
     
@@ -104,6 +103,8 @@
         [self.profileImage setImage:image];
     }
     
+    //Decide which elements to present.
+    [self setCurrentUserStatusWithUser:user];
 
 }
 
@@ -250,7 +251,7 @@
         [self.profileImage addGestureRecognizer:tap];
         
         //Change the position of the university label.
-        [self.universityLabel setFrame:CGRectMake(universityLabelFrame.origin.x, 180.0f, universityLabelFrame.size.width, universityLabelFrame.size.height)];
+       // [self.universityLabel setFrame:CGRectMake(universityLabelFrame.origin.x, 180.0f, universityLabelFrame.size.width, universityLabelFrame.size.height)];
         
         
     }
@@ -282,10 +283,13 @@
         [tap setNumberOfTapsRequired:1];
         [self.profileImage addGestureRecognizer:tap];
         
+        
+        //TODO: Issue by moving the information label.
         //Change the position of the university label.
-        [self.universityLabel setFrame:CGRectMake(universityLabelFrame.origin.x, 160.0f, universityLabelFrame.size.width, universityLabelFrame.size.height)];
-
+       // [self.universityLabel setFrame:CGRectMake(universityLabelFrame.origin.x, 160.0f, universityLabelFrame.size.width, universityLabelFrame.size.height)];
     }
+    
+    [self.universityLabel setHidden:NO];
 }
 
 -(void)changeProfileImage:(id)sender

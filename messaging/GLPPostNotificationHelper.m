@@ -26,7 +26,6 @@
     {
         if([remoteKey intValue] == p.remoteKey)
         {
-            
             currentPost = p;
             
             break;
@@ -41,6 +40,37 @@
     
     currentPost.commentsCount = [numberOfComments intValue];
     currentPost.likes = [numberOfLikes intValue];
+    
+    return index;
+}
+
++(int)parseLikedPostNotification:(NSNotification*)notification withPostsArray:(NSArray *)posts
+{
+    NSDictionary *dict = [notification userInfo];
+    NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
+    NSNumber *liked = [dict objectForKey:@"Liked"];
+    int index = 0;
+    
+    GLPPost *currentPost = nil;
+    
+    //Find post by remote key.
+    for(GLPPost *p in posts)
+    {
+        if([remoteKey intValue] == p.remoteKey)
+        {
+            currentPost = p;
+            
+            break;
+        }
+        ++index;
+    }
+    
+    if(currentPost == nil)
+    {
+        return -1;
+    }
+    
+    currentPost.liked = [liked boolValue];
     
     return index;
 }
@@ -86,5 +116,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
 }
 
-
++(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey withLiked:(BOOL)liked
+{
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithBool:liked], @"Liked", nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
+}
 @end

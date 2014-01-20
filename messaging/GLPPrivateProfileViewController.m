@@ -210,7 +210,6 @@
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
-//    self.title = @"Me";
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle
@@ -248,6 +247,8 @@
         }
 
     }];
+    
+    [self loadPosts];
     
 //    [[WebClient sharedInstance] getUserWithKey:self.selectedUserId callbackBlock:^(BOOL success, GLPUser *user) {
 //        
@@ -295,9 +296,7 @@
         [self refreshFirstCell];
         
         [self loadAndSetUserDetails];
-        
     }
-
 }
 
 - (void)loadPosts

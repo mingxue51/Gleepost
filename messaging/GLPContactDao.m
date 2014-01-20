@@ -98,14 +98,12 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         BOOL s = [db executeUpdateWithFormat:@"delete from contacts"];
-        NSLog(@"Table deleted: %d",s);
     }];
 }
 
 +(void)deleteTableWithDb:(FMDatabase*)db
 {
     BOOL s = [db executeUpdateWithFormat:@"delete from contacts"];
-    NSLog(@"Table deleted: %d",s);
 }
 
 @end

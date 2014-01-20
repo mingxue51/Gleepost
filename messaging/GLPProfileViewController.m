@@ -119,7 +119,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
 
+    
+    [self.tableView reloadData];
 
 }
 
@@ -127,8 +131,15 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
-
+    
     [super viewWillDisappear:animated];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -316,6 +327,25 @@
 -(void)updateViewWithNewImage:(NSString*)imageUrl
 {
     [self loadUserData];
+}
+
+-(void)updatePost:(NSNotification*)notification
+{
+
+    int index = [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
+    
+    if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
+    {
+        //Reload again only this post.
+//        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+-(void)updateLikedPost:(NSNotification*)notification
+{
+    DDLogDebug(@"GLPProfileViewController : updateLikedPost %@", notification);
+
+    int index = [GLPPostNotificationHelper parseLikedPostNotification:notification withPostsArray:self.posts];
     
 }
 

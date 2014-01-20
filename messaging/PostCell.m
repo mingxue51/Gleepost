@@ -157,7 +157,6 @@ static const float OneLineText = 16.0;
     
     if([postData.author.profileImageUrl isEqualToString:@""])
     {
-//        NSLog(@"Not Image in post cell: %@", postData.author.profileImageUrl);
         [self.userImageView setImage:userImage];
     }
     else
@@ -187,9 +186,6 @@ static const float OneLineText = 16.0;
     //Add text to information label.
     [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views",postData.likes, postData.commentsCount, postData.remoteKey]];
     
-
-
-    
     //Set like button status.
     if(postData.liked)
     {
@@ -206,8 +202,6 @@ static const float OneLineText = 16.0;
         [self.thumpsUpBtn setImage:[UIImage imageNamed:@"like_button"] forState:UIControlStateNormal];
         
     }
-    
-
     
     if(self.isViewPost)
     {
@@ -497,7 +491,6 @@ static const float OneLineText = 16.0;
         //Add the thumbs up selected version of image.
         [btn setImage:[UIImage imageNamed:@"like_active_button"] forState:UIControlStateNormal];
         
-        
         [self.post setLiked:YES];
         
         //Change the like status and send to server the change.
@@ -514,6 +507,8 @@ static const float OneLineText = 16.0;
     [GLPPostManager updatePostWithLiked: self.post];
     
     [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
+    
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPLikedPostUdated" withObject:self remoteKey:self.post.remoteKey withLiked:self.post.liked];
 }
 
 - (IBAction)commentPost:(id)sender

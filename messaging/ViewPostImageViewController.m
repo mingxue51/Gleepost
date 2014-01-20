@@ -32,7 +32,6 @@
 - (IBAction)goBack:(id)sender
 {
 
-   NSLog(@"CLASS: %@", self.parentViewController);
     
     [self.transitioningDelegate animationControllerForDismissedController:self];
     
@@ -40,15 +39,12 @@
     [UIView animateWithDuration:0.25 animations:^{
         
         self.view.alpha = 0;
-        NSLog(@"Dismiss ViewPostImageViewController.");
         
     } completion:^(BOOL b){
 
 //        self.view.alpha = 1;
         [self dismissViewControllerAnimated:NO completion:^{
-            
-            NSLog(@"After Dismiss ViewPostImageViewController.");
-            
+                        
         }];
     }];
     

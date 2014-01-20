@@ -925,7 +925,7 @@ static BOOL likePushed;
     return YES;
 }
 
-#pragma mark - The Magic!
+#pragma mark - Hidden navigation bar
 
 -(void)expand
 {
@@ -963,7 +963,6 @@ static BOOL likePushed;
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
 }
-
 
 -(void)hideNavigationbarElements
 {
@@ -1054,11 +1053,7 @@ static BOOL likePushed;
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
         postCell.imageAvailable = YES;
-        
-        //        if(post.tempImage != nil)
-        //        {
-        //
-        //        }
+
         
     }
     else
@@ -1231,6 +1226,10 @@ static BOOL likePushed;
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     
     self.commentCreated = YES;
+    
+    //Notify GLPProfileViewController about changes.
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.selectedPost.remoteKey numberOfLikes:self.selectedPost.likes andNumberOfComments:self.selectedPost.commentsCount];
+    
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 

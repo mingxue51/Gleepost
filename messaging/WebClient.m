@@ -32,7 +32,7 @@
 @synthesize isNetworkAvailable;
 @synthesize webSocket=_webSocket;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.24/";
+static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.25/";
 
 static WebClient *instance = nil;
 
@@ -126,7 +126,7 @@ static WebClient *instance = nil;
         return;
     }
     
-    [self postPath:@"login" parameters:@{@"user": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self postPath:@"login" parameters:@{@"email": name, @"pass": password} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *json = (NSDictionary *) responseObject;
         
         GLPUser *user = [[GLPUser alloc] init];

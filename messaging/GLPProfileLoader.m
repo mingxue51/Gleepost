@@ -11,6 +11,36 @@
 #import "WebClient.h"
 #import "SessionManager.h"
 
+/**
+ Inner class. Check if this methodology is the most appropriate.
+ */
+
+@interface UrlImage : NSObject
+
+@property (strong, nonatomic) UIImage *img;
+@property (strong, nonatomic) NSString *url;
+
+@end
+
+@implementation UrlImage
+
+-(id)initWithImage:(UIImage*)img andUrl:(NSString*)url
+{
+    self = [super init];
+    
+    if(self)
+    {
+        self.img = img;
+        self.url = url;
+    }
+    
+    return self;
+}
+
+@end
+
+
+
 @interface GLPProfileLoader ()
 
 @property (strong, nonatomic) NSMutableDictionary *contactsImages;
@@ -18,6 +48,7 @@
 //userDetails contains one GLPContact and UIImage of the logged in user.
 @property (strong, nonatomic) GLPUser *userDetails;
 @property (strong, nonatomic) UIImage *userImage;
+@property (assign, nonatomic) BOOL loadingImagesExecuting;
 
 @end
 
@@ -48,7 +79,7 @@ static GLPProfileLoader *instance = nil;
     {
         _contactsImages = [[NSMutableDictionary alloc] init];
         _userDetails = [[GLPUser alloc] init];
-        
+        self.loadingImagesExecuting = NO;
     }
     
     return self;
@@ -75,14 +106,6 @@ static GLPProfileLoader *instance = nil;
 -(void)loadImageForUser:(id)sender
 {
     //Load user's image.
-    
-//    NSString *str = (NSString*)sender;
-//    
-//    NSURL *imageUrl = [NSURL URLWithString:str];
-//    
-//    NSData *data = [NSData dataWithContentsOfURL:imageUrl];
-//    UIImage *img = [[UIImage alloc] initWithData:data];
-    
     _userImage = [self loadImageWithUrl:(NSString*)sender];
     
 }
@@ -98,15 +121,59 @@ static GLPProfileLoader *instance = nil;
     
     for(GLPContact *contact in contacts)
     {
-        UIImage *userImg = [self loadImageWithUrl:contact.user.profileImageUrl];
-        
-        if(userImg)
-        {
-            [_contactsImages setObject:userImg forKey:[NSNumber numberWithInteger:contact.remoteKey]];
-        }
-        
+        [self loadImageWithUrl:contact.user.profileImageUrl withContactRemoteKeyAndAddIt:contact.remoteKey];
     }
     
+}
+
+-(void)refreshContactsImages:(NSArray*)contacts
+{
+    if(!self.loadingImagesExecuting)
+    {
+        [NSThread detachNewThreadSelector:@selector(refreshImagesWithContacts:) toTarget:self withObject:contacts];
+    }
+}
+
+-(void)refreshImagesWithContacts:(id)sender
+{
+    self.loadingImagesExecuting = YES;
+    
+    NSArray *contacts = (NSArray*)sender;
+    
+    for(GLPContact *contact in contacts)
+    {
+        UrlImage *oldUrlImage = [_contactsImages objectForKey:[NSNumber numberWithInt:contact.remoteKey]];
+        NSString *oldProfileUrl = oldUrlImage.url;
+        
+        //If the oldProfileUrl is nil then the image is not added yet.
+        //If the current url is not equal with the old one then we
+        //need to load new image and replace it with the old one.
+        if(!oldProfileUrl)
+        {
+            [self loadImageWithUrl:contact.user.profileImageUrl withContactRemoteKeyAndAddIt:contact.remoteKey];
+        }
+        else if(![contact.user.profileImageUrl isEqualToString:oldProfileUrl])
+        {
+            [self loadImageWithUrl:contact.user.profileImageUrl withContactRemoteKeyAndAddIt:contact.remoteKey];
+        }
+
+    }
+    
+    self.loadingImagesExecuting = NO;
+}
+
+-(void)loadImageWithUrl:(NSString*)url withContactRemoteKeyAndAddIt:(int)remoteKey
+{
+    UIImage *userImg = [self loadImageWithUrl:url];
+    
+    if(userImg)
+    {
+        //Add url and image to the object and add it to the Dictionary.
+        
+        UrlImage *urlImage = [[UrlImage alloc] initWithImage:userImg andUrl:url];
+        
+        [_contactsImages setObject:urlImage forKey:[NSNumber numberWithInteger:remoteKey]];
+    }
 }
 
 -(UIImage*)loadImageWithUrl:(NSString*)url
@@ -138,10 +205,11 @@ static GLPProfileLoader *instance = nil;
 }
 
 
-
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey
 {
-    UIImage *currentImage = [_contactsImages objectForKey:[NSNumber numberWithInt:remoteKey]];
+    UrlImage *currentUrlImage = [_contactsImages objectForKey:[NSNumber numberWithInt:remoteKey]];
+    
+    UIImage *currentImage = currentUrlImage.img;
     
     return currentImage;
 }

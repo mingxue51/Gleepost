@@ -35,5 +35,8 @@
 
 +(GLPPost*)parsePostImageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts;
 
++(int)parseLikedPostNotification:(NSNotification*)notification withPostsArray:(NSArray *)posts;
+
++(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey withLiked:(BOOL)liked;
 
 @end

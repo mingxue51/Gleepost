@@ -61,10 +61,10 @@
 //            self.passwordTextField.text = @"TestingPass";
 //            self.nameTextField.text = @"Silouanos N";
 //            self.passwordTextField.text = @"1234";
-            self.nameTextField.text = @"Fingolfin";
+            self.nameTextField.text = @"fingolfin@leeds.ac.uk";
             self.passwordTextField.text = @"ihatemorgoth";
         } else {
-            self.nameTextField.text = @"TestingUser";
+            self.nameTextField.text = @"sc11pm@leeds.ac.uk";
             self.passwordTextField.text = @"TestingPass";
 //            self.nameTextField.text = @"TestingUser";
 //            self.passwordTextField.text = @"TestingPass";

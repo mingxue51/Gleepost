@@ -8,13 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface GLPProfileLoader : NSObject
+
+
 
 + (GLPProfileLoader *)sharedInstance;
 
 -(void)loadUserData;
 -(NSArray*)userData;
 -(void)loadContactsImages:(NSArray*)contacts;
+-(void)refreshContactsImages:(NSArray*)contacts;
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey;
 
 @end

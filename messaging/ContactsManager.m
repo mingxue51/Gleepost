@@ -70,7 +70,6 @@ static ContactsManager *instance = nil;
  */
 -(void)refreshContacts
 {
-    
     [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
         
         //Store contacts into an array.
@@ -81,9 +80,6 @@ static ContactsManager *instance = nil;
         {
             //Store contacts into an array.
             self.contacts = contacts;
-            
-            //Load contacts' images.
-            [[GLPProfileLoader sharedInstance] loadContactsImages:contacts];
             
             [GLPContactDao deleteTable];
             
@@ -276,7 +272,7 @@ static ContactsManager *instance = nil;
 
 
 + (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback
-{
+{    
     NSArray *localEntities = [GLPContactDao loadContacts];
     localCallback(localEntities);
     
@@ -289,9 +285,11 @@ static ContactsManager *instance = nil;
             return;
         }
         
+        //Refresh contacts' images in case a contact has new profile image.
+        [[GLPProfileLoader sharedInstance] refreshContactsImages:serverContacts];
 
-            //Store contacts into an array.
         
+            //Store contacts into an array.
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
                 [GLPContactDao deleteTableWithDb:db];
