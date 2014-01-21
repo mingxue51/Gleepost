@@ -13,11 +13,17 @@
 
 + (GLPLiveConversationsManager *)sharedInstance;
 
+// conversations
 - (void)loadConversations;
-- (void)markAsNotSynchronizedWithRemote;
-
+- (NSArray *)conversations;
 - (int)conversationsCount;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
+
+- (void)markAsNotSynchronizedWithRemote;
+
+
+
+
 - (void)loadConversationWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 - (void)updateConversation:(GLPConversation *)conversation;
 

@@ -70,6 +70,9 @@ static GLPLiveConversationsManager *instance = nil;
             
             _conversations = [NSMutableArray arrayWithArray:conversations];
             _isSynchronizedWithRemote = YES;
+            
+            GLPConversation *c = _conversations[0];
+            DDLogInfo(@"LOAD conv %@", c.title);
         });
     }];
 }
@@ -96,6 +99,19 @@ static GLPLiveConversationsManager *instance = nil;
     return conversation;
 }
 
+- (NSArray *)conversations
+{
+    __block NSArray *conversations;
+    dispatch_sync(_queue, ^{
+        conversations = [_conversations copy];
+    });
+    
+    GLPConversation *c = conversations[0];
+    DDLogInfo(@"GET conv %@", c.title);
+    
+    return conversations;
+}
+
 - (void)loadConversationWithCallback:(void (^)(BOOL success, NSArray *conversations))callback
 {
     
@@ -119,9 +135,9 @@ static GLPLiveConversationsManager *instance = nil;
 {
     __block int res = 0;
     
-    [self runOnConversationQueue:^{
+    dispatch_sync(_queue, ^{
         res = _conversations.count;
-    }];
+    });
     
     return res;
 }

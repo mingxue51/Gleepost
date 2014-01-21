@@ -23,31 +23,25 @@
 
 @interface MessagesViewController ()
 
-@property (strong, nonatomic) NSMutableArray *conversations;
 @property (strong, nonatomic) GLPConversation *selectedConversation;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
-//New approach.
 @property (strong, nonatomic) NSMutableArray *sections;
-@property (strong, nonatomic) NSMutableDictionary *categorisedConversations;
-
-@property (strong, nonatomic) NSMutableArray *liveConversations;
+@property (strong, nonatomic) NSMutableArray *conversations;
+@property (strong, nonatomic) NSArray *liveConversations;
 
 // reload conversations when user comes back from chat view, in order to update last message and last update
 @property (assign, nonatomic) BOOL needsReloadConversations;
-
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
-
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
-
 @property (strong, nonatomic) UITabBarItem *messagesTabbarItem;
 
 @end
 
+
 @implementation MessagesViewController
 
-NSString *const LIVE_CHATS_STR = @"Live chats";
-NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
+@synthesize liveConversations=_liveConversations;
 
 
 - (void)viewDidLoad
@@ -79,16 +73,13 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.needsReloadConversations = NO;
     
-    //NEW APPROACH.
-    self.categorisedConversations = [[NSMutableDictionary alloc] init];
-    
-    //Initialise two sections: Random Chats and Messages from Contacts.
-    self.sections = [[NSMutableArray alloc] init];
-    [self addSectionWithName:LIVE_CHATS_STR];
+    self.sections = [[NSMutableArray alloc] initWithObjects:@"Live chats", @"Contact chats", nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
@@ -97,54 +88,36 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     if(self.needsReloadConversations) {
         [self reloadLocalConversations];
     }
+    
+    [self loadLiveConversations];
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar2"] forBarMetrics:UIBarMetricsDefault];
-    
-//    UIImage *image = [UIImage imageNamed:@"navigationbar2"];
-//    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
-//        [self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-//    } else {
-//        [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-//    }
-    [self loadLiveConversations];
-    
-    [self showReadyConversations:[[GLPMessagesLoader sharedInstance]getConversations]];
-    
-    //[self loadConversations];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:@"GLPNewMessage" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLiveConversations:) name:@"GLPPostUpdated" object:nil];
-
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateConversationsFromNotification:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+    
+    
+    [self loadConversations];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewMessage" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
 
     // reload the local conversations next time the VC appears
     self.needsReloadConversations = YES;
     
-    
-
-    
+    [super viewDidDisappear:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-
     [AppearanceHelper setUnselectedColourForTabbarItem:self.messagesTabbarItem];
-    
-
     
     [super viewWillDisappear:animated];
 }
@@ -233,10 +206,6 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
             [self createRefreshIfNeed];
             self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             
-            //ADDED NEW APPROACH.
-            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
-
-            
             [self showConversations:conversations];
         }
     } remoteCallback:^(BOOL success, NSArray *conversations) {
@@ -245,9 +214,6 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
             self.loadingCellStatus = kGLPLoadingCellStatusFinished;
             [self createRefreshIfNeed];
             self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-            
-            //ADDED NEW APPROACH.
-            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
             
             [self showConversations: conversations];
         } else {
@@ -264,33 +230,32 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     }];
 }
 
--(void)showReadyConversations:(NSArray*)conversations
+- (void)loadLiveConversations
 {
-    // hide loading cell and add refresh control
-    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-    [self createRefreshIfNeed];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _liveConversations = [[GLPLiveConversationsManager sharedInstance] conversations];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     
-    //ADDED NEW APPROACH.
-    [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
-    
-    NSLog(@"Categorised Conversations: %@",self.categorisedConversations);
-    
-    [self showConversations:conversations];
 }
+
+//-(void)showReadyConversations:(NSArray*)conversations
+//{
+//    // hide loading cell and add refresh control
+//    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+//    [self createRefreshIfNeed];
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+//    
+//    //ADDED NEW APPROACH.
+//    [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:1]];
+//    
+//    NSLog(@"Categorised Conversations: %@",self.categorisedConversations);
+//    
+//    [self showConversations:conversations];
+//}
 
 - (void)showConversations:(NSArray *)conversations
 {
     self.conversations = [conversations mutableCopy];
-    
-    if(self.conversations.count != 0)
-    {
-        //Add new section.
-        [self addSectionWithName:CONTACTS_CHATS_STR];
-    }
-
-    
-    [self.tableView reloadData];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)reloadLocalConversations
@@ -299,61 +264,17 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
     [self showConversations:localConversations];
 }
 
--(void)loadLiveConversations
-{
-    DDLogInfo(@"Load live conversations");
-    
-    [[GLPLiveConversationsManager sharedInstance] loadConversationWithCallback:^(BOOL success, NSArray *conversations) {
-        DDLogInfo(@"Load live conversations callback with count: %d", conversations.count);
-        
-        if(!success || conversations.count == 0) {
-            return;
-        }
-        
-        [self addSectionWithName:LIVE_CHATS_STR];
-        [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
-        [self.tableView reloadData];
-    }];
-}
-
--(void)addSectionWithName:(NSString*)section
-{
-    for(NSString* s in self.sections)
-    {
-        if([section isEqualToString:s])
-        {
-            return;
-        }
-    }
-    
-    if([section isEqualToString:LIVE_CHATS_STR])
-    {
-        [self.sections setObject:section atIndexedSubscript:0];
-//        [self.sections insertObject:section atIndex:0];
-    }
-    else
-    {
-        [self.sections addObject:section];
-        //[self.sections insertObject:section atIndex:1];
-    }
-    
-    NSLog(@"SECTIONS: %@",self.sections);
-}
 
 #pragma mark - Notifications
 
 - (void)updateConversationsFromNotification:(NSNotification *)notification
 {
-    [self reloadLocalConversations];
-}
-
--(void)updateLiveConversations:(NSNotification *)notification
-{
-    NSDictionary *dict = [notification userInfo];
-    
-    NSArray *array = [dict objectForKey:@"Conversations"];
-    
-    NSLog(@"LIVE CHATS ARRAY RECEIVED: %@",array);
+    GLPMessage *message = [notification userInfo][@"message"];
+    if(message.conversation.isLive) {
+        [self loadLiveConversations];
+    } else {
+        [self reloadLocalConversations];
+    }
 }
 
 
@@ -394,50 +315,37 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // loading cell or conversations
-    //return (self.loadingCellStatus == kGLPLoadingCellStatusFinished) ? self.conversations.count : 1;
-    
-    if(self.loadingCellStatus == kGLPLoadingCellStatusFinished)
-    {
-        if(section == 0)
-        {
-            //Change to number of live chats.
-            return [[GLPLiveConversationsManager sharedInstance] conversationsCount];
-        }
-        else
-        {
-            return self.conversations.count;
-        }
+    if(section == 0) {
+        return [[GLPLiveConversationsManager sharedInstance] conversationsCount];
     }
     
-    
-    return 1;
-
-    
+    // loading cell or conversations
+    return (self.loadingCellStatus == kGLPLoadingCellStatusFinished) ? self.conversations.count : 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // loading cell in loading or error states
-    if(self.loadingCellStatus != kGLPLoadingCellStatusFinished) {
-        GLPLoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
-        cell.delegate = self;
-        [cell.loadMoreButton setTitle:@"Tap to load conversations" forState:UIControlStateNormal];
-        [cell updateWithStatus:self.loadingCellStatus];
-        return cell;
+    GLPConversation *conversation;
+    
+    if(indexPath.section == 0) {
+        conversation = _liveConversations[indexPath.row];
+        DDLogInfo(@"live conv with user %@", conversation.title);
+    } else {
+        // loading cell in loading or error states
+        if(self.loadingCellStatus != kGLPLoadingCellStatusFinished) {
+            GLPLoadingCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
+            cell.delegate = self;
+            [cell.loadMoreButton setTitle:@"Tap to load conversations" forState:UIControlStateNormal];
+            [cell updateWithStatus:self.loadingCellStatus];
+            return cell;
+        }
+        
+        conversation = self.conversations[indexPath.row];
     }
     
+    
+    
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    //NEW APPROACH.
-    //Take the array of appropriate section.
-    NSArray *conversations = [self.categorisedConversations objectForKey:[NSNumber numberWithInt:indexPath.section]];
-    
-    GLPConversation *conversation = [conversations objectAtIndex:indexPath.row];
-
-    
-    
-//    GLPConversation *conversation = self.conversations[indexPath.row];
     
     cell.userName.text = conversation.title;
     cell.content.text = [conversation getLastMessageOrDefault];
@@ -454,14 +362,7 @@ NSString *const CONTACTS_CHATS_STR = @"Contacts chats";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-//    self.selectedConversation = self.conversations[indexPath.row];
-    
-    //NEW APPROACH.
-    NSArray *conversations = [self.categorisedConversations objectForKey:[NSNumber numberWithInt:indexPath.section]];
-    
-    GLPConversation *conversation = [conversations objectAtIndex:indexPath.row];
-    
-    self.selectedConversation = conversation;
+    self.selectedConversation = (indexPath.section == 0) ? _liveConversations[indexPath.row] : self.conversations[indexPath.row];
     
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }
