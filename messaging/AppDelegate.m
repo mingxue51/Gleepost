@@ -61,8 +61,9 @@ static NSString * const kCustomURLHost      = @"verify";
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     DDLogInfo(@"Application will become inactive");
-    [[WebClient sharedInstance] stopWebSocket];
-    [[GLPNetworkManager sharedInstance] stopNetworkOperations];
+    if([[SessionManager sharedInstance] isLogged]) {
+        [[GLPNetworkManager sharedInstance] stopNetworkOperations];
+    }
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -84,8 +85,7 @@ static NSString * const kCustomURLHost      = @"verify";
     DDLogInfo(@"Application active");
     
     if([[SessionManager sharedInstance] isLogged]) {
-        [[WebClient sharedInstance] startWebSocket];
-        [[GLPNetworkManager sharedInstance] startNetworkOperations];
+        [[GLPNetworkManager sharedInstance] restartNetworkOperations];
     }
     
     // activate or reactivate web client
@@ -118,6 +118,7 @@ static NSString * const kCustomURLHost      = @"verify";
 {
 	NSLog(@"Fail to register to push on Apple servers, error: %@", error);
 }
+
 
 # pragma mark - Handle custom URL Scheme (gleepost://)
 

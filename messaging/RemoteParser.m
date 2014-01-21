@@ -135,6 +135,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return conversations;
 }
 
++ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations
+{
+    NSMutableArray *conversations = [NSMutableArray array];
+    
+    for(id jsonConversation in jsonConversations) {
+        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+    }
+    
+    return conversations;
+}
+
+
 #pragma mark - Live conversations
 
 + (GLPLiveConversation *)parseLiveConversationFromJson:(NSDictionary *)json

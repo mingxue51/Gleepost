@@ -8,15 +8,27 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GLPNetworkManager : NSObject
-
 typedef enum {
     kGLPNetworkManagerStateStarted,
-    kGLPNetworkManagerStateStopped
+    kGLPNetworkManagerStateStopped,
+    kGLPNetworkManagerStateNeverStarted
 } GLPNetworkManagerState;
+
+typedef enum {
+    kGLPNetworkStatusOnline,
+    kGLPNetworkStatusOffline,
+    kGLPNetworkStatusUndefined
+} GLPNetworkStatus;
+
+
+@interface GLPNetworkManager : NSObject
+
+@property (assign, nonatomic, readonly) GLPNetworkStatus networkStatus;
 
 + (GLPNetworkManager *)sharedInstance;
 - (void)startNetworkOperations;
+- (void)restartNetworkOperations;
 - (void)stopNetworkOperations;
+- (void)webSocketDidConnect;
 
 @end

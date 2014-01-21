@@ -359,6 +359,7 @@
 		807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D0E180AF0F6003D67E6 /* GLPUser.m */; };
 		807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C4D10180AF0F6003D67E6 /* WebEntity.m */; };
 		807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807C4D1B180B2D15003D67E6 /* SystemConfiguration.framework */; };
+		807D5EBD188DEE8700673F01 /* GLPWebSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 807D5EBC188DEE8700673F01 /* GLPWebSocketClient.m */; };
 		8087E42D180EC02E00938264 /* _Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E426180EC02E00938264 /* _Comment.m */; };
 		8087E42E180EC02E00938264 /* _Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E428180EC02E00938264 /* _Post.m */; };
 		8087E42F180EC02E00938264 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8087E42A180EC02E00938264 /* Comment.m */; };
@@ -949,6 +950,8 @@
 		807C4D0F180AF0F6003D67E6 /* WebEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebEntity.h; sourceTree = "<group>"; };
 		807C4D10180AF0F6003D67E6 /* WebEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebEntity.m; sourceTree = "<group>"; };
 		807C4D1B180B2D15003D67E6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		807D5EBB188DEE8700673F01 /* GLPWebSocketClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWebSocketClient.h; sourceTree = "<group>"; };
+		807D5EBC188DEE8700673F01 /* GLPWebSocketClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPWebSocketClient.m; sourceTree = "<group>"; };
 		8087E425180EC02E00938264 /* _Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Comment.h; sourceTree = "<group>"; };
 		8087E426180EC02E00938264 /* _Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _Comment.m; sourceTree = "<group>"; };
 		8087E427180EC02E00938264 /* _Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _Post.h; sourceTree = "<group>"; };
@@ -2235,6 +2238,8 @@
 			children = (
 				80AB894717C26EB50053E784 /* WebClient.h */,
 				80AB894817C26EB50053E784 /* WebClient.m */,
+				807D5EBB188DEE8700673F01 /* GLPWebSocketClient.h */,
+				807D5EBC188DEE8700673F01 /* GLPWebSocketClient.m */,
 			);
 			name = Webservice;
 			sourceTree = "<group>";
@@ -3056,6 +3061,7 @@
 				58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,
 				58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */,
+				807D5EBD188DEE8700673F01 /* GLPWebSocketClient.m in Sources */,
 				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,

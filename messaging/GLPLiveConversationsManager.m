@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSMutableArray *conversations;
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (assign, nonatomic) BOOL successfullyLoaded;
+@property (assign, nonatomic) BOOL isSynchronizedWithRemote;
 
 @end
 
@@ -24,6 +25,7 @@
 @synthesize conversations=_conversations;
 @synthesize queue=_queue;
 @synthesize successfullyLoaded=_successfullyLoaded;
+@synthesize isSynchronizedWithRemote=_isSynchronizedWithRemote;
 
 static GLPLiveConversationsManager *instance = nil;
 
@@ -47,43 +49,36 @@ static GLPLiveConversationsManager *instance = nil;
     _conversations = [NSMutableArray array];
     _queue = dispatch_queue_create("com.gleepost.queue.liveconversation", DISPATCH_QUEUE_SERIAL);
     _successfullyLoaded = NO;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
+    _isSynchronizedWithRemote = NO;
     
     return self;
-}
-
-- (void)updateNetworkStatus:(NSNotification *)notification
-{
-    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    DDLogInfo(@"Live conversations manager network status update: %d", isNetwork);
-    
-    if(isNetwork) {
-        [self loadConversations];
-    } else {
-
-    }
 }
 
 - (void)loadConversations
 {
     DDLogInfo(@"Load live conversations");
     
-    [[WebClient sharedInstance] getConversationsFilterByLive:YES withCallbackBlock:^(BOOL success, NSArray *conversations) {
-        if(!success) {
-            DDLogError(@"Cannot load live conversations");
-            _successfullyLoaded = NO;
-            return;
-        }
-        
-        DDLogInfo(@"Load live conversations sucess, loaded conversations: %d", conversations.count);
-        
+    [[WebClient sharedInstance] getLiveConversationsWithCallbackBlock:^(BOOL success, NSArray *conversations) {
         dispatch_async(_queue, ^{
+            if(!success) {
+                DDLogError(@"Cannot load live conversations");
+                _isSynchronizedWithRemote = NO;
+                return;
+            }
+            
+            DDLogInfo(@"Load live conversations sucess, loaded conversations: %d", conversations.count);
+            
             _conversations = [NSMutableArray arrayWithArray:conversations];
+            _isSynchronizedWithRemote = YES;
         });
-        
-        _successfullyLoaded = YES;
     }];
+}
+
+- (void)markAsNotSynchronizedWithRemote
+{
+    dispatch_async(_queue, ^{
+        _isSynchronizedWithRemote = NO;
+    });
 }
 
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey
@@ -118,46 +113,6 @@ static GLPLiveConversationsManager *instance = nil;
         callback(YES, conversations);
     }];
 }
-
-//- (NSArray *)getConversations
-//{
-//    __block NSArray *res = nil;
-//    
-//    [[WebClient sharedInstance] getConversationsFilterByLive:YES withCallbackBlock:^(BOOL success, NSArray *conversations) {
-//        if(!success) {
-//            [self runOnConversationQueue:^{
-//                res = [_conversations copy];
-//            }];
-//            return;
-//        }
-//        
-//        callback(YES, conversations);
-//    }];
-//    
-//    [ConversationManager loadLiveConversationsWithCallback:^(BOOL success, NSArray *conversations) {
-//        
-//        if(!success) {
-//            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
-//            return;
-//        }
-//        
-//        if(conversations.count != 0)
-//        {
-//            //Add live chats' section in the section array.
-//            //            [self addSectionWithName:LIVE_CHATS_STR];
-//            
-//            //            [GLPLiveConversationsManager sharedInstance].conversations = [conversations mutableCopy];
-//            [self.categorisedConversations setObject:[conversations mutableCopy] forKey:[NSNumber numberWithInt:0]];
-//            [self.tableView reloadData];
-//        }
-//        
-//        
-//    }];
-//
-//
-//    
-//    return res;
-//}
 
 
 - (int)conversationsCount

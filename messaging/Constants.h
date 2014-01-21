@@ -25,6 +25,10 @@
 
 #define GLPNOTIFICATION_NEW_NOTIFICATION            @"GLPNewNotification"
 #define GLPNOTIFICATION_NEW_MESSAGE                 @"GLPNewMessage"
+#define GLPNOTIFICATION_NETWORK_UPDATE              @"GLPNetworkStatusUpdate"
+
+#define GLP_WEBSERVICE_VERSION                      @"0.25"
+#define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
 // DDLog
 #ifdef ENV_DEBUG

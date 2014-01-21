@@ -32,15 +32,13 @@
 @synthesize isNetworkAvailable;
 @synthesize webSocket=_webSocket;
 
-static NSString * const kWebserviceBaseUrl = @"https://gleepost.com/api/v0.25/";
-
 static WebClient *instance = nil;
 
 + (WebClient *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[WebClient alloc] initWithBaseURL:[NSURL URLWithString:kWebserviceBaseUrl]];
+        instance = [[WebClient alloc] initWithBaseURL:[NSURL URLWithString:GLP_BASE_URL]];
         instance.defaultSSLPinningMode = AFSSLPinningModeCertificate;
     });
     
@@ -99,13 +97,6 @@ static WebClient *instance = nil;
         
         // spread the notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNetworkStatusUpdate" object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:self.isNetworkAvailable] forKey:@"status"]];
-        
-        // start / stop the websocket accordly
-        if(available) {
-            [self startWebSocket];
-        } else {
-            [self stopWebSocket];
-        }
         
         NSLog(@"Network status changed, currently available: %d", self.isNetworkAvailable);
     }
@@ -425,25 +416,36 @@ static WebClient *instance = nil;
 
 #pragma mark - Live conversations
 
-/**
- Find all the live conversations and return only the last three.
- 
- */
-
 - (void)getLiveConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
-    [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:responseObject];
-        
-        //Choose the last three conversations and sort them by expiration date.
-        conversations = [RemoteParser orderAndGetLastThreeConversations:conversations];
-        
+    [self getPath:@"conversations/live" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
         callbackBlock(YES, conversations);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];
 }
+
+
+/**
+ Find all the live conversations and return only the last three.
+ 
+ */
+
+//- (void)getLiveConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
+//{
+//    [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:responseObject];
+//        
+//        //Choose the last three conversations and sort them by expiration date.
+//        conversations = [RemoteParser orderAndGetLastThreeConversations:conversations];
+//        
+//        callbackBlock(YES, conversations);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
 
 - (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
@@ -845,7 +847,7 @@ static WebClient *instance = nil;
 
 
     
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kWebserviceBaseUrl]];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:GLP_BASE_URL]];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         
         [formData appendPartWithFileData:image name:@"image" fileName:[NSString stringWithFormat:@"user_id_%d_image.png",userRemoteKey] mimeType:@"image/png"];
@@ -961,67 +963,6 @@ static WebClient *instance = nil;
     callback(YES, json);
 }
 
-
-#pragma mark - Web socket
-
-- (void)startWebSocket
-{
-    DDLogInfo(@"Start web socket");
-    
-    if(_webSocket && (_webSocket.readyState == SR_CONNECTING || _webSocket.readyState == SR_OPEN)) {
-        DDLogInfo(@"Start web socket cannot start because web socket is already in opening or opened, abort");
-        return;
-    }
-    
-    NSString *url = [NSString stringWithFormat:@"%@ws?id=%d&token=%@", kWebserviceBaseUrl, self.sessionManager.user.remoteKey, self.sessionManager.token];
-    NSLog(@"Init web socket with url: %@", url);
-    
-    _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:url]];
-    _webSocket.delegate = self;
-    
-    [_webSocket open];
-}
-
-- (void)stopWebSocket
-{
-    DDLogInfo(@"Stop web socket");
-    
-    // web socket not yet initialized
-    if(!_webSocket) {
-        DDLogInfo(@"Stop web socket cannot stop because web socket is nil, abort");
-        return;
-    }
-    
-    if(_webSocket.readyState == SR_CLOSING || _webSocket.readyState == SR_CLOSED) {
-        DDLogInfo(@"Stop web socket cannot stop because web socket already in closing or closed, abort");
-        _webSocket = nil;
-        return;
-    }
-    
-    [_webSocket close];
-    _webSocket = nil;
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
-{
-    NSLog(@"Web socket received response: %@", response);
-    [[GLPWebSocketMessageProcessor sharedInstance] processMessage:response];
-}
-
-- (void)webSocketDidOpen:(SRWebSocket *)webSocket
-{
-    NSLog(@"Web socket did open");
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
-{
-    NSLog(@"Web socket did fail with error: %@", error);
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
-{
-    NSLog(@"Web socket did close with code: %d, reason: %@, was clean: %d", code, reason, wasClean);
-}
 
 #pragma mark - Invite Message
 - (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback {

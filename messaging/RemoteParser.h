@@ -24,6 +24,7 @@
 // conversations
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;
 + (NSArray *)parseConversationsFilterByLive:(BOOL)live fromJson:(NSArray *)jsonConversations;
++ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
 //+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
 //+ (NSArray *)parseLiveConversationsFromJson:(NSArray *)jsonConversations;
 +(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations;

@@ -16,7 +16,9 @@
 #import "GLPNotification.h"
 #import "SRWebSocket.h"
 
-@interface WebClient : AFHTTPClient <SRWebSocketDelegate>
+@interface WebClient : AFHTTPClient
+
+extern NSString * const kWebserviceBaseUrl;
 
 @property (assign, nonatomic) BOOL isNetworkAvailable;
 
@@ -43,6 +45,9 @@
 - (void)getConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
 - (void)synchronousGetConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
 - (void)synchronousGetConversationsFilterByLive:(BOOL)live withCallback:(void (^)(BOOL success, NSArray *conversations))callback;
+
+// live conversations
+- (void)getLiveConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 
 - (void)getLastMessagesForConversation:(GLPConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 - (void)getPreviousMessagesBefore:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
@@ -78,10 +83,6 @@
 // notifications
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback;
-
-// websocket
-- (void)startWebSocket;
-- (void)stopWebSocket;
 
 // invite
 - (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback;

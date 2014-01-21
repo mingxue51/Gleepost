@@ -7,10 +7,13 @@
 //
 
 #import "GLPNetworkManager.h"
+#import "GLPWebSocketClient.h"
+#import "GLPLiveConversationsManager.h"
 
 @interface GLPNetworkManager()
 
 @property (assign, nonatomic) GLPNetworkManagerState state;
+@property (assign, nonatomic) GLPNetworkStatus networkStatus;
 
 @end
 
@@ -18,6 +21,7 @@
 @implementation GLPNetworkManager
 
 @synthesize state=_state;
+@synthesize networkStatus=_networkStatus;
 
 static GLPNetworkManager *instance = nil;
 
@@ -38,9 +42,10 @@ static GLPNetworkManager *instance = nil;
         return nil;
     }
     
-    _state = kGLPNetworkManagerStateStopped;
+    _state = kGLPNetworkManagerStateNeverStarted;
+    _networkStatus = kGLPNetworkStatusUndefined;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     
     return self;
 }
@@ -51,8 +56,10 @@ static GLPNetworkManager *instance = nil;
     NSLog(@"Network manager got network status update, is online: %d", isNetwork);
     
     if(isNetwork) {
+        _networkStatus = kGLPNetworkStatusOnline;
         [self startNetworkOperations];
     } else {
+        _networkStatus = kGLPNetworkStatusOffline;
         [self stopNetworkOperations];
     }
 }
@@ -65,6 +72,19 @@ static GLPNetworkManager *instance = nil;
     }
     
     _state = kGLPNetworkManagerStateStarted;
+    
+    // start web socket, then wait for its connection before starting next requests
+    [[GLPWebSocketClient sharedInstance] startWebSocket];
+}
+
+- (void)restartNetworkOperations
+{
+    if(_state == kGLPNetworkManagerStateNeverStarted) {
+        DDLogInfo(@"Cannot restart network operations, never started");
+        return;
+    }
+    
+    [self startNetworkOperations];
 }
 
 - (void)stopNetworkOperations
@@ -75,6 +95,15 @@ static GLPNetworkManager *instance = nil;
     }
     
     _state = kGLPNetworkManagerStateStopped;
+    
+    [[GLPWebSocketClient sharedInstance] stopWebSocket];
+    [[GLPLiveConversationsManager sharedInstance] markAsNotSynchronizedWithRemote];
+}
+
+- (void)webSocketDidConnect
+{
+    // init the live conversations
+    [[GLPLiveConversationsManager sharedInstance] loadConversations];
 }
 
 

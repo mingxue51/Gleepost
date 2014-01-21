@@ -111,14 +111,12 @@
 + (void)performAfterLoginForUser:(GLPUser *)user
 {
     [[GLPNetworkManager sharedInstance] startNetworkOperations];
-    [[WebClient sharedInstance] startWebSocket];
-    
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }
 
 + (void)logout
 {
-    [[WebClient sharedInstance] stopWebSocket];
+    [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
 
     [[SessionManager sharedInstance] cleanSession];
