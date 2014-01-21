@@ -792,7 +792,6 @@ static bool firstTime = YES;
     }];
 }
 
-
 - (IBAction)tableViewClicked:(id)sender
 {
     NSLog(@"Table View Touched");
@@ -832,12 +831,6 @@ static bool firstTime = YES;
             self.commentGrowingTextView.text = @"";
             
             //Notify timeline view controller.
-//            NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.post.remoteKey],@"RemoteKey", [NSNumber numberWithInt:self.post.commentsCount], @"NumberOfComments", nil];
-//            
-//            
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:dataDict];
-            
-            
             [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
             
         } else {

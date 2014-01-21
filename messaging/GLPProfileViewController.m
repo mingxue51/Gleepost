@@ -33,6 +33,8 @@
 #import "GLPProfileLoader.h"
 #import "GLPUserDao.h"
 #import "GLPInvitationManager.h"
+#import "ViewPostImageViewController.h"
+#import "TransitionDelegateViewImage.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -65,6 +67,11 @@
 @property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
 @property (assign, nonatomic) BOOL isBusy;
+
+@property (assign, nonatomic) BOOL commentCreated;
+
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+
 
 @end
 
@@ -123,7 +130,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
 
     
-    [self.tableView reloadData];
 
 }
 
@@ -166,7 +172,7 @@
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
     [btnBack setFrame:CGRectMake(0, 0, 30, 30)];
     
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+//    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
 //    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
 //    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
@@ -264,6 +270,9 @@
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
+    
+    //Used for viewing post image.
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
 }
 
@@ -332,7 +341,7 @@
 -(void)updatePost:(NSNotification*)notification
 {
 
-    int index = [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
+    [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
     
     if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
     {
@@ -343,10 +352,9 @@
 
 -(void)updateLikedPost:(NSNotification*)notification
 {
-    DDLogDebug(@"GLPProfileViewController : updateLikedPost %@", notification);
+    [GLPPostNotificationHelper parseLikedPostNotification:notification withPostsArray:self.posts];
+    [self.tableView reloadData];
 
-    int index = [GLPPostNotificationHelper parseLikedPostNotification:notification withPostsArray:self.posts];
-    
 }
 
 #pragma mark - Selectors
@@ -704,8 +712,7 @@
                 }
                 
                 //Set this class as delegate.
-                //TODO: Fix that.
-                //postViewCell.delegate = self;
+                postViewCell.delegate = self;
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
@@ -715,6 +722,28 @@
         }
         
     }
+    
+    //TODO: See this again.
+    return nil;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //TODO: implement manual reloading
+    if(indexPath.row-2 == self.posts.count) {
+        return;
+    }
+    else if(indexPath.row < 2)
+    {
+        return;
+    }
+    
+    self.selectedPost = self.posts[indexPath.row-2];
+    //    self.selectedIndex = indexPath.row;
+//    self.postIndexToReload = indexPath.row-2;
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -749,6 +778,59 @@
     }
     
     return 70.0f;
+}
+
+#pragma mark - View image delegate
+
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = postImage;
+    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+#pragma mark - New comment delegate
+
+-(void)setPreviousViewToNavigationBar
+{
+    [self.notificationView setHidden:NO];
+}
+
+-(void)setPreviousNavigationBarName
+{
+    [self.navigationItem setTitle:@"Me"];
+}
+
+-(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
+{
+    [self.navigationItem setTitle:newTitle];
+    [self.notificationView setHidden:YES];
+}
+
+-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
+{
+    self.selectedPost = self.posts[postIndex-2];
+    
+    //    self.postIndexToReload = postIndex;
+    
+    ++self.selectedPost.commentsCount;
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+    self.commentCreated = YES;
+    
+    //Notify GLPProfileViewController about changes.
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.selectedPost.remoteKey numberOfLikes:self.selectedPost.likes andNumberOfComments:self.selectedPost.commentsCount];
+    
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 #pragma mark - Table view refresh methods
@@ -786,6 +868,7 @@
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
         ViewPostViewController *vc = segue.destinationViewController;
+        vc.commentJustCreated = self.commentCreated;
         vc.post = self.selectedPost;
         vc.isViewPostNotifications = YES;
         self.selectedPost = nil;
@@ -813,9 +896,6 @@
     {
         //Hide tabbar.
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        LoginRegisterViewController *loginRegisterViewController = segue.destinationViewController;
-        
         
     }
 }

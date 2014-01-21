@@ -67,8 +67,6 @@
         
         //Find comment text view height.
         float textViewHeight = screenSizeVar.size.height - (216.0 + 70.0 + 50.0);
-        NSLog(@"Screen Height: %f",screenSizeVar.size.height);
-        NSLog(@"textViewHeight: %f",textViewHeight);
         
         //Add text view.
         self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 70.0f, 300, textViewHeight)];
@@ -410,38 +408,30 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    NSLog(@"textViewDidBeginEditing");
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSLog(@"textViewDidChange");
 
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
-    NSLog(@"textViewDidChangeSelection");
 
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    NSLog(@"textViewDidEndEditing");
 
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    NSLog(@"textViewShouldBeginEditing");
-
     return YES;
 }
 
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    NSLog(@"textViewShouldEndEditing");
-
     return YES;
 }
 

@@ -10,8 +10,10 @@
 #import "GLPPost.h"
 #import "NSObject_ProfileEnums.h"
 #import "FDTakeController.h"
+#import "NewCommentDelegate.h"
+#import "ViewImageDelegate.h"
 
-@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate>
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate>
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;

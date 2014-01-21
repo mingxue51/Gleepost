@@ -24,10 +24,10 @@
 @property (strong, nonatomic) UITextView *commentTextView;
 @property (assign, nonatomic) int postIndex;
 
-+ (id)loadingViewInView:(UIView *)aSuperview;
-- (void)removeView;
--(void) cancelPushed: (id)sender;
-- (void)keyboardWillShow:(NSNotification *)note;
++(id)loadingViewInView:(UIView *)aSuperview;
+-(void)removeView;
+-(void) cancelPushed:(id)sender;
+-(void)keyboardWillShow:(NSNotification *)note;
 
 
 @end

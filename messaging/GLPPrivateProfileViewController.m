@@ -21,7 +21,8 @@
 #import "AppearanceHelper.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPPostImageLoader.h"
-
+#import "ViewPostViewController.h"
+#import "GLPPostNotificationHelper.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -41,6 +42,14 @@
 
 @property (assign, nonatomic) BOOL contact;
 
+//Used when there is new comment.
+@property (assign, nonatomic) BOOL commentCreated;
+
+@property (strong, nonatomic) GLPPost *selectedPost;
+
+@property (assign, nonatomic) int postIndexToReload;
+
+
 @end
 
 @implementation GLPPrivateProfileViewController
@@ -59,6 +68,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.allowsSelectionDuringEditing=YES;
     
     // [self loadPosts];
     
@@ -453,7 +464,7 @@
             if(self.posts.count != 0)
             {
                 GLPPost *post = self.posts[indexPath.row-2];
-                
+
                 if([post imagePost])
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
@@ -464,8 +475,7 @@
                 }
                 
                 //Set this class as delegate.
-                //TODO: Fix that.
-                //postViewCell.delegate = self;
+                postViewCell.delegate = self;
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
@@ -484,6 +494,27 @@
         
     }
     
+    //TODO: See if this is right.
+    return nil;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //TODO: implement manual reloading
+    if(indexPath.row-2 == self.posts.count) {
+        return;
+    }
+    else if(indexPath.row < 2)
+    {
+        return;
+    }
+    
+    self.selectedPost = self.posts[indexPath.row-2];
+//    self.selectedIndex = indexPath.row;
+    self.postIndexToReload = indexPath.row-2;
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 
@@ -527,30 +558,6 @@
 
 #pragma mark - Table view refresh methods
 
--(void)refreshCellViewWithIndex:(const NSUInteger)index
-{
-    
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
-}
-
--(void)refreshCells
-{
-    NSMutableArray *paths = [[NSMutableArray alloc] init];
-    
-    for(int i = 2; i<self.currentNumberOfRows; ++i)
-    {
-        [paths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-    }
-    
-//    [self.tableView beginUpdates];
-    
-    
-    
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithArray:paths.mutableCopy] withRowAnimation:UITableViewRowAnimationFade];
-//    [self.tableView endUpdates];
-}
 
 -(void)refreshFirstCell
 {
@@ -565,20 +572,82 @@
 {
     self.selectedTabStatus = selectedTab;
     
-    if(self.selectedTabStatus == kGLPMutual)
-    {
-    }
-    else
-    {
-        //[self loadAndSetUserDetails];
-    }
     [self.tableView reloadData];
-
-    
-    
-//    [self refreshCellViewWithIndex:2];
-//    [self.tableView reloadData];
 }
+
+#pragma mark - View image delegate
+
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = postImage;
+    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+#pragma mark - New comment delegate
+
+-(void)setPreviousViewToNavigationBar
+{
+    self.navigationItem.hidesBackButton = NO;
+
+}
+
+-(void)setPreviousNavigationBarName
+{
+    [self.navigationItem setTitle:self.profileUser.name];
+}
+
+-(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
+{
+    [self.navigationItem setTitle:newTitle];
+    self.navigationItem.hidesBackButton = YES;
+}
+
+-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
+{
+    self.selectedPost = self.posts[postIndex-2];
+    
+//    self.postIndexToReload = postIndex;
+    
+    ++self.selectedPost.commentsCount;
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+    self.commentCreated = YES;
+    
+    //Notify GLPProfileViewController about changes.
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.selectedPost.remoteKey numberOfLikes:self.selectedPost.likes andNumberOfComments:self.selectedPost.commentsCount];
+    
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"view post"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ViewPostViewController *vc = segue.destinationViewController;
+        /**
+         Forward data of the post the to the view. Or in future just forward the post id
+         in order to fetch it from the server.
+         */
+        
+        vc.commentJustCreated = self.commentCreated;
+        
+        vc.post = self.selectedPost;
+        
+    }
+}
+
 
 /*
 // Override to support conditional editing of the table view.

@@ -158,10 +158,11 @@ static BOOL likePushed;
     }
     
 
+    //TODO: Delete that.
     if(self.postIndexToReload!=-1)
     {
         //Refresh post cell in the table view with index.
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         
     }
     
@@ -244,6 +245,7 @@ static BOOL likePushed;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
 }
 
 
@@ -306,6 +308,12 @@ static BOOL likePushed;
         [self.tableView reloadData];
     }
 
+}
+
+-(void)updateLikedPost:(NSNotification*)notification
+{
+    [GLPPostNotificationHelper parseLikedPostNotification:notification withPostsArray:self.posts];
+    [self.tableView reloadData];
 }
 
 
@@ -449,6 +457,9 @@ static BOOL likePushed;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+
     
 }
 
@@ -1040,7 +1051,7 @@ static BOOL likePushed;
     PostCell *postCell;
     
     
-    //TODO: Add to Post datatype a boolean like.
+
     GLPPost *post = self.posts[indexPath.row];
     
     
@@ -1058,8 +1069,6 @@ static BOOL likePushed;
     }
     else
     {
-        
-        
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         
         postCell.imageAvailable = NO;
@@ -1195,6 +1204,23 @@ static BOOL likePushed;
 }
 
 
+#pragma mark - View image delegate
+
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = postImage;
+    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 
 #pragma mark - New comment delegate
 
@@ -1321,20 +1347,6 @@ static BOOL likePushed;
 //    [self presentViewController:vc animated:YES completion:nil];
 //    
 //}
-
--(void)viewPostImage:(UIImage*)postImage
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = postImage;
-    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    vc.modalPresentationStyle = UIModalPresentationCustom;
-    
-    [vc setTransitioningDelegate:self.transitionViewImageController];
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
-}
 
 
 /**

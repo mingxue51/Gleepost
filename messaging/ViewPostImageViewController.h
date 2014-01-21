@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewPostImageViewController : UIViewController
+@interface ViewPostImageViewController : UIViewController<UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) UIImage *image;
 
