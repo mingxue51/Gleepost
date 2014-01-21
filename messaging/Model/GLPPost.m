@@ -17,7 +17,7 @@
 @synthesize date;
 @synthesize author;
 @synthesize imagesUrls;
-@synthesize sendStatus=_sendStatus;
+@synthesize sendStatus=_sendStatus; 
 //@synthesize liked=_liked;
 
 - (id)init

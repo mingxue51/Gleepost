@@ -23,6 +23,7 @@
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;
 @property (assign, nonatomic) SendStatus sendStatus;
+@property (strong, nonatomic) NSArray *categories;
 
 -(BOOL) imagePost;
 

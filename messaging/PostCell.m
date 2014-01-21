@@ -17,7 +17,7 @@
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
-
+#import "GLPCategory.h"
 
 @interface PostCell()
 
@@ -161,7 +161,6 @@ static const float OneLineText = 16.0;
     }
     else
     {
-        
         [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
     }
 
@@ -172,8 +171,6 @@ static const float OneLineText = 16.0;
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
 
-    
-    
     //Add the user's name.
     [self.userName setText:postData.author.name];
     
@@ -182,9 +179,18 @@ static const float OneLineText = 16.0;
     //Add the post's time.
     [self.postTime setText:[currentDate timeAgo]];
     
+    //Temp categories string.
+    NSMutableString *categoriesStr = [NSMutableString string];
+    
+    for(GLPCategory *c in postData.categories)
+    {
+        [categoriesStr appendString:c.tag];
+    }
+    
+    [categoriesStr appendString:@" General"];
     
     //Add text to information label.
-    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views",postData.likes, postData.commentsCount, postData.remoteKey]];
+    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views Category: %@",postData.likes, postData.commentsCount, postData.remoteKey, categoriesStr]];
     
     //Set like button status.
     if(postData.liked)

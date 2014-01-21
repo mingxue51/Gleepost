@@ -10,6 +10,7 @@
 #import "GLPEntityDaoParser.h"
 #import "FMResultSet.h"
 #import "GLPUserDao.h"
+#import "GLPCategoryDao.h"
 
 @implementation GLPPostDaoParser
 
@@ -25,6 +26,8 @@
     entity.liked = [resultSet boolForColumn:@"liked"];
     
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
+    
+    entity.categories = [GLPCategoryDao findByPostRemoteKey:entity.remoteKey db:db];
 }
 
 + (GLPPost *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db

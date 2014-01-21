@@ -11,6 +11,7 @@
 #import "SendStatus.h"
 #import "GLPLike.h"
 #import "SessionManager.h"
+#import "GLPCategory.h"
 
 @interface RemoteParser()
 
@@ -393,6 +394,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
+    
+    //Parse categories.
+    post.categories = [self parseCategoriesFromJson:json[@"categories"] forPost:post];
+    
     //Parse users' likes of the post and find if the post is liked by logged in user.
     NSArray *usersLiked = json[@"likes"];
     
@@ -559,6 +564,23 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return likes;
+}
+
++(NSArray*)parseCategoriesFromJson:(NSArray*)jsonCategories forPost:(GLPPost*)post
+{
+    NSMutableArray *categories = [NSMutableArray array];
+    
+    for(NSDictionary* c in jsonCategories)
+    {
+        NSNumber* remoteKey = [c objectForKey:@"id"];
+        
+        GLPCategory *category = [[GLPCategory alloc]initWithTag:[c objectForKey:@"tag"] name:[c objectForKey:@"name"] postRemoteKey:post.remoteKey andRemoteKey:[remoteKey integerValue]];
+        
+        [categories addObject:category];
+        
+    }
+    
+    return categories;
 }
 
 #pragma mark - Contacts

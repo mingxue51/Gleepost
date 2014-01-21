@@ -169,6 +169,14 @@ static DatabaseManager *instance = nil;
              author_key integer, \
              liked integer);"];
             
+            // categories
+            [db executeUpdate:@"create table categories ( \
+             key integer primary key autoincrement, \
+             remoteKey integer unique, \
+             post_remote_key integer, \
+             tag text, \
+             name text);"];
+            
             // post images
             [db executeUpdate:@"create table post_images ( \
              post_remote_key integer, \

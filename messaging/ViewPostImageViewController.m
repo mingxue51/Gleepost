@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *viewImage;
 @property (assign, nonatomic) CGFloat previousScale;
 @property (assign, nonatomic) CGFloat scale;
+
 @end
 
 @implementation ViewPostImageViewController

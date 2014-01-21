@@ -12,6 +12,7 @@
 #import "GLPPostDaoParser.h"
 #import "GLPUserDao.h"
 #import "DatabaseManager.h"
+#import "GLPCategoryDao.h"
 
 @implementation GLPPostDao
 
@@ -128,6 +129,12 @@
     
     entity.key = [db lastInsertRowId];
     
+    
+    //Insert post's categories.
+    for(GLPCategory *category in entity.categories)
+    {
+        [GLPCategoryDao saveCategoryIfNotExist:category db:db];
+    }
     
      
     //Insert images

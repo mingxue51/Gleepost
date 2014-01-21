@@ -46,6 +46,9 @@
 		581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */; };
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
+		581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */; };
+		581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311C188EFE6800BAA082 /* GLPCategory.m */; };
+		581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311F188F068600BAA082 /* GLPCategoryDao.m */; };
 		581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C9C4218044CD300279256 /* PullDownScrollView.m */; };
 		58204E781862061600702F4F /* GLPPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E771862061600702F4F /* GLPPostOperation.m */; };
 		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
@@ -514,6 +517,12 @@
 		581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollContactsOperation.m; sourceTree = "<group>"; };
 		581AAF0C181DA88700F091A9 /* InvitationSentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationSentView.h; sourceTree = "<group>"; };
 		581AAF0D181DA88700F091A9 /* InvitationSentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationSentView.m; sourceTree = "<group>"; };
+		581C3118188EFE0400BAA082 /* GLPCategoryDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryDaoParser.h; sourceTree = "<group>"; };
+		581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryDaoParser.m; sourceTree = "<group>"; };
+		581C311B188EFE6800BAA082 /* GLPCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategory.h; sourceTree = "<group>"; };
+		581C311C188EFE6800BAA082 /* GLPCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategory.m; sourceTree = "<group>"; };
+		581C311E188F068600BAA082 /* GLPCategoryDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryDao.h; sourceTree = "<group>"; };
+		581C311F188F068600BAA082 /* GLPCategoryDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryDao.m; sourceTree = "<group>"; };
 		581C9C4118044CD300279256 /* PullDownScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownScrollView.h; sourceTree = "<group>"; };
 		581C9C4218044CD300279256 /* PullDownScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownScrollView.m; sourceTree = "<group>"; };
 		58204E761862061600702F4F /* GLPPostOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperation.h; sourceTree = "<group>"; };
@@ -2076,6 +2085,8 @@
 				80E396371858D87600391922 /* GLPLiveConversation.m */,
 				80728A50187C68A4008624B8 /* GLPWebSocketEvent.h */,
 				80728A51187C68A4008624B8 /* GLPWebSocketEvent.m */,
+				581C311B188EFE6800BAA082 /* GLPCategory.h */,
+				581C311C188EFE6800BAA082 /* GLPCategory.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2447,6 +2458,8 @@
 				805358CB182EF37600579079 /* GLPPostDao.m */,
 				80B2A4231833824F002AB1F0 /* GLPNotificationDao.h */,
 				80B2A4241833824F002AB1F0 /* GLPNotificationDao.m */,
+				581C311E188F068600BAA082 /* GLPCategoryDao.h */,
+				581C311F188F068600BAA082 /* GLPCategoryDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -2472,6 +2485,8 @@
 				805358CE182EF41000579079 /* GLPPostDaoParser.m */,
 				80C8BA6118103712004F70DB /* GLPUserDaoParser.h */,
 				80C8BA6218103712004F70DB /* GLPUserDaoParser.m */,
+				581C3118188EFE0400BAA082 /* GLPCategoryDaoParser.h */,
+				581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */,
 			);
 			name = DaoParser;
 			sourceTree = "<group>";
@@ -2910,6 +2925,7 @@
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
 				58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
+				581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */,
 				58DB02871810391F001C021A /* NSMutableArray+QueueAdditions.m in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
 				80C8BA5018103203004F70DB /* GLPEntity.m in Sources */,
@@ -2928,6 +2944,7 @@
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
+				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
@@ -3041,6 +3058,7 @@
 				806E3D751832B1960063AACE /* TSMessage.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
+				581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */,
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
 				5890D2181847676A00E293DD /* GLPTheme.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
