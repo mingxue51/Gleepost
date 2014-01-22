@@ -21,9 +21,10 @@
 -(void)likeButtonPushed:(id)sender;
 -(void)commentButtonPushed:(id)sender;
 -(void)shareButtonPushed:(id)sender;
--(void)setPlusButtonToNavigationBar;
+-(void)setButtonsToNavigationBar;
 -(void)setNavigationBarName;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost;
+-(void)refreshPostsWithNewCategory;
 
 @end

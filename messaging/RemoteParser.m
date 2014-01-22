@@ -337,7 +337,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 
-#pragma mark - Posts, comments and likes
+#pragma mark - Posts, comments, likes and categories
 
 + (GLPPost *)parsePostFromJson:(NSDictionary *)json
 {
@@ -581,6 +581,32 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return categories;
+}
+
++(NSString*)parseCategoriesToTags:(NSArray*)categories
+{
+    NSMutableString *delimitedCommaTags = [NSMutableString string];
+    
+    int i = 0;
+    
+    for(GLPCategory *c in categories)
+    {
+        if(i==categories.count-1)
+        {
+            //Last category don't add delimiter.
+            [delimitedCommaTags appendString:[NSString stringWithFormat:@"%@",c.tag]];
+
+        }
+        else
+        {
+            [delimitedCommaTags appendString:[NSString stringWithFormat:@"%@,",c.tag]];
+        }
+        
+        ++i;
+    }
+    
+    return delimitedCommaTags;
+    
 }
 
 #pragma mark - Contacts

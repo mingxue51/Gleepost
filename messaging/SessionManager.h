@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPUser.h"
+#import "GLPCategory.h"
 
 @interface SessionManager : NSObject
 
@@ -15,6 +16,7 @@
 @property (readonly, strong, nonatomic) GLPUser *user;
 
 @property (readonly, strong, nonatomic) NSDictionary *authParameters;
+@property (strong, nonatomic) GLPCategory *currentCategory;
 
 + (SessionManager *)sharedInstance;
 

@@ -41,6 +41,8 @@
 #import "GLPPostImageLoader.h"
 #import "GLPMessagesLoader.h"
 #import "GLPProfileLoader.h"
+#import "GLPCategoriesViewController.h"
+#import "TransitionDelegateViewCategories.h"
 
 @interface GLPTimelineViewController ()
 
@@ -56,6 +58,7 @@
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegate *transitionController;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+@property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
 
@@ -98,7 +101,6 @@
 
 @end
 
-static BOOL likePushed;
 
 @implementation GLPTimelineViewController
 
@@ -134,7 +136,6 @@ static BOOL likePushed;
 //    [self startLoadingContents];
     
     [self loadInitialPosts];
-    
 
 }
 
@@ -217,6 +218,8 @@ static BOOL likePushed;
     self.transitionController = [[TransitionDelegate alloc] init];
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
+    self.transitionCategoriesViewController = [[TransitionDelegateViewCategories alloc] init];
+    
     //Initialise.
     self.readyToReloadPosts = YES;
     
@@ -235,8 +238,6 @@ static BOOL likePushed;
     self.commentCreated = NO;
     
     self.postIndexToReload = -1;
-    
-
 }
 
 
@@ -380,7 +381,7 @@ static BOOL likePushed;
 //    [self configTabbarFormat];
     
     
-    [self setPlusButtonToNavigationBar];
+    [self setButtonsToNavigationBar];
 }
 
 -(void)configStatusbarBackground
@@ -486,7 +487,7 @@ static BOOL likePushed;
 }
 
 
-- (UIImage*) blur:(UIImage*)theImage
+- (UIImage*)blur:(UIImage*)theImage
 {
     // create our blurred image
     CIContext *context = [CIContext contextWithOptions:nil];
@@ -513,25 +514,27 @@ static BOOL likePushed;
 
 #pragma mark - Navigation bar
 
--(void) setPlusButtonToNavigationBar
+-(void) setButtonsToNavigationBar
 {
     //UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
     //imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
     
     
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeContactAdd];
-    [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [btnBack setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+//    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeContactAdd];
+//    [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
+//    [btnBack setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
+//    
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+
+
+    UIBarButtonItem *tagsButton = [[UIBarButtonItem alloc] initWithTitle:@"Tags" style:UIBarButtonItemStyleBordered target:self action:@selector(showCategories:)];
     
-    //btnBack.frame = imageView.bounds;
-    //[imageView addSubview:btnBack];
     
-//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+    
     UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newPostButtonClick)];
     [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
-    
+    self.navigationItem.leftBarButtonItem = tagsButton;
     self.navigationItem.rightBarButtonItem = i;
 }
 
@@ -1203,6 +1206,12 @@ static BOOL likePushed;
     }
 }
 
+#pragma mark - Change category
+
+-(void)refreshPostsWithNewCategory
+{
+    [self loadInitialPosts];
+}
 
 #pragma mark - View image delegate
 
@@ -1226,7 +1235,7 @@ static BOOL likePushed;
 
 -(void)setPreviousViewToNavigationBar
 {
-    [self setPlusButtonToNavigationBar];
+    [self setButtonsToNavigationBar];
     
     [self configAppearance];
 }
@@ -1349,72 +1358,6 @@ static BOOL likePushed;
 //}
 
 
-/**
- 
- Gets information from the server and sets the current state
- of the buttons: Like, Comment and maybe Share.
- 
- */
--(void) getInformationAndSetFormatButtons
-{
-    //Like button.
-    /**
-     If the current post is liked by the user then change the
-     default colour of the like image.
-     */
-    
-    
-    //Set the current status of like button to status variable.
-    likePushed = NO;
-    
-}
-
-/**
- 
- Add selectors to the social panel buttons.
- 
- @param buttonName title of the button.
- @param subviews of the social panel.
- @param cell current cell.
- 
- */
-//-(UIButton*) buttonWithName: (NSString*)buttonName andSubviews: (NSArray*)subArray withCell: (PostCell*) cell andPostIndex:(int)postIndex
-//{
-//    for(UIView* view in subArray)
-//    {
-//        if([view isKindOfClass:[UIButton class]])
-//        {
-//            UIButton *currentBtn = (UIButton*)view;
-//            currentBtn.userInteractionEnabled = YES;
-//            if([currentBtn.titleLabel.text isEqualToString:@"Like"])
-//            {
-//                currentBtn.tag = postIndex;
-//
-//                
-//                //[currentBtn addTarget:self action:@selector(likeButtonPushedWithImage:) forControlEvents:UIControlEventTouchUpInside];
-//                
-//                [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-//                
-//            }
-////            else if ([currentBtn.titleLabel.text isEqualToString:@"Comment"])
-////            {
-////                currentBtn.tag = postIndex;
-////                [currentBtn addTarget:self action:@selector(commentButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-////            }
-//            else if([currentBtn.titleLabel.text isEqualToString:@"Share"])
-//            {
-//                [currentBtn addTarget:self action:@selector(shareButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-//            }
-////            else
-////            {
-////                [currentBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-////            }
-//        }
-//    }
-//    
-//    
-//    return nil;
-//}
 
 /*
  When like button is pushed turn it to our application's custom colour.
@@ -1684,10 +1627,20 @@ static BOOL likePushed;
         //[self performSegueWithIdentifier:@"new post" sender:self];
         
     }
+}
+
+-(void)showCategories:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
+
+    cvc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    cvc.delegate = self;    
+    [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
     
-    
-    
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:cvc animated:YES completion:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -1788,6 +1741,10 @@ static BOOL likePushed;
 //        }
 //        
 //        profileViewController.incomingUser = incomingUser;
+    }
+    else if ([segue.identifier isEqualToString:@"view categories"])
+    {
+        
     }
     
 }

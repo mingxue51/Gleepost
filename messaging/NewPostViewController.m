@@ -32,7 +32,8 @@
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
-
+@property (weak, nonatomic) IBOutlet UIButton *testCategoryBtn;
+@property (strong, nonatomic) GLPCategory *chosenCategory;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -47,6 +48,7 @@
 @synthesize delegate;
 @synthesize postUploader=_postUploader;
 @synthesize hasImage=_hasImage;
+@synthesize chosenCategory = _chosenCategory;
 
 - (void)viewDidLoad
 {
@@ -55,6 +57,7 @@
     
     [self.contentTextView becomeFirstResponder];
     
+    _chosenCategory = nil;
     
     if(!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7"))
     {
@@ -132,7 +135,7 @@
 - (IBAction)cancelButtonClick:(id)sender
 {
     [self.delegate setNavigationBarName];
-    [self.delegate setPlusButtonToNavigationBar];
+    [self.delegate setButtonsToNavigationBar];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -140,14 +143,16 @@
 {
     if (![NSString isStringEmpty:self.contentTextView.text]) {
         [self.delegate setNavigationBarName];
-        [self.delegate setPlusButtonToNavigationBar];
+        [self.delegate setButtonsToNavigationBar];
         
         [self.contentTextView resignFirstResponder];
         
 //        GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
         
-        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text];
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
 
+//        inPost.categories = [[NSArray alloc] initWithObjects:_chosenCategory, nil];
+        
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
         [self dismissViewControllerAnimated:YES completion:^{
@@ -164,6 +169,21 @@
             }
             
         }];
+    }
+}
+- (IBAction)selectTestCategory:(id)sender
+{
+    if([[self.testCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[UIColor whiteColor]])
+    {
+        _chosenCategory = nil;
+        [self.testCategoryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    }
+    else
+    {
+        _chosenCategory = [[GLPCategory alloc]initWithTag:@"test" name:@"" andPostRemoteKey:0];
+        //test category was chosen.
+        
+        [self.testCategoryBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
 }
 

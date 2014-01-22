@@ -22,8 +22,8 @@
 @property (strong, nonatomic) NSMutableDictionary *data;
 @property (strong, nonatomic) NSString *pushToken;
 @property (assign, nonatomic) BOOL pushTokenRegistered;
-
 @property (strong, nonatomic) NSDictionary *authParameters;
+
 
 @end
 
@@ -35,7 +35,7 @@
 @synthesize authParameters = _authParameters;
 @synthesize pushToken=_pushToken;
 @synthesize pushTokenRegistered=_pushTokenRegistered;
-
+@synthesize currentCategory = _currentCategory;
 
 NSString * const GLPSessionFileName = @"GLPSession.plist";
 
@@ -64,6 +64,9 @@ static SessionManager *instance = nil;
     
     _pushTokenRegistered = NO;
     _authParameters = [NSDictionary dictionary];
+    
+    //Set default category.
+    _currentCategory = nil;
     
     [self loadData];
     
@@ -215,6 +218,7 @@ static SessionManager *instance = nil;
         NSLog(@"Push token register success: %d", success);
     }];
 }
+
 
 
 @end

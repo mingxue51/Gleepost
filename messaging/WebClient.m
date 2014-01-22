@@ -188,11 +188,31 @@ static WebClient *instance = nil;
 
 #pragma mark - Posts
 
-- (void)getPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+//- (void)getPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+//{
+//    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+//    if(post) {
+//        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+//    }
+//    
+//    [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+//        callbackBlock(YES, posts);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        callbackBlock(NO, nil);
+//    }];
+//}
+
+- (void)getPostsAfter:(GLPPost *)post withCategoryTag:(NSString*)tag callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
     if(post) {
         params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+    }
+    
+    if(tag)
+    {
+        params[@"filter"] = tag;
     }
     
     [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -203,11 +223,14 @@ static WebClient *instance = nil;
     }];
 }
 
+
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
-        
+    [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+    
+    
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         //Get the post id. If user has ulpoaded an image execute the createImagePost method.
@@ -220,8 +243,6 @@ static WebClient *instance = nil;
                
                 if(success)
                 {
-                    NSLog(@"Image posted!");
-                    
                     callbackBlock(YES,postRemoteKey);
                 }
                 else
@@ -301,8 +322,6 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSLog(@"RESPONSE FROM LIKE:%@",responseObject);
         
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

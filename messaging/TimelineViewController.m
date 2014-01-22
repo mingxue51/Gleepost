@@ -410,66 +410,66 @@ static BOOL likePushed;
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
     
-    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
-      // [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        if(success) {
-            self.posts = [posts mutableCopy];
-            
-            
-//            for(GLPPost *p in self.posts)
-//            {
-//                UIImageView *imgView = [[UIImageView alloc] init];
-//                
-//                [imgView setImageWithURL:[NSURL URLWithString:[p.imagesUrls objectAtIndex:0] placeholderImage:[UIImage imageNamed:nil]];
-//            }
-            
-
-
-            
-
-            
-            //TODO: Change this when image is available.
-            //TODO: Add new attribute containsImage in Post class.
-            
-            //TODO: Fix the dynamic calculation of the size.
-//            for(int i=0; i<posts.count; ++i)
-//            {
-//                Post *currentPost = [posts objectAtIndex:i];
-//                float sizeOfText = [PostCell getContentLabelHeightForContent: currentPost.content];
-//                if(i%3 == 0)
-//                {
-//                    //Add height for image.
-//                    
-//                    NSNumber *height = [NSNumber numberWithFloat:(imageSize+fixedLimitHeight+sizeOfText)];
-//                    NSLog(@"Image height: %f",[height floatValue]);
-//                    [self.postsHeight addObject:height];
-//                }
-//                else
-//                {
-//                    NSNumber *height = [NSNumber numberWithFloat:(fixedLimitHeight+sizeOfText)];
-//                    
-//                    if(height.floatValue < lowerPostLimit)
-//                    {
-//                        height = [NSNumber numberWithFloat:(lowerPostLimit+sizeOfText)];
-//                         
-//                    }
-// 
-//                    
-//                    NSLog(@"Text height: %f",[height floatValue]);
-//                    [self.postsHeight addObject:height];
+//    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+//      // [WebClientHelper hideStandardLoaderForView:self.view];
+//        
+//        if(success) {
+//            self.posts = [posts mutableCopy];
+//            
+//            
+////            for(GLPPost *p in self.posts)
+////            {
+////                UIImageView *imgView = [[UIImageView alloc] init];
+////                
+////                [imgView setImageWithURL:[NSURL URLWithString:[p.imagesUrls objectAtIndex:0] placeholderImage:[UIImage imageNamed:nil]];
+////            }
+//            
 //
-//                }
-//            }
-            //[self loadUsersImagesAndReloadTable];
-            
-            
-            [self.tableView reloadData];
-            
-        } else {
-            [WebClientHelper showStandardError];
-        }
-    }];
+//
+//            
+//
+//            
+//            //TODO: Change this when image is available.
+//            //TODO: Add new attribute containsImage in Post class.
+//            
+//            //TODO: Fix the dynamic calculation of the size.
+////            for(int i=0; i<posts.count; ++i)
+////            {
+////                Post *currentPost = [posts objectAtIndex:i];
+////                float sizeOfText = [PostCell getContentLabelHeightForContent: currentPost.content];
+////                if(i%3 == 0)
+////                {
+////                    //Add height for image.
+////                    
+////                    NSNumber *height = [NSNumber numberWithFloat:(imageSize+fixedLimitHeight+sizeOfText)];
+////                    NSLog(@"Image height: %f",[height floatValue]);
+////                    [self.postsHeight addObject:height];
+////                }
+////                else
+////                {
+////                    NSNumber *height = [NSNumber numberWithFloat:(fixedLimitHeight+sizeOfText)];
+////                    
+////                    if(height.floatValue < lowerPostLimit)
+////                    {
+////                        height = [NSNumber numberWithFloat:(lowerPostLimit+sizeOfText)];
+////                         
+////                    }
+//// 
+////                    
+////                    NSLog(@"Text height: %f",[height floatValue]);
+////                    [self.postsHeight addObject:height];
+////
+////                }
+////            }
+//            //[self loadUsersImagesAndReloadTable];
+//            
+//            
+//            [self.tableView reloadData];
+//            
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
 }
 
 -(void) loadPostsImages

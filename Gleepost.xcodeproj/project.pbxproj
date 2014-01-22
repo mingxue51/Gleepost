@@ -304,6 +304,11 @@
 		58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FB7CBA18565640002C6A00 /* ProfileAboutTableViewCell.m */; };
 		58FB7CBE18565AAA002C6A00 /* ProfileMutualTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FB7CBD18565AAA002C6A00 /* ProfileMutualTableViewCell.m */; };
 		58FB7CC018565AC1002C6A00 /* ProfileViewMutualTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FB7CBF18565AC1002C6A00 /* ProfileViewMutualTableViewCell.xib */; };
+		58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7065188FFDF90024E8A1 /* GLPCategoriesViewController.m */; };
+		58FD7069189001AA0024E8A1 /* GLPCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7068189001AA0024E8A1 /* GLPCategoryCell.m */; };
+		58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */; };
+		58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */; };
+		58FD7072189009190024E8A1 /* TransitionDelegateViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */; };
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
@@ -867,6 +872,15 @@
 		58FB7CBC18565AAA002C6A00 /* ProfileMutualTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileMutualTableViewCell.h; sourceTree = "<group>"; };
 		58FB7CBD18565AAA002C6A00 /* ProfileMutualTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileMutualTableViewCell.m; sourceTree = "<group>"; };
 		58FB7CBF18565AC1002C6A00 /* ProfileViewMutualTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewMutualTableViewCell.xib; sourceTree = "<group>"; };
+		58FD7064188FFDF90024E8A1 /* GLPCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoriesViewController.h; sourceTree = "<group>"; };
+		58FD7065188FFDF90024E8A1 /* GLPCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoriesViewController.m; sourceTree = "<group>"; };
+		58FD7067189001AA0024E8A1 /* GLPCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryCell.h; sourceTree = "<group>"; };
+		58FD7068189001AA0024E8A1 /* GLPCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryCell.m; sourceTree = "<group>"; };
+		58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPCategoryCell.xib; sourceTree = "<group>"; };
+		58FD706D189008BA0024E8A1 /* AnimatedTransitioningViewCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioningViewCategories.h; sourceTree = "<group>"; };
+		58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewCategories.m; sourceTree = "<group>"; };
+		58FD7070189009190024E8A1 /* TransitionDelegateViewCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewCategories.h; sourceTree = "<group>"; };
+		58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewCategories.m; sourceTree = "<group>"; };
 		80112B93180F03B9006A35AA /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		80112B94180F03B9006A35AA /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		80112B95180F03B9006A35AA /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -1281,6 +1295,7 @@
 		584906B917FD945F0045B65D /* Post Classes */ = {
 			isa = PBXGroup;
 			children = (
+				58FD706C189008830024E8A1 /* Transition Delegate View Categories */,
 				58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */,
 				5851B5D618258ECE00AA9103 /* Transition Delegate New Post */,
 				58080B79180EBB6500C4DB83 /* PostImageCellView.xib */,
@@ -1841,6 +1856,17 @@
 			name = "ProfileView Mutual";
 			sourceTree = "<group>";
 		};
+		58FD706C189008830024E8A1 /* Transition Delegate View Categories */ = {
+			isa = PBXGroup;
+			children = (
+				58FD706D189008BA0024E8A1 /* AnimatedTransitioningViewCategories.h */,
+				58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */,
+				58FD7070189009190024E8A1 /* TransitionDelegateViewCategories.h */,
+				58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */,
+			);
+			name = "Transition Delegate View Categories";
+			sourceTree = "<group>";
+		};
 		80112B91180F039C006A35AA /* TextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1880,6 +1906,8 @@
 			children = (
 				805358C4182EEEC700579079 /* GLPTimelineViewController.h */,
 				805358C5182EEEC700579079 /* GLPTimelineViewController.m */,
+				58FD7064188FFDF90024E8A1 /* GLPCategoriesViewController.h */,
+				58FD7065188FFDF90024E8A1 /* GLPCategoriesViewController.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -2114,6 +2142,8 @@
 				58B865E1180DA2B100BB18AF /* NotificationCell.m */,
 				803B6083181FFE8A00A178EB /* GLPLoadingCell.h */,
 				803B6084181FFE8A00A178EB /* GLPLoadingCell.m */,
+				58FD7067189001AA0024E8A1 /* GLPCategoryCell.h */,
+				58FD7068189001AA0024E8A1 /* GLPCategoryCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2398,6 +2428,7 @@
 				58D0E2611850BB80005879F4 /* GLPNotCell.xib */,
 				80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */,
 				8073346D183B956200C6D74A /* GLPLoadingCell.xib */,
+				58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -2633,6 +2664,7 @@
 				5891254C1858CF2E000531DE /* share_button.png in Resources */,
 				806E3D781832B1960063AACE /* NotificationBackgroundErrorIcon.png in Resources */,
 				80AB898F17C2ADA60053E784 /* line.png in Resources */,
+				58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */,
 				58DC023A1804379A0008993A /* new_chat_background.png in Resources */,
 				58DAD7751859F5DD0016D838 /* contacts.png in Resources */,
 				58DC0244180437A70008993A /* bubble2.png in Resources */,
@@ -2978,6 +3010,7 @@
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
 				580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */,
 				807C4D15180AF0F6003D67E6 /* _WebEntity.m in Sources */,
+				58FD7072189009190024E8A1 /* TransitionDelegateViewCategories.m in Sources */,
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
@@ -3053,6 +3086,7 @@
 				58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */,
+				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
 				806E3D751832B1960063AACE /* TSMessage.m in Sources */,
@@ -3062,11 +3096,13 @@
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
 				5890D2181847676A00E293DD /* GLPTheme.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
+				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80D3D35118882AB90063FB6E /* GLPNewMessageProcessor.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,
 				585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */,
+				58FD7069189001AA0024E8A1 /* GLPCategoryCell.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
 				5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */,

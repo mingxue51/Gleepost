@@ -11,6 +11,7 @@
 #import "WebClient.h"
 #import "GLPPost.h"
 #import "GLPPostDao.h"
+#import "SessionManager.h"
 
 @implementation GLPPostManager
 
@@ -32,7 +33,7 @@ NSInteger const kGLPNumberOfPosts = 20;
 
 +(void)loadRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback
 {
-    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:nil callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, nil);
             return;
@@ -59,7 +60,7 @@ NSInteger const kGLPNumberOfPosts = 20;
 {
     NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
     
-    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, NO, nil);
             return;
@@ -142,7 +143,7 @@ NSInteger const kGLPNumberOfPosts = 20;
         localCallback(localEntities);
     }
     
-    [[WebClient sharedInstance] getPostsAfter:nil callback:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             remoteCallback(NO, NO, nil);
             return;
@@ -208,7 +209,7 @@ NSInteger const kGLPNumberOfPosts = 20;
         return;
     }
     
-    [[WebClient sharedInstance] getPostsAfter:post callback:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:post withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, NO, nil);
             return;

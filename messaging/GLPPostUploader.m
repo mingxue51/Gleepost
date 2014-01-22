@@ -83,13 +83,13 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 }
 
 //ADDED.
--(GLPPost*)uploadPost:(NSString*)content
+-(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray*)categories
 {
     //Add the date to a new post.
     GLPPost *post = [[GLPPost alloc] init];
     post.content = content;
     post.author = [SessionManager sharedInstance].user;
-    
+    post.categories = categories;
     //Create a new operation.
     if(_postImage)
     {

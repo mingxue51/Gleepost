@@ -278,6 +278,7 @@
     
     //    return [NotificationCell getCellHeightForNotification:notification];
 }
+
 - (void)acceptContact:(id)sender
 {
     UIButton *acceptButton = (UIButton*)sender;
