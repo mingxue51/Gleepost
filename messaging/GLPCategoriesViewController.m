@@ -15,12 +15,14 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *categories;
+@property (strong, nonatomic) NSMutableDictionary *categoriesImages;
 
 @end
 
 @implementation GLPCategoriesViewController
 
 @synthesize categories = _categories;
+@synthesize categoriesImages = _categoriesImages;
 
 - (void)viewDidLoad
 {
@@ -47,6 +49,11 @@
 {
     _categories = [[NSArray alloc] initWithObjects:[[GLPCategory alloc] initWithTag:@"test" name:@"Test category" andPostRemoteKey:0], [[GLPCategory alloc] initWithTag:@"All" name:@"All the categories" andPostRemoteKey:0], nil];
     
+    _categoriesImages = [[NSMutableDictionary alloc] init];
+    
+    
+    [_categoriesImages setObject:[UIImage imageNamed:@"events_category"] forKey:@"test"];
+    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
 }
 
@@ -71,7 +78,7 @@
     
 
     
-    [cell updateCategory:category];
+    [cell updateCategory:category withImage:[_categoriesImages objectForKey:category.tag]];
     
     return cell;
 }

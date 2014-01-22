@@ -11,6 +11,7 @@
 @interface GLPCategoryCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *categoryname;
+@property (weak, nonatomic) IBOutlet UIImageView *categoryImage;
 
 @end
 
@@ -33,8 +34,10 @@ NSString * const kGLPCategoryCell = @"CategoryCell";
 
 
 
--(void)updateCategory:(GLPCategory*)category
+-(void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image
 {
+    [self.categoryImage setImage:image];
+    
     [self.categoryname setText:category.tag];
 }
 

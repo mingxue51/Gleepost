@@ -43,6 +43,7 @@
 #import "GLPProfileLoader.h"
 #import "GLPCategoriesViewController.h"
 #import "TransitionDelegateViewCategories.h"
+#import "CampusWallHeader.h"
 
 @interface GLPTimelineViewController ()
 
@@ -439,9 +440,6 @@
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
 
-    
-
-
    
     
     // this way, the icon gets rendered as it is (thus, it needs to be green in this example)
@@ -471,6 +469,9 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 
+    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderCell" bundle:nil] forCellReuseIdentifier:@"CampusWallHeader"];
+    
+    
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
@@ -1049,53 +1050,66 @@
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierHeader = @"CampusWallHeader";
     
+    //Header cell.
+    CampusWallHeader *campusWallHeader;
     
     PostCell *postCell;
-    
-    
 
-    GLPPost *post = self.posts[indexPath.row];
-    
-    
-    //    GLPUser *user = self.users[indexPath.row];
-    
-    
-    if([post imagePost])
-    {
+//    if(indexPath.row == 0)
+//    {
+//        campusWallHeader = [tableView dequeueReusableCellWithIdentifier:CellIdentifierHeader forIndexPath:indexPath];
+//        
+//        return campusWallHeader;
+//    }
+//    else
+//    {
+        GLPPost *post = self.posts[indexPath.row];
         
-        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
-        postCell.imageAvailable = YES;
+        //    GLPUser *user = self.users[indexPath.row];
+        
+        
+        if([post imagePost])
+        {
+            
+            postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+            
+            postCell.imageAvailable = YES;
+            
+            
+        }
+        else
+        {
+            postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+            
+            postCell.imageAvailable = NO;
+            
+        }
+        
+        
+        //TODO: For each post take the status of the button like. (Obviously from the server).
+        //TODO: In updateWithPostData information take the status of the like button.
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+        [tap setNumberOfTapsRequired:1];
+        [postCell.userImageView addGestureRecognizer:tap];
+        
+        
+        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
+        [tap setNumberOfTapsRequired:1];
+        [postCell.postImage addGestureRecognizer:tap];
+        
+        postCell.delegate = self;
+        
+        [postCell updateWithPostData:post withPostIndex:indexPath.row];
+        
+        return postCell;
 
-        
-    }
-    else
-    {
-        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-        
-        postCell.imageAvailable = NO;
-        
-    }
+//    }
     
     
-    //TODO: For each post take the status of the button like. (Obviously from the server).
-    //TODO: In updateWithPostData information take the status of the like button.
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-    [tap setNumberOfTapsRequired:1];
-    [postCell.userImageView addGestureRecognizer:tap];
-    
-    
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [postCell.postImage addGestureRecognizer:tap];
-    
-    postCell.delegate = self;
-    
-    [postCell updateWithPostData:post withPostIndex:indexPath.row];
-    
-    return postCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1126,30 +1140,36 @@
     //static float lowerPostLimit = 115;
     //static float fixedLimitHeight = 70;
     
-    GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
     
-    
-    if([currentPost imagePost])
-    {
-        //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
-        //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
-        //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
+//    if(indexPath.row == 0)
+//    {
+//        return 200;
+//    }
+//    else
+//    {
+        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
         
-        //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
-        
-        
-    }
-    else
-    {
-        //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
-        //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
-        
-        //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
-        
-        //return [PostCell getCellHeightWithContent:currentPost.content image:NO];
-        return TEXT_CELL_HEIGHT;
-    }
+        if([currentPost imagePost])
+        {
+            //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
+            //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
+            //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
+            
+            //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
+            return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+        }
+        else
+        {
+            //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
+            //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
+            
+            //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
+            
+            //return [PostCell getCellHeightWithContent:currentPost.content image:NO];
+            return TEXT_CELL_HEIGHT;
+        }
+//    }
+
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

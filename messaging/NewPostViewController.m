@@ -147,11 +147,8 @@
         
         [self.contentTextView resignFirstResponder];
         
-//        GLPPost* inPost = [_postUploader uploadPostWithContent:self.contentTextView.text];
         
         GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
-
-//        inPost.categories = [[NSArray alloc] initWithObjects:_chosenCategory, nil];
         
         //Dismiss view controller and show immediately the post in the Campus Wall.
         

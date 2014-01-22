@@ -13,7 +13,7 @@
 
 extern NSString * const kGLPCategoryCell;
 
--(void)updateCategory:(GLPCategory*)category;
+-(void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image;
 
 
 @end
