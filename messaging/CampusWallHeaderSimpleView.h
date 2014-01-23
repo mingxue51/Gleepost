@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CampusWallHeaderTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
+@interface CampusWallHeaderSimpleView : UIView
 
 @end

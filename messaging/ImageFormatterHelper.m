@@ -50,6 +50,7 @@
 
 
 
+
 /** Not used at the moment. **/
 
 +(UIImage *)screenshot:(CGRect)cropRect withWindowLayer:(CALayer*)layer
@@ -74,8 +75,7 @@
         return image;
     }
     
-    //    [self resizeImage:image WithSize:CGRectMake(0, 0, image.size.width, <#CGFloat height#>)]
-    
+    //    [self resizeImage:image WithSize:CGRectMake(0, 0, image.size.width, <#CGFloat height#>)
     return nil;
 }
 

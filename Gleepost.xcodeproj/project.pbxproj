@@ -317,7 +317,7 @@
 		58FD7072189009190024E8A1 /* TransitionDelegateViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */; };
 		58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */; };
 		58FD7077189041560024E8A1 /* CampusWallHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7076189041560024E8A1 /* CampusWallHeader.m */; };
-		58FD707A189042A20024E8A1 /* CampusWallHeaderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7079189042A20024E8A1 /* CampusWallHeaderTableView.m */; };
+		58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */; };
 		58FD708118905B680024E8A1 /* all_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707C18905B680024E8A1 /* all_category.png */; };
 		58FD708218905B680024E8A1 /* events_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707D18905B680024E8A1 /* events_category.png */; };
 		58FD708318905B680024E8A1 /* for_sale_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707E18905B680024E8A1 /* for_sale_category.png */; };
@@ -907,8 +907,8 @@
 		58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallHeaderScrollView.xib; sourceTree = "<group>"; };
 		58FD7075189041560024E8A1 /* CampusWallHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeader.h; sourceTree = "<group>"; };
 		58FD7076189041560024E8A1 /* CampusWallHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeader.m; sourceTree = "<group>"; };
-		58FD7078189042A20024E8A1 /* CampusWallHeaderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeaderTableView.h; sourceTree = "<group>"; };
-		58FD7079189042A20024E8A1 /* CampusWallHeaderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeaderTableView.m; sourceTree = "<group>"; };
+		58FD7078189042A20024E8A1 /* CampusWallHeaderSimpleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeaderSimpleView.h; sourceTree = "<group>"; };
+		58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeaderSimpleView.m; sourceTree = "<group>"; };
 		58FD707C18905B680024E8A1 /* all_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_category.png; sourceTree = "<group>"; };
 		58FD707D18905B680024E8A1 /* events_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = events_category.png; sourceTree = "<group>"; };
 		58FD707E18905B680024E8A1 /* for_sale_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = for_sale_category.png; sourceTree = "<group>"; };
@@ -2222,8 +2222,8 @@
 				58FD7068189001AA0024E8A1 /* GLPCategoryCell.m */,
 				58FD7075189041560024E8A1 /* CampusWallHeader.h */,
 				58FD7076189041560024E8A1 /* CampusWallHeader.m */,
-				58FD7078189042A20024E8A1 /* CampusWallHeaderTableView.h */,
-				58FD7079189042A20024E8A1 /* CampusWallHeaderTableView.m */,
+				58FD7078189042A20024E8A1 /* CampusWallHeaderSimpleView.h */,
+				58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */,
 				58212793189165B200BF36E5 /* CampusWallHeaderCell.h */,
 				58212794189165B200BF36E5 /* CampusWallHeaderCell.m */,
 			);
@@ -3131,7 +3131,7 @@
 				8087E42E180EC02E00938264 /* _Post.m in Sources */,
 				807C4D16180AF0F6003D67E6 /* Conversation.m in Sources */,
 				8087E430180EC02E00938264 /* Post.m in Sources */,
-				58FD707A189042A20024E8A1 /* CampusWallHeaderTableView.m in Sources */,
+				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				58212795189165B200BF36E5 /* CampusWallHeaderCell.m in Sources */,
 				58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */,

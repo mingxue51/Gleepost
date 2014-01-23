@@ -11,6 +11,9 @@
 @interface ShapeFormatterHelper : NSObject
 
 +(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize;
+
 +(void)createTwoTopCornerRadius:(UIImageView*)imageView withViewBounts:(CGRect)viewBounds andSizeOfCorners:(CGSize)sizeOfCorners;
+
++(void)setCornerRadiusWithView:(UIView*)imageView andValue:(int)value;
 
 @end

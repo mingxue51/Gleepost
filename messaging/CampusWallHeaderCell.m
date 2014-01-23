@@ -7,31 +7,23 @@
 //
 
 #import "CampusWallHeaderCell.h"
+#import "ShapeFormatterHelper.h"
 
 @interface CampusWallHeaderCell ()
 
+
 @property (weak, nonatomic) IBOutlet UILabel *testLbl;
 
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 
 @end
 
 
 @implementation CampusWallHeaderCell
 
-//- (id)initWithFrame:(CGRect)frame
-//{
-//    self = [super initWithFrame:frame];
-//    if (self) {
-//        // Initialization code
-//    }
-//    return self;
-//}
-
-
-//-(id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    
-//}
+const float CELL_HEIGHT = 115;
+const float CELL_WIDTH = 200;
 
 -(id)initWithIdentifier:(NSString *)identifier
 {
@@ -41,6 +33,20 @@
     if (self)
     {
         [self setFrame:CGRectMake(0, 0, 30, 50)];
+        
+        [self setBackgroundColor:[UIColor clearColor]];
+        
+        [ShapeFormatterHelper setCornerRadiusWithView:self.contentView andValue:17.0f];
+        
+        [ShapeFormatterHelper setCornerRadiusWithView:self andValue:17.0f];
+        
+        [self setBackgroundColor:[UIColor whiteColor]];
+        
+        //Format the image.
+        [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+        
+        self.profileImage.layer.borderWidth = 1.0;
+        self.profileImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
     
     

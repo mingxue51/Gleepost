@@ -15,4 +15,5 @@
 +(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour;
 +(UIImage*)resizeImage:(UIImage*)image withSize:(CGSize)newSize;
 
+
 @end

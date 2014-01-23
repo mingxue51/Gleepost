@@ -15,6 +15,7 @@
 //@property (weak, nonatomic) IBOutlet VSScrollView *scrollView;
 @property (strong, nonatomic) NSMutableArray *dataArray;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIButton *eventsBtn;
 
 @end
 
@@ -36,7 +37,7 @@
         [self setAllowVerticalScrollingForOutOfBoundsCell:NO];
         
         [self setDelegate:self];
-
+        
     
         self.dataArray = [NSMutableArray array];
         
@@ -59,14 +60,14 @@
 
 -(CGFloat)vsscrollView:(VSScrollView *)scrollView widthForViewAtPosition:(int)position
 {
-    return 100.0;
+    return CELL_WIDTH;
+}
+
+-(CGFloat)vsscrollView:(VSScrollView *)scrollView heightForViewAtPosition:(int)position
+{
     
-//    if (position>10)
-//    {
-//        return 50;
-//    }
-//    return 200.0;
-    // return scrollView.bounds.size.width;
+    return CELL_HEIGHT;
+    
 }
 
 -(CGFloat)cellSpacingAfterCellAtPosition:(int)position
@@ -84,23 +85,9 @@
     return 0.0;
 }
 
--(CGFloat)vsscrollView:(VSScrollView *)scrollView heightForViewAtPosition:(int)position
-{
-    
-    return 100.0f;
-    
-//    if (position>20 && position<40)
-//    {
-//        return 600.0;
-//        
-//    }
-//    return scrollView.bounds.size.height;
-    
-}
 
 -(NSUInteger)numberOfViewInvsscrollview:(VSScrollView *)scrollview
 {
-    
     return [self.dataArray count];
 }
 
@@ -110,19 +97,19 @@
     
     // VSScrollerView *myView = [scrollView dequeueReusableViewWithIdentifier:identifier];
     CampusWallHeaderCell *myView = (CampusWallHeaderCell *)[scrollView dequeueReusableVSScrollviewCellsWithIdentifier:identifier];
+
     
     if (!myView)
     {
         myView = [[CampusWallHeaderCell alloc]initWithIdentifier:identifier];
         
     }
-    myView.layer.borderWidth = 2.0;
-    [myView setBackgroundColor:[UIColor brownColor]];
-//    [myView.myImageView setImage:[UIImage imageNamed:@"batman.jpeg"]];
-//    [myView.myImageView setBackgroundColor:[UIColor purpleColor]];
-//    float alphaValue = (float)(position+1)/[dataArr count];
-//    [myView.myImageView setAlpha:alphaValue];
-//    myView.textLabel.text = [NSString stringWithFormat:@"  %@",[dataArr objectAtIndex:position]];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectCell:)];
+    [tap setNumberOfTapsRequired:1];
+    [myView addGestureRecognizer:tap];
+    
+
     
     [myView setData:[self.dataArray objectAtIndex:position]];
     
@@ -138,9 +125,21 @@
     CGRect frame = myCustomCell.frame;
 //    frame.origin.y =  frame.size.height-(frame.size.height/[self.dataArray count])*position;
     
-    frame.origin.y = 30;
+    frame.origin.y = 10;
     
     [myCustomCell setFrame:frame];
+}
+
+-(void)didSelectCell:(id)sender
+{
+    DDLogDebug(@"didChangeValueForKey");
+
+}
+
+
+- (IBAction)chooseCategory:(id)sender
+{
+    DDLogDebug(@"Choose category.");
 }
 
 #pragma mark - Scroll View Delegate

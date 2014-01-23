@@ -11,6 +11,9 @@
 
 @interface CampusWallHeaderCell : VSScrollViewCell
 
+extern const float CELL_HEIGHT;
+extern const float CELL_WIDTH;
+
 -(void)setData:(NSString*)str;
 
 @end

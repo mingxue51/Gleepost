@@ -42,4 +42,9 @@
     imageView.layer.mask = maskLayer;
 }
 
++(void)setCornerRadiusWithView:(UIView*)imageView andValue:(int)value
+{
+    imageView.layer.cornerRadius = value;
+}
+
 @end

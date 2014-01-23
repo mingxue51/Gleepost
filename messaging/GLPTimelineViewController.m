@@ -136,9 +136,7 @@
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
 //    [self startLoadingContents];
     
-    //Hide for now the navigation bar.
-    [self.navigationController setNavigationBarHidden:YES
-                                             animated:YES];
+
     
     [self loadInitialPosts];
 
@@ -150,9 +148,10 @@
     
     [self configAppearance];
     
+   // [self configStatusbarBackground];
     
-    //[self configStatusbarBackground];
-
+    //Hide for now the navigation bar.
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
 }
 
@@ -188,7 +187,9 @@
     [self hideNewElementsIndicatorView];
     
     //Show navigation bar.
-    [self contract];
+//    [self contract];
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
     
     //Hide status bar colour.
     [self.statusBarView setHidden:YES];
@@ -908,7 +909,7 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    //self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
+    self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
 
     
 }
@@ -946,7 +947,7 @@
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
-    //[self contract];
+    [self contract];
     return YES;
 }
 
@@ -988,6 +989,8 @@
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
 }
+
+
 
 -(void)hideNavigationbarElements
 {
