@@ -8,7 +8,7 @@
 //@class GLPConversation;
 @class GLPUser;
 
-@interface GLPMessage : GLPEntity
+@interface GLPMessage : GLPEntity <NSCopying>
 
 @property (assign, nonatomic) BOOL seen;
 @property (assign, nonatomic) BOOL isOld;
@@ -18,7 +18,6 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) GLPConversation *conversation;
-@property (strong, nonatomic) GLPLiveConversation *liveConversation;
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message;
 

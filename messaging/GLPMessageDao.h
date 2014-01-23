@@ -15,20 +15,16 @@
 
 @interface GLPMessageDao : NSObject
 
-+ (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey;
 + (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
 
 + (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 + (NSArray *)findPreviousMessagesBefore:(GLPMessage *)message db:(FMDatabase *)db;
 
-//+ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
-
 + (void)save:(GLPMessage *)entity db:(FMDatabase *)db;
-+ (void)update:(GLPMessage *)entity db:(FMDatabase *)db;
++ (void)updateAfterSending:(GLPMessage *)entity db:(FMDatabase *)db;
 
-//+ (void)saveNewMessageWithPossiblyNewConversation:(GLPMessage *)message db:(FMDatabase *)db;
 
+// todo: remove
 +(GLPUser *)findUserByMessageKey:(NSInteger)messageKey db:(FMDatabase *)db;
 
-+ (NSArray *)findLastMessagesForLiveConversation:(GLPLiveConversation *)conversation db:(FMDatabase *)db;
 @end

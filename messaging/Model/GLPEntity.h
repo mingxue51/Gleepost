@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GLPEntity : NSObject
+@interface GLPEntity : NSObject <NSCopying>
 
 @property (assign, nonatomic) NSInteger key;
 @property (assign, nonatomic) NSInteger remoteKey;

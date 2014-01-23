@@ -54,9 +54,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback;
 
-
-- (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
-- (void)createMessageSynchronously:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock;
+- (void)createMessageSynchronously:(GLPMessage *)message callback:(void (^)(BOOL success, NSInteger remoteKey))callback;
 
 - (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
 

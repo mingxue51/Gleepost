@@ -33,5 +33,6 @@
 - (GLPUser *)getUniqueParticipant;
 - (NSString *)getLastMessageOrDefault;
 - (NSString *)getLastUpdateOrDefault;
+- (void)updateWithNewMessage:(GLPMessage *)message;
 
 @end

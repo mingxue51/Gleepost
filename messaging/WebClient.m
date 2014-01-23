@@ -15,7 +15,7 @@
 #import "AFJSONRequestOperation.h"
 #import "GLPUserDao.h"
 #import "AFNetworking.h"
-#import "GLPWebSocketMessageProcessor.h"
+#import "GLPMessageProcessor.h"
 #import "NSUserDefaults+GLPAdditions.h"
 
 @interface WebClient()
@@ -368,7 +368,7 @@ static WebClient *instance = nil;
 - (void)synchronousGetConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%d", remoteKey];
-    [self executeSynchronousRequestWithMethod:@"GET" path:path callback:^(BOOL success, id json) {
+    [self executeSynchronousRequestWithMethod:@"GET" path:path params:self.sessionManager.authParameters callback:^(BOOL success, id json) {
         if(!success) {
             callback(NO, nil);
             return;
@@ -382,7 +382,7 @@ static WebClient *instance = nil;
 // Synchronous operation
 - (void)synchronousGetConversationsFilterByLive:(BOOL)live withCallback:(void (^)(BOOL success, NSArray *conversations))callback
 {
-    [self executeSynchronousRequestWithMethod:@"GET" path:@"conversations" callback:^(BOOL success, id json) {
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"conversations" params:self.sessionManager.authParameters callback:^(BOOL success, id json) {
         if(!success) {
             callback(NO, nil);
             return;
@@ -541,49 +541,22 @@ static WebClient *instance = nil;
 
 #pragma mark - Messages
 
-- (void)createMessage:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
-{
-    NSString *path = nil;
-    
-    if(!message.conversation)
-    {
-        path = [NSString stringWithFormat:@"conversations/%d/messages", message.liveConversation.remoteKey];
-    }
-    else
-    {
-        path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
-    }
-    
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
-    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    
-    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *json = responseObject;
-        callbackBlock(YES, [json[@"id"] integerValue]);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, 0);
-    }];
-}
-
 // Blocking operation
-- (void)createMessageSynchronously:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSInteger remoteKey))callbackBlock
+- (void)createMessageSynchronously:(GLPMessage *)message callback:(void (^)(BOOL success, NSInteger remoteKey))callback
 {
     NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", message.conversation.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:message.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
-
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:params];
-    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    if(error) {
-        callbackBlock(NO, 0);
-    } else {
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-        callbackBlock(YES, [json[@"id"] integerValue]);
-    }
+    [self executeSynchronousRequestWithMethod:@"POST" path:path params:params callback:^(BOOL success, id json) {
+        if(!success) {
+            callback(NO, NSNotFound);
+            return;
+        }
+        
+        callback(YES, [json[@"id"] integerValue]);
+    }];
 }
 
 
@@ -602,7 +575,7 @@ static WebClient *instance = nil;
 // Blocking operation
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback
 {
-    [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" callback:^(BOOL success, id json) {
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"longpoll" params:self.sessionManager.authParameters callback:^(BOOL success, id json) {
         NSLog(@"long poll response %@", json);
         
         if(!success) {
@@ -911,7 +884,7 @@ static WebClient *instance = nil;
 
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
-    [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" callback:^(BOOL success, id json) {
+    [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" params:self.sessionManager.authParameters callback:^(BOOL success, id json) {
         
         if(!success) {
             callback(NO, nil);
@@ -945,18 +918,19 @@ static WebClient *instance = nil;
 
 #pragma mark - Utils
 
-- (void)executeSynchronousRequestWithMethod:(NSString *)method path:(NSString *)path callback:(void (^)(BOOL success, id json))callback
+- (void)executeSynchronousRequestWithMethod:(NSString *)method path:(NSString *)path params:(NSDictionary *)params callback:(void (^)(BOOL success, id json))callback
 {
-    NSLog(@"Start synchronous request %@ - %@...", method, path);
+    DDLogInfo(@"Start synchronous request %@ - %@...", method, path);
     
     NSURLResponse *response = nil;
     NSError *error = nil;
-    NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:self.sessionManager.authParameters];
+    NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:params];
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
-    NSLog(@"Synchronous %@ - %@ finished with result: %d", method, path, error ? NO : YES);
+    DDLogInfo(@"Synchronous %@ - %@ finished with result: %d", method, path, error ? NO : YES);
     
     if(error) {
+        DDLogError(@"Request error %@", [error localizedDescription]);
         callback(NO, nil);
         return;
     }
@@ -967,14 +941,14 @@ static WebClient *instance = nil;
     // this may happen but im not sure why
     if(error) {
         NSString* content = [NSString stringWithUTF8String:[data bytes]];
-        NSLog(@"Error parsing json response to dictionary: %@ - Problematic content: %@", error.localizedDescription, content);
+        DDLogError(@"Error parsing json response to dictionary: %@ - Problematic content: %@", error.localizedDescription, content);
         callback(NO, nil);
         return;
     }
     
     // this should not happen
     if(!json) {
-        NSLog(@"Json response to dictionary is null");
+        DDLogError(@"Json response to dictionary is null");
         callback(NO, nil);
         return;
     }
@@ -1002,7 +976,7 @@ static WebClient *instance = nil;
 // Setting the max concurrent operations to 1 may break other things such as requests running in "background" and in parallel (long polling request for instance)
 - (void)addLatency
 {
-    NSLog(@"WARNING MESSAGE - ADD 2 SEC LATENCY TO REQUEST");
+    DDLogWarn(@"WARNING MESSAGE - ADD 2 SEC LATENCY TO REQUEST");
     [self.operationQueue setMaxConcurrentOperationCount:1];
     [self.operationQueue addOperationWithBlock:^{
         [NSThread sleepForTimeInterval:2];

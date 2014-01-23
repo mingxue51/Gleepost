@@ -20,7 +20,6 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
-#import "LiveConversationManager.h"
 
 #import "GLPMessage.h"
 #import "GLPMessage+CellLogic.h"
@@ -515,19 +514,25 @@ float timeInterval = 0.1;
         return;
     }
     
-    NSLog(@"Load initial messages");
+    DDLogInfo(@"Load initial messages");
     self.inLoading = YES;
     
-    [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
-        [self loadInitialMessagesLocalCallback:messages];
-    } remoteCallback:^(BOOL success, NSArray *messages) {
-        [self loadInitialMessagesRemoteCallback:success newMessages:messages];
-    }];
+    NSArray *messages = [ConversationManager loadMessagesForConversation:self.conversation];
+    [self loadInitialMessagesLocalCallback:messages];
+    
+    self.inLoading = NO;
+    
+    
+//    [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
+//        [self loadInitialMessagesLocalCallback:messages];
+//    } remoteCallback:^(BOOL success, NSArray *messages) {
+//        [self loadInitialMessagesRemoteCallback:success newMessages:messages];
+//    }];
     
     // conversation has no more unread messages
-    if(!_conversation.isLive) {
-        [ConversationManager markConversationRead:self.conversation];
-    }
+//    if(!_conversation.isLive) {
+//        [ConversationManager markConversationRead:self.conversation];
+//    }
 }
 
 //- (void)loadInitialMessages:(BOOL)live
