@@ -136,6 +136,10 @@
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
 //    [self startLoadingContents];
     
+    //Hide for now the navigation bar.
+    [self.navigationController setNavigationBarHidden:YES
+                                             animated:YES];
+    
     [self loadInitialPosts];
 
 }
@@ -146,7 +150,8 @@
     
     [self configAppearance];
     
-    [self configStatusbarBackground];
+    
+    //[self configStatusbarBackground];
 
 
 }
@@ -469,8 +474,13 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 
-    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderCell" bundle:nil] forCellReuseIdentifier:@"CampusWallHeader"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderCell" bundle:nil] forCellReuseIdentifier:@"CampusWallHeader"];
     
+    //Load the header of the table view.
+    
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
+
+    self.tableView.tableHeaderView = [array objectAtIndex:0];
     
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -898,30 +908,30 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
+    //self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
 
     
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat currentOffset = scrollView.contentOffset.y;
-    CGFloat differenceFromStart = self.startContentOffset - currentOffset;
-    CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
-    self. lastContentOffset = currentOffset;
-    
-    
-    
-    if((differenceFromStart) < 0)
-    {
-        // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
-            [self expand];
-    }
-    else {
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
-            [self contract];
-    }
+//    CGFloat currentOffset = scrollView.contentOffset.y;
+//    CGFloat differenceFromStart = self.startContentOffset - currentOffset;
+//    CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
+//    self. lastContentOffset = currentOffset;
+//    
+//    
+//    
+//    if((differenceFromStart) < 0)
+//    {
+//        // scroll up
+//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+//            [self expand];
+//    }
+//    else {
+//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+//            [self contract];
+//    }
     
 }
 
@@ -936,7 +946,7 @@
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
-    [self contract];
+    //[self contract];
     return YES;
 }
 

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VSScrollView.h"
+#import "VSScrollViewCell.h"
 
-@interface CampusWallHeader : UITableViewCell <UITableViewDelegate, UITableViewDataSource>
+@interface CampusWallHeader : VSScrollView <VSScrollerDatasource,VSScrollerDelegate>
 
 @end

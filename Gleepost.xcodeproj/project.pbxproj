@@ -52,6 +52,12 @@
 		581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C9C4218044CD300279256 /* PullDownScrollView.m */; };
 		58204E781862061600702F4F /* GLPPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E771862061600702F4F /* GLPPostOperation.m */; };
 		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
+		5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5821278C1891627D00BF36E5 /* VSScrollView.m */; };
+		582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5821278E1891627D00BF36E5 /* VSScrollViewCell.m */; };
+		582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582127911891657100BF36E5 /* CampusWallHeaderCell.xib */; };
+		58212795189165B200BF36E5 /* CampusWallHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58212794189165B200BF36E5 /* CampusWallHeaderCell.m */; };
+		582128361891A85B00BF36E5 /* top_wall_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 582128351891A85B00BF36E5 /* top_wall_background.png */; };
+		582128381891AA0C00BF36E5 /* gleepost_logo_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 582128371891AA0C00BF36E5 /* gleepost_logo_header.png */; };
 		582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CB17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m */; };
 		582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CD17FC59F50032ECEB /* TPKeyboardAvoidingTableView.m */; };
 		582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CF17FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
@@ -309,7 +315,7 @@
 		58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */; };
 		58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */; };
 		58FD7072189009190024E8A1 /* TransitionDelegateViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */; };
-		58FD7074189040920024E8A1 /* CampusWallHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD7073189040920024E8A1 /* CampusWallHeaderCell.xib */; };
+		58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */; };
 		58FD7077189041560024E8A1 /* CampusWallHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7076189041560024E8A1 /* CampusWallHeader.m */; };
 		58FD707A189042A20024E8A1 /* CampusWallHeaderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7079189042A20024E8A1 /* CampusWallHeaderTableView.m */; };
 		58FD708118905B680024E8A1 /* all_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707C18905B680024E8A1 /* all_category.png */; };
@@ -542,6 +548,15 @@
 		58204E771862061600702F4F /* GLPPostOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperation.m; sourceTree = "<group>"; };
 		58204E79186207AF00702F4F /* GLPQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPQueueManager.h; sourceTree = "<group>"; };
 		58204E7A186207AF00702F4F /* GLPQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPQueueManager.m; sourceTree = "<group>"; };
+		5821278B1891627D00BF36E5 /* VSScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSScrollView.h; sourceTree = "<group>"; };
+		5821278C1891627D00BF36E5 /* VSScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSScrollView.m; sourceTree = "<group>"; };
+		5821278D1891627D00BF36E5 /* VSScrollViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSScrollViewCell.h; sourceTree = "<group>"; };
+		5821278E1891627D00BF36E5 /* VSScrollViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSScrollViewCell.m; sourceTree = "<group>"; };
+		582127911891657100BF36E5 /* CampusWallHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallHeaderCell.xib; sourceTree = "<group>"; };
+		58212793189165B200BF36E5 /* CampusWallHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeaderCell.h; sourceTree = "<group>"; };
+		58212794189165B200BF36E5 /* CampusWallHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeaderCell.m; sourceTree = "<group>"; };
+		582128351891A85B00BF36E5 /* top_wall_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_wall_background.png; sourceTree = "<group>"; };
+		582128371891AA0C00BF36E5 /* gleepost_logo_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_logo_header.png; sourceTree = "<group>"; };
 		582143CA17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
 		582143CB17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
 		582143CC17FC59F50032ECEB /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
@@ -889,7 +904,7 @@
 		58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewCategories.m; sourceTree = "<group>"; };
 		58FD7070189009190024E8A1 /* TransitionDelegateViewCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewCategories.h; sourceTree = "<group>"; };
 		58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewCategories.m; sourceTree = "<group>"; };
-		58FD7073189040920024E8A1 /* CampusWallHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallHeaderCell.xib; sourceTree = "<group>"; };
+		58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallHeaderScrollView.xib; sourceTree = "<group>"; };
 		58FD7075189041560024E8A1 /* CampusWallHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeader.h; sourceTree = "<group>"; };
 		58FD7076189041560024E8A1 /* CampusWallHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeader.m; sourceTree = "<group>"; };
 		58FD7078189042A20024E8A1 /* CampusWallHeaderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeaderTableView.h; sourceTree = "<group>"; };
@@ -1223,6 +1238,38 @@
 				580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */,
 			);
 			name = "ProfileView Settings";
+			sourceTree = "<group>";
+		};
+		5821278A189161C800BF36E5 /* VSScroller */ = {
+			isa = PBXGroup;
+			children = (
+				5821278B1891627D00BF36E5 /* VSScrollView.h */,
+				5821278C1891627D00BF36E5 /* VSScrollView.m */,
+				5821278D1891627D00BF36E5 /* VSScrollViewCell.h */,
+				5821278E1891627D00BF36E5 /* VSScrollViewCell.m */,
+			);
+			name = VSScroller;
+			sourceTree = "<group>";
+		};
+		582128331891A7E200BF36E5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				58FD707C18905B680024E8A1 /* all_category.png */,
+				58FD707D18905B680024E8A1 /* events_category.png */,
+				58FD707E18905B680024E8A1 /* for_sale_category.png */,
+				58FD707F18905B680024E8A1 /* news_category.png */,
+				58FD708018905B680024E8A1 /* sports_category.png */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		582128341891A7F100BF36E5 /* Campus Wall */ = {
+			isa = PBXGroup;
+			children = (
+				582128351891A85B00BF36E5 /* top_wall_background.png */,
+				582128371891AA0C00BF36E5 /* gleepost_logo_header.png */,
+			);
+			name = "Campus Wall";
 			sourceTree = "<group>";
 		};
 		582143C917FC59E10032ECEB /* External Code */ = {
@@ -1889,11 +1936,8 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
-				58FD707C18905B680024E8A1 /* all_category.png */,
-				58FD707D18905B680024E8A1 /* events_category.png */,
-				58FD707E18905B680024E8A1 /* for_sale_category.png */,
-				58FD707F18905B680024E8A1 /* news_category.png */,
-				58FD708018905B680024E8A1 /* sports_category.png */,
+				582128341891A7F100BF36E5 /* Campus Wall */,
+				582128331891A7E200BF36E5 /* Categories */,
 			);
 			name = "Design v1";
 			sourceTree = "<group>";
@@ -2010,6 +2054,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5821278A189161C800BF36E5 /* VSScroller */,
 				806E3D891832B1A40063AACE /* HexColors */,
 				806E3D591832B1960063AACE /* TSMessages */,
 			);
@@ -2179,6 +2224,8 @@
 				58FD7076189041560024E8A1 /* CampusWallHeader.m */,
 				58FD7078189042A20024E8A1 /* CampusWallHeaderTableView.h */,
 				58FD7079189042A20024E8A1 /* CampusWallHeaderTableView.m */,
+				58212793189165B200BF36E5 /* CampusWallHeaderCell.h */,
+				58212794189165B200BF36E5 /* CampusWallHeaderCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2459,12 +2506,13 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				58FD7073189040920024E8A1 /* CampusWallHeaderCell.xib */,
+				58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */,
 				584CF66E1823017B00EFABB8 /* GLPNotificationCell.xib */,
 				58D0E2611850BB80005879F4 /* GLPNotCell.xib */,
 				80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */,
 				8073346D183B956200C6D74A /* GLPLoadingCell.xib */,
 				58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */,
+				582127911891657100BF36E5 /* CampusWallHeaderCell.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -2712,6 +2760,7 @@
 				58A122B017ECC8F300E2AB4B /* MessageBox2.png in Resources */,
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
 				8096E4D317C2BA3000C7BF60 /* clock.png in Resources */,
+				582128361891A85B00BF36E5 /* top_wall_background.png in Resources */,
 				58808EFA1807012D00E415C1 /* navigationbar2.png in Resources */,
 				80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */,
 				58E3DAC5188405DB00B9B048 /* blimp.png in Resources */,
@@ -2743,6 +2792,7 @@
 				584F3864181809A700A1B742 /* yourchatbubble4.png in Resources */,
 				8096E4D917C2BEF400C7BF60 /* new_post.png in Resources */,
 				805E1559180EF3E700705B1C /* share_image.png in Resources */,
+				582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */,
 				805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */,
 				58C09A1B185B2CDD00648EB4 /* bell.png in Resources */,
 				5890D23918482DC300E293DD /* proximity.png in Resources */,
@@ -2888,6 +2938,7 @@
 				584332A5180F324200BD9F74 /* profilepicture.png in Resources */,
 				587D23C817EA195D00E0DDFF /* chat_user.png in Resources */,
 				586E2236180FE58900C0FA03 /* password2.png in Resources */,
+				582128381891AA0C00BF36E5 /* gleepost_logo_header.png in Resources */,
 				586458B8180854B700B1B19C /* thumbs-up@2x.png in Resources */,
 				58D0E2681850E06D005879F4 /* notification_icon.jpg in Resources */,
 				806E3D841832B1960063AACE /* NotificationButtonBackground.png in Resources */,
@@ -2903,7 +2954,7 @@
 				58493F3C1827ED1800EE5F1A /* navigationbar2_.png in Resources */,
 				58DB02A818105C86001C021A /* blackholder1.png in Resources */,
 				5866F16918844F05007484CF /* blades_night_copy.png in Resources */,
-				58FD7074189040920024E8A1 /* CampusWallHeaderCell.xib in Resources */,
+				58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,
@@ -3036,6 +3087,7 @@
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				806E3D881832B1960063AACE /* TSMessageView.m in Sources */,
 				80C8BA591810340E004F70DB /* GLPUserDao.m in Sources */,
+				582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */,
 				58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */,
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,
 				C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */,
@@ -3081,6 +3133,7 @@
 				8087E430180EC02E00938264 /* Post.m in Sources */,
 				58FD707A189042A20024E8A1 /* CampusWallHeaderTableView.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
+				58212795189165B200BF36E5 /* CampusWallHeaderCell.m in Sources */,
 				58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
 				580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */,
@@ -3134,6 +3187,7 @@
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
 				806E3D751832B1960063AACE /* TSMessage.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
+				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */,
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
