@@ -247,6 +247,7 @@
 		58AD86B01892A7B800016C6D /* top_wall2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86AF1892A7B800016C6D /* top_wall2.png */; };
 		58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86B11892B0A700016C6D /* profile_picture_under.png */; };
 		58AD86BA1892C01500016C6D /* top_wall.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86B91892C01500016C6D /* top_wall.png */; };
+		58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */; };
 		58B1161D180D8491000E9555 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B1161C180D8491000E9555 /* ProfileView.m */; };
 		58B1161F180D89A9000E9555 /* profile_image_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1161E180D89A9000E9555 /* profile_image_frame.png */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
@@ -815,6 +816,7 @@
 		58AD86AF1892A7B800016C6D /* top_wall2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_wall2.png; sourceTree = "<group>"; };
 		58AD86B11892B0A700016C6D /* profile_picture_under.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_under.png; sourceTree = "<group>"; };
 		58AD86B91892C01500016C6D /* top_wall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_wall.png; sourceTree = "<group>"; };
+		58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPIntroducedProfile.xib; sourceTree = "<group>"; };
 		58B1161B180D8491000E9555 /* ProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
 		58B1161C180D8491000E9555 /* ProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		58B1161E180D89A9000E9555 /* profile_image_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_image_frame.png; sourceTree = "<group>"; };
@@ -1775,9 +1777,9 @@
 			isa = PBXGroup;
 			children = (
 				58AD86B91892C01500016C6D /* top_wall.png */,
+				58AD86AC1892A7AB00016C6D /* bottom_wall.png */,
 				58AD86B11892B0A700016C6D /* profile_picture_under.png */,
 				58AD86AF1892A7B800016C6D /* top_wall2.png */,
-				58AD86AC1892A7AB00016C6D /* bottom_wall.png */,
 				58AD869B18929F2200016C6D /* about_button.png */,
 				58AD869C18929F2200016C6D /* active_tab.png */,
 				58AD869D18929F2200016C6D /* bg_middle.png */,
@@ -2542,6 +2544,7 @@
 				8073346D183B956200C6D74A /* GLPLoadingCell.xib */,
 				58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */,
 				582127911891657100BF36E5 /* CampusWallHeaderCell.xib */,
+				58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -2831,6 +2834,7 @@
 				58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */,
 				5843328C180F069800BD9F74 /* loginwithfacebook.png in Resources */,
 				58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */,
+				58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */,
 				8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */,
 				584C1EF4181ACBCA00862E81 /* contacts_tab@2x.png in Resources */,
 				80C8BA4A18101DF9004F70DB /* other_chat_background.png in Resources */,

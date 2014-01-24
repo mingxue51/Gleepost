@@ -100,6 +100,9 @@ float timeInterval = 0.1;
     [self configureTableView];
     
     [self loadElements];
+    
+    [self configureHeader];
+
 
 }
 
@@ -112,6 +115,7 @@ float timeInterval = 0.1;
     [AppearanceHelper setNavigationBarFontFor:self];
     
     [self configureBackground];
+    
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
 
@@ -185,8 +189,17 @@ float timeInterval = 0.1;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self.timer1 invalidate];
-    
-    
+}
+
+-(void)configureHeader
+{
+    if([self isNewChat])
+    {
+        //Add header the introduced view.
+        NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
+        
+        self.tableView.tableHeaderView = [array objectAtIndex:0];
+    }
 }
 
 -(void)configureBackground
@@ -331,12 +344,14 @@ float timeInterval = 0.1;
 
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
-    
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     //self.navigationController.navigationBar.tintColor = tabColour;
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.translucent = NO;
+    
+    //[AppearanceHelper setNavigationBarColour:self];
+
     
 
 }
@@ -1224,6 +1239,24 @@ float timeInterval = 0.1;
 //        
 //        profileViewController.incomingUser = incomingUser;
     }
+}
+
+#pragma mark - Helper methods
+
+-(BOOL)isNewChat
+{
+    NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
+    UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 2];
+    Class parentVCClass = [parentViewController class];
+    NSString *className = NSStringFromClass(parentVCClass);
+    
+    if([className isEqualToString:@"ChatViewController"])
+    {
+        //Add header the introduced view.
+        return YES;
+    }
+    
+    return NO;
 }
 
 
