@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <QuartzCore/QuartzCore.h>
 #import "ContactsManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
@@ -43,6 +44,8 @@
 
 @implementation ProfileTableViewCell
 
+const float PROFILE_CELL_HEIGHT = 220.0f;
+
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
@@ -58,11 +61,7 @@
 {
     [self initialiseLoadingElements];
 
-    
-    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
-    
-    self.profileImage.layer.borderWidth = 4.0;
-    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
+    [self formatProfileImage];
     
     [self.profileImage setImage:image];
 }
@@ -85,11 +84,8 @@
     
     [self.universityLabel setText:user.networkName];
     
-    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
-    
-    self.profileImage.layer.borderWidth = 4.0;
-    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
-    
+    [self formatProfileImage];
+
     
     
     
@@ -130,12 +126,8 @@
     
     [self.universityLabel setText:user.networkName];
 
-    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
-    
-    self.profileImage.layer.borderWidth = 4.0;
-    self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
-    
-    
+    [self formatProfileImage];
+
 
     
     if([user.profileImageUrl isEqualToString:@""])
@@ -226,7 +218,7 @@
 -(void)setCurrentUserStatusWithUser:(GLPUser *)user
 {
 
-    CGRect universityLabelFrame = self.universityLabel.frame;
+//    CGRect universityLabelFrame = self.universityLabel.frame;
     
     if(self.currentUser.remoteKey == [[SessionManager sharedInstance].user remoteKey])
     {
@@ -290,6 +282,21 @@
     }
     
     [self.universityLabel setHidden:NO];
+}
+
+-(void)formatProfileImage
+{
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+    
+    self.profileImage.layer.borderWidth = 5.0;
+    self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    // drop shadow
+//    [self.profileImage.layer setShadowColor:[UIColor blackColor].CGColor];
+//    [self.profileImage.layer setShadowOpacity:0.5];
+//    [self.profileImage.layer setShadowRadius:3.0];
+//    [self.profileImage.layer setShadowOffset:CGSizeMake(0.0, 10.0)];
+//    self.profileImage.layer.masksToBounds = YES;
 }
 
 -(void)changeProfileImage:(id)sender

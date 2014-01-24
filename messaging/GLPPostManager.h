@@ -23,5 +23,6 @@ extern NSInteger const kGLPNumberOfPosts;
 + (void)updatePostAfterSending:(GLPPost *)post;
 +(void)updatePostWithLiked:(GLPPost*)post;
 +(void)updatePostWithRemoteKey:(int)remoteKey andNumberOfComments:(int)numberOfComments;
++(void)loadEventsRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback;
 
 @end

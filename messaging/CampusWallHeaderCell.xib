@@ -34,7 +34,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-bW-q0z">
-                            <rect key="frame" x="146" y="15" width="34" height="18"/>
+                            <rect key="frame" x="146" y="15" width="54" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="highlightedColor"/>
@@ -47,8 +47,11 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <connections>
+                <outlet property="contentLbl" destination="hA7-5b-9Xx" id="5dt-QB-3Pz"/>
                 <outlet property="contentView" destination="ZyH-xX-9dE" id="iuk-AA-oq6"/>
                 <outlet property="profileImage" destination="bJS-28-eDx" id="9N5-wV-KBO"/>
+                <outlet property="timeLbl" destination="kqR-bW-q0z" id="Uq0-Ai-H0M"/>
+                <outlet property="userNameLbl" destination="7nm-RY-Dh1" id="G23-lo-eZ2"/>
             </connections>
         </view>
     </objects>

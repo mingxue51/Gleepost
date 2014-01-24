@@ -25,10 +25,17 @@
     if(self)
     {
         [self setFrame:CGRectMake(0, 0, 320.0f, 280.0f)];
+        
+        DDLogDebug(@"SUBVIEWS: %@",[self subviews]);
     }
     
     return self;
 }
+
+-(void)hideLoadingEvents
+{
+}
+
 - (IBAction)showCategories:(id)sender
 {
     DDLogDebug(@"showCategories");

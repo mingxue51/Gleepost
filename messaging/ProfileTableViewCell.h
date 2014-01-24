@@ -13,6 +13,10 @@
 
 @interface ProfileTableViewCell : UITableViewCell
 
+extern const float PROFILE_CELL_HEIGHT;
+
+
+
 @property (assign, nonatomic) BOOL isBusy;
 
 

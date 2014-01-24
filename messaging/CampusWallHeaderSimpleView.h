@@ -10,4 +10,6 @@
 
 @interface CampusWallHeaderSimpleView : UIView
 
+-(void)hideLoadingEvents;
+
 @end

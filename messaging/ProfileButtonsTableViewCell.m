@@ -19,6 +19,8 @@
 
 @implementation ProfileButtonsTableViewCell
 
+const float BUTTONS_CELL_HEIGHT = 65.0f;
+
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
@@ -37,18 +39,19 @@
 
 - (IBAction)viewAbout:(id)sender
 {
-    [self showAllLines];
-    
-    [self.aboutLine setHidden:YES];
+    [self setGrayToNavigators];
+
+    [self setGreenToNavigator:self.aboutLine];
     
     [_delegate viewSectionWithId:kGLPAbout];
 }
 
 - (IBAction)viewPosts:(id)sender
 {
-    [self showAllLines];
+    [self setGrayToNavigators];
 
-    [self.postsLine setHidden:YES];
+    [self setGreenToNavigator:self.postsLine];
+
 
     [_delegate viewSectionWithId:kGLPPosts];
 
@@ -56,11 +59,25 @@
 
 - (IBAction)viewMutual:(id)sender
 {
-    [self showAllLines];
+    [self setGrayToNavigators];
 
-    [self.mutualLine setHidden:YES];
+    [self setGreenToNavigator:self.mutualLine];
 
     [_delegate viewSectionWithId:kGLPMutual];
+}
+
+
+-(void)setGreenToNavigator:(UIImageView*)navigator
+{
+    [navigator setImage:[UIImage imageNamed:@"active_tab"]];
+}
+
+-(void)setGrayToNavigators
+{
+    [self.aboutLine setImage:[UIImage imageNamed:@"idle_tab"]];
+    
+    [self.postsLine setImage:[UIImage imageNamed:@"idle_tab"]];
+    [self.mutualLine setImage:[UIImage imageNamed:@"idle_tab"]];
 }
 
 -(void)showAllLines

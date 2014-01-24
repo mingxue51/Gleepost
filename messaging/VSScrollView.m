@@ -371,7 +371,6 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"called");
     if (!decelerate)
     {
         [self removeAliveOutOfBoundsCells];

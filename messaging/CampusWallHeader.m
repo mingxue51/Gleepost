@@ -8,19 +8,24 @@
 
 #import "CampusWallHeader.h"
 #import "CampusWallHeaderCell.h"
+#import "GLPPostManager.h"
+#import "SessionManager.h"
+#import "WebClientHelper.h"
 
 @interface CampusWallHeader ()
 
 
 //@property (weak, nonatomic) IBOutlet VSScrollView *scrollView;
-@property (strong, nonatomic) NSMutableArray *dataArray;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIButton *eventsBtn;
+
+@property (strong, nonatomic) NSArray *posts;
 
 @end
 
 @implementation CampusWallHeader
 
+@synthesize posts = _posts;
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -38,12 +43,8 @@
         
         [self setDelegate:self];
         
-    
-        self.dataArray = [NSMutableArray array];
+        [self loadEvents];
         
-        [self.dataArray addObject:@"TEST"];
-        [self.dataArray addObject:@"TEST2"];
-        [self.dataArray addObject:@"TEST3"];
         
 //        [self.scrollView setScrollEnabled:YES];
 //        [self.scrollView setContentSize:CGSizeMake(500.0f, 150.0f)];
@@ -54,6 +55,53 @@
     }
     
     return self;
+}
+
+#pragma mark - Client
+
+-(void)loadEvents
+{
+    [self showLoadingLabel];
+    
+    [GLPPostManager loadEventsRemotePostsForUserRemoteKey:[SessionManager sharedInstance].user.remoteKey callback:^(BOOL success, NSArray *posts) {
+       
+        if(success)
+        {
+            _posts = posts;
+            [self reloadData];
+            [self hideLoadingLabel];
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
+        }
+        
+    }];
+}
+
+#pragma mark - UI methods
+
+-(void)showLoadingLabel
+{
+    UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 200, 20)];
+    loadingLabel.tag = 100;
+    
+    [loadingLabel setTextColor:[UIColor lightGrayColor]];
+    
+    [loadingLabel setText:@"Loading Events..."];
+    
+    [self addSubview:loadingLabel];
+}
+
+-(void)hideLoadingLabel
+{
+    for(UIView *v in [self subviews])
+    {
+        if(v.tag == 100)
+        {
+            [v removeFromSuperview];
+        }
+    }
 }
 
 #pragma mark - VSScrollView Delegate
@@ -88,7 +136,7 @@
 
 -(NSUInteger)numberOfViewInvsscrollview:(VSScrollView *)scrollview
 {
-    return [self.dataArray count];
+    return [_posts count];
 }
 
 -(VSScrollViewCell *)vsscrollView:(VSScrollView *)scrollView viewAtPosition:(int)position
@@ -111,7 +159,7 @@
     
 
     
-    [myView setData:[self.dataArray objectAtIndex:position]];
+    [myView setData:[_posts objectAtIndex:position]];
     
     return myView;
 }

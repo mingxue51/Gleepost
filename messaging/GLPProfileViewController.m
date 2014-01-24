@@ -750,11 +750,11 @@
 {
     if(indexPath.row == 0)
     {
-        return 245.0f;
+        return PROFILE_CELL_HEIGHT;
     }
     else if(indexPath.row == 1)
     {
-        return 50.0f;
+        return TWO_BUTTONS_CELL_HEIGHT;
     }
     else if(indexPath.row >= 2)
     {

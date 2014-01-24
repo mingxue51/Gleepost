@@ -12,6 +12,9 @@
 
 @interface ProfileTwoButtonsTableViewCell : UITableViewCell
 
+extern const float TWO_BUTTONS_CELL_HEIGHT;
+
+
 @property (readonly, nonatomic) GLPProfileViewController *delegate;
 
 

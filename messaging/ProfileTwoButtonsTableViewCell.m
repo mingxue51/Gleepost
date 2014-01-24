@@ -18,12 +18,18 @@
 
 @implementation ProfileTwoButtonsTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+const float TWO_BUTTONS_CELL_HEIGHT = 65.0f;
+
+
+-(id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
+    {
+        
     }
+    
     return self;
 }
 
@@ -34,9 +40,9 @@
 
 - (IBAction)viewPosts:(id)sender
 {
-    [self showAllLines];
+    [self setGrayToNavigators];
     
-    [self.postsLine setHidden:YES];
+    [self setGreenToNavigator:self.postsLine];
     
     [_delegate viewSectionWithId:kGLPPosts];
 }
@@ -44,11 +50,25 @@
 
 - (IBAction)viewSettings:(id)sender
 {
-    [self showAllLines];
     
-    [self.settingsLine setHidden:YES];
+    [self setGrayToNavigators];
+    
+    [self setGreenToNavigator:self.settingsLine];
     
     [_delegate viewSectionWithId:kGLPSettings];
+}
+
+
+-(void)setGreenToNavigator:(UIImageView*)navigator
+{
+    [navigator setImage:[UIImage imageNamed:@"active_tab"]];
+}
+
+-(void)setGrayToNavigators
+{
+    [self.settingsLine setImage:[UIImage imageNamed:@"idle_tab"]];
+    
+    [self.postsLine setImage:[UIImage imageNamed:@"idle_tab"]];
 }
 
 -(void)showAllLines
