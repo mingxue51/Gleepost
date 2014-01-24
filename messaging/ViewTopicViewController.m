@@ -848,8 +848,6 @@ float timeInterval = 0.1;
 {
     [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation localCallback:^(GLPMessage *localMessage) {
         [self showMessage:localMessage];
-    } sendCallback:^(GLPMessage *sentMessage, BOOL success) {
-        [self.tableView reloadData];
     }];
     
     self.formTextView.text = @"";

@@ -122,6 +122,7 @@
     NSDictionary *params = @{
                              @"remoteKey": remoteKey,
                              @"sendStatus": [NSNumber numberWithInt:entity.sendStatus],
+                             @"key": [NSNumber numberWithInteger:entity.key]
                              };
     
     [db executeUpdate:sql withParameterDictionary:params];

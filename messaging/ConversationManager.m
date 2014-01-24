@@ -291,7 +291,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
-+ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback sendCallback:(void (^)(GLPMessage *sentMessage, BOOL success))sendCallback
++ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback
 {
     DDLogInfo(@"Create message with content %@", content);
     
