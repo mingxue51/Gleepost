@@ -24,5 +24,6 @@
 @property (strong, nonatomic) GLPConversation *conversation;
 
 - (void)reloadElements;
+-(void)navigateToProfile:(id)sender;
 
 @end

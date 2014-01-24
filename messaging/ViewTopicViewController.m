@@ -36,6 +36,7 @@
 #import "UIViewController+Flurry.h"
 
 #import "GLPThemeManager.h"
+#import "GLPIntroducedProfile.h"
 
 const int textViewSizeOfLine = 12;
 const int flexibleResizeLimit = 120;
@@ -80,6 +81,8 @@ float timeInterval = 0.1;
 @property (strong, nonatomic) UIView *oldTitleView;
 
 @property (assign, nonatomic) int selectedUserId;
+
+
 
 - (IBAction)sendButtonClicked:(id)sender;
 - (IBAction)tableViewClicked:(id)sender;
@@ -198,7 +201,18 @@ float timeInterval = 0.1;
         //Add header the introduced view.
         NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
         
-        self.tableView.tableHeaderView = [array objectAtIndex:0];
+        GLPIntroducedProfile * introduced = [array objectAtIndex:0];
+        
+        /**
+         [titleLabel setTitle:_conversation.title forState:UIControlStateNormal];
+         titleLabel.tag = [_conversation getUniqueParticipant].remoteKey;
+         */
+        
+        [introduced updateContents:[_conversation getUniqueParticipant]];
+        
+        introduced.delegate = self;
+        
+        self.tableView.tableHeaderView = introduced;
     }
 }
 
@@ -323,10 +337,10 @@ float timeInterval = 0.1;
 {
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 
-    self.title = _conversation.title;
 
     // navigate to profile through navigation bar for user-to-user conversation
-    if(!_conversation.isGroup) {
+    if(!_conversation.isGroup && ![self isNewChat])
+    {
         //Create a button instead of using the default title view for recognising gestures.
         UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
         [titleLabel setTitle:_conversation.title forState:UIControlStateNormal];
@@ -341,6 +355,14 @@ float timeInterval = 0.1;
         self.navigationItem.titleView = titleLabel;
     }
     
+    if([self isNewChat])
+    {
+        self.title = @"Connected";
+    }
+    else
+    {
+        self.title = _conversation.title;
+    }
 
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
@@ -861,6 +883,13 @@ float timeInterval = 0.1;
 
 - (void)createMessageFromForm
 {
+    [UIView animateWithDuration:2.0f animations:^{
+       
+        //Remove header view after first message.
+        [self.tableView.tableHeaderView setAlpha:0.0f];
+    }];
+    
+    
     [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation localCallback:^(GLPMessage *localMessage) {
         [self showMessage:localMessage];
     }];

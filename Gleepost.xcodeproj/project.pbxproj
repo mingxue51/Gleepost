@@ -248,6 +248,9 @@
 		58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86B11892B0A700016C6D /* profile_picture_under.png */; };
 		58AD86BA1892C01500016C6D /* top_wall.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86B91892C01500016C6D /* top_wall.png */; };
 		58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */; };
+		58AD86BF1892DFC400016C6D /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BE1892DFC400016C6D /* add_button.png */; };
+		58AD86C11892DFD100016C6D /* profile_botton.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86C01892DFD100016C6D /* profile_botton.png */; };
+		58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */; };
 		58B1161D180D8491000E9555 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B1161C180D8491000E9555 /* ProfileView.m */; };
 		58B1161F180D89A9000E9555 /* profile_image_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1161E180D89A9000E9555 /* profile_image_frame.png */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
@@ -817,6 +820,10 @@
 		58AD86B11892B0A700016C6D /* profile_picture_under.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_under.png; sourceTree = "<group>"; };
 		58AD86B91892C01500016C6D /* top_wall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_wall.png; sourceTree = "<group>"; };
 		58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPIntroducedProfile.xib; sourceTree = "<group>"; };
+		58AD86BE1892DFC400016C6D /* add_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button.png; sourceTree = "<group>"; };
+		58AD86C01892DFD100016C6D /* profile_botton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_botton.png; sourceTree = "<group>"; };
+		58AD86C21892E0F200016C6D /* GLPIntroducedProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPIntroducedProfile.h; sourceTree = "<group>"; };
+		58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPIntroducedProfile.m; sourceTree = "<group>"; };
 		58B1161B180D8491000E9555 /* ProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
 		58B1161C180D8491000E9555 /* ProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		58B1161E180D89A9000E9555 /* profile_image_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_image_frame.png; sourceTree = "<group>"; };
@@ -1511,6 +1518,8 @@
 				5865813118059DAD005814B4 /* Bubbles.m */,
 				58DB02851810391F001C021A /* NSMutableArray+QueueAdditions.h */,
 				58DB02861810391F001C021A /* NSMutableArray+QueueAdditions.m */,
+				58AD86C21892E0F200016C6D /* GLPIntroducedProfile.h */,
+				58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */,
 			);
 			name = "NewChat Classes";
 			sourceTree = "<group>";
@@ -1792,6 +1801,15 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
+		58AD86BD1892DFB100016C6D /* New Chat */ = {
+			isa = PBXGroup;
+			children = (
+				58AD86BE1892DFC400016C6D /* add_button.png */,
+				58AD86C01892DFD100016C6D /* profile_botton.png */,
+			);
+			name = "New Chat";
+			sourceTree = "<group>";
+		};
 		58B865CF180D9DD200BB18AF /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -1972,6 +1990,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				58AD86BD1892DFB100016C6D /* New Chat */,
 				58AD869A18929EB700016C6D /* Profile */,
 				582128341891A7F100BF36E5 /* Campus Wall */,
 				582128331891A7E200BF36E5 /* Categories */,
@@ -2840,6 +2859,7 @@
 				80C8BA4A18101DF9004F70DB /* other_chat_background.png in Resources */,
 				582840FD180DC0EA000F3CF7 /* multiplechatimg.png in Resources */,
 				58FB7CC018565AC1002C6A00 /* ProfileViewMutualTableViewCell.xib in Resources */,
+				58AD86C11892DFD100016C6D /* profile_botton.png in Resources */,
 				5890D225184790BA00E293DD /* chat_background_default.png in Resources */,
 				58DAD77E1859FBD20016D838 /* man-7@2x.png in Resources */,
 				5893BA031820097C0003589E /* CommentTextCellView.xib in Resources */,
@@ -2952,6 +2972,7 @@
 				80E7479417CEAED7001957E5 /* get_messages.json in Resources */,
 				80C4CABA17CFE3C400AFA80C /* post_register.json in Resources */,
 				806E3D761832B1960063AACE /* NotificationBackgroundError.png in Resources */,
+				58AD86BF1892DFC400016C6D /* add_button.png in Resources */,
 				58DAD77D1859FBD20016D838 /* id-card-7@2x.png in Resources */,
 				58DB02AA18105C86001C021A /* blackholder3.png in Resources */,
 				80C4CABF17CFEAAB00AFA80C /* post_newconversation.json in Resources */,
@@ -3276,6 +3297,7 @@
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
+				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
