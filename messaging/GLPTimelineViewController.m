@@ -44,6 +44,7 @@
 #import "GLPCategoriesViewController.h"
 #import "TransitionDelegateViewCategories.h"
 #import "CampusWallHeader.h"
+#import "CampusWallHeaderSimpleView.h"
 
 @interface GLPTimelineViewController ()
 
@@ -481,7 +482,11 @@
     
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
 
-    self.tableView.tableHeaderView = [array objectAtIndex:0];
+    //Set delegate.
+    CampusWallHeaderSimpleView *c = [array objectAtIndex:0];
+    c.delegate = self;
+    
+    self.tableView.tableHeaderView = c;
     
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];

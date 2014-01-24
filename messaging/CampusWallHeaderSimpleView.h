@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPTimelineViewController.h"
 
 @interface CampusWallHeaderSimpleView : UIView
+
+@property (weak, nonatomic) GLPTimelineViewController *delegate;
 
 -(void)hideLoadingEvents;
 

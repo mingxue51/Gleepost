@@ -26,5 +26,7 @@
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost;
 -(void)refreshPostsWithNewCategory;
+-(void)newPostButtonClick;
+-(void)showCategories:(id)sender;
 
 @end

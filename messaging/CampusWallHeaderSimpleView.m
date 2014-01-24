@@ -36,6 +36,16 @@
 {
 }
 
+- (IBAction)showTags:(id)sender
+{
+    [self.delegate showCategories:sender];
+}
+
+- (IBAction)createNewPost:(id)sender
+{
+    [self.delegate newPostButtonClick];
+}
+
 - (IBAction)showCategories:(id)sender
 {
     DDLogDebug(@"showCategories");

@@ -113,9 +113,7 @@ float timeInterval = 0.1;
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setTranslucent:YES];
-    
-    [AppearanceHelper setNavigationBarFontFor:self];
+
     
     [self configureBackground];
     
@@ -370,7 +368,12 @@ float timeInterval = 0.1;
     //self.navigationController.navigationBar.tintColor = tabColour;
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.translucent = NO;
+//    self.navigationController.navigationBar.translucent = NO;
+    
+    [self.navigationController.navigationBar setTranslucent:YES];
+    
+    [AppearanceHelper setNavigationBarFontFor:self];
+    
     
     //[AppearanceHelper setNavigationBarColour:self];
 
