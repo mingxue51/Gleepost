@@ -17,6 +17,11 @@
 
 @implementation GLPMessageDao
 
++ (GLPMessage *)findLastRemoteMessageForConversation:(GLPConversation *)conversation db:(FMDatabase *)db
+{
+    
+}
+
 + (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by isOld, key DESC limit %d", conversation.remoteKey, NumberMaxOfMessagesLoaded];

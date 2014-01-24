@@ -204,7 +204,7 @@ float timeInterval = 0.1;
     self.tableViewDisplayedLoadingCell = NO;
     
     // new messages bottom loading cell
-    self.bottomLoadingCellStatus = kGLPLoadingCellStatusInit;
+    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished; //kGLPLoadingCellStatusInit;
     
     self.inLoading = NO;
     self.tableViewInScrolling = NO;
@@ -520,7 +520,26 @@ float timeInterval = 0.1;
     NSArray *messages = [ConversationManager loadMessagesForConversation:self.conversation];
     [self loadInitialMessagesLocalCallback:messages];
     
-    self.inLoading = NO;
+    if(messages.count < 20) {
+        DDLogInfo(@"Load previous messages");
+        
+        [ConversationManager loadPreviousMessagesForConversation:self.conversation before:[messages firstObject] localCallback:^(NSArray *messages) {
+            // do nothing so far
+        } remoteCallback:^(BOOL success, NSArray *previousMessages) {
+            DDLogInfo(@"Previous messages remote callback %d", previousMessages.count);
+            
+            // insert messages before existing ones
+            [self.messages insertObjects:previousMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, previousMessages.count)]];
+            
+            [self configureDisplayForMessages:self.messages];
+            [self.tableView reloadData];
+            [self scrollToTheEndAnimated:NO];
+            
+            self.inLoading = NO;
+        }];
+    }
+    
+    
     
     
 //    [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {

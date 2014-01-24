@@ -193,19 +193,21 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
-        NSMutableArray *synchMessages = [NSMutableArray arrayWithCapacity:messages.count];
+        [self internalInsertMessages:messages toConversation:synchConversation atTheEnd:YES];
         
-        NSInteger key = 1;
-        for(GLPMessage *m in messages) {
-            GLPMessage *synchMessage = [m copy];
-            synchMessage.key = key;
-            [synchMessages addObject:synchMessage];
-            key++;
-        }
-        
-        NSNumber *index = [NSNumber numberWithInteger:synchConversation.remoteKey];
-        _conversationsMessages[index] = synchMessages;
-        _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:synchMessages.count];
+//        NSMutableArray *synchMessages = [NSMutableArray arrayWithCapacity:messages.count];
+//        
+//        NSInteger key = 1;
+//        for(GLPMessage *m in messages) {
+//            GLPMessage *synchMessage = [m copy];
+//            synchMessage.key = key;
+//            [synchMessages addObject:synchMessage];
+//            key++;
+//        }
+//        
+//        NSNumber *index = [NSNumber numberWithInteger:synchConversation.remoteKey];
+//        _conversationsMessages[index] = synchMessages;
+//        _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:synchMessages.count];
     });
 }
 
@@ -230,6 +232,39 @@ static GLPLiveConversationsManager *instance = nil;
         if(message.sendStatus == kSendStatusSent) {
             synchMessage.remoteKey = message.remoteKey;
         }
+    });
+}
+
+- (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation before:(GLPMessage *)message
+{
+    DDLogInfo(@"Add messages to live conversation before %@", message.content);
+    
+    dispatch_async(_queue, ^{
+        GLPConversation *syncConversation = [self internalFindConversationByRemoteKey:conversation.remoteKey];
+        if(!syncConversation) {
+            DDLogError(@"Cannot add messages for non existent conversation");
+            return;
+        }
+        
+        NSNumber *index = [NSNumber numberWithInteger:syncConversation.remoteKey];
+        
+        if(message) {
+            // check that the before message is the last one
+            GLPMessage *last = [_conversationsMessages[index] firstObject];
+            if(last.remoteKey != message.remoteKey) {
+                DDLogWarn(@"The last message (%d - %@) is not equal to the before message (%d)", last.remoteKey, last.content, message.remoteKey);
+                return;
+            }
+        } else {
+            // or check that there is no messages
+            NSInteger count = [_conversationsMessages[index] count];
+            if(count != 0) {
+                DDLogWarn(@"The before message is nil, but the live conversation messages list is not empty (count=%d)", count);
+                return;
+            }
+        }
+        
+        [self internalInsertMessages:messages toConversation:syncConversation atTheEnd:NO];
     });
 }
 
@@ -279,18 +314,30 @@ static GLPLiveConversationsManager *instance = nil;
     return messages[index];
 }
 
-//// Internal
-//// Should be called inside a queue block
-//- (void)insertMessages:(NSArray *)messages forConversation:(GLPConversation *)conversation
-//{
-//    NSMutableDictionary *messagesDic = [NSMutableDictionary dictionary];
-//    NSInteger key = 1;
-//    
-//    for(GLPMessage *message in messages) {
-//        messagesDic[[NSNumber numberWithInteger:key]] = mes
-//    }
-//    
-//    _messages[conversation] = [NSArray]
-//}
+// Internal
+// Should be called inside a queue block
+- (void)internalInsertMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation atTheEnd:(BOOL)end
+{
+    NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+    NSMutableArray *synchMessages = [NSMutableArray arrayWithCapacity:messages.count];
+    
+    NSInteger key = [_conversationsMessagesKeys[index] integerValue];
+    for(GLPMessage *m in messages) {
+        key++;
+        
+        GLPMessage *synchMessage = [m copy];
+        synchMessage.key = key;
+        [synchMessages addObject:synchMessage];
+    }
+    
+    // insert messages at the end or if the array is empty
+    if(end || [_conversationsMessages[index] count] == 0) {
+        [_conversationsMessages[index] addObjectsFromArray:synchMessages];
+    } else {
+        [_conversationsMessages[index] insertObjects:synchMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, synchMessages.count)]];
+    }
+    
+    _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:key];
+}
 
 @end

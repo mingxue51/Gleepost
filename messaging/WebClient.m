@@ -416,6 +416,31 @@ static WebClient *instance = nil;
 
 }
 
+- (void)getMessagesForConversation:(GLPConversation *)conversation after:(GLPMessage *)afterMessage before:(GLPMessage *)beforeMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    if(afterMessage) {
+        [params setObject:[NSNumber numberWithInteger:afterMessage.remoteKey] forKey:@"after"];
+    }
+    
+    if(beforeMessage) {
+        [params setObject:[NSNumber numberWithInteger:beforeMessage.remoteKey] forKey:@"before"];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteKey];
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:conversation];
+        callbackBlock(YES, messages);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //TODO: TEMP FIX
+        //callbackBlock(YES, nil);
+        callbackBlock(NO, nil);
+    }];
+    
+}
+
 - (void)getPreviousMessagesBefore:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:message.remoteKey], @"before", nil];

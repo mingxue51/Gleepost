@@ -91,9 +91,49 @@ int const NumberMaxOfMessagesLoaded = 20;
         }];
     }
     
+    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
     
-    NSLog(@"Loaded messages from local: %d", localEntities.count);
     return localEntities;
+}
+
++ (void)loadPreviousMessagesForConversation:(GLPConversation *)conversation before:(GLPMessage *)message localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
+{
+    DDLogInfo(@"Load previous messages, before %@", message.content);
+    
+//    if(message && message.remoteKey == 0) {
+//        DDLogError(@"Before message is nil, abort");
+//        return;
+//    }
+    
+    [[WebClient sharedInstance] getMessagesForConversation:conversation after:nil before:message callbackBlock:^(BOOL success, NSArray *messages) {
+        if(!success) {
+            remoteCallback(NO, nil);
+            return;
+        }
+        
+        // update only if new changes from API
+        if(!messages || messages.count == 0) {
+            remoteCallback(YES, nil);
+            return;
+        }
+        
+        DDLogInfo(@"new remote messages %d", messages.count);
+        
+        // reverse order
+        messages = [[messages reverseObjectEnumerator] allObjects];
+        
+        if(conversation.isLive) {
+            [[GLPLiveConversationsManager sharedInstance] addMessages:messages toConversation:conversation before:message];
+        } else {
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for(GLPMessage *message in messages) {
+                    [GLPMessageDao save:message db:db];
+                }
+            }];
+        }
+        
+        remoteCallback(YES, messages);
+    }];
 }
 
 

@@ -23,6 +23,7 @@
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation;
 - (void)updateMessageAfterSending:(GLPMessage *)message;
 - (void)addNewMessageToConversation:(GLPMessage *)message;
+- (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation before:(GLPMessage *)message;
 
 - (void)markAsNotSynchronizedWithRemote;
 
