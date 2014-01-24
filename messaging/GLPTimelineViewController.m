@@ -149,10 +149,11 @@
     
     [self configAppearance];
     
+    [self configNavigationBar];
+    
    // [self configStatusbarBackground];
     
-    //Hide for now the navigation bar.
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
 
 }
 
@@ -341,25 +342,42 @@
 
 }
 
+-(void)configNavigationBar
+{
+    
+    //Hide for now the navigation bar.
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    //Sets colour to navigation items.
+    self.navigationController.navigationBar.tintColor = tabColour;
+    
+    
+    
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+
+    
+    //Set the  colour of navigation bar's title.
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+    
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+}
+
 - (void)configAppearance
 {
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
     //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
     
-    [self.navigationController.navigationBar setTranslucent:YES];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-    
-    //Sets colour to navigation items.
-    self.navigationController.navigationBar.tintColor = tabColour;
 
-    
-    //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
     
     //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
 
@@ -370,7 +388,7 @@
     //Set colour of the border navigation bar image. TODO: Set one line image.
 //    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
     
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+
 
     
     
@@ -921,37 +939,58 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    CGFloat currentOffset = scrollView.contentOffset.y;
-//    CGFloat differenceFromStart = self.startContentOffset - currentOffset;
-//    CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
-//    self. lastContentOffset = currentOffset;
-//    
-//    
-//    
-//    if((differenceFromStart) < 0)
-//    {
-//        // scroll up
-//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
-//            [self expand];
-//    }
-//    else {
-//        if(scrollView.isTracking && (abs(differenceFromLast)>1))
-//            [self contract];
-//    }
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    CGFloat differenceFromStart = self.startContentOffset - currentOffset;
+    CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
+    self. lastContentOffset = currentOffset;
+    
+//    DDLogDebug(@"offset: %f",scrollView.contentOffset.y);
+    
+    if(scrollView.contentOffset.y >= 250.0f)
+    {
+        //[self contract];
+
+    }
+    else
+    {
+        //[self expand];
+
+    }
+    
+    if((differenceFromStart) < 0)
+    {
+        // scroll up
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        {
+            
+        }
+            //[self expand];
+    }
+    else {
+        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        {
+            
+        }
+            //[self contract];
+    }
     
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    
+    DDLogDebug(@"scrollViewDidEndDragging");
+
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    DDLogDebug(@"scrollViewDidEndDecelerating");
+
 }
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
+    DDLogDebug(@"scrollViewShouldScrollToTop");
     [self contract];
     return YES;
 }

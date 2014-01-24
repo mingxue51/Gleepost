@@ -34,7 +34,8 @@
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (weak, nonatomic) IBOutlet UIButton *testCategoryBtn;
 @property (strong, nonatomic) GLPCategory *chosenCategory;
-
+@property (weak, nonatomic) IBOutlet UIButton *newsCategoryBtn;
+@property (strong, nonatomic) NSMutableArray *categories;
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)cancelButtonClick:(id)sender;
@@ -58,6 +59,8 @@
     [self.contentTextView becomeFirstResponder];
     
     _chosenCategory = nil;
+    
+    _categories = [NSMutableArray array];
     
     if(!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7"))
     {
@@ -148,7 +151,9 @@
         [self.contentTextView resignFirstResponder];
         
         
-        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
+//        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
+        
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:self.categories];
         
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -174,15 +179,57 @@
     {
         _chosenCategory = nil;
         [self.testCategoryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        [self deleteCategoryWithName:@"test"];
+
     }
     else
     {
         _chosenCategory = [[GLPCategory alloc]initWithTag:@"test" name:@"" andPostRemoteKey:0];
+        
+        
         //test category was chosen.
         
         [self.testCategoryBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_categories addObject:[[GLPCategory alloc]initWithTag:@"test" name:@"" andPostRemoteKey:0]];
+
     }
 }
+
+- (IBAction)selectNewsCategory:(id)sender
+{
+    if([[self.newsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[UIColor whiteColor]])
+    {
+        _chosenCategory = nil;
+        [self.newsCategoryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        
+        [self deleteCategoryWithName:@"news"];
+    }
+    else
+    {
+        _chosenCategory = [[GLPCategory alloc]initWithTag:@"news" name:@"" andPostRemoteKey:0];
+        //test category was chosen.
+        
+        [self.newsCategoryBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [_categories addObject:[[GLPCategory alloc]initWithTag:@"news" name:@"" andPostRemoteKey:0]];
+    }
+}
+
+-(void)deleteCategoryWithName:(NSString*)tag
+{
+//    NSMutableArray *array = [NSMutableArray array];
+//    GLPCategory *deletedC = nil;
+    
+    for(GLPCategory *c in _categories)
+    {
+        if([c.tag isEqualToString:tag])
+        {
+            [_categories removeObject:c];
+            break;
+        }
+    }
+}
+
 
 - (IBAction)addImage:(id)sender
 {
