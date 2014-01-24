@@ -55,7 +55,7 @@
 {
     self.view.backgroundColor = [UIColor clearColor];
     
-    UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
+    UIImage *newChatImage = [UIImage imageNamed:@"loginbg"];
     
     UIImageView *backgroundImage = [[UIImageView alloc] init];
     

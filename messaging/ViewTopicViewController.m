@@ -104,6 +104,10 @@ float timeInterval = 0.1;
     
     [self loadElements];
     
+    [self configureNavigationBar];
+    
+    [self configureForm];
+    
     [self configureHeader];
 
 
@@ -241,8 +245,7 @@ float timeInterval = 0.1;
 -(void) loadElements
 {
     //TODO: Why this is here ? self response: because of livechatview probably
-    [self configureNavigationBar];
-    [self configureForm];
+
     self.keyboardAppearanceSpaceY = 0;
     
     if(_conversation.isLive) {

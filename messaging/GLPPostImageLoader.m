@@ -179,6 +179,12 @@ static GLPPostImageLoader *instance = nil;
         NSString* urlStr = nil;
         @synchronized(_loadingImages)
         {
+            
+            if(_imagesNotStarted.count == 0)
+            {
+                continue;
+            }
+            
             remoteKey = [_imagesNotStarted dequeue];
             //Take the one item from queue.
             //remoteKey = (NSNumber*)[[_loadingImages allKeys] objectAtIndex:0]; // Assumes 'message' is not empty
