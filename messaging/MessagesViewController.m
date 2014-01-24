@@ -234,7 +234,6 @@
 {
     _liveConversations = [[GLPLiveConversationsManager sharedInstance] conversations];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
 }
 
 //-(void)showReadyConversations:(NSArray*)conversations

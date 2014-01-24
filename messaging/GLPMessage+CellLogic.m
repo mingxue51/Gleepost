@@ -56,14 +56,8 @@ NSString * const kMessageRightCell = @"RightCell";
 
 - (void)configureAsFollowingMessage:(GLPMessage *)message
 {
-    if([self followsPreviousMessage:message]) {
-        self.cellIdentifier = message.cellIdentifier;
-        self.hasHeader = NO;
-    } else {
-        self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
-        self.hasHeader = YES;
-    }
-    
+    self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
+    self.hasHeader = [self followsPreviousMessage:message] ? NO : YES;
 }
 
 + (NSString *)getCellIdentifierForMessage:(GLPMessage *)message
@@ -71,10 +65,5 @@ NSString * const kMessageRightCell = @"RightCell";
     BOOL currentUser = [message.author isEqualToEntity:[SessionManager sharedInstance].user];
     return currentUser ? kMessageRightCell : kMessageLeftCell;
 }
-
-//+ (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier
-//{
-//    return ([cellIdentifier isEqualToString:kMessageLeftCell]) ? kMessageRightCell : kMessageLeftCell;
-//}
 
 @end

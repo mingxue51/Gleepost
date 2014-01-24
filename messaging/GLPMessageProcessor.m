@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "GLPWebSocketMessageProcessor.h"
+#import "GLPMessageProcessor.h"
 #import "RemoteParser.h"
 #import "ConversationManager.h"
 #import "GLPNotificationManager.h"
@@ -14,25 +14,26 @@
 #import "Conversation.h"
 #import "GLPNotification.h"
 #import "NSNotificationCenter+Utils.h"
+#import "WebClient.h"
 
 
-@interface GLPWebSocketMessageProcessor()
+@interface GLPMessageProcessor()
 
-@property (strong, nonatomic) NSOperationQueue *queue;
+@property (strong, nonatomic) dispatch_queue_t queue;
 
 @end
 
-@implementation GLPWebSocketMessageProcessor
+@implementation GLPMessageProcessor
 
 @synthesize queue=_queue;
 
-static GLPWebSocketMessageProcessor *instance = nil;
+static GLPMessageProcessor *instance = nil;
 
-+ (GLPWebSocketMessageProcessor *)sharedInstance
++ (GLPMessageProcessor *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[GLPWebSocketMessageProcessor alloc] init];
+        instance = [[GLPMessageProcessor alloc] init];
     });
     
     return instance;
@@ -45,56 +46,27 @@ static GLPWebSocketMessageProcessor *instance = nil;
         return nil;
     }
     
-    _queue = [[NSOperationQueue alloc] init];
-    [_queue setMaxConcurrentOperationCount:1]; // process messages in sequential order
+    _queue = dispatch_queue_create("com.gleepost.queue.messageprocessor", DISPATCH_QUEUE_SERIAL);
     
     return self;
 }
 
-- (void)processNewMessage:(GLPMessage *)message
+- (void)processLocalMessage:(GLPMessage *)message
 {
-    GLPNewMessageProcessorOperation *operation = [[GLPNewMessageProcessorOperation alloc] init];
-    operation.message = message;
-    
-    [_queue addOperation:operation];
+    dispatch_async(_queue, ^{
+        [ConversationManager sendMessage:message];
+    });
 }
 
-- (void)processMessage:(NSString *)webSocketMessage
+- (void)processWebSocketMessage:(NSString *)webSocketMessage
 {
-    if([webSocketMessage caseInsensitiveCompare:@"Invalid credentials"] == NSOrderedSame) {
-        DDLogError(@"Web socket connection closed because of invalid credentials");
-        return;
-    }
-    
-    GLPWebSocketMessageProcessorOperation *operation = [[GLPWebSocketMessageProcessorOperation alloc] init];
-    operation.webSocketMessage = webSocketMessage;
-    
-    [_queue addOperation:operation];
-}
-
-@end
-
-
-@implementation GLPNewMessageProcessorOperation
-
-@synthesize message=_message;
-
-- (void)main {
-    @autoreleasepool {
+    dispatch_async(_queue, ^{
+        if([webSocketMessage caseInsensitiveCompare:@"Invalid credentials"] == NSOrderedSame) {
+            DDLogError(@"Web socket connection closed because of invalid credentials");
+            return;
+        }
         
-    }
-}
-
-@end
-
-
-@implementation GLPWebSocketMessageProcessorOperation
-
-@synthesize webSocketMessage=_webSocketMessage;
-
-- (void)main {
-    @autoreleasepool {
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[_webSocketMessage dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[webSocketMessage dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
         
         GLPWebSocketEvent *event = [RemoteParser parseWebSocketEventFromJson:json];
         
@@ -122,8 +94,7 @@ static GLPWebSocketMessageProcessor *instance = nil;
                 break;
             }
         }
-
-    }
+    });
 }
 
 @end

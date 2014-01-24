@@ -18,6 +18,5 @@ extern NSString * const kMessageRightCell;
 
 - (void)configureAsFirstMessage;
 - (void)configureAsFollowingMessage:(GLPMessage *)message;
-+ (NSString *)getOppositeCellIdentifierOf:(NSString *)cellIdentifier;
 
 @end

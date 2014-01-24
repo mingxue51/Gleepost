@@ -17,6 +17,11 @@
 
 @implementation GLPMessageDao
 
++ (GLPMessage *)findLastRemoteMessageForConversation:(GLPConversation *)conversation db:(FMDatabase *)db
+{
+    
+}
+
 + (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by isOld, key DESC limit %d", conversation.remoteKey, NumberMaxOfMessagesLoaded];
@@ -49,62 +54,6 @@
     }
     
     return [[result reverseObjectEnumerator] allObjects]; // reverse order so that the most recent message is at the end
-}
-
-//todo: put somewhere else
-+ (NSArray *)findLastMessagesForLiveConversation:(GLPLiveConversation *)conversation db:(FMDatabase *)db
-{
-//    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayOrder DESC limit 20", conversation.remoteKey];
-    
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from messages where conversation_key=%d order by isOld, key DESC limit %d", conversation.remoteKey, NumberMaxOfMessagesLoaded];
-
-    
-    NSMutableArray *result = [NSMutableArray array];
-    
-    while ([resultSet next]) {
-        [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet db:db]];
-    }
-    
-    return [[result reverseObjectEnumerator] allObjects];
-}
-
-//+ (NSArray *)findAllOrderByDisplayDateForConversation:(GLPConversation *)conversation
-//{
-//    FMResultSet *resultSet = [[DatabaseManager sharedInstance].database executeQueryWithFormat:@"select * from messages where conversation_key=%d order by displayDate ASC", conversation.remoteKey];
-//    
-//    NSMutableArray *result = [NSMutableArray array];
-//    while ([resultSet next]) {
-//        [result addObject:[GLPMessageDaoParser createFromResultSet:resultSet]];
-//    }
-//    
-//    return result;
-//}
-
-//+ (NSArray *)insertNewMessages:(NSArray *)newMessages andFindAllForConversation:(GLPConversation *)conversation
-//{
-//    __block NSArray *result;
-//    
-//    [[DatabaseManager sharedInstance].databaseQueue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-//        for(GLPMessage *message in newMessages) {
-//            [GLPMessageDao save:message db:db];
-//        }
-//        
-//        result = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-//
-//    }];
-//    
-//    return result;
-//}
-
-+ (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey
-{
-    __block GLPMessage *message = nil;
-    
-    [DatabaseManager run:^(FMDatabase *db) {
-        message = [GLPMessageDao findByRemoteKey:remoteKey];
-    }];
-    
-    return message;
 }
 
 + (GLPMessage *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
@@ -162,37 +111,20 @@
     entity.key = [db lastInsertRowId];
 }
 
-+ (void)update:(GLPMessage *)entity db:(FMDatabase *)db
++ (void)updateAfterSending:(GLPMessage *)entity db:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Cannot update entity without key");
     
-    int date = [entity.date timeIntervalSince1970];
+    NSString *sql = @"update messages set remoteKey=:remoteKey, sendStatus=:sendStatus where key=:key";
     
-    //todo: refactor this
-    if(entity.conversation == nil)
-    {
-        [db executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, seen=%d, author_key=%d, conversation_key=%d where key=%d",
-         entity.remoteKey,
-         entity.content,
-         date,
-         entity.sendStatus,
-         entity.seen,
-         entity.author.remoteKey,
-         entity.liveConversation.remoteKey,
-         entity.key];
-    }
-    else
-    {
-        [db executeUpdateWithFormat:@"update messages set remoteKey=%d, content=%@, date=%d, sendStatus=%d, seen=%d, author_key=%d, conversation_key=%d where key=%d",
-         entity.remoteKey,
-         entity.content,
-         date,
-         entity.sendStatus,
-         entity.seen,
-         entity.author.remoteKey,
-         entity.conversation.remoteKey,
-         entity.key];
-    }
+    id remoteKey = (entity.remoteKey == 0) ? [NSNull null] : [NSNumber numberWithInt:entity.remoteKey];
+    
+    NSDictionary *params = @{
+                             @"remoteKey": remoteKey,
+                             @"sendStatus": [NSNumber numberWithInt:entity.sendStatus],
+                             @"key": [NSNumber numberWithInteger:entity.key]
+                             };
+    
+    [db executeUpdate:sql withParameterDictionary:params];
 }
-
 @end

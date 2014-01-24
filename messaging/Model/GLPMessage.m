@@ -3,15 +3,13 @@
 
 @interface GLPMessage ()
 
-
-
 @end
 
 
 @implementation GLPMessage
 
-@synthesize seen;
-@synthesize sendStatus;
+@synthesize seen = _seen;
+@synthesize sendStatus = _sendStatus;
 @synthesize content = _content;
 @synthesize date = _date;
 @synthesize author = _author;
@@ -26,20 +24,15 @@
     }
 
     // default values
-    self.isOld = NO;
-    self.sendStatus = kSendStatusLocal;
+    _isOld = NO;
+    _sendStatus = kSendStatusLocal;
     
     return self;
 }
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {
-//    if(message.author.remoteKey != self.author.remoteKey) {
-//        return NO;
-//    }
-    
-    
-    NSTimeInterval interval = [self.date timeIntervalSinceDate:message.date];
+    NSTimeInterval interval = [_date timeIntervalSinceDate:message.date];
     
     //If the inrerval is more than five minutes the return YES, otherwise NO.
     if(interval > 300)
@@ -47,19 +40,26 @@
         return NO;
     }
     
-    //    NSTimeInterval interval = [self.date timeIntervalSinceDate:message.date];
-    //    NSLog(@"time interval %f", interval);
-    //    if(interval / 60 > 15) {
-    //        return NO;
-    //    }
-    
     return YES;
 }
 
 
--(NSString*) description
+# pragma mark - Copy
+
+-(id)copyWithZone:(NSZone *)zone
 {
-    return [NSString stringWithFormat:@"Author: %@", self.author];
+    GLPMessage *message = [super copyWithZone:zone];
+    message.seen = _seen;
+    message.isOld = _isOld;
+    message.displayOrder = _displayOrder;
+    message.sendStatus = _sendStatus;
+    message.content = [_content copyWithZone:zone];
+    message.date = [_date copyWithZone:zone];
+    message.author = _author;
+    message.conversation = _conversation;
+    
+    
+    return message;
 }
 
 @end

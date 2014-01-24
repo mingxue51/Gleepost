@@ -9,6 +9,7 @@
 #import "GLPConversation.h"
 #import "SessionManager.h"
 #import "NSDate+TimeAgo.h"
+#import "GLPMessage.h"
 
 @implementation GLPConversation
 
@@ -23,7 +24,9 @@
 @synthesize expiryDate=_expiryDate;
 @synthesize isEnded=_isEnded;
 
-// Init conversation from database
+// Init regular conversation from database
+// It will be populated afterwards
+// TODO: Should implement constructor with all args for better reliability
 - (id)init
 {
     self = [super init];
@@ -36,7 +39,7 @@
     return self;
 }
 
-// Init new normal conversation
+// Init new regular conversation
 - (id)initWithParticipants:(NSArray *)participants
 {
     self = [self init];
@@ -49,11 +52,6 @@
     
     // remove the current user
     _participants = [participants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey != %d", [SessionManager sharedInstance].user.remoteKey]];
-    
-//    NSLog(@"Participants to the conversation");
-//    for(GLPUser *user in _participants) {
-//        NSLog(@"%@", user.name);
-//    }
     
     _isGroup = _participants.count > 1;
     _title = _isGroup ? @"Group chat" : [self getUniqueParticipant].name;
@@ -96,68 +94,14 @@
     return _lastUpdate ? [_lastUpdate timeAgo] : @"";
 }
 
-//- (void)setTitleFromParticipants:(NSArray *)participants
-//{
-//    NSAssert(participants.count > 1, @"");
-//    
-//    
-//    _participants = participants;
-//    
-//    NSMutableString *names = [NSMutableString string];
-//    
-//    NSMutableArray *filteredParticipants = [NSMutableArray arrayWithCapacity:participants.count - 1];
-//    for(GLPUser *user in participants) {
-//        if(![user isEqualToEntity:[SessionManager sharedInstance].user]) {
-//            [filteredParticipants addObject:user];
-//        }
-//    }
-//    
-//    [filteredParticipants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        GLPUser *user = obj;
-//        [names appendString:user.name];
-//        
-//        if(filteredParticipants.count > 1 && idx != filteredParticipants.count - 1) {
-//            if(idx == filteredParticipants.count - 2) {
-//                [names appendString:@" and "];
-//            } else {
-//                [names appendString:@", "];
-//            }
-//        }
-//    }];
-//    
-//    self.title = names;
-//}
-// Excludes the current user name
-//- (NSString *)getParticipantsNames
-//{
-//    NSMutableString *names = [NSMutableString string];
-//    
-//    if(self.participants.count < 2) {
-//        return @"Invalid conversation";
-//    }
-//    
-//    NSMutableArray *filteredParticipants = [NSMutableArray arrayWithCapacity:self.participants.count - 1];
-//    
-//    for(GLPUser *user in self.participants) {
-//        if(![user isEqualToEntity:[SessionManager sharedInstance].user]) {
-//            [filteredParticipants addObject:user];
-//        }
-//    }
-//    
-//    [filteredParticipants enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        GLPUser *user = obj;
-//        [names appendString:user.name];
-//        
-//        if(filteredParticipants.count > 1 && idx != filteredParticipants.count - 1) {
-//            if(idx == filteredParticipants.count - 2) {
-//                [names appendString:@" and "];
-//            } else {
-//                [names appendString:@", "];
-//            }
-//        }
-//    }];
-//    
-//    return names;
-//}
+- (void)updateWithNewMessage:(GLPMessage *)message
+{
+    _lastMessage = message.content;
+    _lastUpdate = message.date;
+    
+    if(_isLive) {
+        [_messages addObject:message];
+    }
+}
 
 @end

@@ -20,7 +20,6 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
-#import "LiveConversationManager.h"
 
 #import "GLPMessage.h"
 #import "GLPMessage+CellLogic.h"
@@ -205,7 +204,7 @@ float timeInterval = 0.1;
     self.tableViewDisplayedLoadingCell = NO;
     
     // new messages bottom loading cell
-    self.bottomLoadingCellStatus = kGLPLoadingCellStatusInit;
+    self.bottomLoadingCellStatus = kGLPLoadingCellStatusFinished; //kGLPLoadingCellStatusInit;
     
     self.inLoading = NO;
     self.tableViewInScrolling = NO;
@@ -515,19 +514,44 @@ float timeInterval = 0.1;
         return;
     }
     
-    NSLog(@"Load initial messages");
+    DDLogInfo(@"Load initial messages");
     self.inLoading = YES;
     
-    [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
-        [self loadInitialMessagesLocalCallback:messages];
-    } remoteCallback:^(BOOL success, NSArray *messages) {
-        [self loadInitialMessagesRemoteCallback:success newMessages:messages];
-    }];
+    NSArray *messages = [ConversationManager loadMessagesForConversation:self.conversation];
+    [self loadInitialMessagesLocalCallback:messages];
+    
+    if(messages.count < 20) {
+        DDLogInfo(@"Load previous messages");
+        
+        [ConversationManager loadPreviousMessagesForConversation:self.conversation before:[messages firstObject] localCallback:^(NSArray *messages) {
+            // do nothing so far
+        } remoteCallback:^(BOOL success, NSArray *previousMessages) {
+            DDLogInfo(@"Previous messages remote callback %d", previousMessages.count);
+            
+            // insert messages before existing ones
+            [self.messages insertObjects:previousMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, previousMessages.count)]];
+            
+            [self configureDisplayForMessages:self.messages];
+            [self.tableView reloadData];
+            [self scrollToTheEndAnimated:NO];
+            
+            self.inLoading = NO;
+        }];
+    }
+    
+    
+    
+    
+//    [ConversationManager loadMessagesForConversation:self.conversation localCallback:^(NSArray *messages) {
+//        [self loadInitialMessagesLocalCallback:messages];
+//    } remoteCallback:^(BOOL success, NSArray *messages) {
+//        [self loadInitialMessagesRemoteCallback:success newMessages:messages];
+//    }];
     
     // conversation has no more unread messages
-    if(!_conversation.isLive) {
-        [ConversationManager markConversationRead:self.conversation];
-    }
+//    if(!_conversation.isLive) {
+//        [ConversationManager markConversationRead:self.conversation];
+//    }
 }
 
 //- (void)loadInitialMessages:(BOOL)live
@@ -824,8 +848,6 @@ float timeInterval = 0.1;
 {
     [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation localCallback:^(GLPMessage *localMessage) {
         [self showMessage:localMessage];
-    } sendCallback:^(GLPMessage *sentMessage, BOOL success) {
-        [self.tableView reloadData];
     }];
     
     self.formTextView.text = @"";

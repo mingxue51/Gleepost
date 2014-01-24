@@ -305,7 +305,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     GLPMessage *message = [[GLPMessage alloc] init];
     message.remoteKey = [json[@"id"] integerValue];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
-    message.liveConversation = conversation;
     message.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     message.content = json[@"text"];
     message.sendStatus = kSendStatusSent;

@@ -43,4 +43,16 @@
     return NO;
 }
 
+
+# pragma mark - Copy
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    GLPEntity *object = [[self class] allocWithZone:zone];
+    object.key = _key;
+    object.remoteKey = _remoteKey;
+    
+    return object;
+}
+
 @end

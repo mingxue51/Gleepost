@@ -19,12 +19,12 @@
 - (int)conversationsCount;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
 
+// messages
+- (NSArray *)messagesForConversation:(GLPConversation *)conversation;
+- (void)updateMessageAfterSending:(GLPMessage *)message;
+- (void)addNewMessageToConversation:(GLPMessage *)message;
+- (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation before:(GLPMessage *)message;
+
 - (void)markAsNotSynchronizedWithRemote;
-
-
-
-
-- (void)loadConversationWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
-- (void)updateConversation:(GLPConversation *)conversation;
 
 @end

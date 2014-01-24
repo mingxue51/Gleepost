@@ -7,7 +7,7 @@
 //
 
 #import "GLPWebSocketClient.h"
-#import "GLPWebSocketMessageProcessor.h"
+#import "GLPMessageProcessor.h"
 #import "SessionManager.h"
 #import "GLPNetworkManager.h"
 
@@ -88,7 +88,7 @@ static GLPWebSocketClient *instance = nil;
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
 {
     NSLog(@"Web socket received response: %@", response);
-    [[GLPWebSocketMessageProcessor sharedInstance] processMessage:response];
+    [[GLPMessageProcessor sharedInstance] processWebSocketMessage:response];
 }
 
 
