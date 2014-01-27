@@ -92,14 +92,15 @@
 
 @property (strong, nonatomic) UITabBarItem *homeTabbarItem;
 
-//TODO: For testing purposes.
-
 
 //Hidden navigation bar.
 @property (assign, nonatomic) CGFloat startContentOffset;
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property (assign, nonatomic) BOOL hidden;
 @property (strong, nonatomic) UIImageView *statusBarView;
+
+//Header.
+@property (strong, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
 
 @end
 
@@ -501,10 +502,10 @@
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
 
     //Set delegate.
-    CampusWallHeaderSimpleView *c = [array objectAtIndex:0];
-    c.delegate = self;
+    self.campusWallHeader = [array objectAtIndex:0];
+    self.campusWallHeader.delegate = self;
     
-    self.tableView.tableHeaderView = c;
+    self.tableView.tableHeaderView = self.campusWallHeader;
     
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -942,11 +943,14 @@
     CGFloat currentOffset = scrollView.contentOffset.y;
     CGFloat differenceFromStart = self.startContentOffset - currentOffset;
     CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
-    self. lastContentOffset = currentOffset;
+    self.lastContentOffset = currentOffset;
     
-//    DDLogDebug(@"offset: %f",scrollView.contentOffset.y);
+    //DDLogDebug(@"offset: %f",scrollView.contentOffset.y);
     
-    if(scrollView.contentOffset.y >= 250.0f)
+
+    
+    
+    if(scrollView.contentOffset.y >= 209.0f)
     {
         //[self contract];
 
@@ -955,6 +959,27 @@
     {
         //[self expand];
 
+    }
+
+    
+    if(scrollView.contentOffset.y >= 180.0f)
+    {
+        if ([scrollView.panGestureRecognizer translationInView:scrollView].y > 0)
+        {
+//            DDLogDebug(@"down");
+            [self.campusWallHeader increaseAlphaToBasicElements];
+
+            
+        } else
+        {
+//            DDLogDebug(@"up");
+            [self.campusWallHeader decreaseAlphaToBasicElements];
+
+        }
+        
+    }
+    else
+    {
     }
     
     if((differenceFromStart) < 0)
@@ -976,21 +1001,24 @@
     
 }
 
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    DDLogDebug(@"scrollViewDidEndDragging");
+//    DDLogDebug(@"scrollViewDidEndDragging");
 
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    DDLogDebug(@"scrollViewDidEndDecelerating");
+//    DDLogDebug(@"scrollViewDidEndDecelerating");
 
 }
 
+
+
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
-    DDLogDebug(@"scrollViewShouldScrollToTop");
+//    DDLogDebug(@"scrollViewShouldScrollToTop");
     [self contract];
     return YES;
 }
@@ -1012,7 +1040,7 @@
 
     
     [self.navigationController setNavigationBarHidden:YES
-                                             animated:YES];
+                                             animated:NO];
 }
 
 -(void)contract
@@ -1031,7 +1059,7 @@
     [self.statusBarView setHidden:YES];
 
     [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
+                                             animated:NO];
 }
 
 

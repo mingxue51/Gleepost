@@ -14,5 +14,8 @@
 @property (weak, nonatomic) GLPTimelineViewController *delegate;
 
 -(void)hideLoadingEvents;
+-(void)setAlphaToBasicElements:(CGFloat)alpha;
+-(void)decreaseAlphaToBasicElements;
+-(void)increaseAlphaToBasicElements;
 
 @end
