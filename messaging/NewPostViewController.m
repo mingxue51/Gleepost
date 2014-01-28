@@ -95,7 +95,6 @@
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
     
-    [self formatBackground];
 }
 
 
@@ -144,12 +143,6 @@
         [self.view addSubview:btn];
         break;
     }
-}
-
--(void)formatBackground
-{
-//    [self.view setBackgroundColor:[UIColor clearColor]];
-//    [self.view setAlpha:0.5];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle

@@ -126,11 +126,8 @@
     [super viewDidLoad];
     
     [self configTableView];
-    
 
     [self configHeader];
-    
-
     
     [self configTabbarFormat];
     

@@ -28,7 +28,7 @@ typedef enum
 -(GLPCategory*)categoryWithRemoteKey:(int)remoteKey;
 -(NSArray*)categoriesNames;
 -(NSArray*)categoriesTags;
--(NSArray*)categories;
+-(NSArray*)getCategories;
 
 
 @end

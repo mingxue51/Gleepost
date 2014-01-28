@@ -15,7 +15,7 @@
 @interface CampusWallHeaderCell ()
 
 
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+//@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLbl;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
@@ -41,7 +41,7 @@ const float CELL_WIDTH = 200;
         
         [self setBackgroundColor:[UIColor clearColor]];
         
-        [ShapeFormatterHelper setCornerRadiusWithView:self.contentView andValue:17.0f];
+//        [ShapeFormatterHelper setCornerRadiusWithView:self.contentView andValue:17.0f];
         
         [ShapeFormatterHelper setCornerRadiusWithView:self andValue:17.0f];
         

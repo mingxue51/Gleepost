@@ -20,7 +20,7 @@
     return self;
 }
 
--(void) initTableView
+-(void)initTableView
 {
     //Add a UIView as a header of table view.
     //self.headerView = [[PostView alloc] initWithFrame:CGRectMake(0, 0, 320, 400)];

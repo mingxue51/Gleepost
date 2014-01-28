@@ -98,7 +98,7 @@ static CategoryManager *instance = nil;
     return tags;
 }
 
--(NSArray*)categories
+-(NSArray*)getCategories
 {
     NSMutableArray *categories = [NSMutableArray array];
     

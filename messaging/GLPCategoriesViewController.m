@@ -61,7 +61,7 @@
 //    [_categoriesImages setObject:[UIImage imageNamed:@"events_category"] forKey:@"test"];
 //    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
-    NSArray *catTemp = [[CategoryManager instance] categories];
+    NSArray *catTemp = [[CategoryManager instance] getCategories];
     
     for(GLPCategory *category in catTemp)
     {
