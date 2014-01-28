@@ -10,12 +10,14 @@
 #import "GLPCategoryCell.h"
 #import "GLPCategory.h"
 #import "SessionManager.h"
+#import "CategoryManager.h"
 
 @interface GLPCategoriesViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSArray *categories;
+@property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) NSMutableDictionary *categoriesImages;
+@property (strong, nonatomic) NSMutableDictionary *categoriesSelectedImages;
 
 @end
 
@@ -43,18 +45,38 @@
 -(void)configTableView
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPCategoryCell" bundle:nil] forCellReuseIdentifier:kGLPCategoryCell];
+    
+//    [self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"category_bg.png"]]];
+    
+    [self.tableView reloadData];
 }
 
 -(void)loadCategories
 {
-    _categories = [[NSArray alloc] initWithObjects:[[GLPCategory alloc] initWithTag:@"test" name:@"Test category" andPostRemoteKey:0], [[GLPCategory alloc] initWithTag:@"All" name:@"All the categories" andPostRemoteKey:0], nil];
+//    _categories = [[NSArray alloc] initWithObjects:[[GLPCategory alloc] initWithTag:@"test" name:@"Test category" andPostRemoteKey:0], [[GLPCategory alloc] initWithTag:@"All" name:@"All the categories" andPostRemoteKey:0], nil];
     
     _categoriesImages = [[NSMutableDictionary alloc] init];
+    _categories = [NSMutableArray array];
     
+//    [_categoriesImages setObject:[UIImage imageNamed:@"events_category"] forKey:@"test"];
+//    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
-    [_categoriesImages setObject:[UIImage imageNamed:@"events_category"] forKey:@"test"];
-    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
+    NSArray *catTemp = [[CategoryManager instance] categories];
     
+    for(GLPCategory *category in catTemp)
+    {
+        //TODO: Remove if when final categories decided.
+        
+        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"])
+        {
+            [_categories addObject:category];
+        }
+    }
+    
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"All" name:@"All the categories" andPostRemoteKey:0]];
+    
+    [self setDefaultImages];
+
 }
 
 #pragma mark - Table view
@@ -85,8 +107,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     //Depending on kind of notification navigate to the appropriate view.
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
@@ -122,6 +142,35 @@
     return 50.0f;
 }
 
+
+#pragma mark - Helper methods
+
+-(void)setDefaultImages
+{
+    
+    for(GLPCategory *category in _categories)
+    {
+        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"])
+        {
+            [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category",category.tag]] forKey:category.tag];
+        }
+    }
+    
+    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
+    
+    
+    GLPCategory *current = [SessionManager sharedInstance].currentCategory;
+    
+    //Set selected category image.
+    if(current == nil)
+    {
+        [_categoriesImages setObject:[UIImage imageNamed:@"all_category_selected"] forKey:@"All"];
+    }
+    else
+    {
+        [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category_selected",current.tag]] forKey:current.tag];
+    }
+}
 
 - (IBAction)hideViewController:(id)sender
 {

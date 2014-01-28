@@ -22,6 +22,7 @@
 #import "NSString+Utils.h"
 #import "GLPThemeManager.h"
 #import "GLPPostManager.h"
+#import "CategoryManager.h"
 
 @interface NewPostViewController ()
 
@@ -32,7 +33,7 @@
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
-@property (weak, nonatomic) IBOutlet UIButton *testCategoryBtn;
+@property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
 @property (strong, nonatomic) GLPCategory *chosenCategory;
 @property (weak, nonatomic) IBOutlet UIButton *newsCategoryBtn;
 @property (strong, nonatomic) NSMutableArray *categories;
@@ -55,7 +56,7 @@
 {
     [super viewDidLoad];
 
-    
+
     [self.contentTextView becomeFirstResponder];
     
     _chosenCategory = nil;
@@ -78,6 +79,7 @@
 
     [self configureNavigationBar];
 
+//    [self generateCategoryButtons];
     
     _postUploader = [[GLPPostUploader alloc] init];
     _hasImage = NO;
@@ -123,6 +125,26 @@
     [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Thin" size:20.0f], UITextAttributeFont, nil]];
 }
 
+//TODO: Not user. Use this later if there is a need.
+
+-(void)generateCategoryButtons
+{
+    NSArray *names = [[CategoryManager instance] categoriesNames];
+    
+    for(NSString *name in names)
+    {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(79.0f, 229.0f, 10.0f, 30.0f)];
+        
+        btn.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+        
+        [btn setTitle:name forState:UIControlStateNormal];
+        
+        [btn sizeToFit];
+        
+        [self.view addSubview:btn];
+        break;
+    }
+}
 
 -(void)formatBackground
 {
@@ -153,7 +175,7 @@
         
 //        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
         
-        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:self.categories];
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories];
         
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -173,56 +195,40 @@
         }];
     }
 }
-- (IBAction)selectTestCategory:(id)sender
+
+
+#pragma mark - Selectors
+
+-(IBAction)selectCategory:(id)sender
 {
-    if([[self.testCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[UIColor whiteColor]])
+    UIButton *currentButton = (UIButton*)sender;
+    
+    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[UIColor whiteColor]])
     {
         _chosenCategory = nil;
-        [self.testCategoryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        [self deleteCategoryWithName:@"test"];
-
+        [currentButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        [self deleteCategoryWithRemoteKey:currentButton.tag];
+        
     }
     else
     {
-        _chosenCategory = [[GLPCategory alloc]initWithTag:@"test" name:@"" andPostRemoteKey:0];
-        
+        _chosenCategory = [[CategoryManager instance] categoryWithRemoteKey:currentButton.tag];
         
         //test category was chosen.
         
-        [self.testCategoryBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_categories addObject:[[GLPCategory alloc]initWithTag:@"test" name:@"" andPostRemoteKey:0]];
-
+        [currentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_categories addObject:_chosenCategory];
+        
     }
 }
 
-- (IBAction)selectNewsCategory:(id)sender
-{
-    if([[self.newsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[UIColor whiteColor]])
-    {
-        _chosenCategory = nil;
-        [self.newsCategoryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        
-        [self deleteCategoryWithName:@"news"];
-    }
-    else
-    {
-        _chosenCategory = [[GLPCategory alloc]initWithTag:@"news" name:@"" andPostRemoteKey:0];
-        //test category was chosen.
-        
-        [self.newsCategoryBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
-        [_categories addObject:[[GLPCategory alloc]initWithTag:@"news" name:@"" andPostRemoteKey:0]];
-    }
-}
 
--(void)deleteCategoryWithName:(NSString*)tag
+-(void)deleteCategoryWithRemoteKey:(int)remoteKey
 {
-//    NSMutableArray *array = [NSMutableArray array];
-//    GLPCategory *deletedC = nil;
     
     for(GLPCategory *c in _categories)
     {
-        if([c.tag isEqualToString:tag])
+        if(c.remoteKey == remoteKey)
         {
             [_categories removeObject:c];
             break;

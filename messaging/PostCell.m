@@ -18,6 +18,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "GLPCategory.h"
+#import "ImageFormatterHelper.h"
 
 @interface PostCell()
 
@@ -71,8 +72,6 @@ const float TEXT_CELL_HEIGHT = 160;
 //        NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
         self.initialPostContentLabelY = 37;
         self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
-        
-        
 
     }
     
@@ -165,8 +164,9 @@ static const float OneLineText = 16.0;
     }
 
     
-    [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
 
+    [self formatUsersImage];
+    [self formatPostImage];
     
     //Add to the user's tag's image view the user id.
     self.userImageView.tag = postData.author.remoteKey;
@@ -198,14 +198,14 @@ static const float OneLineText = 16.0;
         [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
         
         //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"like_active_button"] forState:UIControlStateNormal];
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
     }
     else
     {
         [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"like_button"] forState:UIControlStateNormal];
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
         
     }
     
@@ -242,6 +242,37 @@ static const float OneLineText = 16.0;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
+    
+    
+    [self setFontToLabels];
+    
+    
+
+}
+
+#pragma mark - Format UI
+
+-(void)setFontToLabels
+{
+    [self.contentLbl setFont:[UIFont fontWithName:GLP_APP_FONT size:13.0f]];
+    
+    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@-Bold",GLP_APP_FONT] size:14.0f]];
+    
+  
+    
+    [self.postTime setFont:[UIFont fontWithName:GLP_APP_FONT size:10.0f]];
+}
+
+-(void)formatUsersImage
+{
+    [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
+    self.userImageView.layer.borderWidth = 1.0f;
+    self.userImageView.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
+}
+
+-(void)formatPostImage
+{
+    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:10];
 }
 
 #pragma mark - Online indicator
@@ -481,7 +512,7 @@ static const float OneLineText = 16.0;
         [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
         //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"like_button"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
         
         [self.post setLiked:NO];
         
@@ -495,7 +526,7 @@ static const float OneLineText = 16.0;
     {
         [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
         //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"like_active_button"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
         
         [self.post setLiked:YES];
         

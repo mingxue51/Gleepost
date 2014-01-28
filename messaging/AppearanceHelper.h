@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface AppearanceHelper : NSObject
 
 + (void)setNavigationBarBackgroundImageFor:(UIViewController *)controller imageName:(NSString *)imageName forBarMetrics:(UIBarMetrics)barMetrics;

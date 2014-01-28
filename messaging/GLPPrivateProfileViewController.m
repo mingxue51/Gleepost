@@ -208,7 +208,7 @@
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 
     //Change the format of the navigation bar.
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
     
     //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];

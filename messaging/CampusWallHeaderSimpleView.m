@@ -7,12 +7,20 @@
 //
 
 #import "CampusWallHeaderSimpleView.h"
+#import "ShapeFormatterHelper.h"
+#import "CampusWallHeader.h"
+#import "FakeNavigationBar.h"
 
 @interface CampusWallHeaderSimpleView ()
 
 @property (weak, nonatomic) IBOutlet UIButton *eventsBtn;
 
 @property (weak, nonatomic) IBOutlet UILabel *stanfordLbl;
+@property (weak, nonatomic) IBOutlet UIImageView *backTagsImgView;
+
+@property (strong, nonatomic) CampusWallHeader *scrollView;
+
+@property (weak, nonatomic) FakeNavigationBar *fakeNavBar;
 
 @end
 
@@ -27,10 +35,42 @@
     {
         [self setFrame:CGRectMake(0, 0, 320.0f, 280.0f)];
         
+        for(UIView * v in self.subviews)
+        {
+            if([v isKindOfClass:[CampusWallHeader class]])
+            {
+                _scrollView = (CampusWallHeader*) v;
+                break;
+            }
+        }
+        
     }
     
     return self;
 }
+
+#pragma mark - Fake Navigation Bar
+
+//-(void)showFakeNavigationBar
+//{
+//    [self setHidden:NO];
+//}
+//
+//-(void)hideFakeNavigationBar
+//{
+//    [self setHidden:YES];
+//}
+//
+//-(void)setPositionToNavBar:(CGPoint)position
+//{
+//    [_fakeNavBar setFrame:CGRectMake(position.x, position.y, 320.f, 50.0f)];
+//}
+
+-(void)formatElements
+{
+    [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
+}
+
 
 -(void)decreaseAlphaToBasicElements
 {
@@ -69,6 +109,7 @@
 - (IBAction)showTags:(id)sender
 {
     [self.delegate showCategories:sender];
+
 }
 
 - (IBAction)createNewPost:(id)sender
@@ -76,12 +117,11 @@
     [self.delegate newPostButtonClick];
 }
 
-- (IBAction)showCategories:(id)sender
+-(void)clearAndReloadData
 {
-    DDLogDebug(@"showCategories");
+    
+    [_scrollView clearViews];
 }
-
-
 
 /*
 // Only override drawRect: if you perform custom drawing.

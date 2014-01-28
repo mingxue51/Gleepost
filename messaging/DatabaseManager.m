@@ -172,7 +172,7 @@ static DatabaseManager *instance = nil;
             // categories
             [db executeUpdate:@"create table categories ( \
              key integer primary key autoincrement, \
-             remoteKey integer unique, \
+             remoteKey integer, \
              post_remote_key integer, \
              tag text, \
              name text);"];

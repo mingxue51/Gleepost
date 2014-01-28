@@ -259,6 +259,8 @@ static WebClient *instance = nil;
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
         callbackBlock(NO, -1);
     }];
 }

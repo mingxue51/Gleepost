@@ -175,7 +175,7 @@
 }
 
 
--(void) setBackgroundToNavigationBar
+-(void)setBackgroundToNavigationBar
 {
     UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
     

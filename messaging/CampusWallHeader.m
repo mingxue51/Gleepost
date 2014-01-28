@@ -17,8 +17,6 @@
 
 //@property (weak, nonatomic) IBOutlet VSScrollView *scrollView;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
 @property (strong, nonatomic) NSArray *posts;
 
 @end
@@ -33,17 +31,18 @@
     
     if(self)
     {
-        
         [self setFrame:CGRectMake(0, 0, 320.0f, 300.0f)];
         
         [self setDataSource:self];
 
         [self setPaginationEnabled:NO];
-        [self setAllowVerticalScrollingForOutOfBoundsCell:NO];
+        [self setAllowVerticalScrollingForOutOfBoundsCell:YES];
         
         [self setDelegate:self];
         
         [self loadEvents];
+        
+
         
         
 //        [self.scrollView setScrollEnabled:YES];
@@ -61,6 +60,7 @@
 
 -(void)loadEvents
 {
+    
     [self showLoadingLabel];
     
     [GLPPostManager loadEventsRemotePostsForUserRemoteKey:[SessionManager sharedInstance].user.remoteKey callback:^(BOOL success, NSArray *posts) {
@@ -68,8 +68,14 @@
         if(success)
         {
             _posts = posts;
-            [self reloadData];
+            
+
             [self hideLoadingLabel];
+
+            [self clearAndLoad];
+
+            
+
         }
         else
         {
@@ -102,6 +108,35 @@
             [v removeFromSuperview];
         }
     }
+}
+
+-(void)clearViews
+{
+//    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    if(self.subviews.count >= 2)
+    {
+        DDLogError(@"PROBLEM HAVING TWO SCROLLVIEWS IN LIVE WALL IS PROBLEMATIC.");
+    }
+    
+    
+    [self loadEvents];
+}
+
+-(void)clearAndLoad
+{
+//    for(UIView *v in self.subviews)
+//    {
+//        if([v isKindOfClass:[UIScrollView class]])
+//        {
+//            [v removeFromSuperview];
+//            break;
+//        }
+//    }
+    
+    
+    [self reloadData];
+        
 }
 
 #pragma mark - VSScrollView Delegate

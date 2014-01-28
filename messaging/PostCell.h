@@ -29,11 +29,13 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UIButton *commentBtn;
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
-@property (weak, nonatomic) IBOutlet UIImageView* buttonsBack;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfCommentsLbl;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfLikesLbl;
+
+
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
 
 @property (assign, nonatomic) UIViewController<NewCommentDelegate, ViewImageDelegate> *delegate;
-
 
 @property BOOL isViewPost;
 @property BOOL imageAvailable;

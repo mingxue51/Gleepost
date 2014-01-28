@@ -17,5 +17,7 @@
 -(void)setAlphaToBasicElements:(CGFloat)alpha;
 -(void)decreaseAlphaToBasicElements;
 -(void)increaseAlphaToBasicElements;
+-(void)formatElements;
+-(void)clearAndReloadData;
 
 @end

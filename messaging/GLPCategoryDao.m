@@ -52,12 +52,28 @@
     return result;
 }
 
++(NSArray*)findByPostRemoteKey:(NSInteger)postRemoteKey andCategoryRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from categories where post_remote_key=%d AND remoteKey=%d", postRemoteKey, remoteKey];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next])
+    {
+        GLPCategory *c = [GLPCategoryDaoParser createFromResultSet:resultSet inDb:db];
+        [result addObject:c];
+    }
+    
+    return result;
+}
+
 +(void)saveCategoryIfNotExist:(GLPCategory*)category db:(FMDatabase *)db
 {
     
-    NSArray *categoriesForPost = [GLPCategoryDao findByPostRemoteKey:category.postRemoteKey db:db];
+    NSArray *categoriesForPost = [GLPCategoryDao findByPostRemoteKey:category.postRemoteKey andCategoryRemoteKey:category.remoteKey db:db];
     
-    if(!categoriesForPost)
+    
+    if(categoriesForPost.count == 0 || !categoriesForPost)
     {
         [db executeUpdateWithFormat:@"insert into categories (remoteKey, tag, name, post_remote_key) values(%d, %@, %@, %d)",
          category.remoteKey,
@@ -66,10 +82,7 @@
          category.postRemoteKey];
         
         category.key = [db lastInsertRowId];
-    }
-    else
-    {
-        //Don't insert anything.
+
     }
     
 

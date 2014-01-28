@@ -72,9 +72,6 @@ float timeInterval = 0.1;
 
 @property (strong, nonatomic) LiveChatsView *liveChatsView;
 
-/** Timing panel. */
-@property (strong, nonatomic) IBOutlet UIImageView *timingBar;
-@property (strong, nonatomic) IBOutlet UIImageView *backTimingBar;
 
 @property (strong, nonatomic) NSTimer *timer1;
 
@@ -110,6 +107,8 @@ float timeInterval = 0.1;
     
     [self configureHeader];
 
+    
+//    [self.view setBackgroundColor:[UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0]];
 
 }
 
@@ -118,8 +117,12 @@ float timeInterval = 0.1;
     [super viewWillAppear:animated];
     
 
-    
-    [self configureBackground];
+    if(self.tableView.frame.size.height < 465.0f)
+    {
+
+        [self.tableView setFrame:CGRectMake(0, 0, 320, 460)];
+
+    }
     
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
@@ -144,6 +147,7 @@ float timeInterval = 0.1;
     // reload messages when coming back from other VC
     [self configureMessages];
     [self loadInitialMessages];
+    
 
 //    [self loadElements];
     
@@ -154,6 +158,7 @@ float timeInterval = 0.1;
     [super viewDidAppear:animated];
     
     [self.tabBarController.tabBar setHidden:YES];
+//    [self.navigationController setNavigationBarHidden:NO];
 
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -171,13 +176,14 @@ float timeInterval = 0.1;
     
     if([className isEqualToString:@"ChatViewController"])
     {
-        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+//        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+//        [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
         [self.tabBarController.tabBar setHidden:NO];
+//        [self.navigationController setNavigationBarHidden:YES];
     }
     else
     {
-        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+//        [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
         //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
         //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:[[GLPThemeManager sharedInstance] imageForNavBar] forBarMetrics:UIBarMetricsDefault];
         
@@ -189,11 +195,13 @@ float timeInterval = 0.1;
     
     //Hide live chats view.
     [self.liveChatsView removeView];
+    
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [self.timer1 invalidate];
+
 }
 
 -(void)configureHeader
@@ -218,13 +226,6 @@ float timeInterval = 0.1;
     }
 }
 
--(void)configureBackground
-{
-    
-    //[self.view setBackgroundColor: [UIColor colorWithPatternImage: [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]]]];
-    
-    //[self.tableView setBackgroundColor:[UIColor clearColor]];
-}
 
 - (void)configureMessages
 {
@@ -249,11 +250,13 @@ float timeInterval = 0.1;
     self.keyboardAppearanceSpaceY = 0;
     
     if(_conversation.isLive) {
-        [self configureTimeBar];
+        //[self configureTimeBar];
         [self configureNavigationBarButton];
     } else {
-        [self hideTimeBarAndMaximizeTableView];
+//        [self hideTimeBarAndMaximizeTableView];
     }
+    //[self hideTimeBarAndMaximizeTableView];
+
     
 //    [self loadInitialMessages];
 }
@@ -264,31 +267,31 @@ float timeInterval = 0.1;
     [self loadElements];
 }
 
--(void) hideTimeBarAndMaximizeTableView
-{
-    self.timingBar.hidden = YES;
-    self.backTimingBar.hidden = YES;
-    //Remove the live chat button.
-    
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    
-    
-    
-    [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y-7, tableViewFrame.size.width, tableViewFrame.size.height+8)];
-}
+//-(void) hideTimeBarAndMaximizeTableView
+//{
+//    self.timingBar.hidden = YES;
+//    self.backTimingBar.hidden = YES;
+//    //Remove the live chat button.
+//    
+//    
+//    CGRect tableViewFrame = self.tableView.frame;
+//    
+//    
+//    
+//    [self.tableView setFrame:CGRectMake(tableViewFrame.origin.x, tableViewFrame.origin.y-7, tableViewFrame.size.width, tableViewFrame.size.height+8)];
+//}
 
--(void) configureTimeBar
-{
-    timingBarCurrentWidth = 320;
-
-    //Calculate the resizing factor.
-    [self calculateTheResizingFactor];
-    
-    firstTimingBarSize = self.timingBar.frame;
-    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(animateTimeBar:) userInfo:nil repeats:YES];
-    [self.timer1 fire];
-}
+//-(void) configureTimeBar
+//{
+//    timingBarCurrentWidth = 320;
+//
+//    //Calculate the resizing factor.
+//    [self calculateTheResizingFactor];
+//    
+//    firstTimingBarSize = self.timingBar.frame;
+//    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(animateTimeBar:) userInfo:nil repeats:YES];
+//    [self.timer1 fire];
+//}
 
 -(void)calculateTheResizingFactor
 {
@@ -336,8 +339,8 @@ float timeInterval = 0.1;
 
 - (void)configureNavigationBar
 {
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 
+    [self.navigationController setNavigationBarHidden:NO];
 
     // navigate to profile through navigation bar for user-to-user conversation
     if(!_conversation.isGroup && ![self isNewChat])
@@ -365,7 +368,7 @@ float timeInterval = 0.1;
         self.title = _conversation.title;
     }
 
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
@@ -377,11 +380,36 @@ float timeInterval = 0.1;
     [AppearanceHelper setNavigationBarFontFor:self];
     
     
-    //[AppearanceHelper setNavigationBarColour:self];
+    [AppearanceHelper setNavigationBarColour:self];
 
     
 
 }
+
+/**
+ 
+ -(void)configureNavigationBar
+ {
+ //    [self setNeedsStatusBarAppearanceUpdate];
+ self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+ 
+ //Change the format of the navigation bar.
+ //    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+ [AppearanceHelper setNavigationBarColour:self];
+ 
+ //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+ 
+ [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+ 
+ [AppearanceHelper setNavigationBarFontFor:self];
+ 
+ [self.navigationController.navigationBar setTranslucent:NO];
+ 
+ [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+ 
+ }
+ 
+ */
 
 -(void)configureNavigationBarButton
 {

@@ -30,6 +30,9 @@
 #define GLP_WEBSERVICE_VERSION                      @"0.26"
 #define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
+#define GLP_APP_FONT                                @"Khmer Sangam MN"
+
+
 // DDLog
 #ifdef ENV_DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;

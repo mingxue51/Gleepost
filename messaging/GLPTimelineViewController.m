@@ -45,6 +45,7 @@
 #import "TransitionDelegateViewCategories.h"
 #import "CampusWallHeader.h"
 #import "CampusWallHeaderSimpleView.h"
+#import "FakeNavigationBar.h"
 
 @interface GLPTimelineViewController ()
 
@@ -97,10 +98,10 @@
 @property (assign, nonatomic) CGFloat startContentOffset;
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property (assign, nonatomic) BOOL hidden;
-@property (strong, nonatomic) UIImageView *statusBarView;
 
 //Header.
 @property (strong, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
+@property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 @end
 
@@ -125,12 +126,17 @@
     [super viewDidLoad];
     
     [self configTableView];
+    
+
+    [self configHeader];
+    
+
+    
     [self configTabbarFormat];
     
     [self configNewElementsIndicatorView];
     
     [self initialiseObjects];
-    
     
     //TODO: Remove this later.
     [[ContactsManager sharedInstance] refreshContacts];
@@ -138,7 +144,6 @@
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
 //    [self startLoadingContents];
     
-
     
     [self loadInitialPosts];
 
@@ -150,7 +155,11 @@
     
     [self configAppearance];
     
+
+    
     [self configNavigationBar];
+    
+    
     
    // [self configStatusbarBackground];
     
@@ -177,6 +186,7 @@
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -194,8 +204,9 @@
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
-    //Hide status bar colour.
-    [self.statusBarView setHidden:YES];
+    
+    [self.campusWallHeader clearAndReloadData];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -347,17 +358,14 @@
 {
     
     //Hide for now the navigation bar.
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 
-    [self.navigationController.navigationBar setTranslucent:NO];
+//    [self.navigationController.navigationBar setTranslucent:NO];
     
     //Sets colour to navigation items.
     self.navigationController.navigationBar.tintColor = tabColour;
-    
-    
-    
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
 
@@ -366,12 +374,16 @@
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
     
     [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+    
+    
+    //Set to all the application the status bar text white.
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
 }
 
 - (void)configAppearance
 {
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleDefault;
-    
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
 
     //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
@@ -382,7 +394,6 @@
     
     //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
 
-    //[AppearanceHelper setNavigationBarFont];
     
     self.tabBarController.tabBar.hidden = NO;
     
@@ -411,12 +422,6 @@
     [self setButtonsToNavigationBar];
 }
 
--(void)configStatusbarBackground
-{
-    self.statusBarView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
-    self.statusBarView.backgroundColor=[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
-    [self.navigationController.view addSubview:self.statusBarView];
-}
 
 -(void)configTabbarFormat
 {
@@ -495,21 +500,34 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 
-//    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderCell" bundle:nil] forCellReuseIdentifier:@"CampusWallHeader"];
-    
-    //Load the header of the table view.
-    
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
-
-    //Set delegate.
-    self.campusWallHeader = [array objectAtIndex:0];
-    self.campusWallHeader.delegate = self;
-    
-    self.tableView.tableHeaderView = self.campusWallHeader;
-    
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+}
+
+-(void)configHeader
+{
+    //Load the header of the table view.
+    
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
+    
+    //Set delegate.
+    self.campusWallHeader = [array objectAtIndex:0];
+    [self.campusWallHeader formatElements];
+    [self.campusWallHeader setDelegate:self];
+    
+    self.tableView.tableHeaderView = self.campusWallHeader;
+    
+    //Add fake navigation bar to view.
+    array = [[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBar" owner:self options:nil];
+    
+    self.reNavBar = [array objectAtIndex:0];
+    [self.reNavBar formatElements];
+    [self.reNavBar setDelegate:self];
+    [self.tableView addSubview:self.reNavBar];
+    [self.tableView bringSubviewToFront:self.reNavBar];
+    
+    [self.reNavBar setHidden:YES];
 }
 
 - (void)configNewElementsIndicatorView
@@ -820,6 +838,7 @@
         
         self.isLoading = NO;
     }];
+    
 }
 
 
@@ -841,6 +860,10 @@
     
     
     self.isLoading = NO;
+    
+    //Bring the fake navigation bar to from because is hidden by new cell.
+    [self.tableView bringSubviewToFront:self.reNavBar];
+
 }
 
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
@@ -945,19 +968,24 @@
     CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
     self.lastContentOffset = currentOffset;
     
-    //DDLogDebug(@"offset: %f",scrollView.contentOffset.y);
     
-
+    [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
     
+//    [self.campusWallHeader setPositionToNavBar:CGPointMake(0.0f, scrollView.contentOffset.y)];
     
-    if(scrollView.contentOffset.y >= 209.0f)
+    if(scrollView.contentOffset.y >= 195.0f)
     {
         //[self contract];
-
+    
+        [self.reNavBar setHidden:NO];
+        //[self.campusWallHeader showFakeNavigationBar];
+            
     }
     else
     {
         //[self expand];
+        [self.reNavBar setHidden:YES];
+       // [self.campusWallHeader hideFakeNavigationBar];
 
     }
 
@@ -967,14 +995,11 @@
         if ([scrollView.panGestureRecognizer translationInView:scrollView].y > 0)
         {
 //            DDLogDebug(@"down");
-            [self.campusWallHeader increaseAlphaToBasicElements];
 
             
         } else
         {
 //            DDLogDebug(@"up");
-            [self.campusWallHeader decreaseAlphaToBasicElements];
-
         }
         
     }
@@ -1002,24 +1027,9 @@
 }
 
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-//    DDLogDebug(@"scrollViewDidEndDragging");
-
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-//    DDLogDebug(@"scrollViewDidEndDecelerating");
-
-}
-
-
-
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
-//    DDLogDebug(@"scrollViewShouldScrollToTop");
-    [self contract];
+    //[self contract];
     return YES;
 }
 
@@ -1033,10 +1043,6 @@
     }
     
     self.hidden = YES;
-    
-
-    [self.statusBarView setHidden:NO];
-    
 
     
     [self.navigationController setNavigationBarHidden:YES
@@ -1056,8 +1062,6 @@
 //                                  animated:YES];
     
     
-    [self.statusBarView setHidden:YES];
-
     [self.navigationController setNavigationBarHidden:NO
                                              animated:NO];
 }
@@ -1085,6 +1089,9 @@
     
     [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     [self scrollToTheTop];
+    
+    //Bring the fake navigation bar to from because is hidden by new cell.
+    [self.tableView bringSubviewToFront:self.reNavBar];
 }
 
 - (void)updateTableViewWithNewPosts:(int)count
@@ -1310,6 +1317,18 @@
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
+
+-(void)scrollToTheNavigationBar
+{
+    [UIView animateWithDuration:0.5f animations:^{
+        
+        [self.tableView setContentOffset:CGPointMake(0,220)];
+
+    }];
+
+}
+
+
 
 #pragma mark - Change category
 
@@ -1736,6 +1755,8 @@
 
 -(void)showCategories:(id)sender
 {
+    [self scrollToTheTop];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
 
@@ -1746,6 +1767,7 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:cvc animated:YES completion:nil];
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

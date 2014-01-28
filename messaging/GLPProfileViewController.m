@@ -97,7 +97,7 @@
     
     [self initialiseObjects];
     
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 
 //    [self configureNavigationBar];
 

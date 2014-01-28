@@ -54,9 +54,11 @@
     [self.navigationController.navigationBar setTranslucent:YES];
     //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
+    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+
+    [self.navigationController setNavigationBarHidden:YES];
 
     
     [self addGleepostImageToNavigationBar];
@@ -66,6 +68,10 @@
     
     //Get theme type.
     self.themeType = [[GLPThemeManager sharedInstance] themeIdentifier];
+    
+    
+    //    [self presentViewController:<#(UIViewController *)#> animated:<#(BOOL)#> completion:<#^(void)completion#>]
+
 
 }
 
@@ -78,12 +84,22 @@
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     [AppearanceHelper setSelectedColourForTabbarItem:self.chatTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
+    [self.navigationController setNavigationBarHidden:YES];
+
+    
     [self loadLiveConversations];
+    
+
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+    
+    [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y,self.view.frame.size.width , 519.0f)];
+    
     
     [self initialiseAnimationViewToTheViewController];
 
-    [self sendViewToGAI:NSStringFromClass([self class])];
-    [self sendViewToFlurry:NSStringFromClass([self class])];
+
 }
 
 -(void) viewDidDisappear:(BOOL)animated

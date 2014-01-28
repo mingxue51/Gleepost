@@ -130,11 +130,17 @@
     entity.key = [db lastInsertRowId];
     
     
-    //Insert post's categories.
-    for(GLPCategory *category in entity.categories)
+    if(entity.remoteKey != 0)
     {
-        [GLPCategoryDao saveCategoryIfNotExist:category db:db];
+        
+        //Insert post's categories.
+        for(GLPCategory *category in entity.categories)
+        {
+            category.postRemoteKey = entity.remoteKey;
+            [GLPCategoryDao saveCategoryIfNotExist:category db:db];
+        }
     }
+
     
      
     //Insert images
@@ -179,6 +185,14 @@
         [db executeUpdateWithFormat:@"update posts set sendStatus=%d where key=%d",
          entity.sendStatus,
          entity.key];
+    }
+    
+    
+    //Insert post's categories.
+    for(GLPCategory *category in entity.categories)
+    {
+        category.postRemoteKey = entity.remoteKey;        
+        [GLPCategoryDao saveCategoryIfNotExist:category db:db];
     }
 }
 

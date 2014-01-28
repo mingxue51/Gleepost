@@ -69,7 +69,6 @@
     
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
     
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     [AppearanceHelper setNavigationBarFontFor:self];
