@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *stanfordLbl;
 @property (weak, nonatomic) IBOutlet UIImageView *backTagsImgView;
 
-@property (strong, nonatomic) CampusWallHeader *scrollView;
+@property (weak, nonatomic) CampusWallHeader *scrollViewHeader;
 
 @property (weak, nonatomic) FakeNavigationBar *fakeNavBar;
 
@@ -39,7 +39,7 @@
         {
             if([v isKindOfClass:[CampusWallHeader class]])
             {
-                _scrollView = (CampusWallHeader*) v;
+                _scrollViewHeader = (CampusWallHeader*) v;
                 break;
             }
         }
@@ -72,28 +72,28 @@
 }
 
 
--(void)decreaseAlphaToBasicElements
-{
-    if(self.eventsBtn.alpha > 0.0)
-    {
-        self.eventsBtn.alpha -= 0.033;
-        self.stanfordLbl.alpha -= 0.033;
-        DDLogDebug(@"decrease: %f", self.eventsBtn.alpha);
-
-    }
-
-}
-
--(void)increaseAlphaToBasicElements
-{
-    if(self.eventsBtn.alpha < 1.0)
-    {
-        self.eventsBtn.alpha += 0.033;
-        self.stanfordLbl.alpha += 0.033;
-        
-        DDLogDebug(@"increase: %f", self.eventsBtn.alpha);
-    }
-}
+//-(void)decreaseAlphaToBasicElements
+//{
+//    if(self.eventsBtn.alpha > 0.0)
+//    {
+//        self.eventsBtn.alpha -= 0.033;
+//        self.stanfordLbl.alpha -= 0.033;
+//        DDLogDebug(@"decrease: %f", self.eventsBtn.alpha);
+//
+//    }
+//
+//}
+//
+//-(void)increaseAlphaToBasicElements
+//{
+//    if(self.eventsBtn.alpha < 1.0)
+//    {
+//        self.eventsBtn.alpha += 0.033;
+//        self.stanfordLbl.alpha += 0.033;
+//        
+//        DDLogDebug(@"increase: %f", self.eventsBtn.alpha);
+//    }
+//}
 
 -(void)setAlphaToBasicElements:(CGFloat)alpha
 {
@@ -101,10 +101,6 @@
     [self.stanfordLbl setAlpha:alpha];
 }
 
--(void)hideLoadingEvents
-{
-    
-}
 
 - (IBAction)showTags:(id)sender
 {
@@ -117,10 +113,11 @@
     [self.delegate newPostButtonClick];
 }
 
--(void)clearAndReloadData
+
+
+-(IBAction)clearAndReloadData:(id)sender
 {
-    
-    [_scrollView clearViews];
+    [_scrollViewHeader clearViews];
 }
 
 /*

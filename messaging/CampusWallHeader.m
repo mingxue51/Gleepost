@@ -42,6 +42,19 @@
         
         [self loadEvents];
         
+        if(self.subviews.count >= 2)
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Subview removed"];
+            
+            UIView *v = [self.subviews objectAtIndex:1];
+            
+            if(v)
+            {
+                [v removeFromSuperview];
+            }
+        }
+
+        
 
         
         
@@ -114,9 +127,13 @@
 {
 //    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
+    
     if(self.subviews.count >= 2)
     {
-        DDLogError(@"PROBLEM HAVING TWO SCROLLVIEWS IN LIVE WALL IS PROBLEMATIC.");
+        [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Problem in horizontal scroll view detected! Please contact with developer!"];
+        UIView *v = [self.subviews objectAtIndex:1];
+        [v removeFromSuperview];
+        
     }
     
     
@@ -155,17 +172,17 @@
 
 -(CGFloat)cellSpacingAfterCellAtPosition:(int)position
 {
-    if (position<20)
-    {
-        return 10.0;
-        
-    }
-    else if (position<30)
-    {
-        return 50.0;
-        
-    }
-    return 0.0;
+//    if (position<20)
+//    {
+//        return 10.0;
+//        
+//    }
+//    else if (position<30)
+//    {
+//        return 50.0;
+//        
+//    }
+    return 17.0;
 }
 
 
@@ -208,7 +225,7 @@
     CGRect frame = myCustomCell.frame;
 //    frame.origin.y =  frame.size.height-(frame.size.height/[self.dataArray count])*position;
     
-    frame.origin.y = 10;
+    frame.origin.y = 0;
     
     [myCustomCell setFrame:frame];
 }

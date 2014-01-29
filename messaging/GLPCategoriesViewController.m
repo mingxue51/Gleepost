@@ -11,6 +11,7 @@
 #import "GLPCategory.h"
 #import "SessionManager.h"
 #import "CategoryManager.h"
+#import "UIImage+StackBlur.h"
 
 @interface GLPCategoriesViewController ()
 
@@ -30,10 +31,16 @@
 {
     [super viewDidLoad];
 	
+
+    
+    
     [self loadCategories];
     
     [self configTableView];
     
+
+    
+//    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
 }
 
 - (void)didReceiveMemoryWarning

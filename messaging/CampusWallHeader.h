@@ -13,5 +13,6 @@
 @interface CampusWallHeader : VSScrollView <VSScrollerDatasource,VSScrollerDelegate>
 
 -(void)clearViews;
+-(void)loadEvents;
 
 @end

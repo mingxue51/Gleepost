@@ -48,7 +48,17 @@
     return newImage;
 }
 
-
++(UIImage*)cropImage:(UIImage*)image withRect:(CGRect)cropRect
+{
+    UIImage *cropedImage = nil;
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+    // or use the UIImage wherever you like
+    cropedImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    return cropedImage;
+}
 
 
 /** Not used at the moment. **/

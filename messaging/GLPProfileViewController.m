@@ -189,8 +189,8 @@
     [bellBtn setBackgroundImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
     [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
     
-
     
+    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showSettings:)];
     
 //    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
     
@@ -206,7 +206,8 @@
 //        self.navigationItem.rightBarButtonItems = @[settingsButton, [[UIBarButtonItem alloc] initWithCustomView:self.notificationView]];
 //    }
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
+    self.navigationItem.rightBarButtonItem = settingsBtn;
 }
 
 -(void)configureNavigationBar
@@ -388,6 +389,19 @@
     
     [actionSheet showInView:[self.view window]];
     
+}
+
+-(void)showSettings:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    vc.delegate = self;
+    vc.campusWallView = self.fromCampusWall;
+//    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
+    vc.modalPresentationStyle= UIModalPresentationCurrentContext;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)invite {

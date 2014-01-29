@@ -31,6 +31,7 @@
 #define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
+#define GLP_APP_FONT_BOLD                                @"Khmer UI"
 
 
 // DDLog

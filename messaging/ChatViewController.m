@@ -50,6 +50,8 @@
 {
     [super viewDidLoad];
     
+
+    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"new_chat_background"]]];
@@ -74,6 +76,7 @@
 
 
 }
+
 
 
 -(void) viewWillAppear:(BOOL)animated

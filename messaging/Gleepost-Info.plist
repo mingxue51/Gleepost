@@ -41,6 +41,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>KhmerUIb.TTF</string>
 		<string>Khmer-Sangam-MN.TTF</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>

@@ -9,16 +9,21 @@
 
 #import "VSScrollView.h"
 #import "VSScrollViewCell.h"
+#import "WebClientHelper.h"
+
 @interface VSScrollView()
 {
     NSUInteger numberOfViews;
-    UIScrollView *myScrollView;
+//    UIScrollView *myScrollView;
     NSMutableDictionary *widthPositionDict;
     NSMutableArray *currentlyVissiblePositions;
     float currentPosition;
     BOOL lostCells;
 
 }
+
+@property (nonatomic, strong) UIScrollView *customScrollView;
+
 @property (nonatomic,strong)id dequedVSScrollViewCell;
 @property (nonatomic,assign)BOOL cellLostExpected;
 
@@ -30,6 +35,7 @@
 
 @implementation VSScrollView
 @synthesize dataSource;
+@synthesize customScrollView = myScrollView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -48,14 +54,17 @@
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
-     myScrollView = [[UIScrollView alloc]initWithFrame:rect];
-    [myScrollView setDelegate:self];
-    [myScrollView setShowsHorizontalScrollIndicator:NO];
-    [myScrollView setShowsVerticalScrollIndicator:NO];
-    [myScrollView setPagingEnabled:self.paginationEnabled];
-    [self addSubview:myScrollView];
-    [self initiateCalls];
     
+    if(!myScrollView)
+    {
+        myScrollView = [[UIScrollView alloc]initWithFrame:rect];
+        [myScrollView setDelegate:self];
+        [myScrollView setShowsHorizontalScrollIndicator:NO];
+        [myScrollView setShowsVerticalScrollIndicator:NO];
+        [myScrollView setPagingEnabled:self.paginationEnabled];
+        [self addSubview:myScrollView];
+        [self initiateCalls];
+    }
     
 }
 -(void)awakeFromNib

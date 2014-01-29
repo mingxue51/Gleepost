@@ -46,6 +46,8 @@
 #import "CampusWallHeader.h"
 #import "CampusWallHeaderSimpleView.h"
 #import "FakeNavigationBar.h"
+#import "UIImage+StackBlur.h"
+
 
 @interface GLPTimelineViewController ()
 
@@ -100,7 +102,7 @@
 @property (assign, nonatomic) BOOL hidden;
 
 //Header.
-@property (strong, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
+@property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
 @property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 @end
@@ -120,6 +122,8 @@
     return self;
 
 }
+
+
 
 - (void)viewDidLoad
 {
@@ -143,6 +147,7 @@
     
     
     [self loadInitialPosts];
+    
 
 }
 
@@ -155,7 +160,6 @@
 
     
     [self configNavigationBar];
-    
     
     
    // [self configStatusbarBackground];
@@ -201,8 +205,6 @@
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
-    
-    [self.campusWallHeader clearAndReloadData];
     
 }
 
@@ -496,6 +498,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
+    
+//    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -859,7 +863,7 @@
     self.isLoading = NO;
     
     //Bring the fake navigation bar to from because is hidden by new cell.
-    [self.tableView bringSubviewToFront:self.reNavBar];
+//    [self.tableView bringSubviewToFront:self.reNavBar];
 
 }
 
@@ -1088,7 +1092,7 @@
     [self scrollToTheTop];
     
     //Bring the fake navigation bar to from because is hidden by new cell.
-    [self.tableView bringSubviewToFront:self.reNavBar];
+//    [self.tableView bringSubviewToFront:self.reNavBar];
 }
 
 - (void)updateTableViewWithNewPosts:(int)count
@@ -1193,7 +1197,10 @@
         postCell.delegate = self;
         
         [postCell updateWithPostData:post withPostIndex:indexPath.row];
-        
+    
+        [self.tableView bringSubviewToFront:self.reNavBar];
+    
+    
         return postCell;
 
 //    }
@@ -1254,8 +1261,8 @@
             
             //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
             
-            //return [PostCell getCellHeightWithContent:currentPost.content image:NO];
-            return TEXT_CELL_HEIGHT;
+            return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
+            //return TEXT_CELL_HEIGHT;
         }
 //    }
 
@@ -1317,11 +1324,17 @@
 
 -(void)scrollToTheNavigationBar
 {
+
     [UIView animateWithDuration:0.5f animations:^{
         
         [self.tableView setContentOffset:CGPointMake(0,220)];
 
+        
+    } completion:^(BOOL finished) {
+        
+        
     }];
+    
 
 }
 
@@ -1752,14 +1765,32 @@
 
 -(void)showCategories:(id)sender
 {
-    [self scrollToTheTop];
+//    [self scrollToTheTop];
+    
+    [self scrollToTheNavigationBar];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
 
+    /**
+     Takes screenshot from the current view controller to bring the sense of the transparency after the load
+     of the NewPostViewController.
+     */
+    UIGraphicsBeginImageContext(self.view.window.bounds.size);
+    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
     cvc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     cvc.modalPresentationStyle = UIModalPresentationCustom;
-    cvc.delegate = self;    
+    cvc.delegate = self;
+//    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+    
+    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 210)];
+    
+    [cvc.blurBack setImage:[image stackBlur:10.0f]];
+    
     [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -1868,6 +1899,25 @@
     }
     else if ([segue.identifier isEqualToString:@"view categories"])
     {
+     
+        GLPCategoriesViewController *categoriesViewController = segue.destinationViewController;
+        
+        
+        /**
+         Takes screenshot from the current view controller to bring the sense of the transparency after the load
+         of the NewPostViewController.
+         */
+//        UIGraphicsBeginImageContext(self.view.window.bounds.size);
+//        [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+//        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
+        
+//        UIGraphicsBeginImageContext(self.view.window.bounds.size);
+//        [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+//        UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
+        
+//        categoriesViewController.screenshot = viewImage;
         
     }
     

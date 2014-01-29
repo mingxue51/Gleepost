@@ -102,8 +102,11 @@ static BOOL isViewDidDisappearCalled = YES;
     [self.tabBar.items[index] setBadgeValue:badge];
 }
 
+
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
+    DDLogDebug(@"TABBAR ITEM: %d", item.tag);
+    
     switch (item.tag) {
         case 1:
             _notificationsCount = 0;

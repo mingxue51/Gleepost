@@ -37,8 +37,8 @@
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 480;
-const float TEXT_CELL_HEIGHT = 160;
+const float IMAGE_CELL_HEIGHT = 310;
+const float TEXT_CELL_HEIGHT = 100;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -79,11 +79,11 @@ const float TEXT_CELL_HEIGHT = 160;
 }
 
 
-static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT - 25; //110 before.
-static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT-35;
+static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
+static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT-30;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before. 10 before.
-static const float PostContentLabelMaxWidth = 250;
+static const float PostContentLabelMaxWidth = 310;
 static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
 static const float ThreeLinesLimit = 62.0;
@@ -192,6 +192,11 @@ static const float OneLineText = 16.0;
     //Add text to information label.
     [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views Category: %@",postData.likes, postData.commentsCount, postData.remoteKey, categoriesStr]];
     
+    [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d",postData.likes]];
+    
+    [self.numberOfCommentsLbl setText:[NSString stringWithFormat:@"%d",postData.commentsCount]];
+    
+    
     //Set like button status.
     if(postData.liked)
     {
@@ -221,15 +226,11 @@ static const float OneLineText = 16.0;
     }
     
     
-    //[self.contentLbl setText:postData.content];
-
     
 //    [self.contentLbl setFrame:self.labelDimensions];
 //    [self.contentLbl sizeToFit];
     
     //[self setNewPositions];
-    
-//    NSLog(@"-> Final Height: %f. Content: %@", self.contentView.frame.size.height, self.contentLbl.text);
 
     
 //    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
@@ -254,20 +255,22 @@ static const float OneLineText = 16.0;
 
 -(void)setFontToLabels
 {
-    [self.contentLbl setFont:[UIFont fontWithName:GLP_APP_FONT size:13.0f]];
+    //[self.contentLbl setFont:[UIFont fontWithName:GLP_APP_FONT size:13.0f]];
     
-    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@-Bold",GLP_APP_FONT] size:14.0f]];
+    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
     
-  
+    [self.postTime setFont:[UIFont fontWithName:GLP_APP_FONT size:13.0f]];
     
-    [self.postTime setFont:[UIFont fontWithName:GLP_APP_FONT size:10.0f]];
+    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:12.0f]];
+    
+    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:12.0f]];
 }
 
 -(void)formatUsersImage
 {
     [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
-    self.userImageView.layer.borderWidth = 1.0f;
-    self.userImageView.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
+//    self.userImageView.layer.borderWidth = 1.0f;
+//    self.userImageView.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
 }
 
 -(void)formatPostImage
@@ -393,7 +396,7 @@ static const float OneLineText = 16.0;
 {
 //    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     //[UIFont systemFontOfSize:13.0]
-    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:13.0];
+    UIFont *font = [UIFont fontWithName:GLP_APP_FONT size:13.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
@@ -404,13 +407,17 @@ static const float OneLineText = 16.0;
     
     CGSize size = rect.size;
     
-
     
     if(size.height > ThreeLinesLimit && !isViewPost)
     {
         return CGSizeMake(size.width, 50);
     }
     
+//    if(isViewPost)
+//    {
+//        //Decrease the height.
+//        size.height -= 15;
+//    }
 
     //
     

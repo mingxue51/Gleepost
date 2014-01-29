@@ -26,8 +26,8 @@
 
 @implementation CampusWallHeaderCell
 
-const float CELL_HEIGHT = 115;
-const float CELL_WIDTH = 200;
+const float CELL_HEIGHT = 142;
+const float CELL_WIDTH = 186;
 
 
 -(id)initWithIdentifier:(NSString *)identifier
@@ -52,6 +52,7 @@ const float CELL_WIDTH = 200;
         
         _profileImage.layer.borderWidth = 1.0;
         _profileImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        
     }
     
     
@@ -72,6 +73,15 @@ const float CELL_WIDTH = 200;
     NSDate *currentDate = post.date;
 
     [_timeLbl setText:[self takeTime:currentDate]];
+    
+    [self formatFontInLabels];
+}
+
+-(void)formatFontInLabels
+{
+    [_userNameLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
+    
+    [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
 }
 
 -(NSString*)takeTime:(NSDate*)date

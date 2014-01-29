@@ -9,15 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "GLPTimelineViewController.h"
 
-@interface CampusWallHeaderSimpleView : UIView
+@interface CampusWallHeaderSimpleView : UITableViewHeaderFooterView
 
 @property (weak, nonatomic) GLPTimelineViewController *delegate;
 
--(void)hideLoadingEvents;
 -(void)setAlphaToBasicElements:(CGFloat)alpha;
--(void)decreaseAlphaToBasicElements;
--(void)increaseAlphaToBasicElements;
 -(void)formatElements;
--(void)clearAndReloadData;
 
 @end

@@ -12,5 +12,8 @@
 @interface GLPCategoriesViewController : UIViewController <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) GLPTimelineViewController *delegate;
+@property (strong, nonatomic) UIImage *screenshot;
+//@property (weak, nonatomic) IBOutlet UIImageView *backgroundView;
+@property (weak, nonatomic) IBOutlet UIImageView *blurBack;
 
 @end
