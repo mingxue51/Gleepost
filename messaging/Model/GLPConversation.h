@@ -23,7 +23,11 @@
 @property (assign, nonatomic) BOOL isGroup;
 @property (assign, nonatomic) BOOL isLive;
 
-// live
+// transient
+@property (assign, nonatomic) BOOL isSync; // is sync with websocket stream and web service
+@property (assign, nonatomic) NSInteger lastSyncMessageKey;
+
+// live specific
 @property (assign, nonatomic) BOOL isEnded;
 @property (assign, nonatomic) NSDate *expiryDate;
 

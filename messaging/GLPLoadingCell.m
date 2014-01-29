@@ -45,7 +45,7 @@ NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
     _loadingView.hidden = YES;
     _errorView.hidden = YES;
     
-    self.loadingStatus = -1;
+    self.loadingStatus = kGLPLoadingCellStatusInit;
     
     return self;
 }
@@ -53,7 +53,16 @@ NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
 - (void)updateWithStatus:(GLPLoadingCellStatus)status
 {
     switch (status) {
+        case kGLPLoadingCellStatusDisabled:
+            // show nothing
+            break;
+        case kGLPLoadingCellStatusReady:
+            // show nothing, but 
+            
+            
+            
         case kGLPLoadingCellStatusInit:
+            break;
         case kGLPLoadingCellStatusLoading: // same as init but only for animaation purpose
             [self startLoading];
             break;
@@ -75,12 +84,10 @@ NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
 
 - (void)startLoading
 {
-    if(!_loadingView.hidden) {
-        return;
+    if(_loadingView.hidden) {
+        _loadingView.hidden = NO;
+        _errorView.hidden = YES;
     }
-    
-    _loadingView.hidden = NO;
-    _errorView.hidden = YES;
     
     [_activityIndicatorView startAnimating];
 }
@@ -92,11 +99,12 @@ NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
     }
     
     [_activityIndicatorView stopAnimating];
+    _loadingView.hidden = YES;
 }
 
 - (void)showError
 {
-    if(!_errorView.hidden) {
+    if(_errorView.hidden) {
         return;
     }
     
@@ -112,6 +120,21 @@ NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
     }
     
     [_delegate loadingCellDidReload];
+}
+
+
+
+# pragma mark - New API
+
+- (void)startAnimating
+{
+    if(_loadingView.hidden) {
+        _loadingView.hidden = NO;
+    }
+    
+    if(!_activityIndicatorView.isAnimating) {
+        [_activityIndicatorView startAnimating];
+    }
 }
 
 @end

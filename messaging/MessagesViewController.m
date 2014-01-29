@@ -404,9 +404,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"view topic"]) {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         ViewTopicViewController *vc = segue.destinationViewController;
         vc.conversation = self.selectedConversation;
+        vc.hidesBottomBarWhenPushed = YES;
     }
 }
 

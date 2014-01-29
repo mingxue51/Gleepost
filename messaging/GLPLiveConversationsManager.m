@@ -79,12 +79,73 @@ static GLPLiveConversationsManager *instance = nil;
             _conversationsMessagesKeys = [NSMutableDictionary dictionary]; // reset if need
             
             for(GLPConversation *c in _conversations) {
+                c.isSync = NO;
+                
                 NSNumber *index = [NSNumber numberWithInteger:c.remoteKey];
                 _conversationsMessages[index] = [NSMutableArray array];
                 _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:0];
             }
             
             _isSynchronizedWithRemote = YES;
+        });
+    }];
+}
+
+- (void)syncConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"Sync conversation %d", conversation.remoteKey);
+    
+    __block NSInteger lastSyncMessageKey = NSNotFound;
+    __block GLPMessage *message = nil;
+    __block BOOL success = NO;
+    
+    dispatch_sync(_queue, ^{
+        GLPConversation *syncConversation = [self internalFindConversationByRemoteKey:conversation.remoteKey];
+        if(!syncConversation) {
+            DDLogWarn(@"Cannot sync non existent conversation");
+            return;
+        }
+        
+        // conversation has last sync message
+        if(conversation.lastSyncMessageKey != NSNotFound) {
+            message = [self internalFindMessageByKey:conversation.lastSyncMessageKey inConversation:conversation];
+            
+            if(!message) {
+                DDLogWarn(@"Last sync message for key %d not found", conversation.lastSyncMessageKey);
+                return;
+            }
+        }
+        
+        success = YES;
+    });
+    
+    if(!success) {
+        DDLogWarn(@"Sync conversation abort");
+        return;
+    }
+
+    DDLogInfo(@"Last sync message: %d - %@", message.key, message.content);
+    
+    [[WebClient sharedInstance] getMessagesForConversation:conversation after:message before:nil callbackBlock:^(BOOL success, NSArray *messages) {
+        if(!success) {
+            return;
+        }
+        
+        DDLogInfo(@"Received %d messages with success", messages.count);
+        
+        dispatch_async(_queue, ^{
+            GLPConversation *syncConversation = [self internalFindConversationByRemoteKey:conversation.remoteKey];
+            if(!syncConversation) {
+                DDLogWarn(@"Cannot sync non existent conversation");
+                return;
+            }
+            
+            if(syncConversation.lastSyncMessageKey != lastSyncMessageKey) {
+                DDLogWarn(@"Previous last sync message key does not match the current's conversation: %d != %d", lastSyncMessageKey, syncConversation.lastSyncMessageKey);
+                return;
+            }
+            
+            
         });
     }];
 }
@@ -296,6 +357,20 @@ static GLPLiveConversationsManager *instance = nil;
 // Should be called inside a queue block
 - (GLPMessage *)internalFindMessageByKey:(NSInteger)key inConversation:(GLPConversation *)conversation
 {
+    NSUInteger index = [self internalFindMessageIndexByKey:key inConversation:conversation];
+    
+    if(index == NSNotFound) {
+        DDLogError(@"Live conversation's message not found for key %d", key);
+        return nil;
+    }
+    
+    return _conversationsMessages[[NSNumber numberWithInteger:conversation.remoteKey]][index];
+}
+
+// Internal
+// Should be called inside a queue block
+- (NSUInteger)internalFindMessageIndexByKey:(NSInteger)key inConversation:(GLPConversation *)conversation
+{
     NSArray *messages = _conversationsMessages[[NSNumber numberWithInteger:conversation.remoteKey]];
     NSUInteger index = [messages indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         if(((GLPMessage *)obj).key == key) {
@@ -306,12 +381,7 @@ static GLPLiveConversationsManager *instance = nil;
         return NO;
     }];
     
-    if(index == NSNotFound) {
-        DDLogError(@"Live conversation's message not found for key %d", key);
-        return nil;
-    }
-    
-    return messages[index];
+    return index;
 }
 
 // Internal

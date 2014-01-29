@@ -80,7 +80,8 @@ static BOOL visibility;
     
     if(conversation) {
         self.viewTopic.conversation = conversation;
-        [self.viewTopic reloadElements];
+        //[self.viewTopic reloadElements];
+        DDLogError(@"NOT IMPLEMENTED RELOAD");
         [self removeView];
     } else {
         [self removeView];

@@ -61,6 +61,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
 - (void)getMessagesForConversation:(GLPConversation *)conversation after:(GLPMessage *)afterMessage before:(GLPMessage *)beforeMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
+- (void)getMessagesForConversation:(GLPConversation *)conversation afterRemoteKey:(NSInteger)afterRemoteKey beforeRemoteKey:(NSInteger)beforeRemoteKey callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 
 // User
 

@@ -23,6 +23,8 @@
 @synthesize isLive = _isLive;
 @synthesize expiryDate=_expiryDate;
 @synthesize isEnded=_isEnded;
+@synthesize isSync=_isSync;
+@synthesize lastSyncMessageKey=_lastSyncMessageKey;
 
 // Init regular conversation from database
 // It will be populated afterwards
@@ -59,6 +61,9 @@
     _isLive = NO;
     _isEnded = NO;
     _hasUnreadMessages = NO;
+    
+    _isSync = NO;
+    _lastSyncMessageKey = NSNotFound;
 
     return self;
 }

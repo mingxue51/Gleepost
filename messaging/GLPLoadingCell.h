@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    kGLPLoadingCellStatusInit,
+    kGLPLoadingCellStatusInit, // deprecated
+    kGLPLoadingCellStatusSuccess, // deprecated
+    kGLPLoadingCellStatusFinished, // deprecated
+    
+    kGLPLoadingCellStatusDisabled,
+    kGLPLoadingCellStatusReady,
     kGLPLoadingCellStatusLoading,
-    kGLPLoadingCellStatusError,
-    kGLPLoadingCellStatusSuccess,
-    kGLPLoadingCellStatusFinished,
+    kGLPLoadingCellStatusError
 } GLPLoadingCellStatus;
 
 
@@ -35,6 +38,9 @@ extern NSString * const kGLPLoadingCellIdentifier;
 extern NSString * const kGLPLoadingCellNibName;
 
 - (void)updateWithStatus:(GLPLoadingCellStatus)status;
+
+// new API
+- (void)startAnimating;
 
 @end
 
