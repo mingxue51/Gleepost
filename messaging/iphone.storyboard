@@ -984,10 +984,10 @@
             </objects>
             <point key="canvasLocation" x="2038" y="1859"/>
         </scene>
-        <!--View Topic View Controller - ViewTopicViewController-->
+        <!--Conversation View Controller - ViewTopicViewController-->
         <scene sceneID="etG-PG-ZFM">
             <objects>
-                <viewController storyboardIdentifier="ViewTopicViewController" title="ViewTopicViewController" id="p7E-nR-kMk" customClass="ViewTopicViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewTopicViewController" title="ViewTopicViewController" id="p7E-nR-kMk" customClass="GLPConversationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LAc-ph-K7S">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

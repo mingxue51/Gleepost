@@ -394,6 +394,7 @@
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
+		80323E1A189A788400968FE9 /* GLPConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80323E19189A788400968FE9 /* GLPConversationViewController.m */; };
 		803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803B6084181FFE8A00A178EB /* GLPLoadingCell.m */; };
 		803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 803FF9981897D932000B1955 /* GLPLoadingCellDelegate.m */; };
 		8050249C181932C600F5337F /* conversation_new_notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8050249B181932C600F5337F /* conversation_new_notification.png */; };
@@ -1061,6 +1062,8 @@
 		80112B96180F03B9006A35AA /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		80112B99180F2494006A35AA /* NSDate+UTC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+UTC.h"; sourceTree = "<group>"; };
 		80112B9A180F2494006A35AA /* NSDate+UTC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+UTC.m"; sourceTree = "<group>"; };
+		80323E18189A788400968FE9 /* GLPConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationViewController.h; sourceTree = "<group>"; };
+		80323E19189A788400968FE9 /* GLPConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationViewController.m; sourceTree = "<group>"; };
 		803B6083181FFE8A00A178EB /* GLPLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCell.h; sourceTree = "<group>"; };
 		803B6084181FFE8A00A178EB /* GLPLoadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadingCell.m; sourceTree = "<group>"; };
 		803FF9971897D932000B1955 /* GLPLoadingCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCellDelegate.h; sourceTree = "<group>"; };
@@ -1741,6 +1744,8 @@
 				80AB897317C28C640053E784 /* MessagesViewController.m */,
 				586581351805F210005814B4 /* MessageTableViewCell.h */,
 				586581361805F210005814B4 /* MessageTableViewCell.m */,
+				80323E18189A788400968FE9 /* GLPConversationViewController.h */,
+				80323E19189A788400968FE9 /* GLPConversationViewController.m */,
 			);
 			name = "Messages Classes";
 			sourceTree = "<group>";
@@ -2247,13 +2252,6 @@
 			name = HPGrowingTextView;
 			sourceTree = "<group>";
 		};
-		803B607C181FD77200A178EB /* Conversations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Conversations;
-			sourceTree = "<group>";
-		};
 		803FF9961897D921000B1955 /* Delegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -2632,7 +2630,6 @@
 			children = (
 				58729AC4189BCB110041022C /* Settings */,
 				805358C3182EEEAC00579079 /* Posts */,
-				803B607C181FD77200A178EB /* Conversations */,
 				58433284180F02E500BD9F74 /* Login Register Classes */,
 				58B865CF180D9DD200BB18AF /* Notifications */,
 				586581341805F1D9005814B4 /* Messages Classes */,
@@ -3553,6 +3550,7 @@
 				58729ACA189BFC430041022C /* ChangePasswordViewController.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */,
+				80323E1A189A788400968FE9 /* GLPConversationViewController.m in Sources */,
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
@@ -3717,6 +3715,9 @@
 				PRODUCT_NAME = Gleepost;
 				PROVISIONING_PROFILE = "C97B8EF0-A3D6-4C16-B74D-E486FB4ACE76";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C97B8EF0-A3D6-4C16-B74D-E486FB4ACE76";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
 			name = Debug;
 		};
 		80AB893B17C267F50053E784 /* Release */ = {
