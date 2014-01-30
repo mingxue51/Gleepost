@@ -28,11 +28,11 @@
 
 int const NumberMaxOfMessagesLoaded = 20;
 
-+ (NSArray *)getLocalNormalConversations
++ (NSArray *)loadLocalRegularConversation
 {
     __block NSArray *conversations = nil;
     [DatabaseManager run:^(FMDatabase *db) {
-        conversations = [GLPConversationDao findConversationsOrderByDateFilterByLive:NO inDb:db];
+        conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
     }];
     
     return conversations;
@@ -40,7 +40,7 @@ int const NumberMaxOfMessagesLoaded = 20;
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
-    NSArray *localEntities = [ConversationManager getLocalNormalConversations];
+    NSArray *localEntities = [ConversationManager loadLocalRegularConversation];
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);
     
@@ -70,11 +70,6 @@ int const NumberMaxOfMessagesLoaded = 20;
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPConversationDao updateConversationUnreadStatus:conversation db:db];
     }];
-}
-
-+ (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback
-{
-    
 }
 
 +(void)loadConversationWithParticipant:(int)remoteKey withCallback:(void (^) (BOOL sucess, GLPConversation* conversation))callback
@@ -125,11 +120,6 @@ int const NumberMaxOfMessagesLoaded = 20;
 {
     DDLogInfo(@"Load previous messages, before %@", message.content);
     
-//    if(message && message.remoteKey == 0) {
-//        DDLogError(@"Before message is nil, abort");
-//        return;
-//    }
-    
     [[WebClient sharedInstance] getMessagesForConversation:conversation after:nil before:message callbackBlock:^(BOOL success, NSArray *messages) {
         if(!success) {
             remoteCallback(NO, nil);
@@ -142,7 +132,7 @@ int const NumberMaxOfMessagesLoaded = 20;
             return;
         }
         
-        DDLogInfo(@"new remote messages %d", messages.count);
+        DDLogInfo(@"New remote messages %d", messages.count);
         
         // reverse order
         messages = [[messages reverseObjectEnumerator] allObjects];
@@ -161,24 +151,47 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
 }
 
-
-+ (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
++ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation
 {
-    NSLog(@"load messages for conversation %d", conversation.remoteKey);
+    DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
     
     __block NSArray *localEntities = nil;
     
     if(conversation.isLive) {
-        localEntities = conversation.messages;
+        localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
     } else {
         [DatabaseManager run:^(FMDatabase *db) {
             localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
         }];
     }
-
     
-    localCallback(localEntities);
-    NSLog(@"local messages %d", localEntities.count);
+    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
+    
+    return localEntities;
+}
+
++ (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages, BOOL isFinal))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
+{
+    DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
+    
+    __block NSArray *localEntities = nil;
+    
+    if(conversation.isLive) {
+        localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
+    } else {
+        [DatabaseManager run:^(FMDatabase *db) {
+            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+        }];
+    }
+    
+    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
+    
+    if(localEntities.count >= 20) {
+        localCallback(localEntities, YES);
+        return;
+    }
+    
+    localCallback(localEntities, NO);
     
     GLPMessage *last = nil;
     for (int i = localEntities.count - 1; i >= 0; i--) {
@@ -191,7 +204,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     
     NSLog(@"last local message synch with remote: %d - %@", last.remoteKey, last.content);
     
-    [[WebClient sharedInstance] getLastMessagesForConversation:conversation withLastMessage:last callbackBlock:^(BOOL success, NSArray *messages) {
+    [[WebClient sharedInstance] getMessagesForConversation:conversation after:last before:Nil callbackBlock:^(BOOL success, NSArray *messages) {
         if(!success) {
             remoteCallback(NO, nil);
             return;
@@ -204,7 +217,7 @@ int const NumberMaxOfMessagesLoaded = 20;
 //            m.author = last.author;
 //            m.date = [last.date dateByAddingTimeInterval:5];
 //            m.conversation = last.conversation;
-//            
+//
 //            GLPMessage *m2 = [[GLPMessage alloc] init];
 //            m2.content = @"new fake msg 2";
 //            m2.author = last.author;
@@ -226,9 +239,6 @@ int const NumberMaxOfMessagesLoaded = 20;
         // reverse order
         messages = [[messages reverseObjectEnumerator] allObjects];
         
-//        // all messages, including the new ones
-//        __block NSArray *allMessages = nil;
-        
         GLPMessage *lastMessage = [messages lastObject];
         [conversation updateWithNewMessage:lastMessage];
         
@@ -249,6 +259,65 @@ int const NumberMaxOfMessagesLoaded = 20;
         
         remoteCallback(YES, messages);
     }];
+    
+//    [[WebClient sharedInstance] getLastMessagesForConversation:conversation withLastMessage:last callbackBlock:^(BOOL success, NSArray *messages) {
+//        if(!success) {
+//            remoteCallback(NO, nil);
+//            return;
+//        }
+//        
+//        // uncomment for debug, simulate responses with at least 1 new remote message
+////        if(last) {
+////            GLPMessage *m = [[GLPMessage alloc] init];
+////            m.content = @"new fake msg 1";
+////            m.author = last.author;
+////            m.date = [last.date dateByAddingTimeInterval:5];
+////            m.conversation = last.conversation;
+////            
+////            GLPMessage *m2 = [[GLPMessage alloc] init];
+////            m2.content = @"new fake msg 2";
+////            m2.author = last.author;
+////            m2.date = [last.date dateByAddingTimeInterval:10];
+////            m2.conversation = last.conversation;
+////            messages = @[m, m2];
+////            remoteCallback(YES, messages);
+////            return;
+////        }
+//        
+//        // update only if new changes from API
+//        if(!messages || messages.count == 0) {
+//            remoteCallback(YES, nil);
+//            return;
+//        }
+//        
+//        NSLog(@"new remote messages %d", messages.count);
+//        
+//        // reverse order
+//        messages = [[messages reverseObjectEnumerator] allObjects];
+//        
+////        // all messages, including the new ones
+////        __block NSArray *allMessages = nil;
+//        
+//        GLPMessage *lastMessage = [messages lastObject];
+//        [conversation updateWithNewMessage:lastMessage];
+//        
+//        if(conversation.isLive) {
+//            [conversation.messages addObjectsFromArray:messages];
+//            //[[GLPLiveConversationsManager sharedInstance] add];
+//        } else {
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                for(GLPMessage *message in messages) {
+//                    [GLPMessageDao save:message db:db];
+//                }
+//                
+//                [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
+//                
+//                //allMessages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+//            }];
+//        }
+//        
+//        remoteCallback(YES, messages);
+//    }];
 }
 
 + (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback

@@ -53,26 +53,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == [self topLoadingCellRow]) {
-        return [_topLoadingCellDelegate cellForRowAtIndexPath:indexPath];
-    }
-    else if(indexPath.row == [self bottomLoadingCellRow]) {
-        return [_bottomLoadingCellDelegate cellForRowAtIndexPath:indexPath];
+    DDLogInfo(@"Cell for row at index path %d", indexPath.row);
+    
+    if([self isLoadingRowForIndexPath:indexPath]) {
+        GLPLoadingCell *loadingCell = [_tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
+        
+        if(indexPath.row == [self topLoadingCellRow]) {
+            [_topLoadingCellDelegate configureCell:loadingCell];
+        }
+        else if(indexPath.row == [self bottomLoadingCellRow]) {
+            [_bottomLoadingCellDelegate configureCell:loadingCell];
+        }
+        
+        return loadingCell;
     }
     
     return [self cellForItem:[self itemForIndexPath:indexPath] forIndexPath:indexPath];
-}
-
-
-- (id)itemForIndexPath:(NSIndexPath *)indexPath
-{
-    int row = indexPath.row;
-    
-    if(_topLoadingCellDelegate.isVisible) {
-        row++;
-    }
-    
-    return _items[row];
 }
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -101,6 +97,24 @@
     }
 }
 
+
+- (void)reloadWithItems:(NSArray *)items
+{
+    _items = items;
+    [_tableView reloadData];
+}
+
+- (id)itemForIndexPath:(NSIndexPath *)indexPath
+{
+    int row = indexPath.row;
+    
+    if(_topLoadingCellDelegate.isVisible) {
+        row++;
+    }
+    
+    return _items[row];
+}
+
 - (void)activateForPosition:(NSNumber *)enumValue
 {
     GLPLoadingCellPosition position = [enumValue integerValue];
@@ -117,7 +131,7 @@
 
 - (NSInteger)topLoadingCellRow
 {
-    if(_topLoadingCellDelegate.isVisible) {
+    if(!_topLoadingCellDelegate.isVisible) {
         return NSNotFound;
     }
     
@@ -126,7 +140,7 @@
 
 - (NSInteger)bottomLoadingCellRow
 {
-    if(_bottomLoadingCellDelegate.isVisible) {
+    if(!_bottomLoadingCellDelegate.isVisible) {
         return NSNotFound;
     }
     
@@ -140,6 +154,69 @@
     
     return row;
 }
+
+- (void)showTopLoader
+{
+    if(_topLoadingCellDelegate.isVisible || _bottomLoadingCellDelegate.isVisible) {
+        return;
+    }
+    DDLogInfo(@"Show top loader");
+    
+    [_topLoadingCellDelegate show];
+    
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)hideTopLoader
+{
+    if(!_topLoadingCellDelegate.isVisible) {
+        return;
+    }
+    
+    DDLogInfo(@"Hide top loader");
+    
+    [_topLoadingCellDelegate hide];
+    
+    [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)showBottomLoader
+{
+    if(_topLoadingCellDelegate.isVisible || _bottomLoadingCellDelegate.isVisible) {
+        return;
+    }
+    DDLogInfo(@"Show bottom loader");
+
+    [_bottomLoadingCellDelegate show];
+
+    int rows = [self tableView:self.tableView numberOfRowsInSection:0] - 1;
+    [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)hideBottomLoader
+{
+    if(!_bottomLoadingCellDelegate.isVisible) {
+        return;
+    }
+    
+    DDLogInfo(@"Hide bottom loader");
+    
+    [_bottomLoadingCellDelegate hide];
+    
+    int rows = [self tableView:self.tableView numberOfRowsInSection:0];
+    [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)scrollToTheEndAnimated:(BOOL)animated
+{
+    if(_items.count > 0) {
+        int row = [self tableView:_tableView numberOfRowsInSection:0] - 1;
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    }
+}
+
+
+#pragma mark - Abstracts
 
 - (UITableViewCell *)cellForItem:(id)item forIndexPath:(NSIndexPath *)indexPath
 {

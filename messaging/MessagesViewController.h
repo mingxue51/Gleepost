@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GLPLoadingCell.h"
 
-@interface MessagesViewController : UITableViewController <GLPLoadingCellDelegate>
-
-extern NSString * const LIVE_CHATS_STR;
-extern NSString * const CONTACTS_CHATS_STR;
+@interface MessagesViewController : UITableViewController
 
 @end

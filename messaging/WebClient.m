@@ -508,6 +508,16 @@ static WebClient *instance = nil;
 
 #pragma mark - Live conversations
 
+- (void)getConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callbackBlock
+{
+    [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *conversations = [RemoteParser parseConversationsFromJson:responseObject];
+        callbackBlock(YES, conversations);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callbackBlock(NO, nil);
+    }];
+}
+
 - (void)getLiveConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations/live" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {

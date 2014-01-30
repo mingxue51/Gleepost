@@ -16,8 +16,8 @@
 #import "DatabaseManager.h"
 #import "GLPThemeManager.h"
 #import "ContactsManager.h"
-//#import "GLPPostOperationManager.m"
 #import "GLPNetworkManager.h"
+#import "GLPLiveConversationsManager.h"
 
 @implementation GLPLoginManager
 
@@ -114,6 +114,9 @@
 
 + (void)performAfterLoginForUser:(GLPUser *)user
 {
+    // populate local data
+    [[GLPLiveConversationsManager sharedInstance] loadLocalRegularConversations];
+    
     [[GLPNetworkManager sharedInstance] startNetworkOperations];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }

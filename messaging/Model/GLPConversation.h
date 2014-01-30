@@ -12,7 +12,7 @@
 
 @class GLPMessage;
 
-@interface GLPConversation : GLPEntity
+@interface GLPConversation : GLPEntity <NSCopying>
 
 @property (strong, nonatomic) NSDate *lastUpdate;
 @property (strong, nonatomic) NSString *lastMessage;
@@ -29,7 +29,7 @@
 
 // live specific
 @property (assign, nonatomic) BOOL isEnded;
-@property (assign, nonatomic) NSDate *expiryDate;
+@property (strong, nonatomic) NSDate *expiryDate;
 
 
 - (id)initWithParticipants:(NSArray *)participants;

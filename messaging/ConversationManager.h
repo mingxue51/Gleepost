@@ -16,7 +16,7 @@
 
 extern int const NumberMaxOfMessagesLoaded;
 
-+ (NSArray *)getLocalNormalConversations;
++ (NSArray *)loadLocalRegularConversation;
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
 + (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 + (void)markConversationRead:(GLPConversation *)conversation;
@@ -28,7 +28,7 @@ extern int const NumberMaxOfMessagesLoaded;
 + (void)loadPreviousMessagesForConversation:(GLPConversation *)conversation before:(GLPMessage *)message localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
 
 
-+ (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
++ (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages, BOOL isFinal))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
 + (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback;
 
 + (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback;

@@ -22,9 +22,13 @@ typedef enum {
 
 @interface GLPLoadingCellDelegate : NSObject
 
-@property (assign, nonatomic, readonly) BOOL isVisible;
-@property (assign, nonatomic, readonly) GLPLoadingCellState cellState;
+@property (assign, nonatomic) BOOL isVisible;
+@property (assign, nonatomic) GLPLoadingCellState cellState;
 
+- (void)activate;
+- (void)show;
+- (void)hide;
+- (void)configureCell:(GLPLoadingCell *)cell;
 - (NSInteger)numberOfRows;
 - (GLPLoadingCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 

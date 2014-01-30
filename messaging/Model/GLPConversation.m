@@ -109,4 +109,25 @@
     }
 }
 
+
+# pragma mark - Copy
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    GLPConversation *object = [super copyWithZone:zone];
+    object.lastMessage = [_lastMessage copyWithZone:zone];
+    object.lastUpdate = [_lastUpdate copyWithZone:zone];
+    object.participants = [_participants copyWithZone:zone];
+    object.title = [_title copyWithZone:zone];
+    object.hasUnreadMessages = _hasUnreadMessages;
+    object.isGroup = _isGroup;
+    object.isLive = _isLive;
+    object.isSync = _isSync;
+    object.lastSyncMessageKey = _lastSyncMessageKey;
+    object.isEnded = _isEnded;
+    object.expiryDate = [_expiryDate copyWithZone:zone];
+    
+    return object;
+}
+
 @end

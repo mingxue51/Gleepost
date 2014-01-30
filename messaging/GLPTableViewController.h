@@ -15,8 +15,14 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *items;
 
+- (void)reloadWithItems:(NSArray *)items;
 - (UITableViewCell *)cellForItem:(id)item forIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)heightForItem:(id)item;
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position;
+- (void)showTopLoader;
+- (void)hideTopLoader;
+- (void)showBottomLoader;
+- (void)hideBottomLoader;
+- (void)scrollToTheEndAnimated:(BOOL)animated;
 
 @end

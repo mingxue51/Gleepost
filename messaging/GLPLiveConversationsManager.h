@@ -14,9 +14,14 @@
 + (GLPLiveConversationsManager *)sharedInstance;
 
 // conversations
+- (void)loadLocalRegularConversations;
 - (void)loadConversations;
-- (NSArray *)conversations;
-- (int)conversationsCount;
+- (void)addConversation:(GLPConversation *)conversation;
+- (NSArray *)conversationsList;
+- (void)conversationsList:(void (^)(NSArray *liveConversations, NSArray *regularConversations))block;
+- (NSInteger)conversationsCount;
+- (NSInteger)liveConversationsCount;
+- (NSInteger)regularConversationsCount;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
 
 // messages

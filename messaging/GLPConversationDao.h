@@ -13,7 +13,7 @@
 @interface GLPConversationDao : NSObject
 
 + (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
-+ (NSArray *)findConversationsOrderByDateFilterByLive:(BOOL)liveConversations inDb:(FMDatabase *)db;
++ (NSArray *)findConversationsOrderByDateInDb:(FMDatabase *)db;
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)updateConversationLastUpdateAndLastMessage:(GLPConversation *)entity db:(FMDatabase *)db;

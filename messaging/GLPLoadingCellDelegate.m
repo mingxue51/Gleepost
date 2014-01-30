@@ -10,8 +10,6 @@
 
 @interface GLPLoadingCellDelegate()
 
-@property (assign, nonatomic) BOOL isVisible;
-@property (assign, nonatomic) GLPLoadingCellState cellState;
 @property (assign, nonatomic) GLPLoadingCellPosition cellPosition;
 @property (weak, nonatomic) UITableView *tableView;
 
@@ -44,24 +42,45 @@
     _cellState = kGLPLoadingStateReady;
 }
 
+- (void)show
+{
+    _isVisible = YES;
+    _cellState = kGLPLoadingStateLoading;
+}
+
+- (void)hide
+{
+    _isVisible = NO;
+    _cellState = kGLPLoadingStateStopped;
+}
+
 - (NSInteger)numberOfRows
 {
     return _isVisible ? 1 : 0;
 }
 
-- (GLPLoadingCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(GLPLoadingCell *)cell
 {
-    if(!_isVisible) {
-        return nil;
-    }
-    
-    GLPLoadingCell *loadingCell = [_tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
-    
     if(_cellState == kGLPLoadingStateLoading) {
-        [loadingCell startAnimating];
+        [cell startAnimating];
     }
-    
-    return loadingCell;
 }
+
+//- (GLPLoadingCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if(!_isVisible) {
+//        return nil;
+//    }
+//    
+//    GLPLoadingCell *loadingCell = [_tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
+//    
+//    DDLogInfo(@"Loading cell for row at index path %@", loadingCell);
+//    
+//    if(_cellState == kGLPLoadingStateLoading) {
+//        [loadingCell startAnimating];
+//    }
+//    
+//    return loadingCell;
+//}
 
 @end

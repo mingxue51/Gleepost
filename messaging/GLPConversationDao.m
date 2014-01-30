@@ -38,9 +38,9 @@
     return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
 }
 
-+ (NSArray *)findConversationsOrderByDateFilterByLive:(BOOL)liveConversations inDb:(FMDatabase *)db;
++ (NSArray *)findConversationsOrderByDateInDb:(FMDatabase *)db;
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where isLive=%d order by lastUpdate DESC", liveConversations];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations order by lastUpdate DESC"];
     
     NSMutableArray *result = [NSMutableArray array];
     

@@ -102,7 +102,7 @@ static GLPNetworkManager *instance = nil;
 
 - (void)webSocketDidConnect
 {
-    // init the live conversations
+    // init the conversations list
     [[GLPLiveConversationsManager sharedInstance] loadConversations];
 }
 
