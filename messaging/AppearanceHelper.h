@@ -20,5 +20,6 @@
 +(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour;
 +(UIColor*)colourForNotFocusedItems;
 +(UIColor*)defaultGleepostColour;
-
++(void)showTabBar:(UIViewController*)controller;
++(void)hideTabBar:(UIViewController*)controller;
 @end

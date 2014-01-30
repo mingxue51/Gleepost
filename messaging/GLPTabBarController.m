@@ -7,6 +7,7 @@
 //
 
 #import "GLPTabBarController.h"
+#import "ChatViewAnimationController.h"
 
 @interface GLPTabBarController ()
 
@@ -29,8 +30,10 @@ static BOOL isViewDidDisappearCalled = YES;
     _notificationsCount = 0;
     _liveNotificationsCount = 0;
     _profileNotificationsCount = 0;
+    
+    [self setDelegate:self];
+    
 }
-
 
 
 //TODO: BUG: View will appear called multible times.
@@ -103,9 +106,9 @@ static BOOL isViewDidDisappearCalled = YES;
 }
 
 
+
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    DDLogDebug(@"TABBAR ITEM: %d", item.tag);
     
     switch (item.tag) {
         case 1:
@@ -114,6 +117,9 @@ static BOOL isViewDidDisappearCalled = YES;
         case 2:
             _liveNotificationsCount = 0;
             break;
+        case 3:
+            
+            break;
         case 4:
             _profileNotificationsCount = 0;
             break;
@@ -121,5 +127,79 @@ static BOOL isViewDidDisappearCalled = YES;
 
     [self updateBadgeContentForIndex:item.tag count:0];
 }
+
+#pragma mark - UITabBarControllerDelegate
+
+- (BOOL)tabBarController:(UITabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController
+{
+    if(viewController.tabBarItem.tag == 2)
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        ChatViewAnimationController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewAnimation"];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navigationController animated:YES completion:nil];
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+#pragma mark - Custom UIBarButtonItem
+#pragma mark - DELETE THIS
+
+-(void) createAndAddCustomUIBarButtonItemWithImage:(UIImage*)buttonImage highlightImage:(UIImage*)highlightImage
+{
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+    button.frame = CGRectMake(7.5, 0.0, buttonImage.size.width, buttonImage.size.height);
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:highlightImage forState:UIControlStateHighlighted];
+    
+    [button addTarget:self action:@selector(findNewChat:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //    CGFloat heightDifference = buttonImage.size.height - self.tabBar.frame.size.height;
+    
+    
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, buttonImage.size.width+15.0f, buttonImage.size.height+12.0f)];
+    v.center = self.tabBar.center;
+    
+    [v setBackgroundColor:[UIColor clearColor]];
+    [v setUserInteractionEnabled:YES];
+    
+    UILabel *lblName = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, buttonImage.size.height+3.0f, buttonImage.size.width+15.0f, 10.0f)];
+    
+    lblName.textAlignment = NSTextAlignmentCenter;
+    
+    
+    [lblName setText:@"NewChat"];
+    [lblName setFont:[UIFont fontWithName:@"Helvetica" size:9.5f]];
+    [lblName setTextColor:[UIColor colorWithRed:115.0f/255.0f green:133.0f/255.0f blue:148.0f/255.0f alpha:1.0f]];
+    
+    [v addSubview:button];
+    [v addSubview:lblName];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(findNewChat:)];
+    [tap setNumberOfTapsRequired:1];
+    [v addGestureRecognizer:tap];
+    
+    
+    [self.view addSubview:v];
+    
+}
+
+
+-(void)findNewChat:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ChatViewAnimationController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewAnimation"];
+    
+    
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
 
 @end

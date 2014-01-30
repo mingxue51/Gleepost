@@ -48,7 +48,6 @@
 #import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 
-
 @interface GLPTimelineViewController ()
 
 @property (strong, nonatomic) NSMutableArray *posts;
@@ -65,7 +64,6 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
 @property (strong, nonatomic) UIImage *imageToBeView;
-
 
 // cron controls
 @property (assign, nonatomic) BOOL isReloadingCronRunning;
@@ -120,10 +118,7 @@
     }
     
     return self;
-
 }
-
-
 
 - (void)viewDidLoad
 {
@@ -147,8 +142,6 @@
     
     
     [self loadInitialPosts];
-    
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -163,8 +156,6 @@
     
     
    // [self configStatusbarBackground];
-    
-
 
 }
 
@@ -187,7 +178,6 @@
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -202,15 +192,15 @@
     
     //Show navigation bar.
 //    [self contract];
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
-    
+
     
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self stopReloadingCron];
+//    [self.navigationController setNavigationBarHidden:NO
+//                                             animated:YES];
 }
 
 //- (BOOL)prefersStatusBarHidden
@@ -394,7 +384,11 @@
     //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
 
     
-    self.tabBarController.tabBar.hidden = NO;
+//    self.tabBarController.tabBar.hidden = NO;
+    [AppearanceHelper showTabBar:self];
+    
+    //[[CustomTabBarButtonManager sharedInstance] showItemHidden];
+    
     
     //Set colour of the border navigation bar image. TODO: Set one line image.
 //    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
@@ -1805,6 +1799,8 @@
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
 
+        
+        
         ViewPostViewController *vc = segue.destinationViewController;
         /**
          Forward data of the post the to the view. Or in future just forward the post id

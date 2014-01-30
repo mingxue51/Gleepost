@@ -52,9 +52,6 @@
     self.notifications = [NSMutableArray array];
     
     [self configTableView];
-    
-
-
 }
 
 

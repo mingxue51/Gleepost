@@ -10,10 +10,12 @@
 #import "ChatViewController.h"
 #import "ImageFormatterHelper.h"
 #import "PullDownScrollView.h"
+#import "ChatViewAnimationController.h"
 
 @interface ChatViewAnimationsStanford : UIView
 
-@property (strong, nonatomic) ChatViewController *chatViewController;
+//@property (strong, nonatomic) ChatViewController *chatViewController;
+@property (strong, nonatomic) ChatViewAnimationController *chatViewController;
 
 //@property (strong, nonatomic) UIImageView *centralCircle;
 

@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UIImageView *balloon;
 @property (strong, nonatomic) UIButton *searchForPeopleButton;
 @property (strong, nonatomic) UIImageView *bigCircle;
+@property (strong, nonatomic) UIImageView *gleepostLogo;
 
 @property (strong, nonatomic) AnimationDayController *dayController;
 
@@ -41,7 +42,6 @@ static BOOL goBack = NO;
     {
         self.dayController = [AnimationDayController sharedInstance];
         
-        
         [self setBackgroundColor:[UIColor colorWithPatternImage:[ImageFormatterHelper resizeImage:[UIImage imageNamed:[self.dayController backgroundImage]] withSize:frame.size]]];
 
         [self initObjectsWithFrame:frame];
@@ -53,7 +53,6 @@ static BOOL goBack = NO;
         [self addCloudsImages];
         
         [self setUpTimers];
-        
     }
     return self;
 }
@@ -74,10 +73,10 @@ static BOOL goBack = NO;
     UIImage *windBlades = [UIImage imageNamed:[self.dayController blades]];
     
     self.windMillPole = [[UIImageView alloc] initWithImage:windPole];
-    [self.windMillPole setFrame:CGRectMake(280.0f, 370.0f, windPole.size.width/2, windPole.size.height/2)];
+    [self.windMillPole setFrame:CGRectMake(280.0f, 410.0f, windPole.size.width/2, windPole.size.height/2)];
     
     self.windMillBlades = [[UIImageView alloc] initWithImage:windBlades];
-    [self.windMillBlades setFrame:CGRectMake(264.0f, 353.0f, windBlades.size.width/2, windBlades.size.height/2)];
+    [self.windMillBlades setFrame:CGRectMake(264.0f, 393.0f, windBlades.size.width/2, windBlades.size.height/2)];
     
     
     UIImage *ballonImg = [UIImage imageNamed:[self.dayController balloon]];
@@ -94,9 +93,6 @@ static BOOL goBack = NO;
     self.searchForPeopleButton = [[UIButton alloc] initWithFrame:CGRectMake(130.0f, 390.0f, 60.0f, 60.0f)];
     [self.searchForPeopleButton addTarget:self action:@selector(searchForNewChat:) forControlEvents:UIControlEventTouchUpInside];
     
-//    self.searchForPeopleButton.layer.borderColor = [UIColor redColor].CGColor;
-//    self.searchForPeopleButton.layer.borderWidth = 1.0f;
-    
     
     UIImage *centralCircleImage = [UIImage imageNamed:@"lightbublle"];
     self.bigCircle = [[UIImageView alloc] initWithImage:centralCircleImage highlightedImage:nil];
@@ -104,8 +100,10 @@ static BOOL goBack = NO;
     
     [self.bigCircle setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/7.5), (self.frame.size.height/2)-(sizeOfCircleImage.height/7.5), sizeOfCircleImage.width/3.5, sizeOfCircleImage.height/3.5)];
     
+    self.gleepostLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GleepostS"]];
+    CGRect frameLogo = self.gleepostLogo.frame;
     
-    
+    [self.gleepostLogo setFrame:CGRectMake(115.75f, 20.0f, frameLogo.size.width, frameLogo.size.height)];
 }
 
 -(void)addStaticElements
@@ -123,6 +121,8 @@ static BOOL goBack = NO;
     //Add circle but hidden.
     [self.bigCircle setHidden:YES];
     [self addSubview:self.bigCircle];
+    
+    [self addSubview:self.gleepostLogo];
 }
 
 -(void)startStandardAnimations
@@ -161,7 +161,7 @@ static BOOL goBack = NO;
 
 -(void)setUpTimers
 {
-    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(startCloud:) userInfo:nil repeats:YES];
+    self.timer1 = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(startCloud:) userInfo:nil repeats:YES];
     [self.timer1 fire];
 }
 
@@ -176,20 +176,13 @@ static BOOL goBack = NO;
 -(void)addCloudsImages
 {
     UIImage *cloud1Img = [UIImage imageNamed:[self.dayController cloud1]];
-    
-//    UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:cloud1Img];
-//    [cloudSmall setFrame:CGRectMake(70, 120, cloud1Img.size.width/2, cloud1Img.size.height/2)];
+
     
     UIImage *cloud2Img = [UIImage imageNamed:[self.dayController cloud2]];
-    
-//    UIImageView *cloudMedium = [[UIImageView alloc] initWithImage:cloud2Img];
-//    [cloudMedium setFrame:CGRectMake(10, 40, cloud2Img.size.width/2, cloud2Img.size.height/2)];
 
     
     UIImage *cloud3Img = [UIImage imageNamed:[self.dayController cloud3]];
-    
-//    UIImageView *cloudBig = [[UIImageView alloc] initWithImage:cloud3Img];
-//    [cloudBig setFrame:CGRectMake(155, 50, cloud3Img.size.width/2, cloud3Img.size.height/2)];
+
     
     [self.clouds addObject:cloud1Img];
     [self.clouds addObject:cloud2Img];
@@ -201,7 +194,7 @@ static BOOL goBack = NO;
 
 -(void)searchForNewChat:(id)sender
 {
-    [self searchingAnimations];
+//    [self searchingAnimations];
     
     [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:1.4];
     
@@ -213,23 +206,23 @@ static BOOL goBack = NO;
 
 -(void)navigateToNewRandomChat:(id)sender
 {
-    [self.chatViewController searchForConversation];
+//    [self.chatViewController searchForConversation];
 }
 
--(void) startSearchingIndicator
+-(void)startSearchingIndicator
 {
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Searching for people..." forView:self];
     
 }
 
--(void) stopSearchingIndicator
+-(void)stopSearchingIndicator
 {
     [WebClientHelper hideStandardLoaderForView:self];
 }
 
 #pragma mark - Animations
 
-- (void) spinWithOptions: (UIViewAnimationOptions) options withView:(UIView*)view {
+- (void)spinWithOptions: (UIViewAnimationOptions) options withView:(UIView*)view {
     // this spin completes 360 degrees every 2 seconds
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -310,16 +303,43 @@ static BOOL goBack = NO;
     [self addSubview:selectedCloud];
     [self sendSubviewToBack:selectedCloud];
 
-    [UIView animateWithDuration:30.0 animations:^{
+    [UIView animateWithDuration:5.0 animations:^{
 
         [selectedCloud setFrame: CGRectMake(-100, selectedCloud.frame.origin.y , selectedCloud.image.size.width/2, selectedCloud.image.size.height/2)];
+        [self earthquake:selectedCloud];
         
     } completion:^(BOOL finished) {
         
     }];
     
-//    NSLog(@"Clound random: %d",cCloud);
+}
 
+- (void)earthquake:(UIView*)itemView
+{
+    CGFloat t = 0.5;
+    CGAffineTransform leftQuake  = CGAffineTransformTranslate(CGAffineTransformIdentity, t, -t);
+    CGAffineTransform rightQuake = CGAffineTransformTranslate(CGAffineTransformIdentity, -t, t);
+    
+    itemView.transform = leftQuake;  // starting point
+    [UIView beginAnimations:@"earthquake" context:(__bridge void *)(itemView)];
+    [UIView setAnimationRepeatAutoreverses:YES]; // important
+    [UIView setAnimationRepeatCount:4];
+    [UIView setAnimationDuration:0.07];
+    [UIView setAnimationDelay:0.8];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(earthquakeEnded:finished:context:)];
+    
+    itemView.transform = rightQuake; // end here & auto-reverse
+    [UIView commitAnimations];
+}
+
+- (void)earthquakeEnded:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+    if ([finished boolValue])
+    {
+        UIView* item = (__bridge UIView *)context;
+        item.transform = CGAffineTransformIdentity;
+    }
 }
 
 -(void)animateClouds:(id)sender
@@ -371,8 +391,6 @@ static BOOL goBack = NO;
 -(UIImageView*)generateCloud
 {
     srand(time(0));
-    
-    //UIImageView *cloudSmall = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cloudsmall"]];
     
     int cloudNumber = rand() % 3;
     

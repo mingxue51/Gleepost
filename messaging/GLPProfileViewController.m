@@ -72,6 +72,7 @@
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
+@property (strong, nonatomic) NSMutableArray *notifications;
 
 @end
 
@@ -115,6 +116,8 @@
     [super viewWillAppear:animated];
     [self configureNavigationBar];
 
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
@@ -124,13 +127,12 @@
     self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
     [self updateNotificationsBubble];
     
+    [self loadNotifications];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
-
-    
-
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -145,7 +147,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -297,6 +298,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
+    
+    //[self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
 }
 
 
@@ -393,6 +396,8 @@
 
 -(void)showSettings:(id)sender
 {
+    //TODO: Implement here settings.
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
@@ -426,10 +431,6 @@
         [GLPLoginManager logout];
         [self.navigationController popViewControllerAnimated:YES];
         [self performSegueWithIdentifier:@"start" sender:self];
-    }
-    else
-    {
-        NSLog(@"Cancel");
     }
 }
 
@@ -555,8 +556,6 @@
 
 -(void)setImageToUserProfile:(NSString*)url
 {
-    NSLog(@"READY TO ADD IMAGE TO USER WITH URL: %@",url);
-    
     [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
         
         if(success)
@@ -592,6 +591,11 @@
             [WebClientHelper showStandardError];
         }
     }];
+}
+
+-(void)loadNotifications
+{
+    
 }
 
 -(void)getBusyStatus
@@ -782,11 +786,11 @@
             
             if([currentPost imagePost])
             {
-                return IMAGE_CELL_HEIGHT;
+                return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
             }
             else
             {
-                return TEXT_CELL_HEIGHT;
+                return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
             }
         }
     }

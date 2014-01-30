@@ -129,6 +129,9 @@
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
 
 }
@@ -220,6 +223,8 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+
     
 }
 

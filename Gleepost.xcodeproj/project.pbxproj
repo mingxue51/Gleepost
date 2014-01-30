@@ -105,6 +105,7 @@
 		583B9FE417F3676A00B4BEE3 /* set_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */; };
 		583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583C725D17EF2E5600820761 /* MessageBox2small.png */; };
 		583EAB7918119688003D68B3 /* add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7818119688003D68B3 /* add_contact.png */; };
+		583FA27E189B09EB003C6E4E /* going_to_event.png in Resources */ = {isa = PBXBuildFile; fileRef = 583FA27D189B09EB003C6E4E /* going_to_event.png */; };
 		58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403531182FF5FB00499488 /* GLPTimelineViewController.m */; };
 		58406AFE1823FCBE0032353E /* NewPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58406AFD1823FCBE0032353E /* NewPostView.m */; };
 		5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315817FEDD8500A3278D /* AddCommentViewController.m */; };
@@ -659,6 +660,7 @@
 		583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_tab@2x.png"; sourceTree = "<group>"; };
 		583C725D17EF2E5600820761 /* MessageBox2small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageBox2small.png; sourceTree = "<group>"; };
 		583EAB7818119688003D68B3 /* add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact.png; sourceTree = "<group>"; };
+		583FA27D189B09EB003C6E4E /* going_to_event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_to_event.png; sourceTree = "<group>"; };
 		58403530182FF5FB00499488 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
 		58403531182FF5FB00499488 /* GLPTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTimelineViewController.m; sourceTree = "<group>"; };
 		58403533182FF89F00499488 /* GLPPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostManager.h; sourceTree = "<group>"; };
@@ -1361,6 +1363,7 @@
 		582128341891A7F100BF36E5 /* Campus Wall */ = {
 			isa = PBXGroup;
 			children = (
+				583FA27D189B09EB003C6E4E /* going_to_event.png */,
 				5832C4C018993990004FC4F6 /* icon_like.png */,
 				5832C4C118993990004FC4F6 /* icon_like_pushed.png */,
 				5832C4BE189936E9004FC4F6 /* user_image_bg.png */,
@@ -3056,6 +3059,7 @@
 				586659FA17F2203E00A0354E /* home_tab_old.png in Resources */,
 				58D0E2621850BB80005879F4 /* GLPNotCell.xib in Resources */,
 				5890D23518482DC300E293DD /* messages.png in Resources */,
+				583FA27E189B09EB003C6E4E /* going_to_event.png in Resources */,
 				586458C218085A8900B1B19C /* comment_image.png in Resources */,
 				58FB7C9E18561722002C6A00 /* locked.png in Resources */,
 				584CBE7E17F0573C00CD756A /* avatar_icon.png in Resources */,

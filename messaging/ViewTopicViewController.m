@@ -1311,14 +1311,30 @@ float timeInterval = 0.1;
     UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 2];
     Class parentVCClass = [parentViewController class];
     NSString *className = NSStringFromClass(parentVCClass);
-    
-    if([className isEqualToString:@"ChatViewController"])
+
+    if([className isEqualToString:@"ChatViewAnimationController"])
     {
         //Add header the introduced view.
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+
+        
         return YES;
     }
     
+//    if(numberOfViewControllersOnStack == 1)
+//    {
+//        [self performSelector:@selector(dismiss:) withObject:nil afterDelay:2.0f];
+//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+//        
+//        return YES;
+//    }
+    
     return NO;
+}
+
+-(void)dismiss:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

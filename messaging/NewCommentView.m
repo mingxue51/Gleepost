@@ -211,7 +211,7 @@
 
 - (void)keyboardWillShow:(NSNotification *)note
 {
-    CGRect screenSizeVar = [self screenSize];
+//    CGRect screenSizeVar = [self screenSize];
     
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
@@ -299,9 +299,8 @@
 	loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[aSuperview addSubview:loadingView];
     
-	const CGFloat DEFAULT_LABEL_WIDTH = 280.0;
-	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
-	CGRect labelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+
+//	CGRect labelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
     
 
     
