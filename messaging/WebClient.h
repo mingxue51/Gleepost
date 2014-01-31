@@ -70,6 +70,8 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)getContactsWithCallback:(void (^)(BOOL success, NSArray *contacts))callback;
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
 
+-(void)changePasswordWithOld:(NSString*)oldPass andNew:(NSString*)newPass callbackBlock:(void (^) (BOOL success))callbackBlock;
+
 - (void)getLastMessagesForLiveConversation:(GLPLiveConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock;

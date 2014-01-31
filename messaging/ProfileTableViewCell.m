@@ -22,6 +22,8 @@
 @interface ProfileTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIImageView *coverProfileImage;
+
 @property (weak, nonatomic) IBOutlet UILabel *universityLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addContactButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
@@ -64,6 +66,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     [self formatProfileImage];
     
     [self.profileImage setImage:image];
+    
+    [self.coverProfileImage setImage:image];
 }
 
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
@@ -97,6 +101,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     else
     {
         [self.profileImage setImage:image];
+        [self.coverProfileImage setImage:image];
     }
     
     //Decide which elements to present.
@@ -142,7 +147,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         //[self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
         
         [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-
+            
+            [self.coverProfileImage setImage:image];
             
         }];
         
@@ -202,7 +208,15 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 -(void)updateImageWithUrl:(NSString*)url
 {
-    [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
+//    [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
+    
+    [self.profileImage setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil
+    
+    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        
+        [self.coverProfileImage setImage:image];
+        
+    }];
 }
 
 -(void)setDelegate:(GLPProfileViewController *)delegate

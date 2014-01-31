@@ -11,6 +11,7 @@
 @property (strong, nonatomic) NSString *networkName;
 @property int networkId;
 @property (strong, nonatomic) NSString *personalMessage;
+@property (strong, nonatomic) NSString *email;
 
 - (BOOL)hasProfilePicture;
 

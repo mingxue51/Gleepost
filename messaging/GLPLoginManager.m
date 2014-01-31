@@ -36,6 +36,8 @@
         
         NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
         
+  
+        
         // fetch additional info
         // user details
         [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
@@ -52,6 +54,8 @@
                     callback(NO);
                     return;
                 }
+                
+                userWithDetials.email = identifier;
                 
                 [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
                 

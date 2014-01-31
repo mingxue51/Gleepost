@@ -202,6 +202,14 @@
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
+		58729AC7189BCB290041022C /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58729AC6189BCB290041022C /* SettingsViewController.m */; };
+		58729ACA189BFC430041022C /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58729AC9189BFC430041022C /* ChangePasswordViewController.m */; };
+		58729ACD189BFE110041022C /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729ACC189BFE110041022C /* back.png */; };
+		58729ACF189C1A4A0041022C /* settings_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729ACE189C1A4A0041022C /* settings_btn.png */; };
+		58729AD4189C1BC40041022C /* mypost_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD0189C1BC40041022C /* mypost_btn.png */; };
+		58729AD5189C1BC40041022C /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD1189C1BC40041022C /* notification_btn_selected.png */; };
+		58729AD6189C1BC40041022C /* notification_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD2189C1BC40041022C /* notification_btn.png */; };
+		58729AD7189C1BC40041022C /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD3189C1BC40041022C /* mypost_btn_selected.png */; };
 		587D23C517EA195D00E0DDFF /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23B417EA195D00E0DDFF /* comment.png */; };
 		587D23C817EA195D00E0DDFF /* chat_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23B717EA195D00E0DDFF /* chat_user.png */; };
 		587D23C917EA195D00E0DDFF /* new_chat_tab_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23B817EA195D00E0DDFF /* new_chat_tab_small.png */; };
@@ -788,6 +796,16 @@
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
+		58729AC5189BCB290041022C /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		58729AC6189BCB290041022C /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		58729AC8189BFC430041022C /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
+		58729AC9189BFC430041022C /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
+		58729ACC189BFE110041022C /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		58729ACE189C1A4A0041022C /* settings_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_btn.png; sourceTree = "<group>"; };
+		58729AD0189C1BC40041022C /* mypost_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn.png; sourceTree = "<group>"; };
+		58729AD1189C1BC40041022C /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
+		58729AD2189C1BC40041022C /* notification_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn.png; sourceTree = "<group>"; };
+		58729AD3189C1BC40041022C /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		5875FC7818158E8A0047BA9E /* darklayover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darklayover.png; path = "../../Gleepost Data/NewChating/darklayover.png"; sourceTree = "<group>"; };
 		5875FC7918158E8A0047BA9E /* delivered.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delivered.png; path = "../../Gleepost Data/NewChating/delivered.png"; sourceTree = "<group>"; };
 		5875FC7E18158FFB0047BA9E /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_group_image.png; path = "../../Gleepost Data/default_group_image.png"; sourceTree = "<group>"; };
@@ -1705,6 +1723,26 @@
 			name = "Post Images";
 			sourceTree = "<group>";
 		};
+		58729AC4189BCB110041022C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				58729AC5189BCB290041022C /* SettingsViewController.h */,
+				58729AC6189BCB290041022C /* SettingsViewController.m */,
+				58729AC8189BFC430041022C /* ChangePasswordViewController.h */,
+				58729AC9189BFC430041022C /* ChangePasswordViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		58729ACB189BFDFE0041022C /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				58729ACE189C1A4A0041022C /* settings_btn.png */,
+				58729ACC189BFE110041022C /* back.png */,
+			);
+			name = Navigation;
+			sourceTree = "<group>";
+		};
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -1907,6 +1945,10 @@
 		58AD869A18929EB700016C6D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				58729AD0189C1BC40041022C /* mypost_btn.png */,
+				58729AD1189C1BC40041022C /* notification_btn_selected.png */,
+				58729AD2189C1BC40041022C /* notification_btn.png */,
+				58729AD3189C1BC40041022C /* mypost_btn_selected.png */,
 				58AD86C51892ECCC00016C6D /* top_wall_trans.png */,
 				58AD86B91892C01500016C6D /* top_wall.png */,
 				58AD86AC1892A7AB00016C6D /* bottom_wall.png */,
@@ -2114,6 +2156,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				58729ACB189BFDFE0041022C /* Navigation */,
 				5832C4CA189994EA004FC4F6 /* Settings */,
 				580C7AC418985D9F007495EE /* Splash */,
 				58272F811896823800CD7522 /* Fake Navigation Bar */,
@@ -2508,6 +2551,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				58729AC4189BCB110041022C /* Settings */,
 				805358C3182EEEAC00579079 /* Posts */,
 				803B607C181FD77200A178EB /* Conversations */,
 				58433284180F02E500BD9F74 /* Login Register Classes */,
@@ -2907,6 +2951,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */,
+				58729AD6189C1BC40041022C /* notification_btn.png in Resources */,
 				5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */,
 				80AB892717C267F50053E784 /* InfoPlist.strings in Resources */,
 				589125491858CF2E000531DE /* comment_button.png in Resources */,
@@ -2990,6 +3035,7 @@
 				58FB7CAB18565053002C6A00 /* ProfileViewTableViewCell.xib in Resources */,
 				580C7ABB18985059007495EE /* top_image_campus_wall.png in Resources */,
 				58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */,
+				58729AD5189C1BC40041022C /* notification_btn_selected.png in Resources */,
 				5843328C180F069800BD9F74 /* loginwithfacebook.png in Resources */,
 				58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */,
 				58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */,
@@ -3032,6 +3078,7 @@
 				8096E4DD17C2C61500C7BF60 /* back_button.png in Resources */,
 				58808EFF18070A9600E415C1 /* typing_bar@2x.png in Resources */,
 				8096E4DF17C2C6CF00C7BF60 /* add_comment.png in Resources */,
+				58729AD7189C1BC40041022C /* mypost_btn_selected.png in Resources */,
 				58E3DABD1884059100B9B048 /* cloud1.png in Resources */,
 				805E155A180EF3E700705B1C /* share_image@2x.png in Resources */,
 				584CF662182274EE00EFABB8 /* send.png in Resources */,
@@ -3142,6 +3189,7 @@
 				5891254B1858CF2E000531DE /* like_active_button.png in Resources */,
 				58DB02C318107CC8001C021A /* whiteholder3.png in Resources */,
 				80C4CAC317D0080100AFA80C /* post_newgroupconversation.json in Resources */,
+				58729ACD189BFE110041022C /* back.png in Resources */,
 				586659B417F1AC2300A0354E /* messageboxgreen.png in Resources */,
 				80C8BA48181019B1004F70DB /* yourchatbubble2.png in Resources */,
 				587D23C517EA195D00E0DDFF /* comment.png in Resources */,
@@ -3173,6 +3221,7 @@
 				58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */,
 				58AD86A818929F2200016C6D /* mutual_button.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
+				58729AD4189C1BC40041022C /* mypost_btn.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58AD86B01892A7B800016C6D /* top_wall2.png in Resources */,
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,
@@ -3200,6 +3249,7 @@
 				587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */,
 				587D23D317EA195D00E0DDFF /* tabbarold.png in Resources */,
 				580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */,
+				58729ACF189C1A4A0041022C /* settings_btn.png in Resources */,
 				5866F16518844869007484CF /* hot_air_balloon_night.png in Resources */,
 				580A639018184CAB00AC8009 /* default_user_image3.png in Resources */,
 				587D23D417EA195D00E0DDFF /* thumbs-up.png in Resources */,
@@ -3403,6 +3453,8 @@
 				80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */,
 				5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */,
 				58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */,
+				58729AC7189BCB290041022C /* SettingsViewController.m in Sources */,
+				58729ACA189BFC430041022C /* ChangePasswordViewController.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */,
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,

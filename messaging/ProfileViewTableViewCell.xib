@@ -14,9 +14,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="219"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="top_wall.png" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-zA-Cjk">
-                        <rect key="frame" x="0.0" y="-1" width="320" height="221"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lGR-h4-zgU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="221"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-zA-Cjk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="221"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.78823529410000004" blue="0.78823529410000004" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile_picture_under.png" translatesAutoresizingMaskIntoConstraints="NO" id="T5e-qk-kvc">
                         <rect key="frame" x="98" y="15" width="141" height="142"/>
@@ -89,6 +94,7 @@
                 <outlet property="addContactButton" destination="h1k-Hj-OyY" id="Me5-Ao-WUa"/>
                 <outlet property="busyLabel" destination="uy7-fR-wXy" id="Nlg-9F-Ep8"/>
                 <outlet property="busySwitch" destination="j2W-bx-598" id="bvg-Jk-qmq"/>
+                <outlet property="coverProfileImage" destination="lGR-h4-zgU" id="4Vc-wO-HJ0"/>
                 <outlet property="inContacts" destination="IKf-TV-37q" id="u8c-Fh-Zfp"/>
                 <outlet property="messageButton" destination="9Ku-3o-aV6" id="cFq-2z-yUI"/>
                 <outlet property="profileImage" destination="vfr-tr-ebJ" id="XfS-uB-Iju"/>
@@ -102,6 +108,5 @@
         <image name="in-contacts.png" width="254" height="185"/>
         <image name="message-user.png" width="254" height="185"/>
         <image name="profile_picture_under.png" width="265" height="266"/>
-        <image name="top_wall.png" width="642" height="459"/>
     </resources>
 </document>

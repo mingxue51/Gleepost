@@ -13,12 +13,18 @@
 @property (weak, nonatomic) IBOutlet UIImageView *postsLine;
 
 @property (weak, nonatomic) IBOutlet UIImageView *settingsLine;
+@property (weak, nonatomic) IBOutlet UIButton *myPostsBtn;
+@property (weak, nonatomic) IBOutlet UIButton *notificationsBtn;
 
 @end
 
 @implementation ProfileTwoButtonsTableViewCell
 
-const float TWO_BUTTONS_CELL_HEIGHT = 65.0f;
+const NSString *POST_IMAGE_SELECTED = @"mypost_btn_selected";
+const NSString *POST_IMAGE = @"mypost_btn";
+const NSString *NOTIFICATIONS_IMAGE_SELECTED = @"notification_btn_selected";
+const NSString *NOTIFICATIONS_IMAGE = @"notification_btn";
+const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -44,6 +50,14 @@ const float TWO_BUTTONS_CELL_HEIGHT = 65.0f;
     
     [self setGreenToNavigator:self.postsLine];
     
+    
+    UIButton * viewPost = (UIButton*)sender;
+    
+    [viewPost setImage: [UIImage imageNamed:@"mypost_btn_selected"] forState:UIControlStateNormal];
+    
+    [_notificationsBtn setImage: [UIImage imageNamed:@"notification_btn"] forState:UIControlStateNormal];
+    
+    
     [_delegate viewSectionWithId:kGLPPosts];
 }
 
@@ -54,6 +68,13 @@ const float TWO_BUTTONS_CELL_HEIGHT = 65.0f;
     [self setGrayToNavigators];
     
     [self setGreenToNavigator:self.settingsLine];
+    
+    UIButton * viewPost = (UIButton*)sender;
+    
+    [viewPost setImage: [UIImage imageNamed:@"notification_btn_selected"] forState:UIControlStateNormal];
+    
+    [_myPostsBtn setImage: [UIImage imageNamed:@"mypost_btn"] forState:UIControlStateNormal];
+    
     
     [_delegate viewSectionWithId:kGLPSettings];
 }

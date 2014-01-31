@@ -35,6 +35,8 @@
 #import "GLPInvitationManager.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
+#import "SettingsViewController.h"
+#import "UIImage+StackBlur.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -104,6 +106,7 @@
 
     [self configTabbar];
     
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -166,14 +169,14 @@
 
 -(void)addNavigationButtons
 {
-    UIImage *settingsIcon = [UIImage imageNamed:@"settings_icon"];
+    UIImage *settingsIcon = [UIImage imageNamed:@"settings_btn"];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack addTarget:self action:@selector(showSettings:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 30, 30)];
+    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
     
-//    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
 //    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
 //    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
@@ -191,7 +194,9 @@
     [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
     
     
-    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showSettings:)];
+//    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showSettings:)];
+    
+//    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings_btn"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSettings:)];
     
 //    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
     
@@ -208,7 +213,7 @@
 //    }
     
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
-    self.navigationItem.rightBarButtonItem = settingsBtn;
+    self.navigationItem.rightBarButtonItem = settingsButton;
 }
 
 -(void)configureNavigationBar
@@ -217,18 +222,28 @@
     [self addNavigationButtons];
     
 
-    
+    UIColor *barColour = [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
     //Change the format of the navigation bar.
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarColour:self];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+    
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
+
     
 //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    
+   
+    [AppearanceHelper setNavigationBarColour:self];
+
+    [self.navigationController.navigationBar setBackgroundColor:barColour];
     
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
     [AppearanceHelper setNavigationBarFontFor:self];
     
-    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    
+    [self.navigationController.navigationBar setTranslucent:YES];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
@@ -398,15 +413,52 @@
 {
     //TODO: Implement here settings.
     
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
+//    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+//    vc.delegate = self;
+//    vc.campusWallView = self.fromCampusWall;
+////    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
+//    vc.modalPresentationStyle= UIModalPresentationCurrentContext;
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:vc animated:YES completion:nil];
+    
+    
+    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    SettingsViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    
+    /**
+     Takes screenshot from the current view controller to bring the sense of the transparency after the load
+     of the NewPostViewController.
+     */
+    UIGraphicsBeginImageContext(self.view.window.bounds.size);
+    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
+//    cvc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+//    cvc.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:cvc animated:YES completion:nil];
+    
+    
+    
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
-    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    vc.delegate = self;
-    vc.campusWallView = self.fromCampusWall;
-//    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
-    vc.modalPresentationStyle= UIModalPresentationCurrentContext;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
+    SettingsViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+    [navigationController setNavigationBarHidden:YES];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
+    
+    
+    
 }
 
 - (void)invite {

@@ -691,6 +691,22 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)changePasswordWithOld:(NSString*)oldPass andNew:(NSString*)newPass callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:oldPass, @"old", newPass, @"new", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:@"profile/change_pass" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+        callbackBlock(NO);
+    }];
+}
+
+
 /**
  
  NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:notification.remoteKey] forKey:@"seen"];

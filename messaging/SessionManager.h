@@ -14,7 +14,6 @@
 
 @property (readonly, strong, nonatomic) NSString *token;
 @property (readonly, strong, nonatomic) GLPUser *user;
-
 @property (readonly, strong, nonatomic) NSDictionary *authParameters;
 @property (strong, nonatomic) GLPCategory *currentCategory;
 
@@ -27,4 +26,5 @@
 - (void)restoreUser:(GLPUser *)user;
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
+
 @end

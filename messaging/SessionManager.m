@@ -68,6 +68,7 @@ static SessionManager *instance = nil;
     //Set default category.
     _currentCategory = nil;
     
+    
     [self loadData];
     
     return self;
@@ -185,7 +186,6 @@ static SessionManager *instance = nil;
         [NSException raise:@"Save session data error" format:@"Error: %@", error];
     }
 }
-
 
 #pragma mark - Push token
 
