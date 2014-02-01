@@ -10,4 +10,6 @@
 
 @interface ChangePasswordViewController : UIViewController
 
+@property (assign, nonatomic) BOOL isPasswordChange;
+
 @end

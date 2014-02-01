@@ -604,29 +604,43 @@
                                 <color key="textColor" red="0.96078431369999995" green="0.53725490200000003" blue="0.49019607840000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gqQ-Lx-bcs">
+                                <rect key="frame" x="102" y="150" width="200" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hp1-y6-cvS">
+                                <rect key="frame" x="20" y="150" width="50" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="K0S-hG-e22">
-                                <rect key="frame" x="20" y="151" width="50" height="21"/>
+                                <rect key="frame" x="20" y="197" width="50" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <color key="textColor" red="1" green="0.83921568627450982" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="R1s-RU-tru">
-                                <rect key="frame" x="102" y="151" width="200" height="30"/>
+                                <rect key="frame" x="102" y="197" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5o7-zv-0v9">
-                                <rect key="frame" x="20" y="197" width="76" height="21"/>
+                                <rect key="frame" x="20" y="243" width="76" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <color key="textColor" red="0.36078431372549019" green="0.74117647058823533" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LMg-I4-FbS">
-                                <rect key="frame" x="132" y="197" width="170" height="30"/>
+                                <rect key="frame" x="132" y="243" width="170" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <attributedString key="attributedText">
@@ -640,14 +654,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Twitter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UFE-z8-sMP">
-                                <rect key="frame" x="20" y="247" width="51" height="21"/>
+                                <rect key="frame" x="20" y="293" width="51" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <color key="textColor" red="0.49411764705882355" green="0.792156862745098" blue="0.54117647058823526" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7xz-XM-g5U">
-                                <rect key="frame" x="207" y="243" width="95" height="30"/>
+                                <rect key="frame" x="207" y="289" width="95" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.2627450980392157" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
@@ -660,14 +674,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Facebook" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Cd-EH-2N9">
-                                <rect key="frame" x="20" y="292" width="77" height="21"/>
+                                <rect key="frame" x="20" y="338" width="77" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.35686274509803922" blue="0.64313725490196072" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Lxe-t3-jwJ">
-                                <rect key="frame" x="207" y="288" width="95" height="30"/>
+                                <rect key="frame" x="207" y="334" width="95" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
@@ -693,14 +707,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invite Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eh0-7f-WEX">
-                                <rect key="frame" x="20" y="337" width="103" height="21"/>
+                                <rect key="frame" x="20" y="383" width="103" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.78823529410000004" green="0.054901960780000002" blue="0.21960784310000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UQ6-qm-xZU">
-                                <rect key="frame" x="207" y="333" width="93" height="30"/>
+                                <rect key="frame" x="207" y="379" width="93" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.26274509800000001" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
@@ -721,6 +735,7 @@
                         <outlet property="emailLbl" destination="UFT-aa-VkV" id="Roh-gS-ZNA"/>
                         <outlet property="inviteBtn" destination="UQ6-qm-xZU" id="rGz-VN-GAB"/>
                         <outlet property="logOutBtn" destination="mAz-qV-HsM" id="lLn-eK-Kck"/>
+                        <outlet property="nameLbl" destination="gqQ-Lx-bcs" id="F9G-QB-BIX"/>
                         <outlet property="passwordLbl" destination="LMg-I4-FbS" id="vud-RN-rJk"/>
                         <outlet property="phoneLbl" destination="R1s-RU-tru" id="Dfb-xu-Rok"/>
                         <outlet property="simpleNavigationBar" destination="H2U-Pk-w1H" id="Ku6-ve-8KJ"/>
@@ -829,6 +844,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="QeW-ek-Zxg"/>
                     <connections>
+                        <outlet property="item2" destination="H4N-MC-Qwr" id="UNc-Je-lGd"/>
                         <outlet property="oldPassWord" destination="V4I-Og-G0a" id="60V-x3-wpO"/>
                         <outlet property="passWord" destination="kjs-BB-Rj4" id="cgV-09-ooE"/>
                         <outlet property="passWord2" destination="TdX-2b-vxG" id="Q2g-Xd-avH"/>
@@ -837,7 +853,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y4g-4y-npH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2248" y="-3823"/>
+            <point key="canvasLocation" x="2382" y="-3822"/>
         </scene>
         <!--Add Comment View Controller-->
         <scene sceneID="lf3-ch-FK3">
@@ -2356,13 +2372,13 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Ptj-MX-g8C"/>
         <segue reference="tJq-gA-gHE"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="t02-Sh-BtB"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="C4C-f3-cdX"/>
+        <segue reference="t02-Sh-BtB"/>
+        <segue reference="icH-IF-qcr"/>
         <segue reference="Txr-8X-v5l"/>
+        <segue reference="C4C-f3-cdX"/>
         <segue reference="n2N-Iw-72J"/>
     </inferredMetricsTieBreakers>
 </document>

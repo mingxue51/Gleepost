@@ -706,6 +706,27 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)changeNameWithName:(NSString*)name andSurname:(NSString*)surname callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:name, @"first", surname, @"last", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:@"profile/name" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"RESPONSE: %@", responseObject);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogDebug(@"FAILED: %@", error);
+        
+        callbackBlock(NO);
+    }];
+    
+}
+
 
 /**
  

@@ -14,12 +14,14 @@
 #import "GLPInvitationManager.h"
 #import <MessageUI/MessageUI.h>
 #import "SessionManager.h"
+#import "ChangePasswordViewController.h"
 
 @interface SettingsViewController () <MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 
 @property (weak, nonatomic) IBOutlet UILabel *emailLbl;
+@property (weak, nonatomic) IBOutlet UILabel *nameLbl;
 @property (weak, nonatomic) IBOutlet UILabel *phoneLbl;
 @property (weak, nonatomic) IBOutlet UILabel *passwordLbl;
 @property (weak, nonatomic) IBOutlet UIButton *connectTwitterBtn;
@@ -29,6 +31,7 @@
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
+@property (assign, nonatomic) BOOL isPassWordChanged;
 
 @end
 
@@ -62,6 +65,8 @@ const int CORNER_VALUE = 16;
     //Format labels shapes.
     [ShapeFormatterHelper setCornerRadiusWithView:_emailLbl andValue:CORNER_VALUE];
     
+    [ShapeFormatterHelper setCornerRadiusWithView:_nameLbl andValue:CORNER_VALUE];
+    
     [ShapeFormatterHelper setCornerRadiusWithView:_phoneLbl andValue:CORNER_VALUE];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_passwordLbl andValue:CORNER_VALUE];
@@ -79,6 +84,11 @@ const int CORNER_VALUE = 16;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChangePasswordView:)];
     [tap setNumberOfTapsRequired:1];
     [_passwordLbl addGestureRecognizer:tap];
+    
+    //Add push gesture to name label.
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToChangeNameView:)];
+    [tap setNumberOfTapsRequired:1];
+    [_nameLbl addGestureRecognizer:tap];
 }
 
 -(void)configureNavigationBar
@@ -108,6 +118,8 @@ const int CORNER_VALUE = 16;
     
 //    [_passwordLbl setText:@"\uasdjaspdjksada"];
     _passwordLbl.text = @"\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
+    
+    [_nameLbl setText:[SessionManager sharedInstance].user.name];
 }
 
 #pragma mark - Selectors
@@ -147,7 +159,22 @@ const int CORNER_VALUE = 16;
 
 -(void)navigateToChangePasswordView:(id)sender
 {
+    _isPassWordChanged = YES;
     [self performSegueWithIdentifier:@"pass view" sender:self];
+}
+
+-(void)navigateToChangeNameView:(id)sender
+{
+    _isPassWordChanged = NO;
+    [self performSegueWithIdentifier:@"pass view" sender:self];
+
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    ChangePasswordViewController *change = segue.destinationViewController;
+    
+    change.isPasswordChange = _isPassWordChanged;
 }
 
 
