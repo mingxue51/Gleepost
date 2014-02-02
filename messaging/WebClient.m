@@ -565,6 +565,28 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)createRegularConversationWithUserRemoteKey:(int)remoteKey andCallback:(void (^) (BOOL sucess, GLPConversation *conversation ))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"false", @"random",[NSString stringWithFormat:@"%d",remoteKey], @"participants", nil];
+    
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:@"conversations" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
+                
+        callbackBlock(YES, conversation);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogDebug(@"ERROR: %@", error);
+
+        
+        callbackBlock(NO, nil);
+    }];
+    
+}
+
 
 #pragma mark - Messages
 

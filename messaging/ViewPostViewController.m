@@ -171,7 +171,8 @@ static BOOL likePushed;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
     self.commentJustCreated = NO;
-
+    
+    
     [super viewWillDisappear:animated];
 
 
@@ -208,6 +209,9 @@ static BOOL likePushed;
 
 -(void)configureNavigationBar
 {
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+    
     //    [self setNeedsStatusBarAppearanceUpdate];
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     

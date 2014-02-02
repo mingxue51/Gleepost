@@ -23,6 +23,8 @@
 #import "GLPPostImageLoader.h"
 #import "ViewPostViewController.h"
 #import "GLPPostNotificationHelper.h"
+#import "ViewTopicViewController.h"
+
 
 @interface GLPPrivateProfileViewController ()
 
@@ -49,6 +51,7 @@
 
 @property (assign, nonatomic) int postIndexToReload;
 
+@property (strong, nonatomic) GLPConversation *conversation;
 
 @end
 
@@ -634,6 +637,17 @@
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
+#pragma mark - Navigation methods
+
+-(void)viewConversation:(GLPConversation*)conversation
+{
+
+    _conversation = conversation;
+    
+    [self performSegueWithIdentifier:@"view topic" sender:self];
+}
+
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"view post"])
@@ -649,6 +663,15 @@
         vc.commentJustCreated = self.commentCreated;
         
         vc.post = self.selectedPost;
+        
+    }
+    else if ([segue.identifier isEqualToString:@"view topic"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ViewTopicViewController *vt = segue.destinationViewController;
+        
+        vt.conversation = _conversation;
         
     }
 }

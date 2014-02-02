@@ -15,5 +15,6 @@
 +(void) hideStandardLoaderForView:(UIView *)view;
 +(void) showStandardErrorWithTitle:(NSString *)title andContent:(NSString *)content;
 +(void) showStandardError;
++(void)showInternetConnectionErrorWithTitle:(NSString*)title;
 
 @end

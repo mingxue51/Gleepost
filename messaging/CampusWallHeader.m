@@ -85,8 +85,6 @@
 
             [self clearAndLoad];
 
-            
-
         }
         else
         {

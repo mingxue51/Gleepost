@@ -10,6 +10,7 @@
 #import "NSObject_ProfileEnums.h"
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
+#import "GLPConversation.h"
 
 @interface GLPPrivateProfileViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate>
 
@@ -20,5 +21,6 @@
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)showFullProfileImage:(id)sender;
 -(void)unlockProfile;
+-(void)viewConversation:(GLPConversation*)conversation;
 
 @end

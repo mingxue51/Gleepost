@@ -148,6 +148,15 @@ float timeInterval = 0.1;
     [self configureMessages];
     [self loadInitialMessages];
     
+    //TODO: Add that to the new implementation.
+    
+    if(_conversation.key == 0 && !_conversation.isLive)
+    {
+        [ConversationManager saveConversation:_conversation];
+        
+    }
+    
+    
 
 //    [self loadElements];
     

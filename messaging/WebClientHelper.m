@@ -41,6 +41,16 @@
     [alert show];
 }
 
++(void)showInternetConnectionErrorWithTitle:(NSString*)title
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:@"Please check your internet connection and try again"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 + (void)showStandardError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Operation failed"

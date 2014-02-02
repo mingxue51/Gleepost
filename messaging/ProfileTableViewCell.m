@@ -352,13 +352,30 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         else
         {
             //Error message.
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to accept contact" andContent:@"Please check your internet connection and try again"];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to accept contact"];
             
         }
     }];
 }
 
-- (IBAction)sendMessage:(id)sender {
+- (IBAction)sendMessage:(id)sender
+{
+    //Create new conversation with the user.
+    [[WebClient sharedInstance] createRegularConversationWithUserRemoteKey:self.currentUser.remoteKey andCallback:^(BOOL sucess, GLPConversation *conversation) {
+        
+        if(sucess)
+        {
+            DDLogInfo(@"Conversation created: %@",conversation);
+            //Navigate to view topic view controller.
+            [_privateProfileDelegate viewConversation:conversation];
+            
+        }
+        else
+        {
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Error creating conversation"];
+        }
+        
+    }];
 }
 
 #pragma mark - Client
