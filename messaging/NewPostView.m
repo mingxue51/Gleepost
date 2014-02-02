@@ -287,7 +287,6 @@ static BOOL visibility = NO;
     
 	const CGFloat DEFAULT_LABEL_WIDTH = 280.0;
 	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
-	CGRect labelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
     
 	// Set up the fade-in animation
 	CATransition *animation = [CATransition animation];

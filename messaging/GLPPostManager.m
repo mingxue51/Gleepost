@@ -260,17 +260,16 @@ NSInteger const kGLPNumberOfPosts = 20;
             callback(NO, nil);
             return;
         }
-        
-        
+                
         // take only new posts
         NSMutableArray *userPosts = [NSMutableArray array];
         
         for (GLPPost *newPost in posts)
         {
-            if(newPost.author.remoteKey == remoteKey)
-            {
-                [userPosts addObject:newPost];
-            }
+//            if(newPost.author.remoteKey == remoteKey)
+//            {
+            [userPosts addObject:newPost];
+//            }
             
         }
         

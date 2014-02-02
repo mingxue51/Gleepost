@@ -350,7 +350,7 @@
             NSLog(@"Request has been sent to the user.");
             
             self.invitationSentView = [InvitationSentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
-            self.invitationSentView.delegate = self;
+            //self.invitationSentView.delegate = self;
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.profileUser.name profileImage:self.profileUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];

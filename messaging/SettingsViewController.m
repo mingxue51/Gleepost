@@ -172,9 +172,12 @@ const int CORNER_VALUE = 16;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    ChangePasswordViewController *change = segue.destinationViewController;
-    
-    change.isPasswordChange = _isPassWordChanged;
+    if(![segue.identifier isEqualToString:@"start"])
+    {
+        ChangePasswordViewController *change = segue.destinationViewController;
+        
+        change.isPasswordChange = _isPassWordChanged;
+    }
 }
 
 

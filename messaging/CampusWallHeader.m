@@ -73,7 +73,6 @@
 
 -(void)loadEvents
 {
-    
     [self showLoadingLabel];
     
     [GLPPostManager loadEventsRemotePostsForUserRemoteKey:[SessionManager sharedInstance].user.remoteKey callback:^(BOOL success, NSArray *posts) {
@@ -82,7 +81,6 @@
         {
             _posts = posts;
             
-
             [self hideLoadingLabel];
 
             [self clearAndLoad];
