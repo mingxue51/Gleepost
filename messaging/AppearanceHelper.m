@@ -74,10 +74,23 @@
 }
 
 
++(void)setFormatForLoginNavigationBar:(UIViewController*)viewController
+{
+    [viewController.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:GLP_APP_FONT_BOLD size:24.0f], UITextAttributeFont, nil]];
+    
+    viewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    
+    viewController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+
+}
+
+
 //TODO: Fix this working with iOS 6.
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName
 {
-    UIImage *image = [UIImage imageNamed:imageName];
+//    UIImage *image = [UIImage imageNamed:imageName];
     
 //    UIColor *barColour = [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
 

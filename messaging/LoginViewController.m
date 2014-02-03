@@ -38,13 +38,20 @@
     [self.navigationController.navigationBar setTranslucent:YES];
     
     //Sets colour to navigation items.
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    [self setUpTextFields];
     
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+    
+    //Set the  colour of navigation bar's title.
+    [AppearanceHelper setFormatForLoginNavigationBar:self];
+    
+    
     //[[UINavigationBar appearance] setShadowImage: [[UIImage alloc] init]];
 
     
@@ -93,11 +100,36 @@
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
+
+-(void)setUpTextFields
+{
+    CGRect textFielFrame = self.nameTextField.frame;
+    textFielFrame.size.height+=10;
+    [self.nameTextField setFrame:textFielFrame];
+    [self.nameTextField setBackgroundColor:[UIColor whiteColor]];
+    [self.nameTextField setTextColor:[UIColor blackColor]];
+    self.nameTextField.layer.cornerRadius = 20;
+    self.nameTextField.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
+    self.nameTextField.layer.borderWidth = 3.0f;
+    self.nameTextField.clipsToBounds = YES;
+    
+    
+    textFielFrame = self.passwordTextField.frame;
+    textFielFrame.size.height+=10;
+    [self.passwordTextField setFrame:textFielFrame];
+    [self.passwordTextField setBackgroundColor:[UIColor whiteColor]];
+    [self.passwordTextField setTextColor:[UIColor blackColor]];
+    self.passwordTextField.layer.cornerRadius = 20;
+    self.passwordTextField.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
+    self.passwordTextField.layer.borderWidth = 3.0f;
+    self.passwordTextField.clipsToBounds = YES;
+}
+
 -(void) setBackground
 {
     self.view.backgroundColor = [UIColor clearColor];
     
-    UIImage *newChatImage = [UIImage imageNamed:@"loginbg"];
+    UIImage *newChatImage = [UIImage imageNamed:@"background_login_pages"];
     
     UIImageView *backgroundImage = [[UIImageView alloc] init];
     

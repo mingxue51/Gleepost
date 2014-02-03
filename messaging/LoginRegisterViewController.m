@@ -21,6 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     //Change the colour format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     
@@ -28,12 +29,16 @@
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+
     
     
     [self setBackground];
     
     [self setImages];
 }
+
+
 
 - (IBAction)gleepostSignUp:(id)sender
 {
@@ -55,7 +60,7 @@
 {
     self.view.backgroundColor = [UIColor clearColor];
     
-    UIImage *newChatImage = [UIImage imageNamed:@"loginbg"];
+    UIImage *newChatImage = [UIImage imageNamed:@"loginnew2"];
     
     UIImageView *backgroundImage = [[UIImageView alloc] init];
     

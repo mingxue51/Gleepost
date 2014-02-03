@@ -19,6 +19,8 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPUserDao.h"
+#import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @interface FinalRegisterViewController ()
 
@@ -26,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet GCPlaceholderTextView *userLastNameTextView;
 @property (weak, nonatomic) IBOutlet GCPlaceholderTextView *genderTextView;
 
-@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *tagLineTextField;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *genderTextField;
 
@@ -47,9 +49,13 @@
     //Change the colour format of the navigation bar.
     [self.navigationController.navigationBar setTranslucent:YES];
     
+    [AppearanceHelper setFormatForLoginNavigationBar:self];
+    
     [self setBackground];
     
-    [self setUpTextViews];
+    [self setUpTextFields];
+    
+    [self formatElements];
     
     self.profileImage = nil;
     
@@ -58,30 +64,54 @@
     self.fdTakeController.delegate = self;
     
     
-    //Add gesture to select image view.
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickAnImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [self.addImageView addGestureRecognizer:tap];
+
 
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+        
+    [self.tagLineTextField becomeFirstResponder];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
+-(void)formatElements
+{
+    //Add corner radius to image  view.
+    [ShapeFormatterHelper setCornerRadiusWithView:self.addImageView andValue:10.0f];
+    
+    
+    //Add gesture to select image view.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickAnImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.addImageView addGestureRecognizer:tap];
+}
+
+-(void)setUpTextFields
+{
+    CGRect textFielFrame = self.tagLineTextField.frame;
+    textFielFrame.size.height+=10;
+    [self.tagLineTextField setFrame:textFielFrame];
+    [self.tagLineTextField setBackgroundColor:[UIColor whiteColor]];
+    [self.tagLineTextField setTextColor:[UIColor blackColor]];
+    self.tagLineTextField.layer.cornerRadius = 20;
+    self.tagLineTextField.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
+    self.tagLineTextField.layer.borderWidth = 3.0f;
+    self.tagLineTextField.clipsToBounds = YES;
+}
+
 -(void)setUpTextViews
 {
     
-    CGRect textFielFrame = self.nameTextField.frame;
+    CGRect textFielFrame = self.tagLineTextField.frame;
     textFielFrame.size.height+=5;
-    [self.nameTextField setFrame:textFielFrame];
-    [self.nameTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
-    [self.nameTextField setTextColor:[UIColor whiteColor]];
-    self.nameTextField.layer.cornerRadius = 10;
-    self.nameTextField.clipsToBounds = YES;
+    [self.tagLineTextField setFrame:textFielFrame];
+    [self.tagLineTextField setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+    [self.tagLineTextField setTextColor:[UIColor whiteColor]];
+    self.tagLineTextField.layer.cornerRadius = 10;
+    self.tagLineTextField.clipsToBounds = YES;
     
     textFielFrame = self.lastNameTextField.frame;
     textFielFrame.size.height+=5;
@@ -132,9 +162,9 @@
 - (void)hideKeyboardIfDisplayed
 {
     
-    if([self.nameTextField isFirstResponder])
+    if([self.tagLineTextField isFirstResponder])
     {
-        [self.nameTextField resignFirstResponder];
+        [self.tagLineTextField resignFirstResponder];
     }
     
     if([self.lastNameTextField isFirstResponder])
@@ -175,13 +205,32 @@
     if([self areTheDetailsValid])
     {
         //Request to server to register user.
-        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.nameTextField.text, self.lastNameTextField.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responseMessage, int remoteKey) {
-            
+//        [[WebClient sharedInstance] registerWithName:[NSString stringWithFormat:@"%@ %@",self.tagLineTextField.text, self.lastNameTextField.text] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString* responseMessage, int remoteKey) {
+//            
+//            if(success)
+//            {
+//                //Navigate to home.
+//                NSLog(@"User register successful with remote Key: %d", remoteKey);
+//                [self loginUser];
+//            }
+//            else
+//            {
+//                NSLog(@"User not registered.");
+//                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
+//            }
+//            
+//        }];
+        
+        
+        [[WebClient sharedInstance] registerWithName:self.firstLastName[0] surname:self.firstLastName[1] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString *responseMessage, int remoteKey) {
+           
             if(success)
             {
                 //Navigate to home.
                 NSLog(@"User register successful with remote Key: %d", remoteKey);
-                [self loginUser];
+                [WebClientHelper showStandardErrorWithTitle:@"Account verification" andContent:@"An e-mail was send to your mail, please verify your account first and try to login."];
+                
+                //[self loginUser];
             }
             else
             {
@@ -266,7 +315,7 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:[NSString stringWithFormat:@"%@ %@",self.nameTextField.text,self.lastNameTextField.text] andPassword:self.eMailPass[1] callback:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:self.eMailPass[0] andPassword:self.eMailPass[1] callback:^(BOOL success) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
@@ -275,14 +324,14 @@
         } else {
             [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
         }
-    }];
+    }];  
 }
 
--(void) setBackground
+-(void)setBackground
 {
     self.view.backgroundColor = [UIColor clearColor];
     
-    UIImage *newChatImage = [UIImage imageNamed:@"loginbg"];
+    UIImage *newChatImage = [UIImage imageNamed:@"background_login_pages"];
     
     UIImageView *backgroundImage = [[UIImageView alloc] init];
     
@@ -373,7 +422,7 @@
 
 -(BOOL)areTheDetailsValid
 {
-    return (![self.nameTextField.text isEqualToString:@""] && ![self.lastNameTextField.text isEqualToString:@""] && ![self.genderTextField.text isEqualToString:@""] && (self.profileImage!=nil));
+    return (![self.tagLineTextField.text isEqualToString:@""] && (self.profileImage!=nil));
 }
 
 @end

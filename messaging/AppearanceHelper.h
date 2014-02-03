@@ -22,4 +22,5 @@
 +(UIColor*)defaultGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;
 +(void)hideTabBar:(UIViewController*)controller;
++(void)setFormatForLoginNavigationBar:(UIViewController*)viewController;
 @end

@@ -1907,29 +1907,6 @@
 //        
 //        profileViewController.incomingUser = incomingUser;
     }
-    else if ([segue.identifier isEqualToString:@"view categories"])
-    {
-     
-        GLPCategoriesViewController *categoriesViewController = segue.destinationViewController;
-        
-        
-        /**
-         Takes screenshot from the current view controller to bring the sense of the transparency after the load
-         of the NewPostViewController.
-         */
-//        UIGraphicsBeginImageContext(self.view.window.bounds.size);
-//        [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
-//        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
-        
-//        UIGraphicsBeginImageContext(self.view.window.bounds.size);
-//        [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-//        UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-//        UIGraphicsEndImageContext();
-        
-//        categoriesViewController.screenshot = viewImage;
-        
-    }
     
 }
 

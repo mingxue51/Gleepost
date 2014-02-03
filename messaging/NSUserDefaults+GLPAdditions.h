@@ -19,4 +19,8 @@
 - (void)saveAuthParameterPass:(NSString *)pass;
 - (NSString *)authParameterPass;
 
+- (void)saveAuthParameterSurname:(NSString *)surname;
+- (NSString *)authParameterSurname;
+
+
 @end

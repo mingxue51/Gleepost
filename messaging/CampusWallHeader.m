@@ -42,17 +42,17 @@
         
         [self loadEvents];
         
-        if(self.subviews.count >= 2)
-        {
-            [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Subview removed"];
-            
-            UIView *v = [self.subviews objectAtIndex:1];
-            
-            if(v)
-            {
-                [v removeFromSuperview];
-            }
-        }
+//        if(self.subviews.count >= 2)
+//        {
+//            [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Subview removed"];
+//            
+//            UIView *v = [self.subviews objectAtIndex:1];
+//            
+//            if(v)
+//            {
+//                [v removeFromSuperview];
+//            }
+//        }
 
         
 
@@ -124,13 +124,13 @@
 //    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     
-    if(self.subviews.count >= 2)
-    {
-        [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Problem in horizontal scroll view detected! Please contact with developer!"];
-        UIView *v = [self.subviews objectAtIndex:1];
-        [v removeFromSuperview];
-        
-    }
+//    if(self.subviews.count >= 2)
+//    {
+//        [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Problem in horizontal scroll view detected! Please contact with developer!"];
+//        UIView *v = [self.subviews objectAtIndex:1];
+//        [v removeFromSuperview];
+//        
+//    }
     
     
     [self loadEvents];

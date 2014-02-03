@@ -12,5 +12,6 @@
 @interface FinalRegisterViewController : UIViewController  <UINavigationControllerDelegate, FDTakeDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *addImageView;
 @property (strong, nonatomic) NSArray *eMailPass;
+@property (strong, nonatomic) NSArray *firstLastName;
 
 @end

@@ -11,6 +11,8 @@
 static NSString * const kGLPAuthParameterEmailKey   = @"kGLPAuthParameterEmailKey";
 static NSString * const kGLPAuthParameterNameKey    = @"kGLPAuthParameterNameKey";
 static NSString * const kGLPAuthParameterPassKey    = @"kGLPAuthParameterPassKey";
+static NSString * const kGLPAuthParameterSurnameKey = @"kGLPAuthParameterSurnameKey";
+
 
 @implementation NSUserDefaults (GLPAdditions)
 
@@ -26,6 +28,10 @@ static NSString * const kGLPAuthParameterPassKey    = @"kGLPAuthParameterPassKey
     [self setObject:name forKey:kGLPAuthParameterNameKey];
 }
 
+- (void)saveAuthParameterSurname:(NSString *)surname {
+    [self setObject:surname forKey:kGLPAuthParameterSurnameKey];
+}
+
 - (NSString *)authParameterName {
     return [self objectForKey:kGLPAuthParameterNameKey];
 }
@@ -37,5 +43,10 @@ static NSString * const kGLPAuthParameterPassKey    = @"kGLPAuthParameterPassKey
 - (NSString *)authParameterPass {
     return [self objectForKey:kGLPAuthParameterPassKey];
 }
+
+- (NSString *)authParameterSurname {
+    return [self objectForKey:kGLPAuthParameterSurnameKey];
+}
+
 
 @end

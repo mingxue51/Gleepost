@@ -16,7 +16,7 @@
 #import "ValidFields.h"
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
-
+#import "FacebookLoginViewController.h"
 
 @interface RegisterViewController ()
 
@@ -39,14 +39,17 @@
     [self.navigationController.navigationBar setTranslucent:YES];
     
   //  [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-
+    
+    //Set the  colour of navigation bar's title.
+    [AppearanceHelper setFormatForLoginNavigationBar:self];
     
    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
     
 
+    
     [self setBackground];
     
-    [self setUpTextViews];
+    [self setUpTextFields];
 
     
 
@@ -55,8 +58,37 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self.emailTextField becomeFirstResponder];
+
+    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+
+
+-(void)setUpTextFields
+{
+    CGRect textFielFrame = self.emailTextField.frame;
+    textFielFrame.size.height+=10;
+    [self.emailTextField setFrame:textFielFrame];
+    [self.emailTextField setBackgroundColor:[UIColor whiteColor]];
+    [self.emailTextField setTextColor:[UIColor blackColor]];
+    self.emailTextField.layer.cornerRadius = 20;
+    self.emailTextField.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
+    self.emailTextField.layer.borderWidth = 3.0f;
+    self.emailTextField.clipsToBounds = YES;
+    
+    
+    textFielFrame = self.passwordTextField.frame;
+    textFielFrame.size.height+=10;
+    [self.passwordTextField setFrame:textFielFrame];
+    [self.passwordTextField setBackgroundColor:[UIColor whiteColor]];
+    [self.passwordTextField setTextColor:[UIColor blackColor]];
+    self.passwordTextField.layer.cornerRadius = 20;
+    self.passwordTextField.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
+    self.passwordTextField.layer.borderWidth = 3.0f;
+    self.passwordTextField.clipsToBounds = YES;
 }
 
 -(void)setUpTextViews
@@ -81,18 +113,21 @@
     self.passwordTextField.clipsToBounds = YES;
     
     
-    self.emailTextView.placeholder = @"e-mail";
-    [self.emailTextView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_field"]]];
-    [self.emailTextView setTextColor:[UIColor whiteColor]];
-    self.emailTextView.layer.cornerRadius = 5;
-    self.emailTextView.clipsToBounds = YES;
     
     
-    self.passwordTextView.placeholder = @"password";
-    [self.passwordTextView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_field"]]];
-    self.passwordTextView.textColor = [UIColor whiteColor];
-    self.passwordTextView.layer.cornerRadius = 5;
-    self.passwordTextView.clipsToBounds = YES;
+    
+//    self.emailTextView.placeholder = @"e-mail";
+//    [self.emailTextView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_field"]]];
+//    [self.emailTextView setTextColor:[UIColor whiteColor]];
+//    self.emailTextView.layer.cornerRadius = 5;
+//    self.emailTextView.clipsToBounds = YES;
+//    
+//    
+//    self.passwordTextView.placeholder = @"password";
+//    [self.passwordTextView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_field"]]];
+//    self.passwordTextView.textColor = [UIColor whiteColor];
+//    self.passwordTextView.layer.cornerRadius = 5;
+//    self.passwordTextView.clipsToBounds = YES;
 }
 
 - (IBAction)finalRegistrationForm:(id)sender
@@ -100,15 +135,11 @@
     //Check if e-mail and password are valid.
     if([self areDetailsValid])
     {
-        [self performSegueWithIdentifier:@"final registration" sender:self];
+        [self performSegueWithIdentifier:@"facebook login" sender:self];
     }
     else
     {
-        NSLog(@"Details not valid.");
-        
         [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your e-mail or your password."];
-
-        
     }
     
     //TODO: Check if e-mail is a valid university e-mail.
@@ -121,11 +152,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    FinalRegisterViewController *finalRegistrationForm = segue.destinationViewController;
+    FacebookLoginViewController *facebookRegistrationForm = segue.destinationViewController;
     
     //finalRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextView.text, self.passwordTextView.text, nil];
     
-    finalRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextField.text, self.passwordTextField.text, nil];
+    facebookRegistrationForm.eMailPass = [[NSArray alloc] initWithObjects:self.emailTextField.text, self.passwordTextField.text, nil];
     
     
 }
@@ -134,7 +165,7 @@
 {
     self.view.backgroundColor = [UIColor clearColor];
     
-    UIImage *newChatImage = [UIImage imageNamed:@"loginbg"];
+    UIImage *newChatImage = [UIImage imageNamed:@"background_login_pages"];
     
     UIImageView *backgroundImage = [[UIImageView alloc] init];
     
@@ -156,7 +187,6 @@
 
 - (IBAction)viewClicked:(id)sender
 {
-    NSLog(@"View Clicked.");
     [self hideKeyboardIfDisplayed];
 }
 

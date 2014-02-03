@@ -101,9 +101,23 @@
 		58361C38184CC6F500FEFC49 /* private_profile_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C37184CC6F500FEFC49 /* private_profile_background.png */; };
 		58361C3A184CCAD200FEFC49 /* add_as_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C39184CCAD200FEFC49 /* add_as_contact.png */; };
 		58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */; };
+		5839261C18A020E800439398 /* skip_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261B18A020E800439398 /* skip_button.png */; };
+		5839261E18A020F600439398 /* connect_fb_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261D18A020F600439398 /* connect_fb_button.png */; };
+		5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5839262018A0256A00439398 /* SignUpWithNameViewController.m */; };
 		583B9FE317F3676A00B4BEE3 /* set_tab_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE117F3676A00B4BEE3 /* set_tab_small.png */; };
 		583B9FE417F3676A00B4BEE3 /* set_tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */; };
 		583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583C725D17EF2E5600820761 /* MessageBox2small.png */; };
+		583CE326189FFFBA00E78C08 /* loginbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE325189FFFBA00E78C08 /* loginbg.png */; };
+		583CE32818A0018F00E78C08 /* hoover.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE32718A0018F00E78C08 /* hoover.png */; };
+		583CE32C18A0056A00E78C08 /* loginnew2.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE32B18A0056A00E78C08 /* loginnew2.png */; };
+		583CE32F18A0061100E78C08 /* login-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE32D18A0061100E78C08 /* login-button.png */; };
+		583CE33018A0061100E78C08 /* signin-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE32E18A0061100E78C08 /* signin-button.png */; };
+		583CE33218A008EB00E78C08 /* email_label_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33118A008EB00E78C08 /* email_label_bg.png */; };
+		583CE33418A008FD00E78C08 /* password_label_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33318A008FD00E78C08 /* password_label_bg.png */; };
+		583CE33618A010B800E78C08 /* next_button_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33518A010B800E78C08 /* next_button_bg.png */; };
+		583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583CE33818A015FB00E78C08 /* FacebookLoginViewController.m */; };
+		583CE33C18A019AC00E78C08 /* background_login_pages.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33A18A019AC00E78C08 /* background_login_pages.png */; };
+		583CE33D18A019AC00E78C08 /* hoovertall.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33B18A019AC00E78C08 /* hoovertall.png */; };
 		583EAB7918119688003D68B3 /* add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7818119688003D68B3 /* add_contact.png */; };
 		583FA27E189B09EB003C6E4E /* going_to_event.png in Resources */ = {isa = PBXBuildFile; fileRef = 583FA27D189B09EB003C6E4E /* going_to_event.png */; };
 		58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403531182FF5FB00499488 /* GLPTimelineViewController.m */; };
@@ -273,7 +287,6 @@
 		58A67453184FAA1100E3FE45 /* arrow_up_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A67452184FAA1100E3FE45 /* arrow_up_gray.png */; };
 		58A67455184FAA6100E3FE45 /* 1386202636_Arrow_Up copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A67454184FAA6100E3FE45 /* 1386202636_Arrow_Up copy.png */; };
 		58AABA921892F0F60058A552 /* category_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AABA911892F0F60058A552 /* category_bg.png */; };
-		58AABA941892F78B0058A552 /* loginbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AABA931892F78B0058A552 /* loginbg.png */; };
 		58AD86A318929F2200016C6D /* about_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD869B18929F2200016C6D /* about_button.png */; };
 		58AD86A418929F2200016C6D /* active_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD869C18929F2200016C6D /* active_tab.png */; };
 		58AD86A518929F2200016C6D /* bg_middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD869D18929F2200016C6D /* bg_middle.png */; };
@@ -664,9 +677,25 @@
 		58361C37184CC6F500FEFC49 /* private_profile_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = private_profile_background.png; sourceTree = "<group>"; };
 		58361C39184CCAD200FEFC49 /* add_as_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_as_contact.png; sourceTree = "<group>"; };
 		58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_background.png; sourceTree = "<group>"; };
+		5839261B18A020E800439398 /* skip_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skip_button.png; sourceTree = "<group>"; };
+		5839261D18A020F600439398 /* connect_fb_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect_fb_button.png; sourceTree = "<group>"; };
+		5839261F18A0256A00439398 /* SignUpWithNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpWithNameViewController.h; sourceTree = "<group>"; };
+		5839262018A0256A00439398 /* SignUpWithNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpWithNameViewController.m; sourceTree = "<group>"; };
 		583B9FE117F3676A00B4BEE3 /* set_tab_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = set_tab_small.png; sourceTree = "<group>"; };
 		583B9FE217F3676A00B4BEE3 /* set_tab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_tab@2x.png"; sourceTree = "<group>"; };
 		583C725D17EF2E5600820761 /* MessageBox2small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageBox2small.png; sourceTree = "<group>"; };
+		583CE325189FFFBA00E78C08 /* loginbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginbg.png; sourceTree = "<group>"; };
+		583CE32718A0018F00E78C08 /* hoover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hoover.png; sourceTree = "<group>"; };
+		583CE32B18A0056A00E78C08 /* loginnew2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginnew2.png; sourceTree = "<group>"; };
+		583CE32D18A0061100E78C08 /* login-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-button.png"; sourceTree = "<group>"; };
+		583CE32E18A0061100E78C08 /* signin-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signin-button.png"; sourceTree = "<group>"; };
+		583CE33118A008EB00E78C08 /* email_label_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email_label_bg.png; sourceTree = "<group>"; };
+		583CE33318A008FD00E78C08 /* password_label_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password_label_bg.png; sourceTree = "<group>"; };
+		583CE33518A010B800E78C08 /* next_button_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next_button_bg.png; sourceTree = "<group>"; };
+		583CE33718A015FB00E78C08 /* FacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookLoginViewController.h; sourceTree = "<group>"; };
+		583CE33818A015FB00E78C08 /* FacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookLoginViewController.m; sourceTree = "<group>"; };
+		583CE33A18A019AC00E78C08 /* background_login_pages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_login_pages.png; sourceTree = "<group>"; };
+		583CE33B18A019AC00E78C08 /* hoovertall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hoovertall.png; sourceTree = "<group>"; };
 		583EAB7818119688003D68B3 /* add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact.png; sourceTree = "<group>"; };
 		583FA27D189B09EB003C6E4E /* going_to_event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_to_event.png; sourceTree = "<group>"; };
 		58403530182FF5FB00499488 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
@@ -887,7 +916,6 @@
 		58A67452184FAA1100E3FE45 /* arrow_up_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_up_gray.png; sourceTree = "<group>"; };
 		58A67454184FAA6100E3FE45 /* 1386202636_Arrow_Up copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1386202636_Arrow_Up copy.png"; sourceTree = "<group>"; };
 		58AABA911892F0F60058A552 /* category_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_bg.png; sourceTree = "<group>"; };
-		58AABA931892F78B0058A552 /* loginbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginbg.png; sourceTree = "<group>"; };
 		58AD869B18929F2200016C6D /* about_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_button.png; sourceTree = "<group>"; };
 		58AD869C18929F2200016C6D /* active_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = active_tab.png; sourceTree = "<group>"; };
 		58AD869D18929F2200016C6D /* bg_middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_middle.png; sourceTree = "<group>"; };
@@ -1465,6 +1493,25 @@
 			name = "Profile v2";
 			sourceTree = "<group>";
 		};
+		583CE324189FFFB100E78C08 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5839261D18A020F600439398 /* connect_fb_button.png */,
+				5839261B18A020E800439398 /* skip_button.png */,
+				583CE33A18A019AC00E78C08 /* background_login_pages.png */,
+				583CE33B18A019AC00E78C08 /* hoovertall.png */,
+				583CE33518A010B800E78C08 /* next_button_bg.png */,
+				583CE33118A008EB00E78C08 /* email_label_bg.png */,
+				583CE33318A008FD00E78C08 /* password_label_bg.png */,
+				583CE32D18A0061100E78C08 /* login-button.png */,
+				583CE32E18A0061100E78C08 /* signin-button.png */,
+				583CE32B18A0056A00E78C08 /* loginnew2.png */,
+				583CE325189FFFBA00E78C08 /* loginbg.png */,
+				583CE32718A0018F00E78C08 /* hoover.png */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
 		583EAB711811867C003D68B3 /* User Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -1500,6 +1547,10 @@
 				58433293180F178C00BD9F74 /* FinalRegisterViewController.m */,
 				58143D751821762600B76E5D /* ValidFields.h */,
 				58143D761821762600B76E5D /* ValidFields.m */,
+				583CE33718A015FB00E78C08 /* FacebookLoginViewController.h */,
+				583CE33818A015FB00E78C08 /* FacebookLoginViewController.m */,
+				5839261F18A0256A00439398 /* SignUpWithNameViewController.h */,
+				5839262018A0256A00439398 /* SignUpWithNameViewController.m */,
 			);
 			name = "Login Register Classes";
 			sourceTree = "<group>";
@@ -1665,7 +1716,6 @@
 		586581331805E316005814B4 /* Login Images */ = {
 			isa = PBXGroup;
 			children = (
-				58AABA931892F78B0058A552 /* loginbg.png */,
 				5843328E180F09C900BD9F74 /* Gleepost2.png */,
 				58433288180F069800BD9F74 /* Gleepost_main.png */,
 				58433289180F069800BD9F74 /* loginwithfacebook.png */,
@@ -2156,6 +2206,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				583CE324189FFFB100E78C08 /* Login */,
 				58729ACB189BFDFE0041022C /* Navigation */,
 				5832C4CA189994EA004FC4F6 /* Settings */,
 				580C7AC418985D9F007495EE /* Splash */,
@@ -2976,6 +3027,7 @@
 				5832C4BF189936E9004FC4F6 /* user_image_bg.png in Resources */,
 				5891254C1858CF2E000531DE /* share_button.png in Resources */,
 				806E3D781832B1960063AACE /* NotificationBackgroundErrorIcon.png in Resources */,
+				5839261E18A020F600439398 /* connect_fb_button.png in Resources */,
 				58FD708418905B680024E8A1 /* news_category.png in Resources */,
 				80AB898F17C2ADA60053E784 /* line.png in Resources */,
 				58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */,
@@ -2984,6 +3036,7 @@
 				58DC0244180437A70008993A /* bubble2.png in Resources */,
 				80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */,
 				5843328D180F069800BD9F74 /* loginwithfacebookclick.png in Resources */,
+				583CE32C18A0056A00E78C08 /* loginnew2.png in Resources */,
 				580C7AAF18982EA7007495EE /* event_category_selected.png in Resources */,
 				806E3D851832B1960063AACE /* NotificationButtonBackground@2x.png in Resources */,
 				58FB7C96185614C5002C6A00 /* MutualProfileTabView.xib in Resources */,
@@ -3002,14 +3055,18 @@
 				5895B3DC17F5D7730040535D /* thumbs-up_pushed@2x.png in Resources */,
 				58433299180F181700BD9F74 /* email.png in Resources */,
 				5832C4C518993ADC004FC4F6 /* icon_comments.png in Resources */,
+				583CE326189FFFBA00E78C08 /* loginbg.png in Resources */,
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,
 				584332AC180F347F00BD9F74 /* Name.png in Resources */,
 				584F385C1817F50B00A1B742 /* default_group_image.png in Resources */,
+				583CE32F18A0061100E78C08 /* login-button.png in Resources */,
+				583CE33C18A019AC00E78C08 /* background_login_pages.png in Resources */,
 				5898329317F8ED54008CB807 /* background_profile.png in Resources */,
 				584F38621818094A00A1B742 /* mychatbubble4.png in Resources */,
 				58FB7C7D1855FF0B002C6A00 /* message-user.png in Resources */,
 				58FD708118905B680024E8A1 /* all_category.png in Resources */,
 				8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */,
+				583CE33418A008FD00E78C08 /* password_label_bg.png in Resources */,
 				580C7AB118982FAD007495EE /* event_category.png in Resources */,
 				58AD86A618929F2200016C6D /* bg_top.png in Resources */,
 				580C7AB518983C68007495EE /* for-sale_category_selected.png in Resources */,
@@ -3028,7 +3085,6 @@
 				8096E4D917C2BEF400C7BF60 /* new_post.png in Resources */,
 				805E1559180EF3E700705B1C /* share_image.png in Resources */,
 				582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */,
-				58AABA941892F78B0058A552 /* loginbg.png in Resources */,
 				805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */,
 				58C09A1B185B2CDD00648EB4 /* bell.png in Resources */,
 				5890D23918482DC300E293DD /* proximity.png in Resources */,
@@ -3070,6 +3126,7 @@
 				58DAD77C1859FBD20016D838 /* bird-house-7@2x.png in Resources */,
 				58E3DAB71884055E00B9B048 /* pole.png in Resources */,
 				58E3DAC9188405FB00B9B048 /* background_day_old.png in Resources */,
+				583CE32818A0018F00E78C08 /* hoover.png in Resources */,
 				584332A4180F324200BD9F74 /* profilebackground.png in Resources */,
 				5866F16B1884529A007484CF /* hills.png in Resources */,
 				58FB7C7F1855FF82002C6A00 /* add-user.png in Resources */,
@@ -3099,11 +3156,13 @@
 				58A67455184FAA6100E3FE45 /* 1386202636_Arrow_Up copy.png in Resources */,
 				58E3DAC7188405E600B9B048 /* sun.png in Resources */,
 				806E3D861832B1960063AACE /* TSMessagesDefaultDesign.json in Resources */,
+				583CE33218A008EB00E78C08 /* email_label_bg.png in Resources */,
 				8096E4E417C2C88500C7BF60 /* hate.png in Resources */,
 				58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */,
 				5827B4DF1896F67C007C9C52 /* icon_like_pushed2.png in Resources */,
 				58433291180F0DFC00BD9F74 /* loginwithfacebookclick_2.png in Resources */,
 				586659FA17F2203E00A0354E /* home_tab_old.png in Resources */,
+				583CE33618A010B800E78C08 /* next_button_bg.png in Resources */,
 				58D0E2621850BB80005879F4 /* GLPNotCell.xib in Resources */,
 				5890D23518482DC300E293DD /* messages.png in Resources */,
 				583FA27E189B09EB003C6E4E /* going_to_event.png in Resources */,
@@ -3138,6 +3197,7 @@
 				58272F831896824500CD7522 /* fake_nav_background.png in Resources */,
 				80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */,
 				80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */,
+				583CE33018A0061100E78C08 /* signin-button.png in Resources */,
 				584CF675182303FC00EFABB8 /* accept_contact.png in Resources */,
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
 				805E1558180EF3E700705B1C /* notification.png in Resources */,
@@ -3178,6 +3238,7 @@
 				58FB7C811855FFD5002C6A00 /* pending.png in Resources */,
 				58433283180ED55900BD9F74 /* PostTextCellView.xib in Resources */,
 				806E3D791832B1960063AACE /* NotificationBackgroundErrorIcon@2x.png in Resources */,
+				5839261C18A020E800439398 /* skip_button.png in Resources */,
 				58B1161F180D89A9000E9555 /* profile_image_frame.png in Resources */,
 				80C4CAC117CFFCDC00AFA80C /* post_messages.json in Resources */,
 				806E3D7C1832B1960063AACE /* NotificationBackgroundSuccess.png in Resources */,
@@ -3225,6 +3286,7 @@
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58AD86B01892A7B800016C6D /* top_wall2.png in Resources */,
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,
+				583CE33D18A019AC00E78C08 /* hoovertall.png in Resources */,
 				584CF66F1823017B00EFABB8 /* GLPNotificationCell.xib in Resources */,
 				586659FF17F2214300A0354E /* tabbar@2x.png in Resources */,
 				5866F16318844869007484CF /* cloud3_night.png in Resources */,
@@ -3344,6 +3406,7 @@
 				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
+				5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
 				58FB7C8A18560B6B002C6A00 /* AboutProfileView.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
@@ -3443,6 +3506,7 @@
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,
 				580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */,
+				583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				80E396381858D87600391922 /* GLPLiveConversation.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,

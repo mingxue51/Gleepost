@@ -129,6 +129,10 @@ static WebClient *instance = nil;
         
         callbackBlock(YES, user, token, expirationDate);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        //TODO: Parse the error message in order to show to the user.
+        
+        
         callbackBlock(NO, nil, nil, nil);
     }];
 }
@@ -143,6 +147,10 @@ static WebClient *instance = nil;
     }];
 }
 
+
+/**
+ TODO: DEPRECATED.
+ */
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
 {
     __weak NSString *weakEmail = email;
@@ -163,6 +171,35 @@ static WebClient *instance = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
        NSLog(@"ERROR DURING REGISTRATION: %@", [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion]);
+        
+        NSString *errorMessage = [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion];
+        
+        callbackBlock(NO, errorMessage, -1);
+    }];
+}
+
+- (void)registerWithName:(NSString *)name surname:(NSString*)surname email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
+{
+    __weak NSString *weakEmail = email;
+    __weak NSString *weakName  = name;
+    __weak NSString *weakSurname  = surname;
+    __weak NSString *weakPass  = password;
+    
+    [self postPath:@"register" parameters:@{@"first": name, @"last": surname, @"pass": password, @"email": email} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"Response during registration: %@", responseObject);
+        int remotekey = [RemoteParser parseIdFromJson:responseObject];
+        
+        callbackBlock(YES, responseObject, remotekey);
+        
+        // saving user info for email verification
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterEmail:weakEmail];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterName:weakName];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterSurname:weakSurname];
+        [[NSUserDefaults standardUserDefaults] saveAuthParameterPass:weakPass];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"ERROR DURING REGISTRATION: %@", [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion]);
         
         NSString *errorMessage = [RemoteParser parseRegisterErrorMessage:error.localizedRecoverySuggestion];
         
