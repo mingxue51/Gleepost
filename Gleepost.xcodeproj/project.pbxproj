@@ -25,7 +25,6 @@
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		11E2FBB3185730DF002EB2FA /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 11E2FBB2185730DF002EB2FA /* gleepost.cer */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
-		58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58080B79180EBB6500C4DB83 /* PostImageCellView.xib */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */; };
@@ -411,6 +410,7 @@
 		805E155B180EF3E700705B1C /* thumbs-up_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1554180EF3E700705B1C /* thumbs-up_image.png */; };
 		805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1555180EF3E700705B1C /* thumbs-up_image@2x.png */; };
 		805E155D180EF3E700705B1C /* time_label.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1556180EF3E700705B1C /* time_label.png */; };
+		805E91DB189B103B00ECD40F /* PostImageCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 805E91DA189B103B00ECD40F /* PostImageCellView.xib */; };
 		80666C401806D45700E4E515 /* ConversationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C3F1806D45700E4E515 /* ConversationManager.m */; };
 		80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C431806DA7A00E4E515 /* RemoteParser.m */; };
 		80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 80666C531806E11000E4E515 /* GLPMessage+CellLogic.m */; };
@@ -570,7 +570,6 @@
 		11E2FBB2185730DF002EB2FA /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
-		58080B79180EBB6500C4DB83 /* PostImageCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageCellView.xib; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
@@ -1090,6 +1089,7 @@
 		805E1554180EF3E700705B1C /* thumbs-up_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbs-up_image.png"; sourceTree = "<group>"; };
 		805E1555180EF3E700705B1C /* thumbs-up_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbs-up_image@2x.png"; sourceTree = "<group>"; };
 		805E1556180EF3E700705B1C /* time_label.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time_label.png; sourceTree = "<group>"; };
+		805E91DA189B103B00ECD40F /* PostImageCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageCellView.xib; sourceTree = "<group>"; };
 		80666C3E1806D45700E4E515 /* ConversationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationManager.h; sourceTree = "<group>"; };
 		80666C3F1806D45700E4E515 /* ConversationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationManager.m; sourceTree = "<group>"; };
 		80666C421806DA7A00E4E515 /* RemoteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteParser.h; sourceTree = "<group>"; };
@@ -1583,10 +1583,10 @@
 		584906B917FD945F0045B65D /* Post Classes */ = {
 			isa = PBXGroup;
 			children = (
+				805E91DA189B103B00ECD40F /* PostImageCellView.xib */,
 				58FD706C189008830024E8A1 /* Transition Delegate View Categories */,
 				58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */,
 				5851B5D618258ECE00AA9103 /* Transition Delegate New Post */,
-				58080B79180EBB6500C4DB83 /* PostImageCellView.xib */,
 				58433282180ED55900BD9F74 /* PostTextCellView.xib */,
 				5841315717FEDD8500A3278D /* AddCommentViewController.h */,
 				5841315817FEDD8500A3278D /* AddCommentViewController.m */,
@@ -3089,6 +3089,7 @@
 				584F385C1817F50B00A1B742 /* default_group_image.png in Resources */,
 				583CE32F18A0061100E78C08 /* login-button.png in Resources */,
 				583CE33C18A019AC00E78C08 /* background_login_pages.png in Resources */,
+				805E91DB189B103B00ECD40F /* PostImageCellView.xib in Resources */,
 				5898329317F8ED54008CB807 /* background_profile.png in Resources */,
 				584F38621818094A00A1B742 /* mychatbubble4.png in Resources */,
 				58FB7C7D1855FF0B002C6A00 /* message-user.png in Resources */,
@@ -3297,7 +3298,6 @@
 				806E3D841832B1960063AACE /* NotificationButtonBackground.png in Resources */,
 				587D23C917EA195D00E0DDFF /* new_chat_tab_small.png in Resources */,
 				80B1735B18056A0700D9669B /* typing_bar1.png in Resources */,
-				58080B7A180EBB6500C4DB83 /* PostImageCellView.xib in Resources */,
 				80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */,
 				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				587D23CA17EA195D00E0DDFF /* chat_tab_small.png in Resources */,
