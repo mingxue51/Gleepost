@@ -63,6 +63,8 @@
     [super viewDidLoad];
 
     // configuration
+    [self configureNavigationBar];
+    [self configureHeader];
     [self configureTableView];
     [self configureForm];
     
@@ -105,6 +107,49 @@
 
 
 # pragma mark - Configuration
+
+- (void)configureNavigationBar
+{
+    [self.navigationController setNavigationBarHidden:NO];
+    
+    // navigate to profile through navigation bar for user-to-user conversation
+    if(!_conversation.isGroup && ![self isNewChat]) {
+        //Create a button instead of using the default title view for recognising gestures.
+        UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+        [titleLabel setTitle:_conversation.title forState:UIControlStateNormal];
+        titleLabel.tag = [_conversation getUniqueParticipant].remoteKey;
+        
+        //Set colour to the view.
+        [titleLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        //Set navigation to profile selector.
+        titleLabel.frame = CGRectMake(0, 0, 70, 44);
+        [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.titleView = titleLabel;
+    }
+    
+    self.title = [self isNewChat] ? @"Connected" : _conversation.title;
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    
+    [AppearanceHelper setNavigationBarFontFor:self];
+    [AppearanceHelper setNavigationBarColour:self];
+}
+
+-(void)configureHeader
+{
+    if([self isNewChat]) {
+        NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
+        
+        GLPIntroducedProfile * introduced = [array objectAtIndex:0];
+        [introduced updateContents:[_conversation getUniqueParticipant]];
+        introduced.delegate = self;
+        
+        self.tableView.tableHeaderView = introduced;
+    }
+}
 
 - (void)configureTableView
 {
@@ -206,6 +251,34 @@
         [ConversationManager markConversationRead:self.conversation];
     }
 }
+
+
+#pragma mark - Navigation
+
+-(void)navigateToProfile:(id)sender
+{
+    if([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
+        UIImageView *incomingView = (UIImageView*)incomingUser.view;
+        self.selectedUserId = incomingView.tag;
+    }
+    else if([sender isKindOfClass:[UIButton class]]) {
+        UIButton *userButton = (UIButton*)sender;
+        self.selectedUserId = userButton.tag;
+    }
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey)) {
+        self.selectedUserId = -1;
+        //Navigate to profile view controller.
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId]) {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+    else {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
+
 
 
 #pragma mark - Actions
@@ -318,5 +391,24 @@
     
     [self scrollToTheEndAnimated:NO];
 }
+
+
+# pragma mark - Misc
+
+-(BOOL)isNewChat
+{
+    NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
+    UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 2];
+    Class parentVCClass = [parentViewController class];
+    NSString *className = NSStringFromClass(parentVCClass);
+    
+    if([className isEqualToString:@"ChatViewAnimationController"]) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+        return YES;
+    }
+    
+    return NO;
+}
+
 
 @end

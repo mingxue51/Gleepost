@@ -151,24 +151,24 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
 }
 
-+ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation
-{
-    DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
-    
-    __block NSArray *localEntities = nil;
-    
-    if(conversation.isLive) {
-        localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
-    } else {
-        [DatabaseManager run:^(FMDatabase *db) {
-            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-        }];
-    }
-    
-    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
-    
-    return localEntities;
-}
+//+ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation
+//{
+//    DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
+//    
+//    __block NSArray *localEntities = nil;
+//    
+//    if(conversation.isLive) {
+//        localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
+//    } else {
+//        [DatabaseManager run:^(FMDatabase *db) {
+//            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+//        }];
+//    }
+//    
+//    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
+//    
+//    return localEntities;
+//}
 
 + (void)loadMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages, BOOL isFinal))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
 {
