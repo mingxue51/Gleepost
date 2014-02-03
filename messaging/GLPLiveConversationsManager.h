@@ -11,21 +11,26 @@
 
 @interface GLPLiveConversationsManager : NSObject
 
+@property (assign, nonatomic, readonly) BOOL areConversationsSync;
+
 + (GLPLiveConversationsManager *)sharedInstance;
 
 // conversations
-- (void)loadLocalRegularConversations;
+//- (void)loadLocalRegularConversations;
 - (void)loadConversations;
 - (void)addConversation:(GLPConversation *)conversation;
 - (NSArray *)conversationsList;
 - (void)conversationsList:(void (^)(NSArray *liveConversations, NSArray *regularConversations))block;
+- (void)syncConversation:(GLPConversation *)conversation;
+- (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
+- (BOOL)isConversationSync:(GLPConversation *)conversation;
 - (NSInteger)conversationsCount;
 - (NSInteger)liveConversationsCount;
 - (NSInteger)regularConversationsCount;
-- (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
 
 // messages
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation;
+- (NSArray *)messagesForConversation:(GLPConversation *)conversation startingAfter:(GLPMessage *)after;
 - (void)updateMessageAfterSending:(GLPMessage *)message;
 - (void)addNewMessageToConversation:(GLPMessage *)message;
 - (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation before:(GLPMessage *)message;

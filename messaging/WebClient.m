@@ -460,7 +460,7 @@ static WebClient *instance = nil;
     NSInteger before = beforeMessage ? beforeMessage.remoteKey : NSNotFound;
     NSInteger after = afterMessage ? afterMessage.remoteKey : NSNotFound;
     
-    [self getMessagesForConversation:conversation afterRemoteKey:before beforeRemoteKey:after callbackBlock:callbackBlock];
+    [self getMessagesForConversation:conversation afterRemoteKey:after beforeRemoteKey:before callbackBlock:callbackBlock];
 }
 
 - (void)getMessagesForConversation:(GLPConversation *)conversation afterRemoteKey:(NSInteger)afterRemoteKey beforeRemoteKey:(NSInteger)beforeRemoteKey callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock

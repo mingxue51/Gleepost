@@ -113,10 +113,7 @@
 }
 
 + (void)performAfterLoginForUser:(GLPUser *)user
-{
-    // populate local data
-    [[GLPLiveConversationsManager sharedInstance] loadLocalRegularConversations];
-    
+{    
     [[GLPNetworkManager sharedInstance] startNetworkOperations];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }

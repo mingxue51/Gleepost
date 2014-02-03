@@ -9,6 +9,8 @@
 #import "GLPConversationViewController.h"
 #import "GLPPrivateProfileViewController.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 
@@ -23,6 +25,9 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
+#import "GLPLiveConversationsManager.h"
+#import "GLPNetworkManager.h"
+#import "GLPViewControllerHelper.h"
 
 #import "GLPMessage.h"
 #import "GLPMessage+CellLogic.h"
@@ -30,7 +35,7 @@
 
 #import "CurrentChatButton.h"
 
-#import <QuartzCore/QuartzCore.h>
+
 
 #import "LiveChatsView.h"
 #import "ContactsManager.h"
@@ -65,10 +70,12 @@
     // configuration
     [self configureNavigationBar];
     [self configureHeader];
-    [self configureTableView];
     [self configureForm];
     
-    [self loadMessages];
+    _messages = [NSMutableArray array];
+    [self reloadWithItems:_messages];
+    
+    [self loadInitialMessages];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -85,6 +92,8 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
 }
@@ -102,6 +111,7 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
 }
 
@@ -151,11 +161,6 @@
     }
 }
 
-- (void)configureTableView
-{
-    _messages = [NSMutableArray array];
-}
-
 - (void)configureForm
 {
     self.formTextView.isScrollable = NO;
@@ -179,11 +184,86 @@
 }
 
 
+# pragma mark - Loading
+
+- (void)showNewMessagesLoadingIfRequires
+{
+    // do not show loading if conversation is sync
+    if([[GLPLiveConversationsManager sharedInstance] isConversationSync:_conversation]) {
+        DDLogInfo(@"Do not show any loading, conversation is sync");
+        return;
+    }
+    
+    // otherwise show error if there is no network
+    if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
+        [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
+        return;
+    }
+
+    [self showNewMessagesLoading];
+}
+
+- (void)showNewMessagesLoading
+{
+    [[GLPViewControllerHelper sharedInstance] hideErrorNetworkMessage];
+    [self showBottomLoader];
+}
+
+- (void)hideNewMessagesLoading
+{
+    [[GLPViewControllerHelper sharedInstance] hideErrorNetworkMessage];
+    [self hideBottomLoader];
+}
+
+
 # pragma mark - Messages
 
-- (void)loadMessages
+- (void)loadInitialMessages
 {
-    [self showTopLoader];
+    [self loadExistingMessages];
+    
+    if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
+        DDLogInfo(@"No network, abort loading initial messages");
+        [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
+        return;
+    }
+    
+    if([[GLPLiveConversationsManager sharedInstance] isConversationSync:_conversation]) {
+//        DDLogInfo(@"Conversation is sync, load existing messages");
+//        [self loadNewMessages];
+    } else{
+        DDLogInfo(@"Conversation is not sync, ask for sync");
+        [self showBottomLoader];
+        [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
+    }
+}
+
+- (void)loadExistingMessages
+{
+    DDLogInfo(@"Load existing messages");
+
+    _messages = [[[GLPLiveConversationsManager sharedInstance] messagesForConversation:_conversation startingAfter:nil] mutableCopy];
+    
+    [self showLoadedMessages];
+}
+
+- (void)loadNewMessages
+{
+    DDLogInfo(@"Load new messages");
+    
+    id last = _messages.count > 0 ? [_messages lastObject] : nil;
+    NSArray *newMessages = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:_conversation startingAfter:last];
+    
+    [_messages addObjectsFromArray:newMessages];
+    [self showLoadedMessages];
+}
+
+- (void)showLoadedMessages
+{
+    [self configureDisplayForMessages:_messages];
+    [self reloadWithItems:_messages];
+    
+    [self scrollToTheEndAnimated:YES];
 }
 
 - (void)configureDisplayForMessages:(NSArray *)messages
@@ -202,15 +282,15 @@
 
 - (void)showMessage:(GLPMessage *)message
 {
-    if(self.messages.count == 0) {
+    if(_messages.count == 0) {
         [message configureAsFirstMessage];
     } else {
         GLPMessage *last = self.messages[self.messages.count - 1];
         [message configureAsFollowingMessage:last];
     }
     
-    [self.messages addObject:message];
-    [self.tableView reloadData];
+    [_messages addObject:message];
+    [self reloadWithItems:_messages];
     
     [self scrollToTheEndAnimated:YES];
 }
@@ -218,21 +298,32 @@
 - (void)createMessageFromForm
 {
     [UIView animateWithDuration:2.0f animations:^{
-        
         //Remove header view after first message.
         [self.tableView.tableHeaderView setAlpha:0.0f];
     }];
     
+    GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation];
     
-    [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation localCallback:^(GLPMessage *localMessage) {
-        [self showMessage:localMessage];
-    }];
-    
+    [self showMessage:message];
     self.formTextView.text = @"";
 }
 
 
 # pragma mark - Notifications (keyboard ones in form management mark)
+
+- (void)conversationSyncFromNotification:(NSNotification *)notification
+{
+    DDLogInfo(@"Conversation sync from notification");
+    NSInteger conversationRemoteKey = [[notification userInfo][@"remoteKey"] integerValue];
+    
+    if(conversationRemoteKey != _conversation.remoteKey) {
+        DDLogInfo(@"Conversation is not the current one, abort");
+        return;
+    }
+    
+    [self hideNewMessagesLoading];
+    [self loadNewMessages];
+}
 
 - (void)showMessageFromNotification:(NSNotification *)notification
 {
@@ -408,6 +499,36 @@
     }
     
     return NO;
+}
+
+
+# pragma mark - GLPTableViewController
+
+- (UITableViewCell *)cellForItem:(id)item forIndexPath:(NSIndexPath *)indexPath
+{
+    GLPMessage *message = (GLPMessage *)item;
+    NSAssert(message.cellIdentifier, @"Cell identifier is required but null");
+    
+    MessageCell *cell = [self.tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
+    
+    // add touch gesture to avatar image view
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+    [cell.avatarImageView addGestureRecognizer:tap];
+    
+    [cell updateWithMessage:message first:message.hasHeader];
+    
+    return cell;
+}
+
+- (CGFloat)heightForItem:(id)item
+{
+    GLPMessage *message = (GLPMessage *)item;
+    return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
+}
+
+- (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position
+{
+    
 }
 
 

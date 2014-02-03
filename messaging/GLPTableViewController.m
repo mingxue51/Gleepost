@@ -26,8 +26,6 @@
 {
     [super viewDidLoad];
     
-    DDLogInfo(@"View did load %@", self.tableView);
-    
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
     
     _topLoadingCellDelegate = [[GLPLoadingCellDelegate alloc] init];
@@ -53,7 +51,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DDLogInfo(@"Cell for row at index path %d", indexPath.row);
+//    DDLogInfo(@"Cell for row at index path %d", indexPath.row);
     
     if([self isLoadingRowForIndexPath:indexPath]) {
         GLPLoadingCell *loadingCell = [_tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];

@@ -960,9 +960,9 @@ float timeInterval = 0.1;
     }];
     
     
-    [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation localCallback:^(GLPMessage *localMessage) {
-        [self showMessage:localMessage];
-    }];
+//    [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation localCallback:^(GLPMessage *localMessage) {
+//        [self showMessage:localMessage];
+//    }];
     
 
     

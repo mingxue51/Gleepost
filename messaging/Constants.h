@@ -24,6 +24,7 @@
 #define LONGPOLL_ERROR_TIME_INTERVAL_S      5
 
 #define GLPNOTIFICATION_CONVERSATIONS_SYNC          @"GLPConversationsSync"
+#define GLPNOTIFICATION_ONE_CONVERSATION_SYNC       @"GLPOneConversationSync"
 #define GLPNOTIFICATION_NEW_NOTIFICATION            @"GLPNewNotification"
 #define GLPNOTIFICATION_NEW_MESSAGE                 @"GLPNewMessage"
 #define GLPNOTIFICATION_NETWORK_UPDATE              @"GLPNetworkStatusUpdate"

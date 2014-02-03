@@ -554,6 +554,7 @@
 		80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7478B17CEA7CB001957E5 /* get_conversations.json */; };
 		80E7479417CEAED7001957E5 /* get_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7479317CEAED7001957E5 /* get_messages.json */; };
 		80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80F316D21828129700DE6884 /* CoreImage.framework */; };
+		80FC6C1218A02339006D06F8 /* GLPViewControllerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FC6C1118A02339006D06F8 /* GLPViewControllerHelper.m */; };
 		C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D083183CE2C80001B76E /* UIViewController+Flurry.m */; };
 		C02120431850AA1200831872 /* GLPPostUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = C02120421850AA1200831872 /* GLPPostUploader.m */; };
 		C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */ = {isa = PBXBuildFile; fileRef = C04613971834E87000B422A3 /* UIViewController+GAI.m */; };
@@ -1318,6 +1319,8 @@
 		80E7478B17CEA7CB001957E5 /* get_conversations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_conversations.json; sourceTree = "<group>"; };
 		80E7479317CEAED7001957E5 /* get_messages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = get_messages.json; sourceTree = "<group>"; };
 		80F316D21828129700DE6884 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		80FC6C1018A02339006D06F8 /* GLPViewControllerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewControllerHelper.h; sourceTree = "<group>"; };
+		80FC6C1118A02339006D06F8 /* GLPViewControllerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewControllerHelper.m; sourceTree = "<group>"; };
 		82D6C24A4DFC4BA5B92AFE98 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C014D082183CE2C80001B76E /* UIViewController+Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Flurry.h"; sourceTree = "<group>"; };
 		C014D083183CE2C80001B76E /* UIViewController+Flurry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Flurry.m"; sourceTree = "<group>"; };
@@ -2758,6 +2761,8 @@
 				58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */,
 				585EDAE9183106DC008D29F6 /* ImageFormatterHelper.h */,
 				585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */,
+				80FC6C1018A02339006D06F8 /* GLPViewControllerHelper.h */,
+				80FC6C1118A02339006D06F8 /* GLPViewControllerHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -3593,6 +3598,7 @@
 				5890D214184763E700E293DD /* GLPThemeManager.m in Sources */,
 				80C8BA72181048E9004F70DB /* GLPMessageDaoParser.m in Sources */,
 				585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */,
+				80FC6C1218A02339006D06F8 /* GLPViewControllerHelper.m in Sources */,
 				58B1161D180D8491000E9555 /* ProfileView.m in Sources */,
 				58FD7077189041560024E8A1 /* CampusWallHeader.m in Sources */,
 				80C8BA5318103248004F70DB /* GLPConversation.m in Sources */,

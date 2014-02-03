@@ -385,7 +385,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
-+ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback
++ (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation
 {
     DDLogInfo(@"Create message with content %@", content);
     
@@ -397,23 +397,57 @@ int const NumberMaxOfMessagesLoaded = 20;
     message.sendStatus = kSendStatusLocal;
     message.seen = YES;
     
-    if(conversation.isLive) {
-        [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
-    } else {
-        [conversation updateWithNewMessage:message];
-        
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            [GLPMessageDao save:message db:db];
-            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
-        }];
-    }
-    
-    // post message to local
-    localCallback(message);
+    [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
     
     // post message to server
     [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
+    
+    return message;
+    
+//    if(conversation.isLive) {
+//        [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
+//    } else {
+//        [conversation updateWithNewMessage:message];
+//        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            [GLPMessageDao save:message db:db];
+//            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
+//        }];
+//    }
+
+    
+
 }
+
+//+ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback
+//{
+//    DDLogInfo(@"Create message with content %@", content);
+//    
+//    __block GLPMessage *message = [[GLPMessage alloc] init];
+//    message.content = content;
+//    message.conversation = conversation;
+//    message.date = [NSDate dateInUTC];
+//    message.author = [SessionManager sharedInstance].user;
+//    message.sendStatus = kSendStatusLocal;
+//    message.seen = YES;
+//    
+//    if(conversation.isLive) {
+//        [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
+//    } else {
+//        [conversation updateWithNewMessage:message];
+//        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            [GLPMessageDao save:message db:db];
+//            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
+//        }];
+//    }
+//    
+//    // post message to local
+//    localCallback(message);
+//    
+//    // post message to server
+//    [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
+//}
 
 // Save message from websocket event
 // Executed in background
