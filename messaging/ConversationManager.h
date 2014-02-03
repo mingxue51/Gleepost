@@ -20,6 +20,7 @@ extern int const NumberMaxOfMessagesLoaded;
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
 + (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 + (void)markConversationRead:(GLPConversation *)conversation;
++(void)loadConversationWithParticipant:(int)remoteKey withCallback:(void (^) (BOOL sucess, GLPConversation* conversation))callback;
 
 // messages
 + (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation;
@@ -37,5 +38,10 @@ extern int const NumberMaxOfMessagesLoaded;
 + (void)sendMessage:(GLPMessage *)message;
 
 + (void)saveConversation:(GLPConversation *)conversation;
++(void)saveConversationIfNotExist:(GLPConversation *)conversation;
+
++(void)deleteConversationIfExist:(GLPConversation *)conversation;
+
++(GLPConversation*)createFakeConversationWithParticipants:(NSArray*)participants;
 
 @end

@@ -146,15 +146,17 @@ float timeInterval = 0.1;
     
     // reload messages when coming back from other VC
     [self configureMessages];
-    [self loadInitialMessages];
     
-    //TODO: Add that to the new implementation.
     
-    if(_conversation.key == 0 && !_conversation.isLive)
+    //TODO: Move that to the new implementation.
+    
+    if(_conversation.remoteKey != 0) //New
     {
-        [ConversationManager saveConversation:_conversation];
-        
+        [self loadInitialMessages];
     }
+    
+    
+
     
     
 
@@ -204,6 +206,7 @@ float timeInterval = 0.1;
     
     //Hide live chats view.
     [self.liveChatsView removeView];
+    
     
 
 }
@@ -460,6 +463,31 @@ float timeInterval = 0.1;
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
 }
 
+#pragma mark - Client
+
+//TODO: Add to the new implementation.
+
+-(void)createConversationWithCallbackBlock:(void(^)(BOOL sucess, GLPConversation *conversation))callback
+{
+    //Create new conversation with the user.
+    [[WebClient sharedInstance] createRegularConversationWithUserRemoteKey:[_conversation getUniqueParticipant].remoteKey andCallback:^(BOOL sucess, GLPConversation *conversation) {
+        
+        if(sucess)
+        {
+            //Save conversation to local database,
+            [ConversationManager saveConversationIfNotExist:conversation];
+            
+            callback(sucess, conversation);
+            
+        }
+        else
+        {
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Error creating conversation"];
+            callback(sucess, nil);
+        }
+        
+    }];
+}
 
 #pragma mark - Messages management
 
@@ -936,6 +964,8 @@ float timeInterval = 0.1;
         [self showMessage:localMessage];
     }];
     
+
+    
     self.formTextView.text = @"";
 }
 
@@ -948,7 +978,36 @@ float timeInterval = 0.1;
         return;
     }
     
-    [self createMessageFromForm];
+    //TODO: Add that to the new implementation.
+    if(_conversation.remoteKey == 0)
+    {
+        //Create conversation.
+        [self createConversationWithCallbackBlock:^(BOOL sucess, GLPConversation *conversation) {
+            
+            if(sucess)
+            {
+                _conversation = conversation;
+                [self createMessageFromForm];
+            }
+            
+        }];
+    }
+    else
+    {
+        [self createMessageFromForm];
+    }
+    
+    
+//    //Create conversation only when the user sent message.
+//    _conversation.lastMessage = self.formTextField.text;
+//    
+//    if(_conversation.key == 0 && !_conversation.isLive)
+//    {
+//        [ConversationManager saveConversationIfNotExist:_conversation];
+//        DDLogDebug(@"Conversation created: %d", _conversation.key);
+//    }
+    
+    
 }
 
 - (IBAction)tableViewClicked:(id)sender

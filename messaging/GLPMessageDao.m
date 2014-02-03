@@ -19,7 +19,7 @@
 
 + (GLPMessage *)findLastRemoteMessageForConversation:(GLPConversation *)conversation db:(FMDatabase *)db
 {
-    
+    return nil;
 }
 
 + (NSArray *)findLastMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db

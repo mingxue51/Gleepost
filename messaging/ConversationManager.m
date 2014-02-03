@@ -77,6 +77,31 @@ int const NumberMaxOfMessagesLoaded = 20;
     
 }
 
++(void)loadConversationWithParticipant:(int)remoteKey withCallback:(void (^) (BOOL sucess, GLPConversation* conversation))callback
+{
+    __block GLPConversation *localConversation = nil;
+    
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        GLPUser *currentUser = [GLPUserDao findByRemoteKey:remoteKey db:db];
+        localConversation = [GLPConversationDao findByParticipantKey:currentUser.key db:db];
+        
+    }];
+    
+    if(localConversation)
+    {
+        callback(YES, localConversation);
+    }
+    else
+    {
+        callback(NO, localConversation);
+    }
+    
+    DDLogInfo(@"Existed local conversation with id: %d", localConversation.key);
+    
+}
+
 + (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation
 {
     DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
@@ -449,11 +474,36 @@ int const NumberMaxOfMessagesLoaded = 20;
         //[GLPLiveConversationsManager sharedInstance] a
     } else {
         DDLogInfo(@"Save regular conversation");
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            [GLPConversationDao save:conversation db:db];
+//        }];
+        
+        //Edited by Silouanos.
+        
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            [GLPConversationDao save:conversation db:db];
+            [GLPConversationDao saveIfNotExist:conversation db:db];
         }];
     }
 }
+
++(void)saveConversationIfNotExist:(GLPConversation *)conversation
+{
+    DDLogInfo(@"Save conversation if not exist with remote key %d", conversation.remoteKey);
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPConversationDao saveIfNotExist:conversation db:db];
+    }];
+    
+}
+
+//+(void)deleteConversationIfExist:(GLPConversation *)conversation
+//{
+//    DDLogInfo(@"Delete conversation if exist with remote key %d", conversation.remoteKey);
+//    
+//    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//        [GLPConversationDao deleteConversationIfExist:conversation db:db];
+//    }];
+//}
 
 // Send message
 // Executed in background, from GLPNewMessageProcessorOperation
@@ -479,6 +529,16 @@ int const NumberMaxOfMessagesLoaded = 20;
             }];
         }
     }];
+}
+
++(GLPConversation*)createFakeConversationWithParticipants:(NSArray*)participants
+{
+    GLPConversation *fakeConversation = [[GLPConversation alloc] initWithParticipants:participants];
+    GLPUser *participant = [participants objectAtIndex:0];
+    
+    fakeConversation.title = participant.name;
+    
+    return fakeConversation;
 }
 
 

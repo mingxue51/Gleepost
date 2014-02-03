@@ -27,6 +27,17 @@
     return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
 }
 
++(GLPConversation *)findByParticipantKey:(int)key db:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where participants_keys=%d limit 1", key];
+    
+    if(![resultSet next]) {
+        return nil;
+    }
+    
+    return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
+}
+
 + (NSArray *)findConversationsOrderByDateFilterByLive:(BOOL)liveConversations inDb:(FMDatabase *)db;
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where isLive=%d order by lastUpdate DESC", liveConversations];
@@ -81,6 +92,63 @@
     entity.key = [db lastInsertRowId];
 }
 
+
+//Added.
+
+/**
+ By implementing this method we are avoiding retrying save the same conversation from the web socket
+ in case we are creating explicictly conversation.
+ */
++ (void)saveIfNotExist:(GLPConversation *)entity db:(FMDatabase *)db
+{
+    // save the users that does not exist
+    // first because we want the key to exists
+    NSMutableArray *keys = [NSMutableArray array];
+    for(GLPUser *user in entity.participants) {
+        int key = user.key;
+        
+        if(key == 0) {
+            GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
+            
+            if(existingUser) {
+                key = existingUser.key;
+            } else {
+                [GLPUserDao save:user inDb:db];
+                key = user.key;
+            }
+        }
+        
+        [keys addObject:[NSNumber numberWithInt:key]];
+    }
+    
+    int date = [entity.lastUpdate timeIntervalSince1970];
+    
+    //    NSArray *keys = [entity.participants valueForKeyPath:@"key"];
+    NSString *participants = [keys componentsJoinedByString:@";"];
+    
+    
+    GLPConversation *conv = [GLPConversationDao findByRemoteKey:entity.remoteKey db:db];
+
+    if(conv == nil)
+    {
+        //Conversation doesn't exist, add conversation.
+        
+        [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive) values(%d, %@, %d, %@, %@, %d, %d, %d)",
+         entity.remoteKey,
+         entity.lastMessage,
+         date,
+         entity.title,
+         participants,
+         entity.hasUnreadMessages,
+         entity.isGroup,
+         entity.isLive];
+        
+        entity.key = [db lastInsertRowId];
+        
+    }
+}
+
+
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Cannot update entity without key");
@@ -114,6 +182,10 @@
      entity.hasUnreadMessages,
      entity.key];
 }
+
+
+
+
 
 + (void)deleteAllNormalConversationsInDb:(FMDatabase *)db
 {

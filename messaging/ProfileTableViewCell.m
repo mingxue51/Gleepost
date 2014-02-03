@@ -18,6 +18,7 @@
 #import "InvitationSentView.h"
 #import "AppearanceHelper.h"
 #import "ContactsManager.h"
+#import "ConversationManager.h"
 
 @interface ProfileTableViewCell ()
 
@@ -360,22 +361,29 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 - (IBAction)sendMessage:(id)sender
 {
-    //Create new conversation with the user.
-    [[WebClient sharedInstance] createRegularConversationWithUserRemoteKey:self.currentUser.remoteKey andCallback:^(BOOL sucess, GLPConversation *conversation) {
+    
+    //If conversation with user already exist, don't create a new one.
+    [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
         
         if(sucess)
         {
-            DDLogInfo(@"Conversation created: %@",conversation);
-            //Navigate to view topic view controller.
+            //Conversation exist.
             [_privateProfileDelegate viewConversation:conversation];
-            
         }
         else
         {
-            [WebClientHelper showInternetConnectionErrorWithTitle:@"Error creating conversation"];
+            //Conversation not exist, create new fake conversation.
+            
+            NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
+            
+            [_privateProfileDelegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
+
         }
         
     }];
+    
+    
+
 }
 
 #pragma mark - Client

@@ -47,6 +47,7 @@
 #import "CampusWallHeaderSimpleView.h"
 #import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
+#import "ConversationManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -136,6 +137,9 @@
     
     //TODO: Remove this later.
     [[ContactsManager sharedInstance] refreshContacts];
+    
+    //Load conversations.
+    [self loadConversations];
     
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
 //    [self startLoadingContents];
@@ -639,6 +643,16 @@
     self.navigationItem.titleView = label;
 }
 
+#pragma mark - Conversations
+
+- (void)loadConversations
+{
+    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
+
+    } remoteCallback:^(BOOL success, NSArray *conversations) {
+      
+    }];
+}
 
 #pragma mark - Posts
 
