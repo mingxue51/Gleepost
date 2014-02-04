@@ -22,17 +22,20 @@
 - (NSArray *)conversationsList;
 - (void)conversationsList:(void (^)(NSArray *liveConversations, NSArray *regularConversations))block;
 - (void)syncConversation:(GLPConversation *)conversation;
+- (void)resetLastShownMessageForConversation:(GLPConversation *)conversation;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
-- (BOOL)isConversationSync:(GLPConversation *)conversation;
+//- (BOOL)isConversationSync:(GLPConversation *)conversation;
 - (NSInteger)conversationsCount;
 - (NSInteger)liveConversationsCount;
 - (NSInteger)regularConversationsCount;
 
 // messages
+- (NSArray *)lastestMessagesForConversation:(GLPConversation *)conversation;
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation;
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation startingAfter:(GLPMessage *)after;
-- (void)updateMessageAfterSending:(GLPMessage *)message;
-- (void)addNewMessageToConversation:(GLPMessage *)message;
+- (void)updateLocalMessageAfterSending:(GLPMessage *)message;
+- (void)addLocalMessageToConversation:(GLPMessage *)message;
+- (void)addRemoteMessage:(GLPMessage *)message toConversationWithRemoteKey:(NSInteger)remoteKey;
 - (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation before:(GLPMessage *)message;
 
 - (void)markAsNotSynchronizedWithRemote;

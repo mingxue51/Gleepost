@@ -97,24 +97,24 @@ int const NumberMaxOfMessagesLoaded = 20;
     
 }
 
-+ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation
-{
-    DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
-    
-    __block NSArray *localEntities = nil;
-    
-    if(conversation.isLive) {
-        localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
-    } else {
-        [DatabaseManager run:^(FMDatabase *db) {
-            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
-        }];
-    }
-    
-    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
-    
-    return localEntities;
-}
+//+ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation
+//{
+//    DDLogInfo(@"Load messages for conversation %d", conversation.remoteKey);
+//    
+//    __block NSArray *localEntities = nil;
+//    
+//    if(conversation.isLive) {
+//        localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
+//    } else {
+//        [DatabaseManager run:^(FMDatabase *db) {
+//            localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+//        }];
+//    }
+//    
+//    DDLogInfo(@"Loaded messages from local: %d", localEntities.count);
+//    
+//    return localEntities;
+//}
 
 + (void)loadPreviousMessagesForConversation:(GLPConversation *)conversation before:(GLPMessage *)message localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback
 {
@@ -385,7 +385,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
 }
 
-+ (GLPMessage *)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation
++ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation
 {
     DDLogInfo(@"Create message with content %@", content);
     
@@ -397,12 +397,10 @@ int const NumberMaxOfMessagesLoaded = 20;
     message.sendStatus = kSendStatusLocal;
     message.seen = YES;
     
-    [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
+    [[GLPLiveConversationsManager sharedInstance] addLocalMessageToConversation:message];
     
     // post message to server
     [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
-    
-    return message;
     
 //    if(conversation.isLive) {
 //        [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
@@ -447,6 +445,23 @@ int const NumberMaxOfMessagesLoaded = 20;
 //    
 //    // post message to server
 //    [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
+//}
+
+// Save message from websocket event
+// Executed in background
+//+ (void)saveMessageFromWebsocket:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey
+//{
+//    DDLogInfo(@"Save message \"%@\" from websocket for conversation remote key: %d", message.content, remoteKey);
+//    
+//    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:remoteKey];
+//    
+//    if(!conversation) {
+//        DDLogError(@"Conversation does not exist, abort");
+//        return;
+//    }
+//    
+//    message.conversation = conversation;
+//    [[GLPLiveConversationsManager sharedInstance] addNewMessageToConversation:message];
 //}
 
 // Save message from websocket event
@@ -612,10 +627,10 @@ int const NumberMaxOfMessagesLoaded = 20;
 // Executed in background, from GLPNewMessageProcessorOperation
 + (void)sendMessage:(GLPMessage *)message
 {
-    DDLogInfo(@"Post message %@ to server", message.content);
+    DDLogInfo(@"Post message %@ to server, with key: %d", message.content, message.key);
     
     [[WebClient sharedInstance] createMessageSynchronously:message callback:^(BOOL success, NSInteger remoteKey) {
-        DDLogInfo(@"Message posted to server with success: %d", success);
+        DDLogInfo(@"Message with key %d posted to server. Success: %d. New remote key: %d", message.key, success, remoteKey);
         
         if(success) {
             message.remoteKey = remoteKey;
@@ -624,13 +639,7 @@ int const NumberMaxOfMessagesLoaded = 20;
             message.sendStatus = kSendStatusFailure;
         }
         
-        if(message.conversation.isLive) {
-            [[GLPLiveConversationsManager sharedInstance] updateMessageAfterSending:message];
-        } else {
-            [DatabaseManager run:^(FMDatabase *db) {
-                [GLPMessageDao updateAfterSending:message db:db];
-            }];
-        }
+        [[GLPLiveConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
     }];
 }
 

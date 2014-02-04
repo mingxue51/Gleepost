@@ -9,6 +9,7 @@
 #import "GLPMessageProcessor.h"
 #import "RemoteParser.h"
 #import "ConversationManager.h"
+#import "GLPLiveConversationsManager.h"
 #import "GLPNotificationManager.h"
 #import "GLPWebSocketEvent.h"
 #import "Conversation.h"
@@ -72,19 +73,21 @@ static GLPMessageProcessor *instance = nil;
         
         switch (event.type) {
             case kGLPWebSocketEventTypeNewMessage: {
+                DDLogInfo(@"Websocket event: New message");
                 GLPMessage *message = [RemoteParser parseMessageFromJson:event.data forConversation:nil];
-                [ConversationManager saveMessage:message forConversationRemoteKey:[event conversationRemoteKeyFromLocation]];
+                [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
                 break;
             }
                 
             case kGLPWebSocketEventTypeNewConversation: {
+                DDLogInfo(@"Websocket event: New conversation");
                 GLPConversation *conversation = [RemoteParser parseConversationFromJson:event.data];
-                [ConversationManager saveConversation:conversation];
+//                [ConversationManager saveConversation:conversation];
                 break;
             }
                 
             case kGLPWebSocketEventTypeEndConversation: {
-                
+                DDLogInfo(@"Websocket event: End conversation");
                 break;
             }
                 

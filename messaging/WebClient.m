@@ -600,7 +600,22 @@ static WebClient *instance = nil;
 
 - (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
 {
-    [self postPath:@"newconversation" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    if(ENV_FAKE_LIVE_CONVERSATIONS) {
+        params[@"random"] = @"false";
+        
+        NSString *userIds;
+        if(self.sessionManager.user.remoteKey == 2399) {
+            userIds = @"2395";
+        } else {
+            userIds = @"2399";
+        }
+        
+        params[@"participants"] = userIds;
+        DDLogInfo(@"Generate fake live conversation for current user: %d, with opponent user: %@", self.sessionManager.user.remoteKey, userIds);
+    }
+    
+    [self postPath:@"conversations" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
         callback(YES, conversation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

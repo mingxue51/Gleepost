@@ -95,7 +95,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageFromNotification:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -109,10 +109,12 @@
 {
     [super viewWillDisappear:animated];
     
+    [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
 }
 
 
@@ -186,41 +188,13 @@
 
 # pragma mark - Loading
 
-- (void)showNewMessagesLoadingIfRequires
-{
-    // do not show loading if conversation is sync
-    if([[GLPLiveConversationsManager sharedInstance] isConversationSync:_conversation]) {
-        DDLogInfo(@"Do not show any loading, conversation is sync");
-        return;
-    }
-    
-    // otherwise show error if there is no network
-    if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
-        [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
-        return;
-    }
-
-    [self showNewMessagesLoading];
-}
-
-- (void)showNewMessagesLoading
-{
-    [[GLPViewControllerHelper sharedInstance] hideErrorNetworkMessage];
-    [self showBottomLoader];
-}
-
-- (void)hideNewMessagesLoading
-{
-    [[GLPViewControllerHelper sharedInstance] hideErrorNetworkMessage];
-    [self hideBottomLoader];
-}
-
 
 # pragma mark - Messages
 
 - (void)loadInitialMessages
 {
-    [self loadExistingMessages];
+    [self loadNewMessages];
+    [self scrollToTheEndAnimated:YES];
     
     if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
         DDLogInfo(@"No network, abort loading initial messages");
@@ -228,31 +202,25 @@
         return;
     }
     
-    if([[GLPLiveConversationsManager sharedInstance] isConversationSync:_conversation]) {
-//        DDLogInfo(@"Conversation is sync, load existing messages");
-//        [self loadNewMessages];
-    } else{
-        DDLogInfo(@"Conversation is not sync, ask for sync");
-        [self showBottomLoader];
-        [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
-    }
+    DDLogInfo(@"Syncing conversation");
+    [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
+    [self showBottomLoader];
 }
 
-- (void)loadExistingMessages
-{
-    DDLogInfo(@"Load existing messages");
-
-    _messages = [[[GLPLiveConversationsManager sharedInstance] messagesForConversation:_conversation startingAfter:nil] mutableCopy];
-    
-    [self showLoadedMessages];
-}
+//- (void)loadExistingMessages
+//{
+//    DDLogInfo(@"Load existing messages");
+//
+//    _messages = [[[GLPLiveConversationsManager sharedInstance] messagesForConversation:_conversation startingAfter:nil] mutableCopy];
+//    
+//    [self showLoadedMessages];
+//}
 
 - (void)loadNewMessages
 {
     DDLogInfo(@"Load new messages");
     
-    id last = _messages.count > 0 ? [_messages lastObject] : nil;
-    NSArray *newMessages = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:_conversation startingAfter:last];
+    NSArray *newMessages = [[GLPLiveConversationsManager sharedInstance] lastestMessagesForConversation:_conversation];
     
     [_messages addObjectsFromArray:newMessages];
     [self showLoadedMessages];
@@ -262,8 +230,6 @@
 {
     [self configureDisplayForMessages:_messages];
     [self reloadWithItems:_messages];
-    
-    [self scrollToTheEndAnimated:YES];
 }
 
 - (void)configureDisplayForMessages:(NSArray *)messages
@@ -285,7 +251,7 @@
     if(_messages.count == 0) {
         [message configureAsFirstMessage];
     } else {
-        GLPMessage *last = self.messages[self.messages.count - 1];
+        GLPMessage *last = [_messages lastObject];
         [message configureAsFollowingMessage:last];
     }
     
@@ -302,9 +268,8 @@
         [self.tableView.tableHeaderView setAlpha:0.0f];
     }];
     
-    GLPMessage *message = [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation];
+    [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation];
     
-    [self showMessage:message];
     self.formTextView.text = @"";
 }
 
@@ -321,27 +286,32 @@
         return;
     }
     
-    [self hideNewMessagesLoading];
-    [self loadNewMessages];
+    [self hideBottomLoader];
+    
+    BOOL hasNewMessages = [[notification userInfo][@"newMessages"] boolValue];
+    if(hasNewMessages) {
+        [self loadNewMessages];
+        [self scrollToTheEndAnimated:YES];
+    }
 }
 
-- (void)showMessageFromNotification:(NSNotification *)notification
-{
-    GLPMessage *message = [notification userInfo][@"message"];
-    NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
-    
-    if(_conversation.remoteKey != message.conversation.remoteKey) {
-        NSLog(@"Long poll message is not for the current conversation, ignore");
-        return;
-    }
-    
-    [self showMessage:message];
-    
-    // conversation has no more unread messages
-    if(!_conversation.isLive) {
-        [ConversationManager markConversationRead:self.conversation];
-    }
-}
+//- (void)showMessageFromNotification:(NSNotification *)notification
+//{
+//    GLPMessage *message = [notification userInfo][@"message"];
+//    NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
+//    
+//    if(_conversation.remoteKey != message.conversation.remoteKey) {
+//        NSLog(@"Long poll message is not for the current conversation, ignore");
+//        return;
+//    }
+//    
+//    [self showMessage:message];
+//    
+//    // conversation has no more unread messages
+////    if(!_conversation.isLive) {
+////        [ConversationManager markConversationRead:self.conversation];
+////    }
+//}
 
 
 #pragma mark - Navigation
@@ -389,6 +359,11 @@
     
     //Hide the live chats bubble if exist.
     //[self.liveChatsView removeView];
+}
+
+-(void)dismiss:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

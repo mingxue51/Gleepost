@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSMutableDictionary *conversationsMessages;
 @property (strong, nonatomic) NSMutableDictionary *conversationsSyncStatuses;
 @property (strong, nonatomic) NSMutableDictionary *conversationsMessagesKeys;
+@property (strong, nonatomic) NSMutableDictionary *conversationsLastestMessageShown;
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (assign, nonatomic) BOOL successfullyLoaded;
 @property (assign, nonatomic) BOOL isSynchronizedWithRemote;
@@ -31,7 +32,9 @@
 
 @synthesize conversations=_conversations;
 @synthesize conversationsMessages=_conversationsMessages;
+@synthesize conversationsSyncStatuses=_conversationsSyncStatuses;
 @synthesize conversationsMessagesKeys=_conversationsMessagesKeys;
+@synthesize conversationsLastestMessageShown=_conversationsLastestMessageShown;
 @synthesize queue=_queue;
 @synthesize successfullyLoaded=_successfullyLoaded;
 @synthesize isSynchronizedWithRemote=_isSynchronizedWithRemote;
@@ -60,7 +63,9 @@ static GLPLiveConversationsManager *instance = nil;
     
     _conversations = [NSMutableDictionary dictionary];
     _conversationsMessages = [NSMutableDictionary dictionary];
+    _conversationsSyncStatuses = [NSMutableDictionary dictionary];
     _conversationsMessagesKeys = [NSMutableDictionary dictionary];
+    _conversationsLastestMessageShown = [NSMutableDictionary dictionary];
     _liveConversationsCount = 0;
     _regularConversationsCount = 0;
     
@@ -126,12 +131,19 @@ static GLPLiveConversationsManager *instance = nil;
     
     __block NSInteger lastSyncMessageKey = NSNotFound;
     __block GLPMessage *message = nil;
-    __block BOOL success = NO;
+    __block BOOL shouldSyncContinue = NO;
     
     dispatch_sync(_queue, ^{
-        GLPConversation *syncConversation = _conversations[[NSNumber numberWithInteger:conversation.remoteKey]];
+        NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+        GLPConversation *syncConversation = _conversations[index];
         if(!syncConversation) {
             DDLogWarn(@"Cannot sync non existent conversation");
+            return;
+        }
+        
+        if([_conversationsSyncStatuses[index] boolValue] == YES) {
+            DDLogInfo(@"Conversation already sync, send succesful notification directly");
+            [self internalNotifyConversation:syncConversation withNewMessages:NO];
             return;
         }
         
@@ -147,11 +159,11 @@ static GLPLiveConversationsManager *instance = nil;
             lastSyncMessageKey = conversation.lastSyncMessageKey;
         }
         
-        success = YES;
+        shouldSyncContinue = YES;
     });
     
-    if(!success) {
-        DDLogWarn(@"Sync conversation abort");
+    if(!shouldSyncContinue) {
+        DDLogWarn(@"Sync should stop now, so stop it");
         return;
     }
 
@@ -180,11 +192,16 @@ static GLPLiveConversationsManager *instance = nil;
                 return;
             }
             
-            [self internalInsertMessages:messages toConversation:syncConversation atTheEnd:YES];
-            syncConversation.lastSyncMessageKey = [_conversationsMessagesKeys[index] integerValue];
-            DDLogInfo(@"Conversation last sync message key: %d", syncConversation.lastSyncMessageKey);
+            BOOL hasNewMessages = messages.count > 0;
+            if(hasNewMessages) {
+                [self internalInsertMessages:messages toConversation:syncConversation atTheEnd:YES];
+                syncConversation.lastSyncMessageKey = [_conversationsMessagesKeys[index] integerValue];
+                DDLogInfo(@"Conversation last sync message key: %d", syncConversation.lastSyncMessageKey);
+            }
             
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:Nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:syncConversation.remoteKey]}];
+            _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
+            
+            [self internalNotifyConversation:syncConversation withNewMessages:hasNewMessages];
         });
     }];
 }
@@ -193,6 +210,20 @@ static GLPLiveConversationsManager *instance = nil;
 {
     dispatch_async(_queue, ^{
         _isSynchronizedWithRemote = NO;
+    });
+}
+
+- (void)resetLastShownMessageForConversation:(GLPConversation *)conversation
+{
+    dispatch_async(_queue, ^{
+        NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+        GLPConversation *syncConversation = _conversations[index];
+        if(!syncConversation) {
+            DDLogWarn(@"Cannot reset last shown message for non existent conversation");
+            return;
+        }
+        
+        _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:0];
     });
 }
 
@@ -207,22 +238,23 @@ static GLPLiveConversationsManager *instance = nil;
     return conversation;
 }
 
-- (BOOL)isConversationSync:(GLPConversation *)conversation
-{
-    __block BOOL result;
-    
-    dispatch_sync(_queue, ^{
-        GLPConversation *syncConversation = _conversations[[NSNumber numberWithInteger:conversation.remoteKey]];
-        if(!syncConversation) {
-            DDLogWarn(@"Cannot get sync status from non existent conversation");
-            return;
-        }
-        
-        result = syncConversation.isSync;
-    });
-    
-    return result;
-}
+//- (BOOL)isConversationSync:(GLPConversation *)conversation
+//{
+//    __block BOOL result;
+//    
+//    dispatch_sync(_queue, ^{
+//        NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+//        GLPConversation *syncConversation = _conversations[index];
+//        if(!syncConversation) {
+//            DDLogWarn(@"Cannot get sync status from non existent conversation");
+//            return;
+//        }
+//        
+//        result = [_conversationsSyncStatuses[index] boolValue];
+//    });
+//    
+//    return result;
+//}
 
 - (NSArray *)conversationsList
 {
@@ -288,6 +320,84 @@ static GLPLiveConversationsManager *instance = nil;
 
 # pragma mark - Messages
 
+- (NSArray *)lastestMessagesForConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"Get lastest messages for conversation %d", conversation.remoteKey);
+    __block NSArray *array = nil;
+    
+    dispatch_sync(_queue, ^{
+        NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+        
+        GLPConversation *synchConversation = _conversations[index];
+        if(!synchConversation) {
+            DDLogError(@"Cannot get lastest messages for non existent conversation");
+            return;
+        }
+        
+        NSInteger count = [_conversationsMessages[index] count];
+        
+        // empty messages
+        if(count == 0) {
+            DDLogInfo(@"No messages for conversation, abort");
+            return;
+        }
+        
+        NSInteger lastShownMessageKey = [_conversationsLastestMessageShown[index] integerValue];
+        DDLogInfo(@"Last shown message key: %d", lastShownMessageKey);
+        
+        NSArray *syncMessages;
+        
+        // show all messages
+        if(lastShownMessageKey == 0) {
+            syncMessages = _conversationsMessages[index];
+        }
+        
+        // show messages starting after the last shown
+        else {
+            NSUInteger syncIndex = [self internalFindMessageIndexByKey:lastShownMessageKey inConversation:synchConversation];
+            if(syncIndex == NSNotFound) {
+                DDLogError(@"Cannot find the lastest shown message for key %d, abort", lastShownMessageKey);
+                return;
+            }
+            
+            if(syncIndex == count - 1) {
+                DDLogInfo(@"Lastest shown message is the last message of the conversation, abort");
+                return;
+            }
+            
+            NSRange range = NSMakeRange(syncIndex + 1, count - syncIndex - 1);
+            DDLogInfo(@"Get messages after index %d. Range is: %d - %d. Messages count is: %d", syncIndex, range.location, range.length, count);
+            
+            GLPMessage *lastM = _conversationsMessages[index][syncIndex];
+            DDLogInfo(@"Last sync message: %@", lastM.content);
+            
+            // check for out of range errors
+            if(range.location + range.length > count) {
+                DDLogError(@"ERROR: Messages subarray is out of range, THIS IS WRONG!");
+                return;
+            }
+            
+            syncMessages = [_conversationsMessages[index] subarrayWithRange:range];
+        }
+        
+        if(syncMessages.count > 0) {
+            GLPMessage *last = [syncMessages lastObject];
+            _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:last.key];
+            DDLogInfo(@"New last shown message key: %d", last.key);
+        }
+        
+        array = [[NSArray alloc] initWithArray:syncMessages copyItems:YES];
+    });
+    
+    if(!array) {
+        array = [NSArray array];
+    }
+    
+    DDLogInfo(@"Return %d new messages since the last shown message", array.count);
+    
+    return array;
+}
+
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation
 {
     return [self messagesForConversation:conversation startingAfter:nil];
@@ -351,10 +461,12 @@ static GLPLiveConversationsManager *instance = nil;
     return array;
 }
 
-- (void)addNewMessageToConversation:(GLPMessage *)message
+// Local message that has not yet been send to the server
+- (void)addLocalMessageToConversation:(GLPMessage *)message
 {
-    DDLogInfo(@"Add new message \"%@\" to conversation with remote key %d", message.content, message.conversation.remoteKey);
+    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %d", message.content, message.conversation.remoteKey);
     
+    // newly inserted message key
     __block NSInteger key;
     
     dispatch_sync(_queue, ^{
@@ -365,19 +477,37 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
-        [conversation updateWithNewMessage:message];
-        
-        GLPMessage *synchMessage = [message copy];
-        key = [_conversationsMessagesKeys[index] integerValue] + 1;
-        synchMessage.key = key;
-        
-        conversation.lastSyncMessageKey = key;
-        
-        [_conversationsMessages[index] addObject:synchMessage];
-        _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:key];
+        key = [self internalAddMessage:message toConversation:conversation];
+        [self internalNotifyConversation:conversation withNewMessages:YES];
     });
     
+    DDLogInfo(@"New local message successfuly added with key: %d", key);
     message.key = key;
+}
+
+// Remote message that is received from the server
+- (void)addRemoteMessage:(GLPMessage *)message toConversationWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogInfo(@"Add remote message \"%@\" to conversation with remote key %d", message.content, remoteKey);
+    
+    dispatch_async(_queue, ^{
+        NSNumber *index = [NSNumber numberWithInteger:remoteKey];
+        GLPConversation *conversation = _conversations[index];
+        if(!conversation) {
+            DDLogError(@"Cannot add remote message to non existent conversation");
+            return;
+        }
+        
+        GLPMessage *existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
+        
+        if(existingMessage) {
+            DDLogInfo(@"Remote message already exists in conversation's messages, abort");
+            return;
+        }
+        
+        [self internalAddMessage:message toConversation:conversation];
+        [self internalNotifyConversation:conversation withNewMessages:YES];
+    });
 }
 
 - (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation
@@ -409,14 +539,15 @@ static GLPLiveConversationsManager *instance = nil;
     });
 }
 
-- (void)updateMessageAfterSending:(GLPMessage *)message
+// Update once the local message has been sent
+- (void)updateLocalMessageAfterSending:(GLPMessage *)message
 {
-    DDLogInfo(@"Update message \"%@\" after sending", message.content);
+    DDLogInfo(@"Update local message \"%@\" after sending with key: %d", message.content, message.key);
     
     dispatch_async(_queue, ^{
         GLPConversation *conversation = _conversations[[NSNumber numberWithInteger:message.conversation.remoteKey]];
         if(!conversation) {
-            DDLogError(@"Cannot update message for non existent conversation");
+            DDLogError(@"Cannot update local message for non existent conversation");
             return;
         }
         
@@ -427,9 +558,16 @@ static GLPLiveConversationsManager *instance = nil;
         }
         
         synchMessage.sendStatus = message.sendStatus;
+        
+        NSString *sentLog;
         if(message.sendStatus == kSendStatusSent) {
             synchMessage.remoteKey = message.remoteKey;
+            sentLog = @"SENT";
+        } else {
+            sentLog = @"NOT SENT";
         }
+        
+        DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
     });
 }
 
@@ -523,6 +661,27 @@ static GLPLiveConversationsManager *instance = nil;
 
 // Internal
 // Should be called inside a queue block
+- (GLPMessage *)internalFindMessageByRemoteKey:(NSInteger)remoteKey inConversation:(GLPConversation *)conversation
+{
+    NSArray *messages = _conversationsMessages[[NSNumber numberWithInteger:conversation.remoteKey]];
+    NSUInteger index = [messages indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        if(((GLPMessage *)obj).remoteKey == remoteKey) {
+            *stop = YES;
+            return YES;
+        }
+        
+        return NO;
+    }];
+    
+    if(index == NSNotFound) {
+        return nil;
+    }
+    
+    return messages[index];
+}
+
+// Internal
+// Should be called inside a queue block
 - (void)internalInsertMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation atTheEnd:(BOOL)end
 {
     NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
@@ -547,7 +706,26 @@ static GLPLiveConversationsManager *instance = nil;
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:key];
 }
 
-
+- (NSInteger)internalAddMessage:(GLPMessage *)message toConversation:(GLPConversation *)conversation
+{
+    NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+    
+    NSInteger key = [_conversationsMessagesKeys[index] integerValue] + 1;
+    
+    GLPMessage *synchMessage = [message copy];
+    synchMessage.key = key;
+    
+    conversation.lastSyncMessageKey = key;
+    [conversation updateWithNewMessage:message];
+    
+    [_conversationsMessages[index] addObject:synchMessage];
+    
+    NSNumber *keyNumber = [NSNumber numberWithInteger:key];
+    _conversationsMessagesKeys[index] = keyNumber;
+//    _conversationsLastestMessageShown[index] = keyNumber;
+    
+    return key;
+}
 
 // Internal
 // Should be called inside a queue block
@@ -566,17 +744,22 @@ static GLPLiveConversationsManager *instance = nil;
         return;
     }
     
-    conversation.isSync = NO;
-    
     if(conversation.isLive) {
-        _conversationsMessages[index] = [NSMutableArray array];
-        _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:0];
         _liveConversationsCount++;
     } else {
         _regularConversationsCount++;
     }
     
     _conversations[index] = conversation;
+    _conversationsMessages[index] = [NSMutableArray array];
+    _conversationsSyncStatuses[index] = [NSNumber numberWithBool:NO];
+    _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:0];
+    _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:0];
+}
+
+- (void)internalNotifyConversation:(GLPConversation *)conversation withNewMessages:(BOOL)newMessages
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:Nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:conversation.remoteKey], @"newMessages": [NSNumber numberWithBool:newMessages]}];
 }
 
 @end

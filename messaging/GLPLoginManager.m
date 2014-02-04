@@ -113,7 +113,9 @@
 }
 
 + (void)performAfterLoginForUser:(GLPUser *)user
-{    
+{
+    DDLogInfo(@"Logged in user remote key: %d", user.remoteKey);
+    
     [[GLPNetworkManager sharedInstance] startNetworkOperations];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
 }

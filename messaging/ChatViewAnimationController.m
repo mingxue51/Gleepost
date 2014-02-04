@@ -12,6 +12,7 @@
 #import "WebClient.h"
 #import "ViewTopicViewController.h"
 #import "GLPConversation.h"
+#import "GLPLiveConversationsManager.h"
 
 @interface ChatViewAnimationController ()
 
@@ -117,11 +118,12 @@
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
     
     
-    
+    DDLogInfo(@"SEARCHING");
     [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
+            [[GLPLiveConversationsManager sharedInstance] addConversation:conversation];
             _conversation = conversation;
             [self navigateToChat];
         } else {

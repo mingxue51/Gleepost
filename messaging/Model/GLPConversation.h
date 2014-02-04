@@ -24,7 +24,6 @@
 @property (assign, nonatomic) BOOL isLive;
 
 // transient
-@property (assign, nonatomic) BOOL isSync; // is sync with websocket stream and web service
 @property (assign, nonatomic) NSInteger lastSyncMessageKey;
 
 // live specific

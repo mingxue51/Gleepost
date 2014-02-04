@@ -71,6 +71,8 @@ static GLPNetworkManager *instance = nil;
         return;
     }
     
+    DDLogInfo(@"Start network operations");
+    
     _state = kGLPNetworkManagerStateStarted;
     
     // start web socket, then wait for its connection before starting next requests

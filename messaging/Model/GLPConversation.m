@@ -23,7 +23,6 @@
 @synthesize isLive = _isLive;
 @synthesize expiryDate=_expiryDate;
 @synthesize isEnded=_isEnded;
-@synthesize isSync=_isSync;
 @synthesize lastSyncMessageKey=_lastSyncMessageKey;
 
 // Init regular conversation from database
@@ -62,7 +61,6 @@
     _isEnded = NO;
     _hasUnreadMessages = NO;
     
-    _isSync = NO;
     _lastSyncMessageKey = NSNotFound;
 
     return self;
@@ -103,10 +101,6 @@
 {
     _lastMessage = message.content;
     _lastUpdate = message.date;
-    
-    if(_isLive) {
-        [_messages addObject:message];
-    }
 }
 
 
@@ -122,7 +116,6 @@
     object.hasUnreadMessages = _hasUnreadMessages;
     object.isGroup = _isGroup;
     object.isLive = _isLive;
-    object.isSync = _isSync;
     object.lastSyncMessageKey = _lastSyncMessageKey;
     object.isEnded = _isEnded;
     object.expiryDate = [_expiryDate copyWithZone:zone];
