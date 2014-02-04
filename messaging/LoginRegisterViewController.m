@@ -8,10 +8,15 @@
 
 #import "LoginRegisterViewController.h"
 #import "AppearanceHelper.h"
-
+#import "LoginViewController.h"
+#import "CustomPushTransitioningDelegate.h"
 
 @interface LoginRegisterViewController ()
 
+@property (strong, nonatomic) CustomPushTransitioningDelegate *transitionViewLoginController;
+@property (weak, nonatomic) UIViewController *destinationViewController;
+
+@property (weak, nonatomic) IBOutlet UIImageView *backPad;
 
 @end
 
@@ -31,7 +36,10 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    _destinationViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
     
+    _transitionViewLoginController = [[CustomPushTransitioningDelegate alloc] initWithFirstController:self andDestinationController:_destinationViewController];
     
     [self setBackground];
     
@@ -48,7 +56,31 @@
 
 - (IBAction)signIn:(id)sender
 {
+    //LoginViewController
+    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    LoginViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    
+//    _destinationViewController.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+//    _destinationViewController.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    [_destinationViewController setTransitioningDelegate:self.transitionViewLoginController];
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:_destinationViewController animated:YES completion:nil];
     [self performSegueWithIdentifier:@"login" sender:self];
+    
+//    [_backPad setHidden:NO];
+//    CGRect frame = _backPad.frame;
+//    
+//    [UIView animateWithDuration:2.0f animations:^{
+//        [_backPad setFrame:CGRectMake(0, frame.origin.y, frame.size.width, frame.size.height)];
+//
+//    } completion:^(BOOL finished) {
+//        
+//    }];
+    
+    
 }
 
 -(void)setImages
