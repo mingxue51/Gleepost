@@ -118,6 +118,7 @@
 		583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583CE33818A015FB00E78C08 /* FacebookLoginViewController.m */; };
 		583CE33C18A019AC00E78C08 /* background_login_pages.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33A18A019AC00E78C08 /* background_login_pages.png */; };
 		583CE33D18A019AC00E78C08 /* hoovertall.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE33B18A019AC00E78C08 /* hoovertall.png */; };
+		583E6D5B18A10E8C001076CC /* VerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583E6D5A18A10E8C001076CC /* VerificationViewController.m */; };
 		583EAB7918119688003D68B3 /* add_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 583EAB7818119688003D68B3 /* add_contact.png */; };
 		583FA27E189B09EB003C6E4E /* going_to_event.png in Resources */ = {isa = PBXBuildFile; fileRef = 583FA27D189B09EB003C6E4E /* going_to_event.png */; };
 		58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403531182FF5FB00499488 /* GLPTimelineViewController.m */; };
@@ -696,6 +697,8 @@
 		583CE33818A015FB00E78C08 /* FacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookLoginViewController.m; sourceTree = "<group>"; };
 		583CE33A18A019AC00E78C08 /* background_login_pages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_login_pages.png; sourceTree = "<group>"; };
 		583CE33B18A019AC00E78C08 /* hoovertall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hoovertall.png; sourceTree = "<group>"; };
+		583E6D5918A10E8C001076CC /* VerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerificationViewController.h; sourceTree = "<group>"; };
+		583E6D5A18A10E8C001076CC /* VerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerificationViewController.m; sourceTree = "<group>"; };
 		583EAB7818119688003D68B3 /* add_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_contact.png; sourceTree = "<group>"; };
 		583FA27D189B09EB003C6E4E /* going_to_event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_to_event.png; sourceTree = "<group>"; };
 		58403530182FF5FB00499488 /* GLPTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTimelineViewController.h; sourceTree = "<group>"; };
@@ -1551,6 +1554,8 @@
 				583CE33818A015FB00E78C08 /* FacebookLoginViewController.m */,
 				5839261F18A0256A00439398 /* SignUpWithNameViewController.h */,
 				5839262018A0256A00439398 /* SignUpWithNameViewController.m */,
+				583E6D5918A10E8C001076CC /* VerificationViewController.h */,
+				583E6D5A18A10E8C001076CC /* VerificationViewController.m */,
 			);
 			name = "Login Register Classes";
 			sourceTree = "<group>";
@@ -3397,6 +3402,7 @@
 				58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */,
 				584CF66D182289B500EFABB8 /* ContactsManager.m in Sources */,
 				80B2A42818338613002AB1F0 /* GLPGetNotificationsOperation.m in Sources */,
+				583E6D5B18A10E8C001076CC /* VerificationViewController.m in Sources */,
 				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
 				58FB7C9118560D21002C6A00 /* PostsProfileView.m in Sources */,

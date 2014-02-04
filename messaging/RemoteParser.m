@@ -725,13 +725,24 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     //NSLog(@"ERRORS: %@  %@  %@  %@  %@  %@  %@ ",error.domain, error.userInfo, error.localizedDescription, error.localizedRecoveryOptions, error.localizedRecoverySuggestion, error.localizedFailureReason, error.recoveryAttempter);
     
-    if ([error rangeOfString:@"Username or email"].location == NSNotFound)
+    DDLogInfo(@"Error message during registration: %@", error);
+    
+    
+    if ([error rangeOfString:@"Username or email"].location != NSNotFound)
+    {
+        return @"Username or email address already taken";
+    }
+    else if([error rangeOfString:@"Invalid Email"].location != NSNotFound)
+    {
+        return @"Invalid Email";
+    }
+    else if([error rangeOfString:@"Password too weak!"].location != NSNotFound)
     {
         return @"Short password typed";
     }
     else
     {
-        return @"Username or email address already taken";
+        return error;
     }
     
 //    NSLog(@"Suggested error: %@", error);
