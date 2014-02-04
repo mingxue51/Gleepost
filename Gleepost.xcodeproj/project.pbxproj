@@ -39,7 +39,7 @@
 		580C7AB318983C4C007495EE /* all_category_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AB218983C4C007495EE /* all_category_selected.png */; };
 		580C7AB518983C68007495EE /* for-sale_category_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AB418983C68007495EE /* for-sale_category_selected.png */; };
 		580C7AB718983C7F007495EE /* news_category_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AB618983C7F007495EE /* news_category_selected.png */; };
-		580C7AB918983C92007495EE /* sports_category_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AB818983C92007495EE /* sports_category_selected.png */; };
+		580C7AB918983C92007495EE /* jobs_category_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AB818983C92007495EE /* jobs_category_selected.png */; };
 		580C7ABB18985059007495EE /* top_image_campus_wall.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ABA18985059007495EE /* top_image_campus_wall.png */; };
 		580C7ABD189850D2007495EE /* add_new_post_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ABC189850D2007495EE /* add_new_post_new.png */; };
 		580C7ACB1898632C007495EE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AC91898632C007495EE /* splash.png */; };
@@ -390,7 +390,7 @@
 		58FD708118905B680024E8A1 /* all_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707C18905B680024E8A1 /* all_category.png */; };
 		58FD708318905B680024E8A1 /* for-sale_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707E18905B680024E8A1 /* for-sale_category.png */; };
 		58FD708418905B680024E8A1 /* news_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD707F18905B680024E8A1 /* news_category.png */; };
-		58FD708518905B680024E8A1 /* sports_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD708018905B680024E8A1 /* sports_category.png */; };
+		58FD708518905B680024E8A1 /* jobs_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FD708018905B680024E8A1 /* jobs_category.png */; };
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
@@ -592,7 +592,7 @@
 		580C7AB218983C4C007495EE /* all_category_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_category_selected.png; sourceTree = "<group>"; };
 		580C7AB418983C68007495EE /* for-sale_category_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "for-sale_category_selected.png"; sourceTree = "<group>"; };
 		580C7AB618983C7F007495EE /* news_category_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_category_selected.png; sourceTree = "<group>"; };
-		580C7AB818983C92007495EE /* sports_category_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sports_category_selected.png; sourceTree = "<group>"; };
+		580C7AB818983C92007495EE /* jobs_category_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jobs_category_selected.png; sourceTree = "<group>"; };
 		580C7ABA18985059007495EE /* top_image_campus_wall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_image_campus_wall.png; sourceTree = "<group>"; };
 		580C7ABC189850D2007495EE /* add_new_post_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post_new.png; sourceTree = "<group>"; };
 		580C7AC91898632C007495EE /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
@@ -1058,7 +1058,7 @@
 		58FD707C18905B680024E8A1 /* all_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_category.png; sourceTree = "<group>"; };
 		58FD707E18905B680024E8A1 /* for-sale_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "for-sale_category.png"; sourceTree = "<group>"; };
 		58FD707F18905B680024E8A1 /* news_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_category.png; sourceTree = "<group>"; };
-		58FD708018905B680024E8A1 /* sports_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sports_category.png; sourceTree = "<group>"; };
+		58FD708018905B680024E8A1 /* jobs_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jobs_category.png; sourceTree = "<group>"; };
 		80112B93180F03B9006A35AA /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		80112B94180F03B9006A35AA /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		80112B95180F03B9006A35AA /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -1418,8 +1418,8 @@
 				580C7AB418983C68007495EE /* for-sale_category_selected.png */,
 				58FD707F18905B680024E8A1 /* news_category.png */,
 				580C7AB618983C7F007495EE /* news_category_selected.png */,
-				58FD708018905B680024E8A1 /* sports_category.png */,
-				580C7AB818983C92007495EE /* sports_category_selected.png */,
+				58FD708018905B680024E8A1 /* jobs_category.png */,
+				580C7AB818983C92007495EE /* jobs_category_selected.png */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3295,7 +3295,7 @@
 				587D23C517EA195D00E0DDFF /* comment.png in Resources */,
 				806E3D7A1832B1960063AACE /* NotificationBackgroundMessage.png in Resources */,
 				5828D7AD181E94FA002D71F9 /* userchangeimg.png in Resources */,
-				58FD708518905B680024E8A1 /* sports_category.png in Resources */,
+				58FD708518905B680024E8A1 /* jobs_category.png in Resources */,
 				584332A5180F324200BD9F74 /* profilepicture.png in Resources */,
 				587D23C817EA195D00E0DDFF /* chat_user.png in Resources */,
 				586E2236180FE58900C0FA03 /* password2.png in Resources */,
@@ -3333,7 +3333,7 @@
 				580C7ACE189863F6007495EE /* background_day.png in Resources */,
 				58FB7CA5185649D3002C6A00 /* accept.png in Resources */,
 				58E3DAC11884059100B9B048 /* cloud3.png in Resources */,
-				580C7AB918983C92007495EE /* sports_category_selected.png in Resources */,
+				580C7AB918983C92007495EE /* jobs_category_selected.png in Resources */,
 				5843328B180F069800BD9F74 /* Gleepost_main.png in Resources */,
 				584C1EF2181ACBCA00862E81 /* newchat3.png in Resources */,
 				5893BA0518200CA50003589E /* notificationicon.png in Resources */,

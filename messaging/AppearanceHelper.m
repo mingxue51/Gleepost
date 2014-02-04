@@ -82,8 +82,11 @@
     
     
     viewController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+}
 
-
++(UIColor*)colourOfTheFakeNavigationBar
+{
+    return [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:247.0/255.0 alpha:1.0f];
 }
 
 

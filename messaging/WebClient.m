@@ -285,10 +285,13 @@ static WebClient *instance = nil;
 
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
     
+    DDLogInfo(@"Post's categories before post: %@", [RemoteParser parseCategoriesToTags:post.categories]);
+
     
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

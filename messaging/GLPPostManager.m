@@ -255,7 +255,7 @@ NSInteger const kGLPNumberOfPosts = 20;
 
 +(void)loadEventsRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback
 {
-    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:@"event" callback:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:nil callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, nil);
             return;

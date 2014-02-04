@@ -31,7 +31,7 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 300.0f)];
+        [self setFrame:CGRectMake(0, 0, 320.0f, 295.0f)];
         
         [self setDataSource:self];
 
@@ -178,7 +178,7 @@
 //        return 50.0;
 //        
 //    }
-    return 17.0;
+    return 18.0;
 }
 
 

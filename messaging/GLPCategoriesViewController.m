@@ -72,9 +72,9 @@
     
     for(GLPCategory *category in catTemp)
     {
-        //TODO: Remove if when final categories decided.
+        //TODO: Remove condition when final categories decided.
         
-        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"])
+        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"])
         {
             [_categories addObject:category];
         }
@@ -154,13 +154,22 @@
 
 -(void)setDefaultImages
 {
-    
     for(GLPCategory *category in _categories)
     {
-        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"])
+        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"])
         {
-            [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category",category.tag]] forKey:category.tag];
+            NSString *str = [NSString stringWithFormat:@"%@_category.png",category.tag];
+            
+            UIImage *img = [UIImage imageNamed:str];
+            
+            [_categoriesImages setObject:img forKey:category.tag];
         }
+//        else
+//        {
+//            
+//            
+//            [_categoriesImages setObject:[UIImage imageNamed:@"extra_category"] forKey:category.tag];
+//        }
     }
     
     [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
@@ -173,6 +182,10 @@
     {
         [_categoriesImages setObject:[UIImage imageNamed:@"all_category_selected"] forKey:@"All"];
     }
+//    else if([current.tag isEqualToString:@"jobs"])
+//    {
+//        [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"extra_category_selected",current.tag]] forKey:current.tag];
+//    }
     else
     {
         [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category_selected",current.tag]] forKey:current.tag];

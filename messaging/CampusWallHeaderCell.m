@@ -26,8 +26,8 @@
 
 @implementation CampusWallHeaderCell
 
-const float CELL_HEIGHT = 142;
-const float CELL_WIDTH = 186;
+const float CELL_HEIGHT = 151;
+const float CELL_WIDTH = 198;
 
 
 -(id)initWithIdentifier:(NSString *)identifier

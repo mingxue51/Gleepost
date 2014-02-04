@@ -109,6 +109,10 @@
 
 @implementation GLPTimelineViewController
 
+//Constants.
+const float TOP_OFFSET = 230.0f;
+
+
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
@@ -970,6 +974,7 @@
     
 }
 
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat currentOffset = scrollView.contentOffset.y;
@@ -982,7 +987,7 @@
     
 //    [self.campusWallHeader setPositionToNavBar:CGPointMake(0.0f, scrollView.contentOffset.y)];
     
-    if(scrollView.contentOffset.y >= 195.0f)
+    if(scrollView.contentOffset.y >= TOP_OFFSET)
     {
         //[self contract];
     
@@ -1096,7 +1101,19 @@
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
     
-    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    //The condition is added to prevent error when there are no posts in the table view.
+    
+    if(self.posts.count == 0)
+    {
+        [self.tableView reloadData];
+    }
+    else
+    {
+        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+    
+
     [self scrollToTheTop];
     
     //Bring the fake navigation bar to from because is hidden by new cell.
@@ -1335,7 +1352,7 @@
 
     [UIView animateWithDuration:0.5f animations:^{
         
-        [self.tableView setContentOffset:CGPointMake(0,220)];
+        [self.tableView setContentOffset:CGPointMake(0,TOP_OFFSET)];
 
         
     } completion:^(BOOL finished) {
@@ -1775,7 +1792,11 @@
 {
 //    [self scrollToTheTop];
     
-    [self scrollToTheNavigationBar];
+    
+    if([self.reNavBar isHidden])
+    {
+        [self scrollToTheNavigationBar];
+    }
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
