@@ -207,6 +207,28 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)resendVerificationToEmail:(NSString *)email andCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:email, @"email", nil];
+
+    [self postPath:@"resend_verification" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Resend verification successfully :%@",responseObject);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
+        DDLogInfo(@"Resend verification error :%@",error);
+
+        
+        
+        callbackBlock(NO);
+    }];
+}
+
 - (void)registerPushToken:(NSString *)pushToken callback:(void (^)(BOOL success))callback
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];

@@ -21,6 +21,7 @@
 #import "GLPUserDao.h"
 #import "ShapeFormatterHelper.h"
 #import "AppearanceHelper.h"
+#import "VerificationViewController.h"
 
 @interface FinalRegisterViewController ()
 
@@ -46,7 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //Change the colour format of the navigation bar.
+    //Change the colour format of the navigation bar.=
     [self.navigationController.navigationBar setTranslucent:YES];
     
     [AppearanceHelper setFormatForLoginNavigationBar:self];
@@ -200,8 +201,6 @@
 
 - (IBAction)registerUser:(id)sender
 {
-    //TODO: Set user image as a requirement.
-    
     if([self areTheDetailsValid])
     {
         //Request to server to register user.
@@ -221,15 +220,17 @@
 //            
 //        }];
         
+        [WebClientHelper showStandardLoaderWithTitle:@"Registering" forView:self.view];
         
         [[WebClient sharedInstance] registerWithName:self.firstLastName[0] surname:self.firstLastName[1] email:self.eMailPass[0] password:self.eMailPass[1] andCallbackBlock:^(BOOL success, NSString *responseMessage, int remoteKey) {
            
+            [WebClientHelper hideStandardLoaderForView:self.view];
+
             if(success)
             {
                 //Navigate to home.
                 NSLog(@"User register successful with remote Key: %d", remoteKey);
-                [WebClientHelper showStandardErrorWithTitle:@"Account verification" andContent:@"An e-mail was send to your mail, please verify your account first and try to login."];
-                
+                [self performSegueWithIdentifier:@"verify" sender:self];
                 //[self loginUser];
             }
             else
@@ -397,6 +398,16 @@
 //    }];
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    VerificationViewController *verificationController = segue.destinationViewController;
+    
+    verificationController.eMailPass = self.eMailPass;
+    
+    verificationController.profileImage = self.profileImage;
+    
+}
+
 #pragma mark - FDTakeController delegate
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
@@ -416,6 +427,9 @@
 //    
 //	[self.addImageButton setBackgroundImage:[info objectForKey:@"UIImagePickerControllerOriginalImage"] forState:UIControlStateNormal];
 //}
+
+
+
 
 #pragma mark - Other methods
 
