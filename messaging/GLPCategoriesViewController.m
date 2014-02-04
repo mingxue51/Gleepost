@@ -164,12 +164,6 @@
             
             [_categoriesImages setObject:img forKey:category.tag];
         }
-//        else
-//        {
-//            
-//            
-//            [_categoriesImages setObject:[UIImage imageNamed:@"extra_category"] forKey:category.tag];
-//        }
     }
     
     [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
@@ -182,10 +176,6 @@
     {
         [_categoriesImages setObject:[UIImage imageNamed:@"all_category_selected"] forKey:@"All"];
     }
-//    else if([current.tag isEqualToString:@"jobs"])
-//    {
-//        [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"extra_category_selected",current.tag]] forKey:current.tag];
-//    }
     else
     {
         [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category_selected",current.tag]] forKey:current.tag];

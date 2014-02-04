@@ -24,9 +24,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.85098039219999999" green="0.89411764709999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bottom_wall.png" translatesAutoresizingMaskIntoConstraints="NO" id="HEG-0c-RnY">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HEG-0c-RnY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPt-aV-iaG">
                         <rect key="frame" x="30" y="7" width="80" height="30"/>
@@ -91,7 +92,6 @@
     <resources>
         <image name="about_button.png" width="180" height="73"/>
         <image name="active_tab.png" width="51" height="51"/>
-        <image name="bottom_wall.png" width="642" height="97"/>
         <image name="idle_tab.png" width="51" height="51"/>
         <image name="mutual_button.png" width="180" height="73"/>
         <image name="posts_button.png" width="180" height="73"/>

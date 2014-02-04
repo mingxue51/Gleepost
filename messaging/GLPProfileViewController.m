@@ -222,7 +222,6 @@
     [self addNavigationButtons];
     
 
-    UIColor *barColour = [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
     //Change the format of the navigation bar.
 //    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     
@@ -230,24 +229,26 @@
 
     
 //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    
-    
    
     [AppearanceHelper setNavigationBarColour:self];
-
-    [self.navigationController.navigationBar setBackgroundColor:barColour];
-    
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
     [AppearanceHelper setNavigationBarFontFor:self];
+
     
-    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
-    [self.navigationController.navigationBar setTranslucent:YES];
     
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+//    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    
+//    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+
+    
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
     
     self.title = @"Me";
+    
+
 }
 
 

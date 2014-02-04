@@ -279,6 +279,7 @@
 		589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */; };
 		58A122AC17ECC26F00E2AB4B /* tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A122AB17ECC26F00E2AB4B /* tabbar.png */; };
 		58A122B017ECC8F300E2AB4B /* MessageBox2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A122AF17ECC8F300E2AB4B /* MessageBox2.png */; };
+		58A4465718A17368000FE027 /* navigation_bar_stanford_final.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A4465618A17368000FE027 /* navigation_bar_stanford_final.png */; };
 		58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A67445184F8ED400E3FE45 /* PopUpNotificationsViewController.m */; };
 		58A67448184F93B100E3FE45 /* notifications_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A67447184F93B100E3FE45 /* notifications_button.png */; };
 		58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A6744B184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m */; };
@@ -912,6 +913,7 @@
 		589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveUserDao.m; sourceTree = "<group>"; };
 		58A122AB17ECC26F00E2AB4B /* tabbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar.png; sourceTree = "<group>"; };
 		58A122AF17ECC8F300E2AB4B /* MessageBox2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageBox2.png; sourceTree = "<group>"; };
+		58A4465618A17368000FE027 /* navigation_bar_stanford_final.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_stanford_final.png; sourceTree = "<group>"; };
 		58A67444184F8ED400E3FE45 /* PopUpNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpNotificationsViewController.h; sourceTree = "<group>"; };
 		58A67445184F8ED400E3FE45 /* PopUpNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpNotificationsViewController.m; sourceTree = "<group>"; };
 		58A67447184F93B100E3FE45 /* notifications_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notifications_button.png; sourceTree = "<group>"; };
@@ -1880,6 +1882,7 @@
 		5890D20F1847619700E293DD /* Stanfort */ = {
 			isa = PBXGroup;
 			children = (
+				58A4465618A17368000FE027 /* navigation_bar_stanford_final.png */,
 				58D612B3184E63C100915B51 /* mascot_stanford.png */,
 				5890D22018477B7C00E293DD /* navigation_bar_stanford.png */,
 				5890D22218478C5400E293DD /* chat_background_stanford.png */,
@@ -3312,6 +3315,7 @@
 				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				587D23CA17EA195D00E0DDFF /* chat_tab_small.png in Resources */,
 				58E3DAC3188405CC00B9B048 /* hot_air_balloon.png in Resources */,
+				58A4465718A17368000FE027 /* navigation_bar_stanford_final.png in Resources */,
 				587D23CB17EA195D00E0DDFF /* share.png in Resources */,
 				587D23CD17EA195D00E0DDFF /* home_tab_small.png in Resources */,
 				58493F3C1827ED1800EE5F1A /* navigationbar2_.png in Resources */,
@@ -3725,8 +3729,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "C97B8EF0-A3D6-4C16-B74D-E486FB4ACE76";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C97B8EF0-A3D6-4C16-B74D-E486FB4ACE76";
+				PROVISIONING_PROFILE = "1F01743C-6749-4093-8F07-1556C38A2DD9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1F01743C-6749-4093-8F07-1556C38A2DD9";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3745,8 +3749,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "C97B8EF0-A3D6-4C16-B74D-E486FB4ACE76";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C97B8EF0-A3D6-4C16-B74D-E486FB4ACE76";
+				PROVISIONING_PROFILE = "1F01743C-6749-4093-8F07-1556C38A2DD9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1F01743C-6749-4093-8F07-1556C38A2DD9";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

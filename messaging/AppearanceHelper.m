@@ -24,9 +24,19 @@
 +(void)setNavigationBarColour:(UIViewController *)controller
 {
     //75, 208, 210
-    UIColor *barColour = [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
+//    UIColor *barColour = [UIColor colorWithRed:0.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:1.0];
+//    
+//    [controller.navigationController.navigationBar setBarTintColor: barColour];
     
-    [controller.navigationController.navigationBar setBarTintColor: barColour];
+    //In order to hide shadow image we are adding background image as a background to the navigation bar and the remove shadow image.
+    
+    UINavigationBar *navigationBar = controller.navigationController.navigationBar;
+    
+    [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"]
+                       forBarPosition:UIBarPositionAny
+                           barMetrics:UIBarMetricsDefault];
+    
+    [navigationBar setShadowImage:[UIImage new]];
 
 }
 
