@@ -28,8 +28,8 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) NSMutableArray *sections;
-@property (strong, nonatomic) NSArray *regularConversations;
-@property (strong, nonatomic) NSArray *liveConversations;
+@property (strong, nonatomic) NSMutableArray *regularConversations;
+@property (strong, nonatomic) NSMutableArray *liveConversations;
 
 // reload conversations when user comes back from chat view, in order to update last message and last update
 @property (assign, nonatomic) BOOL needsReloadConversations;
@@ -79,6 +79,10 @@
 {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
@@ -92,10 +96,6 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newMessageFromNotification:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -103,9 +103,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
-
     // reload the local conversations next time the VC appears
     self.needsReloadConversations = YES;
     
@@ -114,6 +111,9 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    
     [AppearanceHelper setUnselectedColourForTabbarItem:self.messagesTabbarItem];
     
     [super viewWillDisappear:animated];
@@ -195,8 +195,8 @@
 - (void)reloadConversations
 {
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
-        _liveConversations = liveConversations;
-        _regularConversations = regularConversations;
+        _liveConversations = [NSMutableArray arrayWithArray:liveConversations];
+        _regularConversations = [NSMutableArray arrayWithArray:regularConversations];
         
         [self.tableView reloadData];
     }];
@@ -205,7 +205,7 @@
 - (void)reloadLiveConversations
 {
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
-        _liveConversations = liveConversations;
+        _liveConversations = [NSMutableArray arrayWithArray:liveConversations];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 }
@@ -213,7 +213,7 @@
 - (void)reloadRegularConversations
 {
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
-        _regularConversations = regularConversations;
+        _regularConversations = [NSMutableArray arrayWithArray:regularConversations];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 }
@@ -274,6 +274,40 @@
     }
 }
 
+// One conversation sync
+- (void)conversationSyncFromNotification:(NSNotification *)notification
+{
+    NSInteger conversationRemoteKey = [[notification userInfo][@"remoteKey"] integerValue];
+    DDLogInfo(@"Conversation sync notification for conversation with remote key: %d", conversationRemoteKey);
+    
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:conversationRemoteKey];
+    
+    NSMutableArray *array = conversation.isLive ? _liveConversations : _regularConversations;
+    NSUInteger index = [array indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        if(((GLPConversation *)obj).remoteKey == conversation.remoteKey) {
+            return YES;
+        }
+        
+        return NO;
+    }];
+    
+    if(index == NSNotFound) {
+        DDLogError(@"Cannot find conversation in the local list, abort");
+        return;
+    }
+    
+    array[index] = conversation;
+    
+    if(conversation.isLive) {
+        [self reloadLiveConversations];
+    } else {
+        [self reloadRegularConversations];
+    }
+    
+    DDLogInfo(@"Conversation with remote key %d reloaded successfuly", conversation.remoteKey);
+}
+
+// Conversations list sync
 - (void)conversationsSyncFromNotification:(NSNotification *)notification
 {
     [self reloadConversations];

@@ -11,24 +11,21 @@
 
 @interface GLPTabBarController ()
 
-@property (assign, nonatomic) NSInteger notificationsCount;
-@property (assign, nonatomic) NSInteger liveNotificationsCount;
+@property (assign, nonatomic) NSInteger messagesCount;
 @property (assign, nonatomic) NSInteger profileNotificationsCount;
 
 @end
 
 @implementation GLPTabBarController
 
-@synthesize notificationsCount=_notificationsCount;
-@synthesize liveNotificationsCount=_liveNotificationsCount;
+@synthesize messagesCount=_messagesCount;
 @synthesize profileNotificationsCount=_profileNotificationsCount;
 
 static BOOL isViewDidDisappearCalled = YES;
 
 - (void)viewDidLoad
 {
-    _notificationsCount = 0;
-    _liveNotificationsCount = 0;
+    _messagesCount = 0;
     _profileNotificationsCount = 0;
     
     [self setDelegate:self];
@@ -42,7 +39,7 @@ static BOOL isViewDidDisappearCalled = YES;
     [super viewWillAppear:animated];
 
     if(isViewDidDisappearCalled) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
         
@@ -56,7 +53,7 @@ static BOOL isViewDidDisappearCalled = YES;
     
     isViewDidDisappearCalled = YES;
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_MESSAGE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
 }
 
@@ -71,21 +68,19 @@ static BOOL isViewDidDisappearCalled = YES;
 
 - (void)updateChatBadge:(NSNotification *)notification
 {
-    BOOL isLive = [notification.userInfo[@"isLive"] boolValue];
-    int index;
-    int count;
-    
-    if(isLive) {
-        _liveNotificationsCount++;
-        index = 2;
-        count = _liveNotificationsCount;
-    } else {
-        _notificationsCount++;
-        index = 1;
-        count = _notificationsCount;
+    if(self.selectedIndex == 1) {
+        return;
     }
     
-    [self updateBadgeForIndex:index count:count];
+    DDLogInfo(@"Tab bar update message badge notification");
+    
+    BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
+    if(newMessages) {
+        _messagesCount++;
+        [self updateBadgeForIndex:1 count:_messagesCount];
+        
+        DDLogInfo(@"Tab bar messages badge increment notification count");
+    }
 }
 
 
@@ -101,7 +96,6 @@ static BOOL isViewDidDisappearCalled = YES;
 - (void)updateBadgeContentForIndex:(int)index count:(int)count
 {
     NSString *badge = count > 0 ? [NSString stringWithFormat:@"%d", count] : nil;
-    
     [self.tabBar.items[index] setBadgeValue:badge];
 }
 
@@ -109,16 +103,12 @@ static BOOL isViewDidDisappearCalled = YES;
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    
     switch (item.tag) {
         case 1:
-            _notificationsCount = 0;
+            _messagesCount = 0;
             break;
         case 2:
-            _liveNotificationsCount = 0;
-            break;
         case 3:
-            
             break;
         case 4:
             _profileNotificationsCount = 0;

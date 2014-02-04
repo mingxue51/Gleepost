@@ -386,6 +386,9 @@ static GLPLiveConversationsManager *instance = nil;
             DDLogInfo(@"New last shown message key: %d", last.key);
         }
         
+        // mark conversation as read
+        synchConversation.hasUnreadMessages = NO;
+        
         array = [[NSArray alloc] initWithArray:syncMessages copyItems:YES];
     });
     
@@ -504,6 +507,9 @@ static GLPLiveConversationsManager *instance = nil;
             DDLogInfo(@"Remote message already exists in conversation's messages, abort");
             return;
         }
+        
+        // conversation has unread messages
+        conversation.hasUnreadMessages = YES;
         
         [self internalAddMessage:message toConversation:conversation];
         [self internalNotifyConversation:conversation withNewMessages:YES];
