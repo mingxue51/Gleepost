@@ -133,7 +133,7 @@ const float TOP_OFFSET = 230.0f;
 
     [self configHeader];
     
-    [self configTabbarFormat];
+    //[self configTabbarFormat];
     
     [self configNewElementsIndicatorView];
     

@@ -55,10 +55,17 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.emailTextField becomeFirstResponder];
+
+    
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.emailTextField becomeFirstResponder];
 
     
     [self sendViewToGAI:NSStringFromClass([self class])];

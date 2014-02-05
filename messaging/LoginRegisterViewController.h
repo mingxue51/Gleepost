@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RegisterViewsProtocol.h"
 
-@interface LoginRegisterViewController : UIViewController
+@interface LoginRegisterViewController : UIViewController <RegisterViewsProtocol>
 
 @end
