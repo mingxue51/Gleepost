@@ -132,11 +132,11 @@
 		58428E3A18A2867000B82E4B /* RegisterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58428E3918A2867000B82E4B /* RegisterView.m */; };
 		58428E4618A2ADA400B82E4B /* SignUpOneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58428E4518A2ADA400B82E4B /* SignUpOneView.xib */; };
 		58428E4918A2AE1900B82E4B /* SignUpOneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58428E4818A2AE1900B82E4B /* SignUpOneView.m */; };
-		58428E4F18A2AFBF00B82E4B /* bird-house-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58428E4A18A2AFBF00B82E4B /* bird-house-7@2x.png */; };
 		58428E5018A2AFBF00B82E4B /* id-card-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58428E4B18A2AFBF00B82E4B /* id-card-7@2x.png */; };
 		58428E5118A2AFBF00B82E4B /* man-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58428E4C18A2AFBF00B82E4B /* man-7@2x.png */; };
 		58428E5218A2AFBF00B82E4B /* message-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58428E4D18A2AFBF00B82E4B /* message-7@2x.png */; };
 		58428E5318A2AFBF00B82E4B /* proximity-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58428E4E18A2AFBF00B82E4B /* proximity-7@2x.png */; };
+		58428E5518A2B9D800B82E4B /* bird-house-7new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58428E5418A2B9D800B82E4B /* bird-house-7new@2x.png */; };
 		58433283180ED55900BD9F74 /* PostTextCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58433282180ED55900BD9F74 /* PostTextCellView.xib */; };
 		58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58433286180F032C00BD9F74 /* LoginRegisterViewController.m */; };
 		5843328B180F069800BD9F74 /* Gleepost_main.png in Resources */ = {isa = PBXBuildFile; fileRef = 58433288180F069800BD9F74 /* Gleepost_main.png */; };
@@ -333,7 +333,7 @@
 		58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */; };
 		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
-		58DAD77C1859FBD20016D838 /* bird-house-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7771859FBD20016D838 /* bird-house-7-old@2x.png */; };
+		58DAD77C1859FBD20016D838 /* bird-house-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7771859FBD20016D838 /* bird-house-7@2x.png */; };
 		58DAD77D1859FBD20016D838 /* id-card-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7781859FBD20016D838 /* id-card-7-old@2x.png */; };
 		58DAD77E1859FBD20016D838 /* man-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7791859FBD20016D838 /* man-7-old@2x.png */; };
 		58DAD77F1859FBD20016D838 /* message-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD77A1859FBD20016D838 /* message-7-old@2x.png */; };
@@ -741,11 +741,11 @@
 		58428E4518A2ADA400B82E4B /* SignUpOneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpOneView.xib; sourceTree = "<group>"; };
 		58428E4718A2AE1900B82E4B /* SignUpOneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpOneView.h; sourceTree = "<group>"; };
 		58428E4818A2AE1900B82E4B /* SignUpOneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpOneView.m; sourceTree = "<group>"; };
-		58428E4A18A2AFBF00B82E4B /* bird-house-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7@2x.png"; sourceTree = "<group>"; };
 		58428E4B18A2AFBF00B82E4B /* id-card-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card-7@2x.png"; sourceTree = "<group>"; };
 		58428E4C18A2AFBF00B82E4B /* man-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "man-7@2x.png"; sourceTree = "<group>"; };
 		58428E4D18A2AFBF00B82E4B /* message-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-7@2x.png"; sourceTree = "<group>"; };
 		58428E4E18A2AFBF00B82E4B /* proximity-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "proximity-7@2x.png"; sourceTree = "<group>"; };
+		58428E5418A2B9D800B82E4B /* bird-house-7new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7new@2x.png"; sourceTree = "<group>"; };
 		58433282180ED55900BD9F74 /* PostTextCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostTextCellView.xib; sourceTree = "<group>"; };
 		58433285180F032C00BD9F74 /* LoginRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginRegisterViewController.h; sourceTree = "<group>"; };
 		58433286180F032C00BD9F74 /* LoginRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginRegisterViewController.m; sourceTree = "<group>"; };
@@ -998,7 +998,7 @@
 		58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewImage.h; sourceTree = "<group>"; };
 		58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewImage.m; sourceTree = "<group>"; };
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
-		58DAD7771859FBD20016D838 /* bird-house-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7-old@2x.png"; sourceTree = "<group>"; };
+		58DAD7771859FBD20016D838 /* bird-house-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7@2x.png"; sourceTree = "<group>"; };
 		58DAD7781859FBD20016D838 /* id-card-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card-7-old@2x.png"; sourceTree = "<group>"; };
 		58DAD7791859FBD20016D838 /* man-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "man-7-old@2x.png"; sourceTree = "<group>"; };
 		58DAD77A1859FBD20016D838 /* message-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-7-old@2x.png"; sourceTree = "<group>"; };
@@ -1972,12 +1972,12 @@
 		5890D22618482D8600E293DD /* New Tabbar */ = {
 			isa = PBXGroup;
 			children = (
-				58428E4A18A2AFBF00B82E4B /* bird-house-7@2x.png */,
+				58428E5418A2B9D800B82E4B /* bird-house-7new@2x.png */,
 				58428E4B18A2AFBF00B82E4B /* id-card-7@2x.png */,
 				58428E4C18A2AFBF00B82E4B /* man-7@2x.png */,
 				58428E4D18A2AFBF00B82E4B /* message-7@2x.png */,
 				58428E4E18A2AFBF00B82E4B /* proximity-7@2x.png */,
-				58DAD7771859FBD20016D838 /* bird-house-7-old@2x.png */,
+				58DAD7771859FBD20016D838 /* bird-house-7@2x.png */,
 				58DAD7781859FBD20016D838 /* id-card-7-old@2x.png */,
 				58DAD7791859FBD20016D838 /* man-7-old@2x.png */,
 				58DAD77A1859FBD20016D838 /* message-7-old@2x.png */,
@@ -3107,7 +3107,6 @@
 			files = (
 				5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */,
 				58729AD6189C1BC40041022C /* notification_btn.png in Resources */,
-				58428E4F18A2AFBF00B82E4B /* bird-house-7@2x.png in Resources */,
 				5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */,
 				80AB892717C267F50053E784 /* InfoPlist.strings in Resources */,
 				589125491858CF2E000531DE /* comment_button.png in Resources */,
@@ -3200,6 +3199,7 @@
 				58729AD5189C1BC40041022C /* notification_btn_selected.png in Resources */,
 				5843328C180F069800BD9F74 /* loginwithfacebook.png in Resources */,
 				58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */,
+				58428E5518A2B9D800B82E4B /* bird-house-7new@2x.png in Resources */,
 				58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */,
 				8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */,
 				584C1EF4181ACBCA00862E81 /* contacts_tab@2x.png in Resources */,
@@ -3229,7 +3229,7 @@
 				806E3D7F1832B1960063AACE /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				58AD86BA1892C01500016C6D /* top_wall.png in Resources */,
 				586659B517F1AC2300A0354E /* messageboxgreen@2x.png in Resources */,
-				58DAD77C1859FBD20016D838 /* bird-house-7-old@2x.png in Resources */,
+				58DAD77C1859FBD20016D838 /* bird-house-7@2x.png in Resources */,
 				58E3DAB71884055E00B9B048 /* pole.png in Resources */,
 				58E3DAC9188405FB00B9B048 /* background_day_old.png in Resources */,
 				583CE32818A0018F00E78C08 /* hoover.png in Resources */,

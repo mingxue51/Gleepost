@@ -133,7 +133,7 @@ const float TOP_OFFSET = 230.0f;
 
     [self configHeader];
     
-    //[self configTabbarFormat];
+    [self configTabbarFormat];
     
     [self configNewElementsIndicatorView];
     
@@ -429,11 +429,13 @@ const float TOP_OFFSET = 230.0f;
     // set selected and unselected icons
     NSArray *items = self.tabBarController.tabBar.items;
     
+    
     UITabBarItem *item = [items objectAtIndex:0];
     
     item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        
+//
     item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+    
     
     self.homeTabbarItem = item;
     

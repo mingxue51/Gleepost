@@ -104,7 +104,7 @@
 
 //    [self configureNavigationBar];
 
-    [self configTabbar];
+//    [self configTabbar];
     
     
     // Uncomment the following line to preserve selection between presentations.
@@ -122,9 +122,9 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
-    
-    [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+//    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+//    
+//    [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
     
     self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
@@ -160,12 +160,12 @@
 
 #pragma mark - Configuration
 
--(void)configTabbar
-{
-    NSArray *items = self.tabBarController.tabBar.items;
-    
-    self.profileTabbarItem = [items objectAtIndex:4];
-}
+//-(void)configTabbar
+//{
+//    NSArray *items = self.tabBarController.tabBar.items;
+//    
+//    self.profileTabbarItem = [items objectAtIndex:4];
+//}
 
 -(void)addNavigationButtons
 {
@@ -246,7 +246,7 @@
     
 //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
     
-    self.title = @"Me";
+//    self.title = @"Me";
     
 
 }
@@ -877,7 +877,7 @@
 
 -(void)setPreviousNavigationBarName
 {
-    [self.navigationItem setTitle:@"Me"];
+//    [self.navigationItem setTitle:@"Me"];
 }
 
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
