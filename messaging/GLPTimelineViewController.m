@@ -436,6 +436,7 @@ const float TOP_OFFSET = 230.0f;
 //
     item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
     
+    item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
     
     self.homeTabbarItem = item;
     
@@ -446,6 +447,9 @@ const float TOP_OFFSET = 230.0f;
     
     item.selectedImage = [UIImage imageNamed:@"message-7"];
     
+    item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+
+    
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
     
     
@@ -455,6 +459,9 @@ const float TOP_OFFSET = 230.0f;
     
     item.selectedImage = [UIImage imageNamed:@"proximity-7"];
     
+    item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+
+    
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
 
     
@@ -463,6 +470,9 @@ const float TOP_OFFSET = 230.0f;
     item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     item.selectedImage = [UIImage imageNamed:@"man-7"];
+    
+    item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
 
     
@@ -471,6 +481,9 @@ const float TOP_OFFSET = 230.0f;
     item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+    
+    item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
 

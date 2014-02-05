@@ -30,6 +30,18 @@ static BOOL isViewDidDisappearCalled = YES;
     
     [self setDelegate:self];
     
+    
+    
+    DDLogDebug(@"-> %f : %f", self.tabBar.frame.origin.y, self.tabBar.frame.size.height);
+    
+    CGRect frame = self.tabBar.frame;
+    
+    
+    
+    [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+10.0f, frame.size.width, 39.0f)];
+    
+    
+    
 }
 
 
