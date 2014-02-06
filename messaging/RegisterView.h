@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RegisterViewsProtocol.h"
+#import "WebClientHelper.h"
 
 @interface RegisterView : UIView
 
@@ -17,9 +18,14 @@
 -(NSString*)textFirstTextField;
 -(NSString*)textSecondTextField;
 -(void)setDelegate:(UIViewController<RegisterViewsProtocol> *)delegate;
+-(UIViewController<RegisterViewsProtocol> *)getDelegate;
+-(NSArray*)firstAndSecondFields;
 -(void)login;
 -(void)becomeFirstFieldFirstResponder;
 -(void)resignFieldResponder;
 -(void)setTextToFirst:(NSString*)firstText andToSecond:(NSString*)secondText;
+-(void)nextView;
+-(BOOL)areTheDetailsValid;
+
 
 @end

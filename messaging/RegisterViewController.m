@@ -151,8 +151,6 @@
     
     //TODO: Check if e-mail is a valid university e-mail.
     
-    
-    
 
     
 }

@@ -1521,7 +1521,7 @@
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="F06A3F3C-E61C-42FD-ADE4-29AB170D3B14" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="6F0494D2-2FD0-413E-B171-94D8E472F759" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2595,7 +2595,7 @@
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="F06A3F3C-E61C-42FD-ADE4-29AB170D3B14" width="34" height="34">
+        <image name="6F0494D2-2FD0-413E-B171-94D8E472F759" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -2762,7 +2762,7 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="tJq-gA-gHE"/>
+        <segue reference="yy9-mn-oeB"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="UCY-3t-8FQ"/>
         <segue reference="C4C-f3-cdX"/>

@@ -14,6 +14,7 @@
 
 -(void)navigateToNextView;
 -(void)login;
-
+-(void)firstAndLastName:(NSArray*)firstLastName;
+-(void)emailAndPass:(NSArray*)emailPass;
 
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "SignUpOneView.h"
+#import "ValidFields.h"
+#import "WebClientHelper.h"
 
 @implementation SignUpOneView
 
@@ -19,13 +21,50 @@
     return self;
 }
 
-/*
+-(void)awakeFromNib
+{
+    [self becomeFirstFieldFirstResponder];
+}
+
+- (IBAction)nextView:(id)sender
+{
+    
+    //Check if e-mail and password are valid.
+    if([self areDetailsValid])
+    {
+        [[super getDelegate] emailAndPass:[super firstAndSecondFields]];
+        
+        [super nextView];
+
+    }
+    else
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your e-mail or your password."];
+    }
+    
+    //TODO: Check if e-mail is a valid university e-mail.
+    
+}
+
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
+    
+    [self setUpTextFields];
+    
+    
     // Drawing code
 }
-*/
+
+#pragma mark - Other methods
+
+-(BOOL)areDetailsValid
+{
+    return ([ValidFields NSStringIsValidEmail:[super textFirstTextField]] && ![[super textFirstTextField] isEqualToString:@""]);
+}
+
 
 @end

@@ -13,6 +13,7 @@
 #import "RegisterPositionHelper.h"
 #import "RegisterView.h"
 #import "KeyboardHelper.h"
+#import "SignUpOneView.h"
 
 @interface LoginRegisterViewController ()
 
@@ -34,7 +35,13 @@
 
 @property (strong, nonatomic) RegisterView *currentView;
 
+@property (strong, nonatomic) NSDictionary *signUpViews;
+
 @property (assign, nonatomic) float ANIMATION_DURATION;
+
+@property (strong, nonatomic) NSArray *firstLastName;
+
+@property (strong, nonatomic) NSArray *emailPass;
 
 
 @end
@@ -62,15 +69,12 @@
     
     [self setBackground];
     
-    [self setImages];
     
     [self initialiseViews];
     
     [self initialiseObjects];
     
-    [self loadRegisterViews];
     
-    _ANIMATION_DURATION = 0.25;
     
 }
 
@@ -106,6 +110,9 @@
  */
 -(void)loadRegisterViews
 {
+//    _signUpViews = [[NSDictionary alloc] initWithObjectsAndKeys:[self loadNibWithName:@"SignUpOneView"], [NSNumber numberWithInt:1], [self loadNibWithName:@"SignUpTwoView"], [NSNumber numberWithInt:2] , nil];
+    
+    _signUpViews = [[NSDictionary alloc] initWithObjectsAndKeys:@"SignUpOneView", [NSNumber numberWithInt:1], @"SignUpTwoView", [NSNumber numberWithInt:2], @"SignUpThreeView", [NSNumber numberWithInt:3], @"SignUpFourView", [NSNumber numberWithInt:4], @"SignUpFiveView", [NSNumber numberWithInt:5], nil];
     
 }
 
@@ -114,6 +121,7 @@
     _mainViewFrame = _mainView.frame;
     _mainViewFrameInit = _mainView.frame;
     
+    _ANIMATION_DURATION = 0.25;
 
 }
 
@@ -122,6 +130,11 @@
     [_backBtn setHidden:YES];
     
     _currentViewId = 0;
+    
+    //Fetch all the views and add them to the dictonary in order.
+   
+    [self loadRegisterViews];
+
 }
 
 #pragma mark - Fake navigators
@@ -129,10 +142,19 @@
 - (IBAction)gleepostSignUp:(id)sender
 {
     //Animate mainView to the middle of the screen.
-//    [self continueToLoginSignUpAnimation];
+    //[self continueToLoginSignUpAnimation];
     
+    //[self loadAndAddNibWithName:@"SignUpOneView"];
+//    ++_currentViewId;
+
     
-    [self performSegueWithIdentifier:@"register" sender:self];
+    [self navigateToNextView];
+    
+    [self continueToLoginSignUpAnimationWithCallbackBlock:^(BOOL finished) {
+        
+    }];
+    
+    //[self performSegueWithIdentifier:@"register" sender:self];
 }
 
 
@@ -142,20 +164,9 @@
     
     //Load the login view.
     
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"LoginView" owner:self options:nil];
+    ++_currentViewId;
     
-    _currentView = [array objectAtIndex:0];
-    
-    [_currentView setDelegate:self];
-    
-//    [_currentView becomeFirstFieldFirstResponder];
-    
-    [_currentView setAlpha:0.0];
-    
-    [_currentView setFrame:CGRectMake(_mainViewFrame.origin.x, _mainViewFrameInit.origin.y, _mainViewFrame.size.width, _mainViewFrame.size.height)];
-    
-    
-    [self.view addSubview:_currentView];
+    [self loadAndAddNibWithName:@"LoginView"];
     
 
     
@@ -192,7 +203,9 @@
 
 - (IBAction)goBack:(id)sender
 {
-    if(_currentViewId == 0 || _currentViewId == 1)
+    DDLogDebug(@"GO BACK: %d", _currentViewId);
+    
+    if(_currentViewId == 1)
     {
         //Navigate to the first view.
         [self goBackToLoginRegisterAnimation];
@@ -200,9 +213,80 @@
     }
     else
     {
-        //Navigate back to the previews view.
+        //Navigate back to the previews view from right to left.
+        [self goBackView];
     }
     
+    --_currentViewId;
+    
+    
+}
+
+#pragma mark - Helpers
+
+-(void)loadAndAddNibWithName:(NSString*)nibName
+{
+    
+    _currentView = [self loadNibWithName:nibName];
+    
+    [_currentView setDelegate:self];
+    
+    [_currentView setAlpha:0.0];
+    
+    [_currentView setFrame:CGRectMake(_mainViewFrame.origin.x, _mainViewFrameInit.origin.y, _mainViewFrame.size.width, _mainViewFrame.size.height)];
+    
+    
+    [self.view addSubview:_currentView];
+}
+
+-(RegisterView*)loadNibWithName:(NSString*)nibName
+{
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
+    
+    return [array objectAtIndex:0];
+}
+
+-(RegisterView*)loadAndAddViewWithId:(int)viewId
+{
+    
+    _currentView = [self loadNibWithName:[_signUpViews objectForKey:[NSNumber numberWithInt:viewId]]];
+    
+    [_currentView setDelegate:self];
+    
+    [_currentView setAlpha:0.0];
+    
+    if([_currentView isKindOfClass:[SignUpOneView class]])
+    {
+        [_currentView setFrame:CGRectMake(_mainViewFrame.origin.x, _mainViewFrameInit.origin.y, _mainViewFrame.size.width, _mainViewFrame.size.height)];
+    }
+    else
+    {
+        [_currentView setFrame:CGRectMake(320.0f, [RegisterPositionHelper middleScreenY], _mainViewFrame.size.width, _mainViewFrame.size.height)];
+
+    }
+    
+    _currentView.tag = viewId*10;
+    
+    
+    for(UIView *v in self.view.subviews)
+    {
+        if(v.tag == viewId*10)
+        {
+            DDLogDebug(@"DUPLICATED!");
+            
+            //Show already exist view.
+            [v setAlpha:1.0f];
+            ([(RegisterView*)v becomeFirstResponder]);
+            
+            return _currentView;
+
+        }
+    }
+    
+    
+    [self.view addSubview:_currentView];
+    
+    return _currentView;
 }
 
 #pragma mark - RegisterViewsProtocol delegate
@@ -212,6 +296,25 @@
     [self performSegueWithIdentifier:@"start" sender:self];
 }
 
+-(void)navigateToNextView
+{
+    //TODO: If the currentView is equal to 4 then try to navigate to the main view controller.
+
+    ++_currentViewId;
+    
+    //Load the next view.
+    [self goToNextViewWithView:[self loadAndAddViewWithId:_currentViewId]];
+}
+
+-(void)firstAndLastName:(NSArray *)firstLastName
+{
+    _firstLastName = firstLastName;
+}
+
+-(void)emailAndPass:(NSArray *)emailPass
+{
+    _emailPass = emailPass;
+}
 
 
 #pragma mark - Animations
@@ -252,6 +355,10 @@
 
 -(void)goBackToLoginRegisterAnimation
 {
+    //Remove all the subviews.
+    
+    [self removeAllTheSuviews];
+    
     [_currentView resignFieldResponder];
     
     [_signUpBtn setHidden:NO];
@@ -274,6 +381,7 @@
         
         [_backBtn setAlpha:0.0];
         
+        
     } completion:^(BOOL finished) {
         
 
@@ -282,6 +390,83 @@
         _currentView = nil;
         
     }];
+}
+
+-(void)goBackView
+{
+    //Hide current view.
+    
+    [UIView animateWithDuration:_ANIMATION_DURATION animations:^{
+        
+//        [_currentView setAlpha:0.0];
+        [self exitNavigationWithView:_currentView];
+        
+    } completion:^(BOOL finished) {
+        
+        [self removePreviewsViewFromSubview];
+        
+    }];
+    
+    
+    
+    //Show the previews view.
+    [self loadAndAddViewWithId:_currentViewId-1];
+    
+//    [UIView animateWithDuration:_ANIMATION_DURATION animations:^{
+//        
+//        [_currentView setFrame:CGRectMake(0.0f, [RegisterPositionHelper middleScreenY], _mainViewFrame.size.width, _mainViewFrame.size.height)];
+//
+//        
+//    }];
+
+}
+
+-(void)exitNavigationWithView:(RegisterView*)view
+{
+    [view setFrame:CGRectMake(320.0f, [RegisterPositionHelper middleScreenY], _mainViewFrame.size.width, _mainViewFrame.size.height)];
+    
+    
+   
+}
+
+-(void)goToNextViewWithView:(RegisterView*)view
+{
+    
+    if(_currentViewId == 1)
+    {
+        //Do the default animation. (Keyboard is doing that for us don't do anything).
+        
+    }
+    else
+    {
+        //Do the push animation.
+        DDLogDebug(@"CURRENT VIEW PUSH ID: %d - %d", _currentViewId-1, _currentView.tag);
+
+
+        
+        [UIView animateWithDuration:_ANIMATION_DURATION animations:^{
+            
+            [self showNextView];
+
+            
+        } completion:^(BOOL finished) {
+            
+            //Remove the previous view from the parent view.
+            
+//            [self removeNotNeededSuviews];
+            
+
+            
+        }];
+    }
+}
+
+-(void)showNextView
+{
+    [_currentView setFrame:CGRectMake(0, [RegisterPositionHelper middleScreenY], _mainViewFrame.size.width, _mainViewFrame.size.height)];
+    
+    
+    [_currentView setAlpha:1.0];
 }
 
 -(void)showLoginView
@@ -317,9 +502,40 @@
     [_currentView setAlpha:0.0];
 }
 
--(void)setImages
+-(void)removeAllTheSuviews
 {
-    
+    for(UIView *v in self.view.subviews)
+    {
+        if([v isKindOfClass:[RegisterView class]])
+        {
+            [v removeFromSuperview];
+        }
+    }
+}
+
+-(void)removePreviewsViewFromSubview
+{
+    for(UIView *v in self.view.subviews)
+    {
+        if([v isKindOfClass:[RegisterView class]])
+        {
+            if(_currentView.tag+10 == v.tag)
+            {
+                [UIView animateWithDuration:_ANIMATION_DURATION animations:^{
+                    
+                    [self exitNavigationWithView:(RegisterView*)v];
+                    
+                } completion:^(BOOL finished) {
+                    
+                    [v removeFromSuperview];
+
+                }];
+                
+            }
+
+            
+        }
+    }
 }
 
 -(void) setBackground
@@ -386,6 +602,8 @@
         
     }];
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {

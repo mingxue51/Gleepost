@@ -37,6 +37,11 @@
     [_delegate login];
 }
 
+-(void)nextView
+{
+    [_delegate navigateToNextView];
+}
+
 #pragma mark - Accessors
 
 -(NSString*)textFirstTextField
@@ -50,6 +55,22 @@
     return _second.text;
 }
 
+-(BOOL)areTheDetailsValid
+{
+    return (![self.first.text isEqualToString:@""] && ![self.second.text isEqualToString:@""]);
+}
+
+-(UIViewController<RegisterViewsProtocol> *)getDelegate
+{
+    return _delegate;
+}
+
+-(NSArray*)firstAndSecondFields
+{
+    NSArray *array = [[NSArray alloc] initWithObjects:_first.text, _second.text, nil];
+    
+    return array;
+}
 
 
 #pragma mark - Modifiers

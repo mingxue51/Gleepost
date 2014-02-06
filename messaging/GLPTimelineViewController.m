@@ -433,17 +433,14 @@ const float TOP_OFFSET = 230.0f;
     UITabBarItem *item = [items objectAtIndex:0];
     
     item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//
+
     item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
     
     item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     
     self.homeTabbarItem = item;
     
-    UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bird-house-7"]];
     
-    DDLogDebug(@"SIZE: %f", img.frame.size.height);
-
     
     item = [items objectAtIndex:1];
     

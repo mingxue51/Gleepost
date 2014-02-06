@@ -288,6 +288,14 @@
 		58999C1418930E6300FB2F10 /* navbar3.png in Resources */ = {isa = PBXBuildFile; fileRef = 58999C1318930E6300FB2F10 /* navbar3.png */; };
 		589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642917EC871100F64B30 /* ProfileViewController.m */; };
 		589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642F17EC88DC00F64B30 /* ContactsViewController.m */; };
+		589EAD0918A3C4A4005B2F4C /* SignUpTwoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD0818A3C4A4005B2F4C /* SignUpTwoView.xib */; };
+		589EAD0C18A3C54E005B2F4C /* SignUpTwoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD0B18A3C54E005B2F4C /* SignUpTwoView.m */; };
+		589EAD0E18A403F8005B2F4C /* SignUpThreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD0D18A403F8005B2F4C /* SignUpThreeView.xib */; };
+		589EAD1118A40416005B2F4C /* SignUpThreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD1018A40416005B2F4C /* SignUpThreeView.m */; };
+		589EAD1318A418C2005B2F4C /* SignUpFourView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD1218A418C2005B2F4C /* SignUpFourView.xib */; };
+		589EAD1618A41918005B2F4C /* SignUpFourView.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD1518A41918005B2F4C /* SignUpFourView.m */; };
+		589EAD1818A41B37005B2F4C /* SignUpFiveView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD1718A41B37005B2F4C /* SignUpFiveView.xib */; };
+		589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD1A18A41B95005B2F4C /* SignUpFiveView.m */; };
 		589EFD9C182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */; };
 		589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */; };
 		58A122AC17ECC26F00E2AB4B /* tabbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A122AB17ECC26F00E2AB4B /* tabbar.png */; };
@@ -938,6 +946,18 @@
 		589C642917EC871100F64B30 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		589C642E17EC88DB00F64B30 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		589C642F17EC88DC00F64B30 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
+		589EAD0818A3C4A4005B2F4C /* SignUpTwoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpTwoView.xib; sourceTree = "<group>"; };
+		589EAD0A18A3C54E005B2F4C /* SignUpTwoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpTwoView.h; sourceTree = "<group>"; };
+		589EAD0B18A3C54E005B2F4C /* SignUpTwoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpTwoView.m; sourceTree = "<group>"; };
+		589EAD0D18A403F8005B2F4C /* SignUpThreeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpThreeView.xib; sourceTree = "<group>"; };
+		589EAD0F18A40416005B2F4C /* SignUpThreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpThreeView.h; sourceTree = "<group>"; };
+		589EAD1018A40416005B2F4C /* SignUpThreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpThreeView.m; sourceTree = "<group>"; };
+		589EAD1218A418C2005B2F4C /* SignUpFourView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpFourView.xib; sourceTree = "<group>"; };
+		589EAD1418A41918005B2F4C /* SignUpFourView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpFourView.h; sourceTree = "<group>"; };
+		589EAD1518A41918005B2F4C /* SignUpFourView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpFourView.m; sourceTree = "<group>"; };
+		589EAD1718A41B37005B2F4C /* SignUpFiveView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpFiveView.xib; sourceTree = "<group>"; };
+		589EAD1918A41B95005B2F4C /* SignUpFiveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpFiveView.h; sourceTree = "<group>"; };
+		589EAD1A18A41B95005B2F4C /* SignUpFiveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpFiveView.m; sourceTree = "<group>"; };
 		589EFD9A182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversationParticipantsDao.h; sourceTree = "<group>"; };
 		589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationParticipantsDao.m; sourceTree = "<group>"; };
 		589EFD9D182D38CA00EBEB2E /* GLPLiveUserDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveUserDao.h; sourceTree = "<group>"; };
@@ -1588,6 +1608,10 @@
 			children = (
 				58428E2E18A27D9300B82E4B /* LoginView.xib */,
 				58428E4518A2ADA400B82E4B /* SignUpOneView.xib */,
+				589EAD0818A3C4A4005B2F4C /* SignUpTwoView.xib */,
+				589EAD0D18A403F8005B2F4C /* SignUpThreeView.xib */,
+				589EAD1218A418C2005B2F4C /* SignUpFourView.xib */,
+				589EAD1718A41B37005B2F4C /* SignUpFiveView.xib */,
 			);
 			name = Register;
 			sourceTree = "<group>";
@@ -1602,6 +1626,14 @@
 				58428E3918A2867000B82E4B /* RegisterView.m */,
 				58428E4718A2AE1900B82E4B /* SignUpOneView.h */,
 				58428E4818A2AE1900B82E4B /* SignUpOneView.m */,
+				589EAD0A18A3C54E005B2F4C /* SignUpTwoView.h */,
+				589EAD0B18A3C54E005B2F4C /* SignUpTwoView.m */,
+				589EAD0F18A40416005B2F4C /* SignUpThreeView.h */,
+				589EAD1018A40416005B2F4C /* SignUpThreeView.m */,
+				589EAD1418A41918005B2F4C /* SignUpFourView.h */,
+				589EAD1518A41918005B2F4C /* SignUpFourView.m */,
+				589EAD1918A41B95005B2F4C /* SignUpFiveView.h */,
+				589EAD1A18A41B95005B2F4C /* SignUpFiveView.m */,
 			);
 			name = Register;
 			sourceTree = "<group>";
@@ -3246,6 +3278,7 @@
 				805E155A180EF3E700705B1C /* share_image@2x.png in Resources */,
 				584CF662182274EE00EFABB8 /* send.png in Resources */,
 				586458B9180854B700B1B19C /* share@2x.png in Resources */,
+				589EAD0E18A403F8005B2F4C /* SignUpThreeView.xib in Resources */,
 				58AD86A518929F2200016C6D /* bg_middle.png in Resources */,
 				5843328F180F09C900BD9F74 /* Gleepost2.png in Resources */,
 				580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */,
@@ -3256,6 +3289,7 @@
 				58DAD77F1859FBD20016D838 /* message-7-old@2x.png in Resources */,
 				8096E4E317C2C88500C7BF60 /* comments.png in Resources */,
 				586659FB17F2203E00A0354E /* new_chat_tab@2x.png in Resources */,
+				589EAD1818A41B37005B2F4C /* SignUpFiveView.xib in Resources */,
 				58428E4618A2ADA400B82E4B /* SignUpOneView.xib in Resources */,
 				58E3DAB31884053600B9B048 /* blades.png in Resources */,
 				58A67448184F93B100E3FE45 /* notifications_button.png in Resources */,
@@ -3324,6 +3358,7 @@
 				586659FD17F2203E00A0354E /* contacts_tab_old@2x.png in Resources */,
 				584E8E2D18A2EB3D005AEF91 /* message-7@2x.png in Resources */,
 				80E7478417CE9F4C001957E5 /* get_comments.json in Resources */,
+				589EAD1318A418C2005B2F4C /* SignUpFourView.xib in Resources */,
 				586659BE17F1B17E00A0354E /* camera_icon@2x.png in Resources */,
 				80E7478A17CEA2C4001957E5 /* post_comments.json in Resources */,
 				5832C4B7189929FC004FC4F6 /* show_categories.png in Resources */,
@@ -3416,6 +3451,7 @@
 				584CF676182303FC00EFABB8 /* ignore_contact.png in Resources */,
 				586CDFEA185244BD00902F68 /* user-added.png in Resources */,
 				580C7ACC1898632C007495EE /* splash@2x.png in Resources */,
+				589EAD0918A3C4A4005B2F4C /* SignUpTwoView.xib in Resources */,
 				583B9FE317F3676A00B4BEE3 /* set_tab_small.png in Resources */,
 				587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */,
 				587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */,
@@ -3558,6 +3594,7 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
+				589EAD1118A40416005B2F4C /* SignUpThreeView.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
@@ -3582,6 +3619,7 @@
 				8087E42E180EC02E00938264 /* _Post.m in Sources */,
 				807C4D16180AF0F6003D67E6 /* Conversation.m in Sources */,
 				8087E430180EC02E00938264 /* Post.m in Sources */,
+				589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */,
 				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				58212795189165B200BF36E5 /* CampusWallHeaderCell.m in Sources */,
@@ -3614,6 +3652,7 @@
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */,
 				584332A0180F30DC00BD9F74 /* PrivateProfileViewController.m in Sources */,
+				589EAD1618A41918005B2F4C /* SignUpFourView.m in Sources */,
 				58960EBF18A197E5005FC433 /* CustomPushTransitioningDelegate.m in Sources */,
 				807C4D18180AF0F6003D67E6 /* GLPMessage.m in Sources */,
 				8096E4EC17C2CBFD00C7BF60 /* CommentCell.m in Sources */,
@@ -3667,6 +3706,7 @@
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
+				589EAD0C18A3C54E005B2F4C /* SignUpTwoView.m in Sources */,
 				58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */,
 				58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,
