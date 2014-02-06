@@ -18,6 +18,8 @@
 
 @implementation GLPTabBarController
 
+const float TABBAR_OFFSET_HEIGHT = 5.0f;
+
 @synthesize messagesCount=_messagesCount;
 @synthesize profileNotificationsCount=_profileNotificationsCount;
 
@@ -31,17 +33,10 @@ static BOOL isViewDidDisappearCalled = YES;
     [self setDelegate:self];
     
     
-    
-    DDLogDebug(@"-> %f : %f", self.tabBar.frame.origin.y, self.tabBar.frame.size.height);
-    
     CGRect frame = self.tabBar.frame;
+
     
-    
-    
-    [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+10.0f, frame.size.width, 39.0f)];
-    
-    
-    
+    [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+TABBAR_OFFSET_HEIGHT, frame.size.width, frame.size.height-TABBAR_OFFSET_HEIGHT)];
 }
 
 
