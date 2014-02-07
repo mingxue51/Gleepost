@@ -63,7 +63,7 @@
 
 -(BOOL)areDetailsValid
 {
-    return ([ValidFields NSStringIsValidEmail:[super textFirstTextField]] && ![[super textFirstTextField] isEqualToString:@""]);
+    return ([ValidFields NSStringIsValidEmail:[super textFirstTextField]] && ![[super textSecondTextField] isEqualToString:@""]);
 }
 
 

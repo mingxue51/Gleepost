@@ -14,6 +14,9 @@
 #import "RegisterView.h"
 #import "KeyboardHelper.h"
 #import "SignUpOneView.h"
+#import "LoginView.h"
+#import "SignUpFourView.h"
+
 
 @interface LoginRegisterViewController ()
 
@@ -42,6 +45,9 @@
 @property (strong, nonatomic) NSArray *firstLastName;
 
 @property (strong, nonatomic) NSArray *emailPass;
+
+@property (strong, nonatomic) FDTakeController *fdTakeController;
+
 
 
 @end
@@ -123,6 +129,11 @@
     
     _ANIMATION_DURATION = 0.25;
 
+    
+    _fdTakeController = [[FDTakeController alloc] init];
+    _fdTakeController.viewControllerForPresentingImagePickerController = self;
+    _fdTakeController.delegate = self;
+    
 }
 
 -(void)initialiseViews
@@ -135,6 +146,20 @@
    
     [self loadRegisterViews];
 
+}
+
+
+
+#pragma mark - Accessors
+
+-(NSArray*)firstLastName
+{
+    return _firstLastName;
+}
+
+-(NSArray*)emailPass
+{
+    return _emailPass;
 }
 
 #pragma mark - Fake navigators
@@ -316,6 +341,27 @@
     _emailPass = emailPass;
 }
 
+-(void)pickImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+
+}
+
+
+#pragma mark - FDTakeController delegate
+
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dict
+{
+//    self.profileImage = photo;
+//    [self.addImageView setImage:photo];
+    
+    //TODO: This is not working good. Facing issues with views.
+    
+    SignUpFourView *s = (SignUpFourView*)_currentView;
+    
+    [s setImage:photo];
+    
+}
 
 #pragma mark - Animations
 

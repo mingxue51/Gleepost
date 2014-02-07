@@ -38,13 +38,14 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="goNext:" destination="2K8-X7-j5S" eventType="touchUpInside" id="GhW-d4-vX1"/>
+                        <action selector="registerUser:" destination="2K8-X7-j5S" eventType="touchUpInside" id="TLD-uQ-OIO"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="first" destination="hc9-5v-ho8" id="cel-9g-bUI"/>
+                <outlet property="profileImageView" destination="Gkz-h0-gfZ" id="Pg6-9F-MFw"/>
             </connections>
         </view>
     </objects>

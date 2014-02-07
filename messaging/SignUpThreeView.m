@@ -27,10 +27,8 @@
 
 - (IBAction)goNext:(id)sender
 {
-    
     if([self areTheDetailsValid])
     {
-        
         [[super getDelegate] firstAndLastName:[super firstAndSecondFields]];
         
         [super nextView];

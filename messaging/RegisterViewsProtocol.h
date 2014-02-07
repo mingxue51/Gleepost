@@ -16,5 +16,6 @@
 -(void)login;
 -(void)firstAndLastName:(NSArray*)firstLastName;
 -(void)emailAndPass:(NSArray*)emailPass;
+-(void)pickImage:(id)sender;
 
 @end

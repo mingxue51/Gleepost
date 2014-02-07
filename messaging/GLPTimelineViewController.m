@@ -986,8 +986,6 @@ const float TOP_OFFSET = 230.0f;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
-
-    
 }
 
 

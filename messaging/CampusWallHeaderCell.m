@@ -26,8 +26,8 @@
 
 @implementation CampusWallHeaderCell
 
-const float CELL_HEIGHT = 151;
-const float CELL_WIDTH = 198;
+const float CELL_WIDTH = 198; //
+const float CELL_HEIGHT = 132; //Change the height
 
 
 -(id)initWithIdentifier:(NSString *)identifier
@@ -43,9 +43,8 @@ const float CELL_WIDTH = 198;
         
 //        [ShapeFormatterHelper setCornerRadiusWithView:self.contentView andValue:17.0f];
         
-        [ShapeFormatterHelper setCornerRadiusWithView:self andValue:17.0f];
+//        [ShapeFormatterHelper setCornerRadiusWithView:self andValue:17.0f];
         
-        [self setBackgroundColor:[UIColor whiteColor]];
         
         //Format the image.
         [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];

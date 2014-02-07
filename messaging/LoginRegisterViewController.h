@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "RegisterViewsProtocol.h"
+#import "FDTakeController.h"
 
-@interface LoginRegisterViewController : UIViewController <RegisterViewsProtocol>
+@interface LoginRegisterViewController : UIViewController <RegisterViewsProtocol, UINavigationControllerDelegate, FDTakeDelegate>
+
+-(NSArray*)firstLastName;
+-(NSArray*)emailPass;
 
 @end
