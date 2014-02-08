@@ -527,9 +527,11 @@
     //Set directly the new user's profile image.
     self.userImage = photo;
     
+    [self refreshFirstCell];
     
-    //[self.profileView.profileImage setImage:photo];
-    //[self.profileView updateImage:photo];
+    
+//    [self.profileView.profileImage setImage:photo];
+//    [self.profileView updateImage:photo];
     
     //Communicate with server to change the image.
     [self uploadImageAndSetUserImageWithUserRemoteKey];

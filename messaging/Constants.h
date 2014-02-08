@@ -30,11 +30,14 @@
 #define GLPNOTIFICATION_NEW_MESSAGE                 @"GLPNewMessage"
 #define GLPNOTIFICATION_NETWORK_UPDATE              @"GLPNetworkStatusUpdate"
 
-#define GLP_WEBSERVICE_VERSION                      @"0.31"
+#define GLP_WEBSERVICE_VERSION                      @"0.30"
 #define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
 #define GLP_APP_FONT_BOLD                                @"Khmer UI"
+#define GLP_UNIVERS_LIGHT_BOLD                      @"Univers 45 Light"
+#define GLP_UNIVERS_CE_LIGHT                        @"Univers CE 45 Light"
+
 
 
 // DDLog

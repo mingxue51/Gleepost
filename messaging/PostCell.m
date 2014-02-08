@@ -37,8 +37,8 @@
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 310;
-const float TEXT_CELL_HEIGHT = 100;
+const float IMAGE_CELL_HEIGHT = 270;
+const float TEXT_CELL_HEIGHT = 70;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -47,15 +47,6 @@ const float TEXT_CELL_HEIGHT = 100;
     
     if(self)
     {
-        //Change the user's button shape to circle.
-        /**
-         button.clipsToBounds = YES;
-         
-         button.layer.cornerRadius = 20;//half of the width
-         button.layer.borderColor=[UIColor redColor].CGColor;
-         button.layer.borderWidth=2.0f;
-         */
-        
         self.socialPanelY = self.socialPanel.frame.origin.y;
         
         self.labelDimensions = CGRectMake(60.0f, 30.0f, 250.0f, 50.0f);
@@ -70,8 +61,8 @@ const float TEXT_CELL_HEIGHT = 100;
 //        [self.contentView addSubview:self.lineView];
         
 //        NSLog(@"Label content Y: %f",self.contentLbl.frame.origin.y);
-        self.initialPostContentLabelY = 37;
-        self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
+//        self.initialPostContentLabelY = 37;
+//        self.initialPostContentLabelHeight = self.contentLbl.frame.size.height;
 
     }
     
@@ -80,13 +71,14 @@ const float TEXT_CELL_HEIGHT = 100;
 
 
 static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
-static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT-30;
+static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before. 10 before.
-static const float PostContentLabelMaxWidth = 310;
+static const float PostContentLabelMaxWidth = 300;
 static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
-static const float ThreeLinesLimit = 62.0;
+//static const float ThreeLinesLimit = 62.0;
+static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
@@ -163,8 +155,6 @@ static const float OneLineText = 16.0;
         [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
     }
 
-    
-
     [self formatUsersImage];
     [self formatPostImage];
     
@@ -219,25 +209,14 @@ static const float OneLineText = 16.0;
         [self.contentLbl setNumberOfLines:0];
         
         //Hide comment button.
-        [self.commentBtn setHidden:YES];
+        [self.commentBtn setEnabled:NO];
         
-        
-//        self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
     }
     
     
-    
-//    [self.contentLbl setFrame:self.labelDimensions];
-//    [self.contentLbl sizeToFit];
-    
-    //[self setNewPositions];
 
-    
-//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-//    self.contentLbl.layer.borderWidth = 0.5f;
-//
-//    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
-//    self.contentView.layer.borderWidth = 0.5f;
+//    [self setBorderToContentLabel];
+
     
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
@@ -255,27 +234,32 @@ static const float OneLineText = 16.0;
 
 -(void)setFontToLabels
 {
-    //[self.contentLbl setFont:[UIFont fontWithName:GLP_APP_FONT size:13.0f]];
+    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_UNIVERS_LIGHT_BOLD] size:14.0f]];
     
-    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
+    [self.postTime setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:13.0f]];
     
-    [self.postTime setFont:[UIFont fontWithName:GLP_APP_FONT size:13.0f]];
+    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
     
-    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:12.0f]];
-    
-    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:12.0f]];
+    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
 }
 
 -(void)formatUsersImage
 {
     [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
-//    self.userImageView.layer.borderWidth = 1.0f;
-//    self.userImageView.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
 }
 
 -(void)formatPostImage
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:10];
+    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:8];
+}
+
+-(void)setBorderToContentLabel
+{
+    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+    self.contentLbl.layer.borderWidth = 0.5f;
+    
+//    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
+//    self.contentView.layer.borderWidth = 0.5f;
 }
 
 #pragma mark - Online indicator
@@ -396,7 +380,7 @@ static const float OneLineText = 16.0;
 {
 //    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     //[UIFont systemFontOfSize:13.0]
-    UIFont *font = [UIFont fontWithName:GLP_APP_FONT size:13.0];
+    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
@@ -408,9 +392,9 @@ static const float OneLineText = 16.0;
     CGSize size = rect.size;
     
     
-    if(size.height > ThreeLinesLimit && !isViewPost)
+    if(size.height > FiveLinesLimit && !isViewPost)
     {
-        return CGSizeMake(size.width, 50);
+        return CGSizeMake(size.width, FiveLinesLimit);
     }
     
 //    if(isViewPost)
@@ -434,10 +418,10 @@ static const float OneLineText = 16.0;
     height += [PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height /*+ PostContentViewPadding*/;
     
     //Decrease by 10 points when the text is over one line.
-    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)
-    {
-        height -= 10;
-    }
+//    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)
+//    {
+//        height -= 10;
+//    }
     
 //    NSLog(@"Final Height: %f Label size: %f. Content: %@",height, [PostCell getContentLabelSizeForContent:content].height, content);
     

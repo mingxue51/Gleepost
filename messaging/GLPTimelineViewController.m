@@ -1005,14 +1005,34 @@ const float TOP_OFFSET = 230.0f;
     {
         //[self contract];
     
-        [self.reNavBar setHidden:NO];
+        [UIView animateWithDuration:0.1f animations:^{
+            
+            [self.reNavBar setAlpha:1.0f];
+            
+        } completion:^(BOOL finished) {
+            
+            [self.reNavBar setHidden:NO];
+
+        }];
+        
         //[self.campusWallHeader showFakeNavigationBar];
             
     }
     else
     {
         //[self expand];
-        [self.reNavBar setHidden:YES];
+        
+        [UIView animateWithDuration:0.1f animations:^{
+            
+            [self.reNavBar setAlpha:0.0f];
+            
+        } completion:^(BOOL finished) {
+            
+            [self.reNavBar setHidden:YES];
+
+        }];
+        
+        
        // [self.campusWallHeader hideFakeNavigationBar];
 
     }
@@ -1182,10 +1202,10 @@ const float TOP_OFFSET = 230.0f;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
-    static NSString *CellIdentifierHeader = @"CampusWallHeader";
+//    static NSString *CellIdentifierHeader = @"CampusWallHeader";
     
     //Header cell.
-    CampusWallHeader *campusWallHeader;
+//    CampusWallHeader *campusWallHeader;
     
     PostCell *postCell;
 

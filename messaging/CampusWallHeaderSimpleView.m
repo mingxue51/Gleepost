@@ -35,6 +35,7 @@
     {
         [self setFrame:CGRectMake(0, 0, 320.0f, 295.0f)];
         
+        
         for(UIView * v in self.subviews)
         {
             if([v isKindOfClass:[CampusWallHeader class]])
@@ -49,7 +50,18 @@
     return self;
 }
 
+
+
 #pragma mark - Fake Navigation Bar
+
+-(void)formatNavigationBar
+{
+    //    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
+    
+    [_stanfordLbl setFont:[UIFont fontWithName:@"Univers 45 Light" size:24.0f]];
+
+}
+
 
 //-(void)showFakeNavigationBar
 //{
@@ -69,6 +81,8 @@
 -(void)formatElements
 {
     [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
+    
+    [self formatNavigationBar];
 }
 
 

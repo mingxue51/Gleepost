@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *eventsBtn;
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLbl;
 
 @end
 
@@ -37,6 +38,8 @@ const CGFloat HEIGH_FAKE = 64.0f;
 -(void)formatElements
 {
     [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
+    
+    [_titleLbl setFont:[UIFont fontWithName:@"Univers 45 Light" size:24.0f]];
 }
 
 - (IBAction)createNewPost:(id)sender
