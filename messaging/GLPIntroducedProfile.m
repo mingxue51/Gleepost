@@ -19,8 +19,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImage;
 @property (weak, nonatomic) IBOutlet UILabel *userName;
-@property (weak, nonatomic) IBOutlet UIButton *profileBtn;
 @property (weak, nonatomic) IBOutlet UIButton *addUser;
+@property (weak, nonatomic) IBOutlet UILabel *universityName;
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -64,7 +64,8 @@
 
     
     //Add tags to buttons.
-    self.profileBtn.tag = incomingUser.remoteKey;
+//    self.profileBtn.tag = incomingUser.remoteKey;
+    [self.universityName setText:incomingUser.networkName];
     self.addUser.tag = incomingUser.remoteKey;
     
 }
@@ -74,24 +75,22 @@
     [self.delegate navigateToProfile:sender];
 }
 
-- (IBAction)addUser:(id)sender
+-(void)addUser:(id)sender
 {
-    UIButton *btn = (UIButton*)sender;
+//    UIButton *btn = (UIButton*)sender;
     
     
-    [[WebClient sharedInstance] addContact:btn.tag callbackBlock:^(BOOL success) {
+    [[WebClient sharedInstance] addContact:_user.remoteKey callbackBlock:^(BOOL success) {
         
         if(success)
         {
             //Change the button style.
-            NSLog(@"Request has been sent to the user.");
+            DDLogInfo(@"Request has been sent to the user.");
             
-//            self.invitationSentView = [InvitationSentView loadingViewInView:[_privateProfileDelegate.view.window.subviews objectAtIndex:0]];
-//            self.invitationSentView.delegate = _privateProfileDelegate;
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.user.name profileImage:self.user.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
-            contact.remoteKey = btn.tag;
+            contact.remoteKey = _user.remoteKey;
             
             //Save contact to database.
             [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
@@ -101,12 +100,13 @@
         }
         else
         {
-            NSLog(@"Failed to send to the user.");
+            DDLogError(@"Failed to send to the user.");
             //This section of code should never be reached.
             [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
         }
     }];
 }
+
 
 -(void)setContactAsRequested
 {

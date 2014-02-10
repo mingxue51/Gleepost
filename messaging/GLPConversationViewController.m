@@ -55,6 +55,8 @@
 @property (assign, nonatomic) NSInteger selectedUserId;
 @property (strong, nonatomic) NSMutableArray *messages;
 
+@property (strong, nonatomic) GLPIntroducedProfile * introduced;
+
 @end
 
 @implementation GLPConversationViewController
@@ -68,9 +70,11 @@
     [super viewDidLoad];
 
     // configuration
-    [self configureNavigationBar];
     [self configureHeader];
+
+    [self configureNavigationBar];
     [self configureForm];
+    [self initialiseObjects];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
@@ -117,7 +121,13 @@
 }
 
 
+
 # pragma mark - Configuration
+
+-(void)initialiseObjects
+{
+    self.introduced = nil;
+}
 
 - (void)configureNavigationBar
 {
@@ -139,7 +149,15 @@
         self.navigationItem.titleView = titleLabel;
     }
     
-    self.title = [self isNewChat] ? @"Connected" : _conversation.title;
+//    self.title = [self isNewChat] ? @"Connected" : _conversation.title;
+    self.title = _conversation.title;
+
+    if([self isNewChat])
+    {
+        //Add the add user button to navigation bar.
+        [self addRandomChatAddUser];
+    }
+    
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -149,16 +167,30 @@
     [AppearanceHelper setNavigationBarColour:self];
 }
 
+-(void)addRandomChatAddUser
+{
+    UIImage *addIcon = [UIImage imageNamed:@"add_button"];
+    
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self.introduced action:@selector(addUser:) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack setBackgroundImage:addIcon forState:UIControlStateNormal];
+    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+    
+    self.navigationItem.rightBarButtonItem = addButton;
+}
+
 -(void)configureHeader
 {
     if([self isNewChat]) {
         NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
         
-        GLPIntroducedProfile * introduced = [array objectAtIndex:0];
-        [introduced updateContents:[_conversation getUniqueParticipant]];
-        introduced.delegate = self;
+        self.introduced = [array objectAtIndex:0];
+        [self.introduced updateContents:[_conversation getUniqueParticipant]];
+        self.introduced.delegate = self;
         
-        self.tableView.tableHeaderView = introduced;
+        self.tableView.tableHeaderView = self.introduced;
     }
 }
 

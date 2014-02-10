@@ -16,5 +16,8 @@
 @property (strong, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
 
 - (IBAction)addImage:(id)sender;
+- (void)doneSelectingDateForEvent:(NSDate *)date;
+-(void)cancelSelectingDateForEvent;
+
 
 @end

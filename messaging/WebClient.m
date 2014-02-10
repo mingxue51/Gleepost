@@ -17,6 +17,7 @@
 #import "AFNetworking.h"
 #import "GLPMessageProcessor.h"
 #import "NSUserDefaults+GLPAdditions.h"
+#import "DateFormatterHelper.h"
 
 @interface WebClient()
 
@@ -245,26 +246,37 @@ static WebClient *instance = nil;
     }];
 }
 
+/**
+ Server is not responding anything. That's why we are returning success = YES even if failure is triggered.
+ If pushToken is empty method is returning unsuccessful.
+ 
+ */
 -(void)deregisterPushToken:(NSString*)pushToken callback:(void (^)(BOOL success))callback
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
   
     NSString *path = [NSString stringWithFormat:@"devices/%@", pushToken];
     
-    [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        DDLogInfo(@"Push notifications deregistered for this device.");
-        
-        callback(YES);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        DDLogInfo(@"Error: %@", error);
-
-        
+    if(pushToken)
+    {
+        [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            callback(YES);
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            
+            
+            callback(YES);
+            
+        }];
+    }
+    else
+    {
         callback(NO);
-        
-    }];
+    }
+    
+
 }
 
 
@@ -309,10 +321,16 @@ static WebClient *instance = nil;
 
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
-    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+    
+    if(post.dateEventStarts)
+    {
+        NSString *attribs = [NSString stringWithFormat:@"event-time,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts]];
+        
+        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
+    }
     
     DDLogInfo(@"Post's categories before post: %@", [RemoteParser parseCategoriesToTags:post.categories]);
 
@@ -351,6 +369,19 @@ static WebClient *instance = nil;
     }];
 }
 
+
+///**
+// Call this mehtod when you need to create a new post that is event.
+// 
+// @param post
+// @param date
+// 
+// */
+//-(void)createPost:(GLPPost *)post withDate:(NSDate *)date callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
+//{
+//    
+//}
+
 -(void)getPostWithRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/", remoteKey];
@@ -366,6 +397,25 @@ static WebClient *instance = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO, nil);
     }];
+}
+
+-(void)getEventPostsAfterDate:(NSDate*)date withCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+{    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:[DateFormatterHelper dateUnixFormat:date], @"after", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    [self getPath:@"live" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+
+        callbackBlock(YES, posts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+
+    }];
+    
 }
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock

@@ -608,6 +608,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
 }
 
+//+(NSString *)parseEventTime:(NSDate *)date
+//{
+//    
+//}
+
 #pragma mark - Contacts
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts

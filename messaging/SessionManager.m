@@ -230,17 +230,9 @@ static SessionManager *instance = nil;
 
 -(void)deregisterPushFromServer
 {
-    
-    DDLogDebug(@"DATA2: %@", self.data);
-
-    DDLogInfo(@"Push token: %@", self.data[@"user.pushToken"]);
-    
     [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
        
-        if(!success)
-        {
-            DDLogInfo(@"Unable to deregister device from push notifications.");
-        }
+        
         
     }];
 }

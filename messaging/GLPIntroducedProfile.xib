@@ -11,21 +11,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="top_wall_trans.png" translatesAutoresizingMaskIntoConstraints="NO" id="DTP-W9-OoW">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="260"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DTP-W9-OoW">
+                    <rect key="frame" x="0.0" y="3" width="320" height="157"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" red="0.10980392156862745" green="0.81176470588235294" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile_picture_under.png" translatesAutoresizingMaskIntoConstraints="NO" id="otY-2k-Ijk">
-                    <rect key="frame" x="98" y="45" width="141" height="142"/>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile_picture_under.png" translatesAutoresizingMaskIntoConstraints="NO" id="otY-2k-Ijk">
+                    <rect key="frame" x="98" y="67" width="120" height="120"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTr-hF-1c5">
-                    <rect key="frame" x="98" y="45" width="125" height="125"/>
+                    <rect key="frame" x="108" y="29" width="105" height="105"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O83-0b-H9k">
-                    <rect key="frame" x="164" y="204" width="90" height="36"/>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O83-0b-H9k">
+                    <rect key="frame" x="269" y="22" width="36" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" image="add_button.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -34,21 +35,11 @@
                         <action selector="addUser:" destination="1" eventType="touchUpInside" id="Nb0-iF-2oz"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDa-4U-ol3">
-                    <rect key="frame" x="66" y="204" width="90" height="36"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="profile_botton.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="navigateToProfile:" destination="1" eventType="touchUpInside" id="icg-gc-Vyi"/>
-                    </connections>
-                </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTC-ha-u7a">
-                    <rect key="frame" x="56" y="176" width="208" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXt-NK-6DQ">
+                    <rect key="frame" x="46" y="195" width="208" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -57,16 +48,13 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <connections>
                 <outlet property="addUser" destination="O83-0b-H9k" id="o3a-QZ-hHo"/>
-                <outlet property="profileBtn" destination="DDa-4U-ol3" id="QI2-rK-iG2"/>
+                <outlet property="universityName" destination="ZXt-NK-6DQ" id="PaB-c1-uPS"/>
                 <outlet property="userImage" destination="eTr-hF-1c5" id="qlp-OU-Y8d"/>
-                <outlet property="userName" destination="sTC-ha-u7a" id="HWc-gR-xgU"/>
             </connections>
         </view>
     </objects>
     <resources>
-        <image name="add_button.png" width="180" height="73"/>
-        <image name="profile_botton.png" width="180" height="73"/>
+        <image name="add_button.png" width="70" height="68"/>
         <image name="profile_picture_under.png" width="265" height="266"/>
-        <image name="top_wall_trans.png" width="642" height="459"/>
     </resources>
 </document>

@@ -15,5 +15,7 @@
 + (NSDateFormatter *)createRemoteDateFormatterWithNanoSeconds;
 + (NSDateFormatter *)createTimeDateFormatter;
 + (NSDateFormatter *)createMessageDateFormatter;
++ (NSDate *)generateDateWithDay:(int)day month:(int)month year:(int)year hour:(int)hour andMinutes:(int)minutes;
++ (NSString *)dateUnixFormat:(NSDate *)date;
 
 @end

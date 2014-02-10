@@ -11,6 +11,8 @@
 #import "GLPPostManager.h"
 #import "SessionManager.h"
 #import "WebClientHelper.h"
+#import "WebClient.h"
+#import "DateFormatterHelper.h"
 
 @interface CampusWallHeader ()
 
@@ -31,7 +33,7 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 295.0f)];
+        [self setFrame:CGRectMake(0, 0, 320.0f, 280.0f)];
         
         [self setDataSource:self];
 
@@ -75,16 +77,21 @@
 {
     [self showLoadingLabel];
     
-    [GLPPostManager loadEventsRemotePostsForUserRemoteKey:[SessionManager sharedInstance].user.remoteKey callback:^(BOOL success, NSArray *posts) {
+    NSDate *date = [DateFormatterHelper generateDateWithDay:10 month:1 year:2014 hour:12 andMinutes:00];
+
+    
+    [[WebClient sharedInstance] getEventPostsAfterDate:date withCallbackBlock:^(BOOL success, NSArray *posts) {
        
         if(success)
         {
             _posts = posts;
             
             [self hideLoadingLabel];
-
+            
             [self clearAndLoad];
-
+            
+            [self scrollToPosition:1];
+            
         }
         else
         {

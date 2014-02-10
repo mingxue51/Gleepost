@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPUser.h"
-#import "ViewTopicViewController.h"
+#import "GLPConversationViewController.h"
 
 @interface GLPIntroducedProfile : UIView
 
-@property (weak, nonatomic) ViewTopicViewController *delegate;
+@property (weak, nonatomic) GLPConversationViewController *delegate;
 
 -(void)updateContents:(GLPUser*)incomingUser;
-
+-(void)addUser:(id)sender;
 @end

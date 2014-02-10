@@ -11,6 +11,7 @@
 #import "GLPPost.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NSDate+TimeAgo.h"
+#import "AppearanceHelper.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -20,14 +21,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *userNameLbl;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
+@property (weak, nonatomic) IBOutlet UILabel *attendingLbl;
+@property (weak, nonatomic) IBOutlet UILabel *staticAttendingLbl;
+@property (weak, nonatomic) IBOutlet UIButton *goingBtn;
 
 @end
 
 
 @implementation CampusWallHeaderCell
 
-const float CELL_WIDTH = 198; //
-const float CELL_HEIGHT = 132; //Change the height
+const float CELL_WIDTH = 198.0; //
+const float CELL_HEIGHT = 132.0; //Change the height
 
 
 -(id)initWithIdentifier:(NSString *)identifier
@@ -37,7 +41,7 @@ const float CELL_HEIGHT = 132; //Change the height
     
     if (self)
     {
-        [self setFrame:CGRectMake(0, 0, 30, 50)];
+//        [self setFrame:CGRectMake(0, 0, 30, 50)];
         
         [self setBackgroundColor:[UIColor clearColor]];
         
@@ -60,27 +64,43 @@ const float CELL_HEIGHT = 132; //Change the height
 
 -(void)setData:(GLPPost*)post
 {
-    [self setFrame:CGRectMake(0, 0, 30, 50)];
+//    [self setFrame:CGRectMake(0, 0, 30, 50)];
     
-    //Set user's image.
-    [_profileImage setImageWithURL:[NSURL URLWithString:post.author.profileImageUrl] placeholderImage:nil];
+    [self setDataInElements:post];
     
-    [_userNameLbl setText:post.author.name];
-    
-    [_contentLbl setText:post.content];
-    
-    NSDate *currentDate = post.date;
-
-    [_timeLbl setText:[self takeTime:currentDate]];
-    
-    [self formatFontInLabels];
+    [self formatFontInElements];
 }
 
--(void)formatFontInLabels
+-(void)setDataInElements:(GLPPost *)postData
 {
-    [_userNameLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
+    //Set user's image.
+    [_profileImage setImageWithURL:[NSURL URLWithString:postData.author.profileImageUrl] placeholderImage:nil];
     
-    [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
+    [_userNameLbl setText:postData.author.name];
+    
+    [_contentLbl setText:postData.content];
+    
+    NSDate *currentDate = postData.date;
+    
+    [_timeLbl setText:[self takeTime:currentDate]];
+    
+    //TODO: set number of attending.
+    [_attendingLbl setText:@"0"];
+    
+    //TODO: select the going button if the user is attending,
+}
+
+-(void)formatFontInElements
+{
+    [_userNameLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+    
+    [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+    
+    [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18]];
+    
+    [_attendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
+    
+    [_staticAttendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
 }
 
 -(NSString*)takeTime:(NSDate*)date
@@ -90,6 +110,38 @@ const float CELL_HEIGHT = 132; //Change the height
     NSString *timeString = [formatter stringFromDate:date];
     
     return timeString;
+}
+- (IBAction)goingToEvent:(id)sender
+{
+    UIButton *currentButton = (UIButton*)sender;
+    
+    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    {
+        
+        [self makeButtonSelected:currentButton];
+        
+        
+    }
+    else
+    {
+        
+        [self makeButtonUnselected:currentButton];
+        
+    }
+    
+}
+
+-(void)makeButtonUnselected:(UIButton *)btn
+{
+    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
+    [btn.layer setBorderColor:[AppearanceHelper colourForNotFocusedItems].CGColor];
+}
+
+-(void)makeButtonSelected:(UIButton *)btn
+{
+    [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
+    [btn.layer setBorderColor:[AppearanceHelper defaultGleepostColour].CGColor];
+    
 }
 
 /*

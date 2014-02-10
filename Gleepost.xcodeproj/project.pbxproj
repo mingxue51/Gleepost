@@ -258,6 +258,8 @@
 		588794BD18A81EA9002EEC8A /* icon_comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 588794BB18A81EA9002EEC8A /* icon_comment.png */; };
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
 		588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 588DE5D318A8FA40001D344D /* add_photo_btn.png */; };
+		588DE5D618A917E0001D344D /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 588DE5D518A917E0001D344D /* add_button.png */; };
+		588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588DE5D918A96552001D344D /* PickDateEventViewController.m */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
 		5890D2181847676A00E293DD /* GLPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D2171847676A00E293DD /* GLPTheme.m */; };
 		5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D21A1847692B00E293DD /* GLPStanfordTheme.m */; };
@@ -337,7 +339,7 @@
 		58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86B11892B0A700016C6D /* profile_picture_under.png */; };
 		58AD86BA1892C01500016C6D /* top_wall.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86B91892C01500016C6D /* top_wall.png */; };
 		58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */; };
-		58AD86BF1892DFC400016C6D /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BE1892DFC400016C6D /* add_button.png */; };
+		58AD86BF1892DFC400016C6D /* add_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BE1892DFC400016C6D /* add_button_old.png */; };
 		58AD86C11892DFD100016C6D /* profile_botton.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86C01892DFD100016C6D /* profile_botton.png */; };
 		58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */; };
 		58AD86C61892ECCC00016C6D /* top_wall_trans.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86C51892ECCC00016C6D /* top_wall_trans.png */; };
@@ -934,6 +936,9 @@
 		588794BB18A81EA9002EEC8A /* icon_comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_comment.png; sourceTree = "<group>"; };
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
 		588DE5D318A8FA40001D344D /* add_photo_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_photo_btn.png; sourceTree = "<group>"; };
+		588DE5D518A917E0001D344D /* add_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button.png; sourceTree = "<group>"; };
+		588DE5D818A96552001D344D /* PickDateEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickDateEventViewController.h; sourceTree = "<group>"; };
+		588DE5D918A96552001D344D /* PickDateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickDateEventViewController.m; sourceTree = "<group>"; };
 		5890D212184763E700E293DD /* GLPThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPThemeManager.h; sourceTree = "<group>"; };
 		5890D213184763E700E293DD /* GLPThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPThemeManager.m; sourceTree = "<group>"; };
 		5890D2161847676A00E293DD /* GLPTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTheme.h; sourceTree = "<group>"; };
@@ -1032,7 +1037,7 @@
 		58AD86B11892B0A700016C6D /* profile_picture_under.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_under.png; sourceTree = "<group>"; };
 		58AD86B91892C01500016C6D /* top_wall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_wall.png; sourceTree = "<group>"; };
 		58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPIntroducedProfile.xib; sourceTree = "<group>"; };
-		58AD86BE1892DFC400016C6D /* add_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button.png; sourceTree = "<group>"; };
+		58AD86BE1892DFC400016C6D /* add_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button_old.png; sourceTree = "<group>"; };
 		58AD86C01892DFD100016C6D /* profile_botton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_botton.png; sourceTree = "<group>"; };
 		58AD86C21892E0F200016C6D /* GLPIntroducedProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPIntroducedProfile.h; sourceTree = "<group>"; };
 		58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPIntroducedProfile.m; sourceTree = "<group>"; };
@@ -1754,8 +1759,6 @@
 				5841315817FEDD8500A3278D /* AddCommentViewController.m */,
 				584906BD17FDA26E0045B65D /* ViewPostTableView.h */,
 				584906BE17FDA26E0045B65D /* ViewPostTableView.m */,
-				80AB895B17C277D40053E784 /* NewPostViewController.h */,
-				80AB895C17C277D40053E784 /* NewPostViewController.m */,
 				80AB896117C27AF50053E784 /* ViewPostViewController.h */,
 				80AB896217C27AF50053E784 /* ViewPostViewController.m */,
 				584906C017FDA57B0045B65D /* PostView.h */,
@@ -2034,6 +2037,17 @@
 			name = "New Post";
 			sourceTree = "<group>";
 		};
+		588DE5D718A96531001D344D /* New post Classes */ = {
+			isa = PBXGroup;
+			children = (
+				80AB895B17C277D40053E784 /* NewPostViewController.h */,
+				80AB895C17C277D40053E784 /* NewPostViewController.m */,
+				588DE5D818A96552001D344D /* PickDateEventViewController.h */,
+				588DE5D918A96552001D344D /* PickDateEventViewController.m */,
+			);
+			name = "New post Classes";
+			sourceTree = "<group>";
+		};
 		5890D20E1847618F00E293DD /* Themes */ = {
 			isa = PBXGroup;
 			children = (
@@ -2241,7 +2255,8 @@
 		58AD86BD1892DFB100016C6D /* New Chat */ = {
 			isa = PBXGroup;
 			children = (
-				58AD86BE1892DFC400016C6D /* add_button.png */,
+				588DE5D518A917E0001D344D /* add_button.png */,
+				58AD86BE1892DFC400016C6D /* add_button_old.png */,
 				58AD86C01892DFD100016C6D /* profile_botton.png */,
 			);
 			name = "New Chat";
@@ -2840,6 +2855,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				588DE5D718A96531001D344D /* New post Classes */,
 				58729AC4189BCB110041022C /* Settings */,
 				805358C3182EEEAC00579079 /* Posts */,
 				58433284180F02E500BD9F74 /* Login Register Classes */,
@@ -3504,7 +3520,8 @@
 				584E8E2B18A2EB3D005AEF91 /* id-card-7_old2@2x.png in Resources */,
 				80C4CABA17CFE3C400AFA80C /* post_register.json in Resources */,
 				806E3D761832B1960063AACE /* NotificationBackgroundError.png in Resources */,
-				58AD86BF1892DFC400016C6D /* add_button.png in Resources */,
+				588DE5D618A917E0001D344D /* add_button.png in Resources */,
+				58AD86BF1892DFC400016C6D /* add_button_old.png in Resources */,
 				58DAD77D1859FBD20016D838 /* id-card-7-old@2x.png in Resources */,
 				58DB02AA18105C86001C021A /* blackholder3.png in Resources */,
 				80C4CABF17CFEAAB00AFA80C /* post_newconversation.json in Resources */,
@@ -3707,6 +3724,7 @@
 				80C8BA591810340E004F70DB /* GLPUserDao.m in Sources */,
 				80809AF01895DAB90077D227 /* GLPTableViewController.m in Sources */,
 				582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */,
+				588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */,
 				58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */,
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,
 				C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */,

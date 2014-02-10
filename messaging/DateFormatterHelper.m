@@ -46,13 +46,32 @@
     return f;
 }
 
-
 + (NSDateFormatter *)createMessageDateFormatter {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
     f.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     
     f.dateFormat = @"EEEE hh:mm a";
     return f;
+
+}
+
++(NSString *)dateUnixFormat:(NSDate *)date
+{
+    return [NSString stringWithFormat:@"%.0f", [date timeIntervalSince1970]];
+}
+
++(NSDate *)generateDateWithDay:(int)day month:(int)month year:(int)year hour:(int)hour andMinutes:(int)minutes
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
+    
+    [comp setDay:day];
+    [comp setMonth:month];
+    [comp setHour:hour];
+    [comp setMinute:minutes];
+    [comp setYear:year];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
 }
 
 @end
