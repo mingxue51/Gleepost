@@ -1769,7 +1769,7 @@ const float TOP_OFFSET = 230.0f;
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
         NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
         vc.delegate = self;
         [vc setTransitioningDelegate:self.transitionController];
         vc.modalPresentationStyle= UIModalPresentationCustom;

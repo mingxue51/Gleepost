@@ -26,17 +26,30 @@
 
 @interface NewPostViewController ()
 
-@property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
-@property (weak, nonatomic) IBOutlet UIButton *addImageButton;
 
+//IBOutlets.
+@property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
+@property (weak, nonatomic) IBOutlet UILabel *categoriesLbl;
+
+//Category buttons.
+@property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
+@property (weak, nonatomic) IBOutlet UIButton *newsCategoryBtn;
+@property (weak, nonatomic) IBOutlet UIButton *eventsCategoryBtn;
+@property (weak, nonatomic) IBOutlet UIButton *jobsCategoryBtn;
+@property (weak, nonatomic) IBOutlet UIButton *questionsCategoryBtn;
+
+
+//Navigation bar.
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelNavBarBtn;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *postNavBarBtn;
+
+@property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+@property (strong, nonatomic) NSMutableArray *categories;
+@property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
-@property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
-@property (strong, nonatomic) GLPCategory *chosenCategory;
-@property (weak, nonatomic) IBOutlet UIButton *newsCategoryBtn;
-@property (strong, nonatomic) NSMutableArray *categories;
+
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)cancelButtonClick:(id)sender;
@@ -50,7 +63,6 @@
 @synthesize delegate;
 @synthesize postUploader=_postUploader;
 @synthesize hasImage=_hasImage;
-@synthesize chosenCategory = _chosenCategory;
 
 - (void)viewDidLoad
 {
@@ -58,8 +70,6 @@
 
 
     [self.contentTextView becomeFirstResponder];
-    
-    _chosenCategory = nil;
     
     _categories = [NSMutableArray array];
     
@@ -78,6 +88,8 @@
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureNavigationBar];
+    [self configureCategoryButtons];
+    [self configureLabel];
 
 //    [self generateCategoryButtons];
     
@@ -108,22 +120,61 @@
 
 #pragma mark - Configuration
 
+-(void)configureCategoryButtons
+{
+    [self formatButton: self.newsCategoryBtn];
+    [self formatButton: self.forSaleCategoryBtn];
+    [self formatButton: self.eventsCategoryBtn];
+    [self formatButton: self.jobsCategoryBtn];
+    [self formatButton: self.questionsCategoryBtn];
+}
+
+-(void)formatButton:(UIButton*)btn
+{
+    btn.layer.cornerRadius = 11;
+    btn.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
+    btn.layer.borderWidth = 2.5f;
+    btn.clipsToBounds = YES;
+    [btn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f]];
+    btn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1, 0);
+
+}
+
 -(void)configureNavigationBar
 {
-    //UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+    [self formatNavigationBar];
+    [self formatNavigationButtons];
+}
 
-//    [self.simpleNavBar setBackgroundImage:[UIImage imageNamed:@"chat_background_default"] forBarMetrics:UIBarMetricsDefault];
-    
+-(void)formatNavigationBar
+{
     [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
     
     [self.simpleNavBar setTranslucent:NO];
     [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
-    self.simpleNavBar.tintColor = [UIColor whiteColor];
+    self.simpleNavBar.tintColor = [UIColor blackColor];
     
-    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Thin" size:20.0f], UITextAttributeFont, nil]];
+    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
 }
 
-//TODO: Not user. Use this later if there is a need.
+-(void)formatNavigationButtons
+{
+    UIFont *font = [UIFont fontWithName:GLP_TITLE_FONT size:17.0f];
+    [self.cancelNavBarBtn setTitleTextAttributes:@{NSFontAttributeName: font}
+                                     forState:UIControlStateNormal];
+    
+    
+    font = [UIFont fontWithName:GLP_TITLE_FONT size:22.0f];
+    [self.postNavBarBtn setTitleTextAttributes:@{NSFontAttributeName: font}
+                                        forState:UIControlStateNormal];
+}
+
+-(void)configureLabel
+{
+    [self.categoriesLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14.0f]];
+}
+
+//TODO: Not used. Use this later if there is a need.
 
 -(void)generateCategoryButtons
 {
@@ -195,25 +246,42 @@
 {
     UIButton *currentButton = (UIButton*)sender;
     
-    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[UIColor whiteColor]])
+    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
     {
-        _chosenCategory = nil;
-        [currentButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        [self deleteCategoryWithRemoteKey:currentButton.tag];
+        
+        GLPCategory *chosenCategory = [[CategoryManager instance] categoryWithRemoteKey:currentButton.tag];
+        
+        
+        [self makeButtonSelected:currentButton];
+
+        
+        [_categories addObject:chosenCategory];
+
         
     }
     else
-    {
-        _chosenCategory = [[CategoryManager instance] categoryWithRemoteKey:currentButton.tag];
+    {        
         
-        //test category was chosen.
+        [self makeButtonUnselected:currentButton];
+
         
-        [currentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_categories addObject:_chosenCategory];
+        [self deleteCategoryWithRemoteKey:currentButton.tag];
         
     }
 }
 
+-(void)makeButtonUnselected:(UIButton *)btn
+{
+    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
+    [btn.layer setBorderColor:[AppearanceHelper colourForNotFocusedItems].CGColor];
+}
+
+-(void)makeButtonSelected:(UIButton *)btn
+{
+    [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
+    [btn.layer setBorderColor:[AppearanceHelper defaultGleepostColour].CGColor];
+
+}
 
 -(void)deleteCategoryWithRemoteKey:(int)remoteKey
 {

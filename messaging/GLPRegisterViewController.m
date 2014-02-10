@@ -162,19 +162,24 @@
 -(void)setDefaultTextToEmailAndPassFields
 {
     if(DEV) {
-        if(!ON_DEVICE) {
-            //            self.nameTextField.text = @"TestingUser";
-            //            self.passwordTextField.text = @"TestingPass";
-            //            self.nameTextField.text = @"Silouanos N";
-            //            self.passwordTextField.text = @"1234";
-            self.emailTextField.text = @"fingolfin@leeds.ac.uk";
-            self.passwordTextField.text = @"ihatemorgoth";
-        } else {
-            self.emailTextField.text = @"sc11pm@leeds.ac.uk";
-            self.passwordTextField.text = @"TestingPass";
-            //            self.nameTextField.text = @"TestingUser";
-            //            self.passwordTextField.text = @"TestingPass";
-        }
+        
+        self.emailTextField.text = @"A@kent.ac.uk";
+        self.passwordTextField.text = @"1234";
+
+        
+//        if(!ON_DEVICE) {
+//            //            self.nameTextField.text = @"TestingUser";
+//            //            self.passwordTextField.text = @"TestingPass";
+//            //            self.nameTextField.text = @"Silouanos N";
+//            //            self.passwordTextField.text = @"1234";
+//            self.emailTextField.text = @"fingolfin@leeds.ac.uk";
+//            self.passwordTextField.text = @"ihatemorgoth";
+//        } else {
+//            self.emailTextField.text = @"sc11pm@leeds.ac.uk";
+//            self.passwordTextField.text = @"TestingPass";
+//            //            self.nameTextField.text = @"TestingUser";
+//            //            self.passwordTextField.text = @"TestingPass";
+//        }
     }
 }
 

@@ -368,8 +368,6 @@ static WebClient *instance = nil;
     }];
 }
 
-//-(void)upload
-
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.remoteKey];

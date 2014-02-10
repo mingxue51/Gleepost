@@ -77,7 +77,7 @@
 
 +(UIColor*)colourForNotFocusedItems
 {
-    return [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+    return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
 }
 
 +(void)showTabBar:(UIViewController*)controller
