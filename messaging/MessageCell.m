@@ -50,7 +50,8 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     }
     
     self.isBackgroundRounded = NO;
-    self.dateFormatter = [DateFormatterHelper createTimeDateFormatter];
+    //self.dateFormatter = [DateFormatterHelper createTimeDateFormatter];
+    self.dateFormatter = [DateFormatterHelper createMessageDateFormatter];
     
     
     return self;
@@ -76,8 +77,24 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
         self.timeView.hidden = NO;
         self.avatarImageView.hidden = NO;
         self.timeLabel.text = [self.dateFormatter stringFromDate:message.date];
+        self.timeLabel.textColor = [UIColor lightGrayColor];
+        self.timeLabel.font = [UIFont fontWithName:GLP_APP_FONT_BOLD size:10.0f];
+        
+        
         // move the content view at its initial position
         self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, self.messageContentViewInitialY, self.messageContentView.frame.size.width, self.messageContentView.frame.size.height);
+        
+        if (self.isLeft) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-left"]];
+            imageView.frame = CGRectMake(self.avatarImageView.frame.origin.x + self.avatarImageView.frame.size.width, self.messageContentViewInitialY +7, 5, 10);
+            [self.contentView addSubview:imageView];
+        }else {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arraow-right"]];
+            imageView.frame = CGRectMake(self.avatarImageView.frame.origin.x -5, self.messageContentViewInitialY +7, 5, 10);
+            [self.contentView addSubview:imageView];
+            
+        }
+        
     } else {
         self.timeView.hidden = YES;
         self.avatarImageView.hidden = YES;
@@ -103,17 +120,27 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     self.messageContentView.frame = CGRectMake(viewX, self.messageContentView.frame.origin.y, contentWidth + MessageContentLabelPadding, contentHeight + MessageContentViewPadding);
     self.messageContentLabel.frame = CGRectMake(self.messageContentLabel.frame.origin.x, self.messageContentLabel.frame.origin.y, contentWidth, contentHeight);
     
+    
     self.messageContentLabel.text = message.content;
     
     self.messageContentImageView.layer.masksToBounds = YES;
-    self.messageContentImageView.layer.cornerRadius = 12.5;
+    self.messageContentImageView.layer.cornerRadius = 12.0;
     
+    //self.messageContentView.layer.masksToBounds = YES;
+    self.messageContentView.layer.cornerRadius = 12.0;
+    self.messageContentLabel.font = [UIFont fontWithName:GLP_APP_FONT_BOLD size:12.0];
+
     if(!self.isLeft) {
-        [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:76.0/255.0 green:183.0/255.0 blue:197.0/255.0 alpha:1.0] CGColor]];
-        [self.messageContentImageView.layer setBorderWidth: 1.25];
+        [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor]];
+        [self.messageContentImageView.layer setBorderWidth:2];
+                self.messageContentLabel.textColor = [UIColor lightGrayColor];
+    }else {
+        self.messageContentLabel.textColor = [UIColor whiteColor];
+        self.messageContentView.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
+        
     }
     
-    UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image"];
+    UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image3.png"];
     if([message.author hasProfilePicture]) {
             [self.avatarImageView setImageWithURL:[NSURL URLWithString:message.author.profileImageUrl] placeholderImage:defaultProfilePicture];
     } else {

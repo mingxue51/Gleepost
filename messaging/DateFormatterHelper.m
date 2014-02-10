@@ -46,4 +46,13 @@
     return f;
 }
 
+
++ (NSDateFormatter *)createMessageDateFormatter {
+    NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    
+    f.dateFormat = @"EEEE hh:mm a";
+    return f;
+}
+
 @end

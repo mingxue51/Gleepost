@@ -544,6 +544,7 @@ static WebClient *instance = nil;
     
     NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteKey];
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"response Object %@", responseObject);
         NSArray *messages = [RemoteParser parseMessagesFromJson:responseObject forConversation:conversation];
         callbackBlock(YES, messages);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

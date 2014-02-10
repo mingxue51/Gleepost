@@ -598,6 +598,9 @@
 		80E7479417CEAED7001957E5 /* get_messages.json in Resources */ = {isa = PBXBuildFile; fileRef = 80E7479317CEAED7001957E5 /* get_messages.json */; };
 		80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80F316D21828129700DE6884 /* CoreImage.framework */; };
 		80FC6C1218A02339006D06F8 /* GLPViewControllerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FC6C1118A02339006D06F8 /* GLPViewControllerHelper.m */; };
+		C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0090C1F18A8BC2800153878 /* GLPLoadMoreCell.m */; };
+		C0090C2318A8F90A00153878 /* arraow-right.png in Resources */ = {isa = PBXBuildFile; fileRef = C0090C2118A8F90A00153878 /* arraow-right.png */; };
+		C0090C2418A8F90A00153878 /* arrow-left.png in Resources */ = {isa = PBXBuildFile; fileRef = C0090C2218A8F90A00153878 /* arrow-left.png */; };
 		C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D083183CE2C80001B76E /* UIViewController+Flurry.m */; };
 		C02120431850AA1200831872 /* GLPPostUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = C02120421850AA1200831872 /* GLPPostUploader.m */; };
 		C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */ = {isa = PBXBuildFile; fileRef = C04613971834E87000B422A3 /* UIViewController+GAI.m */; };
@@ -1424,6 +1427,10 @@
 		80FC6C1018A02339006D06F8 /* GLPViewControllerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewControllerHelper.h; sourceTree = "<group>"; };
 		80FC6C1118A02339006D06F8 /* GLPViewControllerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewControllerHelper.m; sourceTree = "<group>"; };
 		82D6C24A4DFC4BA5B92AFE98 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0090C1E18A8BC2800153878 /* GLPLoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadMoreCell.h; sourceTree = "<group>"; };
+		C0090C1F18A8BC2800153878 /* GLPLoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadMoreCell.m; sourceTree = "<group>"; };
+		C0090C2118A8F90A00153878 /* arraow-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arraow-right.png"; sourceTree = "<group>"; };
+		C0090C2218A8F90A00153878 /* arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-left.png"; sourceTree = "<group>"; };
 		C014D082183CE2C80001B76E /* UIViewController+Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Flurry.h"; sourceTree = "<group>"; };
 		C014D083183CE2C80001B76E /* UIViewController+Flurry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Flurry.m"; sourceTree = "<group>"; };
 		C02120411850AA1200831872 /* GLPPostUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploader.h; sourceTree = "<group>"; };
@@ -2713,6 +2720,8 @@
 				58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */,
 				58212793189165B200BF36E5 /* CampusWallHeaderCell.h */,
 				58212794189165B200BF36E5 /* CampusWallHeaderCell.m */,
+				C0090C1E18A8BC2800153878 /* GLPLoadMoreCell.h */,
+				C0090C1F18A8BC2800153878 /* GLPLoadMoreCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2980,6 +2989,8 @@
 		80AB898717C2AAF70053E784 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C0090C2118A8F90A00153878 /* arraow-right.png */,
+				C0090C2218A8F90A00153878 /* arrow-left.png */,
 				80B2A4361833FCE9002AB1F0 /* Profile */,
 				80B2A42E1833C8A6002AB1F0 /* Timeline */,
 				8050249A181932BB00F5337F /* Conversations */,
@@ -3300,6 +3311,7 @@
 				8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */,
 				583CE33418A008FD00E78C08 /* password_label_bg.png in Resources */,
 				580C7AB118982FAD007495EE /* event_category.png in Resources */,
+				C0090C2318A8F90A00153878 /* arraow-right.png in Resources */,
 				58AD86A618929F2200016C6D /* bg_top.png in Resources */,
 				580C7AB518983C68007495EE /* for-sale_category_selected.png in Resources */,
 				584C1EF0181ACBCA00862E81 /* chat3.png in Resources */,
@@ -3350,6 +3362,7 @@
 				589EAD3418A449DF005B2F4C /* sign_up.png in Resources */,
 				58E3DAC01884059100B9B048 /* cloud2.png in Resources */,
 				80B1735C18056A0700D9669B /* typing_bar1@2x.png in Resources */,
+				C0090C2418A8F90A00153878 /* arrow-left.png in Resources */,
 				58143D7018212AE900B76E5D /* +_old.png in Resources */,
 				805E155D180EF3E700705B1C /* time_label.png in Resources */,
 				58F8C33518A549E7005EC7ED /* email_field.png in Resources */,
@@ -3675,6 +3688,7 @@
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
+				C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				806E3D881832B1960063AACE /* TSMessageView.m in Sources */,

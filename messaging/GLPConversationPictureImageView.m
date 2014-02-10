@@ -39,6 +39,8 @@
         }
         
         [ShapeFormatterHelper setRoundedView:self toDiameter:self.frame.size.height];
+
+        
     }
 
 }
