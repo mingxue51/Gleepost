@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
+
 #import "AppDelegate.h"
 #import "AFHTTPRequestOperationLogger.h"
 #import "SessionManager.h"
@@ -24,6 +25,7 @@
 #import "GLPNetworkManager.h"
 #import "NSUserDefaults+GLPAdditions.h"
 #import "GLPLoginManager.h"
+#import "DCIntrospect.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -54,7 +56,11 @@ static NSString * const kCustomURLHost      = @"verify";
     
     self.window.rootViewController = initVC;
     [self.window makeKeyAndVisible];
-        
+    
+#if TARGET_IPHONE_SIMULATOR
+    [[DCIntrospect sharedIntrospector] start];
+#endif
+
     return YES;
 }
 

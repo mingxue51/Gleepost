@@ -19,8 +19,11 @@
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
-
+#import "GLPLoadMoreCell.h"
 #import "GLPMessagesLoader.h"
+
+
+#define CELL_THEME_COLOR [UIColor colorWithRed:243/255.0 green:243/255.0 blue:243/255.0 alpha:1.0]
 
 @interface MessagesViewController ()
 
@@ -47,6 +50,8 @@
 @synthesize liveConversations=_liveConversations;
 
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -68,11 +73,13 @@
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.needsReloadConversations = NO;
     
-    _liveConversations = [NSArray array];
-    _regularConversations = [NSArray array];
-    _sections = [[NSMutableArray alloc] initWithObjects:@"Live chats", @"Contact chats", nil];
+    _liveConversations = [NSMutableArray array];
+    _regularConversations = [NSMutableArray array];
+    _sections = [[NSMutableArray alloc] initWithObjects:@"Random Chats", @"Messages", nil];
     
     [self reloadConversations];
+    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -192,12 +199,20 @@
 
 #pragma mark - Conversations
 
+- (NSArray *)sortedByDateOnArray:(NSArray *)array{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    return [array sortedArrayUsingDescriptors:sortDescriptors];
+ }
+
 - (void)reloadConversations
 {
+    
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
-        _liveConversations = [NSMutableArray arrayWithArray:liveConversations];
-        _regularConversations = [NSMutableArray arrayWithArray:regularConversations];
-        
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        _liveConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:liveConversations]];
+        _regularConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self.tableView reloadData];
     }];
 }
@@ -205,7 +220,9 @@
 - (void)reloadLiveConversations
 {
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
-        _liveConversations = [NSMutableArray arrayWithArray:liveConversations];
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _liveConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:liveConversations]];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 }
@@ -213,7 +230,9 @@
 - (void)reloadRegularConversations
 {
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
-        _regularConversations = [NSMutableArray arrayWithArray:regularConversations];
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _regularConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 }
@@ -299,8 +318,10 @@
     array[index] = conversation;
     
     if(conversation.isLive) {
+        self.loadingCellStatus = kGLPLoadingCellStatusLoading;
         [self reloadLiveConversations];
     } else {
+                self.loadingCellStatus = kGLPLoadingCellStatusLoading;
         [self reloadRegularConversations];
     }
     
@@ -341,31 +362,66 @@
     return index;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return _sections[section];
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? _liveConversations.count : _regularConversations.count;
+    if (self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return 1;
+    }
+    return section == 0 ? _liveConversations.count +1 : _regularConversations.count +1; // added +1 to show cell "No more messages"
+}
+
+- (UITableViewCell *)cellWithMessage:(NSString *)message {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.textLabel.text = message;
+    cell.textLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [UIColor grayColor];
+    cell.userInteractionEnabled = NO;
+    return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return [GLPLoadMoreCell cell];
+    }
+    
+    if (indexPath.section == 0 && indexPath.row == [_liveConversations count]) {
+        return [self cellWithMessage:@"You have no more chats."];
+    }else if (indexPath.section == 1 && indexPath.row == [_regularConversations count]){
+        return [self cellWithMessage:@"You have no more messages."];
+    }else {
     GLPConversation *conversation = indexPath.section == 0 ? _liveConversations[indexPath.row] : _regularConversations[indexPath.row];
     
     MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
+    //cell.conversation = conversation;
     cell.userName.text = conversation.title;
+    cell.userName.font = [UIFont fontWithName:GLP_TITLE_FONT size:14.0f];
+    
     cell.content.text = [conversation getLastMessageOrDefault];
+    cell.content.textColor = [UIColor grayColor];
+    cell.content.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+    cell.content.numberOfLines = 2;
+    [cell.content sizeToFit];
+        
+
+    
+    
     cell.time.text = [conversation getLastUpdateOrDefault];
+    cell.time.textColor = [UIColor grayColor];
+    cell.time.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+
     cell.unreadImageView.hidden = !conversation.hasUnreadMessages;
     
     // add profile image
     [cell.userImage configureWithConversation:conversation];
-    
     return cell;
+
+    }
+    
+    return nil;
+    
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -379,11 +435,23 @@
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(self.loadingCellStatus != kGLPLoadingCellStatusFinished) {
-        return kGLPLoadingCellHeight;
-    }
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return [GLPLoadMoreCell height];
+    }else
     
+    //return 60.0f;
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 30)];
+    [headerView setBackgroundColor:CELL_THEME_COLOR];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.bounds.size.width - 10, 20)];
+    label.text = _sections[section];
+    label.font = [UIFont fontWithName:GLP_TITLE_FONT size:16.0f];
+    label.backgroundColor = [UIColor clearColor];
+    [headerView addSubview:label];
+    return headerView;
 }
 
 

@@ -99,6 +99,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self.tableView reloadData];
+    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -231,16 +233,40 @@
 
 - (void)configureDisplayForMessages:(NSArray *)messages
 {
+
+    GLPMessage *previous;
     for (int i = 0; i < messages.count; i++) {
         GLPMessage *current = messages[i];
-        
         if(i == 0) {
             [current configureAsFirstMessage];
+            previous = current;
+            continue;
+        }
+        
+        if ([current.author.name isEqualToString:previous.author.name]) {
+            [current configureAsFollowingMessage:previous];
+            previous = current;
+        }
+        else {
+            [current configureAsFirstMessage];
+            previous = current;
+        }
+    }
+
+    /*
+    for (int i = 0; i < messages.count; i++) {
+        
+        NSLog(@"running loop %d", i);
+        GLPMessage *current = messages[i];
+        if(i == 0) {
+            [current configureAsFirstMessage];
+
         } else {
             GLPMessage *previous = messages[i-1];
             [current configureAsFollowingMessage:previous];
         }
     }
+     */
 }
 
 - (void)showMessage:(GLPMessage *)message
@@ -494,6 +520,7 @@
 
 - (CGFloat)heightForItem:(id)item
 {
+    
     GLPMessage *message = (GLPMessage *)item;
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }

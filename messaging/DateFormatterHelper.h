@@ -14,5 +14,6 @@
 + (NSDateFormatter *)createRemoteDateFormatter;
 + (NSDateFormatter *)createRemoteDateFormatterWithNanoSeconds;
 + (NSDateFormatter *)createTimeDateFormatter;
++ (NSDateFormatter *)createMessageDateFormatter;
 
 @end

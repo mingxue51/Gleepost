@@ -28,6 +28,8 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
     
+    
+    
     _topLoadingCellDelegate = [[GLPLoadingCellDelegate alloc] init];
     _bottomLoadingCellDelegate = [[GLPLoadingCellDelegate alloc] init];
 }
@@ -51,8 +53,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    DDLogInfo(@"Cell for row at index path %d", indexPath.row);
-    
     if([self isLoadingRowForIndexPath:indexPath]) {
         GLPLoadingCell *loadingCell = [_tableView dequeueReusableCellWithIdentifier:kGLPLoadingCellIdentifier forIndexPath:indexPath];
         
@@ -69,11 +69,16 @@
     return [self cellForItem:[self itemForIndexPath:indexPath] forIndexPath:indexPath];
 }
 
-- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if([self isLoadingRowForIndexPath:indexPath]) {
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self heightForRowAtIndexPath:indexPath];
+}
+
+- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+        if([self isLoadingRowForIndexPath:indexPath]) {
         return kGLPLoadingCellHeight;
     }
+
     
     return [self heightForItem:[self itemForIndexPath:indexPath]];
 }

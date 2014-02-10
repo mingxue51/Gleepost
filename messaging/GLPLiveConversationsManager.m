@@ -27,7 +27,6 @@
 
 @end
 
-
 @implementation GLPLiveConversationsManager
 
 @synthesize conversations=_conversations;
@@ -174,6 +173,8 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
+        
+
         DDLogInfo(@"Received %d messages with success", messages.count);
         
         // reverse order
