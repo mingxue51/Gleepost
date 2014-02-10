@@ -108,12 +108,12 @@
                             <action selector="likePost:" destination="Xyg-Xc-IxG" eventType="touchUpInside" id="NKR-zw-PFB"/>
                         </connections>
                     </button>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" usesAttributedText="YES" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="310" translatesAutoresizingMaskIntoConstraints="NO" id="rsP-k7-Q9f">
-                        <rect key="frame" x="5" y="51" width="310" height="16"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" usesAttributedText="YES" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="264" translatesAutoresizingMaskIntoConstraints="NO" id="rsP-k7-Q9f">
+                        <rect key="frame" x="51" y="51" width="264" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="27" id="ODJ-JE-cl4"/>
-                            <constraint firstAttribute="width" constant="310" id="Phn-m6-9s7"/>
+                            <constraint firstAttribute="width" constant="264" id="Phn-m6-9s7"/>
                         </constraints>
                         <attributedString key="attributedText">
                             <fragment content="Label">
@@ -167,7 +167,7 @@
     </objects>
     <resources>
         <image name="icon_comments.png" width="65" height="65"/>
-        <image name="icon_like.png" width="65" height="65"/>
+        <image name="icon_like.png" width="50" height="50"/>
         <image name="share_button.png" width="198" height="100"/>
         <image name="user_image_bg.png" width="74" height="74"/>
     </resources>

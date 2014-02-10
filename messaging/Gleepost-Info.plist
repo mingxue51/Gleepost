@@ -45,6 +45,7 @@
 		<string>Khmer-Sangam-MN.TTF</string>
 		<string>univers-45-light-bold.ttf</string>
 		<string>univers-ce-45-light.ttf</string>
+		<string>whitney-medium.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

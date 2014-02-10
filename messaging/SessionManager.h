@@ -26,5 +26,6 @@
 - (void)restoreUser:(GLPUser *)user;
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
+-(void)deregisterPushFromServer;
 
 @end

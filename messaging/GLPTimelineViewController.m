@@ -148,7 +148,6 @@ const float TOP_OFFSET = 230.0f;
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
 //    [self startLoadingContents];
     
-    
     [self loadInitialPosts];
 }
 

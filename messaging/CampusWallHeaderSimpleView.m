@@ -58,7 +58,7 @@
 {
     //    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
     
-    [_stanfordLbl setFont:[UIFont fontWithName:@"Univers 45 Light" size:24.0f]];
+    [_stanfordLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24.0f]];
 
 }
 

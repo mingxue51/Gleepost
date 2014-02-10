@@ -234,9 +234,9 @@ static const float OneLineText = 16.0;
 
 -(void)setFontToLabels
 {
-    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_UNIVERS_LIGHT_BOLD] size:14.0f]];
+    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [self.postTime setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:13.0f]];
+    [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
     
     [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
     

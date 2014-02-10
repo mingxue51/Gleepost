@@ -229,6 +229,8 @@ static WebClient *instance = nil;
     }];
 }
 
+#pragma mark - Push notifications
+
 - (void)registerPushToken:(NSString *)pushToken callback:(void (^)(BOOL success))callback
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
@@ -240,6 +242,28 @@ static WebClient *instance = nil;
         callback(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callback(NO);
+    }];
+}
+
+-(void)deregisterPushToken:(NSString*)pushToken callback:(void (^)(BOOL success))callback
+{
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+  
+    NSString *path = [NSString stringWithFormat:@"devices/%@", pushToken];
+    
+    [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Push notifications deregistered for this device.");
+        
+        callback(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogInfo(@"Error: %@", error);
+
+        
+        callback(NO);
+        
     }];
 }
 
@@ -390,6 +414,23 @@ static WebClient *instance = nil;
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);
+    }];
+}
+
+-(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL sucess, NSArray *posts))callbackBlock
+{
+    
+    NSString *path = [NSString stringWithFormat:@"user/%d/posts",remoteKey];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+        callbackBlock(YES, posts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
     }];
 }
 

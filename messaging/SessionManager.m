@@ -148,6 +148,8 @@ static SessionManager *instance = nil;
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
+        DDLogDebug(@"DATA: %@", self.data);
+        
 //        if([self isSessionValid]) {
 //            [[DatabaseManager sharedInstance] initDatabase];
 //            
@@ -198,6 +200,13 @@ static SessionManager *instance = nil;
                           ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
                           ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
     
+    //Add token to the plist file.
+    self.data[@"user.pushToken"] = self.pushToken;
+    
+    DDLogInfo(@"Push Token: %@", self.data[@"user.pushToken"]);
+    
+    [self saveData];
+    
     // register to the server if user is logged in, otherwise wait for the login
     if(self.user) {
         [self registerPushOnServer];
@@ -216,6 +225,23 @@ static SessionManager *instance = nil;
     [[WebClient sharedInstance] registerPushToken:self.pushToken callback:^(BOOL success) {
         _pushTokenRegistered = success;
         NSLog(@"Push token register success: %d", success);
+    }];
+}
+
+-(void)deregisterPushFromServer
+{
+    
+    DDLogDebug(@"DATA2: %@", self.data);
+
+    DDLogInfo(@"Push token: %@", self.data[@"user.pushToken"]);
+    
+    [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
+       
+        if(!success)
+        {
+            DDLogInfo(@"Unable to deregister device from push notifications.");
+        }
+        
     }];
 }
 

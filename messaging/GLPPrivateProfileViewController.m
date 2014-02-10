@@ -320,14 +320,33 @@
 
 - (void)loadPosts
 {
-    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
+//    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
+//        
+//        if(success)
+//        {
+//            self.posts = [posts mutableCopy];
+//            
+//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+//
+//            //TODO: Removed.
+//            [self.tableView reloadData];
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
+//        }
+//
+//        
+//    }];
+    
+    [[WebClient sharedInstance] userPostsWithRemoteKey:self.profileUser.remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
         
         if(success)
         {
             self.posts = [posts mutableCopy];
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-
+            
             //TODO: Removed.
             [self.tableView reloadData];
         }
@@ -335,7 +354,7 @@
         {
             [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
         }
-        
+
         
     }];
 }

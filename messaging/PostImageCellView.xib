@@ -180,7 +180,7 @@
     </objects>
     <resources>
         <image name="icon_comments.png" width="65" height="65"/>
-        <image name="icon_like.png" width="65" height="65"/>
+        <image name="icon_like.png" width="50" height="50"/>
         <image name="share_button.png" width="198" height="100"/>
         <image name="user_image_bg.png" width="74" height="74"/>
     </resources>

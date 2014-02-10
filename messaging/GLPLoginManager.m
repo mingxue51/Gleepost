@@ -122,11 +122,14 @@
 
 + (void)logout
 {
+    [[SessionManager sharedInstance] deregisterPushFromServer];
+    
     [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
 
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
+    
 }
 
 @end

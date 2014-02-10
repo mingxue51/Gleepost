@@ -32,7 +32,9 @@ extern NSString * const kWebserviceBaseUrl;
 /** DEPRECATED **/
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock;
 - (void)registerWithName:(NSString *)name surname:(NSString*)surname email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock;
+
 - (void)registerPushToken:(NSString *)pushToken callback:(void (^)(BOOL success))callback;
+-(void)deregisterPushToken:(NSString*)pushToken callback:(void (^)(BOOL success))callback;
 -(void)resendVerificationToEmail:(NSString *)email andCallbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)getUserWithKey:(NSInteger)key authParams:(NSDictionary *)authParams callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
 -(void)getContactsForUser:(GLPUser *)user authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success, NSArray *contacts))callback;
@@ -40,6 +42,8 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getPostsAfter:(GLPPost *)post withCategoryTag:(NSString*)tag callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock;
 -(void)getPostWithRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock;
+-(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL sucess, NSArray *posts))callbackBlock;
+
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock;
 - (void)createComment:(GLPComment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock;
