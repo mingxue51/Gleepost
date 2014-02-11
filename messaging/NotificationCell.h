@@ -26,18 +26,6 @@
 extern NSString * const kGLPNotificationCell;
 extern NSString* const kGLPNotCell;
 
-@property (weak, nonatomic) IBOutlet UILabel *title;
-@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
-@property (weak, nonatomic) IBOutlet UILabel *time;
-@property (weak, nonatomic) IBOutlet UIImageView *image;
-@property (weak, nonatomic) IBOutlet UIView *buttonsView;
-@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
-@property (weak, nonatomic) IBOutlet UIButton *ignoreButton;
-@property (weak, nonatomic) IBOutlet UIImageView *incomingNotification;
-@property (weak, nonatomic) IBOutlet UIImageView *myImage;
-@property (weak, nonatomic) IBOutlet UIImageView *friendsLinkImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *pictoImageView;
-
 @property (weak, nonatomic) id<GLPNotificationCellDelegate> delegate;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content forNotification:(GLPNotification *)notification;

@@ -36,7 +36,8 @@
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
-        [result addObject:[GLPNotificationDaoParser createFromResultSet:resultSet inDb:db]];
+        GLPNotification *notification = [GLPNotificationDaoParser createFromResultSet:resultSet inDb:db];
+        [result addObject:notification];
     }
     
     return result;
@@ -77,7 +78,8 @@
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
-        [result addObject:[GLPNotificationDaoParser createFromResultSet:resultSet inDb:db]];
+        GLPNotification *notification = [GLPNotificationDaoParser createFromResultSet:resultSet inDb:db];
+        [result addObject:notification];
     }
     
     return result;
@@ -100,22 +102,16 @@
 }
 
 
-+(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number
++(void)updateNotificationType:(GLPNotification *)notification inDb:(FMDatabase*)db
 {
-    
-    /**
-     DELETE FROM ranking WHERE id NOT IN (
-     SELECT id FROM ranking ORDER BY score DESC LIMIT 100);
-     */
-    
-    // wtf is that?
-    BOOL s = [db executeUpdateWithFormat:@"delete from notifications where key in (select key from notifications where seen = 1 order by date desc limit %d)",number];
-    NSLog(@"Some notifications are deleted: %d",s);
+    NSAssert(notification.key != 0, @"Notification key required");
+    [db executeUpdateWithFormat:@"update notifications set type=%d where key=%d", notification.notificationType, notification.key];
 }
 
-+(void)deleteTableWithDb:(FMDatabase*)db
++(void)deleteNotification:(GLPNotification *)notification inDb:(FMDatabase*)db
 {
-    [db executeUpdateWithFormat:@"delete from notifications"];
+    NSAssert(notification.key != 0, @"Notification key required");
+    [db executeUpdateWithFormat:@"delete from notifications where key=%d", notification.key];
 }
 
 + (void)deleteAll:(FMDatabase*)db

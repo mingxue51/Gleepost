@@ -164,6 +164,22 @@
     }];
 }
 
++ (void)ignoreNotification:(GLPNotification *)notification
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPNotificationDao deleteNotification:notification inDb:db];
+    }];
+}
+
++ (void)acceptNotification:(GLPNotification *)notification
+{
+    notification.notificationType = kGLPNotificationTypeAcceptedYou;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPNotificationDao updateNotificationType:notification inDb:db];
+    }];
+}
+
 // Save notification from web socket event
 // Executed in background
 + (void)saveNotification:(GLPNotification *)notification

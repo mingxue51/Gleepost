@@ -683,16 +683,30 @@
 
 
 
+
+
 # pragma mark - GLPNotificationCellDelegate
 
 - (void)notificationCell:(NotificationCell *)cell acceptButtonClickForNotification:(GLPNotification *)notification
 {
-    
+    [GLPNotificationManager acceptNotification:notification];
+    [cell updateWithNotification:notification];
 }
 
 - (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification
 {
+    [GLPNotificationManager ignoreNotification:notification];
     
+    NSUInteger index = [_notifications indexOfObject:notification];
+    if(index == NSNotFound) {
+        DDLogError(@"Cannot find notification to remove in array");
+        return;
+    }
+    
+    [self.tableView beginUpdates];
+    [_notifications removeObjectAtIndex:index];
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
 }
 
 
