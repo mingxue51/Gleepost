@@ -359,8 +359,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         NSDictionary *attributes = json[@"attribs"];
         
-        post.dateEventStarts = [RemoteParser parseDateFromString:[attributes objectForKey:@"event-time"]];
-        post.eventTitle = [attributes objectForKey:@"title"];
+        if([attributes objectForKey:@"event-time"])
+        {
+            post.dateEventStarts = [RemoteParser parseDateFromString:[attributes objectForKey:@"event-time"]];
+            post.eventTitle = [attributes objectForKey:@"title"];
+        }
+        
+
         
     }
     
