@@ -81,6 +81,8 @@ v.frame.origin.y, \
 w, \
 h)
 
+#define GetViewYplusH(v)        (v.frame.origin.y + v.frame.size.height)
+
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)

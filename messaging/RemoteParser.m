@@ -782,20 +782,16 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     NSString* notificationsType = json[@"type"];
     GLPNotificationType type;
 
-    if([notificationsType isEqualToString:@"accepted_you"])
-    {
+    if([notificationsType isEqualToString:@"accepted_you"]) {
         type = kGLPNotificationTypeAcceptedYou;
     }
-    else if([notificationsType isEqualToString:@"added_you"])
-    {
+    else if([notificationsType isEqualToString:@"added_you"]) {
         type = kGLPNotificationTypeAddedYou;
     }
-    else if([notificationsType isEqualToString:@"commented"])
-    {
+    else if([notificationsType isEqualToString:@"commented"]) {
         type = kGLPNotificationTypeCommented;
     }
-    else if([notificationsType isEqualToString:@"liked"])
-    {
+    else if([notificationsType isEqualToString:@"liked"]) {
         type = kGLPNotificationTypeLiked;
     }
     

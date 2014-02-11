@@ -35,10 +35,12 @@ extern NSString* const kGLPNotCell;
 @property (weak, nonatomic) IBOutlet UIButton *ignoreButton;
 @property (weak, nonatomic) IBOutlet UIImageView *incomingNotification;
 @property (weak, nonatomic) IBOutlet UIImageView *myImage;
+@property (weak, nonatomic) IBOutlet UIImageView *friendsLinkImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *pictoImageView;
 
 @property (weak, nonatomic) id<GLPNotificationCellDelegate> delegate;
 
-+ (CGSize)getContentLabelSizeForContent:(NSString *)content;
++ (CGSize)getContentLabelSizeForContent:(NSString *)content forNotification:(GLPNotification *)notification;
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;
 
 - (void)updateWithNotification:(GLPNotification *)notification;

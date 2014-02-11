@@ -28,11 +28,29 @@
 NSString * const kGLPNotificationCell = @"GLPNotificationCell";
 NSString * const kGLPNotCell = @"GLPNotCell";
 
-float const kButtonsViewHeight = 40;
-float const kContentLabelMaxWidth = 240;
+
+
 float const kViewTopPadding = 10;
 float const kViewBottomPadding = 10;
 float const kContentLabelBottomMargin = 7;
+
+// views sizes
+float const kProfileImageSize = 40;
+float const kTwoProfileImagesWidth = 70;
+float const kContentLabelNoPictoMaxWidth = 212;
+float const kContentLabelWithPictoMaxWidth = 182;
+float const kPictoImageSize = 25;
+float const kButtonsViewHeight = 32;
+
+// vertical margins
+float const kMarginBetweenTopAndContent = 10;
+float const kMarginBetweenContentAndButtonsView = 9;
+float const kMarginBetweenContentAndBottom = 10;
+
+// horizontal margins
+float const kMarginBetweenProfileImageAndContent = 15;
+float const kMarginBetweenContentAndPictoImage = 8;
+float const kMarginBetweenBorderAndContent = 15;
 
 - (void)awakeFromNib
 {
@@ -47,70 +65,56 @@ float const kContentLabelBottomMargin = 7;
 
 - (void)updateWithNotification:(GLPNotification *)notification
 {
-    // configure elements' frames
-    CGSize contentSize = [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]];
-    float contentHeight = contentSize.height;
-
-    NSString* currentIdentifier = [self valueForKey:@"_reuseIdentifier"];
+    // update content view height
+    CGRectSetH(self.contentView, [NotificationCell getCellHeightForNotification:notification]);
     
-    if(notification.seen)
-    {
-        //Change the colour of the cell.
-        self.incomingNotification.hidden = YES;
-    }
-    else
-    {
-        self.incomingNotification.hidden = NO;
-    }
-    
-    if([currentIdentifier isEqualToString:kGLPNotificationCell])
-    {
-        CGRectSetH(self.contentLabel, contentHeight);
-        CGRectSetY(self.time, self.contentLabel.frame.origin.y + contentHeight + kContentLabelBottomMargin);
-    }
-    
-    if([notification hasAction]) {
-        
-        //If the user is already in user's contacts list then don't show the buttonsView.
-        if([[ContactsManager sharedInstance] isUserContactWithId:notification.user.remoteKey])
-        {
-            [self setButtonsViewHiddenWithIdentifier:currentIdentifier];
-            [notification alreadyContacts];
-        }
-        else
-        {
-            self.buttonsView.hidden = NO;
-//            if([currentIdentifier isEqualToString:kGLPNotificationCell])
-//            {
-                CGRectSetY(self.buttonsView, self.time.frame.origin.y + self.time.frame.size.height);
-                CGRectSetH(self.contentView, self.buttonsView.frame.origin.y + self.buttonsView.frame.size.height + kViewBottomPadding);
-//            }
-
-            // wtf again is that
-            self.acceptButton.tag = self.ignoreButton.tag = notification.user.remoteKey;
-            
-            [self configureButtonsView];
-        }
-
-    }else if([notification hasActionNewFriends])
-    {
-        //Appear the second image.
-        self.myImage.hidden = NO;
-        [self.myImage setImageWithURL:[NSURL URLWithString:[SessionManager sharedInstance].user.profileImageUrl] placeholderImage:nil];
-        
-        //Reorder main image.
-        CGRectSetX(self.image, 5.0);
-    }
-    else {
-        [self setButtonsViewHiddenWithIdentifier:currentIdentifier];
-    }
-    
+    // common stuff
     self.contentLabel.text = [notification notificationTypeDescription];
-//    self.time.text = [notification.date description];
-    self.time.text = [notification.date timeAgo];
     
     [ShapeFormatterHelper setRoundedView:self.image toDiameter:self.image.frame.size.height];
     [self.image setImageWithURL:[NSURL URLWithString:notification.user.profileImageUrl] placeholderImage:nil];
+    
+    // center content label vertically regarding the image
+    CGSize contentLabelSize = [NotificationCell getContentLabelSizeForContent:self.contentLabel.text forNotification:notification];
+    CGRectSetWH(self.contentLabel, contentLabelSize.width, contentLabelSize.height);
+    
+    // content label small enough to fit vertically inside image height
+    // otherwise, start aligned on top with image
+    float margin = 0;
+    if(self.image.frame.size.height < contentLabelSize.height) {
+        margin = (self.image.frame.size.height - contentLabelSize.height) / 2;
+    }
+    
+    CGRectSetY(self.contentLabel, self.image.frame.origin.y + margin);
+    
+    // default extra hidden
+    self.buttonsView.hidden = YES;
+    self.friendsLinkImageView.hidden = YES;
+    self.myImage.hidden = YES;
+    self.pictoImageView.hidden = YES;
+    
+    // added you event
+    if(notification.notificationType == kGLPNotificationTypeAddedYou) {
+        self.buttonsView.hidden = NO;
+        
+        float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? GetViewYplusH(self.image) : GetViewYplusH(self.contentLabel);
+        CGRectSetY(self.buttonsView, biggestView + kMarginBetweenContentAndButtonsView);
+        
+        [self configureButtonsView];
+        
+    }
+    
+    else if(notification.notificationType == kGLPNotificationTypeAcceptedYou) {
+        self.friendsLinkImageView.hidden = NO;
+        self.myImage.hidden = NO;
+        
+        [ShapeFormatterHelper setRoundedView:self.image toDiameter:self.image.frame.size.height];
+        [self.image setImageWithURL:[NSURL URLWithString:[SessionManager sharedInstance].user.profileImageUrl] placeholderImage:nil];
+        
+        self.contentLabel.textAlignment = NSTextAlignmentRight;
+    }
+    
+
 }
 
 - (void)acceptButtonClick
@@ -123,33 +127,50 @@ float const kContentLabelBottomMargin = 7;
     [_delegate notificationCell:self ignoreButtonClickForNotification:_notification];
 }
 
--(void)setButtonsViewHiddenWithIdentifier:(NSString*)currentIdentifier
-{
-    self.buttonsView.hidden = YES;
-    if([currentIdentifier isEqualToString:kGLPNotificationCell])
-    {
-        CGRectSetH(self.contentView, self.time.frame.origin.y + self.time.frame.size.height + kViewBottomPadding);
-    }
-}
+//-(void)setButtonsViewHiddenWithIdentifier:(NSString*)currentIdentifier
+//{
+//    self.buttonsView.hidden = YES;
+//    if([currentIdentifier isEqualToString:kGLPNotificationCell])
+//    {
+//        CGRectSetH(self.contentView, self.time.frame.origin.y + self.time.frame.size.height + kViewBottomPadding);
+//    }
+//}
 
-+ (CGSize)getContentLabelSizeForContent:(NSString *)content
++ (CGSize)getContentLabelSizeForContent:(NSString *)content forNotification:(GLPNotification *)notification
 {
-    CGSize maximumLabelSize = CGSizeMake(kContentLabelMaxWidth, FLT_MAX);
+    // max width of content label depends of the type
+    float maxW = 320 - (kMarginBetweenBorderAndContent * 2);
     
-    return [content sizeWithFont: [UIFont systemFontOfSize:16.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+    // two profile images
+    if(notification.notificationType == kGLPNotificationTypeAcceptedYou) {
+        maxW -= kMarginBetweenProfileImageAndContent - kTwoProfileImagesWidth;
+    }
+    // contact request
+    else if(notification.notificationType == kGLPNotificationTypeAddedYou) {
+        maxW -= kMarginBetweenProfileImageAndContent;
+    }
+    // like or post
+    else {
+        maxW -= kMarginBetweenProfileImageAndContent - kPictoImageSize - kMarginBetweenContentAndPictoImage;
+    }
+    
+    CGSize maximumLabelSize = CGSizeMake(maxW, FLT_MAX);
+    return [content sizeWithFont: [UIFont fontWithName:@"HelveticaNeue-Thin" size:15.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification
 {
     // initial height with all heights and margins of other elements
-    float height = kViewTopPadding + kViewBottomPadding + kContentLabelBottomMargin;
+    float height = kMarginBetweenTopAndContent + kMarginBetweenContentAndBottom;
     
     // dynamic label
-    height += [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]].height;
+    float labelHeight = [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription] forNotification:notification].height;
     
-    // buttons view height
-    if([notification hasAction]) {
-        height += kButtonsViewHeight;
+    float biggest = (labelHeight > kProfileImageSize) ? labelHeight : kProfileImageSize;
+    height += biggest;
+    
+    if(notification.notificationType == kGLPNotificationTypeAddedYou) {
+        height += kButtonsViewHeight + kMarginBetweenContentAndButtonsView;
     }
     
     return height;

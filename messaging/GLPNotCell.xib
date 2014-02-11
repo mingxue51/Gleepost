@@ -7,54 +7,55 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GLPNotCell" rowHeight="110" id="AE0-Yd-z8W" customClass="NotificationCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GLPNotCell" rowHeight="101" id="AE0-Yd-z8W" customClass="NotificationCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="102"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AE0-Yd-z8W" id="gih-lR-PHx">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="101"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView hidden="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75F-wz-bNt">
-                        <rect key="frame" x="45" y="10" width="40" height="40"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5nj-rK-V2b">
-                        <rect key="frame" x="90" y="6" width="207" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="205" translatesAutoresizingMaskIntoConstraints="NO" id="5nj-rK-V2b">
+                        <rect key="frame" x="70" y="19" width="205" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I9n-28-F1G">
-                        <rect key="frame" x="90" y="29" width="207" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="12"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E0d-ix-cHQ">
-                        <rect key="frame" x="20" y="72" width="280" height="30"/>
+                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E0d-ix-cHQ" userLabel="buttons view">
+                        <rect key="frame" x="20" y="59" width="290" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LGZ-jO-uq6">
-                                <rect key="frame" x="0.0" y="0.0" width="95" height="30"/>
+                                <rect key="frame" x="84" y="0.0" width="95" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="accept_notification_button.png">
+                                <state key="normal" image="internal_notification_cell_accept_button.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4xK-D3-wWC">
-                                <rect key="frame" x="185" y="0.0" width="95" height="30"/>
+                                <rect key="frame" x="195" y="0.0" width="95" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="ignore_notification_button.png">
+                                <state key="normal" image="internal_notification_cell_ignore_button.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0LR-Eu-Bph">
-                        <rect key="frame" x="20" y="10" width="40" height="40"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0LR-Eu-Bph" userLabel="profile image View">
+                        <rect key="frame" x="15" y="10" width="40" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75F-wz-bNt" userLabel="current user profile image View">
+                        <rect key="frame" x="40" y="10" width="40" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="internal_notification_cell_new_friend.png" translatesAutoresizingMaskIntoConstraints="NO" id="I45-Zy-YNk" userLabel="new friend image View">
+                        <rect key="frame" x="39" y="20" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uGU-Us-aDs" userLabel="picto image view">
+                        <rect key="frame" x="280" y="17" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
@@ -63,15 +64,17 @@
                 <outlet property="acceptButton" destination="LGZ-jO-uq6" id="hRS-Gg-E14"/>
                 <outlet property="buttonsView" destination="E0d-ix-cHQ" id="8yq-cz-TXe"/>
                 <outlet property="contentLabel" destination="5nj-rK-V2b" id="bNQ-Xq-JsW"/>
+                <outlet property="friendsLinkImageView" destination="I45-Zy-YNk" id="IV9-0T-vDs"/>
                 <outlet property="ignoreButton" destination="4xK-D3-wWC" id="dom-4j-djq"/>
                 <outlet property="image" destination="0LR-Eu-Bph" id="OVk-es-Zwt"/>
-                <outlet property="myImage" destination="75F-wz-bNt" id="kv8-Vg-E87"/>
-                <outlet property="time" destination="I9n-28-F1G" id="Tbn-KL-p8s"/>
+                <outlet property="myImage" destination="75F-wz-bNt" id="HHx-Dv-wbd"/>
+                <outlet property="pictoImageView" destination="uGU-Us-aDs" id="dMy-VG-qOc"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="accept_notification_button.png" width="123" height="36"/>
-        <image name="ignore_notification_button.png" width="126" height="38"/>
+        <image name="internal_notification_cell_accept_button.png" width="300" height="100"/>
+        <image name="internal_notification_cell_ignore_button.png" width="300" height="100"/>
+        <image name="internal_notification_cell_new_friend.png" width="27" height="27"/>
     </resources>
 </document>

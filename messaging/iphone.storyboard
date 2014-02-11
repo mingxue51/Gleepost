@@ -1602,7 +1602,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="6A4D89E6-4C33-442A-86F1-AC4EEF4873DB" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="2597D92A-9D50-49CD-BB0B-5F2FAD5EEEF9" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2950,7 +2950,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="6A4D89E6-4C33-442A-86F1-AC4EEF4873DB" width="34" height="34">
+        <image name="2597D92A-9D50-49CD-BB0B-5F2FAD5EEEF9" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3078,7 +3078,6 @@ thu7G8MbxhvLG9ob3hvlG+0b+hv/HAEcAxwIHBAcExwYHCAcIxw1HDgcPQAAAAAAAAIBAAAAAAAAAEIA
 AAAAAAAAAAAAAAAAABw/A
 </mutableData>
         </image>
-        <image name="CD15402B-FBEA-4403-8E78-AAC21669D1F4" width="15" height="16"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
@@ -3125,18 +3124,10 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="n2N-Iw-72J"/>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="C4C-f3-cdX"/>
-        <segue reference="Txr-8X-v5l"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="fah-A8-Ky9"/>
         <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
+        <segue reference="fah-A8-Ky9"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="t02-Sh-BtB"/>
         <segue reference="icH-IF-qcr"/>
         <segue reference="woK-8Q-gjw"/>

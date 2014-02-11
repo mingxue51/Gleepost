@@ -28,35 +28,25 @@
     return self;
 }
 
-- (BOOL)hasAction
-{
-    return self.notificationType == kGLPNotificationTypeAddedYou;
-}
-
--(BOOL)hasActionNewFriends
-{
-    return self.notificationType == kGLPNotificationTypeAcceptedYou || self.notificationType == kGLPNotificationTypeContacts;
-}
-
 - (NSString *)notificationTypeDescription
 {
     switch (self.notificationType) {
         case kGLPNotificationTypeAcceptedYou:
-            return [NSString stringWithFormat:@"Contact accepted from %@", self.user.name];
+            return [NSString stringWithFormat:@"Your are friends now"];
         case kGLPNotificationTypeCommented:
-            return [NSString stringWithFormat:@"Comment from %@", self.user.name];
+            return [NSString stringWithFormat:@"%@ comment on your post", self.user.name];
         case kGLPNotificationTypeLiked:
-            return [NSString stringWithFormat:@"Like from %@", self.user.name];
+            return [NSString stringWithFormat:@"%@ liked your post", self.user.name];
         case kGLPNotificationTypeAddedYou:
-            return [NSString stringWithFormat:@"Contact request from %@",self.user.name];
+            return [NSString stringWithFormat:@"Contact invite from %@",self.user.name];
         default:
-            return [NSString stringWithFormat:@"You are now friends with %@",self.user.name];
+            return @"Something happened";
     }
 }
 
--(void)alreadyContacts
+- (BOOL)displaysPictoImage
 {
-    self.notificationType = kGLPNotificationTypeContacts;
+    return self.notificationType == kGLPNotificationTypeLiked || self.notificationType == kGLPNotificationTypeCommented;
 }
 
 @end
