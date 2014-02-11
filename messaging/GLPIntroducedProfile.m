@@ -28,13 +28,15 @@
 
 @implementation GLPIntroducedProfile
 
+const float HEIGHT = 210.0f;
+
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 280.0f)];
+        [self setFrame:CGRectMake(0, 0, 320.0f, HEIGHT)];
     }
     
     return self;
@@ -68,9 +70,15 @@
     [self.universityName setText:incomingUser.networkName];
     self.addUser.tag = incomingUser.remoteKey;
     
+    //Add gesture to image, navigate to profile.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.userImage addGestureRecognizer:tap];
+    self.userImage.tag = self.user.remoteKey;
+    
 }
 
-- (IBAction)navigateToProfile:(id)sender
+- (void)navigateToProfile:(id)sender
 {
     [self.delegate navigateToProfile:sender];
 }
