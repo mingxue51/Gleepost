@@ -13,8 +13,17 @@
 #import "SessionManager.h"
 #import "ShapeFormatterHelper.h"
 
+@interface NotificationCell()
+
+@property (strong, nonatomic) GLPNotification *notification;
+
+@end
+
 
 @implementation NotificationCell
+
+@synthesize notification=_notification;
+@synthesize delegate=_delegate;
 
 NSString * const kGLPNotificationCell = @"GLPNotificationCell";
 NSString * const kGLPNotCell = @"GLPNotCell";
@@ -30,9 +39,13 @@ float const kContentLabelBottomMargin = 7;
     
 }
 
+- (void)configureButtonsView
+{
+    [self.acceptButton addTarget:self action:@selector(acceptButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.ignoreButton addTarget:self action:@selector(ignoreButtonClick) forControlEvents:UIControlEventTouchUpInside];
+}
 
-//- (void)updateWithNotification:(GLPNotification *)notification withViewController:(NotificationsViewController*) controller
-- (void)updateWithNotification:(GLPNotification *)notification withViewController:(UIViewController*) controller
+- (void)updateWithNotification:(GLPNotification *)notification
 {
     // configure elements' frames
     CGSize contentSize = [NotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]];
@@ -73,10 +86,10 @@ float const kContentLabelBottomMargin = 7;
                 CGRectSetH(self.contentView, self.buttonsView.frame.origin.y + self.buttonsView.frame.size.height + kViewBottomPadding);
 //            }
 
+            // wtf again is that
             self.acceptButton.tag = self.ignoreButton.tag = notification.user.remoteKey;
             
-            [self.acceptButton addTarget:controller action:@selector(acceptContact:) forControlEvents:UIControlEventTouchUpInside];
-            [self.ignoreButton addTarget:controller action:@selector(ignoreContact:) forControlEvents:UIControlEventTouchUpInside];
+            [self configureButtonsView];
         }
 
     }else if([notification hasActionNewFriends])
@@ -98,6 +111,16 @@ float const kContentLabelBottomMargin = 7;
     
     [ShapeFormatterHelper setRoundedView:self.image toDiameter:self.image.frame.size.height];
     [self.image setImageWithURL:[NSURL URLWithString:notification.user.profileImageUrl] placeholderImage:nil];
+}
+
+- (void)acceptButtonClick
+{
+    [_delegate notificationCell:self acceptButtonClickForNotification:_notification];
+}
+
+- (void)ignoreButtonClick
+{
+    [_delegate notificationCell:self ignoreButtonClickForNotification:_notification];
 }
 
 -(void)setButtonsViewHiddenWithIdentifier:(NSString*)currentIdentifier

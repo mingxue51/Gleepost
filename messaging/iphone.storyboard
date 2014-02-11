@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
         <!--Timeline View Controller - Campus Wall-->
@@ -1521,7 +1521,7 @@
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="CD15402B-FBEA-4403-8E78-AAC21669D1F4" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="6A4D89E6-4C33-442A-86F1-AC4EEF4873DB" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2869,7 +2869,7 @@
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="CD15402B-FBEA-4403-8E78-AAC21669D1F4" width="34" height="34">
+        <image name="6A4D89E6-4C33-442A-86F1-AC4EEF4873DB" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3043,19 +3043,13 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="rCT-Ex-vO8"/>
-        <segue reference="OVn-Bm-tTd"/>
-        <segue reference="uet-Cl-mZq"/>
+        <segue reference="n2N-Iw-72J"/>
         <segue reference="GTC-XV-iI1"/>
-        <segue reference="JXK-Z8-Y8u"/>
-        <segue reference="n2N-Iw-72J"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="woK-8Q-gjw"/>
+        <segue reference="2ju-Ui-QdM"/>
         <segue reference="icH-IF-qcr"/>
-        <segue reference="lQn-ic-ohV"/>
-        <segue reference="n2N-Iw-72J"/>
-        <segue reference="JXK-Z8-Y8u"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="C4C-f3-cdX"/>
+        <segue reference="Txr-8X-v5l"/>
+        <segue reference="XMX-SH-Gag"/>
     </inferredMetricsTieBreakers>
 </document>

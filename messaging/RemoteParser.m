@@ -798,7 +798,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     notification.seen = NO;
     
     notification.remoteKey = [json[@"id"] integerValue];
-    notification.postRemoteKey = (json[@"post"] != [NSNull null]) ? [json[@"post"] intValue] : 0;
+    notification.postRemoteKey = json[@"post"] ? [json[@"post"] integerValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
     notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
     

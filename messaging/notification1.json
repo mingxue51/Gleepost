@@ -1,0 +1,10 @@
+{
+    "id":99999,
+    "type":"added_you",
+    "time":"2013-09-16T16:58:30.771905595Z",
+    "user": {
+        "id":9,
+        "name":"Patrick",
+        "profile_image":"https://gleepost.com/uploads/35da2ca95be101a655961e37cc875b7b.png"
+    }
+}

@@ -65,10 +65,11 @@ static BOOL likePushed;
 
 @implementation ProfileViewController
 
+@synthesize unreadNotificationsCount=_unreadNotificationsCount;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     
     //Change the format of the navigation bar.
     
@@ -199,7 +200,8 @@ static BOOL likePushed;
     
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -209,9 +211,9 @@ static BOOL likePushed;
     //Initialise selected user id with -1 to dinstinguish logged in user from other users' profile.
     self.selectedUserId = -1;
     
-    // count unread notifications
-    self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
-    [self updateNotificationsBubble];
+//    // count unread notifications
+//    self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
+//    [self updateNotificationsBubble];
     
     [self loadPosts];
 
@@ -224,7 +226,7 @@ static BOOL likePushed;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     
     [super viewWillDisappear:animated];
 
@@ -365,6 +367,19 @@ static BOOL likePushed;
             //Do something.
         }
     }];
+}
+
+
+# pragma mark - Internal notifications
+
+- (void)loadInternalNotifications
+{
+    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
+    
+    if(_unreadNotificationsCount == 0) {
+        
+    }
+    
 }
 
 

@@ -13,11 +13,14 @@
 
 + (void)loadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 + (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback;
-
-+ (NSInteger)getNotificationsCount;
 +(NSArray*)cleanNotificationsArray:(NSArray*)incomingNotifications;
-
-+ (void)saveNotification:(GLPNotification *)notification;
 + (void)saveNotifications:(NSArray *)notifications;
+
+// New
++ (NSMutableArray *)notifications;
++ (NSInteger)unreadNotificationsCount;
++ (void)markNotificationsRead;
++ (void)saveNotification:(GLPNotification *)notification;
++ (void)clearAllNotifications;
 
 @end

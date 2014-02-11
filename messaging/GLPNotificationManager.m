@@ -37,6 +37,7 @@
 }
 
 
+
 /**
  Removes notifications that are already saved and presented in the view controller.
  
@@ -136,14 +137,31 @@
     }];
 }
 
-+ (NSInteger)getNotificationsCount
++ (NSMutableArray *)notifications
+{
+    __block NSMutableArray *notifications;
+    [DatabaseManager run:^(FMDatabase *db) {
+        notifications = [GLPNotificationDao findNotifications:db];
+    }];
+    
+    return notifications;
+}
+
++ (NSInteger)unreadNotificationsCount
 {
     __block int count = 0;
     [DatabaseManager run:^(FMDatabase *db) {
-        count = [GLPNotificationDao countUnreadNotificationsInDb:db];
+        count = [GLPNotificationDao unreadNotificationsCount:db];
     }];
     
     return count;
+}
+
++ (void)markNotificationsRead
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPNotificationDao markNotificationsRead:db];
+    }];
 }
 
 // Save notification from web socket event
@@ -159,6 +177,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
 }
 
+
 + (void)saveNotifications:(NSArray *)notifications
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
@@ -172,6 +191,13 @@
         {
             [GLPNotificationDao save:notification inDb:db];
         }
+    }];
+}
+
++ (void)clearAllNotifications
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPNotificationDao deleteAll:db];
     }];
 }
 

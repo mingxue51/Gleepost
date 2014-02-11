@@ -67,10 +67,12 @@ static BOOL isViewDidDisappearCalled = YES;
 
 - (void)updateProfileBadge:(NSNotification *)notification
 {
-    //    self.profileNotificationsCount += [notification.userInfo[@"count"] intValue];
-
-    self.profileNotificationsCount = [notification.userInfo[@"count"] intValue];
-    [self updateBadgeForIndex:4 count:self.profileNotificationsCount];
+    if(self.selectedIndex == 4) {
+        return;
+    }
+    
+    _profileNotificationsCount++;
+    [self updateBadgeForIndex:4 count:_profileNotificationsCount];
 }
 
 - (void)updateChatBadge:(NSNotification *)notification

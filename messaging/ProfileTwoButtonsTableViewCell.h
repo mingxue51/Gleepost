@@ -14,6 +14,7 @@
 
 extern const float TWO_BUTTONS_CELL_HEIGHT;
 
+@property (weak, nonatomic) IBOutlet UIImageView *notificationsBubbleImageView;
 
 @property (readonly, nonatomic) GLPProfileViewController *delegate;
 

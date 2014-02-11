@@ -20,6 +20,8 @@
 
 @implementation ProfileTwoButtonsTableViewCell
 
+@synthesize notificationsBubbleImageView=_notificationsBubbleImageView;
+
 const NSString *POST_IMAGE_SELECTED = @"mypost_btn_selected";
 const NSString *POST_IMAGE = @"mypost_btn";
 const NSString *NOTIFICATIONS_IMAGE_SELECTED = @"notification_btn_selected";
@@ -33,7 +35,7 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     
     if(self)
     {
-        
+
     }
     
     return self;

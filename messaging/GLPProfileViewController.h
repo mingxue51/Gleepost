@@ -12,8 +12,9 @@
 #import "FDTakeController.h"
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
+#import "NotificationCell.h"
 
-@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate>
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate>
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;

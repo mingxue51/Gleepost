@@ -10,6 +10,17 @@
 #import "GLPNotification.h"
 #import "NotificationsViewController.h"
 
+@class NotificationCell;
+
+
+@protocol GLPNotificationCellDelegate <NSObject>
+
+- (void)notificationCell:(NotificationCell *)cell acceptButtonClickForNotification:(GLPNotification *)notification;
+- (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification;
+
+@end
+
+
 @interface NotificationCell : UITableViewCell
 
 extern NSString * const kGLPNotificationCell;
@@ -25,9 +36,11 @@ extern NSString* const kGLPNotCell;
 @property (weak, nonatomic) IBOutlet UIImageView *incomingNotification;
 @property (weak, nonatomic) IBOutlet UIImageView *myImage;
 
+@property (weak, nonatomic) id<GLPNotificationCellDelegate> delegate;
+
 + (CGSize)getContentLabelSizeForContent:(NSString *)content;
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification;
 
-- (void)updateWithNotification:(GLPNotification *)notification withViewController:(UIViewController*) controller;
+- (void)updateWithNotification:(GLPNotification *)notification;
 
 @end

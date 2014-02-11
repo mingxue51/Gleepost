@@ -70,7 +70,21 @@
     [GLPUserDao saveIfNotExist:entity.user db:db];
 }
 
-+ (NSInteger)countUnreadNotificationsInDb:(FMDatabase *)db
++ (NSMutableArray *)findNotifications:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications order by date desc"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPNotificationDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
+
++ (NSInteger)unreadNotificationsCount:(FMDatabase *)db
 {
     return [db intForQuery:@"select count(key) from notifications where seen = 0"];
 }
@@ -80,6 +94,12 @@
     return [db intForQuery:@"select count(key) from notifications where seen = 1"];
 }
 
++ (void)markNotificationsRead:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"update notifications set seen=1"];
+}
+
+
 +(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number
 {
     
@@ -88,11 +108,17 @@
      SELECT id FROM ranking ORDER BY score DESC LIMIT 100);
      */
     
+    // wtf is that?
     BOOL s = [db executeUpdateWithFormat:@"delete from notifications where key in (select key from notifications where seen = 1 order by date desc limit %d)",number];
     NSLog(@"Some notifications are deleted: %d",s);
 }
 
 +(void)deleteTableWithDb:(FMDatabase*)db
+{
+    [db executeUpdateWithFormat:@"delete from notifications"];
+}
+
++ (void)deleteAll:(FMDatabase*)db
 {
     [db executeUpdateWithFormat:@"delete from notifications"];
 }

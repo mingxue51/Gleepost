@@ -16,9 +16,15 @@
 + (NSArray *)findUnreadNotificationsInDb:(FMDatabase *)db;
 + (void)updateSeenStatus:(GLPNotification *)entity inDb:(FMDatabase *)db;
 + (void)save:(GLPNotification *)entity inDb:(FMDatabase *)db;
-+ (NSInteger)countUnreadNotificationsInDb:(FMDatabase *)db;
+
 + (NSInteger)countReadNotificationsInDb:(FMDatabase *)db;
 +(void)deleteTableWithDb:(FMDatabase*)db;
 +(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number;
+
+// new version
++ (NSMutableArray *)findNotifications:(FMDatabase *)db;
++ (NSInteger)unreadNotificationsCount:(FMDatabase *)db;
++ (void)markNotificationsRead:(FMDatabase *)db;
++ (void)deleteAll:(FMDatabase*)db;
 
 @end

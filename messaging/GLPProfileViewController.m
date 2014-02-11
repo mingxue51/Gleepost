@@ -37,6 +37,7 @@
 #import "TransitionDelegateViewImage.h"
 #import "SettingsViewController.h"
 #import "UIImage+StackBlur.h"
+#import "NotificationCell.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -60,7 +61,7 @@
 
 @property (strong, nonatomic) NotificationsView *notificationView;
 
-@property (assign, nonatomic) int unreadNotificationsCount;
+@property (assign, nonatomic) NSInteger unreadNotificationsCount;
 
 @property (strong, nonatomic) NSString *profileImageUrl;
 
@@ -78,7 +79,11 @@
 
 @end
 
+
 @implementation GLPProfileViewController
+
+@synthesize unreadNotificationsCount=_unreadNotificationsCount;
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -126,21 +131,18 @@
     
     [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
-    
-    self.unreadNotificationsCount = [GLPNotificationManager getNotificationsCount];
-    [self updateNotificationsBubble];
-    
-    [self loadNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(incrementNotificationsCount:) name:@"GLPNewNotifications" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveInternalNotificationNotification:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+    
+    [self loadInternalNotifications];
+    [self.tableView reloadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewNotifications" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
     [super viewWillDisappear:animated];
@@ -255,7 +257,6 @@
 
 -(void)initialiseObjects
 {
-    self.unreadNotificationsCount = 0;
     
     //Find out from which view controller this comes.
     if(self.navigationController.viewControllers.count == 1)
@@ -315,7 +316,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
     
-    //[self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
 }
 
 
@@ -331,17 +332,18 @@
 
 #pragma mark - UI methods
 
--(void)updateNotificationsBubble
-{
-    if(self.unreadNotificationsCount > 0)
-    {
-        [self.notificationView updateNotificationsWithNumber:self.unreadNotificationsCount];
-    }
-    else
-    {
-        [self.notificationView hideNotifications];
-    }
-}
+//-(void)updateNotificationsBubble
+//{
+//    if(self.unreadNotificationsCount > 0)
+//    {
+//        [self.notificationView updateNotificationsWithNumber:self.unreadNotificationsCount];
+//    }
+//    else
+//    {
+//        [self.notificationView hideNotifications];
+//    }
+//}
+//
 
 -(void)updateRealImage:(NSNotification*)notification
 {
@@ -379,25 +381,33 @@
 
 #pragma mark - Selectors
 
--(void)popUpNotifications:(id)sender
+//-(void)popUpNotifications:(id)sender
+//{
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
+//    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+//    vc.delegate = self;
+//    vc.campusWallView = self.fromCampusWall;
+//    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
+//    vc.modalPresentationStyle= UIModalPresentationCustom;
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:vc animated:YES completion:nil];
+//}
+
+
+# pragma mark - Notifications
+
+-(void)receiveInternalNotificationNotification:(NSNotification *)notification
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
-    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-    vc.delegate = self;
-    vc.campusWallView = self.fromCampusWall;
-    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
-    vc.modalPresentationStyle= UIModalPresentationCustom;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
+    DDLogInfo(@"GLPProfileViewController - Notification - Receive internal notificaiton");
+    
+    [self loadInternalNotifications];
+    [self.tableView reloadData];
 }
 
 
--(void)incrementNotificationsCount:(NSNotification *)notification
-{
-    self.unreadNotificationsCount += [notification.userInfo[@"count"] intValue];
-    [self updateNotificationsBubble];
-}
+
+
 
 #pragma mark - ProfileSettingsTableViewCellDelegate
 
@@ -540,6 +550,7 @@
     
 }
 
+
 #pragma mark - Client
 
 -(void)uploadImageAndSetUserImageWithUserRemoteKey
@@ -648,10 +659,42 @@
     }];
 }
 
--(void)loadNotifications
+
+# pragma mark - Internal notifications
+
+- (void)loadInternalNotifications
+{
+    DDLogInfo(@"GLPProfileViewController - Load internal notifications");
+    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
+    _notifications = [GLPNotificationManager notifications];
+    
+    DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
+    
+    if(self.selectedTabStatus == kGLPSettings) {
+        [self notificationsTabClick];
+    }
+}
+
+- (void)notificationsTabClick
+{
+    [GLPNotificationManager markNotificationsRead];
+    _unreadNotificationsCount = 0;
+}
+
+
+
+# pragma mark - GLPNotificationCellDelegate
+
+- (void)notificationCell:(NotificationCell *)cell acceptButtonClickForNotification:(GLPNotification *)notification
 {
     
 }
+
+- (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification
+{
+    
+}
+
 
 -(void)getBusyStatus
 {
@@ -703,7 +746,7 @@
     }
     else
     {
-        return self.numberOfRows + 1;
+        return self.numberOfRows + _notifications.count;
     }
 }
 
@@ -713,7 +756,7 @@
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
-    static NSString *CellIdentifierSettings = @"SettingsCell";
+    static NSString *CellIdentifierNotification = @"GLPNotCell";
     
     
     PostCell *postViewCell;
@@ -721,6 +764,7 @@
     ProfileTwoButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
     ProfileSettingsTableViewCell *profileSettingsView;
+    NotificationCell *notificationCell;
     
     if(indexPath.row == 0)
     {
@@ -752,6 +796,12 @@
         buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
         buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        if(_unreadNotificationsCount > 0) {
+            buttonsView.notificationsBubbleImageView.hidden = NO;
+        } else {
+            buttonsView.notificationsBubbleImageView.hidden = YES;
+        }
+        
         [buttonsView setDelegate:self];
         
         return buttonsView;
@@ -760,14 +810,14 @@
     {
         if(self.selectedTabStatus == kGLPSettings)
         {
-            profileSettingsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSettings forIndexPath:indexPath];
-            
+            notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
             profileSettingsView.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            profileSettingsView.delegate = self;
             
+            GLPNotification *notification = _notifications[indexPath.row - 2];
+            [notificationCell updateWithNotification:notification];
+            notificationCell.delegate = self;
             
-            return profileSettingsView;
+            return notificationCell;
         }
         else if(self.selectedTabStatus == kGLPPosts)
         {
@@ -797,6 +847,7 @@
     }
     
     //TODO: See this again.
+    // => yep
     return nil;
 }
 
@@ -833,7 +884,8 @@
     {
         if(self.selectedTabStatus == kGLPSettings)
         {
-            return 150.0f;
+            GLPNotification *notification = _notifications[indexPath.row - 2];
+            return [NotificationCell getCellHeightForNotification:notification];
         }
         else if (self.selectedTabStatus == kGLPPosts)
         {
@@ -922,11 +974,16 @@
     [self.tableView endUpdates];
 }
 
+
 #pragma  mark - Buttons view methods
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {
     self.selectedTabStatus = selectedTab;
+    
+    if(selectedTab == kGLPSettings) {
+        [self notificationsTabClick];
+    }
     
     [self.tableView reloadData];
 }

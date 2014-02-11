@@ -75,10 +75,9 @@
 }
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-        if([self isLoadingRowForIndexPath:indexPath]) {
+    if([self isLoadingRowForIndexPath:indexPath]) {
         return kGLPLoadingCellHeight;
     }
-
     
     return [self heightForItem:[self itemForIndexPath:indexPath]];
 }

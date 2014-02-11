@@ -22,6 +22,12 @@
 #import "GLPLoadMoreCell.h"
 #import "GLPMessagesLoader.h"
 
+// debug
+#include <stdlib.h>
+#include "RemoteParser.h"
+#import "GLPNotification.h"
+#import "GLPNotificationManager.h"
+
 
 #define CELL_THEME_COLOR [UIColor colorWithRed:243/255.0 green:243/255.0 blue:243/255.0 alpha:1.0]
 
@@ -40,6 +46,10 @@
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 @property (strong, nonatomic) UITabBarItem *messagesTabbarItem;
 
+// debug
+@property (assign, nonatomic) NSInteger debugNotificationCount;
+
+
 @end
 
 
@@ -49,15 +59,14 @@
 @synthesize regularConversations=_regularConversations;
 @synthesize liveConversations=_liveConversations;
 
-
-
+// debug
+@synthesize debugNotificationCount=_debugNotificationCount;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self createNavigationBar];
-    
     [self configTabbar];
 
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -78,8 +87,6 @@
     _sections = [[NSMutableArray alloc] initWithObjects:@"Random Chats", @"Messages", nil];
     
     [self reloadConversations];
-    
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -139,21 +146,13 @@
 
 - (void)createNavigationBar
 {
-    //Change the format of the navigation bar.
-//    [self.navigationController.navigationBar setTranslucent:YES];
-//    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-//    
-//    
-//    
-//    //[self setBackgroundToNavigationBar];
-//    
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//    
-//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
     [self.navigationController.navigationBar setShadowImage: [[UIImage alloc]init]];
+    
+    _debugNotificationCount = 0;
+    UIBarButtonItem *debug = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount] style:UIBarButtonItemStyleBordered target:self action:@selector(debugNotification)];
+    self.navigationItem.rightBarButtonItem = debug;
 
     
 //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
@@ -164,6 +163,9 @@
 
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+
+
 
 // Create the refresh control
 // Should be called only when the loading cell is hidden because it does not make sense to have both
@@ -464,6 +466,52 @@
         vc.conversation = self.selectedConversation;
         vc.hidesBottomBarWhenPushed = YES;
     }
+}
+
+
+# pragma mark - Debug
+
+- (void)debugNotification
+{
+    if(_debugNotificationCount == 0) {
+        [GLPNotificationManager clearAllNotifications];
+        
+        _debugNotificationCount++;
+        [self.navigationItem.rightBarButtonItem setTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount]];
+        return;
+    }
+    
+    NSString *file = [NSString stringWithFormat:@"notification%d", _debugNotificationCount];
+    NSString *path = [[NSBundle mainBundle] pathForResource:file ofType:@"json"];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    
+    GLPNotification *not = [RemoteParser parseNotificationFromJson:[NSJSONSerialization JSONObjectWithData:[content dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil]];
+    
+    NSLog(@"Send debug notification with remote key %d", not.remoteKey);
+    
+    BOOL delay = _debugNotificationCount == 4 ? YES : NO;
+    
+    [self performSelectorInBackground:@selector(debugPostNotification:) withObject:[NSArray arrayWithObjects:not, [NSNumber numberWithBool:delay ], nil]];
+    
+    _debugNotificationCount++;
+    if(_debugNotificationCount > 4) {
+        _debugNotificationCount = 0;
+    }
+    
+    [self.navigationItem.rightBarButtonItem setTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount]];
+}
+
+- (void)debugPostNotification:(NSArray *)args
+{
+    GLPNotification *not = args[0];
+    BOOL delay = [args[1] boolValue];
+    
+    if(delay) {
+        [NSThread sleepForTimeInterval:5.0];
+    }
+    
+    NSLog(@"Debug post notification");
+    [GLPNotificationManager saveNotification:not];
 }
 
 @end
