@@ -41,6 +41,7 @@
             if([v isKindOfClass:[CampusWallHeader class]])
             {
                 _scrollViewHeader = (CampusWallHeader*) v;
+                _scrollViewHeader.timeLineDelegate = _delegate;
                 break;
             }
         }

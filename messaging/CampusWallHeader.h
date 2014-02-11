@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "VSScrollView.h"
 #import "VSScrollViewCell.h"
+#import "GLPTimelineViewController.h"
 
 @interface CampusWallHeader : VSScrollView <VSScrollerDatasource,VSScrollerDelegate>
+
+@property (weak, nonatomic) GLPTimelineViewController *timeLineDelegate;
 
 -(void)clearViews;
 -(void)loadEvents;

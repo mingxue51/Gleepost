@@ -12,7 +12,8 @@
 #define LOCALISABLE_SHORT @"Localizable"
 //#define SUFFIX_UNTIL @"Until the "
 #define SUFFIX_UNTIL @""
-#define PREFIX_LEFT @" left"
+//#define PREFIX_LEFT @" left"
+#define PREFIX_LEFT @"In "
 #define PREFIX_AGO  @" ago"
 
 @implementation NSDate (HumanizedTime)
@@ -109,13 +110,22 @@
         }
         else
         {
-          full_yearString   = [SUFFIX_UNTIL stringByAppendingString:full_yearString];
-          full_dateString   = [SUFFIX_UNTIL stringByAppendingString:full_dateString];
-          full_weekString   = [full_weekString stringByAppendingString:PREFIX_LEFT];
-          full_dayString    = [full_dayString stringByAppendingString:PREFIX_LEFT];
-          full_hourString   = [full_hourString stringByAppendingString:PREFIX_LEFT];
-          full_minuteString = [full_minuteString stringByAppendingString:PREFIX_LEFT];
-          full_secondString = [full_secondString stringByAppendingString:PREFIX_LEFT];
+//          full_yearString   = [SUFFIX_UNTIL stringByAppendingString:full_yearString];
+//          full_dateString   = [SUFFIX_UNTIL stringByAppendingString:full_dateString];
+//          full_weekString   = [full_weekString stringByAppendingString:PREFIX_LEFT];
+//          full_dayString    = [full_dayString stringByAppendingString:PREFIX_LEFT];
+//          full_hourString   = [full_hourString stringByAppendingString:PREFIX_LEFT];
+//          full_minuteString = [full_minuteString stringByAppendingString:PREFIX_LEFT];
+//          full_secondString = [full_secondString stringByAppendingString:PREFIX_LEFT];
+            
+            
+            full_yearString   = [SUFFIX_UNTIL stringByAppendingString:full_yearString];
+            full_dateString   = [SUFFIX_UNTIL stringByAppendingString:full_dateString];
+            full_weekString   = [PREFIX_LEFT stringByAppendingString:full_weekString];
+            full_dayString    = [PREFIX_LEFT stringByAppendingString:full_dayString];
+            full_hourString   = [PREFIX_LEFT stringByAppendingString:full_hourString];
+            full_minuteString = [PREFIX_LEFT stringByAppendingString:full_minuteString];
+            full_secondString = [PREFIX_LEFT stringByAppendingString:full_secondString];
         }
         break;
       }

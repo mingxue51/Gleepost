@@ -28,5 +28,6 @@
 -(void)refreshPostsWithNewCategory;
 -(void)newPostButtonClick;
 -(void)showCategories:(id)sender;
+//-(void)showEventPost:(GLPPost *)post;
 
 @end

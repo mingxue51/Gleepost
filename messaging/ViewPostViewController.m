@@ -229,7 +229,34 @@ static BOOL likePushed;
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
+    if(self.post.dateEventStarts)
+    {
+        [self addCustomBackButton];
+    }
+    
 }
+
+-(void)addCustomBackButton
+{
+    UIImage *img = [UIImage imageNamed:@"back"];
+    
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setBackgroundImage:img forState:UIControlStateNormal];
+    [btn setFrame:CGRectMake(0, 0, 13, 21)];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    
+    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+}
+
+-(void)dismiss:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
 #pragma mark - Social panel button methods
 
 /**

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NewPostViewController.h"
 
-@interface PickDateEventViewController : UIViewController
+@interface PickDateEventViewController : UIViewController <UITextFieldDelegate>
 
 @property (weak, nonatomic) NewPostViewController *delegate;
 

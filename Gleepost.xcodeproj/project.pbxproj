@@ -46,6 +46,8 @@
 		580C7ACC1898632C007495EE /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ACA1898632C007495EE /* splash@2x.png */; };
 		580C7ACE189863F6007495EE /* background_day.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ACD189863F6007495EE /* background_day.png */; };
 		580FF14F18AA58DE0026B65B /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 580FF14E18AA58DE0026B65B /* add_button.png */; };
+		580FF15318AA6DAD0026B65B /* NSDate+HumanizedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */; };
+		580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15518AA74400026B65B /* CampusLiveManager.m */; };
 		5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */; };
 		5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0BB18870C740066D4CE /* GLPProfileLoader.m */; };
 		58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D681821013200B76E5D /* CFNetwork.framework */; };
@@ -651,6 +653,10 @@
 		580C7ACA1898632C007495EE /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
 		580C7ACD189863F6007495EE /* background_day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_day.png; sourceTree = "<group>"; };
 		580FF14E18AA58DE0026B65B /* add_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button.png; sourceTree = "<group>"; };
+		580FF15118AA6DAD0026B65B /* NSDate+HumanizedTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+HumanizedTime.h"; sourceTree = "<group>"; };
+		580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+HumanizedTime.m"; sourceTree = "<group>"; };
+		580FF15418AA74400026B65B /* CampusLiveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveManager.h; sourceTree = "<group>"; };
+		580FF15518AA74400026B65B /* CampusLiveManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveManager.m; sourceTree = "<group>"; };
 		5810F0B71886F73B0066D4CE /* GLPMessagesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessagesLoader.h; sourceTree = "<group>"; };
 		5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessagesLoader.m; sourceTree = "<group>"; };
 		5810F0BA18870C740066D4CE /* GLPProfileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileLoader.h; sourceTree = "<group>"; };
@@ -1513,6 +1519,15 @@
 			children = (
 			);
 			name = Splash;
+			sourceTree = "<group>";
+		};
+		580FF15018AA6D810026B65B /* Time formatter */ = {
+			isa = PBXGroup;
+			children = (
+				580FF15118AA6DAD0026B65B /* NSDate+HumanizedTime.h */,
+				580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */,
+			);
+			name = "Time formatter";
 			sourceTree = "<group>";
 		};
 		5821278A189161C800BF36E5 /* VSScroller */ = {
@@ -2580,6 +2595,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				580FF15018AA6D810026B65B /* Time formatter */,
 				5832C4C618998554004FC4F6 /* Blur */,
 				5821278A189161C800BF36E5 /* VSScroller */,
 				806E3D891832B1A40063AACE /* HexColors */,
@@ -2944,6 +2960,8 @@
 				80DDDF3B180FE00A009E17BD /* UserManager.m */,
 				580C7AAB1897F030007495EE /* CategoryManager.h */,
 				580C7AAC1897F030007495EE /* CategoryManager.m */,
+				580FF15418AA74400026B65B /* CampusLiveManager.h */,
+				580FF15518AA74400026B65B /* CampusLiveManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -3795,6 +3813,7 @@
 				8087E42E180EC02E00938264 /* _Post.m in Sources */,
 				807C4D16180AF0F6003D67E6 /* Conversation.m in Sources */,
 				8087E430180EC02E00938264 /* Post.m in Sources */,
+				580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */,
 				589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */,
 				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
@@ -3820,6 +3839,7 @@
 				5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
+				580FF15318AA6DAD0026B65B /* NSDate+HumanizedTime.m in Sources */,
 				58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				58752FDF18A44BC100F6F09B /* GLPSingInViewController.m in Sources */,

@@ -51,6 +51,7 @@
 @property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
+@property (strong, nonatomic) NSString *eventTitle;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -226,7 +227,7 @@
         
 //        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
         
-        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories andEventTime:_eventDateStart];
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart andTitle:_eventTitle];
         
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -302,10 +303,11 @@
 
 }
 
-- (void)doneSelectingDateForEvent:(NSDate *)date
+- (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title
 {
-    DDLogDebug(@"DATE! : %@",date);
+    DDLogDebug(@"DATE! : %@ with title: %@",date, title);
     _eventDateStart = date;
+    _eventTitle = title;
     
 }
 

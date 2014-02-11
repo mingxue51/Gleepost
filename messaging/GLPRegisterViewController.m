@@ -217,6 +217,10 @@
 
 }
 
+-(BOOL)isEmalValid
+{
+    return [ValidFields NSStringIsValidEmail:self.emailTextField.text];
+}
 
 
 

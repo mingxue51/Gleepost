@@ -13,6 +13,7 @@
 #import "WebClientHelper.h"
 #import "WebClient.h"
 #import "DateFormatterHelper.h"
+#import "CampusLiveManager.h"
 
 @interface CampusWallHeader ()
 
@@ -77,11 +78,10 @@
 {
     [self showLoadingLabel];
     
-    NSDate *date = [DateFormatterHelper generateDateWithDay:10 month:1 year:2014 hour:12 andMinutes:00];
+//    NSDate *date = [DateFormatterHelper generateDateWithDay:10 month:1 year:2014 hour:12 andMinutes:00];
 
-    
-    [[WebClient sharedInstance] getEventPostsAfterDate:date withCallbackBlock:^(BOOL success, NSArray *posts) {
-       
+    [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+        
         if(success)
         {
             _posts = posts;
@@ -91,7 +91,6 @@
             [self clearAndLoad];
             
             [self scrollToPosition:1];
-            
         }
         else
         {
@@ -99,6 +98,26 @@
         }
         
     }];
+    
+//    [[WebClient sharedInstance] getEventPostsAfterDate:date withCallbackBlock:^(BOOL success, NSArray *posts) {
+//       
+//        if(success)
+//        {
+//            _posts = posts;
+//            
+//            [self hideLoadingLabel];
+//            
+//            [self clearAndLoad];
+//            
+//            [self scrollToPosition:1];
+//            
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//    }];
 }
 
 #pragma mark - UI methods
@@ -233,10 +252,29 @@
     [myCustomCell setFrame:frame];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    
+}
+
+
+
 -(void)didSelectCell:(id)sender
 {
-    DDLogDebug(@"didChangeValueForKey");
+   
+    UIGestureRecognizer *g = (UIGestureRecognizer *)sender;
+    
+    
+    
+    CampusWallHeaderCell *headerCell = (CampusWallHeaderCell *)g.view;
+    
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys: headerCell.postData, @"Post"
+                              , nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPShowEvent" object:self userInfo:dataDict];
 
+//    [_timeLineDelegate showEventPost:nil];
 }
 
 

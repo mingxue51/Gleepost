@@ -18,6 +18,8 @@
 
 -(BOOL)areEmailPassValid;
 
+-(BOOL)isEmalValid;
+
 -(void)formatTextField:(UITextField*)textField;
 
 -(void)setDefaultTextToEmailAndPassFields;

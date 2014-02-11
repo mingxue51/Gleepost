@@ -264,6 +264,8 @@ const float TOP_OFFSET = 213.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPShowEvent" object:nil];
+
 }
 
 
@@ -505,6 +507,8 @@ const float TOP_OFFSET = 213.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showEventPost:) name:@"GLPShowEvent" object:nil];
 
     
 }
@@ -1858,6 +1862,20 @@ const float TOP_OFFSET = 213.0f;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:cvc animated:YES completion:nil];
     
+}
+
+-(void)showEventPost:(NSNotification*)notification
+{
+    
+    NSDictionary *dict = [notification userInfo];
+    GLPPost *post = [dict objectForKey:@"Post"];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostViewController *vpvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
+    vpvc.post = post;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vpvc];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

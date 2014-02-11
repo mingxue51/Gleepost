@@ -85,9 +85,7 @@ const float HEIGHT = 210.0f;
 
 -(void)addUser:(id)sender
 {
-//    UIButton *btn = (UIButton*)sender;
-    
-    
+
     [[WebClient sharedInstance] addContact:_user.remoteKey callbackBlock:^(BOOL success) {
         
         if(success)
@@ -104,7 +102,7 @@ const float HEIGHT = 210.0f;
             [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
             
             [self setContactAsRequested];
-            
+
         }
         else
         {
@@ -118,7 +116,7 @@ const float HEIGHT = 210.0f;
 
 -(void)setContactAsRequested
 {
-    self.addUser.enabled = NO;
+    [_delegate disableAddUserButton];
 }
 
 

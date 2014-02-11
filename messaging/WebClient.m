@@ -327,13 +327,13 @@ static WebClient *instance = nil;
     
     if(post.dateEventStarts)
     {
-        NSString *attribs = [NSString stringWithFormat:@"event-time,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts]];
+        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
         
         [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
     }
     
-    DDLogInfo(@"Post's categories before post: %@", [RemoteParser parseCategoriesToTags:post.categories]);
-
+    
+    
     
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -895,6 +895,11 @@ static WebClient *instance = nil;
         callbackBlock(YES);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        //TODO: Handle error message.
+        
+        DDLogError(@"Error adding user: %@", error.localizedDescription);
+        
         callbackBlock(NO);
     }];
 }
@@ -935,6 +940,24 @@ static WebClient *instance = nil;
     
 }
 
+-(void)resetPasswordWithEmail:(NSString *)email callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:email, @"email", nil];
+    
+    [self postPath:@"profile/request_reset" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"RESPONSE: %@", responseObject);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogDebug(@"FAILED: %@", error);
+        
+        callbackBlock(NO);
+    }];
+    
+}
 
 /**
  
