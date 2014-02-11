@@ -14,4 +14,7 @@
 
 @property (strong, nonatomic) GLPConversation *conversation;
 
+-(void)navigateToProfile:(id)sender;
+
+
 @end

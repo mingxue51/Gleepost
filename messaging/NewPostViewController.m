@@ -23,6 +23,7 @@
 #import "GLPThemeManager.h"
 #import "GLPPostManager.h"
 #import "CategoryManager.h"
+#import "PickDateEventViewController.h"
 
 @interface NewPostViewController ()
 
@@ -49,6 +50,7 @@
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
+@property (strong, nonatomic) NSDate *eventDateStart;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -87,6 +89,7 @@
     
     self.tabBarController.tabBar.hidden = NO;
 
+    [self configureObjects];
     [self configureNavigationBar];
     [self configureCategoryButtons];
     [self configureLabel];
@@ -119,6 +122,11 @@
 
 
 #pragma mark - Configuration
+
+-(void)configureObjects
+{
+    _eventDateStart = nil;
+}
 
 -(void)configureCategoryButtons
 {
@@ -218,7 +226,7 @@
         
 //        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
         
-        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories];
+        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories andEventTime:_eventDateStart];
         
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -252,6 +260,8 @@
         GLPCategory *chosenCategory = [[CategoryManager instance] categoryWithRemoteKey:currentButton.tag];
         
         
+        [self popUpTimeSelectorWithCategory:chosenCategory];
+        
         [self makeButtonSelected:currentButton];
 
         
@@ -270,6 +280,7 @@
     }
 }
 
+
 -(void)makeButtonUnselected:(UIButton *)btn
 {
     [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
@@ -280,7 +291,34 @@
 {
     [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
     [btn.layer setBorderColor:[AppearanceHelper defaultGleepostColour].CGColor];
+}
 
+#pragma mark - PickDateEvent delegate
+
+-(void)cancelSelectingDateForEvent
+{
+    //Unselect event category.
+    [self makeButtonUnselected:_eventsCategoryBtn];
+
+}
+
+- (void)doneSelectingDateForEvent:(NSDate *)date
+{
+    DDLogDebug(@"DATE! : %@",date);
+    _eventDateStart = date;
+    
+}
+
+
+-(void)popUpTimeSelectorWithCategory:(GLPCategory *)category
+{
+    if([category.tag isEqualToString:@"event"])
+    {
+        
+        //Pop up the time selector.
+        [self performSegueWithIdentifier:@"pick date" sender:self];
+        
+    }
 }
 
 -(void)deleteCategoryWithRemoteKey:(int)remoteKey
@@ -314,6 +352,16 @@
     [_postUploader uploadImageToQueue:self.imgToUpload];
     //[_postUploader startUploadingImage:self.imgToUpload];
 }
+
+#pragma mark - Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    PickDateEventViewController *pickDateViewController = segue.destinationViewController;
+    
+    pickDateViewController.delegate = self;
+}
+
 
 
 

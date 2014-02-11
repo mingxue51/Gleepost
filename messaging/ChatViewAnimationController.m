@@ -13,6 +13,7 @@
 #import "ViewTopicViewController.h"
 #import "GLPConversation.h"
 #import "GLPLiveConversationsManager.h"
+#import "GLPConversationViewController.h"
 
 @interface ChatViewAnimationController ()
 
@@ -164,11 +165,11 @@
 {
     
     //Navigate to unlock profile.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewTopicViewController *vtvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
-    vtvc.conversation = _conversation;
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    ViewTopicViewController *vtvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+//    vtvc.conversation = _conversation;
     
-    //Navigate to profile view controller.
+    //Navigate to conversation view controller.
     [self performSegueWithIdentifier:@"random chat" sender:self];
     
 }
@@ -181,8 +182,11 @@
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ViewTopicViewController *vc = segue.destinationViewController;
-        vc.conversation = _conversation;
+//        ViewTopicViewController *vc = segue.destinationViewController;
+//        vc.conversation = _conversation;
+        
+        GLPConversationViewController *convController = segue.destinationViewController;
+        convController.conversation = _conversation;
     }
 }
 

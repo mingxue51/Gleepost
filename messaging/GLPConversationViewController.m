@@ -55,6 +55,8 @@
 @property (assign, nonatomic) NSInteger selectedUserId;
 @property (strong, nonatomic) NSMutableArray *messages;
 
+@property (strong, nonatomic) GLPIntroducedProfile * introduced;
+
 @end
 
 @implementation GLPConversationViewController
@@ -68,9 +70,11 @@
     [super viewDidLoad];
 
     // configuration
-    [self configureNavigationBar];
     [self configureHeader];
+
+    [self configureNavigationBar];
     [self configureForm];
+    [self initialiseObjects];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
@@ -81,6 +85,14 @@
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    
+    if(self.tableView.frame.size.height < 465.0f)
+    {
+        
+        [self.tableView setFrame:CGRectMake(0, 0, 320, 460)];
+        
+    }
     
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -117,48 +129,94 @@
 }
 
 
+
 # pragma mark - Configuration
+
+-(void)initialiseObjects
+{
+    self.introduced = nil;
+}
 
 - (void)configureNavigationBar
 {
     [self.navigationController setNavigationBarHidden:NO];
     
     // navigate to profile through navigation bar for user-to-user conversation
-    if(!_conversation.isGroup && ![self isNewChat]) {
+    if(!_conversation.isGroup /*&& ![self isNewChat] */) {
         //Create a button instead of using the default title view for recognising gestures.
-        UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
-        [titleLabel setTitle:_conversation.title forState:UIControlStateNormal];
-        titleLabel.tag = [_conversation getUniqueParticipant].remoteKey;
+        UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [titleLabelBtn setTitle:_conversation.title forState:UIControlStateNormal];
+        [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f]];
+        titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
         
         //Set colour to the view.
-        [titleLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [titleLabelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         //Set navigation to profile selector.
-        titleLabel.frame = CGRectMake(0, 0, 70, 44);
-        [titleLabel addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.titleView = titleLabel;
+        titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
+        [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.titleView = titleLabelBtn;
     }
     
-    self.title = [self isNewChat] ? @"Connected" : _conversation.title;
+
+    if([self isNewChat])
+    {
+        //Add the add user button to navigation bar.
+        [self addRandomChatAddUser];
+        
+        //Add custom button to go back.
+        [self addCustomBackButton];
+    }
+    
     
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTranslucent:NO];
     
     [AppearanceHelper setNavigationBarFontFor:self];
     [AppearanceHelper setNavigationBarColour:self];
 }
+
+-(void)addCustomBackButton
+{
+    UIImage *img = [UIImage imageNamed:@"back"];
+    
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setBackgroundImage:img forState:UIControlStateNormal];
+    [btn setFrame:CGRectMake(0, 0, 13, 21)];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+}
+
+-(void)addRandomChatAddUser
+{
+    
+    UIImage *img = [UIImage imageNamed:@"add_button"];
+    
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btn addTarget:self.introduced action:@selector(addUser:) forControlEvents:UIControlEventTouchUpInside];
+    [btn setBackgroundImage:img forState:UIControlStateNormal];
+    [btn setFrame:CGRectMake(0, 0, 25, 25)];
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    
+    self.navigationItem.rightBarButtonItem = addButton;
+}
+
 
 -(void)configureHeader
 {
     if([self isNewChat]) {
         NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
         
-        GLPIntroducedProfile * introduced = [array objectAtIndex:0];
-        [introduced updateContents:[_conversation getUniqueParticipant]];
-        introduced.delegate = self;
+        self.introduced = [array objectAtIndex:0];
+        [self.introduced updateContents:[_conversation getUniqueParticipant]];
+        self.introduced.delegate = self;
         
-        self.tableView.tableHeaderView = introduced;
+        self.tableView.tableHeaderView = self.introduced;
     }
 }
 
@@ -183,9 +241,6 @@
     
     self.formTextView.layer.cornerRadius = 5;
 }
-
-
-# pragma mark - Loading
 
 
 # pragma mark - Messages
@@ -286,10 +341,10 @@
 
 - (void)createMessageFromForm
 {
-    [UIView animateWithDuration:2.0f animations:^{
-        //Remove header view after first message.
-        [self.tableView.tableHeaderView setAlpha:0.0f];
-    }];
+//    [UIView animateWithDuration:2.0f animations:^{
+//        //Remove header view after first message.
+//        [self.tableView.tableHeaderView setAlpha:0.0f];
+//    }];
     
     [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation];
     
@@ -492,7 +547,7 @@
     NSString *className = NSStringFromClass(parentVCClass);
     
     if([className isEqualToString:@"ChatViewAnimationController"]) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+
         return YES;
     }
     
@@ -520,7 +575,6 @@
 
 - (CGFloat)heightForItem:(id)item
 {
-    
     GLPMessage *message = (GLPMessage *)item;
     return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
 }

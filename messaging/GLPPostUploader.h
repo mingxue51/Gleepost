@@ -13,5 +13,5 @@
 - (void)startUploadingImage:(UIImage *)image;
 - (GLPPost *)uploadPostWithContent:(NSString *)content;
 -(void)uploadImageToQueue:(UIImage*)image;
--(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray*)categories;
+-(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray*)categories andEventTime:(NSDate *)eventDate;
 @end

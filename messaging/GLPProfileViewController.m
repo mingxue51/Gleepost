@@ -839,6 +839,11 @@
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
+                //Add separator line to posts' cells.
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+                [postViewCell addSubview:line];
+                
             }
             
             return postViewCell;

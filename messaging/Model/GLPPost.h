@@ -17,6 +17,7 @@
 @property (assign, nonatomic) NSInteger commentsCount;
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSDate *date;
+@property (strong, nonatomic) NSDate *dateEventStarts;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
 @property (strong, nonatomic) UIImage *tempImage;

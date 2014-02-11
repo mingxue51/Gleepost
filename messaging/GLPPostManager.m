@@ -262,14 +262,14 @@ NSInteger const kGLPNumberOfPosts = 20;
         }
         
         // take only new posts
-        NSMutableArray *userPosts = [NSMutableArray array];
+        NSMutableArray *eventPosts = [NSMutableArray array];
         
         for (GLPPost *newPost in posts)
         {
-            [userPosts addObject:newPost];
+            [eventPosts addObject:newPost];
         }
         
-        callback(YES, userPosts);
+        callback(YES, eventPosts);
     }];
 }
 
