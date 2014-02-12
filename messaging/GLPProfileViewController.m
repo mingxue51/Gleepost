@@ -879,11 +879,12 @@
         if(self.selectedTabStatus == kGLPSettings)
         {
             notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
-            profileSettingsView.selectionStyle = UITableViewCellSelectionStyleNone;
+            notificationCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             GLPNotification *notification = _notifications[indexPath.row - 2];
             [notificationCell updateWithNotification:notification];
             notificationCell.delegate = self;
+            
             
             return notificationCell;
         }
