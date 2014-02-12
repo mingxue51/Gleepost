@@ -720,6 +720,16 @@
 {
     [GLPNotificationManager acceptNotification:notification];
     [cell updateWithNotification:notification];
+    
+    NSUInteger index = [_notifications indexOfObject:notification];
+    if(index == NSNotFound) {
+        DDLogError(@"Cannot find notification to remove in array");
+        return;
+    }
+    
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
 }
 
 - (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification
