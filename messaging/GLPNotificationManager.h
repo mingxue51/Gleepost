@@ -18,6 +18,7 @@
 
 // New
 + (NSMutableArray *)notifications;
++ (NSMutableArray *)unreadNotifications;
 + (NSInteger)unreadNotificationsCount;
 + (void)markNotificationsRead;
 + (void)ignoreNotification:(GLPNotification *)notification;

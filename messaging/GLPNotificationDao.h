@@ -22,6 +22,7 @@
 
 // new version
 + (NSMutableArray *)findNotifications:(FMDatabase *)db;
++ (NSMutableArray *)findUnreadNotifications:(FMDatabase *)db;
 + (NSInteger)unreadNotificationsCount:(FMDatabase *)db;
 + (void)markNotificationsRead:(FMDatabase *)db;
 +(void)updateNotificationType:(GLPNotification *)notification inDb:(FMDatabase*)db;

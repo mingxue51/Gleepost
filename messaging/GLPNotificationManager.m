@@ -147,6 +147,17 @@
     return notifications;
 }
 
++ (NSMutableArray *)unreadNotifications
+{
+    __block NSMutableArray *notifications;
+    [DatabaseManager run:^(FMDatabase *db) {
+        notifications = [GLPNotificationDao findUnreadNotifications:db];
+    }];
+    
+    return notifications;
+}
+
+
 + (NSInteger)unreadNotificationsCount
 {
     __block int count = 0;

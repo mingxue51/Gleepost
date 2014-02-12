@@ -75,13 +75,18 @@
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
+
+// new
 @property (strong, nonatomic) NSMutableArray *notifications;
+@property (assign, nonatomic) BOOL tabButtonEnabled;
 
 @end
 
 
 @implementation GLPProfileViewController
 
+@synthesize notifications=_notifications;
+@synthesize tabButtonEnabled=_tabButtonEnabled;
 @synthesize unreadNotificationsCount=_unreadNotificationsCount;
 
 
@@ -100,6 +105,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _tabButtonEnabled = YES;
     
     [self registerTableViewCells];
     
@@ -293,6 +300,11 @@
     //Used for viewing post image.
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
+    
+    // internal notifications
+    _notifications = [NSMutableArray array];
+    _unreadNotificationsCount = 0;
+    
 }
 
 -(void)registerTableViewCells
@@ -395,15 +407,7 @@
 //}
 
 
-# pragma mark - Notifications
 
--(void)receiveInternalNotificationNotification:(NSNotification *)notification
-{
-    DDLogInfo(@"GLPProfileViewController - Notification - Receive internal notificaiton");
-    
-    [self loadInternalNotifications];
-    [self.tableView reloadData];
-}
 
 
 
@@ -664,7 +668,7 @@
 
 - (void)loadInternalNotifications
 {
-    DDLogInfo(@"GLPProfileViewController - Load internal notifications");
+    DDLogInfo(@"Load internal notifications");
     _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
     _notifications = [GLPNotificationManager notifications];
     
@@ -675,13 +679,38 @@
     }
 }
 
+- (void)loadUnreadInternalNotifications
+{
+    DDLogInfo(@"Load new internal notifications");
+    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
+    
+    NSArray *notifications = [GLPNotificationManager unreadNotifications];
+    if(notifications.count == 0 || self.selectedTabStatus != kGLPSettings) {
+        return;
+    }
+    
+    _tabButtonEnabled = NO;
+
+    [self.tableView beginUpdates];
+    
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:notifications.count];
+    int i = 0;
+    for(id not in notifications) {
+        [_notifications insertObject:not atIndex:i];
+        [indexPaths addObject:[NSIndexPath indexPathForRow:i + 2 inSection:0]];
+    }
+    
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
+    
+    _tabButtonEnabled = YES;
+}
+
 - (void)notificationsTabClick
 {
     [GLPNotificationManager markNotificationsRead];
     _unreadNotificationsCount = 0;
 }
-
-
 
 
 
@@ -707,6 +736,21 @@
     [_notifications removeObjectAtIndex:index];
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
+}
+
+
+# pragma mark - Notifications
+
+-(void)receiveInternalNotificationNotification:(NSNotification *)notification
+{
+    DDLogInfo(@"Receive internal notifications");
+    
+    if(self.selectedTabStatus == kGLPSettings) {
+        [self loadUnreadInternalNotifications];
+    } else {
+        [self loadInternalNotifications];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 
@@ -998,6 +1042,10 @@
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {
+    if(!_tabButtonEnabled) {
+        return;
+    }
+    
     self.selectedTabStatus = selectedTab;
     
     if(selectedTab == kGLPSettings) {

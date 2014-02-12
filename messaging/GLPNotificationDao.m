@@ -85,6 +85,19 @@
     return result;
 }
 
++ (NSMutableArray *)findUnreadNotifications:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where seen=0 order by date desc"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        GLPNotification *notification = [GLPNotificationDaoParser createFromResultSet:resultSet inDb:db];
+        [result addObject:notification];
+    }
+    
+    return result;
+}
 
 + (NSInteger)unreadNotificationsCount:(FMDatabase *)db
 {
