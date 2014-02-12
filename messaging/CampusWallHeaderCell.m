@@ -12,6 +12,7 @@
 #import "NSDate+TimeAgo.h"
 #import "AppearanceHelper.h"
 #import "NSDate+HumanizedTime.h"
+#import "EventBarView.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -25,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *staticAttendingLbl;
 @property (weak, nonatomic) IBOutlet UIButton *goingBtn;
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLbl;
+@property (weak, nonatomic) IBOutlet EventBarView *eventBarView;
+
 @end
 
 
@@ -106,13 +109,16 @@ const float CELL_HEIGHT = 132.0; //Change the height
     
     [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18]];
+    [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:20]];
     
     [_attendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
     [_staticAttendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
-    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18]];
+    [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
+    
+ 
+//    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
 }
 
 -(void)setTimeWithTime:(NSDate *)date
@@ -148,15 +154,19 @@ const float CELL_HEIGHT = 132.0; //Change the height
     {
         
         [self makeButtonSelected:currentButton];
-        
+        [_eventBarView increaseBarLevel:1];
+
         
     }
     else
     {
         
         [self makeButtonUnselected:currentButton];
-        
+        [_eventBarView decreaseBarLevel:1];
+
     }
+    
+
     
 }
 
@@ -168,7 +178,7 @@ const float CELL_HEIGHT = 132.0; //Change the height
 
 -(void)makeButtonSelected:(UIButton *)btn
 {
-    [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorWithRed:0.0/255.0 green:236.0/255.0 blue:172.0/255.0 alpha:1.0f] forState:UIControlStateNormal];
     
 }
 

@@ -179,16 +179,16 @@ static NSString * const kCustomURLHost      = @"verify";
                             
                             weakSelf.window.rootViewController = initVC;
                         } else {
-                            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in."];
+                            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in"];
                         }
                     }];
                 } else {
-                    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account."];
+                    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account"];
                 }
             }];
         }
     } else {
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL."];
+        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL"];
     }
     
     return canHandleURLScheme;

@@ -617,7 +617,7 @@
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
+            [WebClientHelper showStandardError];
         }
         
         
@@ -1141,11 +1141,11 @@
                  didFinishWithResult:(MessageComposeResult)result {
     switch (result) {
         case MessageComposeResultFailed: {
-            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS."];
+            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS"];
             break;
         }
         case MessageComposeResultSent: {
-            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully."];
+            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully"];
             break;
         }
         default:

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLPRegisterViewController : UIViewController
+@interface GLPRegisterViewController : UIViewController <UITextFieldDelegate>
 
 -(NSString*)email;
 
@@ -26,5 +26,6 @@
 
 -(void)uploadImageAndSetUserImage:(UIImage*)userImage;
 
+-(BOOL)isPasswordValid;
 
 @end

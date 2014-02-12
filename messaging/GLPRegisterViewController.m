@@ -76,7 +76,8 @@
             
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
-            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
+            [WebClientHelper showStandardError];
         }
     }];
 }
@@ -122,7 +123,7 @@
         else
         {
             NSLog(@"ERROR");
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            [WebClientHelper showStandardError];
             
         }
     }];
@@ -201,12 +202,25 @@
     textField.layer.cornerRadius = 5;
     textField.clipsToBounds = YES;
     
+    textField.delegate = self;
+    
 }
 
 -(void)formatTextFields
 {
     [self formatTextField:_emailTextField];
     [self formatTextField:_passwordTextField];
+    
+   
+}
+
+#pragma mark - UITextFieldDelegate
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - Helpers
@@ -219,9 +233,28 @@
 
 -(BOOL)isEmalValid
 {
-    return [ValidFields NSStringIsValidEmail:self.emailTextField.text];
+    if ([self.emailTextField.text rangeOfString:@".edu"].location == NSNotFound)
+    {
+        return NO;
+        
+    } else
+    {
+        return [ValidFields NSStringIsValidEmail:self.emailTextField.text];
+    }
+    
 }
 
+-(BOOL)isPasswordValid
+{
+    NSString *pass = self.passwordTextField.text;
+    
+    if(pass.length < 5)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 

@@ -71,7 +71,7 @@
 
         if(![self areDetailsValid])
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fieds are not empty."];
+            [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fields are completed."];
             
             return;
         }
@@ -84,14 +84,14 @@
                 
                 if(success)
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed."];
+                    [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed"];
                     
                     
                     [self goBack:sender];
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again."];
+                    [WebClientHelper showStandardErrorWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
                 }
                 
             }];
