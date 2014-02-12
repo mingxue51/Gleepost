@@ -25,7 +25,7 @@ static CampusLiveManager *instance = nil;
     return instance;
 }
 
-#pragma mark - Live posts
+#pragma mark - Client
 
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
@@ -71,6 +71,13 @@ static CampusLiveManager *instance = nil;
         
     }];
 }
+
+-(void)attendToAPostWithRemoteKey:(int)remoteKey
+{
+    
+}
+
+
 
 #pragma mark - Helpers
 

@@ -95,6 +95,7 @@
 		582A664518AB9BC400006419 /* bar3_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A663D18AB9BC400006419 /* bar3_selected.png */; };
 		582A664618AB9BC400006419 /* bar4_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A663E18AB9BC400006419 /* bar4_selected.png */; };
 		582A664818ABD37D00006419 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664718ABD37D00006419 /* verified.png */; };
+		582A664A18AC0ABC00006419 /* referesh_campus_live.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664918AC0ABC00006419 /* referesh_campus_live.png */; };
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4B51899299B004FC4F6 /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B41899299B004FC4F6 /* add_new_post.png */; };
@@ -740,6 +741,7 @@
 		582A663D18AB9BC400006419 /* bar3_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bar3_selected.png; sourceTree = "<group>"; };
 		582A663E18AB9BC400006419 /* bar4_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bar4_selected.png; sourceTree = "<group>"; };
 		582A664718ABD37D00006419 /* verified.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = verified.png; sourceTree = "<group>"; };
+		582A664918AC0ABC00006419 /* referesh_campus_live.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = referesh_campus_live.png; sourceTree = "<group>"; };
 		582CE05918565D820024D065 /* GLPPrivateProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPrivateProfileViewController.h; sourceTree = "<group>"; };
 		582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPrivateProfileViewController.m; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
@@ -2239,6 +2241,7 @@
 		589EAD1E18A4369C005B2F4C /* Campus Live */ = {
 			isa = PBXGroup;
 			children = (
+				582A664918AC0ABC00006419 /* referesh_campus_live.png */,
 				582A663718AB9BC400006419 /* bar1.png */,
 				582A663818AB9BC400006419 /* bar2.png */,
 				582A663918AB9BC400006419 /* bar3.png */,
@@ -3576,6 +3579,7 @@
 				58E27E0E18A6CD5000D8BB24 /* message-7@2x.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
+				582A664A18AC0ABC00006419 /* referesh_campus_live.png in Resources */,
 				5866F16218844869007484CF /* cloud2_night.png in Resources */,
 				588794BD18A81EA9002EEC8A /* icon_comment.png in Resources */,
 				5866F16618844869007484CF /* pole_night.png in Resources */,

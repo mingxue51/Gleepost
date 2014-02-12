@@ -482,6 +482,48 @@ static WebClient *instance = nil;
     }];
 }
 
+#pragma mark - Campus Live
+
+-(void)postAttendInPostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%d/attending", postRemoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Attendance added in post id: %d", postRemoteKey);
+
+        
+        callbackBlock(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogError(@"Error attending event.");
+
+        callbackBlock(NO);
+    }];
+}
+
+-(void)removeAttendFromPostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%d/attending", postRemoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Attendance removed with post id: %d", postRemoteKey);
+        
+        callbackBlock(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogError(@"Error removing attendance.");
+        
+        callbackBlock(NO);
+    }];
+}
+
+
 /* CONVERSATIONS */
 
 //- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock

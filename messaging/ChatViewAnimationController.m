@@ -74,7 +74,7 @@
     [self.view addSubview:self.chatStanfordAnimations];
     [self.view sendSubviewToBack:self.chatStanfordAnimations];
     
-    [self performSelector:@selector(searchForNewChat:) withObject:nil afterDelay:5.0f];
+    [self performSelector:@selector(searchForNewChat:) withObject:nil afterDelay:3.0f];
 }
 
 #pragma mark - Selectors
@@ -88,11 +88,11 @@
 {
     //    [self searchingAnimations];
     
-    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:1.4];
+    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
     
-    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.5];
+    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
     
-    [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:3.5];
+    [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:3.0];
     
 }
 

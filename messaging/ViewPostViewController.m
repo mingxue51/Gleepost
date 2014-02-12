@@ -229,7 +229,6 @@ static BOOL likePushed;
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     
-//TODO: CHANGE THAT!
     if(self.isFromCampusLive)
     {
         [self addCustomBackButton];
@@ -378,9 +377,7 @@ static bool firstTime = YES;
 -(BOOL)isPostEvent
 {
     NSArray *categories = self.post.categories;
-    
-    DDLogDebug(@"CATEGORIES: %@", categories);
-    
+        
     if(categories)
     {
         for(GLPCategory *c in categories)

@@ -76,9 +76,8 @@
 
 -(void)loadEvents
 {
-    [self showLoadingLabel];
+//    [self showLoadingLabel];
     
-//    NSDate *date = [DateFormatterHelper generateDateWithDay:10 month:1 year:2014 hour:12 andMinutes:00];
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
         
@@ -86,7 +85,7 @@
         {
             _posts = posts;
             
-            [self hideLoadingLabel];
+//            [self hideLoadingLabel];
             
             [self clearAndLoad];
             
