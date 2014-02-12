@@ -927,20 +927,35 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //TODO: implement manual reloading
-    if(indexPath.row-2 == self.posts.count) {
-        return;
-    }
-    else if(indexPath.row < 2)
-    {
+    if(indexPath.row < 2) {
         return;
     }
     
-    self.selectedPost = self.posts[indexPath.row-2];
-    //    self.selectedIndex = indexPath.row;
-//    self.postIndexToReload = indexPath.row-2;
-    self.commentCreated = NO;
-    [self performSegueWithIdentifier:@"view post" sender:self];
+    // click on post cell
+    if(self.selectedTabStatus == kGLPPosts) {
+        self.selectedPost = self.posts[indexPath.row-2];
+        //    self.selectedIndex = indexPath.row;
+        //    self.postIndexToReload = indexPath.row-2;
+        self.commentCreated = NO;
+        [self performSegueWithIdentifier:@"view post" sender:self];
+        
+    }
+    // click on internal notification cell
+    else {
+        GLPNotification *notification = _notifications[indexPath.row - 2];
+        
+        // go to the contact detail ?
+        if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
+           notification.notificationType == kGLPNotificationTypeAddedYou) {
+            DDLogInfo(@"Go to the contact details ?");
+        }
+        // go the post detail ?
+        else if(notification.notificationType == kGLPNotificationTypeLiked ||
+                notification.notificationType == kGLPNotificationTypeCommented) {
+            DDLogInfo(@"Go to the post details ?");
+        }
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
