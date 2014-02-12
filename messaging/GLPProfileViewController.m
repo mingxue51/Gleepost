@@ -1090,6 +1090,7 @@
         ViewPostViewController *vc = segue.destinationViewController;
         vc.commentJustCreated = self.commentCreated;
         vc.post = self.selectedPost;
+        vc.isFromCampusLive = NO;
         vc.isViewPostNotifications = YES;
         self.selectedPost = nil;
         
