@@ -690,8 +690,6 @@
     }
     
     _tabButtonEnabled = NO;
-
-    [self.tableView beginUpdates];
     
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:notifications.count];
     int i = 0;
@@ -701,7 +699,6 @@
     }
     
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
     
     _tabButtonEnabled = YES;
 }
