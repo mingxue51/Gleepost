@@ -26,6 +26,7 @@
 #import "NSUserDefaults+GLPAdditions.h"
 #import "GLPLoginManager.h"
 #import "DCIntrospect.h"
+#import "GLPCommonHelper.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -49,6 +50,16 @@ static NSString * const kCustomURLHost      = @"verify";
     
     UIViewController *initVC;
     if(loggedIn) {
+        
+        // check for push
+        if (launchOptions != nil) {
+            NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+            if (dictionary != nil) {
+                DDLogInfo(@"Application started from push notification");
+                [self addMessageFromRemoteNotification:dictionary updateUI:NO];
+            }
+        }
+        
         initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
     } else {
         initVC = [storyboard instantiateInitialViewController];
@@ -123,6 +134,16 @@ static NSString * const kCustomURLHost      = @"verify";
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Fail to register to push on Apple servers, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    DDLogInfo(@"Receive remote notification, current app state: %@", [GLPCommonHelper applicationStateToString:application.applicationState]);
+}
+
+- (void)receivePushNotification:(NSDictionary *)json
+{
+    DDLogInfo(@"Receive push notification: %@", json);
 }
 
 
