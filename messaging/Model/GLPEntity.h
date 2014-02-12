@@ -13,6 +13,8 @@
 @property (assign, nonatomic) NSInteger key;
 @property (assign, nonatomic) NSInteger remoteKey;
 
+- (NSNumber *)keyNumber;
+- (NSNumber *)remoteKeyNumber;
 - (BOOL) isEqualToEntity:(GLPEntity *)entity;
 
 @end

@@ -56,7 +56,7 @@ static NSString * const kCustomURLHost      = @"verify";
             NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
             if (dictionary != nil) {
                 DDLogInfo(@"Application started from push notification");
-                [self addMessageFromRemoteNotification:dictionary updateUI:NO];
+                [self receivePushNotification:dictionary];
             }
         }
         

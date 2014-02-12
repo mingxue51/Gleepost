@@ -116,7 +116,13 @@ static GLPLiveConversationsManager *instance = nil;
 {
     DDLogInfo(@"Add conversation with remote key %d", conversation.remoteKey);
     
+    if(conversation.remoteKey == 0) {
+        DDLogError(@"Cannot add conversation with no remote key, abort");
+        return;
+    }
+    
     dispatch_async(_queue, ^{
+        // checks for existing conversation inside
         [self internalAddConversation:conversation];
     });
 }

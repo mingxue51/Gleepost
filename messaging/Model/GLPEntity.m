@@ -26,6 +26,16 @@
     return self;
 }
 
+- (NSNumber *)keyNumber
+{
+    return [NSNumber numberWithInteger:_key];
+}
+
+- (NSNumber *)remoteKeyNumber
+{
+    return [NSNumber numberWithInteger:_remoteKey];
+}
+
 - (BOOL) isEqualToEntity:(GLPEntity *)entity
 {
     if(self == entity) {
