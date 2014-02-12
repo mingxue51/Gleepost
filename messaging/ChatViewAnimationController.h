@@ -10,4 +10,6 @@
 
 @interface ChatViewAnimationController : UIViewController
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
 @end

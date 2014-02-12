@@ -98,10 +98,15 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
     [self setTimeWithTime:postData.dateEventStarts];
   
     
-    //TODO: set number of attending.
-    [_attendingLbl setText:@"0"];
+    [_eventBarView increaseBarLevel:postData.popularity];
     
-    //TODO: select the going button if the user is attending,
+//    [_attendingLbl setText:@"0"];
+    
+    //Select the going button if the user is attending,
+    if(_postData.attended)
+    {
+        [self makeButtonSelected:_goingBtn];
+    }
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
@@ -193,7 +198,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
         }];
         
         [self makeButtonSelected:currentButton];
-        [_eventBarView increaseBarLevel:1];
 
         
     }
@@ -207,7 +211,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
             if(success)
             {
                 [self makeButtonUnselected:currentButton];
-                [_eventBarView decreaseBarLevel:1];
             }
             else
             {

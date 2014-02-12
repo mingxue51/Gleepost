@@ -14,5 +14,6 @@
 
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 
+-(int)findMostCloseToNowLivePostWithPosts:(NSArray *)posts;
 
 @end

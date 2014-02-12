@@ -14,6 +14,7 @@
 #import "GLPConversation.h"
 #import "GLPLiveConversationsManager.h"
 #import "GLPConversationViewController.h"
+#import "WalkThroughHelper.h"
 
 @interface ChatViewAnimationController ()
 
@@ -74,7 +75,31 @@
     [self.view addSubview:self.chatStanfordAnimations];
     [self.view sendSubviewToBack:self.chatStanfordAnimations];
     
+    if(![WalkThroughHelper showRandomChatMessageWithDelegate:self])
+    {
+        [self startRegularRandomChatOperation];
+    }
+}
+
+-(void)startRegularRandomChatOperation
+{
+    [self.chatStanfordAnimations startRegularMode];
+    
     [self performSelector:@selector(searchForNewChat:) withObject:nil afterDelay:3.0f];
+
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        [self startRegularRandomChatOperation];
+    }
+    
 }
 
 #pragma mark - Selectors

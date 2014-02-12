@@ -47,7 +47,7 @@
 {
     UIBarButtonItem *button = (UIBarButtonItem *)sender;
     
-
+//TODO: Check for 30 characters.
     
     if(button.tag == 1)
     {

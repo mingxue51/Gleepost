@@ -48,13 +48,23 @@ static BOOL goBack = NO;
         
         [self addStaticElements];
         
-        [self startStandardAnimations];
-        
-        [self addCloudsImages];
-        
-        [self setUpTimers];
+        //[self startRegularMode];
     }
     return self;
+}
+
+-(void)startRegularMode
+{
+    [self startStandardAnimations];
+    
+    [self addCloudsImages];
+    
+    [self setUpTimers];
+}
+
+-(void)startWalkThroughMode
+{
+    
 }
 
 -(void)initObjectsWithFrame:(CGRect)frame

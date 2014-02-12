@@ -26,6 +26,8 @@
 @property (assign, nonatomic) BOOL liked;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) NSArray *categories;
+@property (assign, nonatomic) int popularity;
+@property (assign, nonatomic) BOOL attended;
 
 -(BOOL) imagePost;
 

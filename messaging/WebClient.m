@@ -325,14 +325,16 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
     
+    
     if(post.dateEventStarts)
     {
-        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
+//        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
+//        
+//        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
         
-        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
+        [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
+        [params setObject:post.eventTitle forKey:@"title"];
     }
-    
-    
     
     
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -465,7 +467,7 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL sucess, NSArray *posts))callbackBlock
+-(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
     
     NSString *path = [NSString stringWithFormat:@"user/%d/posts",remoteKey];
@@ -483,6 +485,22 @@ static WebClient *instance = nil;
 }
 
 #pragma mark - Campus Live
+
+-(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock
+{
+    NSString *path = @"profile/attending";
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parseLivePostsIds:responseObject];
+        callbackBlock(YES, posts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
+    }];
+}
 
 -(void)postAttendInPostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {

@@ -48,6 +48,7 @@
 #import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
+#import "WalkThroughHelper.h"
 
 @interface GLPTimelineViewController ()
 
@@ -149,6 +150,8 @@ const float TOP_OFFSET = 213.0f;
 //    [self startLoadingContents];
     
     [self loadInitialPosts];
+    
+    [WalkThroughHelper showCampusWallMessage];
 }
 
 -(void)viewWillAppear:(BOOL)animated
