@@ -7,10 +7,12 @@
 //
 
 #import "PickDateEventViewController.h"
+#import "WebClientHelper.h"
 
 @interface PickDateEventViewController ()
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 
 @end
 
@@ -20,7 +22,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
+	[_titleTextField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,23 +32,43 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - UITextFieldDelegate
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - Actions
+
 -(IBAction)dismissViewController:(id)sender
 {
     UIBarButtonItem *button = (UIBarButtonItem *)sender;
     
 
     
+    if(button.tag == 1)
+    {
+        if([_titleTextField.text isEqualToString:@""])
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Cannot continue" andContent:@"Please enter a title to continue"];
+            
+            return;
+        }
+        
+        //Send the date to the parent view.
+        [_delegate doneSelectingDateForEvent:_datePicker.date andTitle:_titleTextField.text];
+    }
+    else
+    {
+        [_delegate cancelSelectingDateForEvent];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:^{
         
-        if(button.tag == 1)
-        {
-            //Send the date to the parent view.
-            [_delegate doneSelectingDateForEvent:_datePicker.date];
-        }
-        else
-        {
-            [_delegate cancelSelectingDateForEvent];
-        }
+
         
     }];
 }

@@ -8,10 +8,10 @@
 
 #import "CampusWallHeaderCell.h"
 #import "ShapeFormatterHelper.h"
-#import "GLPPost.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NSDate+TimeAgo.h"
 #import "AppearanceHelper.h"
+#import "NSDate+HumanizedTime.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -24,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *attendingLbl;
 @property (weak, nonatomic) IBOutlet UILabel *staticAttendingLbl;
 @property (weak, nonatomic) IBOutlet UIButton *goingBtn;
-
+@property (weak, nonatomic) IBOutlet UILabel *eventTitleLbl;
 @end
 
 
@@ -64,11 +64,17 @@ const float CELL_HEIGHT = 132.0; //Change the height
 
 -(void)setData:(GLPPost*)post
 {
-//    [self setFrame:CGRectMake(0, 0, 30, 50)];
+    self.postData = post;
     
     [self setDataInElements:post];
     
+    
     [self formatFontInElements];
+}
+
+-(GLPPost *)getData
+{
+    return self.postData;
 }
 
 -(void)setDataInElements:(GLPPost *)postData
@@ -76,13 +82,17 @@ const float CELL_HEIGHT = 132.0; //Change the height
     //Set user's image.
     [_profileImage setImageWithURL:[NSURL URLWithString:postData.author.profileImageUrl] placeholderImage:nil];
     
-    [_userNameLbl setText:postData.author.name];
+    [_eventTitleLbl setText:postData.eventTitle];
     
     [_contentLbl setText:postData.content];
     
-    NSDate *currentDate = postData.date;
     
-    [_timeLbl setText:[self takeTime:currentDate]];
+//    [_timeLbl setText:[self takeTime:currentDate]];
+
+    [self setTimeWithTime:postData.dateEventStarts];
+  
+
+
     
     //TODO: set number of attending.
     [_attendingLbl setText:@"0"];
@@ -101,6 +111,23 @@ const float CELL_HEIGHT = 132.0; //Change the height
     [_attendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
     [_staticAttendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
+    
+    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18]];
+}
+
+-(void)setTimeWithTime:(NSDate *)date
+{
+    if ([[NSDate date] compare:date] == NSOrderedDescending) {
+        [_timeLbl setText:[date timeAgo]];
+        
+    } else if ([[NSDate date] compare:date] == NSOrderedAscending) {
+        
+        [_timeLbl setText:[date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES]];
+        
+    } else {
+        [_timeLbl setText:[date timeAgo]];
+        
+    }
 }
 
 -(NSString*)takeTime:(NSDate*)date
@@ -111,6 +138,8 @@ const float CELL_HEIGHT = 132.0; //Change the height
     
     return timeString;
 }
+
+
 - (IBAction)goingToEvent:(id)sender
 {
     UIButton *currentButton = (UIButton*)sender;
@@ -131,16 +160,15 @@ const float CELL_HEIGHT = 132.0; //Change the height
     
 }
 
+
 -(void)makeButtonUnselected:(UIButton *)btn
 {
     [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
-    [btn.layer setBorderColor:[AppearanceHelper colourForNotFocusedItems].CGColor];
 }
 
 -(void)makeButtonSelected:(UIButton *)btn
 {
     [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
-    [btn.layer setBorderColor:[AppearanceHelper defaultGleepostColour].CGColor];
     
 }
 

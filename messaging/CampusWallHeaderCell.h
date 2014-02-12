@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "VSScrollViewCell.h"
+#import "GLPPost.h"
 
 @interface CampusWallHeaderCell : VSScrollViewCell
 
 extern const float CELL_HEIGHT;
 extern const float CELL_WIDTH;
 
+@property (strong, nonatomic) GLPPost *postData;
+
 -(void)setData:(NSString*)str;
+-(GLPPost *)getData;
 
 @end

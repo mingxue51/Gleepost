@@ -76,6 +76,9 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
 -(void)acceptContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
 
+-(void)resetPasswordWithEmail:(NSString *)email callbackBlock:(void (^) (BOOL success))callbackBlock;
+
+
 -(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock;
 -(void)getBusyStatus:(void (^) (BOOL success, BOOL status))callbackBlock;
 -(void)getContactsWithCallback:(void (^)(BOOL success, NSArray *contacts))callback;

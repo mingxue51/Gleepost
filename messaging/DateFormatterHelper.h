@@ -17,5 +17,6 @@
 + (NSDateFormatter *)createMessageDateFormatter;
 + (NSDate *)generateDateWithDay:(int)day month:(int)month year:(int)year hour:(int)hour andMinutes:(int)minutes;
 + (NSString *)dateUnixFormat:(NSDate *)date;
++(NSDate *)generateDateAfterDays:(int)days;
 
 @end

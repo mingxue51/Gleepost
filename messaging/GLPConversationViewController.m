@@ -444,6 +444,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)disableAddUserButton
+{
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+}
+
 
 # pragma mark - Segue
 

@@ -345,30 +345,29 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
+
+    post.commentsCount = [json[@"comment_count"] integerValue];
+
+    
     
 
-//    if([json[@"comments"] isKindOfClass:[NSArray class]])
-//    {
-//        post.commentsCount = 0;
-//    }
-//    else
-//    {
-        post.commentsCount = [json[@"comment_count"] integerValue];
-//    }
-    
-    
-//    if([json[@"likes"] isKindOfClass:[NSArray class]] || json[@"likes"] == [NSNull null])
-//    {
-//        post.likes = 0;
-//    }
-//    else
-//    {
-        post.likes = [json[@"like_count"] integerValue];
-//    }
+    post.likes = [json[@"like_count"] integerValue];
     
     post.dislikes = [json[@"hates"] integerValue];
     
+    if(json[@"attribs"])
+    {
+        NSDictionary *attributes = json[@"attribs"];
+        
+        if([attributes objectForKey:@"event-time"])
+        {
+            post.dateEventStarts = [RemoteParser parseDateFromString:[attributes objectForKey:@"event-time"]];
+            post.eventTitle = [attributes objectForKey:@"title"];
+        }
+        
 
+        
+    }
     
     NSArray *jsonArray = json[@"images"];
     
@@ -396,6 +395,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     //Parse categories.
     post.categories = [self parseCategoriesFromJson:json[@"categories"] forPost:post];
+    
+    
     
     //Parse users' likes of the post and find if the post is liked by logged in user.
     NSArray *usersLiked = json[@"likes"];
@@ -607,6 +608,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return delimitedCommaTags;
     
 }
+
 
 //+(NSString *)parseEventTime:(NSDate *)date
 //{

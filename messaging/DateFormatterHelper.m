@@ -64,11 +64,27 @@
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
     
+    
     [comp setDay:day];
     [comp setMonth:month];
     [comp setHour:hour];
     [comp setMinute:minutes];
     [comp setYear:year];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
+
++(NSDate *)generateDateAfterDays:(int)days
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    
+    [comp setDay:comp.day+days];
+//    [comp setMonth:comp.month];
+    [comp setHour:comp.hour];
+    [comp setMinute:comp.minute];
+//    [comp setYear:year];
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     
     return date;
