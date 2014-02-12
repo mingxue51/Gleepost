@@ -123,7 +123,12 @@ static GLPLiveConversationsManager *instance = nil;
     
     dispatch_async(_queue, ^{
         // checks for existing conversation inside
-        [self internalAddConversation:conversation];
+        BOOL success = [self internalAddConversation:conversation];
+        if(!success) {
+            return;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
     });
 }
 
@@ -737,7 +742,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 // Internal
 // Should be called inside a queue block
-- (void)internalAddConversation:(GLPConversation *)conversation
+- (BOOL)internalAddConversation:(GLPConversation *)conversation
 {
     NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
     
@@ -749,7 +754,7 @@ static GLPLiveConversationsManager *instance = nil;
         GLPConversation *existingC = _conversations[index];
         existingC.lastMessage = conversation.lastMessage;
         existingC.lastUpdate = conversation.lastUpdate;
-        return;
+        return NO;
     }
     
     if(conversation.isLive) {
@@ -763,6 +768,8 @@ static GLPLiveConversationsManager *instance = nil;
     _conversationsSyncStatuses[index] = [NSNumber numberWithBool:NO];
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:0];
     _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:0];
+    
+    return YES;
 }
 
 - (void)internalNotifyConversation:(GLPConversation *)conversation withNewMessages:(BOOL)newMessages
