@@ -15,8 +15,9 @@
 
 + (GLPLiveConversationsManager *)sharedInstance;
 
+- (void)clear;
+
 // conversations
-//- (void)loadLocalRegularConversations;
 - (void)loadConversations;
 - (void)addConversation:(GLPConversation *)conversation;
 - (NSArray *)conversationsList;

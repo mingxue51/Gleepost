@@ -60,20 +60,17 @@ static GLPLiveConversationsManager *instance = nil;
         return nil;
     }
     
-    _conversations = [NSMutableDictionary dictionary];
-    _conversationsMessages = [NSMutableDictionary dictionary];
-    _conversationsSyncStatuses = [NSMutableDictionary dictionary];
-    _conversationsMessagesKeys = [NSMutableDictionary dictionary];
-    _conversationsLastestMessageShown = [NSMutableDictionary dictionary];
-    _liveConversationsCount = 0;
-    _regularConversationsCount = 0;
-    
+    [self internalConfigureInitialState];
     _queue = dispatch_queue_create("com.gleepost.queue.liveconversation", DISPATCH_QUEUE_SERIAL);
-    _successfullyLoaded = NO;
-    _isSynchronizedWithRemote = NO;
-    _areConversationsSync = NO;
     
     return self;
+}
+
+- (void)clear
+{
+    dispatch_async(_queue, ^{
+        [self internalConfigureInitialState];
+    });
 }
 
 //- (void)loadLocalRegularConversations
@@ -765,6 +762,21 @@ static GLPLiveConversationsManager *instance = nil;
 - (void)internalNotifyConversation:(GLPConversation *)conversation withNewMessages:(BOOL)newMessages
 {
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:Nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:conversation.remoteKey], @"newMessages": [NSNumber numberWithBool:newMessages]}];
+}
+
+- (void)internalConfigureInitialState
+{
+    _conversations = [NSMutableDictionary dictionary];
+    _conversationsMessages = [NSMutableDictionary dictionary];
+    _conversationsSyncStatuses = [NSMutableDictionary dictionary];
+    _conversationsMessagesKeys = [NSMutableDictionary dictionary];
+    _conversationsLastestMessageShown = [NSMutableDictionary dictionary];
+    _liveConversationsCount = 0;
+    _regularConversationsCount = 0;
+    
+    _successfullyLoaded = NO;
+    _isSynchronizedWithRemote = NO;
+    _areConversationsSync = NO;
 }
 
 @end
