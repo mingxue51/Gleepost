@@ -61,7 +61,7 @@
 
 - (void)configureCell:(GLPLoadingCell *)cell
 {
-    if(_cellState == kGLPLoadingStateLoading) {
+    if(_cellState == kGLPLoadingStateLoading || _cellState == kGLPLoadingStateReady) {
         [cell startAnimating];
     }
 }

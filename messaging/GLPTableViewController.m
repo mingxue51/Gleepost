@@ -94,7 +94,6 @@
     }
     
     if((int)position != NSNotFound) {
-        DDLogDebug(@"Will display cell for loading cell with position %@", position == kGLPLoadingCellPositionTop ? @"TOP" : @"BOTTOM");
         [self performSelector:@selector(activateForPosition:) withObject:[NSNumber numberWithInt:(int)position]];
     }
 }
@@ -165,9 +164,6 @@
     DDLogInfo(@"Show top loader");
     
     [_topLoadingCellDelegate show];
-    
-    NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
-    DDLogInfo(@"First visible cell row: %i", firstVisibleIndexPath.row);
     
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }

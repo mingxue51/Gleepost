@@ -133,9 +133,7 @@ NSString * const kGLPLoadingCellNibName = @"GLPLoadingCell";
         _errorView.hidden = YES;
     }
     
-    if(!_activityIndicatorView.isAnimating) {
-        [_activityIndicatorView startAnimating];
-    }
+    [_activityIndicatorView startAnimating];
 }
 
 @end
