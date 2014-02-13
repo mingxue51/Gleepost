@@ -143,7 +143,7 @@ const float TOP_OFFSET = 213.0f;
     [[ContactsManager sharedInstance] refreshContacts];
     
     //Load conversations.
-    [self loadConversations];
+    //[self loadConversations];
     
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
 //    [self startLoadingContents];
@@ -668,14 +668,14 @@ const float TOP_OFFSET = 213.0f;
 
 #pragma mark - Conversations
 
-- (void)loadConversations
-{
-    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
-
-    } remoteCallback:^(BOOL success, NSArray *conversations) {
-      
-    }];
-}
+//- (void)loadConversations
+//{
+//    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
+//
+//    } remoteCallback:^(BOOL success, NSArray *conversations) {
+//      
+//    }];
+//}
 
 #pragma mark - Posts
 

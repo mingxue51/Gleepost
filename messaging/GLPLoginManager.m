@@ -122,12 +122,12 @@
 
 + (void)logout
 {
-    [[GLPLiveConversationsManager sharedInstance] clear];
     [[SessionManager sharedInstance] deregisterPushFromServer];
     
     [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
 
+    [[GLPLiveConversationsManager sharedInstance] clear];
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
     

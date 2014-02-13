@@ -252,6 +252,7 @@
     
     if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
         DDLogInfo(@"No network, abort loading initial messages");
+        DDLogInfo(@"Network status: %d", [GLPNetworkManager sharedInstance].networkStatus);
         [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
         return;
     }

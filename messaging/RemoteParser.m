@@ -69,11 +69,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json
 {
+    DDLogInfo(@"json: %@", json);
+    
     // get participants
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
+    }
+    
+    if(participants.count < 2) {
+        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
+        return nil;
     }
     
     GLPConversation *conversation;
@@ -141,7 +148,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     NSMutableArray *conversations = [NSMutableArray array];
     
     for(id jsonConversation in jsonConversations) {
-        [conversations addObject:[RemoteParser parseConversationFromJson:jsonConversation]];
+        GLPConversation *c = [RemoteParser parseConversationFromJson:jsonConversation];
+        if(c) {
+            [conversations addObject:c];
+        }
     }
     
     return conversations;

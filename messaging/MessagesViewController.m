@@ -240,48 +240,6 @@
 }
 
 
-//- (void)loadConversations
-//{
-//    [self startLoading];
-//    
-//    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
-//        if(conversations.count > 0) {
-//            // hide loading cell and add refresh control
-//            self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-//            [self createRefreshIfNeed];
-//            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-//            
-//            [self showConversations:conversations];
-//        }
-//    } remoteCallback:^(BOOL success, NSArray *conversations) {
-//        if(success) {
-//            // hide loading cell and add refresh control
-//            self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-//            [self createRefreshIfNeed];
-//            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-//            
-//            [self showConversations: conversations];
-//        } else {
-//            // no local conversations
-//            // show loading cell error and do not add refresh control
-//            // because loading cell already provides a refresh button
-//            if(self.conversations.count == 0) {
-//                self.loadingCellStatus = kGLPLoadingCellStatusError;
-//                [self.tableView reloadData];
-//            }
-//        }
-//        
-//        [self stopLoading];
-//    }];
-//}
-//
-//- (void)showConversations:(NSArray *)conversations
-//{
-//    self.conversations = [conversations mutableCopy];
-//    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
-//}
-
-
 #pragma mark - Notifications
 
 - (void)newMessageFromNotification:(NSNotification *)notification

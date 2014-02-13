@@ -754,6 +754,7 @@
     
     if(self.selectedTabStatus == kGLPSettings) {
         [self loadUnreadInternalNotifications];
+        _unreadNotificationsCount = 0;
     } else {
         [self loadInternalNotifications];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
