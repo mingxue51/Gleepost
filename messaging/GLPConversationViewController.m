@@ -77,6 +77,13 @@
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
+    
+    //TODO: Move that to the new implementation.
+    
+    if(_conversation.remoteKey != 0) //New
+    {
+        [self loadInitialMessages];
+    }
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -104,12 +111,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     
     
-    //TODO: Move that to the new implementation.
-    
-    if(_conversation.remoteKey != 0) //New
-    {
-        [self loadInitialMessages];
-    }
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {

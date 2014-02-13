@@ -20,7 +20,8 @@
 +(NSDate *)generateDateAfterDays:(int)days;
 +(NSDate *)generateDateAfterHours:(int)hours;
 +(NSDate *)generateTodayDateWhenItStarts;
-+(NSDate *)generateDateWithLastMinute;
++(NSDate *)generateDateWithLastMinutePlusDates:(int)dates;
++(NSArray *)generateTheNextDayStartAndEnd;
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 
 @end

@@ -120,12 +120,12 @@
     return date;
 }
 
-+(NSDate *)generateDateWithLastMinute
++(NSDate *)generateDateWithLastMinutePlusDates:(int)dates
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
     
     
-    [comp setDay:comp.day];
+    [comp setDay:comp.day+dates];
     //    [comp setMonth:comp.month];
     [comp setHour:23];
     [comp setMinute:59];
@@ -133,6 +133,38 @@
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     
     return date;
+}
+
++(NSArray *)generateTheNextDayStartAndEnd
+{
+    
+    NSDate *dateStart = nil;
+    NSDate *dateEnd = nil;
+    
+    NSMutableArray *dates = [[NSMutableArray alloc] init];
+    
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    
+    [comp setDay:comp.day+1];
+    [comp setHour:0];
+    [comp setMinute:0];
+
+    dateStart = [[NSCalendar currentCalendar] dateFromComponents:comp];
+
+    
+    comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    [comp setDay:comp.day+1];
+    [comp setHour:23];
+    [comp setMinute:59];
+    
+    dateEnd = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    [dates addObject:dateStart];
+    [dates addObject:dateEnd];
+        
+    return dates;
 }
 
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate

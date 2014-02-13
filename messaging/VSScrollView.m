@@ -506,9 +506,9 @@
     
     //Make this contition in order to centralised only the middle cells.
     //Not the cells in edges.
-    if(position == 0 || position == myScrollView.subviews.count-1)
+    if(position == 0)
     {
-        
+        DDLogDebug(@"Position: %d, Number of views: %d", position,myScrollView.subviews.count );
     }
     else
     {

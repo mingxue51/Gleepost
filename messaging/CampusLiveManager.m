@@ -32,6 +32,10 @@ static CampusLiveManager *instance = nil;
     
     [[WebClient sharedInstance] getEventPostsAfterDate:[self currentTime] withCallbackBlock:^(BOOL success, NSArray *posts) {
         
+        //TODO: remove that when is supported by the server.
+        posts = [self filterPosts:posts];
+        
+        
         if(success)
         {
             [[WebClient sharedInstance] userAttendingLivePostsWithCallbackBlock:^(BOOL success, NSArray *postsIds) {
@@ -100,7 +104,6 @@ static CampusLiveManager *instance = nil;
         return 0;
     }
     
-    NSMutableArray *finalPosts = [[NSMutableArray alloc] init];
     NSDate *currentDate = [NSDate date];
     int ignorePosts = 0;
 
@@ -111,11 +114,6 @@ static CampusLiveManager *instance = nil;
         if ([[p dateEventStarts] compare:currentDate] == NSOrderedAscending)
         {
             ++ignorePosts;
-        }
-        else
-        {
-            //Add only future posts.
-            [finalPosts addObject:p];
         }
     }
     
@@ -146,6 +144,29 @@ static CampusLiveManager *instance = nil;
     
 }
 
+-(NSArray *)filterPosts:(NSArray *)posts
+{
+    NSMutableArray *finalPosts = [[NSMutableArray alloc] init];
+    NSDate *tomorrow = [DateFormatterHelper generateDateWithLastMinutePlusDates:1];
+    
+    for(GLPPost *p in posts)
+    {
+        if ([[p dateEventStarts] compare:[NSDate date]] == NSOrderedAscending)
+        {
+            [finalPosts addObject:p];
+        }
+    }
+    
+    for(GLPPost *p in posts)
+    {
+        if([DateFormatterHelper date:[p dateEventStarts] isBetweenDate:[NSDate date] andDate:tomorrow])
+        {
+            [finalPosts addObject:p];
+        }
+    }
+    
+    return finalPosts;
+}
 
 
 #pragma mark - Helpers

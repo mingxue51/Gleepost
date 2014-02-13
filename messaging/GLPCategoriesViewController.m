@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) NSMutableDictionary *categoriesImages;
 @property (strong, nonatomic) NSMutableDictionary *categoriesSelectedImages;
-
+@property (strong, nonatomic) GLPCategory *selectedCategory;
 @end
 
 @implementation GLPCategoriesViewController
@@ -60,6 +60,7 @@
 
 -(void)loadCategories
 {
+    self.selectedCategory = nil;
 //    _categories = [[NSArray alloc] initWithObjects:[[GLPCategory alloc] initWithTag:@"test" name:@"Test category" andPostRemoteKey:0], [[GLPCategory alloc] initWithTag:@"All" name:@"All the categories" andPostRemoteKey:0], nil];
     
     _categoriesImages = [[NSMutableDictionary alloc] init];
@@ -105,7 +106,6 @@
     
     GLPCategory *category = _categories[indexPath.row];
     
-
     
     [cell updateCategory:category withImage:[_categoriesImages objectForKey:category.tag]];
     
@@ -174,11 +174,39 @@
     //Set selected category image.
     if(current == nil)
     {
-        [_categoriesImages setObject:[UIImage imageNamed:@"all_category_selected"] forKey:@"All"];
+//        [_categoriesImages setObject:[UIImage imageNamed:@"all_category_selected"] forKey:@"All"];
+        _selectedCategory = nil;
     }
     else
     {
-        [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category_selected",current.tag]] forKey:current.tag];
+//        [_categoriesImages setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%@_category_selected",current.tag]] forKey:current.tag];
+        _selectedCategory = current;
+    }
+    
+
+    
+    for(GLPCategory *cat in _categories)
+    {
+        if(!_selectedCategory)
+        {
+            if([cat.tag isEqualToString:@"All"])
+            {
+                cat.uiSelected = YES;
+            }
+            else
+            {
+                cat.uiSelected = NO;
+            }
+        }
+        else if([_selectedCategory.tag isEqualToString:cat.tag])
+        {
+            cat.uiSelected = YES;
+            
+        }
+        else
+        {
+            cat.uiSelected = NO;
+        }
     }
 }
 

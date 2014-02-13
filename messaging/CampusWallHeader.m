@@ -35,8 +35,9 @@
 
 NSString *HAPPENING_NOW_MSG;
 NSString *HAPPENING_TODAY_MSG;
+NSString *HAPPENING_TOMORROW_MSG;
 NSString *HAPPENING_THIS_WEEK_MSG;
-NSString *HAPPENING_LATER_MSG;
+NSString *HAPPENED_TODAY;
 
 @synthesize posts = _posts;
 
@@ -76,8 +77,9 @@ NSString *HAPPENING_LATER_MSG;
 {
     HAPPENING_NOW_MSG = @"Happening Now";
     HAPPENING_TODAY_MSG = @"Happening Today";
+    HAPPENING_TOMORROW_MSG = @"Happening Tomorrow";
     HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
-    HAPPENING_LATER_MSG = @"Happening Later";
+    HAPPENED_TODAY = @"Happened Today";
 }
 
 //-(void)initialiseObjects
@@ -97,23 +99,30 @@ NSString *HAPPENING_LATER_MSG;
 
 -(void)loadEvents
 {
-//    [self showLoadingLabel];
+    [self showLoadingLabel];
     
+    _posts = nil;
+    
+    [self reloadData];
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+        
+
         
         if(success)
         {
             _posts = posts;
             
-//            [self hideLoadingLabel];
-            
+            [self hideLoadingLabel];
+
             [self clearAndLoad];
             
 //            [self scrollToPosition:1];
         }
         else
         {
+            [self hideLoadingLabel];
+
             [WebClientHelper showStandardError];
         }
         
@@ -127,9 +136,9 @@ NSString *HAPPENING_LATER_MSG;
     UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 200, 20)];
     loadingLabel.tag = 100;
     
-    [loadingLabel setTextColor:[UIColor lightGrayColor]];
+    [loadingLabel setTextColor:[UIColor whiteColor]];
     
-    [loadingLabel setText:@"Loading Events..."];
+    [loadingLabel setText:@"Loading events..."];
     
     [self addSubview:loadingLabel];
 }
@@ -177,9 +186,6 @@ NSString *HAPPENING_LATER_MSG;
                 {
                     [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
                 }
-                
-//                [self scrollToPosition:5];
-                
                 
             }];
             
@@ -268,10 +274,10 @@ NSString *HAPPENING_LATER_MSG;
     
     //Set new message to title label depending on event start time.
     
-    if(position != 1)
-    {
+//    if(position %2 == 0)
+//    {
         [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
-    }
+//    }
     
     
     return myView;
@@ -321,10 +327,10 @@ NSString *HAPPENING_LATER_MSG;
 {
     //If date is between current time and event time + 1 hour change title to happening now.
     NSDate *datePlusOneHour = [DateFormatterHelper generateDateAfterHours:1];
-    NSDate *dateLastMinute = [DateFormatterHelper generateDateWithLastMinute];
-    NSDate *datePlusOneDay = [DateFormatterHelper generateDateAfterDays:1];
-    NSDate *datePlusSevenDays = [DateFormatterHelper generateDateAfterDays:7];
+    NSDate *dateLastMinute = [DateFormatterHelper generateDateWithLastMinutePlusDates:0];
+
     
+    NSArray *nextDayDates = [DateFormatterHelper generateTheNextDayStartAndEnd];
     
     if([DateFormatterHelper date:date isBetweenDate:[NSDate date] andDate:datePlusOneHour])
     {
@@ -334,14 +340,21 @@ NSString *HAPPENING_LATER_MSG;
     {
         [_happeningLbl setText:HAPPENING_TODAY_MSG];
     }
-    else if([DateFormatterHelper date:date isBetweenDate:datePlusOneDay andDate:datePlusSevenDays])
+    else if([DateFormatterHelper date:date isBetweenDate:[nextDayDates objectAtIndex:0] andDate:[nextDayDates objectAtIndex:1]])
     {
-        [_happeningLbl setText:HAPPENING_THIS_WEEK_MSG];
+        [_happeningLbl setText:HAPPENING_TOMORROW_MSG];
     }
     else
     {
-        [_happeningLbl setText:HAPPENING_LATER_MSG];
+        [_happeningLbl setText:HAPPENED_TODAY];
     }
+    
+    /**
+     else if([DateFormatterHelper date:date isBetweenDate:datePlusOneDay andDate:datePlusSevenDays])
+     {
+     [_happeningLbl setText:HAPPENING_THIS_WEEK_MSG];
+     }
+     */
     
     
 }

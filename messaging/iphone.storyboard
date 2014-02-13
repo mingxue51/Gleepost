@@ -495,7 +495,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VJg-9l-69Q">
-                                <rect key="frame" x="0.0" y="63" width="320" height="246"/>
+                                <rect key="frame" x="0.0" y="63" width="320" height="256"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="category_bg.png" id="DhH-lh-3JV">
@@ -1619,7 +1619,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="99B39C77-4E7F-4E97-8807-ADAD23EA1A53" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="3CA0E34C-EBC3-4C3D-8BFD-3F796607C4A7" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -3002,7 +3002,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="99B39C77-4E7F-4E97-8807-ADAD23EA1A53" width="34" height="34">
+        <image name="3CA0E34C-EBC3-4C3D-8BFD-3F796607C4A7" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
