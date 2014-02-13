@@ -79,10 +79,10 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p47-Gh-7Xa">
-                    <rect key="frame" x="290" y="36" width="20" height="20"/>
+                    <rect key="frame" x="290" y="34" width="25" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" image="user_image_bg.png">
+                    <state key="normal" backgroundImage="referesh_campus_live.png">
                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -102,8 +102,8 @@
     <resources>
         <image name="add_new_post.png" width="120" height="120"/>
         <image name="gleepost_logo_header.png" width="142" height="50"/>
+        <image name="referesh_campus_live.png" width="96" height="96"/>
         <image name="show_categories.png" width="120" height="120"/>
         <image name="top_image_campus_wall.png" width="640" height="550"/>
-        <image name="user_image_bg.png" width="74" height="74"/>
     </resources>
 </document>

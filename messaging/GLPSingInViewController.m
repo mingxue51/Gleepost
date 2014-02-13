@@ -14,6 +14,7 @@
 @interface GLPSingInViewController ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
+@property (weak, nonatomic) IBOutlet UILabel *forgotPasswordMsgLbl;
 
 
 @end
@@ -32,6 +33,26 @@
 
 - (IBAction)login:(id)sender
 {
+    
+    //Check e-mail.
+    
+//    if(![super isEmalValid])
+//    {
+//        [WebClientHelper showStandardEmailError];
+//        
+//        return;
+//    }
+    
+    //Check password.
+    
+//    if(![super isPasswordValid])
+//    {
+//        [WebClientHelper showStandardPasswordError];
+//        
+//        return;
+//        
+//    }
+    
     [super loginUserFromLoginScreenWithImage:nil];
 }
 
@@ -57,18 +78,20 @@
             
             if(success)
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Password reseted" andContent:@"Please check your email and complete the resetting procedure"];
+//                [WebClientHelper showStandardErrorWithTitle:@"Password reseted" andContent:@"Please check your email and complete the resetting procedure"];
+                
+                [_forgotPasswordMsgLbl setText:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@",self.email]];
             }
             else
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Problem resetting your password" andContent:@"Please check your email and try again"];
+                [WebClientHelper showStandardError];
             }
             
         }];
     }
     else
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Email not valid" andContent:@"Please make sure that your email is valid and try again"];
+        [WebClientHelper showStandardEmailError];
     }
 }
 

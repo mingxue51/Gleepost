@@ -7,6 +7,7 @@
 //
 
 #import "NSDate+HumanizedTime.h"
+#import "DateFormatterHelper.h"
 
 #define LOCALISABLE_FULL @"Localizable_full"
 #define LOCALISABLE_SHORT @"Localizable"
@@ -120,12 +121,25 @@
             
             
             full_yearString   = [SUFFIX_UNTIL stringByAppendingString:full_yearString];
-            full_dateString   = [SUFFIX_UNTIL stringByAppendingString:full_dateString];
-            full_weekString   = [PREFIX_LEFT stringByAppendingString:full_weekString];
-            full_dayString    = [PREFIX_LEFT stringByAppendingString:full_dayString];
-            full_hourString   = [PREFIX_LEFT stringByAppendingString:full_hourString];
-            full_minuteString = [PREFIX_LEFT stringByAppendingString:full_minuteString];
-            full_secondString = [PREFIX_LEFT stringByAppendingString:full_secondString];
+//            full_dateString   = [[self getDateName] stringByAppendingFormat:@" @ %@",[self getTime]];
+            full_dateString   = [self getMonthWithDate];
+
+//            full_weekString   = [PREFIX_LEFT stringByAppendingString:full_weekString];
+            
+            full_weekString   = ([self isDateWithinTheWeek])? [[self getDateName] stringByAppendingFormat:@" @ %@",[self getTime]] : [self getMonthWithDate] /*]*/;
+
+//            full_dayString    = [PREFIX_LEFT stringByAppendingString:full_dayString];
+            
+            full_dayString    = [@"Tomorrow @ " stringByAppendingString:full_dayString];
+
+//            full_hourString   = [PREFIX_LEFT stringByAppendingString:full_hourString];
+            full_hourString   = [@"Today @ " stringByAppendingString:[self getTime]];
+//            full_minuteString = [PREFIX_LEFT stringByAppendingString:full_minuteString];
+            full_minuteString = [@"Today @ " stringByAppendingString:[self getTime]];
+
+//            full_secondString = [PREFIX_LEFT stringByAppendingString:full_secondString];
+            full_secondString = [@"Today @ " stringByAppendingString:[self getTime]];
+
         }
         break;
       }
@@ -168,13 +182,17 @@
       }
       else
       {
-        if (daysDiff > 0 && daysDiff <= 4)
+        if (daysDiff > 0 && daysDiff <= 1)
         {
-          return [dayFormatter stringFromDate:self];
+         // return [dayFormatter stringFromDate:self];
+            
+            return [self getTomorrowWithTime];
         }
-        else if (daysDiff > 4)
+        else if (daysDiff > 1)
         {
-          return (fullStrings)? full_dayString : dayString;
+//          return (fullStrings)? full_dayString : dayString;
+            return (fullStrings)? full_weekString : dayString;
+
         }
         else
         {
@@ -192,6 +210,116 @@
         }
     }
   }
+}
+
+//-(NSString *)getDateName
+//{
+//    NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+//    NSDate *date = [NSDate date];
+//    NSDateComponents *weekdayComponents = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
+//    NSInteger todayWeekday = [weekdayComponents weekday];
+//    
+//    NSInteger moveDays=WEDNESDAY-todayWeekday;
+//    if (moveDays<=0) {
+//        moveDays+=7;
+//    }
+//    
+//    NSDateComponents *components = [NSDateComponents new];
+//    components.day=moveDays;
+//    
+//    NSCalendar *calendar=[[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+//    NSDate* newDate = [calendar dateByAddingComponents:components toDate:date options:0];
+//    
+//    NSLog(@"-> %d",moveDays);
+//    
+//    return newDate;
+//}
+
+-(NSString *)getTomorrowWithTime
+{
+    NSMutableString *tomorrowStr = [[NSMutableString alloc] initWithString:@"Tomorrow"];
+    
+    [tomorrowStr appendFormat:@" @ %@",[self getTime]];
+    
+    return tomorrowStr;
+}
+
+-(NSString *)getMonthWithDate
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MMMM dd"];
+    NSMutableString *dateString = [formatter stringFromDate:self].mutableCopy;
+    
+    NSDateFormatter *suffixFormatter = [[NSDateFormatter alloc] init];
+    [suffixFormatter setDateFormat:@"d"];
+    
+    NSString *suffixDate = [suffixFormatter stringFromDate:self];
+    
+    
+    if([suffixDate hasSuffix:@"1"])
+    {
+        [dateString appendString:@"st"];
+    }
+    else if([suffixDate hasSuffix:@"2"])
+    {
+        [dateString appendString:@"nd"];
+    }
+    else if([suffixDate hasSuffix:@"3"])
+    {
+        [dateString appendString:@"rd"];
+    }
+    else
+    {
+        [dateString appendString:@"th"];
+    }
+    
+    
+    return dateString;
+}
+
+-(NSString *)getDateName
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE"];
+    NSString *dateString = [formatter stringFromDate:self];
+    
+    return dateString;
+}
+
+-(NSString *)getTime
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"hh a"];
+    NSString *timeString = [formatter stringFromDate:self];
+    
+    return timeString;
+}
+
+-(BOOL)isDateWithinTheWeek
+{
+    //Create a new date that will be one week later.
+    NSDate *aWeekFromNow = [DateFormatterHelper generateDateAfterDays:7];
+    
+    
+    if([self date:self isBetweenDate:[NSDate date] andDate:aWeekFromNow])
+    {
+//        DDLogDebug(@"Now %@, Next week %@, Current time %@",[NSDate date], aWeekFromNow, self);
+
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
+{
+    if ([date compare:beginDate] == NSOrderedAscending)
+    	return NO;
+    
+    if ([date compare:endDate] == NSOrderedDescending)
+    	return NO;
+    
+    return YES;
 }
 
 @end

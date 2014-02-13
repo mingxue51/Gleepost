@@ -16,5 +16,11 @@
 +(void) showStandardErrorWithTitle:(NSString *)title andContent:(NSString *)content;
 +(void) showStandardError;
 +(void)showInternetConnectionErrorWithTitle:(NSString*)title;
++(void)showStandardEmailError;
++(void)showStandardPasswordError;
 
++(void)showStandardProfileImageError;
++(void)showStandardFirstNameError;
+
++(void)showStandardLastNameError;
 @end

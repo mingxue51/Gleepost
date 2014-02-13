@@ -374,10 +374,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
             post.dateEventStarts = [RemoteParser parseDateFromString:[attributes objectForKey:@"event-time"]];
             post.eventTitle = [attributes objectForKey:@"title"];
         }
-        
-
-        
     }
+    
+    post.popularity = [json[@"popularity"] integerValue];
     
     NSArray *jsonArray = json[@"images"];
     
@@ -617,6 +616,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     return delimitedCommaTags;
     
+}
+
++(NSArray *)parseLivePostsIds:(NSArray *)jsonIds
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    for(id remoteKey in jsonIds)
+    {
+        [array addObject:[NSNumber numberWithInteger:[remoteKey integerValue]]];
+    }
+    
+    return array;
 }
 
 

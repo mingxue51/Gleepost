@@ -9,6 +9,7 @@
 #import "GLPSignUpViewController.h"
 #import "WebClientHelper.h"
 #import "WebClient.h"
+#import "GLPLoginManager.h"
 
 @interface GLPSignUpViewController ()
 
@@ -25,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIView *signUpView;
 
 @property (weak, nonatomic) IBOutlet UILabel *messageLlbl;
+@property (weak, nonatomic) IBOutlet UILabel *messageAgainLbl;
 
 
 @end
@@ -42,10 +44,26 @@
 }
 
 
--(void)setUpMessageLabel
+-(void)setUpMessageLabels
 {
     
     [_messageLlbl setText:[NSString stringWithFormat:@"Verification email sent to: %@. Please click on the link in the email to verify that you're at Stanford.",[super email]]];
+    
+
+}
+
+-(void)showErrorVerifyUser
+{
+    [_messageAgainLbl setTintColor:[UIColor redColor]];
+    
+    [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
+}
+
+-(void)showResendMessage
+{
+    [_messageAgainLbl setTintColor:[UIColor blackColor]];
+
+    [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
 }
 
 //TODO: Issue with keyboard.
@@ -129,6 +147,45 @@
 
 - (IBAction)registerUser:(id)sender
 {
+    //Check e-mail.
+    
+    if(![super isEmalValid])
+    {
+        [WebClientHelper showStandardEmailError];
+        
+        return;
+    }
+    
+    //Check password.
+    
+    if(![super isPasswordValid])
+    {
+        [WebClientHelper showStandardPasswordError];
+        
+        return;
+        
+    }
+    
+    if([self.nameTextField.text isEqualToString:@""])
+    {
+        [WebClientHelper showStandardFirstNameError];
+        
+        return;
+    }
+    
+    if([self.surnameTextField.text isEqualToString:@""])
+    {
+        [WebClientHelper showStandardLastNameError];
+        
+        return;
+    }
+    
+    if(!_finalProfileImage)
+    {
+        [WebClientHelper showStandardProfileImageError];
+        
+        return;
+    }
     
     if([self areTheDetailsValid])
     {
@@ -152,7 +209,17 @@
             else
             {
                 NSLog(@"User not registered.");
-                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
+                
+                if ([responseMessage rangeOfString:@"Invalid Email"].location != NSNotFound)
+                {
+                    [WebClientHelper showStandardEmailError];
+                }
+                else
+                {
+                    [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
+                }
+
+                
             }
             
         }];
@@ -165,7 +232,24 @@
 
 -(IBAction)loginUser:(id)sender
 {
-    [super loginUserFromLoginScreenWithImage:_profileImage.image];
+//    [super loginUserFromLoginScreenWithImage:_profileImage.image];
+    
+    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
+    
+    [GLPLoginManager loginWithIdentifier:[super email] andPassword:[super password] callback:^(BOOL success) {
+        [WebClientHelper hideStandardLoaderForView:self.view];
+        
+        if(success) {
+            if(_profileImage.image)
+            {
+                [self uploadImageAndSetUserImage:_profileImage.image];
+            }
+            
+            [self performSegueWithIdentifier:@"start" sender:self];
+        } else {
+            [self showErrorVerifyUser];
+        }
+    }];
 }
 
 - (IBAction)resendVerification:(id)sender
@@ -178,11 +262,13 @@
         
         if(success)
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Email verification sent" andContent:@"Please check your email and try to login in."];
+            
+            [self showResendMessage];
+
         }
         else
         {
-            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to resend verification email"];
+            [self showErrorVerifyUser];
         }
         
     }];
@@ -202,7 +288,7 @@
         
         [_signUpView setAlpha:0.0f];
         
-        [self setUpMessageLabel];
+        [self setUpMessageLabels];
         
     }];
 }

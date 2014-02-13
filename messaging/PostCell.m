@@ -98,7 +98,9 @@ static const float OneLineText = 16.0;
    // self.postImage.autoresizingMask = (UIViewAutoresizingNone);
     
     [self.contentLbl setText:self.post.content];
-
+    [self.titleLbl setText:self.post.eventTitle];
+    
+    
     NSURL *url = nil;
 
     for(NSString* str in postData.imagesUrls)
@@ -236,11 +238,15 @@ static const float OneLineText = 16.0;
 {
     [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
+    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+    
     [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
     
     [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
     
     [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
+    
+    
 }
 
 -(void)formatUsersImage

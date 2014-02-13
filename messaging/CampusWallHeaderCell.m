@@ -12,6 +12,9 @@
 #import "NSDate+TimeAgo.h"
 #import "AppearanceHelper.h"
 #import "NSDate+HumanizedTime.h"
+#import "EventBarView.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -25,6 +28,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *staticAttendingLbl;
 @property (weak, nonatomic) IBOutlet UIButton *goingBtn;
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLbl;
+@property (weak, nonatomic) IBOutlet EventBarView *eventBarView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelWidth;
+
 @end
 
 
@@ -32,7 +38,8 @@
 
 const float CELL_WIDTH = 198.0; //
 const float CELL_HEIGHT = 132.0; //Change the height
-
+const float TITLE_LABEL_MAX_WIDTH = 180.0;
+const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 
 -(id)initWithIdentifier:(NSString *)identifier
 {
@@ -82,22 +89,46 @@ const float CELL_HEIGHT = 132.0; //Change the height
     //Set user's image.
     [_profileImage setImageWithURL:[NSURL URLWithString:postData.author.profileImageUrl] placeholderImage:nil];
     
+    CGSize labelSize = [CampusWallHeaderCell getContentLabelSizeForContent:postData.eventTitle];
+    
     [_eventTitleLbl setText:postData.eventTitle];
     
-    [_contentLbl setText:postData.content];
+    [_titleLabelWidth setConstant: labelSize.height];
     
-    
-//    [_timeLbl setText:[self takeTime:currentDate]];
-
     [self setTimeWithTime:postData.dateEventStarts];
   
-
-
     
-    //TODO: set number of attending.
-    [_attendingLbl setText:@"0"];
+    [_eventBarView increaseBarLevel:postData.popularity];
     
-    //TODO: select the going button if the user is attending,
+//    [_attendingLbl setText:@"0"];
+    
+    //Select the going button if the user is attending,
+    if(_postData.attended)
+    {
+        [self makeButtonSelected:_goingBtn];
+    }
+}
+
++ (CGSize)getContentLabelSizeForContent:(NSString *)content
+{
+    if(!content)
+    {
+        return CGSizeMake(0, 0);
+    }
+    
+    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:17.0];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){TITLE_LABEL_MAX_WIDTH, TITLE_LABEL_MAX_HEIGHT}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+    CGSize size = rect.size;
+    
+    
+    return size;
 }
 
 -(void)formatFontInElements
@@ -106,13 +137,16 @@ const float CELL_HEIGHT = 132.0; //Change the height
     
     [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18]];
+    [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:20]];
     
     [_attendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
     [_staticAttendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
-    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18]];
+    [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
+    
+ 
+//    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
 }
 
 -(void)setTimeWithTime:(NSDate *)date
@@ -147,15 +181,44 @@ const float CELL_HEIGHT = 132.0; //Change the height
     if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
     {
         
-        [self makeButtonSelected:currentButton];
+        //Communicate with server to attend post.
         
+        [[WebClient sharedInstance] postAttendInPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
+            
+            if(success)
+            {
+                
+            }
+            else
+            {
+                //Error message.
+                [WebClientHelper showStandardError];
+            }
+            
+        }];
+        
+        [self makeButtonSelected:currentButton];
+
         
     }
     else
     {
         
-        [self makeButtonUnselected:currentButton];
+        //Communicate with server to remove your attendance form the post.
         
+        [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
+            
+            if(success)
+            {
+                [self makeButtonUnselected:currentButton];
+            }
+            else
+            {
+                //Error message.
+                [WebClientHelper showStandardError];
+            }
+            
+        }];
     }
     
 }
@@ -168,7 +231,7 @@ const float CELL_HEIGHT = 132.0; //Change the height
 
 -(void)makeButtonSelected:(UIButton *)btn
 {
-    [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorWithRed:0.0/255.0 green:236.0/255.0 blue:172.0/255.0 alpha:1.0f] forState:UIControlStateNormal];
     
 }
 

@@ -21,6 +21,9 @@
 //@property (weak, nonatomic) IBOutlet VSScrollView *scrollView;
 
 @property (strong, nonatomic) NSArray *posts;
+@property (assign, nonatomic) BOOL readyToAutomaticallyScroll;
+@property (strong, nonatomic) NSTimer *checkLatestEvent;
+
 
 @end
 
@@ -42,6 +45,8 @@
         [self setAllowVerticalScrollingForOutOfBoundsCell:YES];
         
         [self setDelegate:self];
+        
+        [self initialiseObjects];
         
         [self loadEvents];
         
@@ -72,13 +77,22 @@
     return self;
 }
 
+-(void)initialiseObjects
+{
+    _readyToAutomaticallyScroll = NO;
+    
+    _checkLatestEvent = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(navigateToLatestEvent:) userInfo:nil repeats:YES];
+    [_checkLatestEvent setTolerance:5.0f];
+    
+    [_checkLatestEvent fire];
+}
+
 #pragma mark - Client
 
 -(void)loadEvents
 {
-    [self showLoadingLabel];
+//    [self showLoadingLabel];
     
-//    NSDate *date = [DateFormatterHelper generateDateWithDay:10 month:1 year:2014 hour:12 andMinutes:00];
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
         
@@ -86,11 +100,11 @@
         {
             _posts = posts;
             
-            [self hideLoadingLabel];
+//            [self hideLoadingLabel];
             
             [self clearAndLoad];
             
-            [self scrollToPosition:1];
+//            [self scrollToPosition:1];
         }
         else
         {
@@ -175,7 +189,17 @@
     
     
     [self reloadData];
-        
+}
+
+-(void)navigateToLatestEvent:(id)sender
+{
+    DDLogDebug(@"POSISTION: %d", [[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]);
+    
+    if(_readyToAutomaticallyScroll)
+    {
+        [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
+    }
+    
 }
 
 #pragma mark - VSScrollView Delegate
@@ -254,7 +278,6 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    
 }
 
 
@@ -285,18 +308,37 @@
 
 #pragma mark - Scroll View Delegate
 
-//-(void)scrollViewDidScroll:(UIScrollView *)myscrollView
+-(void)scrollViewDidScroll:(UIScrollView *)myscrollView
+{
+    [super scrollViewDidScroll:myscrollView];
+    
+    _readyToAutomaticallyScroll = NO;
+    
+    //Check if an element dessappeard from the scroll view.
+    
+    //if YES then regenerate it and add it to the end.
+    
+}
+
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)myscrollView willDecelerate:(BOOL)decelerate
+{
+    
+    [super scrollViewDidEndDragging:myscrollView willDecelerate:decelerate];
+    
+    _readyToAutomaticallyScroll = YES;
+    
+}
+
+//-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)myscrollView
 //{
-////    DDLogDebug(@"scrollViewDidScroll : %f", myscrollView.);
-//    
-//    
-//    
-//    //Check if an element dessappeard from the scroll view.
-//    
-//    //if YES then regenerate it and add it to the end.
-//    
+//    [super scrollViewDidScroll:myscrollView];
+//    DDLogDebug(@"scrollViewWillBeginDragging");
 //}
-//
+
+
+
+
 //-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 //{
 //    DDLogDebug(@"scrollViewWillBeginDragging");

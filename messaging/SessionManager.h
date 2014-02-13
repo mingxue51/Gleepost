@@ -27,5 +27,6 @@
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
 -(void)deregisterPushFromServer;
+-(BOOL)isFirstTimeLoggedIn;
 
 @end

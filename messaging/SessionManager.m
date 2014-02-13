@@ -24,6 +24,9 @@
 @property (assign, nonatomic) BOOL pushTokenRegistered;
 @property (strong, nonatomic) NSDictionary *authParameters;
 
+@property (strong, nonatomic) NSString *dataPlistLoggedInPath;
+@property (assign, nonatomic) BOOL currentUserFirstTime;
+@property (strong, nonatomic) NSDictionary *usersData;
 
 @end
 
@@ -38,6 +41,9 @@
 @synthesize currentCategory = _currentCategory;
 
 NSString * const GLPSessionFileName = @"GLPSession.plist";
+
+//Added to support first time tutorial.
+NSString * const GLPLoggedInUsersFileName = @"/GLPLoggedInUser.plist";
 
 static SessionManager *instance = nil;
 
@@ -61,6 +67,12 @@ static SessionManager *instance = nil;
     // init plist path
     NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     self.dataPlistPath = [rootPath stringByAppendingPathComponent:GLPSessionFileName];
+    
+    // init logged in plist path.
+    NSString *rootPath2 = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    self.dataPlistLoggedInPath = [rootPath2 stringByAppendingString:GLPLoggedInUsersFileName];
+    
+    _currentUserFirstTime = NO;
     
     _pushTokenRegistered = NO;
     _authParameters = [NSDictionary dictionary];
@@ -94,6 +106,12 @@ static SessionManager *instance = nil;
     if(_pushToken && !_pushTokenRegistered) {
         [self registerPushOnServer];
     }
+    
+    
+    //Check if it is user's first time.
+    
+    [self firstTimeLoggedIn];
+
 }
 
 - (void)cleanSession
@@ -148,7 +166,6 @@ static SessionManager *instance = nil;
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
-        DDLogDebug(@"DATA: %@", self.data);
         
 //        if([self isSessionValid]) {
 //            [[DatabaseManager sharedInstance] initDatabase];
@@ -175,6 +192,44 @@ static SessionManager *instance = nil;
     }
 }
 
+-(void)firstTimeLoggedIn
+{
+    
+    // load dictionnary data from saved file or create new one
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistLoggedInPath] == YES)
+    {
+        
+        //Load from plist file and add to the usersData.
+        _usersData = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistLoggedInPath];
+        
+        DDLogError(@"Users DATA: %@", _usersData);
+        
+        for(NSString *key in _usersData)
+        {
+            if([key isEqualToString:_user.email])
+            {
+                DDLogDebug(@"USER EXIST!");
+                _currentUserFirstTime = NO;
+                
+                return;
+            }
+        }
+        
+        //If the current user is not in the dictionary then is his first time. Otherwise it's not.
+        _currentUserFirstTime = YES;
+        
+        [self saveLoggedInUsersData];
+
+    }
+    else
+    {
+        _currentUserFirstTime = YES;
+        
+        [self saveLoggedInUsersData];
+    }
+}
+
+
 - (void)saveData
 {
     NSString *error;
@@ -187,6 +242,39 @@ static SessionManager *instance = nil;
     } else {
         [NSException raise:@"Save session data error" format:@"Error: %@", error];
     }
+}
+
+-(void)saveLoggedInUsersData
+{
+    //Key email.
+    //Value name.
+    DDLogError(@"User name: %@ Email: %@", _user.name, _user.email);
+    
+//    NSDictionary *usersData = [NSDictionary dictionaryWithObjectsAndKeys:_user.name, _user.email, nil];
+    
+    NSMutableDictionary *usersData = [NSMutableDictionary dictionaryWithDictionary:_usersData];
+    [usersData setObject:_user.name forKey:_user.email];
+    
+    
+    NSString *error;
+    NSData *plistData = [NSPropertyListSerialization dataFromPropertyList:usersData
+                                                                   format:NSPropertyListXMLFormat_v1_0
+                                                         errorDescription:&error];
+    
+    if(plistData)
+    {
+        [plistData writeToFile:self.dataPlistLoggedInPath atomically:YES];
+//        NSError *error;
+//        [plistData writeToFile:self.dataPlistLoggedInPath options:NSDataWritingWithoutOverwriting error:&error];
+        
+    } else {
+        [NSException raise:@"Save session data error" format:@"Error: %@", error];
+    }
+}
+
+-(BOOL)isFirstTimeLoggedIn
+{
+    return _currentUserFirstTime;
 }
 
 #pragma mark - Push token

@@ -41,7 +41,6 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 
-
 - (IBAction)addCommentButtonClick:(id)sender;
 
 - (IBAction)tableViewClicked:(id)sender;
@@ -229,9 +228,11 @@ static BOOL likePushed;
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
-    if(self.post.dateEventStarts)
+    
+    if(self.isFromCampusLive)
     {
         [self addCustomBackButton];
+
     }
     
 }
@@ -371,6 +372,31 @@ static BOOL likePushed;
 #pragma mark - Other methods
 
 static bool firstTime = YES;
+
+
+-(BOOL)isPostEvent
+{
+    NSArray *categories = self.post.categories;
+        
+    if(categories)
+    {
+        for(GLPCategory *c in categories)
+        {
+            if([c.tag isEqualToString:@"event"])
+            {
+                return YES;
+            }
+        }
+    }
+    else
+    {
+        return NO;
+    }
+    
+    return NO;
+    
+}
+
 
 -(void)viewPostImage:(UIImage*)postImage
 {
@@ -876,10 +902,10 @@ static bool firstTime = YES;
     }];
 }
 
-- (void)backButtonClick
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
+//- (void)backButtonClick
+//{
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

@@ -25,7 +25,7 @@ static CampusLiveManager *instance = nil;
     return instance;
 }
 
-#pragma mark - Live posts
+#pragma mark - Client
 
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
@@ -34,17 +34,46 @@ static CampusLiveManager *instance = nil;
         
         if(success)
         {
+            [[WebClient sharedInstance] userAttendingLivePostsWithCallbackBlock:^(BOOL success, NSArray *postsIds) {
+               
+                
+                if(success)
+                {
+                    [self formatLivePosts:posts withPostIds:postsIds];
+                    
+                    callbackBlock(YES, posts);
+                }
+                else
+                {
+                    callbackBlock(NO,nil);
+                }
+                
 
+                
+            }];
             
             
-            callbackBlock(YES, posts);
         }
         else
         {
-            callbackBlock(NO, posts);
+            callbackBlock(NO, nil);
         }
         
     }];
+}
+
+-(void)formatLivePosts:(NSArray *)posts withPostIds:(NSArray *)postsIds
+{
+    for(GLPPost *p in posts)
+    {
+        for(NSNumber *n in postsIds)
+        {
+            if([n integerValue] == p.remoteKey)
+            {
+                p.attended = YES;
+            }
+        }
+    }
 }
 
 -(void)loadRemotePosts:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
@@ -71,6 +100,33 @@ static CampusLiveManager *instance = nil;
         
     }];
 }
+
+-(int)findMostCloseToNowLivePostWithPosts:(NSArray *)posts
+{
+    NSDate *currentDate = [NSDate date];
+    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:0] dateEventStarts]];
+    int minIndex = 0;
+    for (int i = 1; i < [posts count]; ++i)
+    {
+        double currentmin = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:i] dateEventStarts]];
+        
+        if (currentmin > min)
+        {
+            min = currentmin;
+            minIndex = i;
+        }
+    }
+    
+    return minIndex;
+    
+}
+
+-(void)attendToAPostWithRemoteKey:(int)remoteKey
+{
+    
+}
+
+
 
 #pragma mark - Helpers
 

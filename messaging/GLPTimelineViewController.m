@@ -48,6 +48,7 @@
 #import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
+#import "WalkThroughHelper.h"
 
 @interface GLPTimelineViewController ()
 
@@ -149,6 +150,8 @@ const float TOP_OFFSET = 213.0f;
 //    [self startLoadingContents];
     
     [self loadInitialPosts];
+    
+    [WalkThroughHelper showCampusWallMessage];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -1873,6 +1876,7 @@ const float TOP_OFFSET = 213.0f;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostViewController *vpvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
     vpvc.post = post;
+    vpvc.isFromCampusLive = YES;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vpvc];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
@@ -1896,7 +1900,7 @@ const float TOP_OFFSET = 213.0f;
 //        self.postIndexToReload = 
         
         vc.commentJustCreated = self.commentCreated;
-        
+        vc.isFromCampusLive = NO;
         vc.post = self.selectedPost;
 //        vc.selectedIndex = self.selectedIndex;
         

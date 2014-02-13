@@ -21,6 +21,8 @@
 @property (assign, nonatomic) BOOL commentJustCreated;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
+@property (assign, nonatomic) BOOL isFromCampusLive;
+
 
 //-(float) calculateCommentSize: (NSString*) content;
 -(void)navigateToProfile: (id)sender;

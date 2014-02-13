@@ -15,30 +15,27 @@
                     <rect key="frame" x="-2" y="-3" width="203" height="139"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-bW-q0z">
-                    <rect key="frame" x="4" y="0.0" width="189" height="18"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-bW-q0z">
+                    <rect key="frame" x="-2" y="67" width="198" height="33"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.91764705882352937" green="0.91764705882352937" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bJS-28-eDx">
                     <rect key="frame" x="8" y="13" width="40" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nm-RY-Dh1">
-                    <rect key="frame" x="0.0" y="22" width="201" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="180" translatesAutoresizingMaskIntoConstraints="NO" id="7nm-RY-Dh1">
+                    <rect key="frame" x="9" y="7" width="180" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="98w-LJ-yAw"/>
+                        <constraint firstAttribute="width" constant="180" id="M17-BY-dlG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="hA7-5b-9Xx">
-                    <rect key="frame" x="-2" y="40" width="200" height="52"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
+                    <color key="highlightedColor" red="0.16078431372549018" green="0.16078431372549018" blue="0.054901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a6n-7b-owT">
                     <rect key="frame" x="93" y="100" width="105" height="35"/>
@@ -61,22 +58,53 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kjp-EY-S48">
-                    <rect key="frame" x="0.0" y="100" width="94" height="32"/>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9a8-pH-k21" customClass="EventBarView">
+                    <rect key="frame" x="4" y="100" width="85" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bar1.png" translatesAutoresizingMaskIntoConstraints="NO" id="cRq-29-cvc">
+                            <rect key="frame" x="20" y="18" width="6" height="9"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bar2.png" translatesAutoresizingMaskIntoConstraints="NO" id="plx-xu-31X">
+                            <rect key="frame" x="32" y="14" width="6" height="13"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bar3.png" translatesAutoresizingMaskIntoConstraints="NO" id="MxC-SK-T6b">
+                            <rect key="frame" x="44" y="10" width="6" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bar4.png" translatesAutoresizingMaskIntoConstraints="NO" id="glY-Po-EBr">
+                            <rect key="frame" x="56" y="6" width="6" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="bar1" destination="cRq-29-cvc" id="uJ1-yF-hGQ"/>
+                        <outlet property="bar2" destination="plx-xu-31X" id="CxO-UQ-Nlc"/>
+                        <outlet property="bar3" destination="MxC-SK-T6b" id="eXd-GS-wde"/>
+                        <outlet property="bar4" destination="glY-Po-EBr" id="f3U-iw-5uW"/>
+                    </connections>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="contentLbl" destination="hA7-5b-9Xx" id="Oze-yA-LRH"/>
+                <outlet property="eventBarView" destination="9a8-pH-k21" id="9cB-0S-qDq"/>
                 <outlet property="eventTitleLbl" destination="7nm-RY-Dh1" id="Kpf-b2-7YE"/>
                 <outlet property="goingBtn" destination="a6n-7b-owT" id="Myj-fe-koe"/>
                 <outlet property="profileImage" destination="bJS-28-eDx" id="3sy-qe-MEw"/>
                 <outlet property="timeLbl" destination="kqR-bW-q0z" id="qi3-U9-V3z"/>
+                <outlet property="titleLabelWidth" destination="98w-LJ-yAw" id="TNa-gX-24U"/>
             </connections>
         </view>
     </objects>
     <resources>
+        <image name="bar1.png" width="12" height="21"/>
+        <image name="bar2.png" width="12" height="28"/>
+        <image name="bar3.png" width="12" height="35"/>
+        <image name="bar4.png" width="12" height="42"/>
         <image name="campus_live_cell_bg.png" width="400" height="250"/>
     </resources>
 </document>
