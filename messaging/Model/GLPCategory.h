@@ -14,6 +14,7 @@
 @property (assign, nonatomic) int postRemoteKey;
 @property (strong, nonatomic) NSString *tag;
 @property (strong, nonatomic) NSString *name;
+@property (assign, nonatomic) BOOL uiSelected;
 
 -(id)initWithTag:(NSString*)tag name:(NSString*)name andPostRemoteKey:(int)postRemoteKey;
 -(id)initWithTag:(NSString*)tag name:(NSString*)name postRemoteKey:(int)postRemoteKey andRemoteKey:(int)remoteKey;

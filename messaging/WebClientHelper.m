@@ -81,6 +81,17 @@
     [alert show];
 }
 
++(void)showStandardFirstNameTooShortError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                    message:@"Your name is too short"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
 +(void)showStandardLastNameError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"

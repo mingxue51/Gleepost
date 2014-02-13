@@ -1856,7 +1856,7 @@ const float TOP_OFFSET = 213.0f;
     cvc.delegate = self;
 //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 210)];
+    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 246)];
     
     [cvc.blurBack setImage:[image stackBlur:10.0f]];
     

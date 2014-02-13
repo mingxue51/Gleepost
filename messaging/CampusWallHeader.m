@@ -21,13 +21,23 @@
 //@property (weak, nonatomic) IBOutlet VSScrollView *scrollView;
 
 @property (strong, nonatomic) NSArray *posts;
-@property (assign, nonatomic) BOOL readyToAutomaticallyScroll;
-@property (strong, nonatomic) NSTimer *checkLatestEvent;
+@property (assign, nonatomic) int lastPosition;
 
+@property (weak, nonatomic) IBOutlet UILabel *happeningLbl;
+
+//@property (assign, nonatomic) BOOL readyToAutomaticallyScroll;
+//@property (strong, nonatomic) NSTimer *checkLatestEvent;
+//@property (strong, nonatomic) NSTimer *runAutomaticScroll;
 
 @end
 
 @implementation CampusWallHeader
+
+NSString *HAPPENING_NOW_MSG;
+NSString *HAPPENING_TODAY_MSG;
+NSString *HAPPENING_TOMORROW_MSG;
+NSString *HAPPENING_THIS_WEEK_MSG;
+NSString *HAPPENED_TODAY;
 
 @synthesize posts = _posts;
 
@@ -50,20 +60,6 @@
         
         [self loadEvents];
         
-//        if(self.subviews.count >= 2)
-//        {
-//            [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Subview removed"];
-//            
-//            UIView *v = [self.subviews objectAtIndex:1];
-//            
-//            if(v)
-//            {
-//                [v removeFromSuperview];
-//            }
-//        }
-
-        
-
         
         
 //        [self.scrollView setScrollEnabled:YES];
@@ -79,59 +75,58 @@
 
 -(void)initialiseObjects
 {
-    _readyToAutomaticallyScroll = NO;
-    
-    _checkLatestEvent = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(navigateToLatestEvent:) userInfo:nil repeats:YES];
-    [_checkLatestEvent setTolerance:5.0f];
-    
-    [_checkLatestEvent fire];
+    HAPPENING_NOW_MSG = @"Happening Now";
+    HAPPENING_TODAY_MSG = @"Happening Today";
+    HAPPENING_TOMORROW_MSG = @"Happening Tomorrow";
+    HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
+    HAPPENED_TODAY = @"Happened Earlier";
 }
+
+//-(void)initialiseObjects
+//{
+//    _readyToAutomaticallyScroll = YES;
+//    
+////    _checkLatestEvent = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(navigateToLatestEvent:) userInfo:nil repeats:YES];
+////    [_checkLatestEvent setTolerance:5.0f];
+////    
+////    [_checkLatestEvent fire];
+//    
+//    _runAutomaticScroll = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(enableAutomaticScroll:) userInfo:nil repeats:NO];
+//    [_runAutomaticScroll fire];
+//}
 
 #pragma mark - Client
 
 -(void)loadEvents
 {
-//    [self showLoadingLabel];
+    [self showLoadingLabel];
     
+    _posts = nil;
+    
+    [self reloadData];
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+        
+
         
         if(success)
         {
             _posts = posts;
             
-//            [self hideLoadingLabel];
-            
+            [self hideLoadingLabel];
+
             [self clearAndLoad];
             
 //            [self scrollToPosition:1];
         }
         else
         {
+            [self hideLoadingLabel];
+
             [WebClientHelper showStandardError];
         }
         
     }];
-    
-//    [[WebClient sharedInstance] getEventPostsAfterDate:date withCallbackBlock:^(BOOL success, NSArray *posts) {
-//       
-//        if(success)
-//        {
-//            _posts = posts;
-//            
-//            [self hideLoadingLabel];
-//            
-//            [self clearAndLoad];
-//            
-//            [self scrollToPosition:1];
-//            
-//        }
-//        else
-//        {
-//            [WebClientHelper showStandardError];
-//        }
-//        
-//    }];
 }
 
 #pragma mark - UI methods
@@ -141,9 +136,9 @@
     UILabel *loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 200, 20)];
     loadingLabel.tag = 100;
     
-    [loadingLabel setTextColor:[UIColor lightGrayColor]];
+    [loadingLabel setTextColor:[UIColor whiteColor]];
     
-    [loadingLabel setText:@"Loading Events..."];
+    [loadingLabel setText:@"Loading events..."];
     
     [self addSubview:loadingLabel];
 }
@@ -161,46 +156,61 @@
 
 -(void)clearViews
 {
-//    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
-    
-//    if(self.subviews.count >= 2)
-//    {
-//        [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Problem in horizontal scroll view detected! Please contact with developer!"];
-//        UIView *v = [self.subviews objectAtIndex:1];
-//        [v removeFromSuperview];
-//        
-//    }
-    
-    
     [self loadEvents];
 }
 
 -(void)clearAndLoad
 {
-//    for(UIView *v in self.subviews)
-//    {
-//        if([v isKindOfClass:[UIScrollView class]])
-//        {
-//            [v removeFromSuperview];
-//            break;
-//        }
-//    }
+    [UIView animateWithDuration:0.3f animations:^{
+        
+        [self setAlpha:0.0f];
+
+    } completion:^(BOOL finished) {
+        
+        
+        [UIView animateWithDuration:0.5f animations:^{
+            
+            [self reloadData];
+            
+            //Load to last position.
+            [self scrollToPosition:_lastPosition];
+            
+            
+        } completion:^(BOOL finished) {
+            
+            
+            [UIView animateWithDuration:0.5f animations:^{
+                [self setAlpha:1.0f];
+                
+                if(self.posts.count > 1)
+                {
+                    [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
+                }
+                
+            }];
+            
+        }];
+        
+    }];
+   
     
     
-    [self reloadData];
+
 }
 
--(void)navigateToLatestEvent:(id)sender
-{
-    DDLogDebug(@"POSISTION: %d", [[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]);
-    
-    if(_readyToAutomaticallyScroll)
-    {
-        [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
-    }
-    
-}
+//-(void)navigateToLatestEvent:(id)sender
+//{
+//    
+//    if(_readyToAutomaticallyScroll && self.posts.count > 1)
+//    {
+//        DDLogDebug(@"POSISTION: %d", [[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]);
+//
+//        [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
+//        
+//        _readyToAutomaticallyScroll = NO;
+//    }
+//    
+//}
 
 #pragma mark - VSScrollView Delegate
 
@@ -255,9 +265,25 @@
     [tap setNumberOfTapsRequired:1];
     [myView addGestureRecognizer:tap];
     
+    
+    CGPoint aPosViewA = [self convertPoint:CGPointZero fromView:myView];
+
+    DDLogDebug(@"Position: %f", aPosViewA.x);
+    
+    _lastPosition = position;
+    
+    GLPPost *post = [_posts objectAtIndex:position];
+    
+    [myView setData: post];
 
     
-    [myView setData:[_posts objectAtIndex:position]];
+    //Set new message to title label depending on event start time.
+    
+//    if(position %2 == 0)
+//    {
+        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+//    }
+    
     
     return myView;
 }
@@ -276,11 +302,6 @@
     [myCustomCell setFrame:frame];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-}
-
-
 
 -(void)didSelectCell:(id)sender
 {
@@ -297,7 +318,6 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPShowEvent" object:self userInfo:dataDict];
 
-//    [_timeLineDelegate showEventPost:nil];
 }
 
 
@@ -306,29 +326,100 @@
     DDLogDebug(@"Choose category.");
 }
 
+#pragma mark - Time management
+
+-(void)refreshTitleLabelWithEventStartsDate:(NSDate *)date
+{
+    //If date is between current time and event time + 1 hour change title to happening now.
+    NSDate *datePlusOneHour = [DateFormatterHelper generateDateAfterHours:1];
+    NSDate *dateLastMinute = [DateFormatterHelper generateDateWithLastMinutePlusDates:0];
+
+    
+    NSArray *nextDayDates = [DateFormatterHelper generateTheNextDayStartAndEnd];
+    
+    if([DateFormatterHelper date:date isBetweenDate:[NSDate date] andDate:datePlusOneHour])
+    {
+        [_happeningLbl setText: HAPPENING_NOW_MSG];
+    }
+    else if([DateFormatterHelper date:date isBetweenDate:datePlusOneHour andDate:dateLastMinute])
+    {
+        [_happeningLbl setText:HAPPENING_TODAY_MSG];
+    }
+    else if([DateFormatterHelper date:date isBetweenDate:[nextDayDates objectAtIndex:0] andDate:[nextDayDates objectAtIndex:1]])
+    {
+        [_happeningLbl setText:HAPPENING_TOMORROW_MSG];
+    }
+    else
+    {
+        [_happeningLbl setText:HAPPENED_TODAY];
+    }
+    
+    /**
+     else if([DateFormatterHelper date:date isBetweenDate:datePlusOneDay andDate:datePlusSevenDays])
+     {
+     [_happeningLbl setText:HAPPENING_THIS_WEEK_MSG];
+     }
+     */
+    
+    
+}
+
 #pragma mark - Scroll View Delegate
 
--(void)scrollViewDidScroll:(UIScrollView *)myscrollView
-{
-    [super scrollViewDidScroll:myscrollView];
-    
-    _readyToAutomaticallyScroll = NO;
-    
-    //Check if an element dessappeard from the scroll view.
-    
-    //if YES then regenerate it and add it to the end.
-    
-}
+//-(void)scrollViewDidScroll:(UIScrollView *)myscrollView
+//{
+//    [super scrollViewDidScroll:myscrollView];
+//    
+//    _readyToAutomaticallyScroll = NO;
+//    DDLogDebug(@"Now disabled!");
+//
+//    
+//    //Check if an element dessappeard from the scroll view.
+//    
+//    //if YES then regenerate it and add it to the end.
+//    
+//}
 
-
--(void)scrollViewDidEndDragging:(UIScrollView *)myscrollView willDecelerate:(BOOL)decelerate
-{
-    
-    [super scrollViewDidEndDragging:myscrollView willDecelerate:decelerate];
-    
-    _readyToAutomaticallyScroll = YES;
-    
-}
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+////    [super scrollViewWillBeginDragging:scrollView];
+//    
+//    _readyToAutomaticallyScroll = NO;
+//    DDLogDebug(@"Now disabled!");
+//}
+//
+//-(void)scrollViewDidEndDragging:(UIScrollView *)myscrollView willDecelerate:(BOOL)decelerate
+//{
+//    
+//    [super scrollViewDidEndDragging:myscrollView willDecelerate:decelerate];
+//    
+////    [self performSelector:@selector(enableAutomaticScroll) withObject:nil afterDelay:5.0f];
+//    
+//    
+////    if (![_runAutomaticScroll isValid] || !_runAutomaticScroll)
+//    if(!_readyToAutomaticallyScroll)
+//    {
+//
+//        
+//        [self performSelector:@selector(enableAutomaticScroll:) withObject:nil afterDelay:10.0f];
+//        
+//
+//    }
+//    
+//    
+//}
+//     
+//-(void)enableAutomaticScroll:(id)sender
+//{
+//    @synchronized(_runAutomaticScroll)
+//    {
+//        DDLogDebug(@"Now enabled!");
+//        
+//        _readyToAutomaticallyScroll = YES;
+//        
+////        _runAutomaticScroll = nil;
+//    }
+//}
 
 //-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)myscrollView
 //{

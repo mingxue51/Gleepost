@@ -54,14 +54,14 @@
 
 -(void)showErrorVerifyUser
 {
-    [_messageAgainLbl setTintColor:[UIColor redColor]];
+    [_messageAgainLbl setTextColor:[UIColor redColor]];
     
-    [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
+    [_messageAgainLbl setText:[NSString stringWithFormat:@"No you're not. Are your sure your're at Stanford?"]];
 }
 
 -(void)showResendMessage
 {
-    [_messageAgainLbl setTintColor:[UIColor blackColor]];
+    [_messageAgainLbl setTextColor:[UIColor blackColor]];
 
     [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
 }
@@ -214,9 +214,13 @@
                 {
                     [WebClientHelper showStandardEmailError];
                 }
+                else if([responseMessage rangeOfString:@"Missing parameter: first"].location != NSNotFound)
+                {
+                    [WebClientHelper showStandardFirstNameTooShortError];
+                }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
+                    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:responseMessage];
                 }
 
                 
@@ -288,9 +292,16 @@
         
         [_signUpView setAlpha:0.0f];
         
+        [self hideKeyboard];
+        
         [self setUpMessageLabels];
         
     }];
+}
+
+-(void)hideKeyboard
+{
+    [self.view endEditing:YES];
 }
 
 -(void)hideView:(UIView*)view

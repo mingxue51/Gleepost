@@ -82,8 +82,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     self.currentUser = user;
     
-    [self.busySwitch setOn:!self.isBusy];
-
+    
+    [self getBusyStatus];
     
 
     
@@ -124,6 +124,9 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         
         return;
     }
+    
+    [self getBusyStatus];
+
     
     self.currentUser = user;
     
@@ -369,6 +372,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         {
             //Conversation exist.
             [_privateProfileDelegate viewConversation:conversation];
+            DDLogInfo(@"Conversation already exist: %@", conversation.title);
         }
         else
         {
@@ -377,6 +381,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
             NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
             
             [_privateProfileDelegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
+            
+            DDLogInfo(@"Fake conversation just created.");
 
         }
         
@@ -409,6 +415,19 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         if(success)
         {
             //Do something.
+            self.isBusy = !s.isOn;
+        }
+    }];
+}
+
+-(void)getBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+        
+        if(success)
+        {
+            
+            [self.busySwitch setOn:!status];
         }
     }];
 }

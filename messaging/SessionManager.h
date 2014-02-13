@@ -28,5 +28,7 @@
 - (void)registerPushToken:(NSData *)token;
 -(void)deregisterPushFromServer;
 -(BOOL)isFirstTimeLoggedIn;
+-(void)playSound;
+-(void)firstTimeLoggedInActivate;
 
 @end

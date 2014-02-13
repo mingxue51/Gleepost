@@ -32,6 +32,10 @@ static CampusLiveManager *instance = nil;
     
     [[WebClient sharedInstance] getEventPostsAfterDate:[self currentTime] withCallbackBlock:^(BOOL success, NSArray *posts) {
         
+        //TODO: remove that when is supported by the server.
+        posts = [self filterPosts:posts];
+        
+        
         if(success)
         {
             [[WebClient sharedInstance] userAttendingLivePostsWithCallbackBlock:^(BOOL success, NSArray *postsIds) {
@@ -83,14 +87,6 @@ static CampusLiveManager *instance = nil;
         
         if(success)
         {
-            for(GLPPost *post in posts)
-            {
-                DDLogDebug(@"-> %@", post.dateEventStarts);
-            }
-            
-            
-            DDLogDebug(@"->");
-
             callbackBlock(YES, posts);
         }
         else
@@ -103,12 +99,34 @@ static CampusLiveManager *instance = nil;
 
 -(int)findMostCloseToNowLivePostWithPosts:(NSArray *)posts
 {
+    if(posts.count == 0 || !posts)
+    {
+        return 0;
+    }
+    
     NSDate *currentDate = [NSDate date];
-    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:0] dateEventStarts]];
-    int minIndex = 0;
-    for (int i = 1; i < [posts count]; ++i)
+    int ignorePosts = 0;
+
+    //Cleanup posts of past dates.
+    
+    for(GLPPost *p in posts)
+    {
+        if ([[p dateEventStarts] compare:currentDate] == NSOrderedAscending)
+        {
+            ++ignorePosts;
+        }
+    }
+    
+    //Ignore past times.
+    
+    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:ignorePosts] dateEventStarts]];
+    int minIndex = ignorePosts;
+    
+    
+    for (int i = ignorePosts+1; i < [posts count]; ++i)
     {
         double currentmin = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:i] dateEventStarts]];
+        
         
         if (currentmin > min)
         {
@@ -126,13 +144,37 @@ static CampusLiveManager *instance = nil;
     
 }
 
+-(NSArray *)filterPosts:(NSArray *)posts
+{
+    NSMutableArray *finalPosts = [[NSMutableArray alloc] init];
+    NSDate *tomorrow = [DateFormatterHelper generateDateWithLastMinutePlusDates:1];
+    
+    for(GLPPost *p in posts)
+    {
+        if ([[p dateEventStarts] compare:[NSDate date]] == NSOrderedAscending)
+        {
+            [finalPosts addObject:p];
+        }
+    }
+    
+    for(GLPPost *p in posts)
+    {
+        if([DateFormatterHelper date:[p dateEventStarts] isBetweenDate:[NSDate date] andDate:tomorrow])
+        {
+            [finalPosts addObject:p];
+        }
+    }
+    
+    return finalPosts;
+}
 
 
 #pragma mark - Helpers
 
 -(NSDate *)currentTime
 {
-    NSDate *date = [DateFormatterHelper generateDateAfterDays:0];
+    NSDate *date = [DateFormatterHelper generateTodayDateWhenItStarts];
+    
     
     return date;
 }

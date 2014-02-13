@@ -47,6 +47,8 @@
 		<string>univers-ce-45-light.ttf</string>
 		<string>whitney-medium.ttf</string>
 	</array>
+	<key>UILaunchImageFile</key>
+	<string>splash.png</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -66,8 +68,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UILaunchImageFile</key>
-	<string>splash.png</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

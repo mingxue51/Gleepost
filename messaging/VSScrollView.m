@@ -350,7 +350,10 @@
 {
     NSArray *info = [widthPositionDict objectForKey:[NSNumber numberWithInt:position]];
     NSValue *frameVal = [info objectAtIndex:1];
+    
     CGRect frame = [frameVal CGRectValue];
+    
+    
     return frame;
 }
 
@@ -497,7 +500,25 @@
 -(void)scrollToPosition:(int)position
 {
      self.cellLostExpected = YES;  // this is the case when cell lost is expected one would scroll from first view to 100th view...fast scrolling looses cell.
-    [myScrollView scrollRectToVisible:[self frameForPosition:position] animated:YES];
+    
+    
+    CGRect frame = [self frameForPosition:position];
+    
+    //Make this contition in order to centralised only the middle cells.
+    //Not the cells in edges.
+    if(position == 0)
+    {
+        DDLogDebug(@"Position: %d, Number of views: %d", position,myScrollView.subviews.count );
+    }
+    else
+    {
+        frame.origin.x += 60.0;
+    }
+    
+//    [myScrollView scrollRectToVisible:[self frameForPosition:position] animated:YES];
+    
+    [myScrollView scrollRectToVisible:frame animated:YES];
+
 
 }
 

@@ -84,16 +84,18 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
         // move the content view at its initial position
         self.messageContentView.frame = CGRectMake(self.messageContentView.frame.origin.x, self.messageContentViewInitialY, self.messageContentView.frame.size.width, self.messageContentView.frame.size.height);
         
-        if (self.isLeft) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-left"]];
-            imageView.frame = CGRectMake(self.avatarImageView.frame.origin.x + self.avatarImageView.frame.size.width, self.messageContentViewInitialY +7, 5, 10);
-            [self.contentView addSubview:imageView];
-        }else {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arraow-right"]];
-            imageView.frame = CGRectMake(self.avatarImageView.frame.origin.x -5, self.messageContentViewInitialY +7, 5, 10);
-            [self.contentView addSubview:imageView];
-            
-        }
+        //ARROW REMOVED.
+        
+//        if (self.isLeft) {
+//            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow-left"]];
+//            imageView.frame = CGRectMake(self.avatarImageView.frame.origin.x + self.avatarImageView.frame.size.width, self.messageContentViewInitialY +7, 5, 10);
+//            [self.contentView addSubview:imageView];
+//        }else {
+//            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arraow-right"]];
+//            imageView.frame = CGRectMake(self.avatarImageView.frame.origin.x -5, self.messageContentViewInitialY +7, 5, 10);
+//            [self.contentView addSubview:imageView];
+//            
+//        }
         
     } else {
         self.timeView.hidden = YES;
@@ -128,12 +130,12 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     //self.messageContentView.layer.masksToBounds = YES;
     self.messageContentView.layer.cornerRadius = 12.0;
-    self.messageContentLabel.font = [UIFont fontWithName:GLP_APP_FONT_BOLD size:12.0];
+    self.messageContentLabel.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
 
     if(!self.isLeft) {
         [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor]];
         [self.messageContentImageView.layer setBorderWidth:2];
-                self.messageContentLabel.textColor = [UIColor lightGrayColor];
+                self.messageContentLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
     }else {
         self.messageContentLabel.textColor = [UIColor whiteColor];
         self.messageContentView.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
@@ -169,9 +171,25 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
-    CGSize maximumLabelSize = CGSizeMake(MessageContentLabelMaxWidth, FLT_MAX);
+
+        //DELETED.
+//    CGSize maximumLabelSize = CGSizeMake(MessageContentLabelMaxWidth, FLT_MAX);
+//    
+//    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+     //DELETED.
     
-    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){MessageContentLabelMaxWidth, CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+//    CGSize size = rect.size;
+    
+    return rect.size;
 }
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst

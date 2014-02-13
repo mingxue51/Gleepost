@@ -362,9 +362,8 @@
     
     cell.content.text = [conversation getLastMessageOrDefault];
     cell.content.textColor = [UIColor grayColor];
-    cell.content.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+    cell.content.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0f];
     cell.content.numberOfLines = 2;
-    //[cell.content sizeToFit];
         
 
     

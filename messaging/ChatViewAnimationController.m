@@ -15,13 +15,14 @@
 #import "GLPLiveConversationsManager.h"
 #import "GLPConversationViewController.h"
 #import "WalkThroughHelper.h"
+#import "SessionManager.h"
 
 @interface ChatViewAnimationController ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 @property (strong, nonatomic) ChatViewAnimationsStanford *chatStanfordAnimations;
 @property (strong, nonatomic) GLPConversation *conversation;
-
+@property (assign, nonatomic) BOOL controllerExist;
 @end
 
 @implementation ChatViewAnimationController
@@ -33,6 +34,7 @@
 	// Do any additional setup after loading the view.
 //    [self.view setBackgroundColor:[UIColor greenColor]];
 
+    _controllerExist = YES;
     [self configureView];
     
     [self configureNavigationBar];
@@ -75,9 +77,13 @@
     [self.view addSubview:self.chatStanfordAnimations];
     [self.view sendSubviewToBack:self.chatStanfordAnimations];
     
-    if(![WalkThroughHelper showRandomChatMessageWithDelegate:self])
+    if([WalkThroughHelper isReadyToShowRandomChat])
     {
         [self startRegularRandomChatOperation];
+    }
+    else
+    {
+        [WalkThroughHelper showRandomChatMessageWithDelegate:self];
     }
 }
 
@@ -106,6 +112,8 @@
 
 - (IBAction)dismissModalView:(id)sender
 {
+    _controllerExist = NO;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -142,30 +150,53 @@
 - (void)searchForConversation
 {
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
-    
-    
-    DDLogInfo(@"SEARCHING");
+    DDLogInfo(@"Search for conversation");
     
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] createRandomConversation];
     
     if(conversation) {
+        if(_controllerExist) {
+            [[SessionManager sharedInstance] playSound];
+        }
+
         _conversation = conversation;
         [self navigateToChat];
     } else {
         [WebClientHelper showStandardError];
     }
+}
+
+
+-(void)playSound:(id)sender
+{
+    //Play the sound.
+//    NSString *path = [[NSBundle mainBundle]pathForResource:@"mario" ofType:@"mp3"];
+//    //            AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:NULL];
+//    //            NSURL* url = [[NSBundle mainBundle] URLForResource:@"mario" withExtension:@"mp3"];
+//    
+//    
+//    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:NULL];
+////    audioPlayer.delegate = self;
+//    [audioPlayer play];
     
-//    [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
-//        [WebClientHelper hideStandardLoaderForView:self.view];
+    
+    
+    
+    
+//    NSURL* url = [[NSBundle mainBundle] URLForResource:@"mario" withExtension:@"mp3"];
+//    NSAssert(url, @"URL is valid.");
+//    NSError* error = nil;
+//    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+//    
+//    if(!audioPlayer)
+//    {
+//        NSLog(@"Error creating player: %@", error);
+//    }     else
+//    {
 //        
-//        if(success) {
-//            [[GLPLiveConversationsManager sharedInstance] addConversation:conversation];
-//            _conversation = conversation;
-//            [self navigateToChat];
-//        } else {
-//            [WebClientHelper showStandardError];
-//        }
-//    }];
+//        [audioPlayer play];
+//    }
+
 }
 
 #pragma mark - Configuration

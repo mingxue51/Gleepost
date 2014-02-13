@@ -11,6 +11,7 @@
 @interface GLPCategoryCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *categoryImage;
+@property (weak, nonatomic) IBOutlet UILabel *categoryNameLbl;
 
 @end
 
@@ -35,9 +36,19 @@ NSString * const kGLPCategoryCell = @"CategoryCell";
 
 -(void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image
 {
+    if(category.uiSelected)
+    {
+        [self.categoryNameLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17.0]];
+    }
+    else
+    {
+        [self.categoryNameLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0]];
+    }
+    
     [self.categoryImage setImage:image];
     
-    DDLogDebug(@"Category: %@ With Image: %@",category, image);
+    [self.categoryNameLbl setText:category.name];
+    
     
 }
 
