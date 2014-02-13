@@ -99,7 +99,7 @@ static GLPNetworkManager *instance = nil;
     _state = kGLPNetworkManagerStateStopped;
     
     [[GLPWebSocketClient sharedInstance] stopWebSocket];
-    [[GLPLiveConversationsManager sharedInstance] markAsNotSynchronizedWithRemote];
+    [[GLPLiveConversationsManager sharedInstance] markNotSynchronized];
 }
 
 - (void)webSocketDidConnect

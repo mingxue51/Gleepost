@@ -71,25 +71,19 @@
 
     // configuration
     [self configureHeader];
-
     [self configureNavigationBar];
     [self configureForm];
     [self initialiseObjects];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
-    
-    [self loadInitialMessages];
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    
-    if(self.tableView.frame.size.height < 465.0f)
-    {
-        
+    if(self.tableView.frame.size.height < 465.0f) {
         [self.tableView setFrame:CGRectMake(0, 0, 320, 460)];
         
     }
@@ -106,12 +100,15 @@
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self.tableView reloadData];
+    [self loadInitialMessages]; 
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -124,6 +121,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     
     [super viewWillDisappear:animated];
 }
@@ -250,13 +248,18 @@
     [self loadNewMessages];
     [self scrollToTheEndAnimated:YES];
     
-    if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
-        DDLogInfo(@"No network, abort loading initial messages");
-        DDLogInfo(@"Network status: %d", [GLPNetworkManager sharedInstance].networkStatus);
-        [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
-        return;
-    }
+//    if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
+//        DDLogInfo(@"No network, abort loading initial messages");
+//        DDLogInfo(@"Network status: %d", [GLPNetworkManager sharedInstance].networkStatus);
+//        [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
+//        return;
+//    }
     
+    [self syncConversation];
+}
+
+- (void)syncConversation
+{
     DDLogInfo(@"Syncing conversation");
     [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
     [self showBottomLoader];
@@ -372,6 +375,20 @@
         [self loadNewMessages];
         [self scrollToTheEndAnimated:YES];
     }
+}
+
+// Conversations list sync
+// Scenario:
+// - User on conversationVC
+// - Goes background
+// - Receive message (websocket closed)
+// - Goes active
+// - Web socket reconnect, resynch process, GET conversations list
+// - Sync with remote notif
+- (void)syncWithRemoteFromNotification:(NSNotification *)notification
+{
+    DDLogInfo(@"Synchronized with remote NSNotification");
+    [self syncConversation];
 }
 
 //- (void)showMessageFromNotification:(NSNotification *)notification

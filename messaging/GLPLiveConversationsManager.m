@@ -108,6 +108,7 @@ static GLPLiveConversationsManager *instance = nil;
             _isSynchronizedWithRemote = YES;
             
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
         });
     }];
 }
@@ -154,16 +155,18 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
+        DDLogInfo(@"Conversation last sync message key: %d", syncConversation.lastSyncMessageKey);
+        
         // conversation has last sync message
-        if(conversation.lastSyncMessageKey != NSNotFound) {
-            message = [self internalFindMessageByKey:conversation.lastSyncMessageKey inConversation:conversation];
+        if(syncConversation.lastSyncMessageKey != NSNotFound) {
+            message = [self internalFindMessageByKey:syncConversation.lastSyncMessageKey inConversation:syncConversation];
             
             if(!message) {
-                DDLogWarn(@"Last sync message for key %d not found", conversation.lastSyncMessageKey);
+                DDLogWarn(@"Last sync message for key %d not found", syncConversation.lastSyncMessageKey);
                 return;
             }
             
-            lastSyncMessageKey = conversation.lastSyncMessageKey;
+            lastSyncMessageKey = syncConversation.lastSyncMessageKey;
         }
         
         shouldSyncContinue = YES;
@@ -202,8 +205,8 @@ static GLPLiveConversationsManager *instance = nil;
             BOOL hasNewMessages = messages.count > 0;
             if(hasNewMessages) {
                 [self internalInsertMessages:messages toConversation:syncConversation atTheEnd:YES];
-                syncConversation.lastSyncMessageKey = [_conversationsMessagesKeys[index] integerValue];
-                DDLogInfo(@"Conversation last sync message key: %d", syncConversation.lastSyncMessageKey);
+//                syncConversation.lastSyncMessageKey = [_conversationsMessagesKeys[index] integerValue];
+//                DDLogInfo(@"Conversation last sync message key: %d", syncConversation.lastSyncMessageKey);
             }
             
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
@@ -213,10 +216,16 @@ static GLPLiveConversationsManager *instance = nil;
     }];
 }
 
-- (void)markAsNotSynchronizedWithRemote
+- (void)markNotSynchronized
 {
+    DDLogInfo(@"Mark conversations not synchronized anymore");
+    
     dispatch_async(_queue, ^{
         _isSynchronizedWithRemote = NO;
+        
+        for(NSNumber *key in [_conversationsSyncStatuses allKeys]) {
+            _conversationsSyncStatuses[key] = [NSNumber numberWithBool:NO];
+        }
     });
 }
 
@@ -712,11 +721,16 @@ static GLPLiveConversationsManager *instance = nil;
     // insert messages at the end or if the array is empty
     if(end || [_conversationsMessages[index] count] == 0) {
         [_conversationsMessages[index] addObjectsFromArray:synchMessages];
+        
+        // last message key is the new one only if the array represents the last elements of conversation's messages
+        conversation.lastSyncMessageKey = key;
     } else {
         [_conversationsMessages[index] insertObjects:synchMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, synchMessages.count)]];
     }
     
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:key];
+    
+    DDLogInfo(@"Successful add messages to conversation, last sync message key: %d", key);
 }
 
 - (NSInteger)internalAddMessage:(GLPMessage *)message toConversation:(GLPConversation *)conversation

@@ -69,8 +69,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json
 {
-    DDLogInfo(@"json: %@", json);
-    
     // get participants
     NSMutableArray *participants = [NSMutableArray array];
     for(id jsonUser in json[@"participants"]) {

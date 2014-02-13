@@ -39,6 +39,6 @@
 - (void)addRemoteMessage:(GLPMessage *)message toConversationWithRemoteKey:(NSInteger)remoteKey;
 - (void)addMessages:(NSArray *)messages toConversation:(GLPConversation *)conversation before:(GLPMessage *)message;
 
-- (void)markAsNotSynchronizedWithRemote;
+- (void)markNotSynchronized;
 
 @end
