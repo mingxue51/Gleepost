@@ -83,14 +83,6 @@ static CampusLiveManager *instance = nil;
         
         if(success)
         {
-            for(GLPPost *post in posts)
-            {
-                DDLogDebug(@"-> %@", post.dateEventStarts);
-            }
-            
-            
-            DDLogDebug(@"->");
-
             callbackBlock(YES, posts);
         }
         else
@@ -103,12 +95,40 @@ static CampusLiveManager *instance = nil;
 
 -(int)findMostCloseToNowLivePostWithPosts:(NSArray *)posts
 {
+    if(posts.count == 0 || !posts)
+    {
+        return 0;
+    }
+    
+    NSMutableArray *finalPosts = [[NSMutableArray alloc] init];
     NSDate *currentDate = [NSDate date];
-    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:0] dateEventStarts]];
-    int minIndex = 0;
-    for (int i = 1; i < [posts count]; ++i)
+    int ignorePosts = 0;
+
+    //Cleanup posts of past dates.
+    
+    for(GLPPost *p in posts)
+    {
+        if ([[p dateEventStarts] compare:currentDate] == NSOrderedAscending)
+        {
+            ++ignorePosts;
+        }
+        else
+        {
+            //Add only future posts.
+            [finalPosts addObject:p];
+        }
+    }
+    
+    //Ignore past times.
+    
+    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:ignorePosts] dateEventStarts]];
+    int minIndex = ignorePosts;
+    
+    
+    for (int i = ignorePosts+1; i < [posts count]; ++i)
     {
         double currentmin = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:i] dateEventStarts]];
+        
         
         if (currentmin > min)
         {
@@ -132,7 +152,8 @@ static CampusLiveManager *instance = nil;
 
 -(NSDate *)currentTime
 {
-    NSDate *date = [DateFormatterHelper generateDateAfterDays:0];
+    NSDate *date = [DateFormatterHelper generateTodayDateWhenItStarts];
+    
     
     return date;
 }

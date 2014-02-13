@@ -75,6 +75,21 @@
     return date;
 }
 
++(NSDate *)generateTodayDateWhenItStarts
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    
+    [comp setDay:comp.day];
+    //    [comp setMonth:comp.month];
+    [comp setHour:0];
+    [comp setMinute:0];
+    //    [comp setYear:year];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
+
 +(NSDate *)generateDateAfterDays:(int)days
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
@@ -88,6 +103,18 @@
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     
     return date;
+}
+
+
++(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
+{
+    if ([date compare:beginDate] == NSOrderedAscending)
+    	return NO;
+    
+    if ([date compare:endDate] == NSOrderedDescending)
+    	return NO;
+    
+    return YES;
 }
 
 @end

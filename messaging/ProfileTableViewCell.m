@@ -369,6 +369,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         {
             //Conversation exist.
             [_privateProfileDelegate viewConversation:conversation];
+            DDLogInfo(@"Conversation already exist: %@", conversation.title);
         }
         else
         {
@@ -377,6 +378,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
             NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
             
             [_privateProfileDelegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
+            
+            DDLogInfo(@"Fake conversation just created.");
 
         }
         

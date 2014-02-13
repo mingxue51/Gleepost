@@ -51,10 +51,14 @@
 
 -(void)increaseBarLevel:(int)level
 {
+    [self resetBars];
+
+    
     if(level > 4 || level < 1)
     {
         return;
     }
+    
     
     for(int i = 1; i<=level; ++i)
     {
@@ -65,6 +69,14 @@
 -(void)decreaseBarLevel:(int)level
 {
     for(int i = level; i>=1; --i)
+    {
+        [self deactivateBarWithTag:i];
+    }
+}
+
+-(void)resetBars
+{
+    for(int i = 1; i<=4; ++i)
     {
         [self deactivateBarWithTag:i];
     }

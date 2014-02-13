@@ -102,13 +102,23 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
+    
+    
+    //TODO: Move that to the new implementation.
+    
+    if(_conversation.remoteKey != 0) //New
+    {
+        [self loadInitialMessages];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self.tableView reloadData];
-    [self loadInitialMessages]; 
+    
+    //TODO: Removed.
+    //[self loadInitialMessages];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -238,6 +248,33 @@
     self.formTextView.frame = formTextViewFrame;
     
     self.formTextView.layer.cornerRadius = 5;
+}
+
+
+#pragma mark - Client
+
+//TODO: Add to the new implementation.
+
+-(void)createConversationWithCallbackBlock:(void(^)(BOOL sucess, GLPConversation *conversation))callback
+{
+    //Create new conversation with the user.
+    [[WebClient sharedInstance] createRegularConversationWithUserRemoteKey:[_conversation getUniqueParticipant].remoteKey andCallback:^(BOOL sucess, GLPConversation *conversation) {
+        
+        if(sucess)
+        {
+            //Save conversation to local database,
+            [ConversationManager saveConversationIfNotExist:conversation];
+            
+            callback(sucess, conversation);
+            
+        }
+        else
+        {
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Error creating conversation"];
+            callback(sucess, nil);
+        }
+        
+    }];
 }
 
 
@@ -455,7 +492,27 @@
         return;
     }
     
-    [self createMessageFromForm];
+    //TODO: Add that to the new implementation.
+    if(_conversation.remoteKey == 0)
+    {
+        //Create conversation.
+        [self createConversationWithCallbackBlock:^(BOOL sucess, GLPConversation *conversation) {
+            
+            if(sucess)
+            {
+                _conversation = conversation;
+                [self createMessageFromForm];
+            }
+            
+        }];
+    }
+    else
+    {
+        [self createMessageFromForm];
+    }
+
+    //TODO:Deleted
+//    [self createMessageFromForm];
 }
 
 - (IBAction)tableViewClicked:(id)sender
