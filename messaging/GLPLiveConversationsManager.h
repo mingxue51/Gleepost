@@ -19,6 +19,7 @@
 
 // conversations
 - (void)loadConversations;
+- (GLPConversation *)createRandomConversation;
 - (void)addConversation:(GLPConversation *)conversation;
 - (NSArray *)conversationsList;
 - (void)conversationsList:(void (^)(NSArray *liveConversations, NSArray *regularConversations))block;

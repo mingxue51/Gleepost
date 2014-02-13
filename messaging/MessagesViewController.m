@@ -150,9 +150,11 @@
     
     [self.navigationController.navigationBar setShadowImage: [[UIImage alloc]init]];
     
-//    _debugNotificationCount = 0;
-//    UIBarButtonItem *debug = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount] style:UIBarButtonItemStyleBordered target:self action:@selector(debugNotification)];
-//    self.navigationItem.rightBarButtonItem = debug;
+    if(ENV_DEBUG) {
+        _debugNotificationCount = 0;
+        UIBarButtonItem *debug = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount] style:UIBarButtonItemStyleBordered target:self action:@selector(debugNotification)];
+        self.navigationItem.rightBarButtonItem = debug;
+    }
 
     
 //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];

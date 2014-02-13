@@ -773,6 +773,37 @@ static WebClient *instance = nil;
 //    [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
 //}
 
+- (GLPConversation *)synchronousCreateConversation
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    if(ENV_FAKE_LIVE_CONVERSATIONS) {
+        params[@"random"] = @"false";
+        
+        NSString *userIds;
+        if(self.sessionManager.user.remoteKey == 2399) {
+            userIds = @"2395";
+        } else {
+            userIds = @"2399";
+        }
+        
+        params[@"participants"] = userIds;
+        DDLogInfo(@"Generate fake live conversation for current user: %d, with opponent user: %@", self.sessionManager.user.remoteKey, userIds);
+    }
+    
+    __block GLPConversation *conversation = nil;
+
+    [self executeSynchronousRequestWithMethod:@"POST" path:@"conversations" params:params callback:^(BOOL success, id json) {
+        if(!success) {
+            return;
+        }
+        
+        DDLogInfo(@"JSON: %@", json);
+        conversation = [RemoteParser parseConversationFromJson:json];
+    }];
+    
+    return conversation;
+}
+
 - (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];

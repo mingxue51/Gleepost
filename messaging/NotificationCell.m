@@ -51,7 +51,7 @@ float const kProfileImageSize = 40;
 float const kTwoProfileImagesWidth = 70;
 float const kContentLabelNoPictoMaxWidth = 212;
 float const kContentLabelWithPictoMaxWidth = 182;
-float const kPictoImageSize = 25;
+float const kPictoImageSize = 13;
 float const kButtonsViewHeight = 32;
 
 // vertical margins
@@ -132,7 +132,15 @@ float const kMarginBetweenBorderAndContent = 15;
         
         CGRectSetX(self.contentLabel, kMarginBetweenBorderAndContent + kTwoProfileImagesWidth + kMarginBetweenProfileImageAndContent);
         self.contentLabel.textAlignment = NSTextAlignmentRight;
+    } else if(notification.notificationType == kGLPNotificationTypeCommented || notification.notificationType == kGLPNotificationTypeLiked) {
+        
+        self.pictoImageView.hidden = NO;
+        
+        NSString *imageName = notification.notificationType == kGLPNotificationTypeLiked ? @"internal_notification_cell_liked" : @"internal_notification_cell_commented";
+        DDLogInfo(@"Image picto: %@", imageName);
+        self.pictoImageView.image = [UIImage imageNamed:imageName];
     }
+    
 }
 
 - (void)acceptButtonClick

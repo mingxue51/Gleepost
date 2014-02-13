@@ -145,17 +145,27 @@
     
     
     DDLogInfo(@"SEARCHING");
-    [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        if(success) {
-            [[GLPLiveConversationsManager sharedInstance] addConversation:conversation];
-            _conversation = conversation;
-            [self navigateToChat];
-        } else {
-            [WebClientHelper showStandardError];
-        }
-    }];
+    
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] createRandomConversation];
+    
+    if(conversation) {
+        _conversation = conversation;
+        [self navigateToChat];
+    } else {
+        [WebClientHelper showStandardError];
+    }
+    
+//    [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
+//        [WebClientHelper hideStandardLoaderForView:self.view];
+//        
+//        if(success) {
+//            [[GLPLiveConversationsManager sharedInstance] addConversation:conversation];
+//            _conversation = conversation;
+//            [self navigateToChat];
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
 }
 
 #pragma mark - Configuration

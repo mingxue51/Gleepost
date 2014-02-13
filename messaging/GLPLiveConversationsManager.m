@@ -115,6 +115,27 @@ static GLPLiveConversationsManager *instance = nil;
     }];
 }
 
+- (GLPConversation *)createRandomConversation
+{
+    DDLogInfo(@"Create random conversation");
+    
+    __block GLPConversation *conversation = nil;
+    
+    dispatch_sync(_queue, ^{
+        GLPConversation *syncConversation = [[WebClient sharedInstance] synchronousCreateConversation];
+        
+        BOOL success = [self internalAddConversation:syncConversation];
+        if(!success) {
+            return;
+        }
+        
+        conversation = syncConversation;
+        DDLogInfo(@"Conversation created succesfully");
+    });
+    
+    return conversation;
+}
+
 - (void)addConversation:(GLPConversation *)conversation
 {
     DDLogInfo(@"Add conversation with remote key %d", conversation.remoteKey);
