@@ -82,8 +82,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     self.currentUser = user;
     
-    [self.busySwitch setOn:!self.isBusy];
-
+    
+    [self getBusyStatus];
     
 
     
@@ -124,6 +124,9 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         
         return;
     }
+    
+    [self getBusyStatus];
+
     
     self.currentUser = user;
     
@@ -412,6 +415,19 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         if(success)
         {
             //Do something.
+            self.isBusy = !s.isOn;
+        }
+    }];
+}
+
+-(void)getBusyStatus
+{
+    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
+        
+        if(success)
+        {
+            
+            [self.busySwitch setOn:!status];
         }
     }];
 }

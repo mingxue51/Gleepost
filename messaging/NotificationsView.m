@@ -40,7 +40,7 @@
 
 - (IBAction)showNotifications:(id)sender
 {
-    [_delegate popUpNotifications:sender];
+//    [_delegate popUpNotifications:sender];
 }
 
 -(void)updateNotificationsWithNumber:(int)notNumber

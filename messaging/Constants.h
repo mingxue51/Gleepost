@@ -39,6 +39,7 @@
 #define GLP_UNIVERS_LIGHT_BOLD                      @"Univers 45 Light"
 #define GLP_UNIVERS_CE_LIGHT                        @"Univers CE 45 Light"
 #define GLP_TITLE_FONT                              @"Whitney-Medium"
+#define GLP_MESSAGE_FONT                            @"HelveticaNeue"
 
 
 // DDLog

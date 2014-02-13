@@ -69,8 +69,6 @@
 
 @property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
-@property (assign, nonatomic) BOOL isBusy;
-
 @property (assign, nonatomic) BOOL commentCreated;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
@@ -277,8 +275,6 @@
     
     self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
 
-    //Load busy status.
-    [self getBusyStatus];
     
     //Load user's details from server.
     [self setUserDetails];
@@ -762,16 +758,7 @@
 }
 
 
--(void)getBusyStatus
-{
-    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
-        
-        if(success)
-        {
-            self.isBusy = status;
-        }
-    }];
-}
+
 
 /**
  Fetch user data from loader.
@@ -829,7 +816,7 @@
     
     ProfileTwoButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
-    ProfileSettingsTableViewCell *profileSettingsView;
+//    ProfileSettingsTableViewCell *profileSettingsView;
     NotificationCell *notificationCell;
     
     if(indexPath.row == 0)
@@ -837,8 +824,6 @@
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
         [profileView setDelegate:self];
-
-        profileView.isBusy = self.isBusy;
 
 //        [profileView updateImageWithUrl:self.profileImageUrl];
         if(_userImage)

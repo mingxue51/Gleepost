@@ -289,7 +289,7 @@
 -(NSString *)getTime
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"hh a"];
+    [formatter setDateFormat:@"h a"];
     NSString *timeString = [formatter stringFromDate:self];
     
     return timeString;

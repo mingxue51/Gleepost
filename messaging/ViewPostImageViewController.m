@@ -45,10 +45,10 @@
     pgr.delegate = self;
     [self.viewImage addGestureRecognizer:pgr];
     
-    UIPanGestureRecognizer* panSwipeRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
-    // Here you can customize for example the minimum and maximum number of fingers required
-    panSwipeRecognizer.minimumNumberOfTouches = 1;
-    [self.viewImage addGestureRecognizer:panSwipeRecognizer];
+//    UIPanGestureRecognizer* panSwipeRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
+//    // Here you can customize for example the minimum and maximum number of fingers required
+//    panSwipeRecognizer.minimumNumberOfTouches = 1;
+//    [self.viewImage addGestureRecognizer:panSwipeRecognizer];
 }
 
 

@@ -21,7 +21,6 @@
 @property (assign, nonatomic) int selectedUserId;
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
--(void)popUpNotifications:(id)sender;
 -(void)logout:(id)sender;
 -(void)changeProfileImage:(id)sender;
 
