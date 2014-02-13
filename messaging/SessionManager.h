@@ -29,5 +29,6 @@
 -(void)deregisterPushFromServer;
 -(BOOL)isFirstTimeLoggedIn;
 -(void)playSound;
+-(void)firstTimeLoggedInActivate;
 
 @end

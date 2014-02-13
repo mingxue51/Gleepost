@@ -282,6 +282,11 @@ static SessionManager *instance = nil;
     return _currentUserFirstTime;
 }
 
+-(void)firstTimeLoggedInActivate
+{
+    _currentUserFirstTime = NO;
+}
+
 #pragma mark - Push token
 
 - (void)registerPushToken:(NSData *)token

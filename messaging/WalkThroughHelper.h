@@ -12,7 +12,8 @@
 @interface WalkThroughHelper : NSObject
 
 +(void)showCampusWallMessage;
-+(BOOL)showRandomChatMessageWithDelegate:(ChatViewAnimationController *)delegate;
++(void)showRandomChatMessageWithDelegate:(ChatViewAnimationController *)delegate;
++(BOOL)isReadyToShowRandomChat;
 
 
 @end

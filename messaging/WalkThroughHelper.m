@@ -24,22 +24,32 @@
     }
 }
 
-+(BOOL)showRandomChatMessageWithDelegate:(ChatViewAnimationController *)delegate
++(BOOL)isReadyToShowRandomChat
 {
-    
     if([[SessionManager sharedInstance] isFirstTimeLoggedIn])
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Random chatting"
-                                                        message:@"We'll pair you into a chat with a random peer on campus. All conversations expire after 24 hours, and you can have up to 3 concurrently. Happy chatting!"
-                                                       delegate:delegate
-                                              cancelButtonTitle:@"cancel"
-                                              otherButtonTitles:@"continue", nil];
-        [alert show];
+        [[SessionManager sharedInstance] firstTimeLoggedInActivate];
         
+        return NO;
+    }
+    else
+    {
         return YES;
     }
     
-    return NO;
+}
+
++(void)showRandomChatMessageWithDelegate:(ChatViewAnimationController *)delegate
+{
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Random chatting"
+                                                    message:@"We'll pair you into a chat with a random peer on campus. All conversations expire after 24 hours, and you can have up to 3 concurrently. Happy chatting!"
+                                                   delegate:delegate
+                                          cancelButtonTitle:@"cancel"
+                                          otherButtonTitles:@"continue", nil];
+    [alert show];
+    
+    
 }
 
 @end

@@ -22,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 @property (strong, nonatomic) ChatViewAnimationsStanford *chatStanfordAnimations;
 @property (strong, nonatomic) GLPConversation *conversation;
-
+@property (assign, nonatomic) BOOL controllerExist;
 @end
 
 @implementation ChatViewAnimationController
@@ -34,6 +34,7 @@
 	// Do any additional setup after loading the view.
 //    [self.view setBackgroundColor:[UIColor greenColor]];
 
+    _controllerExist = YES;
     [self configureView];
     
     [self configureNavigationBar];
@@ -76,9 +77,13 @@
     [self.view addSubview:self.chatStanfordAnimations];
     [self.view sendSubviewToBack:self.chatStanfordAnimations];
     
-    if(![WalkThroughHelper showRandomChatMessageWithDelegate:self])
+    if([WalkThroughHelper isReadyToShowRandomChat])
     {
         [self startRegularRandomChatOperation];
+    }
+    else
+    {
+        [WalkThroughHelper showRandomChatMessageWithDelegate:self];
     }
 }
 
@@ -107,6 +112,8 @@
 
 - (IBAction)dismissModalView:(id)sender
 {
+    _controllerExist = NO;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -150,8 +157,11 @@
         
         if(success)
         {
+            if(_controllerExist)
+            {
+                [[SessionManager sharedInstance] playSound];
+            }
            
-            [[SessionManager sharedInstance] playSound];
             
             [[GLPLiveConversationsManager sharedInstance] addConversation:conversation];
             _conversation = conversation;
