@@ -111,7 +111,7 @@
     int row = indexPath.row;
     
     if(_topLoadingCellDelegate.isVisible) {
-        row++;
+        row--;
     }
     
     return _items[row];
@@ -166,6 +166,9 @@
     
     [_topLoadingCellDelegate show];
     
+    NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+    DDLogInfo(@"First visible cell row: %i", firstVisibleIndexPath.row);
+    
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
@@ -180,6 +183,11 @@
     [_topLoadingCellDelegate hide];
     
     [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)activateTopLoader
+{
+    [_topLoadingCellDelegate activate];
 }
 
 - (void)showBottomLoader

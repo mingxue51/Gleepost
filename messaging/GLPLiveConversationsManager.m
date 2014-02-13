@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSMutableDictionary *conversationsSyncStatuses;
 @property (strong, nonatomic) NSMutableDictionary *conversationsMessagesKeys;
 @property (strong, nonatomic) NSMutableDictionary *conversationsLastestMessageShown;
+@property (strong, nonatomic) NSMutableDictionary *conversationsCanHavePreviousMessages;
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (assign, nonatomic) BOOL successfullyLoaded;
 @property (assign, nonatomic) BOOL isSynchronizedWithRemote;
@@ -34,6 +35,7 @@
 @synthesize conversationsSyncStatuses=_conversationsSyncStatuses;
 @synthesize conversationsMessagesKeys=_conversationsMessagesKeys;
 @synthesize conversationsLastestMessageShown=_conversationsLastestMessageShown;
+@synthesize conversationsCanHavePreviousMessages=_conversationsCanHavePreviousMessages;
 @synthesize queue=_queue;
 @synthesize successfullyLoaded=_successfullyLoaded;
 @synthesize isSynchronizedWithRemote=_isSynchronizedWithRemote;
@@ -782,6 +784,7 @@ static GLPLiveConversationsManager *instance = nil;
     _conversationsSyncStatuses[index] = [NSNumber numberWithBool:NO];
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:0];
     _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:0];
+    _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:YES];
     
     return YES;
 }
@@ -798,6 +801,7 @@ static GLPLiveConversationsManager *instance = nil;
     _conversationsSyncStatuses = [NSMutableDictionary dictionary];
     _conversationsMessagesKeys = [NSMutableDictionary dictionary];
     _conversationsLastestMessageShown = [NSMutableDictionary dictionary];
+    _conversationsCanHavePreviousMessages = [NSMutableDictionary dictionary];
     _liveConversationsCount = 0;
     _regularConversationsCount = 0;
     

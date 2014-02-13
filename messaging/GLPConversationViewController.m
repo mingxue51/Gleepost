@@ -358,6 +358,7 @@
 
 # pragma mark - Notifications (keyboard ones in form management mark)
 
+// Conversation is sync
 - (void)conversationSyncFromNotification:(NSNotification *)notification
 {
     DDLogInfo(@"Conversation sync from notification");
@@ -371,13 +372,21 @@
     [self hideBottomLoader];
     
     BOOL hasNewMessages = [[notification userInfo][@"newMessages"] boolValue];
+    BOOL scrollAnimated = _messages.count > 0;
+    
     if(hasNewMessages) {
         [self loadNewMessages];
-        [self scrollToTheEndAnimated:YES];
+        [self scrollToTheEndAnimated:scrollAnimated];
+    }
+    
+    if(_messages.count > 0) {
+        [self showTopLoader];
+        [self activateTopLoader];
+        [self scrollToTheEndAnimated:NO];
     }
 }
 
-// Conversations list sync
+// Sync with remote
 // Scenario:
 // - User on conversationVC
 // - Goes background
@@ -604,7 +613,7 @@
 
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position
 {
-    
+    DDLogInfo(@"Loading cell activated for position: %d", position);
 }
 
 

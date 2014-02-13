@@ -21,6 +21,7 @@
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position;
 - (void)showTopLoader;
 - (void)hideTopLoader;
+- (void)activateTopLoader;
 - (void)showBottomLoader;
 - (void)hideBottomLoader;
 - (void)scrollToTheEndAnimated:(BOOL)animated;
