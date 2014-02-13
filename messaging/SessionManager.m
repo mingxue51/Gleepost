@@ -13,6 +13,7 @@
 #import "GLPUserDao.h"
 #import "WebClient.h"
 #import "GLPThemeManager.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface SessionManager()
 
@@ -27,6 +28,9 @@
 @property (strong, nonatomic) NSString *dataPlistLoggedInPath;
 @property (assign, nonatomic) BOOL currentUserFirstTime;
 @property (strong, nonatomic) NSDictionary *usersData;
+
+
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 
 @end
 
@@ -83,6 +87,7 @@ static SessionManager *instance = nil;
     
     [self loadData];
     
+        
     return self;
 }
 
@@ -323,6 +328,15 @@ static SessionManager *instance = nil;
         
         
     }];
+}
+
+-(void)playSound
+{
+    NSURL *clickURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/mario.mp3", [[NSBundle mainBundle] resourcePath]]];
+    _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
+    
+    [_audioPlayer play];
+
 }
 
 

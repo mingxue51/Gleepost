@@ -103,6 +103,10 @@
 		582B404618AD3E5800BC4285 /* jobs_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404018AD3E5800BC4285 /* jobs_category.png */; };
 		582B404718AD3E5800BC4285 /* purple_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404118AD3E5800BC4285 /* purple_category.png */; };
 		582B404818AD3E5800BC4285 /* news_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404218AD3E5800BC4285 /* news_category.png */; };
+		582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582B404A18AD6C4A00BC4285 /* SoundHelper.m */; };
+		582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404C18AD6DF300BC4285 /* AudioToolbox.framework */; };
+		582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404E18AD6EE300BC4285 /* AVFoundation.framework */; };
+		582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 582B405118AD6FAD00BC4285 /* mario.mp3 */; };
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4B51899299B004FC4F6 /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B41899299B004FC4F6 /* add_new_post.png */; };
@@ -757,6 +761,11 @@
 		582B404018AD3E5800BC4285 /* jobs_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jobs_category.png; sourceTree = "<group>"; };
 		582B404118AD3E5800BC4285 /* purple_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple_category.png; sourceTree = "<group>"; };
 		582B404218AD3E5800BC4285 /* news_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = news_category.png; sourceTree = "<group>"; };
+		582B404918AD6C4A00BC4285 /* SoundHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundHelper.h; sourceTree = "<group>"; };
+		582B404A18AD6C4A00BC4285 /* SoundHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundHelper.m; sourceTree = "<group>"; };
+		582B404C18AD6DF300BC4285 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		582B404E18AD6EE300BC4285 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		582B405118AD6FAD00BC4285 /* mario.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mario.mp3; sourceTree = "<group>"; };
 		582CE05918565D820024D065 /* GLPPrivateProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPrivateProfileViewController.h; sourceTree = "<group>"; };
 		582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPrivateProfileViewController.m; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
@@ -1506,6 +1515,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */,
+				582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */,
 				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
 				80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */,
 				58143D6B1821014C00B76E5D /* Security.framework in Frameworks */,
@@ -1662,6 +1673,14 @@
 				588794BE18A85133002EEC8A /* whitney-medium.ttf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		582B405018AD6FA400BC4285 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				582B405118AD6FAD00BC4285 /* mario.mp3 */,
+			);
+			name = Sounds;
 			sourceTree = "<group>";
 		};
 		5832C4C618998554004FC4F6 /* Blur */ = {
@@ -2861,6 +2880,8 @@
 		80AB891917C267F50053E784 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				582B404E18AD6EE300BC4285 /* AVFoundation.framework */,
+				582B404C18AD6DF300BC4285 /* AudioToolbox.framework */,
 				1172680D1888068E008F5391 /* AddressBookUI.framework */,
 				1172680B188805B8008F5391 /* AddressBook.framework */,
 				80F316D21828129700DE6884 /* CoreImage.framework */,
@@ -3086,6 +3107,8 @@
 				802DCE4F18AB037100A23511 /* GLPCommonHelper.m */,
 				582A664B18AC215C00006419 /* WalkThroughHelper.h */,
 				582A664C18AC215C00006419 /* WalkThroughHelper.m */,
+				582B404918AD6C4A00BC4285 /* SoundHelper.h */,
+				582B404A18AD6C4A00BC4285 /* SoundHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -3093,6 +3116,7 @@
 		80AB898617C2AAF00053E784 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				582B405018AD6FA400BC4285 /* Sounds */,
 				58272F841896D20800CD7522 /* Fonts */,
 				805E1550180EF3E700705B1C /* avatar_big.png */,
 				805E1551180EF3E700705B1C /* notification.png */,
@@ -3564,6 +3588,7 @@
 				5866F16018844869007484CF /* blimp_night.png in Resources */,
 				8096E4E717C2CA6800C7BF60 /* pic.png in Resources */,
 				580C7ABD189850D2007495EE /* add_new_post_new.png in Resources */,
+				582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */,
 				8096E4F217C2D00F00C7BF60 /* navigation_fullblack.png in Resources */,
 				584332AA180F343200BD9F74 /* bottom_background_private_profile.png in Resources */,
 				58FB7CB4185654C8002C6A00 /* ProfileViewButtonsTableViewCell.xib in Resources */,
@@ -3995,6 +4020,7 @@
 				802DCE5018AB037100A23511 /* GLPCommonHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,
+				582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */,
 				589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */,
 				587EA4A417F9C4A0005B3286 /* ContactUserCell.m in Sources */,
 				80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */,

@@ -79,7 +79,7 @@ NSString *HAPPENED_TODAY;
     HAPPENING_TODAY_MSG = @"Happening Today";
     HAPPENING_TOMORROW_MSG = @"Happening Tomorrow";
     HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
-    HAPPENED_TODAY = @"Happened Today";
+    HAPPENED_TODAY = @"Happened Earlier";
 }
 
 //-(void)initialiseObjects
@@ -264,6 +264,11 @@ NSString *HAPPENED_TODAY;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectCell:)];
     [tap setNumberOfTapsRequired:1];
     [myView addGestureRecognizer:tap];
+    
+    
+    CGPoint aPosViewA = [self convertPoint:CGPointZero fromView:myView];
+
+    DDLogDebug(@"Position: %f", aPosViewA.x);
     
     _lastPosition = position;
     

@@ -15,6 +15,7 @@
 #import "GLPLiveConversationsManager.h"
 #import "GLPConversationViewController.h"
 #import "WalkThroughHelper.h"
+#import "SessionManager.h"
 
 @interface ChatViewAnimationController ()
 
@@ -144,18 +145,58 @@
     [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
     
     
-    DDLogInfo(@"SEARCHING");
     [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
-        if(success) {
+        if(success)
+        {
+            
+            [[SessionManager sharedInstance] playSound];
+            
             [[GLPLiveConversationsManager sharedInstance] addConversation:conversation];
             _conversation = conversation;
             [self navigateToChat];
-        } else {
+            
+            
+        }
+        else
+        {
             [WebClientHelper showStandardError];
         }
     }];
+}
+
+
+-(void)playSound:(id)sender
+{
+    //Play the sound.
+//    NSString *path = [[NSBundle mainBundle]pathForResource:@"mario" ofType:@"mp3"];
+//    //            AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:NULL];
+//    //            NSURL* url = [[NSBundle mainBundle] URLForResource:@"mario" withExtension:@"mp3"];
+//    
+//    
+//    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:NULL];
+////    audioPlayer.delegate = self;
+//    [audioPlayer play];
+    
+    
+    
+    
+    
+//    NSURL* url = [[NSBundle mainBundle] URLForResource:@"mario" withExtension:@"mp3"];
+//    NSAssert(url, @"URL is valid.");
+//    NSError* error = nil;
+//    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+//    
+//    if(!audioPlayer)
+//    {
+//        NSLog(@"Error creating player: %@", error);
+//    }     else
+//    {
+//        
+//        [audioPlayer play];
+//    }
+
 }
 
 #pragma mark - Configuration

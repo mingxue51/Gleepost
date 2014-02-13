@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface ChatViewAnimationController : UIViewController
+
+@interface ChatViewAnimationController : UIViewController<AVAudioPlayerDelegate>
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
