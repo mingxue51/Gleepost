@@ -130,7 +130,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     //self.messageContentView.layer.masksToBounds = YES;
     self.messageContentView.layer.cornerRadius = 12.0;
-    self.messageContentLabel.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:13.5];
+    self.messageContentLabel.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
 
     if(!self.isLeft) {
         [self.messageContentImageView.layer setBorderColor: [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor]];
@@ -178,7 +178,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 //    return [content sizeWithFont: [UIFont systemFontOfSize:14.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
      //DELETED.
     
-    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:13.5];
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
