@@ -18,7 +18,9 @@
 + (NSDate *)generateDateWithDay:(int)day month:(int)month year:(int)year hour:(int)hour andMinutes:(int)minutes;
 + (NSString *)dateUnixFormat:(NSDate *)date;
 +(NSDate *)generateDateAfterDays:(int)days;
++(NSDate *)generateDateAfterHours:(int)hours;
 +(NSDate *)generateTodayDateWhenItStarts;
++(NSDate *)generateDateWithLastMinute;
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 
 @end

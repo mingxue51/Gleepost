@@ -17,7 +17,7 @@ extern const float CELL_WIDTH;
 
 @property (strong, nonatomic) GLPPost *postData;
 
--(void)setData:(NSString*)str;
+-(void)setData:(GLPPost*)post;
 -(GLPPost *)getData;
 
 @end

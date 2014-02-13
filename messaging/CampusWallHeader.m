@@ -22,6 +22,9 @@
 
 @property (strong, nonatomic) NSArray *posts;
 @property (assign, nonatomic) int lastPosition;
+
+@property (weak, nonatomic) IBOutlet UILabel *happeningLbl;
+
 //@property (assign, nonatomic) BOOL readyToAutomaticallyScroll;
 //@property (strong, nonatomic) NSTimer *checkLatestEvent;
 //@property (strong, nonatomic) NSTimer *runAutomaticScroll;
@@ -29,6 +32,11 @@
 @end
 
 @implementation CampusWallHeader
+
+NSString *HAPPENING_NOW_MSG;
+NSString *HAPPENING_TODAY_MSG;
+NSString *HAPPENING_THIS_WEEK_MSG;
+NSString *HAPPENING_LATER_MSG;
 
 @synthesize posts = _posts;
 
@@ -47,24 +55,10 @@
         
         [self setDelegate:self];
         
-        //[self initialiseObjects];
+        [self initialiseObjects];
         
         [self loadEvents];
         
-//        if(self.subviews.count >= 2)
-//        {
-//            [WebClientHelper showStandardErrorWithTitle:@"ERROR in horizontal" andContent:@"Subview removed"];
-//            
-//            UIView *v = [self.subviews objectAtIndex:1];
-//            
-//            if(v)
-//            {
-//                [v removeFromSuperview];
-//            }
-//        }
-
-        
-
         
         
 //        [self.scrollView setScrollEnabled:YES];
@@ -76,6 +70,14 @@
     }
     
     return self;
+}
+
+-(void)initialiseObjects
+{
+    HAPPENING_NOW_MSG = @"Happening Now";
+    HAPPENING_TODAY_MSG = @"Happening Today";
+    HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
+    HAPPENING_LATER_MSG = @"Happening Later";
 }
 
 //-(void)initialiseObjects
@@ -116,26 +118,6 @@
         }
         
     }];
-    
-//    [[WebClient sharedInstance] getEventPostsAfterDate:date withCallbackBlock:^(BOOL success, NSArray *posts) {
-//       
-//        if(success)
-//        {
-//            _posts = posts;
-//            
-//            [self hideLoadingLabel];
-//            
-//            [self clearAndLoad];
-//            
-//            [self scrollToPosition:1];
-//            
-//        }
-//        else
-//        {
-//            [WebClientHelper showStandardError];
-//        }
-//        
-//    }];
 }
 
 #pragma mark - UI methods
@@ -165,8 +147,6 @@
 
 -(void)clearViews
 {
-
-    
     [self loadEvents];
 }
 
@@ -281,7 +261,18 @@
     
     _lastPosition = position;
     
-    [myView setData:[_posts objectAtIndex:position]];
+    GLPPost *post = [_posts objectAtIndex:position];
+    
+    [myView setData: post];
+
+    
+    //Set new message to title label depending on event start time.
+    
+    if(position != 1)
+    {
+        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+    }
+    
     
     return myView;
 }
@@ -299,11 +290,6 @@
     
     [myCustomCell setFrame:frame];
 }
-
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-//{
-//}
-
 
 
 -(void)didSelectCell:(id)sender
@@ -327,6 +313,37 @@
 - (IBAction)chooseCategory:(id)sender
 {
     DDLogDebug(@"Choose category.");
+}
+
+#pragma mark - Time management
+
+-(void)refreshTitleLabelWithEventStartsDate:(NSDate *)date
+{
+    //If date is between current time and event time + 1 hour change title to happening now.
+    NSDate *datePlusOneHour = [DateFormatterHelper generateDateAfterHours:1];
+    NSDate *dateLastMinute = [DateFormatterHelper generateDateWithLastMinute];
+    NSDate *datePlusOneDay = [DateFormatterHelper generateDateAfterDays:1];
+    NSDate *datePlusSevenDays = [DateFormatterHelper generateDateAfterDays:7];
+    
+    
+    if([DateFormatterHelper date:date isBetweenDate:[NSDate date] andDate:datePlusOneHour])
+    {
+        [_happeningLbl setText: HAPPENING_NOW_MSG];
+    }
+    else if([DateFormatterHelper date:date isBetweenDate:datePlusOneHour andDate:dateLastMinute])
+    {
+        [_happeningLbl setText:HAPPENING_TODAY_MSG];
+    }
+    else if([DateFormatterHelper date:date isBetweenDate:datePlusOneDay andDate:datePlusSevenDays])
+    {
+        [_happeningLbl setText:HAPPENING_THIS_WEEK_MSG];
+    }
+    else
+    {
+        [_happeningLbl setText:HAPPENING_LATER_MSG];
+    }
+    
+    
 }
 
 #pragma mark - Scroll View Delegate

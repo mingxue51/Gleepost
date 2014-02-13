@@ -23,4 +23,5 @@
 +(void)showStandardFirstNameError;
 
 +(void)showStandardLastNameError;
++(void)showStandardFirstNameTooShortError;
 @end

@@ -105,6 +105,35 @@
     return date;
 }
 
++(NSDate *)generateDateAfterHours:(int)hours
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    
+    [comp setDay:comp.day];
+    //    [comp setMonth:comp.month];
+    [comp setHour:comp.hour+hours];
+    [comp setMinute:comp.minute];
+    //    [comp setYear:year];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
+
++(NSDate *)generateDateWithLastMinute
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    
+    [comp setDay:comp.day];
+    //    [comp setMonth:comp.month];
+    [comp setHour:23];
+    [comp setMinute:59];
+    //    [comp setYear:year];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
 
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
 {
