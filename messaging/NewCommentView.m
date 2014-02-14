@@ -94,6 +94,16 @@
         [commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];
         
         [self addSubview:commentButton];
+        
+        //Add fake navigation bar.
+        UIImageView *navBar = [[UIImageView alloc] init];
+        
+        [navBar setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+        
+        [navBar setFrame:CGRectMake(0, 0, 320, 64)];
+        
+        [self addSubview:navBar];
+        
 //        ChatPanelView *chatPanelView = [[ChatPanelView alloc] initWithFrame:CGRectMake(0, textViewHeight+80, 320, 50)];
 //        
 //        [chatPanelView.commentButton addTarget:self action:@selector(postComment:) forControlEvents:UIControlEventTouchDown];

@@ -205,7 +205,27 @@
           }
           else
           {
-            return (fullStrings)? full_hourString : hourString;
+              
+              NSDate *datePlusOneHour = [DateFormatterHelper generateDateAfterHours:1];
+              NSDate *dateLastMinute = [DateFormatterHelper generateDateWithLastMinutePlusDates:0];
+              NSArray *nextDayDates = [DateFormatterHelper generateTheNextDayStartAndEnd];
+
+              //Tomorrow or today
+              if([DateFormatterHelper date:self isBetweenDate:datePlusOneHour andDate:dateLastMinute])
+              {
+//                  [_happeningLbl setText:HAPPENING_TODAY_MSG];
+                  
+                  return [NSString stringWithFormat:@"Today @ %@",[self getTime]];
+                  
+              }
+              else if([DateFormatterHelper date:self isBetweenDate:[nextDayDates objectAtIndex:0] andDate:[nextDayDates objectAtIndex:1]])
+              {
+//                  [_happeningLbl setText:HAPPENING_TOMORROW_MSG];
+                  return [NSString stringWithFormat:@"Tomorrow @ %@",[self getTime]];
+
+              }
+              
+              return (fullStrings)? full_hourString : hourString;
           }
         }
     }

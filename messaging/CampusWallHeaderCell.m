@@ -85,7 +85,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 }
 
 -(void)setDataInElements:(GLPPost *)postData
-{
+{    
     //Set user's image.
     [_profileImage setImageWithURL:[NSURL URLWithString:postData.author.profileImageUrl] placeholderImage:nil];
     
@@ -151,6 +151,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 
 -(void)setTimeWithTime:(NSDate *)date
 {
+    
+    
     if ([[NSDate date] compare:date] == NSOrderedDescending) {
         [_timeLbl setText:[date timeAgo]];
         

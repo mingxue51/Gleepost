@@ -1145,7 +1145,7 @@ const float TOP_OFFSET = 213.0f;
     
     //The condition is added to prevent error when there are no posts in the table view.
     
-    if(self.posts.count == 0)
+    if(self.posts.count == 1)
     {
         [self.tableView reloadData];
     }

@@ -40,11 +40,11 @@ static CategoryManager *instance = nil;
         //Initialise categories.
         NSMutableDictionary *tempDict = [NSMutableDictionary dictionary];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"news" name:@"News" postRemoteKey:0 andRemoteKey:kGLPNews] forKey:[NSNumber numberWithInt:kGLPNews]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"for-sale" name:@"For Sale" postRemoteKey:0 andRemoteKey:kGLPForSale] forKey:[NSNumber numberWithInt:kGLPForSale]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"question" name:@"Questions" postRemoteKey:0 andRemoteKey:kGLPQuestion] forKey:[NSNumber numberWithInt:kGLPQuestion]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"event" name:@"Events" postRemoteKey:0 andRemoteKey:kGLPEvent] forKey:[NSNumber numberWithInt:kGLPEvent]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"jobs" name:@"Jobs" postRemoteKey:0 andRemoteKey:kGLPJobs] forKey:[NSNumber numberWithInt:kGLPJobs]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"news" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPNews] forKey:[NSNumber numberWithInt:kGLPNews]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"for-sale" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPForSale] forKey:[NSNumber numberWithInt:kGLPForSale]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"question" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPQuestion] forKey:[NSNumber numberWithInt:kGLPQuestion]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"event" name:@"Patries" postRemoteKey:0 andRemoteKey:kGLPEvent] forKey:[NSNumber numberWithInt:kGLPEvent]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"jobs" name:@"Theatre" postRemoteKey:0 andRemoteKey:kGLPJobs] forKey:[NSNumber numberWithInt:kGLPJobs]];
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
     }

@@ -164,8 +164,8 @@
 {
     if(DEV) {
         
-        self.emailTextField.text = @"A@kent.ac.uk";
-        self.passwordTextField.text = @"1234";
+//        self.emailTextField.text = @"gleepost@stanford.edu";
+//        self.passwordTextField.text = @"TestingPass";
 
         
 //        if(!ON_DEVICE) {

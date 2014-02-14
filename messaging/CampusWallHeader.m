@@ -283,7 +283,6 @@ NSString *HAPPENED_TODAY;
     
     //Set new message to title label depending on event start time.
     
-    DDLogDebug(@"Position: %d", position);
     
 //    if(position == 0)
 //    {
@@ -304,27 +303,11 @@ NSString *HAPPENED_TODAY;
 //
 //    }
     
-    if(position != 0)
-    {
-        if(position == [self numberOfViews]-1)
-        {
-            DDLogDebug(@"END VIEWS");
-            [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+    
+    [self refreshHappeningTitleWith:position];
+    
+    
 
-        }
-        else
-        {
-            DDLogDebug(@"NEXT VIEWS");
-            GLPPost *showPost = [_posts objectAtIndex:position-1];
-            
-            [self refreshTitleLabelWithEventStartsDate:showPost.dateEventStarts];
-        }
-
-    }
-    else
-    {
-        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
-    }
     
 
     
@@ -372,6 +355,61 @@ NSString *HAPPENED_TODAY;
 {
     DDLogDebug(@"Choose category.");
 }
+
+#pragma mark - VSScrollView helpers
+
+-(void)refreshHappeningTitleWith:(int)position
+{
+    GLPPost *post = [_posts objectAtIndex:position];
+
+    NSArray *positionsOfVisibleCells = [self postionsOfVissibleCells];
+    
+    DDLogDebug(@"-> %@", [self postionsOfVissibleCells]);
+    
+    if(positionsOfVisibleCells.count < 3)
+    {
+        return;
+    }
+    
+    int middleCellPosition = [[positionsOfVisibleCells objectAtIndex:1]integerValue];
+    
+    
+    if(position == 0 || position == [self numberOfViews]-1)
+    {
+        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+    }
+    else
+    {
+        GLPPost *showPost = [_posts objectAtIndex:middleCellPosition];
+        
+        [self refreshTitleLabelWithEventStartsDate:showPost.dateEventStarts];
+    }
+    
+    
+    
+//    if(position != 0)
+//    {
+//        if(position == [self numberOfViews]-1)
+//        {
+//            DDLogDebug(@"END VIEWS");
+//            [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+//            
+//        }
+//        else
+//        {
+//            DDLogDebug(@"NEXT VIEWS");
+//            GLPPost *showPost = [_posts objectAtIndex:position-1];
+//            
+//            [self refreshTitleLabelWithEventStartsDate:showPost.dateEventStarts];
+//        }
+//        
+//    }
+//    else
+//    {
+//        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+//    }
+}
+
 
 #pragma mark - Time management
 

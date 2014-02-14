@@ -238,6 +238,11 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 //    CGRect universityLabelFrame = self.universityLabel.frame;
     
+    if(user.remoteKey == 0)
+    {
+        return;
+    }
+    
     if(self.currentUser.remoteKey == [[SessionManager sharedInstance].user remoteKey])
     {
         //Set only current user's elements.
@@ -426,7 +431,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         
         if(success)
         {
-            
+            DDLogDebug(@"IS BUSY: %d", status);
             [self.busySwitch setOn:!status];
         }
     }];
