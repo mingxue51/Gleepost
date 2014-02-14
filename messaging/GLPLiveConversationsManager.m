@@ -10,6 +10,7 @@
 #import "WebClient.h"
 #import "ConversationManager.h"
 #import "NSNotificationCenter+Utils.h"
+#import "NSMutableArray+QueueAdditions.h"
 
 @interface GLPLiveConversationsManager()
 
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) NSMutableDictionary *conversationsMessagesKeys;
 @property (strong, nonatomic) NSMutableDictionary *conversationsLastestMessageShown;
 @property (strong, nonatomic) NSMutableDictionary *conversationsCanHavePreviousMessages;
+@property (strong, nonatomic) NSMutableArray *liveConversationsEndedOrder;
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (assign, nonatomic) BOOL successfullyLoaded;
 @property (assign, nonatomic) BOOL isSynchronizedWithRemote;
@@ -140,6 +142,54 @@ static GLPLiveConversationsManager *instance = nil;
         BOOL success = [self internalAddConversation:conversation isEmpty:YES];
         if(!success) {
             return;
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    });
+}
+
+- (void)endConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"End conversation with remote key %d", conversation.remoteKey);
+    
+    if(conversation.remoteKey == 0) {
+        DDLogError(@"Cannot end conversation with no remote key, abort");
+        return;
+    }
+    
+    dispatch_async(_queue, ^{
+        NSNumber *remoteKey = [conversation remoteKeyNumber];
+        GLPConversation *syncConversation = _conversations[remoteKey];
+        
+        if(!syncConversation) {
+            DDLogWarn(@"Cannot find sync conversation, abort");
+            return;
+        }
+        
+        if(syncConversation.isEnded) {
+            DDLogWarn(@"Sync conversation already ended, abort");
+            return;
+        }
+        
+        syncConversation.isEnded = YES;
+        
+        if(syncConversation.isLive) {
+            DDLogInfo(@"End conversation that is live, current live conversation count: %d", _liveConversationsCount);
+            
+            [_liveConversationsEndedOrder enqueue:remoteKey];
+            
+            // keep to 3 conversations
+            while (_liveConversationsCount > 3) {
+                NSNumber *toRemoveRemoteKey = [_liveConversationsEndedOrder dequeue];
+                [self internalRemoveConversation:_conversations[toRemoveRemoteKey]];
+                DDLogInfo(@"Dequeue and remove live conversation with remote key: %@", toRemoveRemoteKey);
+                
+                // something horrible happened, at least avoid infinite loop
+                if(_liveConversationsEndedOrder.count == 0 && _liveConversationsCount > 3) {
+                    DDLogError(@"Something horrible happened, at least avoid infinite loop");
+                    break;
+                }
+            }
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
@@ -819,6 +869,34 @@ static GLPLiveConversationsManager *instance = nil;
     return YES;
 }
 
+// Internal
+// Should be called inside a queue block
+- (BOOL)internalRemoveConversation:(GLPConversation *)conversation
+{
+    NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+    
+    if(!_conversations[index]) {
+        DDLogWarn(@"Conversation does not exists, cannot remove");
+        return NO;
+    }
+    
+    if(conversation.isLive) {
+        _liveConversationsCount--;
+    } else {
+        _regularConversationsCount--;
+    }
+    
+    [_conversations removeObjectForKey:index];
+    [_conversationsMessages removeObjectForKey:index];
+    [_conversationsSyncStatuses removeObjectForKey:index];
+    [_conversationsMessagesKeys removeObjectForKey:index];
+    [_conversationsLastestMessageShown removeObjectForKey:index];
+    [_conversationsCanHavePreviousMessages removeObjectForKey:index];
+    
+    return YES;
+}
+
+
 - (void)internalNotifyConversation:(GLPConversation *)conversation withNewMessages:(BOOL)newMessages
 {
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:Nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:conversation.remoteKey], @"newMessages": [NSNumber numberWithBool:newMessages]}];
@@ -832,6 +910,7 @@ static GLPLiveConversationsManager *instance = nil;
     _conversationsMessagesKeys = [NSMutableDictionary dictionary];
     _conversationsLastestMessageShown = [NSMutableDictionary dictionary];
     _conversationsCanHavePreviousMessages = [NSMutableDictionary dictionary];
+    _liveConversationsEndedOrder = [NSMutableArray array];
     _liveConversationsCount = 0;
     _regularConversationsCount = 0;
     

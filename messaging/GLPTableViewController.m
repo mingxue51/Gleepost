@@ -196,7 +196,7 @@
     [_bottomLoadingCellDelegate show];
 
     int rows = [self tableView:self.tableView numberOfRowsInSection:0] - 1;
-    [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)hideBottomLoader
@@ -210,7 +210,7 @@
     [_bottomLoadingCellDelegate hide];
     
     int rows = [self tableView:self.tableView numberOfRowsInSection:0];
-    [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)scrollToTheEndAnimated:(BOOL)animated

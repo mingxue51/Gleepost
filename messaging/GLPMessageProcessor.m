@@ -88,6 +88,8 @@ static GLPMessageProcessor *instance = nil;
                 
             case kGLPWebSocketEventTypeEndConversation: {
                 DDLogInfo(@"Websocket event: End conversation");
+                GLPConversation *conversation = [RemoteParser parseConversationFromJson:event.data];
+                [[GLPLiveConversationsManager sharedInstance] endConversation:conversation];
                 break;
             }
                 
