@@ -142,6 +142,8 @@
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
+    [self configureView];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
 
 }
@@ -213,6 +215,11 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewAboutTableViewCell" bundle:nil] forCellReuseIdentifier:@"AboutCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewMutualTableViewCell" bundle:nil] forCellReuseIdentifier:@"MutualCell"];
+}
+
+-(void)configureView
+{
+    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
 }
 
 -(void)configureNavigationBar

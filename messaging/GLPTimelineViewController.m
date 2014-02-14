@@ -423,6 +423,8 @@ const float TOP_OFFSET = 213.0f;
     
 //    [self configTabbarFormat];
     
+    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    
     
     [self setButtonsToNavigationBar];
 }
