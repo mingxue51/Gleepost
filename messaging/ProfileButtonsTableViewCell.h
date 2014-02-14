@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPPrivateProfileViewController.h"
+#import "InvitationSentView.h"
+
 
 @interface ProfileButtonsTableViewCell : UITableViewCell
 
@@ -15,8 +17,12 @@ extern const float BUTTONS_CELL_HEIGHT;
 
 
 @property (readonly, nonatomic) GLPPrivateProfileViewController *delegate;
+@property (nonatomic) GLPUser *currentUser;
+@property (strong, nonatomic) InvitationSentView *invitationSentView;
 
 
 -(void)setDelegate:(GLPPrivateProfileViewController *)delegate;
+- (void)sendMessage:(id)sender;
+- (void)addUser:(id)sender;
 
 @end

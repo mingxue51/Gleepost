@@ -71,7 +71,6 @@ static NSString * const kCustomURLHost      = @"verify";
 
     self.window.rootViewController = initVC;
     [self.window makeKeyAndVisible];
-    
 
 #if TARGET_IPHONE_SIMULATOR
     [[DCIntrospect sharedIntrospector] start];

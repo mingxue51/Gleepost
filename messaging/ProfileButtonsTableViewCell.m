@@ -7,6 +7,13 @@
 //
 
 #import "ProfileButtonsTableViewCell.h"
+#import "ConversationManager.h"
+#import "WebClient.h"
+#import "SessionManager.h"
+#import "GLPContact.h"
+#import "WebClientHelper.h"
+#import "ContactsManager.h"
+
 
 @interface ProfileButtonsTableViewCell ()
 
@@ -93,4 +100,68 @@ const float BUTTONS_CELL_HEIGHT = 65.0f;
     
     // Configure the view for the selected state
 }
+- (void)sendMessage:(id)sender
+{
+    
+    //If conversation with user already exist, don't create a new one.
+    [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
+        
+        if(sucess)
+        {
+            //Conversation exist.
+            [self.delegate viewConversation:conversation];
+            DDLogInfo(@"Conversation already exist: %@", conversation.title);
+        }
+        else
+        {
+            //Conversation not exist, create new fake conversation.
+            
+            NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
+            
+            [self.delegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
+            
+            DDLogInfo(@"Fake conversation just created.");
+            
+        }
+        
+    }];
+    
+    
+    
+}
+
+- (void)addUser:(id)sender
+{
+    [[WebClient sharedInstance] addContact:self.currentUser.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            //Change the button style.
+            NSLog(@"Request has been sent to the user.");
+            
+            self.invitationSentView = [InvitationSentView loadingViewInView:[self.delegate.view.window.subviews objectAtIndex:0]];
+            self.invitationSentView.delegate = self.delegate;
+            
+            
+            GLPContact *contact = [[GLPContact alloc] initWithUserName:self.currentUser.name profileImage:self.currentUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];
+            contact.remoteKey = self.currentUser.remoteKey;
+            
+            //Save contact to database.
+            [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
+            
+            //[self setContactAsRequested];
+            
+        }
+        else
+        {
+            NSLog(@"Failed to send to the user.");
+            //This section of code should never be reached.
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
+        }
+    }];
+}
+
+
+
+
 @end

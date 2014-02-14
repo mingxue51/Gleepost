@@ -33,7 +33,7 @@
                         <rect key="frame" x="30" y="7" width="80" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                        <state key="normal" image="about_button.png">
+                        <state key="normal" image="message.png">
                             <color key="titleColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -57,7 +57,7 @@
                         <rect key="frame" x="202" y="7" width="80" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                        <state key="normal" image="mutual_button.png">
+                        <state key="normal" image="add.png">
                             <color key="titleColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -90,10 +90,10 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="about_button.png" width="180" height="73"/>
         <image name="active_tab.png" width="51" height="51"/>
+        <image name="add.png" width="180" height="73"/>
         <image name="idle_tab.png" width="51" height="51"/>
-        <image name="mutual_button.png" width="180" height="73"/>
+        <image name="message.png" width="180" height="73"/>
         <image name="posts_button.png" width="180" height="73"/>
     </resources>
 </document>

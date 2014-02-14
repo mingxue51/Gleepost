@@ -75,8 +75,6 @@
     [super viewDidLoad];
     
     
-    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-
 
     // configuration
     [self configureHeader];
