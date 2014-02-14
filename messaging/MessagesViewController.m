@@ -329,7 +329,9 @@
     if (self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
         return 1;
     }
-    return section == 0 ? _liveConversations.count +1 : _regularConversations.count +1; // added +1 to show cell "No more messages"
+    
+    NSInteger count = section == 0 ? _liveConversations.count : _regularConversations.count;
+    return count != 0 ? count : 1; // if no rows, then add 1 for the "no more" row
 }
 
 - (UITableViewCell *)cellWithMessage:(NSString *)message {
@@ -348,9 +350,9 @@
         return [GLPLoadMoreCell cell];
     }
     
-    if (indexPath.section == 0 && indexPath.row == [_liveConversations count]) {
+    if (indexPath.section == 0 && indexPath.row == 0 && _liveConversations.count == 0) {
         return [self cellWithMessage:@"You have no more chats."];
-    }else if (indexPath.section == 1 && indexPath.row == [_regularConversations count]){
+    }else if (indexPath.section == 1 && indexPath.row == 0 && _regularConversations.count == 0){
         return [self cellWithMessage:@"You have no more messages."];
     }else {
     GLPConversation *conversation = indexPath.section == 0 ? _liveConversations[indexPath.row] : _regularConversations[indexPath.row];
