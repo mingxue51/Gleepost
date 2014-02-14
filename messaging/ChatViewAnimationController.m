@@ -153,7 +153,7 @@
     DDLogInfo(@"Search for conversation");
     
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] createRandomConversation];
-    
+    DDLogInfo(@"Conversation %d", conversation != nil);
     if(conversation) {
         if(_controllerExist) {
             [[SessionManager sharedInstance] playSound];
@@ -162,7 +162,7 @@
         _conversation = conversation;
         [self navigateToChat];
     } else {
-        [WebClientHelper showStandardError];
+        [WebClientHelper showStandardErrorWithTitle:@"Cannot create new random conversation" andContent:@"Something wrong happenned, check your internet connection and try again."];
     }
 }
 

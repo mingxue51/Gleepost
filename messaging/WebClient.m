@@ -776,6 +776,7 @@ static WebClient *instance = nil;
 - (GLPConversation *)synchronousCreateConversation
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
     if(ENV_FAKE_LIVE_CONVERSATIONS) {
         params[@"random"] = @"false";
         
@@ -788,17 +789,26 @@ static WebClient *instance = nil;
         
         params[@"participants"] = userIds;
         DDLogInfo(@"Generate fake live conversation for current user: %d, with opponent user: %@", self.sessionManager.user.remoteKey, userIds);
+    } else {
+        params[@"random"] = @"true";
+        params[@"participant_count"] = @2;
     }
     
     __block GLPConversation *conversation = nil;
+    
+//    NSString *path = [NSString stringWithFormat:@"conversations?random=true&participant_count=2&id=%@&token=%@", self.sessionManager.authParameters[@"id"], self.sessionManager.authParameters[@"token"]];
 
     [self executeSynchronousRequestWithMethod:@"POST" path:@"conversations" params:params callback:^(BOOL success, id json) {
         if(!success) {
             return;
         }
         
-        DDLogInfo(@"JSON: %@", json);
-        conversation = [RemoteParser parseConversationFromJson:json];
+        @try {
+            conversation = [RemoteParser parseConversationFromJson:json];
+        } @catch (NSException *e) {
+            DDLogInfo(@"Parse conversation expcetion for json: %@", json);
+            conversation = nil;
+        }
     }];
     
     return conversation;
@@ -1311,6 +1321,8 @@ static WebClient *instance = nil;
     NSURLResponse *response = nil;
     NSError *error = nil;
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:params];
+    DDLogInfo(@"Url: %@", request.URL);
+    
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     
     DDLogInfo(@"Synchronous %@ - %@ finished with result: %d", method, path, error ? NO : YES);

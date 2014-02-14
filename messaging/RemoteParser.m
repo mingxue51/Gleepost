@@ -71,7 +71,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     // get participants
     NSMutableArray *participants = [NSMutableArray array];
-    for(id jsonUser in json[@"participants"]) {
+    id participantsJson = json[@"participants"];
+    if(!participantsJson || ![participantsJson isKindOfClass:[NSArray class]]) {
+        DDLogError(@"Invalid json, missing participants: %@", json);
+        return nil;
+    }
+    
+    for(id jsonUser in participantsJson) {
         GLPUser *user = [RemoteParser parseUserFromJson:jsonUser];
         [participants addObject:user];
     }

@@ -75,20 +75,6 @@ static GLPLiveConversationsManager *instance = nil;
     });
 }
 
-//- (void)loadLocalRegularConversations
-//{
-//    DDLogInfo(@"Load local regular conversations");
-//    
-//    NSArray *conversations = [ConversationManager loadLocalRegularConversation];
-//    DDLogInfo(@"Loaded %d local regular conversations", conversations.count);
-//    
-//    dispatch_async(_queue, ^{
-//        for(GLPConversation *c in conversations) {
-//            [self internalAddConversation:c];
-//        }
-//    });
-//}
-
 - (void)loadConversations
 {
     DDLogInfo(@"Load conversations");
@@ -104,7 +90,7 @@ static GLPLiveConversationsManager *instance = nil;
             DDLogInfo(@"Load conversations sucess, loaded conversations: %d", conversations.count);
             
             for(GLPConversation *conversation in conversations) {
-                [self internalAddConversation:conversation];
+                [self internalAddConversation:conversation isEmpty:NO];
             }
             
             _isSynchronizedWithRemote = YES;
@@ -123,8 +109,12 @@ static GLPLiveConversationsManager *instance = nil;
     
     dispatch_sync(_queue, ^{
         GLPConversation *syncConversation = [[WebClient sharedInstance] synchronousCreateConversation];
+        if(!syncConversation) {
+            DDLogError(@"Cannot create new random conversation in server, abort");
+            return;
+        }
         
-        BOOL success = [self internalAddConversation:syncConversation];
+        BOOL success = [self internalAddConversation:syncConversation isEmpty:YES];
         if(!success) {
             return;
         }
@@ -147,7 +137,7 @@ static GLPLiveConversationsManager *instance = nil;
     
     dispatch_async(_queue, ^{
         // checks for existing conversation inside
-        BOOL success = [self internalAddConversation:conversation];
+        BOOL success = [self internalAddConversation:conversation isEmpty:YES];
         if(!success) {
             return;
         }
@@ -321,6 +311,23 @@ static GLPLiveConversationsManager *instance = nil;
     });
     
     block(liveConversations, regularConversations);
+}
+
+- (BOOL)conversationCanHavePreviousMessages:(GLPConversation *)conversation
+{
+    __block BOOL res = NO;
+    
+    dispatch_sync(_queue, ^{
+        NSNumber *index = [conversation remoteKeyNumber];
+        GLPConversation *syncConversation = _conversations[index];
+        if(!syncConversation) {
+            return;
+        }
+        
+        res = [_conversationsCanHavePreviousMessages[index] boolValue];
+    });
+    
+    return res;
 }
 
 - (NSInteger)conversationsCount
@@ -779,7 +786,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 // Internal
 // Should be called inside a queue block
-- (BOOL)internalAddConversation:(GLPConversation *)conversation
+- (BOOL)internalAddConversation:(GLPConversation *)conversation isEmpty:(BOOL)isEmpty
 {
     NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
     
@@ -805,7 +812,9 @@ static GLPLiveConversationsManager *instance = nil;
     _conversationsSyncStatuses[index] = [NSNumber numberWithBool:NO];
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:0];
     _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:0];
-    _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:YES];
+    
+    // empty conversations don't have previous mesages
+    _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:!isEmpty];
     
     return YES;
 }

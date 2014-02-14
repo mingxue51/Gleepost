@@ -394,6 +394,19 @@
     self.formTextView.text = @"";
 }
 
+- (BOOL)showTopLoaderIfRequired
+{
+    BOOL canHavePreviousMessages = [[GLPLiveConversationsManager sharedInstance] conversationCanHavePreviousMessages:_conversation];
+    
+    if(canHavePreviousMessages && _messages.count > 0) {
+        [self showTopLoader];
+        [self activateTopLoader];
+        return YES;
+    }
+    
+    return NO;
+}
+
 
 # pragma mark - Notifications (keyboard ones in form management mark)
 
@@ -418,9 +431,8 @@
         [self scrollToTheEndAnimated:scrollAnimated];
     }
     
-    if(_messages.count > 0) {
-        [self showTopLoader];
-        [self activateTopLoader];
+    BOOL isTopLoader = [self showTopLoaderIfRequired];
+    if(isTopLoader) {
         [self scrollToTheEndAnimated:NO];
     }
 }
