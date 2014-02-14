@@ -57,5 +57,7 @@ typedef enum AnimationType
 
 -(void)scrollToPosition:(int)position;
 
+-(int)numberOfViews;
+
 
 @end

@@ -22,6 +22,8 @@
 
 @property (strong, nonatomic) NSArray *posts;
 @property (assign, nonatomic) int lastPosition;
+@property (assign, nonatomic) int previousPosition;
+@property (assign, nonatomic) int currentPostion;
 
 @property (weak, nonatomic) IBOutlet UILabel *happeningLbl;
 
@@ -107,7 +109,6 @@ NSString *HAPPENED_TODAY;
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
         
-
         
         if(success)
         {
@@ -247,6 +248,8 @@ NSString *HAPPENED_TODAY;
     return [_posts count];
 }
 
+
+
 -(VSScrollViewCell *)vsscrollView:(VSScrollView *)scrollView viewAtPosition:(int)position
 {
     static NSString *identifier = @"vsscrollerViewIdentifier";
@@ -266,9 +269,8 @@ NSString *HAPPENED_TODAY;
     [myView addGestureRecognizer:tap];
     
     
-    CGPoint aPosViewA = [self convertPoint:CGPointZero fromView:myView];
+//    CGPoint aPosViewA = [self convertPoint:CGPointZero fromView:myView];
 
-    DDLogDebug(@"Position: %f", aPosViewA.x);
     
     _lastPosition = position;
     
@@ -279,10 +281,53 @@ NSString *HAPPENED_TODAY;
     
     //Set new message to title label depending on event start time.
     
-//    if(position %2 == 0)
+    DDLogDebug(@"Position: %d", position);
+    
+//    if(position == 0)
 //    {
-        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+//        _previousPosition = 0;
 //    }
+//    else if(position == 1)
+//    {
+//        _currentPostion = 1;
+//    }
+//    else
+//    {
+//        _previousPosition = _currentPostion;
+//        _currentPostion = position;
+//        
+//        DDLogDebug(@"Current pos: %d, Previous pos: %d", _currentPostion, _previousPosition);
+//        
+//
+//
+//    }
+    
+    if(position != 0)
+    {
+        if(position == [self numberOfViews]-1)
+        {
+            DDLogDebug(@"END VIEWS");
+            [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+
+        }
+        else
+        {
+            DDLogDebug(@"NEXT VIEWS");
+            GLPPost *showPost = [_posts objectAtIndex:position-1];
+            
+            [self refreshTitleLabelWithEventStartsDate:showPost.dateEventStarts];
+        }
+
+    }
+    else
+    {
+        [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+    }
+    
+
+    
+    
+
     
     
     return myView;

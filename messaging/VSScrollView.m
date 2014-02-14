@@ -522,6 +522,11 @@
 
 }
 
+-(int)numberOfViews
+{
+    return myScrollView.subviews.count;
+}
+
 -(void)removeAllCells
 {
     for (UIView *views in [myScrollView subviews])
