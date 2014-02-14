@@ -16,6 +16,7 @@
 #import "GLPConversationViewController.h"
 #import "WalkThroughHelper.h"
 #import "SessionManager.h"
+#import "UIAlertView+Blocks.h"
 
 @interface ChatViewAnimationController ()
 
@@ -121,9 +122,9 @@
 {
     //    [self searchingAnimations];
     
-    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
-    
-    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
+//    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
+//    
+//    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
     
     [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:3.0];
     
@@ -149,16 +150,41 @@
 
 - (void)searchForConversation
 {
-    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
     DDLogInfo(@"Search for conversation");
+    GLPConversation *oldestConversation = [[GLPLiveConversationsManager sharedInstance] oldestLiveConversation];
+    
+    DDLogInfo(@"Oldest live conversation if required: %d - %@", oldestConversation.remoteKey, oldestConversation.title);
+    
+    if(oldestConversation) {
+        [[[UIAlertView alloc] initWithTitle:@"Already 3 live conversations running"
+                                    message:[NSString stringWithFormat:@"Requesting new live conversation will delete the one you have with %@", oldestConversation.title]
+                           cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]
+                           otherButtonItems:[RIButtonItem itemWithLabel:@"OK, no big deal" action:^{
+            [self requestRandomConversation];
+        }], nil] show];
+    } else {
+        [self requestRandomConversation];
+    }
+}
+
+- (void)requestRandomConversation
+{
+    DDLogInfo(@"Request random conversation");
+    
+    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
     
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] createRandomConversation];
+    
+    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:0.0];
+    
     DDLogInfo(@"Conversation %d", conversation != nil);
     if(conversation) {
         if(_controllerExist) {
             [[SessionManager sharedInstance] playSound];
         }
-
+        
         _conversation = conversation;
         [self navigateToChat];
     } else {

@@ -380,6 +380,34 @@ static GLPLiveConversationsManager *instance = nil;
     return res;
 }
 
+- (GLPConversation *)oldestLiveConversation
+{
+    __block GLPConversation *oldestConversation = nil;
+    
+    dispatch_sync(_queue, ^{
+        if(_liveConversationsCount < 3) {
+            return;
+        }
+        
+        for(NSNumber *remoteKey in _conversations) {
+            GLPConversation *conversation = _conversations[remoteKey];
+            
+            // filter by live and not ended
+            if(!conversation.isLive || conversation.isEnded) {
+                continue;
+            }
+            
+            if(oldestConversation && [oldestConversation.expiryDate compare:conversation.expiryDate] == NSOrderedAscending) {
+                continue;
+            }
+            
+            oldestConversation = conversation;
+        }
+    });
+    
+    return oldestConversation;
+}
+
 - (NSInteger)conversationsCount
 {
     __block int res = 0;
