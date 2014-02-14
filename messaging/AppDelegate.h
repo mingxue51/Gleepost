@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
++ (UIBarButtonItem *)customBackButtonWithTarget:(id)target;
+
 @end

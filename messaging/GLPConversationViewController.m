@@ -65,9 +65,18 @@
 @synthesize messages=_messages;
 
 
+
+- (void) backButtonTapped {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+
 
     // configuration
     [self configureHeader];

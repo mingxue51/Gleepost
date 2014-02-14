@@ -417,7 +417,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [self.sections objectAtIndex:section];
+    return [NSString stringWithFormat:@"  %@", [[self.sections objectAtIndex:section] uppercaseString]] ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -453,6 +453,8 @@
         [cell.profileImageUser setImageWithURL:[NSURL URLWithString:currentContact.user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
     }
     
+    
+
     return cell;
 }
 

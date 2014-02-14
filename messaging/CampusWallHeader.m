@@ -160,6 +160,8 @@ NSString *HAPPENED_TODAY;
     [self loadEvents];
 }
 
+
+
 -(void)clearAndLoad
 {
     [UIView animateWithDuration:0.3f animations:^{

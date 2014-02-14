@@ -53,10 +53,16 @@ static BOOL likePushed;
 
 @synthesize post=_post;
 
+
+- (void)backButtonTapped {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+
     //Change the format of the navigation bar.
     //[self.navigationController.navigationBar setTranslucent:YES];
     

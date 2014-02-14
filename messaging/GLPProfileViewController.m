@@ -88,6 +88,10 @@
 @synthesize unreadNotificationsCount=_unreadNotificationsCount;
 
 
+- (void)backButtonTapped {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -103,6 +107,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.navigationController.viewControllers.count > 1) {
+        self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+    }
+
+
     
     _tabButtonEnabled = YES;
     
@@ -1051,6 +1061,7 @@
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {
+    
     if(!_tabButtonEnabled) {
         return;
     }

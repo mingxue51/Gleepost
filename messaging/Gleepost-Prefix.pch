@@ -15,7 +15,7 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import "DDLog.h"
     #import "MKNetworkKit.h"
-
+    #import "AppDelegate.h" 
     #import "Constants.h"
     #import "GLPMacros.h"
 

@@ -68,12 +68,17 @@
     return self;
 }
 
+- (void)backButtonTapped {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.tableView.allowsSelectionDuringEditing=YES;
     
+    
+    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
     // [self loadPosts];
     
     //If no, check in database if the user is already requested.
@@ -603,8 +608,8 @@
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {
     self.selectedTabStatus = selectedTab;
-    
-    [self.tableView reloadData];
+
+
 }
 
 #pragma mark - View image delegate

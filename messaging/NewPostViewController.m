@@ -67,9 +67,15 @@
 @synthesize postUploader=_postUploader;
 @synthesize hasImage=_hasImage;
 
+- (void)backButtonTapped {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+
 
 
     [self.contentTextView becomeFirstResponder];

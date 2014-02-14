@@ -45,6 +45,9 @@ static NSString * const kCustomURLHost      = @"verify";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    
+
+
 
     BOOL loggedIn = [GLPLoginManager performAutoLogin];
     
@@ -64,10 +67,12 @@ static NSString * const kCustomURLHost      = @"verify";
     } else {
         initVC = [storyboard instantiateInitialViewController];
     }
-    
+
+
     self.window.rootViewController = initVC;
     [self.window makeKeyAndVisible];
     
+
 #if TARGET_IPHONE_SIMULATOR
     [[DCIntrospect sharedIntrospector] start];
 #endif
@@ -220,4 +225,12 @@ static NSString * const kCustomURLHost      = @"verify";
     [DDLog addLogger:ttyLogger];
 }
 
+
++ (UIBarButtonItem *)customBackButtonWithTarget:(id)target {
+    UIButton *backButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [backButton addTarget:target action:@selector(backButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setFrame:CGRectMake(0, 0, 15 , 25)];
+    return [[UIBarButtonItem alloc] initWithCustomView:backButton];
+}
 @end

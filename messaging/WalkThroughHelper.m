@@ -45,8 +45,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Random chatting"
                                                     message:@"We'll pair you into a chat with a random peer on campus. All conversations expire after 24 hours, and you can have up to 3 concurrently. Happy chatting!"
                                                    delegate:delegate
-                                          cancelButtonTitle:@"cancel"
-                                          otherButtonTitles:@"continue", nil];
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Continue", nil];
     [alert show];
     
     
