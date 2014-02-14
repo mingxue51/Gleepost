@@ -881,9 +881,13 @@ const float TOP_OFFSET = 213.0f;
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
-    if(self.isLoading) {
-        return;
-    }
+    DDLogDebug(@"Is loading: %d", self.isLoading);
+    
+    //TODO: REMOVED! IT'S IMPORTANT!
+    
+//    if(self.isLoading) {
+//        return;
+//    }
     
     self.isLoading = YES;
     

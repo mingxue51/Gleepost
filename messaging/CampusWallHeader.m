@@ -368,6 +368,11 @@ NSString *HAPPENED_TODAY;
     
     if(positionsOfVisibleCells.count < 3)
     {
+        if(position == 0 || position == [self numberOfViews]-1)
+        {
+            [self refreshTitleLabelWithEventStartsDate:post.dateEventStarts];
+        }
+        
         return;
     }
     

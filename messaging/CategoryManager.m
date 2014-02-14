@@ -43,8 +43,8 @@ static CategoryManager *instance = nil;
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"news" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPNews] forKey:[NSNumber numberWithInt:kGLPNews]];
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"for-sale" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPForSale] forKey:[NSNumber numberWithInt:kGLPForSale]];
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"question" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPQuestion] forKey:[NSNumber numberWithInt:kGLPQuestion]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"event" name:@"Patries" postRemoteKey:0 andRemoteKey:kGLPEvent] forKey:[NSNumber numberWithInt:kGLPEvent]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"jobs" name:@"Theatre" postRemoteKey:0 andRemoteKey:kGLPJobs] forKey:[NSNumber numberWithInt:kGLPJobs]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"event" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPEvent] forKey:[NSNumber numberWithInt:kGLPEvent]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"jobs" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPJobs] forKey:[NSNumber numberWithInt:kGLPJobs]];
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
     }
