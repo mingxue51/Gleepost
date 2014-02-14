@@ -156,8 +156,8 @@
     DDLogInfo(@"Oldest live conversation if required: %d - %@", oldestConversation.remoteKey, oldestConversation.title);
     
     if(oldestConversation) {
-        [[[UIAlertView alloc] initWithTitle:@"Already 3 live conversations running"
-                                    message:[NSString stringWithFormat:@"Requesting new live conversation will delete the one you have with %@", oldestConversation.title]
+        [[[UIAlertView alloc] initWithTitle:@"You already have 3 Random Chats"
+                                    message:[NSString stringWithFormat:@"Requesting another chat will delete the one you have with user %@", oldestConversation.title]
                            cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:^{
             [self dismissViewControllerAnimated:YES completion:nil];
         }]
