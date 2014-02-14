@@ -30,9 +30,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-
-    
     
     [self loadCategories];
     
@@ -81,7 +78,7 @@
         }
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"All" name:@"All the categories" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"All" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 

@@ -77,7 +77,7 @@
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
 //            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
-            [WebClientHelper showStandardError];
+            [WebClientHelper showStandardEmailError];
         }
     }];
 }

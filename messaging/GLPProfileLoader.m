@@ -77,9 +77,7 @@ static GLPProfileLoader *instance = nil;
     
     if(self)
     {
-        _contactsImages = [[NSMutableDictionary alloc] init];
-        _userDetails = [[GLPUser alloc] init];
-        self.loadingImagesExecuting = NO;
+        [self initialiseLoader];
     }
     
     return self;
@@ -212,6 +210,13 @@ static GLPProfileLoader *instance = nil;
     UIImage *currentImage = currentUrlImage.img;
     
     return currentImage;
+}
+
+-(void)initialiseLoader
+{
+    _contactsImages = [[NSMutableDictionary alloc] init];
+    _userDetails = [[GLPUser alloc] init];
+    self.loadingImagesExecuting = NO;
 }
 
 @end

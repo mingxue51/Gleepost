@@ -120,11 +120,11 @@
 
 -(void)searchForNewChat:(id)sender
 {
-    //    [self searchingAnimations];
+//        [self searchingAnimations];
     
-//    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
-//    
-//    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
+    
+    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
     
     [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:3.0];
     

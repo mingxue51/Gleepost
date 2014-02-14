@@ -20,5 +20,6 @@
 -(void)loadContactsImages:(NSArray*)contacts;
 -(void)refreshContactsImages:(NSArray*)contacts;
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey;
+-(void)initialiseLoader;
 
 @end

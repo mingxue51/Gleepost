@@ -18,6 +18,7 @@
 #import "ContactsManager.h"
 #import "GLPNetworkManager.h"
 #import "GLPLiveConversationsManager.h"
+#import "GLPProfileLoader.h"
 
 @implementation GLPLoginManager
 
@@ -130,6 +131,8 @@
     [[GLPLiveConversationsManager sharedInstance] clear];
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
+    
+    [[GLPProfileLoader sharedInstance] initialiseLoader];
     
 }
 
