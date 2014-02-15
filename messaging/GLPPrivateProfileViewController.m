@@ -620,21 +620,21 @@
     self.selectedTabStatus = selectedTab;
     
     
-    if (self.selectedTabStatus == kGLPMutual) { // overridden to add friend
-        NSLog(@"Add friend");
-        ProfileButtonsTableViewCell *buttonsView = [self.tableView dequeueReusableCellWithIdentifier:@"ButtonsCell" forIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-        [buttonsView addUser:nil];
-
-        
-    }else if (self.selectedTabStatus == kGLPAbout) { // overridden to message
-        NSLog(@"About");
-
-        ProfileButtonsTableViewCell *buttonsView =     (ProfileButtonsTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-        [buttonsView sendMessage:nil];
-        
-    }else {
+//    if (self.selectedTabStatus == kGLPMutual) { // overridden to add friend
+//        NSLog(@"Add friend");
+//        ProfileButtonsTableViewCell *buttonsView = [self.tableView dequeueReusableCellWithIdentifier:@"ButtonsCell" forIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+//        [buttonsView addUser:nil];
+//
+//        
+//    }else if (self.selectedTabStatus == kGLPAbout) { // overridden to message
+//        NSLog(@"About");
+//
+//        ProfileButtonsTableViewCell *buttonsView =     (ProfileButtonsTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+//        [buttonsView sendMessage:nil];
+//        
+//    }else {
         [self.tableView reloadData];
-    }
+//    }
 }
 
 #pragma mark - View image delegate

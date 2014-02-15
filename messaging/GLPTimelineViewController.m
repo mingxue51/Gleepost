@@ -49,6 +49,7 @@
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
 #import "WalkThroughHelper.h"
+#import "AnimationDayController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -152,6 +153,9 @@ const float TOP_OFFSET = 213.0f;
     [self loadInitialPosts];
     
     [WalkThroughHelper showCampusWallMessage];
+    
+    //Find the sunset sunrise for preparation of the new chat.
+    [AnimationDayController sharedInstance];
 }
 
 -(void)viewWillAppear:(BOOL)animated

@@ -7,11 +7,17 @@
 //
 
 #import "AnimationDayController.h"
+#import "FESSolarCalculator.h"
+#import "DateFormatterHelper.h"
 
 @interface AnimationDayController ()
 
 @property (assign, nonatomic) BOOL day;
 @property (strong, nonatomic) NSTimer *checkDay;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) FESSolarCalculator *solarCalculator;
+@property (strong, nonatomic) NSDate *sunset;
+@property (strong, nonatomic) NSDate *sunrise;
 
 @end
 
@@ -26,6 +32,7 @@ static AnimationDayController *instance = nil;
         instance = [[AnimationDayController alloc] init];
     });
     
+    
     return instance;
 }
 
@@ -39,26 +46,61 @@ static AnimationDayController *instance = nil;
     
     self.day = NO;
     
-    self.checkDay = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(decideDay:) userInfo:nil repeats:YES];
+    self.checkDay = [NSTimer scheduledTimerWithTimeInterval:60.0f target:self selector:@selector(decideDay:) userInfo:nil repeats:YES];
     [self.checkDay fire];
+    
+    //Initialise Location manager.
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
     
     return self;
 }
 
 
+
+
 -(void)decideDay:(id)sender
 {
-    
-    if(self.day)
+
+    if(sender != nil)
     {
-        self.day = NO;
+        [self.locationManager startUpdatingLocation];
     }
-    else
+    
+    
+    if([[NSDate date] compare:_sunrise] == NSOrderedDescending && [[NSDate date] compare:_sunset] == NSOrderedAscending)
     {
         self.day = YES;
     }
+    else
+    {
+        self.day = NO;
+    }
     
 }
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    
+    [self.locationManager stopUpdatingLocation];
+    
+    _solarCalculator = [[FESSolarCalculator alloc] initWithDate:[NSDate date] location:newLocation];
+    
+    _sunrise = [_solarCalculator sunrise];
+    _sunset = [_solarCalculator sunset];
+    
+    [self decideDay:nil];
+    
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    
+}
+
 
 #pragma mark - Images' names
 

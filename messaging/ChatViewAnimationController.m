@@ -132,7 +132,11 @@
 
 -(void)navigateToNewRandomChat:(id)sender
 {
-   [self searchForConversation];
+    if(_controllerExist)
+    {
+        [self searchForConversation];
+    }
+    
 }
 
 -(void) startSearchingIndicator

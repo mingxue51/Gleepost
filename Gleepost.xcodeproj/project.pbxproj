@@ -188,6 +188,7 @@
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */; };
+		585FF58D18AFAF07009462AD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 585FF58C18AFAF07009462AD /* CoreLocation.framework */; };
 		586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */ = {isa = PBXBuildFile; fileRef = 586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */; };
 		586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586458B0180834AC00B1B19C /* PostWithImageCell.m */; };
 		586458B41808393B00B1B19C /* PostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586458B31808393B00B1B19C /* PostCell.m */; };
@@ -836,6 +837,7 @@
 		585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageTableViewCell.m; sourceTree = "<group>"; };
 		585EDAE9183106DC008D29F6 /* ImageFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFormatterHelper.h; sourceTree = "<group>"; };
 		585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFormatterHelper.m; sourceTree = "<group>"; };
+		585FF58C18AFAF07009462AD /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		586135B1187C0722008F0EAE /* ChatViewAnimationsStanford.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationsStanford.h; sourceTree = "<group>"; };
 		586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationsStanford.m; sourceTree = "<group>"; };
 		586458AF180834AC00B1B19C /* PostWithImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostWithImageCell.h; sourceTree = "<group>"; };
@@ -1417,6 +1419,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				585FF58D18AFAF07009462AD /* CoreLocation.framework in Frameworks */,
 				582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */,
 				582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */,
 				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
@@ -2727,6 +2730,7 @@
 		80AB891917C267F50053E784 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				585FF58C18AFAF07009462AD /* CoreLocation.framework */,
 				582B404E18AD6EE300BC4285 /* AVFoundation.framework */,
 				582B404C18AD6DF300BC4285 /* AudioToolbox.framework */,
 				1172680D1888068E008F5391 /* AddressBookUI.framework */,
