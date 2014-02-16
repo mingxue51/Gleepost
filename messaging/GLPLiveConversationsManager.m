@@ -511,6 +511,15 @@ static GLPLiveConversationsManager *instance = nil;
             _conversationsSyncStatuses[key] = [NSNumber numberWithBool:NO];
         }
         
+        // all messages that were in waiting to send now marked as failed
+        for(NSNumber *index in _conversationsMessages) {
+            for(GLPMessage *message in _conversationsMessages[index]) {
+                if(message.sendStatus == kSendStatusLocal) {
+                    message.sendStatus = kSendStatusFailure;
+                }
+            }
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     });
 }
