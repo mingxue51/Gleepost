@@ -33,7 +33,7 @@
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
 
-#define GLP_WEBSERVICE_VERSION                      @"0.32"
+#define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"

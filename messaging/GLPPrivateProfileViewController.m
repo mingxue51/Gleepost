@@ -77,6 +77,9 @@
 {
     [super viewDidLoad];
     
+    [self configureView];
+
+    
     self.tableView.allowsSelectionDuringEditing=YES;
     
     
@@ -142,7 +145,6 @@
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
-    [self configureView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
 
@@ -220,6 +222,54 @@
 -(void)configureView
 {
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    
+    //Add new colour in the bottom of the table view.
+//    UIImageView *bottomImageView = [[UIImageView alloc] init];
+//    bottomImageView.backgroundColor = [UIColor whiteColor];
+    
+//    [bottomImageView setFrame:CGRectMake(0.0f, 400.0f, 320.0f, 300.0f)];
+//    [self.tableView addSubview:bottomImageView];
+//    [bottomImageView sendSubviewToBack:self.tableView];
+    
+    
+    [self setBottomView];
+
+}
+
+-(void)setBottomView
+{
+    //Clear bottom view.
+//    [self clearBottomView];
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin.y = frame.size.height;
+    
+    CGRect viewFrame = self.view.bounds;
+    viewFrame.origin.y = viewFrame.size.height;
+    
+    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
+    grayView.tag = 100;
+    grayView.backgroundColor = [UIColor whiteColor];
+//    [self.tableView addSubview:grayView];
+//    [grayView sendSubviewToBack:self.tableView];
+    
+    self.tableView.tableFooterView = grayView;
+//    [self.view addSubview:grayView];
+}
+
+-(void)clearBottomView
+{
+//    for(UIView *v in self.tableView.subviews)
+//    {
+//        if(v.tag == 100)
+//        {
+//            [v removeFromSuperview];
+//        }
+//    }
+    
+//    [self.tableView.tableFooterView setFrame:CGRectMake(0.0f, 300.0f, 320.0f, 0.0f)];
+    
+    self.tableView.tableFooterView = nil;
 }
 
 -(void)configureNavigationBar
@@ -441,16 +491,16 @@
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierButtons = @"ButtonsCell";
-    static NSString *CellIdentifierAbout = @"AboutCell";
-    static NSString *CellIdentifierMutual = @"MutualCell";
+//    static NSString *CellIdentifierAbout = @"AboutCell";
+//    static NSString *CellIdentifierMutual = @"MutualCell";
     
     
     PostCell *postViewCell;
     
     ProfileButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
-    ProfileAboutTableViewCell *profileAboutView;
-    ProfileMutualTableViewCell *profileMutualView;
+//    ProfileAboutTableViewCell *profileAboutView;
+//    ProfileMutualTableViewCell *profileMutualView;
     
     if(indexPath.row == 0)
     {
@@ -521,10 +571,21 @@
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
-                //Add separator line to posts' cells.
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                [postViewCell addSubview:line];
+                if(indexPath.row > 5)
+                {
+                    [self clearBottomView];
+                }
+                
+                if(indexPath.row -1 != self.posts.count)
+                {
+                    //Add separator line to posts' cells.
+                    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+                    line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+                    [postViewCell addSubview:line];
+                }
+                
+
+                
                 
             }
             
