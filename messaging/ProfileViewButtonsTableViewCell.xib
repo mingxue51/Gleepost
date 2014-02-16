@@ -33,7 +33,7 @@
                         <rect key="frame" x="30" y="7" width="80" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                        <state key="normal" image="about_button.png">
+                        <state key="normal" image="send_message.png">
                             <color key="titleColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -53,16 +53,32 @@
                             <action selector="viewPosts:" destination="RZ8-00-mDA" eventType="touchUpInside" id="Ktz-SN-SGq"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zYR-BJ-nxj">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="in_contacts.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rcr-U8-XrA">
+                        <rect key="frame" x="202" y="7" width="80" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oa0-rC-IcP">
                         <rect key="frame" x="202" y="7" width="80" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                        <state key="normal" image="mutual_button.png">
+                        <state key="normal" image="accept_user.png">
                             <color key="titleColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="viewMutual:" destination="RZ8-00-mDA" eventType="touchUpInside" id="eDB-2M-Vtd"/>
+                            <action selector="acceptUser:" destination="RZ8-00-mDA" eventType="touchUpInside" id="cwn-8g-hrg"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zYR-BJ-nxj">
+                        <rect key="frame" x="202" y="7" width="80" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                        <state key="normal" image="add_user.png">
+                            <color key="titleColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="addContact:" destination="RZ8-00-mDA" eventType="touchUpInside" id="z7I-8s-oKI"/>
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="active_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="qQL-eX-nNk">
@@ -84,16 +100,21 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="aboutLine" destination="qQL-eX-nNk" id="Km5-QD-EXm"/>
+                <outlet property="acceptButton" destination="oa0-rC-IcP" id="ntN-7x-rtb"/>
+                <outlet property="addContactButton" destination="zYR-BJ-nxj" id="BAC-HL-Dl2"/>
+                <outlet property="inContacts" destination="Rcr-U8-XrA" id="GPm-t7-zq9"/>
                 <outlet property="mutualLine" destination="INE-Cm-SOl" id="cE9-kD-OWL"/>
                 <outlet property="postsLine" destination="xNB-bw-qPN" id="HjH-FW-mS0"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="about_button.png" width="180" height="73"/>
+        <image name="accept_user.png" width="180" height="73"/>
         <image name="active_tab.png" width="51" height="51"/>
+        <image name="add_user.png" width="180" height="73"/>
         <image name="idle_tab.png" width="51" height="51"/>
-        <image name="mutual_button.png" width="180" height="73"/>
+        <image name="in_contacts.png" width="180" height="73"/>
         <image name="posts_button.png" width="180" height="73"/>
+        <image name="send_message.png" width="180" height="73"/>
     </resources>
 </document>

@@ -272,27 +272,27 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     else
     {
-        if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
-        {
-            //TODO: Set in table view contact as in contacts.
-            [self.inContacts setHidden:NO];
-            [self.addContactButton setHidden:YES];
-        }
-        else
-        {
-            if([[ContactsManager sharedInstance] isContactWithIdRequested:user.remoteKey])
-            {
-                [self setContactAsRequested];
-            }
-            else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:user.remoteKey])
-            {
-                [self setAcceptRequestButton];
-            }
-            else
-            {
-                //If not show the private profile view as is.
-            }
-        }
+//        if([[ContactsManager sharedInstance] isUserContactWithId:user.remoteKey])
+//        {
+//            //TODO: Set in table view contact as in contacts.
+//            [self.inContacts setHidden:NO];
+//            [self.addContactButton setHidden:YES];
+//        }
+//        else
+//        {
+//            if([[ContactsManager sharedInstance] isContactWithIdRequested:user.remoteKey])
+//            {
+//                [self setContactAsRequested];
+//            }
+//            else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:user.remoteKey])
+//            {
+//                [self setAcceptRequestButton];
+//            }
+//            else
+//            {
+//                //If not show the private profile view as is.
+//            }
+//        }
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_privateProfileDelegate action:@selector(showFullProfileImage:)];
         [tap setNumberOfTapsRequired:1];

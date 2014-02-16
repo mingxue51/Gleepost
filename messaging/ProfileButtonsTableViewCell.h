@@ -17,7 +17,7 @@ extern const float BUTTONS_CELL_HEIGHT;
 
 
 @property (readonly, nonatomic) GLPPrivateProfileViewController *delegate;
-@property (nonatomic) GLPUser *currentUser;
+@property (strong, nonatomic) GLPUser *currentUser;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
 
 
