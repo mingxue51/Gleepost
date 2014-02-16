@@ -1632,7 +1632,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="08AF4E27-511D-40A7-A9DE-7B7E697A3D0E" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="AE9941A2-816F-43FB-BF27-57FE29DAD010" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -3014,7 +3014,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </scene>
     </scenes>
     <resources>
-        <image name="08AF4E27-511D-40A7-A9DE-7B7E697A3D0E" width="34" height="34">
+        <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
+        <image name="AE9941A2-816F-43FB-BF27-57FE29DAD010" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3142,7 +3143,6 @@ thu7G8MbxhvLG9ob3hvlG+0b+hv/HAEcAxwIHBAcExwYHCAcIxw1HDgcPQAAAAAAAAIBAAAAAAAAAEIA
 AAAAAAAAAAAAAAAAABw/A
 </mutableData>
         </image>
-        <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
@@ -3180,7 +3180,7 @@ AAAAAAAAAAAAAAAAABw/A
         <image name="sign_up.png" width="564" height="116"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="skip_button.png" width="440" height="108"/>
-        <image name="thumbs-up.png" width="15" height="16"/>
+        <image name="thumbs-up.png" width="265" height="266"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
         <image name="verified.png" width="550" height="120"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>

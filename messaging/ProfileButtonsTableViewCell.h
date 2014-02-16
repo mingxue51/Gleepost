@@ -22,7 +22,7 @@ extern const float BUTTONS_CELL_HEIGHT;
 
 
 -(void)setDelegate:(GLPPrivateProfileViewController *)delegate;
-- (void)sendMessage:(id)sender;
+//- (void)sendMessage:(id)sender;
 - (void)addUser:(id)sender;
 
 @end

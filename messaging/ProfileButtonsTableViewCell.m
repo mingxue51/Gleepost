@@ -26,7 +26,7 @@
 
 @implementation ProfileButtonsTableViewCell
 
-const float BUTTONS_CELL_HEIGHT = 65.0f;
+const float BUTTONS_CELL_HEIGHT = 45.0f;
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -100,9 +100,8 @@ const float BUTTONS_CELL_HEIGHT = 65.0f;
     
     // Configure the view for the selected state
 }
-- (void)sendMessage:(id)sender
+- (IBAction)sendMessage:(id)sender
 {
-    
     //If conversation with user already exist, don't create a new one.
     [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
         
@@ -125,10 +124,38 @@ const float BUTTONS_CELL_HEIGHT = 65.0f;
         }
         
     }];
-    
-    
-    
+
 }
+
+//- (IBAction)sendMessage:(id)sender
+//{
+//    
+//    //If conversation with user already exist, don't create a new one.
+//    [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
+//        
+//        if(sucess)
+//        {
+//            //Conversation exist.
+//            [_privateProfileDelegate viewConversation:conversation];
+//            DDLogInfo(@"Conversation already exist: %@", conversation.title);
+//        }
+//        else
+//        {
+//            //Conversation not exist, create new fake conversation.
+//            
+//            NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
+//            
+//            [_privateProfileDelegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
+//            
+//            DDLogInfo(@"Fake conversation just created.");
+//            
+//        }
+//        
+//    }];
+//    
+//    
+//    
+//}
 
 - (void)addUser:(id)sender
 {

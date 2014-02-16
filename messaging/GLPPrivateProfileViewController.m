@@ -418,21 +418,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(self.selectedTabStatus == kGLPMutual)
-    {
-        self.currentNumberOfRows = self.numberOfRows + 10;
-        return self.currentNumberOfRows; /** + Number of mutual friends. */
-    }
-    else if(self.selectedTabStatus == kGLPPosts)
-    {
+//    if(self.selectedTabStatus == kGLPMutual)
+//    {
+//        self.currentNumberOfRows = self.numberOfRows + 10;
+//        return self.currentNumberOfRows; /** + Number of mutual friends. */
+//    }
+//    else if(self.selectedTabStatus == kGLPPosts)
+//    {
         self.currentNumberOfRows = self.numberOfRows + self.posts.count;
         return self.currentNumberOfRows; /** + Number of user's posts. */
-    }
-    else
-    {
-        self.currentNumberOfRows = self.numberOfRows + 1;
-        return self.currentNumberOfRows;
-    }
+//    }
+//    else
+//    {
+//        self.currentNumberOfRows = self.numberOfRows + 1;
+//        return self.currentNumberOfRows;
+//    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -488,21 +488,21 @@
     }
     else if (indexPath.row >= 2)
     {
-        if(self.selectedTabStatus == kGLPAbout)
-        {
-            profileAboutView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierAbout forIndexPath:indexPath];
-            
-            if(self.contact)
-            {
-                //Show user's details.
-                [profileAboutView updateUserDetails:self.profileUser];
-            }
-
-            
-            return profileAboutView;
-        }
-        else if(self.selectedTabStatus == kGLPPosts)
-        {
+//        if(self.selectedTabStatus == kGLPAbout)
+//        {
+//            profileAboutView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierAbout forIndexPath:indexPath];
+//            
+//            if(self.contact)
+//            {
+//                //Show user's details.
+//                [profileAboutView updateUserDetails:self.profileUser];
+//            }
+//
+//            
+//            return profileAboutView;
+//        }
+//        else if(self.selectedTabStatus == kGLPPosts)
+//        {
             if(self.posts.count != 0)
             {
                 GLPPost *post = self.posts[indexPath.row-2];
@@ -529,15 +529,15 @@
             }
             
             return postViewCell;
-        }
-        else if(self.selectedTabStatus == kGLPMutual)
-        {
-            profileMutualView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierMutual forIndexPath:indexPath];
-            
-            [profileMutualView updateDataWithName:self.profileUser.name andImageUrl:self.profileUser.profileImageUrl];
-            
-            return profileMutualView;
-        }
+//        }
+//        else if(self.selectedTabStatus == kGLPMutual)
+//        {
+//            profileMutualView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierMutual forIndexPath:indexPath];
+//            
+//            [profileMutualView updateDataWithName:self.profileUser.name andImageUrl:self.profileUser.profileImageUrl];
+//            
+//            return profileMutualView;
+//        }
         
     }
     
@@ -577,13 +577,18 @@
     }
     else if(indexPath.row >= 2)
     {
-        if(self.selectedTabStatus == kGLPAbout)
-        {
-            return 150.0f;
-        }
-        else if (self.selectedTabStatus == kGLPPosts)
+//        if(self.selectedTabStatus == kGLPAbout)
+//        {
+//            return 150.0f;
+//        }
+//        else if (self.selectedTabStatus == kGLPPosts)
+//        {
+        
+        if(self.posts.count != 0 && self.posts)
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
+            
+            DDLogDebug(@"Current Post content: %@ : %d", currentPost.content, indexPath.row);
             
             if([currentPost imagePost])
             {
@@ -594,10 +599,12 @@
                 return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
             }
         }
-        else
-        {
-            return 70.0f;
-        }
+
+//        }
+//        else
+//        {
+//            return 70.0f;
+//        }
     }
     
     return 70.0f;
