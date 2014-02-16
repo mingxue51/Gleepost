@@ -278,6 +278,7 @@
     }
     else
     {        
+        [self enableButtons];
         
         [self makeButtonUnselected:currentButton];
 
@@ -306,6 +307,13 @@
 {
     //Unselect event category.
     [self makeButtonUnselected:_eventsCategoryBtn];
+    [self makeButtonUnselected:_forSaleCategoryBtn];
+    [self makeButtonUnselected:_newsCategoryBtn];
+    [self makeButtonUnselected:_jobsCategoryBtn];
+    [self makeButtonUnselected:_questionsCategoryBtn ];
+
+    //Enable all disabled buttons.
+    [self enableButtons];
 
 }
 
@@ -315,18 +323,57 @@
     _eventDateStart = date;
     _eventTitle = title;
     
+    //Disable all the other events buttons.
+    [self disableButtons];
+    
+}
+
+-(void)disableButtons
+{
+    if([[self.newsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    {
+        [self.newsCategoryBtn setEnabled:NO];
+    }
+    
+    if ([[self.forSaleCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    {
+        [self.forSaleCategoryBtn setEnabled:NO];
+    }
+    
+    if ([[self.eventsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    {
+        [self.eventsCategoryBtn setEnabled:NO];
+
+    }
+    if ([[self.jobsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    {
+        [self.jobsCategoryBtn setEnabled:NO];
+
+    }
+   
+    if ([[self.questionsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    {
+        [self.questionsCategoryBtn setEnabled:NO];
+
+    }
+
+}
+
+-(void)enableButtons
+{
+    [self.newsCategoryBtn setEnabled:YES];
+    [self.forSaleCategoryBtn setEnabled:YES];
+    [self.eventsCategoryBtn setEnabled:YES];
+    [self.jobsCategoryBtn setEnabled:YES];
+    [self.questionsCategoryBtn setEnabled:YES];
 }
 
 
 -(void)popUpTimeSelectorWithCategory:(GLPCategory *)category
 {
-    if([category.tag isEqualToString:@"event"])
-    {
         
         //Pop up the time selector.
         [self performSegueWithIdentifier:@"pick date" sender:self];
-        
-    }
 }
 
 -(void)deleteCategoryWithRemoteKey:(int)remoteKey

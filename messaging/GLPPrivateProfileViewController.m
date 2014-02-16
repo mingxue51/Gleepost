@@ -80,7 +80,7 @@
     self.tableView.allowsSelectionDuringEditing=YES;
     
     
-    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
     // [self loadPosts];
     
     //If no, check in database if the user is already requested.

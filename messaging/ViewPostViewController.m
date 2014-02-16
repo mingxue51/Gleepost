@@ -61,7 +61,7 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
-    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
 
     //Change the format of the navigation bar.
     //[self.navigationController.navigationBar setTranslucent:YES];

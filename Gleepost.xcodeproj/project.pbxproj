@@ -97,7 +97,7 @@
 		582A664818ABD37D00006419 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664718ABD37D00006419 /* verified.png */; };
 		582A664A18AC0ABC00006419 /* referesh_campus_live.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664918AC0ABC00006419 /* referesh_campus_live.png */; };
 		582A664D18AC215C00006419 /* WalkThroughHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582A664C18AC215C00006419 /* WalkThroughHelper.m */; };
-		582B404718AD3E5800BC4285 /* purple_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404118AD3E5800BC4285 /* purple_category.png */; };
+		582B404718AD3E5800BC4285 /* question_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404118AD3E5800BC4285 /* question_category.png */; };
 		582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582B404A18AD6C4A00BC4285 /* SoundHelper.m */; };
 		582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404C18AD6DF300BC4285 /* AudioToolbox.framework */; };
 		582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404E18AD6EE300BC4285 /* AVFoundation.framework */; };
@@ -709,7 +709,7 @@
 		582A664918AC0ABC00006419 /* referesh_campus_live.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = referesh_campus_live.png; sourceTree = "<group>"; };
 		582A664B18AC215C00006419 /* WalkThroughHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkThroughHelper.h; sourceTree = "<group>"; };
 		582A664C18AC215C00006419 /* WalkThroughHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalkThroughHelper.m; sourceTree = "<group>"; };
-		582B404118AD3E5800BC4285 /* purple_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple_category.png; sourceTree = "<group>"; };
+		582B404118AD3E5800BC4285 /* question_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question_category.png; sourceTree = "<group>"; };
 		582B404918AD6C4A00BC4285 /* SoundHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundHelper.h; sourceTree = "<group>"; };
 		582B404A18AD6C4A00BC4285 /* SoundHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundHelper.m; sourceTree = "<group>"; };
 		582B404C18AD6DF300BC4285 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -1510,7 +1510,7 @@
 				58AB404518AE45D000DEED31 /* for-sale_category.png */,
 				58AB404618AE45D000DEED31 /* jobs_category.png */,
 				58AB404718AE45D000DEED31 /* news_category.png */,
-				582B404118AD3E5800BC4285 /* purple_category.png */,
+				582B404118AD3E5800BC4285 /* question_category.png */,
 				58AABA911892F0F60058A552 /* category_bg.png */,
 				58FD707C18905B680024E8A1 /* all_category_old.png */,
 				580C7AB218983C4C007495EE /* all_category_selected.png */,
@@ -3486,7 +3486,7 @@
 				5832C4B7189929FC004FC4F6 /* show_categories.png in Resources */,
 				58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */,
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
-				582B404718AD3E5800BC4285 /* purple_category.png in Resources */,
+				582B404718AD3E5800BC4285 /* question_category.png in Resources */,
 				80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */,
 				58AD86A318929F2200016C6D /* about_button.png in Resources */,
 				80E7479417CEAED7001957E5 /* get_messages.json in Resources */,
