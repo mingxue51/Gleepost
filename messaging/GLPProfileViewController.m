@@ -181,7 +181,7 @@
 
 
 -(void)setBottomView
-{    
+{
     CGRect frame = self.tableView.bounds;
     frame.origin.y = frame.size.height;
     
@@ -1107,9 +1107,11 @@
 
 -(void)refreshFirstCell
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    [self.tableView reloadData];
+    
+//    [self.tableView beginUpdates];
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//    [self.tableView endUpdates];
 }
 
 
