@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) GLPLoadingCellDelegate *topLoadingCellDelegate;
 @property (strong, nonatomic) GLPLoadingCellDelegate *bottomLoadingCellDelegate;
+@property (assign, nonatomic) float topVerticalScrollContentOffset;
 
 @end
 
@@ -32,6 +33,7 @@
     
     _topLoadingCellDelegate = [[GLPLoadingCellDelegate alloc] init];
     _bottomLoadingCellDelegate = [[GLPLoadingCellDelegate alloc] init];
+    _topVerticalScrollContentOffset = 0.0F;
 }
 
 
@@ -110,6 +112,33 @@
 {
     _items = items;
     [_tableView reloadData];
+}
+
+- (void)saveScrollContentOffset
+{
+    _topVerticalScrollContentOffset = _tableView.contentOffset.y;
+    DDLogInfo(@"Save scroll offest: %f", _topVerticalScrollContentOffset);
+}
+
+- (void)restoreScrollContentOffsetAfterInsertingNewItems:(NSArray *)newItems
+{
+    NSInteger firstRow;
+    if([self topLoadingCellRow] == NSNotFound) {
+        firstRow = 0;
+        
+        // when the offset is saved, the top loading cell is visible
+        _topVerticalScrollContentOffset -= kGLPLoadingCellHeight;
+    } else {
+        firstRow = 1;
+    }
+    
+    for(int i = firstRow; i < newItems.count; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        _topVerticalScrollContentOffset += [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
+    }
+    
+    DDLogInfo(@"Restore scroll offest: %f", _topVerticalScrollContentOffset);
+    [_tableView setContentOffset:CGPointMake(0, _topVerticalScrollContentOffset)];
 }
 
 - (id)itemForIndexPath:(NSIndexPath *)indexPath

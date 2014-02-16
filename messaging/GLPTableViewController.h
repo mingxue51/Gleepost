@@ -16,6 +16,8 @@
 @property (strong, nonatomic) NSArray *items;
 
 - (void)reloadWithItems:(NSArray *)items;
+- (void)saveScrollContentOffset;
+- (void)restoreScrollContentOffsetAfterInsertingNewItems:(NSArray *)newItems;
 - (UITableViewCell *)cellForItem:(id)item forIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)heightForItem:(id)item;
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position;

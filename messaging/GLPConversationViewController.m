@@ -336,8 +336,12 @@
     
     NSArray *previousMessages = [[GLPLiveConversationsManager sharedInstance] oldestMessagesForConversation:_conversation];
     
+    [self saveScrollContentOffset];
+    
     [_messages insertObjects:previousMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, previousMessages.count)]];
     [self showLoadedMessages];
+    
+    [self restoreScrollContentOffsetAfterInsertingNewItems:previousMessages];
 }
 
 - (void)showLoadedMessages
@@ -348,7 +352,6 @@
 
 - (void)configureDisplayForMessages:(NSArray *)messages
 {
-
     GLPMessage *previous;
     for (int i = 0; i < messages.count; i++) {
         GLPMessage *current = messages[i];
@@ -367,21 +370,6 @@
             previous = current;
         }
     }
-
-    /*
-    for (int i = 0; i < messages.count; i++) {
-        
-        NSLog(@"running loop %d", i);
-        GLPMessage *current = messages[i];
-        if(i == 0) {
-            [current configureAsFirstMessage];
-
-        } else {
-            GLPMessage *previous = messages[i-1];
-            [current configureAsFollowingMessage:previous];
-        }
-    }
-     */
 }
 
 - (void)showMessage:(GLPMessage *)message
