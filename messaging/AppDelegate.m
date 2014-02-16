@@ -229,7 +229,7 @@ static NSString * const kCustomURLHost      = @"verify";
     UIButton *backButton =  [UIButton buttonWithType:UIButtonTypeCustom];
     [backButton setImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
     [backButton addTarget:target action:@selector(backButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-    [backButton setFrame:CGRectMake(0, 0, 15 , 25)];
+    [backButton setFrame:CGRectMake(0, 0, 13, 21)];
     return [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
 @end

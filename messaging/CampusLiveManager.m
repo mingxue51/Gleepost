@@ -117,13 +117,21 @@ static CampusLiveManager *instance = nil;
         }
     }
     
+    
     //Ignore past times.
+
+    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:0] dateEventStarts]];;
     
-    double min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:ignorePosts] dateEventStarts]];
-    int minIndex = ignorePosts;
+    int minIndex = 0;
     
+    if(ignorePosts != 0)
+    {
+        min = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:ignorePosts-1] dateEventStarts]];
+        minIndex = ignorePosts;
+
+    }
     
-    for (int i = ignorePosts+1; i < [posts count]; ++i)
+    for (int i = ignorePosts; i < [posts count]; ++i)
     {
         double currentmin = [currentDate timeIntervalSinceDate:[[posts objectAtIndex:i] dateEventStarts]];
         
