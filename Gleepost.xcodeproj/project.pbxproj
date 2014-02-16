@@ -527,6 +527,8 @@
 		80AB898F17C2ADA60053E784 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AB898E17C2ADA60053E784 /* line.png */; };
 		80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80AB899017C2AE700053E784 /* navigation_bar@2x.png */; };
 		80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */; };
+		80B120D018B0740B006C1E30 /* message_cell_error.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B120CE18B0740B006C1E30 /* message_cell_error.png */; };
+		80B120D118B0740B006C1E30 /* message_cell_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B120CF18B0740B006C1E30 /* message_cell_error@2x.png */; };
 		80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1735E1805792B00D9669B /* WebClientHelper.m */; };
 		80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B2A41E18337D8B002AB1F0 /* GLPNotification.m */; };
 		80B2A421183380CF002AB1F0 /* GLPNotificationDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B2A420183380CF002AB1F0 /* GLPNotificationDaoParser.m */; };
@@ -1310,6 +1312,8 @@
 		80AB899017C2AE700053E784 /* navigation_bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigation_bar@2x.png"; sourceTree = "<group>"; };
 		80B01E6A18428BAF00A1BA5F /* NSNotificationCenter+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+Utils.h"; sourceTree = "<group>"; };
 		80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+Utils.m"; sourceTree = "<group>"; };
+		80B120CE18B0740B006C1E30 /* message_cell_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_cell_error.png; sourceTree = "<group>"; };
+		80B120CF18B0740B006C1E30 /* message_cell_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_cell_error@2x.png"; sourceTree = "<group>"; };
 		80B1735D1805792B00D9669B /* WebClientHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebClientHelper.h; sourceTree = "<group>"; };
 		80B1735E1805792B00D9669B /* WebClientHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebClientHelper.m; sourceTree = "<group>"; };
 		80B2A41D18337D8B002AB1F0 /* GLPNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNotification.h; sourceTree = "<group>"; };
@@ -1938,6 +1942,7 @@
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
+				80B120CD18B073E2006C1E30 /* Conversations */,
 				802DCE4718AA87E800A23511 /* Internal notifications */,
 				58FD707B18905B440024E8A1 /* Design v1 */,
 				5890D22618482D8600E293DD /* New Tabbar */,
@@ -3010,6 +3015,15 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		80B120CD18B073E2006C1E30 /* Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				80B120CE18B0740B006C1E30 /* message_cell_error.png */,
+				80B120CF18B0740B006C1E30 /* message_cell_error@2x.png */,
+			);
+			name = Conversations;
+			sourceTree = "<group>";
+		};
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
@@ -3301,6 +3315,7 @@
 				805E91DB189B103B00ECD40F /* PostImageCellView.xib in Resources */,
 				589EAD1D18A435D5005B2F4C /* gleepost_logo_header.png in Resources */,
 				584F38621818094A00A1B742 /* mychatbubble4.png in Resources */,
+				80B120D018B0740B006C1E30 /* message_cell_error.png in Resources */,
 				802DCE4218AA32CA00A23511 /* notification2.json in Resources */,
 				58FB7C7D1855FF0B002C6A00 /* message-user.png in Resources */,
 				58FD708118905B680024E8A1 /* all_category_old.png in Resources */,
@@ -3379,6 +3394,7 @@
 				58729AD7189C1BC40041022C /* mypost_btn_selected.png in Resources */,
 				58E3DABD1884059100B9B048 /* cloud1.png in Resources */,
 				805E155A180EF3E700705B1C /* share_image@2x.png in Resources */,
+				80B120D118B0740B006C1E30 /* message_cell_error@2x.png in Resources */,
 				584CF662182274EE00EFABB8 /* send.png in Resources */,
 				589EAD0E18A403F8005B2F4C /* SignUpThreeView.xib in Resources */,
 				58AD86A518929F2200016C6D /* bg_middle.png in Resources */,
