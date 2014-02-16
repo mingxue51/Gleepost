@@ -107,14 +107,23 @@
     }
 }
 
-- (void)reloadItem:(id)item
+- (void)reloadItem:(id)item sizeCanChange:(BOOL)sizeCanChange
 {
     NSIndexPath *indexPath = [self indexPathForItem:item];
     if(!indexPath) {
         return;
     }
     
-    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if(sizeCanChange) {
+        NSMutableArray *indexPaths = [NSMutableArray arrayWithObject:indexPath];
+        for(int i = indexPath.row + 1; i < [self tableView:_tableView numberOfRowsInSection:0]; i++) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        
+        [_tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else {
+        [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 - (void)reloadWithItems:(NSArray *)items
@@ -231,9 +240,13 @@
     }
     DDLogInfo(@"Show top loader");
     
+    float offset = _tableView.contentOffset.y;
+    
     [_topLoadingCellDelegate show];
     
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [_tableView setContentOffset:CGPointMake(0, offset + kGLPLoadingCellHeight)];
 }
 
 - (void)hideTopLoader
@@ -256,29 +269,39 @@
 
 - (void)showBottomLoader
 {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    DDLogInfo(@"Show network activity indicator for bottom loader");
+    
     if(_topLoadingCellDelegate.isVisible || _bottomLoadingCellDelegate.isVisible) {
         return;
     }
     DDLogInfo(@"Show bottom loader");
-
-    [_bottomLoadingCellDelegate show];
-
-    int rows = [self tableView:self.tableView numberOfRowsInSection:0] - 1;
-    [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    
+    if(_items.count > 0) {
+        [_bottomLoadingCellDelegate show];
+        
+        int rows = [self tableView:self.tableView numberOfRowsInSection:0] - 1;
+        [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)hideBottomLoader
 {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    DDLogInfo(@"Hide network activity indicator for bottom loader");
+    
     if(!_bottomLoadingCellDelegate.isVisible) {
         return;
     }
     
     DDLogInfo(@"Hide bottom loader");
     
-    [_bottomLoadingCellDelegate hide];
-    
-    int rows = [self tableView:self.tableView numberOfRowsInSection:0];
-    [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    if(_bottomLoadingCellDelegate.isVisible) {
+        [_bottomLoadingCellDelegate hide];
+        
+        int rows = [self tableView:self.tableView numberOfRowsInSection:0];
+        [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)scrollToTheEndAnimated:(BOOL)animated

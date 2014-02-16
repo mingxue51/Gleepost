@@ -247,42 +247,23 @@ static GLPLiveConversationsManager *instance = nil;
     __block BOOL shouldSyncContinue = NO;
     
     dispatch_sync(_queue, ^{
-//        NSNumber *index = [detachedConversation remoteKeyNumber];
-//        GLPConversation *attachedConversation = _conversations[index];
-//        if(!attachedConversation) {
-//            DDLogWarn(@"Cannot sync non existent conversation");
-//            return;
-//        }
-//        
-//        if(![self internalIsConversationForSync:attachedConversation]) {
-//            [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO];
-//            return;
-//        }
-        
-        GLPConversation *attachedConversation = [self internalConversationForSync:detachedConversation];
+        NSNumber *index = [detachedConversation remoteKeyNumber];
+        GLPConversation *attachedConversation = [self internalAttachedConversation:detachedConversation];
         if(!attachedConversation) {
-            [self internalNotifyConversation:detachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+            [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+            return;
+        }
+        
+        BOOL valid = [self isConversationForSync:attachedConversation];
+        if(!valid) {
+            BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
+            DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+            
+            [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
             return;
         }
         
         lastSyncMessage = [self internalConversationLastSyncMessage:attachedConversation];
-        
-        
-//        // conversation has last sync message
-//        if(syncConversation.lastSyncMessageKey != NSNotFound) {
-//            message = [self internalFindMessageByKey:syncConversation.lastSyncMessageKey inConversation:syncConversation];
-//            
-//            if(!message) {
-//                DDLogWarn(@"Last sync message for key %d not found", syncConversation.lastSyncMessageKey);
-//                return;
-//            }
-//            
-//            lastSyncMessageKey = syncConversation.lastSyncMessageKey;
-//        }
-//        lastSyncMessageKey = lastSyncMessage.key;
-        
-        
-        
         shouldSyncContinue = YES;
     });
     
@@ -305,18 +286,24 @@ static GLPLiveConversationsManager *instance = nil;
         messages = [[messages reverseObjectEnumerator] allObjects];
         
         dispatch_async(_queue, ^{
-            GLPConversation *attachedConversation = [self internalConversationForSync:detachedConversation];
+            NSNumber *index = [detachedConversation remoteKeyNumber];
+            GLPConversation *attachedConversation = [self internalAttachedConversation:detachedConversation];
             if(!attachedConversation) {
-                [self internalNotifyConversation:detachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+                [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+                return;
+            }
+            
+            BOOL valid = [self isConversationForSync:attachedConversation];
+            if(!valid) {
+                BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
+                DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+                
+                [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
                 return;
             }
             
             // verify last message sync is still the same
             GLPMessage *m = [self internalConversationLastSyncMessage:attachedConversation];
-            
-            DDLogInfo(@"Origi: %@", lastSyncMessage);
-            DDLogInfo(@"Curr: %@", m);
-            
             
             if((lastSyncMessage || m) && ![lastSyncMessage isEqualToEntity:m]) {
                 DDLogWarn(@"Original last sync message does not match the conversation's current one : %d != %d", lastSyncMessage.key, m.key);
@@ -329,9 +316,13 @@ static GLPLiveConversationsManager *instance = nil;
                 [self internalInsertMessages:messages toConversation:attachedConversation atTheEnd:YES];
             }
             
-            _conversationsSyncStatuses[[attachedConversation remoteKeyNumber]] = [NSNumber numberWithBool:YES];
+            _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             
-            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+            BOOL canHaveMorePreviousMessages = messages.count >= 20;
+            _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:canHaveMorePreviousMessages];
+            DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+            
+            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
         });
     }];
 }
@@ -418,20 +409,14 @@ static GLPLiveConversationsManager *instance = nil;
 }
 
 // Get converation available for sync, from detached conversation
-- (GLPConversation *)internalConversationForSync:(GLPConversation *)detachedConversation
+- (BOOL)isConversationForSync:(GLPConversation *)attachedConversation
 {
-    NSNumber *index = [detachedConversation remoteKeyNumber];
-    GLPConversation *attachedConversation = [self internalAttachedConversation:detachedConversation];
-    if(!attachedConversation) {
-        return nil;
-    }
-    
-    if([_conversationsSyncStatuses[index] boolValue]) {
+    if([_conversationsSyncStatuses[[attachedConversation remoteKeyNumber]] boolValue]) {
         DDLogInfo(@"Conversation for sync is already sync");
-        return nil;
+        return NO;
     }
     
-    return attachedConversation;
+    return YES;
 }
 
 - (GLPConversation *)internalAttachedConversation:(GLPConversation *)detachedConversation

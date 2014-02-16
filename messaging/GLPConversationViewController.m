@@ -295,13 +295,6 @@
     [self loadNewMessages];
     [self scrollToTheEndAnimated:YES];
     
-//    if([GLPNetworkManager sharedInstance].networkStatus != kGLPNetworkStatusOnline) {
-//        DDLogInfo(@"No network, abort loading initial messages");
-//        DDLogInfo(@"Network status: %d", [GLPNetworkManager sharedInstance].networkStatus);
-//        [[GLPViewControllerHelper sharedInstance] showErrorNetworkMessage];
-//        return;
-//    }
-    
     [self syncConversation];
 }
 
@@ -413,6 +406,12 @@
     return NO;
 }
 
+- (void)showAndActivateTopLoaderAfterScroll
+{
+    [self showTopLoader];
+    [self activateTopLoader];
+}
+
 
 # pragma mark - Notifications (keyboard ones in form management mark)
 
@@ -428,11 +427,10 @@
     }
     
     BOOL hasNewMessages = [[notification userInfo][@"newMessages"] boolValue];
+    BOOL canHavePreviousMessages = [[notification userInfo][@"canHaveMorePreviousMessages"] boolValue];
     
     // previous messages loaded
     if([[notification userInfo][@"previousMessages"] boolValue]) {
-        BOOL canHavePreviousMessages = [[notification userInfo][@"canHaveMorePreviousMessages"] boolValue];
-        
         if(canHavePreviousMessages) {
             [self showTopLoader];
         } else {
@@ -447,6 +445,7 @@
     else {
         [self hideBottomLoader];
         
+//        BOOL willShowTopLoader = canHavePreviousMessages && (_messages.count > 0 || hasNewMessages);
         BOOL scrollAnimated = _messages.count > 0;
         
         if(hasNewMessages) {
@@ -454,13 +453,15 @@
             [self scrollToTheEndAnimated:scrollAnimated];
         }
         
-        BOOL isTopLoader = [self showTopLoaderIfRequired];
-        if(isTopLoader) {
-            [self scrollToTheEndAnimated:NO];
+        if(canHavePreviousMessages) {
+            [self showTopLoader];
+            [self activateTopLoader];
+            
+            if(hasNewMessages) {
+                [self scrollToTheEndAnimated:scrollAnimated];
+            }
         }
     }
-    
-    
 }
 
 // Sync with remote
@@ -504,7 +505,7 @@
     GLPMessage *message = [filtered firstObject];
     message.sendStatus = kSendStatusFailure;
     
-    [self reloadItem:message];
+    [self reloadItem:message sizeCanChange:YES];
     DDLogInfo(@"Reload message key: %d - remote key: %d - content: %@", message.key, message.remoteKey, message.content);
 }
 

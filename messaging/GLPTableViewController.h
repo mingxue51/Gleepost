@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *items;
 
-- (void)reloadItem:(id)item;
+- (void)reloadItem:(id)item sizeCanChange:(BOOL)sizeCanChange;
 - (void)reloadWithItems:(NSArray *)items;
 - (void)saveScrollContentOffset;
 - (void)restoreScrollContentOffsetAfterInsertingNewItems:(NSArray *)newItems;
