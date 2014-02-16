@@ -941,12 +941,35 @@
         // go to the contact detail ?
         if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
            notification.notificationType == kGLPNotificationTypeAddedYou) {
-            DDLogInfo(@"Go to the contact details ?");
+            
+            self.selectedUserId = notification.user.remoteKey;
+            //Refresh contacts' data.
+//            [[ContactsManager sharedInstance] refreshContacts];
+            
+            [self performSegueWithIdentifier:@"view private profile" sender:self];
+
+
+
         }
         // go the post detail ?
         else if(notification.notificationType == kGLPNotificationTypeLiked ||
                 notification.notificationType == kGLPNotificationTypeCommented) {
-            DDLogInfo(@"Go to the post details ?");
+            
+            DDLogInfo(@"Go to the post details.");
+            
+            [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL sucess, GLPPost *post) {
+                
+                
+                if(sucess)
+                {
+                    self.selectedPost = post;
+                    [self performSegueWithIdentifier:@"view post" sender:self];
+                }
+                else
+                {
+                    [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+                }
+            }];
         }
     }
     
