@@ -688,6 +688,13 @@ static GLPLiveConversationsManager *instance = nil;
             GLPMessage *last = [syncMessages lastObject];
             _conversationsLastestMessageShown[index] = [NSNumber numberWithInteger:last.key];
             DDLogInfo(@"New last shown message key: %d", last.key);
+            
+            // first time, we also intialize the oldest shown message
+            if([_conversationsOldestMessageShown[index] isEqualToNumber:@0]) {
+               GLPMessage *first = [syncMessages firstObject];
+                _conversationsOldestMessageShown[index] = [NSNumber numberWithInteger:first.key];
+                DDLogInfo(@"New oldest shown message key: %d", first.key);
+            }
         }
         
         // mark conversation as read
@@ -726,7 +733,7 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
-        NSInteger oldestShownMessageKey = [_conversationsLastestMessageShown[index] integerValue];
+        NSInteger oldestShownMessageKey = [_conversationsOldestMessageShown[index] integerValue];
         DDLogInfo(@"Oldest shown message key: %d", oldestShownMessageKey);
         
         if(oldestShownMessageKey == 0) {

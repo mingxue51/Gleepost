@@ -94,7 +94,14 @@
     }
     
     if((int)position != NSNotFound) {
-        [self performSelector:@selector(activateForPosition:) withObject:[NSNumber numberWithInt:(int)position]];
+        NSNumber *positionNumber = [NSNumber numberWithInt:(int)position];
+        
+        // Cancel any previous selector waiting in the queue
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(activateForPosition:) object:positionNumber];
+        
+        // we perform with slight delay in order to perform the selector after the table did stop scroll
+        // It works because the selector will be queued to perform in serial after the scroll event
+        [self performSelector:@selector(activateForPosition:) withObject:positionNumber afterDelay:0.01];
     }
 }
 
@@ -119,6 +126,14 @@
 - (void)activateForPosition:(NSNumber *)enumValue
 {
     GLPLoadingCellPosition position = [enumValue integerValue];
+    if(position == kGLPLoadingCellPositionTop) {
+        // ignore if user did not stop scroll on top loading cell, means scrolled back down
+        NSIndexPath *firstVisibleIndexPath = [[_tableView indexPathsForVisibleRows] objectAtIndex:0];
+        if(firstVisibleIndexPath.row != 0) {
+            return;
+        }
+    }
+    
     DDLogInfo(@"Activate loading cell for position %@", position == kGLPLoadingCellPositionTop ? @"TOP" : @"BOTTOM");
     
     [self loadingCellActivatedForPosition:position];
