@@ -268,18 +268,18 @@
 
 - (void)searchForConversation
 {
-    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
-
-    [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        if(success) {
-            _conversation = conversation;
-            [self performSegueWithIdentifier:@"start" sender:self];
-        } else {
-            [WebClientHelper showStandardError];
-        }
-    }];
+//    [WebClientHelper showStandardLoaderWithoutSpinningAndWithTitle:@"Connecting with user" forView:self.view];
+//
+//    [[WebClient sharedInstance] createConversationWithCallback:^(BOOL success, GLPConversation *conversation) {
+//        [WebClientHelper hideStandardLoaderForView:self.view];
+//        
+//        if(success) {
+//            _conversation = conversation;
+//            [self performSegueWithIdentifier:@"start" sender:self];
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
 }
 
 

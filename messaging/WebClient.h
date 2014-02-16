@@ -60,6 +60,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)synchronousGetConversationsFilterByLive:(BOOL)live withCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 -(void)createRegularConversationWithUserRemoteKey:(int)remoteKey andCallback:(void (^) (BOOL sucess, GLPConversation *conversation ))callbackBlock;
 - (GLPConversation *)synchronousCreateConversation;
+- (void)createConversation:(void (^)(GLPConversation *conversation))callback;
 
 // live conversations
 - (void)getConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
@@ -72,7 +73,6 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)createMessageSynchronously:(GLPMessage *)message callback:(void (^)(BOOL success, NSInteger remoteKey))callback;
 
-- (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
 - (void)getMessagesForConversation:(GLPConversation *)conversation after:(GLPMessage *)afterMessage before:(GLPMessage *)beforeMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 - (void)getMessagesForConversation:(GLPConversation *)conversation afterRemoteKey:(NSInteger)afterRemoteKey beforeRemoteKey:(NSInteger)beforeRemoteKey callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 

@@ -122,11 +122,11 @@
 {
 //        [self searchingAnimations];
     
-    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
+//    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
+//    
+//    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
     
-    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:3.0];
-    
-    [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(navigateToNewRandomChat:) withObject:nil afterDelay:0.0];
     
 }
 
@@ -177,23 +177,23 @@
 {
     DDLogInfo(@"Request random conversation");
     
-    [self performSelector:@selector(startSearchingIndicator) withObject:nil afterDelay:0.0];
+    [self startSearchingIndicator];
     
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] createRandomConversation];
-    
-    [self performSelector:@selector(stopSearchingIndicator) withObject:nil afterDelay:0.0];
-    
-    DDLogInfo(@"Conversation %d", conversation != nil);
-    if(conversation) {
-        if(_controllerExist) {
-            [[SessionManager sharedInstance] playSound];
-        }
+    [[GLPLiveConversationsManager sharedInstance] createRandomConversation:^(GLPConversation *conversation) {
+        [self stopSearchingIndicator];
         
-        _conversation = conversation;
-        [self navigateToChat];
-    } else {
-        [WebClientHelper showStandardErrorWithTitle:@"Cannot create new random conversation" andContent:@"Something wrong happenned, check your internet connection and try again."];
-    }
+        DDLogInfo(@"Conversation created succesfully: %d", conversation != nil);
+        if(conversation) {
+            if(_controllerExist) {
+                [[SessionManager sharedInstance] playSound];
+            }
+            
+            _conversation = conversation;
+            [self navigateToChat];
+        } else {
+            [WebClientHelper showStandardErrorWithTitle:@"Cannot create new random conversation" andContent:@"Something wrong happenned, check your internet connection and try again."];
+        }
+    }];
 }
 
 

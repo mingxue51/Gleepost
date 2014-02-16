@@ -105,29 +105,70 @@ static GLPLiveConversationsManager *instance = nil;
     }];
 }
 
-- (GLPConversation *)createRandomConversation
+- (void)createRandomConversation:(void (^)(GLPConversation *conversation))callback
 {
     DDLogInfo(@"Create random conversation");
     
-    __block GLPConversation *conversation = nil;
-    
-    dispatch_sync(_queue, ^{
-        GLPConversation *syncConversation = [[WebClient sharedInstance] synchronousCreateConversation];
-        if(!syncConversation) {
-            DDLogError(@"Cannot create new random conversation in server, abort");
+    dispatch_async(_queue, ^{
+        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversation];
+        if(!conversation) {
+            DDLogWarn(@"Cannot create new random conversation in server, abort");
             return;
         }
         
-        BOOL success = [self internalAddConversation:syncConversation isEmpty:YES];
-        if(!success) {
-            return;
-        }
-        
-        conversation = syncConversation;
+        BOOL success = [self internalAddConversation:conversation isEmpty:YES];
         DDLogInfo(@"Conversation created succesfully");
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(success) {
+                callback(conversation);
+            } else {
+                callback(nil);
+            }
+        });
     });
+
     
-    return conversation;
+//    [[WebClient sharedInstance] createConversation:^(GLPConversation *conversation) {
+//        if(!conversation) {
+//            DDLogWarn(@"Cannot create new random conversation in server, abort");
+//            return;
+//        }
+//        
+//        dispatch_async(_queue, ^{
+//            BOOL success = [self internalAddConversation:conversation isEmpty:YES];
+//            DDLogInfo(@"Conversation created succesfully");
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                if(success) {
+//                    callback(conversation);
+//                } else {
+//                    callback(nil);
+//                }
+//            });
+//        });
+//    }];
+    
+//    __block GLPConversation *conversation = nil;
+//    
+//    dispatch_sync(_queue, ^{
+//        [NSThread sleepForTimeInterval:10];
+//        GLPConversation *syncConversation = [[WebClient sharedInstance] synchronousCreateConversation];
+//        if(!syncConversation) {
+//            DDLogError(@"Cannot create new random conversation in server, abort");
+//            return;
+//        }
+//        
+//        BOOL success = [self internalAddConversation:syncConversation isEmpty:YES];
+//        if(!success) {
+//            return;
+//        }
+//        
+//        conversation = syncConversation;
+//        DDLogInfo(@"Conversation created succesfully");
+//    });
+//    
+//    return conversation;
 }
 
 - (void)addConversation:(GLPConversation *)conversation

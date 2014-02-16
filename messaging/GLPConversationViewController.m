@@ -476,24 +476,6 @@
     [self syncConversation];
 }
 
-//- (void)showMessageFromNotification:(NSNotification *)notification
-//{
-//    GLPMessage *message = [notification userInfo][@"message"];
-//    NSLog(@"Show message from notification %@ : Date: %@", message, message.date);
-//    
-//    if(_conversation.remoteKey != message.conversation.remoteKey) {
-//        NSLog(@"Long poll message is not for the current conversation, ignore");
-//        return;
-//    }
-//    
-//    [self showMessage:message];
-//    
-//    // conversation has no more unread messages
-////    if(!_conversation.isLive) {
-////        [ConversationManager markConversationRead:self.conversation];
-////    }
-//}
-
 
 #pragma mark - Navigation
 

@@ -795,8 +795,6 @@ static WebClient *instance = nil;
     }
     
     __block GLPConversation *conversation = nil;
-    
-//    NSString *path = [NSString stringWithFormat:@"conversations?random=true&participant_count=2&id=%@&token=%@", self.sessionManager.authParameters[@"id"], self.sessionManager.authParameters[@"token"]];
 
     [self executeSynchronousRequestWithMethod:@"POST" path:@"conversations" params:params callback:^(BOOL success, id json) {
         if(!success) {
@@ -814,28 +812,39 @@ static WebClient *instance = nil;
     return conversation;
 }
 
-- (void)createConversationWithCallback:(void (^)(BOOL success, GLPConversation *conversation))callback
+- (void)createConversation:(void (^)(GLPConversation *conversation))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
     if(ENV_FAKE_LIVE_CONVERSATIONS) {
         params[@"random"] = @"false";
         
         NSString *userIds;
-        if(self.sessionManager.user.remoteKey == 2399) {
-            userIds = @"2395";
+        if(self.sessionManager.user.remoteKey == 15) {
+            userIds = @"8";
         } else {
-            userIds = @"2399";
+            userIds = @"15";
         }
         
         params[@"participants"] = userIds;
         DDLogInfo(@"Generate fake live conversation for current user: %d, with opponent user: %@", self.sessionManager.user.remoteKey, userIds);
+    } else {
+        params[@"random"] = @"true";
+        params[@"participant_count"] = @2;
     }
     
     [self postPath:@"conversations" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        GLPConversation *conversation = [RemoteParser parseConversationFromJson:responseObject];
-        callback(YES, conversation);
+        
+        GLPConversation *conversation = nil;
+        @try {
+            conversation = [RemoteParser parseConversationFromJson:responseObject];
+        } @catch (NSException *e) {
+            DDLogInfo(@"Parse conversation expcetion for json: %@", responseObject);
+        }
+        
+        callback(conversation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callback(NO, nil);
+        callback(nil);
     }];
 }
 
