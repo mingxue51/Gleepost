@@ -430,15 +430,16 @@
     
     // previous messages loaded
     if([[notification userInfo][@"previousMessages"] boolValue]) {
-        if(hasNewMessages) {
-            [self loadPreviousMessages];
-        }
+        BOOL canHavePreviousMessages = [[notification userInfo][@"canHaveMorePreviousMessages"] boolValue];
         
-        BOOL canHavePreviousMessages = [[notification userInfo][@"canHavePreviousMessages"] boolValue];
         if(canHavePreviousMessages) {
             [self showTopLoader];
         } else {
             [self hideTopLoader];
+        }
+        
+        if(hasNewMessages) {
+            [self loadPreviousMessages];
         }
     }
     // new messages loaded
