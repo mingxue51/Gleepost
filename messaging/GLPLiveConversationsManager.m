@@ -667,7 +667,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSArray *)lastestMessagesForConversation:(GLPConversation *)conversation
 {
-    DDLogInfo(@"Get lastest messages for conversation %d", conversation.remoteKey);
+    DDLogInfo(@"Get lastest messages for conversation remote key: %d", conversation.remoteKey);
     __block NSArray *array = nil;
     
     dispatch_sync(_queue, ^{
@@ -930,10 +930,12 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
+        NSInteger key = [self internalAddMessage:message toConversation:conversation];
+        conversation.lastSyncMessageKey = key;
+        
         // conversation has unread messages
         conversation.hasUnreadMessages = YES;
         
-        [self internalAddMessage:message toConversation:conversation];
         [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
     });
 }
@@ -987,15 +989,21 @@ static GLPLiveConversationsManager *instance = nil;
         
         synchMessage.sendStatus = message.sendStatus;
         
+        BOOL sent;
         NSString *sentLog;
         if(message.sendStatus == kSendStatusSent) {
             synchMessage.remoteKey = message.remoteKey;
+            conversation.lastSyncMessageKey = synchMessage.key;
+            
             sentLog = @"SENT";
+            sent = YES;
         } else {
             sentLog = @"NOT SENT";
+            sent = NO;
         }
         
         DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"sent":[NSNumber numberWithBool:sent]}];
     });
 }
 
@@ -1147,8 +1155,6 @@ static GLPLiveConversationsManager *instance = nil;
     
     GLPMessage *synchMessage = [message copy];
     synchMessage.key = key;
-    
-    conversation.lastSyncMessageKey = key;
     [conversation updateWithNewMessage:message];
     
     [_conversationsMessages[index] addObject:synchMessage];

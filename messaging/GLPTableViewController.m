@@ -107,6 +107,15 @@
     }
 }
 
+- (void)reloadItem:(id)item
+{
+    NSIndexPath *indexPath = [self indexPathForItem:item];
+    if(!indexPath) {
+        return;
+    }
+    
+    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
 
 - (void)reloadWithItems:(NSArray *)items
 {
@@ -150,6 +159,21 @@
     }
     
     return _items[row];
+}
+
+- (NSIndexPath *)indexPathForItem:(id)item
+{
+    NSInteger index = [_items indexOfObject:item];
+    if(index == NSNotFound) {
+        DDLogError(@"Grave inconsistency: Cannot find item index to reload");
+        return nil;
+    }
+    
+    if(_topLoadingCellDelegate.isVisible) {
+        index++;
+    }
+    
+    return [NSIndexPath indexPathForRow:index inSection:0];
 }
 
 - (void)activateForPosition:(NSNumber *)enumValue

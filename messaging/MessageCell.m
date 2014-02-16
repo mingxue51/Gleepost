@@ -39,6 +39,7 @@ static const float FirstCellOtherElementsTotalHeight = 22;
 static const float FollowingCellPadding = 7;
 static const float MessageContentViewPadding = 10;  //15 before.
 static const float MessageContentLabelMaxWidth = 241;
+static const float MessageContentLabelMaxWidthWithError = MessageContentLabelMaxWidth - 20;
 static const float MessageContentLabelPadding = 14; // horizontal padding 12
 
 
@@ -106,7 +107,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     }
     
     // configure width and height based on dynamic label size
-    CGSize contentSize = [MessageCell getContentLabelSizeForContent:message.content];
+    CGSize contentSize = [MessageCell getContentLabelSizeForMessage:message];
     float contentHeight = contentSize.height;
     float contentWidth = contentSize.width;
     
@@ -153,7 +154,19 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     [ShapeFormatterHelper setRoundedView:self.avatarImageView toDiameter:self.avatarImageView.frame.size.height];
 
-    
+    if(message.sendStatus == kSendStatusFailure) {
+        self.errorImageView.hidden = NO;
+        
+        if(self.isLeft) {
+            
+        } else {
+            float y = self.messageContentImageView.frame.origin.y + ((self.messageContentImageView.frame.size.height - self.errorImageView.frame.size.height) / 2);
+            float x = self.messageContentImageView.frame.origin.x - self.errorImageView.frame.size.width - 5;
+            CGRectSetXY(self.errorImageView, x, y);
+        }
+    } else {
+        self.errorImageView.hidden = YES;
+    }
     
 //    switch (message.sendStatusValue) {
 //        case kSendStatusLocal:
@@ -169,7 +182,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
 }
 
 
-+ (CGSize)getContentLabelSizeForContent:(NSString *)content
++ (CGSize)getContentLabelSizeForMessage:(GLPMessage *)message
 {
 
         //DELETED.
@@ -180,10 +193,11 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
     
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     
+    float maxWidth = message.sendStatus != kSendStatusFailure ? MessageContentLabelMaxWidth : MessageContentLabelMaxWidthWithError;
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){MessageContentLabelMaxWidth, CGFLOAT_MAX}
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                context:nil];
     
@@ -192,13 +206,13 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     return rect.size;
 }
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst
++ (CGFloat)getCellHeightWithMessage:(GLPMessage *)message first:(BOOL)isFirst
 {
     // initial height
     float height = (isFirst) ? FirstCellOtherElementsTotalHeight : 0;
     
     // add content label height + message content view padding
-    height += [MessageCell getContentLabelSizeForContent:content].height + MessageContentViewPadding;
+    height += [MessageCell getContentLabelSizeForMessage:message].height + MessageContentViewPadding;
     
     return height + FollowingCellPadding;
 }

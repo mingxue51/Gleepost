@@ -1202,12 +1202,13 @@ float timeInterval = 0.1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self isLoadingCellForIndexPath:indexPath]) {
-        return kGLPLoadingCellHeight;
-    }
-    
-    GLPMessage *message = [self getMessageForIndexPath:indexPath];
-    return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
+//    if([self isLoadingCellForIndexPath:indexPath]) {
+//        return kGLPLoadingCellHeight;
+//    }
+//    
+//    GLPMessage *message = [self getMessageForIndexPath:indexPath];
+//    return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
+    return 0;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

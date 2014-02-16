@@ -17,11 +17,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *messageContentLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *messageContentImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *errorImageView;
 
 @property (strong, nonatomic) NSString *cellIdentifier;
 @property (assign, nonatomic) BOOL isLeft;
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content first:(BOOL)isFirst;
++ (CGFloat)getCellHeightWithMessage:(GLPMessage *)content first:(BOOL)isFirst;
 
 - (void)updateWithMessage:(GLPMessage *)message first:(BOOL)isFirst;
 

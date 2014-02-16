@@ -73,8 +73,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
 
     // configuration
     [self configureHeader];
@@ -117,8 +115,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     
-    
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -141,6 +138,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     
     [super viewWillDisappear:animated];
 }
@@ -476,6 +474,30 @@
     [self syncConversation];
 }
 
+- (void)messageSendUpdateFromNotification:(NSNotification *)notification
+{
+    DDLogInfo(@"Message send update from NSNotification");
+    NSInteger key = [[notification userInfo][@"key"] integerValue];
+    BOOL sent = [[notification userInfo][@"sent"] boolValue];
+    
+    // dont do anything
+    if(sent) {
+        return;
+    }
+    
+    NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
+    if(filtered.count != 1) {
+        DDLogError(@"Grave inconsistency: cannot find message in local messages for key: %d - filtered array count: %d", key, filtered.count);
+        return;
+    }
+    
+    GLPMessage *message = [filtered firstObject];
+    message.sendStatus = kSendStatusFailure;
+    
+    [self reloadItem:message];
+    DDLogInfo(@"Reload message key: %d - remote key: %d - content: %@", message.key, message.remoteKey, message.content);
+}
+
 
 #pragma mark - Navigation
 
@@ -686,7 +708,7 @@
 - (CGFloat)heightForItem:(id)item
 {
     GLPMessage *message = (GLPMessage *)item;
-    return [MessageCell getCellHeightWithContent:message.content first:message.hasHeader];
+    return [MessageCell getCellHeightWithMessage:message first:message.hasHeader];
 }
 
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position

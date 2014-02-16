@@ -28,6 +28,7 @@
 #define GLPNOTIFICATION_ONE_CONVERSATION_SYNC       @"GLPOneConversationSync"
 #define GLPNOTIFICATION_NEW_NOTIFICATION            @"GLPNewNotification"
 #define GLPNOTIFICATION_NEW_MESSAGE                 @"GLPNewMessage"
+#define GLPNOTIFICATION_MESSAGE_SEND_UPDATE         @"GLPMessageSendUpdate"
 #define GLPNOTIFICATION_NETWORK_UPDATE              @"GLPNetworkStatusUpdate"
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE    @"GLPSynchronizedWithRemote"
 
