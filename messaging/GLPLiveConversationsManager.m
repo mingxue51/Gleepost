@@ -295,6 +295,7 @@ static GLPLiveConversationsManager *instance = nil;
     
     [[WebClient sharedInstance] getMessagesForConversation:detachedConversation after:lastSyncMessage before:nil callbackBlock:^(BOOL success, NSArray *messages) {
         if(!success) {
+            [self internalNotifyConversation:detachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
             return;
         }
         
@@ -366,6 +367,7 @@ static GLPLiveConversationsManager *instance = nil;
     
     [[WebClient sharedInstance] getMessagesForConversation:detachedConversation after:nil before:oldestMessage callbackBlock:^(BOOL success, NSArray *messages) {
         if(!success) {
+            [self internalNotifyConversation:detachedConversation withNewMessages:NO beingPreviousMessages:YES canHaveMorePreviousMessages:NO];
             return;
         }
         
@@ -508,6 +510,8 @@ static GLPLiveConversationsManager *instance = nil;
         for(NSNumber *key in [_conversationsSyncStatuses allKeys]) {
             _conversationsSyncStatuses[key] = [NSNumber numberWithBool:NO];
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     });
 }
 

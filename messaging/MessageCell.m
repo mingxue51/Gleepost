@@ -155,13 +155,16 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     [ShapeFormatterHelper setRoundedView:self.avatarImageView toDiameter:self.avatarImageView.frame.size.height];
 
     if(message.sendStatus == kSendStatusFailure) {
+        DDLogInfo(@"Show failure for message: %@", message.content);
         self.errorImageView.hidden = NO;
         
+        float y = self.messageContentView.frame.origin.y + ((self.messageContentView.frame.size.height - self.errorImageView.frame.size.height) / 2);
+        
         if(self.isLeft) {
-            
+            float x = CGRectGetMaxX(self.messageContentView.frame) + 10;
+            CGRectSetXY(self.errorImageView, x, y);
         } else {
-            float y = self.messageContentImageView.frame.origin.y + ((self.messageContentImageView.frame.size.height - self.errorImageView.frame.size.height) / 2);
-            float x = self.messageContentImageView.frame.origin.x - self.errorImageView.frame.size.width - 5;
+            float x = self.messageContentView.frame.origin.x - self.errorImageView.frame.size.width - 15;
             CGRectSetXY(self.errorImageView, x, y);
         }
     } else {
@@ -195,7 +198,7 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     
-    float maxWidth = message.sendStatus != kSendStatusFailure ? MessageContentLabelMaxWidth : MessageContentLabelMaxWidthWithError;
+    float maxWidth = message.sendStatus == kSendStatusFailure ? MessageContentLabelMaxWidthWithError : MessageContentLabelMaxWidth;
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)

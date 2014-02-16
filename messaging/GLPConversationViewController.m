@@ -115,6 +115,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
 }
 
@@ -138,6 +140,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     
     [super viewWillDisappear:animated];
@@ -470,8 +473,15 @@
 // - Sync with remote notif
 - (void)syncWithRemoteFromNotification:(NSNotification *)notification
 {
-    DDLogInfo(@"Synchronized with remote NSNotification");
+    DDLogInfo(@"Synchronized with remote from NSNotification");
     [self syncConversation];
+}
+
+- (void)notSyncWithRemoteFromNotification:(NSNotification *)notification
+{
+    DDLogInfo(@"Not synchronized with remote from NSNotification");
+    [self hideBottomLoader];
+    [self hideTopLoader];
 }
 
 - (void)messageSendUpdateFromNotification:(NSNotification *)notification

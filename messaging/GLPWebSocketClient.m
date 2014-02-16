@@ -103,13 +103,13 @@ static GLPWebSocketClient *instance = nil;
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
     NSLog(@"Web socket did fail with error: %@", error);
-//    [[GLPNetworkManager sharedInstance] webSocketDidDisconnect];
+    [[GLPNetworkManager sharedInstance] webSocketDidFailOrClose];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
     NSLog(@"Web socket did close with code: %d, reason: %@, was clean: %d", code, reason, wasClean);
-//    [[GLPNetworkManager sharedInstance] webSocketDidDisconnect];
+    [[GLPNetworkManager sharedInstance] webSocketDidFailOrClose];
 }
 
 

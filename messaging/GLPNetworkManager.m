@@ -86,6 +86,8 @@ static GLPNetworkManager *instance = nil;
         return;
     }
     
+    DDLogInfo(@"Restart network operations");
+    
     [self startNetworkOperations];
 }
 
@@ -95,6 +97,8 @@ static GLPNetworkManager *instance = nil;
         DDLogInfo(@"Cannot stop network operations, already stopped");
         return;
     }
+    
+    DDLogInfo(@"Stop network operations");
     
     _state = kGLPNetworkManagerStateStopped;
     
@@ -106,6 +110,11 @@ static GLPNetworkManager *instance = nil;
 {
     // init the conversations list
     [[GLPLiveConversationsManager sharedInstance] loadConversations];
+}
+
+- (void)webSocketDidFailOrClose
+{
+    [self stopNetworkOperations];
 }
 
 
