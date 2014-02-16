@@ -163,24 +163,23 @@
 -(void)setDefaultTextToEmailAndPassFields
 {
     if(DEV) {
-        
-//        self.emailTextField.text = @"gleepost@stanford.edu";
-//        self.passwordTextField.text = @"TestingPass";
-
-        
-//        if(!ON_DEVICE) {
-//            //            self.nameTextField.text = @"TestingUser";
-//            //            self.passwordTextField.text = @"TestingPass";
-//            //            self.nameTextField.text = @"Silouanos N";
-//            //            self.passwordTextField.text = @"1234";
-//            self.emailTextField.text = @"fingolfin@leeds.ac.uk";
-//            self.passwordTextField.text = @"ihatemorgoth";
-//        } else {
-//            self.emailTextField.text = @"sc11pm@leeds.ac.uk";
-//            self.passwordTextField.text = @"TestingPass";
-//            //            self.nameTextField.text = @"TestingUser";
-//            //            self.passwordTextField.text = @"TestingPass";
-//        }
+        if([GLP_WEBSERVICE_VERSION floatValue] < 1.0) {
+            if(!ON_DEVICE) {
+                self.emailTextField.text = @"fingolfin@leeds.ac.uk";
+                self.passwordTextField.text = @"ihatemorgoth";
+            } else {
+                self.emailTextField.text = @"sc11pm@leeds.ac.uk";
+                self.passwordTextField.text = @"TestingPass";
+            }
+        } else {
+            if(ON_DEVICE) {
+                self.emailTextField.text = @"gleepost@stanford.edu";
+                self.passwordTextField.text = @"TestingPass";
+            } else {
+                self.emailTextField.text = @"gleepost123@stanford.edu";
+                self.passwordTextField.text = @"TestingPass";
+            }
+        }
     }
 }
 

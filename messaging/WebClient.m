@@ -781,10 +781,10 @@ static WebClient *instance = nil;
         params[@"random"] = @"false";
         
         NSString *userIds;
-        if(self.sessionManager.user.remoteKey == 2399) {
-            userIds = @"2395";
+        if(self.sessionManager.user.remoteKey == 15) {
+            userIds = @"8";
         } else {
-            userIds = @"2399";
+            userIds = @"15";
         }
         
         params[@"participants"] = userIds;

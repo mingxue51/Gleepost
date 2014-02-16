@@ -25,6 +25,7 @@
 - (NSArray *)conversationsList;
 - (void)conversationsList:(void (^)(NSArray *liveConversations, NSArray *regularConversations))block;
 - (void)syncConversation:(GLPConversation *)conversation;
+- (void)syncConversationPreviousMessages:(GLPConversation *)detachedConversation;
 - (void)resetLastShownMessageForConversation:(GLPConversation *)conversation;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
 - (BOOL)conversationCanHavePreviousMessages:(GLPConversation *)conversation;
@@ -35,6 +36,7 @@
 
 // messages
 - (NSArray *)lastestMessagesForConversation:(GLPConversation *)conversation;
+- (NSArray *)oldestMessagesForConversation:(GLPConversation *)detachedConversation;
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation;
 - (NSArray *)messagesForConversation:(GLPConversation *)conversation startingAfter:(GLPMessage *)after;
 - (void)updateLocalMessageAfterSending:(GLPMessage *)message;

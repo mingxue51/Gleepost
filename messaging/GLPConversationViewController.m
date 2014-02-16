@@ -330,6 +330,16 @@
     [self showLoadedMessages];
 }
 
+- (void)loadPreviousMessages
+{
+    DDLogInfo(@"Load previous messages");
+    
+    NSArray *previousMessages = [[GLPLiveConversationsManager sharedInstance] oldestMessagesForConversation:_conversation];
+    
+    [_messages insertObjects:previousMessages atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, previousMessages.count)]];
+    [self showLoadedMessages];
+}
+
 - (void)showLoadedMessages
 {
     [self configureDisplayForMessages:_messages];
@@ -428,20 +438,39 @@
         return;
     }
     
-    [self hideBottomLoader];
-    
     BOOL hasNewMessages = [[notification userInfo][@"newMessages"] boolValue];
-    BOOL scrollAnimated = _messages.count > 0;
     
-    if(hasNewMessages) {
-        [self loadNewMessages];
-        [self scrollToTheEndAnimated:scrollAnimated];
+    // previous messages loaded
+    if([[notification userInfo][@"previousMessages"] boolValue]) {
+        if(hasNewMessages) {
+            [self loadPreviousMessages];
+        }
+        
+        BOOL canHavePreviousMessages = [[notification userInfo][@"canHavePreviousMessages"] boolValue];
+        if(canHavePreviousMessages) {
+            [self showTopLoader];
+        } else {
+            [self hideTopLoader];
+        }
+    }
+    // new messages loaded
+    else {
+        [self hideBottomLoader];
+        
+        BOOL scrollAnimated = _messages.count > 0;
+        
+        if(hasNewMessages) {
+            [self loadNewMessages];
+            [self scrollToTheEndAnimated:scrollAnimated];
+        }
+        
+        BOOL isTopLoader = [self showTopLoaderIfRequired];
+        if(isTopLoader) {
+            [self scrollToTheEndAnimated:NO];
+        }
     }
     
-    BOOL isTopLoader = [self showTopLoaderIfRequired];
-    if(isTopLoader) {
-        [self scrollToTheEndAnimated:NO];
-    }
+    
 }
 
 // Sync with remote
@@ -692,6 +721,11 @@
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position
 {
     DDLogInfo(@"Loading cell activated for position: %d", position);
+    if(position != kGLPLoadingCellPositionTop) {
+        return;
+    }
+    
+    [[GLPLiveConversationsManager sharedInstance] syncConversationPreviousMessages:_conversation];
 }
 
 
