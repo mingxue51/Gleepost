@@ -12,5 +12,10 @@
 
 @interface SoundHelper : NSObject
 
++ (SoundHelper *)sharedInstance;
+
+-(void)messageSent;
+-(void)userFound;
+
 
 @end

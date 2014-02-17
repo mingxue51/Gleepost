@@ -10,6 +10,7 @@
 
 @interface SoundHelper ()
 
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 
 
 
@@ -17,8 +18,72 @@
 
 @implementation SoundHelper
 
--(void)playSound
+
+static SoundHelper *instance = nil;
+
++ (SoundHelper *)sharedInstance
 {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[SoundHelper alloc] init];
+    });
+    
+    return instance;
+}
+
+-(id)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+//        _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
+
+        _audioPlayer = [[AVAudioPlayer alloc] init];
+    }
+    
+    return self;
+}
+
+-(void)messageSent
+{
+    if(ON_DEVICE)
+    {
+
+        NSURL *clickURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/b.wav", [[NSBundle mainBundle] resourcePath]]];
+        
+//        NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/b.mp3", [[NSBundle mainBundle] resourcePath]]]];
+        
+        @try {
+            _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
+
+        }
+        @catch (NSException *exception) {
+            DDLogDebug(@"EXCEPTION");
+        }
+        @finally {
+            DDLogDebug(@"EXCEPTION");
+
+        }
+        
+        [_audioPlayer play];
+    }
+}
+
+-(void)userFound
+{
+    
+    
+    if(ON_DEVICE)
+    {
+        NSURL *clickURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/mario.mp3", [[NSBundle mainBundle] resourcePath]]];
+        _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
+        
+        [_audioPlayer play];
+    }
+    
+    
+    
     //start a background sound
 //    NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@"Soothing_Music2_Long" ofType: @"mp3"];
 //    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:soundFilePath ];

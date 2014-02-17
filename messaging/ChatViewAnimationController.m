@@ -17,6 +17,7 @@
 #import "WalkThroughHelper.h"
 #import "SessionManager.h"
 #import "UIAlertView+Blocks.h"
+#import "SoundHelper.h"
 
 @interface ChatViewAnimationController ()
 
@@ -185,7 +186,7 @@
         DDLogInfo(@"Conversation created succesfully: %d", conversation != nil);
         if(conversation) {
             if(_controllerExist) {
-                [[SessionManager sharedInstance] playSound];
+                [[SoundHelper sharedInstance] userFound];
             }
             
             _conversation = conversation;

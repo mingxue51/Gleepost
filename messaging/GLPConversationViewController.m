@@ -43,6 +43,7 @@
 
 #import "GLPThemeManager.h"
 #import "GLPIntroducedProfile.h"
+#import "SoundHelper.h"
 
 @interface GLPConversationViewController ()
 
@@ -474,6 +475,7 @@
         if(hasNewMessages) {
             [self loadNewMessages];
             [self scrollToTheEndAnimated:scrollAnimated];
+
         }
         
         if(canHavePreviousMessages) {
@@ -483,6 +485,10 @@
                 [self activateTopLoader];
             }
         } else {
+            
+            //TODO: Add sound once message received.
+            [[SoundHelper sharedInstance] messageSent];
+            
             [self hideTopLoader];
         }
         
@@ -593,13 +599,20 @@
         return;
     }
     
+    //Play sound.
+//    [[SoundHelper sharedInstance] messageSent];
+    
     if(_isEmptyConversation) {
         
-        
+
         
         [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
             _conversation = conversation;
             [self createMessageFromForm];
+            
+
+
+            
         }];
     } else {
         [self createMessageFromForm];

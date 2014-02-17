@@ -335,17 +335,17 @@ static SessionManager *instance = nil;
     }];
 }
 
--(void)playSound
-{
-    if(ON_DEVICE)
-    {
-        NSURL *clickURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/mario.mp3", [[NSBundle mainBundle] resourcePath]]];
-        _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
-        
-        [_audioPlayer play];
-    }
-
-}
+//-(void)playSound
+//{
+//    if(ON_DEVICE)
+//    {
+//        NSURL *clickURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/mario.mp3", [[NSBundle mainBundle] resourcePath]]];
+//        _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
+//        
+//        [_audioPlayer play];
+//    }
+//
+//}
 
 
 

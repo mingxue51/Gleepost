@@ -1054,7 +1054,7 @@ const float TOP_OFFSET = 219.0f;
     
     
     [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
-        
+    
     
 //    [self.campusWallHeader setPositionToNavBar:CGPointMake(0.0f, scrollView.contentOffset.y)];
     

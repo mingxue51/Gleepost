@@ -635,6 +635,8 @@ int const NumberMaxOfMessagesLoaded = 20;
         if(success) {
             message.remoteKey = remoteKey;
             message.sendStatus = kSendStatusSent;
+            
+            
         } else {
             message.sendStatus = kSendStatusFailure;
         }
