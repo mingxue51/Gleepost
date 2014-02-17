@@ -61,6 +61,9 @@
 @property (assign, nonatomic) BOOL isEmptyConversation;
 @property (assign, nonatomic) BOOL isWaitingForSyncConversation;
 
+
+@property (assign, nonatomic) BOOL isFirstLoaded;
+
 @end
 
 @implementation GLPConversationViewController
@@ -97,6 +100,8 @@
     if([self canLoadMessages]) {
         [self loadInitialMessages];
     }
+    
+    _isFirstLoaded = YES;
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -487,10 +492,26 @@
         } else {
             
             //TODO: Add sound once message received.
-            [[SoundHelper sharedInstance] messageSent];
+            
+            if(_isFirstLoaded)
+            {
+                _isFirstLoaded= NO;
+
+            }
+            else
+            {
+                
+                [[SoundHelper sharedInstance] messageSent];
+
+ 
+            }
+            
             
             [self hideTopLoader];
         }
+        
+        _isFirstLoaded= NO;
+
         
     }
 }

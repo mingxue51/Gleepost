@@ -57,6 +57,8 @@ static SoundHelper *instance = nil;
         @try {
             _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
 
+            [_audioPlayer setVolume:0.1];
+            
         }
         @catch (NSException *exception) {
             DDLogDebug(@"EXCEPTION");
