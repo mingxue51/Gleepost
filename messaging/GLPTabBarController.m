@@ -27,6 +27,9 @@ static BOOL isViewDidDisappearCalled = YES;
 
 - (void)viewDidLoad
 {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    appDelegate.tabBarController = self;
+    
     _messagesCount = 0;
     _profileNotificationsCount = 0;
     

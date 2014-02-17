@@ -96,15 +96,20 @@
     }
     
     if((int)position != NSNotFound) {
-        NSNumber *positionNumber = [NSNumber numberWithInt:(int)position];
-        
-        // Cancel any previous selector waiting in the queue
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(activateForPosition:) object:positionNumber];
-        
-        // we perform with slight delay in order to perform the selector after the table did stop scroll
-        // It works because the selector will be queued to perform in serial after the scroll event
-        [self performSelector:@selector(activateForPosition:) withObject:positionNumber afterDelay:0.01];
+        [self performActivateForPosition:position];
     }
+}
+
+- (void)performActivateForPosition:(GLPLoadingCellPosition)position
+{
+    NSNumber *positionNumber = [NSNumber numberWithInt:(int)position];
+    
+    // Cancel any previous selector waiting in the queue
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(activateForPosition:) object:positionNumber];
+    
+    // we perform with slight delay in order to perform the selector after the table did stop scroll
+    // It works because the selector will be queued to perform in serial after the scroll event
+    [self performSelector:@selector(activateForPosition:) withObject:positionNumber afterDelay:0.01];
 }
 
 - (void)reloadItem:(id)item sizeCanChange:(BOOL)sizeCanChange
@@ -140,6 +145,12 @@
 
 - (void)restoreScrollContentOffsetAfterInsertingNewItems:(NSArray *)newItems
 {
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self tableView:_tableView numberOfRowsInSection:0] - 1 inSection:0];
+//    CGRect rect = [_tableView rectForRowAtIndexPath:indexPath];
+//    DDLogInfo(@"rect %f %f", rect.origin.y, rect.size.height);
+//    DDLogInfo(@"tab %f %f", _tableView.bounds.origin.y, _tableView.bounds.size.height);
+    
+    
     NSInteger firstRow;
     if([self topLoadingCellRow] == NSNotFound) {
         firstRow = 0;
@@ -233,7 +244,7 @@
     return row;
 }
 
-- (void)showTopLoader
+- (void)showTopLoader:(BOOL)animated saveOffset:(BOOL)saveOffset
 {
     if(_topLoadingCellDelegate.isVisible || _bottomLoadingCellDelegate.isVisible) {
         return;
@@ -244,9 +255,13 @@
     
     [_topLoadingCellDelegate show];
     
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    UITableViewRowAnimation animation = animated ? UITableViewRowAnimationAutomatic : UITableViewRowAnimationNone;
     
-    [_tableView setContentOffset:CGPointMake(0, offset + kGLPLoadingCellHeight)];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:animation];
+    
+    if(saveOffset) {
+        [_tableView setContentOffset:CGPointMake(0, offset + kGLPLoadingCellHeight)];
+    }
 }
 
 - (void)hideTopLoader
@@ -265,6 +280,11 @@
 - (void)activateTopLoader
 {
     [_topLoadingCellDelegate activate];
+    
+    NSIndexPath *firstVisibleIndexPath = [[_tableView indexPathsForVisibleRows] objectAtIndex:0];
+    if(firstVisibleIndexPath.row == 0) {
+        [self performActivateForPosition:kGLPLoadingCellPositionTop];
+    }
 }
 
 - (void)showBottomLoader
@@ -285,7 +305,7 @@
     }
 }
 
-- (void)hideBottomLoader
+- (void)hideBottomLoader:(BOOL)animated
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     DDLogInfo(@"Hide network activity indicator for bottom loader");
@@ -299,8 +319,10 @@
     if(_bottomLoadingCellDelegate.isVisible) {
         [_bottomLoadingCellDelegate hide];
         
+        UITableViewRowAnimation animation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
+        
         int rows = [self tableView:self.tableView numberOfRowsInSection:0];
-        [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:animated];
     }
 }
 

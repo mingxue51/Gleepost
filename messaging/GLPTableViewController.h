@@ -22,11 +22,11 @@
 - (UITableViewCell *)cellForItem:(id)item forIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)heightForItem:(id)item;
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position;
-- (void)showTopLoader;
+- (void)showTopLoader:(BOOL)animated saveOffset:(BOOL)saveOffset;
 - (void)hideTopLoader;
 - (void)activateTopLoader;
 - (void)showBottomLoader;
-- (void)hideBottomLoader;
+- (void)hideBottomLoader:(BOOL)animated;
 - (void)scrollToTheEndAnimated:(BOOL)animated;
 
 @end

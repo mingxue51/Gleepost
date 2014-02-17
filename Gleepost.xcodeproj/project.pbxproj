@@ -435,6 +435,7 @@
 		8056763F1805997B006E058E /* UserNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056763E1805997B006E058E /* UserNetwork.m */; };
 		8056764318059DC4006E058E /* LongPollOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056764218059DC4006E058E /* LongPollOperation.m */; };
 		805676461805B742006E058E /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 805676451805B742006E058E /* MessageCell.m */; };
+		80595E1318B1B02900D99E41 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 80595E1218B1B02900D99E41 /* Localizable.strings */; };
 		805E155A180EF3E700705B1C /* share_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1553180EF3E700705B1C /* share_image@2x.png */; };
 		805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1555180EF3E700705B1C /* thumbs-up_image@2x.png */; };
 		805E155D180EF3E700705B1C /* time_label.png in Resources */ = {isa = PBXBuildFile; fileRef = 805E1556180EF3E700705B1C /* time_label.png */; };
@@ -1174,6 +1175,7 @@
 		8056764218059DC4006E058E /* LongPollOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollOperation.m; sourceTree = "<group>"; };
 		805676441805B742006E058E /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		805676451805B742006E058E /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
+		80595E1218B1B02900D99E41 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
 		805E1553180EF3E700705B1C /* share_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share_image@2x.png"; sourceTree = "<group>"; };
 		805E1555180EF3E700705B1C /* thumbs-up_image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbs-up_image@2x.png"; sourceTree = "<group>"; };
 		805E1556180EF3E700705B1C /* time_label.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time_label.png; sourceTree = "<group>"; };
@@ -2775,6 +2777,7 @@
 		80AB892217C267F50053E784 /* Gleepost */ = {
 			isa = PBXGroup;
 			children = (
+				80595E1218B1B02900D99E41 /* Localizable.strings */,
 				80B2A42A1833A2E1002AB1F0 /* Macros */,
 				80B2A42918339624002AB1F0 /* Interfaces */,
 				806E3D581832B0850063AACE /* Libraries */,
@@ -3503,6 +3506,7 @@
 				5832C4B7189929FC004FC4F6 /* show_categories.png in Resources */,
 				58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */,
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
+				80595E1318B1B02900D99E41 /* Localizable.strings in Resources */,
 				582B404718AD3E5800BC4285 /* question_category.png in Resources */,
 				80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */,
 				58AD86A318929F2200016C6D /* about_button.png in Resources */,

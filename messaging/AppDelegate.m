@@ -27,11 +27,17 @@
 #import "GLPLoginManager.h"
 #import "DCIntrospect.h"
 #import "GLPCommonHelper.h"
+#import "UIApplication+SimulatorRemoteNotifications.h"
+#import "GLPTabBarController.h"
+#import "MessagesViewController.h"
+#import "GLPConversationViewController.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
 
 @implementation AppDelegate
+
+@synthesize tabBarController=_tabBarController;
 
 // hello, boy
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -45,23 +51,20 @@ static NSString * const kCustomURLHost      = @"verify";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    
-
-
 
     BOOL loggedIn = [GLPLoginManager performAutoLogin];
     
     UIViewController *initVC;
     if(loggedIn) {
         
-        // check for push
-        if (launchOptions != nil) {
-            NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-            if (dictionary != nil) {
-                DDLogInfo(@"Application started from push notification");
-                [self receivePushNotification:dictionary];
-            }
-        }
+//        // check for push
+//        if (launchOptions != nil) {
+//            NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+//            if (dictionary != nil) {
+//                DDLogInfo(@"Application started from push notification");
+//                [self receivePushNotification:dictionary];
+//            }
+//        }
         
         initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
     } else {
@@ -143,11 +146,60 @@ static NSString * const kCustomURLHost      = @"verify";
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogInfo(@"Receive remote notification, current app state: %@", [GLPCommonHelper applicationStateToString:application.applicationState]);
+    
+    if(application.applicationState == UIApplicationStateInactive) {
+        [self receivePushNotification:userInfo];
+    }
 }
 
 - (void)receivePushNotification:(NSDictionary *)json
 {
     DDLogInfo(@"Receive push notification: %@", json);
+    
+    if(!json[@"conv"]) {
+        DDLogError(@"Converstion id does not exist, abort");
+        return;
+    }
+    
+    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[json[@"conv"] integerValue]];
+    
+//    GLPTabBarController *tabVC = nil;
+//    
+//    DDLogInfo(@"Root VC: %@", NSStringFromClass([self.window.rootViewController class]));
+//    if([self.window.rootViewController isKindOfClass:[GLPTabBarController class]]) {
+//        tabVC = (GLPTabBarController *)self.window.rootViewController;
+//    } else {
+//        UINavigationController *rootNavVC = (UINavigationController *)self.window.rootViewController;
+//        for(UIViewController *vc in rootNavVC.viewControllers) {
+//            DDLogInfo(@"Child VC: %@", NSStringFromClass([vc class]));
+//            if([vc isKindOfClass:[GLPTabBarController class]]) {
+//                tabVC = (GLPTabBarController *) vc;
+//            }
+//        }
+//    }
+    
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 1) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:1];
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[1] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[1];
+    
+    DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    MessagesViewController *messagesVC = navVC.viewControllers[0];
+    
+    GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+    conversationVC.conversation = conversation;
+    conversationVC.hidesBottomBarWhenPushed = YES;
+    
+    [navVC setViewControllers:@[messagesVC, conversationVC] animated:NO];
 }
 
 

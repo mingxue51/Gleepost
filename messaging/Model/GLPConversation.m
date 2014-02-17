@@ -24,10 +24,10 @@
 @synthesize expiryDate=_expiryDate;
 @synthesize isEnded=_isEnded;
 @synthesize lastSyncMessageKey=_lastSyncMessageKey;
+@synthesize isFromPushNotification=_isFromPushNotification;
 
 // Init regular conversation from database
 // It will be populated afterwards
-// TODO: Should implement constructor with all args for better reliability
 - (id)init
 {
     self = [super init];
@@ -36,6 +36,21 @@
     }
     
     _messages = [NSMutableArray array];
+    _isFromPushNotification = NO;
+    
+    return self;
+}
+
+- (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+    
+    self.remoteKey = remoteKey;
+    _isFromPushNotification = YES;
+    _title = @"Loading conversation";
     
     return self;
 }
@@ -62,6 +77,8 @@
     _hasUnreadMessages = NO;
     
     _lastSyncMessageKey = NSNotFound;
+    
+    _isFromPushNotification = NO;
 
     return self;
 }

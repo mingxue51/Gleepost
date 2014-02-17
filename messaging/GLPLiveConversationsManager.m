@@ -302,10 +302,10 @@ static GLPLiveConversationsManager *instance = nil;
             
             BOOL valid = [self isConversationForSync:attachedConversation];
             if(!valid) {
-                BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
-                DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+//                BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
+//                DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
                 
-                [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
+                [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
                 return;
             }
             
@@ -325,14 +325,14 @@ static GLPLiveConversationsManager *instance = nil;
             
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             
-            BOOL canHaveMorePreviousMessages = messages.count >= 20;
-            _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:canHaveMorePreviousMessages];
+//            BOOL canHaveMorePreviousMessages = messages.count >= 20;
+//            _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:canHaveMorePreviousMessages];
             
 //            DDLogInfo(@"Sleep starts");
 //            [NSThread sleepForTimeInterval:10];
 //            DDLogInfo(@"Sleep ends");
             
-            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
+            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
         });
     }];
 }

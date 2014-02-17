@@ -58,6 +58,7 @@
 @property (strong, nonatomic) GLPIntroducedProfile * introduced;
 
 @property (assign, nonatomic) BOOL isEmptyConversation;
+@property (assign, nonatomic) BOOL isWaitingForSyncConversation;
 
 @end
 
@@ -79,6 +80,7 @@
     // configuration
     [self configureHeader];
     [self configureNavigationBar];
+//    [self.tabBarController.tabBar setHidden:YES];
     [self configureForm];
     [self initialiseObjects];
     
@@ -88,7 +90,10 @@
     _isEmptyConversation = _conversation.remoteKey == 0;
     DDLogInfo(@"Conversation is empty: %d", _isEmptyConversation);
     
-    if(!_isEmptyConversation) {
+    _isWaitingForSyncConversation = _conversation.isFromPushNotification;
+    DDLogInfo(@"Conversation is waiting for sync: %d", _isWaitingForSyncConversation);
+    
+    if([self canLoadMessages]) {
         [self loadInitialMessages];
     }
 }
@@ -115,6 +120,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
@@ -126,6 +133,8 @@
     [super viewDidAppear:animated];
     
     [self.tableView reloadData];
+    
+    [self syncWaitingConversation];
     
     //TODO: Removed.
     //[self loadInitialMessages];
@@ -141,6 +150,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
@@ -263,12 +273,26 @@
 }
 
 
+- (void)configureNewConversation:(GLPConversation *)conversation
+{
+    _conversation = conversation;
+
+    [self configureHeader];
+    [self configureNavigationBar];
+}
+
+
 # pragma mark - Messages
+
+- (BOOL)canLoadMessages
+{
+    return !_isEmptyConversation && !_isWaitingForSyncConversation;
+}
 
 - (void)loadInitialMessages
 {
     [self loadNewMessages];
-    [self scrollToTheEndAnimated:YES];
+    [self scrollToTheEndAnimated:NO];
     
     [self syncConversation];
 }
@@ -363,23 +387,45 @@
     self.formTextView.text = @"";
 }
 
-- (BOOL)showTopLoaderIfRequired
+//- (BOOL)showTopLoaderIfRequired
+//{
+//    BOOL canHavePreviousMessages = [[GLPLiveConversationsManager sharedInstance] conversationCanHavePreviousMessages:_conversation];
+//    
+//    if(canHavePreviousMessages && _messages.count > 0) {
+//        [self showTopLoader];
+//        [self activateTopLoader];
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
+
+//- (void)showAndActivateTopLoaderAfterScroll
+//{
+//    [self showTopLoader];
+//    [self activateTopLoader];
+//}
+
+
+- (void)syncWaitingConversation
 {
-    BOOL canHavePreviousMessages = [[GLPLiveConversationsManager sharedInstance] conversationCanHavePreviousMessages:_conversation];
-    
-    if(canHavePreviousMessages && _messages.count > 0) {
-        [self showTopLoader];
-        [self activateTopLoader];
-        return YES;
+    if(!_isWaitingForSyncConversation) {
+        return;
     }
     
-    return NO;
-}
-
-- (void)showAndActivateTopLoaderAfterScroll
-{
-    [self showTopLoader];
-    [self activateTopLoader];
+    DDLogInfo(@"Try to sync waiting conversation");
+    
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:_conversation.remoteKey];
+    
+    if(!conversation) {
+        DDLogInfo(@"Conversation waiting to be loaded not found");
+        return;
+    }
+    
+    _isWaitingForSyncConversation = NO;
+    
+    [self configureNewConversation:conversation];
+    [self loadInitialMessages];
 }
 
 
@@ -388,7 +434,7 @@
 // Conversation is sync
 - (void)conversationSyncFromNotification:(NSNotification *)notification
 {
-    if(_isEmptyConversation) {
+    if(![self canLoadMessages]) {
         return;
     }
     
@@ -406,7 +452,7 @@
     // previous messages loaded
     if([[notification userInfo][@"previousMessages"] boolValue]) {
         if(canHavePreviousMessages) {
-            [self showTopLoader];
+            [self showTopLoader:YES saveOffset:NO];
         } else {
             [self hideTopLoader];
         }
@@ -417,24 +463,31 @@
     }
     // new messages loaded
     else {
-        [self hideBottomLoader];
-        
         BOOL scrollAnimated = _messages.count > 0;
+        
+        [self hideBottomLoader:scrollAnimated];
+        [self showTopLoader:NO saveOffset:YES];
         
         if(hasNewMessages) {
             [self loadNewMessages];
             [self scrollToTheEndAnimated:scrollAnimated];
         }
         
-        if(canHavePreviousMessages) {
-            [self showTopLoader];
+        if(scrollAnimated) {
+            [self performSelector:@selector(activateTopLoader) withObject:nil afterDelay:0.3];
+        } else {
             [self activateTopLoader];
-            
-            if(hasNewMessages) {
-                [self scrollToTheEndAnimated:scrollAnimated];
-            }
         }
+        
     }
+}
+
+// Conversations list is sync
+- (void)conversationsSyncFromNotification:(NSNotification *)notification
+{
+    DDLogInfo(@"Conversations sync from notificaiton");
+    
+    [self syncWaitingConversation];
 }
 
 // Sync with remote
@@ -447,7 +500,7 @@
 // - Sync with remote notif
 - (void)syncWithRemoteFromNotification:(NSNotification *)notification
 {
-    if(_isEmptyConversation) {
+    if(![self canLoadMessages]) {
         return;
     }
     
@@ -457,18 +510,18 @@
 
 - (void)notSyncWithRemoteFromNotification:(NSNotification *)notification
 {
-    if(_isEmptyConversation) {
+    if(![self canLoadMessages]) {
         return;
     }
     
     DDLogInfo(@"Not synchronized with remote from NSNotification");
-    [self hideBottomLoader];
+    [self hideBottomLoader:YES];
     [self hideTopLoader];
 }
 
 - (void)messageSendUpdateFromNotification:(NSNotification *)notification
 {
-    if(_isEmptyConversation) {
+    if(![self canLoadMessages]) {
         return;
     }
     

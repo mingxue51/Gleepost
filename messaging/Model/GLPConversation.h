@@ -25,12 +25,14 @@
 
 // transient
 @property (assign, nonatomic) NSInteger lastSyncMessageKey;
+@property (assign, nonatomic) BOOL isFromPushNotification;
 
 // live specific
 @property (assign, nonatomic) BOOL isEnded;
 @property (strong, nonatomic) NSDate *expiryDate;
 
 
+- (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
 - (id)initWithParticipants:(NSArray *)participants;
 - (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended;
 - (GLPUser *)getUniqueParticipant;

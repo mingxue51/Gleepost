@@ -10,8 +10,8 @@
 
 @implementation GLPEntity
 
-@synthesize key = _key;
-@synthesize remoteKey = _remoteKey;
+@synthesize key=_key;
+@synthesize remoteKey=_remoteKey;
 
 - (id)init
 {
