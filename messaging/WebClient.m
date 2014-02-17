@@ -555,6 +555,7 @@ static WebClient *instance = nil;
 
 #pragma mark - Conversations
 
+
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock
 {
     [self getPath:@"conversations" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1336,11 +1337,29 @@ static WebClient *instance = nil;
     }];
 }
 
-/**
- 
- Mark notifications as read from the current notification and older.
- 
- */
+- (void)markNotificationsRead:(void (^)(BOOL success))callback
+{
+    if(YES) {
+        if(callback)
+            callback(NO);
+        return;
+    }
+    
+    [self postPath:@"notifications" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogInfo(@"Mark notifications read success");
+        
+        if(callback) {
+            callback(YES);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogInfo(@"Mark notifications read failure: %@", [error description]);
+        if(callback) {
+            callback(NO);
+        }
+    }];
+}
+
+
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:notification.remoteKey] forKey:@"seen"];

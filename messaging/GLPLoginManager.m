@@ -119,6 +119,8 @@
     
     [[GLPNetworkManager sharedInstance] startNetworkOperations];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
+    
+    [[WebClient sharedInstance] markNotificationsRead:nil];
 }
 
 + (void)logout

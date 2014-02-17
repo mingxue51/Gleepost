@@ -117,7 +117,11 @@ static BOOL isViewDidDisappearCalled = YES;
     [self.tabBar.items[index] setBadgeValue:badge];
 }
 
-
+- (void)messagesBadgeUnknownNumber
+{
+    _messagesCount = 0;
+    [self.tabBar.items[1] setBadgeValue:@""];
+}
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {

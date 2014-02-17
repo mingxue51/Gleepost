@@ -107,8 +107,14 @@ static NSString * const kCustomURLHost      = @"verify";
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"Application active");
+    DDLogInfo(@"Application badge number: %d", application.applicationIconBadgeNumber);
     
     if([[SessionManager sharedInstance] isLogged]) {
+        [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
+            if(success) {
+                application.applicationIconBadgeNumber = 0;
+            }
+        }];
         [[GLPNetworkManager sharedInstance] restartNetworkOperations];
     }
     

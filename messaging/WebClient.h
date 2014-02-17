@@ -105,6 +105,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 // notifications
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
+- (void)markNotificationsRead:(void (^)(BOOL success))callback;
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback;
 
 // invite

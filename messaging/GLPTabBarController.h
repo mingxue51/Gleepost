@@ -10,4 +10,6 @@
 
 @interface GLPTabBarController : UITabBarController <UITabBarControllerDelegate>
 
+- (void)messagesBadgeUnknownNumber;
+
 @end
