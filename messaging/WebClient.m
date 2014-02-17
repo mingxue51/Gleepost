@@ -1339,13 +1339,9 @@ static WebClient *instance = nil;
 
 - (void)markNotificationsRead:(void (^)(BOOL success))callback
 {
-    if(YES) {
-        if(callback)
-            callback(NO);
-        return;
-    }
+    DDLogInfo(@"Mark all notifications read");
     
-    [self postPath:@"notifications" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self putPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogInfo(@"Mark notifications read success");
         
         if(callback) {
@@ -1358,6 +1354,25 @@ static WebClient *instance = nil;
         }
     }];
 }
+
+- (void)markConversationsRead:(void (^)(BOOL success))callback
+{
+    DDLogInfo(@"Mark all conversations read");
+    
+    [self postPath:@"conversations/read_all" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogInfo(@"Mark conversations read success");
+        
+        if(callback) {
+            callback(YES);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogInfo(@"Mark notifications read failure: %@", [error description]);
+        if(callback) {
+            callback(NO);
+        }
+    }];
+}
+
 
 
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback

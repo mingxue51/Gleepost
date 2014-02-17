@@ -110,12 +110,21 @@ static NSString * const kCustomURLHost      = @"verify";
     DDLogInfo(@"Application badge number: %d", application.applicationIconBadgeNumber);
     
     if([[SessionManager sharedInstance] isLogged]) {
-        [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
-            if(success) {
-                application.applicationIconBadgeNumber = 0;
-            }
-        }];
         [[GLPNetworkManager sharedInstance] restartNetworkOperations];
+        
+        __block BOOL requestsSuccess = YES;
+        [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
+            requestsSuccess = success;
+        }];
+        
+        [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
+            requestsSuccess = success;
+        }];
+        
+        if(requestsSuccess) {
+            application.applicationIconBadgeNumber = 0;
+            DDLogInfo(@"Reset application icon badge number to 0");
+        }
     }
     
     // activate or reactivate web client

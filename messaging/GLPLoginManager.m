@@ -121,6 +121,7 @@
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
     
     [[WebClient sharedInstance] markNotificationsRead:nil];
+    [[WebClient sharedInstance] markConversationsRead:nil];
 }
 
 + (void)logout
