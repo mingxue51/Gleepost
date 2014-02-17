@@ -302,10 +302,9 @@ static GLPLiveConversationsManager *instance = nil;
             
             BOOL valid = [self isConversationForSync:attachedConversation];
             if(!valid) {
-//                BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
-//                DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+                BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
                 
-                [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
+                [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
                 return;
             }
             
@@ -325,14 +324,14 @@ static GLPLiveConversationsManager *instance = nil;
             
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             
-//            BOOL canHaveMorePreviousMessages = messages.count >= 20;
-//            _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:canHaveMorePreviousMessages];
+            BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
+
             
 //            DDLogInfo(@"Sleep starts");
 //            [NSThread sleepForTimeInterval:10];
 //            DDLogInfo(@"Sleep ends");
             
-            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
+            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
         });
     }];
 }
@@ -966,6 +965,40 @@ static GLPLiveConversationsManager *instance = nil;
         if(existingMessage) {
             DDLogInfo(@"Remote message already exists in conversation's messages, abort");
             return;
+        }
+        
+        BOOL hasMessages = [_conversationsMessages[index] count] > 0;
+        BOOL sync = [_conversationsSyncStatuses[index] boolValue];
+        if(hasMessages && !sync) {
+            DDLogInfo(@"Conversation has messages and is not synced, do it before");
+            
+            GLPMessage *lastSyncMessage = [self internalConversationLastSyncMessage:conversation];
+            if(!lastSyncMessage) {
+                DDLogError(@"Cannot find last synced message, abort");
+                return;
+            }
+            
+            DDLogInfo(@"Last sync message: %d - %@", lastSyncMessage.key, lastSyncMessage.content);
+            
+            NSArray *messages = [[WebClient sharedInstance] synchronousGetMessagesForConversation:conversation after:lastSyncMessage before:nil];
+            
+            if(!messages) {
+                DDLogError(@"Nil messages response");
+                return;
+            }
+            
+            DDLogInfo(@"Received %d messages with success", messages.count);
+            
+            // reverse order
+            messages = [[messages reverseObjectEnumerator] allObjects];
+            
+            BOOL hasNewMessages = messages.count > 0;
+            if(hasNewMessages) {
+                [self internalInsertMessages:messages toConversation:conversation atTheEnd:YES];
+            }
+            
+            _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
+            DDLogInfo(@"Synced complete");
         }
         
         NSInteger key = [self internalAddMessage:message toConversation:conversation];

@@ -628,6 +628,37 @@ static WebClient *instance = nil;
 
 }
 
+- (NSArray *)synchronousGetMessagesForConversation:(GLPConversation *)conversation after:(GLPMessage *)afterMessage before:(GLPMessage *)beforeMessage
+{
+    NSInteger beforeRemoteKey = beforeMessage ? beforeMessage.remoteKey : NSNotFound;
+    NSInteger afterRemoteKey = afterMessage ? afterMessage.remoteKey : NSNotFound;
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    if(afterRemoteKey != NSNotFound) {
+        [params setObject:[NSNumber numberWithInteger:afterRemoteKey] forKey:@"after"];
+    }
+    
+    if(beforeRemoteKey != NSNotFound) {
+        [params setObject:[NSNumber numberWithInteger:beforeRemoteKey] forKey:@"before"];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteKey];
+    
+    __block NSArray *result = nil;
+    
+    [self executeSynchronousRequestWithMethod:@"GET" path:path params:params callback:^(BOOL success, id json) {
+        if(!success) {
+            return;
+        }
+        
+        result = [RemoteParser parseMessagesFromJson:json forConversation:conversation];
+    }];
+    
+    return result;
+}
+
 - (void)getMessagesForConversation:(GLPConversation *)conversation after:(GLPMessage *)afterMessage before:(GLPMessage *)beforeMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock
 {
     NSInteger before = beforeMessage ? beforeMessage.remoteKey : NSNotFound;
