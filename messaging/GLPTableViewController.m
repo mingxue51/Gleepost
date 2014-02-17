@@ -281,10 +281,15 @@
 {
     [_topLoadingCellDelegate activate];
     
-    NSIndexPath *firstVisibleIndexPath = [[_tableView indexPathsForVisibleRows] objectAtIndex:0];
-    if(firstVisibleIndexPath.row == 0) {
-        [self performActivateForPosition:kGLPLoadingCellPositionTop];
+    NSArray *rows = [_tableView indexPathsForVisibleRows];
+    if(rows > 0) {
+        NSIndexPath *firstVisibleIndexPath = [[_tableView indexPathsForVisibleRows] objectAtIndex:0];
+        if(firstVisibleIndexPath.row != 0) {
+            return;
+        }
     }
+    
+    [self performActivateForPosition:kGLPLoadingCellPositionTop];
 }
 
 - (void)showBottomLoader
