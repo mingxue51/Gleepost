@@ -263,8 +263,7 @@ static GLPLiveConversationsManager *instance = nil;
         
         BOOL valid = [self isConversationForSync:attachedConversation];
         if(!valid) {
-            BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
-            DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+            BOOL canHaveMorePreviousMessages = [_conversationsMessages[index] count] > 0 && [_conversationsCanHavePreviousMessages[index] boolValue];
             
             [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
             return;
@@ -302,7 +301,7 @@ static GLPLiveConversationsManager *instance = nil;
             
             BOOL valid = [self isConversationForSync:attachedConversation];
             if(!valid) {
-                BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
+                BOOL canHaveMorePreviousMessages = [_conversationsMessages[index] count] > 0 && [_conversationsCanHavePreviousMessages[index] boolValue];
                 
                 [self internalNotifyConversation:attachedConversation withNewMessages:NO beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
                 return;
@@ -324,7 +323,7 @@ static GLPLiveConversationsManager *instance = nil;
             
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             
-            BOOL canHaveMorePreviousMessages = [_conversationsCanHavePreviousMessages[index] boolValue];
+            BOOL canHaveMorePreviousMessages = [_conversationsMessages[index] count] > 0 && [_conversationsCanHavePreviousMessages[index] boolValue];
 
             
 //            DDLogInfo(@"Sleep starts");
@@ -960,12 +959,7 @@ static GLPLiveConversationsManager *instance = nil;
             return;
         }
         
-        GLPMessage *existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
-        
-        if(existingMessage) {
-            DDLogInfo(@"Remote message already exists in conversation's messages, abort");
-            return;
-        }
+        BOOL newMessagesFromSync = NO;
         
         BOOL hasMessages = [_conversationsMessages[index] count] > 0;
         BOOL sync = [_conversationsSyncStatuses[index] boolValue];
@@ -995,18 +989,32 @@ static GLPLiveConversationsManager *instance = nil;
             BOOL hasNewMessages = messages.count > 0;
             if(hasNewMessages) {
                 [self internalInsertMessages:messages toConversation:conversation atTheEnd:YES];
+                newMessagesFromSync = hasMessages;
             }
             
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             DDLogInfo(@"Synced complete");
         }
         
-        NSInteger key = [self internalAddMessage:message toConversation:conversation];
-        conversation.lastSyncMessageKey = key;
+        GLPMessage *existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
+        
+        if(!existingMessage) {
+            NSInteger key = [self internalAddMessage:message toConversation:conversation];
+            conversation.lastSyncMessageKey = key;
+            newMessagesFromSync = YES;
+        } else {
+            DDLogInfo(@"Remote message already exists in conversation's messages, ignore");
+        }
+        
+        if(!newMessagesFromSync) {
+            DDLogInfo(@"No new remote messages to notify, abort");
+            return;
+        }
         
         // conversation has unread messages
         conversation.hasUnreadMessages = YES;
         
+        DDLogInfo(@"Notify new messages");
         [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
     });
 }

@@ -200,6 +200,10 @@
 {
     GLPLoadingCellPosition position = [enumValue integerValue];
     if(position == kGLPLoadingCellPositionTop) {
+        if(_items.count == 0) {
+            return;
+        }
+        
         // ignore if user did not stop scroll on top loading cell, means scrolled back down
         NSIndexPath *firstVisibleIndexPath = [[_tableView indexPathsForVisibleRows] objectAtIndex:0];
         if(firstVisibleIndexPath.row != 0) {
@@ -281,8 +285,7 @@
 {
     [_topLoadingCellDelegate activate];
     
-    NSArray *rows = [_tableView indexPathsForVisibleRows];
-    if(rows > 0) {
+    if(_items.count > 0) {
         NSIndexPath *firstVisibleIndexPath = [[_tableView indexPathsForVisibleRows] objectAtIndex:0];
         if(firstVisibleIndexPath.row != 0) {
             return;

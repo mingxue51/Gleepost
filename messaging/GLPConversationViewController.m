@@ -466,17 +466,24 @@
         BOOL scrollAnimated = _messages.count > 0;
         
         [self hideBottomLoader:scrollAnimated];
-        [self showTopLoader:NO saveOffset:YES];
+        
+        if(canHavePreviousMessages) {
+            [self showTopLoader:NO saveOffset:YES];
+        }
         
         if(hasNewMessages) {
             [self loadNewMessages];
             [self scrollToTheEndAnimated:scrollAnimated];
         }
         
-        if(scrollAnimated) {
-            [self performSelector:@selector(activateTopLoader) withObject:nil afterDelay:0.3];
+        if(canHavePreviousMessages) {
+            if(scrollAnimated) {
+                [self performSelector:@selector(activateTopLoader) withObject:nil afterDelay:0.3];
+            } else {
+                [self activateTopLoader];
+            }
         } else {
-            [self activateTopLoader];
+            [self hideTopLoader];
         }
         
     }
