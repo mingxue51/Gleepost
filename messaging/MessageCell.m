@@ -120,6 +120,12 @@ static const float MessageContentLabelPadding = 14; // horizontal padding 12
         viewX += labelWidthDiff;
     }
     
+    if(message.sendStatus == kSendStatusLocal) {
+        self.messageContentView.alpha = 0.15;
+    } else {
+        self.messageContentView.alpha = 1;
+    }
+    
     self.messageContentView.frame = CGRectMake(viewX, self.messageContentView.frame.origin.y, contentWidth + MessageContentLabelPadding, contentHeight + MessageContentViewPadding);
     self.messageContentLabel.frame = CGRectMake(self.messageContentLabel.frame.origin.x, self.messageContentLabel.frame.origin.y, contentWidth, contentHeight);
     

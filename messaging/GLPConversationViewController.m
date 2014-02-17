@@ -491,11 +491,6 @@
     NSInteger key = [[notification userInfo][@"key"] integerValue];
     BOOL sent = [[notification userInfo][@"sent"] boolValue];
     
-    // dont do anything
-    if(sent) {
-        return;
-    }
-    
     NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
     if(filtered.count != 1) {
         DDLogError(@"Grave inconsistency: cannot find message in local messages for key: %d - filtered array count: %d", key, filtered.count);
@@ -503,10 +498,17 @@
     }
     
     GLPMessage *message = [filtered firstObject];
-    message.sendStatus = kSendStatusFailure;
     
-    [self reloadItem:message sizeCanChange:YES];
-    DDLogInfo(@"Reload message key: %d - remote key: %d - content: %@", message.key, message.remoteKey, message.content);
+    if(sent) {
+        message.sendStatus = kSendStatusSent;
+    } else {
+        message.sendStatus = kSendStatusFailure;
+    }
+    
+    [self reloadWithItems:_messages];
+    
+//    [self reloadItem:message sizeCanChange:YES];
+//    DDLogInfo(@"Reload message key: %d - remote key: %d - content: %@", message.key, message.remoteKey, message.content);
 }
 
 
