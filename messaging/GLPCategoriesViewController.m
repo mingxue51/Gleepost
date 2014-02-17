@@ -78,7 +78,7 @@
 //        }
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"All" name:@"All" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -115,7 +115,7 @@
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
     
-    if([selectedCategory.tag isEqualToString:@"All"])
+    if([selectedCategory.tag isEqualToString:@"all"])
     {
         [[SessionManager sharedInstance] setCurrentCategory:nil];
     }
@@ -160,7 +160,7 @@
         [_categoriesImages setObject:img forKey:category.tag];
     }
     
-    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
+//    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
     
     GLPCategory *current = [SessionManager sharedInstance].currentCategory;
@@ -183,7 +183,7 @@
     {
         if(!_selectedCategory)
         {
-            if([cat.tag isEqualToString:@"All"])
+            if([cat.tag isEqualToString:@"all"])
             {
                 cat.uiSelected = YES;
             }

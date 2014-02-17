@@ -427,7 +427,7 @@ const float TOP_OFFSET = 213.0f;
     
 //    [self configTabbarFormat];
     
-    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     
     
     [self setButtonsToNavigationBar];
@@ -1153,7 +1153,7 @@ const float TOP_OFFSET = 213.0f;
     
     //The condition is added to prevent error when there are no posts in the table view.
     
-    if(self.posts.count == 1)
+    if(self.posts.count == 1 || !self.posts)
     {
         [self.tableView reloadData];
     }
