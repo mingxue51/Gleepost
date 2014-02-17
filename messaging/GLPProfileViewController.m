@@ -112,7 +112,9 @@
         self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
     }
 
+    [self setBottomView];
 
+    
     
     _tabButtonEnabled = YES;
     
@@ -176,6 +178,31 @@
 }
 
 #pragma mark - Configuration
+
+
+-(void)setBottomView
+{
+    CGRect frame = self.tableView.bounds;
+    frame.origin.y = frame.size.height;
+    
+    CGRect viewFrame = self.view.bounds;
+    viewFrame.origin.y = viewFrame.size.height;
+    
+    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
+    grayView.tag = 100;
+    grayView.backgroundColor = [UIColor whiteColor];
+    //    [self.tableView addSubview:grayView];
+    //    [grayView sendSubviewToBack:self.tableView];
+    
+    self.tableView.tableFooterView = grayView;
+    //    [self.view addSubview:grayView];
+}
+
+-(void)clearBottomView
+{
+    
+    self.tableView.tableFooterView = nil;
+}
 
 -(void)configTabbar
 {
@@ -901,6 +928,12 @@
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
+                
+                if(indexPath.row > 5)
+                {
+                    [self clearBottomView];
+                }
+                
                 //Add separator line to posts' cells.
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
                 line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
@@ -1074,9 +1107,11 @@
 
 -(void)refreshFirstCell
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    [self.tableView reloadData];
+    
+//    [self.tableView beginUpdates];
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//    [self.tableView endUpdates];
 }
 
 

@@ -1164,7 +1164,8 @@ const float TOP_OFFSET = 213.0f;
     
     
 
-    [self scrollToTheTop];
+//    [self scrollToTheTop];
+    [self scrollToTheNavigationBar];
     
     //Bring the fake navigation bar to from because is hidden by new cell.
 //    [self.tableView bringSubviewToFront:self.reNavBar];

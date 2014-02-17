@@ -85,6 +85,11 @@
 		5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7AF181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m */; };
 		5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */; };
 		58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58299EA7184636160045427E /* GLPPostNotificationHelper.m */; };
+		5829F48D18B1546300A7B871 /* add_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 5829F48918B1546300A7B871 /* add_user.png */; };
+		5829F48E18B1546300A7B871 /* in_contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 5829F48A18B1546300A7B871 /* in_contacts.png */; };
+		5829F48F18B1546300A7B871 /* pending_request.png in Resources */ = {isa = PBXBuildFile; fileRef = 5829F48B18B1546300A7B871 /* pending_request.png */; };
+		5829F49018B1546300A7B871 /* send_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 5829F48C18B1546300A7B871 /* send_message.png */; };
+		5829F49218B1565900A7B871 /* accept_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 5829F49118B1565900A7B871 /* accept_user.png */; };
 		582A663618AB963700006419 /* EventBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582A663518AB963700006419 /* EventBarView.m */; };
 		582A663F18AB9BC400006419 /* bar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A663718AB9BC400006419 /* bar1.png */; };
 		582A664018AB9BC400006419 /* bar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A663818AB9BC400006419 /* bar2.png */; };
@@ -97,7 +102,7 @@
 		582A664818ABD37D00006419 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664718ABD37D00006419 /* verified.png */; };
 		582A664A18AC0ABC00006419 /* referesh_campus_live.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664918AC0ABC00006419 /* referesh_campus_live.png */; };
 		582A664D18AC215C00006419 /* WalkThroughHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582A664C18AC215C00006419 /* WalkThroughHelper.m */; };
-		582B404718AD3E5800BC4285 /* purple_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404118AD3E5800BC4285 /* purple_category.png */; };
+		582B404718AD3E5800BC4285 /* question_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404118AD3E5800BC4285 /* question_category.png */; };
 		582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582B404A18AD6C4A00BC4285 /* SoundHelper.m */; };
 		582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404C18AD6DF300BC4285 /* AudioToolbox.framework */; };
 		582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404E18AD6EE300BC4285 /* AVFoundation.framework */; };
@@ -221,10 +226,8 @@
 		58729ACA189BFC430041022C /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58729AC9189BFC430041022C /* ChangePasswordViewController.m */; };
 		58729ACD189BFE110041022C /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729ACC189BFE110041022C /* back.png */; };
 		58729ACF189C1A4A0041022C /* settings_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729ACE189C1A4A0041022C /* settings_btn.png */; };
-		58729AD4189C1BC40041022C /* mypost_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD0189C1BC40041022C /* mypost_btn.png */; };
 		58729AD5189C1BC40041022C /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD1189C1BC40041022C /* notification_btn_selected.png */; };
 		58729AD6189C1BC40041022C /* notification_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD2189C1BC40041022C /* notification_btn.png */; };
-		58729AD7189C1BC40041022C /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729AD3189C1BC40041022C /* mypost_btn_selected.png */; };
 		587433EB18A6951F0000DAA0 /* univers-ce-45-light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 587433EA18A694800000DAA0 /* univers-ce-45-light.ttf */; };
 		58752FDF18A44BC100F6F09B /* GLPSingInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58752FDE18A44BC100F6F09B /* GLPSingInViewController.m */; };
 		587D23C817EA195D00E0DDFF /* chat_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23B717EA195D00E0DDFF /* chat_user.png */; };
@@ -238,6 +241,8 @@
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
 		588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 588DE5D318A8FA40001D344D /* add_photo_btn.png */; };
 		588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588DE5D918A96552001D344D /* PickDateEventViewController.m */; };
+		58901ED818B183BE0025F233 /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58901ED618B183BE0025F233 /* mypost_btn_selected.png */; };
+		58901ED918B183BE0025F233 /* mypost_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58901ED718B183BE0025F233 /* mypost_btn.png */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
 		5890D2181847676A00E293DD /* GLPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D2171847676A00E293DD /* GLPTheme.m */; };
 		5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D21A1847692B00E293DD /* GLPStanfordTheme.m */; };
@@ -695,6 +700,11 @@
 		5828D7B5181EA682002D71F9 /* GLPLiveConversationDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationDao.m; sourceTree = "<group>"; };
 		58299EA6184636160045427E /* GLPPostNotificationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostNotificationHelper.h; sourceTree = "<group>"; };
 		58299EA7184636160045427E /* GLPPostNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostNotificationHelper.m; sourceTree = "<group>"; };
+		5829F48918B1546300A7B871 /* add_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_user.png; sourceTree = "<group>"; };
+		5829F48A18B1546300A7B871 /* in_contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = in_contacts.png; sourceTree = "<group>"; };
+		5829F48B18B1546300A7B871 /* pending_request.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pending_request.png; sourceTree = "<group>"; };
+		5829F48C18B1546300A7B871 /* send_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_message.png; sourceTree = "<group>"; };
+		5829F49118B1565900A7B871 /* accept_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_user.png; sourceTree = "<group>"; };
 		582A663418AB963700006419 /* EventBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventBarView.h; sourceTree = "<group>"; };
 		582A663518AB963700006419 /* EventBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventBarView.m; sourceTree = "<group>"; };
 		582A663718AB9BC400006419 /* bar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bar1.png; sourceTree = "<group>"; };
@@ -709,7 +719,7 @@
 		582A664918AC0ABC00006419 /* referesh_campus_live.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = referesh_campus_live.png; sourceTree = "<group>"; };
 		582A664B18AC215C00006419 /* WalkThroughHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkThroughHelper.h; sourceTree = "<group>"; };
 		582A664C18AC215C00006419 /* WalkThroughHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalkThroughHelper.m; sourceTree = "<group>"; };
-		582B404118AD3E5800BC4285 /* purple_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple_category.png; sourceTree = "<group>"; };
+		582B404118AD3E5800BC4285 /* question_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question_category.png; sourceTree = "<group>"; };
 		582B404918AD6C4A00BC4285 /* SoundHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundHelper.h; sourceTree = "<group>"; };
 		582B404A18AD6C4A00BC4285 /* SoundHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundHelper.m; sourceTree = "<group>"; };
 		582B404C18AD6DF300BC4285 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -880,10 +890,8 @@
 		58729AC9189BFC430041022C /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		58729ACC189BFE110041022C /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		58729ACE189C1A4A0041022C /* settings_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_btn.png; sourceTree = "<group>"; };
-		58729AD0189C1BC40041022C /* mypost_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn.png; sourceTree = "<group>"; };
 		58729AD1189C1BC40041022C /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
 		58729AD2189C1BC40041022C /* notification_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn.png; sourceTree = "<group>"; };
-		58729AD3189C1BC40041022C /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		587433EA18A694800000DAA0 /* univers-ce-45-light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "univers-ce-45-light.ttf"; sourceTree = "<group>"; };
 		58752FDD18A44BC100F6F09B /* GLPSingInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSingInViewController.h; sourceTree = "<group>"; };
 		58752FDE18A44BC100F6F09B /* GLPSingInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSingInViewController.m; sourceTree = "<group>"; };
@@ -904,6 +912,8 @@
 		588DE5D318A8FA40001D344D /* add_photo_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_photo_btn.png; sourceTree = "<group>"; };
 		588DE5D818A96552001D344D /* PickDateEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickDateEventViewController.h; sourceTree = "<group>"; };
 		588DE5D918A96552001D344D /* PickDateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickDateEventViewController.m; sourceTree = "<group>"; };
+		58901ED618B183BE0025F233 /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
+		58901ED718B183BE0025F233 /* mypost_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn.png; sourceTree = "<group>"; };
 		5890D212184763E700E293DD /* GLPThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPThemeManager.h; sourceTree = "<group>"; };
 		5890D213184763E700E293DD /* GLPThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPThemeManager.m; sourceTree = "<group>"; };
 		5890D2161847676A00E293DD /* GLPTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTheme.h; sourceTree = "<group>"; };
@@ -1510,7 +1520,7 @@
 				58AB404518AE45D000DEED31 /* for-sale_category.png */,
 				58AB404618AE45D000DEED31 /* jobs_category.png */,
 				58AB404718AE45D000DEED31 /* news_category.png */,
-				582B404118AD3E5800BC4285 /* purple_category.png */,
+				582B404118AD3E5800BC4285 /* question_category.png */,
 				58AABA911892F0F60058A552 /* category_bg.png */,
 				58FD707C18905B680024E8A1 /* all_category_old.png */,
 				580C7AB218983C4C007495EE /* all_category_selected.png */,
@@ -2180,10 +2190,15 @@
 		58AD869A18929EB700016C6D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				58729AD0189C1BC40041022C /* mypost_btn.png */,
+				58901ED618B183BE0025F233 /* mypost_btn_selected.png */,
+				58901ED718B183BE0025F233 /* mypost_btn.png */,
+				5829F49118B1565900A7B871 /* accept_user.png */,
+				5829F48918B1546300A7B871 /* add_user.png */,
+				5829F48A18B1546300A7B871 /* in_contacts.png */,
+				5829F48B18B1546300A7B871 /* pending_request.png */,
+				5829F48C18B1546300A7B871 /* send_message.png */,
 				58729AD1189C1BC40041022C /* notification_btn_selected.png */,
 				58729AD2189C1BC40041022C /* notification_btn.png */,
-				58729AD3189C1BC40041022C /* mypost_btn_selected.png */,
 				58AD86C51892ECCC00016C6D /* top_wall_trans.png */,
 				58AD86B91892C01500016C6D /* top_wall.png */,
 				58AD86AC1892A7AB00016C6D /* bottom_wall.png */,
@@ -3344,6 +3359,7 @@
 				58FB7CAB18565053002C6A00 /* ProfileViewTableViewCell.xib in Resources */,
 				580C7ABB18985059007495EE /* top_image_campus_wall_old.png in Resources */,
 				58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */,
+				5829F49018B1546300A7B871 /* send_message.png in Resources */,
 				58729AD5189C1BC40041022C /* notification_btn_selected.png in Resources */,
 				58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */,
 				58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */,
@@ -3364,6 +3380,7 @@
 				589EAD2018A436D5005B2F4C /* top_image_campus_wall.png in Resources */,
 				8096E4DB17C2C37A00C7BF60 /* background.png in Resources */,
 				58DC0243180437A70008993A /* bubble1.png in Resources */,
+				58901ED918B183BE0025F233 /* mypost_btn.png in Resources */,
 				80B2A4381833FCF1002AB1F0 /* profile_notifications_icon_new_bubble.png in Resources */,
 				5866F16718844869007484CF /* sun_night.png in Resources */,
 				58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */,
@@ -3391,7 +3408,6 @@
 				8096E4DD17C2C61500C7BF60 /* back_button.png in Resources */,
 				8096E4DF17C2C6CF00C7BF60 /* add_comment.png in Resources */,
 				802DCE4418AA32D000A23511 /* notification3.json in Resources */,
-				58729AD7189C1BC40041022C /* mypost_btn_selected.png in Resources */,
 				58E3DABD1884059100B9B048 /* cloud1.png in Resources */,
 				805E155A180EF3E700705B1C /* share_image@2x.png in Resources */,
 				80B120D118B0740B006C1E30 /* message_cell_error@2x.png in Resources */,
@@ -3467,6 +3483,7 @@
 				580C7AB318983C4C007495EE /* all_category_selected.png in Resources */,
 				5866F15F18844869007484CF /* background_night.png in Resources */,
 				58FD708318905B680024E8A1 /* for-sale_category_old.png in Resources */,
+				5829F48D18B1546300A7B871 /* add_user.png in Resources */,
 				58E27E0E18A6CD5000D8BB24 /* message-7@2x.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
@@ -3486,7 +3503,7 @@
 				5832C4B7189929FC004FC4F6 /* show_categories.png in Resources */,
 				58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */,
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
-				582B404718AD3E5800BC4285 /* purple_category.png in Resources */,
+				582B404718AD3E5800BC4285 /* question_category.png in Resources */,
 				80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */,
 				58AD86A318929F2200016C6D /* about_button.png in Resources */,
 				80E7479417CEAED7001957E5 /* get_messages.json in Resources */,
@@ -3512,6 +3529,7 @@
 				5891254B1858CF2E000531DE /* like_active_button.png in Resources */,
 				58DB02C318107CC8001C021A /* whiteholder3.png in Resources */,
 				58E27E0C18A6CD5000D8BB24 /* id-card-7@2x.png in Resources */,
+				5829F49218B1565900A7B871 /* accept_user.png in Resources */,
 				80C4CAC317D0080100AFA80C /* post_newgroupconversation.json in Resources */,
 				58729ACD189BFE110041022C /* back.png in Resources */,
 				586659B417F1AC2300A0354E /* messageboxgreen.png in Resources */,
@@ -3522,6 +3540,7 @@
 				587D23C817EA195D00E0DDFF /* chat_user.png in Resources */,
 				586E2236180FE58900C0FA03 /* password2.png in Resources */,
 				580FF14F18AA58DE0026B65B /* add_button.png in Resources */,
+				5829F48F18B1546300A7B871 /* pending_request.png in Resources */,
 				58AD86AE1892A7AB00016C6D /* bottom_wall.png in Resources */,
 				588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */,
 				582128381891AA0C00BF36E5 /* gleepost_logo_headerOld.png in Resources */,
@@ -3529,6 +3548,7 @@
 				806E3D841832B1960063AACE /* NotificationButtonBackground.png in Resources */,
 				802DCE4018AA32C200A23511 /* notification1.json in Resources */,
 				80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */,
+				58901ED818B183BE0025F233 /* mypost_btn_selected.png in Resources */,
 				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				58E3DAC3188405CC00B9B048 /* hot_air_balloon.png in Resources */,
 				58AB404918AE45D000DEED31 /* event_category.png in Resources */,
@@ -3537,8 +3557,8 @@
 				589EAD2E18A4472D005B2F4C /* pick_pic.png in Resources */,
 				58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */,
 				58AD86A818929F2200016C6D /* mutual_button.png in Resources */,
+				5829F48E18B1546300A7B871 /* in_contacts.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
-				58729AD4189C1BC40041022C /* mypost_btn.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58AD86B01892A7B800016C6D /* top_wall2.png in Resources */,
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,

@@ -77,10 +77,13 @@
 {
     [super viewDidLoad];
     
+    [self configureView];
+
+    
     self.tableView.allowsSelectionDuringEditing=YES;
     
     
-    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
     // [self loadPosts];
     
     //If no, check in database if the user is already requested.
@@ -142,7 +145,6 @@
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
-    [self configureView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
 
@@ -220,6 +222,54 @@
 -(void)configureView
 {
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    
+    //Add new colour in the bottom of the table view.
+//    UIImageView *bottomImageView = [[UIImageView alloc] init];
+//    bottomImageView.backgroundColor = [UIColor whiteColor];
+    
+//    [bottomImageView setFrame:CGRectMake(0.0f, 400.0f, 320.0f, 300.0f)];
+//    [self.tableView addSubview:bottomImageView];
+//    [bottomImageView sendSubviewToBack:self.tableView];
+    
+    
+    [self setBottomView];
+
+}
+
+-(void)setBottomView
+{
+    //Clear bottom view.
+//    [self clearBottomView];
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin.y = frame.size.height;
+    
+    CGRect viewFrame = self.view.bounds;
+    viewFrame.origin.y = viewFrame.size.height;
+    
+    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
+    grayView.tag = 100;
+    grayView.backgroundColor = [UIColor whiteColor];
+//    [self.tableView addSubview:grayView];
+//    [grayView sendSubviewToBack:self.tableView];
+    
+    self.tableView.tableFooterView = grayView;
+//    [self.view addSubview:grayView];
+}
+
+-(void)clearBottomView
+{
+//    for(UIView *v in self.tableView.subviews)
+//    {
+//        if(v.tag == 100)
+//        {
+//            [v removeFromSuperview];
+//        }
+//    }
+    
+//    [self.tableView.tableFooterView setFrame:CGRectMake(0.0f, 300.0f, 320.0f, 0.0f)];
+    
+    self.tableView.tableFooterView = nil;
 }
 
 -(void)configureNavigationBar
@@ -418,21 +468,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(self.selectedTabStatus == kGLPMutual)
-    {
-        self.currentNumberOfRows = self.numberOfRows + 10;
-        return self.currentNumberOfRows; /** + Number of mutual friends. */
-    }
-    else if(self.selectedTabStatus == kGLPPosts)
-    {
+//    if(self.selectedTabStatus == kGLPMutual)
+//    {
+//        self.currentNumberOfRows = self.numberOfRows + 10;
+//        return self.currentNumberOfRows; /** + Number of mutual friends. */
+//    }
+//    else if(self.selectedTabStatus == kGLPPosts)
+//    {
         self.currentNumberOfRows = self.numberOfRows + self.posts.count;
         return self.currentNumberOfRows; /** + Number of user's posts. */
-    }
-    else
-    {
-        self.currentNumberOfRows = self.numberOfRows + 1;
-        return self.currentNumberOfRows;
-    }
+//    }
+//    else
+//    {
+//        self.currentNumberOfRows = self.numberOfRows + 1;
+//        return self.currentNumberOfRows;
+//    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -441,16 +491,16 @@
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierButtons = @"ButtonsCell";
-    static NSString *CellIdentifierAbout = @"AboutCell";
-    static NSString *CellIdentifierMutual = @"MutualCell";
+//    static NSString *CellIdentifierAbout = @"AboutCell";
+//    static NSString *CellIdentifierMutual = @"MutualCell";
     
     
     PostCell *postViewCell;
     
     ProfileButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
-    ProfileAboutTableViewCell *profileAboutView;
-    ProfileMutualTableViewCell *profileMutualView;
+//    ProfileAboutTableViewCell *profileAboutView;
+//    ProfileMutualTableViewCell *profileMutualView;
     
     if(indexPath.row == 0)
     {
@@ -488,21 +538,21 @@
     }
     else if (indexPath.row >= 2)
     {
-        if(self.selectedTabStatus == kGLPAbout)
-        {
-            profileAboutView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierAbout forIndexPath:indexPath];
-            
-            if(self.contact)
-            {
-                //Show user's details.
-                [profileAboutView updateUserDetails:self.profileUser];
-            }
-
-            
-            return profileAboutView;
-        }
-        else if(self.selectedTabStatus == kGLPPosts)
-        {
+//        if(self.selectedTabStatus == kGLPAbout)
+//        {
+//            profileAboutView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierAbout forIndexPath:indexPath];
+//            
+//            if(self.contact)
+//            {
+//                //Show user's details.
+//                [profileAboutView updateUserDetails:self.profileUser];
+//            }
+//
+//            
+//            return profileAboutView;
+//        }
+//        else if(self.selectedTabStatus == kGLPPosts)
+//        {
             if(self.posts.count != 0)
             {
                 GLPPost *post = self.posts[indexPath.row-2];
@@ -521,23 +571,34 @@
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
-                //Add separator line to posts' cells.
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                [postViewCell addSubview:line];
+                if(indexPath.row > 5)
+                {
+                    [self clearBottomView];
+                }
+                
+                if(indexPath.row -1 != self.posts.count)
+                {
+                    //Add separator line to posts' cells.
+                    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+                    line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+                    [postViewCell addSubview:line];
+                }
+                
+
+                
                 
             }
             
             return postViewCell;
-        }
-        else if(self.selectedTabStatus == kGLPMutual)
-        {
-            profileMutualView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierMutual forIndexPath:indexPath];
-            
-            [profileMutualView updateDataWithName:self.profileUser.name andImageUrl:self.profileUser.profileImageUrl];
-            
-            return profileMutualView;
-        }
+//        }
+//        else if(self.selectedTabStatus == kGLPMutual)
+//        {
+//            profileMutualView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierMutual forIndexPath:indexPath];
+//            
+//            [profileMutualView updateDataWithName:self.profileUser.name andImageUrl:self.profileUser.profileImageUrl];
+//            
+//            return profileMutualView;
+//        }
         
     }
     
@@ -577,13 +638,18 @@
     }
     else if(indexPath.row >= 2)
     {
-        if(self.selectedTabStatus == kGLPAbout)
-        {
-            return 150.0f;
-        }
-        else if (self.selectedTabStatus == kGLPPosts)
+//        if(self.selectedTabStatus == kGLPAbout)
+//        {
+//            return 150.0f;
+//        }
+//        else if (self.selectedTabStatus == kGLPPosts)
+//        {
+        
+        if(self.posts.count != 0 && self.posts)
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
+            
+            DDLogDebug(@"Current Post content: %@ : %d", currentPost.content, indexPath.row);
             
             if([currentPost imagePost])
             {
@@ -594,10 +660,12 @@
                 return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
             }
         }
-        else
-        {
-            return 70.0f;
-        }
+
+//        }
+//        else
+//        {
+//            return 70.0f;
+//        }
     }
     
     return 70.0f;
@@ -608,9 +676,10 @@
 
 -(void)refreshFirstCell
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    [self.tableView reloadData];
+//    [self.tableView beginUpdates];
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//    [self.tableView endUpdates];
 }
 
 #pragma  mark - Buttons view methods

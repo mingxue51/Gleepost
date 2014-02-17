@@ -330,12 +330,11 @@ static WebClient *instance = nil;
     {
 //        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
 //        
-//        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
+//        [params addEntriesFromDictionary:[NSMutablefDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
         
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];
     }
-    
     
     [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

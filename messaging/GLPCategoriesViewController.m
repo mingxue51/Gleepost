@@ -72,7 +72,7 @@
     {
         //TODO: Remove condition when final categories decided.
         
-        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"])
+        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
         {
             [_categories addObject:category];
         }
@@ -153,7 +153,7 @@
 {
     for(GLPCategory *category in _categories)
     {
-        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"])
+        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
         {
             NSString *str = [NSString stringWithFormat:@"%@_category.png",category.tag];
             

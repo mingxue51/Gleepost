@@ -81,10 +81,10 @@ NSInteger const kGLPNumberOfPosts = 20;
             
             //If newPost is contained to already posted posts then continue.
             //Avoid duplications.
-            if([GLPPostManager isPost:newPost containedInArray:posts])
-            {
-                continue;
-            }
+//            if([GLPPostManager isPost:newPost containedInArray:posts])
+//            {
+//                continue;
+//            }
             
 
             
