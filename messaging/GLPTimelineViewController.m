@@ -122,6 +122,7 @@ const float TOP_OFFSET = 213.0f;
     if(self)
     {
         [self configNotifications];
+        
     }
     
     return self;
@@ -715,6 +716,18 @@ const float TOP_OFFSET = 213.0f;
             
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
+            
+            
+            //If there are less than 5 posts then add the white footer.
+            if(remotePosts.count < 5)
+            {
+                [self setBottomView];
+            }
+            else
+            {
+                [self clearBottomView];
+            }
+            
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
@@ -722,6 +735,33 @@ const float TOP_OFFSET = 213.0f;
         
         [self stopLoading];
     }];
+}
+
+-(void)setBottomView
+{
+    //Clear bottom view.
+    //    [self clearBottomView];
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin.y = frame.size.height;
+    
+    CGRect viewFrame = self.view.bounds;
+    viewFrame.origin.y = viewFrame.size.height;
+    
+    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
+    grayView.tag = 100;
+    grayView.backgroundColor = [UIColor whiteColor];
+    //    [self.tableView addSubview:grayView];
+    //    [grayView sendSubviewToBack:self.tableView];
+    
+    self.tableView.tableFooterView = grayView;
+    //    [self.view addSubview:grayView];
+}
+
+-(void)clearBottomView
+{
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 }
 
 - (void)loadEarlierPostsFromPullToRefresh

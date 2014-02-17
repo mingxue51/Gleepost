@@ -39,7 +39,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
 {
     [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
     
-    [_titleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24.0f]];
+    [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:24.0f]];
 }
 
 - (IBAction)createNewPost:(id)sender
