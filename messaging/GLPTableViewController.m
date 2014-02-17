@@ -277,7 +277,7 @@
     }
     DDLogInfo(@"Show bottom loader");
     
-    if(_items.count > 0) {
+    if(_items.count == 0) {
         [_bottomLoadingCellDelegate show];
         
         int rows = [self tableView:self.tableView numberOfRowsInSection:0] - 1;

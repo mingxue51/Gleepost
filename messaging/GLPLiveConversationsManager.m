@@ -320,7 +320,10 @@ static GLPLiveConversationsManager *instance = nil;
             
             BOOL canHaveMorePreviousMessages = messages.count >= 20;
             _conversationsCanHavePreviousMessages[index] = [NSNumber numberWithBool:canHaveMorePreviousMessages];
-            DDLogInfo(@"can have: %d", canHaveMorePreviousMessages);
+            
+//            DDLogInfo(@"Sleep starts");
+//            [NSThread sleepForTimeInterval:10];
+//            DDLogInfo(@"Sleep ends");
             
             [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
         });
