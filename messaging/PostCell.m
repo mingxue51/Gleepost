@@ -330,7 +330,7 @@ static const float OneLineText = 16.0;
 -(void)setNewPositions
 {
     //Change the height of the label.
-    [self setElement:self.contentLbl size:[PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost]];
+    [self setElement:self.contentLbl size:[PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable]];
     
     if(!self.imageAvailable)
     {
@@ -382,11 +382,22 @@ static const float OneLineText = 16.0;
 }
 
 
-+ (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost
++ (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
 {
 //    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     //[UIFont systemFontOfSize:13.0]
-    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+    UIFont *font = nil;
+    
+    if(isImage)
+    {
+        font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+    }
+    else
+    {
+        font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+    }
+    
+
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
@@ -421,7 +432,7 @@ static const float OneLineText = 16.0;
     float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
     
     // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height /*+ PostContentViewPadding*/;
+    height += [PostCell getContentLabelSizeForContent:content isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
     
     //Decrease by 10 points when the text is over one line.
 //    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)

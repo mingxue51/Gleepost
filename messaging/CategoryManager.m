@@ -40,11 +40,15 @@ static CategoryManager *instance = nil;
         //Initialise categories.
         NSMutableDictionary *tempDict = [NSMutableDictionary dictionary];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"news" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPNews] forKey:[NSNumber numberWithInt:kGLPNews]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"for-sale" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPForSale] forKey:[NSNumber numberWithInt:kGLPForSale]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"question" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPQuestion] forKey:[NSNumber numberWithInt:kGLPQuestion]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"event" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPEvent] forKey:[NSNumber numberWithInt:kGLPEvent]];
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"jobs" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPJobs] forKey:[NSNumber numberWithInt:kGLPJobs]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers] forKey:[NSNumber numberWithInt:kGLPSpeakers]];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic] forKey:[NSNumber numberWithInt:kGLPMusic]];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater] forKey:[NSNumber numberWithInt:kGLPTheater]];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports] forKey:[NSNumber numberWithInt:kGLPSports]];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties] forKey:[NSNumber numberWithInt:kGLPParties]];
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
     }
@@ -105,6 +109,11 @@ static CategoryManager *instance = nil;
     }
     
     return categories;
+}
+
+-(GLPCategory *)generateEventCategory
+{
+    return [[GLPCategory alloc] initWithTag:@"event" name:@"Event" postRemoteKey:0 andRemoteKey:5];
 }
 
 

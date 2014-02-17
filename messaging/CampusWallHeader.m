@@ -364,7 +364,7 @@ NSString *HAPPENED_TODAY;
 
     NSArray *positionsOfVisibleCells = [self postionsOfVissibleCells];
     
-    DDLogDebug(@"-> %@", [self postionsOfVissibleCells]);
+//    DDLogDebug(@"-> %@", [self postionsOfVissibleCells]);
     
     if(positionsOfVisibleCells.count < 3)
     {

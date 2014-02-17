@@ -38,7 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *eventsCategoryBtn;
 @property (weak, nonatomic) IBOutlet UIButton *jobsCategoryBtn;
 @property (weak, nonatomic) IBOutlet UIButton *questionsCategoryBtn;
-
+@property (strong, nonatomic) GLPCategory *eventCategory;
 
 //Navigation bar.
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelNavBarBtn;
@@ -118,7 +118,6 @@
     self.fdTakeController.delegate = self;
     
 }
-
 
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -272,6 +271,7 @@
         [self makeButtonSelected:currentButton];
 
         
+        [_categories addObject:[[CategoryManager instance] generateEventCategory]];
         [_categories addObject:chosenCategory];
 
         
@@ -314,6 +314,9 @@
 
     //Enable all disabled buttons.
     [self enableButtons];
+    
+    //Remove all objects from selected categories array.
+    [self deleteCategoryWithRemoteKey:0];
 
 }
 
@@ -378,15 +381,19 @@
 
 -(void)deleteCategoryWithRemoteKey:(int)remoteKey
 {
+   
+    [_categories removeAllObjects];
     
-    for(GLPCategory *c in _categories)
-    {
-        if(c.remoteKey == remoteKey)
-        {
-            [_categories removeObject:c];
-            break;
-        }
-    }
+//    for(GLPCategory *c in _categories)
+//    {
+//        if(c.remoteKey == remoteKey)
+//        {
+//            [_categories removeObject:c];
+//            break;
+//        }
+//    }
+    
+    
 }
 
 

@@ -11,11 +11,11 @@
 
 typedef enum
 {
-    kGLPNews = 2,
-    kGLPForSale = 3,
-    kGLPQuestion = 4,
-    kGLPEvent = 5,
-    kGLPJobs = 6
+    kGLPSpeakers = 8,
+    kGLPMusic = 9,
+    kGLPTheater = 10,
+    kGLPSports = 11,
+    kGLPParties = 12
     
 }GLPCategories;
 
@@ -29,6 +29,7 @@ typedef enum
 -(NSArray*)categoriesNames;
 -(NSArray*)categoriesTags;
 -(NSArray*)getCategories;
+-(GLPCategory *)generateEventCategory;
 
 
 @end
