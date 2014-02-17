@@ -23,7 +23,7 @@
 #import "GLPPostImageLoader.h"
 #import "ViewPostViewController.h"
 #import "GLPPostNotificationHelper.h"
-#import "ViewTopicViewController.h"
+#import "GLPConversationViewController.h"
 
 
 
@@ -54,6 +54,7 @@
 @property (assign, nonatomic) int postIndexToReload;
 
 @property (strong, nonatomic) GLPConversation *conversation;
+@property (strong, nonatomic) GLPUser *emptyConversationUser;
 
 @end
 
@@ -764,7 +765,6 @@
 
 -(void)viewConversation:(GLPConversation*)conversation
 {
-
     _conversation = conversation;
     
     [self performSegueWithIdentifier:@"view topic" sender:self];
@@ -792,10 +792,8 @@
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ViewTopicViewController *vt = segue.destinationViewController;
-        
+        GLPConversationViewController *vt = segue.destinationViewController;
         vt.conversation = _conversation;
-        
     }
 }
 

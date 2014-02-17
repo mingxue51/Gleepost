@@ -11,6 +11,7 @@
 #import "ConversationManager.h"
 #import "NSNotificationCenter+Utils.h"
 #import "NSMutableArray+QueueAdditions.h"
+#import "SessionManager.h"
 
 @interface GLPLiveConversationsManager()
 
@@ -110,14 +111,14 @@ static GLPLiveConversationsManager *instance = nil;
     DDLogInfo(@"Create random conversation");
     
     dispatch_async(_queue, ^{
-        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversation];
+        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUser:nil];
         if(!conversation) {
             DDLogWarn(@"Cannot create new random conversation in server, abort");
             return;
         }
         
         BOOL success = [self internalAddConversation:conversation isEmpty:YES];
-        DDLogInfo(@"Conversation created succesfully");
+        DDLogInfo(@"Conversation created succesfully: %d", success);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if(success) {
@@ -127,48 +128,30 @@ static GLPLiveConversationsManager *instance = nil;
             }
         });
     });
+}
 
+- (void)createRegularConversationWithUser:(GLPUser *)user callback:(void (^)(GLPConversation *conversation))callback
+{
+    DDLogInfo(@"Create regular conversation with user %d - %@", user.remoteKey, user.name);
     
-//    [[WebClient sharedInstance] createConversation:^(GLPConversation *conversation) {
-//        if(!conversation) {
-//            DDLogWarn(@"Cannot create new random conversation in server, abort");
-//            return;
-//        }
-//        
-//        dispatch_async(_queue, ^{
-//            BOOL success = [self internalAddConversation:conversation isEmpty:YES];
-//            DDLogInfo(@"Conversation created succesfully");
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                if(success) {
-//                    callback(conversation);
-//                } else {
-//                    callback(nil);
-//                }
-//            });
-//        });
-//    }];
-    
-//    __block GLPConversation *conversation = nil;
-//    
-//    dispatch_sync(_queue, ^{
-//        [NSThread sleepForTimeInterval:10];
-//        GLPConversation *syncConversation = [[WebClient sharedInstance] synchronousCreateConversation];
-//        if(!syncConversation) {
-//            DDLogError(@"Cannot create new random conversation in server, abort");
-//            return;
-//        }
-//        
-//        BOOL success = [self internalAddConversation:syncConversation isEmpty:YES];
-//        if(!success) {
-//            return;
-//        }
-//        
-//        conversation = syncConversation;
-//        DDLogInfo(@"Conversation created succesfully");
-//    });
-//    
-//    return conversation;
+    dispatch_async(_queue, ^{
+        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUser:user];
+        if(!conversation) {
+            DDLogWarn(@"Cannot create new regular conversation in server, abort");
+            return;
+        }
+        
+        BOOL success = [self internalAddConversation:conversation isEmpty:YES];
+        DDLogInfo(@"Conversation created succesfully: %d", success);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(success) {
+                callback(conversation);
+            } else {
+                callback(nil);
+            }
+        });
+    });
 }
 
 - (void)addConversation:(GLPConversation *)conversation
@@ -559,6 +542,35 @@ static GLPLiveConversationsManager *instance = nil;
     
     dispatch_sync(_queue, ^{
         conversation = _conversations[[NSNumber numberWithInteger:remoteKey]];
+    });
+    
+    return conversation;
+}
+
+- (GLPConversation *)findRegularByParticipant:(GLPUser *)participant
+{
+    DDLogInfo(@"Find regular conversation by participant %d - %@", participant.remoteKey, participant.name);
+    
+    __block GLPConversation *conversation = nil;
+    
+    dispatch_sync(_queue, ^{
+        NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            GLPConversation *attachedConversation = evaluatedObject;
+            
+            if(attachedConversation.isLive) {
+                return NO;
+            }
+            
+            GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
+            return attachedParticipant.remoteKey == participant.remoteKey;
+        }]];
+        
+        if(filteredArray.count == 0) {
+            DDLogInfo(@"Cannot found regular conversation that matches");
+            return;
+        }
+        
+        conversation = filteredArray[0];
     });
     
     return conversation;

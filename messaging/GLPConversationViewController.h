@@ -8,6 +8,7 @@
 
 #import "GLPTableViewController.h"
 #import "GLPConversation.h"
+#import "GLPUser.h"
 #import "HPGrowingTextView.h"
 
 @interface GLPConversationViewController : GLPTableViewController <UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate>

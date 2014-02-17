@@ -13,6 +13,7 @@
 #import "GLPContact.h"
 #import "WebClientHelper.h"
 #import "ContactsManager.h"
+#import "GLPLiveConversationsManager.h"
 
 
 @interface ProfileButtonsTableViewCell ()
@@ -107,28 +108,41 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
 }
 - (IBAction)sendMessage:(id)sender
 {
-    //If conversation with user already exist, don't create a new one.
-    [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
+    // we should not duplicate code like that, already exists in profiletableviewcell
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findRegularByParticipant:self.currentUser];
+    DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
+    
+    if(!conversation) {
+        DDLogInfo(@"Create empty conversation");
         
-        if(sucess)
-        {
-            //Conversation exist.
-            [self.delegate viewConversation:conversation];
-            DDLogInfo(@"Conversation already exist: %@", conversation.title);
-        }
-        else
-        {
-            //Conversation not exist, create new fake conversation.
-            
-            NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
-            
-            [self.delegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
-            
-            DDLogInfo(@"Fake conversation just created.");
-            
-        }
-        
-    }];
+        NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
+        conversation = [[GLPConversation alloc] initWithParticipants:part];
+    }
+    
+    [self.delegate viewConversation:conversation];
+    
+//    //If conversation with user already exist, don't create a new one.
+//    [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
+//        
+//        if(sucess)
+//        {
+//            //Conversation exist.
+//            [self.delegate viewConversation:conversation];
+//            DDLogInfo(@"Conversation already exist: %@", conversation.title);
+//        }
+//        else
+//        {
+//            //Conversation not exist, create new fake conversation.
+//            
+//            NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
+//            
+//            [self.delegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
+//            
+//            DDLogInfo(@"Fake conversation just created.");
+//            
+//        }
+//        
+//    }];
 
 }
 - (IBAction)addContact:(id)sender

@@ -20,6 +20,7 @@
 // conversations
 - (void)loadConversations;
 - (void)createRandomConversation:(void (^)(GLPConversation *conversation))callback;
+- (void)createRegularConversationWithUser:(GLPUser *)user callback:(void (^)(GLPConversation *conversation))callback;
 - (void)addConversation:(GLPConversation *)conversation;
 - (void)endConversation:(GLPConversation *)conversation;
 - (void)randomToRegular:(GLPConversation *)detachedRegularConversation;
@@ -29,6 +30,7 @@
 - (void)syncConversationPreviousMessages:(GLPConversation *)detachedConversation;
 - (void)resetLastShownMessageForConversation:(GLPConversation *)conversation;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
+- (GLPConversation *)findRegularByParticipant:(GLPUser *)participant;
 - (BOOL)conversationCanHavePreviousMessages:(GLPConversation *)conversation;
 - (GLPConversation *)oldestLiveConversation;
 - (NSInteger)conversationsCount;

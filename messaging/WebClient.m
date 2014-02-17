@@ -772,7 +772,7 @@ static WebClient *instance = nil;
 //    [self createConversationWithPath:@"newgroupconversation" andCallbackBlock:callbackBlock];
 //}
 
-- (GLPConversation *)synchronousCreateConversation
+- (GLPConversation *)synchronousCreateConversationWithUser:(GLPUser *)user
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     
@@ -789,8 +789,13 @@ static WebClient *instance = nil;
         params[@"participants"] = userIds;
         DDLogInfo(@"Generate fake live conversation for current user: %d, with opponent user: %@", self.sessionManager.user.remoteKey, userIds);
     } else {
-        params[@"random"] = @"true";
-        params[@"participant_count"] = @2;
+        if(!user) {
+            params[@"random"] = @"true";
+            params[@"participant_count"] = @2;
+        } else {
+            params[@"random"] = @"false";
+            params[@"participants"] = [NSString stringWithFormat:@"%d", user.remoteKey];
+        }
     }
     
     __block GLPConversation *conversation = nil;

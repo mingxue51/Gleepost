@@ -57,6 +57,8 @@
 
 @property (strong, nonatomic) GLPIntroducedProfile * introduced;
 
+@property (assign, nonatomic) BOOL isEmptyConversation;
+
 @end
 
 @implementation GLPConversationViewController
@@ -83,10 +85,10 @@
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
     
-    //TODO: Move that to the new implementation.
+    _isEmptyConversation = _conversation.remoteKey == 0;
+    DDLogInfo(@"Conversation is empty: %d", _isEmptyConversation);
     
-    if(_conversation.remoteKey != 0) //New
-    {
+    if(!_isEmptyConversation) {
         [self loadInitialMessages];
     }
 }
@@ -261,33 +263,6 @@
 }
 
 
-#pragma mark - Client
-
-//TODO: Add to the new implementation.
-
--(void)createConversationWithCallbackBlock:(void(^)(BOOL sucess, GLPConversation *conversation))callback
-{
-    //Create new conversation with the user.
-    [[WebClient sharedInstance] createRegularConversationWithUserRemoteKey:[_conversation getUniqueParticipant].remoteKey andCallback:^(BOOL sucess, GLPConversation *conversation) {
-        
-        if(sucess)
-        {
-            //Save conversation to local database,
-            [ConversationManager saveConversationIfNotExist:conversation];
-            
-            callback(sucess, conversation);
-            
-        }
-        else
-        {
-            [WebClientHelper showInternetConnectionErrorWithTitle:@"Error creating conversation"];
-            callback(sucess, nil);
-        }
-        
-    }];
-}
-
-
 # pragma mark - Messages
 
 - (void)loadInitialMessages
@@ -383,11 +358,6 @@
 
 - (void)createMessageFromForm
 {
-//    [UIView animateWithDuration:2.0f animations:^{
-//        //Remove header view after first message.
-//        [self.tableView.tableHeaderView setAlpha:0.0f];
-//    }];
-    
     [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation];
     
     self.formTextView.text = @"";
@@ -418,6 +388,10 @@
 // Conversation is sync
 - (void)conversationSyncFromNotification:(NSNotification *)notification
 {
+    if(_isEmptyConversation) {
+        return;
+    }
+    
     DDLogInfo(@"Conversation sync from notification");
     NSInteger conversationRemoteKey = [[notification userInfo][@"remoteKey"] integerValue];
     
@@ -445,7 +419,6 @@
     else {
         [self hideBottomLoader];
         
-//        BOOL willShowTopLoader = canHavePreviousMessages && (_messages.count > 0 || hasNewMessages);
         BOOL scrollAnimated = _messages.count > 0;
         
         if(hasNewMessages) {
@@ -474,12 +447,20 @@
 // - Sync with remote notif
 - (void)syncWithRemoteFromNotification:(NSNotification *)notification
 {
+    if(_isEmptyConversation) {
+        return;
+    }
+    
     DDLogInfo(@"Synchronized with remote from NSNotification");
     [self syncConversation];
 }
 
 - (void)notSyncWithRemoteFromNotification:(NSNotification *)notification
 {
+    if(_isEmptyConversation) {
+        return;
+    }
+    
     DDLogInfo(@"Not synchronized with remote from NSNotification");
     [self hideBottomLoader];
     [self hideTopLoader];
@@ -487,6 +468,10 @@
 
 - (void)messageSendUpdateFromNotification:(NSNotification *)notification
 {
+    if(_isEmptyConversation) {
+        return;
+    }
+    
     DDLogInfo(@"Message send update from NSNotification");
     NSInteger key = [[notification userInfo][@"key"] integerValue];
     BOOL sent = [[notification userInfo][@"sent"] boolValue];
@@ -548,35 +533,22 @@
         return;
     }
     
-    //TODO: Add that to the new implementation.
-    if(_conversation.remoteKey == 0)
-    {
-        //Create conversation.
-        [self createConversationWithCallbackBlock:^(BOOL sucess, GLPConversation *conversation) {
-            
-            if(sucess)
-            {
-                _conversation = conversation;
-                [self createMessageFromForm];
-            }
-            
+    if(_isEmptyConversation) {
+        
+        
+        
+        [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
+            _conversation = conversation;
+            [self createMessageFromForm];
         }];
-    }
-    else
-    {
+    } else {
         [self createMessageFromForm];
     }
-
-    //TODO:Deleted
-//    [self createMessageFromForm];
 }
 
 - (IBAction)tableViewClicked:(id)sender
 {
     [self hideKeyboardFromTextViewIfNeeded];
-    
-    //Hide the live chats bubble if exist.
-    //[self.liveChatsView removeView];
 }
 
 -(void)dismiss:(id)sender

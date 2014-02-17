@@ -19,6 +19,7 @@
 #import "AppearanceHelper.h"
 #import "ContactsManager.h"
 #import "ConversationManager.h"
+#import "GLPLiveConversationsManager.h"
 
 @interface ProfileTableViewCell ()
 
@@ -369,32 +370,17 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 - (IBAction)sendMessage:(id)sender
 {
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findRegularByParticipant:self.currentUser];
+    DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
     
-    //If conversation with user already exist, don't create a new one.
-    [ConversationManager loadConversationWithParticipant:self.currentUser.remoteKey withCallback:^(BOOL sucess, GLPConversation *conversation) {
+    if(!conversation) {
+        DDLogInfo(@"Create empty conversation");
         
-        if(sucess)
-        {
-            //Conversation exist.
-            [_privateProfileDelegate viewConversation:conversation];
-            DDLogInfo(@"Conversation already exist: %@", conversation.title);
-        }
-        else
-        {
-            //Conversation not exist, create new fake conversation.
-            
-            NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
-            
-            [_privateProfileDelegate viewConversation:[ConversationManager createFakeConversationWithParticipants:part]];
-            
-            DDLogInfo(@"Fake conversation just created.");
-
-        }
-        
-    }];
+        NSArray *part = [[NSArray alloc] initWithObjects:self.currentUser, [SessionManager sharedInstance].user, nil];
+        conversation = [[GLPConversation alloc] initWithParticipants:part];
+    }
     
-    
-
+    [_privateProfileDelegate viewConversation:conversation];
 }
 
 #pragma mark - Client
