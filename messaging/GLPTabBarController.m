@@ -86,6 +86,12 @@ static BOOL isViewDidDisappearCalled = YES;
     
     DDLogInfo(@"Tab bar update message badge notification");
     
+    BOOL localMessage = [notification.userInfo[@"newLocalMessage"] boolValue];
+    if(localMessage) {
+        DDLogInfo(@"Ignore locally posted messages");
+        return;
+    }
+    
     BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
     if(newMessages) {
         _messagesCount++;

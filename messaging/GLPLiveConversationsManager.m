@@ -941,7 +941,8 @@ static GLPLiveConversationsManager *instance = nil;
         }
         
         key = [self internalAddMessage:message toConversation:conversation];
-        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+        
+        [self internalNotifyConversationHasNewLocalMessages:conversation];
     });
     
     DDLogInfo(@"New local message successfuly added with key: %d", key);
@@ -1310,11 +1311,37 @@ static GLPLiveConversationsManager *instance = nil;
     return YES;
 }
 
+- (void)internalNotifyConversationHasNewLocalMessages:(GLPConversation *)conversation
+{
+    [self internalNotifyConversation:conversation
+                         newMessages:YES
+               beingPreviousMessages:NO
+         canHaveMorePreviousMessages:NO
+                     newLocalMessage:YES];
+}
 
 - (void)internalNotifyConversation:(GLPConversation *)conversation withNewMessages:(BOOL)newMessages beingPreviousMessages:(BOOL)previousMessages canHaveMorePreviousMessages:(BOOL)canHaveMorePreviousMessages
 {
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:Nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:conversation.remoteKey], @"newMessages": [NSNumber numberWithBool:newMessages], @"previousMessages": [NSNumber numberWithBool:previousMessages], @"canHaveMorePreviousMessages": [NSNumber numberWithBool:canHaveMorePreviousMessages]}];
+    [self internalNotifyConversation:conversation
+                         newMessages:newMessages
+               beingPreviousMessages:previousMessages
+         canHaveMorePreviousMessages:canHaveMorePreviousMessages
+                     newLocalMessage:NO];
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:Nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:conversation.remoteKey], @"newMessages": [NSNumber numberWithBool:newMessages], @"previousMessages": [NSNumber numberWithBool:previousMessages], @"canHaveMorePreviousMessages": [NSNumber numberWithBool:canHaveMorePreviousMessages]}];
 }
+
+- (void)internalNotifyConversation:(GLPConversation *)conversation newMessages:(BOOL)newMessages beingPreviousMessages:(BOOL)previousMessages canHaveMorePreviousMessages:(BOOL)canHaveMorePreviousMessages newLocalMessage:(BOOL)newLocalMessage
+{
+    NSDictionary *args = @{@"remoteKey":[NSNumber numberWithInteger:conversation.remoteKey],
+                           @"newMessages": [NSNumber numberWithBool:newMessages],
+                           @"previousMessages": [NSNumber numberWithBool:previousMessages],
+                           @"canHaveMorePreviousMessages": [NSNumber numberWithBool:canHaveMorePreviousMessages],
+                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage]};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil userInfo:args];
+}
+
 
 - (void)internalConfigureInitialState
 {
