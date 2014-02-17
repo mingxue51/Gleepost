@@ -892,6 +892,15 @@
         
         [buttonsView setDelegate:self];
         
+        
+        if(self.selectedTabStatus == kGLPSettings)
+        {
+            if(_notifications.count < 5)
+            {
+                [self setBottomView];
+            }
+        }
+        
         return buttonsView;
     }
     else if (indexPath.row >= 2)
@@ -904,6 +913,9 @@
             GLPNotification *notification = _notifications[indexPath.row - 2];
             [notificationCell updateWithNotification:notification];
             notificationCell.delegate = self;
+            
+            
+
             
             
             return notificationCell;

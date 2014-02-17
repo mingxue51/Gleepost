@@ -72,13 +72,13 @@
     {
         //TODO: Remove condition when final categories decided.
         
-        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
-        {
+//        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
+//        {
             [_categories addObject:category];
-        }
+//        }
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"All" name:@"All" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -115,7 +115,7 @@
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
     
-    if([selectedCategory.tag isEqualToString:@"All"])
+    if([selectedCategory.tag isEqualToString:@"all"])
     {
         [[SessionManager sharedInstance] setCurrentCategory:nil];
     }
@@ -153,17 +153,14 @@
 {
     for(GLPCategory *category in _categories)
     {
-        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
-        {
-            NSString *str = [NSString stringWithFormat:@"%@_category.png",category.tag];
-            
-            UIImage *img = [UIImage imageNamed:str];
-            
-            [_categoriesImages setObject:img forKey:category.tag];
-        }
+        NSString *str = [NSString stringWithFormat:@"%@_category.png",category.tag];
+        
+        UIImage *img = [UIImage imageNamed:str];
+        
+        [_categoriesImages setObject:img forKey:category.tag];
     }
     
-    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
+//    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
     
     GLPCategory *current = [SessionManager sharedInstance].currentCategory;
@@ -186,7 +183,7 @@
     {
         if(!_selectedCategory)
         {
-            if([cat.tag isEqualToString:@"All"])
+            if([cat.tag isEqualToString:@"all"])
             {
                 cat.uiSelected = YES;
             }

@@ -112,7 +112,7 @@
 @implementation GLPTimelineViewController
 
 //Constants.
-const float TOP_OFFSET = 213.0f;
+const float TOP_OFFSET = 219.0f;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -122,6 +122,7 @@ const float TOP_OFFSET = 213.0f;
     if(self)
     {
         [self configNotifications];
+        
     }
     
     return self;
@@ -427,7 +428,7 @@ const float TOP_OFFSET = 213.0f;
     
 //    [self configTabbarFormat];
     
-    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     
     
     [self setButtonsToNavigationBar];
@@ -715,6 +716,18 @@ const float TOP_OFFSET = 213.0f;
             
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
+            
+            
+            //If there are less than 5 posts then add the white footer.
+            if(remotePosts.count < 5)
+            {
+                [self setBottomView];
+            }
+            else
+            {
+                [self clearBottomView];
+            }
+            
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
@@ -722,6 +735,33 @@ const float TOP_OFFSET = 213.0f;
         
         [self stopLoading];
     }];
+}
+
+-(void)setBottomView
+{
+    //Clear bottom view.
+    //    [self clearBottomView];
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin.y = frame.size.height;
+    
+    CGRect viewFrame = self.view.bounds;
+    viewFrame.origin.y = viewFrame.size.height;
+    
+    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
+    grayView.tag = 100;
+    grayView.backgroundColor = [UIColor whiteColor];
+    //    [self.tableView addSubview:grayView];
+    //    [grayView sendSubviewToBack:self.tableView];
+    
+    self.tableView.tableFooterView = grayView;
+    //    [self.view addSubview:grayView];
+}
+
+-(void)clearBottomView
+{
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 }
 
 - (void)loadEarlierPostsFromPullToRefresh
@@ -1015,6 +1055,7 @@ const float TOP_OFFSET = 213.0f;
     
     [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
         
+    
 //    [self.campusWallHeader setPositionToNavBar:CGPointMake(0.0f, scrollView.contentOffset.y)];
     
     if(scrollView.contentOffset.y >= TOP_OFFSET)
@@ -1153,7 +1194,7 @@ const float TOP_OFFSET = 213.0f;
     
     //The condition is added to prevent error when there are no posts in the table view.
     
-    if(self.posts.count == 1)
+    if(self.posts.count == 1 || !self.posts)
     {
         [self.tableView reloadData];
     }
@@ -1867,7 +1908,7 @@ const float TOP_OFFSET = 213.0f;
     cvc.delegate = self;
 //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 246)];
+    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
     
     [cvc.blurBack setImage:[image stackBlur:10.0f]];
     

@@ -260,15 +260,6 @@
 
 -(void)clearBottomView
 {
-//    for(UIView *v in self.tableView.subviews)
-//    {
-//        if(v.tag == 100)
-//        {
-//            [v removeFromSuperview];
-//        }
-//    }
-    
-//    [self.tableView.tableFooterView setFrame:CGRectMake(0.0f, 300.0f, 320.0f, 0.0f)];
     
     self.tableView.tableFooterView = nil;
 }
