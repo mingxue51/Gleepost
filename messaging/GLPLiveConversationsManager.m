@@ -239,6 +239,30 @@ static GLPLiveConversationsManager *instance = nil;
     });
 }
 
+- (void)randomToRegular:(GLPConversation *)detachedRegularConversation
+{
+    DDLogInfo(@"Random to regular conversation with remote key: %d", detachedRegularConversation.remoteKey);
+    
+    dispatch_async(_queue, ^{
+        GLPConversation *attachedConversation = [self internalAttachedConversation:detachedRegularConversation];
+        if(!attachedConversation) {
+            return;
+        }
+        
+        attachedConversation.lastUpdate = detachedRegularConversation.lastUpdate;
+        attachedConversation.lastMessage = detachedRegularConversation.lastMessage;
+        attachedConversation.participants = detachedRegularConversation.participants;
+        attachedConversation.title = detachedRegularConversation.title;
+        attachedConversation.isGroup = detachedRegularConversation.isGroup;
+        
+        attachedConversation.isLive = NO;
+        attachedConversation.isEnded = NO;
+        attachedConversation.expiryDate = nil;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    });
+}
+
 - (void)syncConversation:(GLPConversation *)detachedConversation
 {
     DDLogInfo(@"Sync conversation with remote key %d", detachedConversation.remoteKey);
@@ -412,6 +436,7 @@ static GLPLiveConversationsManager *instance = nil;
 }
 
 // Get converation available for sync, from detached conversation
+// TODO: rename internal
 - (BOOL)isConversationForSync:(GLPConversation *)attachedConversation
 {
     if([_conversationsSyncStatuses[[attachedConversation remoteKeyNumber]] boolValue]) {

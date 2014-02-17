@@ -93,6 +93,13 @@ static GLPMessageProcessor *instance = nil;
                 break;
             }
                 
+            case kGLPWebSocketEventTypeChangedConversation: {
+                DDLogInfo(@"Websocket event: Changed conversation");
+                GLPConversation *conversation = [RemoteParser parseConversationFromJson:event.data];
+                [[GLPLiveConversationsManager sharedInstance] randomToRegular:conversation];
+                break;
+            }
+                
             case kGLPWebSocketEventTypeNotification:{
                 GLPNotification *notification = [RemoteParser parseNotificationFromJson:event.data];
                 [GLPNotificationManager saveNotification:notification];

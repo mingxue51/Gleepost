@@ -22,6 +22,8 @@
         _type = kGLPWebSocketEventTypeNewConversation;
     } else if([string isEqualToString:@"ended-conversation"]) {
         _type = kGLPWebSocketEventTypeEndConversation;
+    } else if([string isEqualToString:@"changed-conversation"]) {
+        _type = kGLPWebSocketEventTypeChangedConversation;
     } else if([string isEqualToString:@"notification"]) {
         _type = kGLPWebSocketEventTypeNotification;
     } else {
