@@ -108,8 +108,22 @@
 {
     [super viewWillAppear:animated];
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+
+    
     if(self.tableView.frame.size.height < 465.0f) {
-        [self.tableView setFrame:CGRectMake(0, 0, 320, 460)];
+        
+        if(screenRect.size.height == 568.0)
+        {
+            [self.tableView setFrame:CGRectMake(0, 0, 320, 460)];
+
+        }
+        else
+        {
+            [self.tableView setFrame:CGRectMake(0, 0, 320, 375)];
+        }
+        
+
         
     }
     
@@ -274,6 +288,8 @@
     CGRect formTextViewFrame = self.formTextView.frame;
     formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
     self.formTextView.frame = formTextViewFrame;
+    
+    
     
     self.formTextView.layer.cornerRadius = 5;
 }

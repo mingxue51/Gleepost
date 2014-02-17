@@ -42,7 +42,6 @@
 		580C7AB918983C92007495EE /* jobs_category_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AB818983C92007495EE /* jobs_category_selected.png */; };
 		580C7ABB18985059007495EE /* top_image_campus_wall_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ABA18985059007495EE /* top_image_campus_wall_old.png */; };
 		580C7ABD189850D2007495EE /* add_new_post_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ABC189850D2007495EE /* add_new_post_new.png */; };
-		580C7ACB1898632C007495EE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7AC91898632C007495EE /* splash.png */; };
 		580C7ACC1898632C007495EE /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ACA1898632C007495EE /* splash@2x.png */; };
 		580C7ACE189863F6007495EE /* background_day.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ACD189863F6007495EE /* background_day.png */; };
 		580FF14F18AA58DE0026B65B /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 580FF14E18AA58DE0026B65B /* add_button.png */; };
@@ -192,6 +191,7 @@
 		5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5DA18258FB800AA9103 /* TransitionDelegate.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
+		585E724418B2C07C009034DE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 585E724318B2C07C009034DE /* splash.png */; };
 		585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */; };
 		585FF58D18AFAF07009462AD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 585FF58C18AFAF07009462AD /* CoreLocation.framework */; };
 		586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */ = {isa = PBXBuildFile; fileRef = 586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */; };
@@ -633,7 +633,6 @@
 		580C7AB818983C92007495EE /* jobs_category_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jobs_category_selected.png; sourceTree = "<group>"; };
 		580C7ABA18985059007495EE /* top_image_campus_wall_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_image_campus_wall_old.png; sourceTree = "<group>"; };
 		580C7ABC189850D2007495EE /* add_new_post_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post_new.png; sourceTree = "<group>"; };
-		580C7AC91898632C007495EE /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		580C7ACA1898632C007495EE /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
 		580C7ACD189863F6007495EE /* background_day.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_day.png; sourceTree = "<group>"; };
 		580FF14E18AA58DE0026B65B /* add_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button.png; sourceTree = "<group>"; };
@@ -849,6 +848,7 @@
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
 		585DF77517ECAC1400FBFC35 /* ChatMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageTableViewCell.h; sourceTree = "<group>"; };
 		585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageTableViewCell.m; sourceTree = "<group>"; };
+		585E724318B2C07C009034DE /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		585EDAE9183106DC008D29F6 /* ImageFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFormatterHelper.h; sourceTree = "<group>"; };
 		585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFormatterHelper.m; sourceTree = "<group>"; };
 		585FF58C18AFAF07009462AD /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -2803,7 +2803,7 @@
 				80AB892417C267F50053E784 /* Gleepost-Info.plist */,
 				80AB892517C267F50053E784 /* InfoPlist.strings */,
 				80AB892817C267F50053E784 /* main.m */,
-				580C7AC91898632C007495EE /* splash.png */,
+				585E724318B2C07C009034DE /* splash.png */,
 				580C7ACA1898632C007495EE /* splash@2x.png */,
 				80AB892A17C267F50053E784 /* Gleepost-Prefix.pch */,
 			);
@@ -3398,7 +3398,6 @@
 				58143D7018212AE900B76E5D /* +_old.png in Resources */,
 				805E155D180EF3E700705B1C /* time_label.png in Resources */,
 				58F8C33518A549E7005EC7ED /* email_field.png in Resources */,
-				580C7ACB1898632C007495EE /* splash.png in Resources */,
 				806E3D7D1832B1960063AACE /* NotificationBackgroundSuccess@2x.png in Resources */,
 				806E3D7F1832B1960063AACE /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				58AD86BA1892C01500016C6D /* top_wall.png in Resources */,
@@ -3495,6 +3494,7 @@
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
 				582A664A18AC0ABC00006419 /* referesh_campus_live.png in Resources */,
+				585E724418B2C07C009034DE /* splash.png in Resources */,
 				5866F16218844869007484CF /* cloud2_night.png in Resources */,
 				588794BD18A81EA9002EEC8A /* icon_comment.png in Resources */,
 				5866F16618844869007484CF /* pole_night.png in Resources */,
