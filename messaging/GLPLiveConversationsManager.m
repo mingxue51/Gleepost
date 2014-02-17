@@ -545,6 +545,8 @@ static GLPLiveConversationsManager *instance = nil;
     return conversation;
 }
 
+
+// BOTH REGULAR AND RANDOM SO FAR
 - (GLPConversation *)findRegularByParticipant:(GLPUser *)participant
 {
     DDLogInfo(@"Find regular conversation by participant %d - %@", participant.remoteKey, participant.name);
@@ -555,9 +557,9 @@ static GLPLiveConversationsManager *instance = nil;
         NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
             GLPConversation *attachedConversation = evaluatedObject;
             
-            if(attachedConversation.isLive) {
-                return NO;
-            }
+//            if(attachedConversation.isLive) {
+//                return NO;
+//            }
             
             GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
             return attachedParticipant.remoteKey == participant.remoteKey;
