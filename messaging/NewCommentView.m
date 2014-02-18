@@ -51,7 +51,33 @@
         //Add cancel button.
         //UIBarButtonItem *cB = [[UIBarButtonItem alloc] init];
         
-        UIColor *buttonsColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+        //Add fake navigation bar.
+        UIImageView *navBar = [[UIImageView alloc] init];
+        
+        [navBar setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+        
+        [navBar setFrame:CGRectMake(0, 0, 320, 64)];
+        
+        [self addSubview:navBar];
+        
+        [navBar sendSubviewToBack:self];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(105.0f, 25.0f, 140.0f, 30.0f)];
+        
+        [label setText:@"New Comment"];
+
+        [AppearanceHelper formatTextWithLabel:label withSize:20.0];
+
+        
+        [label setTextColor:[UIColor whiteColor]];
+        
+        [self addSubview:label];
+        
+        
+        
+        
+        
+        UIColor *buttonsColour = [UIColor whiteColor];
         
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
         
@@ -70,6 +96,7 @@
         
         //Add text view.
         self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0f, 70.0f, 300, textViewHeight)];
+        
         [self.commentTextView setBackgroundColor:[UIColor clearColor]];
         [self.commentTextView setTextColor:[UIColor whiteColor]];
         [self.commentTextView setFont:[UIFont fontWithName:@"Helvetica Neue" size:18.0]];
@@ -95,14 +122,7 @@
         
         [self addSubview:commentButton];
         
-        //Add fake navigation bar.
-        UIImageView *navBar = [[UIImageView alloc] init];
-        
-        [navBar setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-        
-        [navBar setFrame:CGRectMake(0, 0, 320, 64)];
-        
-        [self addSubview:navBar];
+
         
 //        ChatPanelView *chatPanelView = [[ChatPanelView alloc] initWithFrame:CGRectMake(0, textViewHeight+80, 320, 50)];
 //        

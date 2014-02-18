@@ -55,7 +55,7 @@
 
 +(void)formatTextWithLabel:(UILabel*)label withSize:(float)size
 {
-    [label setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:size]];
+    [label setFont:[UIFont fontWithName:GLP_APP_FONT size:size]];
 }
 
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item
