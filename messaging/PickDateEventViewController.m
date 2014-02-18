@@ -47,13 +47,20 @@
 {
     UIBarButtonItem *button = (UIBarButtonItem *)sender;
     
-//TODO: Check for 30 characters.
     
     if(button.tag == 1)
     {
         if([_titleTextField.text isEqualToString:@""])
         {
             [WebClientHelper showStandardErrorWithTitle:@"Cannot continue" andContent:@"Please enter a title to continue"];
+            
+            return;
+        }
+        else if(_titleTextField.text.length > 30)
+        {
+            //Check for 30 characters.
+
+            [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 30 characters long"];
             
             return;
         }

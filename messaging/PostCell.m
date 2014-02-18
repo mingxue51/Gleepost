@@ -240,6 +240,8 @@ static const float OneLineText = 16.0;
     
     [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
+    self.titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
+    
     [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
     
     [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
