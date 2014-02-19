@@ -14,6 +14,7 @@
 @interface CampusWallHeaderSimpleView ()
 
 @property (weak, nonatomic) IBOutlet UIButton *eventsBtn;
+@property (weak, nonatomic) IBOutlet UIButton *createPostBtn;
 
 @property (weak, nonatomic) IBOutlet UILabel *stanfordLbl;
 @property (weak, nonatomic) IBOutlet UIImageView *backTagsImgView;
@@ -82,6 +83,11 @@
 -(void)formatElements
 {
     [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
+    
+    CGFloat createPostEdge = 7.5f;
+    
+    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
+    [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
     
     [self formatNavigationBar];
 }
