@@ -311,7 +311,8 @@ static BOOL goBack = NO;
     UIImageView *selectedCloud = [self generateCloud];
     
     [self addSubview:selectedCloud];
-    [self sendSubviewToBack:selectedCloud];
+    [self bringSubviewToFront:selectedCloud];
+    [self bringSubviewToFront:self.gleepostLogo];
 
     [UIView animateWithDuration:5.0 animations:^{
 

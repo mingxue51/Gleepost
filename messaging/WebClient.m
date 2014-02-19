@@ -261,11 +261,14 @@ static WebClient *instance = nil;
     {
         [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
+            DDLogDebug(@"deregisterPushToken: %@",responseObject);
+            
             callback(YES);
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
-            
+            DDLogDebug(@"deregisterPushToken: %@",error);
+
             
             callback(YES);
             

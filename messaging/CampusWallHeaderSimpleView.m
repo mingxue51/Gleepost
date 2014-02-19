@@ -65,20 +65,6 @@
 }
 
 
-//-(void)showFakeNavigationBar
-//{
-//    [self setHidden:NO];
-//}
-//
-//-(void)hideFakeNavigationBar
-//{
-//    [self setHidden:YES];
-//}
-//
-//-(void)setPositionToNavBar:(CGPoint)position
-//{
-//    [_fakeNavBar setFrame:CGRectMake(position.x, position.y, 320.f, 50.0f)];
-//}
 
 -(void)formatElements
 {
@@ -92,29 +78,6 @@
     [self formatNavigationBar];
 }
 
-
-//-(void)decreaseAlphaToBasicElements
-//{
-//    if(self.eventsBtn.alpha > 0.0)
-//    {
-//        self.eventsBtn.alpha -= 0.033;
-//        self.stanfordLbl.alpha -= 0.033;
-//        DDLogDebug(@"decrease: %f", self.eventsBtn.alpha);
-//
-//    }
-//
-//}
-//
-//-(void)increaseAlphaToBasicElements
-//{
-//    if(self.eventsBtn.alpha < 1.0)
-//    {
-//        self.eventsBtn.alpha += 0.033;
-//        self.stanfordLbl.alpha += 0.033;
-//        
-//        DDLogDebug(@"increase: %f", self.eventsBtn.alpha);
-//    }
-//}
 
 -(void)setAlphaToBasicElements:(CGFloat)alpha
 {

@@ -427,13 +427,22 @@ const float TOP_OFFSET = 219.0f;
     
     
 //    [self configTabbarFormat];
+
     
-    [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-    
+    [self setCustomBackgroundToTableView];
     
     [self setButtonsToNavigationBar];
 }
 
+-(void)setCustomBackgroundToTableView
+{
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background_main2"]];
+    
+    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
+    
+    [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [self.tableView setBackgroundView:backImgView];
+}
 
 -(void)configTabbarFormat
 {
@@ -719,14 +728,14 @@ const float TOP_OFFSET = 219.0f;
             
             
             //If there are less than 5 posts then add the white footer.
-            if(remotePosts.count < 5)
-            {
-                [self setBottomView];
-            }
-            else
-            {
-                [self clearBottomView];
-            }
+//            if(remotePosts.count < 5)
+//            {
+//                [self setBottomView];
+//            }
+//            else
+//            {
+//                [self clearBottomView];
+//            }
             
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;

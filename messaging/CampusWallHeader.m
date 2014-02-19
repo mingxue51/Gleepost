@@ -40,6 +40,7 @@ NSString *HAPPENING_TODAY_MSG;
 NSString *HAPPENING_TOMORROW_MSG;
 NSString *HAPPENING_THIS_WEEK_MSG;
 NSString *HAPPENED_TODAY;
+NSString *NOTHING_HAPPENING;
 
 @synthesize posts = _posts;
 
@@ -82,6 +83,7 @@ NSString *HAPPENED_TODAY;
     HAPPENING_TOMORROW_MSG = @"Happening Tomorrow";
     HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
     HAPPENED_TODAY = @"Happened Earlier";
+    NOTHING_HAPPENING = @"Nothing happening on campus!";
 }
 
 //-(void)initialiseObjects
@@ -112,11 +114,17 @@ NSString *HAPPENED_TODAY;
         
         if(success)
         {
+
             _posts = posts;
             
             [self hideLoadingLabel];
 
             [self clearAndLoad];
+            
+            if(_posts.count == 0)
+            {
+                [_happeningLbl setText:NOTHING_HAPPENING];
+            }
             
 //            [self scrollToPosition:1];
         }
@@ -305,14 +313,6 @@ NSString *HAPPENED_TODAY;
     
     
     [self refreshHappeningTitleWith:position];
-    
-    
-
-    
-
-    
-    
-
     
     
     return myView;
