@@ -109,10 +109,10 @@
     [super viewDidLoad];
     
     if (self.navigationController.viewControllers.count > 1) {
-        self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+//        self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
     }
 
-    [self setBottomView];
+//    [self setBottomView];
 
     
     
@@ -153,6 +153,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
     
+    [self setCustomBackgroundToTableView];
+    
     [self loadInternalNotifications];
     [self.tableView reloadData];
 }
@@ -177,38 +179,54 @@
     // Dispose of any resources that can be recreated.
 }
 
+/**
+ Sets custom background in order to have different colour on top and different colour in botton of the view.
+ */
+
+-(void)setCustomBackgroundToTableView
+{
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile_background_main"]];
+    
+    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
+    
+    [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [self.tableView setBackgroundView:backImgView];
+}
+
 #pragma mark - Configuration
 
 
--(void)setBottomView
-{
-    CGRect frame = self.tableView.bounds;
-    frame.origin.y = frame.size.height;
-    
-    CGRect viewFrame = self.view.bounds;
-    viewFrame.origin.y = viewFrame.size.height;
-    
-    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
-    grayView.tag = 100;
-    grayView.backgroundColor = [UIColor whiteColor];
-    //    [self.tableView addSubview:grayView];
-    //    [grayView sendSubviewToBack:self.tableView];
-    
-    self.tableView.tableFooterView = grayView;
-    //    [self.view addSubview:grayView];
-}
-
--(void)clearBottomView
-{
-    
-    self.tableView.tableFooterView = nil;
-}
+//-(void)setBottomView
+//{
+//    CGRect frame = self.tableView.bounds;
+//    frame.origin.y = frame.size.height;
+//    
+//    CGRect viewFrame = self.view.bounds;
+//    viewFrame.origin.y = viewFrame.size.height;
+//    
+//    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
+//    grayView.tag = 100;
+//    grayView.backgroundColor = [UIColor whiteColor];
+//    //    [self.tableView addSubview:grayView];
+//    //    [grayView sendSubviewToBack:self.tableView];
+//    
+//    self.tableView.tableFooterView = grayView;
+//    //    [self.view addSubview:grayView];
+//}
+//
+//-(void)clearBottomView
+//{
+//    
+//    self.tableView.tableFooterView = nil;
+//}
 
 -(void)configTabbar
 {
     NSArray *items = self.tabBarController.tabBar.items;
     
     self.profileTabbarItem = [items objectAtIndex:4];
+    
+    [self.profileTabbarItem setTitle:@" "];
 }
 
 -(void)addNavigationButtons
@@ -423,26 +441,6 @@
     [self.tableView reloadData];
 
 }
-
-#pragma mark - Selectors
-
-//-(void)popUpNotifications:(id)sender
-//{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
-//    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-//    vc.delegate = self;
-//    vc.campusWallView = self.fromCampusWall;
-//    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
-//    vc.modalPresentationStyle= UIModalPresentationCustom;
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-//}
-
-
-
-
-
 
 
 
@@ -895,10 +893,10 @@
         
         if(self.selectedTabStatus == kGLPSettings)
         {
-            if(_notifications.count < 5)
-            {
-                [self setBottomView];
-            }
+//            if(_notifications.count < 5)
+//            {
+//                [self setBottomView];
+//            }
         }
         
         return buttonsView;
@@ -913,10 +911,6 @@
             GLPNotification *notification = _notifications[indexPath.row - 2];
             [notificationCell updateWithNotification:notification];
             notificationCell.delegate = self;
-            
-            
-
-            
             
             return notificationCell;
         }
@@ -941,10 +935,10 @@
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
                 
                 
-                if(indexPath.row > 5)
-                {
-                    [self clearBottomView];
-                }
+//                if(indexPath.row > 5)
+//                {
+//                    [self clearBottomView];
+//                }
                 
                 //Add separator line to posts' cells.
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
@@ -1081,7 +1075,7 @@
 
 -(void)setPreviousNavigationBarName
 {
-//    [self.navigationItem setTitle:@"Me"];
+    [self.navigationItem setTitle:@"Me"];
 }
 
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle

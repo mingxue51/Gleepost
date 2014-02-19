@@ -123,9 +123,8 @@
             [self.tableView setFrame:CGRectMake(0, 0, 320, 375)];
         }
         
-
-        
     }
+    
     
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -289,7 +288,7 @@
     formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
     self.formTextView.frame = formTextViewFrame;
     
-    
+    self.formTextView.tag = 100;
     
     self.formTextView.layer.cornerRadius = 5;
 }

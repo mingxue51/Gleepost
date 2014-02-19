@@ -436,7 +436,7 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)setCustomBackgroundToTableView
 {
-    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background_main2"]];
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
     
     [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     

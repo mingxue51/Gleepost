@@ -67,7 +67,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
+//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
 
     
     
