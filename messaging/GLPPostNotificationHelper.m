@@ -75,37 +75,45 @@
     return index;
 }
 
-+(GLPPost*)parsePostImageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts
++(int)parsePost:(GLPPost **)post imageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts
 {
     NSDictionary *dict = [notification userInfo];
     NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
     UIImage *finalImage = [dict objectForKey:@"FinalImage"];
     
-    GLPPost *currentPost = [GLPPostNotificationHelper findPostWith:[remoteKey intValue] fromPosts:posts];
+    GLPPost *currentPost = nil;
+    
+    int postIndex = [GLPPostNotificationHelper findPost:&currentPost with:[remoteKey intValue] fromPosts:posts];
     
     if(!currentPost)
     {
-        return nil;
+        post = nil;
+        return postIndex;
     }
     else
     {
         currentPost.finalImage = finalImage;
+        *post = currentPost;
     }
     
-    return currentPost;
+    return postIndex;
 }
 
-+(GLPPost*)findPostWith:(int)remoteKey fromPosts:(NSArray*)posts
++(int)findPost:(GLPPost **)post with:(int)remoteKey fromPosts:(NSArray*)posts
 {
+    int i = 0;
+    
     for(GLPPost* p in posts)
     {
         if(remoteKey == p.remoteKey)
         {
-            return p;
+            *post = p;
+            return i;
         }
+        ++i;
     }
     
-    return nil;
+    return -1;
 }
 
 +(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey numberOfLikes:(int)likes andNumberOfComments:(int)comments

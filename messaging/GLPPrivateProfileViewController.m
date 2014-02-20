@@ -420,10 +420,27 @@
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+//    GLPPost *currentPost = nil;
+//    
+//    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
+//    
+//    if(currentPost)
+//    {
+//        //TODO: Removed.
+////        [self.tableView reloadData];
+//        
+//        DDLogDebug(@"Updated post index: %d", index);
+//    }
+    
+    
+    GLPPost *currentPost = nil;
+    
+    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
+    
+    
+    if(currentPost)
     {
-        //TODO: Removed.
-//        [self.tableView reloadData];
+        [self refreshCellViewWithIndex:index+2];
     }
     
 }
@@ -665,6 +682,13 @@
 
 #pragma mark - Table view refresh methods
 
+
+-(void)refreshCellViewWithIndex:(const NSUInteger)index
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
 
 -(void)refreshFirstCell
 {

@@ -417,7 +417,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         
         if(success)
         {
-            DDLogDebug(@"IS BUSY: %d", status);
             [self.busySwitch setOn:!status];
         }
     }];

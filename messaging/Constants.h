@@ -36,6 +36,9 @@
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
+#define GLP_TEST_WEBSERVICE_VERSION                 @"0.33"
+#define GLP_TEST_URL                                ([NSString stringWithFormat:@"https://dev.gleepost.com/api/v%@/", GLP_TEST_WEBSERVICE_VERSION])
+
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
 #define GLP_APP_FONT_BOLD                                @"Khmer UI"
 #define GLP_UNIVERS_LIGHT_BOLD                      @"Univers 45 Light"

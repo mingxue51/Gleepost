@@ -192,13 +192,7 @@ static const float CommentContentLabelMaxWidth = 250;
         
         [self.delegate performSegueWithIdentifier:@"view private profile" sender:self];
     }
-    
-    
 }
-
-
-
-
 
 
 //-(void)layoutSubviews

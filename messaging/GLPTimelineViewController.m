@@ -329,12 +329,22 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-//    NSLog(@"Notification: %@",[notification userInfo]);
     
-    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+    GLPPost *currentPost = nil;
+    
+    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
+    
+    
+    if(currentPost)
     {
-        [self.tableView reloadData];
+        [self refreshCellViewWithIndex:index];
     }
+    
+    
+//    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
+//    {
+//        [self.tableView reloadData];
+//    }
 
 }
 
@@ -695,6 +705,15 @@ const float TOP_OFFSET = 219.0f;
 //      
 //    }];
 //}
+
+#pragma mark - Table view refresh methods
+
+-(void)refreshCellViewWithIndex:(const NSUInteger)index
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+}
 
 #pragma mark - Posts
 

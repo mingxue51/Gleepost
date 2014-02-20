@@ -192,7 +192,7 @@ static GLPPostImageLoader *instance = nil;
             
 //            [_loadingImages removeObjectForKey:remoteKey];
             
-            mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+//            mach_port_t machTID = pthread_mach_thread_np(pthread_self());
             
 //            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
