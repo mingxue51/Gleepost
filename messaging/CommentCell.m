@@ -139,11 +139,9 @@ static const float CommentContentLabelMaxWidth = 250;
     
     self.contentLabel.numberOfLines = 0;
     
-    NSLog(@"Height size: %f",heightSize);
     
     [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
     
-    NSLog(@"Height after: %f",self.contentLabel.frame.size.height);
 
 }
 
@@ -158,8 +156,6 @@ static const float CommentContentLabelMaxWidth = 250;
     self.contentLabel.numberOfLines = 0;
 //    self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
 
-    
-    NSLog(@"Height size: %f",heightSize);
     
     [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
 }

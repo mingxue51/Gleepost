@@ -10,4 +10,9 @@
 
 @implementation GLPComment
 
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Remote key: %d, Content: %@, Date: %@", self.remoteKey, self.content, self.date];
+}
+
 @end

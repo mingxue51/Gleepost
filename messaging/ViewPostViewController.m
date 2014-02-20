@@ -63,72 +63,19 @@ static BOOL likePushed;
     
 //    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
 
-    //Change the format of the navigation bar.
-    //[self.navigationController.navigationBar setTranslucent:YES];
-    
-    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
-    
-    self.navigationItem.title = @"View Post";
-
-    //Register cells.
-    
-    //Register nib files in table view.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
+    [self initialiseElements];
     
     
-    //Register nib files in table view.
-    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
     
-    
-    //To hide empty cells
-    self.tableView.tableFooterView = [UIView new];
-
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
-    
-    
-    //Set image despite title.
-//    UIImage *image = [UIImage imageNamed:@"gleepost"];
-//    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:image];
+    [self registerCells];
     
 
-    
-//    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-    //self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.tableView initTableView];
-
-
     
-    //Initialise elements.
-
-    
-    //Set a selector to the send button.
-//    [currentBtn addTarget:self action:@selector(likeButtonPushed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    self.keyboardAppearanceSpaceY = 0;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
-    self.dateFormatter = [[NSDateFormatter alloc] init];
-    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    self.contentLabel.text = self.post.content;
-    [self.contentLabel sizeToFit];
+    [self registerNotifications];
     
     [self configureForm];
-    
-    
-    
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
-    
-    //[self initialiseCommentsHeightArray];
-    
+
 
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -149,8 +96,19 @@ static BOOL likePushed;
     
     if(self.commentJustCreated)
     {
-        //Scroll to the bottom only when new comment posted.
+       //Scroll to the bottom only when new comment posted.
         [self scrollToTheEndAnimated:YES];
+    }
+    else
+    {
+        if(self.commentNotificationDate)
+        {
+            int commentIndex = [self findIndexOfComment];
+            
+            //Scroll to a particular comment if it is appropriate.
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:commentIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        }
+
     }
     
    // [self loadComments];
@@ -179,15 +137,64 @@ static BOOL likePushed;
     
     
     [super viewWillDisappear:animated];
-
-
 }
 
 
-
+-(int)findIndexOfComment
+{
+    int index = 0;
+    
+    for(GLPComment *comment in self.comments)
+    {
+        if([comment.date compare:self.commentNotificationDate] == NSOrderedSame)
+        {
+            break;
+        }
+        
+        ++index;
+    }
+    
+    return index;
+}
 
 
 #pragma mark - Init and config
+
+-(void)initialiseElements
+{
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+    self.keyboardAppearanceSpaceY = 0;
+    
+    //To hide empty cells
+    self.tableView.tableFooterView = [UIView new];
+    
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    self.contentLabel.text = self.post.content;
+    [self.contentLabel sizeToFit];
+
+}
+
+-(void)registerCells
+{
+    //Register nib files in table view.
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
+    
+    
+    //Register nib files in table view.
+    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
+}
+
+-(void)registerNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
 - (void)configureForm
 {
     //self.commentFormView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"typing_bar"]];
@@ -210,10 +217,16 @@ static BOOL likePushed;
     
     self.commentGrowingTextView.layer.cornerRadius = 5;
     
+    //Set a selector to the send button.
+    [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 -(void)configureNavigationBar
 {
+    
+    self.navigationItem.title = @"View Post";
+
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     

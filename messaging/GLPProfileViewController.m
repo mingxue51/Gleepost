@@ -73,6 +73,7 @@
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
+@property (strong, nonatomic) NSDate *commentNotificationDate;
 
 // new
 @property (strong, nonatomic) NSMutableArray *notifications;
@@ -627,7 +628,6 @@
         }
         else
         {
-            NSLog(@"ERROR");
             [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
             
         }
@@ -991,8 +991,7 @@
 
         }
         // go the post detail ?
-        else if(notification.notificationType == kGLPNotificationTypeLiked ||
-                notification.notificationType == kGLPNotificationTypeCommented) {
+        else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
             
             DDLogInfo(@"Go to the post details.");
             
@@ -1002,6 +1001,13 @@
                 if(sucess)
                 {
                     self.selectedPost = post;
+                    
+                    if(notification.notificationType == kGLPNotificationTypeCommented)
+                    {
+                        //Add the date of the notification to the view post view controller.
+                        self.commentNotificationDate = notification.date;
+                    }
+                    
                     [self performSegueWithIdentifier:@"view post" sender:self];
                 }
                 else
@@ -1010,6 +1016,7 @@
                 }
             }];
         }
+
     }
     
 }
@@ -1150,6 +1157,8 @@
         
         ViewPostViewController *vc = segue.destinationViewController;
         vc.commentJustCreated = self.commentCreated;
+        vc.commentNotificationDate = self.commentNotificationDate;
+        
         vc.post = self.selectedPost;
         vc.isFromCampusLive = NO;
         vc.isViewPostNotifications = YES;

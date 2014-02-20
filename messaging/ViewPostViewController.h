@@ -22,7 +22,7 @@
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
 @property (assign, nonatomic) BOOL isFromCampusLive;
-
+@property (strong, nonatomic) NSDate *commentNotificationDate;
 
 //-(float) calculateCommentSize: (NSString*) content;
 -(void)navigateToProfile: (id)sender;
