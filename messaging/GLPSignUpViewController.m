@@ -240,7 +240,7 @@
     
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:[super email] andPassword:[super password] callback:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:[super email] andPassword:[super password] callback:^(BOOL success, NSString *errorMessage) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {

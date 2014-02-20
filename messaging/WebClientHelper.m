@@ -51,6 +51,16 @@
     [alert show];
 }
 
++(void)showStandardLoginErrorWithMessage:(NSString *)message
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login failed"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 +(void)showStandardPasswordError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"

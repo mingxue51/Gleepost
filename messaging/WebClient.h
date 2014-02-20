@@ -27,7 +27,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)activate;
 
 // User login
-- (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate))callbackBlock;
+- (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate, NSString *errorMessage))callbackBlock;
 - (void)verifyUserWithToken:(NSString *)token callback:(void (^)(BOOL success))callbackBlock;
 /** DEPRECATED **/
 - (void)registerWithName:(NSString *)name email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock;

@@ -22,12 +22,12 @@
 
 @implementation GLPLoginManager
 
-+ (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success))callback
++ (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success, NSString *errorMessage))callback
 {
-    [[WebClient sharedInstance] loginWithName:identifier password:password andCallbackBlock:^(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate) {
+    [[WebClient sharedInstance] loginWithName:identifier password:password andCallbackBlock:^(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate, NSString *errorMessage) {
         
         if(!success) {
-            callback(NO);
+            callback(NO, errorMessage);
             return;
         }
 
@@ -44,7 +44,7 @@
         [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
             
             if(!success) {
-                callback(NO);
+                callback(NO, errorMessage);
                 return;
             }
             
@@ -52,7 +52,7 @@
             [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
              
                 if(!success) {
-                    callback(NO);
+                    callback(NO, errorMessage);
                     return;
                 }
                 
@@ -60,7 +60,7 @@
                 
                 [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
                 
-                callback(YES);
+                callback(YES, errorMessage);
             }];
         }];
     }];

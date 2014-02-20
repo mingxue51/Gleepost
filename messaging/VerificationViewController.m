@@ -104,14 +104,14 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:self.eMailPass[0] andPassword:self.eMailPass[1] callback:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:self.eMailPass[0] andPassword:self.eMailPass[1] callback:^(BOOL success, NSString *errorMessage) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             [self uploadImageAndSetUserImageWithUserRemoteKey:0];
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
-            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
         }
     }];  
 }

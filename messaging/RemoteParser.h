@@ -51,6 +51,7 @@
 + (NSDate *)parseDateFromString:(NSString *)string;
 
 +(NSString*)parseRegisterErrorMessage:(NSString*)error;
++(NSString*)parseLoginErrorMessage:(NSString*)error;
 
 // images
 +(NSString*)parseImageUrl:(NSDictionary*)url;

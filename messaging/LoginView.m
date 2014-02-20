@@ -66,7 +66,7 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self];
     
-    [GLPLoginManager loginWithIdentifier:[self textFirstTextField] andPassword:[self textSecondTextField] callback:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:[self textFirstTextField] andPassword:[self textSecondTextField] callback:^(BOOL success, NSString *errorMessage) {
         
         [WebClientHelper hideStandardLoaderForView:self];
         

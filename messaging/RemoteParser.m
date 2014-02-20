@@ -753,6 +753,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return date;
 }
 
+#pragma mark - Error messages
+
 +(NSString*)parseRegisterErrorMessage:(NSString*)error
 {
     //NSLog(@"ERRORS: %@  %@  %@  %@  %@  %@  %@ ",error.domain, error.userInfo, error.localizedDescription, error.localizedRecoveryOptions, error.localizedRecoverySuggestion, error.localizedFailureReason, error.recoveryAttempter);
@@ -776,10 +778,23 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         return error;
     }
-    
-//    NSLog(@"Suggested error: %@", error);
-//    
-//    return error.description;
+}
+
+
++(NSString*)parseLoginErrorMessage:(NSString*)error
+{
+    if([error rangeOfString:@"unverified"].location != NSNotFound)
+    {
+        return @"Your email remains unverified. Please verify your email and try again.";
+    }
+    else if([error rangeOfString:@"Bad username/password"].location != NSNotFound)
+    {
+        return @"Your username or password are invalid. Please try again.";
+    }
+    else
+    {
+        return error;
+    }
 }
 
 #pragma mark - Images

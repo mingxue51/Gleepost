@@ -24,4 +24,7 @@
 
 +(void)showStandardLastNameError;
 +(void)showStandardFirstNameTooShortError;
+
++(void)showStandardLoginErrorWithMessage:(NSString *)message;
+
 @end

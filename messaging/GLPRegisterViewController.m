@@ -65,7 +65,8 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:_emailTextField.text andPassword:_passwordTextField.text callback:^(BOOL success) {
+    [GLPLoginManager loginWithIdentifier:_emailTextField.text andPassword:_passwordTextField.text callback:^(BOOL success, NSString *errorMessage) {
+        
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
@@ -77,7 +78,7 @@
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
 //            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
-            [WebClientHelper showStandardEmailError];
+            [WebClientHelper showStandardLoginErrorWithMessage:errorMessage];
         }
     }];
 }

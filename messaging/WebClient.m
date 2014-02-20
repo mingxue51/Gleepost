@@ -110,11 +110,11 @@ static WebClient *instance = nil;
 
 
 
-- (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate))callbackBlock
+- (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate, NSString *errorMessage))callbackBlock
 {
     // ios6 temp fix
     if(!name || !password) {
-        callbackBlock(NO, nil, nil, nil);
+        callbackBlock(NO, nil, nil, nil, nil);
         return;
     }
     
@@ -128,13 +128,12 @@ static WebClient *instance = nil;
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
-        callbackBlock(YES, user, token, expirationDate);
+        callbackBlock(YES, user, token, expirationDate, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+        NSString *errorMessage = [RemoteParser parseLoginErrorMessage:error.localizedRecoverySuggestion];
         
-        //TODO: Parse the error message in order to show to the user.
-        
-        
-        callbackBlock(NO, nil, nil, nil);
+        callbackBlock(NO, nil, nil, nil, errorMessage);
     }];
 }
 

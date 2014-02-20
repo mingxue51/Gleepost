@@ -11,7 +11,7 @@
 
 @interface GLPLoginManager : NSObject
 
-+ (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success))callback;
++ (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success, NSString *errorMessage))callback;
 + (BOOL)performAutoLogin;
 + (void)logout;
 
