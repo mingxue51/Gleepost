@@ -7,6 +7,7 @@
 //
 
 #import "GLPPostNotificationHelper.h"
+#import "SessionManager.h"
 
 @implementation GLPPostNotificationHelper
 
@@ -42,6 +43,43 @@
     currentPost.likes = [numberOfLikes intValue];
     
     return index;
+}
+
+/**
+ Parse notification after the change of user's profile image in order to find user's posts to refresh them.
+ 
+ @param notification.
+ @param posts array of the posts of the campus wall.
+ @param profileImageUrl the new profile image url.
+ 
+ @return an array with all the posts' indexes that need to refresh.
+ 
+ */
++(NSArray *)parseNotification:(NSNotification *)notification withPostsArrayForNewProfileImage:(NSArray *)posts
+{
+    NSMutableArray *postsIndexes = [[NSMutableArray alloc] init];
+    
+    NSDictionary *dict = [notification userInfo];
+    
+    NSString *profileUrl = [dict objectForKey:@"profile_image_url"];
+    
+    int userRemoteKey = [SessionManager sharedInstance].user.remoteKey;
+    
+    //Find all the current user's posts.
+    for(int i = 0; i < posts.count; ++i)
+    {
+        GLPPost *currentPost = posts[i];
+        
+        if(currentPost.author.remoteKey == userRemoteKey)
+        {
+            currentPost.author.profileImageUrl = profileUrl;
+            
+            [postsIndexes addObject:[NSNumber numberWithInt:i]];
+        }
+    }
+    
+    return postsIndexes;
+    
 }
 
 +(int)parseLikedPostNotification:(NSNotification*)notification withPostsArray:(NSArray *)posts

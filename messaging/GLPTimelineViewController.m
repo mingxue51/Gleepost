@@ -273,7 +273,7 @@ const float TOP_OFFSET = 219.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPShowEvent" object:nil];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
 }
 
 
@@ -354,6 +354,19 @@ const float TOP_OFFSET = 219.0f;
     [self.tableView reloadData];
 }
 
+-(void)refreshPostsWithNewProfileImage:(NSNotification *)notification
+{
+
+    NSArray *postsIndexes = [GLPPostNotificationHelper parseNotification:notification withPostsArrayForNewProfileImage:self.posts];
+    
+    //Update all the user's posts in campus wall.
+    
+    for(NSNumber *number in postsIndexes)
+    {
+        [self refreshCellViewWithIndex:number.integerValue];
+    }
+    
+}
 
 #pragma mark - Init config
 
@@ -539,7 +552,8 @@ const float TOP_OFFSET = 219.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showEventPost:) name:@"GLPShowEvent" object:nil];
 
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPostsWithNewProfileImage:) name:@"GLPProfileImageChanged" object:nil];
+
 }
 
 - (void)configTableView

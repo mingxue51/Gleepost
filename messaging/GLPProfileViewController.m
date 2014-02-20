@@ -115,8 +115,6 @@
 
 //    [self setBottomView];
 
-    
-    
     _tabButtonEnabled = YES;
     
     [self registerTableViewCells];
@@ -432,6 +430,16 @@
     [self loadUserData];
 }
 
+-(void)notifyAppWithNewImage:(NSString *)imageUrl
+{
+    NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:imageUrl , @"profile_image_url", nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPProfileImageChanged" object:nil userInfo:data];
+
+}
+
+
+
 -(void)updatePost:(NSNotification*)notification
 {
 
@@ -450,6 +458,7 @@
     [self.tableView reloadData];
 
 }
+
 
 
 
@@ -672,6 +681,8 @@
             NSLog(@"NEW PROFILE IMAGE UPLOADED");
             
             [self updateViewWithNewImage:url];
+            
+            [self notifyAppWithNewImage:url];
 
         }
         else
