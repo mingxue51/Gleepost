@@ -105,7 +105,12 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
     //Select the going button if the user is attending,
     if(_postData.attended)
     {
+        
         [self makeButtonSelected:_goingBtn];
+    }
+    else
+    {
+        [self makeButtonUnselected:_goingBtn];
     }
 }
 
@@ -189,7 +194,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
             
             if(success)
             {
-                
+                _postData.attended = YES;
             }
             else
             {
@@ -212,6 +217,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
             
             if(success)
             {
+                _postData.attended = NO;
+
                 [self makeButtonUnselected:currentButton];
             }
             else

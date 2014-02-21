@@ -288,6 +288,7 @@ NSString *NOTHING_HAPPENING;
     
     [myView setData: post];
 
+    DDLogDebug(@"LIVE POST CELL: %d TITLE: %@", post.attended, post.eventTitle);
     
     //Set new message to title label depending on event start time.
     
