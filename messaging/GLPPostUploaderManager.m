@@ -83,7 +83,7 @@
         textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         textPost.remoteKey = success ? remoteKey : 0;
         
-        NSLog(@"!!Post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
+        NSLog(@"Post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
         
         
         [GLPPostManager updatePostAfterSending:textPost];

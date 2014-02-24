@@ -118,6 +118,11 @@ static GLPPostOperationManager *instance = nil;
 //    }
 }
 
+-(void)uploadCommentWithText:(NSString *)comment
+{
+    
+}
+
 -(void)uploadImage:(UIImage*)image withTimestamp:(NSDate*)timestamp
 {
     //Upload image with timestasmp.

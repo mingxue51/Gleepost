@@ -133,4 +133,14 @@
     [alert show];
 }
 
++ (void)showEmptyTextError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                    message:@"The lenght of comment should be at least one character"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

@@ -380,7 +380,7 @@ static const float OneLineText = 16.0;
 
 -(void)refreshInformationLabel
 {
-    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views",self.post.likes, self.post.commentsCount, self.post.remoteKey]];
+    [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d",self.post.likes]];
 }
 
 

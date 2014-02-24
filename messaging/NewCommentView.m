@@ -164,6 +164,7 @@
     if([self.commentTextView.text isEqualToString:@""])
     {
         //Don't do anything.
+        [WebClientHelper showEmptyTextError];
     }
     else
     {

@@ -123,7 +123,7 @@ static BOOL likePushed;
     [self configureNavigationBar];
     
     
-    [self loadComments];
+    [self loadCommentsWithScrollToTheEnd:NO];
 
 }
 
@@ -496,7 +496,7 @@ static bool firstTime = YES;
 //    }];
 //}
 
-- (void)loadComments
+- (void)loadCommentsWithScrollToTheEnd:(BOOL)scroll
 {
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
@@ -515,6 +515,13 @@ static bool firstTime = YES;
             self.comments = reversedComments.mutableCopy;
    
             [self.tableView reloadData];
+            
+            
+            if(scroll)
+            {
+                [self scrollToTheEndAnimated:YES];
+            }
+            
         } else {
             [WebClientHelper showStandardError];
         }
@@ -647,7 +654,7 @@ static bool firstTime = YES;
     {
         GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
         
-        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
+//        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
         
         //return 200.0f;
         
@@ -802,18 +809,7 @@ static bool firstTime = YES;
     }
 }
 
-- (void)scrollToTheEndAnimated:(BOOL)animated
-{
-//    if(self.comments.count > 0)
-//    {
-    
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
-//    }
-//    else
-//    {
-//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
-//    }
-}
+
 
 
 #pragma mark - Keyboard methods
@@ -896,20 +892,24 @@ static bool firstTime = YES;
 
 - (void)postComment
 {
-    GLPComment *comment = [[GLPComment alloc] init];
-    comment.content = self.commentGrowingTextView.text;
-    comment.post = self.post;
     
-    //[WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self.view];
+    if([self isCommmentEmpty])
+    {
+        return;
+    }
+    
+    GLPComment *comment = [self createComment];
+    
+    [self reloadNewComment:comment];
+    
     [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
-        //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             
             //Increase the number of comments to the post.
             ++self.post.commentsCount;
             
-            [self loadComments];
+//            [self loadCommentsWithScrollToTheEnd:YES];
             self.commentGrowingTextView.text = @"";
             
             //Notify timeline view controller.
@@ -919,6 +919,94 @@ static bool firstTime = YES;
             [WebClientHelper showStandardError];
         }
     }];
+}
+
+-(GLPComment *)createComment
+{
+    GLPComment *comment = [[GLPComment alloc] init];
+    comment.content = self.commentGrowingTextView.text;
+    comment.post = self.post;
+    comment.author = [SessionManager sharedInstance].user;
+    comment.date = [NSDate date];
+    return comment;
+}
+
+-(BOOL)isCommmentEmpty
+{
+    if(self.commentGrowingTextView.text.length == 0)
+    {
+        [WebClientHelper showEmptyTextError];
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
+#pragma mark - UI methods
+
+-(void)reloadNewComment:(GLPComment *)comment
+{
+    
+    //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *comments = [[NSArray alloc] initWithObjects:comment, nil];
+    
+    
+    [self.comments insertObjects:comments atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.comments.count, comments.count)]];
+    
+    
+//    [self.comments addObject:comment];
+    
+    [self scrollToBottomAndUpdateTableViewWithNewComments:comments.count];
+    
+
+}
+
+- (void)scrollToBottomAndUpdateTableViewWithNewComments:(int)count
+{
+    
+    
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+        
+    
+    for(int i = self.comments.count; i < self.comments.count+count; i++)
+    {
+        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+
+    
+    //The condition is added to prevent error when there are no posts in the table view.
+    
+//    if(self.posts.count == 1 || !self.posts)
+//    {
+//        [self.tableView reloadData];
+//    }
+//    else
+//    {
+        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+//    }
+    
+    [self scrollToTheEndAnimated:YES];
+    
+
+    
+    //Bring the fake navigation bar to from because is hidden by new cell.
+    //    [self.tableView bringSubviewToFront:self.reNavBar];
+}
+
+- (void)scrollToTheEndAnimated:(BOOL)animated
+{
+    //    if(self.comments.count > 0)
+    //    {
+    
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    //    }
+    //    else
+    //    {
+    //        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    //    }
 }
 
 //- (void)backButtonClick

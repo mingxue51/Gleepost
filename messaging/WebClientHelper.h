@@ -26,5 +26,6 @@
 +(void)showStandardFirstNameTooShortError;
 
 +(void)showStandardLoginErrorWithMessage:(NSString *)message;
++ (void)showEmptyTextError;
 
 @end
