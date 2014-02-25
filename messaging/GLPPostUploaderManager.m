@@ -10,12 +10,16 @@
 #import "WebClient.h"
 #import "GLPPostManager.h"
 #import "NSNotificationCenter+Utils.h"
-
+#import "GLPCommentDao.h"
+#import "WebClientHelper.h"
 
 @interface GLPPostUploaderManager ()
 
 @property (nonatomic, strong) NSMutableDictionary *readyPosts;
-
+@property (nonatomic, strong) NSMutableArray *uploadedPosts;
+@property (nonatomic, strong) NSMutableDictionary *pendingComments;
+@property (strong, nonatomic) NSTimer *checkForUploadingCommentTimer;
+@property (assign, nonatomic) BOOL isNetworkAvailable;
 @end
 
 @implementation GLPPostUploaderManager
@@ -28,10 +32,50 @@
     
     if(self)
     {
+        //Contains all the posts that are ready for uploading.
         _readyPosts = [[NSMutableDictionary alloc] init];
+        
+        //Contains all the posts that are already uploaded.
+        _uploadedPosts = [[NSMutableArray alloc] init];
+        
+        //Contains all the comments that are ready for uploading,
+        _pendingComments = [[NSMutableDictionary alloc] init];
+        
+        
+        _checkForUploadingCommentTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForCommentUpload:) userInfo:nil repeats:YES];
+        
+        [_checkForUploadingCommentTimer setTolerance:5.0f];
+        [_checkForUploadingCommentTimer fire];
+
+        
+        self.isNetworkAvailable = [WebClient sharedInstance].isNetworkAvailable;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
+
     }
     
     return self;
+}
+
+
+#pragma mark - Notification Methods
+
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    DDLogCInfo(@"Background requests manager network status update POST UPLOADER: %d", isNetwork);
+    
+    self.isNetworkAvailable = isNetwork;
+    
+    //    if(isNetwork)
+    //    {
+    //        [self.queue setSuspended:NO];
+    //        //        [self startConsuming];
+    //    } else
+    //    {
+    //        [self.queue setSuspended:YES];
+    //        //        [self suspendConsuming];
+    //    }
 }
 
 #pragma mark - Getters Setters
@@ -51,7 +95,270 @@
     [_readyPosts removeObjectForKey:timestamp];
 }
 
+//-(void)removeComment:(
+
+/**
+ Add comment to queue and if post is uploaded, upload comment.
+ 
+ @param comment
+ 
+ */
+-(void)addComment:(GLPComment *)comment
+{
+    int postKey = comment.post.key;
+    
+    NSAssert(postKey != 0, @"Key post should not be 0");
+    
+    DDLogDebug(@"Add comment GLPPostUploaderManager.");
+    
+//    int isNetworkAvailable = [WebClient sharedInstance].isNetworkAvailable;
+    
+    
+    
+    //Single implementation.
+    
+    [self setCommentInQueue:comment];
+
+    
+    
+    
+    
+//    if([self isPostInQueueWithKey:postKey] || !isNetworkAvailable)
+//    {
+//        //Post not yet uploaded.
+//        
+//        [self setCommentInQueue:comment];
+//    }
+//    else
+//    {
+//        //Post already uploaded.
+//        
+//        if(comment.post.remoteKey == 0)
+//        {
+//            //Take the post from finished posts' list.
+//            GLPPost *commentPost = [self postRemoteKeyWithKey:postKey];
+//            
+//            NSAssert(commentPost != nil, @"Comment post should not be nil.");
+//            
+//            comment.post = commentPost;
+//            
+//            DDLogDebug(@"Add comment: %@.", comment);
+//
+//        }
+//    
+//        
+//        //Upload comment.
+//        [self uploadComment:comment];
+//    }
+    
+    
+}
+
+
+
+-(BOOL)isPostInQueueWithKey:(int)postKey
+{
+    for(NSDate *timestamp in _readyPosts)
+    {
+        GLPPost *post = [_readyPosts objectForKey:timestamp];
+        
+        if(post.key == postKey)
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+-(void)setCommentInQueue:(GLPComment *)comment
+{
+    NSArray *comments = [_pendingComments objectForKey:[NSNumber numberWithInt:comment.key]];
+    
+    NSMutableArray *mutableComments = [[NSMutableArray alloc] init];
+    
+    if(comments)
+    {
+        //Set already exist comments array to a temporary array.
+        mutableComments = comments.mutableCopy;
+        
+    }
+    else
+    {
+        DDLogInfo(@"First comment with key: %d", comment.key);
+    }
+    
+    [mutableComments addObject:comment];
+    
+    [_pendingComments setObject:mutableComments forKey:[NSNumber numberWithInt:comment.key]];
+    
+    DDLogDebug(@"PENDING COMMENTS: %@", _pendingComments);
+}
+
+-(void)removeCommentFromQueue:(GLPComment *)comment
+{
+    NSArray *comments = [_pendingComments objectForKey:[NSNumber numberWithInt:comment.key]];
+
+    if(!comments)
+    {
+        return;
+    }
+    
+    if(comments.count == 1)
+    {
+        [_pendingComments removeObjectForKey:[NSNumber numberWithInt:comment.key]];
+    }
+    else
+    {
+        int commentToBeRemoved = 0;
+        
+        NSMutableArray *commentsMutable = comments.mutableCopy;
+        
+        for(GLPComment *inComment in comments)
+        {
+            if(inComment.key == comment.key)
+            {
+                break;
+            }
+            
+            ++commentToBeRemoved;
+        }
+        
+        [commentsMutable removeObjectAtIndex:commentToBeRemoved];
+        
+        comments = commentsMutable;
+        
+        //Add back to pending comments.
+        [_pendingComments setObject:comments forKey:[NSNumber numberWithInt:comment.key]];
+        
+        
+    }
+    DDLogDebug(@"New list of comments: %@", _pendingComments);
+
+}
+
+/**
+ This method is called each time a post is uploaded to check if there are pending comments.
+ If there are some with the same post key then upload comment.
+ 
+ @param postKey post's key.
+ 
+ */
+-(void)checkForPendingCommentsWithPostkey:(int)postKey
+{
+    GLPComment *currentComment = [_pendingComments objectForKey: [NSNumber numberWithInt:postKey]];
+    
+    if(currentComment)
+    {
+        [self uploadComment:currentComment];
+    }
+}
+
+-(GLPPost *)postRemoteKeyWithKey:(int)postKey
+{
+    for(GLPPost *post in _uploadedPosts)
+    {
+        if(postKey == post.key)
+        {
+            return post;
+        }
+    }
+    
+    return nil;
+}
+
+#pragma mark - Operations
+
+-(void)checkForCommentUpload:(id)sender
+{
+    
+//    if(!self.isNetworkAvailable)
+//    {
+//        
+//        DDLogDebug(@"Network not available.");
+//        
+//        return;
+//    }
+    
+//    if(_pendingComments.count == 0)
+//    {
+//        return;
+//    }
+    
+    self.isNetworkAvailable = [WebClient sharedInstance].isNetworkAvailable;
+
+    
+    if(self.isNetworkAvailable)
+    {
+        for(NSNumber *postKey in _pendingComments)
+        {
+            NSArray *comments = [_pendingComments objectForKey:postKey];
+            
+            if([self isPostInQueueWithKey:[postKey integerValue]])
+            {
+                continue;
+            }
+            else
+            {
+                //Upload comment.
+                for(GLPComment *comment in comments)
+                {
+                    
+                    if(comment.sendStatus != kSendStatusSent)
+                    {
+                        DDLogDebug(@"Comment to upload: %@", comment);
+
+                        [self uploadComment:comment];
+                    }
+                    
+                }
+            }
+        }
+    }
+    else
+    {
+        [WebClientHelper commentWillUploadedLater];
+    }
+    
+
+    
+}
+
 #pragma mark - Client
+
+-(void)uploadComment:(GLPComment *)comment
+{
+    [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
+        
+        if(success) {
+            
+            //Remove comment from the pending comments array.
+            
+            
+            //Increase the number of comments to the post.
+//            ++self.post.commentsCount;
+            
+            //            [self loadCommentsWithScrollToTheEnd:YES];
+            
+            //TODO: Notify timeline view controller.
+            
+//            [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
+            
+            DDLogInfo(@"Comment uploaded with content: %@ and remote key: %d", comment.content, comment.remoteKey);
+            comment.sendStatus = kSendStatusSent;
+            
+            //Update local database.
+            [GLPCommentDao updateCommentSendingData:comment];
+            
+            //Remove from pending array.
+            [self removeCommentFromQueue:comment];
+            
+        } else {
+            
+//            [WebClientHelper showStandardError];
+        }
+    }];
+}
 
 -(void)uploadTextPost:(GLPPost*)textPost
 {
@@ -147,6 +454,11 @@
         
         if(success)
         {
+            [self checkForPendingCommentsWithPostkey:post.key];
+            
+            //Add post to uploaded posts.
+            [_uploadedPosts addObject:post];
+            
             //Remove post from the NSDictionary.
             [self removePostWithTimestamp:timestamp];
         }

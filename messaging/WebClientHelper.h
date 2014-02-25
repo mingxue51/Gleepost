@@ -28,4 +28,7 @@
 +(void)showStandardLoginErrorWithMessage:(NSString *)message;
 + (void)showEmptyTextError;
 
++ (void)commentWillUploadedLater;
+
+
 @end

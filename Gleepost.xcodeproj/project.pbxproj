@@ -165,6 +165,10 @@
 		584332A4180F324200BD9F74 /* profilebackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A1180F324200BD9F74 /* profilebackground.png */; };
 		584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A3180F324200BD9F74 /* unlock_the_profile.png */; };
 		584332AA180F343200BD9F74 /* bottom_background_private_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 584332A9180F343200BD9F74 /* bottom_background_private_profile.png */; };
+		5844293318BCD17600DFEAF4 /* GLPCommentUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */; };
+		5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */; };
+		5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */; };
+		5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */; };
 		584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906BE17FDA26E0045B65D /* ViewPostTableView.m */; };
 		584906C217FDA57B0045B65D /* PostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C117FDA57B0045B65D /* PostView.m */; };
 		584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C417FDE8710045B65D /* GCPlaceholderTextView.m */; };
@@ -811,6 +815,14 @@
 		584332A1180F324200BD9F74 /* profilebackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profilebackground.png; sourceTree = "<group>"; };
 		584332A3180F324200BD9F74 /* unlock_the_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlock_the_profile.png; sourceTree = "<group>"; };
 		584332A9180F343200BD9F74 /* bottom_background_private_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_background_private_profile.png; sourceTree = "<group>"; };
+		5844293118BCD17600DFEAF4 /* GLPCommentUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentUploader.h; sourceTree = "<group>"; };
+		5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentUploader.m; sourceTree = "<group>"; };
+		5844293418BCDC6900DFEAF4 /* GLPCommentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentManager.h; sourceTree = "<group>"; };
+		5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentManager.m; sourceTree = "<group>"; };
+		5844293718BCDCBD00DFEAF4 /* GLPCommentDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentDao.h; sourceTree = "<group>"; };
+		5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDao.m; sourceTree = "<group>"; };
+		5844293A18BCE1EE00DFEAF4 /* GLPCommentDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentDaoParser.h; sourceTree = "<group>"; };
+		5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDaoParser.m; sourceTree = "<group>"; };
 		584906BD17FDA26E0045B65D /* ViewPostTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPostTableView.h; sourceTree = "<group>"; };
 		584906BE17FDA26E0045B65D /* ViewPostTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPostTableView.m; sourceTree = "<group>"; };
 		584906C017FDA57B0045B65D /* PostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostView.h; sourceTree = "<group>"; };
@@ -2541,6 +2553,8 @@
 				5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */,
 				5810F0BA18870C740066D4CE /* GLPProfileLoader.h */,
 				5810F0BB18870C740066D4CE /* GLPProfileLoader.m */,
+				5844293118BCD17600DFEAF4 /* GLPCommentUploader.h */,
+				5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */,
 			);
 			name = Processors;
 			sourceTree = "<group>";
@@ -2942,6 +2956,8 @@
 				580C7AAC1897F030007495EE /* CategoryManager.m */,
 				580FF15418AA74400026B65B /* CampusLiveManager.h */,
 				580FF15518AA74400026B65B /* CampusLiveManager.m */,
+				5844293418BCDC6900DFEAF4 /* GLPCommentManager.h */,
+				5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -3145,6 +3161,8 @@
 				80B2A4241833824F002AB1F0 /* GLPNotificationDao.m */,
 				581C311E188F068600BAA082 /* GLPCategoryDao.h */,
 				581C311F188F068600BAA082 /* GLPCategoryDao.m */,
+				5844293718BCDCBD00DFEAF4 /* GLPCommentDao.h */,
+				5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -3172,6 +3190,8 @@
 				80C8BA6218103712004F70DB /* GLPUserDaoParser.m */,
 				581C3118188EFE0400BAA082 /* GLPCategoryDaoParser.h */,
 				581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */,
+				5844293A18BCE1EE00DFEAF4 /* GLPCommentDaoParser.h */,
+				5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */,
 			);
 			name = DaoParser;
 			sourceTree = "<group>";
@@ -3712,6 +3732,7 @@
 				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
 				58FB7C9118560D21002C6A00 /* PostsProfileView.m in Sources */,
+				5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */,
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
@@ -3728,6 +3749,7 @@
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */,
 				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
+				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
@@ -3865,6 +3887,7 @@
 				581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */,
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
 				5890D2181847676A00E293DD /* GLPTheme.m in Sources */,
+				5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
@@ -3911,6 +3934,7 @@
 				80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */,
 				805358CF182EF41000579079 /* GLPPostDaoParser.m in Sources */,
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
+				5844293318BCD17600DFEAF4 /* GLPCommentUploader.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
 				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,

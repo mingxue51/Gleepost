@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLPComment.h"
+#import "GLPPost.h"
 
 @interface GLPCommentUploader : NSObject
+
+-(GLPComment *)uploadCommentWithContent:(NSString *)content andPost:(GLPPost *)post;
 
 @end

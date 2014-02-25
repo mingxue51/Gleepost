@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMResultSet.h"
+#import "GLPComment.h"
 
 @interface GLPCommentDaoParser : NSObject
+
++ (void)parseResultSet:(FMResultSet *)resultSet into:(GLPComment *)entity inDb:(FMDatabase *)db;
++ (GLPComment *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db;
 
 @end

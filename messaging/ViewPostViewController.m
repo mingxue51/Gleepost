@@ -26,6 +26,7 @@
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "AppearanceHelper.h"
+#import "GLPCommentUploader.h"
 
 @interface ViewPostViewController ()
 
@@ -173,6 +174,8 @@ static BOOL likePushed;
     
     self.contentLabel.text = self.post.content;
     [self.contentLabel sizeToFit];
+    
+    self.comments = [[NSMutableArray alloc] init];
 
 }
 
@@ -564,7 +567,6 @@ static bool firstTime = YES;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //Add 1 in order to create another cell for post.
-    NSLog(@"Number of comments: %d", self.comments.count);
     return self.comments.count+1;
 }
 
@@ -898,38 +900,34 @@ static bool firstTime = YES;
         return;
     }
     
-    GLPComment *comment = [self createComment];
+    GLPCommentUploader *commentUploader = [[GLPCommentUploader alloc] init];
+    
+    GLPComment *comment = [commentUploader uploadCommentWithContent:self.commentGrowingTextView.text andPost:self.post];
     
     [self reloadNewComment:comment];
     
-    [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
-        
-        if(success) {
-            
-            //Increase the number of comments to the post.
-            ++self.post.commentsCount;
-            
-//            [self loadCommentsWithScrollToTheEnd:YES];
-            self.commentGrowingTextView.text = @"";
-            
-            //Notify timeline view controller.
-            [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
-            
-        } else {
-            [WebClientHelper showStandardError];
-        }
-    }];
+    self.commentGrowingTextView.text = @"";
+
+    
+//    [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
+//        
+//        if(success) {
+//            
+//            //Increase the number of comments to the post.
+//            ++self.post.commentsCount;
+//            
+////            [self loadCommentsWithScrollToTheEnd:YES];
+//            self.commentGrowingTextView.text = @"";
+//
+//            //Notify timeline view controller.
+//            [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
+//            
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
 }
 
--(GLPComment *)createComment
-{
-    GLPComment *comment = [[GLPComment alloc] init];
-    comment.content = self.commentGrowingTextView.text;
-    comment.post = self.post;
-    comment.author = [SessionManager sharedInstance].user;
-    comment.date = [NSDate date];
-    return comment;
-}
 
 -(BOOL)isCommmentEmpty
 {
@@ -998,15 +996,15 @@ static bool firstTime = YES;
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
 {
-    //    if(self.comments.count > 0)
-    //    {
+    if(self.comments.count > 0)
+    {
     
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
-    //    }
-    //    else
-    //    {
-    //        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
-    //    }
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    }
+    else
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    }
 }
 
 //- (void)backButtonClick

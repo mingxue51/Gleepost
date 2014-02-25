@@ -109,7 +109,6 @@ static WebClient *instance = nil;
 }
 
 
-
 - (void)loginWithName:(NSString *)name password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate, NSString *errorMessage))callbackBlock
 {
     // ios6 temp fix
@@ -445,6 +444,9 @@ static WebClient *instance = nil;
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        comment.remoteKey = [RemoteParser parseIdFromJson:responseObject];
+        
         callbackBlock(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callbackBlock(NO);

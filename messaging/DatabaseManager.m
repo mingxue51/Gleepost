@@ -192,6 +192,17 @@ static DatabaseManager *instance = nil;
              post_remote_key integer, \
              user_remote_key integer);"];
             
+            // comments
+            [db executeUpdate:@"create table comments ( \
+             key integer primary key autoincrement, \
+             remote_key integer unique, \
+             post_remote_key integer, \
+             content text, \
+             date integer, \
+             send_status integer, \
+             user_remote_key integer, \
+             image_url text);"]; //Image url is for future use.
+            
             self.exists = YES;
         }];
     }

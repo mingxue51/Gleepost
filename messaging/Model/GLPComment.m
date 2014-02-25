@@ -10,9 +10,21 @@
 
 @implementation GLPComment
 
+-(id)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _sendStatus = kSendStatusLocal;
+    }
+    
+    return self;
+}
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Remote key: %d, Content: %@, Date: %@", self.remoteKey, self.content, self.date];
+    return [NSString stringWithFormat:@"Remote key: %d, Post remote key: %d, Content: %@, Date: %@ Send status: %d", self.remoteKey, self.post.remoteKey, self.content, self.date, self.sendStatus];
 }
 
 @end

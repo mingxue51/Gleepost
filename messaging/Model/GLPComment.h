@@ -16,5 +16,6 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) GLPPost *post;
+@property (assign, nonatomic) SendStatus sendStatus;
 
 @end

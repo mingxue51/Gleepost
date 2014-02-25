@@ -143,4 +143,14 @@
     [alert show];
 }
 
++ (void)commentWillUploadedLater
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network!"
+                                                    message:@"Your comment is going to be uploaded later."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

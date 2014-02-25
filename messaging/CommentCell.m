@@ -96,7 +96,6 @@ static const float CommentContentLabelMaxWidth = 250;
     }
     else
     {
-        NSLog(@"UserImageView: %@",comment.author.profileImageUrl);
         [self.userImageView setImageWithURL:[NSURL URLWithString:comment.author.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
         
     }

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPPost.h"
+#import "GLPComment.h"
 
 @interface GLPPostUploaderManager : NSObject
 
@@ -15,6 +16,7 @@
 -(NSDictionary*)pendingPosts;
 -(void)uploadPostWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url;
 -(void)uploadTextPost:(GLPPost*)textPost;
+-(void)addComment:(GLPComment *)comment;
 
 
 @end

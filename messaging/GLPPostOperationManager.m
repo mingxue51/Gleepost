@@ -67,7 +67,7 @@ static GLPPostOperationManager *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    DDLogCInfo(@"Background requests manager network status update GLPPost: %d", isNetwork);
+    DDLogCInfo(@"Background requests manager network status update POST OPERATION: %d", isNetwork);
     
     self.isNetworkAvailable = isNetwork;
     
@@ -118,9 +118,9 @@ static GLPPostOperationManager *instance = nil;
 //    }
 }
 
--(void)uploadCommentWithText:(NSString *)comment
+-(void)uploadComment:(GLPComment*)comment
 {
-    
+    [_postUploader addComment:comment];
 }
 
 -(void)uploadImage:(UIImage*)image withTimestamp:(NSDate*)timestamp
