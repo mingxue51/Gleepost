@@ -168,11 +168,57 @@
     return count;
 }
 
-+ (void)markNotificationsRead
++ (void)markAllNotificationsRead
 {
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        [GLPNotificationDao markNotificationsRead:db];
+
+    
+    //Mark notification read in the server side.
+//    [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
+//        
+//        if(success)
+//        {
+//            DDLogInfo(@"Notifications mark as read.");
+//        }
+//        
+//    }];
+    
+    __block NSArray *unreadNotifications = nil;
+
+    
+    [DatabaseManager run:^(FMDatabase *db) {
+        
+        
+        unreadNotifications = [GLPNotificationDao findUnreadNotifications:db];
+        
+
+
     }];
+    
+    if(unreadNotifications.count != 0)
+    {
+        GLPNotification *lastNotification = [unreadNotifications objectAtIndex:0];
+        
+        DDLogInfo(@"Last notification with content: %d", lastNotification.notificationType);
+        
+        
+        [[WebClient sharedInstance] markNotificationsReadWithLastNotificationRemoteKey:lastNotification.remoteKey withCallbackBlock:^(BOOL success) {
+            
+            if(success)
+            {
+                DDLogInfo(@"Notifications mark as read.");
+            }
+            
+        }];
+        
+        
+        
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            [GLPNotificationDao markNotificationsRead:db];
+        }];
+    }
+    
+
+
 }
 
 + (void)ignoreNotification:(GLPNotification *)notification
@@ -209,14 +255,16 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        if([GLPNotificationDao countReadNotificationsInDb:db]>10)
-        {
-            [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
-        }
+//        if([GLPNotificationDao countReadNotificationsInDb:db]>10)
+//        {
+//            [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
+//        }
         
         for(GLPNotification *notification in notifications)
         {
             [GLPNotificationDao save:notification inDb:db];
+            DDLogInfo(@"New notifications after become active.");
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
         }
     }];
 }
@@ -226,6 +274,40 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPNotificationDao deleteAll:db];
     }];
+}
+
++(void)fetchNotificationsFromServerWithCallBack:(void (^) (BOOL success, NSArray *notifications))callback
+{
+    [[WebClient sharedInstance] synchronousGetNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+        if(success) {
+            NSLog(@"New notifications from get notifications request: %d", notifications.count);
+            
+            if(notifications.count > 0) {
+                
+                //Check if the same notification exist in database and if it is unread. If yes the don't call GLPNewNotifications.
+                NSArray* finalNotifications = [GLPNotificationManager cleanNotificationsArray:notifications];
+                
+                if(finalNotifications.count > 0)
+                {
+                    //Don't do anything.
+                    [GLPNotificationManager saveNotifications:finalNotifications];
+                    
+//                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
+                }
+                else
+                {
+                    
+                }
+                
+                callback(success, notifications);
+            }
+            else
+            {
+                callback(NO, nil);
+            }
+        }
+    }];
+    
 }
 
 

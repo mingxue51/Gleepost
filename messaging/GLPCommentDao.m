@@ -17,15 +17,15 @@
 {
     NSMutableArray *comments = [[NSMutableArray alloc] init];
     
-    
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from comments where post_remote_key=%d",postRemoteKey];
+    //TODO: Do that descending.
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from comments where post_remote_key=%d order by date desc",postRemoteKey];
     
     while ([resultSet next])
     {
         GLPComment *currentComment = [GLPCommentDaoParser createFromResultSet:resultSet inDb:db];
         
         //Load user's details for current comment.
-        currentComment.author = [GLPUserDao findByRemoteKey:currentComment.remoteKey db:db];
+        currentComment.author = [GLPUserDao findByRemoteKey:currentComment.author.remoteKey db:db];
         
         [comments addObject: currentComment];
         
@@ -34,15 +34,31 @@
     return comments;
 }
 
++ (NSArray *)findCommentsByPostRemoteKey:(NSInteger)postRemoteKey
+{
+    __block NSArray *comments = [[NSMutableArray alloc] init];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        comments = [GLPCommentDao findCommentsByPostRemoteKey:postRemoteKey db:db];
+        
+    }];
+    
+    return comments;
+
+}
+
 + (GLPComment *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from comments where remote_key=%d", remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from comments where remoteKey=%d", remoteKey];
     
     GLPComment *comment = nil;
     
     if([resultSet next]) {
         
         comment = [GLPCommentDaoParser createFromResultSet:resultSet inDb:db];
+        //Load user's details for current comment.
+        comment.author = [GLPUserDao findByRemoteKey:comment.author.remoteKey db:db];
     }
     
     return comment;
@@ -57,6 +73,31 @@
     }];
 
 }
+
++ (void)saveIfNotExist:(GLPComment *)entity
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+       [GLPCommentDao saveIfNotExist:entity db:db];
+        
+    }];
+}
+
++ (int)saveIfNotExist:(GLPComment *)entity db:(FMDatabase *)db
+{
+    GLPComment *comment = [GLPCommentDao findByRemoteKey:entity.remoteKey db:db];
+    
+    if(comment == nil)
+    {
+        [GLPCommentDao save:entity inDb:db];
+        entity.key = [db lastInsertRowId];
+        
+        return entity.key;
+    }
+    
+    return comment.key;
+}
+
 
 + (void)save:(GLPComment *)entity inDb:(FMDatabase *)db
 {
@@ -94,7 +135,14 @@
     }
     else
     {
-        [db executeUpdateWithFormat:@"insert into comments(remote_key, post_remote_key, content, date, user_remote_key, image_url, send_status) values(%d, %d, %@, %d, %d, %@, %d)", entity.remoteKey, entity.post.remoteKey, entity.content, entity.date.timeIntervalSince1970, entity.author.remoteKey, @"", entity.sendStatus];
+        [db executeUpdateWithFormat:@"insert into comments (remoteKey, post_remote_key, content, date, user_remote_key, image_url, send_status) values(%d, %d, %@, %d, %d, %@, %d)",
+         entity.remoteKey,
+         entity.post.remoteKey,
+         entity.content,
+         date,
+         entity.author.remoteKey,
+         entity.content,
+         entity.sendStatus];
     }
 
     
@@ -121,7 +169,7 @@
     
     if(entity.remoteKey != 0)
     {
-        success = [db executeUpdateWithFormat:@"update comments set remote_key=%d, send_status=%d where key=%d",
+        success = [db executeUpdateWithFormat:@"update comments set remoteKey=%d, send_status=%d where key=%d",
          entity.remoteKey,
          entity.sendStatus,
          entity.key];

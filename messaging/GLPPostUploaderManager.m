@@ -109,7 +109,7 @@
     
     NSAssert(postKey != 0, @"Key post should not be 0");
     
-    DDLogDebug(@"Add comment GLPPostUploaderManager.");
+    DDLogDebug(@"Add comment GLPPostUploaderManager: %@", comment);
     
 //    int isNetworkAvailable = [WebClient sharedInstance].isNetworkAvailable;
     
@@ -288,8 +288,8 @@
     self.isNetworkAvailable = [WebClient sharedInstance].isNetworkAvailable;
 
     
-    if(self.isNetworkAvailable)
-    {
+//    if(self.isNetworkAvailable)
+//    {
         for(NSNumber *postKey in _pendingComments)
         {
             NSArray *comments = [_pendingComments objectForKey:postKey];
@@ -314,11 +314,11 @@
                 }
             }
         }
-    }
-    else
-    {
-        [WebClientHelper commentWillUploadedLater];
-    }
+//    }
+//    else
+//    {
+//        //[WebClientHelper commentWillUploadedLater];
+//    }
     
 
     

@@ -14,7 +14,10 @@
 
 -(NSString*)password;
 
--(void)loginUserFromLoginScreenWithImage:(UIImage*)profileImage;
+//-(void)loginUserFromLoginScreenWithImage:(UIImage*)profileImage;
+
+-(void)loginUserFromLoginScreen;
+
 
 -(BOOL)areEmailPassValid;
 

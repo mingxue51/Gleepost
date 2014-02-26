@@ -18,7 +18,7 @@
 + (void)save:(GLPNotification *)entity inDb:(FMDatabase *)db;
 
 + (NSInteger)countReadNotificationsInDb:(FMDatabase *)db;
-+(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number;
+//+(void)deleteNotifications:(FMDatabase*)db withNumber:(int)number;
 
 // new version
 + (NSMutableArray *)findNotifications:(FMDatabase *)db;

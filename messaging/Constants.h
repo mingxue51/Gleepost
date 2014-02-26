@@ -33,11 +33,16 @@
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
 
+#define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
+
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
-#define GLP_BASE_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
+#define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
 #define GLP_TEST_WEBSERVICE_VERSION                 @"0.33"
-#define GLP_TEST_URL                                ([NSString stringWithFormat:@"https://dev.gleepost.com/api/v%@/", GLP_TEST_WEBSERVICE_VERSION])
+#define GLP_TEST_SERVER_URL                                ([NSString stringWithFormat:@"https://dev.gleepost.com/api/v%@/", GLP_TEST_WEBSERVICE_VERSION])
+
+#define GLP_BASE_URL                                GLP_TEST_SERVER_URL
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
 #define GLP_APP_FONT_BOLD                                @"Khmer UI"

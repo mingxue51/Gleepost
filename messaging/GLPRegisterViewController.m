@@ -15,7 +15,7 @@
 #import "ImageFormatterHelper.h"
 #import "SessionManager.h"
 #import "GLPUserDao.h"
-
+#import "GLPTemporaryUserInformationManager.h"
 
 @interface GLPRegisterViewController ()
 
@@ -61,7 +61,7 @@
 
 #pragma mark - Client
 
--(void)loginUserFromLoginScreenWithImage:(UIImage*)profileImage
+-(void)loginUserFromLoginScreen
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
@@ -70,14 +70,21 @@
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
-            if(profileImage)
+            
+//            if(profileImage)
+//            {
+//                [self uploadImageAndSetUserImage:profileImage];
+//            }
+            
+            if([[GLPTemporaryUserInformationManager sharedInstance] informationExistWithEmail:_emailTextField.text])
             {
-                [self uploadImageAndSetUserImage:profileImage];
+                [self uploadImageAndSetUserImage:[[GLPTemporaryUserInformationManager sharedInstance] image]];
             }
+
+            
             
             [self performSegueWithIdentifier:@"start" sender:self];
         } else {
-//            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
             [WebClientHelper showStandardLoginErrorWithMessage:errorMessage];
         }
     }];
@@ -233,7 +240,7 @@
 
 -(BOOL)isEmalValid
 {
-    if ([self.emailTextField.text rangeOfString:@".edu"].location == NSNotFound)
+    if ([self.emailTextField.text rangeOfString:@".edu"].location == NSNotFound && [self.emailTextField.text rangeOfString:@"gleepost.com"].location == NSNotFound)
     {
         return NO;
         

@@ -27,6 +27,8 @@
 #import "TransitionDelegateViewImage.h"
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
+#import "GLPCommentManager.h"
+#import "GLPPostManager.h"
 
 @interface ViewPostViewController ()
 
@@ -77,6 +79,8 @@ static BOOL likePushed;
     
     [self configureForm];
 
+    
+    [self fillPostWithKey];
 
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -158,6 +162,13 @@ static BOOL likePushed;
     return index;
 }
 
+-(void)fillPostWithKey
+{
+    if(self.post.key == 0)
+    {
+        [GLPPostManager setFakeKeyToPost:self.post];
+    }
+}
 
 #pragma mark - Init and config
 
@@ -504,34 +515,70 @@ static bool firstTime = YES;
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
     
-    [[WebClient sharedInstance] getCommentsForPost:self.post withCallbackBlock:^(BOOL success, NSArray *comments) {
-        //[WebClientHelper hideStandardLoaderForView:self.view];
+    [GLPCommentManager loadCommentsWithLocalCallback:^(NSArray *comments) {
         
-        if(success) {
-            self.comments = [comments mutableCopy];
-            
+        self.comments = [comments mutableCopy];
+        
+        [self viewCommentsWithScroll:scroll];
 
-            
-            //Reverse the comments' order.
-            NSArray *reversedComments = [[self.comments reverseObjectEnumerator] allObjects];
-            
-            self.comments = reversedComments.mutableCopy;
-   
-            [self.tableView reloadData];
-            
-            
-            if(scroll)
-            {
-                [self scrollToTheEndAnimated:YES];
-            }
-            
-        } else {
-            [WebClientHelper showStandardError];
-        }
-    }];
+
+        
+    } remoteCallback:^(BOOL success, NSArray *comments) {
+        
+        
+        self.comments = [comments mutableCopy];
+        
+        [self viewCommentsWithScroll:scroll];
+        
+    } withPost:self.post];
+    
+    
+    
+//    [[WebClient sharedInstance] getCommentsForPost:self.post withCallbackBlock:^(BOOL success, NSArray *comments) {
+//        //[WebClientHelper hideStandardLoaderForView:self.view];
+//        
+//        if(success) {
+//            self.comments = [comments mutableCopy];
+//            
+//
+//            DDLogDebug(@"Comments loaded successfully.");
+//            //Reverse the comments' order.
+//            NSArray *reversedComments = [[self.comments reverseObjectEnumerator] allObjects];
+//            
+//            self.comments = reversedComments.mutableCopy;
+//   
+//            [self.tableView reloadData];
+//            
+//            
+//            if(scroll)
+//            {
+//                [self scrollToTheEndAnimated:YES];
+//            }
+//
+//        } else {
+//            [WebClientHelper showStandardError];
+//        }
+//    }];
     
     //Create an array consisting of height of each corresponding comment.
     
+}
+
+-(void)viewCommentsWithScroll:(BOOL)scroll
+{
+    
+    //Reverse the comments' order.
+    NSArray *reversedComments = [[self.comments reverseObjectEnumerator] allObjects];
+    
+    self.comments = reversedComments.mutableCopy;
+    
+    [self.tableView reloadData];
+    
+    
+    if(scroll)
+    {
+        [self scrollToTheEndAnimated:YES];
+    }
 }
 
 //TODO: Call this only when there is a need to pass data to the segue.
@@ -906,7 +953,7 @@ static bool firstTime = YES;
     
     [self reloadNewComment:comment];
     
-    self.commentGrowingTextView.text = @"";
+    [self clearCommentFieldAndUpdatePostWithNewComment];
 
     
 //    [[WebClient sharedInstance] createComment:comment callbackBlock:^(BOOL success) {
@@ -921,13 +968,23 @@ static bool firstTime = YES;
 //
 //            //Notify timeline view controller.
 //            [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
-//            
+//
 //        } else {
 //            [WebClientHelper showStandardError];
 //        }
 //    }];
 }
 
+-(void)clearCommentFieldAndUpdatePostWithNewComment
+{
+    //Increase the number of comments to the post.
+    ++self.post.commentsCount;
+    
+    self.commentGrowingTextView.text = @"";
+    
+    //Notify timeline view controller.
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
+}
 
 -(BOOL)isCommmentEmpty
 {

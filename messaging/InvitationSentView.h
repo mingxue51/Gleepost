@@ -12,7 +12,7 @@
 @interface InvitationSentView : UIView
 
 
-@property (strong, nonatomic) GLPPrivateProfileViewController* delegate;
+@property (strong, nonatomic) UIViewController* delegate;
 
 + (id)loadingViewInView:(UIView *)aSuperview;
 - (void)removeView;

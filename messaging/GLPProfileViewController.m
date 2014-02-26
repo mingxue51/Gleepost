@@ -155,7 +155,12 @@
     [self setCustomBackgroundToTableView];
     
     [self loadInternalNotifications];
-    [self.tableView reloadData];
+    
+    if(self.posts.count == 0)
+    {
+        [self loadPosts];
+    }
+//    [self.tableView reloadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -354,6 +359,9 @@
     // internal notifications
     _notifications = [NSMutableArray array];
     _unreadNotificationsCount = 0;
+    
+    [self.tableView reloadData];
+
     
 }
 
@@ -659,6 +667,8 @@
         {
             self.posts = [posts mutableCopy];
             
+            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             
             [self.tableView reloadData];
@@ -746,16 +756,26 @@
     for(id not in notifications) {
         [_notifications insertObject:not atIndex:i];
         [indexPaths addObject:[NSIndexPath indexPathForRow:i + 2 inSection:0]];
+        DDLogDebug(@"notification count: %d, index paths: %@", notifications.count, indexPaths);
+        
+        //ADDED.
+//        ++i;
     }
     
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [self.tableView reloadData];
     
     _tabButtonEnabled = YES;
+    
+    //ADDED.
+    [GLPNotificationManager markAllNotificationsRead];
+    
 }
 
 - (void)notificationsTabClick
 {
-    [GLPNotificationManager markNotificationsRead];
+    [GLPNotificationManager markAllNotificationsRead];
     _unreadNotificationsCount = 0;
 }
 

@@ -12,9 +12,10 @@
 
 @interface GLPCommentDao : NSObject
 
-+ (NSArray *)findCommentsByPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db;
++ (NSArray *)findCommentsByPostRemoteKey:(NSInteger)postRemoteKey;
 //+ (GLPComment *)findByKey:(NSInteger)key db:(FMDatabase *)db;
 + (void)save:(GLPComment *)entity;
++ (void)saveIfNotExist:(GLPComment *)entity;
 + (void)updateCommentSendingData:(GLPComment *)entity;
 //+ (int)saveIfNotExist:(GLPComment*)entity db:(FMDatabase *)db;
 //+ (void)update:(GLPComment*)entity;

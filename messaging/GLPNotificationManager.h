@@ -20,10 +20,11 @@
 + (NSMutableArray *)notifications;
 + (NSMutableArray *)unreadNotifications;
 + (NSInteger)unreadNotificationsCount;
-+ (void)markNotificationsRead;
++ (void)markAllNotificationsRead;
 + (void)ignoreNotification:(GLPNotification *)notification;
 + (void)acceptNotification:(GLPNotification *)notification;
 + (void)saveNotification:(GLPNotification *)notification;
 + (void)clearAllNotifications;
++(void)fetchNotificationsFromServerWithCallBack:(void (^) (BOOL success, NSArray *notifications))callback;
 
 @end

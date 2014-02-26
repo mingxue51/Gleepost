@@ -789,7 +789,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     else if([error rangeOfString:@"Bad username/password"].location != NSNotFound)
     {
-        return @"Your username or password are invalid. Please try again.";
+        return @"Your email address or password is incorrect";
     }
     else
     {

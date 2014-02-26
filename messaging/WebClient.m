@@ -129,7 +129,9 @@ static WebClient *instance = nil;
         
         callbackBlock(YES, user, token, expirationDate, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
+        
+        DDLogDebug(@"Operation: %@ With error: %@", operation, error);
+        
         NSString *errorMessage = [RemoteParser parseLoginErrorMessage:error.localizedRecoverySuggestion];
         
         callbackBlock(NO, nil, nil, nil, errorMessage);
@@ -1346,7 +1348,30 @@ static WebClient *instance = nil;
     DDLogInfo(@"Mark all notifications read");
     
     [self putPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogInfo(@"Mark notifications read success");
+        DDLogInfo(@"Mark notifications read success: %@",responseObject);
+        
+        if(callback) {
+            callback(YES);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogInfo(@"Mark notifications read failure: %@", [error description]);
+        if(callback) {
+            callback(NO);
+        }
+    }];
+}
+
+
+- (void)markNotificationsReadWithLastNotificationRemoteKey:(int)remoteKey withCallbackBlock:(void (^)(BOOL success))callback
+{
+    DDLogInfo(@"Mark all notifications read");
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:[NSNumber numberWithInt:remoteKey] forKey:@"seen"];
+    
+    [self putPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogInfo(@"Mark notifications read success: %@",responseObject);
         
         if(callback) {
             callback(YES);

@@ -401,9 +401,11 @@
         {
             self.posts = [posts mutableCopy];
             
+            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+            
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             
-            //TODO: Removed.
+            //TODO: Remove.
             [self.tableView reloadData];
         }
         else

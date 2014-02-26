@@ -16,6 +16,7 @@
 #import "GLPPostManager.h"
 #import "GLPThemeManager.h"
 #import "AppearanceHelper.h"
+#import "GLPCommentUploader.h"
 
 @implementation NewCommentView
 
@@ -168,30 +169,29 @@
     }
     else
     {
-        GLPComment *newComment = [[GLPComment alloc] init];
-        NSLog(@"Comment Post: %@",self.post);
+//        GLPComment *newComment = [[GLPComment alloc] init];
+//        NSLog(@"Comment Post: %@",self.post);
+//        
+//        newComment.content = self.commentTextView.text;
+//        newComment.date = [NSDate date];
+//        newComment.author = [SessionManager sharedInstance].user;
+//        newComment.post = self.post;
         
-        newComment.content = self.commentTextView.text;
-        newComment.date = [NSDate date];
-        newComment.author = [SessionManager sharedInstance].user;
-        newComment.post = self.post;
+        GLPCommentUploader *commentUploader = [[GLPCommentUploader alloc] init];
         
-        //TODO: Add comment to local database before start uploading it.
+        GLPComment *comment = [commentUploader uploadCommentWithContent:self.commentTextView.text andPost:self.post];
+        
         
         [self cancelPushed:nil];
 
-        //[WebClientHelper showStandardLoaderWithTitle:@"Creating comment" forView:self];
-        [[WebClient sharedInstance] createComment:newComment callbackBlock:^(BOOL success) {
-            //[WebClientHelper hideStandardLoaderForView:self];
-            
-            if(success) {
-                
-                //TODO: Update comment in local database.
-
-            } else {
-                [WebClientHelper showStandardError];
-            }
-        }];
+//        [[WebClient sharedInstance] createComment:newComment callbackBlock:^(BOOL success) {
+//            
+//            if(success) {
+//            
+//            } else {
+//                [WebClientHelper showStandardError];
+//            }
+//        }];
         
     }
 }

@@ -31,6 +31,8 @@
 #import "GLPTabBarController.h"
 #import "MessagesViewController.h"
 #import "GLPConversationViewController.h"
+#import "GLPNotificationManager.h"
+#import "NSNotificationCenter+Utils.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -86,6 +88,7 @@ static NSString * const kCustomURLHost      = @"verify";
 {
     DDLogInfo(@"Application will become inactive");
     if([[SessionManager sharedInstance] isLogged]) {
+        
         [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     }
     
@@ -113,9 +116,39 @@ static NSString * const kCustomURLHost      = @"verify";
         [[GLPNetworkManager sharedInstance] restartNetworkOperations];
         
         __block BOOL requestsSuccess = YES;
-        [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
-            requestsSuccess = success;
-        }];
+        __block int conversationsNumber = 0;
+        
+        if(application.applicationIconBadgeNumber > 0)
+        {
+            [GLPNotificationManager fetchNotificationsFromServerWithCallBack:^(BOOL success, NSArray *notifications) {
+               
+                if(success)
+                {
+                    //Check for new notifications.
+                    int notificationsNumber = notifications.count;
+                    
+                    //Subtract the number of application badge number with number of notifications.
+                    conversationsNumber = application.applicationIconBadgeNumber - notificationsNumber;
+                    
+                    
+                    NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
+                    
+                    //Set the number of conversations in tab bar.
+                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
+
+                }
+                
+            }];
+            
+
+            
+        }
+
+        
+//        [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
+//            requestsSuccess = success;
+//        }];
+        
         
         [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
             requestsSuccess = success;

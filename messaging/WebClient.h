@@ -114,4 +114,6 @@ extern NSString * const kWebserviceBaseUrl;
 // invite
 - (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback;
 
+- (void)markNotificationsReadWithLastNotificationRemoteKey:(int)remoteKey withCallbackBlock:(void (^)(BOOL success))callback;
+
 @end

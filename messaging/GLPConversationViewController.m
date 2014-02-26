@@ -101,6 +101,13 @@
         [self loadInitialMessages];
     }
     
+    if([[ContactsManager sharedInstance] isContactWithIdRequested:[_conversation getUniqueParticipant].remoteKey])
+    {
+        DDLogDebug(@"Contact already requested.");
+        [self disableAddUserButton];
+    }
+    
+    
     _isFirstLoaded = YES;
 }
 

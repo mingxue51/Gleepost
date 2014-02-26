@@ -14,6 +14,7 @@
 #import "GLPContact.h"
 #import "ContactsManager.h"
 #import "WebClientHelper.h"
+#import "InvitationSentView.h"
 
 @interface GLPIntroducedProfile ()
 
@@ -21,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *userName;
 @property (weak, nonatomic) IBOutlet UIButton *addUser;
 @property (weak, nonatomic) IBOutlet UILabel *universityName;
+@property (strong, nonatomic) InvitationSentView *invitationSentView;
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -65,6 +67,7 @@ const float HEIGHT = 210.0f;
     [ShapeFormatterHelper setRoundedView:self.userImage toDiameter:self.userImage.frame.size.height];
 
     
+    
     //Add tags to buttons.
 //    self.profileBtn.tag = incomingUser.remoteKey;
     [self.universityName setText:incomingUser.networkName];
@@ -76,6 +79,13 @@ const float HEIGHT = 210.0f;
     [self.userImage addGestureRecognizer:tap];
     self.userImage.tag = self.user.remoteKey;
     
+    
+    if([[ContactsManager sharedInstance] isContactWithIdRequested:self.user.remoteKey])
+    {
+        DDLogDebug(@"Contact already requested.");
+        [self setContactAsRequested];
+    }
+    
 }
 
 - (void)navigateToProfile:(id)sender
@@ -85,6 +95,12 @@ const float HEIGHT = 210.0f;
 
 -(void)addUser:(id)sender
 {
+    
+    if([[ContactsManager sharedInstance] isContactWithIdRequested:self.user.remoteKey])
+    {
+        DDLogDebug(@"Contact already requested.");
+        [self setContactAsRequested];
+    }
 
     [[WebClient sharedInstance] addContact:_user.remoteKey callbackBlock:^(BOOL success) {
         
@@ -93,6 +109,8 @@ const float HEIGHT = 210.0f;
             //Change the button style.
             DDLogInfo(@"Request has been sent to the user.");
             
+            self.invitationSentView = [InvitationSentView loadingViewInView:[_delegate.view.window.subviews objectAtIndex:0]];
+            self.invitationSentView.delegate = _delegate;
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.user.name profileImage:self.user.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];

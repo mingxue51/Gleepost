@@ -10,12 +10,14 @@
 #import "WebClientHelper.h"
 #import "WebClient.h"
 #import "GLPLoginManager.h"
+#import "GLPTemporaryUserInformationManager.h"
 
 @interface GLPSignUpViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *surnameTextField;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 
@@ -202,6 +204,10 @@
                 //Navigate to home.
                 NSLog(@"User register successful with remote Key: %d", remoteKey);
 //                [self performSegueWithIdentifier:@"verify" sender:self];
+                
+                //Update the image and the image in temporary user information manager.
+                [[GLPTemporaryUserInformationManager sharedInstance] setEmail:[super email] andImage:_finalProfileImage];
+                
                 [self hideSignUpViewAndShowVerification];
                 
                 //[self loginUser];
@@ -236,24 +242,24 @@
 
 -(IBAction)loginUser:(id)sender
 {
-//    [super loginUserFromLoginScreenWithImage:_profileImage.image];
-    
-    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
-    
-    [GLPLoginManager loginWithIdentifier:[super email] andPassword:[super password] callback:^(BOOL success, NSString *errorMessage) {
-        [WebClientHelper hideStandardLoaderForView:self.view];
-        
-        if(success) {
-            if(_profileImage.image)
-            {
-                [self uploadImageAndSetUserImage:_profileImage.image];
-            }
-            
-            [self performSegueWithIdentifier:@"start" sender:self];
-        } else {
-            [self showErrorVerifyUser];
-        }
-    }];
+    [super loginUserFromLoginScreen];
+//    
+//    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
+//    
+//    [GLPLoginManager loginWithIdentifier:[super email] andPassword:[super password] callback:^(BOOL success, NSString *errorMessage) {
+//        [WebClientHelper hideStandardLoaderForView:self.view];
+//        
+//        if(success) {
+//            if(_profileImage.image)
+//            {
+//                [self uploadImageAndSetUserImage:_profileImage.image];
+//            }
+//            
+//            [self performSegueWithIdentifier:@"start" sender:self];
+//        } else {
+//            [self showErrorVerifyUser];
+//        }
+//    }];
 }
 
 - (IBAction)resendVerification:(id)sender
@@ -291,6 +297,7 @@
         [_verifyView setAlpha:1.0f];
         
         [_signUpView setAlpha:0.0f];
+        
         
         [self hideKeyboard];
         

@@ -53,7 +53,7 @@
 //        
 //    }
     
-    [super loginUserFromLoginScreenWithImage:nil];
+    [super loginUserFromLoginScreen];
 }
 
 //TODO: Call this method.

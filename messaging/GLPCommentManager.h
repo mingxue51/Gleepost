@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLPCommentDao.h"
 
 @interface GLPCommentManager : NSObject
+
++ (void)loadCommentsWithLocalCallback:(void (^)(NSArray *comments))localCallback remoteCallback:(void (^)(BOOL success, NSArray *comments))remoteCallback withPost:(GLPPost *)post;
 
 @end

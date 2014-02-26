@@ -218,6 +218,7 @@ static ContactsManager *instance = nil;
 {
     GLPContact* contact = [self contactWithRemoteKey:remoteKey];
     
+    DDLogDebug(@"Contact requested: %@ : %d", contact.user, contact.youConfirmed);
     
     return contact.youConfirmed;
 }
@@ -235,6 +236,8 @@ static ContactsManager *instance = nil;
     {
         if(contact.remoteKey == remoteKey)
         {
+            DDLogDebug(@"Contact exist: %@", contact.user);
+            
             return contact;
         }
     }

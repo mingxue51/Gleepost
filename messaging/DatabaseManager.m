@@ -195,7 +195,7 @@ static DatabaseManager *instance = nil;
             // comments
             [db executeUpdate:@"create table comments ( \
              key integer primary key autoincrement, \
-             remote_key integer unique, \
+             remoteKey integer unique, \
              post_remote_key integer, \
              content text, \
              date integer, \

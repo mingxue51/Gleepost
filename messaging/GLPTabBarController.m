@@ -53,6 +53,10 @@ static BOOL isViewDidDisappearCalled = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
         
+        //Added new notification center. This is temporary called just from AppDelegate.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatCountBadge:) name:GLPNOTIFICATION_CONVERSATION_COUNT object:nil];
+
+        
         isViewDidDisappearCalled = NO;
     }
 }
@@ -65,6 +69,8 @@ static BOOL isViewDidDisappearCalled = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATION_COUNT object:nil];
+
 }
 
 
@@ -99,6 +105,14 @@ static BOOL isViewDidDisappearCalled = YES;
         
         DDLogInfo(@"Tab bar messages badge increment notification count");
     }
+}
+
+-(void)updateChatCountBadge:(NSNotification *)notification
+{
+    int conversationCount = [notification.userInfo[@"conversationsCount"] integerValue];
+    
+    [self updateBadgeForIndex:1 count:conversationCount];
+
 }
 
 

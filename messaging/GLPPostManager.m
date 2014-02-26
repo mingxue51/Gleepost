@@ -448,4 +448,47 @@ NSInteger const kGLPNumberOfPosts = 20;
     }];
 }
 
+/**
+ Temporary method to set "virtual keys" to posts in order to create the possibility
+ of adding comment asynchronously on those posts too.
+ 
+ @param privateProfilePosts Particular user's posts.
+ 
+ */
++ (void)setFakeKeysToPrivateProfilePosts:(NSArray *)privateProfilePosts
+{
+    __block int lastPostIndex = 0;
+    NSMutableArray *profilePosts = privateProfilePosts.mutableCopy;
+    
+    //Take the last key of the current campus wall posts from database.
+    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
+       
+        GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
+        lastPostIndex = lastPost.key;
+
+    }];
+    
+    for(GLPPost *post in profilePosts)
+    {
+        ++lastPostIndex;
+        
+        post.key = lastPostIndex;
+    }
+}
+
++(void)setFakeKeyToPost:(GLPPost *)post
+{
+    __block int lastPostIndex = 0;
+    
+    //Take the last key of the current campus wall posts from database.
+    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
+        
+        GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
+        lastPostIndex = lastPost.key;
+        
+    }];
+    
+    post.key = lastPostIndex+1;
+}
+
 @end
