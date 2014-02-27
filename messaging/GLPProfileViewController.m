@@ -38,6 +38,7 @@
 #import "SettingsViewController.h"
 #import "UIImage+StackBlur.h"
 #import "NotificationCell.h"
+#import "GLPCommonHelper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -172,6 +173,11 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+    
+    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
     
     [super viewWillDisappear:animated];
 }
@@ -312,24 +318,51 @@
 
     
 //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    
+    
+    //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    
+    //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    
+    //    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    
+    //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
    
+//    [AppearanceHelper setNavigationBarColour:self];
+//    [AppearanceHelper setNavigationBarFontFor:self];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+//
+//    
+//
+//
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+//
+//    
+//    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    
+    
+    
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+    
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
+    
+    
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
     [AppearanceHelper setNavigationBarFontFor:self];
-
-    
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    
-//    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    
-//    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
-//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
-    
-//    self.title = @"Me";
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
 
 }

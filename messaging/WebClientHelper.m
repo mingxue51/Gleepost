@@ -136,7 +136,7 @@
 + (void)showEmptyTextError
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
-                                                    message:@"The lenght of comment should be at least one character"
+                                                    message:@"It looks like you haven't written anything"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
@@ -146,7 +146,7 @@
 + (void)commentWillUploadedLater
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network!"
-                                                    message:@"Your comment is going to be uploaded later."
+                                                    message:@"Your comment is going to be uploaded later"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];

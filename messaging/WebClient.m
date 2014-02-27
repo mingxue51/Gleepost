@@ -257,6 +257,8 @@ static WebClient *instance = nil;
   
     NSString *path = [NSString stringWithFormat:@"devices/%@", pushToken];
     
+    DDLogDebug(@"WEB CLIENT: %@", self);
+    
     if(pushToken)
     {
         [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {

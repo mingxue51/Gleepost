@@ -24,7 +24,7 @@
 #import "ViewPostViewController.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPConversationViewController.h"
-
+#import "GLPCommonHelper.h"
 
 
 
@@ -128,7 +128,6 @@
     
     [self initialiseObjects];
     
-    [self configureNavigationBar];
     
 
     
@@ -143,8 +142,11 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
+    [self configureNavigationBar];
+
+    
+//    [self.navigationController setNavigationBarHidden:NO
+//                                             animated:YES];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
@@ -154,6 +156,11 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+    
+    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
     
     [super viewWillDisappear:animated];
 }
@@ -271,9 +278,36 @@
 
     //Change the format of the navigation bar.
 //    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarColour:self];
     
     //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    
+    
+//    [AppearanceHelper setNavigationBarColour:self];
+    
+//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+//    
+//    [AppearanceHelper setNavigationBarFontFor:self];
+//    
+//    [self.navigationController.navigationBar setTranslucent:NO];
+//    
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    
+    
+    
+    
+    
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+    
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+    [AppearanceHelper setNavigationBarColour:self];
+    
+    
     
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     

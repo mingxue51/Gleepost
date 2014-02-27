@@ -337,29 +337,39 @@ static SessionManager *instance = nil;
     }];
 }
 
--(void)deregisterPushFromServer
+-(void)deregisterPushFromServerWithCallBackBlock:(void (^)(BOOL success))callback
 {
-    _pushTokenRegistered = NO;
-    
-    if(self.data[@"user.pushToken"])
+    if(ON_DEVICE)
     {
-        [self savePushToken:self.data[@"user.pushToken"]];
+        _pushTokenRegistered = NO;
+        
+        if(self.data[@"user.pushToken"])
+        {
+            [self savePushToken:self.data[@"user.pushToken"]];
+        }
+        else
+        {
+            //Load token
+            self.data[@"user.pushToken"] = [self loadPushTokenIfExist];
+        }
+        
+        
+        
+        DDLogDebug(@"Data before deregister: %@",self.data);
+        
+        [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
+            
+            
+            callback(YES);
+            
+        }];
     }
     else
     {
-        //Load token
-        self.data[@"user.pushToken"] = [self loadPushTokenIfExist];
+        callback(YES);
     }
     
-    
 
-    DDLogDebug(@"Data before deregister: %@",self.data);
-    
-    [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
-       
-        
-        
-    }];
 }
 
 -(void)savePushToken:(NSString *)pushToken

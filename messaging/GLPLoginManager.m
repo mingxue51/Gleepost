@@ -126,16 +126,22 @@
 
 + (void)logout
 {
-    [[SessionManager sharedInstance] deregisterPushFromServer];
+    [[SessionManager sharedInstance] deregisterPushFromServerWithCallBackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            [[GLPNetworkManager sharedInstance] stopNetworkOperations];
+            [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
+            
+            [[GLPLiveConversationsManager sharedInstance] clear];
+            [[SessionManager sharedInstance] cleanSession];
+            [[DatabaseManager sharedInstance] dropDatabase];
+            
+            [[GLPProfileLoader sharedInstance] initialiseLoader];
+        }
+    }];
     
-    [[GLPNetworkManager sharedInstance] stopNetworkOperations];
-    [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
 
-    [[GLPLiveConversationsManager sharedInstance] clear];
-    [[SessionManager sharedInstance] cleanSession];
-    [[DatabaseManager sharedInstance] dropDatabase];
-    
-    [[GLPProfileLoader sharedInstance] initialiseLoader];
     
 }
 
