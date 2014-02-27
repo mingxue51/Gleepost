@@ -113,6 +113,9 @@
 		5832C4BF189936E9004FC4F6 /* user_image_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BE189936E9004FC4F6 /* user_image_bg.png */; };
 		5832C4C918998563004FC4F6 /* UIImage+StackBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 5832C4C818998563004FC4F6 /* UIImage+StackBlur.m */; };
 		5832C4CD1899B8E7004FC4F6 /* ChatViewAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */; };
+		5834903A18BF80670087CC3A /* FDTake.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902718BF80670087CC3A /* FDTake.strings */; };
+		5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902B18BF80670087CC3A /* InfoPlist.strings */; };
+		5834903E18BF80670087CC3A /* FDTakeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5834903218BF80670087CC3A /* FDTakeController.m */; };
 		5834FF4118B4FE480092C52D /* campus_wall_background_main.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834FF4018B4FE480092C52D /* campus_wall_background_main.png */; };
 		5834FF4418B502D20092C52D /* profile_background_main.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834FF4318B502D20092C52D /* profile_background_main.png */; };
 		58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58361C32184CAE8D00FEFC49 /* ReflectedImageView.m */; };
@@ -746,6 +749,19 @@
 		5832C4C818998563004FC4F6 /* UIImage+StackBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+StackBlur.m"; sourceTree = "<group>"; };
 		5832C4CB1899B8E7004FC4F6 /* ChatViewAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationController.h; sourceTree = "<group>"; };
 		5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationController.m; sourceTree = "<group>"; };
+		5834902818BF80670087CC3A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834902918BF80670087CC3A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834902A18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834902C18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5834903118BF80670087CC3A /* FDTakeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDTakeController.h; sourceTree = "<group>"; };
+		5834903218BF80670087CC3A /* FDTakeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTakeController.m; sourceTree = "<group>"; };
+		5834903318BF80670087CC3A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834903418BF80670087CC3A /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834903518BF80670087CC3A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834903618BF80670087CC3A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834903718BF80670087CC3A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/FDTake.strings; sourceTree = "<group>"; };
+		5834903818BF80670087CC3A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/FDTake.strings"; sourceTree = "<group>"; };
+		5834903918BF80670087CC3A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/FDTake.strings"; sourceTree = "<group>"; };
 		5834FF4018B4FE480092C52D /* campus_wall_background_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = campus_wall_background_main.png; sourceTree = "<group>"; };
 		5834FF4318B502D20092C52D /* profile_background_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_background_main.png; sourceTree = "<group>"; };
 		58361C31184CAE8D00FEFC49 /* ReflectedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflectedImageView.h; sourceTree = "<group>"; };
@@ -1642,6 +1658,17 @@
 			children = (
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		5834902618BF80670087CC3A /* FDTakeViewControllerImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				5834902718BF80670087CC3A /* FDTake.strings */,
+				5834902B18BF80670087CC3A /* InfoPlist.strings */,
+				5834903118BF80670087CC3A /* FDTakeController.h */,
+				5834903218BF80670087CC3A /* FDTakeController.m */,
+			);
+			path = FDTakeViewControllerImagePicker;
 			sourceTree = "<group>";
 		};
 		5834FF4218B502AE0092C52D /* Backgrounds */ = {
@@ -2590,6 +2617,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5834902618BF80670087CC3A /* FDTakeViewControllerImagePicker */,
 				5867FF5618B64D180080AD9D /* Copy Label */,
 				580FF15018AA6D810026B65B /* Time formatter */,
 				5832C4C618998554004FC4F6 /* Blur */,
@@ -3308,6 +3336,15 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ar,
+				de,
+				fr,
+				nb,
+				nl,
+				ru,
+				tr,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = 80AB890E17C267F50053E784;
 			productRefGroup = 80AB891817C267F50053E784 /* Products */;
@@ -3432,6 +3469,7 @@
 				58FB7CC018565AC1002C6A00 /* ProfileViewMutualTableViewCell.xib in Resources */,
 				58AD86C11892DFD100016C6D /* profile_botton.png in Resources */,
 				5890D225184790BA00E293DD /* chat_background_default.png in Resources */,
+				5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */,
 				58DAD77E1859FBD20016D838 /* man-7-old@2x.png in Resources */,
 				5893BA031820097C0003589E /* CommentTextCellView.xib in Resources */,
 				580C7AB718983C7F007495EE /* news_category_selected.png in Resources */,
@@ -3565,6 +3603,7 @@
 				5832C4B7189929FC004FC4F6 /* show_categories.png in Resources */,
 				58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */,
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
+				5834903A18BF80670087CC3A /* FDTake.strings in Resources */,
 				80595E1318B1B02900D99E41 /* Localizable.strings in Resources */,
 				582B404718AD3E5800BC4285 /* speaker_category.png in Resources */,
 				80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */,
@@ -3852,6 +3891,7 @@
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				58752FDF18A44BC100F6F09B /* GLPSingInViewController.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
+				5834903E18BF80670087CC3A /* FDTakeController.m in Sources */,
 				11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
@@ -3955,6 +3995,31 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		5834902718BF80670087CC3A /* FDTake.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5834902818BF80670087CC3A /* ar */,
+				5834902918BF80670087CC3A /* de */,
+				5834902A18BF80670087CC3A /* en */,
+				5834903318BF80670087CC3A /* fr */,
+				5834903418BF80670087CC3A /* nb */,
+				5834903518BF80670087CC3A /* nl */,
+				5834903618BF80670087CC3A /* ru */,
+				5834903718BF80670087CC3A /* tr */,
+				5834903818BF80670087CC3A /* zh-Hans */,
+				5834903918BF80670087CC3A /* zh-Hant */,
+			);
+			name = FDTake.strings;
+			sourceTree = "<group>";
+		};
+		5834902B18BF80670087CC3A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5834902C18BF80670087CC3A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		80AB892517C267F50053E784 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
