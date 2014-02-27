@@ -128,8 +128,7 @@ static BOOL likePushed;
     [self configureNavigationBar];
     
     
-    [self loadCommentsWithScrollToTheEnd:NO];
-
+    [self loadComments];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -510,9 +509,23 @@ static bool firstTime = YES;
 //    }];
 //}
 
+-(void)loadComments
+{
+    if(self.post.remoteKey == 0)
+    {
+        //TODO: Load comments from operation manager.
+        
+    }
+    else
+    {
+        [self loadCommentsWithScrollToTheEnd:NO];
+    }
+}
+
 - (void)loadCommentsWithScrollToTheEnd:(BOOL)scroll
 {
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    
     
     
     [GLPCommentManager loadCommentsWithLocalCallback:^(NSArray *comments) {

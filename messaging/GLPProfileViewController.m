@@ -75,6 +75,8 @@
 
 @property (strong, nonatomic) NSDate *commentNotificationDate;
 
+@property (assign, nonatomic) BOOL postUploaded;
+
 // new
 @property (strong, nonatomic) NSMutableArray *notifications;
 @property (assign, nonatomic) BOOL tabButtonEnabled;
@@ -147,16 +149,13 @@
     
     [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveInternalNotificationNotification:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+    [self setUpNotifications];
     
     [self setCustomBackgroundToTableView];
     
     [self loadInternalNotifications];
     
-    if(self.posts.count == 0)
+    if(self.posts.count == 0 || _postUploaded)
     {
         [self loadPosts];
     }
@@ -175,6 +174,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -195,6 +196,16 @@
     
     [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     [self.tableView setBackgroundView:backImgView];
+}
+
+-(void)setUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveInternalNotificationNotification:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
+
 }
 
 #pragma mark - Configuration
@@ -361,6 +372,8 @@
     _unreadNotificationsCount = 0;
     
     [self.tableView reloadData];
+    
+    _postUploaded = NO;
 
     
 }
@@ -468,7 +481,13 @@
 }
 
 
-
+-(void)postByUserInCampusWall:(NSNotification *)notification
+{
+    //Set a boolean value YES in order to reload posts when user navigates back to profile.
+    _postUploaded = YES;
+    
+    DDLogDebug(@"New post!");
+}
 
 #pragma mark - ProfileSettingsTableViewCellDelegate
 
@@ -672,6 +691,8 @@
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             
             [self.tableView reloadData];
+            
+            _postUploaded = NO;
         }
         else
         {
