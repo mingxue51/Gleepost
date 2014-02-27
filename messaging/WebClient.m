@@ -276,6 +276,8 @@ static WebClient *instance = nil;
     }
     else
     {
+        DDLogDebug(@"No push token.");
+
         callback(NO);
     }
     
@@ -1348,7 +1350,7 @@ static WebClient *instance = nil;
     DDLogInfo(@"Mark all notifications read");
     
     [self putPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogInfo(@"Mark notifications read success: %@",responseObject);
+//        DDLogInfo(@"Mark notifications read success: %@",responseObject);
         
         if(callback) {
             callback(YES);
