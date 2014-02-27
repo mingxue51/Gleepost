@@ -155,6 +155,12 @@
     
     [self loadInternalNotifications];
     
+    
+    if(self.selectedTabStatus == kGLPSettings)
+    {
+        [self notificationsTabClick];
+    }
+    
     if(self.posts.count == 0 || _postUploaded)
     {
         [self loadPosts];
