@@ -77,7 +77,6 @@ static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 300;
 static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
-//static const float ThreeLinesLimit = 62.0;
 static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
 
@@ -227,9 +226,6 @@ static const float OneLineText = 16.0;
     
     
     [self setFontToLabels];
-    
-    
-
 }
 
 #pragma mark - Format UI
@@ -331,39 +327,46 @@ static const float OneLineText = 16.0;
 
 -(void)setNewPositions
 {
-    //Change the height of the label.
-    [self setElement:self.contentLbl size:[PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable]];
+    
+    CGSize labelSize = [PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable];
+    
+
     
     if(!self.imageAvailable)
     {
-        [self.textLabelConstrain setConstant:self.contentLbl.frame.size.height];
+//        [self.textLabelConstrain setConstant:self.contentLbl.frame.size.height];
+        [self.textLabelConstrain setConstant:labelSize.height];
+
+        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
+
+    }
+    else
+    {
+        //Change the height of the label.
+        [self setElement:self.contentLbl size:labelSize];
     }
     
     //Change the position of the social view.
-    float socialViewY = self.contentLbl.frame.origin.y + self.contentLbl.frame.size.height + 5;
+//    float socialViewY = self.contentLbl.frame.origin.y + self.contentLbl.frame.size.height + 5;
+//    
+//    if(socialViewY < 52)
+//    {
+//        socialViewY += OneLinePadding;
+//    }
+//    
+//    CGRect socialFrame = self.socialPanel.frame;
+//    
+//    [self.socialPanel setFrame:CGRectMake(socialFrame.origin.x, socialViewY, socialFrame.size.width, socialFrame.size.height)];
+//    
+//    //Change the height of the content view.
+//    CGRect contentViewFrame = self.contentView.frame;   
+//    
+//    float contentViewH = socialViewY + socialFrame.size.height + FollowingCellPadding;
+//    
+////    NSLog(@"ContentViewH: %f Content: %@",contentViewH, self.contentLbl.text);
+//    
+//    [self.contentView setFrame:CGRectMake(contentViewFrame.origin.x, contentViewFrame.origin.y, contentViewFrame.size.width, contentViewH)];
     
-    if(socialViewY < 52)
-    {
-        socialViewY += OneLinePadding;
-    }
-    
-    CGRect socialFrame = self.socialPanel.frame;
-    
-    [self.socialPanel setFrame:CGRectMake(socialFrame.origin.x, socialViewY, socialFrame.size.width, socialFrame.size.height)];
-    
-    //Change the height of the content view.
-    CGRect contentViewFrame = self.contentView.frame;   
-    
-    float contentViewH = socialViewY + socialFrame.size.height + FollowingCellPadding;
-    
-//    NSLog(@"ContentViewH: %f Content: %@",contentViewH, self.contentLbl.text);
-    
-    [self.contentView setFrame:CGRectMake(contentViewFrame.origin.x, contentViewFrame.origin.y, contentViewFrame.size.width, contentViewH)];
-    
-    if(!self.imageAvailable)
-    {
-//        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
-    }
 }
 
 -(void)postFromNotifications:(BOOL)notifications
@@ -390,13 +393,18 @@ static const float OneLineText = 16.0;
     //[UIFont systemFontOfSize:13.0]
     UIFont *font = nil;
     
+    int maxWidth = 0;
+    
     if(isImage)
     {
         font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+        maxWidth = PostContentLabelMaxWidth;
+        
     }
     else
     {
         font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+        maxWidth = 264;
     }
     
 
@@ -404,7 +412,7 @@ static const float OneLineText = 16.0;
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){PostContentLabelMaxWidth, CGFLOAT_MAX}
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                context:nil];
     
