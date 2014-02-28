@@ -278,7 +278,7 @@
 
 +(void)fetchNotificationsFromServerWithCallBack:(void (^) (BOOL success, NSArray *notifications))callback
 {
-    [[WebClient sharedInstance] synchronousGetNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+    [[WebClient sharedInstance] getNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
         if(success) {
             NSLog(@"New notifications from get notifications request: %d", notifications.count);
             

@@ -10,6 +10,10 @@
 #import "GLPWebSocketClient.h"
 #import "GLPLiveConversationsManager.h"
 
+#import "GLPNotificationManager.h"
+#import "NSNotificationCenter+Utils.h"
+#import "WebClient.h"
+
 @interface GLPNetworkManager()
 
 @property (assign, nonatomic) GLPNetworkManagerState state;
@@ -110,6 +114,42 @@ static GLPNetworkManager *instance = nil;
 {
     // init the conversations list
     [[GLPLiveConversationsManager sharedInstance] loadConversations];
+    
+    // get notifications
+    __block BOOL requestsSuccess = YES;
+    __block int conversationsNumber = 0;
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    if(application.applicationIconBadgeNumber > 0)
+    {
+        [GLPNotificationManager fetchNotificationsFromServerWithCallBack:^(BOOL success, NSArray *notifications) {
+            
+            if(success)
+            {
+                //Check for new notifications.
+                int notificationsNumber = notifications.count;
+                
+                //Subtract the number of application badge number with number of notifications.
+                conversationsNumber = application.applicationIconBadgeNumber - notificationsNumber;
+                
+                
+                NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
+                
+                //Set the number of conversations in tab bar.
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
+                
+            }
+        }];
+    }
+    
+    [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
+        requestsSuccess = success;
+    }];
+    
+    if(requestsSuccess) {
+        application.applicationIconBadgeNumber = 0;
+        DDLogInfo(@"Reset application icon badge number to 0");
+    }
 }
 
 - (void)webSocketDidFailOrClose

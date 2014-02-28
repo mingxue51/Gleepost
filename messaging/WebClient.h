@@ -104,6 +104,7 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)postLike:(BOOL)like forPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 
 // notifications
+-(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 
 - (void)markNotificationsRead:(void (^)(BOOL success))callback;

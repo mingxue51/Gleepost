@@ -114,56 +114,7 @@ static NSString * const kCustomURLHost      = @"verify";
     
     if([[SessionManager sharedInstance] isLogged]) {
         [[GLPNetworkManager sharedInstance] restartNetworkOperations];
-        
-        __block BOOL requestsSuccess = YES;
-        __block int conversationsNumber = 0;
-        
-        if(application.applicationIconBadgeNumber > 0)
-        {
-            [GLPNotificationManager fetchNotificationsFromServerWithCallBack:^(BOOL success, NSArray *notifications) {
-               
-                if(success)
-                {
-                    //Check for new notifications.
-                    int notificationsNumber = notifications.count;
-                    
-                    //Subtract the number of application badge number with number of notifications.
-                    conversationsNumber = application.applicationIconBadgeNumber - notificationsNumber;
-                    
-                    
-                    NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
-                    
-                    //Set the number of conversations in tab bar.
-                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
-
-                }
-                
-            }];
-            
-
-            
-        }
-
-        
-//        [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
-//            requestsSuccess = success;
-//        }];
-        
-        
-        [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
-            requestsSuccess = success;
-        }];
-        
-        if(requestsSuccess) {
-            application.applicationIconBadgeNumber = 0;
-            DDLogInfo(@"Reset application icon badge number to 0");
-        }
     }
-    
-    // activate or reactivate web client
-    //[[WebClient sharedInstance] activate];
-    
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

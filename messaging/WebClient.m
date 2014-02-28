@@ -1329,6 +1329,16 @@ static WebClient *instance = nil;
 
 #pragma mark - Notifications
 
+-(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
+{
+    [self getPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *items = [RemoteParser parseNotificationsFromJson:responseObject];
+        callback(YES, items);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
+
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" params:self.sessionManager.authParameters callback:^(BOOL success, id json) {
