@@ -25,7 +25,7 @@
 static const float FixedSizeOfTextCell = 45; //Before was 90.
 static const float FollowingCellPadding = 0;
 static const float CommentContentViewPadding = 0;  //15 before.
-static const float CommentContentLabelMaxWidth = 250;
+static const float CommentContentLabelMaxWidth = 217; //250 before
 
 
 @implementation CommentCell
@@ -118,6 +118,8 @@ static const float CommentContentLabelMaxWidth = 250;
     //Set circle the user's image.
     [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
     
+    [self formatCommentElements];
+    
     
 //    self.contentView.layer.borderColor = [UIColor redColor].CGColor;
 //    self.contentView.layer.borderWidth = 1.0f;
@@ -126,6 +128,17 @@ static const float CommentContentLabelMaxWidth = 250;
 //    self.contentLabel.layer.borderWidth = 1.0f;
     
     
+}
+
+-(void)formatCommentElements
+{
+    _userNameLabel.font = [UIFont fontWithName:GLP_TITLE_FONT size:14.0f];
+    
+    _contentLabel.textColor = [UIColor grayColor];
+    _contentLabel.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0f];
+    
+    _postDateLabel.textColor = [UIColor grayColor];
+    _postDateLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
 }
 
 -(void)setCellHeight:(NSString*)content
@@ -212,7 +225,7 @@ static const float CommentContentLabelMaxWidth = 250;
     //CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
     
     
-    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:12.0];
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
