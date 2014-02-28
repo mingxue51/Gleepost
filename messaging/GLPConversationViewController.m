@@ -593,6 +593,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 -(void)navigateToProfile:(id)sender
 {
+    // bad way of doing this
     if([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
         UIImageView *incomingView = (UIImageView*)incomingUser.view;
@@ -602,6 +603,23 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         UIButton *userButton = (UIButton*)sender;
         self.selectedUserId = userButton.tag;
     }
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey)) {
+        self.selectedUserId = -1;
+        //Navigate to profile view controller.
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId]) {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+    else {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
+
+-(void)navigateToUserProfile:(GLPUser *)user
+{
+    self.selectedUserId = user.remoteKey;
+    
     if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey)) {
         self.selectedUserId = -1;
         //Navigate to profile view controller.
@@ -774,10 +792,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 //    NSAssert(message.cellIdentifier, @"Cell identifier is required but null");
     
     GLPMessageCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
-    
-    // add touch gesture to avatar image view
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-//    [cell.avatarImageView addGestureRecognizer:tap];
+    cell.delegate = self;
     
     [cell configureWithMessage:message];
     
@@ -803,5 +818,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 # pragma mark - GLPMessageCellDelegate
 
+- (void)profileImageClickForMessage:(GLPMessage *)message
+{
+    [self navigateToUserProfile:message.author];
+}
 
 @end

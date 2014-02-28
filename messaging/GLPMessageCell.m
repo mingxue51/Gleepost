@@ -37,9 +37,11 @@ static const CGFloat kProfileImageViewTopMargin = 9;
 static const CGFloat kProfileImageViewSideMargin = 6;
 static const CGFloat kProfileImageViewOppositeSideMargin = 6;
 static const CGFloat kTimeLabelBottomMargin = 0;
-static const CGFloat kContentLabelPadding = 10;
+static const CGFloat kContentLabelVerticalPadding = 10;
+static const CGFloat kContentLabelHorizontalPadding = 15;
 static const CGFloat kErrorImageSideMargin = 6;
-static const CGFloat kOppositeSideMargin = 20;
+static const CGFloat kOppositeSideMarginWithoutError = 30;
+static const CGFloat kOppositeSideMarginWithError = 10 + kErrorImageW + kErrorImageSideMargin;
 static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMargin + kProfileImageViewSize + kProfileImageViewOppositeSideMargin;
 static const CGFloat kTopMargin = 0;
 static const CGFloat kBottomMargin = 7;
@@ -72,7 +74,14 @@ static const CGFloat kBottomMargin = 7;
 - (void)configureViews
 {
     // profile image
-    [self.contentView addSubview:[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kProfileImageViewSize, kProfileImageViewSize)]];
+    {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kProfileImageViewSize, kProfileImageViewSize)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profileImageClick)];
+        [imageView addGestureRecognizer:tap];
+        imageView.userInteractionEnabled = YES;
+        
+        [self.contentView addSubview:imageView];
+    }
 
     // timeview
     {
@@ -83,7 +92,6 @@ static const CGFloat kBottomMargin = 7;
         [self.contentView addSubview:label];
     }
 
-    
     // text view
     {
         UIView *view = [UIView new];
@@ -97,7 +105,6 @@ static const CGFloat kBottomMargin = 7;
         imageView.layer.borderWidth = 2;
         
         UILabel *label = [UILabel new];
-        label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -111,11 +118,14 @@ static const CGFloat kBottomMargin = 7;
     {
         UIImage *image = [UIImage imageNamed:@"message_cell_error"];
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(0, 0, kErrorImageW, kErrorImageH);
         [button setImage:image forState:UIControlStateNormal];
         [button addTarget:self action:@selector(errorButtonClick) forControlEvents:UIControlEventTouchUpInside];
         
         [self.contentView addSubview:button];
     }
+    
+    self.selectedBackgroundView = [UIView new];
 }
 
 - (void)configureWithMessage:(GLPMessage *)message
@@ -135,7 +145,6 @@ static const CGFloat kBottomMargin = 7;
         _height = kProfileImageViewSize;
     }
     
-    DDLogDebug(@"Configure message total height %f", _height);
     CGRectSetH(self.contentView, _height);
 }
 
@@ -180,25 +189,28 @@ static const CGFloat kBottomMargin = 7;
 - (void)configureMessageText
 {
     UIView *view = self.contentView.subviews[2];
+    UIImageView *imageView = view.subviews[0];
+    UILabel *label = view.subviews[1];
     
     CGSize labelSize = [GLPMessageCell contentLabelSizeForMessage:_message];
     
     if(labelSize.width < kContentLabelMinimalW) {
         labelSize.width = kContentLabelMinimalW;
+        label.textAlignment = NSTextAlignmentCenter;
+    } else {
+        label.textAlignment = NSTextAlignmentLeft;
     }
     
-    CGFloat w = labelSize.width + kContentLabelPadding;
-    CGFloat h = labelSize.height + kContentLabelPadding;
+    CGFloat w = labelSize.width + kContentLabelHorizontalPadding;
+    CGFloat h = labelSize.height + kContentLabelVerticalPadding;
     CGFloat x = [self xForCurrentSide:kSideMarginIncludingProfileImage w:w];
     view.frame = CGRectMake(x, _height, w, h);
 
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
 
-    UIImageView *imageView = view.subviews[0];
     imageView.frame = CGRectMake(0, 0, w, h);
-    
-    UILabel *label = view.subviews[1];
-    label.frame = CGRectMake(kContentLabelPadding / 2, kContentLabelPadding / 2, labelSize.width, labelSize.height);
+
+    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2, labelSize.width, labelSize.height);
     label.text = _message.content;
     
     if(_isOnLeftSide) {
@@ -209,6 +221,16 @@ static const CGFloat kBottomMargin = 7;
         view.backgroundColor = [UIColor clearColor];
         imageView.hidden = NO;
         label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+    }
+    
+    UIButton *errorButton = self.contentView.subviews[3];
+    if(_message.sendStatus == kSendStatusFailure) {
+        errorButton.hidden = NO;
+        CGFloat errorX = _isOnLeftSide ? CGRectGetMaxX(view.frame) + kErrorImageSideMargin : view.frame.origin.x - kErrorImageSideMargin - kErrorImageW;
+        CGFloat errorY = CGRectGetMidY(view.frame) - errorButton.frame.size.height / 2;
+        CGRectSetXY(errorButton, errorX, errorY);
+    } else {
+        errorButton.hidden = YES;
     }
 
     _height += h;
@@ -226,6 +248,10 @@ static const CGFloat kBottomMargin = 7;
     [_delegate errorButtonClickForMessage:_message];
 }
 
+- (void)profileImageClick
+{
+    [_delegate profileImageClickForMessage:_message];
+}
 
 # pragma mark - Helpers
 
@@ -235,14 +261,14 @@ static const CGFloat kBottomMargin = 7;
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     
-    CGFloat maxWidth = KViewW - (kSideMarginIncludingProfileImage + kOppositeSideMargin);
+    CGFloat maxWidth = KViewW - (kSideMarginIncludingProfileImage + kContentLabelHorizontalPadding);
     if(message.sendStatus == kSendStatusFailure) {
-        maxWidth -= (kErrorImageW + kErrorImageSideMargin);
+        maxWidth -= kOppositeSideMarginWithError;
+    } else {
+        maxWidth -= kOppositeSideMarginWithoutError;
     }
     
-    DDLogDebug(@"max width %f", maxWidth);
-    
-    CGSize size = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+    CGSize size = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading context:nil].size;
     
     //    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
     //                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
@@ -259,10 +285,8 @@ static const CGFloat kBottomMargin = 7;
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }
     
-    height += [GLPMessageCell contentLabelSizeForMessage:message].height + kContentLabelPadding;
+    height += [GLPMessageCell contentLabelSizeForMessage:message].height + kContentLabelVerticalPadding;
     height += kBottomMargin;
-    
-    DDLogDebug(@"View height %f", height);
     
     return height;
 }

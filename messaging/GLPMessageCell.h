@@ -12,6 +12,7 @@
 @protocol GLPMessageCellDelegate <NSObject>
 
 - (void)errorButtonClickForMessage:(GLPMessage *)message;
+- (void)profileImageClickForMessage:(GLPMessage *)message;
 
 @end
 
