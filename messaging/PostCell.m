@@ -337,7 +337,7 @@ static const float OneLineText = 16.0;
 //        [self.textLabelConstrain setConstant:self.contentLbl.frame.size.height];
         [self.textLabelConstrain setConstant:labelSize.height];
 
-        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
+//        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
 
     }
     else

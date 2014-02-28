@@ -28,9 +28,7 @@
 }
 
 + (BOOL)isTheNextViewCampusWall:(NSArray *)viewControllersStuck
-{
-    DDLogDebug(@"Stuck: %@", viewControllersStuck);
-    
+{    
     if(viewControllersStuck.count == 1)
     {
         UIViewController *campusWall = [viewControllersStuck objectAtIndex:0];

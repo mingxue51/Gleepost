@@ -1094,8 +1094,11 @@
             
             DDLogInfo(@"Go to the post details.");
             
+            [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:self.view];
+            
             [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL sucess, GLPPost *post) {
                 
+                [WebClientHelper hideStandardLoaderForView:self.view];
                 
                 if(sucess)
                 {

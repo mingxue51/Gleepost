@@ -159,17 +159,24 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
 
 -(void)layoutSubviews
 {
-    CGRect cellFrame = self.contentLabel.frame;
+//    CGRect cellFrame = self.contentLabel.frame;
     
-    float heightSize = [CommentCell getContentLabelSizeForContent:self.contentLabel.text].height;
+    CGSize heightSize = [CommentCell getContentLabelSizeForContent:self.contentLabel.text];
     
-    [self.contentView setFrame:CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.size.width, self.heightOfCell+heightSize)];
+//    [self.contentView setFrame:CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.size.width, self.heightOfCell+heightSize)];
     
     self.contentLabel.numberOfLines = 0;
 //    self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
 
     
-    [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
+    [self setElement:self.contentLabel size:heightSize];
+    
+//    [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
+}
+
+-(void)setElement:(UIView*)element size:(CGSize)size
+{
+    [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, CommentContentLabelMaxWidth, size.height)];
 }
 
 #pragma mark - Delegate methods

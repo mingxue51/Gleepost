@@ -79,6 +79,7 @@ static const CGFloat kBottomMargin = 7;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profileImageClick)];
         [imageView addGestureRecognizer:tap];
         imageView.userInteractionEnabled = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         
         [self.contentView addSubview:imageView];
     }
