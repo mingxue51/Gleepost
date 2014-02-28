@@ -17,6 +17,6 @@
     #import "MKNetworkKit.h"
     #import "AppDelegate.h" 
     #import "Constants.h"
-    #import "GLPMacros.h"
+    #import "GLPCommonHelper.h"
 
 #endif

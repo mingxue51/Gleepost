@@ -29,7 +29,7 @@
 #import "GLPCommentUploader.h"
 #import "GLPCommentManager.h"
 #import "GLPPostManager.h"
-#import "GLPCommonHelper.h"
+#import "GLPApplicationHelper.h"
 
 @interface ViewPostViewController ()
 
@@ -142,7 +142,7 @@ static BOOL likePushed;
     
     self.commentJustCreated = NO;
     
-    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
     {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "GLPCommonHelper.h"
+#import "GLPApplicationHelper.h"
 #import "GLPTimelineViewController.h"
 
-@implementation GLPCommonHelper
+@implementation GLPApplicationHelper
 
 + (NSString *)applicationStateToString:(UIApplicationState)applicationState
 {

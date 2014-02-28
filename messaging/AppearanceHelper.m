@@ -14,7 +14,7 @@
 + (void)setNavigationBarBackgroundImageFor:(UIViewController *)controller imageName:(NSString *)imageName forBarMetrics:(UIBarMetrics)barMetrics
 {
     UIImage *image = [UIImage imageNamed:imageName];
-    if(SYSTEM_VERSION_EQUAL_TO(@"7")) {
+    if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
         [controller.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionTopAttached barMetrics:barMetrics];
     } else {
         [controller.navigationController.navigationBar setBackgroundImage:image forBarMetrics:barMetrics];

@@ -437,7 +437,7 @@
 		802DCE4918AA880900A23511 /* internal_notification_cell_ignore_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 802DCE4818AA880900A23511 /* internal_notification_cell_ignore_button.png */; };
 		802DCE4B18AA883300A23511 /* internal_notification_cell_accept_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 802DCE4A18AA883300A23511 /* internal_notification_cell_accept_button.png */; };
 		802DCE4D18AA885600A23511 /* internal_notification_cell_new_friend.png in Resources */ = {isa = PBXBuildFile; fileRef = 802DCE4C18AA885600A23511 /* internal_notification_cell_new_friend.png */; };
-		802DCE5018AB037100A23511 /* GLPCommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 802DCE4F18AB037100A23511 /* GLPCommonHelper.m */; };
+		802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 802DCE4F18AB037100A23511 /* GLPApplicationHelper.m */; };
 		80323E1A189A788400968FE9 /* GLPConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80323E19189A788400968FE9 /* GLPConversationViewController.m */; };
 		803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803B6084181FFE8A00A178EB /* GLPLoadingCell.m */; };
 		803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 803FF9981897D932000B1955 /* GLPLoadingCellDelegate.m */; };
@@ -579,6 +579,8 @@
 		80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C8BA6E18104447004F70DB /* GLPCommonsDaoParser.m */; };
 		80C8BA72181048E9004F70DB /* GLPMessageDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C8BA71181048E9004F70DB /* GLPMessageDaoParser.m */; };
 		80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C8BA74181049BA004F70DB /* GLPMessageDao.m */; };
+		80C92AA218C0C040001CB621 /* GLPMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C92AA118C0C040001CB621 /* GLPMessageCell.m */; };
+		80C92AA518C0C446001CB621 /* UIImageView+CommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C92AA418C0C446001CB621 /* UIImageView+CommonHelper.m */; };
 		80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307317CE4E4D003007D0 /* JsonParser.m */; };
 		80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307C17CE5092003007D0 /* DateFormatterManager.m */; };
 		80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */; };
@@ -1193,8 +1195,8 @@
 		802DCE4818AA880900A23511 /* internal_notification_cell_ignore_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = internal_notification_cell_ignore_button.png; sourceTree = "<group>"; };
 		802DCE4A18AA883300A23511 /* internal_notification_cell_accept_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = internal_notification_cell_accept_button.png; sourceTree = "<group>"; };
 		802DCE4C18AA885600A23511 /* internal_notification_cell_new_friend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = internal_notification_cell_new_friend.png; sourceTree = "<group>"; };
-		802DCE4E18AB037100A23511 /* GLPCommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommonHelper.h; sourceTree = "<group>"; };
-		802DCE4F18AB037100A23511 /* GLPCommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommonHelper.m; sourceTree = "<group>"; };
+		802DCE4E18AB037100A23511 /* GLPApplicationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPApplicationHelper.h; sourceTree = "<group>"; };
+		802DCE4F18AB037100A23511 /* GLPApplicationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPApplicationHelper.m; sourceTree = "<group>"; };
 		80323E18189A788400968FE9 /* GLPConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationViewController.h; sourceTree = "<group>"; };
 		80323E19189A788400968FE9 /* GLPConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationViewController.m; sourceTree = "<group>"; };
 		803B6083181FFE8A00A178EB /* GLPLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingCell.h; sourceTree = "<group>"; };
@@ -1419,6 +1421,11 @@
 		80C8BA71181048E9004F70DB /* GLPMessageDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessageDaoParser.m; sourceTree = "<group>"; };
 		80C8BA73181049BA004F70DB /* GLPMessageDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessageDao.h; sourceTree = "<group>"; };
 		80C8BA74181049BA004F70DB /* GLPMessageDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessageDao.m; sourceTree = "<group>"; };
+		80C92AA018C0C040001CB621 /* GLPMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessageCell.h; sourceTree = "<group>"; };
+		80C92AA118C0C040001CB621 /* GLPMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessageCell.m; sourceTree = "<group>"; };
+		80C92AA318C0C446001CB621 /* UIImageView+CommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+CommonHelper.h"; sourceTree = "<group>"; };
+		80C92AA418C0C446001CB621 /* UIImageView+CommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+CommonHelper.m"; sourceTree = "<group>"; };
+		80C92AA618C0C4E7001CB621 /* GLPCommonHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLPCommonHelper.h; sourceTree = "<group>"; };
 		80CE307217CE4E4D003007D0 /* JsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonParser.h; sourceTree = "<group>"; };
 		80CE307317CE4E4D003007D0 /* JsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonParser.m; sourceTree = "<group>"; };
 		80CE307B17CE5092003007D0 /* DateFormatterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateFormatterManager.h; sourceTree = "<group>"; };
@@ -2762,11 +2769,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		80809AED1895DA680077D227 /* Table */ = {
+		80809AED1895DA680077D227 /* Tables */ = {
 			isa = PBXGroup;
 			children = (
+				80C92A9F18C0BFD2001CB621 /* Cells */,
 			);
-			name = Table;
+			name = Tables;
 			sourceTree = "<group>";
 		};
 		8096E4E817C2CBEA00C7BF60 /* Table */ = {
@@ -2854,7 +2862,7 @@
 			isa = PBXGroup;
 			children = (
 				80595E1218B1B02900D99E41 /* Localizable.strings */,
-				80B2A42A1833A2E1002AB1F0 /* Macros */,
+				80B2A42A1833A2E1002AB1F0 /* Common helpers */,
 				80B2A42918339624002AB1F0 /* Interfaces */,
 				806E3D581832B0850063AACE /* Libraries */,
 				80AB898617C2AAF00053E784 /* Resources */,
@@ -3012,7 +3020,7 @@
 			isa = PBXGroup;
 			children = (
 				58428E3018A27DF600B82E4B /* Register */,
-				80809AED1895DA680077D227 /* Table */,
+				80809AED1895DA680077D227 /* Tables */,
 				80AB896817C2808A0053E784 /* UIPlaceHolderTextView.h */,
 				80AB896917C2808A0053E784 /* UIPlaceHolderTextView.m */,
 				80B2A4331833C9DF002AB1F0 /* GLPNewElementsIndicatorView.h */,
@@ -3057,8 +3065,8 @@
 				80FC6C1118A02339006D06F8 /* GLPViewControllerHelper.m */,
 				58428E2B18A26DF300B82E4B /* RegisterPositionHelper.h */,
 				58428E2C18A26DF300B82E4B /* RegisterPositionHelper.m */,
-				802DCE4E18AB037100A23511 /* GLPCommonHelper.h */,
-				802DCE4F18AB037100A23511 /* GLPCommonHelper.m */,
+				802DCE4E18AB037100A23511 /* GLPApplicationHelper.h */,
+				802DCE4F18AB037100A23511 /* GLPApplicationHelper.m */,
 				582A664B18AC215C00006419 /* WalkThroughHelper.h */,
 				582A664C18AC215C00006419 /* WalkThroughHelper.m */,
 				582B404918AD6C4A00BC4285 /* SoundHelper.h */,
@@ -3139,12 +3147,15 @@
 			name = Interfaces;
 			sourceTree = "<group>";
 		};
-		80B2A42A1833A2E1002AB1F0 /* Macros */ = {
+		80B2A42A1833A2E1002AB1F0 /* Common helpers */ = {
 			isa = PBXGroup;
 			children = (
 				80B2A42B1833A2F8002AB1F0 /* GLPMacros.h */,
+				80C92AA318C0C446001CB621 /* UIImageView+CommonHelper.h */,
+				80C92AA418C0C446001CB621 /* UIImageView+CommonHelper.m */,
+				80C92AA618C0C4E7001CB621 /* GLPCommonHelper.h */,
 			);
-			name = Macros;
+			name = "Common helpers";
 			sourceTree = "<group>";
 		};
 		80B2A42E1833C8A6002AB1F0 /* Timeline */ = {
@@ -3230,6 +3241,15 @@
 				5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */,
 			);
 			name = DaoParser;
+			sourceTree = "<group>";
+		};
+		80C92A9F18C0BFD2001CB621 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				80C92AA018C0C040001CB621 /* GLPMessageCell.h */,
+				80C92AA118C0C040001CB621 /* GLPMessageCell.m */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		80DDAA6017CE5CBD0034C0EF /* Fake API */ = {
@@ -3833,6 +3853,7 @@
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
 				589EAD1118A40416005B2F4C /* SignUpThreeView.m in Sources */,
+				80C92AA218C0C040001CB621 /* GLPMessageCell.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
@@ -3899,6 +3920,7 @@
 				584332A0180F30DC00BD9F74 /* PrivateProfileViewController.m in Sources */,
 				589EAD1618A41918005B2F4C /* SignUpFourView.m in Sources */,
 				58960EBF18A197E5005FC433 /* CustomPushTransitioningDelegate.m in Sources */,
+				80C92AA518C0C446001CB621 /* UIImageView+CommonHelper.m in Sources */,
 				807C4D18180AF0F6003D67E6 /* GLPMessage.m in Sources */,
 				8096E4EC17C2CBFD00C7BF60 /* CommentCell.m in Sources */,
 				5832C4CD1899B8E7004FC4F6 /* ChatViewAnimationController.m in Sources */,
@@ -3962,7 +3984,7 @@
 				58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */,
 				807D5EBD188DEE8700673F01 /* GLPWebSocketClient.m in Sources */,
 				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
-				802DCE5018AB037100A23511 /* GLPCommonHelper.m in Sources */,
+				802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,
 				582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */,

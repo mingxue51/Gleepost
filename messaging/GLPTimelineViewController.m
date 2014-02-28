@@ -1873,7 +1873,7 @@ const float TOP_OFFSET = 219.0f;
     
     
     
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7"))
+    if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
         //If iOS7
         

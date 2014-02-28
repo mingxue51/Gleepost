@@ -26,7 +26,7 @@
 #import "NSUserDefaults+GLPAdditions.h"
 #import "GLPLoginManager.h"
 #import "DCIntrospect.h"
-#import "GLPCommonHelper.h"
+#import "GLPApplicationHelper.h"
 #import "UIApplication+SimulatorRemoteNotifications.h"
 #import "GLPTabBarController.h"
 #import "MessagesViewController.h"
@@ -144,7 +144,7 @@ static NSString * const kCustomURLHost      = @"verify";
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    DDLogInfo(@"Receive remote notification, current app state: %@", [GLPCommonHelper applicationStateToString:application.applicationState]);
+    DDLogInfo(@"Receive remote notification, current app state: %@", [GLPApplicationHelper applicationStateToString:application.applicationState]);
     
     if(application.applicationState == UIApplicationStateInactive) {
         [self receivePushNotification:userInfo];

@@ -115,7 +115,7 @@ float const kMarginBetweenBorderAndContent = 15;
     if(notification.notificationType == kGLPNotificationTypeAddedYou) {
         self.buttonsView.hidden = NO;
         
-        float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? GetViewYplusH(self.image) : GetViewYplusH(self.contentLabel);
+        float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? CGRectGetMaxY(self.image.frame) : CGRectGetMaxY(self.contentLabel.frame);
         CGRectSetY(self.buttonsView, biggestView + kMarginBetweenContentAndButtonsView);
         
         [self configureButtonsView];

@@ -38,7 +38,7 @@
 #import "SettingsViewController.h"
 #import "UIImage+StackBlur.h"
 #import "NotificationCell.h"
-#import "GLPCommonHelper.h"
+#import "GLPApplicationHelper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -174,7 +174,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
-    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
     {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }

@@ -82,7 +82,7 @@
     
     _categories = [NSMutableArray array];
     
-    if(!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7"))
+    if(NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1)
     {
         //If iOS 6 add transparent black UIImageView.
         UIImageView *imageViewBlack = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.contentTextView.frame.size.height+50)];

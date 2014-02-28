@@ -24,7 +24,7 @@
 #import "ViewPostViewController.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPConversationViewController.h"
-#import "GLPCommonHelper.h"
+#import "GLPApplicationHelper.h"
 
 
 
@@ -157,7 +157,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
-    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
     {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }

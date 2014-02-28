@@ -81,14 +81,11 @@ v.frame.origin.y, \
 w, \
 h)
 
-#define GetViewYplusH(v)        (v.frame.origin.y + v.frame.size.height)
+#define CGRectSetBelow(v, below, verticalOffset) \
+v.frame = CGRectMake(v.frame.origin.x, CGRectGetMaxY(below.frame) + verticalOffset, \
+v.frame.size.width, v.frame.size.height)
 
-
-#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
-#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
-
+#define CGRectMoveY(v, offset) \
+v.frame = CGRectSetY(v, v.frame.origin.y + offset)
 
 #endif
