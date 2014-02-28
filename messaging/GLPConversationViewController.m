@@ -14,7 +14,7 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 
-#import "MessageCell.h"
+#import "GLPMessageCell.h"
 #import "GLPLoadingCell.h"
 
 #import "GLPMessageDao.h"
@@ -71,11 +71,7 @@
 @synthesize conversation=_conversation;
 @synthesize messages=_messages;
 
-
-
-- (void) backButtonTapped {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
+static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)viewDidLoad
 {
@@ -85,6 +81,7 @@
     [self configureHeader];
     [self configureNavigationBar];
     [self configureForm];
+    [self configureTableView];
     [self initialiseObjects];
     
     _messages = [NSMutableArray array];
@@ -105,7 +102,6 @@
         DDLogDebug(@"Contact already requested.");
         [self disableAddUserButton];
     }
-    
     
     _isFirstLoaded = YES;
 }
@@ -297,6 +293,11 @@
     self.formTextView.tag = 100;
     
     self.formTextView.layer.cornerRadius = 5;
+}
+
+- (void)configureTableView
+{
+    [self.tableView registerClass:[GLPMessageCell class] forCellReuseIdentifier:kCellIdentifier];
 }
 
 
@@ -618,26 +619,21 @@
 
 #pragma mark - Actions
 
+- (void) backButtonTapped
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (IBAction)sendButtonClicked:(id)sender
 {
     if([self.formTextView.text isEmpty]) {
         return;
     }
     
-    //Play sound.
-//    [[SoundHelper sharedInstance] messageSent];
-    
     if(_isEmptyConversation) {
-        
-
-        
         [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
             _conversation = conversation;
             [self createMessageFromForm];
-            
-
-
-            
         }];
     } else {
         [self createMessageFromForm];
@@ -775,15 +771,15 @@
 - (UITableViewCell *)cellForItem:(id)item forIndexPath:(NSIndexPath *)indexPath
 {
     GLPMessage *message = (GLPMessage *)item;
-    NSAssert(message.cellIdentifier, @"Cell identifier is required but null");
+//    NSAssert(message.cellIdentifier, @"Cell identifier is required but null");
     
-    MessageCell *cell = [self.tableView dequeueReusableCellWithIdentifier:message.cellIdentifier forIndexPath:indexPath];
+    GLPMessageCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
     
     // add touch gesture to avatar image view
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-    [cell.avatarImageView addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+//    [cell.avatarImageView addGestureRecognizer:tap];
     
-    [cell updateWithMessage:message first:message.hasHeader];
+    [cell configureWithMessage:message];
     
     return cell;
 }
@@ -791,7 +787,7 @@
 - (CGFloat)heightForItem:(id)item
 {
     GLPMessage *message = (GLPMessage *)item;
-    return [MessageCell getCellHeightWithMessage:message first:message.hasHeader];
+    return [GLPMessageCell viewHeightForMessage:message];
 }
 
 - (void)loadingCellActivatedForPosition:(GLPLoadingCellPosition)position
@@ -803,6 +799,9 @@
     
     [[GLPLiveConversationsManager sharedInstance] syncConversationPreviousMessages:_conversation];
 }
+
+
+# pragma mark - GLPMessageCellDelegate
 
 
 @end

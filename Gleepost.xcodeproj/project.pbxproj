@@ -581,6 +581,7 @@
 		80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C8BA74181049BA004F70DB /* GLPMessageDao.m */; };
 		80C92AA218C0C040001CB621 /* GLPMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C92AA118C0C040001CB621 /* GLPMessageCell.m */; };
 		80C92AA518C0C446001CB621 /* UIImageView+CommonHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C92AA418C0C446001CB621 /* UIImageView+CommonHelper.m */; };
+		80C92AA918C0CC6F001CB621 /* GLPDateFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C92AA818C0CC6F001CB621 /* GLPDateFormatterHelper.m */; };
 		80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307317CE4E4D003007D0 /* JsonParser.m */; };
 		80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CE307C17CE5092003007D0 /* DateFormatterManager.m */; };
 		80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D1472D1817DE4500F7E3DD /* GLPTabBarController.m */; };
@@ -1426,6 +1427,8 @@
 		80C92AA318C0C446001CB621 /* UIImageView+CommonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+CommonHelper.h"; sourceTree = "<group>"; };
 		80C92AA418C0C446001CB621 /* UIImageView+CommonHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+CommonHelper.m"; sourceTree = "<group>"; };
 		80C92AA618C0C4E7001CB621 /* GLPCommonHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLPCommonHelper.h; sourceTree = "<group>"; };
+		80C92AA718C0CC6F001CB621 /* GLPDateFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPDateFormatterHelper.h; sourceTree = "<group>"; };
+		80C92AA818C0CC6F001CB621 /* GLPDateFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPDateFormatterHelper.m; sourceTree = "<group>"; };
 		80CE307217CE4E4D003007D0 /* JsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonParser.h; sourceTree = "<group>"; };
 		80CE307317CE4E4D003007D0 /* JsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonParser.m; sourceTree = "<group>"; };
 		80CE307B17CE5092003007D0 /* DateFormatterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateFormatterManager.h; sourceTree = "<group>"; };
@@ -3071,6 +3074,8 @@
 				582A664C18AC215C00006419 /* WalkThroughHelper.m */,
 				582B404918AD6C4A00BC4285 /* SoundHelper.h */,
 				582B404A18AD6C4A00BC4285 /* SoundHelper.m */,
+				80C92AA718C0CC6F001CB621 /* GLPDateFormatterHelper.h */,
+				80C92AA818C0CC6F001CB621 /* GLPDateFormatterHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -3948,6 +3953,7 @@
 				5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */,
 				80323E1A189A788400968FE9 /* GLPConversationViewController.m in Sources */,
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
+				80C92AA918C0CC6F001CB621 /* GLPDateFormatterHelper.m in Sources */,
 				582A663618AB963700006419 /* EventBarView.m in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,

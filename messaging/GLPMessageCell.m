@@ -7,20 +7,43 @@
 //
 
 #import "GLPMessageCell.h"
+#import "GLPMessage+CellLogic.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "ShapeFormatterHelper.h"
+#import "GLPDateFormatterHelper.h"
 
 @interface GLPMessageCell()
 
 @property (strong, nonatomic) GLPMessage *message;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
 @property (assign, nonatomic) CGFloat height;
+@property (assign, nonatomic) BOOL isOnLeftSide;
 
 @end
 
 
 @implementation GLPMessageCell
 
+static const CGFloat KViewW = 320;
 static const CGFloat kProfileImageViewSize = 40;
+static const CGFloat kTimeLabelW = 200;
+static const CGFloat kTimeLabelH = 20;
+static const CGFloat kContentLabelMinimalW = 15;
 static const CGFloat kErrorImageW = 13;
 static const CGFloat kErrorImageH = 17;
+
+static const CGFloat kProfileImageViewTopMargin = 9;
+static const CGFloat kProfileImageViewSideMargin = 6;
+static const CGFloat kProfileImageViewOppositeSideMargin = 6;
+static const CGFloat kTimeLabelBottomMargin = 0;
+static const CGFloat kContentLabelPadding = 10;
+static const CGFloat kErrorImageSideMargin = 6;
+static const CGFloat kOppositeSideMargin = 20;
+static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMargin + kProfileImageViewSize + kProfileImageViewOppositeSideMargin;
+static const CGFloat kTopMargin = 0;
+static const CGFloat kBottomMargin = 7;
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -49,16 +72,39 @@ static const CGFloat kErrorImageH = 17;
 - (void)configureViews
 {
     // profile image
-    [self addSubview:[UIImageView newWithImageName:@"default_user_image3"]];
+    [self.contentView addSubview:[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kProfileImageViewSize, kProfileImageViewSize)]];
 
     // timeview
-    [self addSubview:[UILabel new]];
+    {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor lightGrayColor];
+        label.font = [UIFont fontWithName:GLP_APP_FONT_BOLD size:10.0f];
+        [self.contentView addSubview:label];
+    }
+
     
     // text view
     {
         UIView *view = [UIView new];
-        [view addSubview:[UIImageView new]];
-        [view addSubview:[UILabel new]];
+        view.layer.cornerRadius = 12.0;
+        
+        UIImageView *imageView = [UIImageView new];
+        imageView.image = [UIImage imageNamed:@"yourchatbubble4"];
+        imageView.layer.masksToBounds = YES;
+        imageView.layer.cornerRadius = 12.0;
+        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
+        imageView.layer.borderWidth = 2;
+        
+        UILabel *label = [UILabel new];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
+        label.numberOfLines = 0;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+        
+        [view addSubview:imageView];
+        [view addSubview:label];
+        [self.contentView addSubview:view];
     }
     
     // error image
@@ -67,16 +113,106 @@ static const CGFloat kErrorImageH = 17;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setImage:image forState:UIControlStateNormal];
         [button addTarget:self action:@selector(errorButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.contentView addSubview:button];
     }
 }
 
 - (void)configureWithMessage:(GLPMessage *)message
 {
     _message = message;
+    _isOnLeftSide = [message.cellIdentifier isEqualToString:kMessageLeftCell];
     
-    _height = 0;
+    _height = kTopMargin;
+    
+    [self configureProfileImage];
+    [self configureTimeLabel];
+    [self configureMessageText];
+    
+    _height += kBottomMargin;
+    
+    if(_height < kProfileImageViewSize) {
+        _height = kProfileImageViewSize;
+    }
+    
+    DDLogDebug(@"Configure message total height %f", _height);
+    CGRectSetH(self.contentView, _height);
 }
 
+- (void)configureProfileImage
+{
+    UIImageView *imageView = self.contentView.subviews[0];
+    
+    if(_message.hasHeader) {
+        imageView.hidden = NO;
+        
+        CGRectSetXY(imageView, [self xForCurrentSide:kProfileImageViewSideMargin w:kProfileImageViewSize], kTopMargin + kProfileImageViewTopMargin);
+        
+        UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image3.png"];
+        if([_message.author hasProfilePicture]) {
+            [imageView setImageWithURL:[NSURL URLWithString:_message.author.profileImageUrl] placeholderImage:defaultProfilePicture];
+        } else {
+            imageView.image = defaultProfilePicture;
+        }
+        
+        [ShapeFormatterHelper setRoundedView:imageView toDiameter:imageView.frame.size.height];
+        
+    } else {
+        imageView.hidden = YES;
+    }
+}
+
+- (void)configureTimeLabel
+{
+    UILabel *label = self.contentView.subviews[1];
+
+    if(_message.hasHeader) {
+        label.hidden = NO;
+        
+        label.text = [[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date];
+        _height += label.frame.size.height + kTimeLabelBottomMargin;
+        
+    } else {
+        label.hidden = YES;
+    }
+}
+
+- (void)configureMessageText
+{
+    UIView *view = self.contentView.subviews[2];
+    
+    CGSize labelSize = [GLPMessageCell contentLabelSizeForMessage:_message];
+    
+    if(labelSize.width < kContentLabelMinimalW) {
+        labelSize.width = kContentLabelMinimalW;
+    }
+    
+    CGFloat w = labelSize.width + kContentLabelPadding;
+    CGFloat h = labelSize.height + kContentLabelPadding;
+    CGFloat x = [self xForCurrentSide:kSideMarginIncludingProfileImage w:w];
+    view.frame = CGRectMake(x, _height, w, h);
+
+    view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
+
+    UIImageView *imageView = view.subviews[0];
+    imageView.frame = CGRectMake(0, 0, w, h);
+    
+    UILabel *label = view.subviews[1];
+    label.frame = CGRectMake(kContentLabelPadding / 2, kContentLabelPadding / 2, labelSize.width, labelSize.height);
+    label.text = _message.content;
+    
+    if(_isOnLeftSide) {
+        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
+        imageView.hidden = YES;
+        label.textColor = [UIColor whiteColor];
+    } else {
+        view.backgroundColor = [UIColor clearColor];
+        imageView.hidden = NO;
+        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+    }
+
+    _height += h;
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -88,6 +224,56 @@ static const CGFloat kErrorImageH = 17;
 - (void)errorButtonClick
 {
     [_delegate errorButtonClickForMessage:_message];
+}
+
+
+# pragma mark - Helpers
+
++ (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
+{
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
+    
+    CGFloat maxWidth = KViewW - (kSideMarginIncludingProfileImage + kOppositeSideMargin);
+    if(message.sendStatus == kSendStatusFailure) {
+        maxWidth -= (kErrorImageW + kErrorImageSideMargin);
+    }
+    
+    DDLogDebug(@"max width %f", maxWidth);
+    
+    CGSize size = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+    
+    //    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
+    //                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+    //                                               context:nil];
+    
+    return (CGSize){ceilf(size.width), ceilf(size.height)};
+}
+
++ (CGFloat)viewHeightForMessage:(GLPMessage *)message
+{
+    CGFloat height = kTopMargin;
+    
+    if(message.hasHeader) {
+        height = kTimeLabelH + kTimeLabelBottomMargin;
+    }
+    
+    height += [GLPMessageCell contentLabelSizeForMessage:message].height + kContentLabelPadding;
+    height += kBottomMargin;
+    
+    DDLogDebug(@"View height %f", height);
+    
+    return height;
+}
+
+- (CGFloat)xForCurrentSide:(CGFloat)x w:(CGFloat)w
+{
+    if(_isOnLeftSide) {
+        return x;
+    } else {
+        return self.contentView.frame.size.width - w - x;
+    }
 }
 
 @end

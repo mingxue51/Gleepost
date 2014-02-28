@@ -79,7 +79,7 @@ static BOOL visibility;
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:imageView.conversationRemoteKey];
     
     if(conversation) {
-        self.viewTopic.conversation = conversation;
+//        self.viewTopic.conversation = conversation;
         //[self.viewTopic reloadElements];
         DDLogError(@"NOT IMPLEMENTED RELOAD");
         [self removeView];

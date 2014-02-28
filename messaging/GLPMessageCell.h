@@ -20,4 +20,7 @@
 
 @property (weak, nonatomic) id<GLPMessageCellDelegate> delegate;
 
+- (void)configureWithMessage:(GLPMessage *)message;
++ (CGFloat)viewHeightForMessage:(GLPMessage *)message;
+
 @end

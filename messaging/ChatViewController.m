@@ -7,7 +7,7 @@
 //
 
 #import "ChatViewController.h"
-#import "ViewTopicViewController.h"
+#import "GLPConversationViewController.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
@@ -291,7 +291,7 @@
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
-        ViewTopicViewController *vc = segue.destinationViewController;
+        GLPConversationViewController *vc = segue.destinationViewController;
         vc.conversation = _conversation;
 
     }

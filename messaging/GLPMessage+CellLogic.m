@@ -16,8 +16,6 @@
 
 NSString * const kMessageCellIdentifier = @"kMessageCellIdentifier";
 NSString * const kMessageHasHeader = @"kMessageHasHeader";
-
-// Cell recycling identifiers, equals to IB values
 NSString * const kMessageLeftCell = @"LeftCell";
 NSString * const kMessageRightCell = @"RightCell";
 

@@ -7,7 +7,7 @@
 //
 
 #import "MessagesViewController.h"
-#import "ViewTopicViewController.h"
+#import "GLPConversationViewController.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "ConversationManager.h"
@@ -423,7 +423,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"view topic"]) {
-        ViewTopicViewController *vc = segue.destinationViewController;
+        GLPConversationViewController *vc = segue.destinationViewController;
         vc.conversation = self.selectedConversation;
         vc.hidesBottomBarWhenPushed = YES;
     }

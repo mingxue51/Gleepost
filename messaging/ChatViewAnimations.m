@@ -7,7 +7,7 @@
 //
 
 #import "ChatViewAnimations.h"
-#import "ViewTopicViewController.h"
+#import "GLPConversationViewController.h"
 #import "GLPConversation.h"
 #import "GLPConversationPictureImageView.h"
 #import "GLPLiveConversationsManager.h"
@@ -145,7 +145,7 @@ static BOOL initLiveChats;
     
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:imageView.conversationRemoteKey];
     if(conversation) {
-        ViewTopicViewController *vc = [self.chatViewController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+        GLPConversationViewController *vc = [self.chatViewController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
         vc.conversation = conversation;
         
         [self.chatViewController.navigationController pushViewController:vc animated:YES];
