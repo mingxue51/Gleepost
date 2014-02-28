@@ -95,9 +95,16 @@ static SessionManager *instance = nil;
 {
     NSAssert(!self.user, @"An user is already registered in the session");
     
+    //TODO: Lukasz I added that because when the user was on the app and tried to log out and
+    //      login again we never save the token.
+    
+//    [self loadPushTokenIfExist];
+    
     self.user = user;
     self.token = token;
     self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", user.remoteKey], @"token": token};
+    
+    DDLogDebug(@"REGISTER USER");
     
     // save session
     self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
@@ -165,12 +172,16 @@ static SessionManager *instance = nil;
     _authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
 }
 
+
+
 - (void)loadData
 {
     // load dictionnary data from saved file or create new one
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
+        
+        DDLogDebug(@"DATA LOADED: %@", self.data);
         
 //        if([self isSessionValid]) {
 //            [[DatabaseManager sharedInstance] initDatabase];
@@ -326,13 +337,76 @@ static SessionManager *instance = nil;
     }];
 }
 
--(void)deregisterPushFromServer
+-(void)deregisterPushFromServerWithCallBackBlock:(void (^)(BOOL success))callback
 {
-    [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
-       
+    if(ON_DEVICE)
+    {
+        _pushTokenRegistered = NO;
+        
+        if(self.data[@"user.pushToken"])
+        {
+            [self savePushToken:self.data[@"user.pushToken"]];
+        }
+        else
+        {
+            //Load token
+            self.data[@"user.pushToken"] = [self loadPushTokenIfExist];
+        }
         
         
-    }];
+        
+        DDLogDebug(@"Data before deregister: %@",self.data);
+        
+        [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
+            
+            
+            callback(YES);
+            
+        }];
+    }
+    else
+    {
+        callback(YES);
+    }
+    
+
+}
+
+-(void)savePushToken:(NSString *)pushToken
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
+    
+    NSLog(@"PATH SAVED: %@", documentsDirectory);
+
+    
+    NSError *error;
+    BOOL succeed = [pushToken writeToFile:[documentsDirectory stringByAppendingPathComponent:@"token.txt"]
+                              atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    if (!succeed){
+        // Handle error here
+    }
+}
+
+-(NSString *)loadPushTokenIfExist
+{
+//    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"token" ofType:@"txt"];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
+    
+    NSString *finalPath = [NSString stringWithFormat:@"%@/%@",documentsDirectory,@"token.txt"];
+    
+    NSError *error;
+    NSString *fileContents = [NSString stringWithContentsOfFile:finalPath encoding:NSUTF8StringEncoding error:&error];
+    
+    if (error)
+    {
+        NSLog(@"Error reading file: %@", error.localizedDescription);
+    }
+    
+    
+    return fileContents;
 }
 
 //-(void)playSound

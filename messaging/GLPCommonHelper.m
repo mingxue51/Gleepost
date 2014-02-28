@@ -7,6 +7,7 @@
 //
 
 #import "GLPCommonHelper.h"
+#import "GLPTimelineViewController.h"
 
 @implementation GLPCommonHelper
 
@@ -24,6 +25,23 @@
     }
     
     return state;
+}
+
++ (BOOL)isTheNextViewCampusWall:(NSArray *)viewControllersStuck
+{
+    DDLogDebug(@"Stuck: %@", viewControllersStuck);
+    
+    if(viewControllersStuck.count == 1)
+    {
+        UIViewController *campusWall = [viewControllersStuck objectAtIndex:0];
+        
+        if([campusWall isKindOfClass:[GLPTimelineViewController class]])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

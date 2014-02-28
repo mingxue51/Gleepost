@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -237,7 +237,7 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="none" indentationWidth="10" reuseIdentifier="CellText" rowHeight="49" id="OEj-TO-kqx">
-                                        <rect key="frame" x="0.0" y="86" width="320" height="49"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="49"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OEj-TO-kqx" id="b7s-tR-baM">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
@@ -282,7 +282,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="ccD-jb-35X">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="LDZ-e5-1CM"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="LDZ-e5-1CM"/>
                     </navigationItem>
                     <connections>
                         <outlet property="commentFormView" destination="tQq-qG-efF" id="7Km-N5-q9z"/>
@@ -1520,7 +1520,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="9FF01F9A-C4C8-4D46-B950-3AF15F5F540E" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="B8587BD4-6E0E-4B7E-94CD-E0A1E86A0334" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2908,7 +2908,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="9FF01F9A-C4C8-4D46-B950-3AF15F5F540E" width="34" height="34">
+        <image name="B8587BD4-6E0E-4B7E-94CD-E0A1E86A0334" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3084,12 +3084,12 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="lQn-ic-ohV"/>
-        <segue reference="woK-8Q-gjw"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="2ju-Ui-QdM"/>
         <segue reference="GTC-XV-iI1"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="lQn-ic-ohV"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
     </inferredMetricsTieBreakers>

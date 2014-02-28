@@ -145,11 +145,8 @@ const float TOP_OFFSET = 219.0f;
     //TODO: Remove this later.
     [[ContactsManager sharedInstance] refreshContacts];
     
-    //Load conversations.
-    //[self loadConversations];
     
     [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
-//    [self startLoadingContents];
     
     [self loadInitialPosts];
     
@@ -157,6 +154,10 @@ const float TOP_OFFSET = 219.0f;
     
     //Find the sunset sunrise for preparation of the new chat.
     [AnimationDayController sharedInstance];
+    
+    
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -306,17 +307,28 @@ const float TOP_OFFSET = 219.0f;
     
     int index = 0;
     
+    GLPPost *uploadedPost = nil;
+    
     for(GLPPost* p in self.posts)
     {
         if(key == p.key)
         {
             p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
             p.remoteKey = remoteKey;
+            uploadedPost = p;
 //            p.tempImage = nil;
             break;
         }
         ++index;
     }
+
+    
+    if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
+    {
+        //If the post belongs to logged in user then inform his/her profile's posts.
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
+    }
+    
 
     
     
@@ -387,7 +399,7 @@ const float TOP_OFFSET = 219.0f;
 {
     
     //Hide for now the navigation bar.
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+//    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
 

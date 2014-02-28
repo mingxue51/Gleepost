@@ -34,7 +34,7 @@
         case kGLPNotificationTypeAcceptedYou:
             return [NSString stringWithFormat:@"Your are now friends"];
         case kGLPNotificationTypeCommented:
-            return [NSString stringWithFormat:@"%@ comment on your post", self.user.name];
+            return [NSString stringWithFormat:@"%@ commented on your post", self.user.name];
         case kGLPNotificationTypeLiked:
             return [NSString stringWithFormat:@"%@ liked your post", self.user.name];
         case kGLPNotificationTypeAddedYou:

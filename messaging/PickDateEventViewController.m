@@ -23,6 +23,8 @@
 {
     [super viewDidLoad];
     
+    [self setUpDatePicker];
+    
 	[_titleTextField becomeFirstResponder];
 }
 
@@ -32,11 +34,35 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Initialisations
+
+-(void)setUpDatePicker
+{
+    NSDate* now = [NSDate date];
+    
+    // Get current NSDate without seconds & milliseconds, so that I can better compare the chosen date to the minimum & maximum dates.
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents* nowWithoutSecondsComponents = [calendar components:
+                                                     (NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit) fromDate:now] ;
+    
+    NSDate* nowWithoutSeconds = [calendar dateFromComponents:nowWithoutSecondsComponents] ;
+
+    _datePicker.minimumDate = nowWithoutSeconds;
+    
+    
+    //TODO: Uncomment the following code to set maximum date. More here: http://stackoverflow.com/questions/14694452/uidatepicker-set-maximum-date
+//    NSDateComponents* addOneMonthComponents = [NSDateComponents new] ;
+//    addOneMonthComponents.month = 1 ;
+//    NSDate* oneMonthFromNowWithoutSeconds = [calendar dateByAddingComponents:addOneMonthComponents toDate:nowWithoutSeconds options:0] ;
+//    picker.maximumDate = oneMonthFromNowWithoutSeconds ;
+}
+
+
 #pragma mark - UITextFieldDelegate
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    
     [textField resignFirstResponder];
     return YES;
 }
@@ -56,11 +82,11 @@
             
             return;
         }
-        else if(_titleTextField.text.length > 30)
+        else if(_titleTextField.text.length > 37)
         {
-            //Check for 30 characters.
+            //Check for 37 characters.
 
-            [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 30 characters long"];
+            [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 37 characters long"];
             
             return;
         }

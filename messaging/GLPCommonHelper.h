@@ -11,5 +11,6 @@
 @interface GLPCommonHelper : NSObject
 
 + (NSString *)applicationStateToString:(UIApplicationState)applicationState;
++ (BOOL)isTheNextViewCampusWall:(NSArray *)viewControllersStuck;
 
 @end

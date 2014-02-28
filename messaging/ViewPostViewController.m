@@ -29,6 +29,7 @@
 #import "GLPCommentUploader.h"
 #import "GLPCommentManager.h"
 #import "GLPPostManager.h"
+#import "GLPCommonHelper.h"
 
 @interface ViewPostViewController ()
 
@@ -75,7 +76,6 @@ static BOOL likePushed;
 
     [self.tableView initTableView];
     
-    [self registerNotifications];
     
     [self configureForm];
 
@@ -116,6 +116,9 @@ static BOOL likePushed;
 
     }
     
+    [self registerNotifications];
+
+    
    // [self loadComments];
 
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -128,8 +131,7 @@ static BOOL likePushed;
     [self configureNavigationBar];
     
     
-    [self loadCommentsWithScrollToTheEnd:NO];
-
+    [self loadComments];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -140,7 +142,12 @@ static BOOL likePushed;
     
     self.commentJustCreated = NO;
     
+    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
     
+
     [super viewWillDisappear:animated];
 }
 
@@ -239,19 +246,23 @@ static BOOL likePushed;
 -(void)configureNavigationBar
 {
     
+        //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    //    [self setNeedsStatusBarAppearanceUpdate];
+
+    
     self.navigationItem.title = @"View Post";
 
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
-    //    [self setNeedsStatusBarAppearanceUpdate];
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
     
-    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+
     
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
@@ -510,9 +521,23 @@ static bool firstTime = YES;
 //    }];
 //}
 
+-(void)loadComments
+{
+    if(self.post.remoteKey == 0)
+    {
+        //TODO: Load comments from operation manager.
+        
+    }
+    else
+    {
+        [self loadCommentsWithScrollToTheEnd:NO];
+    }
+}
+
 - (void)loadCommentsWithScrollToTheEnd:(BOOL)scroll
 {
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
+    
     
     
     [GLPCommentManager loadCommentsWithLocalCallback:^(NSArray *comments) {

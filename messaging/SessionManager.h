@@ -26,7 +26,7 @@
 - (void)restoreUser:(GLPUser *)user;
 - (void)cleanSession;
 - (void)registerPushToken:(NSData *)token;
--(void)deregisterPushFromServer;
+-(void)deregisterPushFromServerWithCallBackBlock:(void (^)(BOOL success))callback;
 -(BOOL)isFirstTimeLoggedIn;
 //-(void)playSound;
 -(void)firstTimeLoggedInActivate;

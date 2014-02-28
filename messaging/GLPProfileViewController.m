@@ -38,6 +38,7 @@
 #import "SettingsViewController.h"
 #import "UIImage+StackBlur.h"
 #import "NotificationCell.h"
+#import "GLPCommonHelper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -74,6 +75,8 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 @property (strong, nonatomic) NSDate *commentNotificationDate;
+
+@property (assign, nonatomic) BOOL postUploaded;
 
 // new
 @property (strong, nonatomic) NSMutableArray *notifications;
@@ -147,16 +150,19 @@
     
     [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveInternalNotificationNotification:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+    [self setUpNotifications];
     
     [self setCustomBackgroundToTableView];
     
     [self loadInternalNotifications];
     
-    if(self.posts.count == 0)
+    
+    if(self.selectedTabStatus == kGLPSettings)
+    {
+        [self notificationsTabClick];
+    }
+    
+    if(self.posts.count == 0 || _postUploaded)
     {
         [self loadPosts];
     }
@@ -168,6 +174,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
+    if([GLPCommonHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+    {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
+    
     [super viewWillDisappear:animated];
 }
 
@@ -175,6 +186,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -195,6 +208,16 @@
     
     [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     [self.tableView setBackgroundView:backImgView];
+}
+
+-(void)setUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveInternalNotificationNotification:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
+
 }
 
 #pragma mark - Configuration
@@ -295,24 +318,51 @@
 
     
 //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    
+    
+    //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    
+    //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
+    
+    //    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    
+    //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
    
+//    [AppearanceHelper setNavigationBarColour:self];
+//    [AppearanceHelper setNavigationBarFontFor:self];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+//
+//    
+//
+//
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+//
+//    
+//    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    
+    
+    
+    [self.navigationController setNavigationBarHidden:NO
+                                             animated:YES];
+    
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+    
+    //Change the format of the navigation bar.
+    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
+    
+    
+    
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
     [AppearanceHelper setNavigationBarFontFor:self];
-
-    
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    
-//    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    
-//    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
-//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
-    
-//    self.title = @"Me";
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
 
 }
@@ -361,6 +411,8 @@
     _unreadNotificationsCount = 0;
     
     [self.tableView reloadData];
+    
+    _postUploaded = NO;
 
     
 }
@@ -468,7 +520,13 @@
 }
 
 
-
+-(void)postByUserInCampusWall:(NSNotification *)notification
+{
+    //Set a boolean value YES in order to reload posts when user navigates back to profile.
+    _postUploaded = YES;
+    
+    DDLogDebug(@"New post!");
+}
 
 #pragma mark - ProfileSettingsTableViewCellDelegate
 
@@ -672,6 +730,8 @@
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             
             [self.tableView reloadData];
+            
+            _postUploaded = NO;
         }
         else
         {

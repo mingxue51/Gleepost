@@ -183,7 +183,7 @@ static const float CommentContentLabelMaxWidth = 250;
     {
         //Navigate to profile view controller.
         
-        [self.delegate performSegueWithIdentifier:@"view profile" sender:self];
+        [self.delegate performSegueWithIdentifier:@"view private profile" sender:self];
     }
     else
     {
