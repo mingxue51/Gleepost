@@ -145,12 +145,6 @@
 
 - (void)restoreScrollContentOffsetAfterInsertingNewItems:(NSArray *)newItems
 {
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self tableView:_tableView numberOfRowsInSection:0] - 1 inSection:0];
-//    CGRect rect = [_tableView rectForRowAtIndexPath:indexPath];
-//    DDLogInfo(@"rect %f %f", rect.origin.y, rect.size.height);
-//    DDLogInfo(@"tab %f %f", _tableView.bounds.origin.y, _tableView.bounds.size.height);
-    
-    
     NSInteger firstRow;
     if([self topLoadingCellRow] == NSNotFound) {
         firstRow = 0;
@@ -298,40 +292,33 @@
 - (void)showBottomLoader
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    DDLogInfo(@"Show network activity indicator for bottom loader");
     
     if(_topLoadingCellDelegate.isVisible || _bottomLoadingCellDelegate.isVisible) {
         return;
     }
-    DDLogInfo(@"Show bottom loader");
     
+    // only if there table is empty
     if(_items.count == 0) {
         [_bottomLoadingCellDelegate show];
         
-        int rows = [self tableView:self.tableView numberOfRowsInSection:0] - 1;
-        [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
 - (void)hideBottomLoader:(BOOL)animated
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    DDLogInfo(@"Hide network activity indicator for bottom loader");
     
-    if(!_bottomLoadingCellDelegate.isVisible) {
+    if(!_bottomLoadingCellDelegate.isVisible || _items.count > 0) {
         return;
     }
     
-    DDLogInfo(@"Hide bottom loader");
+    [_bottomLoadingCellDelegate hide];
     
-    if(_bottomLoadingCellDelegate.isVisible) {
-        [_bottomLoadingCellDelegate hide];
-        
-        UITableViewRowAnimation animation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
-        
-        int rows = [self tableView:self.tableView numberOfRowsInSection:0];
-        [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rows inSection:0]] withRowAnimation:animated];
-    }
+//    UITableViewRowAnimation animation = animated ? UITableViewRowAnimationFade : UITableViewRowAnimationNone;
+//    int rows = [self tableView:self.tableView numberOfRowsInSection:0];
+    
+    [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:animated];
 }
 
 - (void)scrollToTheEndAnimated:(BOOL)animated

@@ -84,7 +84,6 @@
     // configuration
     [self configureHeader];
     [self configureNavigationBar];
-//    [self.tabBarController.tabBar setHidden:YES];
     [self configureForm];
     [self initialiseObjects];
     
@@ -329,17 +328,11 @@
 {
     DDLogInfo(@"Syncing conversation");
     [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
-    [self showBottomLoader];
+    
+    if(_messages.count == 0) {
+        [self showBottomLoader];
+    }
 }
-
-//- (void)loadExistingMessages
-//{
-//    DDLogInfo(@"Load existing messages");
-//
-//    _messages = [[[GLPLiveConversationsManager sharedInstance] messagesForConversation:_conversation startingAfter:nil] mutableCopy];
-//    
-//    [self showLoadedMessages];
-//}
 
 - (void)loadNewMessages
 {
@@ -415,26 +408,6 @@
     self.formTextView.text = @"";
 }
 
-//- (BOOL)showTopLoaderIfRequired
-//{
-//    BOOL canHavePreviousMessages = [[GLPLiveConversationsManager sharedInstance] conversationCanHavePreviousMessages:_conversation];
-//    
-//    if(canHavePreviousMessages && _messages.count > 0) {
-//        [self showTopLoader];
-//        [self activateTopLoader];
-//        return YES;
-//    }
-//    
-//    return NO;
-//}
-
-//- (void)showAndActivateTopLoaderAfterScroll
-//{
-//    [self showTopLoader];
-//    [self activateTopLoader];
-//}
-
-
 - (void)syncWaitingConversation
 {
     if(!_isWaitingForSyncConversation) {
@@ -493,7 +466,11 @@
     else {
         BOOL scrollAnimated = _messages.count > 0;
         
-        [self hideBottomLoader:scrollAnimated];
+        // bottom loader displayed if messages's empty
+        if(_messages.count == 0) {
+            // hide bottom loader without animation if there are some messages to show
+            [self hideBottomLoader:!hasNewMessages];
+        }
         
         if(canHavePreviousMessages) {
             [self showTopLoader:NO saveOffset:YES];
@@ -571,7 +548,12 @@
     }
     
     DDLogInfo(@"Not synchronized with remote from NSNotification");
-    [self hideBottomLoader:YES];
+    
+    if(_messages.count == 0) {
+        [self hideBottomLoader:YES];
+    }
+    
+    
     [self hideTopLoader];
 }
 
