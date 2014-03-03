@@ -39,5 +39,17 @@
     return comment;
 }
 
+-(NSArray *)pendingCommentsWithPostKey:(int)postKey
+{
+    NSArray *pendingComments = [[GLPPostOperationManager sharedInstance] getCommentsWithPostKey:postKey];
+    
+    if(pendingComments)
+    {
+        return pendingComments;
+    }
+    
+    return [[NSArray alloc] init];
+}
+
 
 @end

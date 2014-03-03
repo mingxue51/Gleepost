@@ -19,6 +19,7 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "GLPCategory.h"
 #import "ImageFormatterHelper.h"
+#import "NSDate+HumanizedTime.h"
 
 @interface PostCell()
 
@@ -37,7 +38,7 @@
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 270;
+const float IMAGE_CELL_HEIGHT = 290;
 const float TEXT_CELL_HEIGHT = 70;
 
 
@@ -98,7 +99,6 @@ static const float OneLineText = 16.0;
     
     [self.contentLbl setText:self.post.content];
     [self.titleLbl setText:self.post.eventTitle];
-    
     
     NSURL *url = nil;
 
@@ -166,9 +166,9 @@ static const float OneLineText = 16.0;
     [self.userName setText:postData.author.name];
     
     NSDate *currentDate = postData.date;
-    
     //Add the post's time.
     [self.postTime setText:[currentDate timeAgo]];
+    [self setTimeWithTime:postData.dateEventStarts];
     
     //Temp categories string.
     NSMutableString *categoriesStr = [NSMutableString string];
@@ -244,7 +244,26 @@ static const float OneLineText = 16.0;
     
     [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
     
+    [self.eventTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14]];
+
     
+    
+}
+
+
+-(void)setTimeWithTime:(NSDate *)date
+{
+    if ([[NSDate date] compare:date] == NSOrderedDescending) {
+        [self.eventTime setText:[date timeAgo]];
+        
+    } else if ([[NSDate date] compare:date] == NSOrderedAscending) {
+        
+        [self.eventTime setText:[date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES]];
+        
+    } else {
+        [self.eventTime setText:[date timeAgo]];
+        
+    }
 }
 
 -(void)formatUsersImage

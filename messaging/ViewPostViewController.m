@@ -526,12 +526,27 @@ static bool firstTime = YES;
     if(self.post.remoteKey == 0)
     {
         //TODO: Load comments from operation manager.
-        
+        [self loadLocalComments];
     }
     else
     {
         [self loadCommentsWithScrollToTheEnd:NO];
     }
+}
+
+/**
+ Load local comments stored in the database.
+ This method is called only when the post is not yet uploaded.
+ */
+-(void)loadLocalComments
+{
+    NSAssert(self.post.key != 0, @"Post needs to have post key.");
+    
+    GLPCommentUploader *uploader = [[GLPCommentUploader alloc] init];
+    
+    self.comments = [uploader pendingCommentsWithPostKey:self.post.key].mutableCopy;
+    
+    [self viewCommentsWithScroll:NO];
 }
 
 - (void)loadCommentsWithScrollToTheEnd:(BOOL)scroll
@@ -1037,6 +1052,8 @@ static bool firstTime = YES;
     
     
 //    [self.comments addObject:comment];
+    
+    DDLogDebug(@"Local comments: %@ Global comments: %@", comments, self.comments);
     
     [self scrollToBottomAndUpdateTableViewWithNewComments:comments.count];
     

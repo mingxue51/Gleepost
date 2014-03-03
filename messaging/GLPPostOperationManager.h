@@ -16,4 +16,6 @@
 -(void)setPost:(GLPPost*)post withTimestamp:(NSDate*)timestamp;
 -(void)stopTimer;
 -(void)uploadComment:(GLPComment*)comment;
+-(NSArray *)getCommentsWithPostKey:(int)postKey;
+
 @end

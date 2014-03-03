@@ -115,8 +115,6 @@
     
     
     
-    //Single implementation.
-    
     [self setCommentInQueue:comment];
 
     
@@ -173,7 +171,7 @@
 
 -(void)setCommentInQueue:(GLPComment *)comment
 {
-    NSArray *comments = [_pendingComments objectForKey:[NSNumber numberWithInt:comment.key]];
+    NSArray *comments = [_pendingComments objectForKey:[NSNumber numberWithInt:comment.post.key]];
     
     NSMutableArray *mutableComments = [[NSMutableArray alloc] init];
     
@@ -190,14 +188,14 @@
     
     [mutableComments addObject:comment];
     
-    [_pendingComments setObject:mutableComments forKey:[NSNumber numberWithInt:comment.key]];
+    [_pendingComments setObject:mutableComments forKey:[NSNumber numberWithInt:comment.post.key]];
     
     DDLogDebug(@"PENDING COMMENTS: %@", _pendingComments);
 }
 
 -(void)removeCommentFromQueue:(GLPComment *)comment
 {
-    NSArray *comments = [_pendingComments objectForKey:[NSNumber numberWithInt:comment.key]];
+    NSArray *comments = [_pendingComments objectForKey:[NSNumber numberWithInt:comment.post.key]];
 
     if(!comments)
     {
@@ -206,7 +204,7 @@
     
     if(comments.count == 1)
     {
-        [_pendingComments removeObjectForKey:[NSNumber numberWithInt:comment.key]];
+        [_pendingComments removeObjectForKey:[NSNumber numberWithInt:comment.post.key]];
     }
     else
     {
@@ -229,7 +227,7 @@
         comments = commentsMutable;
         
         //Add back to pending comments.
-        [_pendingComments setObject:comments forKey:[NSNumber numberWithInt:comment.key]];
+        [_pendingComments setObject:comments forKey:[NSNumber numberWithInt:comment.post.key]];
         
         
     }
@@ -244,14 +242,17 @@
  @param postKey post's key.
  
  */
--(void)checkForPendingCommentsWithPostkey:(int)postKey
+-(void)checkForPendingCommentsWithPostkey:(int)postKey andPostRemoteKey:(int)postRemoteKey
 {
-    GLPComment *currentComment = [_pendingComments objectForKey: [NSNumber numberWithInt:postKey]];
+    NSArray *currentComments = [_pendingComments objectForKey: [NSNumber numberWithInt:postKey]];
     
-    if(currentComment)
+    for (GLPComment *comment in currentComments)
     {
-        [self uploadComment:currentComment];
+        comment.post.remoteKey = postRemoteKey;
+        [self uploadComment:comment];
+
     }
+    
 }
 
 -(GLPPost *)postRemoteKeyWithKey:(int)postKey
@@ -265,6 +266,11 @@
     }
     
     return nil;
+}
+
+-(NSArray *)getPendingCommentsWithPostKey:(int)postKey
+{
+    return [_pendingComments objectForKey:[NSNumber numberWithInt:postKey]];
 }
 
 #pragma mark - Operations
@@ -454,7 +460,7 @@
         
         if(success)
         {
-            [self checkForPendingCommentsWithPostkey:post.key];
+            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
             
             //Add post to uploaded posts.
             [_uploadedPosts addObject:post];

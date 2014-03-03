@@ -40,6 +40,12 @@
     }];
 }
 
+//+ (void)loadLocalCommentsWithPost:(GLPPost *)post andLocalCallback:(void (^)(NSArray *comments))localCallback
+//{
+//    
+//}
+
+
 + (void)saveCommentsInDb:(NSArray *)comments
 {
     for(GLPComment *comment in comments)

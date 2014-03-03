@@ -17,6 +17,6 @@
 -(void)uploadPostWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url;
 -(void)uploadTextPost:(GLPPost*)textPost;
 -(void)addComment:(GLPComment *)comment;
-
+-(NSArray *)getPendingCommentsWithPostKey:(int)postKey;
 
 @end

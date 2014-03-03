@@ -24,7 +24,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Remote key: %d, Post remote key: %d, Content: %@, Date: %@ Send status: %d", self.remoteKey, self.post.remoteKey, self.content, self.date, self.sendStatus];
+    return [NSString stringWithFormat:@"Remote key: %d, Post remote key: %d, Post key: %d, Content: %@, Date: %@ Send status: %d", self.remoteKey, self.post.remoteKey, self.post.key ,self.content, self.date, self.sendStatus];
 }
 
 @end

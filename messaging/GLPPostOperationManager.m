@@ -123,6 +123,11 @@ static GLPPostOperationManager *instance = nil;
     [_postUploader addComment:comment];
 }
 
+-(NSArray *)getCommentsWithPostKey:(int)postKey
+{
+    return [_postUploader getPendingCommentsWithPostKey:postKey];
+}
+
 -(void)uploadImage:(UIImage*)image withTimestamp:(NSDate*)timestamp
 {
     //Upload image with timestasmp.

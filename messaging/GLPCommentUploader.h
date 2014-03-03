@@ -13,5 +13,6 @@
 @interface GLPCommentUploader : NSObject
 
 -(GLPComment *)uploadCommentWithContent:(NSString *)content andPost:(GLPPost *)post;
+-(NSArray *)pendingCommentsWithPostKey:(int)postKey;
 
 @end
