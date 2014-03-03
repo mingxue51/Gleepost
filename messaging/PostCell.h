@@ -12,7 +12,7 @@
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 
-@interface PostCell : UITableViewCell
+@interface PostCell : UITableViewCell <UIActionSheetDelegate>
 
 extern const float IMAGE_CELL_HEIGHT;
 extern const float TEXT_CELL_HEIGHT;
@@ -33,6 +33,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfLikesLbl;
 @property (weak, nonatomic) IBOutlet UILabel *titleLbl;
 @property (weak, nonatomic) IBOutlet UILabel *eventTime;
+@property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;

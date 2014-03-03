@@ -20,6 +20,7 @@
 #import "GLPCategory.h"
 #import "ImageFormatterHelper.h"
 #import "NSDate+HumanizedTime.h"
+#import "SessionManager.h"
 
 @interface PostCell()
 
@@ -38,7 +39,7 @@
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 290;
+const float IMAGE_CELL_HEIGHT = 320;
 const float TEXT_CELL_HEIGHT = 70;
 
 
@@ -80,6 +81,7 @@ static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
 static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
+static const float FixedDistanceOfMoreFromText = 295.0;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
@@ -349,8 +351,6 @@ static const float OneLineText = 16.0;
     
     CGSize labelSize = [PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable];
     
-
-    
     if(!self.imageAvailable)
     {
 //        [self.textLabelConstrain setConstant:self.contentLbl.frame.size.height];
@@ -363,7 +363,11 @@ static const float OneLineText = 16.0;
     {
         //Change the height of the label.
         [self setElement:self.contentLbl size:labelSize];
+        
+        [self setElement:self.moreBtn y:labelSize.height];
     }
+    
+    
     
     //Change the position of the social view.
 //    float socialViewY = self.contentLbl.frame.origin.y + self.contentLbl.frame.size.height + 5;
@@ -481,6 +485,11 @@ static const float OneLineText = 16.0;
     [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, PostContentLabelMaxWidth, size.height)];
 }
 
+-(void)setElement:(UIView *)element y:(float)y
+{
+    [element setFrame:CGRectMake(element.frame.origin.x, FixedDistanceOfMoreFromText + y, element.frame.size.width, element.frame.size.height)];
+}
+
 //-(void)layoutSubviews
 //{
 //    if(self.isViewPost)
@@ -537,6 +546,34 @@ static const float OneLineText = 16.0;
 //}
 
 #pragma - mark Selector methods
+
+
+-(IBAction)viewMoreMenu:(id)sender
+{
+    //Pop up a bottom menu.
+    
+    UIActionSheet *actionSheet = nil;
+    
+    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"RSVP", @"Report", nil];
+    }
+    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Report", nil];
+    }
+    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"RSVP", @"Report", nil];
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
+    }
+
+    
+    [actionSheet showInView:[_delegate.view window]];
+}
 
 - (IBAction)likePost:(id)sender
 {
@@ -678,6 +715,79 @@ static const float OneLineText = 16.0;
     
     
 
+}
+
+#pragma mark - Helper methods
+
+-(BOOL)isCurrentPostBelongsToCurrentUser
+{
+    return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
+}
+
+-(BOOL)isCurrentPostEvent
+{
+    DDLogDebug(@"EVENT: %@", self.post.eventTitle);
+    
+    if(self.post.eventTitle == nil)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+    
+    
+//    return (![self.post.eventTitle isEqualToString:@""] || self.post.eventTitle != nil);
+}
+
+#pragma mark - Action Sheet delegate
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if([selectedButtonTitle isEqualToString:@"RSVP"])
+    {
+        //RSVP post.
+        DDLogDebug(@"RSVP");
+
+    }
+    else if ([selectedButtonTitle isEqualToString:@"Delete"])
+    {
+        //Delete post.
+        DDLogDebug(@"Delete");
+
+    }
+    else if ([selectedButtonTitle isEqualToString:@"Report"])
+    {
+        //Report post.
+        DDLogDebug(@"Report");
+        
+    }
+    
+
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *subview in actionSheet.subviews)
+    {
+        if ([subview isKindOfClass:[UIButton class]])
+        {
+            UIButton *btn = (UIButton*)subview;
+            
+            if([btn.titleLabel.text isEqualToString:@"Cancel"])
+            {
+
+            }
+            else
+            {
+            }
+        }
+    }
 }
 
 #pragma mark - Client
