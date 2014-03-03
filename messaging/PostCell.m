@@ -21,6 +21,7 @@
 #import "ImageFormatterHelper.h"
 #import "NSDate+HumanizedTime.h"
 #import "SessionManager.h"
+#import "WebClientHelper.h"
 
 @interface PostCell()
 
@@ -554,9 +555,21 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     UIActionSheet *actionSheet = nil;
     
+    NSString *attending = nil;
+    
+    if(self.post.attended)
+    {
+        attending = @"Not Going";
+    }
+    else
+    {
+        attending = @"Going";
+    }
+    
+    
     if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"RSVP", @"Report", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, @"Report", nil];
     }
     else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
     {
@@ -564,7 +577,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     }
     else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"RSVP", @"Report", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, @"Report", nil];
     }
     else
     {
@@ -726,8 +739,6 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 
 -(BOOL)isCurrentPostEvent
 {
-    DDLogDebug(@"EVENT: %@", self.post.eventTitle);
-    
     if(self.post.eventTitle == nil)
     {
         return NO;
@@ -736,9 +747,6 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     {
         return YES;
     }
-    
-    
-//    return (![self.post.eventTitle isEqualToString:@""] || self.post.eventTitle != nil);
 }
 
 #pragma mark - Action Sheet delegate
@@ -749,11 +757,17 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if([selectedButtonTitle isEqualToString:@"RSVP"])
+    if([selectedButtonTitle isEqualToString:@"Going"])
     {
         //RSVP post.
-        DDLogDebug(@"RSVP");
+        [self attending];
 
+    }
+    else if([selectedButtonTitle isEqualToString:@"Not Going"])
+    {
+        //Not attending.
+        [self notAttending];
+        
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
     {
@@ -805,6 +819,46 @@ static const float FixedDistanceOfMoreFromText = 295.0;
             NSLog(@"Like for post %d not succeed.",postRemoteKey);
         }
         
+        
+    }];
+}
+
+-(void)attending
+{
+    self.post.attended = YES;
+
+    
+    [[WebClient sharedInstance] postAttendInPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+        }
+        else
+        {
+            //Error message.
+            [WebClientHelper showStandardError];
+        }
+        
+    }];
+}
+
+-(void)notAttending
+{
+    
+    self.post.attended = NO;
+
+    [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            
+//            [self makeButtonUnselected:currentButton];
+        }
+        else
+        {
+            //Error message.
+            [WebClientHelper showStandardError];
+        }
         
     }];
 }
