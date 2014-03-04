@@ -7,6 +7,7 @@
 //
 
 #import "ProfileTwoButtonsTableViewCell.h"
+#import "GroupViewController.h"
 
 @interface ProfileTwoButtonsTableViewCell ()
 
@@ -16,16 +17,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *myPostsBtn;
 @property (weak, nonatomic) IBOutlet UIButton *notificationsBtn;
 
+@property (assign, nonatomic) BOOL isProfileViewController;
+
 @end
 
 @implementation ProfileTwoButtonsTableViewCell
 
 @synthesize notificationsBubbleImageView=_notificationsBubbleImageView;
 
-const NSString *POST_IMAGE_SELECTED = @"mypost_btn_selected";
-const NSString *POST_IMAGE = @"mypost_btn";
-const NSString *NOTIFICATIONS_IMAGE_SELECTED = @"notification_btn_selected";
-const NSString *NOTIFICATIONS_IMAGE = @"notification_btn";
 const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
 
 
@@ -41,10 +40,38 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     return self;
 }
 
--(void)setDelegate:(GLPProfileViewController *)delegate
+#pragma mark - Group methods
+
+//TODO: Call that in the future when there will be a need for introducing buttons in group.
+
+//-(void)configViewForGroups
+//{
+//    [self showGroupButtonsPostsSelected];
+//}
+
+-(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate
 {
+    if([delegate isKindOfClass:[GLPProfileViewController class]])
+    {
+        _isProfileViewController = YES;
+    }
+    else if([delegate isKindOfClass:[GroupViewController class]])
+    {
+        _isProfileViewController = NO;
+        [_notificationsBubbleImageView setHidden:YES];
+        
+        if(!_delegate)
+        {
+            [self showGroupButtonsPostsSelected];
+        }
+        
+    }
+    
     _delegate = delegate;
 }
+
+#pragma mark - Selectors
+
 
 - (IBAction)viewPosts:(id)sender
 {
@@ -53,29 +80,37 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     [self setGreenToNavigator:self.postsLine];
     
     
-    UIButton * viewPost = (UIButton*)sender;
     
-    [viewPost setImage: [UIImage imageNamed:@"mypost_btn_selected"] forState:UIControlStateNormal];
+    if(_isProfileViewController)
+    {
+        [self showProfileButtonsPostsSelected];
+    }
+    else
+    {
+        [self showGroupButtonsPostsSelected];
+    }
     
-    [_notificationsBtn setImage: [UIImage imageNamed:@"notification_btn"] forState:UIControlStateNormal];
-    
-    
+
     [_delegate viewSectionWithId:kGLPPosts];
 }
 
 
 - (IBAction)viewSettings:(id)sender
 {
-    
     [self setGrayToNavigators];
     
     [self setGreenToNavigator:self.settingsLine];
+
     
-    UIButton * viewPost = (UIButton*)sender;
-    
-    [viewPost setImage: [UIImage imageNamed:@"notification_btn_selected"] forState:UIControlStateNormal];
-    
-    [_myPostsBtn setImage: [UIImage imageNamed:@"mypost_btn"] forState:UIControlStateNormal];
+    if(_isProfileViewController)
+    {
+        
+        [self showProfileButtonsNotificationsSelected];
+    }
+    else
+    {
+        [self showGroupButtonsMembersSelected];
+    }
     
     
     [_delegate viewSectionWithId:kGLPSettings];
@@ -92,6 +127,30 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     [self.settingsLine setImage:[UIImage imageNamed:@"idle_tab"]];
     
     [self.postsLine setImage:[UIImage imageNamed:@"idle_tab"]];
+}
+
+-(void)showGroupButtonsPostsSelected
+{
+    [_myPostsBtn setImage:[UIImage imageNamed:@"group_posts_selected"] forState:UIControlStateNormal];
+    [_notificationsBtn setImage: [UIImage imageNamed:@"members"] forState:UIControlStateNormal];
+}
+
+-(void)showGroupButtonsMembersSelected
+{
+    [_myPostsBtn setImage:[UIImage imageNamed:@"group_posts"] forState:UIControlStateNormal];
+    [_notificationsBtn setImage:[UIImage imageNamed:@"members_selected"] forState:UIControlStateNormal];
+}
+
+-(void)showProfileButtonsPostsSelected
+{
+    [_myPostsBtn setImage:[UIImage imageNamed:@"mypost_btn_selected"] forState:UIControlStateNormal];
+    [_notificationsBtn setImage:[UIImage imageNamed:@"notification_btn"] forState:UIControlStateNormal];
+}
+
+-(void)showProfileButtonsNotificationsSelected
+{
+    [_myPostsBtn setImage:[UIImage imageNamed:@"mypost_btn"] forState:UIControlStateNormal];
+    [_notificationsBtn setImage:[UIImage imageNamed:@"notification_btn_selected"] forState:UIControlStateNormal];
 }
 
 -(void)showAllLines

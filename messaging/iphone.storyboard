@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -1189,7 +1189,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lhy-3j-G5f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2382" y="-3264"/>
+            <point key="canvasLocation" x="2553" y="-3277"/>
         </scene>
         <!--Pick Date Event View Controller-->
         <scene sceneID="x3F-SQ-LJN">
@@ -1520,7 +1520,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="412A5DFE-132B-4548-935C-1F91E00BA65B" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="692B2DB7-2406-4CED-9743-92F33094F0F5" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2451,7 +2451,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -2666,8 +2666,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <rect key="frame" x="85" y="8" width="151" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="Contacts"/>
                                 <segment title="Groups"/>
+                                <segment title="Contacts"/>
                             </segments>
                             <connections>
                                 <action selector="barSegmentTouched:" destination="29g-P3-71n" eventType="valueChanged" id="o1q-et-B7m"/>
@@ -2677,11 +2677,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <connections>
                         <outlet property="contactsTableView" destination="u2T-TE-5Mf" id="A9j-E7-u38"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view profile" id="4IA-qk-kaG"/>
+                        <segue destination="sIa-ky-63T" kind="push" identifier="view group" id="n9o-DN-8oU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JFZ-mC-Naf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1160" y="2671"/>
+            <point key="canvasLocation" x="1132" y="2671"/>
         </scene>
         <!--Pop Up Notifications View Controller-->
         <scene sceneID="9wZ-7Q-6fX">
@@ -2759,6 +2760,42 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1580" y="2671"/>
         </scene>
+        <!--Group View Controller-->
+        <scene sceneID="8Ze-ev-Xfl">
+            <objects>
+                <tableViewController id="sIa-ky-63T" customClass="GroupViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="XpL-qe-E6V">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="OjE-uB-bza">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OjE-uB-bza" id="KYN-hY-M0k">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sIa-ky-63T" id="PNu-gt-ACZ"/>
+                            <outlet property="delegate" destination="sIa-ky-63T" id="uKQ-7b-JgO"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="9aI-2W-x8z">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Q0a-VY-a2V"/>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="IeZ-i8-4wD"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="hfC-gb-v6E"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZeS-u2-wb8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2048" y="2758"/>
+        </scene>
         <!--Notifications View Controller-->
         <scene sceneID="4cJ-PZ-TTP">
             <objects>
@@ -2817,7 +2854,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lXs-jN-Rl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2051" y="2446"/>
+            <point key="canvasLocation" x="2046" y="2194"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="SEo-vv-EHO">
@@ -2864,7 +2901,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="412A5DFE-132B-4548-935C-1F91E00BA65B" width="34" height="34">
+        <image name="692B2DB7-2406-4CED-9743-92F33094F0F5" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3040,13 +3077,13 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fah-A8-Ky9"/>
+        <segue reference="GTC-XV-iI1"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="4IA-qk-kaG"/>
-        <segue reference="lQn-ic-ohV"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="IeZ-i8-4wD"/>
+        <segue reference="hfC-gb-v6E"/>
+        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="MWr-28-zFw"/>
+        <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

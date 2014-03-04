@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPProfileViewController.h"
-
+#import "ButtonNavigationDelegate.h"
 
 @interface ProfileTwoButtonsTableViewCell : UITableViewCell
 
@@ -16,8 +16,8 @@ extern const float TWO_BUTTONS_CELL_HEIGHT;
 
 @property (weak, nonatomic) IBOutlet UIImageView *notificationsBubbleImageView;
 
-@property (readonly, nonatomic) GLPProfileViewController *delegate;
+@property (readonly, nonatomic) UIViewController<ButtonNavigationDelegate> *delegate;
 
 
--(void)setDelegate:(GLPProfileViewController *)delegate;
+-(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate;
 @end

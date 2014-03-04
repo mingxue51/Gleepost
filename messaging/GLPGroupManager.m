@@ -8,10 +8,78 @@
 
 #import "GLPGroupManager.h"
 #import "GLPGroup.h"
-
+#import "WebClient.h"
 
 @implementation GLPGroupManager
 
+#pragma mark - Client methods
+
++ (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success/*, BOOL remain*/, NSArray *remotePosts))remoteCallback
+{
+    NSLog(@"load initial group posts with id: %d", groupId);
+    
+//    __block NSArray *localEntities = nil;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = [GLPPostDao findLastPostsInDb:db];
+//    }];
+//    
+//    NSLog(@"local posts %d", localEntities.count);
+//    
+//    if(localEntities.count > 0) {
+//        localCallback(localEntities);
+//    }
+    
+    [[WebClient sharedInstance] getPostsAfter:nil withGroupId:groupId callback:^(BOOL success, NSArray *posts) {
+       
+        if(success)
+        {
+            remoteCallback(YES, posts);
+        }
+        else
+        {
+            remoteCallback(NO, nil);
+            return;
+        }
+        
+    }];
+    
+    
+//    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
+//        if(!success) {
+//            remoteCallback(NO, NO, nil);
+//            return;
+//        }
+//        
+//        NSLog(@"remote posts %d", posts.count);
+//        
+//        if(!posts || posts.count == 0) {
+//            remoteCallback(YES, NO, nil);
+//            return;
+//        }
+//        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            
+//            // get list of posts with liked=YES
+//            //            NSArray* likedPosts = [GLPPostDao likedPostsInDb:db];
+//            
+//            // clean posts table
+//            [GLPPostDao deleteAllInDb:db];
+//            
+//            //Set liked to the database if the user liked from other device (?)
+//            for(GLPPost *post in posts)
+//            {
+//                [GLPPostDao save:post inDb:db];
+//            }
+//        }];
+//        
+//        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+//        
+//        remoteCallback(YES, remains, posts);
+//    }];
+}
+
+
+#pragma mark - Processing methods
 
 +(NSDictionary *)processGroups:(NSArray *)groups
 {

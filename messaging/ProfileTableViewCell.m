@@ -37,11 +37,11 @@
 
 
 @property (strong, nonatomic) GLPUser *currentUser;
-
 @property (readonly, nonatomic) GLPProfileViewController *delegate;
 @property (readonly, nonatomic) GLPPrivateProfileViewController *privateProfileDelegate;
-
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
+
+@property (strong, nonatomic) GLPGroup *currentGroup;
 
 
 @end
@@ -61,6 +61,32 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     return self;
 }
 
+#pragma mark - Group methods
+
+-(void)initialiseElementsWithGroupInformation:(GLPGroup *)group
+{
+    if(!group)
+    {
+        
+        //Hide all the elements and put loading in university label.
+        [self initialiseLoadingElements];
+        
+        return;
+    }
+    
+    self.currentGroup = group;
+    
+    [self.universityLabel setHidden:NO];
+    
+    [self.universityLabel setText:self.currentGroup.name];
+    
+    //TODO: Set image when api supports that and add gesture on image.
+//    [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
+    
+}
+
+
+
 -(void)initialiseProfileImage:(UIImage*)image
 {
     [self initialiseLoadingElements];
@@ -71,6 +97,9 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
 //    [self.coverProfileImage setImage:image];
 }
+
+
+#pragma mark - User methods
 
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
 {
@@ -151,7 +180,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         //Fetch the image from the server and add it to the image view.
         //[self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
         
-        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
             
 //            [self.coverProfileImage setImage:image];
             
@@ -340,6 +369,13 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     [self.addContactButton setHidden:YES];
     [self.addContactButton setEnabled:NO];
     [self.acceptButton setHidden:NO];
+}
+
+#pragma mark - UI methods
+
+-(void)hideElements
+{
+    
 }
 
 #pragma mark - Selectors

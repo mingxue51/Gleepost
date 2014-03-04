@@ -570,6 +570,28 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+{
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    
+    if(post)
+    {
+        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/posts",groupId];
+
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+        callbackBlock(YES, posts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
 /* CONVERSATIONS */
 
 //- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock

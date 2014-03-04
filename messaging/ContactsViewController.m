@@ -15,8 +15,6 @@
 #import "WebClientHelper.h"
 #import "GLPContact.h"
 #import "AppearanceHelper.h"
-#import "ShapeFormatterHelper.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
@@ -24,6 +22,7 @@
 #import "ContactsManager.h"
 #import "GLPGroup.h"
 #import "GLPGroupManager.h"
+#import "GroupViewController.h"
 
 @interface ContactsViewController ()
 
@@ -42,6 +41,7 @@
 @property (strong, nonatomic) NSMutableArray *groupsStr;
 @property (strong, nonatomic) NSMutableDictionary *categorisedGroups;
 @property (strong, nonatomic) NSArray *groupSections;
+@property (strong, nonatomic) GLPGroup *selectedGroup;
 
 @end
 
@@ -170,7 +170,7 @@
     
     self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
-    self.isContactsView = YES;
+    self.isContactsView = NO;
     _groups = [[NSMutableArray alloc] init];
     self.groupsStr = [[NSMutableArray alloc] init];
 }
@@ -374,7 +374,7 @@
 {
     UISegmentedControl *segment = sender;
     
-    _isContactsView = !segment.selectedSegmentIndex;
+    _isContactsView = segment.selectedSegmentIndex;
     
     [self.tableView reloadData];
     
@@ -491,19 +491,8 @@
         
         GLPContact *currentContact = [currentUsers objectAtIndex:indexPath.row];
         
-        [cell.nameUser setText: currentContact.user.name];
+        [cell setName:currentContact.user.name withImageUrl:currentContact.user.profileImageUrl];
         
-        
-        [ShapeFormatterHelper setRoundedView:cell.profileImageUser toDiameter:cell.profileImageUser.frame.size.height];
-        
-        if([currentContact.user.profileImageUrl isEqualToString:@""])
-        {
-            [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image"]];
-        }
-        else
-        {
-            [cell.profileImageUser setImageWithURL:[NSURL URLWithString:currentContact.user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
-        }
     }
     else
     {
@@ -511,11 +500,8 @@
         
         GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
         
-        [cell.nameUser setText: currentGroup.name];
+        [cell setName:currentGroup.name withImageUrl:@""];
         
-        [ShapeFormatterHelper setRoundedView:cell.profileImageUser toDiameter:cell.profileImageUser.frame.size.height];
-        
-        [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image2"]];
 
     }
     
@@ -584,7 +570,11 @@
     }
     else
     {
+        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section]];
         
+        self.selectedGroup = [currentGroups objectAtIndex:indexPath.row];
+        
+        [self performSegueWithIdentifier:@"view group" sender:self];
     }
     
 
@@ -603,6 +593,12 @@
         GLPPrivateProfileViewController *pvc = segue.destinationViewController;
         
         pvc.selectedUserId = self.selectedUserId;
+    }
+    else if([segue.identifier isEqualToString:@"view group"])
+    {
+        GroupViewController *gvc = segue.destinationViewController;
+        
+        gvc.group = self.selectedGroup;
     }
 }
 

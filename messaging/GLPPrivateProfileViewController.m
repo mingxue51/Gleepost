@@ -74,6 +74,8 @@
 - (void)backButtonTapped {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -693,9 +695,7 @@
         if(self.posts.count != 0 && self.posts)
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
-            
-            DDLogDebug(@"Current Post content: %@ : %d", currentPost.content, indexPath.row);
-            
+                        
             if([currentPost imagePost])
             {
                 return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
