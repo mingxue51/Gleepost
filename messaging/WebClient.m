@@ -551,6 +551,25 @@ static WebClient *instance = nil;
 }
 
 
+#pragma mark - Groups
+
+-(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"networks/%d",groupId];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
+        
+        
+        callbackBlock(YES, group);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
 /* CONVERSATIONS */
 
 //- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock

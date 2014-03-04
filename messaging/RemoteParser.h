@@ -15,6 +15,7 @@
 #import "GLPContact.h"
 #import "GLPNotification.h"
 #import "GLPWebSocketEvent.h"
+#import "GLPGroup.h"
 
 @interface RemoteParser : NSObject
 
@@ -43,6 +44,9 @@
 +(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json;
 +(NSString*)parseCategoriesToTags:(NSArray*)categories;
 +(NSArray *)parseLivePostsIds:(NSArray *)jsonIds;
+
+// groups
++ (GLPGroup *)parseGroupFromJson:(NSDictionary *)json;
 
 // contacts
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;

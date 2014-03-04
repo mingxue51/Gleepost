@@ -640,6 +640,16 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    
 //}
 
+#pragma mark - Groups
+
++ (GLPGroup *)parseGroupFromJson:(NSDictionary *)json
+{
+    DDLogDebug(@"JSON GROUP: %@", json);
+    
+    return [[GLPGroup alloc] initWithName:json[@"name"] andRemoteKey:[json[@"id"] integerValue]];
+    
+}
+
 #pragma mark - Contacts
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts

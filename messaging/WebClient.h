@@ -15,6 +15,7 @@
 #import "GLPLiveConversation.h"
 #import "GLPNotification.h"
 #import "SRWebSocket.h"
+#import "GLPGroup.h"
 
 @interface WebClient : AFHTTPClient
 
@@ -61,6 +62,10 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)createRegularConversationWithUserRemoteKey:(int)remoteKey andCallback:(void (^) (BOOL sucess, GLPConversation *conversation ))callbackBlock;
 - (GLPConversation *)synchronousCreateConversationWithUser:(GLPUser *)user;
 - (void)createConversation:(void (^)(GLPConversation *conversation))callback;
+
+
+// groups
+-(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group))callbackBlock;
 
 // live conversations
 - (void)getConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
