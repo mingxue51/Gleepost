@@ -21,7 +21,7 @@
 #import "ProfileTwoButtonsTableViewCell.h"
 #import "ContactUserCell.h"
 #import "GLPPrivateProfileViewController.h"
-#import "SessionManager.h"
+#import "WebClient.h"
 
 @interface GroupViewController ()
 
@@ -317,16 +317,18 @@ const int NUMBER_OF_ROWS = 2;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row-2 == self.posts.count) {
-        return;
-    }
-    else if(indexPath.row < 2)
+
+    if(indexPath.row < 2)
     {
         return;
     }
     
     if(self.selectedTabStatus == kGLPPosts)
     {
+        if(indexPath.row-2 == self.posts.count) {
+            return;
+        }
+        
         self.selectedPost = self.posts[indexPath.row-2];
         //    self.postIndexToReload = indexPath.row-2;
         self.commentCreated = NO;
@@ -410,16 +412,28 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)loadMembers
 {
-    #warning implementation pending.
+    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
+       
+        if(success)
+        {
+            self.members = members;
+            
+            if(self.selectedTabStatus == kGLPSettings)
+            {
+                [self.tableView reloadData];
+            }
+        }
+        
+    }];
     
-    GLPUser *user = [[GLPUser alloc] init];
-    
-    user.name = @"Test Guy";
-    user.remoteKey = [SessionManager sharedInstance].user.remoteKey;
-    
-    self.members = [[NSArray alloc] initWithObjects:user, nil];
-    
-    [self.tableView reloadData];
+//    GLPUser *user = [[GLPUser alloc] init];
+//    
+//    user.name = @"Test Guy";
+//    user.remoteKey = [SessionManager sharedInstance].user.remoteKey;
+//    
+//    self.members = [[NSArray alloc] initWithObjects:user, nil];
+//    
+//    [self.tableView reloadData];
     
 }
 

@@ -642,6 +642,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 #pragma mark - Groups
 
++ (NSArray *)parseGroupsFromJson:(NSArray *)json
+{
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    
+    for(id group in json)
+    {
+        [groups addObject:[RemoteParser parseGroupFromJson:group]];
+    }
+    
+    return groups;
+}
+
 + (GLPGroup *)parseGroupFromJson:(NSDictionary *)json
 {
     DDLogDebug(@"JSON GROUP: %@", json);
@@ -682,6 +694,21 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     contact.theyConfirmed = [json[@"they_confirmed"] boolValue];
     
     return contact;
+}
+
+
+#pragma mark - Users
+
++ (NSArray *)parseUsersFromJson:(NSArray *)json
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    
+    for(id user in json)
+    {
+        [users addObject:[RemoteParser parseUserFromJson:user]];
+    }
+    
+    return users;
 }
 
 

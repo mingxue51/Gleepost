@@ -47,6 +47,11 @@ const CGFloat HEIGH_FAKE = 64.0f;
     [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
     
     [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:24.0f]];
+    
+    //Add gesture to cardinal wall label.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(loadGroupsFeed:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.titleLbl addGestureRecognizer:tap];
 }
 
 - (IBAction)createNewPost:(id)sender
@@ -59,6 +64,29 @@ const CGFloat HEIGH_FAKE = 64.0f;
     [self.delegate showCategories:sender];
 }
 
+-(void)loadGroupsFeed:(id)sender
+{
+    if([self.titleLbl.text isEqualToString:@"Cardinal Wall"])
+    {
+        [UIView animateWithDuration:1.0f animations:^{
+            
+            [self.titleLbl setText:@"Groups Feed"];
+            
+        }];
+        
+        [self.delegate loadGroupsFeed];
+    }
+    else
+    {
+        [UIView animateWithDuration:1.0f animations:^{
+            
+            [self.titleLbl setText:@"Cardinal Wall"];
+            
+        }];
+        
+        [self.delegate loadRegularPosts];
+    }
+}
 
 
 /*

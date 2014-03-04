@@ -47,9 +47,11 @@
 
 // groups
 + (GLPGroup *)parseGroupFromJson:(NSDictionary *)json;
++ (NSArray *)parseGroupsFromJson:(NSArray *)json;
 
 // contacts
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;
++ (NSArray *)parseUsersFromJson:(NSArray *)json;
 
 // commons
 + (NSDate *)parseDateFromString:(NSString *)string;

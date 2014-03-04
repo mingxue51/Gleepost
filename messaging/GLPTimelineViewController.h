@@ -28,6 +28,11 @@
 -(void)refreshPostsWithNewCategory;
 -(void)newPostButtonClick;
 -(void)showCategories:(id)sender;
+
+-(void)loadGroupsFeed;
+
+-(void)loadRegularPosts;
+
 //-(void)showEventPost:(GLPPost *)post;
 
 @end

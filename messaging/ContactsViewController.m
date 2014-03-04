@@ -347,23 +347,37 @@
 
 -(void)loadGroups
 {
-    int networkKey = [SessionManager sharedInstance].user.networkId;
+//    int networkKey = [SessionManager sharedInstance].user.networkId;
+//    
+//    
+//    [[WebClient sharedInstance] getGroupDescriptionWithId:networkKey withCallbackBlock:^(BOOL success, GLPGroup *group) {
+//       
+//        if(success)
+//        {
+//            _groups = [[NSMutableArray alloc] initWithObjects:group, nil];
+//            
+//            [self showGroups];
+//            
+//            [self.contactsTableView reloadData];
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//        
+//    }];
     
-    [[WebClient sharedInstance] getGroupDescriptionWithId:networkKey withCallbackBlock:^(BOOL success, GLPGroup *group) {
+    [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
        
         if(success)
         {
-            _groups = [[NSMutableArray alloc] initWithObjects:group, nil];
+            _groups = groups.mutableCopy;
             
             [self showGroups];
             
             [self.contactsTableView reloadData];
         }
-        else
-        {
-            [WebClientHelper showStandardError];
-        }
-        
         
     }];
 }

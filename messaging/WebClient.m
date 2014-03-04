@@ -570,6 +570,39 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)getGroupswithCallbackBlock:(void (^) (BOOL success, NSArray *groups))callbackBlock
+{
+    [self getPath:@"profile/networks" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *groups = [RemoteParser parseGroupsFromJson:responseObject];
+        
+        
+        callbackBlock(YES, groups);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
+-(void)getMembersWithGroupRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, NSArray *members))callbackBlock
+{
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/users",remoteKey];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *members = [RemoteParser parseUsersFromJson:responseObject];
+        
+        
+        callbackBlock(YES, members);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
 -(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];

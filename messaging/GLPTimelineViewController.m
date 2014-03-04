@@ -50,6 +50,7 @@
 #import "ConversationManager.h"
 #import "WalkThroughHelper.h"
 #import "AnimationDayController.h"
+#import "GLPGroupManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -131,7 +132,7 @@ const float TOP_OFFSET = 219.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+     
     [self configTableView];
 
     [self configHeader];
@@ -328,9 +329,6 @@ const float TOP_OFFSET = 219.0f;
         //If the post belongs to logged in user then inform his/her profile's posts.
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
     }
-    
-
-    
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 
@@ -977,6 +975,36 @@ const float TOP_OFFSET = 219.0f;
 }
 
 
+#pragma mark - Groups' Posts
+
+- (void)loadInitialGroupsPosts
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    [self startLoading];
+    
+    
+    [GLPGroupManager loadInitialPostsWithGroupId:[SessionManager sharedInstance].user.networkId remoteCallback:^(BOOL success, NSArray *remotePosts) {
+       
+        if(success)
+        {
+            self.posts = remotePosts.mutableCopy;
+            
+            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+
+            [self.tableView reloadData];
+            
+            self.firstLoadSuccessful = YES;
+            [self startReloadingCronImmediately:NO];
+        }
+        
+        [self stopLoading];
+    }];
+}
+
+
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
     DDLogDebug(@"Is loading: %d", self.isLoading);
@@ -1337,11 +1365,9 @@ const float TOP_OFFSET = 219.0f;
         
         if([post imagePost])
         {
-            
             postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             
             postCell.imageAvailable = YES;
-            
             
         }
         else
@@ -1932,6 +1958,16 @@ const float TOP_OFFSET = 219.0f;
         //[self performSegueWithIdentifier:@"new post" sender:self];
         
     }
+}
+
+-(void)loadGroupsFeed
+{
+    [self loadInitialGroupsPosts];
+}
+
+-(void)loadRegularPosts
+{
+    [self loadInitialPosts];
 }
 
 -(void)showCategories:(id)sender
