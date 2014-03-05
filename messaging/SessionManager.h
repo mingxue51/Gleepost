@@ -22,8 +22,7 @@
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
 - (BOOL)isSessionValid;
 - (BOOL)isLogged;
-- (BOOL)isUserSessionExists;
-- (BOOL)isUserTokenValid;
+- (BOOL)isUserSessionValidForAutoLogin;
 - (NSUInteger)validUserRemoteKey;
 - (void)restoreUser:(GLPUser *)user;
 - (void)cleanSession;

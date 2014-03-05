@@ -72,11 +72,6 @@ static NSString * const kCustomURLHost      = @"verify";
         initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
     } else {
         initVC = [storyboard instantiateInitialViewController];
-        
-        if([GLPLoginManager isUserRemembered]) {
-            UIViewController *signInVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSingInViewController"];
-            [(UINavigationController *)initVC pushViewController:signInVC animated:NO];
-        }
     }
 
 
@@ -86,6 +81,11 @@ static NSString * const kCustomURLHost      = @"verify";
 #if TARGET_IPHONE_SIMULATOR
     [[DCIntrospect sharedIntrospector] start];
 #endif
+    
+    if(!loggedIn && [GLPLoginManager shouldAutoLogin]) {
+        UIViewController *signInVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSingInViewController"];
+        [initVC presentViewController:signInVC animated:NO completion:nil];
+    }
 
     return YES;
 }

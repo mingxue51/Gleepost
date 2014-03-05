@@ -114,12 +114,6 @@
     return YES;
 }
 
-// Auto login with expired token
-+ (BOOL)shouldPerformAutoLoginRequest
-{
-    return [[SessionManager sharedInstance] isUserSessionExists];
-}
-
 + (void)performAfterLoginForUser:(GLPUser *)user
 {
     DDLogInfo(@"Logged in user remote key: %d", user.remoteKey);
@@ -141,6 +135,7 @@
     [[GLPLiveConversationsManager sharedInstance] clear];
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
+    [GLPLoginManager disableAutoLogin];
     
     [[GLPProfileLoader sharedInstance] initialiseLoader];
     
@@ -152,12 +147,15 @@
 
 + (void)rememberUser:(BOOL)shouldRemember withIdentifier:(NSString *)identifier andPassword:(NSString *)password
 {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:shouldRemember] forKey:@"login.shouldremember"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:shouldRemember] forKey:@"login.remember"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:shouldRemember] forKey:@"login.shouldautologin"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     if(shouldRemember) {
-        [UICKeyChainStore setString:identifier forKey:@"user.email"];
-        [UICKeyChainStore setString:password forKey:@"user.password"];
+        UICKeyChainStore *store = [UICKeyChainStore keyChainStore];
+        [store setString:identifier forKey:@"user.email"];
+        [store setString:password forKey:@"user.password"];
+        [store synchronize];
     } else {
         [UICKeyChainStore removeAllItems];
     }
@@ -165,8 +163,22 @@
 
 + (BOOL)isUserRemembered
 {
-    NSNumber *rememberMeNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"login.shouldremember"];
+    NSNumber *rememberMeNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"login.remember"];
     return rememberMeNumber ? [rememberMeNumber boolValue] : NO;
+}
+
++ (void)disableAutoLogin
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"login.shouldautologin"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (BOOL)shouldAutoLogin
+{
+    NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:@"login.shouldautologin"];
+    BOOL autologin = number ? [number boolValue] : NO;
+    
+    return autologin && [[SessionManager sharedInstance] isUserSessionValidForAutoLogin];
 }
 
 @end

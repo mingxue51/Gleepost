@@ -45,19 +45,22 @@
 
 - (void)configureRememberMe
 {
-    NSNumber *rememberMeNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"login.shouldremember"];
-    _shouldRememberMe = rememberMeNumber ? [rememberMeNumber boolValue] : NO;
+    _shouldRememberMe = [GLPLoginManager isUserRemembered];
+    [self updateRememberMe];
     
     if(_shouldRememberMe) {
-        NSString *email = [UICKeyChainStore stringForKey:@"user.email"];
-        if(email) {
-            self.emailTextField.text = email;
-            [self.emailTextField resignFirstResponder];
+        self.emailTextField.text = [UICKeyChainStore stringForKey:@"user.email"];
+        [self.emailTextField resignFirstResponder];
+        
+        if([GLPLoginManager shouldAutoLogin]) {
+            self.passwordTextField.text = [UICKeyChainStore stringForKey:@"user.password"];
+            [self.passwordTextField resignFirstResponder];
+            
+            [super loginUserFromLoginScreen:YES];
+        } else {
             [self.passwordTextField becomeFirstResponder];
         }
     }
-    
-    [self updateRememberMe];
 }
 
 - (void)updateRememberMe

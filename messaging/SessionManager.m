@@ -139,18 +139,14 @@ static SessionManager *instance = nil;
     return _user != nil;
 }
 
-- (BOOL)isUserSessionExists
+- (BOOL)isUserSessionValidForAutoLogin
 {
-    return self.data[@"user.remoteKey"] && self.data[@"user.token"] && self.data[@"user.expirationDate"];
-}
-
-- (BOOL)isUserTokenValid
-{
-    NSDate *expirationDate = [[DateFormatterHelper createDefaultDateFormatter] dateFromString:self.data[@"user.expirationDate"]];
+    BOOL sessionExists = self.data[@"user.remoteKey"] && self.data[@"user.token"] && self.data[@"user.expirationDate"];
     
-    // expired
-    return [[NSDate date] compare:expirationDate] == NSOrderedAscending;
-
+    NSDate *expirationDate = [[DateFormatterHelper createDefaultDateFormatter] dateFromString:self.data[@"user.expirationDate"]];
+    BOOL expired = [[NSDate date] compare:expirationDate] == NSOrderedDescending;
+    
+    return ![self isLogged] && sessionExists && expired;
 }
 
 - (NSUInteger)validUserRemoteKey

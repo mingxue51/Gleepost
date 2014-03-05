@@ -15,5 +15,6 @@
 + (BOOL)performAutoLogin;
 + (void)logout;
 + (BOOL)isUserRemembered;
++ (BOOL)shouldAutoLogin;
 
 @end
