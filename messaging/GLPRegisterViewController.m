@@ -63,11 +63,12 @@
 
 -(void)loginUserFromLoginScreen:(BOOL)shouldRemember
 {
-    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
+    UIView *view = [[UIApplication sharedApplication] windows][1];
+    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:view];
     
     [GLPLoginManager loginWithIdentifier:_emailTextField.text andPassword:_passwordTextField.text shouldRemember:shouldRemember callback:^(BOOL success, NSString *errorMessage) {
         
-        [WebClientHelper hideStandardLoaderForView:self.view];
+        [WebClientHelper hideStandardLoaderForView:view];
         
         if(success) {
             
