@@ -5,6 +5,8 @@
 //  Created by Σιλουανός on 31/10/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+//  Class responsible of managing groups' posts' data in Campus Wall.
+//
 
 #import <Foundation/Foundation.h>
 #import "GLPContactDao.h"

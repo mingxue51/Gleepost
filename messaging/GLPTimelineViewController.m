@@ -51,6 +51,7 @@
 #import "WalkThroughHelper.h"
 #import "AnimationDayController.h"
 #import "GLPGroupManager.h"
+#import "CampusWallGroupsPostsManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -106,6 +107,9 @@
 //Header.
 @property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
 @property (strong, nonatomic) FakeNavigationBar *reNavBar;
+
+//Goups.
+@property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
 
 @end
 

@@ -347,6 +347,7 @@
 		58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865E1180DA2B100BB18AF /* NotificationCell.m */; };
 		58B9507318B2AF1E00EBA231 /* b.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58B9507218B2AF1E00EBA231 /* b.wav */; };
 		58C09A1B185B2CDD00648EB4 /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C09A1A185B2CDD00648EB4 /* bell.png */; };
+		58CEA1E818C69560009FDF2C /* CampusWallGroupsPostsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */; };
 		58D0E2621850BB80005879F4 /* GLPNotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2611850BB80005879F4 /* GLPNotCell.xib */; };
 		58D0E2651850BD7B005879F4 /* ignore_notification_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2631850BD7B005879F4 /* ignore_notification_button.png */; };
 		58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2641850BD7B005879F4 /* accept_notification_button.png */; };
@@ -1084,6 +1085,8 @@
 		58B865E1180DA2B100BB18AF /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		58B9507218B2AF1E00EBA231 /* b.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = b.wav; sourceTree = "<group>"; };
 		58C09A1A185B2CDD00648EB4 /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
+		58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallGroupsPostsManager.h; sourceTree = "<group>"; };
+		58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallGroupsPostsManager.m; sourceTree = "<group>"; };
 		58D0E2611850BB80005879F4 /* GLPNotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPNotCell.xib; sourceTree = "<group>"; };
 		58D0E2631850BD7B005879F4 /* ignore_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ignore_notification_button.png; sourceTree = "<group>"; };
 		58D0E2641850BD7B005879F4 /* accept_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_notification_button.png; sourceTree = "<group>"; };
@@ -2368,6 +2371,17 @@
 			name = Notifications;
 			sourceTree = "<group>";
 		};
+		58CEA1E518C694E9009FDF2C /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				58F9C64018C5306D004A237E /* GLPGroupManager.h */,
+				58F9C64118C5306D004A237E /* GLPGroupManager.m */,
+				58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */,
+				58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */,
+			);
+			name = Groups;
+			sourceTree = "<group>";
+		};
 		58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -3014,6 +3028,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58CEA1E518C694E9009FDF2C /* Groups */,
 				584CF66B182289B500EFABB8 /* ContactsManager.h */,
 				584CF66C182289B500EFABB8 /* ContactsManager.m */,
 				80666C3D1806D43200E4E515 /* Database */,
@@ -3053,8 +3068,6 @@
 				5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */,
 				58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */,
 				58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */,
-				58F9C64018C5306D004A237E /* GLPGroupManager.h */,
-				58F9C64118C5306D004A237E /* GLPGroupManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -4060,6 +4073,7 @@
 				80C8BA72181048E9004F70DB /* GLPMessageDaoParser.m in Sources */,
 				585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */,
 				80FC6C1218A02339006D06F8 /* GLPViewControllerHelper.m in Sources */,
+				58CEA1E818C69560009FDF2C /* CampusWallGroupsPostsManager.m in Sources */,
 				58B1161D180D8491000E9555 /* ProfileView.m in Sources */,
 				58FD7077189041560024E8A1 /* CampusWallHeader.m in Sources */,
 				80C8BA5318103248004F70DB /* GLPConversation.m in Sources */,
