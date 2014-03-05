@@ -59,6 +59,12 @@
 		5819E64B18C79E98003361B3 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5819E64A18C79E98003361B3 /* GroupCell.xib */; };
 		5819E64E18C79F2C003361B3 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E64D18C79F2C003361B3 /* GroupCell.m */; };
 		5819E65018C79FD0003361B3 /* leave_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 5819E64F18C79FD0003361B3 /* leave_group.png */; };
+		5819E65418C7AE14003361B3 /* selected_segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 5819E65218C7AE14003361B3 /* selected_segment.png */; };
+		5819E65518C7AE14003361B3 /* uselected_segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 5819E65318C7AE14003361B3 /* uselected_segment.png */; };
+		5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E65718C7C442003361B3 /* NewGroupViewController.m */; };
+		5819E65B18C7D108003361B3 /* GLPGroupUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E65A18C7D108003361B3 /* GLPGroupUploader.m */; };
+		5819E65E18C7E3FC003361B3 /* GLPGroupDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E65D18C7E3FC003361B3 /* GLPGroupDaoParser.m */; };
+		5819E66118C7E58E003361B3 /* GLPGroupDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E66018C7E58E003361B3 /* GLPGroupDao.m */; };
 		581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */; };
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
@@ -689,6 +695,16 @@
 		5819E64D18C79F2C003361B3 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCell.m; sourceTree = "<group>"; };
 		5819E64F18C79FD0003361B3 /* leave_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leave_group.png; sourceTree = "<group>"; };
 		5819E65118C7A38B003361B3 /* GroupDeletedDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDeletedDelegate.h; sourceTree = "<group>"; };
+		5819E65218C7AE14003361B3 /* selected_segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected_segment.png; sourceTree = "<group>"; };
+		5819E65318C7AE14003361B3 /* uselected_segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uselected_segment.png; sourceTree = "<group>"; };
+		5819E65618C7C442003361B3 /* NewGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGroupViewController.h; sourceTree = "<group>"; };
+		5819E65718C7C442003361B3 /* NewGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGroupViewController.m; sourceTree = "<group>"; };
+		5819E65918C7D108003361B3 /* GLPGroupUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupUploader.h; sourceTree = "<group>"; };
+		5819E65A18C7D108003361B3 /* GLPGroupUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupUploader.m; sourceTree = "<group>"; };
+		5819E65C18C7E3FC003361B3 /* GLPGroupDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupDaoParser.h; sourceTree = "<group>"; };
+		5819E65D18C7E3FC003361B3 /* GLPGroupDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupDaoParser.m; sourceTree = "<group>"; };
+		5819E65F18C7E58E003361B3 /* GLPGroupDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupDao.h; sourceTree = "<group>"; };
+		5819E66018C7E58E003361B3 /* GLPGroupDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupDao.m; sourceTree = "<group>"; };
 		581AAF06181D9E9D00F091A9 /* GLPNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNotificationManager.h; sourceTree = "<group>"; };
 		581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNotificationManager.m; sourceTree = "<group>"; };
 		581AAF09181DA08D00F091A9 /* LongPollContactsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LongPollContactsOperation.h; sourceTree = "<group>"; };
@@ -2065,6 +2081,8 @@
 				587248A718C648E200B98484 /* ButtonNavigationDelegate.h */,
 				5845524318C774DA00112F61 /* GroupCreatedDelegate.h */,
 				5819E65118C7A38B003361B3 /* GroupDeletedDelegate.h */,
+				5819E65618C7C442003361B3 /* NewGroupViewController.h */,
+				5819E65718C7C442003361B3 /* NewGroupViewController.m */,
 			);
 			name = "Group Classes";
 			sourceTree = "<group>";
@@ -2072,6 +2090,8 @@
 		587248A818C64BFB00B98484 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				5819E65218C7AE14003361B3 /* selected_segment.png */,
+				5819E65318C7AE14003361B3 /* uselected_segment.png */,
 				5819E64F18C79FD0003361B3 /* leave_group.png */,
 				58D19D9518C766C000CB13CC /* create_new_group.png */,
 				587248A918C64C5200B98484 /* group_posts_selected.png */,
@@ -2680,6 +2700,8 @@
 				5810F0BB18870C740066D4CE /* GLPProfileLoader.m */,
 				5844293118BCD17600DFEAF4 /* GLPCommentUploader.h */,
 				5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */,
+				5819E65918C7D108003361B3 /* GLPGroupUploader.h */,
+				5819E65A18C7D108003361B3 /* GLPGroupUploader.m */,
 			);
 			name = Processors;
 			sourceTree = "<group>";
@@ -3308,6 +3330,8 @@
 				581C311F188F068600BAA082 /* GLPCategoryDao.m */,
 				5844293718BCDCBD00DFEAF4 /* GLPCommentDao.h */,
 				5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */,
+				5819E65F18C7E58E003361B3 /* GLPGroupDao.h */,
+				5819E66018C7E58E003361B3 /* GLPGroupDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -3337,6 +3361,8 @@
 				581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */,
 				5844293A18BCE1EE00DFEAF4 /* GLPCommentDaoParser.h */,
 				5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */,
+				5819E65C18C7E3FC003361B3 /* GLPGroupDaoParser.h */,
+				5819E65D18C7E3FC003361B3 /* GLPGroupDaoParser.m */,
 			);
 			name = DaoParser;
 			sourceTree = "<group>";
@@ -3780,6 +3806,7 @@
 				806E3D841832B1960063AACE /* NotificationButtonBackground.png in Resources */,
 				802DCE4018AA32C200A23511 /* notification1.json in Resources */,
 				80B2A4311833C8C7002AB1F0 /* timeline_new_post_indicator_arrow.png in Resources */,
+				5819E65418C7AE14003361B3 /* selected_segment.png in Resources */,
 				58901ED818B183BE0025F233 /* mypost_btn_selected.png in Resources */,
 				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				58E3DAC3188405CC00B9B048 /* hot_air_balloon.png in Resources */,
@@ -3823,6 +3850,7 @@
 				5866F16518844869007484CF /* hot_air_balloon_night.png in Resources */,
 				580A639018184CAB00AC8009 /* default_user_image3.png in Resources */,
 				589EAD3318A449DF005B2F4C /* sign_in.png in Resources */,
+				5819E65518C7AE14003361B3 /* uselected_segment.png in Resources */,
 				802DCE4D18AA885600A23511 /* internal_notification_cell_new_friend.png in Resources */,
 				58DAD7801859FBD20016D838 /* proximity-7-old@2x.png in Resources */,
 			);
@@ -3888,6 +3916,7 @@
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
 				5832C4C918998563004FC4F6 /* UIImage+StackBlur.m in Sources */,
 				58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */,
+				5819E65B18C7D108003361B3 /* GLPGroupUploader.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
 				58FB7CB11856548A002C6A00 /* ProfileButtonsTableViewCell.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
@@ -3934,6 +3963,7 @@
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
 				C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
+				5819E65E18C7E3FC003361B3 /* GLPGroupDaoParser.m in Sources */,
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				806E3D881832B1960063AACE /* TSMessageView.m in Sources */,
 				80C8BA591810340E004F70DB /* GLPUserDao.m in Sources */,
@@ -4065,6 +4095,7 @@
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
 				806E3D751832B1960063AACE /* TSMessage.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
+				5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
 				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
@@ -4096,6 +4127,7 @@
 				58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */,
 				807D5EBD188DEE8700673F01 /* GLPWebSocketClient.m in Sources */,
 				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
+				5819E66118C7E58E003361B3 /* GLPGroupDao.m in Sources */,
 				802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
 				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,

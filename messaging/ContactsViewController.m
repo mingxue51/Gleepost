@@ -25,6 +25,7 @@
 #import "GroupViewController.h"
 #import "CreateNewGroupCell.h"
 #import "GroupCell.h"
+#import "NewGroupViewController.h"
 
 @interface ContactsViewController ()
 
@@ -45,6 +46,8 @@
 @property (strong, nonatomic) NSArray *groupSections;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *groupsContactsSegment;
+
 @end
 
 @implementation ContactsViewController
@@ -62,6 +65,8 @@
     [self registerViews];
     
     [self configureTableView];
+    
+    [self configureSegment];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -131,6 +136,34 @@
     
     
     //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+}
+
+-(void)configureSegment
+{
+//    [self.groupsContactsSegment setTintColor:[UIColor whiteColor]];
+    
+    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    
+    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor lightGrayColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+    
+    
+    
+    
+    
+//    UIColor *newSelectedTintColor = [UIColor lightGrayColor];
+//    [[[self.groupsContactsSegment subviews] objectAtIndex:1] setTintColor:[AppearanceHelper defaultGleepostColour]];
+//    [[[self.groupsContactsSegment subviews] objectAtIndex:1] setBackgroundColor:newSelectedTintColor];
+    
+    
+    
+//    [self.groupsContactsSegment setTintColor:[AppearanceHelper defaultGleepostColour]];
+//    
+//    [self.groupsContactsSegment setBackgroundColor:newSelectedTintColor];
+    
+    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"uselected_segment"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"selected_segment"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+    [self.groupsContactsSegment setDividerImage:[[UIImage alloc] init] forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 }
 
 -(void)configTabbar
@@ -408,6 +441,24 @@
     }];
 }
 
+-(void)createNewGroupWithGroup:(GLPGroup *)group
+{
+    [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup* group) {
+        
+        if(success)
+        {
+            DDLogInfo(@"Group with name: %@ created.", group.name);
+            
+            [self reloadNewGroupWithGroup:group];
+        }
+        else
+        {
+            DDLogInfo(@"Fail to create group with name: %@.", group.name);
+        }
+        
+    }];
+}
+
 #pragma mark - Selectors
 
 - (IBAction)barSegmentTouched:(id)sender
@@ -415,6 +466,22 @@
     UISegmentedControl *segment = sender;
     
     _isContactsView = segment.selectedSegmentIndex;
+    
+    
+//    for (int i=0; i<[segment.subviews count]; i++)
+//    {
+//        if ([[segment.subviews objectAtIndex:i]isSelected] )
+//        {
+//            UIColor *tintcolor=[AppearanceHelper defaultGleepostColour];
+//            [[segment.subviews objectAtIndex:i] setTintColor:tintcolor];
+//        }
+//        else
+//        {
+//            [[segment.subviews objectAtIndex:i] setTintColor:[UIColor lightGrayColor]];
+//        }
+//    }
+    
+    
     
     [self.tableView reloadData];
     
@@ -592,7 +659,7 @@
             
             GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
             
-            [cell setName:currentGroup.name withImageUrl:@"" andRemoteKey:currentGroup.remoteKey];
+            [cell setGroupData:currentGroup];
             
             return cell;
 
@@ -724,8 +791,23 @@
 
 -(void)groupCreatedWithData:(GLPGroup *)group
 {
-    //Add new group to the table view.
-    [self reloadNewGroupWithGroup:group];
+    [self createNewGroupWithGroup:group];
+}
+
+-(void)popUpCreateView
+{
+    //Pop up the creation view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    NewGroupViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupViewController"];
+    
+//    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+//    [navigationController setNavigationBarHidden:YES];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [cvc setDelegate:self];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
 }
 
 

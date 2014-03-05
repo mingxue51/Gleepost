@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GroupDeletedDelegate.h"
 
-@interface GroupCell : UITableViewCell
+@interface GroupCell : UITableViewCell <UIAlertViewDelegate>
 
--(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl andRemoteKey:(int)groupRemoteKey;
+-(void)setGroupData:(GLPGroup *)groupData;
 -(void)setDelegate:(UIViewController <GroupDeletedDelegate> *)delegate;
 
 @end

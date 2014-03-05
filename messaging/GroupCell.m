@@ -19,6 +19,8 @@
 
 @property (weak, nonatomic) UIViewController <GroupDeletedDelegate> *delegate;
 
+@property (strong, nonatomic) GLPGroup *groupData;
+
 @end
 
 
@@ -43,25 +45,25 @@
     // Configure the view for the selected state
 }
 
--(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl andRemoteKey:(int)groupRemoteKey
+-(void)setGroupData:(GLPGroup *)groupData
 {
-    NSLog(@"Create Elements");
+    _groupData = groupData;
     
     //Add user's profile image.
-    [_groupName setText:name];
+    [_groupName setText:groupData.name];
     
-    _groupName.tag = groupRemoteKey;
+    _groupName.tag = groupData.remoteKey;
     
     //Add user's name.
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
     
-    if([imageUrl isEqualToString:@""])
+    if([groupData.groupImageUrl isEqualToString:@""] || !groupData.groupImageUrl)
     {
         [_groupImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
     else
     {
-        [_groupImage setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"]];
     }
 }
 
@@ -74,8 +76,32 @@
 
 - (IBAction)quitGroup:(id)sender
 {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to leave the group?" message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Leave",nil];
+    
+//    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    if(buttonIndex == 0)
+    {
+        return;
+    }
+    
+    
+    [self quitFromGroup];
+}
+
+
+#pragma mark - Client
+
+-(void)quitFromGroup
+{
     [[WebClient sharedInstance] quitFromAGroupWithRemoteKey:_groupName.tag callback:^(BOOL success) {
-       
+        
         if(success)
         {
             DDLogInfo(@"User not in group: %@ anymore", _groupName.text);

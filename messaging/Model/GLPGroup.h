@@ -12,6 +12,8 @@
 @interface GLPGroup : GLPEntity
 
 @property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) NSString *description;
 @property (strong, nonatomic) NSString *groupImageUrl;
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;

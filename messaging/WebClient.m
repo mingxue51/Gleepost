@@ -625,12 +625,12 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)createGroupWithName:(NSString *)groupName callback:(void (^) (BOOL success, GLPGroup *group))callbackBlock
+-(void)createGroupWithGroup:(GLPGroup *)group callback:(void (^) (BOOL success, GLPGroup *group))callbackBlock
 {
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
     
-    [params setObject:groupName forKey:@"name"];
+    [params setObject:group.name forKey:@"name"];
     
     [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

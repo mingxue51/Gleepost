@@ -11,8 +11,10 @@
 
 @protocol GroupCreatedDelegate <NSObject>
 
-@required
-
+@optional
 -(void)groupCreatedWithData:(GLPGroup *)group;
+
+@optional
+-(void)popUpCreateView;
 
 @end

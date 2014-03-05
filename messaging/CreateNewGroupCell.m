@@ -55,11 +55,14 @@ const float NEW_GROUP_CELL_HEIGHT = 55;
 
 - (IBAction)createNewGroup:(id)sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Group name" message:@"Please enter the name of your new group" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Create",nil];
     
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [_delegate popUpCreateView];
     
-    [alert show];
+//    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Group name" message:@"Please enter the name of your new group" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Create",nil];
+//    
+//    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+//    
+//    [alert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -87,20 +90,7 @@ const float NEW_GROUP_CELL_HEIGHT = 55;
 
 -(void)executeGroupCreationWithName:(NSString *)groupName
 {
-    [[WebClient sharedInstance] createGroupWithName:groupName callback:^(BOOL success, GLPGroup* group) {
-        
-        if(success)
-        {
-            DDLogInfo(@"Group with name: %@ created.", groupName);
-            
-            [_delegate groupCreatedWithData: group];
-        }
-        else
-        {
-            DDLogInfo(@"Fail to create group with name: %@.", groupName);
-        }
-        
-    }];
+
 }
 
 @end
