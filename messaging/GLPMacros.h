@@ -88,4 +88,6 @@ v.frame.size.width, v.frame.size.height)
 #define CGRectMoveY(v, offset) \
 v.frame = CGRectSetY(v, v.frame.origin.y + offset)
 
+#define IS_IPHONE_5  ([[UIScreen mainScreen] bounds].size.height == 568) ? YES : NO
+
 #endif

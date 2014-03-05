@@ -19,10 +19,11 @@
 #import "GLPNetworkManager.h"
 #import "GLPLiveConversationsManager.h"
 #import "GLPProfileLoader.h"
+#import "UICKeyChainStore.h"
 
 @implementation GLPLoginManager
 
-+ (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password callback:(void (^)(BOOL success, NSString *errorMessage))callback
++ (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password shouldRemember:(BOOL)shouldRemember callback:(void (^)(BOOL success, NSString *errorMessage))callback
 {
     [[WebClient sharedInstance] loginWithName:identifier password:password andCallbackBlock:^(BOOL success, GLPUser *user, NSString *token, NSDate *expirationDate, NSString *errorMessage) {
         
@@ -36,8 +37,6 @@
         NSAssert(expirationDate, @"User expiration date can't be null");
         
         NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
-        
-  
         
         // fetch additional info
         // user details
@@ -58,7 +57,16 @@
                 
                 userWithDetials.email = identifier;
                 
-                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:shouldRemember] forKey:@"login.shouldremember"];
+                
+                if(shouldRemember) {
+                    [UICKeyChainStore setString:identifier forKey:@"user.email"];
+                    [UICKeyChainStore setString:password forKey:@"user.password"];
+                } else {
+                    [UICKeyChainStore removeAllItems];
+                }
+                
+                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
                 
                 callback(YES, errorMessage);
             }];
@@ -66,7 +74,7 @@
     }];
 }
 
-+ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts
++ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate contacts:(NSArray *)contacts
 {
     [[DatabaseManager sharedInstance] initDatabase];
     

@@ -225,7 +225,7 @@ static NSString * const kCustomURLHost      = @"verify";
                     [WebClientHelper showStandardLoaderWithTitle:@"Logging in" forView:self.window.rootViewController.view];
                     
                     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                    [GLPLoginManager loginWithIdentifier:[userDefaults authParameterName] andPassword:[userDefaults authParameterPass] callback:^(BOOL success, NSString *errorMessage) {
+                    [GLPLoginManager loginWithIdentifier:[userDefaults authParameterName] andPassword:[userDefaults authParameterPass] shouldRemember:NO callback:^(BOOL success, NSString *errorMessage) {
                         [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
                         
                         if (success) {

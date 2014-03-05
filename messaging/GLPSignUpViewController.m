@@ -242,7 +242,7 @@
 
 -(IBAction)loginUser:(id)sender
 {
-    [super loginUserFromLoginScreen];
+    [super loginUserFromLoginScreen:NO];
 //    
 //    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
 //    

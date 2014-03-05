@@ -10,14 +10,14 @@
 
 @interface GLPRegisterViewController : UIViewController <UITextFieldDelegate>
 
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
 -(NSString*)email;
 
 -(NSString*)password;
 
-//-(void)loginUserFromLoginScreenWithImage:(UIImage*)profileImage;
-
--(void)loginUserFromLoginScreen;
-
+-(void)loginUserFromLoginScreen:(BOOL)shouldRemember;
 
 -(BOOL)areEmailPassValid;
 

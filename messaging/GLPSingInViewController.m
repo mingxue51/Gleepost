@@ -10,12 +10,19 @@
 #import "WebClientHelper.h"
 #import "GLPLoginManager.h"
 #import "WebClient.h"
+#import "UICKeyChainStore.h"
 
 @interface GLPSingInViewController ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
 @property (weak, nonatomic) IBOutlet UILabel *forgotPasswordMsgLbl;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
+@property (weak, nonatomic) IBOutlet UIButton *rememberMeButton;
 
+@property (assign, nonatomic) BOOL shouldRememberMe;
+
+- (IBAction)rememberMeButtonClick:(id)sender;
 
 @end
 
@@ -27,35 +34,68 @@
 	
     [super setDefaultTextToEmailAndPassFields];
     
+    if(!IS_IPHONE_5) {
+        CGFloat offset = -88;
+        CGRectMoveY(_submitButton, offset);
+        CGRectMoveY(_forgotPasswordButton, offset);
+    }
+    
+    [self configureRememberMe];
 }
 
-#pragma mark - Selectors
+- (void)configureRememberMe
+{
+    NSNumber *rememberMeNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"login.shouldremember"];
+    _shouldRememberMe = rememberMeNumber ? [rememberMeNumber boolValue] : NO;
+    
+    if(_shouldRememberMe) {
+        NSString *email = [UICKeyChainStore stringForKey:@"user.email"];
+        if(email) {
+            self.emailTextField.text = email;
+            [self.emailTextField resignFirstResponder];
+            [self.passwordTextField becomeFirstResponder];
+        }
+    }
+    
+    [self updateRememberMe];
+}
+
+- (void)updateRememberMe
+{
+    UIImage *selectedImage = [UIImage imageNamed:@"login_checkbox_checked"];
+    UIImage *unselectedImage = [UIImage imageNamed:@"login_checkbox_unchecked"];
+    
+    UIImage *current, *opposite;
+    
+    if(_shouldRememberMe) {
+        current = selectedImage;
+        opposite = unselectedImage;
+    } else {
+        current = unselectedImage;
+        opposite = selectedImage;
+    }
+    
+    [_rememberMeButton setImage:current forState:UIControlStateNormal];
+    [_rememberMeButton setImage:opposite forState:UIControlStateHighlighted];
+}
+
+
+#pragma mark - Actions
 
 - (IBAction)login:(id)sender
 {
-    
-    //Check e-mail.
-    
-//    if(![super isEmalValid])
-//    {
-//        [WebClientHelper showStandardEmailError];
-//        
-//        return;
-//    }
-    
-    //Check password.
-    
-//    if(![super isPasswordValid])
-//    {
-//        [WebClientHelper showStandardPasswordError];
-//        
-//        return;
-//        
-//    }
-    
-    [super loginUserFromLoginScreen];
+    [super loginUserFromLoginScreen:_shouldRememberMe];
 }
 
+- (IBAction)rememberMeButtonClick:(id)sender
+{
+    _shouldRememberMe = !_shouldRememberMe;
+    [self updateRememberMe];
+}
+
+
+
+// What is that ?!
 //TODO: Call this method.
 
 -(void)configureNavigationBar
@@ -95,11 +135,5 @@
     }
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

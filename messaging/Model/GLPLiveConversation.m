@@ -10,14 +10,4 @@
 
 @implementation GLPLiveConversation
 
-- (NSArray *)messages
-{
-    
-}
-
-- (void)addMessage:(GLPMessage *)message
-{
-    
-}
-
 @end

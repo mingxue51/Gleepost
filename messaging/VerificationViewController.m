@@ -104,7 +104,7 @@
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:self.eMailPass[0] andPassword:self.eMailPass[1] callback:^(BOOL success, NSString *errorMessage) {
+    [GLPLoginManager loginWithIdentifier:self.eMailPass[0] andPassword:self.eMailPass[1] shouldRemember:NO callback:^(BOOL success, NSString *errorMessage) {
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {

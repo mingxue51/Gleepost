@@ -19,9 +19,9 @@
 
 @interface GLPRegisterViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+
 
 
 @end
@@ -61,11 +61,11 @@
 
 #pragma mark - Client
 
--(void)loginUserFromLoginScreen
+-(void)loginUserFromLoginScreen:(BOOL)shouldRemember
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
     
-    [GLPLoginManager loginWithIdentifier:_emailTextField.text andPassword:_passwordTextField.text callback:^(BOOL success, NSString *errorMessage) {
+    [GLPLoginManager loginWithIdentifier:_emailTextField.text andPassword:_passwordTextField.text shouldRemember:shouldRemember callback:^(BOOL success, NSString *errorMessage) {
         
         [WebClientHelper hideStandardLoaderForView:self.view];
         

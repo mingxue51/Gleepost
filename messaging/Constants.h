@@ -45,7 +45,7 @@
 #define GLP_BASE_URL                                GLP_BASE_SERVER_URL
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
-#define GLP_APP_FONT_BOLD                                @"Khmer UI"
+#define GLP_APP_FONT_BOLD                           @"Khmer UI"
 #define GLP_UNIVERS_LIGHT_BOLD                      @"Univers 45 Light"
 #define GLP_UNIVERS_CE_LIGHT                        @"Univers CE 45 Light"
 #define GLP_TITLE_FONT                              @"Whitney-Medium"
