@@ -24,6 +24,7 @@
 #import "GLPGroupManager.h"
 #import "GroupViewController.h"
 #import "CreateNewGroupCell.h"
+#import "GroupCell.h"
 
 @interface ContactsViewController ()
 
@@ -59,6 +60,8 @@
     [self configNavigationBar];
     
     [self registerViews];
+    
+    [self configureTableView];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -82,9 +85,28 @@
     [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
     
-    
     [self.contactsTableView setTableFooterView:[[UIView alloc] init]];
+    
+//    [self setCustomBackgroundToTableView];
 
+}
+
+-(void)configureTableView
+{
+    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+    
+    
+}
+
+-(void)setCustomBackgroundToTableView
+{
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
+    
+    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
+    
+    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+//    [self.tableView setBackgroundView:backImgView];
 }
 
 #pragma mark - Configuration
@@ -158,6 +180,8 @@
 -(void)registerViews
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"CreateGroupCell" bundle:nil] forCellReuseIdentifier:@"CreateGroupCellIdentifier"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"GroupCell" bundle:nil] forCellReuseIdentifier:@"GroupCellIdentifier"];
+
 }
 
 -(void)initialiseObjects
@@ -182,8 +206,7 @@
     _groups = [[NSMutableArray alloc] init];
     self.groupsStr = [[NSMutableArray alloc] init];
     
-    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+
 }
 
 
@@ -354,8 +377,6 @@
 //    }];
 }
 
-//TODO: When it will be supported by serve we need to change the method from getGroup to getGroups.
-
 -(void)loadGroups
 {
     
@@ -365,9 +386,23 @@
         {
             _groups = groups.mutableCopy;
             
-            [self showGroups];
+//            if(_groups.count == 0)
+//            {
+//                
+//                
+//                //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
+//
+//            }
+//            else
+//            {
+                [self showGroups];
+                
+                [self.contactsTableView reloadData];
+//            }
             
-            [self.contactsTableView reloadData];
+        }
+        else
+        {
         }
         
     }];
@@ -414,6 +449,12 @@
         _categorisedGroups = [result objectForKey:@"CategorisedGroups"];
         _groupSections = [result objectForKey:@"Sections"];
     }
+    else
+    {
+        _groupsStr = [[NSMutableArray alloc] init];
+        _categorisedGroups = [[NSMutableDictionary alloc] init];
+        _groupSections = [[NSMutableArray alloc] init];
+    }
 }
 
 -(void)reloadNewGroupWithGroup:(GLPGroup *)group
@@ -433,10 +474,13 @@
     }
     else
     {
+        DDLogInfo(@"Number of sections: %d", _groupSections.count);
+        
         return _groupSections.count+1;
     }
     
 }
+
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
@@ -509,7 +553,7 @@
 {
     static NSString *CellIdentifier = @"ContactCell";
     static NSString *CreateGroupCellIdentifier = @"CreateGroupCellIdentifier";
-    
+    static NSString *GroupCellIdentifier = @"GroupCellIdentifier";
     
     if(_isContactsView)
     {
@@ -537,13 +581,18 @@
         }
         else
         {
-            ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            
+            GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellIdentifier forIndexPath:indexPath];
+            
+//            ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
+            [cell setDelegate:self];
+            
             NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section - 1]];
             
             GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
             
-            [cell setName:currentGroup.name withImageUrl:@""];
+            [cell setName:currentGroup.name withImageUrl:@"" andRemoteKey:currentGroup.remoteKey];
             
             return cell;
 
@@ -637,12 +686,16 @@
 {
     if(indexPath.row == 0 && indexPath.section == 0)
     {
-        return 50.0f;
+        return NEW_GROUP_CELL_HEIGHT;
     }
     
     return 48.0f;
 }
 
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    
+//}
 
 
 //Call this when there is a need to pass elements to the next controller.
@@ -667,9 +720,17 @@
 
 #pragma mark - Group Created Delegate
 
+//TODO: Make those methods more efficient.
+
 -(void)groupCreatedWithData:(GLPGroup *)group
 {
     //Add new group to the table view.
+    [self reloadNewGroupWithGroup:group];
+}
+
+
+-(void)groupDeletedWithData:(GLPGroup *)group
+{
     [self reloadNewGroupWithGroup:group];
 }
 

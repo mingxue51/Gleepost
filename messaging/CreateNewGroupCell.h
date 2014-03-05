@@ -12,6 +12,8 @@
 
 @interface CreateNewGroupCell : UITableViewCell <UIAlertViewDelegate>
 
+extern const float NEW_GROUP_CELL_HEIGHT;
+
 -(void)setDelegate:(UIViewController<GroupCreatedDelegate> *)delegate;
 
 @end

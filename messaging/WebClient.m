@@ -647,6 +647,24 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)quitFromAGroupWithRemoteKey:(int)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
+{
+    
+    NSString *path = [NSString stringWithFormat:@"profile/networks/%d", groupRemoteKey];
+    
+    
+    
+    [self deletePath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        callbackBlock(NO);
+        
+    }];
+}
+
 /* CONVERSATIONS */
 
 //- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock

@@ -17,6 +17,9 @@
 
 @implementation CreateNewGroupCell
 
+const float NEW_GROUP_CELL_HEIGHT = 55;
+
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

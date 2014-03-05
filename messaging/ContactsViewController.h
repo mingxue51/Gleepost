@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "GroupCreatedDelegate.h"
+#import "GroupDeletedDelegate.h"
 
-@interface ContactsViewController : UITableViewController <GroupCreatedDelegate>
+@interface ContactsViewController : UITableViewController <GroupCreatedDelegate, GroupDeletedDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sections;
 
