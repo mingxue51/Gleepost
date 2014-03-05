@@ -108,8 +108,10 @@
 @property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
 @property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
-//Goups.
+//Groups.
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
+@property (assign, nonatomic) BOOL groupsMode;
+
 
 @end
 
@@ -269,6 +271,8 @@ const float TOP_OFFSET = 219.0f;
     self.commentCreated = NO;
     
     self.postIndexToReload = -1;
+    
+    self.groupsMode = NO;
 }
 
 
@@ -620,31 +624,6 @@ const float TOP_OFFSET = 219.0f;
 }
 
 
-- (UIImage*)blur:(UIImage*)theImage
-{
-    // create our blurred image
-    CIContext *context = [CIContext contextWithOptions:nil];
-    CIImage *inputImage = [CIImage imageWithCGImage:theImage.CGImage];
-    
-    // setting up Gaussian Blur (we could use one of many filters offered by Core Image)
-    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
-    [filter setValue:inputImage forKey:kCIInputImageKey];
-    [filter setValue:[NSNumber numberWithFloat:15.0f] forKey:@"inputRadius"];
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];
-    
-    // CIGaussianBlur has a tendency to shrink the image a little,
-    // this ensures it matches up exactly to the bounds of our original image
-    CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
-    
-    return [UIImage imageWithCGImage:cgImage];
-    
-    // if you need scaling
-    // return [[self class] scaleIfNeeded:cgImage];
-}
-
-
-
-
 #pragma mark - Navigation bar
 
 -(void) setButtonsToNavigationBar
@@ -822,12 +801,32 @@ const float TOP_OFFSET = 219.0f;
 
 - (void)loadEarlierPostsFromPullToRefresh
 {
-    [self loadEarlierPostsAndSaveScrollingState:NO];
+    
+    //Added to support groups' feed.
+    
+    if(_groupsMode)
+    {
+        [self loadEarlierGroupsPostsAndSaveScrollingState:NO];
+    }
+    else
+    {
+        [self loadEarlierPostsAndSaveScrollingState:NO];
+    }
 }
 
 - (void)loadEarlierPostsFromCron
 {
-    [self loadEarlierPostsAndSaveScrollingState:YES];
+    //Added to support groups' feed.
+    
+    if(_groupsMode)
+    {
+        [self loadEarlierGroupsPostsAndSaveScrollingState:YES];
+    }
+    else
+    {
+        [self loadEarlierPostsAndSaveScrollingState:YES];
+    }
+    
 }
 
 - (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
@@ -989,11 +988,19 @@ const float TOP_OFFSET = 219.0f;
     
     [self startLoading];
     
+    if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+    {
+        self.posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy;
+        
+        [self.tableView reloadData];
+    }
     
     [GLPGroupManager loadInitialPostsWithGroupId:[SessionManager sharedInstance].user.networkId remoteCallback:^(BOOL success, NSArray *remotePosts) {
        
         if(success)
         {
+            [[CampusWallGroupsPostsManager sharedInstance] setPosts:remotePosts.mutableCopy];
+            
             self.posts = remotePosts.mutableCopy;
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
@@ -1008,6 +1015,78 @@ const float TOP_OFFSET = 219.0f;
     }];
 }
 
+-(void)loadEarlierGroupsPostsAndSaveScrollingState:(BOOL)scrollingState
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    // take the last remote post
+    GLPPost *remotePost = nil;
+    
+    NSMutableArray *notUploadedPosts = [[NSMutableArray alloc] init];
+    
+    if(self.posts.count > 0) {
+        // first is the most recent
+        for(GLPPost *p in self.posts) {
+            
+            if(p.remoteKey == 0)
+            {
+                [notUploadedPosts addObject:p];
+            }
+            
+            if(p.remoteKey != 0) {
+                remotePost = p;
+                break;
+            }
+        }
+    }
+    
+    [self startLoading];
+    
+    
+    //TODO change that when it will be supported from server.
+    
+    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
+        [self stopLoading];
+        
+        if(!success) {
+            [self showLoadingError:@"Failed to load new posts"];
+            return;
+        }
+        
+        if(posts.count > 0) {
+            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+            
+            //New methodology of loading images.
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+            
+            
+            // update table view and keep the scrolling state
+            if(scrollingState) {
+                // delay the update if user is in scrolling state
+                // Not need because we use performselector which areis deprioritized during scrolling
+                //                if(self.tableViewInScrolling) {
+                //                    self.shouldLoadNewPostsAfterScrolling = YES;
+                //                    self.postsNewRowsCountToInsertAfterScrolling += posts.count; // add new posts count to possibly non 0 count, if scrolling is still enabled after two reloads for instance
+                //                } else {
+                //                    [self updateTableViewWithNewPosts:posts.count];
+                //                }
+                
+                // do not care about the user is in scrolling state, see commented code below
+                [self updateTableViewWithNewPosts:posts.count];
+                
+                // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
+                self.insertedNewRowsCount += posts.count;
+            }
+            
+            // or scroll to the top
+            else {
+                [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+            }
+        }
+    }];
+}
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
@@ -1966,11 +2045,15 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)loadGroupsFeed
 {
+    _groupsMode = YES;
+    
     [self loadInitialGroupsPosts];
 }
 
 -(void)loadRegularPosts
 {
+    _groupsMode = NO;
+    
     [self loadInitialPosts];
 }
 

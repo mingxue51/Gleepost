@@ -655,9 +655,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 + (GLPGroup *)parseGroupFromJson:(NSDictionary *)json
-{
-    DDLogDebug(@"JSON GROUP: %@", json);
-    
+{    
     return [[GLPGroup alloc] initWithName:json[@"name"] andRemoteKey:[json[@"id"] integerValue]];
     
 }

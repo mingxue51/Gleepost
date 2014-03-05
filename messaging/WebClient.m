@@ -625,6 +625,28 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)createGroupWithName:(NSString *)groupName callback:(void (^) (BOOL success, GLPGroup *group))callbackBlock
+{
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:groupName forKey:@"name"];
+    
+    [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
+        
+        callbackBlock(YES, group);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+
+        
+    }];
+}
+
 /* CONVERSATIONS */
 
 //- (void)getConversationsWithCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock

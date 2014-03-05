@@ -11,7 +11,7 @@
 
 @interface GLPPostManager : NSObject
 
-extern NSInteger const kGLPNumberOfPosts;
+//extern NSInteger const kGLPNumberOfPosts;
 
 + (void)loadInitialPostsWithLocalCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback;
 +(void)loadRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback;

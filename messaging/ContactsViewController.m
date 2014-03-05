@@ -23,6 +23,7 @@
 #import "GLPGroup.h"
 #import "GLPGroupManager.h"
 #import "GroupViewController.h"
+#import "CreateNewGroupCell.h"
 
 @interface ContactsViewController ()
 
@@ -56,6 +57,8 @@
     [self initialiseObjects];
     
     [self configNavigationBar];
+    
+    [self registerViews];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -152,6 +155,11 @@
     }
 }
 
+-(void)registerViews
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"CreateGroupCell" bundle:nil] forCellReuseIdentifier:@"CreateGroupCellIdentifier"];
+}
+
 -(void)initialiseObjects
 {
     //Init categorised users dictionary.
@@ -173,6 +181,9 @@
     self.isContactsView = NO;
     _groups = [[NSMutableArray alloc] init];
     self.groupsStr = [[NSMutableArray alloc] init];
+    
+    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
 }
 
 
@@ -347,26 +358,6 @@
 
 -(void)loadGroups
 {
-//    int networkKey = [SessionManager sharedInstance].user.networkId;
-//    
-//    
-//    [[WebClient sharedInstance] getGroupDescriptionWithId:networkKey withCallbackBlock:^(BOOL success, GLPGroup *group) {
-//       
-//        if(success)
-//        {
-//            _groups = [[NSMutableArray alloc] initWithObjects:group, nil];
-//            
-//            [self showGroups];
-//            
-//            [self.contactsTableView reloadData];
-//        }
-//        else
-//        {
-//            [WebClientHelper showStandardError];
-//        }
-//        
-//        
-//    }];
     
     [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
        
@@ -425,6 +416,10 @@
     }
 }
 
+-(void)reloadNewGroupWithGroup:(GLPGroup *)group
+{
+    [self loadGroups];
+}
 
 #pragma mark - Table view data source
 
@@ -438,7 +433,7 @@
     }
     else
     {
-        return _groupSections.count;
+        return _groupSections.count+1;
     }
     
 }
@@ -447,11 +442,13 @@
 {
     if (_isContactsView)
     {
-        
         return self.panelSections;
     }
     else
     {
+//        NSMutableArray *panelSec = self.panelSections.mutableCopy;
+//        [panelSec setObject:@"-" atIndexedSubscript:0];
+        
         return self.panelSections;
     }
 }
@@ -469,7 +466,12 @@
     }
     else
     {
-        return [NSString stringWithFormat:@"  %@", [[_groupSections objectAtIndex:section] uppercaseString]];
+        if(section == 0)
+        {
+            return nil;
+        }
+        
+        return [NSString stringWithFormat:@"  %@", [[_groupSections objectAtIndex:section-1] uppercaseString]];
     }
     
 }
@@ -487,9 +489,18 @@
     }
     else
     {
-        NSArray *sectionArray = [self.groupsStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.groupSections objectAtIndex:section]]];
+
+        if(section == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            NSArray *sectionArray = [self.groupsStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.groupSections objectAtIndex:section-1]]];
+
+            return [sectionArray count];
+        }
         
-        return [sectionArray count];
     }
 
 }
@@ -497,30 +508,53 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ContactCell";
-    ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CreateGroupCellIdentifier = @"CreateGroupCellIdentifier";
+    
     
     if(_isContactsView)
     {
+        ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+        
         NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
         
         GLPContact *currentContact = [currentUsers objectAtIndex:indexPath.row];
         
         [cell setName:currentContact.user.name withImageUrl:currentContact.user.profileImageUrl];
         
+        return cell;
+
     }
     else
     {
-        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section]];
-        
-        GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
-        
-        [cell setName:currentGroup.name withImageUrl:@""];
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            CreateNewGroupCell *groupCell = [tableView dequeueReusableCellWithIdentifier:CreateGroupCellIdentifier forIndexPath:indexPath];
+            
+            [groupCell setDelegate:self];
+            
+            return groupCell;
+        }
+        else
+        {
+            ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+            NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section - 1]];
+            
+            GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
+            
+            [cell setName:currentGroup.name withImageUrl:@""];
+            
+            return cell;
+
+        }
+
         
 
     }
     
 
-    return cell;
+    return nil;
 }
 
 /*
@@ -584,7 +618,12 @@
     }
     else
     {
-        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section]];
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            return;
+        }
+        
+        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section-1]];
         
         self.selectedGroup = [currentGroups objectAtIndex:indexPath.row];
         
@@ -592,6 +631,16 @@
     }
     
 
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0 && indexPath.section == 0)
+    {
+        return 50.0f;
+    }
+    
+    return 48.0f;
 }
 
 
@@ -616,11 +665,13 @@
     }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return 450;
-//}
+#pragma mark - Group Created Delegate
 
+-(void)groupCreatedWithData:(GLPGroup *)group
+{
+    //Add new group to the table view.
+    [self reloadNewGroupWithGroup:group];
+}
 
 /**
  

@@ -15,7 +15,7 @@
 
 @implementation GLPPostManager
 
-NSInteger const kGLPNumberOfPosts = 20;
+//NSInteger const kGLPNumberOfPosts = 20;
 
 // load only local earlier posts
 + (void)loadLocalPostsBefore:(GLPPost *)post callback:(void (^)(NSArray *posts))callback

@@ -51,6 +51,7 @@
 #define GLP_TITLE_FONT                              @"Whitney-Medium"
 #define GLP_MESSAGE_FONT                            @"HelveticaNeue"
 
+#define kGLPNumberOfPosts                           20
 
 // DDLog
 #ifdef ENV_DEBUG

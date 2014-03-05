@@ -51,9 +51,30 @@ static CampusWallGroupsPostsManager *instance = nil;
     _posts = [[NSMutableArray alloc] init];
 }
 
+#pragma mark -
+
 #pragma mark - Modifiers
 
+-(void)setPosts:(NSMutableArray *)posts
+{
+    _posts = posts;
+}
 
-#pragma mark - 
+#pragma mark - Accessors
+
+-(GLPPost *)postAtIndex:(int)index
+{
+    return [_posts objectAtIndex:index];
+}
+
+-(NSArray *)allPosts
+{
+    return _posts;
+}
+
+-(BOOL)arePostsEmpty
+{
+    return (_posts.count == 0);
+}
 
 @end

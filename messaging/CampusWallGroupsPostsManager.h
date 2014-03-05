@@ -7,9 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLPPost.h"
 
 @interface CampusWallGroupsPostsManager : NSObject
 
 +(CampusWallGroupsPostsManager* )sharedInstance;
+
+-(void)setPosts:(NSMutableArray *)posts;
+-(GLPPost *)postAtIndex:(int)index;
+-(BOOL)arePostsEmpty;
+-(NSArray *)allPosts;
 
 @end

@@ -12,6 +12,7 @@
 
 @implementation GLPGroupManager
 
+
 #pragma mark - Client methods
 
 + (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success/*, BOOL remain*/, NSArray *remotePosts))remoteCallback
@@ -78,6 +79,116 @@
 //    }];
 }
 
+
++ (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
+{
+    NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
+    
+    [[WebClient sharedInstance] getPostsAfter:nil withGroupId:remoteKey callback:^(BOOL success, NSArray *posts) {
+       
+        if(!success) {
+            callback(NO, NO, nil);
+            return;
+        }
+        
+        
+        // take only new posts
+        NSMutableArray *newPosts = [NSMutableArray array];
+        for (GLPPost *newPost in posts) {
+            
+            if(newPost.remoteKey == post.remoteKey) {
+                break;
+            }
+            
+//            if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
+//            {
+//                continue;
+//            }
+            
+            //If newPost is contained to already posted posts then continue.
+            //Avoid duplications.
+            //            if([GLPPostManager isPost:newPost containedInArray:posts])
+            //            {
+            //                continue;
+            //            }
+            
+            
+            
+            [newPosts addObject:newPost];
+        }
+        
+        //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
+        
+        NSLog(@"remote posts %d", newPosts.count);
+        
+        if(!newPosts || newPosts.count == 0) {
+            callback(YES, NO, nil);
+            return;
+        }
+        
+        // only new posts loaded, means it may remain some
+        BOOL remain = newPosts.count == posts.count;
+        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            for (GLPPost *newPost in newPosts) {
+//                [GLPPostDao save:newPost inDb:db];
+//            }
+//        }];
+        
+        callback(YES, remain, newPosts);
+        
+    }];
+}
+
++ (void)loadPreviousPostsAfter:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
+{
+    NSLog(@"load posts after %d - %@", post.remoteKey, post.content);
+    
+//    __block NSArray *localEntities = nil;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = post ? [GLPPostDao findLastPostsAfter:post inDb:db] : [GLPPostDao findLastPostsInDb:db];
+//    }];
+    
+//    NSLog(@"local posts %d", localEntities.count);
+    
+//    if(localEntities.count > 0) {
+//        // delay for infime ms because fuck ios development
+//        double delayInSeconds = 0.1;
+//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//            callback(YES, YES, localEntities);
+//        });
+//        
+//        return;
+//    }
+    
+    [[WebClient sharedInstance] getPostsAfter:post withGroupId:remoteKey callback:^(BOOL success, NSArray *posts) {
+       
+        if(!success) {
+            callback(NO, NO, nil);
+            return;
+        }
+        
+        
+        NSLog(@"remote posts %d", posts.count);
+        
+        if(!posts || posts.count == 0) {
+            callback(YES, NO, nil);
+            return;
+        }
+        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            for(GLPPost *post in posts) {
+//                [GLPPostDao save:post inDb:db];
+//            }
+//        }];
+        
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+        
+        callback(YES, remains, posts);
+    }];
+
+}
 
 #pragma mark - Processing methods
 
