@@ -20,6 +20,7 @@
 #import "GLPLiveConversationsManager.h"
 #import "GLPProfileLoader.h"
 #import "UICKeyChainStore.h"
+#import "GLPPushManager.h"
 
 @implementation GLPLoginManager
 
@@ -57,15 +58,7 @@
                 
                 userWithDetials.email = identifier;
                 
-                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:shouldRemember] forKey:@"login.shouldremember"];
-                
-                if(shouldRemember) {
-                    [UICKeyChainStore setString:identifier forKey:@"user.email"];
-                    [UICKeyChainStore setString:password forKey:@"user.password"];
-                } else {
-                    [UICKeyChainStore removeAllItems];
-                }
-                
+                [self rememberUser:shouldRemember withIdentifier:identifier andPassword:password];
                 [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
                 
                 callback(YES, errorMessage);
@@ -121,6 +114,12 @@
     return YES;
 }
 
+// Auto login with expired token
++ (BOOL)shouldPerformAutoLoginRequest
+{
+    return [[SessionManager sharedInstance] isUserSessionExists];
+}
+
 + (void)performAfterLoginForUser:(GLPUser *)user
 {
     DDLogInfo(@"Logged in user remote key: %d", user.remoteKey);
@@ -134,23 +133,40 @@
 
 + (void)logout
 {
-    [[SessionManager sharedInstance] deregisterPushFromServerWithCallBackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            [[GLPNetworkManager sharedInstance] stopNetworkOperations];
-            [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
-            
-            [[GLPLiveConversationsManager sharedInstance] clear];
-            [[SessionManager sharedInstance] cleanSession];
-            [[DatabaseManager sharedInstance] dropDatabase];
-            
-            [[GLPProfileLoader sharedInstance] initialiseLoader];
-        }
-    }];
+    NSDictionary *authParams = [[SessionManager sharedInstance].authParameters copy];
     
+    [[GLPNetworkManager sharedInstance] stopNetworkOperations];
+    [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
+    
+    [[GLPLiveConversationsManager sharedInstance] clear];
+    [[SessionManager sharedInstance] cleanSession];
+    [[DatabaseManager sharedInstance] dropDatabase];
+    
+    [[GLPProfileLoader sharedInstance] initialiseLoader];
+    
+    [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
+}
 
+
+# pragma mark - Remember user
+
++ (void)rememberUser:(BOOL)shouldRemember withIdentifier:(NSString *)identifier andPassword:(NSString *)password
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:shouldRemember] forKey:@"login.shouldremember"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
+    if(shouldRemember) {
+        [UICKeyChainStore setString:identifier forKey:@"user.email"];
+        [UICKeyChainStore setString:password forKey:@"user.password"];
+    } else {
+        [UICKeyChainStore removeAllItems];
+    }
+}
+
++ (BOOL)isUserRemembered
+{
+    NSNumber *rememberMeNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"login.shouldremember"];
+    return rememberMeNumber ? [rememberMeNumber boolValue] : NO;
 }
 
 @end

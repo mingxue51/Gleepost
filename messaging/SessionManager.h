@@ -22,13 +22,12 @@
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate;
 - (BOOL)isSessionValid;
 - (BOOL)isLogged;
+- (BOOL)isUserSessionExists;
+- (BOOL)isUserTokenValid;
 - (NSUInteger)validUserRemoteKey;
 - (void)restoreUser:(GLPUser *)user;
 - (void)cleanSession;
-- (void)registerPushToken:(NSData *)token;
--(void)deregisterPushFromServerWithCallBackBlock:(void (^)(BOOL success))callback;
 -(BOOL)isFirstTimeLoggedIn;
-//-(void)playSound;
 -(void)firstTimeLoggedInActivate;
 
 @end

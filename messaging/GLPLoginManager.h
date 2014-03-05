@@ -14,5 +14,6 @@
 + (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password shouldRemember:(BOOL)shouldRemember callback:(void (^)(BOOL success, NSString *errorMessage))callback;
 + (BOOL)performAutoLogin;
 + (void)logout;
++ (BOOL)isUserRemembered;
 
 @end

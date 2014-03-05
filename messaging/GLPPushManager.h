@@ -10,4 +10,9 @@
 
 @interface GLPPushManager : NSObject
 
++ (GLPPushManager *)sharedInstance;
+- (void)savePushToken:(NSData *)token;
+- (void)registerPushTokenWithAuthParams:(NSDictionary *)authParams;
+- (void)unregisterPushTokenWithAuthParams:(NSDictionary *)authParams;
+
 @end

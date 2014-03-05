@@ -14,6 +14,7 @@
 #import "WebClient.h"
 #import "GLPThemeManager.h"
 #import <AVFoundation/AVFoundation.h>
+#import "GLPPushManager.h"
 
 @interface SessionManager()
 
@@ -21,8 +22,6 @@
 @property (strong, nonatomic) GLPUser *user;
 @property (strong, nonatomic) NSString *dataPlistPath;
 @property (strong, nonatomic) NSMutableDictionary *data;
-@property (strong, nonatomic) NSString *pushToken;
-@property (assign, nonatomic) BOOL pushTokenRegistered;
 @property (strong, nonatomic) NSDictionary *authParameters;
 
 @property (strong, nonatomic) NSString *dataPlistLoggedInPath;
@@ -40,8 +39,6 @@
 @synthesize token = _token;
 @synthesize user = _user;
 @synthesize authParameters = _authParameters;
-@synthesize pushToken=_pushToken;
-@synthesize pushTokenRegistered=_pushTokenRegistered;
 @synthesize currentCategory = _currentCategory;
 
 NSString * const GLPSessionFileName = @"GLPSession.plist";
@@ -77,8 +74,6 @@ static SessionManager *instance = nil;
     self.dataPlistLoggedInPath = [rootPath2 stringByAppendingString:GLPLoggedInUsersFileName];
     
     _currentUserFirstTime = NO;
-    
-    _pushTokenRegistered = NO;
     _authParameters = [NSDictionary dictionary];
     
     //Set default category.
@@ -95,16 +90,9 @@ static SessionManager *instance = nil;
 {
     NSAssert(!self.user, @"An user is already registered in the session");
     
-    //TODO: Lukasz I added that because when the user was on the app and tried to log out and
-    //      login again we never save the token.
-    
-//    [self loadPushTokenIfExist];
-    
     self.user = user;
     self.token = token;
     self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", user.remoteKey], @"token": token};
-    
-    DDLogDebug(@"REGISTER USER");
     
     // save session
     self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
@@ -114,14 +102,9 @@ static SessionManager *instance = nil;
     
     [self saveData];
 
-    // register push if ready
-    if(_pushToken && !_pushTokenRegistered) {
-        [self registerPushOnServer];
-    }
-    
+    [[GLPPushManager sharedInstance] registerPushTokenWithAuthParams:_authParameters];
     
     //Check if it is user's first time.
-    
     [self firstTimeLoggedIn];
 
 }
@@ -154,6 +137,20 @@ static SessionManager *instance = nil;
 - (BOOL)isLogged
 {
     return _user != nil;
+}
+
+- (BOOL)isUserSessionExists
+{
+    return self.data[@"user.remoteKey"] && self.data[@"user.token"] && self.data[@"user.expirationDate"];
+}
+
+- (BOOL)isUserTokenValid
+{
+    NSDate *expirationDate = [[DateFormatterHelper createDefaultDateFormatter] dateFromString:self.data[@"user.expirationDate"]];
+    
+    // expired
+    return [[NSDate date] compare:expirationDate] == NSOrderedAscending;
+
 }
 
 - (NSUInteger)validUserRemoteKey
@@ -297,130 +294,6 @@ static SessionManager *instance = nil;
 {
     _currentUserFirstTime = NO;
 }
-
-#pragma mark - Push token
-
-- (void)registerPushToken:(NSData *)token
-{
-    // convert from base64 to string
-    const unsigned *tokenBytes = [token bytes];
-    self.pushToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
-                          ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
-                          ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
-                          ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
-    
-    //Add token to the plist file.
-    self.data[@"user.pushToken"] = self.pushToken;
-    
-    DDLogInfo(@"Push Token: %@", self.data[@"user.pushToken"]);
-    
-    [self saveData];
-    
-    // register to the server if user is logged in, otherwise wait for the login
-    if(self.user) {
-        [self registerPushOnServer];
-    }
-}
-
-- (void)registerPushOnServer
-{
-    // do not register twice
-    if(_pushTokenRegistered) {
-        return;
-    }
-    
-    NSAssert(self.pushToken, @"Push token to register on server is null");
-    
-    [[WebClient sharedInstance] registerPushToken:self.pushToken callback:^(BOOL success) {
-        _pushTokenRegistered = success;
-        NSLog(@"Push token register success: %d", success);
-    }];
-}
-
--(void)deregisterPushFromServerWithCallBackBlock:(void (^)(BOOL success))callback
-{
-    if(ON_DEVICE)
-    {
-        _pushTokenRegistered = NO;
-        
-        if(self.data[@"user.pushToken"])
-        {
-            [self savePushToken:self.data[@"user.pushToken"]];
-        }
-        else
-        {
-            //Load token
-            self.data[@"user.pushToken"] = [self loadPushTokenIfExist];
-        }
-        
-        
-        
-        DDLogDebug(@"Data before deregister: %@",self.data);
-        
-        [[WebClient sharedInstance] deregisterPushToken:self.data[@"user.pushToken"] callback:^(BOOL success) {
-            
-            
-            callback(YES);
-            
-        }];
-    }
-    else
-    {
-        callback(YES);
-    }
-    
-
-}
-
--(void)savePushToken:(NSString *)pushToken
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
-    
-    NSLog(@"PATH SAVED: %@", documentsDirectory);
-
-    
-    NSError *error;
-    BOOL succeed = [pushToken writeToFile:[documentsDirectory stringByAppendingPathComponent:@"token.txt"]
-                              atomically:YES encoding:NSUTF8StringEncoding error:&error];
-    if (!succeed){
-        // Handle error here
-    }
-}
-
--(NSString *)loadPushTokenIfExist
-{
-//    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"token" ofType:@"txt"];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0]; // Get documents directory
-    
-    NSString *finalPath = [NSString stringWithFormat:@"%@/%@",documentsDirectory,@"token.txt"];
-    
-    NSError *error;
-    NSString *fileContents = [NSString stringWithContentsOfFile:finalPath encoding:NSUTF8StringEncoding error:&error];
-    
-    if (error)
-    {
-        NSLog(@"Error reading file: %@", error.localizedDescription);
-    }
-    
-    
-    return fileContents;
-}
-
-//-(void)playSound
-//{
-//    if(ON_DEVICE)
-//    {
-//        NSURL *clickURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/mario.mp3", [[NSBundle mainBundle] resourcePath]]];
-//        _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:clickURL error:nil];
-//        
-//        [_audioPlayer play];
-//    }
-//
-//}
-
 
 
 @end

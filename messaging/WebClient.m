@@ -232,58 +232,29 @@ static WebClient *instance = nil;
 
 #pragma mark - Push notifications
 
-- (void)registerPushToken:(NSString *)pushToken callback:(void (^)(BOOL success))callback
+- (void)registerPushToken:(NSString *)pushToken authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success))callback
 {
-    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:authParams];
     params[@"type"] = @"ios";
     params[@"device_id"] = pushToken;
     
     [self postPath:@"devices" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"push register response: %@", responseObject);
         callback(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callback(NO);
     }];
 }
 
-/**
- Server is not responding anything. That's why we are returning success = YES even if failure is triggered.
- If pushToken is empty method is returning unsuccessful.
- 
- */
--(void)deregisterPushToken:(NSString*)pushToken callback:(void (^)(BOOL success))callback
+-(void)unregisterPushToken:(NSString*)pushToken authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success))callback;
 {
-    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
-  
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:authParams];
     NSString *path = [NSString stringWithFormat:@"devices/%@", pushToken];
     
-    DDLogDebug(@"WEB CLIENT: %@", self);
-    
-    if(pushToken)
-    {
-        [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-            DDLogDebug(@"deregisterPushToken: %@",responseObject);
-            
-            callback(YES);
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-            DDLogDebug(@"deregisterPushToken: %@",error);
-
-            
-            callback(YES);
-            
-        }];
-    }
-    else
-    {
-        DDLogDebug(@"No push token.");
-
-        callback(NO);
-    }
-    
-
+    [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        callback(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(YES);
+    }];
 }
 
 

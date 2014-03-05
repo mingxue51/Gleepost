@@ -1520,7 +1520,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="BEF56809-7FEF-4E92-954A-58CBC788AC89" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="7D19ECEC-C4F3-4372-B567-DF67109C24C7" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -1698,7 +1698,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <!--Sing In View Controller-->
         <scene sceneID="GoN-mC-yup">
             <objects>
-                <viewController id="ILo-t4-uE9" customClass="GLPSingInViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPSingInViewController" id="ILo-t4-uE9" customClass="GLPSingInViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n6D-VK-LlH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2859,7 +2859,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="BEF56809-7FEF-4E92-954A-58CBC788AC89" width="34" height="34">
+        <image name="7D19ECEC-C4F3-4372-B567-DF67109C24C7" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

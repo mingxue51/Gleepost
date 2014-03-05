@@ -33,6 +33,7 @@
 #import "GLPConversationViewController.h"
 #import "GLPNotificationManager.h"
 #import "NSNotificationCenter+Utils.h"
+#import "GLPPushManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -71,6 +72,11 @@ static NSString * const kCustomURLHost      = @"verify";
         initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
     } else {
         initVC = [storyboard instantiateInitialViewController];
+        
+        if([GLPLoginManager isUserRemembered]) {
+            UIViewController *signInVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSingInViewController"];
+            [(UINavigationController *)initVC pushViewController:signInVC animated:NO];
+        }
     }
 
 
@@ -134,7 +140,7 @@ static NSString * const kCustomURLHost      = @"verify";
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
 	NSLog(@"Push token registered on Apple servers: %@", deviceToken);
-    [[SessionManager sharedInstance] registerPushToken:deviceToken];
+    [[GLPPushManager sharedInstance] savePushToken:deviceToken];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
