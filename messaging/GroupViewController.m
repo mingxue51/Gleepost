@@ -25,9 +25,10 @@
 #import "NewPostViewController.h"
 #import "WebClientHelper.h"
 
+
 @interface GroupViewController ()
 
-@property (strong, nonatomic) NSArray *posts;
+@property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSArray *members;
 @property (assign, nonatomic) BOOL commentCreated;
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -153,11 +154,15 @@ const int NUMBER_OF_ROWS = 2;
 -(void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+
 
 }
 
@@ -182,6 +187,41 @@ const int NUMBER_OF_ROWS = 2;
     }
 }
 
+-(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+    
+    int index = 2;
+    
+    DDLogDebug(@"Post Uploaded: %@", urlImage);
+    
+    GLPPost *uploadedPost = nil;
+    
+    for(GLPPost* p in self.posts)
+    {
+        if(key == p.key)
+        {
+            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            p.remoteKey = remoteKey;
+            uploadedPost = p;
+            //            p.tempImage = nil;
+            break;
+        }
+        ++index;
+    }
+    
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+    //    [self.tableView reloadData];
+    
+    
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
@@ -189,6 +229,30 @@ const int NUMBER_OF_ROWS = 2;
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
+}
+
+- (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
+{
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    for(int i = 2; i < count+2; i++) {
+        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+    //The condition is added to prevent error when there are no posts in the table view.
+    
+    if(self.posts.count == 1 || !self.posts)
+    {
+        [self.tableView reloadData];
+    }
+    else
+    {
+        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+    
+    
+    //    [self scrollToTheTop];
+    
 }
 
 #pragma mark - Table view data source
@@ -400,7 +464,7 @@ const int NUMBER_OF_ROWS = 2;
         {
             DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
             
-            _posts = remotePosts;
+            _posts = remotePosts.mutableCopy;
             
             [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
             
@@ -444,6 +508,31 @@ const int NUMBER_OF_ROWS = 2;
 -(void)reloadNewImagePostWithPost:(GLPPost *)post
 {
     DDLogDebug(@"POST UPLOADED: %@", post);
+
+//    DDLogDebug(@"Is loading: %d", self.isLoading);
+    
+    //TODO: REMOVED! IT'S IMPORTANT!
+    
+    //    if(self.isLoading) {
+    //        return;
+    //    }
+    
+//    self.isLoading = YES;
+    
+    //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
+    
+    [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+    
+    [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+    
+    
+//    self.isLoading = NO;
+    
+    //Bring the fake navigation bar to from because is hidden by new cell.
+    //    [self.tableView bringSubviewToFront:self.reNavBar];
+    
 }
 
 #pragma mark - View image delegate
