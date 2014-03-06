@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPGroup.h"
+#import "GLPPost.h"
 
 @interface GLPGroupManager : NSObject
 
@@ -15,6 +16,8 @@
 + (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success/*, BOOL remain*/, NSArray *remotePosts))remoteCallback;
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback;
+
++ (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 
 + (void)deleteGroup:(GLPGroup *)group;
 

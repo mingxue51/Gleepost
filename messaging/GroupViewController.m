@@ -24,6 +24,8 @@
 #import "WebClient.h"
 #import "NewPostViewController.h"
 #import "WebClientHelper.h"
+#import "GLPNewElementsIndicatorView.h"
+
 
 
 @interface GroupViewController ()
@@ -36,6 +38,12 @@
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (assign, nonatomic) int selectedUserId;
 @property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
+
+//Properties for refresh loader.
+@property (assign, nonatomic) BOOL isLoading;
+@property (assign, nonatomic) int insertedNewRowsCount;
+@property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
+
 
 @end
 
@@ -62,6 +70,7 @@ const int NUMBER_OF_ROWS = 2;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    [self configureTableView];
     
     [self registerTableViewCells];
     
@@ -121,6 +130,13 @@ const int NUMBER_OF_ROWS = 2;
 
 }
 
+-(void)configureTableView
+{
+    // refresh control
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+}
+
 -(void)initialiseObjects
 {
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
@@ -162,8 +178,6 @@ const int NUMBER_OF_ROWS = 2;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
-
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -222,6 +236,24 @@ const int NUMBER_OF_ROWS = 2;
     
 }
 
+#pragma mark - GLPNewElementsIndicatorView
+
+- (void)showNewElementsIndicatorView
+{
+    if(!self.elementsIndicatorView.hidden) {
+        return;
+    }
+    
+    self.elementsIndicatorView.alpha = 0;
+    self.elementsIndicatorView.hidden = NO;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.elementsIndicatorView.alpha = 1;
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
@@ -253,6 +285,37 @@ const int NUMBER_OF_ROWS = 2;
     
     //    [self scrollToTheTop];
     
+}
+
+- (void)updateTableViewWithNewPosts:(int)count
+{
+    CGPoint tableViewOffset = [self.tableView contentOffset];
+    [UIView setAnimationsEnabled:NO];
+    
+    int heightForNewRows = 0;
+    
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    
+    for (NSInteger i = 0; i < count; i++) {
+        
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        [rowsInsertIndexPath addObject:tempIndexPath];
+        
+        heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+    }
+    
+    tableViewOffset.y += heightForNewRows;
+    
+    [self.tableView setContentOffset:tableViewOffset animated:NO];
+    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    
+    [UIView setAnimationsEnabled:YES];
+    
+    // display the new elements indicator if we are not on top
+    NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+    if(firstVisibleIndexPath.row != 0) {
+        [self showNewElementsIndicatorView];
+    }
 }
 
 #pragma mark - Table view data source
@@ -501,6 +564,103 @@ const int NUMBER_OF_ROWS = 2;
 //    
 //    [self.tableView reloadData];
     
+}
+
+- (void)loadEarlierPostsFromPullToRefresh
+{
+    //Added to support groups' feed.
+    [self loadEarlierPostsAndSaveScrollingState:NO];
+}
+
+- (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    // take the last remote post
+    GLPPost *remotePost = nil;
+    
+    NSMutableArray *notUploadedPosts = [[NSMutableArray alloc] init];
+    
+    if(self.posts.count > 0) {
+        // first is the most recent
+        for(GLPPost *p in self.posts) {
+            
+            if(p.remoteKey == 0)
+            {
+                [notUploadedPosts addObject:p];
+            }
+            
+            if(p.remoteKey != 0) {
+                remotePost = p;
+                break;
+            }
+        }
+    }
+    
+    [self startLoading];
+    
+    
+    [GLPGroupManager loadRemotePostsBefore:remotePost withGroupRemoteKey:_group.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
+        [self stopLoading];
+
+        if(!success) {
+            //                [self showLoadingError:@"Failed to load new posts"];
+            DDLogInfo(@"Failed to load new posts");
+            
+            return;
+        }
+        
+        if(posts.count > 0)
+        {
+            
+            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+            
+            //New methodology of loading images.
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+            
+            
+            // update table view and keep the scrolling state
+            if(saveScrollingState)
+            {
+                // do not care about the user is in scrolling state, see commented code below
+                [self updateTableViewWithNewPosts:posts.count];
+                
+                // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
+                self.insertedNewRowsCount += posts.count;
+            }
+        }
+        
+        // or scroll to the top
+        else
+        {
+           [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+        }
+        
+    }];
+    
+
+
+}
+
+
+#pragma mark - Request management
+
+- (void)startLoading
+{
+    self.isLoading = YES;
+    
+    [self.refreshControl beginRefreshing];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)stopLoading
+{
+    self.isLoading = NO;
+    
+    [self.refreshControl endRefreshing];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - New Post Delegate
