@@ -156,7 +156,7 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        [self updateCommentSendingData:entity inDb:db];
+        [GLPCommentDao updateCommentSendingData:entity inDb:db];
         
     }];
 }

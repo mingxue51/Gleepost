@@ -9,6 +9,7 @@
 #import "NewGroupViewController.h"
 #import "UIPlaceHolderTextView.h"
 #import "WebClientHelper.h"
+#import "GroupOperationManager.h"
 
 @interface NewGroupViewController ()
 
@@ -24,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *addImageBtn;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIProgressView *progress;
+
+@property (strong, nonatomic) NSDate *timestamp;
 
 @end
 
@@ -103,6 +106,10 @@
     {
         group.name = _groupNameTextField.text;
         
+        [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
+        
+        group.finalImage = _groupImage;
+        
         [_delegate groupCreatedWithData:group];
 
         [self dismissModalView:nil];
@@ -134,8 +141,13 @@
     
     _groupImage = photo;
     
-    DDLogDebug(@"SELECTED PHOTO: %@", _groupImage);
     
+    _timestamp = [NSDate date];
+    
+    //Add image to image uploader to start the uploading.
+    [[GroupOperationManager sharedInstance] uploadImage:_groupImage withTimestamp:_timestamp];
+    
+        
 //    [_postUploader uploadImageToQueue:self.imgToUpload];
     //[_postUploader startUploadingImage:self.imgToUpload];
 }

@@ -15,10 +15,10 @@
 {
     entity = [[GLPGroup alloc] init];
     
-    entity.name = [resultSet stringForColumn:@"name"];
+    entity.name = [resultSet stringForColumn:@"title"];
     entity.groupImageUrl = [resultSet stringForColumn:@"image_url"];
-    entity.title = [resultSet stringForColumn:@"title"];
     entity.description = [resultSet stringForColumn:@"description"];
+    entity.sendStatus = [resultSet intForColumn:@"send_status"];
     
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     

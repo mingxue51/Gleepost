@@ -21,6 +21,9 @@
 
 @property (strong, nonatomic) GLPGroup *groupData;
 
+@property (weak, nonatomic) IBOutlet UIButton *exitButton;
+@property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
+
 @end
 
 
@@ -57,13 +60,33 @@
     //Add user's name.
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
     
-    if([groupData.groupImageUrl isEqualToString:@""] || !groupData.groupImageUrl)
+    [ShapeFormatterHelper setRoundedView:_uploadedIndicator toDiameter:_uploadedIndicator.frame.size.height];
+
+    if(groupData.finalImage)
+    {
+        [_groupImage setImage:groupData.finalImage];
+    }
+    else if([groupData.groupImageUrl isEqualToString:@""] || !groupData.groupImageUrl)
     {
         [_groupImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
     else
     {
         [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"]];
+    }
+    
+    if(groupData.sendStatus == kSendStatusLocal)
+    {
+        //Hide exit and show blink indicator.
+        [self hideExitButton];
+        [self blinkIndicator];
+
+    }
+    else
+    {
+        //Show exit button.
+        [self hideIndicator];
+        [self showExitButton];
     }
 }
 
@@ -93,6 +116,77 @@
     
     
     [self quitFromGroup];
+}
+
+
+#pragma mark - Online indicator
+
+-(void)hideIndicator
+{
+    [self.uploadedIndicator setAlpha:1.0];
+    
+    [_exitButton setAlpha:0.0f];
+    [_exitButton setHidden:NO];
+
+    [UIView animateWithDuration:0.5 delay:0.0 options:(UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut) animations:^{
+        
+        [_exitButton setAlpha:1.0f];
+        [self.uploadedIndicator setAlpha:0.0];
+        
+    } completion:^(BOOL finished) {
+        
+        [_exitButton setAlpha:1.0f];
+
+        [_uploadedIndicator setHidden:YES];
+        
+    }];
+    
+}
+
+-(void)blinkIndicator
+{
+    [_uploadedIndicator setHidden:NO];
+    
+    [self.uploadedIndicator setAlpha:1.0];
+    
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat | UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        [self.uploadedIndicator setAlpha:0.0];
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)hideExitButton
+{
+    [UIView animateWithDuration:0.5f animations:^{
+        
+        [_exitButton setAlpha:0.0f];
+
+        
+    } completion:^(BOOL finished){
+       
+        [_exitButton setHidden:YES];
+        
+    }];
+    
+}
+
+-(void)showExitButton
+{
+    [_exitButton setHidden:NO];
+
+    
+    [UIView animateWithDuration:0.5f animations:^{
+        
+        [_exitButton setAlpha:1.0f];
+        
+        
+    } completion:^(BOOL finished){
+        
+        
+    }];
 }
 
 

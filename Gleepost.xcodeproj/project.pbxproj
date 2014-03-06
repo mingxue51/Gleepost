@@ -355,6 +355,9 @@
 		58B1161D180D8491000E9555 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B1161C180D8491000E9555 /* ProfileView.m */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
 		58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865E1180DA2B100BB18AF /* NotificationCell.m */; };
+		58B90F1918C81B9300FA0955 /* GroupOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1818C81B9300FA0955 /* GroupOperationManager.m */; };
+		58B90F1C18C81DF800FA0955 /* GLPOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1B18C81DF800FA0955 /* GLPOperationManager.m */; };
+		58B90F1F18C8216300FA0955 /* GroupUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */; };
 		58B9507318B2AF1E00EBA231 /* b.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58B9507218B2AF1E00EBA231 /* b.wav */; };
 		58C09A1B185B2CDD00648EB4 /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C09A1A185B2CDD00648EB4 /* bell.png */; };
 		58CEA1E818C69560009FDF2C /* CampusWallGroupsPostsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */; };
@@ -1113,6 +1116,12 @@
 		58B865DE180D9F4800BB18AF /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		58B865E0180DA2B100BB18AF /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		58B865E1180DA2B100BB18AF /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
+		58B90F1718C81B9300FA0955 /* GroupOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupOperationManager.h; sourceTree = "<group>"; };
+		58B90F1818C81B9300FA0955 /* GroupOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupOperationManager.m; sourceTree = "<group>"; };
+		58B90F1A18C81DF800FA0955 /* GLPOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPOperationManager.h; sourceTree = "<group>"; };
+		58B90F1B18C81DF800FA0955 /* GLPOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPOperationManager.m; sourceTree = "<group>"; };
+		58B90F1D18C8216200FA0955 /* GroupUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupUploaderManager.h; sourceTree = "<group>"; };
+		58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupUploaderManager.m; sourceTree = "<group>"; };
 		58B9507218B2AF1E00EBA231 /* b.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = b.wav; sourceTree = "<group>"; };
 		58C09A1A185B2CDD00648EB4 /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
 		58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallGroupsPostsManager.h; sourceTree = "<group>"; };
@@ -2421,6 +2430,10 @@
 				58F9C64118C5306D004A237E /* GLPGroupManager.m */,
 				58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */,
 				58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */,
+				58B90F1718C81B9300FA0955 /* GroupOperationManager.h */,
+				58B90F1818C81B9300FA0955 /* GroupOperationManager.m */,
+				58B90F1D18C8216200FA0955 /* GroupUploaderManager.h */,
+				58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */,
 			);
 			name = Groups;
 			sourceTree = "<group>";
@@ -3117,6 +3130,8 @@
 				5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */,
 				58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */,
 				58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */,
+				58B90F1A18C81DF800FA0955 /* GLPOperationManager.h */,
+				58B90F1B18C81DF800FA0955 /* GLPOperationManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -3932,6 +3947,7 @@
 				80C8BA69181043D5004F70DB /* GLPConversationDao.m in Sources */,
 				8067E6CC18152AA800A343EF /* GLPBackgroundRequestsManager.m in Sources */,
 				58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */,
+				58B90F1C18C81DF800FA0955 /* GLPOperationManager.m in Sources */,
 				584CF66D182289B500EFABB8 /* ContactsManager.m in Sources */,
 				80B2A42818338613002AB1F0 /* GLPGetNotificationsOperation.m in Sources */,
 				583E6D5B18A10E8C001076CC /* VerificationViewController.m in Sources */,
@@ -4015,6 +4031,7 @@
 				C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */,
 				5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
+				58B90F1918C81B9300FA0955 /* GroupOperationManager.m in Sources */,
 				58960EBC18A19559005FC433 /* CustomPushTransitioning.m in Sources */,
 				5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */,
 				585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */,
@@ -4052,6 +4069,7 @@
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				58752FDF18A44BC100F6F09B /* GLPSingInViewController.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
+				58B90F1F18C8216300FA0955 /* GroupUploaderManager.m in Sources */,
 				5834903E18BF80670087CC3A /* FDTakeController.m in Sources */,
 				11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,

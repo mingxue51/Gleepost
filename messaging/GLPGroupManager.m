@@ -7,13 +7,146 @@
 //
 
 #import "GLPGroupManager.h"
-#import "GLPGroup.h"
 #import "WebClient.h"
+#import "GLPGroupDao.h"
+#import "DatabaseManager.h"
 
 @implementation GLPGroupManager
 
 
-#pragma mark - Client methods
+#pragma mark - Groups methods
+
++ (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback
+{
+    
+    //Find all the groups that contain real images and save them.
+    
+    NSMutableArray *localGroupsWithImages = [[self findGroupsWithRealImagesWithGroups:groups] mutableCopy];
+    
+    NSArray *localEntities = [GLPGroupDao findGroups];
+    
+    localEntities = [self overwriteGroups:localEntities withImagesGroups:localGroupsWithImages];
+    
+    DDLogDebug(@"LOCAL GROUPS: %@", localEntities);
+
+    
+    localCallback(localEntities);
+    
+    
+    [[WebClient sharedInstance ] getGroupswithCallbackBlock:^(BOOL success, NSArray *serverGroups) {
+        
+        if(!success) {
+            remoteCallback(NO, nil);
+            return;
+        }
+        
+        
+        //Store only groups that are not exist into the database.
+
+        [GLPGroupDao saveGroups:serverGroups];
+        
+        NSArray *finalRemoteGroups = [self overwriteGroups:serverGroups withImagesGroups:localGroupsWithImages];
+        
+        DDLogDebug(@"REMOTE GROUPS: %@", finalRemoteGroups);
+        
+        remoteCallback(YES, finalRemoteGroups);
+
+     
+//        remoteCallback(YES, [GLPGroupManager addLocalGroups:localEntities toRemoteGroups:serverGroups]);
+     
+      }];
+}
+
++ (NSArray *)addLocalGroups:(NSArray *)localGroups toRemoteGroups:(NSArray *)remoteGroups
+{
+    NSMutableArray *finalGroups = remoteGroups.mutableCopy;
+    
+    for(GLPComment *localGroup in localGroups)
+    {
+        if(localGroup.remoteKey == 0)
+        {
+            [finalGroups setObject:localGroup atIndexedSubscript:0];
+        }
+    }
+    
+    return finalGroups;
+}
+
+
++(NSArray *)findGroupsWithRealImagesWithGroups:(NSArray *)groups
+{
+    NSMutableArray *finalGroups = [[NSMutableArray alloc] init];
+    
+    for(GLPGroup *group in groups)
+    {
+        if(group.finalImage)
+        {
+            [finalGroups addObject:group];
+        }
+    }
+    
+    return finalGroups;
+}
+
+
+//TODO: Inefficient code.
+
+/**
+ 
+ Overwrites all the posts that are not having real image with posts that exist in the app and have real images.
+ 
+ */
++(NSArray *)overwriteGroups:(NSArray *)groups withImagesGroups:(NSArray *)groupsImages
+{
+    NSMutableArray *finalGroups = groups.mutableCopy;
+
+    BOOL sameKey = NO;
+    
+    for(int i = 0; i<groups.count; ++i)
+    {
+//        int gKey =
+
+        GLPGroup *currentGroup = [groups objectAtIndex:i];
+        
+        for(int j = 0; j<groupsImages.count; ++j)
+        {
+//            int gImageKey = [[groupsImages objectAtIndex:j] remoteKey];
+            
+            GLPGroup *groupImage = [groupsImages objectAtIndex:j];
+
+            
+            if(groupImage.remoteKey == currentGroup.remoteKey)
+            {
+                
+                if(currentGroup.sendStatus == kSendStatusSent)
+                {
+                    groupImage = currentGroup;
+                }
+                else
+                {
+                    [finalGroups replaceObjectAtIndex:i withObject:groupImage];
+                }
+                
+                sameKey = YES;
+            }
+        }
+    }
+    
+    if(!sameKey && groupsImages.count > 0)
+    {
+        [finalGroups addObjectsFromArray:groupsImages];
+    }
+    
+    return finalGroups;
+}
+
+
++ (void)deleteGroup:(GLPGroup *)group
+{
+    [GLPGroupDao remove:group];
+}
+
+#pragma mark - Posts methods
 
 + (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success/*, BOOL remain*/, NSArray *remotePosts))remoteCallback
 {

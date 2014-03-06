@@ -11,9 +11,11 @@
 
 @interface GLPGroupDao : NSObject
 
--(void)save:(GLPGroup *)group;
--(void)remove:(GLPGroup *)group;
--(NSArray *)findGroups;
+
++(void)saveGroups:(NSArray *)groups;
++(void)save:(GLPGroup *)group;
++(void)remove:(GLPGroup *)group;
++(NSArray *)findGroups;
 +(void)updateGroupSendingData:(GLPGroup *)entity;
 
 

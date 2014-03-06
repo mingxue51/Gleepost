@@ -576,6 +576,7 @@ static WebClient *instance = nil;
         
         NSArray *groups = [RemoteParser parseGroupsFromJson:responseObject];
         
+        DDLogDebug(@"Groups: %@, RESPONCE: %@",groups, responseObject);
         
         callbackBlock(YES, groups);
         
@@ -631,6 +632,10 @@ static WebClient *instance = nil;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
     
     [params setObject:group.name forKey:@"name"];
+    [params setObject:group.groupImageUrl forKey:@"url"];
+    [params setObject:group.description forKey:@"desc"];
+    
+    DDLogDebug(@"Group to be created: %@", group.groupImageUrl);
     
     [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

@@ -74,7 +74,7 @@
     [super viewDidAppear:animated];
     
     [self loadContacts];
-    [self loadGroups];
+    [self loadGroupsWithGroup:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -92,9 +92,19 @@
     
     [self.contactsTableView setTableFooterView:[[UIView alloc] init]];
     
+    [self configNotifications];
 //    [self setCustomBackgroundToTableView];
 
 }
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
+
+}
+
 
 -(void)configureTableView
 {
@@ -172,6 +182,54 @@
     
     self.contactsTabbarItem = [items objectAtIndex:3];
 }
+
+-(void)configNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupRemoteKeyAndImage:) name:@"GLPGroupUploaded" object:nil];
+
+}
+
+#pragma mark - Notifications
+
+//-(void)updateGroupRemoteKeyAndImage:(NSNotification*)notification
+//{
+//    NSDictionary *dict = [notification userInfo];
+//    
+//    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+//    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+//    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+//    
+//    int index = 0;
+//    
+//    GLPPost *uploadedPost = nil;
+//    
+//    for(GLPPost* p in self.posts)
+//    {
+//        if(key == p.key)
+//        {
+//            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+//            p.remoteKey = remoteKey;
+//            uploadedPost = p;
+//            //            p.tempImage = nil;
+//            break;
+//        }
+//        ++index;
+//    }
+//    
+//    
+//    if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
+//    {
+//        //If the post belongs to logged in user then inform his/her profile's posts.
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
+//    }
+//    
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    
+//    //    [self.tableView reloadData];
+//    
+//    
+//}
+
 
 -(void) clearContactsUselessSections
 {
@@ -410,35 +468,71 @@
 //    }];
 }
 
--(void)loadGroups
+-(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
 {
     
-    [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
+    if(createdGroup)
+    {
+        //Add the new group in order to preserve it as is.
+        //We are doing that because the new group has a real image
+        //in order to create better user experience for the user.
+        
+        [_groups addObject:createdGroup];
+    }
+
+    
+    [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
        
-        if(success)
+        _groups = groups.mutableCopy;
+
+        [self showGroups];
+        
+        //TODO: Change that in order to avoid ovewritting of not uploaded groups.
+        
+        [self.contactsTableView reloadData];
+        
+    } remoteCallback:^(BOOL success, NSArray *groups) {
+        
+        if(!success)
         {
-            _groups = groups.mutableCopy;
-            
-//            if(_groups.count == 0)
-//            {
-//                
-//                
-//                //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
-//
-//            }
-//            else
-//            {
-                [self showGroups];
-                
-                [self.contactsTableView reloadData];
-//            }
-            
-        }
-        else
-        {
+            return;
         }
         
+        _groups = groups.mutableCopy;
+        
+        [self showGroups];
+        
+        //TODO: Change that in order to avoid ovewritting of not uploaded groups.
+        
+        [self.contactsTableView reloadData];
+        
     }];
+    
+    
+
+//    [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
+//       
+//        if(success)
+//        {
+//            _groups = groups.mutableCopy;
+//            
+////            if(_groups.count == 0)
+////            {
+////                
+////                
+////                //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
+////
+////            }
+////            else
+////            {
+//                [self showGroups];
+//                
+//                [self.contactsTableView reloadData];
+////            }
+//            
+//        }
+//        
+//    }];
 }
 
 -(void)createNewGroupWithGroup:(GLPGroup *)group
@@ -526,7 +620,7 @@
 
 -(void)reloadNewGroupWithGroup:(GLPGroup *)group
 {
-    [self loadGroups];
+    [self loadGroupsWithGroup:group];
 }
 
 #pragma mark - Table view data source
@@ -541,8 +635,6 @@
     }
     else
     {
-        DDLogInfo(@"Number of sections: %d", _groupSections.count);
-        
         return _groupSections.count+1;
     }
     
@@ -791,7 +883,9 @@
 
 -(void)groupCreatedWithData:(GLPGroup *)group
 {
-    [self createNewGroupWithGroup:group];
+    [self reloadNewGroupWithGroup:group];
+    
+//    [self createNewGroupWithGroup:group];
 }
 
 -(void)popUpCreateView
@@ -813,6 +907,8 @@
 
 -(void)groupDeletedWithData:(GLPGroup *)group
 {
+    [GLPGroupManager deleteGroup:group];
+    
     [self reloadNewGroupWithGroup:group];
 }
 
