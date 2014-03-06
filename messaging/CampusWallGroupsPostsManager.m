@@ -7,6 +7,7 @@
 //
 
 #import "CampusWallGroupsPostsManager.h"
+#import "WebClient.h"
 
 @interface CampusWallGroupsPostsManager ()
 
@@ -51,7 +52,16 @@ static CampusWallGroupsPostsManager *instance = nil;
     _posts = [[NSMutableArray alloc] init];
 }
 
-#pragma mark -
+#pragma mark - Client
+
+-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+{
+    [[WebClient sharedInstance] getPostsGroupsFeedWithCallbackBlock:^(BOOL success, NSArray *posts) {
+       
+        callbackBlock(YES, posts);
+        
+    }];
+}
 
 #pragma mark - Modifiers
 

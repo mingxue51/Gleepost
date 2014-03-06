@@ -24,6 +24,8 @@
 #import "GLPPostManager.h"
 #import "CategoryManager.h"
 #import "PickDateEventViewController.h"
+#import "GroupViewController.h"
+#import "GLPTimelineViewController.h"
 
 @interface NewPostViewController ()
 
@@ -92,6 +94,8 @@
         [self.view addSubview:imageViewBlack];
         [self.view sendSubviewToBack:imageViewBlack];
     }
+    
+    
 
     
     self.tabBarController.tabBar.hidden = NO;
@@ -116,14 +120,13 @@
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
-    
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
+//    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
 }
 
 
@@ -216,23 +219,37 @@
 
 - (IBAction)cancelButtonClick:(id)sender
 {
-    [self.delegate setNavigationBarName];
-    [self.delegate setButtonsToNavigationBar];
+//    [self.delegate setNavigationBarName];
+//    [self.delegate setButtonsToNavigationBar];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)postButtonClick:(id)sender
 {
     if (![NSString isStringEmpty:self.contentTextView.text]) {
-        [self.delegate setNavigationBarName];
-        [self.delegate setButtonsToNavigationBar];
+//        [self.delegate setNavigationBarName];
+//        [self.delegate setButtonsToNavigationBar];
         
         [self.contentTextView resignFirstResponder];
         
         
 //        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
+        GLPPost* inPost = nil;
         
-        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart andTitle:_eventTitle];
+        //Check if the post is group post or regular post.
+        if([self isGroupPost])
+        {
+            NSAssert(_group, @"Group should exist to create a new group post.");
+            
+            DDLogDebug(@"GROUP REMOTE KEY: %d", _group.remoteKey);
+            
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart title:_eventTitle andGroup:_group];
+        }
+        else
+        {
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart andTitle:_eventTitle];
+        }
+        
         
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -377,6 +394,24 @@
         
         //Pop up the time selector.
         [self performSegueWithIdentifier:@"pick date" sender:self];
+}
+
+-(BOOL)isGroupPost
+{
+    if([self.delegate isKindOfClass:[GLPTimelineViewController class]])
+    {
+        return NO;
+    }
+    else if ([self.delegate isKindOfClass:[GroupViewController class]])
+    {
+        return YES;
+    }
+    else
+    {
+        DDLogError(@"ERROR: NewPostViewController needs to be called only from GroupViewController or GLPTimelineViewController.");
+        
+        return NO;
+    }
 }
 
 -(void)deleteCategoryWithRemoteKey:(int)remoteKey

@@ -18,4 +18,6 @@
 -(BOOL)arePostsEmpty;
 -(NSArray *)allPosts;
 
+-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
+
 @end

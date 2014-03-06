@@ -328,6 +328,7 @@ static WebClient *instance = nil;
 
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
@@ -343,7 +344,7 @@ static WebClient *instance = nil;
         [params setObject:post.eventTitle forKey:@"title"];
     }
     
-    [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         //Get the post id. If user has ulpoaded an image execute the createImagePost method.
         int postRemoteKey = [RemoteParser parseIdFromJson:responseObject];
@@ -375,6 +376,18 @@ static WebClient *instance = nil;
         
         callbackBlock(NO, -1);
     }];
+}
+
+-(NSString *)pathForPost:(GLPPost *)post
+{
+    if(post.group)
+    {
+        return [NSString stringWithFormat:@"networks/%d/posts", post.group.remoteKey];
+    }
+    else
+    {
+        return @"posts";
+    }
 }
 
 
@@ -576,7 +589,7 @@ static WebClient *instance = nil;
         
         NSArray *groups = [RemoteParser parseGroupsFromJson:responseObject];
         
-        DDLogDebug(@"Groups: %@, RESPONCE: %@",groups, responseObject);
+        DDLogDebug(@"Groups: %@, RESPONSE: %@",groups, responseObject);
         
         callbackBlock(YES, groups);
         
@@ -667,6 +680,23 @@ static WebClient *instance = nil;
        
         callbackBlock(NO);
         
+    }];
+}
+
+-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+{
+    //profile/networks/posts
+    
+    [self getPath:@"profile/networks/posts" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parsePostsGroupFromJson:responseObject];
+        
+        callbackBlock(YES, posts);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
     }];
 }
 

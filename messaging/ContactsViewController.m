@@ -835,6 +835,8 @@
         
         self.selectedGroup = [currentGroups objectAtIndex:indexPath.row];
         
+        DDLogDebug(@"Selected group: %@", self.selectedGroup);
+        
         [self performSegueWithIdentifier:@"view group" sender:self];
     }
     

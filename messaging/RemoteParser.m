@@ -666,6 +666,29 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
 }
 
++ (GLPPost *)parsePostGroupFromJson:(NSDictionary *)json
+{
+    GLPPost *groupPost = [RemoteParser parsePostFromJson:json];
+
+    groupPost.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    
+    
+    return groupPost;
+    
+}
+
++ (NSArray *)parsePostsGroupFromJson:(NSArray *)jsonPosts
+{
+    NSMutableArray *groupPosts = [[NSMutableArray alloc] init];
+    
+    for(id groupPost in jsonPosts)
+    {
+        [groupPosts addObject:[RemoteParser parsePostGroupFromJson:groupPost]];
+    }
+    
+    return groupPosts;
+}
+
 #pragma mark - Contacts
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts

@@ -48,6 +48,8 @@
 // groups
 + (GLPGroup *)parseGroupFromJson:(NSDictionary *)json;
 + (NSArray *)parseGroupsFromJson:(NSArray *)json;
++ (NSArray *)parsePostsGroupFromJson:(NSArray *)jsonPosts;
+
 
 // contacts
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;

@@ -83,6 +83,9 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 }
 
 //ADDED.
+/**
+ Method used for upload regular post.
+ */
 -(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray*)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title
 {
     //Add the date to a new post.
@@ -94,6 +97,47 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.eventTitle = title;
     
     //Create a new operation.
+    
+    post = [self uploadPostWithPost:post];
+    
+//    if(_postImage)
+//    {
+//        post.date = [NSDate date];
+//        post.tempImage = _postImage;
+//        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
+//        
+//        [GLPPostManager createLocalPost:post];
+//        
+//        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
+//        
+////        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
+//    }
+//    else
+//    {
+//        [self createLocalAndUploadPost:post];
+//    }
+    
+    return post;
+}
+
+-(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andGroup:(GLPGroup *)group
+{
+    //Add information to a new post.
+    
+    GLPPost *post = [[GLPPost alloc] init];
+    post.content = content;
+    post.author = [SessionManager sharedInstance].user;
+    post.categories = categories;
+    post.dateEventStarts = eventDate;
+    post.eventTitle = title;
+    post.group = group;
+    
+    return [self uploadPostWithPost:post];
+}
+
+-(GLPPost *)uploadPostWithPost:(GLPPost *)post
+{
+    //Create a new operation.
     if(_postImage)
     {
         post.date = [NSDate date];
@@ -104,7 +148,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
         
-//        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
+        //        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
     }
     else
     {
@@ -113,6 +157,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     
     return post;
 }
+
 
 - (GLPPost *)uploadPostWithContent:(NSString *)content {
     if (content) {

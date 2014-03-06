@@ -22,6 +22,8 @@
 #import "ContactUserCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
+#import "NewPostViewController.h"
+#import "WebClientHelper.h"
 
 @interface GroupViewController ()
 
@@ -437,6 +439,13 @@ const int NUMBER_OF_ROWS = 2;
     
 }
 
+#pragma mark - New Post Delegate
+
+-(void)reloadNewImagePostWithPost:(GLPPost *)post
+{
+    DDLogDebug(@"POST UPLOADED: %@", post);
+}
+
 #pragma mark - View image delegate
 
 
@@ -547,6 +556,33 @@ const int NUMBER_OF_ROWS = 2;
 
 
 #pragma mark - Navigation
+
+- (IBAction)createNewPost:(id)sender
+{
+    if(_group.remoteKey == 0)
+    {
+        [WebClientHelper showInternetConnectionErrorWithTitle:@"It seems that the group is not uploaded yet!"];
+        
+        return;
+    }
+    
+    //Pop up the creation view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    NewPostViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+    
+    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+    //    [navigationController setNavigationBarHidden:YES];
+    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    
+    cvc.group = _group;
+    [cvc setDelegate:self];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+
 
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
