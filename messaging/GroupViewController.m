@@ -25,7 +25,7 @@
 #import "NewPostViewController.h"
 #import "WebClientHelper.h"
 #import "GLPNewElementsIndicatorView.h"
-
+#import "GLPLoadingCell.h"
 
 
 @interface GroupViewController ()
@@ -41,9 +41,16 @@
 
 //Properties for refresh loader.
 @property (assign, nonatomic) BOOL isLoading;
-@property (assign, nonatomic) int insertedNewRowsCount;
+@property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
 @property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 
+@property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
+
+
+//@property (assign, nonatomic) BOOL firstLoadSuccessful; //Not used here.
+
+@property (assign, nonatomic) BOOL tableViewInScrolling;
+@property (assign, nonatomic) int postIndexToReload;
 
 @end
 
@@ -93,6 +100,8 @@ const int NUMBER_OF_ROWS = 2;
 
     
     [self configureNavigationBar];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -127,6 +136,11 @@ const int NUMBER_OF_ROWS = 2;
     //Register contacts' cells.
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    
+    
+    
+//    [self.tableView registerNib:[UINib nibWithNibName:@"GLPLoadingCell" bundle:nil] forCellReuseIdentifier:@"LoadingCell"];
+
 
 }
 
@@ -142,6 +156,16 @@ const int NUMBER_OF_ROWS = 2;
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     self.selectedTabStatus = kGLPPosts;
     
+    
+    //Initialise.
+//    self.readyToReloadPosts = YES;
+    
+    // loading related controls
+//    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    self.isLoading = NO;
+//    self.firstLoadSuccessful = NO;
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+
 }
 
 -(void)configureNavigationBar
@@ -254,6 +278,19 @@ const int NUMBER_OF_ROWS = 2;
     }];
 }
 
+- (void)hideNewElementsIndicatorView
+{
+    if(self.elementsIndicatorView.hidden) {
+        return;
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.elementsIndicatorView.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.elementsIndicatorView.hidden = YES;
+    }];
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
@@ -330,7 +367,9 @@ const int NUMBER_OF_ROWS = 2;
 {
     if(self.selectedTabStatus == kGLPPosts)
     {
-        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count;
+        int i = (self.posts.count == 0) ? 0 : 1;
+        
+        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + i;
     }
     else
     {
@@ -344,6 +383,17 @@ const int NUMBER_OF_ROWS = 2;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Try to load previous posts.
+    if(indexPath.row-2 == self.posts.count) {
+        
+//        DDLogDebug(@"Rows: %d, Count: %d", indexPath.row, self.posts.count);
+        
+//        GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
+//        [loadingCell updateWithStatus:self.loadingCellStatus];
+//        return loadingCell;
+        
+        return [self cellWithMessage:@"Loading posts"];
+    }
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
@@ -444,6 +494,17 @@ const int NUMBER_OF_ROWS = 2;
     return nil;
 }
 
+
+- (UITableViewCell *)cellWithMessage:(NSString *)message {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.textLabel.text = message;
+    cell.textLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [UIColor grayColor];
+    cell.userInteractionEnabled = NO;
+    return cell;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -479,6 +540,13 @@ const int NUMBER_OF_ROWS = 2;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    
+    if(indexPath.row - 2 == self.posts.count) {
+        
+        return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
+    }
+    
     if(indexPath.row == 0)
     {
         return PROFILE_CELL_HEIGHT;
@@ -517,15 +585,35 @@ const int NUMBER_OF_ROWS = 2;
     return 70.0f;
 }
 
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // hide the new elements indicator if needed when we are on top
+    if(!self.elementsIndicatorView.hidden && (indexPath.row == 0 || indexPath.row < self.insertedNewRowsCount)) {
+        NSLog(@"HIDE %d - %d", indexPath.row, self.insertedNewRowsCount);
+        
+        self.insertedNewRowsCount = 0; // reset the count
+        [self hideNewElementsIndicatorView];
+    }
+    
+    //    if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusFinished) {
+
+    
+    if(indexPath.row - 2 == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
+        NSLog(@"Load previous posts cell activated");
+        [self loadPreviousPosts];
+    }
+}
+
 #pragma mark - Client
 
 -(void)loadPosts
 {
-    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey remoteCallback:^(BOOL success, NSArray *remotePosts) {
+    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
        
         if(success)
         {
-            DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
+//            DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
             
             _posts = remotePosts.mutableCopy;
             
@@ -534,6 +622,12 @@ const int NUMBER_OF_ROWS = 2;
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             
             [self.tableView reloadData];
+            
+            self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+        }
+        else
+        {
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
         }
         
     }];
@@ -555,16 +649,79 @@ const int NUMBER_OF_ROWS = 2;
         
     }];
     
-//    GLPUser *user = [[GLPUser alloc] init];
-//    
-//    user.name = @"Test Guy";
-//    user.remoteKey = [SessionManager sharedInstance].user.remoteKey;
-//    
-//    self.members = [[NSArray alloc] initWithObjects:user, nil];
-//    
-//    [self.tableView reloadData];
     
 }
+
+#pragma mark - Previous posts
+
+- (void)loadPreviousPosts
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    if(self.posts.count == 0) {
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        return;
+    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return;
+    }
+    
+    [self startLoading];
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    
+    
+    
+    [GLPGroupManager loadPreviousPostsAfter:[self.posts lastObject] withGroupRemoteKey:_group.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
+        
+        [self stopLoading];
+       
+        if(!success) {
+            self.loadingCellStatus = kGLPLoadingCellStatusError;
+            [self reloadLoadingCell];
+            return;
+        }
+        
+        self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+
+        
+        if(posts.count > 0) {
+            int firstInsertRow = self.posts.count+1;
+            
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+            
+            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
+            
+            
+            NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+            for(int i = firstInsertRow; i < self.posts.count+1; i++) {
+                [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            }
+            
+            // update table view with showing new rows and updating the loading row
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:firstInsertRow inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView endUpdates];
+            
+        } else {
+            [self reloadLoadingCell];
+        }
+        
+        
+    }];
+    
+    
+}
+
+- (void)reloadLoadingCell
+{
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.posts.count inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark - Pull to refresh methods
 
 - (void)loadEarlierPostsFromPullToRefresh
 {
@@ -667,7 +824,6 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)reloadNewImagePostWithPost:(GLPPost *)post
 {
-    DDLogDebug(@"POST UPLOADED: %@", post);
 
 //    DDLogDebug(@"Is loading: %d", self.isLoading);
     

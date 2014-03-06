@@ -995,7 +995,7 @@ const float TOP_OFFSET = 219.0f;
         [self.tableView reloadData];
     }
     
-    [GLPGroupManager loadInitialPostsWithGroupId:[SessionManager sharedInstance].user.networkId remoteCallback:^(BOOL success, NSArray *remotePosts) {
+    [GLPGroupManager loadInitialPostsWithGroupId:[SessionManager sharedInstance].user.networkId remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
        
         if(success)
         {
@@ -1506,6 +1506,7 @@ const float TOP_OFFSET = 219.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if(indexPath.row == self.posts.count) {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }

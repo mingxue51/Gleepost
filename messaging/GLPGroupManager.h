@@ -13,11 +13,13 @@
 @interface GLPGroupManager : NSObject
 
 + (NSDictionary *)processGroups:(NSArray *)groups;
-+ (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success/*, BOOL remain*/, NSArray *remotePosts))remoteCallback;
++ (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback;
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback;
 
 + (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
+
++ (void)loadPreviousPostsAfter:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 
 + (void)deleteGroup:(GLPGroup *)group;
 

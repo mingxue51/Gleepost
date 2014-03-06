@@ -148,7 +148,7 @@
 
 #pragma mark - Posts methods
 
-+ (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success/*, BOOL remain*/, NSArray *remotePosts))remoteCallback
++ (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
 {
     NSLog(@"load initial group posts with id: %d", groupId);
     
@@ -167,11 +167,14 @@
        
         if(success)
         {
-            remoteCallback(YES, posts);
+            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+
+            
+            remoteCallback(YES, remains, posts);
         }
         else
         {
-            remoteCallback(NO, nil);
+            remoteCallback(NO, NO, nil);
             return;
         }
         
