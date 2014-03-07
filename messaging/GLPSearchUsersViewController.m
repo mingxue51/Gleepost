@@ -12,6 +12,10 @@
 #import "WebClientHelper.h"
 #import "NSString+Utils.h"
 
+#import "ContactsManager.h"
+#import "SessionManager.h"
+#import "GLPPrivateProfileViewController.h"
+
 @interface GLPSearchUsersViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *searchTextfield;
@@ -26,6 +30,7 @@
 @property (assign, nonatomic) NSInteger checkUsersCount;
 @property (assign, nonatomic) NSInteger requestsCount;
 @property (assign, nonatomic) BOOL shouldAnimateEndLoading;
+@property (assign, nonatomic) NSInteger viewProfileUserRemoteKey;
 
 - (IBAction)searchButtonClick:(id)sender;
 - (IBAction)searchTextFieldChanged:(id)sender;
@@ -166,11 +171,6 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     return 43;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-
 
 # pragma mark - GLPSearchUserCellDelegate
 
@@ -190,6 +190,25 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     } else {
         _submitButton.enabled = NO;
         _countLabel.hidden = YES;
+    }
+}
+
+- (void)overlayViewClickForUser:(GLPUser *)user
+{
+    DDLogInfo(@"click");
+    _viewProfileUserRemoteKey = user.remoteKey;
+    
+    //TODO: Sil, i copy pasted this from GLPConversationViewController
+    // but it's the profile VC that should manage the access,
+    // or some independant class called GLPAccessManager or something like that
+    if(user.remoteKey == [[SessionManager sharedInstance]user].remoteKey) {
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:user.remoteKey]) {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+    else {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
 }
 
@@ -256,6 +275,20 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     CGRectSetY(_submitButton, keyboardFrameConverted.origin.y - 6 - _submitButton.frame.size.height);
     CGRectSetXY(_countLabel, 220, _submitButton.frame.origin.y);
     CGRectSetH(_tableView, _submitButton.frame.origin.y - 5 - _tableView.frame.origin.y);
+}
+
+
+# pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"view private profile"]) {
+        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
+        ppvc.selectedUserId = _viewProfileUserRemoteKey;
+        
+    }
+    else if([segue.identifier isEqualToString:@"view profile"]) {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    }
 }
 
 

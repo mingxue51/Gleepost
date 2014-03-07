@@ -43,7 +43,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2Pe-7I-8ri">
                                             <rect key="frame" x="20" y="126" width="49" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Like" image="thumbs-up.png">
+                                            <state key="normal" title="Like" image="default_user_image">
                                                 <color key="titleColor" red="0.54376594389999999" green="0.54376594389999999" blue="0.54376594389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </state>
@@ -865,7 +865,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="QKV-G9-syf">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="QKV-G9-syf">
                                 <rect key="frame" x="0.0" y="60" width="320" height="356"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -878,19 +878,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search_users_profile_image_mask" id="yNe-Wx-lDi">
-                                                    <rect key="frame" x="7" y="4" width="35" height="34"/>
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_image_bg.png" id="yNe-Wx-lDi">
+                                                    <rect key="frame" x="15" y="4" width="35" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xMq-v2-e2o">
-                                                    <rect key="frame" x="50" y="11" width="229" height="21"/>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xMq-v2-e2o">
+                                                    <rect key="frame" x="58" y="4" width="209" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GKG-Wo-6Yz">
-                                                    <rect key="frame" x="287" y="8" width="27" height="27"/>
+                                                    <rect key="frame" x="275" y="8" width="27" height="27"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <state key="normal" image="search_users_checkbox_unselected">
@@ -898,6 +898,19 @@
                                                     </state>
                                                     <connections>
                                                         <action selector="checkboxClick:" destination="ArO-hp-02e" eventType="touchUpInside" id="ICb-vI-4nl"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ky1-ly-45C">
+                                                    <rect key="frame" x="0.0" y="0.0" width="267" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <state key="normal">
+                                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="overlayViewClick:" destination="ArO-hp-02e" eventType="touchUpInside" id="4jm-yq-JCI"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -978,6 +991,8 @@
                         <outlet property="searchTextfield" destination="lqJ-sz-IEW" id="OC6-jY-ip6"/>
                         <outlet property="submitButton" destination="MfT-c7-a2k" id="WRc-lH-5WE"/>
                         <outlet property="tableView" destination="QKV-G9-syf" id="isH-ef-UX0"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="w3Q-IM-kd1"/>
+                        <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="TV3-yd-KJQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t9q-pk-LJp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1647,7 +1662,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="883C7935-ED1C-4D7B-A969-95D161776CE8" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="D1123DB4-8242-4C4A-8B46-3C4A80F81233" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2986,7 +3001,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="883C7935-ED1C-4D7B-A969-95D161776CE8" width="34" height="34">
+        <image name="D1123DB4-8242-4C4A-8B46-3C4A80F81233" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3125,6 +3140,7 @@ AAAAAAAAAAAAAAAAABw/A
         <image name="comment_image.png" width="39" height="34"/>
         <image name="connect_fb_button.png" width="588" height="136"/>
         <image name="conversation_new_notification.png" width="45" height="26"/>
+        <image name="default_user_image" width="320" height="568"/>
         <image name="default_user_image2.png" width="1000" height="1000"/>
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="finished.png" width="600" height="120"/>
@@ -3148,7 +3164,6 @@ AAAAAAAAAAAAAAAAABw/A
         <image name="proximity.png" width="30" height="30"/>
         <image name="search_users_checkbox_unselected" width="27" height="27"/>
         <image name="search_users_disabled_save_button" width="301" height="51"/>
-        <image name="search_users_profile_image_mask" width="35" height="35"/>
         <image name="search_users_textfield_background" width="301" height="44"/>
         <image name="search_users_textfield_icon" width="52" height="52"/>
         <image name="share.png" width="20" height="17"/>
@@ -3157,8 +3172,8 @@ AAAAAAAAAAAAAAAAABw/A
         <image name="sign_up.png" width="564" height="116"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="skip_button.png" width="440" height="108"/>
-        <image name="thumbs-up.png" width="320" height="568"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
+        <image name="user_image_bg.png" width="74" height="74"/>
         <image name="verified.png" width="550" height="120"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
@@ -3168,13 +3183,13 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="fah-A8-Ky9"/>
+        <segue reference="TV3-yd-KJQ"/>
+        <segue reference="w3Q-IM-kd1"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="UFN-Sk-0kH"/>
-        <segue reference="woK-8Q-gjw"/>
-        <segue reference="lQn-ic-ohV"/>
+        <segue reference="fah-A8-Ky9"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="lQn-ic-ohV"/>
     </inferredMetricsTieBreakers>
 </document>

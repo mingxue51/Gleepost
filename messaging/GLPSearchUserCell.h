@@ -12,6 +12,7 @@
 @protocol GLPSearchUserCellDelegate <NSObject>
 
 - (void)checkButtonClickForUser:(GLPUser *)user;
+- (void)overlayViewClickForUser:(GLPUser *)user;
 
 @end
 

@@ -61,7 +61,11 @@
     
     _userLabel.text = _user.name;
     
-    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"search_users_profile_image_mask"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        if(!image) {
+            return;
+        }
+        
         _profileImageView.image = [_profileImageView.image maskWithImage:[UIImage imageNamed:@"search_users_profile_image_mask"]];
     }];
     
@@ -91,12 +95,21 @@
     
 }
 
+
+# pragma mark - Actions
+
 - (IBAction)checkboxClick:(id)sender
 {
     _checked = !_checked;
     [self updateCheckbox];
     
     [_delegate checkButtonClickForUser:_user];
+}
+
+- (IBAction)overlayViewClick:(id)sender
+{
+    DDLogInfo(@"c2");
+    [_delegate overlayViewClickForUser:_user];
 }
 
 @end
