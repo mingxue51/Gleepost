@@ -137,7 +137,15 @@
     }
 }
 
+-(void)groupFeedEnabled
+{
+    [self.stanfordLbl setText:@"Groups Feed"];
+}
 
+-(void)groupFeedDisabled
+{
+    [self.stanfordLbl setText:@"Cardinal Wall"];
+}
 
 -(IBAction)clearAndReloadData:(id)sender
 {

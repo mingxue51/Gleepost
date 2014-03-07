@@ -43,9 +43,19 @@
     return YES;
 }
 
+-(BOOL)isGroupPost
+{
+    if(_group != nil)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post content: %@", self.content];
+    return [NSString stringWithFormat:@"Post content: %@ Group: %@", self.content, self.group];
 }
 
 

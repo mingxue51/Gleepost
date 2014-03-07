@@ -17,5 +17,7 @@ extern CGFloat HEIGHT_FAKE;
 @property (weak, nonatomic) GLPTimelineViewController *delegate;
 
 -(void)formatElements;
+-(void)groupFeedEnabled;
+-(void)groupFeedDisabled;
 
 @end

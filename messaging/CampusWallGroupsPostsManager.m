@@ -70,6 +70,64 @@ static CampusWallGroupsPostsManager *instance = nil;
     _posts = posts;
 }
 
+
+/**
+ 
+ Returns all the new posts if new posts exist.
+ 
+ @param posts all the posts from server.
+ 
+ @return posts that are not exist in the current posts array.
+ 
+ */
+-(NSArray *)addNewPosts:(NSMutableArray *)recentPosts
+{
+    NSMutableArray *recent = [[NSMutableArray alloc] init];
+    GLPPost *foundPost = nil;
+    BOOL found = NO;
+    
+    //Find new posts.
+    for(GLPPost *recentPost in recentPosts)
+    {
+        for(GLPPost *post in _posts)
+        {
+            if(recentPost.remoteKey == post.remoteKey)
+            {
+                found = YES;
+                break;
+            }
+        }
+        
+        if(!found)
+        {
+            [recent addObject:recentPost];
+        }
+        
+        found = NO;
+    }
+    
+    [_posts replaceObjectsInRange:NSMakeRange(0,0) withObjectsFromArray:recent];
+    DDLogDebug(@"Recent grou posts: %@", recent);
+    
+    return recent;
+    
+}
+
+//NSInteger res = [_posts indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+//    
+//    return ((GLPPost *)obj).remoteKey == post.remoteKey;
+//    
+//}];
+//
+//if(res == NSNotFound)
+//{
+//    //Add post to list.
+//    [_posts setObject:post atIndexedSubscript:0];
+//    [recentPosts addObject:post];
+//    
+//    DDLogDebug(@"New post: %@", post);
+//}
+
 #pragma mark - Accessors
 
 -(GLPPost *)postAtIndex:(int)index
@@ -85,6 +143,11 @@ static CampusWallGroupsPostsManager *instance = nil;
 -(BOOL)arePostsEmpty
 {
     return (_posts.count == 0);
+}
+
+-(int)numberOfPosts
+{
+    return _posts.count;
 }
 
 @end

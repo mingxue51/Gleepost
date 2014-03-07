@@ -34,5 +34,6 @@
 @property (strong, nonatomic) GLPGroup *group;
 
 -(BOOL) imagePost;
+-(BOOL)isGroupPost;
 
 @end

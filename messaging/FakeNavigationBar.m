@@ -70,8 +70,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
     {
         [UIView animateWithDuration:1.0f animations:^{
             
-            [self.titleLbl setText:@"Groups Feed"];
-            
+            [self groupFeedEnabled];
         }];
         
         [self.delegate loadGroupsFeed];
@@ -80,12 +79,22 @@ const CGFloat HEIGH_FAKE = 64.0f;
     {
         [UIView animateWithDuration:1.0f animations:^{
             
-            [self.titleLbl setText:@"Cardinal Wall"];
+            [self groupFeedDisabled];
             
         }];
         
         [self.delegate loadRegularPosts];
     }
+}
+
+-(void)groupFeedEnabled
+{
+    [self.titleLbl setText:@"Groups Feed"];
+}
+
+-(void)groupFeedDisabled
+{
+    [self.titleLbl setText:@"Cardinal Wall"];
 }
 
 

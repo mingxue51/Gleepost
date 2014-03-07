@@ -654,7 +654,6 @@ static WebClient *instance = nil;
 
 -(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
-    //profile/networks/posts
     
     [self getPath:@"profile/networks/posts" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

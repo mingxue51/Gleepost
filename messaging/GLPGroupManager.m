@@ -324,7 +324,28 @@
         
         callback(YES, remains, posts);
     }];
+}
 
++(void)loadGroupsFeedWithCallback:(void (^) (BOOL success, NSArray *posts))callback
+{
+    [[WebClient sharedInstance] getPostsGroupsFeedWithCallbackBlock:^(BOOL success, NSArray *posts) {
+       
+        if(success)
+        {
+            DDLogDebug(@"Feed posts: %@", posts);
+            
+            callback(YES, posts);
+            
+        }
+        else
+        {
+            DDLogError(@"Groups' posts feed not able to load");
+            
+            callback(NO, nil);
+        }
+        
+        
+    }];
 }
 
 #pragma mark - Processing methods

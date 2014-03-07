@@ -15,5 +15,7 @@
 
 -(void)setAlphaToBasicElements:(CGFloat)alpha;
 -(void)formatElements;
+-(void)groupFeedEnabled;
+-(void)groupFeedDisabled;
 
 @end

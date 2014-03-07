@@ -308,6 +308,11 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
 {
+    if(_groupsMode)
+    {
+        return;
+    }
+    
     NSDictionary *dict = [notification userInfo];
     
     int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
@@ -349,15 +354,34 @@ const float TOP_OFFSET = 219.0f;
 {
     
     GLPPost *currentPost = nil;
-    
-    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    
-    
-    if(currentPost)
+    int index = -1;
+    if(_groupsMode)
     {
-        [self refreshCellViewWithIndex:index];
+        NSArray *posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts];
+
+        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:posts];
+    }
+    else
+    {
+        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
     }
     
+    
+    if(_groupsMode && [currentPost isGroupPost])
+    {
+        if(currentPost)
+        {
+            [self refreshCellViewWithIndex:index];
+        }
+    }
+    else if(!_groupsMode && ![currentPost isGroupPost])
+    {
+        if(currentPost)
+        {
+
+            [self refreshCellViewWithIndex:index];
+        }
+    }
     
 //    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
 //    {
@@ -806,6 +830,8 @@ const float TOP_OFFSET = 219.0f;
     
     if(_groupsMode)
     {
+//        [self loadEarlierGroupsPostsAndSaveScrollingState:NO];
+        
         [self loadEarlierGroupsPostsAndSaveScrollingState:NO];
     }
     else
@@ -820,7 +846,9 @@ const float TOP_OFFSET = 219.0f;
     
     if(_groupsMode)
     {
-        [self loadEarlierGroupsPostsAndSaveScrollingState:YES];
+//        [self loadEarlierGroupsPostsAndSaveScrollingState:YES];
+        [self loadInitialGroupsPosts];
+
     }
     else
     {
@@ -990,29 +1018,60 @@ const float TOP_OFFSET = 219.0f;
     
     if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
     {
-        self.posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy;
+//        self.posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy;
+        
+        DDLogDebug(@"Feed posts: %@", [[CampusWallGroupsPostsManager sharedInstance] allPosts]);
         
         [self.tableView reloadData];
     }
     
-    [GLPGroupManager loadInitialPostsWithGroupId:[SessionManager sharedInstance].user.networkId remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
+    
+    [GLPGroupManager loadGroupsFeedWithCallback:^(BOOL success, NSArray *posts) {
        
-        if(success)
+        
+        if(!success)
         {
-            [[CampusWallGroupsPostsManager sharedInstance] setPosts:remotePosts.mutableCopy];
-            
-            self.posts = remotePosts.mutableCopy;
-            
-            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-
-            [self.tableView reloadData];
-            
-            self.firstLoadSuccessful = YES;
-            [self startReloadingCronImmediately:NO];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to load groups feed posts"];
+            [self stopLoading];
+            return;
         }
         
+        [[CampusWallGroupsPostsManager sharedInstance] setPosts:posts.mutableCopy];
+        
+//        self.posts = posts.mutableCopy;
+        
+        [[GLPPostImageLoader sharedInstance] addPostsImages:[[CampusWallGroupsPostsManager sharedInstance] allPosts]];
+        
+        [self.tableView reloadData];
+        
+        self.firstLoadSuccessful = YES;
+//        [self startReloadingCronImmediately:NO];
+
+        
         [self stopLoading];
+
+        
     }];
+    
+    
+//    [GLPGroupManager loadInitialPostsWithGroupId:[SessionManager sharedInstance].user.networkId remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
+//       
+//        if(success)
+//        {
+//            [[CampusWallGroupsPostsManager sharedInstance] setPosts:remotePosts.mutableCopy];
+//            
+//            self.posts = remotePosts.mutableCopy;
+//            
+//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+//
+//            [self.tableView reloadData];
+//            
+//            self.firstLoadSuccessful = YES;
+//            [self startReloadingCronImmediately:NO];
+//        }
+//        
+//        [self stopLoading];
+//    }];
 }
 
 -(void)loadEarlierGroupsPostsAndSaveScrollingState:(BOOL)scrollingState
@@ -1021,71 +1080,108 @@ const float TOP_OFFSET = 219.0f;
         return;
     }
     
-    // take the last remote post
-    GLPPost *remotePost = nil;
-    
-    NSMutableArray *notUploadedPosts = [[NSMutableArray alloc] init];
-    
-    if(self.posts.count > 0) {
-        // first is the most recent
-        for(GLPPost *p in self.posts) {
-            
-            if(p.remoteKey == 0)
-            {
-                [notUploadedPosts addObject:p];
-            }
-            
-            if(p.remoteKey != 0) {
-                remotePost = p;
-                break;
-            }
-        }
-    }
+//    // take the last remote post
+//    GLPPost *remotePost = nil;
+//    
+//    NSMutableArray *notUploadedPosts = [[NSMutableArray alloc] init];
+//    
+//    if(self.posts.count > 0) {
+//        // first is the most recent
+//        for(GLPPost *p in self.posts) {
+//            
+//            if(p.remoteKey == 0)
+//            {
+//                [notUploadedPosts addObject:p];
+//            }
+//            
+//            if(p.remoteKey != 0) {
+//                remotePost = p;
+//                break;
+//            }
+//        }
+//    }
     
     [self startLoading];
     
     
-    //TODO change that when it will be supported from server.
     
-    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
-        [self stopLoading];
+    [GLPGroupManager loadGroupsFeedWithCallback:^(BOOL success, NSArray *posts) {
         
-        if(!success) {
-            [self showLoadingError:@"Failed to load new posts"];
+        if(!success)
+        {
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to load groups feed posts"];
+            [self stopLoading];
             return;
         }
         
-        if(posts.count > 0) {
-            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
-            
-            //New methodology of loading images.
-            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
-            
-            
-            // update table view and keep the scrolling state
-            if(scrollingState) {
-                // delay the update if user is in scrolling state
-                // Not need because we use performselector which areis deprioritized during scrolling
-                //                if(self.tableViewInScrolling) {
-                //                    self.shouldLoadNewPostsAfterScrolling = YES;
-                //                    self.postsNewRowsCountToInsertAfterScrolling += posts.count; // add new posts count to possibly non 0 count, if scrolling is still enabled after two reloads for instance
-                //                } else {
-                //                    [self updateTableViewWithNewPosts:posts.count];
-                //                }
-                
-                // do not care about the user is in scrolling state, see commented code below
-                [self updateTableViewWithNewPosts:posts.count];
-                
-                // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
-                self.insertedNewRowsCount += posts.count;
-            }
-            
-            // or scroll to the top
-            else {
-                [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
-            }
+        NSArray *recentPosts = [[CampusWallGroupsPostsManager sharedInstance] addNewPosts:posts.mutableCopy];
+        
+        //        self.posts = posts.mutableCopy;
+        
+        
+        DDLogDebug(@"Recent posts: %d", recentPosts.count);
+
+        [[GLPPostImageLoader sharedInstance] addPostsImages:recentPosts];
+
+        if(recentPosts.count > 0)
+        {
+            [self updateTableViewWithNewPosts:recentPosts.count];
         }
+        
+        
+        self.firstLoadSuccessful = YES;
+        //        [self startReloadingCronImmediately:NO];
+        
+        
+        [self stopLoading];
+        
+//        [self updateTableViewWithNewPostsAndScrollToTop:[[CampusWallGroupsPostsManager sharedInstance] numberOfPosts]];
+
+        
+        
     }];
+    
+    //TODO change that when it will be supported from server.
+    
+//    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
+//        [self stopLoading];
+//        
+//        if(!success) {
+//            [self showLoadingError:@"Failed to load new posts"];
+//            return;
+//        }
+//        
+//        if(posts.count > 0) {
+//            [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+//            
+//            //New methodology of loading images.
+//            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+//            
+//            
+//            // update table view and keep the scrolling state
+//            if(scrollingState) {
+//                // delay the update if user is in scrolling state
+//                // Not need because we use performselector which areis deprioritized during scrolling
+//                //                if(self.tableViewInScrolling) {
+//                //                    self.shouldLoadNewPostsAfterScrolling = YES;
+//                //                    self.postsNewRowsCountToInsertAfterScrolling += posts.count; // add new posts count to possibly non 0 count, if scrolling is still enabled after two reloads for instance
+//                //                } else {
+//                //                    [self updateTableViewWithNewPosts:posts.count];
+//                //                }
+//                
+//                // do not care about the user is in scrolling state, see commented code below
+//                [self updateTableViewWithNewPosts:posts.count];
+//                
+//                // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
+//                self.insertedNewRowsCount += posts.count;
+//            }
+//            
+//            // or scroll to the top
+//            else {
+//                [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+//            }
+//        }
+//    }];
 }
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
@@ -1412,16 +1508,29 @@ const float TOP_OFFSET = 219.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.posts.count + 1;
+    if(_groupsMode)
+    {
+        return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+    }
+    else
+    {
+        return self.posts.count + 1;
+    }
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == self.posts.count) {
-        GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
-        [loadingCell updateWithStatus:self.loadingCellStatus];
-        return loadingCell;
+    //For group posts we want to disable the loading previous posts.
+    if(!_groupsMode)
+    {
+        if(indexPath.row == self.posts.count) {
+            GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
+            [loadingCell updateWithStatus:self.loadingCellStatus];
+            return loadingCell;
+        }
     }
+
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
@@ -1440,50 +1549,63 @@ const float TOP_OFFSET = 219.0f;
 //    }
 //    else
 //    {
-        GLPPost *post = self.posts[indexPath.row];
-        
-        
-        //    GLPUser *user = self.users[indexPath.row];
-        
-        
-        if([post imagePost])
-        {
-            postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-            
-            postCell.imageAvailable = YES;
-            
-        }
-        else
-        {
-            postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-            
-            postCell.imageAvailable = NO;
-            
-        }
-        
-        
-        //TODO: For each post take the status of the button like. (Obviously from the server).
-        //TODO: In updateWithPostData information take the status of the like button.
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-        [tap setNumberOfTapsRequired:1];
-        [postCell.userImageView addGestureRecognizer:tap];
-        
-        
-        tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
-        [tap setNumberOfTapsRequired:1];
-        [postCell.postImage addGestureRecognizer:tap];
-        
-        postCell.delegate = self;
-        
-        [postCell updateWithPostData:post withPostIndex:indexPath.row];
-    
-        [self.tableView bringSubviewToFront:self.reNavBar];
-    
-    
-        return postCell;
 
 //    }
+    
+    //    GLPUser *user = self.users[indexPath.row];
+
+    
+    GLPPost *post = [self currentPostWithIndexPath:indexPath];
+    
+//    if(_groupsMode)
+//    {
+//        post = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
+//    }
+//    else
+//    {
+//        post = self.posts[indexPath.row];
+//    }
+    
+    
+    
+    
+    
+    if([post imagePost])
+    {
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+        
+        postCell.imageAvailable = YES;
+        
+    }
+    else
+    {
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+        
+        postCell.imageAvailable = NO;
+        
+    }
+    
+    
+    //TODO: For each post take the status of the button like. (Obviously from the server).
+    //TODO: In updateWithPostData information take the status of the like button.
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+    [tap setNumberOfTapsRequired:1];
+    [postCell.userImageView addGestureRecognizer:tap];
+    
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [postCell.postImage addGestureRecognizer:tap];
+    
+    postCell.delegate = self;
+    
+    [postCell updateWithPostData:post withPostIndex:indexPath.row];
+    
+    [self.tableView bringSubviewToFront:self.reNavBar];
+    
+    
+    return postCell;
     
     
 }
@@ -1495,7 +1617,18 @@ const float TOP_OFFSET = 219.0f;
         return;
     }
     
-    self.selectedPost = self.posts[indexPath.row];
+    
+    self.selectedPost = [self currentPostWithIndexPath:indexPath];
+    
+//    if(_groupsMode)
+//    {
+//        self.selectedPost = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
+//    }
+//    else
+//    {
+//        self.selectedPost = self.posts[indexPath.row];
+//    }
+    
     self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row;
     self.commentCreated = NO;
@@ -1524,27 +1657,30 @@ const float TOP_OFFSET = 219.0f;
 //    }
 //    else
 //    {
-        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
+//        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
+    GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
+    
+    if([currentPost imagePost])
+    {
+        //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
+        //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
+        //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
-        if([currentPost imagePost])
-        {
-            //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
-            //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
-            //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
-            
-            //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-            return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
-        }
-        else
-        {
-            //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
-            //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
-            
-            //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
-            
-            return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
-            //return TEXT_CELL_HEIGHT;
-        }
+        //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
+        return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+    }
+    else
+    {
+        //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
+        //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
+        
+        //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
+        
+        return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
+        //return TEXT_CELL_HEIGHT;
+    }
+    
+
 //    }
 
 }
@@ -1559,10 +1695,37 @@ const float TOP_OFFSET = 219.0f;
         [self hideNewElementsIndicatorView];
     }
     
-    if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
-        NSLog(@"Load previous posts cell activated");
-        [self loadPreviousPosts];
+    if(!_groupsMode)
+    {
+        if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
+            NSLog(@"Load previous posts cell activated");
+            [self loadPreviousPosts];
+        }
     }
+    
+
+}
+
+/**
+ 
+ Gives the current post depending on the mode.
+ 
+ @param indexPath.
+ 
+ @return the current post.
+ 
+ */
+-(GLPPost *)currentPostWithIndexPath:(NSIndexPath *)indexPath
+{
+    if(_groupsMode)
+    {
+        return [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
+    }
+    else
+    {
+        return [self.posts objectAtIndex:indexPath.row];
+    }
+    
 }
 
 -(void) updateTableWithNewRowCount:(int)rowCount
@@ -2047,6 +2210,7 @@ const float TOP_OFFSET = 219.0f;
 -(void)loadGroupsFeed
 {
     _groupsMode = YES;
+    [self updateTitleView];
     
     [self loadInitialGroupsPosts];
 }
@@ -2054,6 +2218,8 @@ const float TOP_OFFSET = 219.0f;
 -(void)loadRegularPosts
 {
     _groupsMode = NO;
+    
+    [self updateTitleView];
     
     [self loadInitialPosts];
 }
@@ -2099,7 +2265,6 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)showEventPost:(NSNotification*)notification
 {
-    
     NSDictionary *dict = [notification userInfo];
     GLPPost *post = [dict objectForKey:@"Post"];
     
@@ -2110,6 +2275,21 @@ const float TOP_OFFSET = 219.0f;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vpvc];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void)updateTitleView
+{
+    if(_groupsMode)
+    {
+        [self.reNavBar groupFeedEnabled];
+        [self.campusWallHeader groupFeedEnabled];
+    }
+    else
+    {
+        [self.reNavBar groupFeedDisabled];
+        [self.campusWallHeader groupFeedDisabled];
+
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
