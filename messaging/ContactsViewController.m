@@ -67,6 +67,9 @@
     [self configureTableView];
     
     [self configureSegment];
+    
+    [self configNotifications];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -92,7 +95,6 @@
     
     [self.contactsTableView setTableFooterView:[[UIView alloc] init]];
     
-    [self configNotifications];
 //    [self setCustomBackgroundToTableView];
 
 }
@@ -101,8 +103,12 @@
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
 
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
 }
 
 
@@ -191,44 +197,19 @@
 
 #pragma mark - Notifications
 
-//-(void)updateGroupRemoteKeyAndImage:(NSNotification*)notification
-//{
-//    NSDictionary *dict = [notification userInfo];
-//    
-//    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-//    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
-//    NSString * urlImage = [dict objectForKey:@"imageUrl"];
-//    
-//    int index = 0;
-//    
-//    GLPPost *uploadedPost = nil;
-//    
-//    for(GLPPost* p in self.posts)
-//    {
-//        if(key == p.key)
-//        {
-//            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
-//            p.remoteKey = remoteKey;
-//            uploadedPost = p;
-//            //            p.tempImage = nil;
-//            break;
-//        }
-//        ++index;
-//    }
-//    
-//    
-//    if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
-//    {
-//        //If the post belongs to logged in user then inform his/her profile's posts.
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
-//    }
-//    
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-//    
-//    //    [self.tableView reloadData];
-//    
-//    
-//}
+-(void)updateGroupRemoteKeyAndImage:(NSNotification *)notification
+{
+    int index = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+    
+    if(index == -1)
+    {
+        return;
+    }
+    
+    [self.tableView reloadData];
+    
+    
+}
 
 
 -(void) clearContactsUselessSections
@@ -422,50 +403,6 @@
         
     }];
     
-    
-//    NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
-//    
-//    
-//    
-//    self.users = [allContacts objectForKey:@"Contacts"];
-//    self.usersStr = [allContacts objectForKey:@"ContactsUserNames"];
-//    
-//    if(self.users.count>0)
-//    {
-//        self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-//        [self clearUselessSections];
-//        
-//        [self categoriseUsersByLetter];
-//        [self.contactsTableView reloadData];
-//    }
-    
-    
-//    [[WebClient sharedInstance ] getContactsWithCallbackBlock:^(BOOL success, NSArray *contacts) {
-//        
-//        if(success)
-//        {
-//            //Store contacts into an array.
-//            [self findConfirmedContacts:contacts.mutableCopy];
-//            
-//            if(self.users.count>0)
-//            {
-//                self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-//                [self clearUselessSections];
-//
-//                [self categoriseUsersByLetter];
-//                [self.contactsTableView reloadData];
-//            }
-//            
-////            self.users = contacts.mutableCopy;
-//            
-//        }
-//        else
-//        {
-//            [WebClientHelper showStandardError];
-//        }
-//
-//        
-//    }];
 }
 
 -(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
@@ -507,51 +444,25 @@
         [self.contactsTableView reloadData];
         
     }];
-    
-    
+}
 
-//    [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
-//       
+//-(void)createNewGroupWithGroup:(GLPGroup *)group
+//{
+//    [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup* group) {
+//        
 //        if(success)
 //        {
-//            _groups = groups.mutableCopy;
+//            DDLogInfo(@"Group with name: %@ created.", group.name);
 //            
-////            if(_groups.count == 0)
-////            {
-////                
-////                
-////                //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
-////
-////            }
-////            else
-////            {
-//                [self showGroups];
-//                
-//                [self.contactsTableView reloadData];
-////            }
-//            
+//            [self reloadNewGroupWithGroup:group];
+//        }
+//        else
+//        {
+//            DDLogInfo(@"Fail to create group with name: %@.", group.name);
 //        }
 //        
 //    }];
-}
-
--(void)createNewGroupWithGroup:(GLPGroup *)group
-{
-    [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup* group) {
-        
-        if(success)
-        {
-            DDLogInfo(@"Group with name: %@ created.", group.name);
-            
-            [self reloadNewGroupWithGroup:group];
-        }
-        else
-        {
-            DDLogInfo(@"Fail to create group with name: %@.", group.name);
-        }
-        
-    }];
-}
+//}
 
 #pragma mark - Selectors
 

@@ -28,17 +28,34 @@
     return group;
 }
 
+
 + (NSArray *)findGroupsdb:(FMDatabase *)db
 {
     NSMutableArray *groups = [[NSMutableArray alloc] init];
     
-    //TODO: Do that descending.
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups"];
     
     while ([resultSet next])
     {
         GLPGroup *currentGroup = [GLPGroupDaoParser createFromResultSet:resultSet inDb:db];
     
+        [groups addObject: currentGroup];
+        
+    }
+    
+    return groups;
+}
+
++ (NSArray *)findRemoteGroupsdb:(FMDatabase *)db
+{
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d", kSendStatusSent];
+    
+    while ([resultSet next])
+    {
+        GLPGroup *currentGroup = [GLPGroupDaoParser createFromResultSet:resultSet inDb:db];
+        
         [groups addObject: currentGroup];
         
     }
@@ -53,6 +70,19 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         groups = [GLPGroupDao findGroupsdb:db];
+        
+    }];
+    
+    return groups;
+}
+
++(NSArray *)findRemoteGroups
+{
+    __block NSArray *groups = [[NSMutableArray alloc] init];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        groups = [GLPGroupDao findRemoteGroupsdb:db];
         
     }];
     
@@ -145,19 +175,21 @@
     
     if(entity.remoteKey != 0)
     {
-        success = [db executeUpdateWithFormat:@"update groups set remoteKey=%d, send_status=%d where key=%d",
+        success = [db executeUpdateWithFormat:@"update groups set remoteKey=%d, send_status=%d, image_url=%@ where key=%d",
                    entity.remoteKey,
                    entity.sendStatus,
+                   entity.groupImageUrl,
                    entity.key];
         
     } else
     {
-        success = [db executeUpdateWithFormat:@"update groups set send_status=%d where key=%d",
+        success = [db executeUpdateWithFormat:@"update groups set send_status=%d, image_url=%@ where key=%d",
                    entity.sendStatus,
+                   entity.groupImageUrl,
                    entity.key];
     }
     
-    DDLogDebug(@"Group with title %@ updated successfully", entity.name);
+    DDLogDebug(@"Group with title %@ and url %@ updated successfully", entity.name, entity.groupImageUrl);
 }
 
 

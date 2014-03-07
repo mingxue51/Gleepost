@@ -9,6 +9,7 @@
 #import "GroupUploaderManager.h"
 #import "WebClient.h"
 #import "GLPGroupDao.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface GroupUploaderManager ()
 
@@ -49,11 +50,6 @@
     [_readyGroups removeObjectForKey:timestamp];
 }
 
-//-(NSDictionary*)pendingPosts
-//{
-//    
-//}
-
 #pragma mark - Client
 
 -(void)uploadGroupWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url
@@ -71,17 +67,18 @@
         
         _uploadImageContentBlock = ^(GLPGroup* group){
             
-            NSLog(@"Into uploadImageContentBlock");
             
-            //TODO: Notify ContactsViewController after finish.
-//            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-//                                                                                                                            @"imageUrl":[post.imagesUrls objectAtIndex:0],
-//                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
+        //TODO: Notify ContactsViewController after finish.
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+                                                                        object:nil
+                                                                        userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
+                                                                                    @"imageUrl":group.groupImageUrl,
+                                                                                    @"key":[NSNumber numberWithInt:group.key]}];
             
         };
     }
     
-    NSLog(@"Group uploading task started with group title: %@ and image url: %@.",group.name, group.groupImageUrl);
+    DDLogInfo(@"Group uploading task started with group title: %@ and image url: %@.",group.name, group.groupImageUrl);
     
     
     //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
@@ -94,7 +91,7 @@
         
         group.remoteKey = success ? remoteGroup.remoteKey : 0;
         
-        NSLog(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
+        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
 
         [GLPGroupDao updateGroupSendingData:group];
         

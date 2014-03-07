@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "GLPEntity.h"
 #import "SendStatus.h"
+#import "GLPUser.h"
 
 @interface GLPGroup : GLPEntity
 
@@ -17,6 +18,9 @@
 @property (strong, nonatomic) NSString *groupImageUrl;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) UIImage *finalImage;
+
+//Not create in local database
+@property (strong, nonatomic) GLPUser *author;
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
 

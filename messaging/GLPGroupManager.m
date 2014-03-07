@@ -21,11 +21,13 @@
     
     //Find all the groups that contain real images and save them.
     
-    NSMutableArray *localGroupsWithImages = [[self findGroupsWithRealImagesWithGroups:groups] mutableCopy];
+    NSMutableArray *pendingGroups = [[self findGroupsWithRealImagesWithGroups:groups] mutableCopy];
     
-    NSArray *localEntities = [GLPGroupDao findGroups];
+    NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
     
-    localEntities = [self overwriteGroups:localEntities withImagesGroups:localGroupsWithImages];
+//    localEntities = [self overwriteGroups:localEntities withImagesGroups:localGroupsWithImages];
+    
+    [localEntities addObjectsFromArray:pendingGroups];
     
     DDLogDebug(@"LOCAL GROUPS: %@", localEntities);
 
@@ -45,7 +47,11 @@
 
         [GLPGroupDao saveGroups:serverGroups];
         
-        NSArray *finalRemoteGroups = [self overwriteGroups:serverGroups withImagesGroups:localGroupsWithImages];
+//        NSArray *finalRemoteGroups = [self overwriteGroups:serverGroups withImagesGroups:localGroupsWithImages];
+        
+        NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
+        
+        [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
         DDLogDebug(@"REMOTE GROUPS: %@", finalRemoteGroups);
         
@@ -452,6 +458,45 @@
     
     return categorisedGroups;
 }
+
+#pragma mark - Notifications methods
+
++(int)parseNotification:(NSNotification*)notification withGroupsArray:(NSArray*)groups
+{
+    NSDictionary *dict = [notification userInfo];
+    NSNumber *remoteKey = [dict objectForKey:@"remoteKey"];
+    NSNumber *key = [dict objectForKey:@"key"];
+    NSString *imageUrl = [dict objectForKey:@"imageUrl"];
+
+    
+    int index = 0;
+    
+    GLPGroup *currentGroup = nil;
+    
+    //Find post by remote key.
+    for(GLPGroup *g in groups)
+    {
+        if([key intValue] == g.key)
+        {
+            currentGroup = g;
+            currentGroup.finalImage = nil;
+            
+            break;
+        }
+        ++index;
+    }
+    
+    if(currentGroup == nil)
+    {
+        return -1;
+    }
+    
+    currentGroup.remoteKey = [remoteKey intValue];
+    currentGroup.groupImageUrl = imageUrl;
+    
+    return index;
+}
+
 
 
 @end

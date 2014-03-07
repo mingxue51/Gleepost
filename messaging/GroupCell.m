@@ -48,6 +48,15 @@
     // Configure the view for the selected state
 }
 
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
+
+    
+}
+
 -(void)setGroupData:(GLPGroup *)groupData
 {
     _groupData = groupData;
@@ -58,7 +67,7 @@
     _groupName.tag = groupData.remoteKey;
     
     //Add user's name.
-    [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
+//    [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
     
     [ShapeFormatterHelper setRoundedView:_uploadedIndicator toDiameter:_uploadedIndicator.frame.size.height];
 
@@ -176,17 +185,17 @@
 -(void)showExitButton
 {
     [_exitButton setHidden:NO];
+    [_exitButton setAlpha:1.0f];
 
     
-    [UIView animateWithDuration:0.5f animations:^{
-        
-        [_exitButton setAlpha:1.0f];
-        
-        
-    } completion:^(BOOL finished){
-        
-        
-    }];
+//    [UIView animateWithDuration:0.5f animations:^{
+//        
+//        
+//        
+//    } completion:^(BOOL finished){
+//        
+//        
+//    }];
 }
 
 

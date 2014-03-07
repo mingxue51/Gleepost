@@ -23,4 +23,6 @@
 
 + (void)deleteGroup:(GLPGroup *)group;
 
++(int)parseNotification:(NSNotification*)notification withGroupsArray:(NSArray*)groups;
+
 @end

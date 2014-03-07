@@ -560,8 +560,6 @@ static WebClient *instance = nil;
         
         NSArray *groups = [RemoteParser parseGroupsFromJson:responseObject];
         
-        DDLogDebug(@"Groups: %@, RESPONSE: %@",groups, responseObject);
-        
         callbackBlock(YES, groups);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
