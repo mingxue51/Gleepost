@@ -39,14 +39,19 @@
             return [NSString stringWithFormat:@"%@ liked your post", self.user.name];
         case kGLPNotificationTypeAddedYou:
             return [NSString stringWithFormat:@"Contact invite from %@",self.user.name];
+        case kGLPNotificationTypeAddedGroup:
+            return [NSString stringWithFormat:@"You have been added to a group"];
         default:
             return @"Something happened";
     }
 }
 
-- (BOOL)displaysPictoImage
-{
-    return self.notificationType == kGLPNotificationTypeLiked || self.notificationType == kGLPNotificationTypeCommented;
-}
+//- (BOOL)displaysPictoImage
+//{
+//    return
+//        self.notificationType == kGLPNotificationTypeLiked ||
+//        self.notificationType == kGLPNotificationTypeCommented ||
+//        self.notificationType == kGLPNotificationTypeAddedGroup;
+//}
 
 @end

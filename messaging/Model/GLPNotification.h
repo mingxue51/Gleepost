@@ -12,10 +12,11 @@
 @interface GLPNotification : GLPEntity
 
 typedef enum {
-    kGLPNotificationTypeAddedYou, //0
-    kGLPNotificationTypeAcceptedYou, //1
-    kGLPNotificationTypeCommented, //2
-    kGLPNotificationTypeLiked, //3
+    kGLPNotificationTypeAddedYou,
+    kGLPNotificationTypeAcceptedYou,
+    kGLPNotificationTypeCommented,
+    kGLPNotificationTypeLiked,
+    kGLPNotificationTypeAddedGroup
 } GLPNotificationType;
 
 @property (assign, nonatomic) NSInteger postRemoteKey;
@@ -23,8 +24,9 @@ typedef enum {
 @property (assign, nonatomic) BOOL seen;
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *user;
+@property (strong, nonatomic) NSDictionary *customParams;
 
 - (NSString *)notificationTypeDescription;
-- (BOOL)displaysPictoImage;
+//- (BOOL)displaysPictoImage;
 
 @end

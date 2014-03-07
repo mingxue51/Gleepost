@@ -850,6 +850,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     else if([notificationsType isEqualToString:@"liked"]) {
         type = kGLPNotificationTypeLiked;
     }
+    else if([notificationsType isEqualToString:@"added_group"]) {
+        type = kGLPNotificationTypeAddedGroup;
+    }
     
     notification.notificationType = type;
     notification.seen = NO;
@@ -858,6 +861,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     notification.postRemoteKey = json[@"post"] ? [json[@"post"] integerValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
     notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
+    
+    if(json[@"network"]) {
+        notification.customParams = @{@"network": json[@"network"]};
+    }
     
     return notification;
 }

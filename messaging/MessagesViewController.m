@@ -463,7 +463,7 @@
     [self performSelectorInBackground:@selector(debugPostNotification:) withObject:[NSArray arrayWithObjects:not, [NSNumber numberWithBool:delay ], nil]];
     
     _debugNotificationCount++;
-    if(_debugNotificationCount > 4) {
+    if(_debugNotificationCount > 5) {
         _debugNotificationCount = 0;
     }
     

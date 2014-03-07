@@ -522,6 +522,7 @@
 		80A21D4518AD136200559BF6 /* internal_notification_cell_commented@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A21D4118AD136200559BF6 /* internal_notification_cell_commented@2x.png */; };
 		80A21D4618AD136200559BF6 /* internal_notification_cell_liked.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A21D4218AD136200559BF6 /* internal_notification_cell_liked.png */; };
 		80A21D4718AD136200559BF6 /* internal_notification_cell_liked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80A21D4318AD136200559BF6 /* internal_notification_cell_liked@2x.png */; };
+		80A5C48F18C9D3D4000F8E39 /* notification5.json in Resources */ = {isa = PBXBuildFile; fileRef = 80A5C48E18C9D3D4000F8E39 /* notification5.json */; };
 		80AB891B17C267F50053E784 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80AB891A17C267F50053E784 /* UIKit.framework */; };
 		80AB891D17C267F50053E784 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80AB891C17C267F50053E784 /* Foundation.framework */; };
 		80AB891F17C267F50053E784 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80AB891E17C267F50053E784 /* CoreGraphics.framework */; };
@@ -1329,6 +1330,7 @@
 		80A21D4118AD136200559BF6 /* internal_notification_cell_commented@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internal_notification_cell_commented@2x.png"; sourceTree = "<group>"; };
 		80A21D4218AD136200559BF6 /* internal_notification_cell_liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = internal_notification_cell_liked.png; sourceTree = "<group>"; };
 		80A21D4318AD136200559BF6 /* internal_notification_cell_liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internal_notification_cell_liked@2x.png"; sourceTree = "<group>"; };
+		80A5C48E18C9D3D4000F8E39 /* notification5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notification5.json; sourceTree = "<group>"; };
 		80AB891717C267F50053E784 /* Gleepost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gleepost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80AB891A17C267F50053E784 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		80AB891C17C267F50053E784 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -3288,6 +3290,7 @@
 				802DCE4118AA32CA00A23511 /* notification2.json */,
 				802DCE4318AA32D000A23511 /* notification3.json */,
 				802DCE4518AA32D500A23511 /* notification4.json */,
+				80A5C48E18C9D3D4000F8E39 /* notification5.json */,
 			);
 			name = "Fake API";
 			sourceTree = "<group>";
@@ -3630,6 +3633,7 @@
 				584CF675182303FC00EFABB8 /* accept_contact.png in Resources */,
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
 				58428E2F18A27D9300B82E4B /* LoginView.xib in Resources */,
+				80A5C48F18C9D3D4000F8E39 /* notification5.json in Resources */,
 				58FB7C8E18560D08002C6A00 /* PostsProfileTabView.xib in Resources */,
 				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
 				58E27E0718A6CD1500D8BB24 /* bird-house-7@2x.png in Resources */,
