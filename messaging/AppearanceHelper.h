@@ -24,5 +24,6 @@
 +(void)hideTabBar:(UIViewController*)controller;
 +(void)setFormatForLoginNavigationBar:(UIViewController*)viewController;
 +(UIColor*)colourOfTheFakeNavigationBar;
++(void)setCustomBackgroundToTableView:(UITableView *)tableView;
 
 @end

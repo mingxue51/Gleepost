@@ -90,6 +90,20 @@
     controller.tabBarController.tabBar.hidden = YES;
 }
 
+/**
+ Sets custom background in order to have different colour on top and different colour in botton of the view.
+ */
+
++(void)setCustomBackgroundToTableView:(UITableView *)tableView
+{
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile_background_main"]];
+    
+    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
+    
+    [tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [tableView setBackgroundView:backImgView];
+}
+
 
 +(void)setFormatForLoginNavigationBar:(UIViewController*)viewController
 {

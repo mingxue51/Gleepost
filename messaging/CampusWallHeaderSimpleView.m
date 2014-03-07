@@ -94,9 +94,10 @@
 {
     [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
     
-    CGFloat createPostEdge = 7.5f;
+    CGFloat createPostEdge = 5.0f;
+    CGFloat showCategoriesEdge = 5.0f;
     
-    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
+    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(showCategoriesEdge, showCategoriesEdge, showCategoriesEdge, showCategoriesEdge)];
     [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
 }
 

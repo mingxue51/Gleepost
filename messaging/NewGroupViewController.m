@@ -10,6 +10,7 @@
 #import "UIPlaceHolderTextView.h"
 #import "WebClientHelper.h"
 #import "GroupOperationManager.h"
+#import "ShapeFormatterHelper.h"
 
 @interface NewGroupViewController ()
 
@@ -57,6 +58,9 @@
 -(void)configureTextView
 {
     _groupDescriptionTextView.placeholder = @"Group description";
+    
+    [ShapeFormatterHelper setCornerRadiusWithView:_groupDescriptionTextView andValue:5];
+
 }
 
 -(void)configureFDTakeController

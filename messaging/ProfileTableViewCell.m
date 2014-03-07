@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *busySwitch;
 @property (weak, nonatomic) IBOutlet UILabel *busyLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *groupDescriptionLbl;
 
 @property (strong, nonatomic) GLPUser *currentUser;
 @property (readonly, nonatomic) GLPProfileViewController *delegate;
@@ -76,9 +77,14 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     self.currentGroup = group;
     
-    [self.universityLabel setHidden:NO];
+    [self.universityLabel setHidden:YES];
     
-    [self.universityLabel setText:self.currentGroup.name];
+    [self.groupDescriptionLbl setHidden:NO];
+    
+//    [self.universityLabel setNumberOfLines:3];
+    
+
+    [self.groupDescriptionLbl setText:group.description];
     
     [self formatProfileImage];
 

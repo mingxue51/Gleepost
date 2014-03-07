@@ -156,11 +156,21 @@
 
 -(void)configureSegment
 {
-//    [self.groupsContactsSegment setTintColor:[UIColor whiteColor]];
     
-    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    //http://stackoverflow.com/questions/19138252/uisegmentedcontrol-bounds
     
-    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor lightGrayColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+//    [self.groupsContactsSegment setTintColor:[UIColor blackColor]];
+//    [self.groupsContactsSegment setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    
+//    self.groupsContactsSegment.layer.cornerRadius = 5;
+//    CAShapeLayer* mask = [[CAShapeLayer alloc] init];
+//    mask.frame = CGRectMake(0, 0, self.groupsContactsSegment.bounds.size.width, self.groupsContactsSegment.bounds.size.height);
+//    mask.path = [[UIBezierPath bezierPathWithRoundedRect:mask.frame cornerRadius:4] CGPath];
+//    self.groupsContactsSegment.layer.mask = mask;
+    
+//    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+//    
+//    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor lightGrayColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
     
     
     
@@ -176,10 +186,10 @@
 //    
 //    [self.groupsContactsSegment setBackgroundColor:newSelectedTintColor];
     
-    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"uselected_segment"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"selected_segment"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-
-    [self.groupsContactsSegment setDividerImage:[[UIImage alloc] init] forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"uselected_segment"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+//    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"selected_segment"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//
+//    [self.groupsContactsSegment setDividerImage:[[UIImage alloc] init] forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 }
 
 -(void)configTabbar

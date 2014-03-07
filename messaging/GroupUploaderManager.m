@@ -42,7 +42,16 @@
 
 -(void)addGroup:(GLPGroup*)group withTimestamp:(NSDate*)timestamp
 {
-    [_readyGroups setObject:group forKey:timestamp];
+    if(timestamp == nil)
+    {
+        //Group without image.
+        [self uploadGroupWithoutImage:group];
+    }
+    else
+    {
+        [_readyGroups setObject:group forKey:timestamp];
+    }
+    
 }
 
 -(void)removeGroupWithTimestamp:(NSDate*)timestamp
@@ -51,6 +60,32 @@
 }
 
 #pragma mark - Client
+
+-(void)uploadGroupWithoutImage:(GLPGroup *)group
+{
+    
+    [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
+        
+        
+        group.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        
+        group.remoteKey = success ? remoteGroup.remoteKey : 0;
+        
+        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
+        
+        [GLPGroupDao updateGroupSendingData:group];
+        
+        if(success)
+        {
+//            _uploadImageContentBlock(group);
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+                                                                            object:nil
+                                                                          userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
+                                                                                     @"imageUrl":group.groupImageUrl,
+                                                                                     @"key":[NSNumber numberWithInt:group.key]}];
+        }
+    }];
+}
 
 -(void)uploadGroupWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url
 {
@@ -68,7 +103,7 @@
         _uploadImageContentBlock = ^(GLPGroup* group){
             
             
-        //TODO: Notify ContactsViewController after finish.
+        //Notify ContactsViewController after finish.
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
                                                                         object:nil
                                                                         userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],

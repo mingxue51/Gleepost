@@ -283,6 +283,10 @@
     [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
     
     
+    
+    self.navigationItem.rightBarButtonItem = settingsButton;
+
+    
 //    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showSettings:)];
     
 //    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings_btn"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSettings:)];
@@ -302,7 +306,6 @@
 //    }
     
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
-    self.navigationItem.rightBarButtonItem = settingsButton;
 }
 
 -(void)configureNavigationBar

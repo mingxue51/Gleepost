@@ -30,6 +30,7 @@
 
 @interface GroupViewController ()
 
+
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSArray *members;
 @property (assign, nonatomic) BOOL commentCreated;
@@ -98,8 +99,9 @@ const int NUMBER_OF_ROWS = 2;
     
     [self configureNotifications];
 
-    
     [self configureNavigationBar];
+    
+    [self configureNavigationItems];
     
     [self.tableView reloadData];
 }
@@ -149,6 +151,8 @@ const int NUMBER_OF_ROWS = 2;
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+    
+    [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
 }
 
 -(void)initialiseObjects
@@ -165,7 +169,25 @@ const int NUMBER_OF_ROWS = 2;
     self.isLoading = NO;
 //    self.firstLoadSuccessful = NO;
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    
 
+}
+
+-(void)configureNavigationItems
+{
+    UIImage *createPostImg = [UIImage imageNamed:@"new_post_groups"];
+    
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack setBackgroundImage:createPostImg forState:UIControlStateNormal];
+    [btnBack setFrame:CGRectMake(10, 0, 35, 35)];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
+    [view addSubview:btnBack];
+    
+    UIBarButtonItem *createPostButton = [[UIBarButtonItem alloc] initWithCustomView:view];
+    
+    self.navigationItem.rightBarButtonItem = createPostButton;
 }
 
 -(void)configureNavigationBar
@@ -189,6 +211,9 @@ const int NUMBER_OF_ROWS = 2;
     [self.navigationController.navigationBar setTranslucent:NO];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    //Set title.
+    self.title = _group.name;
 }
 
 -(void)configureNotifications

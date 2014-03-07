@@ -41,9 +41,10 @@ const CGFloat HEIGH_FAKE = 64.0f;
     [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
     
     //Change the size of the image in buttons in order to make the touch range bigger.
-    CGFloat createPostEdge = 7.5f;
+    CGFloat createPostEdge = 5.0f;
+    CGFloat showCategoriesEdge = 5.0f;
     
-    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
+    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(showCategoriesEdge, showCategoriesEdge, showCategoriesEdge, showCategoriesEdge)];
     [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
     
     [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:24.0f]];

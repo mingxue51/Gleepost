@@ -20,6 +20,10 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                         </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="nav_bar_title_button.png" translatesAutoresizingMaskIntoConstraints="NO" id="ObV-dH-1Dz">
+                            <rect key="frame" x="70" y="15" width="180" height="46"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                         <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cardinal Wall" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqQ-6c-uJb">
                             <rect key="frame" x="75" y="22" width="170" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -104,10 +108,11 @@
         </view>
     </objects>
     <resources>
-        <image name="add_new_post.png" width="120" height="120"/>
+        <image name="add_new_post.png" width="80" height="80"/>
         <image name="gleepost_logo_header.png" width="142" height="50"/>
+        <image name="nav_bar_title_button.png" width="320" height="80"/>
         <image name="referesh_campus_live.png" width="96" height="96"/>
-        <image name="show_categories.png" width="120" height="120"/>
+        <image name="show_categories.png" width="80" height="80"/>
         <image name="top_image_campus_wall.png" width="640" height="550"/>
     </resources>
 </document>
