@@ -654,6 +654,55 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    
 //}
 
+#pragma mark - Groups
+
++ (NSArray *)parseGroupsFromJson:(NSArray *)json
+{
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    
+    for(id group in json)
+    {
+        [groups addObject:[RemoteParser parseGroupFromJson:group]];
+    }
+    
+    return groups;
+}
+
++ (GLPGroup *)parseGroupFromJson:(NSDictionary *)json
+{
+    GLPGroup *group = [[GLPGroup alloc] initWithName:json[@"name"] andRemoteKey:[json[@"id"] integerValue]];
+    
+    group.description = json[@"description"];
+    group.groupImageUrl = json[@"url"];
+    
+    
+    return group;
+    
+}
+
++ (GLPPost *)parsePostGroupFromJson:(NSDictionary *)json
+{
+    GLPPost *groupPost = [RemoteParser parsePostFromJson:json];
+
+    groupPost.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    
+    
+    return groupPost;
+    
+}
+
++ (NSArray *)parsePostsGroupFromJson:(NSArray *)jsonPosts
+{
+    NSMutableArray *groupPosts = [[NSMutableArray alloc] init];
+    
+    for(id groupPost in jsonPosts)
+    {
+        [groupPosts addObject:[RemoteParser parsePostGroupFromJson:groupPost]];
+    }
+    
+    return groupPosts;
+}
+
 #pragma mark - Contacts
 
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts
@@ -687,7 +736,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     return contact;
 }
-
 
 /***
  

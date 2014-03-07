@@ -203,6 +203,17 @@ static DatabaseManager *instance = nil;
              user_remote_key integer, \
              image_url text);"]; //Image url is for future use.
             
+            // groups
+            [db executeUpdate:@"create table groups ( \
+             key integer primary key autoincrement, \
+             remoteKey integer unique, \
+             title text, \
+             description text, \
+             image_url text, \
+             send_status integer, \
+             date integer, \
+             user_remote_key integer);"];
+            
             self.exists = YES;
         }];
     }

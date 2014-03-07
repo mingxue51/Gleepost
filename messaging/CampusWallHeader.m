@@ -455,7 +455,6 @@ NSString *NOTHING_HAPPENING;
     
 }
 
-#pragma mark - Scroll View Delegate
 
 //-(void)scrollViewDidScroll:(UIScrollView *)myscrollView
 //{

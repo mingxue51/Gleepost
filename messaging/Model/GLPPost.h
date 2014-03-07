@@ -9,6 +9,7 @@
 #import "GLPEntity.h"
 #import "GLPUser.h"
 #import "SendStatus.h"
+#import "GLPGroup.h"
 
 @interface GLPPost : GLPEntity
 
@@ -28,6 +29,9 @@
 @property (strong, nonatomic) NSArray *categories;
 @property (assign, nonatomic) int popularity;
 @property (assign, nonatomic) BOOL attended;
+
+//In case post has group information.
+@property (strong, nonatomic) GLPGroup *group;
 
 -(BOOL) imagePost;
 

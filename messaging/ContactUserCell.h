@@ -10,6 +10,8 @@
 
 @interface ContactUserCell : UITableViewCell
 
+extern const float CONTACT_CELL_HEIGHT;
+
 /** User's profile image. */
 @property (retain, nonatomic) IBOutlet UIImageView *profileImageUser;
 
@@ -18,7 +20,7 @@
 
 
 /** Creates the elements of the cell. */
--(void) createElements;
+-(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl;
 
 
 @end

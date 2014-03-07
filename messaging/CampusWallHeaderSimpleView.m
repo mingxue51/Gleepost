@@ -68,14 +68,11 @@
 
 -(void)formatElements
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
-    
-    CGFloat createPostEdge = 7.5f;
-    
-    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
-    [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
+    [self formatButtons];
     
     [self formatNavigationBar];
+    
+    [self addGestureToTitle];
 }
 
 
@@ -85,6 +82,25 @@
     [self.stanfordLbl setAlpha:alpha];
 }
 
+-(void)addGestureToTitle
+{
+    //Add gesture to cardinal wall label.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(loadGroupsFeed:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.stanfordLbl addGestureRecognizer:tap];
+}
+
+-(void)formatButtons
+{
+    [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
+    
+    CGFloat createPostEdge = 7.5f;
+    
+    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f)];
+    [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
+}
+
+#pragma mark - Selectors
 
 - (IBAction)showTags:(id)sender
 {
@@ -95,6 +111,30 @@
 - (IBAction)createNewPost:(id)sender
 {
     [self.delegate newPostButtonClick];
+}
+
+-(void)loadGroupsFeed:(id)sender
+{
+    if([self.stanfordLbl.text isEqualToString:@"Cardinal Wall"])
+    {
+        [UIView animateWithDuration:1.0f animations:^{
+            
+            [self.stanfordLbl setText:@"Groups Feed"];
+            
+        }];
+        
+        [self.delegate loadGroupsFeed];
+    }
+    else
+    {
+        [UIView animateWithDuration:1.0f animations:^{
+            
+            [self.stanfordLbl setText:@"Cardinal Wall"];
+            
+        }];
+        
+        [self.delegate loadRegularPosts];
+    }
 }
 
 

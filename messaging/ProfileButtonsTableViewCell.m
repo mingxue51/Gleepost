@@ -25,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *inContacts;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 
-
 @end
 
 @implementation ProfileButtonsTableViewCell
@@ -42,6 +41,11 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
     
     return self;
 }
+
+
+
+
+#pragma mark - Profile methods
 
 -(void)setDelegate:(GLPPrivateProfileViewController *)delegate
 {
@@ -106,6 +110,9 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
     
     // Configure the view for the selected state
 }
+
+#pragma mark - Profile selectors
+
 - (IBAction)sendMessage:(id)sender
 {
     // we should not duplicate code like that, already exists in profiletableviewcell
@@ -199,6 +206,10 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
         }
     }];
 }
+
+
+
+
 
 -(void)setContactAsRequested
 {

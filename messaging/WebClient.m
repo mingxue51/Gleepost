@@ -299,6 +299,7 @@ static WebClient *instance = nil;
 
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
@@ -314,7 +315,7 @@ static WebClient *instance = nil;
         [params setObject:post.eventTitle forKey:@"title"];
     }
     
-    [self postPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         //Get the post id. If user has ulpoaded an image execute the createImagePost method.
         int postRemoteKey = [RemoteParser parseIdFromJson:responseObject];
@@ -346,6 +347,18 @@ static WebClient *instance = nil;
         
         callbackBlock(NO, -1);
     }];
+}
+
+-(NSString *)pathForPost:(GLPPost *)post
+{
+    if(post.group)
+    {
+        return [NSString stringWithFormat:@"networks/%d/posts", post.group.remoteKey];
+    }
+    else
+    {
+        return @"posts";
+    }
 }
 
 
@@ -521,6 +534,142 @@ static WebClient *instance = nil;
     }];
 }
 
+
+#pragma mark - Groups
+
+-(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"networks/%d",groupId];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
+        
+        
+        callbackBlock(YES, group);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
+-(void)getGroupswithCallbackBlock:(void (^) (BOOL success, NSArray *groups))callbackBlock
+{
+    [self getPath:@"profile/networks" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *groups = [RemoteParser parseGroupsFromJson:responseObject];
+        
+        DDLogDebug(@"Groups: %@, RESPONSE: %@",groups, responseObject);
+        
+        callbackBlock(YES, groups);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
+-(void)getMembersWithGroupRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, NSArray *members))callbackBlock
+{
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/users",remoteKey];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *members = [RemoteParser parseUsersFromJson:responseObject];
+        
+        
+        callbackBlock(YES, members);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
+-(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+{
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    
+    if(post)
+    {
+        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/posts",groupId];
+
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+        callbackBlock(YES, posts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
+-(void)createGroupWithGroup:(GLPGroup *)group callback:(void (^) (BOOL success, GLPGroup *group))callbackBlock
+{
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:group.name forKey:@"name"];
+    [params setObject:group.groupImageUrl forKey:@"url"];
+    [params setObject:group.description forKey:@"desc"];
+    
+    DDLogDebug(@"Group to be created: %@", group.groupImageUrl);
+    
+    [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
+        
+        callbackBlock(YES, group);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+
+        
+    }];
+}
+
+-(void)quitFromAGroupWithRemoteKey:(int)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
+{
+    
+    NSString *path = [NSString stringWithFormat:@"profile/networks/%d", groupRemoteKey];
+    
+    
+    
+    [self deletePath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        callbackBlock(NO);
+        
+    }];
+}
+
+-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+{
+    //profile/networks/posts
+    
+    [self getPath:@"profile/networks/posts" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *posts = [RemoteParser parsePostsGroupFromJson:responseObject];
+        
+        callbackBlock(YES, posts);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
 
 /* CONVERSATIONS */
 

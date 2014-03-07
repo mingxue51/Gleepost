@@ -15,14 +15,17 @@
 #import "WebClientHelper.h"
 #import "GLPContact.h"
 #import "AppearanceHelper.h"
-#import "ShapeFormatterHelper.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPThemeManager.h"
 #import "ImageFormatterHelper.h"
 #import "ContactsManager.h"
-
+#import "GLPGroup.h"
+#import "GLPGroupManager.h"
+#import "GroupViewController.h"
+#import "CreateNewGroupCell.h"
+#import "GroupCell.h"
+#import "NewGroupViewController.h"
 
 @interface ContactsViewController ()
 
@@ -35,6 +38,16 @@
 
 @property (strong, nonatomic) UITabBarItem *contactsTabbarItem;
 
+//Groups attributes.
+@property (assign, nonatomic) BOOL isContactsView;
+@property (strong, nonatomic) NSMutableArray *groups;
+@property (strong, nonatomic) NSMutableArray *groupsStr;
+@property (strong, nonatomic) NSMutableDictionary *categorisedGroups;
+@property (strong, nonatomic) NSArray *groupSections;
+@property (strong, nonatomic) GLPGroup *selectedGroup;
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *groupsContactsSegment;
+
 @end
 
 @implementation ContactsViewController
@@ -44,46 +57,16 @@
     [super viewDidLoad];
     
     [self configTabbar];
-
     
-    //Init categorised users dictionary.
-    self.categorisedUsers = [[NSMutableDictionary alloc] init];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self initialiseObjects];
     
-    //Add samples users.
-    self.users = [[NSMutableArray alloc] init];
-    self.usersStr = [[NSMutableArray alloc] init];
-
+    [self configNavigationBar];
     
+    [self registerViews];
     
-    //Change the format of the navigation bar.
+    [self configureTableView];
     
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-    
-    [AppearanceHelper setNavigationBarColour:self];
-    
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-    
-    
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    [AppearanceHelper setNavigationBarFontFor:self];
-
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    
-    
-//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
-
-
-
-    self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-
+    [self configureSegment];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -91,6 +74,7 @@
     [super viewDidAppear:animated];
     
     [self loadContacts];
+    [self loadGroupsWithGroup:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -104,8 +88,93 @@
     self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
     [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    
+    
+    [self.contactsTableView setTableFooterView:[[UIView alloc] init]];
+    
+    [self configNotifications];
+//    [self setCustomBackgroundToTableView];
+
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
+
+}
+
+
+-(void)configureTableView
+{
+    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+    
+    
+}
+
+-(void)setCustomBackgroundToTableView
+{
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
+    
+    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
+    
+    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+//    [self.tableView setBackgroundView:backImgView];
+}
+
+#pragma mark - Configuration
+
+-(void)configNavigationBar
+{
+    //Change the format of the navigation bar.
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
+    
+    [AppearanceHelper setNavigationBarColour:self];
+    
+    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+    
+    
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    [AppearanceHelper setNavigationBarFontFor:self];
+    
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    
+    //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+}
+
+-(void)configureSegment
+{
+//    [self.groupsContactsSegment setTintColor:[UIColor whiteColor]];
+    
+    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil] forState:UIControlStateSelected];
+    
+    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor lightGrayColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
+    
+    
+    
+    
+    
+//    UIColor *newSelectedTintColor = [UIColor lightGrayColor];
+//    [[[self.groupsContactsSegment subviews] objectAtIndex:1] setTintColor:[AppearanceHelper defaultGleepostColour]];
+//    [[[self.groupsContactsSegment subviews] objectAtIndex:1] setBackgroundColor:newSelectedTintColor];
+    
+    
+    
+//    [self.groupsContactsSegment setTintColor:[AppearanceHelper defaultGleepostColour]];
+//    
+//    [self.groupsContactsSegment setBackgroundColor:newSelectedTintColor];
+    
+    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"uselected_segment"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [self.groupsContactsSegment setBackgroundImage:[UIImage imageNamed:@"selected_segment"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+    [self.groupsContactsSegment setDividerImage:[[UIImage alloc] init] forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+}
 
 -(void)configTabbar
 {
@@ -114,7 +183,55 @@
     self.contactsTabbarItem = [items objectAtIndex:3];
 }
 
--(void) clearUselessSections
+-(void)configNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupRemoteKeyAndImage:) name:@"GLPGroupUploaded" object:nil];
+
+}
+
+#pragma mark - Notifications
+
+//-(void)updateGroupRemoteKeyAndImage:(NSNotification*)notification
+//{
+//    NSDictionary *dict = [notification userInfo];
+//    
+//    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+//    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+//    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+//    
+//    int index = 0;
+//    
+//    GLPPost *uploadedPost = nil;
+//    
+//    for(GLPPost* p in self.posts)
+//    {
+//        if(key == p.key)
+//        {
+//            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+//            p.remoteKey = remoteKey;
+//            uploadedPost = p;
+//            //            p.tempImage = nil;
+//            break;
+//        }
+//        ++index;
+//    }
+//    
+//    
+//    if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
+//    {
+//        //If the post belongs to logged in user then inform his/her profile's posts.
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
+//    }
+//    
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    
+//    //    [self.tableView reloadData];
+//    
+//    
+//}
+
+
+-(void) clearContactsUselessSections
 {
     BOOL sectionFound = NO;
     NSMutableArray *deletedSections = [[NSMutableArray alloc] init];
@@ -150,6 +267,39 @@
         [self.sections removeObject:letter];
     }
 }
+
+-(void)registerViews
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"CreateGroupCell" bundle:nil] forCellReuseIdentifier:@"CreateGroupCellIdentifier"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"GroupCell" bundle:nil] forCellReuseIdentifier:@"GroupCellIdentifier"];
+
+}
+
+-(void)initialiseObjects
+{
+    //Init categorised users dictionary.
+    self.categorisedUsers = [[NSMutableDictionary alloc] init];
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    //Add samples users.
+    self.users = [[NSMutableArray alloc] init];
+    self.usersStr = [[NSMutableArray alloc] init];
+    
+    
+    self.panelSections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+    
+    self.isContactsView = NO;
+    _groups = [[NSMutableArray alloc] init];
+    self.groupsStr = [[NSMutableArray alloc] init];
+    
+
+}
+
 
 -(void) categoriseUsersByLetter
 {
@@ -233,68 +383,7 @@
     }
 }
 
-/**
- 
- Not used.
- 
- */
-- (UIImage *)resizeImageToSize:(CGSize)targetSize withImage:(UIImage*) incImage
-{
-    UIImage *sourceImage = incImage;
-    UIImage *newImage = nil;
-    
-    CGSize imageSize = sourceImage.size;
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    
-    CGFloat targetWidth = targetSize.width;
-    CGFloat targetHeight = targetSize.height;
-    
-    CGFloat scaleFactor = 0.0;
-    CGFloat scaledWidth = targetWidth;
-    CGFloat scaledHeight = targetHeight;
-    
-    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
-    
-    if (CGSizeEqualToSize(imageSize, targetSize) == NO) {
-        
-        CGFloat widthFactor = targetWidth / width;
-        CGFloat heightFactor = targetHeight / height;
-        
-        if (widthFactor < heightFactor)
-            scaleFactor = widthFactor;
-        else
-            scaleFactor = heightFactor;
-        
-        scaledWidth  = width * scaleFactor;
-        scaledHeight = height * scaleFactor;
-        
-        // make image center aligned
-//        if (widthFactor < heightFactor)
-//        {
-//            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
-//        }
-//        else if (widthFactor > heightFactor)
-//        {
-//            thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
-//        }
-    }
-    
-    UIGraphicsBeginImageContext(targetSize);
-    CGRect thumbnailRect = CGRectZero;
-    thumbnailRect.origin = thumbnailPoint;
-    thumbnailRect.size.width  = scaledWidth;
-    thumbnailRect.size.height = scaledHeight;
-    
-    [sourceImage drawInRect:thumbnailRect];
-    newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    if(newImage == nil)
-        NSLog(@"could not scale image");
-    
-    return newImage ;
-}
+
 
 
 - (void)didReceiveMemoryWarning
@@ -379,6 +468,120 @@
 //    }];
 }
 
+-(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
+{
+    
+    if(createdGroup)
+    {
+        //Add the new group in order to preserve it as is.
+        //We are doing that because the new group has a real image
+        //in order to create better user experience for the user.
+        
+        [_groups addObject:createdGroup];
+    }
+
+    
+    [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
+       
+        _groups = groups.mutableCopy;
+
+        [self showGroups];
+        
+        //TODO: Change that in order to avoid ovewritting of not uploaded groups.
+        
+        [self.contactsTableView reloadData];
+        
+    } remoteCallback:^(BOOL success, NSArray *groups) {
+        
+        if(!success)
+        {
+            return;
+        }
+        
+        _groups = groups.mutableCopy;
+        
+        [self showGroups];
+        
+        //TODO: Change that in order to avoid ovewritting of not uploaded groups.
+        
+        [self.contactsTableView reloadData];
+        
+    }];
+    
+    
+
+//    [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
+//       
+//        if(success)
+//        {
+//            _groups = groups.mutableCopy;
+//            
+////            if(_groups.count == 0)
+////            {
+////                
+////                
+////                //[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationFade];
+////
+////            }
+////            else
+////            {
+//                [self showGroups];
+//                
+//                [self.contactsTableView reloadData];
+////            }
+//            
+//        }
+//        
+//    }];
+}
+
+-(void)createNewGroupWithGroup:(GLPGroup *)group
+{
+    [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup* group) {
+        
+        if(success)
+        {
+            DDLogInfo(@"Group with name: %@ created.", group.name);
+            
+            [self reloadNewGroupWithGroup:group];
+        }
+        else
+        {
+            DDLogInfo(@"Fail to create group with name: %@.", group.name);
+        }
+        
+    }];
+}
+
+#pragma mark - Selectors
+
+- (IBAction)barSegmentTouched:(id)sender
+{
+    UISegmentedControl *segment = sender;
+    
+    _isContactsView = segment.selectedSegmentIndex;
+    
+    
+//    for (int i=0; i<[segment.subviews count]; i++)
+//    {
+//        if ([[segment.subviews objectAtIndex:i]isSelected] )
+//        {
+//            UIColor *tintcolor=[AppearanceHelper defaultGleepostColour];
+//            [[segment.subviews objectAtIndex:i] setTintColor:tintcolor];
+//        }
+//        else
+//        {
+//            [[segment.subviews objectAtIndex:i] setTintColor:[UIColor lightGrayColor]];
+//        }
+//    }
+    
+    
+    
+    [self.tableView reloadData];
+    
+}
+
+
 #pragma mark - UI loaders
 
 -(void)showContacts:(NSDictionary*)categorisedContacts
@@ -389,25 +592,68 @@
     if(self.users.count>0)
     {
         self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
-        [self clearUselessSections];
+        
+        [self clearContactsUselessSections];
         
         [self categoriseUsersByLetter];
         [self.contactsTableView reloadData];
     }
 }
 
+-(void)showGroups
+{
+    if(self.groups.count > 0)
+    {
+        NSDictionary *result = [GLPGroupManager processGroups:_groups];
+        
+        _groupsStr = [result objectForKey:@"GroupNames"];
+        _categorisedGroups = [result objectForKey:@"CategorisedGroups"];
+        _groupSections = [result objectForKey:@"Sections"];
+    }
+    else
+    {
+        _groupsStr = [[NSMutableArray alloc] init];
+        _categorisedGroups = [[NSMutableDictionary alloc] init];
+        _groupSections = [[NSMutableArray alloc] init];
+    }
+}
+
+-(void)reloadNewGroupWithGroup:(GLPGroup *)group
+{
+    [self loadGroupsWithGroup:group];
+}
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return self.sections.count;
+    
+    if (_isContactsView)
+    {
+        return self.sections.count;
+    }
+    else
+    {
+        return _groupSections.count+1;
+    }
+    
 }
+
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-    return self.panelSections;
+    if (_isContactsView)
+    {
+        return self.panelSections;
+    }
+    else
+    {
+//        NSMutableArray *panelSec = self.panelSections.mutableCopy;
+//        [panelSec setObject:@"-" atIndexedSubscript:0];
+        
+        return self.panelSections;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
@@ -417,45 +663,106 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [NSString stringWithFormat:@"  %@", [[self.sections objectAtIndex:section] uppercaseString]] ;
+    if (_isContactsView)
+    {
+        return [NSString stringWithFormat:@"  %@", [[self.sections objectAtIndex:section] uppercaseString]];
+    }
+    else
+    {
+        if(section == 0)
+        {
+            return nil;
+        }
+        
+        return [NSString stringWithFormat:@"  %@", [[_groupSections objectAtIndex:section-1] uppercaseString]];
+    }
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
     
-    NSArray *sectionArray = [self.usersStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.sections objectAtIndex:section]]];
-    
-    return [sectionArray count];
+    if(_isContactsView)
+    {
+        
+        NSArray *sectionArray = [self.usersStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.sections objectAtIndex:section]]];
+        
+        return [sectionArray count];
+    }
+    else
+    {
+
+        if(section == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            NSArray *sectionArray = [self.groupsStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.groupSections objectAtIndex:section-1]]];
+
+            return [sectionArray count];
+        }
+        
+    }
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ContactCell";
-    ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CreateGroupCellIdentifier = @"CreateGroupCellIdentifier";
+    static NSString *GroupCellIdentifier = @"GroupCellIdentifier";
     
-    
-    NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
-    
-    GLPContact *currentContact = [currentUsers objectAtIndex:indexPath.row];
-    
-    [cell.nameUser setText: currentContact.user.name];
-
-    
-    [ShapeFormatterHelper setRoundedView:cell.profileImageUser toDiameter:cell.profileImageUser.frame.size.height];
-
-    if([currentContact.user.profileImageUrl isEqualToString:@""])
+    if(_isContactsView)
     {
-        [cell.profileImageUser setImage:[UIImage imageNamed:@"default_user_image"]];
+        ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+        
+        NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
+        
+        GLPContact *currentContact = [currentUsers objectAtIndex:indexPath.row];
+        
+        [cell setName:currentContact.user.name withImageUrl:currentContact.user.profileImageUrl];
+        
+        return cell;
+
     }
     else
     {
-        [cell.profileImageUser setImageWithURL:[NSURL URLWithString:currentContact.user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            CreateNewGroupCell *groupCell = [tableView dequeueReusableCellWithIdentifier:CreateGroupCellIdentifier forIndexPath:indexPath];
+            
+            [groupCell setDelegate:self];
+            
+            return groupCell;
+        }
+        else
+        {
+            
+            GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellIdentifier forIndexPath:indexPath];
+            
+//            ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+            [cell setDelegate:self];
+            
+            NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section - 1]];
+            
+            GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
+            
+            [cell setGroupData:currentGroup];
+            
+            return cell;
+
+        }
+
+        
+
     }
     
-    
 
-    return cell;
+    return nil;
 }
 
 /*
@@ -509,14 +816,48 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
     
-    NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
+    if(_isContactsView)
+    {
+        NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];
+        
+        self.selectedUserId = [[currentUsers objectAtIndex:indexPath.row] remoteKey];
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        if(indexPath.row == 0 && indexPath.section == 0)
+        {
+            return;
+        }
+        
+        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section-1]];
+        
+        self.selectedGroup = [currentGroups objectAtIndex:indexPath.row];
+        
+        DDLogDebug(@"Selected group: %@", self.selectedGroup);
+        
+        [self performSegueWithIdentifier:@"view group" sender:self];
+    }
     
-    
-    
-    self.selectedUserId = [[currentUsers objectAtIndex:indexPath.row] remoteKey];
-    
-    [self performSegueWithIdentifier:@"view profile" sender:self];
+
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0 && indexPath.section == 0)
+    {
+        return NEW_GROUP_CELL_HEIGHT;
+    }
+    
+    return 48.0f;
+}
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    
+//}
+
 
 //Call this when there is a need to pass elements to the next controller.
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -530,12 +871,110 @@
         
         pvc.selectedUserId = self.selectedUserId;
     }
+    else if([segue.identifier isEqualToString:@"view group"])
+    {
+        GroupViewController *gvc = segue.destinationViewController;
+        
+        gvc.group = self.selectedGroup;
+    }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return 450;
-//}
+#pragma mark - Group Created Delegate
 
+//TODO: Make those methods more efficient.
+
+-(void)groupCreatedWithData:(GLPGroup *)group
+{
+    [self reloadNewGroupWithGroup:group];
+    
+//    [self createNewGroupWithGroup:group];
+}
+
+-(void)popUpCreateView
+{
+    //Pop up the creation view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    NewGroupViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupViewController"];
+    
+//    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+//    [navigationController setNavigationBarHidden:YES];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [cvc setDelegate:self];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+
+-(void)groupDeletedWithData:(GLPGroup *)group
+{
+    [GLPGroupManager deleteGroup:group];
+    
+    [self reloadNewGroupWithGroup:group];
+}
+
+/**
+ 
+ Not used.
+ 
+ */
+- (UIImage *)resizeImageToSize:(CGSize)targetSize withImage:(UIImage*) incImage
+{
+    UIImage *sourceImage = incImage;
+    UIImage *newImage = nil;
+    
+    CGSize imageSize = sourceImage.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    
+    CGFloat targetWidth = targetSize.width;
+    CGFloat targetHeight = targetSize.height;
+    
+    CGFloat scaleFactor = 0.0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    
+    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
+    
+    if (CGSizeEqualToSize(imageSize, targetSize) == NO) {
+        
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor < heightFactor)
+            scaleFactor = widthFactor;
+        else
+            scaleFactor = heightFactor;
+        
+        scaledWidth  = width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        // make image center aligned
+        //        if (widthFactor < heightFactor)
+        //        {
+        //            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
+        //        }
+        //        else if (widthFactor > heightFactor)
+        //        {
+        //            thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
+        //        }
+    }
+    
+    UIGraphicsBeginImageContext(targetSize);
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width  = scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    if(newImage == nil)
+        NSLog(@"could not scale image");
+    
+    return newImage ;
+}
 
 @end

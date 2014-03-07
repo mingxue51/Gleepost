@@ -26,10 +26,10 @@
         
         if(success) {
             
-            //TODO: Save new comments in database.
-            //TODO: If there are comments in db and not in server show them.
-            [self saveCommentsInDb:comments];
+            //Save new comments in database.
+            [GLPCommentManager saveCommentsInDb:comments];
            
+            //If there are comments in db and not in server show them.
             
             remoteCallback(success, [self addLocalComments:localComments toRemoteComments:comments]);
             

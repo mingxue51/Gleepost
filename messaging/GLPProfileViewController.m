@@ -1230,7 +1230,7 @@
 }
 
 
-#pragma  mark - Buttons view methods
+#pragma  mark - Button Navigation Delegate
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {

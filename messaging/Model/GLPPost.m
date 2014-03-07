@@ -43,6 +43,11 @@
     return YES;
 }
 
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Post content: %@", self.content];
+}
+
 
 
 @end

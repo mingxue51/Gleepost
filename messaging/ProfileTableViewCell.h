@@ -10,6 +10,7 @@
 #import "GLPUser.h"
 #import "GLPProfileViewController.h"
 #import "GLPPrivateProfileViewController.h"
+#import "GLPGroup.h"
 
 @interface ProfileTableViewCell : UITableViewCell
 
@@ -26,5 +27,6 @@ extern const float PROFILE_CELL_HEIGHT;
 -(void)updateImageWithUrl:(NSString*)url;
 -(void)setDelegate:(GLPProfileViewController *)delegate;
 -(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate;
+-(void)initialiseElementsWithGroupInformation:(GLPGroup *)group;
 
 @end
