@@ -1566,21 +1566,19 @@ static WebClient *instance = nil;
 
 # pragma mark - Groups
 
-- (BOOL)synchronousAddUser:(GLPUser *)user toGroup:(id)group
+- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback
 {
-    __block BOOL result = NO;
-    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
-    params[@"user"] = [user remoteKeyNumber];
+    params[@"users"] = [users componentsJoinedByString:@","];
     
-    NSString *path = [NSString stringWithFormat:@"networks/%d/users", 1];
-    [self executeSynchronousRequestWithMethod:@"POST" path:path params:params callback:^(BOOL success, id json) {
-        result = success;
+    NSString *path = [NSString stringWithFormat:@"networks/%d/users", group.remoteKey];
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        callback(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO);
     }];
-    
-    return result;
 }
-
 
 # pragma mark - Utils
 

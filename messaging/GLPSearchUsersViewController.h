@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GLPSearchUserCell.h"
 
-@interface GLPSearchUsersViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, GLPSearchUserCellDelegate>
+@interface GLPSearchUsersViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, GLPSearchUserCellDelegate, UIAlertViewDelegate>
 
 @end

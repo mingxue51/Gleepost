@@ -251,16 +251,23 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
         }
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [[WebClient sharedInstance] addUsers:userKeys toGroup:nil callback:^(BOOL success) {
+        [WebClientHelper hideStandardLoaderForView:view];
         
-
-        
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [WebClientHelper hideStandardLoaderForView:view];
-            
+        if(!success) {
             [WebClientHelper showStandardErrorWithTitle:@"Request failed" andContent:@"Something went wrong. Please check your internet connection and retry."];
-        });
-    });
+            return;
+        }
+        
+        NSString *desc = userKeys.count > 1 ? [NSString stringWithFormat:@"%d members were added to the group!", (int)userKeys.count] : @"The member was added to the group!";
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Members added successfully"
+                                                        message:desc
+                                                       delegate:self
+                                              cancelButtonTitle:@"Finish"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }];
 }
 
 
@@ -291,5 +298,12 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     }
 }
 
+
+# pragma mark - Alert view
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

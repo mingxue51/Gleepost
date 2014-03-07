@@ -133,6 +133,6 @@ extern NSString * const kWebserviceBaseUrl;
 
 // groups
 
-- (BOOL)synchronousAddUser:(GLPUser *)user toGroup:(id)group;
+- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback;
 
 @end
