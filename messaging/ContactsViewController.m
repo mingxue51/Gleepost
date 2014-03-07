@@ -199,14 +199,20 @@
 
 -(void)updateGroupRemoteKeyAndImage:(NSNotification *)notification
 {
-    int index = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+    int remoteKey = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
     
-    if(index == -1)
+    if(remoteKey == -1)
     {
         return;
     }
     
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
+    
+    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
+    
+    DDLogDebug(@"Index path of updated group: %d : %d", indexPath.row, indexPath.section);
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+1]] withRowAnimation:UITableViewRowAnimationNone];
     
     
 }

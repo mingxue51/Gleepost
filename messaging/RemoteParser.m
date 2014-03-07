@@ -672,7 +672,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     GLPGroup *group = [[GLPGroup alloc] initWithName:json[@"name"] andRemoteKey:[json[@"id"] integerValue]];
     
-    group.description = json[@"description"];
+    group.groupDescription = json[@"description"];
     group.groupImageUrl = json[@"image"];
     
     group.author = [RemoteParser parseUserFromJson:json[@"creator"]];

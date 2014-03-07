@@ -41,7 +41,7 @@
     
     [self configureFDTakeController];
     
-    [self configureProgressBar];
+//    [self configureProgressBar];
     
 }
 

@@ -29,9 +29,6 @@
     
     [localEntities addObjectsFromArray:pendingGroups];
     
-    DDLogDebug(@"LOCAL GROUPS: %@", localEntities);
-
-    
     localCallback(localEntities);
     
     
@@ -52,8 +49,6 @@
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
         
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
-        
-        DDLogDebug(@"REMOTE GROUPS: %@", finalRemoteGroups);
         
         remoteCallback(YES, finalRemoteGroups);
 
@@ -459,6 +454,38 @@
     return categorisedGroups;
 }
 
+/**
+ Finds the row and section number of the current group with remote key.
+ 
+ @param remoteKey group remote key.
+ @param dictionary the categorised dictionary that contains all groups in section order.
+ 
+ @return the index path of the group.
+ 
+ */
+
++(NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey withCategorisedGroups:(NSMutableDictionary *)dictionary
+{
+    int row = 0;
+    
+    for(NSNumber *index in dictionary)
+    {
+        NSArray *groups = [dictionary objectForKey:index];
+                
+        for(GLPGroup *g in groups)
+        {
+            if(g.remoteKey == remoteKey)
+            {
+                return [NSIndexPath indexPathForRow:row inSection:[index integerValue]];
+            }
+            ++row;
+        }
+        row = 0;
+    }
+    
+    return nil;
+}
+
 #pragma mark - Notifications methods
 
 +(int)parseNotification:(NSNotification*)notification withGroupsArray:(NSArray*)groups
@@ -494,7 +521,7 @@
     currentGroup.remoteKey = [remoteKey intValue];
     currentGroup.groupImageUrl = imageUrl;
     
-    return index;
+    return [remoteKey integerValue];
 }
 
 

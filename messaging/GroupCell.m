@@ -95,7 +95,7 @@
     {
         //Show exit button.
         [self hideIndicator];
-        [self showExitButton];
+//        [self showExitButton];
     }
 }
 
@@ -208,7 +208,7 @@
         if(success)
         {
             DDLogInfo(@"User not in group: %@ anymore", _groupName.text);
-            [_delegate groupDeletedWithData:[[GLPGroup alloc] init]];
+            [_delegate groupDeletedWithData:_groupData];
         }
         else
         {

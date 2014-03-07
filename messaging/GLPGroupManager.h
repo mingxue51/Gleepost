@@ -25,4 +25,6 @@
 
 +(int)parseNotification:(NSNotification*)notification withGroupsArray:(NSArray*)groups;
 
++(NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey withCategorisedGroups:(NSMutableDictionary *)dictionary;
+
 @end

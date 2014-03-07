@@ -156,6 +156,8 @@
 
 +(void)remove:(GLPGroup *)group
 {
+    NSAssert(group.remoteKey != 0, @"Key must not be 0.");
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         [GLPGroupDao remove:group inDb:db];
@@ -164,9 +166,9 @@
 
 +(void)remove:(GLPGroup *)group inDb:(FMDatabase*)db
 {
-    BOOL removed = [db executeUpdateWithFormat:@"delete from groups where key=%d", group.key];
+    BOOL removed = [db executeUpdateWithFormat:@"delete from groups where remoteKey=%d", group.remoteKey];
     
-    DDLogDebug(@"Group with key %d removed statusL %d.", group.key, removed);
+    DDLogDebug(@"Group with key %d removed status %d.", group.remoteKey, removed);
 }
 
 +(void)updateGroupSendingData:(GLPGroup *)entity db:(FMDatabase *)db
