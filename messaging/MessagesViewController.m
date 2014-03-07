@@ -151,8 +151,11 @@
     [self.navigationController.navigationBar setShadowImage: [[UIImage alloc]init]];
     
     if(ENV_DEBUG) {
-        _debugNotificationCount = 0;
-        UIBarButtonItem *debug = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount] style:UIBarButtonItemStyleBordered target:self action:@selector(debugNotification)];
+//        _debugNotificationCount = 0;
+//        UIBarButtonItem *debug = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"Notif %d", _debugNotificationCount] style:UIBarButtonItemStyleBordered target:self action:@selector(debugNotification)];
+//        self.navigationItem.rightBarButtonItem = debug;
+        
+        UIBarButtonItem *debug = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStyleBordered target:self action:@selector(debugSearch)];
         self.navigationItem.rightBarButtonItem = debug;
     }
 
@@ -431,6 +434,11 @@
 
 
 # pragma mark - Debug
+
+- (void)debugSearch
+{
+    [self.navigationController pushViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"GLPSearchUsersViewController"] animated:YES];
+}
 
 - (void)debugNotification
 {

@@ -79,13 +79,13 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getMessagesForConversation:(GLPConversation *)conversation after:(GLPMessage *)afterMessage before:(GLPMessage *)beforeMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 - (void)getMessagesForConversation:(GLPConversation *)conversation afterRemoteKey:(NSInteger)afterRemoteKey beforeRemoteKey:(NSInteger)beforeRemoteKey callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 
-// User
 
+// User
 
 - (void)getUserWithKey:(NSInteger)key callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
 -(void)acceptContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock;
-
 -(void)resetPasswordWithEmail:(NSString *)email callbackBlock:(void (^) (BOOL success))callbackBlock;
+- (void)searchUserByName:(NSString *)name callback:(void (^)(NSArray *users))callback;
 
 
 -(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock;
@@ -118,5 +118,10 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback;
 
 - (void)markNotificationsReadWithLastNotificationRemoteKey:(int)remoteKey withCallbackBlock:(void (^)(BOOL success))callback;
+
+
+// groups
+
+- (BOOL)synchronousAddUser:(GLPUser *)user toGroup:(id)group;
 
 @end

@@ -1403,8 +1403,40 @@ static WebClient *instance = nil;
 }
 
 
+# pragma mark - Users
 
-#pragma mark - Utils
+- (void)searchUserByName:(NSString *)name callback:(void (^)(NSArray *users))callback
+{
+    NSString *path = [NSString stringWithFormat:@"search/users/%@", name];
+    [self getPath:path parameters:_sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogInfo(@"search: %@", responseObject);
+        NSArray *users = [RemoteParser parseUsersFromJson:responseObject];
+        callback(users);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(nil);
+    }];
+}
+
+
+# pragma mark - Groups
+
+- (BOOL)synchronousAddUser:(GLPUser *)user toGroup:(id)group
+{
+    __block BOOL result = NO;
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    params[@"user"] = [user remoteKeyNumber];
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/users", 1];
+    [self executeSynchronousRequestWithMethod:@"POST" path:path params:params callback:^(BOOL success, id json) {
+        result = success;
+    }];
+    
+    return result;
+}
+
+
+# pragma mark - Utils
 
 - (void)executeSynchronousRequestWithMethod:(NSString *)method path:(NSString *)path params:(NSDictionary *)params callback:(void (^)(BOOL success, id json))callback
 {
@@ -1437,11 +1469,11 @@ static WebClient *instance = nil;
     }
     
     // this should not happen
-    if(!json) {
-        DDLogError(@"Json response to dictionary is null");
-        callback(NO, nil);
-        return;
-    }
+//    if(!json) {
+//        DDLogError(@"Json response to dictionary is null");
+//        callback(NO, nil);
+//        return;
+//    }
     
     callback(YES, json);
 }

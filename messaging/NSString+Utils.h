@@ -13,4 +13,7 @@
 - (BOOL)isEmpty;
 + (BOOL)isStringEmpty:(NSString *)string;
 
+- (BOOL)isNotEmpty;
+- (BOOL)isNotBlank;
+
 @end

@@ -48,6 +48,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return user;
 }
 
++ (NSArray *)parseUsersFromJson:(NSArray *)jsonArray
+{
+    NSMutableArray *objects = [NSMutableArray array];
+    
+    for(id json in jsonArray) {
+        GLPUser *object = [RemoteParser parseUserFromJson:json];
+        [objects addObject:object];
+    }
+    
+    return objects;
+}
+
+
+
 +(NSArray*)parseNetworkUser:(NSDictionary *)json
 {
     NSMutableArray *networkContent = [[NSMutableArray alloc] init];

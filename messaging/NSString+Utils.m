@@ -28,4 +28,21 @@
     return NO;
 }
 
+- (BOOL)isNotEmpty
+{
+    return [self length] != 0;
+}
+
+- (BOOL)isNotBlank
+{
+    if (![self isNotEmpty]) {
+        return NO;
+    }
+
+    NSCharacterSet *nonWhitespaceSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
+    NSRange range = [self rangeOfCharacterFromSet:nonWhitespaceSet];
+    
+    return range.location != NSNotFound;
+}
+
 @end

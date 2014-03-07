@@ -20,6 +20,7 @@
 
 // user
 + (GLPUser *)parseUserFromJson:(NSDictionary *)json;
++ (NSArray *)parseUsersFromJson:(NSArray *)jsonArray;
 
 // conversations
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;

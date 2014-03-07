@@ -1,0 +1,262 @@
+//
+//  GLPSearchUsersViewController.m
+//  Gleepost
+//
+//  Created by Lukas on 3/6/14.
+//  Copyright (c) 2014 Gleepost. All rights reserved.
+//
+
+#import "GLPSearchUsersViewController.h"
+#import "GLPSearchUserCell.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
+#import "NSString+Utils.h"
+
+@interface GLPSearchUsersViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *searchTextfield;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UILabel *countLabel;
+
+@property (strong, nonatomic) NSMutableArray *users;
+@property (strong, nonatomic) NSMutableDictionary *checkedUsers;
+@property (assign, nonatomic) NSInteger checkUsersCount;
+@property (assign, nonatomic) NSInteger requestsCount;
+@property (assign, nonatomic) BOOL shouldAnimateEndLoading;
+
+- (IBAction)searchButtonClick:(id)sender;
+- (IBAction)searchTextFieldChanged:(id)sender;
+- (IBAction)submitButtonClick:(id)sender;
+
+@end
+
+@implementation GLPSearchUsersViewController
+
+static NSString * const kCellIdentifier = @"CellIdentifier";
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = @"Invite Group Members";
+    
+    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    _users = [NSMutableArray array];
+    _checkedUsers = [NSMutableDictionary dictionary];
+    _checkUsersCount = 0;
+    _requestsCount = 0;
+    _shouldAnimateEndLoading = NO;
+    
+    _activityIndicator.hidden = YES;
+    
+    [_submitButton setImage:[UIImage imageNamed:@"search_users_enabled_save_button"] forState:UIControlStateNormal];
+    [_submitButton setImage:[UIImage imageNamed:@"search_users_disabled_save_button"] forState:UIControlStateDisabled];
+    _submitButton.enabled = NO;
+    
+    [_searchTextfield becomeFirstResponder];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+}
+
+# pragma mark - Searching
+
+- (void)searchUsers
+{
+    NSString *name = _searchTextfield.text;
+    
+    if(![name isNotBlank]) {
+        return;
+    }
+    
+    DDLogInfo(@"Start user search");
+    
+    if(_requestsCount == 0) {
+        _searchButton.hidden = YES;
+        _activityIndicator.hidden = NO;
+        [_activityIndicator startAnimating];
+    }
+    
+    _requestsCount++;
+    
+    [[WebClient sharedInstance] searchUserByName:name callback:^(NSArray *users) {
+        _requestsCount--;
+        
+        if(_requestsCount == 0) {
+            _activityIndicator.hidden = YES;
+            [_activityIndicator stopAnimating];
+            _searchButton.hidden = NO;
+        }
+        
+        if(!users) {
+            return;
+        }
+        
+        NSLog(@"Search users by name count: %d", users.count);
+        
+        for(GLPUser *user in users) {
+            NSNumber *index = [user remoteKeyNumber];
+            if(!_checkedUsers[index]) {
+                _checkedUsers[index] = [NSNumber numberWithBool:NO];
+            }
+        }
+        
+        _users = [users mutableCopy];
+        [_tableView reloadData];
+    }];
+}
+
+- (void)performEndLoadingAnimation
+{
+    _searchButton.hidden = NO;
+    _searchButton.alpha = 0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        _activityIndicator.alpha = 0;
+        _searchButton.alpha = 1;
+    } completion:^(BOOL finished) {
+        [_activityIndicator stopAnimating];
+        _activityIndicator.hidden = YES;
+        _searchButton.hidden = NO;
+    }];
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _users.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GLPUser *user = _users[indexPath.row];
+    BOOL check = [_checkedUsers[[user remoteKeyNumber]] boolValue];
+    
+    GLPSearchUserCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
+    [cell configureWithUser:user checked:check];
+    cell.delegate = self;
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 43;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+
+# pragma mark - GLPSearchUserCellDelegate
+
+- (void)checkButtonClickForUser:(GLPUser *)user
+{
+    BOOL checked = ![_checkedUsers[[user remoteKeyNumber]] boolValue];
+    _checkedUsers[[user remoteKeyNumber]] = [NSNumber numberWithBool:checked];
+    _checkUsersCount += checked ? 1 : -1;
+
+    NSUInteger index = [_users indexOfObject:user];
+    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+    if(_checkUsersCount > 0) {
+        _submitButton.enabled = YES;
+        _countLabel.hidden = NO;
+        _countLabel.text = [NSString stringWithFormat:@"(%d)", _checkUsersCount];
+    } else {
+        _submitButton.enabled = NO;
+        _countLabel.hidden = YES;
+    }
+}
+
+
+# pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self searchUsers];
+    return YES;
+}
+
+# pragma mark - Actions
+
+- (IBAction)searchButtonClick:(id)sender
+{
+    [self searchUsers];
+}
+
+- (IBAction)searchTextFieldChanged:(id)sender
+{
+    if(_searchTextfield.text.length > 2) {
+        [self searchUsers];
+    }
+    else if(_users.count > 0) {
+        [_users removeAllObjects];
+        [_tableView reloadData];
+    }
+}
+
+- (IBAction)submitButtonClick:(id)sender
+{
+    UIView *view = [[UIApplication sharedApplication] windows][1];
+    [WebClientHelper showStandardLoaderWithTitle:@"Adding members" forView:view];
+    
+    NSMutableArray *userKeys = [NSMutableArray array];
+    for(NSNumber *remoteKey in _checkedUsers) {
+        if([_checkedUsers[remoteKey] boolValue]) {
+            [userKeys addObject:remoteKey];
+        }
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [WebClientHelper hideStandardLoaderForView:view];
+            
+            [WebClientHelper showStandardErrorWithTitle:@"Request failed" andContent:@"Something went wrong. Please check your internet connection and retry."];
+        });
+    });
+}
+
+
+# pragma mark - Keyboard
+
+- (void) keyboardDidShow:(NSNotification*)notification {
+    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    UIWindow *window = [[[UIApplication sharedApplication] windows]objectAtIndex:0];
+    CGRect keyboardFrameConverted = [self.view convertRect:keyboardFrame fromView:window];
+    
+    CGRectSetY(_submitButton, keyboardFrameConverted.origin.y - 6 - _submitButton.frame.size.height);
+    CGRectSetXY(_countLabel, 220, _submitButton.frame.origin.y);
+    CGRectSetH(_tableView, _submitButton.frame.origin.y - 5 - _tableView.frame.origin.y);
+}
+
+
+@end
