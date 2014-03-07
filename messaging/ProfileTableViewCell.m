@@ -80,8 +80,10 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     [self.universityLabel setText:self.currentGroup.name];
     
+    [self formatProfileImage];
+
     //TODO: Set image when api supports that and add gesture on image.
-//    [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
+    [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
     
 }
 
