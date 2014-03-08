@@ -32,7 +32,7 @@
 {
     switch (self.notificationType) {
         case kGLPNotificationTypeAcceptedYou:
-            return [NSString stringWithFormat:@"Your are now friends"];
+            return [NSString stringWithFormat:@"Your are now contacts"];
         case kGLPNotificationTypeCommented:
             return [NSString stringWithFormat:@"%@ commented on your post", self.user.name];
         case kGLPNotificationTypeLiked:
