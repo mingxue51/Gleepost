@@ -367,7 +367,7 @@
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
-
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 

@@ -22,6 +22,8 @@
     [super viewDidLoad];
     
     [self configNavigationBar];
+    
+
 
 }
 
@@ -44,6 +46,9 @@
     [self.navigationController.navigationBar setTranslucent:YES];
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
 }

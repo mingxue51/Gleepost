@@ -5,6 +5,7 @@
 //  Created by Lukas on 8/29/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+// Class not used.
 
 #import "ChatViewController.h"
 #import "GLPConversationViewController.h"
@@ -167,7 +168,7 @@
     {
          self.chatStanfordAnimations = [[ChatViewAnimationsStanford alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         
-        self.chatStanfordAnimations.chatViewController = self;
+//        self.chatStanfordAnimations.chatViewController = self;
         self.chatStanfordAnimations.tag = 100;
         
         [self.view addSubview:self.chatStanfordAnimations];

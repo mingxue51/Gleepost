@@ -200,6 +200,14 @@ static BOOL goBack = NO;
 
 }
 
+#pragma mark - Accessors
+
+-(BOOL)isDay
+{
+    return [self.dayController isDay];
+}
+
+
 #pragma mark - Selectors
 
 -(void)searchForNewChat:(id)sender

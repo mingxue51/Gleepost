@@ -620,9 +620,13 @@ static WebClient *instance = nil;
         [params setObject:group.groupImageUrl forKey:@"url"];
     }
     
-    [params setObject:group.description forKey:@"desc"];
+    if(group.groupDescription)
+    {
+        [params setObject:group.groupDescription forKey:@"desc"];
+    }
     
-    DDLogDebug(@"Group to be created: %@", group.groupImageUrl);
+    
+    DDLogDebug(@"Group to be created: %@", group);
     
     [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

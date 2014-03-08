@@ -104,16 +104,18 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     
     if(_isProfileViewController)
     {
-        
         [self showProfileButtonsNotificationsSelected];
+        [_delegate viewSectionWithId:kGLPSettings];
+
     }
     else
     {
-        [self showGroupButtonsMembersSelected];
+        [_delegate viewSectionWithId:kGLPSettings];
+
+//        [self showGroupButtonsMembersSelected];
     }
     
     
-    [_delegate viewSectionWithId:kGLPSettings];
 }
 
 

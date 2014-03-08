@@ -26,7 +26,7 @@
 #import "WebClientHelper.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
-
+#import "MembersViewController.h"
 
 @interface GroupViewController ()
 
@@ -38,7 +38,7 @@
 @property (assign, nonatomic) int currentNumberOfRows;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (assign, nonatomic) int selectedUserId;
-@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
+//@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
 
 //Properties for refresh loader.
 @property (assign, nonatomic) BOOL isLoading;
@@ -86,7 +86,7 @@ const int NUMBER_OF_ROWS = 2;
     
     [self loadPosts];
     
-    [self loadMembers];
+//    [self loadMembers];
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
 
@@ -158,7 +158,7 @@ const int NUMBER_OF_ROWS = 2;
 -(void)initialiseObjects
 {
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-    self.selectedTabStatus = kGLPPosts;
+//    self.selectedTabStatus = kGLPPosts;
     
     
     //Initialise.
@@ -214,6 +214,9 @@ const int NUMBER_OF_ROWS = 2;
     
     //Set title.
     self.title = _group.name;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
 }
 
 -(void)configureNotifications
@@ -390,16 +393,16 @@ const int NUMBER_OF_ROWS = 2;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(self.selectedTabStatus == kGLPPosts)
-    {
+//    if(self.selectedTabStatus == kGLPPosts)
+//    {
         int i = (self.posts.count == 0) ? 0 : 1;
         
         self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + i;
-    }
-    else
-    {
-        self.currentNumberOfRows = NUMBER_OF_ROWS + self.members.count;
-    }
+//    }
+//    else
+//    {
+//        self.currentNumberOfRows = NUMBER_OF_ROWS + self.members.count;
+//    }
         
     
     
@@ -470,19 +473,19 @@ const int NUMBER_OF_ROWS = 2;
     else if (indexPath.row >= 2)
     {
         
-        if(self.selectedTabStatus == kGLPSettings)
-        {
-            //Imeplement members cell.
-            contactCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierContact forIndexPath:indexPath];
-            
-            GLPUser *currentMember = self.members[indexPath.row - 2];
-            
-            [contactCell setName:currentMember.name withImageUrl:currentMember.profileImageUrl];
-            
-            return contactCell;
-        }
-        else
-        {
+//        if(self.selectedTabStatus == kGLPSettings)
+//        {
+//            //Imeplement members cell.
+//            contactCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierContact forIndexPath:indexPath];
+//            
+//            GLPUser *currentMember = self.members[indexPath.row - 2];
+//            
+//            [contactCell setName:currentMember.name withImageUrl:currentMember.profileImageUrl];
+//            
+//            return contactCell;
+//        }
+//        else
+//        {
             if(self.posts.count != 0)
             {
                 GLPPost *post = self.posts[indexPath.row-2];
@@ -510,7 +513,7 @@ const int NUMBER_OF_ROWS = 2;
                     [postViewCell addSubview:line];
                 }
             }
-        }
+//        }
 
         
         return postViewCell;
@@ -538,8 +541,8 @@ const int NUMBER_OF_ROWS = 2;
         return;
     }
     
-    if(self.selectedTabStatus == kGLPPosts)
-    {
+//    if(self.selectedTabStatus == kGLPPosts)
+//    {
         if(indexPath.row-2 == self.posts.count) {
             return;
         }
@@ -548,16 +551,16 @@ const int NUMBER_OF_ROWS = 2;
         //    self.postIndexToReload = indexPath.row-2;
         self.commentCreated = NO;
         [self performSegueWithIdentifier:@"view post" sender:self];
-    }
-    else
-    {
-        GLPUser *member = self.members[indexPath.row - 2];
-        
-        self.selectedUserId = member.remoteKey;
-        
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-
-    }
+//    }
+//    else
+//    {
+//        GLPUser *member = self.members[indexPath.row - 2];
+//        
+//        self.selectedUserId = member.remoteKey;
+//        
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//
+//    }
     
 
 }
@@ -583,8 +586,8 @@ const int NUMBER_OF_ROWS = 2;
     else if(indexPath.row >= 2)
     {
         
-        if(self.selectedTabStatus == kGLPPosts)
-        {
+//        if(self.selectedTabStatus == kGLPPosts)
+//        {
             if(self.posts.count != 0 && self.posts)
             {
                 GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
@@ -598,11 +601,11 @@ const int NUMBER_OF_ROWS = 2;
                     return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
                 }
             }
-        }
-        else
-        {
-            return CONTACT_CELL_HEIGHT;
-        }
+//        }
+//        else
+//        {
+//            return CONTACT_CELL_HEIGHT;
+//        }
         
 
     }
@@ -658,24 +661,24 @@ const int NUMBER_OF_ROWS = 2;
     }];
 }
 
--(void)loadMembers
-{
-    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
-       
-        if(success)
-        {
-            self.members = members;
-            
-            if(self.selectedTabStatus == kGLPSettings)
-            {
-                [self.tableView reloadData];
-            }
-        }
-        
-    }];
-    
-    
-}
+//-(void)loadMembers
+//{
+//    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
+//       
+//        if(success)
+//        {
+//            self.members = members;
+//            
+//            if(self.selectedTabStatus == kGLPSettings)
+//            {
+//                [self.tableView reloadData];
+//            }
+//        }
+//        
+//    }];
+//    
+//    
+//}
 
 #pragma mark - Previous posts
 
@@ -935,15 +938,21 @@ const int NUMBER_OF_ROWS = 2;
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {
     
-    self.selectedTabStatus = selectedTab;
+//    self.selectedTabStatus = selectedTab;
     
     if(selectedTab == kGLPSettings)
     {
+        //Navigate to members view controller.
+        [self performSegueWithIdentifier:@"view members" sender:self];
         
     }
+    else
+    {
+        [self.tableView reloadData];
+    }
     
-    [self.tableView reloadData];
 }
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -1032,6 +1041,12 @@ const int NUMBER_OF_ROWS = 2;
         GLPPrivateProfileViewController *profileViewController = segue.destinationViewController;
         
         profileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if ([segue.identifier isEqualToString:@"view members"])
+    {
+        MembersViewController *mvc = segue.destinationViewController;
+        
+        mvc.group = _group;
     }
 }
 

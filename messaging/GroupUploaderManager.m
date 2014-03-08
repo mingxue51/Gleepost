@@ -81,7 +81,6 @@
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
                                                                             object:nil
                                                                           userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                     @"imageUrl":group.groupImageUrl,
                                                                                      @"key":[NSNumber numberWithInt:group.key]}];
         }
     }];

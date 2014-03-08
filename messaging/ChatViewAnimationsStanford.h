@@ -28,6 +28,7 @@
 -(void)removeElements;
 -(void)navigateToNewRandomChat:(id)sender;
 -(void)startRegularMode;
+-(BOOL)isDay;
 
 
 @end

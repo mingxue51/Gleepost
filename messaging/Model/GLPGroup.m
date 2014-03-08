@@ -27,7 +27,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Name: %@, Remote key: %d, Url: %@", _name, _remoteKey, _groupImageUrl];
+    return [NSString stringWithFormat:@"Name: %@, Remote key: %d, Url: %@, Description: %@", _name, _remoteKey, _groupImageUrl, _groupDescription];
 }
 
 @end

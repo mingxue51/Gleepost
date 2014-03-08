@@ -31,6 +31,7 @@
 -(NSDictionary*)findConfirmedContacts;
 -(NSDictionary*)findConfirmedContactsTemp:(NSArray*)contactsFromServer;
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey;
+-(BOOL)isLoggedInUser:(GLPUser *)user;
 
 
 @end

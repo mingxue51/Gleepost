@@ -62,12 +62,14 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     [_submitButton setImage:[UIImage imageNamed:@"search_users_disabled_save_button"] forState:UIControlStateDisabled];
     _submitButton.enabled = NO;
     
-    [_searchTextfield becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [_searchTextfield becomeFirstResponder];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 }
@@ -251,7 +253,7 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
         }
     }
     
-    [[WebClient sharedInstance] addUsers:userKeys toGroup:nil callback:^(BOOL success) {
+    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success) {
         [WebClientHelper hideStandardLoaderForView:view];
         
         if(!success) {

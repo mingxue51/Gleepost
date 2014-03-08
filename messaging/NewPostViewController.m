@@ -172,6 +172,9 @@
     self.simpleNavBar.tintColor = [UIColor blackColor];
     
     [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
 }
 
 -(void)formatNavigationButtons

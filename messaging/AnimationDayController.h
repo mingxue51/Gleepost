@@ -25,6 +25,7 @@
 -(NSString*)blades;
 -(NSString*)balloon;
 -(NSString*)blimp;
+-(BOOL)isDay;
 
 
 @end

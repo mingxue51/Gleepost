@@ -47,7 +47,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
     [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(showCategoriesEdge, showCategoriesEdge, showCategoriesEdge, showCategoriesEdge)];
     [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
     
-    [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:24.0f]];
+    [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:20.0f]];
     
     //Add gesture to cardinal wall label.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(loadGroupsFeed:)];
@@ -90,7 +90,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
 
 -(void)groupFeedEnabled
 {
-    [self.titleLbl setText:@"Groups Feed"];
+    [self.titleLbl setText:@"My Groups"];
 }
 
 -(void)groupFeedDisabled

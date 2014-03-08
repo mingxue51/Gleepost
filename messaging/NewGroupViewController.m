@@ -42,6 +42,10 @@
     
     [self configureFDTakeController];
     
+    [self configureNavigationBar];
+    
+
+    
 //    [self configureProgressBar];
     
 }
@@ -93,6 +97,11 @@
     self.progress.hidden = NO;
     
     [self.progress setProgress:1.0f];
+}
+
+-(void)configureNavigationBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 #pragma mark - Selectors

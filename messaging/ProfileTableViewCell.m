@@ -57,6 +57,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     if(self)
     {
+
     }
     
     return self;
@@ -74,6 +75,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         
         return;
     }
+
     
     self.currentGroup = group;
     
@@ -83,13 +85,26 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
 //    [self.universityLabel setNumberOfLines:3];
     
+    if(group.groupDescription)
+    {
+        [self.groupDescriptionLbl setText:group.groupDescription];
+    }
+    else
+    {
+        [self.groupDescriptionLbl setText:@""];
+    }
 
-    [self.groupDescriptionLbl setText:group.description];
+    DDLogDebug(@"Group Description: %@", group.groupDescription);
+    
+    
     
     [self formatProfileImage];
+    
+    if(group.groupImageUrl)
+    {
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
+    }
 
-    //TODO: Set image when api supports that and add gesture on image.
-    [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
     
 }
 

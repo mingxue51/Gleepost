@@ -173,8 +173,6 @@ const float TOP_OFFSET = 219.0f;
     
     [self configAppearance];
     
-
-    
     [self configNavigationBar];
     
     
@@ -449,7 +447,7 @@ const float TOP_OFFSET = 219.0f;
     
     //Set to all the application the status bar text white.
 
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
 }
 
@@ -1326,6 +1324,10 @@ const float TOP_OFFSET = 219.0f;
         [UIView animateWithDuration:0.1f animations:^{
             
             [self.reNavBar setAlpha:1.0f];
+            
+            //Bring reNavBar to front to avoid problems of hiding the view.
+            [self.tableView bringSubviewToFront:self.reNavBar];
+
             
         } completion:^(BOOL finished) {
             

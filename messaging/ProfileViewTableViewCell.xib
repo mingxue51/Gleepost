@@ -27,7 +27,7 @@
                         <rect key="frame" x="98" y="15" width="141" height="142"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vfr-tr-ebJ">
+                    <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user_image_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="vfr-tr-ebJ">
                         <rect key="frame" x="98" y="15" width="125" height="125"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
@@ -115,5 +115,6 @@
         <image name="in-contacts.png" width="254" height="185"/>
         <image name="message-user.png" width="254" height="185"/>
         <image name="profile_picture_under.png" width="265" height="266"/>
+        <image name="user_image_bg.png" width="74" height="74"/>
     </resources>
 </document>

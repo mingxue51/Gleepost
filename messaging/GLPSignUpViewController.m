@@ -40,6 +40,9 @@
 {
     [super viewDidLoad];
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    
     [self initialiseObjects];
     
     [self formatElements];

@@ -25,6 +25,7 @@
 @property (strong, nonatomic) ChatViewAnimationsStanford *chatStanfordAnimations;
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (assign, nonatomic) BOOL controllerExist;
+
 @end
 
 @implementation ChatViewAnimationController
@@ -37,6 +38,7 @@
 //    [self.view setBackgroundColor:[UIColor greenColor]];
 
     _controllerExist = YES;
+    
     [self configureView];
     
     [self configureNavigationBar];
@@ -244,6 +246,18 @@
 
 -(void)configureNavigationBar
 {
+    
+    //If it is day set status bar text colour black, otherwise set it white.
+    
+    if([self.chatStanfordAnimations isDay])
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
+    
     [self.simpleNavigationBar setBackgroundColor:[UIColor clearColor]];
     
     [self.simpleNavigationBar setTranslucent:NO];

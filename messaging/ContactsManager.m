@@ -13,6 +13,7 @@
 #import "GLPUserDao.h"
 #import "GLPProfileLoader.h"
 #import "GLPUser.h"
+#import "SessionManager.h"
 
 @implementation ContactsManager
 
@@ -228,6 +229,11 @@ static ContactsManager *instance = nil;
     GLPContact* contact = [self contactWithRemoteKey:remoteKey];
     
     return contact.theyConfirmed;
+}
+
+-(BOOL)isLoggedInUser:(GLPUser *)user
+{
+    return ([SessionManager sharedInstance].user.remoteKey == user.remoteKey);
 }
 
 -(GLPContact*)contactWithRemoteKey:(int)remoteKey

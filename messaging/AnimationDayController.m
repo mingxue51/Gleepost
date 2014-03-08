@@ -154,6 +154,11 @@ static AnimationDayController *instance = nil;
     return self.day ? @"blimp" : @"blimp_night";
 }
 
+-(BOOL)isDay
+{
+    return _day;
+}
+
 
 
 @end

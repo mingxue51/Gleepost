@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPSearchUserCell.h"
+#import "GLPGroup.h"
 
 @interface GLPSearchUsersViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, GLPSearchUserCellDelegate, UIAlertViewDelegate>
+
+@property (strong, nonatomic) GLPGroup *group;
 
 @end
