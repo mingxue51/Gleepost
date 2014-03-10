@@ -143,6 +143,16 @@
     [alert show];
 }
 
++(void)showOutOfBoundsError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                    message:@"Information needs to be 80 characters max and title 40 characters max."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 + (void)commentWillUploadedLater
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network!"

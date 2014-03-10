@@ -14,7 +14,6 @@
 #import "WebClientHelper.h"
 #import "PostCell.h"
 #import "ProfileTwoButtonsTableViewCell.h"
-#import "ProfileTableViewCell.h"
 #import "ProfileSettingsTableViewCell.h"
 #import "AppearanceHelper.h"
 #import "PopUpNotificationsViewController.h"
@@ -642,12 +641,6 @@
 
 #pragma mark - FDTakeController delegate
 
--(void)changeProfileImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-    
-}
-
 -(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
 {
 }
@@ -680,8 +673,6 @@
     UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
     
     NSData *imageData = UIImagePNGRepresentation(imageToUpload);
-    
-    NSLog(@"Image register image size: %d",imageData.length);
     
     
     //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
@@ -1213,6 +1204,14 @@
     
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
+
+#pragma mark - ProfileTableViewCellDelegate
+
+-(void)changeProfileImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+}
+
 
 #pragma mark - Table view refresh methods
 

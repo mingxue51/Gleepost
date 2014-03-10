@@ -25,5 +25,6 @@
 +(void)setFormatForLoginNavigationBar:(UIViewController*)viewController;
 +(UIColor*)colourOfTheFakeNavigationBar;
 +(void)setCustomBackgroundToTableView:(UITableView *)tableView;
++(UIColor *)colourForTableViewSeparatorLines;
 
 @end

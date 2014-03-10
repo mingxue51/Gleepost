@@ -11,7 +11,6 @@
 #import "ContactsManager.h"
 #import "PostCell.h"
 #import "ProfileAboutTableViewCell.h"
-#import "ProfileTableViewCell.h"
 #import "ProfileButtonsTableViewCell.h"
 #import "ProfileMutualTableViewCell.h"
 #import "WebClient.h"
@@ -455,7 +454,6 @@
 
 #pragma mark - UI methods
 
-
 -(void)updateRealImage:(NSNotification*)notification
 {
 //    GLPPost *currentPost = nil;
@@ -482,6 +480,8 @@
     }
     
 }
+
+#pragma mark - ProfileTableViewCellDelegate
 
 -(void)showFullProfileImage:(id)sender
 {
@@ -553,7 +553,7 @@
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
-        [profileView setPrivateProfileDelegate:self];
+        [profileView setDelegate:self];
         
         if(self.profileImage && self.profileUser)
         {

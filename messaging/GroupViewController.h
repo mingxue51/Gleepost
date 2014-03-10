@@ -12,8 +12,11 @@
 #import "ViewImageDelegate.h"
 #import "ButtonNavigationDelegate.h"
 #import "NewPostDelegate.h"
+#import "ProfileTableViewCell.h"
+#import "FDTakeController.h"
 
-@interface GroupViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate, ButtonNavigationDelegate, NewPostDelegate>
+
+@interface GroupViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate, ButtonNavigationDelegate, NewPostDelegate, UIActionSheetDelegate, ProfileTableViewCellDelegate, FDTakeDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
 

@@ -11,7 +11,6 @@
 #import "AppearanceHelper.h"
 #import "GLPGroupManager.h"
 #import "PostCell.h"
-#import "ProfileTableViewCell.h"
 #import "GLPPostManager.h"
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
@@ -27,6 +26,7 @@
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
 #import "MembersViewController.h"
+#import "GroupUploaderManager.h"
 
 @interface GroupViewController ()
 
@@ -52,6 +52,10 @@
 
 @property (assign, nonatomic) BOOL tableViewInScrolling;
 @property (assign, nonatomic) int postIndexToReload;
+
+@property (strong, nonatomic) UIImage *groupImage;
+@property (strong, nonatomic) FDTakeController *fdTakeController;
+
 
 @end
 
@@ -170,7 +174,11 @@ const int NUMBER_OF_ROWS = 2;
 //    self.firstLoadSuccessful = NO;
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     
-
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+    
+    self.fdTakeController = [[FDTakeController alloc] init];
+    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
+    self.fdTakeController.delegate = self;
 }
 
 -(void)configureNavigationItems
@@ -427,12 +435,10 @@ const int NUMBER_OF_ROWS = 2;
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
-    static NSString *CellIdentifierContact = @"ContactCell";
     
     PostCell *postViewCell;
     ProfileTableViewCell *profileView;
     ProfileTwoButtonsTableViewCell *buttonsView;
-    ContactUserCell *contactCell;
     
     if(indexPath.row == 0)
     {
@@ -453,7 +459,9 @@ const int NUMBER_OF_ROWS = 2;
 //            [profileView initialiseElementsWithUserDetails:self.profileUser];
 //        }
         
-        [profileView initialiseElementsWithGroupInformation:self.group];
+        [profileView setDelegate:self];
+        
+        [profileView initialiseElementsWithGroupInformation:self.group withGroupImage:_groupImage];
         
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -568,8 +576,6 @@ const int NUMBER_OF_ROWS = 2;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     if(indexPath.row - 2 == self.posts.count) {
         
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
@@ -879,6 +885,96 @@ const int NUMBER_OF_ROWS = 2;
     
 }
 
+#pragma mark - Selectors
+
+-(void)viewGroupImageOptions:(id)sender
+{
+    
+}
+
+#pragma mark - FDTakeController delegate
+
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+{
+    _groupImage = photo;
+    
+    //Set directly the new user's profile image.
+//    self.userImage = photo;
+//    
+    [self refreshCellViewWithIndex:0];
+    
+    
+    
+    
+    //Communicate with server to change the image.
+    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
+    
+    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
+    
+    
+}
+
+#pragma mark - Action Sheet delegate
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if([selectedButtonTitle isEqualToString:@"Show image"])
+    {
+        //Show image.
+        [self showImage];
+    }
+    else if([selectedButtonTitle isEqualToString:@"Change image"])
+    {
+        //Change image.
+        
+        [self.fdTakeController takePhotoOrChooseFromLibrary];
+
+    }
+    
+    
+}
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *subview in actionSheet.subviews)
+    {
+        if ([subview isKindOfClass:[UIButton class]])
+        {
+            UIButton *btn = (UIButton*)subview;
+            
+            if([btn.titleLabel.text isEqualToString:@"Cancel"])
+            {
+                
+            }
+            else
+            {
+            }
+        }
+    }
+}
+
+#pragma mark - ProfileTableViewCellDelegate
+
+-(void)showInformationMenu:(id)sender
+{
+    
+    [self addGroupImage:sender];
+    
+    UIActionSheet *actionSheet = nil;
+    
+    actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show image", @"Change image", nil];
+    
+    [actionSheet showInView:[self.view window]];
+
+}
+
+
+
+
 #pragma mark - View image delegate
 
 
@@ -953,6 +1049,17 @@ const int NUMBER_OF_ROWS = 2;
     
 }
 
+#pragma  mark - Helpers
+
+-(void)addGroupImage:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    
+    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    
+    _groupImage = clickedImageView.image;
+}
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -995,6 +1102,20 @@ const int NUMBER_OF_ROWS = 2;
 
 
 #pragma mark - Navigation
+
+-(void)showImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+    vc.image = _groupImage;
+    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    
+    [vc setTransitioningDelegate:self.transitionViewImageController];
+    vc.modalPresentationStyle= UIModalPresentationCustom;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 
 - (IBAction)createNewPost:(id)sender
 {

@@ -38,8 +38,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *groupDescriptionLbl;
 
 @property (strong, nonatomic) GLPUser *currentUser;
-@property (readonly, nonatomic) GLPProfileViewController *delegate;
-@property (readonly, nonatomic) GLPPrivateProfileViewController *privateProfileDelegate;
+@property (readonly, nonatomic) UIViewController <ProfileTableViewCellDelegate> *delegate;
+//@property (readonly, nonatomic) GLPPrivateProfileViewController *privateProfileDelegate;
 @property (strong, nonatomic) InvitationSentView *invitationSentView;
 
 @property (strong, nonatomic) GLPGroup *currentGroup;
@@ -65,7 +65,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 #pragma mark - Group methods
 
--(void)initialiseElementsWithGroupInformation:(GLPGroup *)group
+-(void)initialiseElementsWithGroupInformation:(GLPGroup *)group withGroupImage:(UIImage *)image
 {
     if(!group)
     {
@@ -85,6 +85,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
 //    [self.universityLabel setNumberOfLines:3];
     
+
+    
     if(group.groupDescription)
     {
         [self.groupDescriptionLbl setText:group.groupDescription];
@@ -93,19 +95,39 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     {
         [self.groupDescriptionLbl setText:@""];
     }
-
-    DDLogDebug(@"Group Description: %@", group.groupDescription);
     
     
     
     [self formatProfileImage];
     
-    if(group.groupImageUrl)
+    if(image)
+    {
+        [self.profileImage setImage:image];
+    }
+    else if(group.groupImageUrl)
     {
         [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
     }
-
     
+    //Add gesture to show menu.
+    [self addGestureToGroupImage];
+
+}
+
+-(void)initialiseGroupImage:(UIImage *)image
+{
+//    [self initialiseLoadingElements];
+    
+    [self formatProfileImage];
+    
+    [self.profileImage setImage:image];
+}
+
+-(void)addGestureToGroupImage
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(showInformationMenu:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.profileImage addGestureRecognizer:tap];
 }
 
 
@@ -276,15 +298,15 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }];
 }
 
--(void)setDelegate:(GLPProfileViewController *)delegate
+-(void)setDelegate:(UIViewController <ProfileTableViewCellDelegate> *)delegate
 {
     _delegate = delegate;
 }
 
--(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate
-{
-    _privateProfileDelegate = delegate;
-}
+//-(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate
+//{
+//    _privateProfileDelegate = delegate;
+//}
 
 -(void)setCurrentUserStatusWithUser:(GLPUser *)user
 {
@@ -347,7 +369,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 //            }
 //        }
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_privateProfileDelegate action:@selector(showFullProfileImage:)];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullProfileImage:)];
         [tap setNumberOfTapsRequired:1];
         [self.profileImage addGestureRecognizer:tap];
         
@@ -416,7 +438,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
             [self.inContacts setHidden:NO];
             
             //Call method in Controller to unlock profile.
-            [_privateProfileDelegate unlockProfile];
+            [_delegate unlockProfile];
         }
         else
         {
@@ -439,21 +461,15 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         conversation = [[GLPConversation alloc] initWithParticipants:part];
     }
     
-    [_privateProfileDelegate viewConversation:conversation];
+    [_delegate viewConversation:conversation];
+}
+
+-(void)showFullProfileImage:(id)sender
+{
+    [_delegate showFullProfileImage:sender];
 }
 
 #pragma mark - Client
-
-//-(void)getBusyStatus
-//{
-//    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
-//        
-//        if(success)
-//        {
-//            [self.busySwitch setOn:!status];
-//        }
-//    }];
-//}
 
 - (IBAction)setBusyStatus:(id)sender
 {
@@ -490,8 +506,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
             //Change the button style.
             NSLog(@"Request has been sent to the user.");
             
-            self.invitationSentView = [InvitationSentView loadingViewInView:[_privateProfileDelegate.view.window.subviews objectAtIndex:0]];
-            self.invitationSentView.delegate = _privateProfileDelegate;
+            self.invitationSentView = [InvitationSentView loadingViewInView:[_delegate.view.window.subviews objectAtIndex:0]];
+            self.invitationSentView.delegate = _delegate;
             
             
             GLPContact *contact = [[GLPContact alloc] initWithUserName:self.currentUser.name profileImage:self.currentUser.profileImageUrl youConfirmed:YES andTheyConfirmed:NO];

@@ -29,6 +29,7 @@
 + (void)showEmptyTextError;
 
 + (void)commentWillUploadedLater;
++(void)showOutOfBoundsError;
 
 
 @end

@@ -1369,8 +1369,7 @@ static WebClient *instance = nil;
     NSLog(@"PARAMS BEFORE SETTING AN IMAGE: %@", params);
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
+    
         
         callbackBlock(YES);
         
@@ -1453,6 +1452,30 @@ static WebClient *instance = nil;
     
     
     [httpClient enqueueHTTPRequestOperation:operation];
+    
+}
+
+
+-(void)uploadImageUrl:(NSString *)imageUrl withGroupRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:imageUrl forKey:@"url"];
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d", remoteKey];
+    
+    [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"Response after changing group image: %@", responseObject);
+        
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        
+        
+    }];
     
 }
 

@@ -122,6 +122,12 @@
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     
     
+//    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage  imageNamed:@"contacts_background_main"]];
+//    
+//    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
+//    
+//    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+//    [self.tableView setBackgroundView:backImgView];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -155,6 +161,7 @@
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
 
     //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
 }
@@ -493,6 +500,15 @@
     
     _isContactsView = segment.selectedSegmentIndex;
     
+    if(!_isContactsView)
+    {
+        self.tableView.separatorColor = [UIColor clearColor];
+    }
+    else
+    {
+        self.tableView.separatorColor = [AppearanceHelper colourForTableViewSeparatorLines];
+    }
+    
     
 //    for (int i=0; i<[segment.subviews count]; i++)
 //    {
@@ -668,6 +684,7 @@
             
             [groupCell setDelegate:self];
             
+            
             return groupCell;
         }
         else
@@ -685,6 +702,8 @@
             
             [cell setGroupData:currentGroup];
             
+            [self addSeparatorLineToCell:cell];
+            
             return cell;
 
         }
@@ -695,6 +714,13 @@
     
 
     return nil;
+}
+
+-(void)addSeparatorLineToCell:(GroupCell *)cell
+{
+    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 47.0f, 320, 1)];
+    line.backgroundColor = [AppearanceHelper colourForTableViewSeparatorLines];
+    [cell addSubview:line];
 }
 
 /*
@@ -766,8 +792,6 @@
         NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section-1]];
         
         self.selectedGroup = [currentGroups objectAtIndex:indexPath.row];
-        
-        DDLogDebug(@"Selected group: %@", self.selectedGroup);
         
         [self performSegueWithIdentifier:@"view group" sender:self];
     }

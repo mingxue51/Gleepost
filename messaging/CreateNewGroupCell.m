@@ -17,7 +17,7 @@
 
 @implementation CreateNewGroupCell
 
-const float NEW_GROUP_CELL_HEIGHT = 55;
+const float NEW_GROUP_CELL_HEIGHT = 60;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

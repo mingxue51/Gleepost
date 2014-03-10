@@ -115,6 +115,14 @@
 {
     GLPGroup *group = [[GLPGroup alloc] init];
     
+    
+    if([self isInformationInBounds])
+    {
+        [WebClientHelper showOutOfBoundsError];
+        return;
+    }
+    
+    
     if ([self isInformationValid])
     {
         group.name = _groupNameTextField.text;
@@ -140,7 +148,22 @@
 
 -(BOOL)isInformationValid
 {
-    return /*![_groupDescriptionTextView.text isEqualToString:@""] &&*/ ![_groupNameTextField.text isEqualToString:@""];
+    return ![_groupNameTextField.text isEqualToString:@""];
+}
+
+-(BOOL)isInformationInBounds
+{
+    if(_groupDescriptionTextView.text.length > 80)
+    {
+        return NO;
+    }
+    
+    if(_groupNameTextField.text.length > 40)
+    {
+        return NO;
+    }
+    
+    return YES;
 }
 
 

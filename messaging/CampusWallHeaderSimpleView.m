@@ -120,8 +120,7 @@
     {
         [UIView animateWithDuration:1.0f animations:^{
             
-            [self.stanfordLbl setText:@"My Groups"];
-            
+            [self groupFeedEnabled];
         }];
         
         [self.delegate loadGroupsFeed];
@@ -130,7 +129,7 @@
     {
         [UIView animateWithDuration:1.0f animations:^{
             
-            [self.stanfordLbl setText:@"Cardinal Wall"];
+            [self groupFeedDisabled];
             
         }];
         
@@ -140,7 +139,7 @@
 
 -(void)groupFeedEnabled
 {
-    [self.stanfordLbl setText:@"Groups Feed"];
+    [self.stanfordLbl setText:@"My Groups"];
 }
 
 -(void)groupFeedDisabled

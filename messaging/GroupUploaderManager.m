@@ -10,6 +10,9 @@
 #import "WebClient.h"
 #import "GLPGroupDao.h"
 #import "NSNotificationCenter+Utils.h"
+#import "ImageFormatterHelper.h"
+#import "SessionManager.h"
+
 
 @interface GroupUploaderManager ()
 
@@ -140,5 +143,60 @@
         }
     }];
 }
+
+#pragma mark - Change group image
+
+-(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group
+{
+//    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(test:) userInfo:nil repeats:YES];
+    
+    NSData *imageData = [self convertImageToData:image];
+    
+    [self uploadImageWithData:imageData andGroup:group];
+    
+}
+
+-(void)uploadImageWithData:(NSData *)imageData andGroup:(GLPGroup *)group
+{
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        if(success)
+        {
+//            [self updateDatabaseWithGroup:group andUrl:response];
+            [self setNewUrlToGroup:group withUrl:response];
+        }
+        
+    }];
+}
+
+-(void)setNewUrlToGroup:(GLPGroup *)group withUrl:(NSString *)url
+{
+    [[WebClient sharedInstance] uploadImageUrl:url withGroupRemoteKey:group.remoteKey callbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            DDLogDebug(@"New image uploaded!");
+        }
+        
+    }];
+}
+
+-(void)updateDatabaseWithGroup:(GLPGroup *)group andUrl:(NSString *)url
+{
+    group.groupImageUrl = url;
+    [GLPGroupDao updateGroupSendingData:group];
+}
+
+-(NSData *)convertImageToData:(UIImage *)image
+{
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:image scaledToHeight:320];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    return imageData;
+}
+
+
+
 
 @end

@@ -41,7 +41,7 @@
 @implementation PostCell
 
 const float IMAGE_CELL_HEIGHT = 320;
-const float TEXT_CELL_HEIGHT = 70;
+const float TEXT_CELL_HEIGHT = 90;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder

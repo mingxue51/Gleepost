@@ -14,6 +14,7 @@
 -(void)addGroup:(GLPGroup*)group withTimestamp:(NSDate*)timestamp;
 -(void)uploadGroupWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url;
 -(NSDictionary *)pendingGroups;
+-(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group;
 
 
 @end

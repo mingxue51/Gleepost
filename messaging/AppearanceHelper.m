@@ -80,6 +80,11 @@
     return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
 }
 
++(UIColor *)colourForTableViewSeparatorLines
+{
+    return [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
+}
+
 +(void)showTabBar:(UIViewController*)controller
 {
     controller.tabBarController.tabBar.hidden = NO;
