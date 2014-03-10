@@ -81,10 +81,7 @@
         if(success)
         {
 //            _uploadImageContentBlock(group);
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                            object:nil
-                                                                          userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                     @"key":[NSNumber numberWithInt:group.key]}];
+            [self notifyControllerWithGroup:group];
         }
     }];
 }
@@ -165,7 +162,7 @@
             [self updateDatabaseWithGroup:group andUrl:response];
             
             //Send notification to contacts view controller.
-            
+            [self notifyControllerWithGroup:group];
             
             [self setNewUrlToGroup:group withUrl:response];
         }
@@ -200,6 +197,14 @@
     return imageData;
 }
 
+-(void)notifyControllerWithGroup:(GLPGroup *)group
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+                                                                    object:nil
+                                                                  userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
+                                                                             @"imageUrl": group.groupImageUrl,
+                                                                             @"key":[NSNumber numberWithInt:group.key]}];
+}
 
 
 

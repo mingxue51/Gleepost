@@ -11,6 +11,8 @@
 @implementation GLPGroup
 
 @synthesize remoteKey = _remoteKey;
+@synthesize key = _key;
+
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey
 {
@@ -27,7 +29,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Name: %@, Remote key: %d, Url: %@, Description: %@", _name, _remoteKey, _groupImageUrl, _groupDescription];
+    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d, Url: %@, Description: %@", _name, _key, _remoteKey, _groupImageUrl, _groupDescription];
 }
 
 @end

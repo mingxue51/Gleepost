@@ -239,9 +239,18 @@
     
     DDLogDebug(@"Index path of updated group: %d : %d", indexPath.row, indexPath.section);
     
+    
+    for(GLPGroup *gr in _groups)
+    {
+        
+        if(gr.remoteKey == remoteKey)
+        {
+            DDLogDebug(@"GROUP: %@", gr);
+
+        }
+    }
+    
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+1]] withRowAnimation:UITableViewRowAnimationFade];
-    
-    
 }
 
 

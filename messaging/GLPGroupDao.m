@@ -239,7 +239,7 @@
         {
             group.sendStatus = kSendStatusSent;
             
-            [GLPGroupDao saveIfNotExist:group db:db];
+            group.key = [GLPGroupDao saveIfNotExist:group db:db];
         }
         
     }];

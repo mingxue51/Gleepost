@@ -47,7 +47,7 @@
 //        NSArray *finalRemoteGroups = [self overwriteGroups:serverGroups withImagesGroups:localGroupsWithImages];
         
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
-        
+                
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
         remoteCallback(YES, finalRemoteGroups);
