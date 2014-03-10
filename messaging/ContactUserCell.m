@@ -29,9 +29,7 @@ const float CONTACT_CELL_HEIGHT = 48;
 
 
 -(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl
-{
-    NSLog(@"Create Elements");
-    
+{    
     //Add user's profile image.
     [_nameUser setText:name];
     

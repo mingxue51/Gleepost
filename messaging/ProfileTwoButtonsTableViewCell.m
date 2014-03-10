@@ -133,7 +133,7 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
 
 -(void)showGroupButtonsPostsSelected
 {
-    [_myPostsBtn setImage:[UIImage imageNamed:@"group_posts_selected"] forState:UIControlStateNormal];
+    [_myPostsBtn setImage:[UIImage imageNamed:@"group_posts"] forState:UIControlStateNormal];
     [_notificationsBtn setImage: [UIImage imageNamed:@"members"] forState:UIControlStateNormal];
 }
 

@@ -68,6 +68,7 @@
     [self configureSegment];
     
     [self configNotifications];
+    
 
 }
 
@@ -89,6 +90,9 @@
     [super viewWillAppear:animated];
     
     [self configNavigationBar];
+    
+    [self configureNavigationButton];
+
 
     
     //Change the colour of the tab bar.
@@ -164,6 +168,40 @@
 
 
     //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
+}
+
+-(void)configureNavigationButton
+{
+    if(_isContactsView)
+    {
+        [self configureSearchContactButton];
+    }
+    else
+    {
+        [self configureCreateGroupButton];
+    }
+}
+
+
+-(void)configureCreateGroupButton
+{
+    UIImage *addGroupIcon = [UIImage imageNamed:@"settings_btn"];
+    
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self action:@selector(popUpCreateView:) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack setBackgroundImage:addGroupIcon forState:UIControlStateNormal];
+    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
+    
+    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(popUpCreateView:)];
+    
+    self.navigationItem.rightBarButtonItem = groupButton;
+}
+
+-(void)configureSearchContactButton
+{
+    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(popUpCreateView:)];
+    
+    self.navigationItem.rightBarButtonItem = groupButton;
 }
 
 -(void)configureSegment
@@ -481,6 +519,7 @@
         
         [self showGroups];
         
+        
         //TODO: Change that in order to avoid ovewritting of not uploaded groups.
         
         [self.contactsTableView reloadData];
@@ -517,12 +556,15 @@
     if(!_isContactsView)
     {
         self.tableView.separatorColor = [UIColor clearColor];
+        
     }
     else
     {
         self.tableView.separatorColor = [AppearanceHelper colourForTableViewSeparatorLines];
     }
+
     
+    [self configureNavigationButton];
     
 //    for (int i=0; i<[segment.subviews count]; i++)
 //    {
@@ -597,7 +639,7 @@
     }
     else
     {
-        return _groupSections.count+1;
+        return _groupSections.count;
     }
     
 }
@@ -614,7 +656,11 @@
 //        NSMutableArray *panelSec = self.panelSections.mutableCopy;
 //        [panelSec setObject:@"-" atIndexedSubscript:0];
         
-        return self.panelSections;
+        //return self.panelSections;
+        
+        //We don't need index section in the right for groups.
+        
+        return nil;
     }
 }
 
@@ -631,12 +677,12 @@
     }
     else
     {
-        if(section == 0)
-        {
-            return nil;
-        }
+//        if(section == 0)
+//        {
+//            return nil;
+//        }
         
-        return [NSString stringWithFormat:@"  %@", [[_groupSections objectAtIndex:section-1] uppercaseString]];
+        return [NSString stringWithFormat:@"  %@", [[_groupSections objectAtIndex:section] uppercaseString]];
     }
     
 }
@@ -655,16 +701,16 @@
     else
     {
 
-        if(section == 0)
-        {
-            return 1;
-        }
-        else
-        {
-            NSArray *sectionArray = [self.groupsStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.groupSections objectAtIndex:section-1]]];
+//        if(section == 0)
+//        {
+//            return 1;
+//        }
+//        else
+//        {
+            NSArray *sectionArray = [self.groupsStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.groupSections objectAtIndex:section]]];
 
             return [sectionArray count];
-        }
+//        }
         
     }
 
@@ -673,7 +719,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ContactCell";
-    static NSString *CreateGroupCellIdentifier = @"CreateGroupCellIdentifier";
+//    static NSString *CreateGroupCellIdentifier = @"CreateGroupCellIdentifier";
     static NSString *GroupCellIdentifier = @"GroupCellIdentifier";
     
     if(_isContactsView)
@@ -692,25 +738,25 @@
     }
     else
     {
-        if(indexPath.row == 0 && indexPath.section == 0)
-        {
-            CreateNewGroupCell *groupCell = [tableView dequeueReusableCellWithIdentifier:CreateGroupCellIdentifier forIndexPath:indexPath];
-            
-            [groupCell setDelegate:self];
-            
-            
-            return groupCell;
-        }
-        else
-        {
-            
+//        if(indexPath.row == 0 && indexPath.section == 0)
+//        {
+//            CreateNewGroupCell *groupCell = [tableView dequeueReusableCellWithIdentifier:CreateGroupCellIdentifier forIndexPath:indexPath];
+//            
+//            [groupCell setDelegate:self];
+//            
+//            
+//            return groupCell;
+//        }
+//        else
+//        {
+        
             GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellIdentifier forIndexPath:indexPath];
             
 //            ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
             [cell setDelegate:self];
             
-            NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section - 1]];
+            NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section]];
             
             GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
             
@@ -720,7 +766,7 @@
             
             return cell;
 
-        }
+//        }
 
         
 
@@ -798,12 +844,12 @@
     }
     else
     {
-        if(indexPath.row == 0 && indexPath.section == 0)
-        {
-            return;
-        }
+//        if(indexPath.row == 0 && indexPath.section == 0)
+//        {
+//            return;
+//        }
         
-        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section-1]];
+        NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt:indexPath.section]];
         
         self.selectedGroup = [currentGroups objectAtIndex:indexPath.row];
         
@@ -815,10 +861,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0 && indexPath.section == 0)
-    {
-        return NEW_GROUP_CELL_HEIGHT;
-    }
+//    if(indexPath.row == 0 && indexPath.section == 0)
+//    {
+//        return NEW_GROUP_CELL_HEIGHT;
+//    }
     
     return 48.0f;
 }
@@ -860,7 +906,7 @@
 //    [self createNewGroupWithGroup:group];
 }
 
--(void)popUpCreateView
+-(void)popUpCreateView:(id)sender
 {
     //Pop up the creation view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];

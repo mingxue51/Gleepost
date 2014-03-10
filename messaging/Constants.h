@@ -15,7 +15,7 @@
 
 #define ENV_FAKE_API                    NO
 #define DEV                             NO
-#define ENV_DEBUG                       YES
+#define ENV_DEBUG                       NO
 #define ENV_FAKE_LIVE_CONVERSATIONS     NO
 
 #define ON_DEVICE       !(TARGET_IPHONE_SIMULATOR)
