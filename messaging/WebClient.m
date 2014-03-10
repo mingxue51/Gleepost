@@ -1465,9 +1465,7 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"networks/%d", remoteKey];
     
     [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        DDLogDebug(@"Response after changing group image: %@", responseObject);
-        
+                
         
         
         

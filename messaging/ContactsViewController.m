@@ -228,13 +228,18 @@
         return;
     }
     
+    if(_isContactsView)
+    {
+        return;
+    }
+    
 //    [self.tableView reloadData];
     
     NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
     
     DDLogDebug(@"Index path of updated group: %d : %d", indexPath.row, indexPath.section);
     
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+1]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section+1]] withRowAnimation:UITableViewRowAnimationFade];
     
     
 }

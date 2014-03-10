@@ -18,6 +18,7 @@
 +(NSArray *)findGroups;
 +(NSArray *)findRemoteGroups;
 +(void)updateGroupSendingData:(GLPGroup *)entity;
++(void)updateGroup:(GLPGroup *)entity;
 
 
 @end

@@ -194,6 +194,19 @@
     DDLogDebug(@"Group with title %@ and url %@ updated successfully", entity.name, entity.groupImageUrl);
 }
 
++(void)updateGroupWithRemoteKey:(GLPGroup *)entity db:(FMDatabase *)db
+{
+    BOOL success = NO;
+    
+
+    success = [db executeUpdateWithFormat:@"update groups set image_url=%@ where remoteKey=%d",
+                   entity.groupImageUrl,
+                   entity.remoteKey];
+        
+    
+    DDLogDebug(@"Group with title %@ and url %@ updated successfully", entity.name, entity.groupImageUrl);
+}
+
 
 +(void)updateGroupSendingData:(GLPGroup *)entity
 {
@@ -204,6 +217,18 @@
         [GLPGroupDao updateGroupSendingData:entity db:db];
         
     }];
+}
+
++(void)updateGroup:(GLPGroup *)entity
+{
+    NSAssert(entity.remoteKey != 0, @"Update group entity without remote key");
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        [self updateGroupWithRemoteKey:entity db:db];
+        
+    }];
+
 }
 
 +(void)saveGroups:(NSArray *)groups

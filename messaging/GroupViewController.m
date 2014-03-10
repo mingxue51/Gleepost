@@ -894,7 +894,7 @@ const int NUMBER_OF_ROWS = 2;
 
 #pragma mark - FDTakeController delegate
 
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dictionary
 {
     _groupImage = photo;
     

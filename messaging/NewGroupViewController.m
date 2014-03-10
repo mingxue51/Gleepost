@@ -116,7 +116,7 @@
     GLPGroup *group = [[GLPGroup alloc] init];
     
     
-    if([self isInformationInBounds])
+    if(![self isInformationInBounds])
     {
         [WebClientHelper showOutOfBoundsError];
         return;

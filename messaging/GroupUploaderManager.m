@@ -162,7 +162,11 @@
         
         if(success)
         {
-//            [self updateDatabaseWithGroup:group andUrl:response];
+            [self updateDatabaseWithGroup:group andUrl:response];
+            
+            //Send notification to contacts view controller.
+            
+            
             [self setNewUrlToGroup:group withUrl:response];
         }
         
@@ -173,9 +177,9 @@
 {
     [[WebClient sharedInstance] uploadImageUrl:url withGroupRemoteKey:group.remoteKey callbackBlock:^(BOOL success) {
        
-        if(success)
+        if(!success)
         {
-            DDLogDebug(@"New image uploaded!");
+            
         }
         
     }];
@@ -184,7 +188,7 @@
 -(void)updateDatabaseWithGroup:(GLPGroup *)group andUrl:(NSString *)url
 {
     group.groupImageUrl = url;
-    [GLPGroupDao updateGroupSendingData:group];
+    [GLPGroupDao updateGroup:group];
 }
 
 -(NSData *)convertImageToData:(UIImage *)image
