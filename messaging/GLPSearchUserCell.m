@@ -10,6 +10,7 @@
 #import "SDWebImage/UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
 #import "UIImage+Masking.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPSearchUserCell()
 
@@ -61,13 +62,19 @@
     
     _userLabel.text = _user.name;
     
-    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-        if(!image) {
-            return;
-        }
-        
-        _profileImageView.image = [_profileImageView.image maskWithImage:[UIImage imageNamed:@"search_users_profile_image_mask"]];
-    }];
+    [ShapeFormatterHelper setRoundedView:_profileImageView toDiameter:_profileImageView.frame.size.height];
+    
+    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"]];
+    
+    //Lukasz I removed this code because it was causing issues with images. I replaced this code with the code above! Let me know for any comments!
+    
+//    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//        if(!image) {
+//            return;
+//        }
+//        
+////        _profileImageView.image = [_profileImageView.image maskWithImage:[UIImage imageNamed:@"search_users_profile_image_mask"]];
+//    }];
     
     [self updateCheckbox];
 }
