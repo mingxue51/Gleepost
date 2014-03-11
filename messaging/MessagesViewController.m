@@ -66,7 +66,7 @@
 {
     [super viewDidLoad];
     
-    [self createNavigationBar];
+//    [self createNavigationBar];
     [self configTabbar];
 
     self.dateFormatter = [[NSDateFormatter alloc] init];

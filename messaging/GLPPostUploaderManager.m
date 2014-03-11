@@ -456,10 +456,11 @@
         
 //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
         
-        _uploadImageContentBlock(post);
         
         if(success)
         {
+            _uploadImageContentBlock(post);
+
             [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
             
             //Add post to uploaded posts.

@@ -208,6 +208,7 @@
 		584F385C1817F50B00A1B742 /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385B1817F50B00A1B742 /* default_group_image.png */; };
 		584F38621818094A00A1B742 /* mychatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38611818094A00A1B742 /* mychatbubble4.png */; };
 		584F3864181809A700A1B742 /* yourchatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F3863181809A700A1B742 /* yourchatbubble4.png */; };
+		5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */; };
 		5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */; };
 		5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5DA18258FB800AA9103 /* TransitionDelegate.m */; };
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
@@ -932,6 +933,8 @@
 		584F385B1817F50B00A1B742 /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_group_image.png; sourceTree = "<group>"; };
 		584F38611818094A00A1B742 /* mychatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mychatbubble4.png; sourceTree = "<group>"; };
 		584F3863181809A700A1B742 /* yourchatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yourchatbubble4.png; sourceTree = "<group>"; };
+		5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPiOS6Helper.h; sourceTree = "<group>"; };
+		5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOS6Helper.m; sourceTree = "<group>"; };
 		5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
 		5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
 		5851B5D918258FB800AA9103 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
@@ -3236,6 +3239,8 @@
 				582B404A18AD6C4A00BC4285 /* SoundHelper.m */,
 				80C92AA718C0CC6F001CB621 /* GLPDateFormatterHelper.h */,
 				80C92AA818C0CC6F001CB621 /* GLPDateFormatterHelper.m */,
+				5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */,
+				5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -4030,6 +4035,7 @@
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */,
 				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
+				5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */,
 				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,

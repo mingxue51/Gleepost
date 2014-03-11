@@ -67,7 +67,7 @@ static GLPPostOperationManager *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    DDLogCInfo(@"Background requests manager network status update POST OPERATION: %d", isNetwork);
+    DDLogInfo(@"Background requests manager network status update POST OPERATION: %d", isNetwork);
     
     self.isNetworkAvailable = isNetwork;
     

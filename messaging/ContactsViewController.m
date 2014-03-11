@@ -123,8 +123,8 @@
 
 -(void)configureTableView
 {
-    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+//    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+//    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     
     
 //    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage  imageNamed:@"contacts_background_main"]];

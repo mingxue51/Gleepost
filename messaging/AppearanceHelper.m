@@ -8,6 +8,7 @@
 
 #import "AppearanceHelper.h"
 #import <QuartzCore/QuartzCore.h>
+#import "GLPiOS6Helper.h"
 
 @implementation AppearanceHelper
 
@@ -30,11 +31,29 @@
     
     //In order to hide shadow image we are adding background image as a background to the navigation bar and the remove shadow image.
     
+    
+    
     UINavigationBar *navigationBar = controller.navigationController.navigationBar;
     
-    [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"]
-                       forBarPosition:UIBarPositionAny
-                           barMetrics:UIBarMetricsDefault];
+    if([GLPiOS6Helper isIOS6])
+    {
+//        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"] forBarMetrics:UIBarMetricsDefault];
+        
+        [navigationBar setTintColor:[AppearanceHelper defaultGleepostColour]];
+ //       [[UINavigationBar appearance] setTintColor:[AppearanceHelper defaultGleepostColour]];
+        
+//        [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+
+        
+
+    }
+    else
+    {
+        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"]
+                           forBarPosition:UIBarPositionAny
+                               barMetrics:UIBarMetricsDefault];
+        
+    }
     
     [navigationBar setShadowImage:[UIImage new]];
 
@@ -43,6 +62,11 @@
 +(void)setNavigationBarFontFor: (UIViewController *)controller
 {
 //    [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_APP_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+       return;
+    }
     
     [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
 

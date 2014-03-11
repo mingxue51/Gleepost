@@ -259,12 +259,12 @@ static BOOL likePushed;
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
     
 
     
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
     [AppearanceHelper setNavigationBarFontFor:self];
     

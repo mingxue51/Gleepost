@@ -218,9 +218,7 @@ static GLPPostImageLoader *instance = nil;
             //Notify GLPTimelineViewController after finish.
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
                                                                                                                                 @"FinalImage":img}];
-            
-            DDLogDebug(@"Loading images: %@", _loadingImages);
-            
+                        
             //Delete the entry from the queue.
             [_loadingImages removeObjectForKey:remoteKey];
         }

@@ -40,7 +40,7 @@
 #import "UIImage+StackBlur.h"
 #import "NotificationCell.h"
 #import "GLPApplicationHelper.h"
-
+#import "GLPiOS6Helper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -147,10 +147,17 @@
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     
-    [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        //Change the colour of the tab bar.
+        self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+        
+        [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    }
+
+    
+
     
     [self setUpNotifications];
     
@@ -366,18 +373,18 @@
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
+//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
     
     
     
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
     [AppearanceHelper setNavigationBarFontFor:self];
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }

@@ -52,6 +52,7 @@
 #import "AnimationDayController.h"
 #import "GLPGroupManager.h"
 #import "CampusWallGroupsPostsManager.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPTimelineViewController ()
 
@@ -143,6 +144,7 @@ const float TOP_OFFSET = 219.0f;
 
     [self configHeader];
     
+
     [self configTabbarFormat];
     
     [self configNewElementsIndicatorView];
@@ -499,6 +501,13 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)setCustomBackgroundToTableView
 {
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        
+        return;
+    }
+    
     UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
     
     [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
@@ -509,6 +518,76 @@ const float TOP_OFFSET = 219.0f;
 
 -(void)configTabbarFormat
 {
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper configureTabbarController:self.tabBarController];
+        
+        NSArray *items = self.tabBarController.tabBar.items;
+        
+        
+        UITabBarItem *item = [items objectAtIndex:0];
+                
+        item.image = [UIImage imageNamed:@"bird-house-7"];
+        
+        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+        
+//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        
+        
+        self.homeTabbarItem = item;
+        
+        
+        
+        item = [items objectAtIndex:1];
+        
+        item.image = [UIImage imageNamed:@"message-7"];
+        
+        item.selectedImage = [UIImage imageNamed:@"message-7"];
+        
+//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        
+        
+        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        
+        item = [items objectAtIndex:2];
+        
+        item.image = [UIImage imageNamed:@"proximity-7"];
+        
+        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
+        
+//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        
+        
+        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        
+        item = [items objectAtIndex:3];
+        
+        item.image = [UIImage imageNamed:@"man-7"];
+        
+        item.selectedImage = [UIImage imageNamed:@"man-7"];
+        
+//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        
+        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        
+        item = [items objectAtIndex:4];
+        
+        item.image = [UIImage imageNamed:@"id-card-7"];
+        
+        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+        
+//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        
+        
+        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        return;
+    }
+    
     // set selected and unselected icons
     NSArray *items = self.tabBarController.tabBar.items;
     
@@ -516,7 +595,7 @@ const float TOP_OFFSET = 219.0f;
     UITabBarItem *item = [items objectAtIndex:0];
     
     item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
+    
     item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
     
     item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);

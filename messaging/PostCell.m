@@ -415,7 +415,11 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 {
     [super layoutSubviews];
     
-    [self setNewPositions];
+    if(self.post.content)
+    {
+        [self setNewPositions];
+    }
+    
     
     [self hideMoreButton];
 

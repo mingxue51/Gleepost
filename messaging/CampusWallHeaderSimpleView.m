@@ -60,7 +60,7 @@
 {
     //    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
     
-    [_stanfordLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:20.0f]];
+    [_stanfordLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:18.0f]];
 
 }
 
@@ -92,13 +92,13 @@
 
 -(void)formatButtons
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
+//    [ShapeFormatterHelper setCornerRadiusWithView:self.eventsBtn andValue:10];
     
-    CGFloat createPostEdge = 5.0f;
-    CGFloat showCategoriesEdge = 5.0f;
-    
-    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(showCategoriesEdge, showCategoriesEdge, showCategoriesEdge, showCategoriesEdge)];
-    [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
+//    CGFloat createPostEdge = 5.0f;
+//    CGFloat showCategoriesEdge = 5.0f;
+//    
+//    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(showCategoriesEdge, showCategoriesEdge, showCategoriesEdge, showCategoriesEdge)];
+//    [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
 }
 
 #pragma mark - Selectors
