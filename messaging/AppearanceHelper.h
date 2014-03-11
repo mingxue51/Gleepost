@@ -26,5 +26,7 @@
 +(UIColor*)colourOfTheFakeNavigationBar;
 +(void)setCustomBackgroundToTableView:(UITableView *)tableView;
 +(UIColor *)colourForTableViewSeparatorLines;
++(void)setSegmentFontWithSegment:(UISegmentedControl *)segment;
++(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar;
 
 @end

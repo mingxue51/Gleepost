@@ -68,6 +68,8 @@ static GLPPostImageLoader *instance = nil;
             {
                 self.networkAvailable = YES;
                 
+                DDLogInfo(@"Continue all operations of loading images.");
+
                 [self startConsume];
             }
             else
@@ -139,6 +141,8 @@ static GLPPostImageLoader *instance = nil;
  */
 -(void)cancelOperations
 {
+    DDLogInfo(@"Cancel all operations of loading images");
+    
     BOOL exist = NO;
     
     //Refill the array with the not finished remote keys.
@@ -208,11 +212,14 @@ static GLPPostImageLoader *instance = nil;
 //        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
         
         
+        
         if(img)
         {
             //Notify GLPTimelineViewController after finish.
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
                                                                                                                                 @"FinalImage":img}];
+            
+            DDLogDebug(@"Loading images: %@", _loadingImages);
             
             //Delete the entry from the queue.
             [_loadingImages removeObjectForKey:remoteKey];
@@ -220,6 +227,8 @@ static GLPPostImageLoader *instance = nil;
         else
         {
             //TODO: No internet connection. Retry later.
+            DDLogDebug(@"No network!");
+            
             break;
         }
         
@@ -233,6 +242,7 @@ static GLPPostImageLoader *instance = nil;
 {
     if(self.networkAvailable)
     {
+        
         //If there is network then start threads.
         [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
         [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];

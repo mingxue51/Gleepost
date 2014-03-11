@@ -208,6 +208,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         
     }
     
+    
     if(self.isViewPost)
     {
         [self.contentLbl setNumberOfLines:0];
@@ -253,6 +254,18 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
 }
 
+//TODO: Remove this button when report and delete would be ready from server side.
+-(void)hideMoreButton
+{
+    if(![self isCurrentPostEvent])
+    {
+        [_moreBtn setHidden:YES];
+    }
+    else
+    {
+        [_moreBtn setHidden:NO];
+    }
+}
 
 -(void)setTimeWithTime:(NSDate *)date
 {
@@ -403,6 +416,9 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     [super layoutSubviews];
     
     [self setNewPositions];
+    
+    [self hideMoreButton];
+
 }
 
 -(void)refreshInformationLabel
@@ -567,22 +583,30 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     }
     
     
-    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+    if([self isCurrentPostEvent])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, @"Report", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
     }
-    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Report", nil];
-    }
-    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, @"Report", nil];
-    }
-    else
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
-    }
+    
+    
+    
+    //TODO: Uncomment this code when report and delete post are supported from the server side.
+//    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, @"Report", nil];
+//    }
+//    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Report", nil];
+//    }
+//    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, @"Report", nil];
+//    }
+//    else
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
+//    }
 
     
     [actionSheet showInView:[_delegate.view window]];

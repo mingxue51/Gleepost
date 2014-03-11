@@ -15,6 +15,7 @@
 #import <MessageUI/MessageUI.h>
 #import "SessionManager.h"
 #import "ChangePasswordViewController.h"
+#import "AppearanceHelper.h"
 
 @interface SettingsViewController () <MFMessageComposeViewControllerDelegate>
 
@@ -94,7 +95,8 @@ const int CORNER_VALUE = 16;
 -(void)configureNavigationBar
 {
     
-    [self.navigationController setNavigationBarHidden:YES];
+    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+    
 //
 //    
 //    [self.simpleNavigationBar setBackgroundColor:[UIColor clearColor]];

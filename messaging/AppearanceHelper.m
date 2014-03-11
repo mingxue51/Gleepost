@@ -53,6 +53,20 @@
 
 }
 
++(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar
+{
+    [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    
+    
+    [navigationBar setTintColor:[UIColor whiteColor]];
+}
+
+
++(void)setSegmentFontWithSegment:(UISegmentedControl *)segment
+{
+    [segment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont fontWithName:GLP_TITLE_FONT size:16.0f], UITextAttributeFont, nil] forState:UIControlStateNormal];
+}
+
 +(void)formatTextWithLabel:(UILabel*)label withSize:(float)size
 {
     [label setFont:[UIFont fontWithName:GLP_APP_FONT size:size]];

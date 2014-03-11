@@ -161,12 +161,15 @@
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
     [AppearanceHelper setNavigationBarFontFor:self];
     
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
+    
+    
 
     //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
 }
@@ -223,6 +226,7 @@
 //    
 //    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor lightGrayColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
     
+    [AppearanceHelper setSegmentFontWithSegment:_groupsContactsSegment];
     
     
     

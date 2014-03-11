@@ -101,16 +101,16 @@
 // What is that ?!
 //TODO: Call this method.
 
--(void)configureNavigationBar
-{
-//    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
-    
-    [self.simpleNavBar setTranslucent:NO];
-    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 100.f)];
-    self.simpleNavBar.tintColor = [UIColor whiteColor];
-    
-    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:GLP_APP_FONT size:20.0f], UITextAttributeFont, nil]];
-}
+//-(void)configureNavigationBar
+//{
+////    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
+//    
+//    [self.simpleNavBar setTranslucent:NO];
+//    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 100.f)];
+//    self.simpleNavBar.tintColor = [UIColor whiteColor];
+//    
+//    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:GLP_APP_FONT size:20.0f], UITextAttributeFont, nil]];
+//}
 
 - (IBAction)forgotPassword:(id)sender
 {

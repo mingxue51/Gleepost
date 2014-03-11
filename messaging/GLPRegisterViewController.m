@@ -16,13 +16,11 @@
 #import "SessionManager.h"
 #import "GLPUserDao.h"
 #import "GLPTemporaryUserInformationManager.h"
+#import "AppearanceHelper.h"
 
 @interface GLPRegisterViewController ()
 
-
-
-
-
+@property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 
 @end
 
@@ -35,7 +33,9 @@
     [_emailTextField becomeFirstResponder];
     
     [self formatTextFields];
-	// Do any additional setup after loading the view.
+    
+    [self configureNavigationBar];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -218,8 +218,11 @@
 {
     [self formatTextField:_emailTextField];
     [self formatTextField:_passwordTextField];
-    
-   
+}
+
+-(void)configureNavigationBar
+{
+    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
 }
 
 #pragma mark - UITextFieldDelegate
