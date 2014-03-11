@@ -120,7 +120,7 @@
 @implementation GLPTimelineViewController
 
 //Constants.
-const float TOP_OFFSET = 219.0f;
+const float TOP_OFFSET = 225.0f;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
