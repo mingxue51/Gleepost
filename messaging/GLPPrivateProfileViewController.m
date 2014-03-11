@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
+#import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 #import "GLPPrivateProfileViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
@@ -152,6 +154,14 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
 
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

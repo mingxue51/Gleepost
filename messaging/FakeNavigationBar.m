@@ -91,12 +91,17 @@ const CGFloat HEIGH_FAKE = 64.0f;
 -(void)groupFeedEnabled
 {
     [self.titleLbl setText:@"My Groups"];
+    [self.createPostBtn setHidden:YES];
 }
 
 -(void)groupFeedDisabled
 {
     [self.titleLbl setText:@"Cardinal Wall"];
+    [self.createPostBtn setHidden:NO];
+
 }
+
+
 
 
 /*

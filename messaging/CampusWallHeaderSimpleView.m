@@ -140,11 +140,13 @@
 -(void)groupFeedEnabled
 {
     [self.stanfordLbl setText:@"My Groups"];
+    [self.createPostBtn setHidden:YES];
 }
 
 -(void)groupFeedDisabled
 {
     [self.stanfordLbl setText:@"Cardinal Wall"];
+    [self.createPostBtn setHidden:NO];
 }
 
 -(IBAction)clearAndReloadData:(id)sender

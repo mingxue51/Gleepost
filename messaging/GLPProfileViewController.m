@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
+#import "UIViewController+GAI.h"
+#import "UIViewController+Flurry.h"
 #import <MessageUI/MessageUI.h>
 #import "GLPProfileViewController.h"
 #import "GLPUser.h"
@@ -38,6 +40,7 @@
 #import "UIImage+StackBlur.h"
 #import "NotificationCell.h"
 #import "GLPApplicationHelper.h"
+
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -180,6 +183,16 @@
     
     [super viewWillDisappear:animated];
 }
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+
 
 -(void)dealloc
 {

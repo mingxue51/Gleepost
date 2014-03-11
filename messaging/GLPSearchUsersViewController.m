@@ -41,27 +41,19 @@
 @implementation GLPSearchUsersViewController
 
 static NSString * const kCellIdentifier = @"CellIdentifier";
+static NSString *const INVITE_GROUP_MEMBERS_STR = @"Invite Group Members";
+static NSString *const SEARCH_USERS_STR = @"Search Users";
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.title = @"Invite Group Members";
+    [self initialiseObjects];
     
-    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self configureButtons];
     
-    _users = [NSMutableArray array];
-    _checkedUsers = [NSMutableDictionary dictionary];
-    _checkUsersCount = 0;
-    _requestsCount = 0;
-    _shouldAnimateEndLoading = NO;
-    
-    _activityIndicator.hidden = YES;
-    
-    [_submitButton setImage:[UIImage imageNamed:@"search_users_enabled_save_button"] forState:UIControlStateNormal];
-    [_submitButton setImage:[UIImage imageNamed:@"search_users_disabled_save_button"] forState:UIControlStateDisabled];
-    _submitButton.enabled = NO;
-    
+    [self configureUI];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -79,6 +71,47 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+}
+
+# pragma mark - Configuration
+
+-(void)initialiseObjects
+{
+    
+    if(_searchForMembers)
+    {
+        self.title = INVITE_GROUP_MEMBERS_STR;
+    }
+    else
+    {
+        self.title = SEARCH_USERS_STR;
+    }
+    
+    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    _users = [NSMutableArray array];
+    _checkedUsers = [NSMutableDictionary dictionary];
+    _checkUsersCount = 0;
+    _requestsCount = 0;
+    _shouldAnimateEndLoading = NO;
+    
+    _activityIndicator.hidden = YES;
+}
+
+-(void)configureButtons
+{
+    [_submitButton setImage:[UIImage imageNamed:@"search_users_enabled_save_button"] forState:UIControlStateNormal];
+    [_submitButton setImage:[UIImage imageNamed:@"search_users_disabled_save_button"] forState:UIControlStateDisabled];
+    _submitButton.enabled = NO;
+}
+
+-(void)configureUI
+{
+    if(!_searchForMembers)
+    {
+        [_submitButton setHidden:YES];
+    }
+        
 }
 
 # pragma mark - Searching
@@ -162,7 +195,16 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     BOOL check = [_checkedUsers[[user remoteKeyNumber]] boolValue];
     
     GLPSearchUserCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
-    [cell configureWithUser:user checked:check];
+    
+    if(_searchForMembers)
+    {
+        [cell configureWithUser:user checked:check];
+    }
+    else
+    {
+        [cell configureWithUser:user];
+    }
+    
     cell.delegate = self;
     
     return cell;

@@ -57,14 +57,14 @@
 
 - (void)configureWithUser:(GLPUser *)user checked:(BOOL)checked
 {
-    _user = user;
+
+    [self setUserInformationWithUser:user];
+    
     _checked = checked;
     
-    _userLabel.text = _user.name;
-    
-    [ShapeFormatterHelper setRoundedView:_profileImageView toDiameter:_profileImageView.frame.size.height];
-    
-    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"]];
+    [self updateCheckbox];
+
+
     
     //Lukasz I removed this code because it was causing issues with images. I replaced this code with the code above! Let me know for any comments!
     
@@ -76,8 +76,34 @@
 ////        _profileImageView.image = [_profileImageView.image maskWithImage:[UIImage imageNamed:@"search_users_profile_image_mask"]];
 //    }];
     
-    [self updateCheckbox];
 }
+
+
+/**
+ This method is called when we need just search for contacts.
+ 
+ @param user User information
+ 
+ */
+-(void)configureWithUser:(GLPUser *)user
+{
+    [self setUserInformationWithUser:user];
+    
+    [_checkboxButton setHidden:YES];
+}
+
+
+-(void)setUserInformationWithUser:(GLPUser *)user
+{
+    _user = user;
+    
+    _userLabel.text = _user.name;
+    
+    [ShapeFormatterHelper setRoundedView:_profileImageView toDiameter:_profileImageView.frame.size.height];
+    
+    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"]];
+}
+
 
 - (void)updateCheckbox
 {

@@ -2213,7 +2213,6 @@ const float TOP_OFFSET = 219.0f;
 {
     _groupsMode = YES;
     [self updateTitleView];
-    
     [self loadInitialGroupsPosts];
 }
 
@@ -2222,6 +2221,7 @@ const float TOP_OFFSET = 219.0f;
     _groupsMode = NO;
     
     [self updateTitleView];
+
     
     [self loadInitialPosts];
 }
@@ -2293,6 +2293,7 @@ const float TOP_OFFSET = 219.0f;
 
     }
 }
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

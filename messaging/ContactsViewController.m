@@ -26,6 +26,7 @@
 #import "CreateNewGroupCell.h"
 #import "GroupCell.h"
 #import "NewGroupViewController.h"
+#import "GLPSearchUsersViewController.h"
 
 @interface ContactsViewController ()
 
@@ -199,7 +200,7 @@
 
 -(void)configureSearchContactButton
 {
-    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(popUpCreateView:)];
+    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchForNewContacts:)];
     
     self.navigationItem.rightBarButtonItem = groupButton;
 }
@@ -866,11 +867,32 @@
 //}
 
 
+#pragma mark - Group Created Delegate
+
+//TODO: Make those methods more efficient.
+
+-(void)groupCreatedWithData:(GLPGroup *)group
+{
+    [self reloadNewGroupWithGroup:group];
+    
+//    [self createNewGroupWithGroup:group];
+}
+
+
+-(void)groupDeletedWithData:(GLPGroup *)group
+{
+    [GLPGroupManager deleteGroup:group];
+    
+    [self reloadNewGroupWithGroup:group];
+}
+
+#pragma mark - Navigation
+
 //Call this when there is a need to pass elements to the next controller.
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     //Hide tabbar.
-   // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
     
     if([segue.identifier isEqualToString:@"view profile"])
     {
@@ -884,17 +906,12 @@
         
         gvc.group = self.selectedGroup;
     }
-}
-
-#pragma mark - Group Created Delegate
-
-//TODO: Make those methods more efficient.
-
--(void)groupCreatedWithData:(GLPGroup *)group
-{
-    [self reloadNewGroupWithGroup:group];
-    
-//    [self createNewGroupWithGroup:group];
+    else if ([segue.identifier isEqualToString:@"search contacts"])
+    {
+        GLPSearchUsersViewController *suvc = segue.destinationViewController;
+        
+        suvc.searchForMembers = NO;
+    }
 }
 
 -(void)popUpCreateView:(id)sender
@@ -903,22 +920,19 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     NewGroupViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupViewController"];
     
-//    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
-//    [navigationController setNavigationBarHidden:YES];
-//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+    //    [navigationController setNavigationBarHidden:YES];
+    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [cvc setDelegate:self];
     
     [self presentViewController:cvc animated:YES completion:nil];
 }
 
-
--(void)groupDeletedWithData:(GLPGroup *)group
+-(void)searchForNewContacts:(id)sender
 {
-    [GLPGroupManager deleteGroup:group];
-    
-    [self reloadNewGroupWithGroup:group];
+    [self performSegueWithIdentifier:@"search contacts" sender:self];
 }
 
 /**

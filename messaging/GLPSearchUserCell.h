@@ -21,5 +21,6 @@
 @property (weak, nonatomic) id<GLPSearchUserCellDelegate> delegate;
 
 - (void)configureWithUser:(GLPUser *)user checked:(BOOL)checked;
+-(void)configureWithUser:(GLPUser *)user;
 
 @end
