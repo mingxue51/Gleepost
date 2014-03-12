@@ -55,7 +55,7 @@
 
 -(void)configurateView
 {
-    self.title = _group.name;
+    self.title = @"Members";
 }
 
 -(void)configureTopView
@@ -72,6 +72,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewMember:)];
     [tap setNumberOfTapsRequired:1];
     [_addNewMembersView addGestureRecognizer:tap];
+    
 }
 
 -(void)configurateTableView

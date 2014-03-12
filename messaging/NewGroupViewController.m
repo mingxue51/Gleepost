@@ -127,6 +127,11 @@
     {
         group.name = _groupNameTextField.text;
         
+        if(![_groupDescriptionTextView.text isEqualToString:@""])
+        {
+            group.groupDescription = _groupDescriptionTextView.text;
+        }
+        
         [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
         
         group.finalImage = _groupImage;

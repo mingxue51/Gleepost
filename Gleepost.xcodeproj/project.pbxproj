@@ -209,6 +209,8 @@
 		584F38621818094A00A1B742 /* mychatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38611818094A00A1B742 /* mychatbubble4.png */; };
 		584F3864181809A700A1B742 /* yourchatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F3863181809A700A1B742 /* yourchatbubble4.png */; };
 		5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */; };
+		5851957F18CFD36200F8CE46 /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851957E18CFD36200F8CE46 /* more.png */; };
+		5851958318CFDF9C00F8CE46 /* add_members_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851958218CFDF9C00F8CE46 /* add_members_bg.png */; };
 		5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */; };
 		5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5DA18258FB800AA9103 /* TransitionDelegate.m */; };
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
@@ -425,7 +427,6 @@
 		58F8C33118A4FC1E005EC7ED /* GLPRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */; };
 		58F8C33318A50184005EC7ED /* finished.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F8C33218A50184005EC7ED /* finished.png */; };
 		58F8C33518A549E7005EC7ED /* email_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F8C33418A549E7005EC7ED /* email_field.png */; };
-		58F9C63C18C51407004A237E /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F9C63B18C51407004A237E /* more.png */; };
 		58F9C63F18C522CA004A237E /* GLPGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F9C63E18C522CA004A237E /* GLPGroup.m */; };
 		58F9C64218C5306D004A237E /* GLPGroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F9C64118C5306D004A237E /* GLPGroupManager.m */; };
 		58FB7C7D1855FF0B002C6A00 /* message-user.png in Resources */ = {isa = PBXBuildFile; fileRef = 58FB7C7C1855FF0B002C6A00 /* message-user.png */; };
@@ -935,6 +936,8 @@
 		584F3863181809A700A1B742 /* yourchatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yourchatbubble4.png; sourceTree = "<group>"; };
 		5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPiOS6Helper.h; sourceTree = "<group>"; };
 		5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOS6Helper.m; sourceTree = "<group>"; };
+		5851957E18CFD36200F8CE46 /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
+		5851958218CFDF9C00F8CE46 /* add_members_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_members_bg.png; sourceTree = "<group>"; };
 		5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
 		5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
 		5851B5D918258FB800AA9103 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
@@ -1220,7 +1223,6 @@
 		58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPRegisterViewController.m; sourceTree = "<group>"; };
 		58F8C33218A50184005EC7ED /* finished.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = finished.png; sourceTree = "<group>"; };
 		58F8C33418A549E7005EC7ED /* email_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email_field.png; sourceTree = "<group>"; };
-		58F9C63B18C51407004A237E /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
 		58F9C63D18C522CA004A237E /* GLPGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroup.h; sourceTree = "<group>"; };
 		58F9C63E18C522CA004A237E /* GLPGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroup.m; sourceTree = "<group>"; };
 		58F9C64018C5306D004A237E /* GLPGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupManager.h; sourceTree = "<group>"; };
@@ -1702,7 +1704,7 @@
 				582128351891A85B00BF36E5 /* top_wall_background.png */,
 				582128371891AA0C00BF36E5 /* gleepost_logo_headerOld.png */,
 				589EAD2118A43702005B2F4C /* icon_comments_old2.png */,
-				58F9C63B18C51407004A237E /* more.png */,
+				5851957E18CFD36200F8CE46 /* more.png */,
 			);
 			name = "Campus Wall";
 			sourceTree = "<group>";
@@ -2142,6 +2144,7 @@
 				587248AC18C64C5200B98484 /* members_old.png */,
 				5823932118CB6719001BC88C /* members.png */,
 				5823932218CB6719001BC88C /* members_selected.png */,
+				5851958218CFDF9C00F8CE46 /* add_members_bg.png */,
 			);
 			name = Groups;
 			sourceTree = "<group>";
@@ -3604,6 +3607,7 @@
 				58143D74182170C000B76E5D /* +.png in Resources */,
 				58143D72182169A400B76E5D /* +_old2.png in Resources */,
 				5823C27B18CA4BBB00288777 /* show_categories.png in Resources */,
+				5851957F18CFD36200F8CE46 /* more.png in Resources */,
 				5866F16D188452F1007484CF /* hills_night.png in Resources */,
 				58AD86A918929F2200016C6D /* plus_button.png in Resources */,
 				58D0E2651850BD7B005879F4 /* ignore_notification_button.png in Resources */,
@@ -3674,7 +3678,6 @@
 				5819E64B18C79E98003361B3 /* GroupCell.xib in Resources */,
 				805E155C180EF3E700705B1C /* thumbs-up_image@2x.png in Resources */,
 				58C09A1B185B2CDD00648EB4 /* bell.png in Resources */,
-				58F9C63C18C51407004A237E /* more.png in Resources */,
 				5890D23918482DC300E293DD /* proximity.png in Resources */,
 				58FB7CAB18565053002C6A00 /* ProfileViewTableViewCell.xib in Resources */,
 				580C7ABB18985059007495EE /* top_image_campus_wall_old.png in Resources */,
@@ -3898,6 +3901,7 @@
 				58AD86A818929F2200016C6D /* mutual_button.png in Resources */,
 				5829F48E18B1546300A7B871 /* in_contacts.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
+				5851958318CFDF9C00F8CE46 /* add_members_bg.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58AD86B01892A7B800016C6D /* top_wall2.png in Resources */,
 				58A67451184FA7D000E3FE45 /* up_arrow.png in Resources */,

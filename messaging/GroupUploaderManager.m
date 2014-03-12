@@ -199,11 +199,24 @@
 
 -(void)notifyControllerWithGroup:(GLPGroup *)group
 {
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                    object:nil
-                                                                  userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                             @"imageUrl": group.groupImageUrl,
-                                                                             @"key":[NSNumber numberWithInt:group.key]}];
+    
+    if(group.groupImageUrl)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+                                                                        object:nil
+                                                                      userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
+                                                                                 @"imageUrl": group.groupImageUrl,
+                                                                                 @"key":[NSNumber numberWithInt:group.key]}];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+                                                                        object:nil
+                                                                      userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
+                                                                                 @"key":[NSNumber numberWithInt:group.key]}];
+    }
+    
+
 }
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -108,12 +108,12 @@
                             <action selector="likePost:" destination="Xyg-Xc-IxG" eventType="touchUpInside" id="NKR-zw-PFB"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o9s-os-g4m">
-                        <rect key="frame" x="265" y="93" width="50" height="15"/>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o9s-os-g4m">
+                        <rect key="frame" x="265" y="87" width="50" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="gNC-TF-lQF"/>
-                            <constraint firstAttribute="height" constant="15" id="jGd-p5-9u4"/>
+                            <constraint firstAttribute="height" constant="21" id="jGd-p5-9u4"/>
                         </constraints>
                         <state key="normal" image="more.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -176,7 +176,7 @@
     <resources>
         <image name="icon_comment.png" width="50" height="50"/>
         <image name="icon_like.png" width="50" height="50"/>
-        <image name="more.png" width="99" height="33"/>
+        <image name="more.png" width="77" height="33"/>
         <image name="share_button.png" width="198" height="100"/>
         <image name="user_image_bg.png" width="74" height="74"/>
     </resources>

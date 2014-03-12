@@ -42,7 +42,7 @@
 
 static NSString * const kCellIdentifier = @"CellIdentifier";
 static NSString *const INVITE_GROUP_MEMBERS_STR = @"Invite Group Members";
-static NSString *const SEARCH_USERS_STR = @"Search Users";
+static NSString *const SEARCH_USERS_STR = @"Search";
 
 - (void)viewDidLoad
 {
