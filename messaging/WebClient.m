@@ -574,10 +574,8 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"networks/%d/users",remoteKey];
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        DDLogDebug(@"Members: %@", responseObject);
-        
-        NSArray *members = [RemoteParser parseUsersFromJson:responseObject];
+                
+        NSArray *members = [RemoteParser parseMembersFromJson:responseObject withGroupRemoteKey:remoteKey];
         
         
         callbackBlock(YES, members);
@@ -663,10 +661,17 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+-(void)getPostsGroupsFeedWithTag:(NSString *)tag callback:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+
+    if(tag)
+    {
+        params[@"filter"] = tag;
+    }
     
-    [self getPath:@"profile/networks/posts" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [self getPath:@"profile/networks/posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *posts = [RemoteParser parsePostsGroupFromJson:responseObject];
         

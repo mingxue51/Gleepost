@@ -54,14 +54,14 @@ static CampusWallGroupsPostsManager *instance = nil;
 
 #pragma mark - Client
 
--(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
-{
-    [[WebClient sharedInstance] getPostsGroupsFeedWithCallbackBlock:^(BOOL success, NSArray *posts) {
-       
-        callbackBlock(YES, posts);
-        
-    }];
-}
+//-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+//{
+//    [[WebClient sharedInstance] getPostsGroupsFeedWithCallbackBlock:^(BOOL success, NSArray *posts) {
+//       
+//        callbackBlock(YES, posts);
+//        
+//    }];
+//}
 
 #pragma mark - Modifiers
 

@@ -60,6 +60,19 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return objects;
 }
 
++ (NSArray *)parseMembersFromJson:(NSArray *)jsonArray withGroupRemoteKey:(int)groupRemoteKey
+{
+    NSMutableArray *objects = [NSMutableArray array];
+    
+    for(id json in jsonArray) {
+        GLPUser *object = [RemoteParser parseUserFromJson:json];
+        object.networkId = groupRemoteKey;
+        [objects addObject:object];
+    }
+    
+    return objects;
+}
+
 
 
 +(NSArray*)parseNetworkUser:(NSDictionary *)json

@@ -17,6 +17,8 @@
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback;
 
++ (void)loadMembersWithGroupRemoteKey:(int)groupRemoteKey withLocalCallback:(void (^)(NSArray *members))localCallback remoteCallback:(void (^)(BOOL success, NSArray *members))remoteCallback;
+
 + (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 
 + (void)loadPreviousPostsAfter:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;

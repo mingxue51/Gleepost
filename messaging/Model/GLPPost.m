@@ -55,7 +55,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post content: %@ Group: %@", self.content, self.group];
+    return [NSString stringWithFormat:@"Post content: %@ Group: %@ ", self.content, self.group];
 }
 
 

@@ -378,7 +378,6 @@ const float TOP_OFFSET = 225.0f;
     {
         if(currentPost)
         {
-
             [self refreshCellViewWithIndex:index];
         }
     }
@@ -1869,7 +1868,14 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)refreshPostsWithNewCategory
 {
-    [self loadInitialPosts];
+    if(_groupsMode)
+    {
+        [self loadGroupsFeed];
+    }
+    else
+    {
+        [self loadInitialPosts];
+    }
 }
 
 #pragma mark - View image delegate

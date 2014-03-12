@@ -374,6 +374,8 @@
 		58D0E2661850BD7B005879F4 /* accept_notification_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E2641850BD7B005879F4 /* accept_notification_button.png */; };
 		58D0E51918D092C1004DF10D /* add_member_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E51818D092C1004DF10D /* add_member_icon.png */; };
 		58D0E51B18D09353004DF10D /* add_members_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E51A18D09353004DF10D /* add_members_bg.png */; };
+		58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */; };
+		58D0E52118D10E98004DF10D /* GLPMemberDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D0E52018D10E98004DF10D /* GLPMemberDao.m */; };
 		58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */; };
 		58D19D9418C7668000CB13CC /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9318C7668000CB13CC /* CreateGroupCell.xib */; };
 		58D19D9618C766C000CB13CC /* create_new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9518C766C000CB13CC /* create_new_group.png */; };
@@ -1155,6 +1157,10 @@
 		58D0E26B1850FC24005879F4 /* ViewImageDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewImageDelegate.h; sourceTree = "<group>"; };
 		58D0E51818D092C1004DF10D /* add_member_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_member_icon.png; sourceTree = "<group>"; };
 		58D0E51A18D09353004DF10D /* add_members_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_members_bg.png; sourceTree = "<group>"; };
+		58D0E51C18D10CE9004DF10D /* GLPMemberDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMemberDaoParser.h; sourceTree = "<group>"; };
+		58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMemberDaoParser.m; sourceTree = "<group>"; };
+		58D0E51F18D10E98004DF10D /* GLPMemberDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMemberDao.h; sourceTree = "<group>"; };
+		58D0E52018D10E98004DF10D /* GLPMemberDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMemberDao.m; sourceTree = "<group>"; };
 		58D113D418857D3A00C6B953 /* GLPPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostImageLoader.h; sourceTree = "<group>"; };
 		58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostImageLoader.m; sourceTree = "<group>"; };
 		58D19D9318C7668000CB13CC /* CreateGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateGroupCell.xib; sourceTree = "<group>"; };
@@ -3391,6 +3397,8 @@
 				5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */,
 				5819E65F18C7E58E003361B3 /* GLPGroupDao.h */,
 				5819E66018C7E58E003361B3 /* GLPGroupDao.m */,
+				58D0E51F18D10E98004DF10D /* GLPMemberDao.h */,
+				58D0E52018D10E98004DF10D /* GLPMemberDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -3398,6 +3406,8 @@
 		80C8BA5A18103456004F70DB /* DaoParser */ = {
 			isa = PBXGroup;
 			children = (
+				58D0E51C18D10CE9004DF10D /* GLPMemberDaoParser.h */,
+				58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */,
 				80C8BA6D18104447004F70DB /* GLPCommonsDaoParser.h */,
 				80C8BA6E18104447004F70DB /* GLPCommonsDaoParser.m */,
 				584CF66518227BA700EFABB8 /* GLPContactDaoParser.h */,
@@ -4034,6 +4044,7 @@
 				58428E2D18A26DF300B82E4B /* RegisterPositionHelper.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
+				58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */,
 				5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
 				58FB7C8A18560B6B002C6A00 /* AboutProfileView.m in Sources */,
@@ -4074,6 +4085,7 @@
 				58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */,
 				58FB7C9C18561598002C6A00 /* MutualProfileView.m in Sources */,
 				589EFD9C182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m in Sources */,
+				58D0E52118D10E98004DF10D /* GLPMemberDao.m in Sources */,
 				5890D21E1847693600E293DD /* GLPDefaultTheme.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
 				580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */,

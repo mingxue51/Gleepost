@@ -15,6 +15,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ShapeFormatterHelper.h"
 #import "GLPSearchUsersViewController.h"
+#import "GLPGroupManager.h"
 
 @interface MembersViewController ()
 
@@ -147,16 +148,31 @@
 
 -(void)loadMembers
 {
-    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
+    
+    [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
         
-        if(success)
-        {
-            self.members = members;
-            
-            [self.tableView reloadData];
-        }
+        self.members = members;
+        
+        [self.tableView reloadData];
+        
+    } remoteCallback:^(BOOL success, NSArray *members) {
+        
+        self.members = members;
+        
+        [self.tableView reloadData];
         
     }];
+    
+//    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
+//        
+//        if(success)
+//        {
+//            self.members = members;
+//            
+//            [self.tableView reloadData];
+//        }
+//        
+//    }];
 }
 
 #pragma mark - Selectors

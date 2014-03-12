@@ -51,10 +51,10 @@
 + (NSArray *)parseGroupsFromJson:(NSArray *)json;
 + (NSArray *)parsePostsGroupFromJson:(NSArray *)jsonPosts;
 
++ (NSArray *)parseMembersFromJson:(NSArray *)jsonArray withGroupRemoteKey:(int)groupRemoteKey;
 
 // contacts
 + (NSArray*)parseContactsFromJson:(NSArray *)jsonContacts;
-+ (NSArray *)parseUsersFromJson:(NSArray *)json;
 
 // commons
 + (NSDate *)parseDateFromString:(NSString *)string;

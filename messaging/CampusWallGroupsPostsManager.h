@@ -19,7 +19,7 @@
 -(NSArray *)allPosts;
 -(int)numberOfPosts;
 
--(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
+//-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 -(NSArray *)addNewPosts:(NSMutableArray *)posts;
 
 @end

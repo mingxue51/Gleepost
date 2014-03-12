@@ -215,6 +215,14 @@ static DatabaseManager *instance = nil;
              date integer, \
              user_remote_key integer);"];
             
+            // group members
+            [db executeUpdate:@"create table members ( \
+             key integer primary key autoincrement, \
+             remoteKey integer, \
+             name text, \
+             image_url text, \
+             group_remote_key integer);"];
+            
             self.exists = YES;
         }];
     }

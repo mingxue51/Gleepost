@@ -10,6 +10,8 @@
 #import "WebClient.h"
 #import "GLPGroupDao.h"
 #import "DatabaseManager.h"
+#import "SessionManager.h"
+#import "GLPMemberDao.h"
 
 @implementation GLPGroupManager
 
@@ -49,6 +51,8 @@
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
         
 //        [GLPGroupManager removePendingGroupsIfExist:pendingGroups withRemoteGroups:finalRemoteGroups];
+        
+        DDLogDebug(@"REMOTE GROUPS: %@", finalRemoteGroups);
         
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
@@ -335,7 +339,10 @@
 
 +(void)loadGroupsFeedWithCallback:(void (^) (BOOL success, NSArray *posts))callback
 {
-    [[WebClient sharedInstance] getPostsGroupsFeedWithCallbackBlock:^(BOOL success, NSArray *posts) {
+    
+    NSString *tag = [SessionManager sharedInstance].currentCategory.tag;
+    
+    [[WebClient sharedInstance] getPostsGroupsFeedWithTag:tag callback:^(BOOL success, NSArray *posts) {
        
         if(success)
         {
@@ -351,8 +358,26 @@
             callback(NO, nil);
         }
         
-        
     }];
+    
+//    [[WebClient sharedInstance] getPostsGroupsFeedWithCallbackBlock:^(BOOL success, NSArray *posts) {
+//       
+//        if(success)
+//        {
+//            DDLogDebug(@"Feed posts: %@", posts);
+//            
+//            callback(YES, posts);
+//            
+//        }
+//        else
+//        {
+//            DDLogError(@"Groups' posts feed not able to load");
+//            
+//            callback(NO, nil);
+//        }
+//        
+//        
+//    }];
 }
 
 #pragma mark - Processing methods
@@ -541,6 +566,33 @@
     }
     
     return nil;
+}
+
+#pragma mark - Group members methods
+
++ (void)loadMembersWithGroupRemoteKey:(int)groupRemoteKey withLocalCallback:(void (^)(NSArray *members))localCallback remoteCallback:(void (^)(BOOL success, NSArray *members))remoteCallback
+{
+    NSArray *localMembers = [GLPMemberDao findMembersWithGroupRemoteKey:groupRemoteKey];
+    
+    DDLogDebug(@"LOCAL MEMBERS: %@", localMembers);
+    
+    localCallback(localMembers);
+    
+    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:groupRemoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
+        
+        if(success)
+        {
+            [GLPMemberDao saveMembers:members];
+            
+            remoteCallback(success, members);
+            
+        }
+        else
+        {
+            remoteCallback(success, nil);
+        }
+        
+    }];
 }
 
 #pragma mark - Notifications methods

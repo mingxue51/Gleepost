@@ -10,7 +10,6 @@
 #import "DatabaseManager.h"
 #import "GLPGroupDaoParser.h"
 
-
 @implementation GLPGroupDao
 
 
@@ -244,5 +243,6 @@
         
     }];
 }
+
 
 @end
