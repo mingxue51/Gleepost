@@ -27,6 +27,7 @@
 @property (assign, nonatomic) int selectedUserId;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *addMembersLabel;
 
 @end
 
@@ -65,9 +66,16 @@
         [_groupImageView setImageWithURL:[NSURL URLWithString:_group.groupImageUrl]];
     }
     
+    [_addMembersLabel setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:24.0f]];
+
+    
     [ShapeFormatterHelper setCornerRadiusWithView:_addNewMembersView andValue:5];
     
-    [ShapeFormatterHelper setRoundedView:_groupImageView toDiameter:_groupImageView.frame.size.height];
+//    [ShapeFormatterHelper setRoundedView:_groupImageView toDiameter:_groupImageView.frame.size.height];
+    
+    CGRect imageFrame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
+    
+    [ShapeFormatterHelper setTwoLeftCornerRadius:_groupImageView withViewFrame:imageFrame withValue:10];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewMember:)];
     [tap setNumberOfTapsRequired:1];
@@ -78,6 +86,10 @@
 -(void)configurateTableView
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    
+    //Remove empty cells.
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
+
 }
 
 

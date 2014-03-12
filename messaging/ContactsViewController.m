@@ -61,7 +61,6 @@
     
     [self initialiseObjects];
     
-    
     [self registerViews];
     
     [self configureTableView];
@@ -102,7 +101,6 @@
     [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     
     
-    [self.contactsTableView setTableFooterView:[[UIView alloc] init]];
     
 //    [self setCustomBackgroundToTableView];
 
@@ -123,6 +121,9 @@
 
 -(void)configureTableView
 {
+    
+    [self.contactsTableView setTableFooterView:[[UIView alloc] init]];
+
 //    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
 //    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     

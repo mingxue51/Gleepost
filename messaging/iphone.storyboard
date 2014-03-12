@@ -1665,7 +1665,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="946A2392-CF49-47BA-AF29-EDF2AF7ED0DB" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="A6D05E19-7516-47EE-B66B-6BC324D26E71" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2965,6 +2965,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="90" width="320" height="277"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="9bg-aO-bMl" id="ajW-eU-3iv"/>
                                     <outlet property="delegate" destination="9bg-aO-bMl" id="Ia6-5e-Zmp"/>
@@ -2978,15 +2979,19 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_image_bg.png" id="tDe-dK-I4H">
-                                        <rect key="frame" x="9" y="6" width="50" height="50"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_member_icon.png" id="j5P-4Z-zPA">
+                                        <rect key="frame" x="77" y="16" width="47" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_image_bg.png" id="tDe-dK-I4H">
+                                        <rect key="frame" x="5" y="5" width="51" height="51"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Members" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aFk-NH-a3W">
-                                        <rect key="frame" x="67" y="20" width="222" height="22"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rjZ-8C-bWH">
+                                        <rect key="frame" x="125" y="19" width="156" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="24"/>
+                                        <color key="textColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -2999,6 +3004,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <barButtonItem key="backBarButtonItem" title=" " id="rNX-4l-cYU"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="addMembersLabel" destination="rjZ-8C-bWH" id="bs1-z4-8KR"/>
                         <outlet property="addNewMembersView" destination="LXp-mL-ttm" id="kxi-Ls-nns"/>
                         <outlet property="groupImageView" destination="tDe-dK-I4H" id="EiX-4z-IXF"/>
                         <outlet property="tableView" destination="twu-HW-Ewl" id="HFp-WE-wgA"/>
@@ -3195,7 +3201,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="946A2392-CF49-47BA-AF29-EDF2AF7ED0DB" width="34" height="34">
+        <image name="A6D05E19-7516-47EE-B66B-6BC324D26E71" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3326,6 +3332,7 @@ AAAAAAAAAAAAAAAAABw/A
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
+        <image name="add_member_icon.png" width="51" height="51"/>
         <image name="add_members_bg.png" width="303" height="63"/>
         <image name="add_photo_btn.png" width="172" height="168"/>
         <image name="back.png" width="23" height="37"/>
@@ -3381,9 +3388,9 @@ AAAAAAAAAAAAAAAAABw/A
         <segue reference="fah-A8-Ky9"/>
         <segue reference="Ptj-MX-g8C"/>
         <segue reference="IeZ-i8-4wD"/>
-        <segue reference="WhX-ZL-dQD"/>
-        <segue reference="0xq-5H-6eX"/>
         <segue reference="Vyz-Un-MGO"/>
+        <segue reference="0xq-5H-6eX"/>
+        <segue reference="WhX-ZL-dQD"/>
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="fL3-CC-Jbz"/>

@@ -16,4 +16,6 @@
 
 +(void)setCornerRadiusWithView:(UIView*)imageView andValue:(int)value;
 
++(void)setTwoLeftCornerRadius:(UIImageView *)imageView withViewFrame:(CGRect)frame withValue:(int)value;
+
 @end
