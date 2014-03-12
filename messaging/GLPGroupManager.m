@@ -47,7 +47,9 @@
 //        NSArray *finalRemoteGroups = [self overwriteGroups:serverGroups withImagesGroups:localGroupsWithImages];
         
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
-                
+        
+//        [GLPGroupManager removePendingGroupsIfExist:pendingGroups withRemoteGroups:finalRemoteGroups];
+        
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
         remoteCallback(YES, finalRemoteGroups);
@@ -57,6 +59,11 @@
      
       }];
 }
+
+//+(NSArray *)removePendingGroupsIfExist:(NSArray *)pending withRemoteGroups:(NSArray *)remoteGroups
+//{
+//    
+//}
 
 + (NSArray *)addLocalGroups:(NSArray *)localGroups toRemoteGroups:(NSArray *)remoteGroups
 {
@@ -363,7 +370,7 @@
     
     
     NSArray *finalSections = [self findValidSections:groups];
-        
+    
     NSDictionary *categorisedGroups = [self categoriseByLetterWithSections:finalSections andGroups:groups];
     
     

@@ -190,7 +190,8 @@ static DatabaseManager *instance = nil;
              date integer, \
              type integer, \
              post_remote_key integer, \
-             user_remote_key integer);"];
+             user_remote_key integer, \
+             group_remote_key integer);"];
             
             // comments
             [db executeUpdate:@"create table comments ( \

@@ -41,6 +41,7 @@
 #import "NotificationCell.h"
 #import "GLPApplicationHelper.h"
 #import "GLPiOS6Helper.h"
+#import "GroupViewController.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -83,6 +84,8 @@
 // new
 @property (strong, nonatomic) NSMutableArray *notifications;
 @property (assign, nonatomic) BOOL tabButtonEnabled;
+
+@property (strong, nonatomic) GLPGroup *groupToNavigate;
 
 @end
 
@@ -756,6 +759,24 @@
     }];
 }
 
+-(void)loadGroupAndNavigateWithRemoteKey:(NSString *)remoteKey
+{
+    [[WebClient sharedInstance] getGroupDescriptionWithId:[remoteKey integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group) {
+       
+        if(success)
+        {
+            //Navigate to group with group.
+            _groupToNavigate = group;
+            [self performSegueWithIdentifier:@"view group" sender:self];
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
+        }
+        
+    }];
+}
+
 -(void)setImageToUserProfile:(NSString*)url
 {
     [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
@@ -1103,7 +1124,7 @@
 
 
         }
-        // go the post detail ?
+        // navigate to post.
         else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
             
             DDLogInfo(@"Go to the post details.");
@@ -1131,6 +1152,13 @@
                     [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
                 }
             }];
+        }
+        //Navigate to group.
+        else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
+        {
+            DDLogDebug(@"Notification group id: %@, remote key: %d", [notification.customParams objectForKey:@"network"], notification.remoteKey);
+            
+            [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
         }
 
     }
@@ -1312,6 +1340,12 @@
         //Hide tabbar.
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         
+    }
+    else if([segue.identifier isEqualToString:@"view group"])
+    {
+        GroupViewController *groupVC = segue.destinationViewController;
+        
+        groupVC.group = _groupToNavigate;
     }
 }
 

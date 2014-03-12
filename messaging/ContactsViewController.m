@@ -76,8 +76,6 @@
 {
     [super viewDidAppear:animated];
     
-
-    
     [self loadContacts];
     [self loadGroupsWithGroup:nil];
     

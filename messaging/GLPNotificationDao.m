@@ -56,19 +56,37 @@
 {
     int date = [entity.date timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, seen, date, type, post_remote_key, user_remote_key) values(%d, %d, %d, %d, %d, %d)",
+    //Parse the custom parameters.
+    int groupRemoteKey = [GLPNotificationDao parseGroupRemoteKeyWithEntity:entity];
+    
+    
+    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, seen, date, type, post_remote_key, user_remote_key, group_remote_key) values(%d, %d, %d, %d, %d, %d, %d)",
                       entity.remoteKey,
                         entity.seen,
                         date,
                       entity.notificationType,
                       entity.postRemoteKey,
-                      entity.user.remoteKey];
+                      entity.user.remoteKey,
+                        groupRemoteKey];
     
     entity.key = [db lastInsertRowId];
 
     
     //Add the user to users table.
     [GLPUserDao saveIfNotExist:entity.user db:db];
+}
+
++(int)parseGroupRemoteKeyWithEntity:(GLPNotification *)entity
+{
+    if(entity.customParams)
+    {
+        NSString *groupRemoteKey = entity.customParams[@"network"];
+        
+        return [groupRemoteKey integerValue];
+    }
+    
+    return 0;
+
 }
 
 + (NSMutableArray *)findNotifications:(FMDatabase *)db

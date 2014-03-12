@@ -79,6 +79,11 @@
     {
         [_groupImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
+//    else if (groupData.finalImage && groupData.groupImageUrl)
+//    {
+//        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:groupData.finalImage];
+//        groupData.finalImage = nil;
+//    }
     else
     {
         [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"]];

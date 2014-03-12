@@ -21,9 +21,16 @@
     entity.date = [resultSet dateForColumn:@"date"];
     entity.postRemoteKey = [resultSet intForColumn:@"post_remote_key"];
     entity.seen = [resultSet boolForColumn:@"seen"];
-    int i = [resultSet intForColumn:@"user_remote_key"];
     
-    entity.user = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"user_remote_key"] db:db];
+    int userRemoteKey = [resultSet intForColumn:@"user_remote_key"];
+    
+    entity.user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
+    
+    int groupRemoteKey = [resultSet intForColumn:@"group_remote_key"];
+    
+    NSString *groupRemoteKeyStr = [NSString stringWithFormat:@"%d", groupRemoteKey];
+    
+    entity.customParams = @{@"network" : groupRemoteKeyStr};
 }
 
 + (GLPNotification *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db

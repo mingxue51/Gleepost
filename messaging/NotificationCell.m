@@ -112,7 +112,8 @@ float const kMarginBetweenBorderAndContent = 15;
     self.pictoImageView.hidden = YES;
     
     // added you event
-    if(notification.notificationType == kGLPNotificationTypeAddedYou) {
+    if(notification.notificationType == kGLPNotificationTypeAddedYou)
+    {
         self.buttonsView.hidden = NO;
         
         float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? CGRectGetMaxY(self.image.frame) : CGRectGetMaxY(self.contentLabel.frame);
@@ -122,7 +123,8 @@ float const kMarginBetweenBorderAndContent = 15;
         
     }
     
-    else if(notification.notificationType == kGLPNotificationTypeAcceptedYou) {
+    else if(notification.notificationType == kGLPNotificationTypeAcceptedYou)
+    {
         self.friendsLinkImageView.hidden = NO;
         self.myImage.hidden = NO;
         
@@ -132,15 +134,20 @@ float const kMarginBetweenBorderAndContent = 15;
         
         CGRectSetX(self.contentLabel, kMarginBetweenBorderAndContent + kTwoProfileImagesWidth + kMarginBetweenProfileImageAndContent);
         self.contentLabel.textAlignment = NSTextAlignmentRight;
+        
     } else if(notification.notificationType == kGLPNotificationTypeCommented ||
-              notification.notificationType == kGLPNotificationTypeLiked ||
-              notification.notificationType == kGLPNotificationTypeAddedGroup) {
+              notification.notificationType == kGLPNotificationTypeLiked)
+    {
         
         self.pictoImageView.hidden = NO;
         
         NSString *imageName = notification.notificationType == kGLPNotificationTypeLiked ? @"internal_notification_cell_liked" : @"internal_notification_cell_commented";
         self.pictoImageView.image = [UIImage imageNamed:imageName];
     }
+//    else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
+//    {
+//        self.pictoImageView.hidden = YES;
+//    }
     
 }
 

@@ -575,6 +575,8 @@ static WebClient *instance = nil;
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        DDLogDebug(@"Members: %@", responseObject);
+        
         NSArray *members = [RemoteParser parseUsersFromJson:responseObject];
         
         
