@@ -354,20 +354,48 @@
 {
     NSMutableArray *groupsStr = [[NSMutableArray alloc] init];
     
-    NSArray *sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
+//    NSArray *sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
     
     for (GLPGroup *group in groups)
     {
         [groupsStr addObject:group.name];
     }
     
-    NSArray *finalSections = [self clearUselessSectionsWithSections:sections andGroups:groups];
     
+    NSArray *finalSections = [self findValidSections:groups];
+        
     NSDictionary *categorisedGroups = [self categoriseByLetterWithSections:finalSections andGroups:groups];
     
     
     
     return [[NSDictionary alloc] initWithObjectsAndKeys:groupsStr, @"GroupNames", categorisedGroups, @"CategorisedGroups", finalSections, @"Sections" ,nil];
+}
+
++(NSArray *)findValidSections:(NSArray *)groups
+{
+    NSMutableArray *sections = [[NSMutableArray alloc] init];
+    
+    for(GLPGroup* group in groups)
+    {
+        NSString* groupName = group.name;
+        //Get the first letter of the user.
+        NSString* firstLetter = [groupName substringWithRange: NSMakeRange(0, 1)];
+        
+        firstLetter = [firstLetter uppercaseString];
+        
+        [sections addObject:firstLetter];
+        
+    }
+    
+    
+    
+    sections = [sections valueForKeyPath:@"@distinctUnionOfObjects.self"];
+    
+    sections = [sections sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)].mutableCopy;
+
+
+    
+    return sections;
 }
 
 +(NSArray *)clearUselessSectionsWithSections:(NSArray *)sections andGroups:(NSArray *)groups
@@ -427,6 +455,7 @@
         for(GLPGroup* group in groups)
         {
             NSString* name = group.name;
+            
             //Get the first letter of the user.
             NSString* firstLetter = [name substringWithRange: NSMakeRange(0, 1)];
             

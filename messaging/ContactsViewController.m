@@ -501,7 +501,6 @@
 
         [self showGroups];
         
-        //TODO: Change that in order to avoid ovewritting of not uploaded groups.
         
         [self.contactsTableView reloadData];
         
@@ -516,8 +515,6 @@
         
         [self showGroups];
         
-        
-        //TODO: Change that in order to avoid ovewritting of not uploaded groups.
         
         [self.contactsTableView reloadData];
         
