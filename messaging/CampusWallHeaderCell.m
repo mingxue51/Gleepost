@@ -15,12 +15,14 @@
 #import "EventBarView.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "ImageFormatterHelper.h"
+#import "ReflectedImageView.h"
 
 @interface CampusWallHeaderCell ()
 
 
 //@property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIImageView *eventImage;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLbl;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
@@ -36,8 +38,8 @@
 
 @implementation CampusWallHeaderCell
 
-const float CELL_WIDTH = 198.0; //
-const float CELL_HEIGHT = 132.0; //Change the height
+const float CELL_WIDTH = 230.0; //198
+const float CELL_HEIGHT = 215.0; //Change the height //132
 const float TITLE_LABEL_MAX_WIDTH = 180.0;
 const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 
@@ -58,10 +60,16 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
         
         
         //Format the image.
-        [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+//        [ShapeFormatterHelper setRoundedView:self.eventImage toDiameter:self.eventImage.frame.size.height];
         
-        _profileImage.layer.borderWidth = 1.0;
-        _profileImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        [ShapeFormatterHelper setCornerRadiusWithView:self.eventImage andValue:self.eventImage.frame.size.height];
+        
+        
+        
+        [self formatEventImage];
+        
+//        _eventImage.layer.borderWidth = 1.0;
+//        _eventImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
     }
     
@@ -85,9 +93,29 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 }
 
 -(void)setDataInElements:(GLPPost *)postData
-{    
-    //Set user's image.
-    [_profileImage setImageWithURL:[NSURL URLWithString:postData.author.profileImageUrl] placeholderImage:nil];
+{
+    
+    NSURL *imgUrl = nil;
+    
+    if(postData.imagesUrls)
+    {
+       imgUrl = [NSURL URLWithString:postData.imagesUrls[0]];
+    }
+    
+    
+    //Set post's image.
+    [_eventImage setImageWithURL:imgUrl placeholderImage:nil];
+    
+    
+//    [_eventImage setImageWithURL:imgUrl placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//        
+//        //Create the reflection effect.
+//        //TODO: Fix that, only add image when the image is loaded.
+//        [_reflectedEventImage reflectionImageWithImage:_eventImage.image];
+//        
+//    }];
+    
+    
     
     CGSize labelSize = [CampusWallHeaderCell getContentLabelSizeForContent:postData.eventTitle];
     
@@ -152,6 +180,20 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
     
  
 //    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
+}
+
+-(void)formatEventImage
+{
+    //Resize the image.
+//    [ImageFormatterHelper imageWithImage:<#(UIImage *)#> scaledToWidth:<#(float)#>]
+    
+    
+    //Set alpha to a specific part of the image.
+    
+    //http://stackoverflow.com/questions/14107979/blur-an-image-of-specific-part-rectangular-circular
+    
+    //Format the image.
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(7.0f, 7.0f)];
 }
 
 -(void)setTimeWithTime:(NSDate *)date

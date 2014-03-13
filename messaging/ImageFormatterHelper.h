@@ -12,6 +12,7 @@
 @interface ImageFormatterHelper : NSObject
 
 +(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToHeight: (float) finalHeight;
++(UIImage*)imageWithImage: (UIImage*) sourceImage scaledToWidth: (float) i_width;
 +(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour;
 +(UIImage*)resizeImage:(UIImage*)image withSize:(CGSize)newSize;
 +(UIImage*)cropImage:(UIImage*)image withRect:(CGRect)cropRect;
