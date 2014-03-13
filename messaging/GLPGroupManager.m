@@ -51,9 +51,7 @@
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
         
 //        [GLPGroupManager removePendingGroupsIfExist:pendingGroups withRemoteGroups:finalRemoteGroups];
-        
-        DDLogDebug(@"REMOTE GROUPS: %@", finalRemoteGroups);
-        
+                
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
         remoteCallback(YES, finalRemoteGroups);

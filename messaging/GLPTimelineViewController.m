@@ -1096,8 +1096,6 @@ const float TOP_OFFSET = 225.0f;
     {
 //        self.posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy;
         
-        DDLogDebug(@"Feed posts: %@", [[CampusWallGroupsPostsManager sharedInstance] allPosts]);
-        
         [self.tableView reloadData];
     }
     
@@ -1526,60 +1524,6 @@ const float TOP_OFFSET = 225.0f;
 
 #pragma mark - Table view
 
-- (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
-{
-    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for(int i = 0; i < count; i++) {
-        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-    }
-    
-    //The condition is added to prevent error when there are no posts in the table view.
-    
-    if(self.posts.count == 1 || !self.posts)
-    {
-        [self.tableView reloadData];
-    }
-    else
-    {
-        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
-    }
-    
-    
-
-//    [self scrollToTheTop];
-    [self scrollToTheNavigationBar];
-    
-    //Bring the fake navigation bar to from because is hidden by new cell.
-//    [self.tableView bringSubviewToFront:self.reNavBar];
-}
-
-- (void)updateTableViewWithNewPosts:(int)count
-{
-    CGPoint tableViewOffset = [self.tableView contentOffset];
-    [UIView setAnimationsEnabled:NO];
-    
-    int heightForNewRows = 0;
-    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < count; i++) {
-        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
-        [rowsInsertIndexPath addObject:tempIndexPath];
-        
-        heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
-    }
-    
-    tableViewOffset.y += heightForNewRows;
-    
-    [self.tableView setContentOffset:tableViewOffset animated:NO];
-    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
-    
-    [UIView setAnimationsEnabled:YES];
-    
-    // display the new elements indicator if we are not on top
-    NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
-    if(firstVisibleIndexPath.row != 0) {
-        [self showNewElementsIndicatorView];
-    }
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -1786,6 +1730,10 @@ const float TOP_OFFSET = 225.0f;
 
 }
 
+
+
+#pragma mark - Table view manager methods
+
 /**
  
  Gives the current post depending on the mode.
@@ -1848,18 +1796,106 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)scrollToTheNavigationBar
 {
-
+    
     [UIView animateWithDuration:0.5f animations:^{
         
         [self.tableView setContentOffset:CGPointMake(0,TOP_OFFSET)];
-
+        
         
     } completion:^(BOOL finished) {
         
         
     }];
     
+    
+}
 
+
+- (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
+{
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    for(int i = 0; i < count; i++) {
+        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+    //The condition is added to prevent error when there are no posts in the table view.
+    
+    if(self.posts.count == 1 || !self.posts)
+    {
+        [self.tableView reloadData];
+    }
+    else
+    {
+        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
+    
+    
+    //    [self scrollToTheTop];
+    [self scrollToTheNavigationBar];
+    
+    //Bring the fake navigation bar to from because is hidden by new cell.
+    //    [self.tableView bringSubviewToFront:self.reNavBar];
+}
+
+- (void)updateTableViewWithNewPosts:(int)count
+{
+    CGPoint tableViewOffset = [self.tableView contentOffset];
+    [UIView setAnimationsEnabled:NO];
+    
+    int heightForNewRows = 0;
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < count; i++) {
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        [rowsInsertIndexPath addObject:tempIndexPath];
+        
+        heightForNewRows = heightForNewRows + [self tableView:self.tableView heightForRowAtIndexPath:tempIndexPath];
+    }
+    
+    tableViewOffset.y += heightForNewRows;
+    
+    [self.tableView setContentOffset:tableViewOffset animated:NO];
+    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    
+    [UIView setAnimationsEnabled:YES];
+    
+    // display the new elements indicator if we are not on top
+    NSIndexPath *firstVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] objectAtIndex:0];
+    if(firstVisibleIndexPath.row != 0) {
+        [self showNewElementsIndicatorView];
+    }
+}
+
+
+-(void)removeTableViewPostWithIndex:(int)index
+{
+    NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
+    
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+
+    [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+}
+
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+    int index;
+    
+    for(index = 0; index < self.posts.count; ++index)
+    {
+        GLPPost *p = [self.posts objectAtIndex:index];
+        
+        if(p.remoteKey == post.remoteKey)
+        {
+            [self.posts removeObject:p];
+            
+            [self removeTableViewPostWithIndex:index];
+
+            return;
+        }
+    }
+    
 }
 
 

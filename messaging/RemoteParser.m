@@ -390,7 +390,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.commentsCount = [json[@"comment_count"] integerValue];
 
     
-    
 
     post.likes = [json[@"like_count"] integerValue];
     

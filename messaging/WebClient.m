@@ -477,6 +477,27 @@ static WebClient *instance = nil;
     }];
 }
 
+/**
+ 
+ At the moment this method is not supported by the server.
+ 
+ */
+-(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    
+    NSString *path = [NSString stringWithFormat:@"posts/%d", postRemoteKey];
+    
+    [self deletePath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO);
+    }];
+    
+}
+
 #pragma mark - Campus Live
 
 -(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock

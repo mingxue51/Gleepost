@@ -157,9 +157,17 @@ static ContactsManager *instance = nil;
     {
         if(contact.youConfirmed && contact.theyConfirmed)
         {
-            //TODO: Bug here. User is nil.
-            [confirmedContacts addObject:contact];
-            [confirmedContactsNames addObject:contact.user.name];
+            if(contact.user.name)
+            {
+                //TODO: Bug here. User sometimes is nil.
+                [confirmedContacts addObject:contact];
+                [confirmedContactsNames addObject:contact.user.name];
+            }
+            else
+            {
+                return nil;
+            }
+
         }
     }
     

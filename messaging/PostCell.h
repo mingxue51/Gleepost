@@ -12,6 +12,16 @@
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 
+
+
+@protocol RemovePostCellDelegate <NSObject>
+
+-(void)removePostWithPost:(GLPPost *)post;
+
+@end
+
+
+
 @interface PostCell : UITableViewCell <UIActionSheetDelegate>
 
 extern const float IMAGE_CELL_HEIGHT;
@@ -38,7 +48,7 @@ extern const float TEXT_CELL_HEIGHT;
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
 
-@property (assign, nonatomic) UIViewController<NewCommentDelegate, ViewImageDelegate> *delegate;
+@property (assign, nonatomic) UIViewController<RemovePostCellDelegate,NewCommentDelegate, ViewImageDelegate> *delegate;
 
 @property BOOL isViewPost;
 @property BOOL imageAvailable;

@@ -228,7 +228,8 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
     
-    
+    [self hideMoreButtonIfNecessary];
+
     [self setFontToLabels];
 }
 
@@ -254,17 +255,27 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
 }
 
-//TODO: Remove this button when report and delete would be ready from server side.
--(void)hideMoreButton
+-(void)hideMoreButtonIfNecessary
 {
-    if(![self isCurrentPostEvent])
-    {
-        [_moreBtn setHidden:YES];
-    }
-    else
-    {
-        [_moreBtn setHidden:NO];
-    }
+    
+   if(self.post.group)
+   {
+       [_moreBtn setHidden:YES];
+
+   }
+   else
+   {
+       if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
+       {
+           [_moreBtn setHidden:NO];
+           
+       }
+       else
+       {
+           [_moreBtn setHidden:YES];
+       }
+   }
+
 }
 
 -(void)setTimeWithTime:(NSDate *)date
@@ -419,10 +430,6 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     {
         [self setNewPositions];
     }
-    
-    
-    [self hideMoreButton];
-
 }
 
 -(void)refreshInformationLabel
@@ -587,10 +594,30 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     }
     
     
-    if([self isCurrentPostEvent])
+    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, nil];
+    }
+    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+    }
+    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
     {
         actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
     }
+    else
+    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
+    }
+
+    
+    
+    
+//    if([self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
+//    }
     
     
     
@@ -779,7 +806,6 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 
 #pragma mark - Action Sheet delegate
 
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
@@ -800,7 +826,10 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
     {
         //Delete post.
-        DDLogDebug(@"Delete");
+        [self deleteCurrentPost];
+        
+        
+        [_delegate removePostWithPost:_post];
 
     }
     else if ([selectedButtonTitle isEqualToString:@"Report"])
@@ -886,6 +915,19 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         {
             //Error message.
             [WebClientHelper showStandardError];
+        }
+        
+    }];
+}
+
+-(void)deleteCurrentPost
+{
+    [[WebClient sharedInstance] deletePostWithRemoteKey:_post.remoteKey callbackBlock:^(BOOL success) {
+       
+        if(!success)
+        {
+            //TODO: Maybe bring back the post.
+            
         }
         
     }];

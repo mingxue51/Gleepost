@@ -463,10 +463,12 @@
         
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
         
-//        if(allContacts != nil)
-//        {
+        //TODO: Find the issue and fix it.
+        
+        if(allContacts != nil)
+        {
             [self showContacts:allContacts];
-//        }
+        }
         
     } remoteCallback:^(BOOL success, NSArray *contacts) {
         
