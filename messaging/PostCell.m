@@ -40,7 +40,7 @@
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 320;
+const float IMAGE_CELL_HEIGHT = 380;
 const float TEXT_CELL_HEIGHT = 90;
 
 
@@ -82,7 +82,7 @@ static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
 static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
-static const float FixedDistanceOfMoreFromText = 295.0;
+static const float FixedDistanceOfMoreFromText = 330; //295
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
@@ -239,7 +239,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 {
     [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+//    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
     self.titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
     
@@ -389,7 +389,9 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         //Change the height of the label.
         [self setElement:self.contentLbl size:labelSize];
         
-        [self setElement:self.moreBtn y:labelSize.height];
+//        [self setElement:self.moreBtn y:labelSize.height];
+        
+        [self setElement:_likeCommentView y:labelSize.height];
     }
     
     

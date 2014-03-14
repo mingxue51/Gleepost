@@ -1066,12 +1066,7 @@
                 postViewCell.delegate = self;
                 
                 [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
-                
-                
-//                if(indexPath.row > 5)
-//                {
-//                    [self clearBottomView];
-//                }
+        
                 
                 //Add separator line to posts' cells.
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];

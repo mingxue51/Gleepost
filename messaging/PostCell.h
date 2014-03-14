@@ -45,6 +45,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UILabel *eventTime;
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 
+@property (weak, nonatomic) IBOutlet UIView *likeCommentView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
 
