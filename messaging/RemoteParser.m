@@ -380,7 +380,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 #pragma mark - Posts, comments, likes and categories
 
 + (GLPPost *)parsePostFromJson:(NSDictionary *)json
-{
+{    
     GLPPost *post = [[GLPPost alloc] init];
     post.remoteKey = [json[@"id"] integerValue];
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];

@@ -48,6 +48,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UIView *likeCommentView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *goingButton;
 
 @property (assign, nonatomic) UIViewController<RemovePostCellDelegate,NewCommentDelegate, ViewImageDelegate> *delegate;
 

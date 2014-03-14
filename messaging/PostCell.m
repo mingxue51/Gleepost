@@ -228,9 +228,12 @@ static const float FixedDistanceOfMoreFromText = 330; //295
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
     
+    [self configureGoingButton];
+    
     [self hideMoreButtonIfNecessary];
 
     [self setFontToLabels];
+    
 }
 
 #pragma mark - Format UI
@@ -253,6 +256,33 @@ static const float FixedDistanceOfMoreFromText = 330; //295
 
     
     
+}
+
+-(void)configureGoingButton
+{
+    if(!self.post.eventTitle)
+    {
+        [_goingButton setHidden:YES];
+    }
+    else
+    {
+        [_goingButton setHidden:NO];
+    }
+    
+    
+    DDLogDebug(@"post content: %@ Attended: %d", self.post.content, self.post.attended);
+    
+    if(self.post.attended)
+    {
+        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        _goingButton.tag = 1;
+    }
+    else
+    {
+        [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+        _goingButton.tag = 2;
+    }
+
 }
 
 -(void)hideMoreButtonIfNecessary
@@ -771,6 +801,28 @@ static const float FixedDistanceOfMoreFromText = 330; //295
     
     [self.delegate viewPostImage:clickedImageView.image];
 }
+- (IBAction)attendOrNotAttendToEvent:(id)sender
+{
+    if(_goingButton.tag == 1)
+    {
+        //Not attend.
+        [self notAttending];
+        [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+        _goingButton.tag = 2;
+        
+    }
+    else if(_goingButton.tag == 2)
+    {
+        //Attend.
+        [self attending];
+        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        _goingButton.tag = 1;
+
+    }
+    
+}
+
+
 
 /**
  Sends a post notification to timeline view controller to update dynamically the number of likes.

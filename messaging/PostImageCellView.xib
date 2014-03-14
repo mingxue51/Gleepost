@@ -184,6 +184,9 @@
                         <state key="normal" image="going.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="attendOrNotAttendToEvent:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="qS9-qq-1Jh"/>
+                        </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="HIw-ZV-q6b">
                         <rect key="frame" x="0.0" y="57" width="320" height="1"/>
@@ -200,6 +203,7 @@
                 <outlet property="commentBtn" destination="pWb-OM-ElW" id="xGQ-za-pzT"/>
                 <outlet property="contentLbl" destination="fa2-fh-Hdm" id="IS0-Vi-hgd"/>
                 <outlet property="eventTime" destination="zo2-Ky-5fp" id="fIo-c6-poH"/>
+                <outlet property="goingButton" destination="A3C-R2-MVf" id="bHc-Sy-yE5"/>
                 <outlet property="informationLabel" destination="zfL-cm-ZtG" id="3u8-Nn-KGP"/>
                 <outlet property="likeCommentView" destination="Qmu-Y4-2yv" id="aWG-y0-Dbn"/>
                 <outlet property="moreBtn" destination="vuN-nN-Jos" id="dtK-EL-Ldh"/>
