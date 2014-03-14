@@ -179,7 +179,7 @@
         
         GLPCommentUploader *commentUploader = [[GLPCommentUploader alloc] init];
         
-        GLPComment *comment = [commentUploader uploadCommentWithContent:self.commentTextView.text andPost:self.post];
+        [commentUploader uploadCommentWithContent:self.commentTextView.text andPost:self.post];
         
         
         [self cancelPushed:nil];

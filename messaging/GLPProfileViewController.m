@@ -14,7 +14,6 @@
 #import "SessionManager.h"
 #import "GLPPostManager.h"
 #import "WebClientHelper.h"
-#import "PostCell.h"
 #import "ProfileTwoButtonsTableViewCell.h"
 #import "ProfileSettingsTableViewCell.h"
 #import "AppearanceHelper.h"

@@ -41,7 +41,7 @@
 const float CELL_WIDTH = 230.0; //198
 const float CELL_HEIGHT = 215.0; //Change the height //132
 const float TITLE_LABEL_MAX_WIDTH = 180.0;
-const float TITLE_LABEL_MAX_HEIGHT = 61.0;
+const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(id)initWithIdentifier:(NSString *)identifier
 {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -16,7 +16,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-bW-q0z">
-                    <rect key="frame" x="51" y="152" width="170" height="17"/>
+                    <rect key="frame" x="51" y="155" width="170" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
@@ -30,8 +30,8 @@
                     <rect key="frame" x="32" y="113" width="186" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="20" id="ne3-2W-5w7"/>
-                        <constraint firstAttribute="width" constant="186" id="xLD-pY-uMu"/>
+                        <constraint firstAttribute="height" constant="20" id="gcK-Ld-L0w"/>
+                        <constraint firstAttribute="width" constant="186" id="y3W-l9-TuP"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -55,13 +55,9 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="X0d-GB-MaU">
-                    <rect key="frame" x="29" y="154" width="15" height="15"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="X0d-GB-MaU">
+                    <rect key="frame" x="29" y="157" width="15" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="15" id="A8j-Lz-ON9"/>
-                        <constraint firstAttribute="width" constant="15" id="rrg-rk-nRv"/>
-                    </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qjA-dc-W8y" customClass="EventBarView">
                     <rect key="frame" x="5" y="101" width="16" height="105"/>
@@ -134,7 +130,7 @@
                 <outlet property="eventTitleLbl" destination="7nm-RY-Dh1" id="Kpf-b2-7YE"/>
                 <outlet property="goingBtn" destination="a6n-7b-owT" id="Myj-fe-koe"/>
                 <outlet property="timeLbl" destination="kqR-bW-q0z" id="qi3-U9-V3z"/>
-                <outlet property="titleLabelWidth" destination="ne3-2W-5w7" id="ViP-TC-sDN"/>
+                <outlet property="titleLabelWidth" destination="gcK-Ld-L0w" id="0lj-RI-1EW"/>
             </connections>
         </view>
     </objects>
