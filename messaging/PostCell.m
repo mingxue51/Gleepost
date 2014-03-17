@@ -31,6 +31,7 @@
 @property (assign, nonatomic) float initialPostContentLabelHeight;
 @property (assign, nonatomic) CGRect labelDimensions;
 @property (assign, nonatomic) float socialPanelY;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topBackgroundConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
 @property (assign, nonatomic) BOOL freshPost;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
@@ -41,7 +42,7 @@
 @implementation PostCell
 
 const float IMAGE_CELL_HEIGHT = 380;
-const float TEXT_CELL_HEIGHT = 90;
+const float TEXT_CELL_HEIGHT = 200;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -84,6 +85,8 @@ static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
 static const float FixedDistanceOfMoreFromText = 330; //295
 static const float FixedTopBackgroundHeight = 250;
+static const float FixedTopBackgroundHeightTextPost = 70;
+
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
@@ -426,7 +429,11 @@ static const float FixedTopBackgroundHeight = 250;
         [self.textLabelConstrain setConstant:labelSize.height];
 
 //        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
-
+        
+        //Change the size of top background view.
+//        [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeightTextPost];
+        
+        [self.topBackgroundConstrain setConstant:labelSize.height+FixedTopBackgroundHeightTextPost];
     }
     else
     {
@@ -436,11 +443,12 @@ static const float FixedTopBackgroundHeight = 250;
 //        [self setElement:self.moreBtn y:labelSize.height];
         
         [self setElement:_likeCommentView y:labelSize.height];
-        
+
         //Change the size of top background view.
         [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeight];
     }
     
+
     
     
     //Change the position of the social view.

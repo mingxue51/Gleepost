@@ -82,9 +82,9 @@
             
             return;
         }
-        else if(_titleTextField.text.length > 37)
+        else if(_titleTextField.text.length > 50)
         {
-            //Check for 37 characters.
+            //Check for 50 characters.
 
             [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 37 characters long"];
             

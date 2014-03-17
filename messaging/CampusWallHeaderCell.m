@@ -133,7 +133,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     //Select the going button if the user is attending,
     if(_postData.attended)
     {
-        
         [self makeButtonSelected:_goingBtn];
     }
     else
@@ -227,7 +226,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 {
     UIButton *currentButton = (UIButton*)sender;
     
-    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+//    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    if(currentButton.tag == 2)
     {
         
         //Communicate with server to attend post.
@@ -277,12 +277,18 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(void)makeButtonUnselected:(UIButton *)btn
 {
-    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
+//    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
+    
+    [btn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+    btn.tag = 2;
 }
 
 -(void)makeButtonSelected:(UIButton *)btn
 {
-    [btn setTitleColor:[UIColor colorWithRed:0.0/255.0 green:236.0/255.0 blue:172.0/255.0 alpha:1.0f] forState:UIControlStateNormal];
+//    [btn setTitleColor:[UIColor colorWithRed:0.0/255.0 green:236.0/255.0 blue:172.0/255.0 alpha:1.0f] forState:UIControlStateNormal];
+    
+    [btn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+    btn.tag = 1;
     
 }
 
