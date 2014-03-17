@@ -189,12 +189,12 @@
                             <action selector="attendOrNotAttendToEvent:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="qS9-qq-1Jh"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="HIw-ZV-q6b">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="HIw-ZV-q6b">
                         <rect key="frame" x="0.0" y="57" width="320" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock_post.png" id="R4M-el-hr4">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock.png" id="R4M-el-hr4">
                         <rect key="frame" x="5" y="63" width="15" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -225,11 +225,11 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="clock_post.png" width="26" height="26"/>
+        <image name="clock.png" width="24" height="24"/>
         <image name="going.png" width="142" height="64"/>
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>
-        <image name="more.png" width="46" height="24"/>
+        <image name="more.png" width="77" height="33"/>
         <image name="post_bottom_bg.png" width="636" height="66"/>
         <image name="post_top_bg.png" width="636" height="659"/>
         <image name="share_button.png" width="198" height="100"/>
