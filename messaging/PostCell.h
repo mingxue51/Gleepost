@@ -49,6 +49,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UIImageView *likeCommentBackImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *topBackgroundImageView;
 
+@property (weak, nonatomic) IBOutlet UIView *eventView;
 
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;

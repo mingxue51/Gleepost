@@ -226,6 +226,16 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 
 //    [self setBorderToContentLabel];
 
+    if(![self isCurrentPostEvent])
+    {
+        //TODO: Hide elements on top, bring other elements up and make the cell smaller.
+        [_eventView setHidden:YES];
+    }
+    else
+    {
+        [_eventView setHidden:NO];
+    }
+    
     
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
