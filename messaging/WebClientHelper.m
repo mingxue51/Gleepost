@@ -153,6 +153,16 @@
     [alert show];
 }
 
++(void)showFailedToDeletePostError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Post not deleted"
+                                                    message:@"Post was unable to be deleted, please try again later."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 + (void)commentWillUploadedLater
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network!"

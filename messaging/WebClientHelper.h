@@ -31,5 +31,6 @@
 + (void)commentWillUploadedLater;
 +(void)showOutOfBoundsError;
 
++(void)showFailedToDeletePostError;
 
 @end

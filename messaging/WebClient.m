@@ -477,11 +477,7 @@ static WebClient *instance = nil;
     }];
 }
 
-/**
- 
- At the moment this method is not supported by the server.
- 
- */
+
 -(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
     

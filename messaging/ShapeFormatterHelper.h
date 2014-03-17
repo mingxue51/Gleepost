@@ -18,4 +18,10 @@
 
 +(void)setTwoLeftCornerRadius:(UIImageView *)imageView withViewFrame:(CGRect)frame withValue:(int)value;
 
++(void)setTwoBottomCornerRadius:(UIView *)view withViewFrame:(CGRect)frame withValue:(int)value;
+
++(void)setElement:(UIView *)element withExtraHeight:(float)height;
+
++(void)setTopCornerRadius:(UIView *)view withViewFrame:(CGRect)frame withValue:(int)value;
+
 @end

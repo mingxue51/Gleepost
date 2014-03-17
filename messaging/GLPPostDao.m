@@ -104,7 +104,7 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked) values(%@, %d, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending) values(%@, %d, %d, %d, %d, %d, %d, %d, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -112,9 +112,10 @@
                      entity.commentsCount,
                      entity.sendStatus,
                      entity.author.remoteKey,
-                     entity.liked];
+                     entity.liked,
+                     entity.attended];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked) values(%d, %@, %d, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -123,8 +124,8 @@
                      entity.commentsCount,
                      entity.sendStatus,
                      entity.author.remoteKey,
-                     entity.liked];
-        
+                     entity.liked,
+                     entity.attended];
     }
     
     entity.key = [db lastInsertRowId];
@@ -163,6 +164,14 @@
      entity.remoteKey];
 }
 
+
++(void)updatePostAttending:(GLPPost*)entity db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"update posts set attending=%d where remoteKey=%d",
+     entity.attended,
+     entity.remoteKey];
+}
+
 +(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db
 {
     BOOL ex = [db executeUpdateWithFormat:@"update posts set comments=%d where remoteKey=%d",
@@ -194,6 +203,12 @@
         category.postRemoteKey = entity.remoteKey;        
         [GLPCategoryDao saveCategoryIfNotExist:category db:db];
     }
+}
+
++(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"delete from posts where remoteKey=%d",
+     entity.remoteKey];
 }
 
 + (void)deleteAllInDb:(FMDatabase *)db

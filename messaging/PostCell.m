@@ -83,6 +83,7 @@ static const float OneLinePadding = 10;
 static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
 static const float FixedDistanceOfMoreFromText = 330; //295
+static const float FixedTopBackgroundHeight = 250;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
@@ -234,6 +235,8 @@ static const float FixedDistanceOfMoreFromText = 330; //295
 
     [self setFontToLabels];
     
+    [self formatBottomView];
+    
 }
 
 #pragma mark - Format UI
@@ -269,9 +272,14 @@ static const float FixedDistanceOfMoreFromText = 330; //295
         [_goingButton setHidden:NO];
     }
     
+    if([self.post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
+    {
+        [_goingButton setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
+        [_goingButton setEnabled:NO];
+        return;
+    }
     
-    DDLogDebug(@"post content: %@ Attended: %d", self.post.content, self.post.attended);
-    
+        
     if(self.post.attended)
     {
         [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
@@ -330,7 +338,8 @@ static const float FixedDistanceOfMoreFromText = 330; //295
 
 -(void)formatPostImage
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:8];
+//    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:8];
+    [ShapeFormatterHelper setTopCornerRadius:self.postImage withViewFrame:self.postImage.frame withValue:8];
 }
 
 -(void)setBorderToContentLabel
@@ -340,6 +349,11 @@ static const float FixedDistanceOfMoreFromText = 330; //295
     
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
+}
+
+-(void)formatBottomView
+{
+    [ShapeFormatterHelper setTwoBottomCornerRadius:_likeCommentBackImageView withViewFrame:_likeCommentBackImageView.frame withValue:10];
 }
 
 #pragma mark - Online indicator
@@ -422,6 +436,9 @@ static const float FixedDistanceOfMoreFromText = 330; //295
 //        [self setElement:self.moreBtn y:labelSize.height];
         
         [self setElement:_likeCommentView y:labelSize.height];
+        
+        //Change the size of top background view.
+        [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeight];
     }
     
     
@@ -549,6 +566,10 @@ static const float FixedDistanceOfMoreFromText = 330; //295
 {
     [element setFrame:CGRectMake(element.frame.origin.x, FixedDistanceOfMoreFromText + y, element.frame.size.width, element.frame.size.height)];
 }
+
+
+
+
 
 //-(void)layoutSubviews
 //{
@@ -807,16 +828,18 @@ static const float FixedDistanceOfMoreFromText = 330; //295
     {
         //Not attend.
         [self notAttending];
-        [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
-        _goingButton.tag = 2;
+//        [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+//        _goingButton.tag = 2;
+        [self makeButtonUnselected];
         
     }
     else if(_goingButton.tag == 2)
     {
         //Attend.
         [self attending];
-        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
-        _goingButton.tag = 1;
+        [self makeButtonSelected];
+//        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+//        _goingButton.tag = 1;
 
     }
     
@@ -883,7 +906,7 @@ static const float FixedDistanceOfMoreFromText = 330; //295
         [self deleteCurrentPost];
         
         
-        [_delegate removePostWithPost:_post];
+//        [_delegate removePostWithPost:_post];
 
     }
     else if ([selectedButtonTitle isEqualToString:@"Report"])
@@ -943,9 +966,13 @@ static const float FixedDistanceOfMoreFromText = 330; //295
         
         if(success)
         {
+            //Update local database.
+            [GLPPostManager updatePostAttending:self.post];
         }
         else
         {
+            [self makeButtonUnselected];
+
             //Error message.
             [WebClientHelper showStandardError];
         }
@@ -962,16 +989,30 @@ static const float FixedDistanceOfMoreFromText = 330; //295
         
         if(success)
         {
-            
-//            [self makeButtonUnselected:currentButton];
+            //Update local database.
+            [GLPPostManager updatePostAttending:self.post];
         }
         else
         {
+            [self makeButtonSelected];
+
             //Error message.
             [WebClientHelper showStandardError];
         }
         
     }];
+}
+
+-(void)makeButtonSelected
+{
+    [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+    _goingButton.tag = 1;
+}
+
+-(void)makeButtonUnselected
+{
+    [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+    _goingButton.tag = 2;
 }
 
 -(void)deleteCurrentPost
@@ -980,9 +1021,15 @@ static const float FixedDistanceOfMoreFromText = 330; //295
        
         if(!success)
         {
-            //TODO: Maybe bring back the post.
-            
+            [WebClientHelper showFailedToDeletePostError];
+            return;
         }
+        
+        [_delegate removePostWithPost:_post];
+
+        
+        //Delete post from database.
+        [GLPPostManager deletePostWithPost:self.post];
         
     }];
 }

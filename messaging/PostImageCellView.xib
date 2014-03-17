@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -14,6 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="379"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_top_bg.png" id="JFC-d3-Dhq">
+                        <rect key="frame" x="0.0" y="80" width="320" height="263"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                     <view contentMode="scaleToFill" id="J0Q-lJ-BI0">
                         <rect key="frame" x="0.0" y="607" width="320" height="393"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -80,7 +84,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <imageView autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="FJI-B7-pDB">
-                        <rect key="frame" x="5" y="83" width="310" height="190"/>
+                        <rect key="frame" x="4" y="83" width="312" height="190"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -96,9 +100,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ad saad saad saad saad saad saads  asd asd a" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lRt-g1-SSi">
-                        <rect key="frame" x="5" y="2" width="310" height="51"/>
+                        <rect key="frame" x="5" y="2" width="310" height="52"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -120,18 +124,23 @@
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" id="Qmu-Y4-2yv">
-                        <rect key="frame" x="5" y="350" width="310" height="33"/>
+                        <rect key="frame" x="0.0" y="350" width="320" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_bottom_bg.png" id="thd-WW-Ung">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="143" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IfU-6J-x3n">
-                                <rect key="frame" x="194" y="6" width="27" height="21"/>
+                                <rect key="frame" x="162" y="6" width="27" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="hTD-mn-1Zb">
-                                <rect key="frame" x="235" y="4" width="25" height="25"/>
+                                <rect key="frame" x="241" y="8" width="19" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -152,7 +161,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" id="pWb-OM-ElW">
-                                <rect key="frame" x="161" y="4" width="25" height="25"/>
+                                <rect key="frame" x="132" y="8" width="19" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="icon_comment.png">
                                     <attributedString key="attributedTitle">
@@ -170,16 +179,16 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="143" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6dk-dE-sHA">
-                                <rect key="frame" x="268" y="6" width="27" height="21"/>
+                                <rect key="frame" x="271" y="6" width="27" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="A3C-R2-MVf">
-                        <rect key="frame" x="224" y="278" width="91" height="36"/>
+                        <rect key="frame" x="235" y="280" width="70" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="going.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -193,8 +202,8 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock.png" id="R4M-el-hr4">
-                        <rect key="frame" x="5" y="62" width="15" height="15"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock_post.png" id="R4M-el-hr4">
+                        <rect key="frame" x="5" y="63" width="15" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
@@ -205,6 +214,7 @@
                 <outlet property="eventTime" destination="zo2-Ky-5fp" id="fIo-c6-poH"/>
                 <outlet property="goingButton" destination="A3C-R2-MVf" id="bHc-Sy-yE5"/>
                 <outlet property="informationLabel" destination="zfL-cm-ZtG" id="3u8-Nn-KGP"/>
+                <outlet property="likeCommentBackImageView" destination="thd-WW-Ung" id="WNE-V0-qzz"/>
                 <outlet property="likeCommentView" destination="Qmu-Y4-2yv" id="aWG-y0-Dbn"/>
                 <outlet property="moreBtn" destination="vuN-nN-Jos" id="dtK-EL-Ldh"/>
                 <outlet property="numberOfCommentsLbl" destination="IfU-6J-x3n" id="nFG-bO-1VM"/>
@@ -215,6 +225,7 @@
                 <outlet property="socialPanel" destination="J0Q-lJ-BI0" id="Zs4-Ai-Bld"/>
                 <outlet property="thumpsUpBtn" destination="hTD-mn-1Zb" id="B26-sf-h1A"/>
                 <outlet property="titleLbl" destination="lRt-g1-SSi" id="uTw-BR-gax"/>
+                <outlet property="topBackgroundImageView" destination="JFC-d3-Dhq" id="zdQ-ke-tzF"/>
                 <outlet property="uploadedIndicator" destination="dxO-eC-D7E" id="xeJ-Xo-cke"/>
                 <outlet property="userImageView" destination="PGO-to-l0y" id="RRX-jH-sc7"/>
                 <outlet property="userName" destination="LuD-N8-hDP" id="oGg-M3-vqQ"/>
@@ -222,11 +233,13 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="clock.png" width="24" height="24"/>
-        <image name="going.png" width="142" height="56"/>
-        <image name="icon_comment.png" width="50" height="50"/>
-        <image name="icon_like.png" width="50" height="50"/>
-        <image name="more.png" width="77" height="33"/>
+        <image name="clock_post.png" width="26" height="26"/>
+        <image name="going.png" width="142" height="64"/>
+        <image name="icon_comment.png" width="36" height="33"/>
+        <image name="icon_like.png" width="34" height="31"/>
+        <image name="more.png" width="46" height="24"/>
+        <image name="post_bottom_bg.png" width="636" height="66"/>
+        <image name="post_top_bg.png" width="636" height="659"/>
         <image name="share_button.png" width="198" height="100"/>
     </resources>
 </document>

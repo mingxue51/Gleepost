@@ -50,7 +50,7 @@
 
 @property (assign, nonatomic) int numberOfRows;
 
-@property (strong, nonatomic) NSArray *posts;
+@property (strong, nonatomic) NSMutableArray *posts;
 
 @property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
 
@@ -418,7 +418,7 @@
     
     self.selectedTabStatus = kGLPPosts;
     
-    self.posts = [[NSArray alloc] init];
+    self.posts = [[NSMutableArray alloc] init];
     
     self.numberOfRows = 2;
     
@@ -522,6 +522,13 @@
 
 }
 
+-(void)notifyCampusWallWithDeletedPost:(GLPPost *)post
+{
+//    NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber num] , @"profile_image_url", nil];
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPProfileImageChanged" object:nil userInfo:data];
+}
+
 
 
 -(void)updatePost:(NSNotification*)notification
@@ -542,6 +549,7 @@
     [self.tableView reloadData];
 
 }
+
 
 
 -(void)postByUserInCampusWall:(NSNotification *)notification
@@ -684,6 +692,29 @@
     [self uploadImageAndSetUserImageWithUserRemoteKey];
     
     [self loadPosts];
+    
+}
+
+
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+    int index;
+    
+    for(index = 0; index < self.posts.count; ++index)
+    {
+        GLPPost *p = [self.posts objectAtIndex:index];
+        
+        if(p.remoteKey == post.remoteKey)
+        {
+            [self.posts removeObject:p];
+            
+            [self removeTableViewPostWithIndex:index];
+            
+            return;
+        }
+    }
     
 }
 
@@ -1271,6 +1302,15 @@
 //    [self.tableView beginUpdates];
 //    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 //    [self.tableView endUpdates];
+}
+
+-(void)removeTableViewPostWithIndex:(int)index
+{
+    NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
+    
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+2 inSection:0]];
+    
+    [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
 }
 
 
