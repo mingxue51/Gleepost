@@ -243,19 +243,19 @@ static const float FixedTopBackgroundHeight = 250;
 
 -(void)setFontToLabels
 {
-    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+//    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
 //    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
     self.titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
     
-    [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
+//    [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
+//    
+//    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
+//    
+//    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
     
-    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
-    
-    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
-    
-    [self.eventTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14]];
+//    [self.eventTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14]];
 
     
     
