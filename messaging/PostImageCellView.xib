@@ -83,14 +83,14 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vuN-nN-Jos">
-                        <rect key="frame" x="285" y="62" width="30" height="15"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="A3C-R2-MVf">
+                        <rect key="frame" x="235" y="280" width="70" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="more.png">
+                        <state key="normal" image="going.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="viewMoreMenu:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="rOb-QA-n6A"/>
+                            <action selector="attendOrNotAttendToEvent:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="qS9-qq-1Jh"/>
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" id="Qmu-Y4-2yv">
@@ -154,24 +154,19 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vuN-nN-Jos">
+                                <rect key="frame" x="28" y="8" width="40" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="more.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="viewMoreMenu:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="rOb-QA-n6A"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="A3C-R2-MVf">
-                        <rect key="frame" x="235" y="280" width="70" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="going.png">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="attendOrNotAttendToEvent:" destination="pmf-Sb-L1C" eventType="touchUpInside" id="qS9-qq-1Jh"/>
-                        </connections>
-                    </button>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="HIw-ZV-q6b">
-                        <rect key="frame" x="0.0" y="57" width="320" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
-                    </imageView>
                     <view contentMode="scaleToFill" id="J0Q-lJ-BI0">
                         <rect key="frame" x="0.0" y="607" width="320" height="393"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

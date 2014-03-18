@@ -1691,7 +1691,7 @@ const float TOP_OFFSET = 280.0f;
         //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
         
         //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+        return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
     }
     else
     {
@@ -1700,7 +1700,7 @@ const float TOP_OFFSET = 280.0f;
         
         //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
         
-        return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
+        return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
         //return TEXT_CELL_HEIGHT;
     }
     

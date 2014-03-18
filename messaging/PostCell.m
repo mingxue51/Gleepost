@@ -33,6 +33,8 @@
 @property (assign, nonatomic) float socialPanelY;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topBackgroundConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTop;
 @property (assign, nonatomic) BOOL freshPost;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
@@ -76,6 +78,8 @@ const float TEXT_CELL_HEIGHT = 200;
 
 static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
 static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
+static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 30;
+static const float FixedSizeOfNonEventTextCell = TEXT_CELL_HEIGHT - 80;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 300;
@@ -207,7 +211,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
     {
         [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         
-        //Add the thumbs up selected version of image.
+        //Add the thumbs up selected version of i   age.
         [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
         
     }
@@ -289,11 +293,8 @@ static const float FixedTopBackgroundHeightTextPost = 70;
     {
         [_goingButton setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
         [_goingButton setEnabled:NO];
-        return;
     }
-    
-        
-    if(self.post.attended)
+    else if(self.post.attended)
     {
         [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
         _goingButton.tag = 1;
@@ -431,7 +432,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 -(void)setNewPositions
 {
     
-    CGSize labelSize = [PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable];
+    CGSize labelSize = [PostCell getContentLabelSizeForContent:self.post isViewPost:self.isViewPost isImage:self.imageAvailable];
     
     if(!self.imageAvailable)
     {
@@ -444,6 +445,19 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 //        [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeightTextPost];
         
         [self.topBackgroundConstrain setConstant:labelSize.height+FixedTopBackgroundHeightTextPost];
+        
+        [self.distanceFromTopView setConstant:16];
+        
+        if([self isCurrentPostEvent])
+        {
+            [self.distanceFromTop setConstant:81];
+        }
+        else
+        {
+            [self.distanceFromTop setConstant:5];
+        }
+        
+
     }
     else
     {
@@ -505,7 +519,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 }
 
 
-+ (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
++ (CGSize)getContentLabelSizeForContent:(GLPPost *)post isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
 {
 //    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     //[UIFont systemFontOfSize:13.0]
@@ -517,17 +531,35 @@ static const float FixedTopBackgroundHeightTextPost = 70;
     {
         font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
         maxWidth = PostContentLabelMaxWidth;
+
+//        if(post.eventTitle)
+//        {
+//        }
+//        else
+//        {
+//            maxWidth = 200;
+//        }
+
         
     }
     else
     {
         font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
         maxWidth = 264;
+
+//        if(post.eventTitle)
+//        {
+//        }
+//        else
+//        {
+//            maxWidth = 180;
+//        }
+
     }
     
 
     
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:post.content attributes:@{NSFontAttributeName: font}];
     
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
@@ -554,13 +586,29 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 //    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage isViewPost:(BOOL)isViewPost
++ (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
 {
     // initial height
     float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
     
+    
+    if(isImage)
+    {
+        if(!post.eventTitle)
+        {
+            height = FixedSizeOfNonEventImageCell;
+        }
+    }
+    else
+    {
+        if(!post.eventTitle)
+        {
+            height = FixedSizeOfNonEventTextCell;
+        }
+    }
+    
     // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:content isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
+    height += [PostCell getContentLabelSizeForContent:post isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
     
     //Decrease by 10 points when the text is over one line.
 //    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)
