@@ -284,6 +284,8 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPShowEvent" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+
 }
 
 
@@ -397,7 +399,6 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)refreshPostsWithNewProfileImage:(NSNotification *)notification
 {
-
     NSArray *postsIndexes = [GLPPostNotificationHelper parseNotification:notification withPostsArrayForNewProfileImage:self.posts];
     
     //Update all the user's posts in campus wall.
@@ -406,7 +407,18 @@ const float TOP_OFFSET = 280.0f;
     {
         [self refreshCellViewWithIndex:number.integerValue];
     }
+}
+
+-(void)deletePost:(NSNotification *)notification
+{
+    if(_groupsMode)
+    {
+        return;
+    }
     
+    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    
+    [self removeTableViewPostWithIndex:index];
 }
 
 #pragma mark - Init config
@@ -671,6 +683,9 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showEventPost:) name:@"GLPShowEvent" object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPostsWithNewProfileImage:) name:@"GLPProfileImageChanged" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
+
 
 }
 
@@ -1873,21 +1888,25 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-    int index;
+//    int index;
     
-    for(index = 0; index < self.posts.count; ++index)
-    {
-        GLPPost *p = [self.posts objectAtIndex:index];
-        
-        if(p.remoteKey == post.remoteKey)
-        {
-            [self.posts removeObject:p];
-            
-            [self removeTableViewPostWithIndex:index];
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
 
-            return;
-        }
-    }
+    
+//    for(index = 0; index < self.posts.count; ++index)
+//    {
+//        GLPPost *p = [self.posts objectAtIndex:index];
+//        
+//        if(p.remoteKey == post.remoteKey)
+//        {
+//            [self.posts removeObject:p];
+//            
+//            [self removeTableViewPostWithIndex:index];
+//            
+//
+//            return;
+//        }
+//    }
     
 }
 

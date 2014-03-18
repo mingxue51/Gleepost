@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
 
+@property (strong, nonatomic) NSAttributedString *contentAttributeText;
 @property (assign, nonatomic) BOOL freshPost;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
@@ -63,6 +64,8 @@ const float TEXT_CELL_HEIGHT = 200;
         self.isViewPost = NO;
         self.isViewPostNotifications = NO;
         
+
+        
 //        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
 //
 //        self.lineView.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:0.4];
@@ -87,7 +90,7 @@ static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 300;
 static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
-static const float FiveLinesLimit = 76.0;
+static const float FiveLinesLimit = 101.0; //76
 static const float OneLineText = 16.0;
 static const float FixedDistanceOfMoreFromText = 250; //295
 static const float FixedTopBackgroundHeight = 250;
@@ -100,6 +103,8 @@ static const float FixedBottomTextViewHeight = 140;
 {
     self.post = postData;
     self.postIndex = postIndex;
+    
+    [self initFormatLabelsObjects];
     
     self.imageAvailable = NO;
     [self updateOnlinePost:postData.remoteKey];
@@ -256,6 +261,7 @@ static const float FixedBottomTextViewHeight = 140;
 
     [self setFontToLabels];
     
+    
     [self formatBottomView];
     
 }
@@ -267,6 +273,10 @@ static const float FixedBottomTextViewHeight = 140;
 //    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
 //    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+    
+    
+    self.contentLbl.attributedText = _contentAttributeText;
+    
     
     self.titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
     
@@ -280,6 +290,12 @@ static const float FixedBottomTextViewHeight = 140;
 
     
     
+}
+
+-(void)initFormatLabelsObjects
+{
+    _contentAttributeText = [[NSAttributedString alloc] initWithString:self.post.content
+                                                            attributes:@{ NSKernAttributeName : @(0.3f)}];
 }
 
 -(void)configureGoingButton
@@ -362,11 +378,11 @@ static const float FixedBottomTextViewHeight = 140;
 
 -(void)setBorderToContentLabel
 {
-//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-//    self.contentLbl.layer.borderWidth = 0.5f;
+    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+    self.contentLbl.layer.borderWidth = 0.5f;
     
-    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
-    self.mainView.layer.borderWidth = 0.5f;
+//    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
+//    self.mainView.layer.borderWidth = 0.5f;
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
 }
@@ -491,8 +507,6 @@ static const float FixedBottomTextViewHeight = 140;
         
         [ShapeFormatterHelper setElement:_mainView withExtraHeight:labelSize.height+FixedBottomImageViewHeight];
         
-
-        
     }
 
     
@@ -551,7 +565,7 @@ static const float FixedBottomTextViewHeight = 140;
     
     if(isImage)
     {
-        font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
         maxWidth = PostContentLabelMaxWidth;
 
 //        if(post.eventTitle)
@@ -566,7 +580,7 @@ static const float FixedBottomTextViewHeight = 140;
     }
     else
     {
-        font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
         maxWidth = 264;
 
 //        if(post.eventTitle)
@@ -581,7 +595,8 @@ static const float FixedBottomTextViewHeight = 140;
     
 
     
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,
+                                                                                                         NSKernAttributeName : @(0.3f)}];
     
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
@@ -792,10 +807,14 @@ static const float FixedBottomTextViewHeight = 140;
     //colour of the image.
     if([self.post liked])
     {
-        [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+        if(btn.tag != 1)
+        {
+            [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+            //Add the thumbs up selected version of image.
+            [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+        }
+
         
         [self.post setLiked:NO];
         
@@ -807,9 +826,13 @@ static const float FixedBottomTextViewHeight = 140;
     }
     else
     {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+        if(btn.tag != 1)
+        {
+            [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+            //Add the thumbs up selected version of image.
+            [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+        }
+
         
         [self.post setLiked:YES];
         

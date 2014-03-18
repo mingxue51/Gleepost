@@ -137,6 +137,37 @@
     return postIndex;
 }
 
++(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
+    
+    
+    for(GLPPost *postC in posts)
+    {
+        if(postC.remoteKey == [remoteKey integerValue])
+        {
+            DDLogDebug(@"FOUND! Remote Key: %d, Content: %@", postC.remoteKey, postC.content);
+        }
+    }
+    
+
+    
+    GLPPost *post = [[GLPPost alloc] init];
+    
+    //Find the index of the post.
+    int index = [GLPPostNotificationHelper findPost:&post with:[remoteKey integerValue] fromPosts:posts];
+    
+    [posts removeObjectAtIndex:index];
+
+    
+    DDLogDebug(@"Post to be deleted: %@", post);
+    
+    return index;
+    
+}
+
 +(int)findPost:(GLPPost **)post with:(int)remoteKey fromPosts:(NSArray*)posts
 {
     int i = 0;
@@ -169,4 +200,13 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
 }
+
++(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey
+{
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", nil];
+    
+    //TODO: See if the self object is good to set as a parameter.
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POST_DELETED object:self userInfo:dataDict];
+}
+
 @end

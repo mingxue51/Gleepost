@@ -208,6 +208,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+
 
 }
 
@@ -238,7 +240,26 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePost:) name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
 
+
+}
+
+
+#pragma mark - Notifications
+
+-(void)deletePost:(NSNotification *)notification
+{
+    DDLogDebug(@"DELETE POST CALLED INDEX!");
+    
+    _postUploaded = YES;
+    
+//    [self.tableView reloadData];
+    
+//    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    
+//    
+//    [self removeTableViewPostWithIndex:index];
 }
 
 #pragma mark - Configuration
@@ -700,6 +721,8 @@
 
 -(void)removePostWithPost:(GLPPost *)post
 {
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+
     int index;
     
     for(index = 0; index < self.posts.count; ++index)
@@ -711,6 +734,7 @@
             [self.posts removeObject:p];
             
             [self removeTableViewPostWithIndex:index];
+            
             
             return;
         }
