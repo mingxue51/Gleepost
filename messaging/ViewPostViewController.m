@@ -15,7 +15,6 @@
 #import "CommentCell.h"
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
-#import "PostCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
@@ -807,6 +806,16 @@ static bool firstTime = YES;
     return YES;
 }
 */
+
+
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+
+    //TODO: Call the parent view controller to delete the post.
+    // Pop-up view controller.
+}
 
 
 #pragma mark - Form management

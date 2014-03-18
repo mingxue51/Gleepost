@@ -188,6 +188,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="height" constant="138" id="DGF-8Y-R96"/>
                             <constraint firstItem="rsP-k7-Q9f" firstAttribute="top" secondItem="fIE-VY-MZi" secondAttribute="bottom" constant="8" id="p08-tc-yCM"/>
                             <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="rsP-k7-Q9f" secondAttribute="bottom" constant="16" id="wEH-kG-Xak"/>
                         </constraints>
@@ -206,6 +207,7 @@
                 <outlet property="eventView" destination="eJM-2L-W3q" id="2vB-Oj-6lH"/>
                 <outlet property="goingButton" destination="l4K-xD-V8U" id="nJH-as-jdD"/>
                 <outlet property="likeCommentView" destination="RLb-ca-bOp" id="CDt-a5-Fxf"/>
+                <outlet property="mainViewHeight" destination="DGF-8Y-R96" id="Dhs-ee-jGy"/>
                 <outlet property="moreBtn" destination="o9s-os-g4m" id="XJz-GQ-T58"/>
                 <outlet property="numberOfCommentsLbl" destination="w3J-A5-7w9" id="UZ6-SM-NKX"/>
                 <outlet property="numberOfLikesLbl" destination="Guf-kH-3QR" id="Sxn-o3-kaI"/>

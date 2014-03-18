@@ -35,6 +35,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
+
 @property (assign, nonatomic) BOOL freshPost;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
@@ -90,6 +92,8 @@ static const float OneLineText = 16.0;
 static const float FixedDistanceOfMoreFromText = 250; //295
 static const float FixedTopBackgroundHeight = 250;
 static const float FixedTopBackgroundHeightTextPost = 70;
+static const float FixedBottomImageViewHeight = 295;
+static const float FixedBottomTextViewHeight = 140;
 
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
@@ -358,9 +362,11 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 
 -(void)setBorderToContentLabel
 {
-    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-    self.contentLbl.layer.borderWidth = 0.5f;
+//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth = 0.5f;
     
+    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
+    self.mainView.layer.borderWidth = 0.5f;
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
 }
@@ -457,6 +463,8 @@ static const float FixedTopBackgroundHeightTextPost = 70;
             [self.distanceFromTop setConstant:5];
         }
         
+        [self.mainViewHeight setConstant:labelSize.height + FixedBottomTextViewHeight];
+        
 
     }
     else
@@ -480,8 +488,12 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 
         //Change the size of top background view.
         [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeight];
+        
+        [ShapeFormatterHelper setElement:_mainView withExtraHeight:labelSize.height+FixedBottomImageViewHeight];
+        
+
+        
     }
-    
 
     
     
