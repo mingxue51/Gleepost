@@ -24,4 +24,6 @@
 
 +(void)setTopCornerRadius:(UIView *)view withViewFrame:(CGRect)frame withValue:(int)value;
 
++(void)setElement:(UIView *)element withExtraY:(float)y;
+
 @end

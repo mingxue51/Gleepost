@@ -757,11 +757,11 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:YES isViewPost:YES];
+            return [PostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
         }
         else
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:NO isViewPost:YES];
+            return [PostCell getCellHeightWithContent:self.post image:NO isViewPost:YES];
         }
         //return 200;
     }

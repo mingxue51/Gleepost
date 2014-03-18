@@ -78,7 +78,7 @@ const float TEXT_CELL_HEIGHT = 200;
 
 static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
 static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
-static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 30;
+static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 80;
 static const float FixedSizeOfNonEventTextCell = TEXT_CELL_HEIGHT - 80;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before. 10 before.
@@ -87,7 +87,7 @@ static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
 static const float FiveLinesLimit = 76.0;
 static const float OneLineText = 16.0;
-static const float FixedDistanceOfMoreFromText = 330; //295
+static const float FixedDistanceOfMoreFromText = 250; //295
 static const float FixedTopBackgroundHeight = 250;
 static const float FixedTopBackgroundHeightTextPost = 70;
 
@@ -432,7 +432,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 -(void)setNewPositions
 {
     
-    CGSize labelSize = [PostCell getContentLabelSizeForContent:self.post isViewPost:self.isViewPost isImage:self.imageAvailable];
+    CGSize labelSize = [PostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable];
     
     if(!self.imageAvailable)
     {
@@ -467,6 +467,16 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 //        [self setElement:self.moreBtn y:labelSize.height];
         
         [self setElement:_likeCommentView y:labelSize.height];
+        
+        
+        if([self isCurrentPostEvent])
+        {
+            [ShapeFormatterHelper setElement:_mainView withExtraY:83];
+        }
+        else
+        {
+            [ShapeFormatterHelper setElement:_mainView withExtraY:5];
+        }
 
         //Change the size of top background view.
         [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeight];
@@ -519,7 +529,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
 }
 
 
-+ (CGSize)getContentLabelSizeForContent:(GLPPost *)post isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
++ (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
 {
 //    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
     //[UIFont systemFontOfSize:13.0]
@@ -559,7 +569,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
     
 
     
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:post.content attributes:@{NSFontAttributeName: font}];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
@@ -608,7 +618,7 @@ static const float FixedTopBackgroundHeightTextPost = 70;
     }
     
     // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:post isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
+    height += [PostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
     
     //Decrease by 10 points when the text is over one line.
 //    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)

@@ -87,4 +87,11 @@
     [element setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, height)];
 }
 
++(void)setElement:(UIView *)element withExtraY:(float)y
+{
+    CGRect frame = element.frame;
+    
+    [element setFrame:CGRectMake(frame.origin.x, y, frame.size.width, frame.size.height)];
+}
+
 @end
