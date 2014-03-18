@@ -807,6 +807,17 @@ static bool firstTime = YES;
 }
 */
 
+#pragma mark - Table view delegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+    //Remove post.
+        
+    
+    //Pop up back.
+    
+}
+
 
 #pragma mark - RemovePostCellDelegate
 
