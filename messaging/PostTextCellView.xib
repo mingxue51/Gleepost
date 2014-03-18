@@ -231,6 +231,7 @@
                 <outlet property="uploadedIndicator" destination="o93-uF-j4R" id="2Eq-SL-eah"/>
                 <outlet property="userImageView" destination="rLa-G4-0ZA" id="fQ4-bv-hqD"/>
                 <outlet property="userName" destination="yxh-pG-jkv" id="9qA-Cy-tDn"/>
+                <outlet property="wideCommentBtn" destination="51d-yj-djx" id="tFh-YV-Xd0"/>
             </connections>
         </tableViewCell>
     </objects>

@@ -255,6 +255,7 @@
                 <outlet property="uploadedIndicator" destination="dxO-eC-D7E" id="xeJ-Xo-cke"/>
                 <outlet property="userImageView" destination="PGO-to-l0y" id="RRX-jH-sc7"/>
                 <outlet property="userName" destination="LuD-N8-hDP" id="oGg-M3-vqQ"/>
+                <outlet property="wideCommentBtn" destination="fIK-LJ-ms7" id="jLr-fr-pOZ"/>
             </connections>
         </tableViewCell>
     </objects>

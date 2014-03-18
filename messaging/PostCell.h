@@ -37,6 +37,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *thumpsUpBtn;
 @property (weak, nonatomic) IBOutlet UIButton *commentBtn;
+@property (weak, nonatomic) IBOutlet UIButton *wideCommentBtn;
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfCommentsLbl;

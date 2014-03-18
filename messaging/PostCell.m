@@ -232,7 +232,7 @@ static const float FixedBottomTextViewHeight = 140;
         
         //Hide comment button.
         [self.commentBtn setEnabled:NO];
-        
+        [self.wideCommentBtn setEnabled:NO];
     }
     
     
