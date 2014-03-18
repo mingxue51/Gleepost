@@ -1890,7 +1890,11 @@ const float TOP_OFFSET = 280.0f;
 {
 //    int index;
     
+    self.isLoading = YES;
+    
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    
+    self.isLoading = NO;
 
     
 //    for(index = 0; index < self.posts.count; ++index)

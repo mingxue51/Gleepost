@@ -807,25 +807,17 @@ static bool firstTime = YES;
 }
 */
 
-#pragma mark - Table view delegate
-
--(void)removePostWithPost:(GLPPost *)post
-{
-    //Remove post.
-        
-    
-    //Pop up back.
-    
-}
-
 
 #pragma mark - RemovePostCellDelegate
 
 -(void)removePostWithPost:(GLPPost *)post
 {
+    //TODO: Call the parent view controller to delete the post or send notification.
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
 
-    //TODO: Call the parent view controller to delete the post.
     // Pop-up view controller.
+    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 
