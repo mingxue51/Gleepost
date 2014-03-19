@@ -157,10 +157,13 @@
         
     } remoteCallback:^(BOOL success, NSArray *members) {
         
-        self.members = members;
-        
-        [self.tableView reloadData];
-        
+        if(success)
+        {
+            self.members = members;
+            
+            [self.tableView reloadData];
+            
+        }
     }];
     
 //    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
