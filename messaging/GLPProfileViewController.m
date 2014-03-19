@@ -257,7 +257,7 @@
 //    [self.tableView reloadData];
     
 //    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
-    
+//    
 //    
 //    [self removeTableViewPostWithIndex:index];
 }
@@ -734,7 +734,6 @@
             [self.posts removeObject:p];
             
             [self removeTableViewPostWithIndex:index];
-            
             
             return;
         }

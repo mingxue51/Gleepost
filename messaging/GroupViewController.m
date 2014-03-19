@@ -10,7 +10,6 @@
 #import "GLPPost.h"
 #import "AppearanceHelper.h"
 #import "GLPGroupManager.h"
-#import "PostCell.h"
 #import "GLPPostManager.h"
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
@@ -93,6 +92,7 @@ const int NUMBER_OF_ROWS = 2;
 //    [self loadMembers];
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
+    [self configureNotifications];
 
     
 }
@@ -101,7 +101,6 @@ const int NUMBER_OF_ROWS = 2;
 {
     [super viewWillAppear:animated];
     
-    [self configureNotifications];
 
     [self configureNavigationBar];
     
@@ -118,9 +117,14 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self removeNotifications];
     
     [super viewWillDisappear:animated];
+}
+
+-(void)dealloc
+{
+    [self removeNotifications];
+
 }
 
 #pragma mark - Configuration methods
@@ -149,6 +153,7 @@ const int NUMBER_OF_ROWS = 2;
 
 
 }
+
 
 -(void)configureTableView
 {
@@ -232,12 +237,16 @@ const int NUMBER_OF_ROWS = 2;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -294,6 +303,15 @@ const int NUMBER_OF_ROWS = 2;
     //    [self.tableView reloadData];
     
     
+}
+
+-(void)deletePost:(NSNotification *)notification
+{
+    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    
+    DDLogDebug(@"Delete POST! %@", notification);
+    
+    [self removeTableViewPostWithIndex:index];
 }
 
 #pragma mark - GLPNewElementsIndicatorView
@@ -389,6 +407,15 @@ const int NUMBER_OF_ROWS = 2;
     if(firstVisibleIndexPath.row != 0) {
         [self showNewElementsIndicatorView];
     }
+}
+
+-(void)removeTableViewPostWithIndex:(int)index
+{
+    NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
+    
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+2 inSection:0]];
+    
+    [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
 }
 
 #pragma mark - Table view data source
@@ -572,7 +599,6 @@ const int NUMBER_OF_ROWS = 2;
     
 
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -889,6 +915,30 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)viewGroupImageOptions:(id)sender
 {
+    
+}
+
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+//    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    
+    int index;
+    
+    for(index = 0; index < self.posts.count; ++index)
+    {
+        GLPPost *p = [self.posts objectAtIndex:index];
+        
+        if(p.remoteKey == post.remoteKey)
+        {
+            [self.posts removeObject:p];
+            
+            [self removeTableViewPostWithIndex:index];
+            
+            return;
+        }
+    }
     
 }
 

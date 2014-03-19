@@ -330,13 +330,13 @@ static const float FixedBottomTextViewHeight = 140;
 -(void)hideMoreButtonIfNecessary
 {
     
-   if(self.post.group)
-   {
-       [_moreBtn setHidden:YES];
-
-   }
-   else
-   {
+//   if(self.post.group)
+//   {
+//       [_moreBtn setHidden:YES];
+//
+//   }
+//   else
+//   {
        if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
        {
            [_moreBtn setHidden:NO];
@@ -346,7 +346,7 @@ static const float FixedBottomTextViewHeight = 140;
        {
            [_moreBtn setHidden:YES];
        }
-   }
+//   }
 
 }
 

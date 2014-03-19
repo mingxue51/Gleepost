@@ -418,7 +418,11 @@ const float TOP_OFFSET = 280.0f;
     
     int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     
-    [self removeTableViewPostWithIndex:index];
+    if(index != -1)
+    {
+        [self removeTableViewPostWithIndex:index];
+    }
+    
 }
 
 #pragma mark - Init config

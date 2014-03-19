@@ -159,6 +159,11 @@
     //Find the index of the post.
     int index = [GLPPostNotificationHelper findPost:&post with:[remoteKey integerValue] fromPosts:posts];
     
+    if(index == -1)
+    {
+        return index;
+    }
+    
     [posts removeObjectAtIndex:index];
 
     
