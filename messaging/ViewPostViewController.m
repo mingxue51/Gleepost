@@ -812,12 +812,18 @@ static bool firstTime = YES;
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-    //TODO: Call the parent view controller to delete the post or send notification.
-    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
-
+    if(_groupController)
+    {
+        [_groupController removePostWithPost:post];
+    }
+    else
+    {
+        [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    }
+    
+    
     // Pop-up view controller.
     [self.navigationController popViewControllerAnimated:YES];
-
 }
 
 

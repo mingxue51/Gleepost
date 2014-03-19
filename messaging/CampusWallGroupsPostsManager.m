@@ -83,7 +83,6 @@ static CampusWallGroupsPostsManager *instance = nil;
 -(NSArray *)addNewPosts:(NSMutableArray *)recentPosts
 {
     NSMutableArray *recent = [[NSMutableArray alloc] init];
-    GLPPost *foundPost = nil;
     BOOL found = NO;
     
     //Find new posts.
@@ -148,6 +147,11 @@ static CampusWallGroupsPostsManager *instance = nil;
 -(int)numberOfPosts
 {
     return _posts.count;
+}
+
+-(void)removePostAtIndex:(int)index
+{
+    [_posts removeObjectAtIndex:index];
 }
 
 @end

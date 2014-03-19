@@ -411,12 +411,19 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)deletePost:(NSNotification *)notification
 {
+    int index = -1;
+    
     if(_groupsMode)
     {
-        return;
+        
+        index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:[[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy];
+        
+    }
+    else
+    {
+        index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     }
     
-    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     
     if(index != -1)
     {
@@ -1608,9 +1615,6 @@ const float TOP_OFFSET = 280.0f;
 //    {
 //        post = self.posts[indexPath.row];
 //    }
-    
-    
-    
     
     
     if([post imagePost])

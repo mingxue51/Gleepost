@@ -8,6 +8,7 @@
 
 #import "GLPPostNotificationHelper.h"
 #import "SessionManager.h"
+#import "CampusWallGroupsPostsManager.h"
 
 @implementation GLPPostNotificationHelper
 
@@ -164,13 +165,26 @@
         return index;
     }
     
-    [posts removeObjectAtIndex:index];
+    [self deletePostWithPost:post posts:posts andIndex:index];
+    
 
     
     DDLogDebug(@"Post to be deleted: %@", post);
     
     return index;
     
+}
+
++(void)deletePostWithPost:(GLPPost *)post posts:(NSMutableArray *)posts andIndex:(int)index
+{
+    if(post.group)
+    {
+        [[CampusWallGroupsPostsManager sharedInstance] removePostAtIndex:index];
+    }
+    else
+    {
+        [posts removeObjectAtIndex:index];
+    }
 }
 
 +(int)findPost:(GLPPost **)post with:(int)remoteKey fromPosts:(NSArray*)posts

@@ -24,6 +24,8 @@
 @property (assign, nonatomic) BOOL isFromCampusLive;
 @property (strong, nonatomic) NSDate *commentNotificationDate;
 
+@property (weak, nonatomic) UIViewController <RemovePostCellDelegate> *groupController;
+
 //-(float) calculateCommentSize: (NSString*) content;
 -(void)navigateToProfile: (id)sender;
 -(void)viewPostImage:(UIImage*)postImage;

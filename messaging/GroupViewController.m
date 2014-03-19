@@ -238,14 +238,14 @@ const int NUMBER_OF_ROWS = 2;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_GROUP_POST_DELETED object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_POST_DELETED object:nil];
 
 }
 
@@ -305,6 +305,7 @@ const int NUMBER_OF_ROWS = 2;
     
 }
 
+//TODO: NOT USED.
 -(void)deletePost:(NSNotification *)notification
 {
     int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
@@ -430,9 +431,9 @@ const int NUMBER_OF_ROWS = 2;
 {
 //    if(self.selectedTabStatus == kGLPPosts)
 //    {
-        int i = (self.posts.count == 0) ? 0 : 1;
-        
-        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + i;
+//        int i = (self.posts.count == 0) ? 0 : 1;
+    
+        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count +1 /*+ i*/;
 //    }
 //    else
 //    {
@@ -455,7 +456,9 @@ const int NUMBER_OF_ROWS = 2;
 //        [loadingCell updateWithStatus:self.loadingCellStatus];
 //        return loadingCell;
         
-        return [self cellWithMessage:@"Loading posts"];
+        return [self cellWithMessage:@"No more posts"];
+        
+        
     }
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
@@ -922,9 +925,10 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-//    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
     
     int index;
+    
     
     for(index = 0; index < self.posts.count; ++index)
     {
@@ -932,13 +936,14 @@ const int NUMBER_OF_ROWS = 2;
         
         if(p.remoteKey == post.remoteKey)
         {
-            [self.posts removeObject:p];
-            
-            [self removeTableViewPostWithIndex:index];
-            
-            return;
+
+            break;
         }
     }
+    
+    [self.posts removeObjectAtIndex:index];
+    
+    [self removeTableViewPostWithIndex:index];
     
 }
 
@@ -1204,6 +1209,8 @@ const int NUMBER_OF_ROWS = 2;
         ViewPostViewController *vpvc = segue.destinationViewController;
         
         vpvc.post = self.selectedPost;
+        
+        vpvc.groupController = self;
         
         vpvc.commentJustCreated = self.commentCreated;
     }

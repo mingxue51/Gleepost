@@ -86,7 +86,7 @@
 		5823932718CB9A04001BC88C /* MembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5823932618CB9A04001BC88C /* MembersViewController.m */; };
 		5823C27B18CA4BBB00288777 /* show_categories_old2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5823C27A18CA4BBB00288777 /* show_categories_old2.png */; };
 		5823C27D18CA4BE600288777 /* add_new_post_old2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5823C27C18CA4BE600288777 /* add_new_post_old2.png */; };
-		5823C27F18CA4F9D00288777 /* nav_bar_title_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5823C27E18CA4F9D00288777 /* nav_bar_title_button.png */; };
+		5823C27F18CA4F9D00288777 /* nav_bar_title_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5823C27E18CA4F9D00288777 /* nav_bar_title_button_old.png */; };
 		5823C28118CA5A5B00288777 /* leave_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 5823C28018CA5A5B00288777 /* leave_group.png */; };
 		58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58272F7C1896804300CD7522 /* FakeNavigationBar.xib */; };
 		58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 58272F7F1896807900CD7522 /* FakeNavigationBar.m */; };
@@ -217,6 +217,7 @@
 		584E8E2C18A2EB3D005AEF91 /* man-7_old2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E8E2718A2EB3D005AEF91 /* man-7_old2@2x.png */; };
 		584E8E2D18A2EB3D005AEF91 /* message-7_old2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E8E2818A2EB3D005AEF91 /* message-7_old2@2x.png */; };
 		584E8E2E18A2EB3D005AEF91 /* proximity-7_old2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E8E2918A2EB3D005AEF91 /* proximity-7_old2@2x.png */; };
+		584F1BF118DA3C2C00F43ABF /* nav_bar_title_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F1BF018DA3C2C00F43ABF /* nav_bar_title_button.png */; };
 		584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38591817F4E500A1B742 /* multipleusersicon.png */; };
 		584F385C1817F50B00A1B742 /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385B1817F50B00A1B742 /* default_group_image.png */; };
 		584F38621818094A00A1B742 /* mychatbubble4.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38611818094A00A1B742 /* mychatbubble4.png */; };
@@ -782,7 +783,7 @@
 		5823932618CB9A04001BC88C /* MembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembersViewController.m; sourceTree = "<group>"; };
 		5823C27A18CA4BBB00288777 /* show_categories_old2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_categories_old2.png; sourceTree = "<group>"; };
 		5823C27C18CA4BE600288777 /* add_new_post_old2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post_old2.png; sourceTree = "<group>"; };
-		5823C27E18CA4F9D00288777 /* nav_bar_title_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button.png; sourceTree = "<group>"; };
+		5823C27E18CA4F9D00288777 /* nav_bar_title_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button_old.png; sourceTree = "<group>"; };
 		5823C28018CA5A5B00288777 /* leave_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leave_group.png; sourceTree = "<group>"; };
 		58272F7C1896804300CD7522 /* FakeNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBar.xib; sourceTree = "<group>"; };
 		58272F7E1896807900CD7522 /* FakeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBar.h; sourceTree = "<group>"; };
@@ -967,6 +968,7 @@
 		584E8E2718A2EB3D005AEF91 /* man-7_old2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "man-7_old2@2x.png"; sourceTree = "<group>"; };
 		584E8E2818A2EB3D005AEF91 /* message-7_old2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-7_old2@2x.png"; sourceTree = "<group>"; };
 		584E8E2918A2EB3D005AEF91 /* proximity-7_old2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "proximity-7_old2@2x.png"; sourceTree = "<group>"; };
+		584F1BF018DA3C2C00F43ABF /* nav_bar_title_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button.png; sourceTree = "<group>"; };
 		584F38511817DE8900A1B742 /* message_box_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = message_box_1.png; path = "../../Gleepost Data/NewChating/message_box_1.png"; sourceTree = "<group>"; };
 		584F38591817F4E500A1B742 /* multipleusersicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multipleusersicon.png; sourceTree = "<group>"; };
 		584F385B1817F50B00A1B742 /* default_group_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_group_image.png; sourceTree = "<group>"; };
@@ -1756,7 +1758,8 @@
 				5832C4B41899299B004FC4F6 /* add_new_post_old.png */,
 				5823C27C18CA4BE600288777 /* add_new_post_old2.png */,
 				5840286018D2607800753A5F /* add_new_post.png */,
-				5823C27E18CA4F9D00288777 /* nav_bar_title_button.png */,
+				584F1BF018DA3C2C00F43ABF /* nav_bar_title_button.png */,
+				5823C27E18CA4F9D00288777 /* nav_bar_title_button_old.png */,
 				580C7ABA18985059007495EE /* top_image_campus_wall_old.png */,
 				582128351891A85B00BF36E5 /* top_wall_background.png */,
 				582128371891AA0C00BF36E5 /* gleepost_logo_headerOld.png */,
@@ -3920,6 +3923,7 @@
 				5834FF4118B4FE480092C52D /* campus_wall_background_main.png in Resources */,
 				5829F48D18B1546300A7B871 /* add_user.png in Resources */,
 				58E27E0E18A6CD5000D8BB24 /* message-7@2x.png in Resources */,
+				584F1BF118DA3C2C00F43ABF /* nav_bar_title_button.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
 				582A664A18AC0ABC00006419 /* referesh_campus_live.png in Resources */,
@@ -3927,7 +3931,7 @@
 				585E724418B2C07C009034DE /* splash.png in Resources */,
 				5866F16218844869007484CF /* cloud2_night.png in Resources */,
 				58289EF718D7522B00228EFF /* post_bottom_bg.png in Resources */,
-				5823C27F18CA4F9D00288777 /* nav_bar_title_button.png in Resources */,
+				5823C27F18CA4F9D00288777 /* nav_bar_title_button_old.png in Resources */,
 				588794BD18A81EA9002EEC8A /* icon_comment_old.png in Resources */,
 				589CE50518D222790046DAD2 /* thermometer_color.png in Resources */,
 				5866F16618844869007484CF /* pole_night.png in Resources */,

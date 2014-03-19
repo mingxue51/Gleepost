@@ -22,4 +22,6 @@
 //-(void)getPostsGroupsFeedWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 -(NSArray *)addNewPosts:(NSMutableArray *)posts;
 
+-(void)removePostAtIndex:(int)index;
+
 @end
