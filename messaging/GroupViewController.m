@@ -600,11 +600,11 @@ const int NUMBER_OF_ROWS = 2;
                 
                 if([currentPost imagePost])
                 {
-                    return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+                    return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
                 }
                 else
                 {
-                    return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
+                    return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
                 }
             }
 //        }
