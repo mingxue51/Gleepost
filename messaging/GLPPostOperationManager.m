@@ -135,6 +135,29 @@ static GLPPostOperationManager *instance = nil;
     [_checkForUploadingTimer fire];
 }
 
+/**
+ Cancel uploading post.
+ 
+ @param postKey the post's local database key.
+ 
+ @return YES if post pending, returns NO if the post is already uploaded.
+ 
+ */
+-(BOOL)cancelPostWithKey:(int)postKey
+{
+    NSDate *timestamp = [_postUploader cancelPendingPostWithKey:postKey];
+        
+    if(!timestamp)
+    {
+        return NO;
+    }
+
+    //Remove image from progress of uploading.
+    [_imageUploader cancelImageWithTimestamp:timestamp];
+    
+    return YES;
+}
+
 -(void)uploadTextPost:(GLPPost*)post
 {
     

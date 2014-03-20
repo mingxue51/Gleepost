@@ -22,6 +22,7 @@
 #import "NSDate+HumanizedTime.h"
 #import "SessionManager.h"
 #import "WebClientHelper.h"
+#import "GLPPostOperationManager.h"
 
 @interface PostCell()
 
@@ -337,7 +338,7 @@ static const float FixedBottomTextViewHeight = 140;
 //   }
 //   else
 //   {
-       if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
+       if([self isCurrentPostBelongsToCurrentUser] /*|| [self isCurrentPostEvent]*/)
        {
            [_moreBtn setHidden:NO];
            
@@ -749,31 +750,29 @@ static const float FixedBottomTextViewHeight = 140;
         attending = @"Going";
     }
     
-    
-    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, nil];
-    }
-    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+    if([self isCurrentPostBelongsToCurrentUser])
     {
         actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
     }
-    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
-    }
-    else
-    {
-//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
-    }
-
     
     
-    
-//    if([self isCurrentPostEvent])
+//    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, nil];
+//    }
+//    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+//    }
+//    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
 //    {
 //        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
 //    }
+//    else
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
+//    }
+
     
     
     
@@ -1128,8 +1127,31 @@ static const float FixedBottomTextViewHeight = 140;
 
 -(void)deleteCurrentPost
 {
+    
+    if(_post.remoteKey == 0)
+    {
+        BOOL postPending = [[GLPPostOperationManager sharedInstance] cancelPostWithKey:_post.key];
+        
+        
+        if(!postPending)
+        {
+            [self deletePostFromServer];
+        }
+        else
+        {
+            [_delegate removePostWithPost:_post];
+        }
+    }
+    else
+    {
+        [self deletePostFromServer];
+    }
+}
+
+-(void)deletePostFromServer
+{
     [[WebClient sharedInstance] deletePostWithRemoteKey:_post.remoteKey callbackBlock:^(BOOL success) {
-       
+        
         if(!success)
         {
             [WebClientHelper showFailedToDeletePostError];
@@ -1137,7 +1159,7 @@ static const float FixedBottomTextViewHeight = 140;
         }
         
         [_delegate removePostWithPost:_post];
-
+        
         
         //Delete post from database.
         [GLPPostManager deletePostWithPost:self.post];

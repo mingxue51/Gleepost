@@ -17,5 +17,6 @@
 -(void)stopTimer;
 -(void)uploadComment:(GLPComment*)comment;
 -(NSArray *)getCommentsWithPostKey:(int)postKey;
+-(BOOL)cancelPostWithKey:(int)postKey;
 
 @end

@@ -126,6 +126,19 @@ const NSString *IMAGE_PENDING = @"PENDING";
     [_uploadedImages removeObjectForKey:timestamp];
 }
 
+/**
+ Removes the image with a particular timestamp from pending and uploaded images data structures.
+ 
+ @param timestamp.
+ 
+ */
+-(void)cancelImageWithTimestamp:(NSDate *)timestamp
+{
+    [_pendingImages removeObjectForKey:timestamp];
+    [_uploadedImages removeObjectForKey:timestamp];
+    [_pendingTimestamps removeObject:timestamp];
+}
+
 
 #pragma mark - Client
 

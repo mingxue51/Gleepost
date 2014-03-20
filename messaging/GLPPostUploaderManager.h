@@ -18,5 +18,6 @@
 -(void)uploadTextPost:(GLPPost*)textPost;
 -(void)addComment:(GLPComment *)comment;
 -(NSArray *)getPendingCommentsWithPostKey:(int)postKey;
+-(NSDate *)cancelPendingPostWithKey:(int)postKey;
 
 @end

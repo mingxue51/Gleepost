@@ -11,8 +11,6 @@
 
 @interface GLPProfileLoader : NSObject
 
-
-
 + (GLPProfileLoader *)sharedInstance;
 
 -(void)loadUserData;
