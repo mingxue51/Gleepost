@@ -642,11 +642,17 @@
     __block int lastPostIndex = 0;
     NSMutableArray *profilePosts = privateProfilePosts.mutableCopy;
     
+    DDLogDebug(@"Private posts: %@", privateProfilePosts);
+    
     //Take the last key of the current campus wall posts from database.
     [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
        
-        GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
-        lastPostIndex = lastPost.key;
+        if(posts.count != 0)
+        {
+            GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
+            lastPostIndex = lastPost.key;
+        }
+
 
     }];
     
@@ -665,8 +671,12 @@
     //Take the last key of the current campus wall posts from database.
     [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
         
-        GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
-        lastPostIndex = lastPost.key;
+        if(posts.count != 0)
+        {
+            GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
+            lastPostIndex = lastPost.key;
+        }
+
         
     }];
     

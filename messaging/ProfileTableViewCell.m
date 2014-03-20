@@ -103,14 +103,28 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     if(image)
     {
         [self.profileImage setImage:image];
+        
+        //Add gesture to show menu.
+        [self addGestureToGroupImage];
     }
     else if(group.groupImageUrl)
     {
         [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
+        
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+           
+            if(image)
+            {
+                
+            }
+            
+        }];
+        
+        //Add gesture to show menu.
+        [self addGestureToGroupImage];
     }
     
-    //Add gesture to show menu.
-    [self addGestureToGroupImage];
+
 
 }
 
