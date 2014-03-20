@@ -131,6 +131,7 @@
 		582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404E18AD6EE300BC4285 /* AVFoundation.framework */; };
 		582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 582B405118AD6FAD00BC4285 /* mario.mp3 */; };
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
+		5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831B41018DB28BB00574A53 /* UIImage+Alpha.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4B51899299B004FC4F6 /* add_new_post_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B41899299B004FC4F6 /* add_new_post_old.png */; };
 		5832C4B7189929FC004FC4F6 /* show_categories_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B6189929FC004FC4F6 /* show_categories_old.png */; };
@@ -838,6 +839,8 @@
 		582CE05918565D820024D065 /* GLPPrivateProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPrivateProfileViewController.h; sourceTree = "<group>"; };
 		582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPrivateProfileViewController.m; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
+		5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		5831B41018DB28BB00574A53 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		5832C4B018992049004FC4F6 /* KhmerUIb.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = KhmerUIb.TTF; sourceTree = "<group>"; };
 		5832C4B41899299B004FC4F6 /* add_new_post_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post_old.png; sourceTree = "<group>"; };
 		5832C4B6189929FC004FC4F6 /* show_categories_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_categories_old.png; sourceTree = "<group>"; };
@@ -3330,6 +3333,8 @@
 				80C92AA818C0CC6F001CB621 /* GLPDateFormatterHelper.m */,
 				5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */,
 				5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */,
+				5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */,
+				5831B41018DB28BB00574A53 /* UIImage+Alpha.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -4269,6 +4274,7 @@
 				807C4D18180AF0F6003D67E6 /* GLPMessage.m in Sources */,
 				8096E4EC17C2CBFD00C7BF60 /* CommentCell.m in Sources */,
 				5832C4CD1899B8E7004FC4F6 /* ChatViewAnimationController.m in Sources */,
+				5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */,
 				584CF66A18227E3200EFABB8 /* GLPContactDao.m in Sources */,
 				58E4555C1840091B001A5D80 /* GLPLike.m in Sources */,
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
@@ -4516,7 +4522,7 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "029CFA43-468C-464C-8E4A-19102CA06D57";
+				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

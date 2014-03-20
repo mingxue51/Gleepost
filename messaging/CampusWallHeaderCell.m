@@ -17,6 +17,7 @@
 #import "WebClientHelper.h"
 #import "ImageFormatterHelper.h"
 #import "ReflectedImageView.h"
+#import "UIImage+Alpha.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -111,7 +112,20 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 //        
 //        //Create the reflection effect.
 //        //TODO: Fix that, only add image when the image is loaded.
-//        [_reflectedEventImage reflectionImageWithImage:_eventImage.image];
+////        [_reflectedEventImage reflectionImageWithImage:_eventImage.image];
+//        
+//        UIImage *croppedImg = image;
+//        
+//        croppedImg = [ImageFormatterHelper cropImage:croppedImg withRect:CGRectMake(0, 0, croppedImg.size.width, croppedImg.size.height-300)];
+//        
+//        [croppedImg setAlpha:0.5];
+////        
+////        UIImage *finalImg = [ImageFormatterHelper addImageToImage:image withImage2:croppedImg withImageView:_eventImage andRect:CGRectMake(0, 0, croppedImg.size.width, croppedImg.size.height-300)];
+//        
+//        UIImage *finalImg = [ImageFormatterHelper maskImage:image withMask:image];
+//        
+//        
+//        [_eventImage setImage:finalImg];
 //        
 //    }];
     
@@ -193,6 +207,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     //Format the image.
     [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(7.0f, 7.0f)];
+    
+
 }
 
 -(void)setTimeWithTime:(NSDate *)date

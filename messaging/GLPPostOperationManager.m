@@ -146,7 +146,7 @@ static GLPPostOperationManager *instance = nil;
 -(BOOL)cancelPostWithKey:(int)postKey
 {
     NSDate *timestamp = [_postUploader cancelPendingPostWithKey:postKey];
-        
+    
     if(!timestamp)
     {
         return NO;

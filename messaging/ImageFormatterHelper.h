@@ -16,6 +16,10 @@
 +(UIImage*)generateOnePixelHeightImageWithColour:(UIColor*)colour;
 +(UIImage*)resizeImage:(UIImage*)image withSize:(CGSize)newSize;
 +(UIImage*)cropImage:(UIImage*)image withRect:(CGRect)cropRect;
++(UIImage *)convertToGrayscale:(UIImage *) originalImage inRect: (CGRect) rect;
++(UIImage *)fadeOutEffectInBottomOfImage:(UIImage *)originalImage inRect:(CGRect)rect;
++ (UIImage *) addImageToImage:(UIImage *)img withImage2:(UIImage *)img2 withImageView:(UIImageView *)imageView andRect:(CGRect)cropRect;
 
++ (UIImage*) maskImage:(UIImage *)image withMask:(UIImage *)maskImage;
 
 @end
