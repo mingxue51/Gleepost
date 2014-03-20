@@ -61,7 +61,9 @@
                 userWithDetials.email = identifier;
                 
                 [self rememberUser:shouldRemember withIdentifier:identifier andPassword:password];
-                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
+//                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
+                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+
                 
                 callback(YES, errorMessage);
             }];
@@ -97,7 +99,7 @@
         }
     }];
     
-//    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
     
     [GLPLoginManager performAfterLoginForUser:user];
 }

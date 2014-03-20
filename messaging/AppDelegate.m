@@ -221,6 +221,8 @@ static NSString * const kCustomURLHost      = @"verify";
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     BOOL canHandleURLScheme = NO;
     
+    DDLogInfo(@"URL scheme: %@",[url scheme]);
+    
     if ([[url scheme] isEqualToString:kCustomURLScheme] && [[url host] isEqualToString:kCustomURLHost]) {
         canHandleURLScheme = YES;
         NSLog(@"handle URL : %@", url);
@@ -257,11 +259,24 @@ static NSString * const kCustomURLHost      = @"verify";
             }];
         }
     } else {
+        
+        //TODO: See if that is the appropriate way to do it. Possible it's bad way to do it.
+        return [[GLPFacebookConnect sharedConnection] handleOpenURL:url];
+        
         [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL"];
     }
     
+
+
+    
+    
     return canHandleURLScheme;
 }
+
+# pragma mark - Facebook login handling
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+//    return [[GLPFacebookConnect sharedConnection] handleOpenURL:url];
+//}
 
 # pragma mark - Setup Analytics
 
@@ -298,12 +313,6 @@ static NSString * const kCustomURLHost      = @"verify";
     return [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
 
-# pragma mark - Facebook login handling
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    return [[GLPFacebookConnect sharedConnection] handleOpenURL:url];
-}
+
 
 @end
