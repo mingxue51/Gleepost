@@ -15,6 +15,7 @@
 #import "GLPThemeManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import "GLPPushManager.h"
+#import "GLPFacebookConnect.h"
 
 @interface SessionManager()
 
@@ -117,6 +118,9 @@ static SessionManager *instance = nil;
     
     [self.data removeAllObjects];
     [[NSFileManager defaultManager] removeItemAtPath:self.dataPlistPath error:nil];
+    
+    // closing Facebook active session on clean up
+    [[GLPFacebookConnect sharedConnection] logout];
 }
 
 - (BOOL)isSessionValid

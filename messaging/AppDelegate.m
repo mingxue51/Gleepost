@@ -34,6 +34,7 @@
 #import "GLPNotificationManager.h"
 #import "NSNotificationCenter+Utils.h"
 #import "GLPPushManager.h"
+#import "GLPFacebookConnect.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -121,6 +122,13 @@ static NSString * const kCustomURLHost      = @"verify";
     if([[SessionManager sharedInstance] isLogged]) {
         [[GLPNetworkManager sharedInstance] restartNetworkOperations];
     }
+
+    
+    // activate or reactivate web client
+    //[[WebClient sharedInstance] activate];
+    
+    [[GLPFacebookConnect sharedConnection] handleDidBecomeActive];
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -289,4 +297,13 @@ static NSString * const kCustomURLHost      = @"verify";
     [backButton setFrame:CGRectMake(0, 0, 13, 21)];
     return [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
+
+# pragma mark - Facebook login handling
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[GLPFacebookConnect sharedConnection] handleOpenURL:url];
+}
+
 @end

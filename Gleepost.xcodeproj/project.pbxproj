@@ -652,6 +652,7 @@
 		C02120431850AA1200831872 /* GLPPostUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = C02120421850AA1200831872 /* GLPPostUploader.m */; };
 		C02DB4DC18AE56CA0077FDEB /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = C02DB4DA18AE56CA0077FDEB /* add.png */; };
 		C02DB4DD18AE56CA0077FDEB /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = C02DB4DB18AE56CA0077FDEB /* message.png */; };
+		C014D08718433C990001B76E /* GLPFacebookConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D08618433C960001B76E /* GLPFacebookConnect.m */; };
 		C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */ = {isa = PBXBuildFile; fileRef = C04613971834E87000B422A3 /* UIViewController+GAI.m */; };
 		D23E342C04344F0B93695525 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D6C24A4DFC4BA5B92AFE98 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -1580,6 +1581,8 @@
 		C02120421850AA1200831872 /* GLPPostUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostUploader.m; sourceTree = "<group>"; };
 		C02DB4DA18AE56CA0077FDEB /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		C02DB4DB18AE56CA0077FDEB /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
+		C014D08518433C950001B76E /* GLPFacebookConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFacebookConnect.h; sourceTree = "<group>"; };
+		C014D08618433C960001B76E /* GLPFacebookConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFacebookConnect.m; sourceTree = "<group>"; };
 		C04613961834E87000B422A3 /* UIViewController+GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GAI.h"; sourceTree = "<group>"; };
 		C04613971834E87000B422A3 /* UIViewController+GAI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GAI.m"; sourceTree = "<group>"; };
 		FF972496B7AD4044B85FE95E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -3142,6 +3145,15 @@
 				584CF66B182289B500EFABB8 /* ContactsManager.h */,
 				584CF66C182289B500EFABB8 /* ContactsManager.m */,
 				80666C3D1806D43200E4E515 /* Database */,
+
+				C014D08518433C950001B76E /* GLPFacebookConnect.h */,
+				C014D08618433C960001B76E /* GLPFacebookConnect.m */,
+				80AB894B17C26ECA0053E784 /* SessionManager.h */,
+				80AB894C17C26ECA0053E784 /* SessionManager.m */,
+				80CE307B17CE5092003007D0 /* DateFormatterManager.h */,
+				80CE307C17CE5092003007D0 /* DateFormatterManager.m */,
+				80666C7D1806FF4900E4E515 /* MessagesSendingProcessor.h */,
+				80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */,
 				80DDDF31180FD159009E17BD /* DatabaseManager.h */,
 				80DDDF32180FD159009E17BD /* DatabaseManager.m */,
 				80CE307B17CE5092003007D0 /* DateFormatterManager.h */,
@@ -4162,6 +4174,7 @@
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */,
+				C014D08718433C990001B76E /* GLPFacebookConnect.m in Sources */,
 				584332A0180F30DC00BD9F74 /* PrivateProfileViewController.m in Sources */,
 				589EAD1618A41918005B2F4C /* SignUpFourView.m in Sources */,
 				58960EBF18A197E5005FC433 /* CustomPushTransitioningDelegate.m in Sources */,

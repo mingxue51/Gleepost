@@ -39,6 +39,9 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)unregisterPushToken:(NSString*)pushToken authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success))callback;
 
 -(void)resendVerificationToEmail:(NSString *)email andCallbackBlock:(void (^) (BOOL success))callbackBlock;
+- (void)registerViaFacebookToken:(NSString *)token
+                  withEmailOrNil:(NSString *)email
+                andCallbackBlock:(void (^)(BOOL success, NSString* responseObject))callbackBlock;
 - (void)getUserWithKey:(NSInteger)key authParams:(NSDictionary *)authParams callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;
 -(void)getContactsForUser:(GLPUser *)user authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success, NSArray *contacts))callback;
 

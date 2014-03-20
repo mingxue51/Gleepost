@@ -21,6 +21,8 @@
 #import "GLPProfileLoader.h"
 #import "UICKeyChainStore.h"
 #import "GLPPushManager.h"
+#import "GLPFacebookConnect.h"
+#import "RemoteParser.h"
 
 @implementation GLPLoginManager
 
@@ -67,7 +69,23 @@
     }];
 }
 
-+ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate contacts:(NSArray *)contacts
+
++ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success))callback {
+    NSDictionary *json = (NSDictionary *)response;
+    
+    GLPUser *user = [[GLPUser alloc] init];
+    user.remoteKey = [json[@"id"] integerValue];
+    user.name = name;
+    
+    NSString *token = json[@"value"];
+    NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
+    
+    loadData(user, token, expirationDate, ^(BOOL success) {
+        callback(success);
+    });
+}
+
++ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts
 {
     [[DatabaseManager sharedInstance] initDatabase];
     
@@ -79,7 +97,7 @@
         }
     }];
     
-    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+//    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
     
     [GLPLoginManager performAfterLoginForUser:user];
 }
@@ -179,6 +197,37 @@
     BOOL autologin = number ? [number boolValue] : NO;
     
     return autologin && [[SessionManager sharedInstance] isUserSessionValidForAutoLogin];
+}
+
+# pragma mark - Helper function for loading user data
+void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^callback)(BOOL success)) {
+    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+    
+
+    NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
+        
+    // fetch additional info
+    // user details
+    [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
+        
+        if(!success) {
+            callback(NO);
+            return;
+        }
+        
+        // load contacts
+        [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
+         
+            if(!success) {
+                callback(NO);
+                return;
+            }
+            
+            [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+            
+            callback(YES);
+        }];
+    }];
 }
 
 @end
