@@ -187,6 +187,8 @@ static WebClient *instance = nil;
     parameters[@"token"] = token;
     if (email) parameters[@"email"] = email;
     
+    DDLogDebug(@"register facebook: %@", parameters);
+    
     [self postPath:@"fblogin" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSLog(@"Response during FB login: %@", responseObject);

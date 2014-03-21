@@ -13,7 +13,7 @@
 
 + (void)loginWithIdentifier:(NSString *)identifier andPassword:(NSString *)password shouldRemember:(BOOL)shouldRemember callback:(void (^)(BOOL success, NSString *errorMessage))callback;
 + (BOOL)performAutoLogin;
-+ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success))callback;
++ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success, NSString *response))callback;
 + (void)logout;
 + (BOOL)isUserRemembered;
 + (BOOL)shouldAutoLogin;

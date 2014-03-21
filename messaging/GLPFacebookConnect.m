@@ -35,16 +35,26 @@
 
 - (void)openSessionWithEmailOrNil:(NSString *)email completionHandler:(void (^)(BOOL success, NSString *name, NSString *response))completionHandler {
     _openCompletionHandler = completionHandler;
-    _universityEmail = email;
+//    _universityEmail = email;
+    _universityEmail = @"admin@gleepost.com";
+
+    
+    DDLogDebug(@"Email before connect: %@", email);
     
     NSArray *permissions = @[@"basic_info"];
     [FBSession openActiveSessionWithReadPermissions:permissions
                                        allowLoginUI:YES
                                   completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                      if (error) {
-                                          NSLog(@"FBSession connectWithFacebook failed");
+                                      
+                                      
+                                      if (error)
+                                      {
+                                          NSLog(@"FBSession connectWithFacebook failed :%@", error);
                                           [FBSession.activeSession closeAndClearTokenInformation];
-                                      } else {
+                                          
+                                          completionHandler(NO, nil, nil);
+                                      } else
+                                      {
                                           [self sessionStateChanged:session
                                                               state:status
                                                               error:error];
@@ -69,33 +79,40 @@
     [FBSession.activeSession closeAndClearTokenInformation];
 }
 
-- (void)sessionStateChanged:(FBSession *)session
-                      state:(FBSessionState)state
-                      error:(NSError *)error {
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState)state error:(NSError *)error
+{
+    
+    
     switch (state) {
         case FBSessionStateOpen: {
-            [[WebClient sharedInstance] registerViaFacebookToken:[self facebookLoginToken]
-                                                  withEmailOrNil:_universityEmail
-                                                andCallbackBlock:^(BOOL success, NSString *responseObject) {
-                                                    if (success) {
-                                                        NSLog(@"Facebook registration succesful");
-                                                        
-                                                        // get User's name from Facebook
-                                                        [FBRequestConnection
-                                                         startForMeWithCompletionHandler:^(FBRequestConnection *connection,
-                                                                                           id<FBGraphUser> user,
-                                                                                           NSError *error) {
-                                                             if (!error) {
-                                                                 _openCompletionHandler(YES, user.name, responseObject);
-                                                             } else {
-                                                                 _openCompletionHandler(NO, nil, responseObject);
-                                                             }
-                                                         }];
-                                                    } else {
-                                                        NSLog(@"An error occurred while registering through facebook.");
-                                                        _openCompletionHandler(NO, nil, responseObject);
-                                                    }
-                                                }];
+            [[WebClient sharedInstance] registerViaFacebookToken:[self facebookLoginToken] withEmailOrNil:_universityEmail andCallbackBlock:^(BOOL success, NSString *responseObject) {
+
+                if (success)
+                {
+                    NSLog(@"Facebook registration succesful: %@", responseObject);
+                    
+                    // get User's name from Facebook
+                    [FBRequestConnection
+                     startForMeWithCompletionHandler:^(FBRequestConnection *connection,
+                                                       id<FBGraphUser> user,
+                                                       NSError *error) {
+                         if (!error)
+                         {
+                             _openCompletionHandler(YES, user.name, responseObject);
+                             
+                         } else
+                         {
+                             _openCompletionHandler(NO, nil, responseObject);
+                         }
+                     }];
+                    
+                } else
+                {
+                    NSLog(@"An error occurred while registering through facebook.");
+                    _openCompletionHandler(NO, nil, responseObject);
+                }
+                
+            }];
             break;
         }
         case FBSessionStateClosed: {

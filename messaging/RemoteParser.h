@@ -79,4 +79,9 @@
 // invite message
 + (NSString *)parseMessageFromJson:(NSDictionary *)json;
 
+// facebook
++(BOOL)isAccountVerified:(NSDictionary *)json;
++(NSString *)parseFBStatusFromAPI:(NSDictionary *)json;
+
+
 @end

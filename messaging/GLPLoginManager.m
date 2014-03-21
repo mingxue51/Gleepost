@@ -72,19 +72,34 @@
 }
 
 
-+ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success))callback {
++ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success, NSString *response))callback {
+    
     NSDictionary *json = (NSDictionary *)response;
     
-    GLPUser *user = [[GLPUser alloc] init];
-    user.remoteKey = [json[@"id"] integerValue];
-    user.name = name;
+    DDLogDebug(@"FB RESPONSE: %@", json);
     
-    NSString *token = json[@"value"];
-    NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
+    NSString *responseFromServer = [RemoteParser parseFBStatusFromAPI:json];
     
-    loadData(user, token, expirationDate, ^(BOOL success) {
-        callback(success);
-    });
+    if([RemoteParser isAccountVerified:json])
+    {
+        GLPUser *user = [[GLPUser alloc] init];
+        user.remoteKey = [json[@"id"] integerValue];
+        user.name = name;
+        //TODO: Take name surname here.
+        NSString *token = json[@"value"];
+        NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
+        
+        loadData(user, token, expirationDate, ^(BOOL success) {
+            callback(success, responseFromServer);
+        });
+    }
+    else
+    {
+        //Unverified.
+        callback(NO, responseFromServer);
+    }
+    
+
 }
 
 + (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts

@@ -30,6 +30,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *messageLlbl;
 @property (weak, nonatomic) IBOutlet UILabel *messageAgainLbl;
 
+@property (strong, nonatomic) NSString *fbName;
+@property (strong, nonatomic) NSString *fbResponse;
+@property (assign, nonatomic) BOOL facebookMode;
 
 @end
 
@@ -46,6 +49,7 @@
     [self initialiseObjects];
     
     [self formatElements];
+    
 }
 
 
@@ -77,6 +81,9 @@
 {
     [super viewWillAppear:animated];
     
+    [self configureViews];
+
+    
     if(![_nameTextField isFirstResponder])
     {
         [_nameTextField becomeFirstResponder];
@@ -99,6 +106,30 @@
 //    [_nameTextField becomeFirstResponder];
 
     [super viewWillDisappear:animated];
+}
+
+-(void)configureViews
+{
+    DDLogDebug(@"FB INFO: %@", _facebookLoginInfo);
+    
+    
+    //Load verification view if the user needs to verified from facebook login.
+    if(_facebookLoginInfo)
+    {
+        _fbName = [_facebookLoginInfo objectForKey:@"Name"];
+        _fbResponse = [_facebookLoginInfo objectForKey:@"Response"];
+        [super emailTextField].text = [_facebookLoginInfo objectForKey:@"Email"];
+        _facebookMode = YES;
+        
+        [self hideSignUpViewAndShowVerification];
+        
+//        [_signUpView setHidden:YES];
+//        [_verifyView setHidden:NO];
+    }
+    else
+    {
+        _facebookMode = NO;
+    }
 }
 
 -(void)initialiseObjects
@@ -245,7 +276,32 @@
 
 -(IBAction)loginUser:(id)sender
 {
-    [super loginUserFromLoginScreen:NO];
+    if(_facebookMode)
+    {
+        DDLogDebug(@"Facebook info: %@ : %@ :%@", _fbName, _fbResponse, [super emailTextField].text);
+        
+        [GLPLoginManager loginFacebookUserWithName:_fbName response:_fbResponse callback:^(BOOL success, NSString *serverResponse) {
+            
+            if (success)
+            {
+                [self performSegueWithIdentifier:@"start" sender:self];
+            }
+            else if(!success && [serverResponse isEqualToString:@"unverified"])
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"You still unverified."];
+            }
+            else
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
+            }
+        }];
+    }
+    else
+    {
+        [super loginUserFromLoginScreen:NO];
+    }
+    
+    
 //    
 //    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
 //    

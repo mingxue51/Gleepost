@@ -218,7 +218,8 @@ static NSString * const kCustomURLHost      = @"verify";
 
 # pragma mark - Handle custom URL Scheme (gleepost://)
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
     BOOL canHandleURLScheme = NO;
     
     DDLogInfo(@"URL scheme: %@",[url scheme]);
@@ -260,17 +261,18 @@ static NSString * const kCustomURLHost      = @"verify";
         }
     } else {
         
-        //TODO: See if that is the appropriate way to do it. Possible it's bad way to do it.
-        return [[GLPFacebookConnect sharedConnection] handleOpenURL:url];
-        
         [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL"];
     }
     
-
+    //TODO: See if that is the appropriate way to do it. Possible it's bad way to do it.
+    
+    BOOL canHandleFBUrl = [[GLPFacebookConnect sharedConnection] handleOpenURL:url];
+    
+    DDLogDebug(@"Handle urls fb: %d - scheme: %d", canHandleFBUrl, canHandleURLScheme);
 
     
     
-    return canHandleURLScheme;
+    return canHandleURLScheme || canHandleFBUrl;
 }
 
 # pragma mark - Facebook login handling

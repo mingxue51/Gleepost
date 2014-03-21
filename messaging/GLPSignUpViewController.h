@@ -12,4 +12,6 @@
 
 @interface GLPSignUpViewController : GLPRegisterViewController <UINavigationControllerDelegate, FDTakeDelegate>
 
+@property (strong, nonatomic) NSDictionary *facebookLoginInfo;
+
 @end
