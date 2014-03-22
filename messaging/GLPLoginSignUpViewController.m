@@ -37,9 +37,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [super viewDidLoad];
     
     [self configNavigationBar];
-    
-
-
 }
 
 - (IBAction)facebookLogin:(id)sender
@@ -87,8 +84,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
         [self registerViaFacebookWithEmailOrNil:universityEmail];
         
         
-        //TODO: Save university e-mail to a plist file in case user kill the app.
-//        [self saveLocallyUniversityEmail:universityEmail];
+        //Save university e-mail to a plist file in case user kill the app.
+        [self saveLocallyUniversityEmail:universityEmail];
         
         
         [_emailPromptAlertView dismissWithClickedButtonIndex:-1 animated:YES];
@@ -99,18 +96,36 @@ static NSString * const kOkButtonTitle       = @"Ok";
     return shouldReturn;
 }
 
--(void)saveLocallyUniversityEmail:(NSString *)email
+-(NSString *)saveLocallyUniversityEmail:(NSString *)email
 {
-    UICKeyChainStore *store = [UICKeyChainStore keyChainStore];
-    [store setString:email forKey:@"user.email"];
-    [store synchronize];
+    if(email)
+    {
+        UICKeyChainStore *store = [UICKeyChainStore keyChainStore];
+        [store setString:email forKey:@"facebook.email"];
+        [store synchronize];
+        
+        return email;
+    }
+    else
+    {
+        return [self loadUniversityEmail];
+    }
+}
+
+-(NSString *)loadUniversityEmail
+{
+    return [UICKeyChainStore stringForKey:@"facebook.email"];
 }
 
 #pragma mark - Facebook login
 
-- (void)registerViaFacebookWithEmailOrNil:(NSString *)email {
+- (void)registerViaFacebookWithEmailOrNil:(NSString *)email
+{
     [WebClientHelper showStandardLoaderWithTitle:@"Logging in" forView:self.view];
-    DDLogDebug(@"EMAIL!: %@",email);
+    
+    email = [self saveLocallyUniversityEmail:email];
+    
+    DDLogDebug(@"Univeristy email: %@",email);
     
     __weak GLPLoginSignUpViewController *weakSelf = self;
     [[GLPFacebookConnect sharedConnection] openSessionWithEmailOrNil:email completionHandler:^(BOOL success, NSString *name, NSString *response) {
@@ -136,7 +151,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
+                    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
                 }
             }];
                         #warning TODO: add segue in storyboard!
@@ -154,7 +169,11 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 NSLog(@"Wrong email address entered");
                 [weakSelf askUserForEmailAddressAgain:YES];
                 
-            } else
+            } else if([response rangeOfString:@"To use your Facebook account"].location != NSNotFound)
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
+            }
+            else
             {
                 NSLog(@"Cannot login through facebook");
                 [WebClientHelper showStandardError];
@@ -163,7 +182,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
     }];
 }
 
-- (void)askUserForEmailAddressAgain:(BOOL)askingAgain {
+- (void)askUserForEmailAddressAgain:(BOOL)askingAgain
+{
     NSString *alertMessage = (askingAgain) ? @"Invalid email address. Please enter your valid university email address to sign up" : @"Please enter your valid university email address to sign up";
     
     _emailPromptAlertView = [[UIAlertView alloc] initWithTitle:@"Email Required"

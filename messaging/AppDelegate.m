@@ -261,7 +261,7 @@ static NSString * const kCustomURLHost      = @"verify";
         }
     } else {
         
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL"];
+//        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while handling the URL"];
     }
     
     //TODO: See if that is the appropriate way to do it. Possible it's bad way to do it.

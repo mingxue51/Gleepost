@@ -13,6 +13,8 @@
 #import "FBRequestConnection.h"
 #import "FBGraphUser.h"
 #import "WebClient.h"
+#import "NSError+FBError.h"
+
 
 @interface GLPFacebookConnect () {
     void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
@@ -36,6 +38,7 @@
 - (void)openSessionWithEmailOrNil:(NSString *)email completionHandler:(void (^)(BOOL success, NSString *name, NSString *response))completionHandler {
     _openCompletionHandler = completionHandler;
 //    _universityEmail = email;
+    //TODO: Remove that after testing.
     _universityEmail = @"admin@gleepost.com";
 
     
@@ -49,10 +52,17 @@
                                       
                                       if (error)
                                       {
-                                          NSLog(@"FBSession connectWithFacebook failed :%@", error);
+                                          NSString *errorMessage = nil;
+                                          
+                                          if([error fberrorShouldNotifyUser])
+                                          {
+                                              errorMessage = [error fberrorUserMessage];
+                                          }
+                                          
+                                          NSLog(@"FBSession connectWithFacebook failed :%@", errorMessage);
                                           [FBSession.activeSession closeAndClearTokenInformation];
                                           
-                                          completionHandler(NO, nil, nil);
+                                          completionHandler(NO, nil, errorMessage);
                                       } else
                                       {
                                           [self sessionStateChanged:session
