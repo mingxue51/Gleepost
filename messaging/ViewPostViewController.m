@@ -184,7 +184,7 @@ static BOOL likePushed;
     self.keyboardAppearanceSpaceY = 0;
     
     //To hide empty cells
-    self.tableView.tableFooterView = [UIView new];
+//    self.tableView.tableFooterView = [UIView new];
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -757,6 +757,8 @@ static bool firstTime = YES;
         if([self.post imagePost])
         {
             return [PostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
+            
+//            return 650;
         }
         else
         {

@@ -202,7 +202,7 @@ static const float FixedBottomTextViewHeight = 140;
     [categoriesStr appendString:@" General"];
     
     //Add text to information label.
-    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views Category: %@",postData.likes, postData.commentsCount, postData.remoteKey, categoriesStr]];
+//    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views Category: %@",postData.likes, postData.commentsCount, postData.remoteKey, categoriesStr]];
     
     [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d",postData.likes]];
     
@@ -210,21 +210,7 @@ static const float FixedBottomTextViewHeight = 140;
     
     
     //Set like button status.
-    if(postData.liked)
-    {
-        [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
-    }
-    else
-    {
-        [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of i   age.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
-        
-    }
+    [self setLikeImageToButton];
     
     
     if(self.isViewPost)
@@ -239,6 +225,7 @@ static const float FixedBottomTextViewHeight = 140;
     
 
 //    [self setBorderToContentLabel];
+    
 
     if(![self isCurrentPostEvent])
     {
@@ -291,6 +278,29 @@ static const float FixedBottomTextViewHeight = 140;
 
     
     
+}
+
+-(void)setLikeImageToButton
+{
+    if(self.post.liked)
+    {
+        [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        
+        //Add the thumbs up selected version of image.
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        
+        //Add the thumbs up selected version of i   age.
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+        
+    }
+    
+    [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d", self.post.likes]];
+
 }
 
 -(void)initFormatLabelsObjects
@@ -382,8 +392,8 @@ static const float FixedBottomTextViewHeight = 140;
     self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
     self.contentLbl.layer.borderWidth = 0.5f;
     
-//    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
-//    self.mainView.layer.borderWidth = 0.5f;
+    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
+    self.mainView.layer.borderWidth = 0.5f;
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
 }
@@ -800,19 +810,19 @@ static const float FixedBottomTextViewHeight = 140;
 
 - (IBAction)likePost:(id)sender
 {
-    UIButton *btn = (UIButton*) sender;
+//    UIButton *btn = (UIButton*) sender;
     
     //If like button is pushed then set the pushed variable to NO and change the
     //colour of the image.
     if([self.post liked])
     {
-        if(btn.tag != 1)
-        {
-            [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-            
-            //Add the thumbs up selected version of image.
-            [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
-        }
+//        if(btn.tag != 1)
+//        {
+//            [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//            
+//            //Add the thumbs up selected version of image.
+//            [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+//        }
 
         
         [self.post setLiked:NO];
@@ -825,12 +835,12 @@ static const float FixedBottomTextViewHeight = 140;
     }
     else
     {
-        if(btn.tag != 1)
-        {
-            [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-            //Add the thumbs up selected version of image.
-            [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
-        }
+//        if(btn.tag != 1)
+//        {
+//            [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+//            //Add the thumbs up selected version of image.
+//            [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+//        }
 
         
         [self.post setLiked:YES];
@@ -842,11 +852,10 @@ static const float FixedBottomTextViewHeight = 140;
         ++self.post.likes;
     }
     
-    //Update the UI.
-    [self refreshInformationLabel];
+    [self setLikeImageToButton];
     
     //Update post in local database.
-    [GLPPostManager updatePostWithLiked: self.post];
+    [GLPPostManager updatePostWithLiked:self.post];
     
     [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
     
@@ -1056,11 +1065,11 @@ static const float FixedBottomTextViewHeight = 140;
         
         if(success)
         {
-            NSLog(@"Like for post %d succeed.",postRemoteKey);
+            NSLog(@"Like %d for post %d succeed.",like, postRemoteKey);
         }
         else
         {
-            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+            NSLog(@"Like %d for post %d not succeed.",like, postRemoteKey);
         }
         
         

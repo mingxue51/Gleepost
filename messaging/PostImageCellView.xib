@@ -197,7 +197,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <view contentMode="scaleToFill" id="J0Q-lJ-BI0">
+                    <view hidden="YES" contentMode="scaleToFill" id="J0Q-lJ-BI0">
                         <rect key="frame" x="0.0" y="607" width="320" height="393"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>

@@ -1665,7 +1665,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="AE8E2981-B1C4-47BD-9D23-1DA812F8ADAD" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="78D9E084-F2FA-4B0C-B67E-171C057BA3E1" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -3202,7 +3202,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="AE8E2981-B1C4-47BD-9D23-1DA812F8ADAD" width="34" height="34">
+        <image name="78D9E084-F2FA-4B0C-B67E-171C057BA3E1" width="34" height="34">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPj9YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQsLzI4O1UkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -3386,15 +3386,15 @@ AAAAAAAAAAAAAAAAABw/A
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="0xq-5H-6eX"/>
-        <segue reference="PCe-7s-A56"/>
-        <segue reference="Vyz-Un-MGO"/>
         <segue reference="2ju-Ui-QdM"/>
+        <segue reference="J6b-Ty-4qO"/>
         <segue reference="C4C-f3-cdX"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="PCe-7s-A56"/>
+        <segue reference="WhX-ZL-dQD"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="WhX-ZL-dQD"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

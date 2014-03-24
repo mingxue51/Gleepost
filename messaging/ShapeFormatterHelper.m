@@ -81,7 +81,7 @@
 }
 
 +(void)setElement:(UIView *)element withExtraHeight:(float)height
-{
+{    
     CGRect frame = element.frame;
     
     [element setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, height)];

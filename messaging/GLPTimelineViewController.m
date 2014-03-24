@@ -1318,11 +1318,11 @@ const float TOP_OFFSET = 280.0f;
         
         if(success)
         {
-            NSLog(@"Like for post %d succeed.",postRemoteKey);
+            NSLog(@"Timeline Like for post %d succeed.",postRemoteKey);
         }
         else
         {
-            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+            NSLog(@"Timeline for post %d not succeed.",postRemoteKey);
         }
         
         
