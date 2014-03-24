@@ -125,9 +125,20 @@ static NSString * const kOkButtonTitle       = @"Ok";
     
     email = [self saveLocallyUniversityEmail:email];
     
-    DDLogDebug(@"Univeristy email: %@",email);
-    
     __weak GLPLoginSignUpViewController *weakSelf = self;
+    
+    //If user's email is not locally saved or user didn't type it prompt a window to add his email.
+    if(!email)
+    {
+        NSLog(@"University Email id required for Facebook Login");
+        [weakSelf askUserForEmailAddressAgain:NO];
+        
+        return;
+    }
+    
+    DDLogDebug(@"Univeristy email: %@",email);
+
+    
     [[GLPFacebookConnect sharedConnection] openSessionWithEmailOrNil:email completionHandler:^(BOOL success, NSString *name, NSString *response) {
         
         [WebClientHelper hideStandardLoaderForView:weakSelf.view];
