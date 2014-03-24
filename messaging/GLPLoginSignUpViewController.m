@@ -46,6 +46,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (IBAction)signUp:(id)sender
 {
+    _fbLoginInfo = nil;
     [self performSegueWithIdentifier:@"show signup" sender:self];
 }
 
@@ -125,13 +126,15 @@ static NSString * const kOkButtonTitle       = @"Ok";
     
     email = [self saveLocallyUniversityEmail:email];
     
-    __weak GLPLoginSignUpViewController *weakSelf = self;
+//    __weak GLPLoginSignUpViewController *weakSelf = self;
     
     //If user's email is not locally saved or user didn't type it prompt a window to add his email.
     if(!email)
     {
         NSLog(@"University Email id required for Facebook Login");
-        [weakSelf askUserForEmailAddressAgain:NO];
+//        [weakSelf askUserForEmailAddressAgain:NO];
+        [self askUserForEmailAddressAgain:NO];
+
         
         return;
     }
@@ -141,7 +144,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     
     [[GLPFacebookConnect sharedConnection] openSessionWithEmailOrNil:email completionHandler:^(BOOL success, NSString *name, NSString *response) {
         
-        [WebClientHelper hideStandardLoaderForView:weakSelf.view];
+        [WebClientHelper hideStandardLoaderForView:self.view];
         
         if (success)
         {
@@ -151,13 +154,13 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 
                 if (success)
                 {
-                    [weakSelf performSegueWithIdentifier:@"start" sender:weakSelf];
+                    [self performSegueWithIdentifier:@"start" sender:self];
                 }
                 else if(!success && [serverResponse isEqualToString:@"unverified"])
                 {
                     //Pop up the verification view.
-                    _fbLoginInfo = [NSDictionary dictionaryWithObjectsAndKeys:name, @"Name", response, @"Response", email, @"Email", nil];
-                    [weakSelf performSegueWithIdentifier:@"show signup" sender:weakSelf];
+                    _fbLoginInfo = [NSDictionary dictionaryWithObjectsAndKeys:name, @"Name", email, @"Email", nil];
+                    [self performSegueWithIdentifier:@"show signup" sender:self];
                     
                 }
                 else
@@ -173,12 +176,12 @@ static NSString * const kOkButtonTitle       = @"Ok";
             if ([response rangeOfString:@"Email is required"].location != NSNotFound)
             {
                 NSLog(@"University Email id required for Facebook Login");
-                [weakSelf askUserForEmailAddressAgain:NO];
+                [self askUserForEmailAddressAgain:NO];
                 
             } else if ([response rangeOfString:@"Invalid email"].location != NSNotFound)
             {
                 NSLog(@"Wrong email address entered");
-                [weakSelf askUserForEmailAddressAgain:YES];
+                [self askUserForEmailAddressAgain:YES];
                 
             } else if([response rangeOfString:@"To use your Facebook account"].location != NSNotFound)
             {

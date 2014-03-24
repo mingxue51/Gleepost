@@ -72,11 +72,12 @@
 }
 
 
-+ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success, NSString *response))callback {
++ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success, NSString *responseFromServer))callback {
     
     NSDictionary *json = (NSDictionary *)response;
     
     DDLogDebug(@"FB RESPONSE: %@", json);
+ 
     
     NSString *responseFromServer = [RemoteParser parseFBStatusFromAPI:json];
     

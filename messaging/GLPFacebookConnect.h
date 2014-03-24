@@ -16,5 +16,6 @@
 - (void)handleDidBecomeActive;
 - (BOOL)handleOpenURL:(NSURL *)url;
 - (void)logout;
+- (NSString *)facebookLoginToken;
 
 @end
