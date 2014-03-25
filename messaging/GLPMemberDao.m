@@ -95,12 +95,22 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
+        //Remove all elements from database.
+        [self removeAllTheEntriesInDb:db];
+        
         for(GLPUser *member in members)
         {
             member.key = [GLPMemberDao saveMemberIfNotExist:member db:db];
         }
         
     }];
+}
+
++(void)removeAllTheEntriesInDb:(FMDatabase*)db
+{
+    BOOL removed = [db executeUpdateWithFormat:@"delete from members"];
+    
+    DDLogDebug(@"All the members list removed %d.", removed);
 }
 
 @end

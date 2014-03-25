@@ -40,7 +40,7 @@
         case kGLPNotificationTypeAddedYou:
             return [NSString stringWithFormat:@"Contact invite from %@",self.user.name];
         case kGLPNotificationTypeAddedGroup:
-            return [NSString stringWithFormat:@"User %@ added you to a new group", self.user.name];
+            return [NSString stringWithFormat:@"User %@ added you to a group", self.user.name];
         default:
             return @"Something happened";
     }
