@@ -75,7 +75,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
-    DDLogInfo(@"Text field: %@", textField);
     
     BOOL shouldReturn = NO;
     NSString *universityEmail = textField.text;
@@ -139,8 +138,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
         return;
     }
     
-    DDLogDebug(@"Univeristy email: %@",email);
-
     
     [[GLPFacebookConnect sharedConnection] openSessionWithEmailOrNil:email completionHandler:^(BOOL success, NSString *name, NSString *response) {
         
@@ -148,9 +145,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
         
         if (success)
         {
-            NSLog(@"logged in successfully via facebook with response: %@", response);
-            
-            [GLPLoginManager loginFacebookUserWithName:name response:response callback:^(BOOL success, NSString *serverResponse) {
+            [GLPLoginManager loginFacebookUserWithName:name withEmail:email response:response callback:^(BOOL success, NSString *serverResponse) {
                 
                 if (success)
                 {
@@ -168,10 +163,10 @@ static NSString * const kOkButtonTitle       = @"Ok";
                     [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
                 }
             }];
-                        #warning TODO: add segue in storyboard!
+            
         } else
         {
-            DDLogDebug(@"logged in not successfully via facebook with response: %@", response);
+            DDLogDebug(@"logged in not successfully via facebook.");
             
             if ([response rangeOfString:@"Email is required"].location != NSNotFound)
             {

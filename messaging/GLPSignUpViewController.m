@@ -340,7 +340,7 @@
 {
     //Load data if that's success.
     
-    [GLPLoginManager loginFacebookUserWithName:_fbName response:response callback:^(BOOL success, NSString *serverResponse) {
+    [GLPLoginManager loginFacebookUserWithName:_fbName withEmail:[super emailTextField].text response:response callback:^(BOOL success, NSString *serverResponse) {
         
         if (success)
         {

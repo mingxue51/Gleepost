@@ -72,7 +72,7 @@
 }
 
 
-+ (void)loginFacebookUserWithName:(NSString *)name response:(NSString *)response callback:(void (^)(BOOL success, NSString *responseFromServer))callback {
++ (void)loginFacebookUserWithName:(NSString *)name withEmail:(NSString *)email response:(NSString *)response callback:(void (^)(BOOL success, NSString *responseFromServer))callback {
     
     NSDictionary *json = (NSDictionary *)response;
     
@@ -86,6 +86,7 @@
         GLPUser *user = [[GLPUser alloc] init];
         user.remoteKey = [json[@"id"] integerValue];
         user.name = name;
+        user.email = email;
         //TODO: Take name surname here.
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
@@ -219,9 +220,10 @@
 
 # pragma mark - Helper function for loading user data
 void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^callback)(BOOL success)) {
-    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+//    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
     
-
+    NSString *userEmail = user.email;
+    
     NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
         
     // fetch additional info
@@ -240,6 +242,8 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
                 callback(NO);
                 return;
             }
+            
+            userWithDetials.email = userEmail;
             
             [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
             

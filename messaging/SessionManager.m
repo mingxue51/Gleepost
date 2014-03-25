@@ -89,6 +89,9 @@ static SessionManager *instance = nil;
 
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate
 {
+    DDLogDebug(@"Session Manager USER: %@", self.user);
+    
+    
     NSAssert(!self.user, @"An user is already registered in the session");
     
     self.user = user;
