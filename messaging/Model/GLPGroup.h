@@ -18,10 +18,12 @@
 @property (strong, nonatomic) NSString *groupImageUrl;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) UIImage *finalImage;
+@property (assign, nonatomic) BOOL isFromPushNotification;
 
 //Not create in local database
 @property (strong, nonatomic) GLPUser *author;
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
+- (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
 
 @end

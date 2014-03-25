@@ -7,3 +7,4 @@
 */
 
 "MSG" = "New message from %@";
+"GROUP" = "%@ added you to '%@' group.";
