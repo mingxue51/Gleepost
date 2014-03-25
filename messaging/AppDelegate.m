@@ -221,6 +221,7 @@ static NSString * const kCustomURLHost      = @"verify";
     
     GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
     groupVC.group = group;
+    groupVC.fromPushNotification = YES;
 //    conversationVC.hidesBottomBarWhenPushed = YES;
     
     [navVC setViewControllers:@[contactsVC, groupVC] animated:NO];

@@ -89,6 +89,12 @@ const int NUMBER_OF_ROWS = 2;
     
     [self loadPosts];
     
+    if(_fromPushNotification)
+    {
+        [self loadGroupData];
+    }
+    
+    
 //    [self loadMembers];
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
@@ -691,6 +697,25 @@ const int NUMBER_OF_ROWS = 2;
         else
         {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
+        }
+        
+    }];
+}
+
+-(void)loadGroupData
+{
+    [[WebClient sharedInstance] getGroupDescriptionWithId:_group.remoteKey withCallbackBlock:^(BOOL success, GLPGroup *group) {
+        
+        if(success)
+        {
+            _group = group;
+            self.title = _group.name;
+            
+            [self refreshCellViewWithIndex:0];
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
         }
         
     }];
