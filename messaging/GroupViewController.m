@@ -25,7 +25,7 @@
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
 #import "MembersViewController.h"
-#import "GroupUploaderManager.h"
+#import "GroupOperationManager.h"
 
 @interface GroupViewController ()
 
@@ -490,6 +490,8 @@ const int NUMBER_OF_ROWS = 2;
 //        }
         
         [profileView setDelegate:self];
+
+        [self loadPendingImageIfExist];
         
         [profileView initialiseElementsWithGroupInformation:self.group withGroupImage:_groupImage];
         
@@ -666,6 +668,19 @@ const int NUMBER_OF_ROWS = 2;
         NSLog(@"Load previous posts cell activated");
         [self loadPreviousPosts];
     }
+}
+
+
+-(void)loadPendingImageIfExist
+{
+    UIImage *img = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:_group.remoteKey];
+    
+    if(!img)
+    {
+        return;
+    }
+    
+    _groupImage = img;
 }
 
 #pragma mark - Client
@@ -959,13 +974,12 @@ const int NUMBER_OF_ROWS = 2;
     [self refreshCellViewWithIndex:0];
     
     
-    
-    
     //Communicate with server to change the image.
-    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
+//    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
+//    
+//    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
     
-    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
-    
+    [[GroupOperationManager sharedInstance] changeGroupImageWithImage:_groupImage withGroup:_group];
     
 }
 
@@ -982,7 +996,7 @@ const int NUMBER_OF_ROWS = 2;
         //Show image.
         [self showImage];
     }
-    else if([selectedButtonTitle isEqualToString:@"Change image"])
+    else if([selectedButtonTitle isEqualToString:@"Change image"] || [selectedButtonTitle isEqualToString:@"Add image"])
     {
         //Change image.
         
@@ -1016,22 +1030,26 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)showInformationMenu:(id)sender
 {
+    UIActionSheet *actionSheet = nil;
     
     [self addGroupImage:sender];
     
-    UIActionSheet *actionSheet = nil;
+    if(_groupImage)
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show image", @"Change image", nil];
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Add image", nil];
+    }
     
-    actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show image", @"Change image", nil];
     
     [actionSheet showInView:[self.view window]];
-
 }
 
 
 
-
 #pragma mark - View image delegate
-
 
 -(void)viewPostImage:(UIImage*)postImage
 {

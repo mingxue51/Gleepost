@@ -44,6 +44,7 @@
 
 @property (strong, nonatomic) GLPGroup *currentGroup;
 
+@property (weak, nonatomic) IBOutlet UIImageView *profileBackImage;
 
 @end
 
@@ -97,7 +98,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     
     
-    
     [self formatProfileImage];
     
     if(image)
@@ -119,6 +119,14 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
             }
             
         }];
+        
+        //Add gesture to show menu.
+        [self addGestureToGroupImage];
+    }
+    else
+    {
+        [_profileBackImage setHidden:YES];
+        [self.profileImage setImage:nil];
         
         //Add gesture to show menu.
         [self addGestureToGroupImage];

@@ -14,6 +14,8 @@
 
 + (GroupOperationManager *)sharedInstance;
 -(void)setGroup:(GLPGroup *)group withTimestamp:(NSDate *)timestamp;
+-(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group;
+-(UIImage *)pendingGroupImageWithRemoteKey:(int)remoteKey;
 
 //-(void)stopTimer;
 //-(void)uploadImage:(UIImage *)image withTimestamp:(NSDate *)timestamp;

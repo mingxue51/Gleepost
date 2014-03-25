@@ -12,6 +12,7 @@
 #import "DatabaseManager.h"
 #import "SessionManager.h"
 #import "GLPMemberDao.h"
+#import "GroupOperationManager.h"
 
 @implementation GLPGroupManager
 
@@ -20,12 +21,14 @@
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback
 {
-    
+
     //Find all the groups that contain real images and save them.
-    
     NSMutableArray *pendingGroups = [[self findGroupsWithRealImagesWithGroups:groups] mutableCopy];
     
     NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
+    
+    //Add any new images that are uploading in GroupOperationManager.
+//    localEntities = [self addPendingImagesIfExistWithGroups:localEntities].mutableCopy;
     
 //    localEntities = [self overwriteGroups:localEntities withImagesGroups:localGroupsWithImages];
     
@@ -41,7 +44,6 @@
             return;
         }
         
-        
         //Store only groups that are not exist into the database.
 
         [GLPGroupDao saveGroups:serverGroups];
@@ -51,7 +53,11 @@
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
         
 //        [GLPGroupManager removePendingGroupsIfExist:pendingGroups withRemoteGroups:finalRemoteGroups];
-                
+        
+        //Add any new images that are uploading in GroupOperationManager.
+//        finalRemoteGroups = [self addPendingImagesIfExistWithGroups:finalRemoteGroups].mutableCopy;
+        
+        
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
         remoteCallback(YES, finalRemoteGroups);
@@ -564,6 +570,22 @@
     }
     
     return nil;
+}
+
++(NSArray *)addPendingImagesIfExistWithGroups:(NSArray *)groups
+{
+    for(GLPGroup *g in groups)
+    {
+        UIImage *pendingImg = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:g.remoteKey];
+        
+        if(pendingImg)
+        {
+            g.finalImage = pendingImg;
+        }
+        
+    }
+    
+    return groups;
 }
 
 #pragma mark - Group members methods
