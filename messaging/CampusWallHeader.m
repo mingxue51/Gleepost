@@ -62,6 +62,7 @@ NSString *NOTHING_HAPPENING;
         
         [self initialiseObjects];
         
+        
         [self loadEvents];
         
         
@@ -153,7 +154,7 @@ NSString *NOTHING_HAPPENING;
     [self addSubview:loadingLabel];
 }
 
--(void)hideLoadingLabel
+-(void )hideLoadingLabel
 {
     for(UIView *v in [self subviews])
     {

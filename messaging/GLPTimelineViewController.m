@@ -113,6 +113,8 @@
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
 @property (assign, nonatomic) BOOL groupsMode;
 
+//Extra view will present to hide the change of background during the viewing of new post.
+@property (strong, nonatomic) UIImageView *topImageView;
 
 @end
 
@@ -208,7 +210,9 @@ const float TOP_OFFSET = 280.0f;
 //    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
     
     [AppearanceHelper setUnselectedColourForTabbarItem:self.homeTabbarItem];
-
+    
+    //Hide temporary top image view.
+    [_topImageView setHidden:YES];
     
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
@@ -273,6 +277,12 @@ const float TOP_OFFSET = 280.0f;
     self.postIndexToReload = -1;
     
     self.groupsMode = NO;
+    
+    //Initialize temporary top image view.
+    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
+    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    
+    [self.view addSubview:_topImageView];
 }
 
 
@@ -519,6 +529,9 @@ const float TOP_OFFSET = 280.0f;
     [self setCustomBackgroundToTableView];
     
     [self setButtonsToNavigationBar];
+    
+    //Show temporary top image view.
+    [_topImageView setHidden:NO];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -1822,7 +1835,6 @@ const float TOP_OFFSET = 280.0f;
         
         
     }];
-    
     
 }
 

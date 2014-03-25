@@ -148,6 +148,7 @@
 		58361C36184CBF6700FEFC49 /* profiletext_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C35184CBF6700FEFC49 /* profiletext_background.png */; };
 		58361C3A184CCAD200FEFC49 /* add_as_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C39184CCAD200FEFC49 /* add_as_contact.png */; };
 		58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */; };
+		5837FD9218E1C54100776D0F /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 5837FD9118E1C54100776D0F /* pin.png */; };
 		5839261C18A020E800439398 /* skip_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261B18A020E800439398 /* skip_button.png */; };
 		5839261E18A020F600439398 /* connect_fb_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261D18A020F600439398 /* connect_fb_button.png */; };
 		5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5839262018A0256A00439398 /* SignUpWithNameViewController.m */; };
@@ -870,6 +871,7 @@
 		58361C35184CBF6700FEFC49 /* profiletext_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profiletext_background.png; sourceTree = "<group>"; };
 		58361C39184CCAD200FEFC49 /* add_as_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_as_contact.png; sourceTree = "<group>"; };
 		58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_background.png; sourceTree = "<group>"; };
+		5837FD9118E1C54100776D0F /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		5839261B18A020E800439398 /* skip_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skip_button.png; sourceTree = "<group>"; };
 		5839261D18A020F600439398 /* connect_fb_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect_fb_button.png; sourceTree = "<group>"; };
 		5839261F18A0256A00439398 /* SignUpWithNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpWithNameViewController.h; sourceTree = "<group>"; };
@@ -2446,6 +2448,7 @@
 		589EAD1E18A4369C005B2F4C /* Campus Live */ = {
 			isa = PBXGroup;
 			children = (
+				5837FD9118E1C54100776D0F /* pin.png */,
 				589CE50618D227770046DAD2 /* Thermometer bars */,
 				582A664918AC0ABC00006419 /* referesh_campus_live.png */,
 				582A663718AB9BC400006419 /* bar1.png */,
@@ -3757,6 +3760,7 @@
 				58FD708118905B680024E8A1 /* all_category_old.png in Resources */,
 				8096E4D517C2BBD800C7BF60 /* navigation_bar.png in Resources */,
 				583CE33418A008FD00E78C08 /* password_label_bg.png in Resources */,
+				5837FD9218E1C54100776D0F /* pin.png in Resources */,
 				580C7AB118982FAD007495EE /* event_category_old.png in Resources */,
 				C0090C2318A8F90A00153878 /* arraow-right.png in Resources */,
 				58AD86A618929F2200016C6D /* bg_top.png in Resources */,
