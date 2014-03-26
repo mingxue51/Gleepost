@@ -1032,9 +1032,8 @@ const int NUMBER_OF_ROWS = 2;
 {
     UIActionSheet *actionSheet = nil;
     
-    [self addGroupImage:sender];
     
-    if(_groupImage)
+    if([self addGroupImage:sender])
     {
         actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show image", @"Change image", nil];
     }
@@ -1124,13 +1123,23 @@ const int NUMBER_OF_ROWS = 2;
 
 #pragma  mark - Helpers
 
--(void)addGroupImage:(id)sender
+/**
+ Takes the image and add it to groupImage.
+ 
+ @param sender
+ 
+ @return returns NO if there group does not contain any image, otherwise returns YES.
+ 
+ */
+-(BOOL)addGroupImage:(id)sender
 {
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
     _groupImage = clickedImageView.image;
+    
+    return (clickedImageView.tag == 0) ? NO : YES;
 }
 
 

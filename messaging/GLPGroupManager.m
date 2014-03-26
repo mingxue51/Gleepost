@@ -34,6 +34,8 @@
     
     [localEntities addObjectsFromArray:pendingGroups];
     
+    localEntities = [GLPGroupManager orderMembersByNameWithMembers:localEntities].mutableCopy;
+    
     localCallback(localEntities);
     
     
@@ -59,6 +61,9 @@
         
         
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
+        
+        finalRemoteGroups = [GLPGroupManager orderMembersByNameWithMembers:finalRemoteGroups].mutableCopy;
+
         
         remoteCallback(YES, finalRemoteGroups);
 

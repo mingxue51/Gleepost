@@ -600,6 +600,7 @@
 
 -(void)showGroups
 {
+    
     if(self.groups.count > 0)
     {
         NSDictionary *result = [GLPGroupManager processGroups:_groups];
