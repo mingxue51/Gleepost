@@ -81,6 +81,7 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewMember:)];
     [tap setNumberOfTapsRequired:1];
+    
     [_addNewMembersView addGestureRecognizer:tap];
     
 }
