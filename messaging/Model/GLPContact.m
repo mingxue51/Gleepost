@@ -36,4 +36,9 @@ NSString * const GLPContactName = @"name";
     return nil;
 }
 
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Name: %@, You confirmed: %d, They confirmed: %d", self.user.name, _youConfirmed, _theyConfirmed];
+}
+
 @end

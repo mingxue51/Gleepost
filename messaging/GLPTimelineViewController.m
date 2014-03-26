@@ -1131,12 +1131,15 @@ const float TOP_OFFSET = 280.0f;
     
     [self startLoading];
     
-    if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
-    {
-//        self.posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy;
-        
-        [self.tableView reloadData];
-    }
+//    if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+//    {
+//        DDLogDebug(@"Post are not empty.");
+//        
+//        [self.tableView reloadData];
+//    }
+    
+    [self.tableView reloadData];
+
     
     
     [GLPGroupManager loadGroupsFeedWithCallback:^(BOOL success, NSArray *posts) {
