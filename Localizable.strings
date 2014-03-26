@@ -6,5 +6,5 @@
   Copyright (c) 2014 Gleepost. All rights reserved.
 */
 
-"MSG" = "New message from %@";
+"MSG" = "New message from %@: %@";
 "GROUP" = "User %@ added you to %@.";
