@@ -642,8 +642,6 @@
     __block int lastPostIndex = 0;
     NSMutableArray *profilePosts = privateProfilePosts.mutableCopy;
     
-    DDLogDebug(@"Private posts: %@", privateProfilePosts);
-    
     //Take the last key of the current campus wall posts from database.
     [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
        

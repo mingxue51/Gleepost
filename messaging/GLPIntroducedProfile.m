@@ -8,6 +8,7 @@
 
 #import "GLPIntroducedProfile.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ShapeFormatterHelper.h"
 #import "WebClient.h"
@@ -59,7 +60,7 @@ const float HEIGHT = 210.0f;
     }
     else
     {
-        [self.userImage setImageWithURL:[NSURL URLWithString:incomingUser.profileImageUrl] placeholderImage:nil];
+        [self.userImage setImageWithURL:[NSURL URLWithString:incomingUser.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
     [self.userName setText:incomingUser.name];

@@ -71,16 +71,21 @@ static ContactsManager *instance = nil;
  */
 -(void)refreshContacts
 {
-    [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
+    [self loadContactsWithLocalCallback:^(NSArray *contacts) {
         
         //Store contacts into an array.
         self.contacts = contacts;
+        
+        DDLogDebug(@"Local contacts: %@", contacts);
         
     } remoteCallback:^(BOOL success, NSArray *contacts) {
         if(success)
         {
             //Store contacts into an array.
             self.contacts = contacts;
+            
+            DDLogDebug(@"Remote contacts: %@", contacts);
+
             
             [GLPContactDao deleteTable];
             
@@ -288,14 +293,13 @@ static ContactsManager *instance = nil;
 }
 
 
-+ (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback
+- (void)loadContactsWithLocalCallback:(void (^)(NSArray *contacts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *contacts))remoteCallback
 {    
     NSArray *localEntities = [GLPContactDao loadContacts];
     localCallback(localEntities);
     
     
     [[WebClient sharedInstance ] getContactsWithCallback:^(BOOL success, NSArray *serverContacts) {
-        
         
         if(!success) {
             remoteCallback(NO, nil);
@@ -305,7 +309,8 @@ static ContactsManager *instance = nil;
         //Refresh contacts' images in case a contact has new profile image.
         [[GLPProfileLoader sharedInstance] refreshContactsImages:serverContacts];
 
-        
+            self.contacts = serverContacts;
+
             //Store contacts into an array.
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
@@ -315,7 +320,6 @@ static ContactsManager *instance = nil;
                     [GLPContactDao save:c inDb:db];
                 }
             }];
-        
 
         remoteCallback(YES, serverContacts);
 

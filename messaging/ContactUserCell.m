@@ -9,6 +9,7 @@
 #import "ContactUserCell.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @implementation ContactUserCell
 
@@ -42,7 +43,7 @@ const float CONTACT_CELL_HEIGHT = 48;
     }
     else
     {
-        [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
 

@@ -41,6 +41,7 @@
 #import "GLPApplicationHelper.h"
 #import "GLPiOS6Helper.h"
 #import "GroupViewController.h"
+#import "ContactsManager.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -933,18 +934,44 @@
 
 - (void)notificationCell:(NotificationCell *)cell acceptButtonClickForNotification:(GLPNotification *)notification
 {
-    [GLPNotificationManager acceptNotification:notification];
-    [cell updateWithNotification:notification];
     
-    NSUInteger index = [_notifications indexOfObject:notification];
-    if(index == NSNotFound) {
-        DDLogError(@"Cannot find notification to remove in array");
-        return;
-    }
+    GLPContact *contact = [[GLPContact alloc] initWithUserName:notification.user.name profileImage:notification.user.profileImageUrl youConfirmed:YES andTheyConfirmed:YES];
+    contact.remoteKey = notification.user.remoteKey;
     
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
+    //Accept contact in the local database and in server.
+    [[ContactsManager sharedInstance] acceptContact:contact.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(!success)
+        {
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to accept contact"];
+            
+            return;
+        }
+        
+        
+        [GLPNotificationManager acceptNotification:notification];
+        [cell updateWithNotification:notification];
+        
+        NSUInteger index = [_notifications indexOfObject:notification];
+        if(index == NSNotFound) {
+            DDLogError(@"Cannot find notification to remove in array");
+            return;
+        }
+                
+        //Save contact to database.
+        [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
+        
+        DDLogDebug(@"Contact saved: %@", contact);
+        
+        
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+        
+        
+    }];
+    
+
 }
 
 - (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification
@@ -1168,8 +1195,6 @@
 //            [[ContactsManager sharedInstance] refreshContacts];
             
             [self performSegueWithIdentifier:@"view private profile" sender:self];
-
-
 
         }
         // navigate to post.

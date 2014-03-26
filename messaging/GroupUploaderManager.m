@@ -17,6 +17,10 @@
 @interface GroupUploaderManager ()
 
 @property (nonatomic, strong) NSMutableDictionary *readyGroups;
+
+/** Preserves the pending images for groups. */
+@property (strong, nonatomic) NSMutableDictionary *pendingGroupImages;
+
 //@property (nonatomic, strong) NSMutableArray *uploadedGroups;
 
 @end
@@ -30,6 +34,8 @@
     if(self)
     {
         _readyGroups = [[NSMutableDictionary alloc] init];
+        _pendingGroupImages = [[NSMutableDictionary alloc] init];
+
     }
     
     return self;
@@ -146,12 +152,19 @@
 -(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group
 {
 //    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(test:) userInfo:nil repeats:YES];
-    
+    [_pendingGroupImages setObject:image forKey:[NSNumber numberWithInt:group.remoteKey]];
+
     NSData *imageData = [self convertImageToData:image];
     
     [self uploadImageWithData:imageData andGroup:group];
     
 }
+
+-(void)removeEntryFromPendingGroupImagesWithRemoteKey:(int)remoteKey
+{
+    [_pendingGroupImages removeObjectForKey:[NSNumber numberWithInt:remoteKey]];
+}
+
 
 -(void)uploadImageWithData:(NSData *)imageData andGroup:(GLPGroup *)group
 {
@@ -160,6 +173,8 @@
         if(success)
         {
             [self updateDatabaseWithGroup:group andUrl:response];
+            
+            [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
             
             //Send notification to contacts view controller.
             [self notifyControllerWithGroup:group];
@@ -196,6 +211,15 @@
     
     return imageData;
 }
+
+#pragma mark - Accessors
+
+-(UIImage *)pendingGroupImageWithRemoteKey:(int)remoteKey
+{
+    return [_pendingGroupImages objectForKey:[NSNumber numberWithInt:remoteKey]];
+}
+
+#pragma mark - Notifications
 
 -(void)notifyControllerWithGroup:(GLPGroup *)group
 {

@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ContactsManager.h"
 #import "WebClient.h"
@@ -20,6 +21,7 @@
 #import "ContactsManager.h"
 #import "ConversationManager.h"
 #import "GLPLiveConversationsManager.h"
+
 
 @interface ProfileTableViewCell ()
 
@@ -44,6 +46,7 @@
 
 @property (strong, nonatomic) GLPGroup *currentGroup;
 
+@property (weak, nonatomic) IBOutlet UIImageView *profileBackImage;
 
 @end
 
@@ -97,31 +100,34 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     
     
-    
     [self formatProfileImage];
+    
+    //        [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+    
+    DDLogDebug(@"Image url: %@", group.groupImageUrl);
     
     if(image)
     {
         [self.profileImage setImage:image];
         
         //Add gesture to show menu.
-        [self addGestureToGroupImage];
+        [self addGestureToGroupImageWithImage:YES];
     }
     else if(group.groupImageUrl)
     {
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
-        
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-           
-            if(image)
-            {
-                
-            }
-            
-        }];
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
         //Add gesture to show menu.
-        [self addGestureToGroupImage];
+        [self addGestureToGroupImageWithImage:YES];
+    }
+    else
+    {
+        [_profileBackImage setHidden:YES];
+        [self.profileImage setImage:nil];
+        
+        //Add gesture to show menu.
+        [self addGestureToGroupImageWithImage:NO];
     }
     
 
@@ -137,11 +143,13 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     [self.profileImage setImage:image];
 }
 
--(void)addGestureToGroupImage
+-(void)addGestureToGroupImageWithImage:(BOOL)imageAvailable
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(showInformationMenu:)];
     [tap setNumberOfTapsRequired:1];
     [self.profileImage addGestureRecognizer:tap];
+    
+    self.profileImage.tag = (imageAvailable) ?  1 : 0;
 }
 
 

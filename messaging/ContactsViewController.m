@@ -459,7 +459,7 @@
 -(void) loadContacts
 {
 
-    [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
+    [[ContactsManager sharedInstance] loadContactsWithLocalCallback:^(NSArray *contacts) {
         
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
         
@@ -474,6 +474,8 @@
         
         
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContactsTemp:contacts];
+        
+        DDLogDebug(@"All contacts: %@", allContacts);
         
         [self showContacts:allContacts];
 
@@ -600,6 +602,7 @@
 
 -(void)showGroups
 {
+    
     if(self.groups.count > 0)
     {
         NSDictionary *result = [GLPGroupManager processGroups:_groups];

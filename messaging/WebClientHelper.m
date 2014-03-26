@@ -173,4 +173,15 @@
     [alert show];
 }
 
++ (void)failedToSendEmailResettingPassword
+{
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                    message:@"There was a problem sending you a password recovery link."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 @end
