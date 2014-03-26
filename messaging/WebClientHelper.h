@@ -33,4 +33,6 @@
 
 +(void)showFailedToDeletePostError;
 
++ (void)failedToSendEmailResettingPassword;
+
 @end

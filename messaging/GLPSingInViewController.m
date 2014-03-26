@@ -15,7 +15,6 @@
 @interface GLPSingInViewController ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
-@property (weak, nonatomic) IBOutlet UILabel *forgotPasswordMsgLbl;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 @property (weak, nonatomic) IBOutlet UIButton *rememberMeButton;
@@ -116,18 +115,20 @@
 {
     if([self isEmalValid])
     {
+        [WebClientHelper showStandardLoaderWithTitle:@"Sending email" forView:self.view];
+        
         //Communicate with server to send verification to email.
         [[WebClient sharedInstance] resetPasswordWithEmail:[self email] callbackBlock:^(BOOL success) {
             
+            [WebClientHelper hideStandardLoaderForView:self.view];
+            
             if(success)
             {
-//                [WebClientHelper showStandardErrorWithTitle:@"Password reseted" andContent:@"Please check your email and complete the resetting procedure"];
-                
-                [_forgotPasswordMsgLbl setText:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@",self.email]];
+                [WebClientHelper showStandardErrorWithTitle:@"" andContent:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@",self.email]];
             }
             else
             {
-                [WebClientHelper showStandardError];
+                [WebClientHelper failedToSendEmailResettingPassword];
             }
             
         }];
