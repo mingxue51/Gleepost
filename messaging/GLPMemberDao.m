@@ -30,7 +30,7 @@
 {
     NSMutableArray *members = [[NSMutableArray alloc] init];
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from members where group_remote_key = %d", groupRemoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from members where group_remote_key = %d order by name asc", groupRemoteKey];
     
     while ([resultSet next])
     {

@@ -604,6 +604,8 @@
         {
             [GLPMemberDao saveMembers:members];
             
+            members = [GLPGroupManager orderMembersByNameWithMembers:members];
+            
             remoteCallback(success, members);
             
         }
@@ -613,6 +615,15 @@
         }
         
     }];
+}
+
++(NSArray *)orderMembersByNameWithMembers:(NSArray *)members
+{
+    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+    NSArray *sortedArray = [members sortedArrayUsingDescriptors:descriptors];
+    
+    return sortedArray;
 }
 
 #pragma mark - Notifications methods

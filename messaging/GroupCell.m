@@ -9,7 +9,9 @@
 #import "GroupCell.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "WebClient.h"
+
 
 @interface GroupCell ()
 
@@ -86,7 +88,7 @@
 //    }
     else
     {
-        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
     if(groupData.sendStatus == kSendStatusLocal)

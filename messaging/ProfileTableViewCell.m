@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ContactsManager.h"
 #import "WebClient.h"
@@ -20,6 +21,7 @@
 #import "ContactsManager.h"
 #import "ConversationManager.h"
 #import "GLPLiveConversationsManager.h"
+
 
 @interface ProfileTableViewCell ()
 
@@ -100,6 +102,9 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     [self formatProfileImage];
     
+    //        [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+    
     if(image)
     {
         [self.profileImage setImage:image];
@@ -109,16 +114,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     else if(group.groupImageUrl)
     {
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
-        
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-           
-            if(image)
-            {
-                
-            }
-            
-        }];
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         
         //Add gesture to show menu.
         [self addGestureToGroupImage];
