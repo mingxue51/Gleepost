@@ -279,9 +279,6 @@
     
     NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
     
-    DDLogDebug(@"Index path of updated group: %d : %d", indexPath.row, indexPath.section);
-    
-    
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
 }
@@ -445,7 +442,10 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
+    
+    DDLogInfo(@"Received memory warning. ContactsViewController.");
 }
 
 -(void) navigateToProfileContact: (id)sender
@@ -475,18 +475,14 @@
         
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContactsTemp:contacts];
         
-        DDLogDebug(@"All contacts: %@", allContacts);
-        
         [self showContacts:allContacts];
 
-        
     }];
     
 }
 
 -(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
 {
-    
     if(createdGroup)
     {
         //Add the new group in order to preserve it as is.

@@ -105,8 +105,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     //        [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 
     
-    DDLogDebug(@"Image url: %@", group.groupImageUrl);
-    
     if(image)
     {
         [self.profileImage setImage:image];
