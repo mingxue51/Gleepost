@@ -9,6 +9,7 @@
 #import "CampusWallHeaderCell.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "NSDate+TimeAgo.h"
 #import "AppearanceHelper.h"
 #import "NSDate+HumanizedTime.h"
@@ -103,9 +104,11 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
        imgUrl = [NSURL URLWithString:postData.imagesUrls[0]];
     }
     
+
+    DDLogDebug(@"Event image url: %@", imgUrl);
     
     //Set post's image.
-    [_eventImage setImageWithURL:imgUrl placeholderImage:nil];
+    [_eventImage setImageWithURL:imgUrl usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     
 //    [_eventImage setImageWithURL:imgUrl placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {

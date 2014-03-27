@@ -39,9 +39,7 @@ extern const float PROFILE_CELL_HEIGHT;
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image;
 -(void)initialiseGroupImage:(UIImage *)image;
 -(void)initialiseProfileImage:(UIImage*)image;
--(void)updateImageWithUrl:(NSString*)url;
 -(void)setDelegate:(UIViewController <ProfileTableViewCellDelegate> *)delegate;
-//-(void)setPrivateProfileDelegate:(GLPPrivateProfileViewController*)delegate;
 -(void)initialiseElementsWithGroupInformation:(GLPGroup *)group withGroupImage:(UIImage *)image;
 
 @end

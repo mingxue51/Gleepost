@@ -168,14 +168,14 @@ static const float FixedBottomTextViewHeight = 140;
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
 
     
-    if([postData.author.profileImageUrl isEqualToString:@""])
-    {
-        [self.userImageView setImage:userImage];
-    }
-    else
-    {
-        [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
-    }
+//    if([postData.author.profileImageUrl isEqualToString:@""])
+//    {
+//        [self.userImageView setImage:userImage];
+//    }
+//    else
+//    {
+        [self.userImageView setImageWithURL:userImageUrl usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    }
 
     [self formatUsersImage];
     [self formatPostImage];

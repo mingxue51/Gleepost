@@ -444,6 +444,8 @@
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
 {
+    [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
+    
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
 
     _hasImage = YES;

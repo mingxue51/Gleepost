@@ -41,7 +41,7 @@
     
     
     //TODO: Problem here.
-    self.usersNames = [NSArray arrayWithObjects:@"Lukas", @"Patrick", @"Tade", @"Tosh", nil];
+//    self.usersNames = [NSArray arrayWithObjects:@"Lukas", @"Patrick", @"Tade", @"Tosh", nil];
 
     float aboveHeight = self.titleLimitView.frame.origin.y + 1;
     self.tokenFieldView = [[TITokenFieldView alloc] initWithFrame:CGRectMake(0, aboveHeight, self.view.bounds.size.width, self.view.bounds.size.height - aboveHeight)];
@@ -49,7 +49,7 @@
 	[self.view addSubview:self.tokenFieldView];
 	
 	[self.tokenFieldView.tokenField setDelegate:self];
-	[self.tokenFieldView.tokenField addTarget:self action:@selector(tokenFieldFrameDidChange:) forControlEvents:TITokenFieldControlEventFrameDidChange];
+//	[self.tokenFieldView.tokenField addTarget:self action:@selector(tokenFieldFrameDidChange:) forControlEvents:TITokenFieldControlEventFrameDidChange];
 	[self.tokenFieldView.tokenField setTokenizingCharacters:[NSCharacterSet characterSetWithCharactersInString:@",;."]]; // Default is a comma
     [self.tokenFieldView.tokenField setPromptText:@"To:"];
 	[self.tokenFieldView.tokenField setPlaceholder:@"Type a name"];
@@ -79,7 +79,7 @@
 
 -(void) setBackgroundToNavigationBar
 {
-    UIImage *img = [UIImage imageNamed:@"navigationbar_4"];
+//    UIImage *img = [UIImage imageNamed:@"navigationbar_4"];
     UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
     
     

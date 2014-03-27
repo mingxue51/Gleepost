@@ -30,6 +30,8 @@
 
 @implementation ChatViewAnimationController
 
+float const NEW_CHAT_DELAY = 0.0;
+
 
 - (void)viewDidLoad
 {
@@ -95,7 +97,7 @@
 {
     [self.chatStanfordAnimations startRegularMode];
     
-    [self performSelector:@selector(searchForNewChat:) withObject:nil afterDelay:3.0f];
+    [self performSelector:@selector(searchForNewChat:) withObject:nil afterDelay:NEW_CHAT_DELAY];
 
 }
 
@@ -162,16 +164,23 @@
     
     DDLogInfo(@"Oldest live conversation if required: %d - %@", oldestConversation.remoteKey, oldestConversation.title);
     
-    if(oldestConversation) {
+    if(oldestConversation)
+    {
         [[[UIAlertView alloc] initWithTitle:@"You already have 3 Random Chats"
                                     message:[NSString stringWithFormat:@"Requesting another chat will delete the one you have with user %@", oldestConversation.title]
                            cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:^{
+            
             [self dismissViewControllerAnimated:YES completion:nil];
+            
         }]
-                           otherButtonItems:[RIButtonItem itemWithLabel:@"OK, no big deal" action:^{
+        otherButtonItems:[RIButtonItem itemWithLabel:@"OK, no big deal" action:^{
+            
             [self requestRandomConversation];
+            
         }], nil] show];
-    } else {
+        
+    } else
+    {
         [self requestRandomConversation];
     }
 }

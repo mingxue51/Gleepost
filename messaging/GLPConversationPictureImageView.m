@@ -9,6 +9,7 @@
 #import "GLPConversationPictureImageView.h"
 #import "ShapeFormatterHelper.h"
 #import "UIImageView+AFNetworking.h"
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @implementation GLPConversationPictureImageView
 
@@ -33,7 +34,7 @@
         UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image"];
         
         if([user hasProfilePicture]) {
-            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:defaultProfilePicture];
+            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:defaultProfilePicture usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         } else {
             self.image = defaultProfilePicture;
         }

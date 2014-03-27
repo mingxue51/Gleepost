@@ -243,13 +243,13 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     {
         
         //Fetch the image from the server and add it to the image view.
-        //[self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
-        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            
-//            [self.coverProfileImage setImage:image];
-            
-        }];
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//            
+////            [self.coverProfileImage setImage:image];
+//            
+//        }];
         
         //TODO: Create shadow to the image.
         
@@ -305,18 +305,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     [self.busySwitch setHidden:YES];
 }
 
--(void)updateImageWithUrl:(NSString*)url
-{
-//    [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
-    
-    [self.profileImage setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil
-    
-    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-        
-//        [self.coverProfileImage setImage:image];
-        
-    }];
-}
 
 -(void)setDelegate:(UIViewController <ProfileTableViewCellDelegate> *)delegate
 {

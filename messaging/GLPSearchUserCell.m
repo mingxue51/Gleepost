@@ -8,6 +8,7 @@
 
 #import "GLPSearchUserCell.h"
 #import "SDWebImage/UIImageView+WebCache.h"
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "SDWebImageManager.h"
 #import "UIImage+Masking.h"
 #import "ShapeFormatterHelper.h"
@@ -101,7 +102,7 @@
     
     [ShapeFormatterHelper setRoundedView:_profileImageView toDiameter:_profileImageView.frame.size.height];
     
-    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"user_image_bg"]];
+    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 }
 
 
