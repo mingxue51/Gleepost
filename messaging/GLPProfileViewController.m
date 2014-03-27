@@ -226,6 +226,13 @@
 
 -(void)setCustomBackgroundToTableView
 {
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        
+        return;
+    }
+    
     UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile_background_main"]];
     
     [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];

@@ -26,6 +26,7 @@
 #import "GLPLoadingCell.h"
 #import "MembersViewController.h"
 #import "GroupOperationManager.h"
+#import "GLPiOS6Helper.h"
 
 @interface GroupViewController ()
 
@@ -107,7 +108,6 @@ const int NUMBER_OF_ROWS = 2;
 {
     [super viewWillAppear:animated];
     
-
     [self configureNavigationBar];
     
     [self configureNavigationItems];
@@ -167,7 +167,15 @@ const int NUMBER_OF_ROWS = 2;
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
-    [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+    }
+    else
+    {
+        [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
+    }
+    
 }
 
 -(void)initialiseObjects
@@ -194,14 +202,23 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)configureNavigationItems
 {
+    int buttonX = 10;
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        buttonX = 0;
+    }
+    
     UIImage *createPostImg = [UIImage imageNamed:@"new_post_groups"];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:createPostImg forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(10, 0, 35, 35)];
+    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
+    
+    
     [view addSubview:btnBack];
     
     UIBarButtonItem *createPostButton = [[UIBarButtonItem alloc] initWithCustomView:view];
@@ -1217,7 +1234,10 @@ const int NUMBER_OF_ROWS = 2;
     vc.image = _groupImage;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];

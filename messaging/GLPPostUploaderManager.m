@@ -12,6 +12,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPCommentDao.h"
 #import "WebClientHelper.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -44,7 +45,11 @@
         
         _checkForUploadingCommentTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForCommentUpload:) userInfo:nil repeats:YES];
         
-        [_checkForUploadingCommentTimer setTolerance:5.0f];
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [_checkForUploadingCommentTimer setTolerance:5.0f];
+        }
+        
         [_checkForUploadingCommentTimer fire];
 
         

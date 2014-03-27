@@ -460,7 +460,7 @@
                                     <outletCollection property="gestureRecognizers" destination="yXP-10-6Q5" appends="YES" id="qrJ-4b-fYD"/>
                                 </connections>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="S10-eA-au5">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="S10-eA-au5">
                                 <rect key="frame" x="20" y="26" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
@@ -3196,7 +3196,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
         <image name="add_members_bg.png" width="516" height="112"/>
-        <image name="add_members_bg_p.png" width="300" height="100"/>
+        <image name="add_members_bg_p.png" width="81" height="104"/>
         <image name="add_photo_btn.png" width="172" height="168"/>
         <image name="back.png" width="23" height="37"/>
         <image name="category_bg.png" width="630" height="525"/>
@@ -3249,12 +3249,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     <inferredMetricsTieBreakers>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="TV3-yd-KJQ"/>
-        <segue reference="WhX-ZL-dQD"/>
-        <segue reference="PCe-7s-A56"/>
-        <segue reference="w3Q-IM-kd1"/>
+        <segue reference="icH-IF-qcr"/>
         <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="woK-8Q-gjw"/>
         <segue reference="C4C-f3-cdX"/>
+        <segue reference="PCe-7s-A56"/>
+        <segue reference="WhX-ZL-dQD"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
     </inferredMetricsTieBreakers>

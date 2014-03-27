@@ -82,7 +82,17 @@
     [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
     
-    [navigationBar setTintColor:[UIColor whiteColor]];
+    if([GLPiOS6Helper isIOS6])
+    {
+        [navigationBar setTintColor:[AppearanceHelper defaultGleepostColour]];
+        CGRectSetH(navigationBar, 60.0f);
+        CGRectMoveY(navigationBar, -19.0f);
+    }
+    else
+    {
+        [navigationBar setTintColor:[UIColor whiteColor]];
+    }
+    
 }
 
 

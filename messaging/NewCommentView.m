@@ -17,6 +17,7 @@
 #import "GLPThemeManager.h"
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
+#import "GLPiOS6Helper.h"
 
 @implementation NewCommentView
 
@@ -44,10 +45,14 @@
         
         //[self showKeyboardEffect];
         //[self hideKeyboardEffect];
-        [self showKeyboardEffectFirst];
-        [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(showKeyboardEffect:) userInfo:nil repeats:YES];
-
-        [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(hideKeyboardEffect:) userInfo:nil repeats:YES];
+        
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [self showKeyboardEffectFirst];
+            [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(showKeyboardEffect:) userInfo:nil repeats:YES];
+            
+            [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(hideKeyboardEffect:) userInfo:nil repeats:YES];
+        }
         
         //Add cancel button.
         //UIBarButtonItem *cB = [[UIBarButtonItem alloc] init];
@@ -65,10 +70,12 @@
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(105.0f, 25.0f, 140.0f, 30.0f)];
         
+        
         [label setText:@"New Comment"];
 
         [AppearanceHelper formatTextWithLabel:label withSize:20.0];
-
+        [label setBackgroundColor:[UIColor clearColor]];
+        
         
         [label setTextColor:[UIColor whiteColor]];
         
@@ -279,9 +286,7 @@
 }
 
 
-
-
--(void) cancelPushed: (id)sender
+-(void)cancelPushed:(id)sender
 {
 //    [self.timeLineDelegate setPlusButtonToNavigationBar];
 //    [self.timeLineDelegate setNavigationBarName];
@@ -291,9 +296,7 @@
     
     
     UIView *superView = [self superview];
-	[super removeFromSuperview];
-    
-    
+
     
     if(!sender)
     {
@@ -312,7 +315,7 @@
 	
 	[[superView layer] addAnimation:animation forKey:@"layerAnimation"];
     
-
+    [super removeFromSuperview];
 }
 
 

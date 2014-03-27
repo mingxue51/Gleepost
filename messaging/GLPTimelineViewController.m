@@ -1964,7 +1964,10 @@ const float TOP_OFFSET = 280.0f;
     vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
@@ -2396,6 +2399,29 @@ const float TOP_OFFSET = 280.0f;
         [self scrollToTheNavigationBar];
     }
     
+    
+    /**
+     Takes screenshot from the current view controller to bring the sense of the transparency after the load
+     of the NewPostViewController.
+     */
+//    UIGraphicsBeginImageContext(self.view.window.bounds.size);
+//    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+//    
+//    // vc.view.backgroundColor = [UIColor clearColor];
+//    vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
+//    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    [self presentViewController:vc animated:YES completion:nil];
+    
+    
+    
+    
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
 
@@ -2414,11 +2440,18 @@ const float TOP_OFFSET = 280.0f;
     cvc.delegate = self;
 //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
+    }
+    
     
     [cvc.blurBack setImage:[image stackBlur:10.0f]];
     
-    [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+    }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:cvc animated:YES completion:nil];

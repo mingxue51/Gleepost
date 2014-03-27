@@ -7,6 +7,7 @@
 //
 
 #import "ViewPostImageViewController.h"
+#import "GLPiOS6Helper.h"
 
 #define SWIPE_UP_THRESHOLD 20.0f
 #define SWIPE_DOWN_THRESHOLD 650.0f
@@ -145,19 +146,30 @@
 
 - (IBAction)goBack:(id)sender
 {
-    [self.transitioningDelegate animationControllerForDismissedController:self];
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        
-        self.view.alpha = 0;
-        
-    } completion:^(BOOL b){
-
-//        self.view.alpha = 1;
-        [self dismissViewControllerAnimated:NO completion:^{
-                        
+    if([GLPiOS6Helper isIOS6])
+    {
+        [self dismissViewControllerAnimated:YES completion:^{
+            
         }];
-    }];
+    }
+    else
+    {
+        [self.transitioningDelegate animationControllerForDismissedController:self];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            
+            self.view.alpha = 0;
+            
+        } completion:^(BOOL b){
+            
+            [self dismissViewControllerAnimated:NO completion:^{
+                
+            }];
+        }];
+    }
+    
+    
+
 }
 
 
