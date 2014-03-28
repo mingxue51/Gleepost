@@ -149,6 +149,12 @@ static NSString *const SEARCH_USERS_STR = @"Search";
         
         NSLog(@"Search users by name count: %d", users.count);
         
+        //Filter already members users.
+        users = [self filterUsersWithFoundUsers:users];
+        
+        DDLogInfo(@"Final users: %@", users);
+        
+        
         for(GLPUser *user in users) {
             NSNumber *index = [user remoteKeyNumber];
             if(!_checkedUsers[index]) {
@@ -176,6 +182,41 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     }];
 }
 
+
+-(NSArray *)filterUsersWithFoundUsers:(NSArray *)foundUsers
+{
+    NSMutableArray *finalUsers = foundUsers.mutableCopy;
+    
+//    NSMutableArray *deleteUsers = [[NSMutableArray alloc] init];
+    
+//    for(GLPUser *user in foundUsers)
+//    {
+//        for(GLPUser *member in _alreadyMembers)
+//        {
+//            if(user.remoteKey == member.remoteKey)
+//            {
+//                [deleteUsers addObject:user];
+//            }
+//        }
+//    }
+    
+    for(int i = 0; i<foundUsers.count; ++i)
+    {
+        for(int j = 0; j<_alreadyMembers.count; ++j)
+        {
+            GLPUser *fUser = [foundUsers objectAtIndex:i];
+            
+            GLPUser *allUser = [_alreadyMembers objectAtIndex:j];
+            
+            if(fUser.remoteKey == allUser.remoteKey)
+            {
+                [finalUsers removeObjectAtIndex:i];
+            }
+        }
+    }
+    
+    return finalUsers;
+}
 
 #pragma mark - Table view data source
 
@@ -296,6 +337,7 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     }
     
     [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success) {
+        
         [WebClientHelper hideStandardLoaderForView:view];
         
         if(!success) {

@@ -199,14 +199,26 @@ const int NUMBER_OF_ROWS = 2;
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:createPostImg forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(10, 0, 35, 35)];
+    [btnBack setFrame:CGRectMake(23, 0, 35, 35)];
+    btnBack.exclusiveTouch = YES;
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
+    
+    UIButton *rangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rangeBtn addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
+    [rangeBtn setBackgroundImage:nil forState:UIControlStateNormal];
+    [rangeBtn setFrame:CGRectMake(0, 0, 35, 35)];
+    
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width+20, btnBack.frame.size.height)];
     [view addSubview:btnBack];
+    [view addSubview:rangeBtn];
+    
     
     UIBarButtonItem *createPostButton = [[UIBarButtonItem alloc] initWithCustomView:view];
     
+    
     self.navigationItem.rightBarButtonItem = createPostButton;
+    
 }
 
 -(void)configureNavigationBar

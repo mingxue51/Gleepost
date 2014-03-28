@@ -121,7 +121,6 @@
     [contactCell setName:currentMember.name withImageUrl:currentMember.profileImageUrl];
     
     return contactCell;
-
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -184,9 +183,7 @@
 
 -(void)addNewMember:(id)sender
 {
-    
     [_addNewMembersBg setImage:[UIImage imageNamed:@"add_members_bg_press_down"]];
-
     
     [self performSegueWithIdentifier:@"add members" sender:self];
 }
@@ -204,6 +201,7 @@
         GLPSearchUsersViewController *suvc = segue.destinationViewController;
         suvc.searchForMembers = YES;
         suvc.group = _group;
+        suvc.alreadyMembers = _members;
     }
 }
 

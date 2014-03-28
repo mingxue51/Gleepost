@@ -94,15 +94,16 @@
     if(groupData.sendStatus == kSendStatusLocal)
     {
         //Hide exit and show blink indicator.
-        [self hideExitButton];
+//        [self hideExitButton];
         [self blinkIndicator];
-
+        [_exitButton setHidden:YES];
     }
     else
     {
         //Show exit button.
         [self hideIndicator];
 //        [self showExitButton];
+        [_exitButton setHidden:NO];
     }
 }
 
@@ -141,17 +142,17 @@
 {
     [self.uploadedIndicator setAlpha:1.0];
     
-    [_exitButton setAlpha:0.0f];
-    [_exitButton setHidden:NO];
+//    [_exitButton setAlpha:0.0f];
+//    [_exitButton setHidden:NO];
 
     [UIView animateWithDuration:0.5 delay:0.0 options:(UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut) animations:^{
         
-        [_exitButton setAlpha:1.0f];
+//        [_exitButton setAlpha:1.0f];
         [self.uploadedIndicator setAlpha:0.0];
         
     } completion:^(BOOL finished) {
         
-        [_exitButton setAlpha:1.0f];
+//        [_exitButton setAlpha:1.0f];
 
         [_uploadedIndicator setHidden:YES];
         

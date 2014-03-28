@@ -710,8 +710,6 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPostsWithNewProfileImage:) name:@"GLPProfileImageChanged" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
-
-
 }
 
 - (void)configTableView

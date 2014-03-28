@@ -620,6 +620,19 @@
     [self loadGroupsWithGroup:group];
 }
 
+
+//TODO: Do that later.
+/**
+ We need to delete first number of sections and then rows (?).
+ */
+-(void)deleteGroupWithRemoteKey:(int)remoteKey
+{
+//    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
+//    DDLogDebug(@"IndexPath: %d : %d", indexPath.row, indexPath.section);
+//    
+//    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationRight];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -883,8 +896,10 @@
 -(void)groupDeletedWithData:(GLPGroup *)group
 {
     [GLPGroupManager deleteGroup:group];
+
+//    [self deleteGroupWithRemoteKey:group.remoteKey];
     
-    [self reloadNewGroupWithGroup:group];
+    [self reloadNewGroupWithGroup:nil];
 }
 
 #pragma mark - Navigation
