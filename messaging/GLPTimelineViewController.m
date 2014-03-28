@@ -869,7 +869,8 @@ const float TOP_OFFSET = 280.0f;
         return;
     }
     
-    [self startLoading];
+//    [self startLoading];
+    [self showLoadingIndicator];
     
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
@@ -907,7 +908,8 @@ const float TOP_OFFSET = 280.0f;
             [self.tableView reloadData];
         }
         
-        [self stopLoading];
+//        [self stopLoading];
+        [self hideLoadingIndicator];
     }];
 }
 
@@ -1129,7 +1131,7 @@ const float TOP_OFFSET = 280.0f;
         return;
     }
     
-    [self startLoading];
+    [self showLoadingIndicator];
     
 //    if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
 //    {
@@ -1164,8 +1166,7 @@ const float TOP_OFFSET = 280.0f;
 //        [self startReloadingCronImmediately:NO];
 
         
-        [self stopLoading];
-
+        [self hideLoadingIndicator];
         
     }];
     
@@ -1256,8 +1257,6 @@ const float TOP_OFFSET = 280.0f;
         
         
     }];
-    
-    //TODO change that when it will be supported from server.
     
 //    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
 //        [self stopLoading];
@@ -1405,6 +1404,16 @@ const float TOP_OFFSET = 280.0f;
     self.isLoading = NO;
     
     [self.refreshControl endRefreshing];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+-(void)showLoadingIndicator
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+-(void)hideLoadingIndicator
+{
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1945,7 +1954,8 @@ const float TOP_OFFSET = 280.0f;
 {
     if(_groupsMode)
     {
-        [self loadGroupsFeed];
+//        [self loadGroupsFeed];
+        [self loadInitialGroupsPosts];
     }
     else
     {
@@ -2371,6 +2381,9 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)loadGroupsFeed
 {
+    //Initialise categories to all.
+    [[SessionManager sharedInstance] setCurrentCategory:nil];
+
     _groupsMode = YES;
     [self updateTitleView];
     [self loadInitialGroupsPosts];
@@ -2378,6 +2391,10 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)loadRegularPosts
 {
+    //Initialise categories to all.
+    [[SessionManager sharedInstance] setCurrentCategory:nil];
+
+    
     _groupsMode = NO;
     
     [self updateTitleView];
