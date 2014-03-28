@@ -104,8 +104,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
        imgUrl = [NSURL URLWithString:postData.imagesUrls[0]];
     }
     
-
-    DDLogDebug(@"Event image url: %@", imgUrl);
     
     //Set post's image.
     [_eventImage setImageWithURL:imgUrl usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -194,6 +192,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
     
+    [self configureGoingButton];
+    
  
 //    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
 }
@@ -212,6 +212,27 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(7.0f, 7.0f)];
     
 
+}
+
+
+-(void)configureGoingButton
+{
+    if([self.postData.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
+    {
+        [_goingBtn setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
+        [_goingBtn setEnabled:NO];
+    }
+    else if(self.postData.attended)
+    {
+        [_goingBtn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        _goingBtn.tag = 1;
+    }
+    else
+    {
+        [_goingBtn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+        _goingBtn.tag = 2;
+    }
+    
 }
 
 -(void)setTimeWithTime:(NSDate *)date

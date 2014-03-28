@@ -972,7 +972,7 @@
                                 </connections>
                             </button>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="P4S-g6-342">
-                                <rect key="frame" x="245" y="345" width="46" height="51"/>
+                                <rect key="frame" x="245" y="359" width="35" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3249,10 +3249,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     <inferredMetricsTieBreakers>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="Vyz-Un-MGO"/>
-        <segue reference="PCe-7s-A56"/>
+        <segue reference="TV3-yd-KJQ"/>
         <segue reference="WhX-ZL-dQD"/>
-        <segue reference="0xq-5H-6eX"/>
+        <segue reference="PCe-7s-A56"/>
+        <segue reference="w3Q-IM-kd1"/>
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="C4C-f3-cdX"/>
         <segue reference="XMX-SH-Gag"/>

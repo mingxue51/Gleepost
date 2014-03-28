@@ -366,7 +366,7 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     CGRect keyboardFrameConverted = [self.view convertRect:keyboardFrame fromView:window];
     
     CGRectSetY(_submitButton, keyboardFrameConverted.origin.y - 6 - _submitButton.frame.size.height);
-    CGRectSetXY(_countLabel, 220, _submitButton.frame.origin.y);
+    CGRectSetXY(_countLabel, 220, _submitButton.frame.origin.y+13);
     CGRectSetH(_tableView, _submitButton.frame.origin.y - 5 - _tableView.frame.origin.y);
 }
 

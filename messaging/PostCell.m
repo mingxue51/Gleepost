@@ -328,11 +328,13 @@ static const float FixedBottomTextViewHeight = 140;
     else if(self.post.attended)
     {
         [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        [_goingButton setEnabled:YES];
         _goingButton.tag = 1;
     }
     else
     {
         [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+        [_goingButton setEnabled:YES];
         _goingButton.tag = 2;
     }
 
