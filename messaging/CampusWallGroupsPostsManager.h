@@ -23,5 +23,6 @@
 -(NSArray *)addNewPosts:(NSMutableArray *)posts;
 
 -(void)removePostAtIndex:(int)index;
+-(BOOL)isTextPostExist;
 
 @end

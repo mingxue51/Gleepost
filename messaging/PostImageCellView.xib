@@ -160,8 +160,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vuN-nN-Jos">
-                                        <rect key="frame" x="28" y="8" width="40" height="18"/>
+                                        <rect key="frame" x="19" y="6" width="70" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="imageEdgeInsets" minX="10" minY="3" maxX="10" maxY="3"/>
                                         <state key="normal" image="more.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -264,7 +265,7 @@
         <image name="going.png" width="142" height="64"/>
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>
-        <image name="more.png" width="77" height="33"/>
+        <image name="more.png" width="68" height="21"/>
         <image name="post_bottom_bg.png" width="636" height="66"/>
         <image name="post_top_bg.png" width="636" height="659"/>
         <image name="share_button.png" width="198" height="100"/>

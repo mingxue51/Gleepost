@@ -149,6 +149,19 @@ static CampusWallGroupsPostsManager *instance = nil;
     return _posts.count;
 }
 
+-(BOOL)isTextPostExist
+{
+    for(GLPPost *p in _posts)
+    {
+        if(![p imagePost])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 -(void)removePostAtIndex:(int)index
 {
     [_posts removeObjectAtIndex:index];

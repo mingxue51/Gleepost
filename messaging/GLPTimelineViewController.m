@@ -53,6 +53,7 @@
 #import "GLPGroupManager.h"
 #import "CampusWallGroupsPostsManager.h"
 #import "GLPiOS6Helper.h"
+#import "TableViewHelper.h"
 
 @interface GLPTimelineViewController ()
 
@@ -903,10 +904,13 @@ const float TOP_OFFSET = 280.0f;
 //                [self clearBottomView];
 //            }
             
+            [self addFooterIfNeeded];
+            
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
         }
+        
         
 //        [self stopLoading];
         [self hideLoadingIndicator];
@@ -936,7 +940,6 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)clearBottomView
 {
-    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 }
 
@@ -1040,6 +1043,8 @@ const float TOP_OFFSET = 280.0f;
             else {
                 [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
             }
+            
+            [self addFooterIfNeeded];
         }
     }];
 }
@@ -1160,6 +1165,8 @@ const float TOP_OFFSET = 280.0f;
         
         [[GLPPostImageLoader sharedInstance] addPostsImages:[[CampusWallGroupsPostsManager sharedInstance] allPosts]];
         
+        [self addFooterIfNeeded];
+        
         [self.tableView reloadData];
         
         self.firstLoadSuccessful = YES;
@@ -1246,6 +1253,8 @@ const float TOP_OFFSET = 280.0f;
         }
         
         
+        [self addFooterIfNeeded];
+        
         self.firstLoadSuccessful = YES;
         //        [self startReloadingCronImmediately:NO];
         
@@ -1297,6 +1306,38 @@ const float TOP_OFFSET = 280.0f;
 //            }
 //        }
 //    }];
+}
+
+-(void)addFooterIfNeeded
+{
+    int numberOfPosts = 0;
+    
+    if(_groupsMode)
+    {
+        numberOfPosts = [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+    }
+    else
+    {
+        numberOfPosts = self.posts.count;
+    }
+    
+    
+    if(numberOfPosts == 0 || (numberOfPosts == 1 && [[CampusWallGroupsPostsManager sharedInstance] isTextPostExist]))
+    {
+        [self addTableViewFooterWithSize:2];
+    }
+    else if (numberOfPosts == 1 && ![[CampusWallGroupsPostsManager sharedInstance] isTextPostExist])
+    {
+        [self addTableViewFooterWithSize:1];
+    }
+    else if (numberOfPosts == 2 && [[CampusWallGroupsPostsManager sharedInstance] isTextPostExist])
+    {
+        [self addTableViewFooterWithSize:0.4];
+    }
+    else
+    {
+        [self removeTableViewFooter];
+    }
 }
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
@@ -1605,6 +1646,14 @@ const float TOP_OFFSET = 280.0f;
             return loadingCell;
         }
     }
+    
+    if(_groupsMode)
+    {
+        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+        {
+            return [TableViewHelper generateCellWithMessage:@"No more group posts."];
+        }
+    }
 
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
@@ -1715,6 +1764,16 @@ const float TOP_OFFSET = 280.0f;
     if(indexPath.row == self.posts.count) {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
+    
+    
+    if(_groupsMode)
+    {
+        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+        {
+            return 500.0f;
+        }
+    }
+    
     
     //float height = [[self.postsHeight objectAtIndex:indexPath.row] floatValue];
     
@@ -1961,6 +2020,23 @@ const float TOP_OFFSET = 280.0f;
     {
         [self loadInitialPosts];
     }
+}
+
+
+#pragma mark - UI methods
+
+-(void)addTableViewFooterWithSize:(float)sizeFactor
+{
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 240*sizeFactor)];
+    
+    [imgView setBackgroundColor:[UIColor whiteColor]];
+    
+    self.tableView.tableFooterView = imgView;
+}
+
+-(void)removeTableViewFooter
+{
+    self.tableView.tableFooterView = nil;
 }
 
 #pragma mark - View image delegate
