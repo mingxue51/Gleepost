@@ -143,6 +143,7 @@
 		5832C4BF189936E9004FC4F6 /* user_image_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BE189936E9004FC4F6 /* user_image_bg.png */; };
 		5832C4C918998563004FC4F6 /* UIImage+StackBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 5832C4C818998563004FC4F6 /* UIImage+StackBlur.m */; };
 		5832C4CD1899B8E7004FC4F6 /* ChatViewAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */; };
+		5834382218E643BA00DDAFB3 /* going_pressed_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834382118E643B900DDAFB3 /* going_pressed_new.png */; };
 		5834903A18BF80670087CC3A /* FDTake.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902718BF80670087CC3A /* FDTake.strings */; };
 		5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902B18BF80670087CC3A /* InfoPlist.strings */; };
 		5834903E18BF80670087CC3A /* FDTakeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5834903218BF80670087CC3A /* FDTakeController.m */; };
@@ -860,6 +861,7 @@
 		5832C4C818998563004FC4F6 /* UIImage+StackBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+StackBlur.m"; sourceTree = "<group>"; };
 		5832C4CB1899B8E7004FC4F6 /* ChatViewAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationController.h; sourceTree = "<group>"; };
 		5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationController.m; sourceTree = "<group>"; };
+		5834382118E643B900DDAFB3 /* going_pressed_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_pressed_new.png; sourceTree = "<group>"; };
 		5834902818BF80670087CC3A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/FDTake.strings; sourceTree = "<group>"; };
 		5834902918BF80670087CC3A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FDTake.strings; sourceTree = "<group>"; };
 		5834902A18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FDTake.strings; sourceTree = "<group>"; };
@@ -2474,6 +2476,7 @@
 				589EAD2718A43A12005B2F4C /* campus_live_cell_bg_old.png */,
 				58940FBB18D218F800FED5AF /* campus_live_cell_bg.png */,
 				58289EFA18D7595000228EFF /* going.png */,
+				5834382118E643B900DDAFB3 /* going_pressed_new.png */,
 				58289EF818D7593600228EFF /* going_pressed.png */,
 				58289EFC18D7598900228EFF /* going_expired.png */,
 				589EAD1C18A435D5005B2F4C /* gleepost_logo_header_old.png */,
@@ -3874,6 +3877,7 @@
 				583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */,
 				5890D23818482DC300E293DD /* profile@2x.png in Resources */,
 				802DCE4918AA880900A23511 /* internal_notification_cell_ignore_button.png in Resources */,
+				5834382218E643BA00DDAFB3 /* going_pressed_new.png in Resources */,
 				5834FF4418B502D20092C52D /* profile_background_main.png in Resources */,
 				58F8C33318A50184005EC7ED /* finished.png in Resources */,
 				5890D23318482DC300E293DD /* home.png in Resources */,

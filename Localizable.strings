@@ -8,3 +8,5 @@
 
 "MSG" = "New message from %@: %@";
 "GROUP" = "User %@ added you to %@.";
+"added_you" = "%@ added you as a contact.";
+"accepted_you" = "%@ accepted your contact request.";

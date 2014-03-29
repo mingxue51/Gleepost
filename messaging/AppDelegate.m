@@ -36,6 +36,9 @@
 #import "GLPPushManager.h"
 #import "ContactsViewController.h"
 #import "GroupViewController.h"
+#import "GLPPrivateProfileViewController.h"
+#import "GLPProfileViewController.h"
+#import "ContactsManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -180,9 +183,9 @@ static NSString * const kCustomURLHost      = @"verify";
     
     DDLogInfo(@"Receive push notification: %@", json);
     
-    if(!json[@"conv"] && !json[@"group-id"]) {
+    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"]) {
         
-        DDLogError(@"Converstion id or group id does not exist, abort");
+        DDLogError(@"Converstion id or group id or added user or accepted user does not exist, abort");
         return;
     }
     
@@ -194,8 +197,52 @@ static NSString * const kCustomURLHost      = @"verify";
     {
         [self navigateToGroupWithJson:json];
     }
-    
+    else if(json[@"adder-id"])
+    {
+        [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"adder-id"] integerValue]];
+    }
+    else if (json[@"accepter-id"])
+    {
+        [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"accepter-id"] integerValue]];
+    }
+}
 
+-(void)navigateToUsersProfileWithJson:(NSDictionary *)json withRemoteKey:(int)remoteKey
+{
+//    DDLogDebug(@"JSON: %@", json);
+    
+//    int remoteKey = [json[@"adder-id"] integerValue];
+    
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 4) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:4];
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    
+    DDLogInfo(@"Private Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    GLPPrivateProfileViewController *privateProfileVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPPrivateProfileViewController"];
+    
+    DDLogDebug(@"Remote Key push notification: %d", remoteKey);
+    
+    privateProfileVC.selectedUserId = remoteKey;
+    
+    [[ContactsManager sharedInstance] refreshContacts];
+    
+//    groupVC.group = group;
+//    groupVC.fromPushNotification = YES;
+    
+    [navVC setViewControllers:@[profileVC, privateProfileVC] animated:NO];
+    
 }
 
 -(void)navigateToGroupWithJson:(NSDictionary *)json

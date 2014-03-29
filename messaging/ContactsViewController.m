@@ -463,6 +463,7 @@
         
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
         
+        
         //TODO: Find the issue and fix it.
         
         if(allContacts != nil)

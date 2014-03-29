@@ -1304,7 +1304,7 @@
         <!--Private Profile View Controller-->
         <scene sceneID="Zcz-zy-fr7">
             <objects>
-                <tableViewController id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3253,8 +3253,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <segue reference="WhX-ZL-dQD"/>
         <segue reference="PCe-7s-A56"/>
         <segue reference="w3Q-IM-kd1"/>
+        <segue reference="lQn-ic-ohV"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="C4C-f3-cdX"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
     </inferredMetricsTieBreakers>
