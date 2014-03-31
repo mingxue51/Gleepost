@@ -114,28 +114,27 @@ float const kMarginBetweenBorderAndContent = 15;
     // added you event
     if(notification.notificationType == kGLPNotificationTypeAddedYou)
     {
-        self.buttonsView.hidden = NO;
         
-        float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? CGRectGetMaxY(self.image.frame) : CGRectGetMaxY(self.contentLabel.frame);
-        CGRectSetY(self.buttonsView, biggestView + kMarginBetweenContentAndButtonsView);
+        //If the contact is added from profile view (using push notification) convert the cell to: "You are now friends".
         
-        [self configureButtonsView];
-        
-        //TODO: If the contact is added from profile view (using push notification) convert the cell to: "You are now friends".
-        
+        if([[ContactsManager sharedInstance] isUserContactWithId:notification.user.remoteKey])
+        {
+            [self showYouAreNowFriendsView];
+        }
+        else
+        {
+            self.buttonsView.hidden = NO;
+            
+            float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? CGRectGetMaxY(self.image.frame) : CGRectGetMaxY(self.contentLabel.frame);
+            CGRectSetY(self.buttonsView, biggestView + kMarginBetweenContentAndButtonsView);
+            
+            [self configureButtonsView];
+        }
     }
     
     else if(notification.notificationType == kGLPNotificationTypeAcceptedYou)
     {
-        self.friendsLinkImageView.hidden = NO;
-        self.myImage.hidden = NO;
-        
-        NSString *currentProfile = [SessionManager sharedInstance].user.profileImageUrl;
-        [ShapeFormatterHelper setRoundedView:self.myImage toDiameter:self.myImage.frame.size.height];
-        [self.myImage setImageWithURL:[NSURL URLWithString:currentProfile] placeholderImage:nil];
-        
-        CGRectSetX(self.contentLabel, kMarginBetweenBorderAndContent + kTwoProfileImagesWidth + kMarginBetweenProfileImageAndContent);
-        self.contentLabel.textAlignment = NSTextAlignmentRight;
+        [self showYouAreNowFriendsView];
         
     } else if(notification.notificationType == kGLPNotificationTypeCommented ||
               notification.notificationType == kGLPNotificationTypeLiked)
@@ -153,6 +152,19 @@ float const kMarginBetweenBorderAndContent = 15;
         [self.contentLabel sizeToFit];
     }
     
+}
+
+-(void)showYouAreNowFriendsView
+{
+    self.friendsLinkImageView.hidden = NO;
+    self.myImage.hidden = NO;
+    
+    NSString *currentProfile = [SessionManager sharedInstance].user.profileImageUrl;
+    [ShapeFormatterHelper setRoundedView:self.myImage toDiameter:self.myImage.frame.size.height];
+    [self.myImage setImageWithURL:[NSURL URLWithString:currentProfile] placeholderImage:nil];
+    
+    CGRectSetX(self.contentLabel, kMarginBetweenBorderAndContent + kTwoProfileImagesWidth + kMarginBetweenProfileImageAndContent);
+    self.contentLabel.textAlignment = NSTextAlignmentRight;
 }
 
 - (void)acceptButtonClick
