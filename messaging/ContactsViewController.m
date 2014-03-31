@@ -601,6 +601,7 @@
 
 -(void)showGroups
 {
+    DDLogDebug(@"SHOW GROUPS: %@", _groups);
     
     if(self.groups.count > 0)
     {

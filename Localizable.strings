@@ -7,7 +7,7 @@
 */
 
 "MSG" = "New message from %@: %@";
-"GROUP" = "User %@ added you to %@.";
+"GROUP" = "%@ added you to group: %@.";
 "added_you" = "%@ added you as a contact.";
 "accepted_you" = "%@ accepted your contact request.";
 "NEW_CONV" = "%@ created a new conversation with you.";

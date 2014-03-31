@@ -118,7 +118,7 @@
     
     GLPUser *currentMember = self.members[indexPath.row];
     
-    [contactCell setName:currentMember.name withImageUrl:currentMember.profileImageUrl];
+    [contactCell setMember:currentMember withGroup:_group];
     
     return contactCell;
 }

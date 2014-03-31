@@ -26,6 +26,7 @@
 #import "GLPLoadingCell.h"
 #import "MembersViewController.h"
 #import "GroupOperationManager.h"
+#import "SessionManager.h"
 
 @interface GroupViewController ()
 
@@ -1028,7 +1029,7 @@ const int NUMBER_OF_ROWS = 2;
     
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if([selectedButtonTitle isEqualToString:@"Show image"])
+    if([selectedButtonTitle isEqualToString:@"View image"])
     {
         //Show image.
         [self showImage];
@@ -1069,15 +1070,25 @@ const int NUMBER_OF_ROWS = 2;
 {
     UIActionSheet *actionSheet = nil;
     
+    BOOL hasImage = [self addGroupImage:sender];
     
-    if([self addGroupImage:sender])
+    if(_group.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show image", @"Change image", nil];
+        if(hasImage)
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
+        }
+        else
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Add image", nil];
+        }
     }
     else
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Add image", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", nil];
     }
+    
+
     
     
     [actionSheet showInView:[self.view window]];

@@ -22,10 +22,14 @@
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback
 {
 
+    NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
+    
     //Find all the groups that contain real images and save them.
     NSMutableArray *pendingGroups = [[self findGroupsWithRealImagesWithGroups:groups] mutableCopy];
     
-    NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
+    DDLogDebug(@"Pending groups: %@", pendingGroups);
+    
+
     
     //Add any new images that are uploading in GroupOperationManager.
 //    localEntities = [self addPendingImagesIfExistWithGroups:localEntities].mutableCopy;
@@ -35,6 +39,9 @@
     [localEntities addObjectsFromArray:pendingGroups];
     
     localEntities = [GLPGroupManager orderMembersByNameWithMembers:localEntities].mutableCopy;
+    
+    
+    
     
     localCallback(localEntities);
     
@@ -403,9 +410,9 @@
     }
     
     
-    NSArray *finalSections = [self findValidSections:groups];
+    NSArray *finalSections = [GLPGroupManager findValidSections:groups];
     
-    NSDictionary *categorisedGroups = [self categoriseByLetterWithSections:finalSections andGroups:groups];
+    NSDictionary *categorisedGroups = [GLPGroupManager categoriseByLetterWithSections:finalSections andGroups:groups];
     
     
     

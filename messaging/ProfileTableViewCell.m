@@ -108,20 +108,25 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     if(image)
     {
         [self.profileImage setImage:image];
-        
+        [_profileBackImage setHidden:NO];
+
         //Add gesture to show menu.
         [self addGestureToGroupImageWithImage:YES];
     }
     else if(group.groupImageUrl)
     {
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+            [_profileBackImage setHidden:NO];
+            
+        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
         //Add gesture to show menu.
         [self addGestureToGroupImageWithImage:YES];
     }
     else
     {
-        [_profileBackImage setHidden:YES];
+//        [_profileBackImage setHidden:YES];
         [self.profileImage setImage:nil];
         
         //Add gesture to show menu.
@@ -192,7 +197,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     if([user.profileImageUrl isEqualToString:@""])
     {
         //Set default image.
-        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
     else
     {
@@ -243,7 +248,11 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     {
         
         //Fetch the image from the server and add it to the image view.
-        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+            [_profileBackImage setHidden:NO];
+            
+        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
 //        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
 //            

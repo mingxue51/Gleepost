@@ -88,7 +88,9 @@
 //    }
     else
     {
-        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
     if(groupData.sendStatus == kSendStatusLocal)

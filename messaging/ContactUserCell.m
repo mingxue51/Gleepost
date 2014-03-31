@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
+
 @implementation ContactUserCell
 
 const float CONTACT_CELL_HEIGHT = 48;
@@ -46,5 +47,16 @@ const float CONTACT_CELL_HEIGHT = 48;
         [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
+
+-(void)setMember:(GLPUser *)member withGroup:(GLPGroup *)group
+{
+    [self setName:member.name withImageUrl:member.profileImageUrl];
+    
+    if(group.author.remoteKey == member.remoteKey)
+    {
+        [_creatorLbl setHidden:NO];
+    }
+}
+
 
 @end

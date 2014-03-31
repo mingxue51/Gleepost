@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPGroup.h"
 
 @interface ContactUserCell : UITableViewCell
 
@@ -18,9 +19,12 @@ extern const float CONTACT_CELL_HEIGHT;
 /** User's name. */
 @property (retain, nonatomic) IBOutlet UILabel *nameUser;
 
+@property (weak, nonatomic) IBOutlet UILabel *creatorLbl;
+
 
 /** Creates the elements of the cell. */
 -(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl;
 
+-(void)setMember:(GLPUser *)member withGroup:(GLPGroup *)group;
 
 @end

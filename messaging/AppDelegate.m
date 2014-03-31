@@ -183,7 +183,7 @@ static NSString * const kCustomURLHost      = @"verify";
     
     DDLogInfo(@"Receive push notification: %@", json);
     
-    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"]) {
+    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"]) {
         
         DDLogError(@"Converstion id or group id or added user or accepted user does not exist, abort");
         return;
@@ -204,6 +204,20 @@ static NSString * const kCustomURLHost      = @"verify";
     else if (json[@"accepter-id"])
     {
         [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"accepter-id"] integerValue]];
+    }
+    else if (json[@"version"])
+    {
+        NSString *jsonVersion = json[@"version"];
+        
+        NSString *actualVersion = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+        
+        if(![jsonVersion isEqualToString:actualVersion])
+        {
+            //Navigate to the user in AppStore.
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/gb/app/gleepost/id820569024?mt=8&uo=4"]];
+
+        }
+
     }
 }
 
