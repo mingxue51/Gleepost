@@ -274,14 +274,37 @@ static ContactsManager *instance = nil;
     [GLPContactDao setContactAsRegularContactWithRemoteKey:remoteKey];
 }
 
+
+/**
+ Callback accepts contact with remote key.
+ If the contact is in local database then update it and reload contacts from database,
+ otherwise refresh contacts.
+ 
+ @param remoteKey contact's remote key
+ 
+ */
 -(void)acceptContact:(int)remoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
 {
+    GLPContact* contact = [self contactWithRemoteKey:remoteKey];
+    
     [[WebClient sharedInstance]acceptContact:remoteKey callbackBlock:^(BOOL success) {
 
         if(success)
         {
-            [self contactWithRemoteKeyAccepted:remoteKey];
-            [self loadContactsFromDatabase];
+            if(contact)
+            {
+                [self contactWithRemoteKeyAccepted:remoteKey];
+                [self loadContactsFromDatabase];
+                
+                DDLogDebug(@"Contact exist in database: %@", contact);
+            }
+            else
+            {
+                DDLogDebug(@"Contact not exist in database: %@", contact);
+
+                [self refreshContacts];
+            }
+
             callbackBlock(success);
         }
         else

@@ -121,6 +121,8 @@ float const kMarginBetweenBorderAndContent = 15;
         
         [self configureButtonsView];
         
+        //TODO: If the contact is added from profile view (using push notification) convert the cell to: "You are now friends".
+        
     }
     
     else if(notification.notificationType == kGLPNotificationTypeAcceptedYou)

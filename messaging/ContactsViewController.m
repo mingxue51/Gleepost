@@ -586,6 +586,8 @@
     self.users = [categorisedContacts objectForKey:@"Contacts"];
     self.usersStr = [categorisedContacts objectForKey:@"ContactsUserNames"];
     
+    [self.categorisedUsers removeAllObjects];
+    
     if(self.users.count>0)
     {
         self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];

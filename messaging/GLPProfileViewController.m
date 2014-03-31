@@ -959,9 +959,7 @@
         }
                 
         //Save contact to database.
-        [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
-        
-        DDLogDebug(@"Contact saved: %@", contact);
+//        [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
         
         
         [self.tableView beginUpdates];
@@ -1192,7 +1190,7 @@
             
             self.selectedUserId = notification.user.remoteKey;
             //Refresh contacts' data.
-//            [[ContactsManager sharedInstance] refreshContacts];
+            [[ContactsManager sharedInstance] refreshContacts];
             
             [self performSegueWithIdentifier:@"view private profile" sender:self];
 

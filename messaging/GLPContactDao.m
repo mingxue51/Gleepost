@@ -89,7 +89,7 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         BOOL s = [db executeUpdateWithFormat:@"update contacts set they_confirmed=1 where remoteKey=%d",remoteKey];
-        NSLog(@"Contact became regular. %d",s);
+        DDLogInfo(@"Contact became regular. %d",s);
         
     }];
 }

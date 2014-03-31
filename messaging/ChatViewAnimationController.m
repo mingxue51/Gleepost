@@ -30,7 +30,7 @@
 
 @implementation ChatViewAnimationController
 
-float const NEW_CHAT_DELAY = 0.0;
+float const NEW_CHAT_DELAY = 2.0;
 
 
 - (void)viewDidLoad
