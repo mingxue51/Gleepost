@@ -1624,7 +1624,14 @@ const float TOP_OFFSET = 280.0f;
 {
     if(_groupsMode)
     {
-        return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+        {
+            return 1;
+        }
+        else
+        {
+            return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+        }
     }
     else
     {
@@ -1768,7 +1775,7 @@ const float TOP_OFFSET = 280.0f;
     {
         if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
         {
-            return 500.0f;
+            return 100.0f;
         }
     }
     
