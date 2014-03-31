@@ -523,7 +523,7 @@ const int NUMBER_OF_ROWS = 2;
         buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
         buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [buttonsView setDelegate:self];
+        [buttonsView setDelegate:self fromPushNotification:NO];
         
         return buttonsView;
         

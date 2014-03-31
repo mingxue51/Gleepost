@@ -159,7 +159,12 @@
         [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
     }
 
-    
+    if(_fromPushNotification)
+    {
+        self.selectedTabStatus = kGLPSettings;
+        
+//        [self.tableView reloadData];
+    }
 
     
     [self setUpNotifications];
@@ -1094,13 +1099,20 @@
         buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
         buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        
         if(_unreadNotificationsCount > 0) {
             buttonsView.notificationsBubbleImageView.hidden = NO;
         } else {
             buttonsView.notificationsBubbleImageView.hidden = YES;
         }
         
-        [buttonsView setDelegate:self];
+        [buttonsView setDelegate:self fromPushNotification:_fromPushNotification];
+        
+        if(_fromPushNotification)
+        {
+//            [buttonsView viewSettingsButton];
+            _fromPushNotification = NO;
+        }
         
         
         if(self.selectedTabStatus == kGLPSettings)

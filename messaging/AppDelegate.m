@@ -247,31 +247,43 @@ static NSString * const kCustomURLHost      = @"verify";
 
 -(void)navigateToGroupWithJson:(NSDictionary *)json
 {
-    GLPGroup *group = [[GLPGroup alloc] initFromPushNotificationWithRemoteKey:[json[@"group-id"] integerValue]];
+//    GLPGroup *group = [[GLPGroup alloc] initFromPushNotificationWithRemoteKey:[json[@"group-id"] integerValue]];
     
     if(!_tabBarController) {
         DDLogError(@"Cannot find tab bar VC, abort");
         return;
     }
     
-    if(_tabBarController.selectedIndex != 3) {
+    if(_tabBarController.selectedIndex != 4) {
         UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
         [currentNavigationVC popToRootViewControllerAnimated:NO];
-        [_tabBarController setSelectedIndex:3];
+        [_tabBarController setSelectedIndex:4];
     }
     
-    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
-    UINavigationController *navVC = _tabBarController.viewControllers[3];
+//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
+//    UINavigationController *navVC = _tabBarController.viewControllers[3];
+//    
+//    DDLogInfo(@"Contacts VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+//    ContactsViewController *contactsVC = navVC.viewControllers[0];
+//    
+//    GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+//    groupVC.group = group;
+//    groupVC.fromPushNotification = YES;
     
-    DDLogInfo(@"Contacts VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
-    ContactsViewController *contactsVC = navVC.viewControllers[0];
     
-    GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
-    groupVC.group = group;
-    groupVC.fromPushNotification = YES;
-//    conversationVC.hidesBottomBarWhenPushed = YES;
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[4];
     
-    [navVC setViewControllers:@[contactsVC, groupVC] animated:NO];
+    DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    //Navigate to notifications.
+    profileVC.fromPushNotification = YES;
+    
+    
+    [navVC setViewControllers:@[profileVC] animated:NO];
+
+//    [navVC setViewControllers:@[contactsVC, groupVC] animated:NO];
 }
 
 -(void)navigateToConversationWithJson:(NSDictionary *)json

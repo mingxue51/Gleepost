@@ -49,11 +49,16 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
 //    [self showGroupButtonsPostsSelected];
 //}
 
--(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate
+-(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate fromPushNotification:(BOOL)push
 {
     if([delegate isKindOfClass:[GLPProfileViewController class]])
     {
         _isProfileViewController = YES;
+        
+        if(push)
+        {
+            [self viewSettingsButton];
+        }
     }
     else if([delegate isKindOfClass:[GroupViewController class]])
     {
@@ -114,8 +119,27 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
 
 //        [self showGroupButtonsMembersSelected];
     }
+}
+
+-(void)viewSettingsButton
+{
+    [self setGrayToNavigators];
+    
+    [self setGreenToNavigator:self.settingsLine];
     
     
+    if(_isProfileViewController)
+    {
+        [self showProfileButtonsNotificationsSelected];
+        [_delegate viewSectionWithId:kGLPSettings];
+        
+    }
+    else
+    {
+        [_delegate viewSectionWithId:kGLPSettings];
+        
+        //        [self showGroupButtonsMembersSelected];
+    }
 }
 
 

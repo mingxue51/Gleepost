@@ -22,6 +22,8 @@
 
 @property (strong, nonatomic) GLPPost *selectedPost;
 @property (assign, nonatomic) int selectedUserId;
+@property (assign, nonatomic) BOOL fromPushNotification;
+
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)logout:(id)sender;

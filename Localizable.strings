@@ -10,3 +10,4 @@
 "GROUP" = "User %@ added you to %@.";
 "added_you" = "%@ added you as a contact.";
 "accepted_you" = "%@ accepted your contact request.";
+"NEW_CONV" = "%@ created a new conversation with you.";

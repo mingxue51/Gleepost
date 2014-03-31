@@ -19,5 +19,7 @@ extern const float TWO_BUTTONS_CELL_HEIGHT;
 @property (readonly, nonatomic) UIViewController<ButtonNavigationDelegate> *delegate;
 
 
--(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate;
+-(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate fromPushNotification:(BOOL)push;
+-(void)viewSettingsButton;
+
 @end
