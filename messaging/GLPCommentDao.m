@@ -101,7 +101,7 @@
 
 + (void)save:(GLPComment *)entity inDb:(FMDatabase *)db
 {
-    DDLogDebug(@"Comment: %@", entity);
+    DDLogDebug(@"Comment before save: %@", entity);
     
     int date = entity.date.timeIntervalSince1970;
     

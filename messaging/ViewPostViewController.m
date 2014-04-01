@@ -526,6 +526,8 @@ static bool firstTime = YES;
 
 -(void)loadComments
 {
+    DDLogDebug(@"Post remote key: %d", self.post.remoteKey);
+    
     if(self.post.remoteKey == 0)
     {
         //TODO: Load comments from operation manager.
@@ -545,6 +547,8 @@ static bool firstTime = YES;
 {
     NSAssert(self.post.key != 0, @"Post needs to have post key.");
     
+    DDLogInfo(@"Loading local comments from comment uploader.");
+    
     GLPCommentUploader *uploader = [[GLPCommentUploader alloc] init];
     
     self.comments = [uploader pendingCommentsWithPostKey:self.post.key].mutableCopy;
@@ -556,14 +560,14 @@ static bool firstTime = YES;
 {
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
-    
+    DDLogInfo(@"Loading comments from database and from server.");
+
     
     [GLPCommentManager loadCommentsWithLocalCallback:^(NSArray *comments) {
         
         self.comments = [comments mutableCopy];
         
         [self viewCommentsWithScroll:scroll];
-
 
         
     } remoteCallback:^(BOOL success, NSArray *comments) {
@@ -572,6 +576,7 @@ static bool firstTime = YES;
         self.comments = [comments mutableCopy];
         
         [self viewCommentsWithScroll:scroll];
+        
         
     } withPost:self.post];
     

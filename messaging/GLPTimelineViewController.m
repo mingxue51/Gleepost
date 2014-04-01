@@ -2084,8 +2084,17 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
-    self.selectedPost = self.posts[postIndex];
-    self.postIndexToReload = postIndex;
+    if(_groupsMode)
+    {
+        self.selectedPost = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:postIndex];
+    }
+    else
+    {
+        self.selectedPost = self.posts[postIndex];
+        self.postIndexToReload = postIndex;
+    }
+    
+
    
     ++self.selectedPost.commentsCount;
 

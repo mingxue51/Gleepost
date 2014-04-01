@@ -76,8 +76,6 @@
         
         
         
-        
-        
         UIColor *buttonsColour = [UIColor whiteColor];
         
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
@@ -176,6 +174,8 @@
 //        newComment.date = [NSDate date];
 //        newComment.author = [SessionManager sharedInstance].user;
 //        newComment.post = self.post;
+        
+        DDLogDebug(@"New comment view post remote key: %d", self.post.remoteKey);
         
         GLPCommentUploader *commentUploader = [[GLPCommentUploader alloc] init];
         
