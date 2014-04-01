@@ -654,6 +654,7 @@
 
     }];
     
+    
     for(GLPPost *post in profilePosts)
     {
         ++lastPostIndex;

@@ -11,6 +11,7 @@
 #import "WebClientHelper.h"
 #import "GroupOperationManager.h"
 #import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @interface NewGroupViewController ()
 
@@ -45,7 +46,12 @@
     [self configureNavigationBar];
     
 
-    
+    if(!IS_IPHONE_5) {
+        CGFloat offset = -25;
+//        CGRectMoveY(_groupDescriptionTextView, offset);
+        CGRectAddH(_groupDescriptionTextView, offset);
+
+    }
 //    [self configureProgressBar];
     
 }
@@ -101,6 +107,9 @@
 
 -(void)configureNavigationBar
 {
+    [AppearanceHelper setNavigationBarFontForNavigationBar:_navBar];
+
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 

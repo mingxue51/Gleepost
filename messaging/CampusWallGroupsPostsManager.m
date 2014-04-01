@@ -8,6 +8,7 @@
 
 #import "CampusWallGroupsPostsManager.h"
 #import "WebClient.h"
+#import "GLPPostManager.h"
 
 @interface CampusWallGroupsPostsManager ()
 
@@ -67,7 +68,13 @@ static CampusWallGroupsPostsManager *instance = nil;
 
 -(void)setPosts:(NSMutableArray *)posts
 {
+
+    
     _posts = posts;
+    
+    [GLPPostManager setFakeKeysToPrivateProfilePosts:_posts];
+    
+
 }
 
 
