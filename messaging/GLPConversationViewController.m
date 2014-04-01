@@ -314,6 +314,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (BOOL)canLoadMessages
 {
+    DDLogDebug(@"is empty %d is waiting for sync %d", _isEmptyConversation, _isWaitingForSyncConversation);
+    
     return !_isEmptyConversation && !_isWaitingForSyncConversation;
 }
 
