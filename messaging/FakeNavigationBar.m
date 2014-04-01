@@ -98,7 +98,6 @@ const CGFloat HEIGH_FAKE = 64.0f;
 {
     [self.titleLbl setText:@"Cardinal Wall"];
     [self.createPostBtn setHidden:NO];
-
 }
 
 

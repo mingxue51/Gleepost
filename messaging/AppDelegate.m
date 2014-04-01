@@ -213,7 +213,6 @@ static NSString * const kCustomURLHost      = @"verify";
         
         if(![jsonVersion isEqualToString:actualVersion])
         {
-
             [self navigateToGleepostApp];
 
         }
