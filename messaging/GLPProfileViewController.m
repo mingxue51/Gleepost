@@ -247,8 +247,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
-
-
 }
 
 
@@ -256,8 +254,6 @@
 
 -(void)deletePost:(NSNotification *)notification
 {
-    DDLogDebug(@"DELETE POST CALLED INDEX!");
-    
     _postUploaded = YES;
     
 //    [self.tableView reloadData];
@@ -584,7 +580,6 @@
     //Set a boolean value YES in order to reload posts when user navigates back to profile.
     _postUploaded = YES;
     
-    DDLogDebug(@"New post!");
 }
 
 #pragma mark - ProfileSettingsTableViewCellDelegate
@@ -886,10 +881,20 @@
     _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
     _notifications = [GLPNotificationManager notifications];
     
+ 
+
+    
     DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
     
     if(self.selectedTabStatus == kGLPSettings) {
         [self notificationsTabClick];
+    }
+    else
+    {
+        if(_unreadNotificationsCount > 0)
+        {
+            [self.tableView reloadData];
+        }
     }
 }
 
@@ -910,7 +915,6 @@
     for(id not in notifications) {
         [_notifications insertObject:not atIndex:i];
         [indexPaths addObject:[NSIndexPath indexPathForRow:i + 2 inSection:0]];
-        DDLogDebug(@"notification count: %d, index paths: %@", notifications.count, indexPaths);
         
         //ADDED.
 //        ++i;
@@ -1239,8 +1243,6 @@
         //Navigate to group.
         else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
         {
-            DDLogDebug(@"Notification group id: %@, remote key: %d", [notification.customParams objectForKey:@"network"], notification.remoteKey);
-            
             [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
         }
 
