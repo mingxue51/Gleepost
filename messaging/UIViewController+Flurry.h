@@ -15,5 +15,6 @@
 
 // Can be used to track viewWillAppear
 - (void)sendViewToFlurry:(NSString *)view;
+-(void)sendView:(NSString *)view withId:(int)remoteKey;
 
 @end

@@ -30,6 +30,7 @@
 #import "GLPPostManager.h"
 #import "GLPApplicationHelper.h"
 
+
 @interface ViewPostViewController ()
 
 @property (strong, nonatomic) NSMutableArray *comments;
@@ -80,6 +81,7 @@ static BOOL likePushed;
 
     
     [self fillPostWithKey];
+    
 
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -118,10 +120,11 @@ static BOOL likePushed;
     [self registerNotifications];
 
     
+    [self sendStatistics];
+
    // [self loadComments];
 
-    [self sendViewToGAI:NSStringFromClass([self class])];
-    [self sendViewToFlurry:NSStringFromClass([self class])];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -148,6 +151,15 @@ static BOOL likePushed;
     
 
     [super viewWillDisappear:animated];
+}
+
+-(void)sendStatistics
+{
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+    
+    [self sendView:NSStringFromClass([self class]) withId:self.post.remoteKey];
+
 }
 
 

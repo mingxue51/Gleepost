@@ -213,12 +213,31 @@ static NSString * const kCustomURLHost      = @"verify";
         
         if(![jsonVersion isEqualToString:actualVersion])
         {
-            //Navigate to the user in AppStore.
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/gb/app/gleepost/id820569024?mt=8&uo=4"]];
+
+            [self navigateToGleepostApp];
 
         }
 
     }
+}
+
+-(void)navigateToGleepostApp
+{
+//    UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+    
+//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[_tabBarController.selectedIndex] class]));
+//    UINavigationController *navVC = _tabBarController.viewControllers[_tabBarController.selectedIndex];
+//    
+//    DDLogInfo(@"Private Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+//    UINavigationController *currentVC = navVC.viewControllers[0];
+    
+    [NSThread detachNewThreadSelector:@selector(openUrl:) toTarget:self withObject:nil];
+}
+
+-(void)openUrl:(id)sender
+{
+    //Navigate to the user in AppStore.
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/gb/app/gleepost/id820569024?mt=8&uo=4"]];
 }
 
 -(void)navigateToUsersProfileWithJson:(NSDictionary *)json withRemoteKey:(int)remoteKey
