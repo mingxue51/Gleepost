@@ -45,9 +45,7 @@ float const NEW_CHAT_DELAY = 2.0;
     
     [self configureNavigationBar];
 
-    
     [self startAnimation];
-    
 }
 
 

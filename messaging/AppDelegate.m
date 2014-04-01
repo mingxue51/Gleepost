@@ -209,7 +209,7 @@ static NSString * const kCustomURLHost      = @"verify";
     {
         NSString *jsonVersion = json[@"version"];
         
-        NSString *actualVersion = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+        NSString *actualVersion = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
         
         if(![jsonVersion isEqualToString:actualVersion])
         {

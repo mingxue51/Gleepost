@@ -68,8 +68,6 @@
     [self configureSegment];
     
     [self configNotifications];
-    
-
 }
 
 -(void)viewDidAppear:(BOOL)animated
