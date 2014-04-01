@@ -84,7 +84,7 @@ static NSString * const kCustomURLHost      = @"verify";
     [self.window makeKeyAndVisible];
 
 #if TARGET_IPHONE_SIMULATOR
-    //[[DCIntrospect sharedIntrospector] start];
+    [[DCIntrospect sharedIntrospector] start];
 #endif
     
     if(!loggedIn && [GLPLoginManager shouldAutoLogin]) {

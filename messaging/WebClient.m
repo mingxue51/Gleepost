@@ -554,7 +554,7 @@ static WebClient *instance = nil;
 
 #pragma mark - Groups
 
--(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group))callbackBlock
+-(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"networks/%d",groupId];
     
@@ -563,11 +563,14 @@ static WebClient *instance = nil;
         GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
         
         
-        callbackBlock(YES, group);
+        callbackBlock(YES, group, nil);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        callbackBlock(NO, nil);
+        NSString *errorMessage = [RemoteParser parseLoadingGroupErrorMessage:error.localizedRecoverySuggestion];
+        
+        callbackBlock(NO, nil, errorMessage);
+        
     }];
 }
 

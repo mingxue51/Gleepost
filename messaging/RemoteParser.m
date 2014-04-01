@@ -873,6 +873,23 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
 }
 
++(NSString *)parseLoadingGroupErrorMessage:(NSString *)error
+{
+    if(!error)
+    {
+        return @"No network";
+    }
+    
+    if([error rangeOfString:@"You're not allowed to do that!"].location != NSNotFound)
+    {
+        return @"No access";
+    }
+    else
+    {
+        return @"No network";
+    }
+}
+
 #pragma mark - Images
 
 +(NSString*)parseImageUrl:(NSString*)url

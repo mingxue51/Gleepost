@@ -61,6 +61,7 @@
 
 +(NSString*)parseRegisterErrorMessage:(NSString*)error;
 +(NSString*)parseLoginErrorMessage:(NSString*)error;
++(NSString *)parseLoadingGroupErrorMessage:(NSString *)error;
 
 // images
 +(NSString*)parseImageUrl:(NSDictionary*)url;

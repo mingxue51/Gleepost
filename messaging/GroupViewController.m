@@ -732,7 +732,7 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)loadGroupData
 {
-    [[WebClient sharedInstance] getGroupDescriptionWithId:_group.remoteKey withCallbackBlock:^(BOOL success, GLPGroup *group) {
+    [[WebClient sharedInstance] getGroupDescriptionWithId:_group.remoteKey withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errormMessage) {
         
         if(success)
         {

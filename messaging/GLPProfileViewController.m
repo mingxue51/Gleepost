@@ -815,7 +815,7 @@
 
 -(void)loadGroupAndNavigateWithRemoteKey:(NSString *)remoteKey
 {
-    [[WebClient sharedInstance] getGroupDescriptionWithId:[remoteKey integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group) {
+    [[WebClient sharedInstance] getGroupDescriptionWithId:[remoteKey integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errorMessage) {
        
         if(success)
         {
@@ -825,7 +825,16 @@
         }
         else
         {
-            [WebClientHelper showStandardError];
+            
+            if([errorMessage isEqualToString:@"No access"])
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Error loading group" andContent:@"It seems that you are not belonging to this group anymore"];
+            }
+            else
+            {
+                [WebClientHelper showStandardError];
+            }
+            
         }
         
     }];
