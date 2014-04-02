@@ -16,4 +16,6 @@
 //@property (weak, nonatomic) IBOutlet UIImageView *backgroundView;
 @property (weak, nonatomic) IBOutlet UIImageView *blurBack;
 
+-(void)setImageToTopImage:(UIImage *)image;
+
 @end

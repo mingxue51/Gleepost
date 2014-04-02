@@ -167,11 +167,13 @@
 {
     [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
     
-    [self.simpleNavBar setTranslucent:NO];
-    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
-    self.simpleNavBar.tintColor = [UIColor blackColor];
+    [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
     
-    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
+//    [self.simpleNavBar setTranslucent:NO];
+//    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
+//    self.simpleNavBar.tintColor = [UIColor blackColor];
+//    
+//    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 

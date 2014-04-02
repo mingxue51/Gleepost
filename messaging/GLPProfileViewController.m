@@ -215,8 +215,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
-
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -231,7 +229,15 @@
 
 -(void)setCustomBackgroundToTableView
 {
-    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        
+        return;
+    }
+    
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile_background_main"]];
     
     [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     

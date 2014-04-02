@@ -464,20 +464,24 @@ const float TOP_OFFSET = 280.0f;
     //Hide for now the navigation bar.
 //    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-
-//    [self.navigationController.navigationBar setTranslucent:NO];
+//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+//
+////    [self.navigationController.navigationBar setTranslucent:NO];
+//    
+//    //Sets colour to navigation items.
+//    self.navigationController.navigationBar.tintColor = tabColour;
+//    
+//    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+//
+//    
+//    //Set the  colour of navigation bar's title.
+//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+//    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
     
-    //Sets colour to navigation items.
-    self.navigationController.navigationBar.tintColor = tabColour;
+    [AppearanceHelper setNavigationBarColour:self];
     
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-
-    
-    //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
-    
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+    [AppearanceHelper setNavigationBarFontFor:self];
     
     
     //Set to all the application the status bar text white.
@@ -557,71 +561,74 @@ const float TOP_OFFSET = 280.0f;
     
     if([GLPiOS6Helper isIOS6])
     {
-        [GLPiOS6Helper configureTabbarController:self.tabBarController];
-        
-        NSArray *items = self.tabBarController.tabBar.items;
-        
-        
-        UITabBarItem *item = [items objectAtIndex:0];
-                
-        item.image = [UIImage imageNamed:@"bird-house-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        self.homeTabbarItem = item;
-        
-        
-        
-        item = [items objectAtIndex:1];
-        
-        item.image = [UIImage imageNamed:@"message-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"message-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:2];
-        
-        item.image = [UIImage imageNamed:@"proximity-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:3];
-        
-        item.image = [UIImage imageNamed:@"man-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"man-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:4];
-        
-        item.image = [UIImage imageNamed:@"id-card-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
         
         return;
+        
+//        [GLPiOS6Helper configureTabbarController:self.tabBarController];
+//        
+//        NSArray *items = self.tabBarController.tabBar.items;
+//        
+//        
+//        UITabBarItem *item = [items objectAtIndex:0];
+//                
+////        item.image = [UIImage imageNamed:@"bird-house-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        self.homeTabbarItem = item;
+//        
+//        
+//        
+//        item = [items objectAtIndex:1];
+//        
+////        item.image = [UIImage imageNamed:@"message-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"message-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:2];
+//        
+////        item.image = [UIImage imageNamed:@"proximity-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:3];
+//        
+////        item.image = [UIImage imageNamed:@"man-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"man-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:4];
+//        
+////        item.image = [UIImage imageNamed:@"id-card-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        
     }
     
     // set selected and unselected icons
@@ -2055,7 +2062,10 @@ const float TOP_OFFSET = 280.0f;
     vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
@@ -2503,6 +2513,27 @@ const float TOP_OFFSET = 280.0f;
         [self scrollToTheNavigationBar];
     }
     
+    
+    /**
+     Takes screenshot from the current view controller to bring the sense of the transparency after the load
+     of the NewPostViewController.
+     */
+//    UIGraphicsBeginImageContext(self.view.window.bounds.size);
+//    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+//    
+//    // vc.view.backgroundColor = [UIColor clearColor];
+//    vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
+//    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    [self presentViewController:vc animated:YES completion:nil];
+    
+    
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
 
@@ -2521,11 +2552,22 @@ const float TOP_OFFSET = 280.0f;
     cvc.delegate = self;
 //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
-    
-    [cvc.blurBack setImage:[image stackBlur:10.0f]];
-    
-    [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+    if([GLPiOS6Helper isIOS6])
+    {
+        [cvc.blurBack setImage:[image stackBlur:10.0f]];
+        //Crop image to add it at the top image view.
+        UIImage *topImage = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 30, 320, 62)];
+        [cvc setImageToTopImage:[topImage stackBlur:10.0f]];
+        
+    }
+    else
+    {
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
+        [cvc.blurBack setImage:[image stackBlur:10.0f]];
+        [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+
+    }
+
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:cvc animated:YES completion:nil];

@@ -222,6 +222,7 @@
 
 -(void)configureNavigationBar
 {
+    
     [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
 }
 
