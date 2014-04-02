@@ -224,7 +224,7 @@ static const float FixedBottomTextViewHeight = 140;
     
     
 
-//    [self setBorderToContentLabel];
+    [self setBorderToContentLabel];
     
 
     if(![self isCurrentPostEvent])
@@ -389,11 +389,12 @@ static const float FixedBottomTextViewHeight = 140;
 
 -(void)setBorderToContentLabel
 {
-    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-    self.contentLbl.layer.borderWidth = 0.5f;
+//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth = 0.5f;
     
-    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
-    self.mainView.layer.borderWidth = 0.5f;
+//    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
+//    self.mainView.layer.borderWidth = 0.5f;
+    
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
 }
