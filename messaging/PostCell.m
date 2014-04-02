@@ -224,7 +224,7 @@ static const float FixedBottomTextViewHeight = 140;
     
     
 
-    [self setBorderToContentLabel];
+//    [self setBorderToContentLabel];
     
 
     if(![self isCurrentPostEvent])
@@ -389,6 +389,10 @@ static const float FixedBottomTextViewHeight = 140;
 
 -(void)setBorderToContentLabel
 {
+    
+    self.eventView.layer.borderColor = [UIColor redColor].CGColor;
+    self.eventView.layer.borderWidth = 1.0f;
+    
 //    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
 //    self.contentLbl.layer.borderWidth = 0.5f;
     

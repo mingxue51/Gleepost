@@ -463,20 +463,24 @@ const float TOP_OFFSET = 280.0f;
     //Hide for now the navigation bar.
 //    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-
-//    [self.navigationController.navigationBar setTranslucent:NO];
+//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+//
+////    [self.navigationController.navigationBar setTranslucent:NO];
+//    
+//    //Sets colour to navigation items.
+//    self.navigationController.navigationBar.tintColor = tabColour;
+//    
+//    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+//
+//    
+//    //Set the  colour of navigation bar's title.
+//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+//    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
     
-    //Sets colour to navigation items.
-    self.navigationController.navigationBar.tintColor = tabColour;
+    [AppearanceHelper setNavigationBarColour:self];
     
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-
-    
-    //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
-    
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+    [AppearanceHelper setNavigationBarFontFor:self];
     
     
     //Set to all the application the status bar text white.

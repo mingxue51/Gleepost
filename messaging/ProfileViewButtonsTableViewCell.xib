@@ -81,17 +81,17 @@
                             <action selector="addContact:" destination="RZ8-00-mDA" eventType="touchUpInside" id="z7I-8s-oKI"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="active_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="qQL-eX-nNk">
+                    <imageView hidden="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="active_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="qQL-eX-nNk">
                         <rect key="frame" x="126" y="52" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="idle_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="xNB-bw-qPN">
+                    <imageView hidden="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="idle_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="xNB-bw-qPN">
                         <rect key="frame" x="149" y="52" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="idle_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="INE-Cm-SOl">
+                    <imageView hidden="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="idle_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="INE-Cm-SOl">
                         <rect key="frame" x="172" y="52" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

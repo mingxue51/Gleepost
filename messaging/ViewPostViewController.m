@@ -69,7 +69,6 @@ static BOOL likePushed;
     [self initialiseElements];
     
     
-    
     [self registerCells];
     
 

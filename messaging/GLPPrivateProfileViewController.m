@@ -239,6 +239,14 @@
 
 -(void)configureView
 {
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        
+        return;
+    }
+    
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     
     //Add new colour in the bottom of the table view.
@@ -846,6 +854,8 @@
          */
         
         vc.commentJustCreated = self.commentCreated;
+        
+        vc.isFromCampusLive = NO;
         
         vc.post = self.selectedPost;
         
