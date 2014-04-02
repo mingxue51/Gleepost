@@ -66,7 +66,6 @@ float const kMarginBetweenBorderAndContent = 15;
 
 - (void)awakeFromNib
 {
-    
 }
 
 - (void)configureButtonsView
@@ -84,6 +83,8 @@ float const kMarginBetweenBorderAndContent = 15;
     
     // common stuff
     self.contentLabel.text = [notification notificationTypeDescription];
+
+
     
     [ShapeFormatterHelper setRoundedView:self.image toDiameter:self.image.frame.size.height];
     [self.image setImageWithURL:[NSURL URLWithString:notification.user.profileImageUrl] placeholderImage:nil];
@@ -188,9 +189,23 @@ float const kMarginBetweenBorderAndContent = 15;
 {
     float maxW = [NotificationCell getContentLabelMaxWidthforNotification:notification];
     
-    CGSize maximumLabelSize = CGSizeMake(maxW, FLT_MAX);
-    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:15.0];
-    return [content sizeWithFont: font constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+//    CGSize maximumLabelSize = CGSizeMake(maxW, FLT_MAX);
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    
+    
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxW, CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+    CGSize size = rect.size;
+    
+    return size;
+    
+//    return [content sizeWithFont: font constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification

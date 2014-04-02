@@ -160,8 +160,6 @@
     }
 
     
-
-    
     [self setUpNotifications];
     
     [self setCustomBackgroundToTableView];
@@ -210,8 +208,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
-
-
 }
 
 - (void)didReceiveMemoryWarning

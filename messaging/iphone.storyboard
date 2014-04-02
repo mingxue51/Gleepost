@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -226,18 +226,18 @@
             <objects>
                 <viewController storyboardIdentifier="ViewPostViewController" id="Wkk-th-enz" customClass="ViewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j8K-jL-ODz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="49" sectionHeaderHeight="22" sectionFooterHeight="22" id="vla-0s-5vy" customClass="ViewPostTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="438"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="389"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.85098039219999999" green="0.89411764709999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="none" indentationWidth="10" reuseIdentifier="CellText" rowHeight="49" id="OEj-TO-kqx">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="49"/>
+                                        <rect key="frame" x="0.0" y="86" width="320" height="49"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OEj-TO-kqx" id="b7s-tR-baM">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
@@ -252,7 +252,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" id="tQq-qG-efF">
-                                <rect key="frame" x="0.0" y="438" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="389" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="bCz-dv-lej">
@@ -527,8 +527,8 @@
                                     <outlet property="delegate" destination="S6q-z9-JBG" id="Lcu-tQ-xHz"/>
                                 </connections>
                             </tableView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VW6-Jx-hoc">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VW6-Jx-hoc">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -549,6 +549,7 @@
                     <connections>
                         <outlet property="blurBack" destination="VJg-9l-69Q" id="9Fx-46-xai"/>
                         <outlet property="tableView" destination="MGx-Bk-zFC" id="2Er-aZ-rJW"/>
+                        <outlet property="topImageView" destination="VW6-Jx-hoc" id="HDY-Wf-b8p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aK2-YR-WtJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -862,11 +863,11 @@
             <objects>
                 <viewController storyboardIdentifier="GLPSearchUsersViewController" id="iKQ-TK-fBb" customClass="GLPSearchUsersViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9v9-To-eaE">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="QKV-G9-syf">
-                                <rect key="frame" x="0.0" y="60" width="320" height="356"/>
+                                <rect key="frame" x="0.0" y="60" width="320" height="307"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.41149154974489799" green="0.41149154974489799" blue="0.41149154974489799" alpha="0.27000000000000002" colorSpace="calibratedRGB"/>
@@ -1601,7 +1602,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="OUI-su-CjG">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Mum-dy-WxM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="" image="proximity.png" id="u1A-Qv-3bB"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="" image="proximity-7.png" id="u1A-Qv-3bB"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="jKh-Xr-Cjo">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -1665,7 +1666,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="02AFB5CB-5787-4BD4-A9AB-2892A461E926" id="nOK-XO-YpR">
+                    <tabBarItem key="tabBarItem" title="" image="bird-house-7.png" id="nOK-XO-YpR">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="1" vertical="10"/>
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -2604,7 +2605,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -2922,7 +2923,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController storyboardIdentifier="GroupViewController" id="sIa-ky-63T" customClass="GroupViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="XpL-qe-E6V">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2959,11 +2960,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="9bg-aO-bMl" customClass="MembersViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4wS-ou-SXr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="twu-HW-Ewl">
-                                <rect key="frame" x="0.0" y="78" width="320" height="402"/>
+                                <rect key="frame" x="0.0" y="78" width="320" height="353"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
@@ -3190,15 +3191,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </scene>
     </scenes>
     <resources>
-        <image name="02AFB5CB-5787-4BD4-A9AB-2892A461E926" width="300" height="100"/>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
         <image name="add_members_bg.png" width="516" height="112"/>
-        <image name="add_members_bg_p.png" width="81" height="104"/>
+        <image name="add_members_bg_p.png" width="300" height="100"/>
         <image name="add_photo_btn.png" width="172" height="168"/>
         <image name="back.png" width="23" height="37"/>
+        <image name="bird-house-7.png" width="30" height="30"/>
         <image name="category_bg.png" width="630" height="525"/>
         <image name="chat_background_default.png" width="640" height="1136"/>
         <image name="comment.png" width="19" height="17"/>
@@ -3225,7 +3226,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="pick_pic.png" width="312" height="311"/>
         <image name="private_profile_background.png" width="640" height="724"/>
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
-        <image name="proximity.png" width="30" height="30"/>
+        <image name="proximity-7.png" width="30" height="30"/>
         <image name="search_users_checkbox_unselected" width="27" height="27"/>
         <image name="search_users_disabled_save_button" width="301" height="51"/>
         <image name="search_users_textfield_background" width="301" height="44"/>
@@ -3249,13 +3250,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     <inferredMetricsTieBreakers>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="woK-8Q-gjw"/>
+        <segue reference="UCY-3t-8FQ"/>
         <segue reference="C4C-f3-cdX"/>
         <segue reference="PCe-7s-A56"/>
         <segue reference="WhX-ZL-dQD"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
+        <segue reference="woK-8Q-gjw"/>
+        <segue reference="Nh6-Tl-qmR"/>
     </inferredMetricsTieBreakers>
 </document>

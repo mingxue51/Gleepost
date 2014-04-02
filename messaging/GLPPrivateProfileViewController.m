@@ -26,8 +26,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPConversationViewController.h"
 #import "GLPApplicationHelper.h"
-
-
+#import "GLPiOS6Helper.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -503,8 +502,10 @@
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
     vc.image = clickedImageView.image;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];

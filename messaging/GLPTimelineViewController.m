@@ -556,71 +556,74 @@ const float TOP_OFFSET = 280.0f;
     
     if([GLPiOS6Helper isIOS6])
     {
-        [GLPiOS6Helper configureTabbarController:self.tabBarController];
-        
-        NSArray *items = self.tabBarController.tabBar.items;
-        
-        
-        UITabBarItem *item = [items objectAtIndex:0];
-                
-        item.image = [UIImage imageNamed:@"bird-house-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        self.homeTabbarItem = item;
-        
-        
-        
-        item = [items objectAtIndex:1];
-        
-        item.image = [UIImage imageNamed:@"message-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"message-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:2];
-        
-        item.image = [UIImage imageNamed:@"proximity-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:3];
-        
-        item.image = [UIImage imageNamed:@"man-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"man-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:4];
-        
-        item.image = [UIImage imageNamed:@"id-card-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
         
         return;
+        
+//        [GLPiOS6Helper configureTabbarController:self.tabBarController];
+//        
+//        NSArray *items = self.tabBarController.tabBar.items;
+//        
+//        
+//        UITabBarItem *item = [items objectAtIndex:0];
+//                
+////        item.image = [UIImage imageNamed:@"bird-house-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        self.homeTabbarItem = item;
+//        
+//        
+//        
+//        item = [items objectAtIndex:1];
+//        
+////        item.image = [UIImage imageNamed:@"message-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"message-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:2];
+//        
+////        item.image = [UIImage imageNamed:@"proximity-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:3];
+//        
+////        item.image = [UIImage imageNamed:@"man-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"man-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:4];
+//        
+////        item.image = [UIImage imageNamed:@"id-card-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        
     }
     
     // set selected and unselected icons
@@ -2420,8 +2423,6 @@ const float TOP_OFFSET = 280.0f;
     
     
     
-    
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
 
@@ -2440,18 +2441,22 @@ const float TOP_OFFSET = 280.0f;
     cvc.delegate = self;
 //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    if(![GLPiOS6Helper isIOS6])
+    if([GLPiOS6Helper isIOS6])
+    {
+        [cvc.blurBack setImage:[image stackBlur:10.0f]];
+        //Crop image to add it at the top image view.
+        UIImage *topImage = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 30, 320, 62)];
+        [cvc setImageToTopImage:[topImage stackBlur:10.0f]];
+        
+    }
+    else
     {
         image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
-    }
-    
-    
-    [cvc.blurBack setImage:[image stackBlur:10.0f]];
-    
-    if(![GLPiOS6Helper isIOS6])
-    {
+        [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+
     }
+
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:cvc animated:YES completion:nil];

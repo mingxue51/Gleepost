@@ -149,6 +149,8 @@ NSString *NOTHING_HAPPENING;
     
     [loadingLabel setTextColor:[UIColor whiteColor]];
     
+    [loadingLabel setBackgroundColor:[UIColor clearColor]];
+    
     [loadingLabel setText:@"Loading events..."];
     
     [self addSubview:loadingLabel];
