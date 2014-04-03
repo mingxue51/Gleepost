@@ -44,7 +44,7 @@ const float CONTACT_CELL_HEIGHT = 48;
     }
     else
     {
-        [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl]  placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
 

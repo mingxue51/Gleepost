@@ -225,7 +225,7 @@ static GLPPostImageLoader *instance = nil;
         else
         {
             //TODO: No internet connection. Retry later.
-            DDLogDebug(@"No network!");
+            DDLogInfo(@"GLPPostImageLoader : No network!");
             
             break;
         }

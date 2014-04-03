@@ -1045,6 +1045,9 @@
     else
     {
         self.user = [usersData objectAtIndex:0];
+        
+        DDLogDebug(@"GLPProfileViewController : %@", self.user);
+        
         self.userImage = [usersData objectAtIndex:1];
 //        [self.tableView reloadData];
         [self refreshFirstCell];
@@ -1097,14 +1100,14 @@
         [profileView setDelegate:self];
 
 //        [profileView updateImageWithUrl:self.profileImageUrl];
-        if(_userImage)
-        {
-            [profileView initialiseElementsWithUserDetails:self.user withImage:self.userImage];
-        }
-        else
-        {
+//        if(_userImage)
+//        {
+//            [profileView initialiseElementsWithUserDetails:self.user withImage:self.userImage];
+//        }
+//        else
+//        {
             [profileView initialiseElementsWithUserDetails:self.user];
-        }
+//        }
         
         
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -106,7 +106,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     
     //Set post's image.
-    [_eventImage setImageWithURL:imgUrl usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     
 //    [_eventImage setImageWithURL:imgUrl placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {

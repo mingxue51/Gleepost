@@ -97,8 +97,6 @@
     
     if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
     {
-        //TODO: Set in table view contact as in contacts.
-        
         self.contact = YES;
     }
     else
@@ -130,7 +128,7 @@
     
     [self initialiseObjects];
     
-    
+    [self loadUsersInformation];
 
     
     // Uncomment the following line to preserve selection between presentations.
@@ -191,18 +189,6 @@
     
     
     self.profileImage = nil;
-    
-    if(self.contact)
-    {
-        //If the user is contact then load data from ContactsManager.
-        [self loadAndSetContactDetails];
-
-    }
-    else
-    {
-        //Load user's details from server.
-        [self loadAndSetUserDetails];
-    }
     
 
     
@@ -338,6 +324,20 @@
 
     
 }
+-(void)loadUsersInformation
+{
+    if(self.contact)
+    {
+        //If the user is contact then load data from ContactsManager.
+        [self loadAndSetContactDetails];
+        
+    }
+    else
+    {
+        //Load user's details from server.
+        [self loadAndSetUserDetails];
+    }
+}
 
 - (UIStatusBarStyle) preferredStatusBarStyle
 {
@@ -347,7 +347,11 @@
 #pragma mark - Client methods
 
 
-//TODO: Load first user from local database and the from server.
+/**
+ 
+ Loads first user from local database and then from server.
+ 
+ */
 
 -(void)loadAndSetUserDetails
 {
@@ -572,24 +576,8 @@
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
-        [profileView setDelegate:self];
-        
-        if(self.profileImage && self.profileUser)
-        {
-            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-        }
-        else if(self.profileImage && !self.profileUser)
-        {
-            [profileView initialiseProfileImage:self.profileImage];
-        }
-        else
-        {
-            [profileView initialiseElementsWithUserDetails:self.profileUser];
-        }
-        
-        profileView.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        return profileView;
+        return  [self configureProfileViewCell:profileView];
 
     }
     else if (indexPath.row == 1)
@@ -733,6 +721,35 @@
     }
     
     return 70.0f;
+}
+
+-(ProfileTableViewCell *)configureProfileViewCell:(ProfileTableViewCell *)cell
+{
+    [cell setDelegate:self];
+    
+    if(self.profileImage && self.profileUser)
+    {
+        DDLogDebug(@"Private profile: Image / user ready.");
+        
+        [cell initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
+    }
+    else if(self.profileImage && !self.profileUser)
+    {
+        DDLogDebug(@"Private profile: Image ready not user.");
+        
+        [cell initialiseProfileImage:self.profileImage];
+    }
+    else if((!self.profileImage && self.profileUser) || (!self.profileImage && !self.profileUser))
+    {
+        DDLogDebug(@"Private profile: Last choise. %@ : %@", self.profileImage, self.profileUser);
+        
+        [cell initialiseElementsWithUserDetails:self.profileUser];
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    
+    return cell;
 }
 
 #pragma mark - Table view refresh methods

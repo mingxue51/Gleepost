@@ -24,6 +24,7 @@
 #import "WebClientHelper.h"
 #import "GLPPostOperationManager.h"
 
+
 @interface PostCell()
 
 @property (strong, nonatomic) GLPPost *post;
@@ -162,6 +163,8 @@ static const float FixedBottomTextViewHeight = 140;
     if(self.isViewPostNotifications)
     {
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        
     }
     
     
@@ -174,8 +177,24 @@ static const float FixedBottomTextViewHeight = 140;
 //    }
 //    else
 //    {
-        [self.userImageView setImageWithURL:userImageUrl usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    }
+//        [self.userImageView setImageWithURL:userImageUrl];
+    
+    
+    
+    [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    
+
+//    [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//        
+//    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//        
+//        DDLogDebug(@"Error: %@", error.description);
+//        
+//    }];
+    
+    
+    
 
     [self formatUsersImage];
     [self formatPostImage];

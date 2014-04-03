@@ -115,11 +115,16 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     else if(group.groupImageUrl)
     {
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+        
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
             
             [_profileBackImage setHidden:NO];
             
         } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        
+
+
         
         //Add gesture to show menu.
         [self addGestureToGroupImageWithImage:YES];
@@ -171,6 +176,12 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 #pragma mark - User methods
 
+
+/**
+ 
+ TODO: Call that method from Profile VC when after refactoring image prefetching.
+ 
+ */
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
 {
     if(user == nil)
@@ -191,8 +202,7 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     [self formatProfileImage];
 
-    
-    
+
     
     if([user.profileImageUrl isEqualToString:@""])
     {
@@ -201,7 +211,11 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     else
     {
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+        
         [self.profileImage setImage:image];
+        
 //        [self.coverProfileImage setImage:image];
     }
     
@@ -248,11 +262,14 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     {
         
         //Fetch the image from the server and add it to the image view.
-        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            
-            [_profileBackImage setHidden:NO];
-            
-        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//            
+//            [_profileBackImage setHidden:NO];
+//            
+//        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        
+        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
 //        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
 //            
@@ -300,6 +317,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     self.profileImage.layer.borderWidth = 4.0;
     self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
     
+    
+
     
     //Set default image.
    [self.profileImage setImage:[UIImage imageNamed:@"default_user_image2"]];

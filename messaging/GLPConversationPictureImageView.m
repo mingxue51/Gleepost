@@ -34,7 +34,9 @@
         UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image2"];
         
         if([user hasProfilePicture]) {
-            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
         } else {
             self.image = defaultProfilePicture;
         }
