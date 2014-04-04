@@ -541,7 +541,7 @@ static bool firstTime = YES;
     
     if(self.post.remoteKey == 0)
     {
-        //TODO: Load comments from operation manager.
+        //Load comments from operation manager.
         [self loadLocalComments];
     }
     else
@@ -579,7 +579,7 @@ static bool firstTime = YES;
         self.comments = [comments mutableCopy];
         
         [self viewCommentsWithScroll:scroll];
-
+        
         
     } remoteCallback:^(BOOL success, NSArray *comments) {
         

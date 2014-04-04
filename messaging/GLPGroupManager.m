@@ -361,9 +361,7 @@
     [[WebClient sharedInstance] getPostsGroupsFeedWithTag:tag callback:^(BOOL success, NSArray *posts) {
        
         if(success)
-        {
-            DDLogDebug(@"Feed posts: %@", posts);
-            
+        {            
             callback(YES, posts);
             
         }

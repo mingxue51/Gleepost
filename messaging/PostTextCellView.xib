@@ -226,6 +226,7 @@
                 <outlet property="moreBtn" destination="o9s-os-g4m" id="XJz-GQ-T58"/>
                 <outlet property="numberOfCommentsLbl" destination="w3J-A5-7w9" id="UZ6-SM-NKX"/>
                 <outlet property="numberOfLikesLbl" destination="Guf-kH-3QR" id="Sxn-o3-kaI"/>
+                <outlet property="postTime" destination="fIE-VY-MZi" id="OBJ-CP-M6F"/>
                 <outlet property="textLabelConstrain" destination="ODJ-JE-cl4" id="RU2-eX-jWG"/>
                 <outlet property="thumpsUpBtn" destination="SMo-Nc-dV3" id="04g-tA-gA2"/>
                 <outlet property="titleLbl" destination="c8y-Xv-Q7R" id="Lfd-iZ-cbM"/>

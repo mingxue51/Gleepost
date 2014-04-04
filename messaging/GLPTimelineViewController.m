@@ -162,6 +162,9 @@ const float TOP_OFFSET = 280.0f;
     
     [self loadInitialPosts];
     
+    //Load groups' posts.
+    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
+    
     [WalkThroughHelper showCampusWallMessage];
     
     //Find the sunset sunrise for preparation of the new chat.

@@ -24,5 +24,6 @@
 
 -(void)removePostAtIndex:(int)index;
 -(BOOL)isTextPostExist;
+-(void)loadGroupPosts;
 
 @end

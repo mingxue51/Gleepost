@@ -31,8 +31,6 @@
 @property (assign, nonatomic) int postIndex;
 @property (assign, nonatomic) float initialPostContentLabelY;
 @property (assign, nonatomic) float initialPostContentLabelHeight;
-@property (assign, nonatomic) CGRect labelDimensions;
-@property (assign, nonatomic) float socialPanelY;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topBackgroundConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
@@ -43,7 +41,6 @@
 @property (assign, nonatomic) BOOL freshPost;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
-//@property (strong, nonatomic) UIView *lineView;
 @end
 
 @implementation PostCell
@@ -58,11 +55,6 @@ const float TEXT_CELL_HEIGHT = 192;
     
     if(self)
     {
-        self.socialPanelY = self.socialPanel.frame.origin.y;
-        
-        self.labelDimensions = CGRectMake(60.0f, 30.0f, 250.0f, 50.0f);
-
-        
         self.isViewPost = NO;
         self.isViewPostNotifications = NO;
         
@@ -98,7 +90,7 @@ static const float FixedDistanceOfMoreFromText = 250; //295
 static const float FixedTopBackgroundHeight = 250;
 static const float FixedTopBackgroundHeightTextPost = 70;
 static const float FixedBottomImageViewHeight = 295;
-static const float FixedBottomTextViewHeight = 140;
+static const float FixedBottomTextViewHeight = 100;
 
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
@@ -169,15 +161,6 @@ static const float FixedBottomTextViewHeight = 140;
     
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
-
-    
-//    if([postData.author.profileImageUrl isEqualToString:@""])
-//    {
-//        [self.userImageView setImage:userImage];
-//    }
-//    else
-//    {
-//        [self.userImageView setImageWithURL:userImageUrl];
     
     
     
@@ -193,8 +176,6 @@ static const float FixedBottomTextViewHeight = 140;
 //        
 //    }];
     
-    
-    
 
     [self formatUsersImage];
     [self formatPostImage];
@@ -207,6 +188,7 @@ static const float FixedBottomTextViewHeight = 140;
     
     NSDate *currentDate = postData.date;
     //Add the post's time.
+    
     [self.postTime setText:[currentDate timeAgo]];
     [self setTimeWithTime:postData.dateEventStarts];
     
@@ -220,8 +202,6 @@ static const float FixedBottomTextViewHeight = 140;
     
     [categoriesStr appendString:@" General"];
     
-    //Add text to information label.
-//    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views Category: %@",postData.likes, postData.commentsCount, postData.remoteKey, categoriesStr]];
     
     [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d",postData.likes]];
     
@@ -248,7 +228,7 @@ static const float FixedBottomTextViewHeight = 140;
 
     if(![self isCurrentPostEvent])
     {
-        //TODO: Hide elements on top, bring other elements up and make the cell smaller.
+        //Hide elements on top, bring other elements up and make the cell smaller.
         [_eventView setHidden:YES];
     }
     else
@@ -267,7 +247,6 @@ static const float FixedBottomTextViewHeight = 140;
     [self hideMoreButtonIfNecessary];
 
     [self setFontToLabels];
-    
     
     [self formatBottomView];
     
@@ -411,14 +390,14 @@ static const float FixedBottomTextViewHeight = 140;
 -(void)setBorderToContentLabel
 {
     
-    self.eventView.layer.borderColor = [UIColor redColor].CGColor;
-    self.eventView.layer.borderWidth = 1.0f;
+//    self.eventView.layer.borderColor = [UIColor redColor].CGColor;
+//    self.eventView.layer.borderWidth = 1.0f;
     
 //    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
 //    self.contentLbl.layer.borderWidth = 0.5f;
     
-//    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
-//    self.mainView.layer.borderWidth = 0.5f;
+    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
+    self.mainView.layer.borderWidth = 0.5f;
     
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
@@ -545,30 +524,6 @@ static const float FixedBottomTextViewHeight = 140;
         [ShapeFormatterHelper setElement:_mainView withExtraHeight:labelSize.height+FixedBottomImageViewHeight];
         
     }
-
-    
-    
-    //Change the position of the social view.
-//    float socialViewY = self.contentLbl.frame.origin.y + self.contentLbl.frame.size.height + 5;
-//    
-//    if(socialViewY < 52)
-//    {
-//        socialViewY += OneLinePadding;
-//    }
-//    
-//    CGRect socialFrame = self.socialPanel.frame;
-//    
-//    [self.socialPanel setFrame:CGRectMake(socialFrame.origin.x, socialViewY, socialFrame.size.width, socialFrame.size.height)];
-//    
-//    //Change the height of the content view.
-//    CGRect contentViewFrame = self.contentView.frame;   
-//    
-//    float contentViewH = socialViewY + socialFrame.size.height + FollowingCellPadding;
-//    
-////    NSLog(@"ContentViewH: %f Content: %@",contentViewH, self.contentLbl.text);
-//    
-//    [self.contentView setFrame:CGRectMake(contentViewFrame.origin.x, contentViewFrame.origin.y, contentViewFrame.size.width, contentViewH)];
-    
 }
 
 -(void)postFromNotifications:(BOOL)notifications
@@ -594,8 +549,6 @@ static const float FixedBottomTextViewHeight = 140;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
 {
-//    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
-    //[UIFont systemFontOfSize:13.0]
     UIFont *font = nil;
     
     int maxWidth = 0;
@@ -605,14 +558,6 @@ static const float FixedBottomTextViewHeight = 140;
         font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
         maxWidth = PostContentLabelMaxWidth;
 
-//        if(post.eventTitle)
-//        {
-//        }
-//        else
-//        {
-//            maxWidth = 200;
-//        }
-
         
     }
     else
@@ -620,21 +565,10 @@ static const float FixedBottomTextViewHeight = 140;
         font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
         maxWidth = 264;
 
-//        if(post.eventTitle)
-//        {
-//        }
-//        else
-//        {
-//            maxWidth = 180;
-//        }
-
     }
-    
-
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,
                                                                                                          NSKernAttributeName : @(0.3f)}];
-    
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
@@ -647,17 +581,9 @@ static const float FixedBottomTextViewHeight = 140;
     {
         return CGSizeMake(size.width, FiveLinesLimit);
     }
-    
-//    if(isViewPost)
-//    {
-//        //Decrease the height.
-//        size.height -= 15;
-//    }
 
-    //
     
     return size;
-//    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
 + (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
@@ -681,18 +607,8 @@ static const float FixedBottomTextViewHeight = 140;
         }
     }
     
-    // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
-    
-    //Decrease by 10 points when the text is over one line.
-//    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)
-//    {
-//        height -= 10;
-//    }
-    
-//    NSLog(@"Final Height: %f Label size: %f. Content: %@",height, [PostCell getContentLabelSizeForContent:content].height, content);
-    
-    //return height + FollowingCellPadding;
+    // add content label height
+    height += [PostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height;
     
     return height;
 }
@@ -708,83 +624,13 @@ static const float FixedBottomTextViewHeight = 140;
 }
 
 
-
-
-
-//-(void)layoutSubviews
-//{
-//    if(self.isViewPost)
-//    {
-//        self.contentView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
-//
-//        //Hide and disable comment button.
-//        [self.commentBtn setHidden:YES];
-//        [self.commentBtn setUserInteractionEnabled:NO];
-//        
-//        
-//        CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
-//        
-//        
-//        CGRect frameSize = self.contentLbl.frame;
-//        
-// 
-//        [self.contentLbl setNumberOfLines:0];
-//
-//        if(self.imageAvailable)
-//        {
-//            
-//            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+5, self.contentLbl.frame.size.width, contentSize.height);
-//            
-//            frameSize = self.contentLbl.frame;
-//            
-////            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
-//            
-//            //Move all views below content label.
-//            frameSize = self.postImage.frame;
-//            
-//            CGRect socialFrame = self.socialPanel.frame;
-//            
-//            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+50.0), socialFrame.size.width, socialFrame.size.height);
-//
-//        }
-//        else
-//        {
-//            if([self.contentLbl.text isEqualToString:@""])
-//            {
-//                return;
-//            }
-//            
-//                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height+self.initialPostContentLabelHeight);
-//                
-//                CGRect socialFrame = self.socialPanel.frame;
-//            
-//                
-//            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
-//
-//        }
-//    }
-//
-//}
-
 #pragma - mark Selector methods
-
 
 -(IBAction)viewMoreMenu:(id)sender
 {
     //Pop up a bottom menu.
     
     UIActionSheet *actionSheet = nil;
-    
-    NSString *attending = nil;
-    
-    if(self.post.attended)
-    {
-        attending = @"Not Going";
-    }
-    else
-    {
-        attending = @"Going";
-    }
     
     if([self isCurrentPostBelongsToCurrentUser])
     {

@@ -18,6 +18,7 @@
 
 @property (assign, nonatomic) float heightOfCell;
 //@property (strong, nonatomic) UIView *lineView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
 
 @end
 
@@ -79,7 +80,7 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
     
     
     //Set comment's content.
-    self.contentLabel.text = comment.content;
+    [self.contentLabel setText:comment.content];
     
     
 //    [self setCellHeight:comment.content];
@@ -152,6 +153,8 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
     self.contentLabel.numberOfLines = 0;
     
     
+//    [self.contentLabelHeight setConstant:heightSize];
+    
     [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
     
 
@@ -169,7 +172,10 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
 //    self.lineView.frame = CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1);
 
     
-    [self setElement:self.contentLabel size:heightSize];
+//    [self setElement:self.contentLabel size:heightSize];
+    
+    [self.contentLabelHeight setConstant:heightSize.height];
+
     
 //    [self.contentLabel setFrame:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, cellFrame.size.width, heightSize)];
 }
@@ -214,17 +220,12 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
 }
 
 
-//-(void)layoutSubviews
+//- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 //{
+//    [super setSelected:selected animated:animated];
 //
+//    // Configure the view for the selected state
 //}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
