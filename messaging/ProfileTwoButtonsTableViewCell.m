@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *settingsLine;
 @property (weak, nonatomic) IBOutlet UIButton *myPostsBtn;
 @property (weak, nonatomic) IBOutlet UIButton *notificationsBtn;
+@property (weak, nonatomic) IBOutlet UILabel *notificationsCountLbl;
 
 @property (assign, nonatomic) BOOL isProfileViewController;
 
@@ -64,6 +65,7 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     {
         _isProfileViewController = NO;
         [_notificationsBubbleImageView setHidden:YES];
+        [_notificationsCountLbl setHidden:YES];
         
         if(!_delegate)
         {
@@ -190,6 +192,22 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+#pragma mark - Modifiers
+
+-(void)showNotificationBubbleWithNotificationCount:(int)notificationCount
+{
+    [_notificationsBubbleImageView setHidden:NO];
+    [_notificationsCountLbl setHidden:NO];
+    [_notificationsCountLbl setText:[NSString stringWithFormat:@"%d", notificationCount]];
+}
+
+-(void)hideNotificationBubble
+{
+    [_notificationsBubbleImageView setHidden:YES];
+    [_notificationsCountLbl setHidden:YES];
+
 }
 
 @end

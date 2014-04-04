@@ -162,8 +162,7 @@ const float TOP_OFFSET = 280.0f;
     
     [self loadInitialPosts];
     
-    //Load groups' posts.
-    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
+
     
     [WalkThroughHelper showCampusWallMessage];
     
@@ -458,6 +457,9 @@ const float TOP_OFFSET = 280.0f;
     //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
     //[[GLPMessagesLoader sharedInstance] loadConversations];
     [[GLPProfileLoader sharedInstance] loadUserData];
+    
+    //Load groups' posts.
+    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
 
 }
 

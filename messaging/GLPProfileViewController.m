@@ -1123,9 +1123,11 @@
         
         
         if(_unreadNotificationsCount > 0) {
-            buttonsView.notificationsBubbleImageView.hidden = NO;
+//            buttonsView.notificationsBubbleImageView.hidden = NO;
+            [buttonsView showNotificationBubbleWithNotificationCount:_unreadNotificationsCount];
         } else {
-            buttonsView.notificationsBubbleImageView.hidden = YES;
+            [buttonsView hideNotificationBubble];
+//            buttonsView.notificationsBubbleImageView.hidden = YES;
         }
         
         [buttonsView setDelegate:self fromPushNotification:_fromPushNotification];

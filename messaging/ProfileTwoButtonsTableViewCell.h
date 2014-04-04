@@ -21,5 +21,6 @@ extern const float TWO_BUTTONS_CELL_HEIGHT;
 
 -(void)setDelegate:(UIViewController<ButtonNavigationDelegate> *)delegate fromPushNotification:(BOOL)push;
 -(void)viewSettingsButton;
-
+-(void)showNotificationBubbleWithNotificationCount:(int)notificationCount;
+-(void)hideNotificationBubble;
 @end
