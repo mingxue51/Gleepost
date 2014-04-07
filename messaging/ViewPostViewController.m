@@ -81,8 +81,6 @@ static BOOL likePushed;
     
     [self fillPostWithKey];
     
-
-    
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
 
