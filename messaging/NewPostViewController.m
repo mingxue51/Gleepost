@@ -167,6 +167,8 @@
 {
     [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
     
+    self.simpleNavBar.tag = 1;
+    
     [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
     
 //    [self.simpleNavBar setTranslucent:NO];
