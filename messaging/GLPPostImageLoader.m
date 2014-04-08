@@ -10,7 +10,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
-#include <pthread.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface GLPPostImageLoader ()
 
@@ -104,31 +104,39 @@ static GLPPostImageLoader *instance = nil;
 
 -(void)addPostsImages:(NSArray*)posts
 {
-    BOOL newPost = NO;
+    __block BOOL newPost = NO;
  
 
-    for(GLPPost *p in posts)
+    for(int i = 0; i<posts.count; ++i)
     {
-        NSNumber *currentRemoteKey = [NSNumber numberWithInt:p.remoteKey];
+        GLPPost *p = [posts objectAtIndex:i];
         
+        //If image exist in cache fetch it and send it to campus wall.
         
-        //Check if some posts are already in.
-        
-        if(![_loadingImages objectForKey:currentRemoteKey])
-        {
-            if(p.imagesUrls)
+        [[SDImageCache sharedImageCache] queryDiskCacheForKey:p.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
+           
+            if(image)
             {
-                [_imagesNotStarted enqueue:currentRemoteKey];
-
-                [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
-                newPost = YES;
+                //Inform Campus Wall.
+                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInt:p.remoteKey] andImage:image];
+                
+                DDLogDebug(@"Image exist in cache.");
             }
-        }
-    }
-    
-    if(newPost)
-    {
-        [self startConsume];
+            else
+            {
+                //Check if some posts are already in.
+                
+                newPost = [self addPostImageInQueueWithPost:p];
+                
+                if(newPost == YES && (posts.count-1) == i)
+                {
+                    DDLogDebug(@"Image doesn't exist in cache.");
+
+                    [self startConsume];
+                }
+            }
+            
+        }];
     }
 }
 
@@ -140,9 +148,7 @@ static GLPPostImageLoader *instance = nil;
  
  */
 -(void)cancelOperations
-{
-    DDLogInfo(@"Cancel all operations of loading images");
-    
+{    
     BOOL exist = NO;
     
     //Refill the array with the not finished remote keys.
@@ -169,7 +175,34 @@ static GLPPostImageLoader *instance = nil;
     
 }
 
+/**
+ Add post image url and post remote key to the queue.
+ imagesNotStarted array is used to track all the images are not loaded yet.
+ loadingImages dictionary stored all the urls that are ready to downloaded.
+ 
+ @param currentRemoteKey post's remote key.
+ @param
+ */
 
+-(BOOL)addPostImageInQueueWithPost:(GLPPost *)p
+{
+    NSNumber *currentRemoteKey = [NSNumber numberWithInt:p.remoteKey];
+    
+    if(![_loadingImages objectForKey:currentRemoteKey])
+    {
+        if(p.imagesUrls)
+        {
+            [_imagesNotStarted enqueue:currentRemoteKey];
+            
+            [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
+//            newPost = YES;
+            
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 
 #pragma mark - Selectors
@@ -178,7 +211,6 @@ static GLPPostImageLoader *instance = nil;
 {
     while (_imagesNotStarted.count != 0)
     {
-        
         NSNumber* remoteKey = nil;
         NSString* urlStr = nil;
         @synchronized(_loadingImages)
@@ -212,12 +244,14 @@ static GLPPostImageLoader *instance = nil;
 //        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
         
         
-        
         if(img)
         {
+            //TODO: Save image with image url.
+            [[SDImageCache sharedImageCache] storeImage:img forKey:urlStr];
+
+            
             //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
-                                                                                                                                @"FinalImage":img}];
+            [self notifyCampusWallWithRemoteKey:remoteKey andImage:img];
                         
             //Delete the entry from the queue.
             [_loadingImages removeObjectForKey:remoteKey];
@@ -233,6 +267,13 @@ static GLPPostImageLoader *instance = nil;
     }
 }
 
+#pragma mark - Notifications
+
+-(void)notifyCampusWallWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
+                                                                                                                         @"FinalImage":image}];
+}
 
 #pragma mark - Client
 
