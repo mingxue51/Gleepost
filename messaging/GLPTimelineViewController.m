@@ -146,7 +146,6 @@ const float TOP_OFFSET = 280.0f;
     [self configTableView];
 
     [self configHeader];
-    
 
     [self configTabbarFormat];
     
@@ -2490,6 +2489,7 @@ const float TOP_OFFSET = 280.0f;
     [[SessionManager sharedInstance] setCurrentCategory:nil];
 
     _groupsMode = YES;
+    [self.tableView reloadData];
     [self updateTitleView];
     [self loadInitialGroupsPosts];
 }
