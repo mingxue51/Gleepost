@@ -148,7 +148,7 @@ static GLPPostImageLoader *instance = nil;
  
  */
 -(void)cancelOperations
-{    
+{
     BOOL exist = NO;
     
     //Refill the array with the not finished remote keys.
