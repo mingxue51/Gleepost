@@ -10,6 +10,11 @@
 #import "UIViewController+Flurry.h"
 #import "Flurry.h"
 
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAITracker.h"
+#import "GAIDictionaryBuilder.h"
+
 @interface PostTime : NSObject
 
 @property (strong, nonatomic) GLPPost *post;
@@ -95,21 +100,13 @@ const float VISIBILITY_TIME = 2.0f;
     PostTime *postTime = sender.userInfo;
     
     
-    ///    if ([date compare:beginDate] == NSOrderedAscending)
-    
     if([self isPostInArray:postTime.post])
     {
-        DDLogDebug(@"Send to flurry: %@", postTime.post.content);
-        [self sendAnalyticsWithPost:postTime.post];
+        DDLogDebug(@"Send to flurry and google analytics: %d", postTime.post.remoteKey);
+        [self sendFlurryAnalyticsWithPost:postTime.post];
+        [self sendGAIAnalyticsWithPost:postTime.post];
     }
-    
-    
-//    if([_currentPosts objectForKey:[postInfo objectForKey:<#(id)#>]])
-    
-//    @synchronized(_currentPosts)
-//    {
-//        
-//    }
+
 }
 
 -(BOOL)isPostInArray:(GLPPost *)post
@@ -125,12 +122,23 @@ const float VISIBILITY_TIME = 2.0f;
     return NO;
 }
 
--(void)sendAnalyticsWithPost:(GLPPost *)post
+-(void)sendFlurryAnalyticsWithPost:(GLPPost *)post
 {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", post.remoteKey], @"Key", nil];
 
     [Flurry logEvent:@"PostCell" withParameters:params];
+}
 
+-(void)sendGAIAnalyticsWithPost:(GLPPost *)post
+{
+    // Initialize tracker
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GLP_GAI_TRACK_ID];
+    
+    
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"Visible Posts"     // Event category (required)
+                                                          action:@"PostCell"  // Event action (required)
+                                                           label:[NSString stringWithFormat:@"%d", post.remoteKey] // Event label
+                                                           value:nil] build]];  // Event value
 }
 
 @end
