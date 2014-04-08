@@ -38,7 +38,6 @@
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 
 @property (weak, nonatomic) IBOutlet ViewPostTableView *tableView;
-@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
@@ -199,9 +198,6 @@ static BOOL likePushed;
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    self.contentLabel.text = self.post.content;
-    [self.contentLabel sizeToFit];
     
     self.comments = [[NSMutableArray alloc] init];
 
@@ -692,7 +688,7 @@ static bool firstTime = YES;
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-            [postViewCell postFromNotifications:YES];
+            [postViewCell postFromNotifications:NO];
         }
         else
         {
