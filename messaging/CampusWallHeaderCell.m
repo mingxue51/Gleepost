@@ -228,11 +228,13 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     {
         [_goingBtn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
         _goingBtn.tag = 1;
+        [_goingBtn setEnabled:YES];
     }
     else
     {
         [_goingBtn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
         _goingBtn.tag = 2;
+        [_goingBtn setEnabled:YES];
     }
     
 }
