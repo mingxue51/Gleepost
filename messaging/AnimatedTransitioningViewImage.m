@@ -24,14 +24,14 @@
     
     UIView *inView = [transitionContext containerView];
     ViewPostImageViewController *toVC = (ViewPostImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+//    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     
     toVC.view.alpha = 0.0;
     
     [inView addSubview:toVC.view];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     //[toVC.view setFrame:CGRectMake(0, screenRect.size.height, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
     

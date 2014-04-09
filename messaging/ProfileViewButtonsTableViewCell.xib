@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -81,38 +81,18 @@
                             <action selector="addContact:" destination="RZ8-00-mDA" eventType="touchUpInside" id="z7I-8s-oKI"/>
                         </connections>
                     </button>
-                    <imageView hidden="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="active_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="qQL-eX-nNk">
-                        <rect key="frame" x="126" y="52" width="12" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="idle_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="xNB-bw-qPN">
-                        <rect key="frame" x="149" y="52" width="12" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" restorationIdentifier="about line" image="idle_tab.png" translatesAutoresizingMaskIntoConstraints="NO" id="INE-Cm-SOl">
-                        <rect key="frame" x="172" y="52" width="12" height="12"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
-                <outlet property="aboutLine" destination="qQL-eX-nNk" id="Km5-QD-EXm"/>
                 <outlet property="acceptButton" destination="oa0-rC-IcP" id="ntN-7x-rtb"/>
                 <outlet property="addContactButton" destination="zYR-BJ-nxj" id="BAC-HL-Dl2"/>
                 <outlet property="inContacts" destination="Rcr-U8-XrA" id="GPm-t7-zq9"/>
-                <outlet property="mutualLine" destination="INE-Cm-SOl" id="cE9-kD-OWL"/>
-                <outlet property="postsLine" destination="xNB-bw-qPN" id="HjH-FW-mS0"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
         <image name="accept_user.png" width="180" height="73"/>
-        <image name="active_tab.png" width="51" height="51"/>
         <image name="add_user.png" width="180" height="73"/>
-        <image name="idle_tab.png" width="51" height="51"/>
         <image name="in_contacts.png" width="180" height="73"/>
         <image name="posts_button.png" width="180" height="73"/>
         <image name="send_message.png" width="180" height="73"/>

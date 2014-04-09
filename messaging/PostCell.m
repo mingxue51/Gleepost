@@ -79,13 +79,8 @@ static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
 static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
 static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 80;
 static const float FixedSizeOfNonEventTextCell = TEXT_CELL_HEIGHT - 80;
-static const float FollowingCellPadding = 7;
-static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 300;
-static const float FollowingSocialPanel = 40;
-static const float OneLinePadding = 10;
 static const float FiveLinesLimit = 101.0; //76
-static const float OneLineText = 16.0;
 static const float FixedDistanceOfMoreFromText = 250; //295
 static const float FixedTopBackgroundHeight = 250;
 static const float FixedTopBackgroundHeightTextPost = 70;
@@ -1047,19 +1042,6 @@ static const float FixedBottomTextViewHeight = 100;
         
     }];
 }
-
-
-static const float firstContentTextViewHeight = 60;
-static const float firstImagePosition = 110;
-
-static const float firstSocialPanelPosition = 363;
-static const float firstImageButtonsPosition = firstSocialPanelPosition+20;
-static const float firstImageInformationPosition = firstSocialPanelPosition+5;
-
-static const float firstTextButtonsPosition = 99;
-static const float firstTextInformationPosition = 300;
-
-static const float contentTextViewLimit = 100;
 
 
 /**
