@@ -50,7 +50,7 @@ static const CGFloat kDefaultReflectionFraction = 0.15;
 {
     self.image = image;
     self.image = [self reflectedImage:self withHeight:self.bounds.size.height * kDefaultReflectionFraction];
-    self.alpha = 0.4;
+    self.alpha = 1.0;
 }
 
 #pragma mark - Format image

@@ -123,9 +123,6 @@
 
 + (void)save:(GLPGroup *)entity inDb:(FMDatabase *)db
 {
-    DDLogDebug(@"Group: %@", entity);
-    
-    
     if(entity.remoteKey == 0)
     {
         [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, user_remote_key) values(%@, %@, %@, %d, %d, %d)",
@@ -234,14 +231,23 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 
+        [self cleanTable:db];
+        
         for(GLPGroup *group in groups)
         {
             group.sendStatus = kSendStatusSent;
             
-            group.key = [GLPGroupDao saveIfNotExist:group db:db];
+            [GLPGroupDao save:group inDb:db];
         }
         
     }];
+}
+
++(void)cleanTable:(FMDatabase*)db
+{
+    BOOL removed = [db executeUpdateWithFormat:@"delete from groups"];
+    
+    DDLogDebug(@"All the groups list removed %d.", removed);
 }
 
 

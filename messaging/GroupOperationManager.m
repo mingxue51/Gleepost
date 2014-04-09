@@ -9,10 +9,12 @@
 #import "GroupOperationManager.h"
 #import "GroupUploaderManager.h"
 #import "GLPGroupDao.h"
+#import "GLPiOS6Helper.h"
 
 @interface GroupOperationManager ()
 
 @property (strong, nonatomic) GroupUploaderManager *groupUploader;
+
 
 
 @end
@@ -46,12 +48,13 @@ static GroupOperationManager *instance = nil;
 
         _groupUploader = [[GroupUploaderManager alloc] init];
         
-        
         super.checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForGroupUpload:) userInfo:nil repeats:YES];
         
-        [super.checkForUploadingTimer setTolerance:5.0f];
-        
-        
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [super.checkForUploadingTimer setTolerance:5.0f];
+
+        }
     }
     
     return self;
@@ -98,6 +101,18 @@ static GroupOperationManager *instance = nil;
     [_groupUploader addGroup:group withTimestamp:timestamp];
 }
 
+#pragma mark - Group uploader manager methods
+
+-(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group
+{
+    
+    [_groupUploader changeGroupImageWithImage:image withGroup:group];
+}
+
+-(UIImage *)pendingGroupImageWithRemoteKey:(int)remoteKey
+{
+    return [_groupUploader pendingGroupImageWithRemoteKey:remoteKey];
+}
 
 /**
  -(void)uploadImage:(UIImage *)image withTimestamp:(NSDate *)timestamp

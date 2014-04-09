@@ -22,6 +22,8 @@
 #import "NSDate+HumanizedTime.h"
 #import "SessionManager.h"
 #import "WebClientHelper.h"
+#import "GLPPostOperationManager.h"
+
 
 @interface PostCell()
 
@@ -29,19 +31,22 @@
 @property (assign, nonatomic) int postIndex;
 @property (assign, nonatomic) float initialPostContentLabelY;
 @property (assign, nonatomic) float initialPostContentLabelHeight;
-@property (assign, nonatomic) CGRect labelDimensions;
-@property (assign, nonatomic) float socialPanelY;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topBackgroundConstrain;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textLabelConstrain;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
+
+@property (strong, nonatomic) NSAttributedString *contentAttributeText;
 @property (assign, nonatomic) BOOL freshPost;
 @property (assign, nonatomic) BOOL isViewPostNotifications;
 
-//@property (strong, nonatomic) UIView *lineView;
 @end
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 320;
-const float TEXT_CELL_HEIGHT = 90;
+const float IMAGE_CELL_HEIGHT = 372;
+const float TEXT_CELL_HEIGHT = 192;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -50,13 +55,10 @@ const float TEXT_CELL_HEIGHT = 90;
     
     if(self)
     {
-        self.socialPanelY = self.socialPanel.frame.origin.y;
-        
-        self.labelDimensions = CGRectMake(60.0f, 30.0f, 250.0f, 50.0f);
-
-        
         self.isViewPost = NO;
         self.isViewPostNotifications = NO;
+        
+
         
 //        self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height-1, self.contentView.frame.size.width, 1)];
 //
@@ -75,19 +77,28 @@ const float TEXT_CELL_HEIGHT = 90;
 
 static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
 static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
+static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 80;
+static const float FixedSizeOfNonEventTextCell = TEXT_CELL_HEIGHT - 80;
 static const float FollowingCellPadding = 7;
 static const float PostContentViewPadding = 10;  //15 before. 10 before.
 static const float PostContentLabelMaxWidth = 300;
 static const float FollowingSocialPanel = 40;
 static const float OneLinePadding = 10;
-static const float FiveLinesLimit = 76.0;
+static const float FiveLinesLimit = 101.0; //76
 static const float OneLineText = 16.0;
-static const float FixedDistanceOfMoreFromText = 295.0;
+static const float FixedDistanceOfMoreFromText = 250; //295
+static const float FixedTopBackgroundHeight = 250;
+static const float FixedTopBackgroundHeightTextPost = 70;
+static const float FixedBottomImageViewHeight = 295;
+static const float FixedBottomTextViewHeight = 100;
+
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex
 {
     self.post = postData;
     self.postIndex = postIndex;
+    
+    [self initFormatLabelsObjects];
     
     self.imageAvailable = NO;
     [self updateOnlinePost:postData.remoteKey];
@@ -144,20 +155,27 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     if(self.isViewPostNotifications)
     {
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        
     }
     
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
-
     
-    if([postData.author.profileImageUrl isEqualToString:@""])
-    {
-        [self.userImageView setImage:userImage];
-    }
-    else
-    {
-        [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil];
-    }
+    
+    
+    [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    
+
+//    [self.userImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//        
+//    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//        
+//        DDLogDebug(@"Error: %@", error.description);
+//        
+//    }];
+    
 
     [self formatUsersImage];
     [self formatPostImage];
@@ -170,6 +188,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     NSDate *currentDate = postData.date;
     //Add the post's time.
+    
     [self.postTime setText:[currentDate timeAgo]];
     [self setTimeWithTime:postData.dateEventStarts];
     
@@ -183,8 +202,6 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     [categoriesStr appendString:@" General"];
     
-    //Add text to information label.
-    [self.informationLabel setText:[NSString stringWithFormat:@"%d likes %d comments %d views Category: %@",postData.likes, postData.commentsCount, postData.remoteKey, categoriesStr]];
     
     [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d",postData.likes]];
     
@@ -192,21 +209,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     
     //Set like button status.
-    if(postData.liked)
-    {
-        [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
-    }
-    else
-    {
-        [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
-        
-    }
+    [self setLikeImageToButton];
     
     
     if(self.isViewPost)
@@ -215,57 +218,137 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         
         //Hide comment button.
         [self.commentBtn setEnabled:NO];
-        
+        [self.wideCommentBtn setEnabled:NO];
     }
     
     
 
 //    [self setBorderToContentLabel];
+    
 
+    if(![self isCurrentPostEvent])
+    {
+        //Hide elements on top, bring other elements up and make the cell smaller.
+        [_eventView setHidden:YES];
+    }
+    else
+    {
+        [_eventView setHidden:NO];
+    }
+    
     
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [self.postImage addGestureRecognizer:tap];
     
+    [self configureGoingButton];
+    
     [self hideMoreButtonIfNecessary];
 
     [self setFontToLabels];
+    
+    [self formatBottomView];
+    
 }
 
 #pragma mark - Format UI
 
 -(void)setFontToLabels
 {
-    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+//    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+//    [self.titleLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
+    
+    
+    self.contentLbl.attributedText = _contentAttributeText;
+    
     
     self.titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
     
-    [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
+//    [self.postTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:11.0f]];
+//    
+//    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
+//    
+//    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
     
-    [self.numberOfCommentsLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
-    
-    [self.numberOfLikesLbl setFont:[UIFont fontWithName:GLP_UNIVERS_LIGHT_BOLD size:12.0f]];
-    
-    [self.eventTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14]];
+//    [self.eventTime setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14]];
 
     
     
 }
 
+-(void)setLikeImageToButton
+{
+    if(self.post.liked)
+    {
+        [self.thumpsUpBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+        
+        //Add the thumbs up selected version of image.
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        [self.thumpsUpBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        
+        //Add the thumbs up selected version of i   age.
+        [self.thumpsUpBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+        
+    }
+    
+    [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d", self.post.likes]];
+
+}
+
+-(void)initFormatLabelsObjects
+{
+    _contentAttributeText = [[NSAttributedString alloc] initWithString:self.post.content
+                                                            attributes:@{ NSKernAttributeName : @(0.3f)}];
+}
+
+-(void)configureGoingButton
+{
+    if(!self.post.eventTitle)
+    {
+        [_goingButton setHidden:YES];
+    }
+    else
+    {
+        [_goingButton setHidden:NO];
+    }
+    
+    if([self.post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
+    {
+        [_goingButton setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
+        [_goingButton setEnabled:NO];
+    }
+    else if(self.post.attended)
+    {
+        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        [_goingButton setEnabled:YES];
+        _goingButton.tag = 1;
+    }
+    else
+    {
+        [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+        [_goingButton setEnabled:YES];
+        _goingButton.tag = 2;
+    }
+
+}
+
 -(void)hideMoreButtonIfNecessary
 {
     
-   if(self.post.group)
-   {
-       [_moreBtn setHidden:YES];
-
-   }
-   else
-   {
-       if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
+//   if(self.post.group)
+//   {
+//       [_moreBtn setHidden:YES];
+//
+//   }
+//   else
+//   {
+       if([self isCurrentPostBelongsToCurrentUser] /*|| [self isCurrentPostEvent]*/)
        {
            [_moreBtn setHidden:NO];
            
@@ -274,7 +357,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
        {
            [_moreBtn setHidden:YES];
        }
-   }
+//   }
 
 }
 
@@ -300,16 +383,29 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 
 -(void)formatPostImage
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:8];
+//    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:8];
+    [ShapeFormatterHelper setTopCornerRadius:self.postImage withViewFrame:self.postImage.frame withValue:8];
 }
 
 -(void)setBorderToContentLabel
 {
-    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
-    self.contentLbl.layer.borderWidth = 0.5f;
+    
+//    self.eventView.layer.borderColor = [UIColor redColor].CGColor;
+//    self.eventView.layer.borderWidth = 1.0f;
+    
+//    self.contentLbl.layer.borderColor = [UIColor redColor].CGColor;
+//    self.contentLbl.layer.borderWidth = 0.5f;
+    
+    self.mainView.layer.borderColor = [UIColor redColor].CGColor;
+    self.mainView.layer.borderWidth = 0.5f;
     
 //    self.contentView.layer.borderColor = [UIColor blueColor].CGColor;
 //    self.contentView.layer.borderWidth = 0.5f;
+}
+
+-(void)formatBottomView
+{
+    [ShapeFormatterHelper setTwoBottomCornerRadius:_likeCommentBackImageView withViewFrame:_likeCommentBackImageView.frame withValue:10];
 }
 
 #pragma mark - Online indicator
@@ -382,6 +478,25 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         [self.textLabelConstrain setConstant:labelSize.height];
 
 //        NSLog(@"Text With content: %@ with height: %f", self.contentLbl.text, self.contentView.frame.size.height);
+        
+        //Change the size of top background view.
+//        [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeightTextPost];
+        
+        [self.topBackgroundConstrain setConstant:labelSize.height+FixedTopBackgroundHeightTextPost];
+        
+        [self.distanceFromTopView setConstant:16];
+        
+        if([self isCurrentPostEvent])
+        {
+            [self.distanceFromTop setConstant:81];
+        }
+        else
+        {
+            [self.distanceFromTop setConstant:5];
+        }
+        
+        [self.mainViewHeight setConstant:labelSize.height + FixedBottomTextViewHeight];
+        
 
     }
     else
@@ -389,32 +504,26 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         //Change the height of the label.
         [self setElement:self.contentLbl size:labelSize];
         
-        [self setElement:self.moreBtn y:labelSize.height];
+//        [self setElement:self.moreBtn y:labelSize.height];
+        
+        [self setElement:_likeCommentView y:labelSize.height];
+        
+        
+        if([self isCurrentPostEvent])
+        {
+            [ShapeFormatterHelper setElement:_mainView withExtraY:83];
+        }
+        else
+        {
+            [ShapeFormatterHelper setElement:_mainView withExtraY:5];
+        }
+
+        //Change the size of top background view.
+        [ShapeFormatterHelper setElement:_topBackgroundImageView withExtraHeight:labelSize.height+FixedTopBackgroundHeight];
+        
+        [ShapeFormatterHelper setElement:_mainView withExtraHeight:labelSize.height+FixedBottomImageViewHeight];
+        
     }
-    
-    
-    
-    //Change the position of the social view.
-//    float socialViewY = self.contentLbl.frame.origin.y + self.contentLbl.frame.size.height + 5;
-//    
-//    if(socialViewY < 52)
-//    {
-//        socialViewY += OneLinePadding;
-//    }
-//    
-//    CGRect socialFrame = self.socialPanel.frame;
-//    
-//    [self.socialPanel setFrame:CGRectMake(socialFrame.origin.x, socialViewY, socialFrame.size.width, socialFrame.size.height)];
-//    
-//    //Change the height of the content view.
-//    CGRect contentViewFrame = self.contentView.frame;   
-//    
-//    float contentViewH = socialViewY + socialFrame.size.height + FollowingCellPadding;
-//    
-////    NSLog(@"ContentViewH: %f Content: %@",contentViewH, self.contentLbl.text);
-//    
-//    [self.contentView setFrame:CGRectMake(contentViewFrame.origin.x, contentViewFrame.origin.y, contentViewFrame.size.width, contentViewH)];
-    
 }
 
 -(void)postFromNotifications:(BOOL)notifications
@@ -440,28 +549,26 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
 {
-//    CGSize maximumLabelSize = CGSizeMake(PostContentLabelMaxWidth, FLT_MAX);
-    //[UIFont systemFontOfSize:13.0]
     UIFont *font = nil;
     
     int maxWidth = 0;
     
     if(isImage)
     {
-        font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
+        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
         maxWidth = PostContentLabelMaxWidth;
+
         
     }
     else
     {
-        font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
         maxWidth = 264;
+
     }
     
-
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
-    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,
+                                                                                                         NSKernAttributeName : @(0.3f)}];
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
@@ -474,36 +581,34 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     {
         return CGSizeMake(size.width, FiveLinesLimit);
     }
-    
-//    if(isViewPost)
-//    {
-//        //Decrease the height.
-//        size.height -= 15;
-//    }
 
-    //
     
     return size;
-//    return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage isViewPost:(BOOL)isViewPost
++ (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
 {
     // initial height
     float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
     
-    // add content label height + message content view padding
-    height += [PostCell getContentLabelSizeForContent:content isViewPost:isViewPost isImage:isImage].height /*+ PostContentViewPadding*/;
     
-    //Decrease by 10 points when the text is over one line.
-//    if([PostCell getContentLabelSizeForContent:content isViewPost:isViewPost].height > OneLineText)
-//    {
-//        height -= 10;
-//    }
+    if(isImage)
+    {
+        if(!post.eventTitle)
+        {
+            height = FixedSizeOfNonEventImageCell;
+        }
+    }
+    else
+    {
+        if(!post.eventTitle)
+        {
+            height = FixedSizeOfNonEventTextCell;
+        }
+    }
     
-//    NSLog(@"Final Height: %f Label size: %f. Content: %@",height, [PostCell getContentLabelSizeForContent:content].height, content);
-    
-    //return height + FollowingCellPadding;
+    // add content label height
+    height += [PostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height;
     
     return height;
 }
@@ -518,63 +623,8 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     [element setFrame:CGRectMake(element.frame.origin.x, FixedDistanceOfMoreFromText + y, element.frame.size.width, element.frame.size.height)];
 }
 
-//-(void)layoutSubviews
-//{
-//    if(self.isViewPost)
-//    {
-//        self.contentView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
-//
-//        //Hide and disable comment button.
-//        [self.commentBtn setHidden:YES];
-//        [self.commentBtn setUserInteractionEnabled:NO];
-//        
-//        
-//        CGSize contentSize = [PostCell getContentLabelSizeForContent:self.contentLbl.text];
-//        
-//        
-//        CGRect frameSize = self.contentLbl.frame;
-//        
-// 
-//        [self.contentLbl setNumberOfLines:0];
-//
-//        if(self.imageAvailable)
-//        {
-//            
-//            self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.contentLbl.frame.origin.y+5, self.contentLbl.frame.size.width, contentSize.height);
-//            
-//            frameSize = self.contentLbl.frame;
-//            
-////            NSLog(@"Frame Size after: %f : %f",frameSize.size.width, frameSize.size.height);
-//            
-//            //Move all views below content label.
-//            frameSize = self.postImage.frame;
-//            
-//            CGRect socialFrame = self.socialPanel.frame;
-//            
-//            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height+50.0), socialFrame.size.width, socialFrame.size.height);
-//
-//        }
-//        else
-//        {
-//            if([self.contentLbl.text isEqualToString:@""])
-//            {
-//                return;
-//            }
-//            
-//                self.contentLbl.frame = CGRectMake(self.contentLbl.frame.origin.x, self.initialPostContentLabelY+10, self.contentLbl.frame.size.width, contentSize.height+self.initialPostContentLabelHeight);
-//                
-//                CGRect socialFrame = self.socialPanel.frame;
-//            
-//                
-//            self.socialPanel.frame = CGRectMake(socialFrame.origin.x, self.frame.size.height-(socialFrame.size.height), socialFrame.size.width, socialFrame.size.height);
-//
-//        }
-//    }
-//
-//}
 
 #pragma - mark Selector methods
-
 
 -(IBAction)viewMoreMenu:(id)sender
 {
@@ -582,42 +632,29 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     UIActionSheet *actionSheet = nil;
     
-    NSString *attending = nil;
-    
-    if(self.post.attended)
-    {
-        attending = @"Not Going";
-    }
-    else
-    {
-        attending = @"Going";
-    }
-    
-    
-    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, nil];
-    }
-    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+    if([self isCurrentPostBelongsToCurrentUser])
     {
         actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
     }
-    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
-    }
-    else
-    {
-//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
-    }
-
     
     
-    
-//    if([self isCurrentPostEvent])
+//    if([self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:attending, nil];
+//    }
+//    else if([self isCurrentPostBelongsToCurrentUser] && ![self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+//    }
+//    else if (![self isCurrentPostBelongsToCurrentUser] && [self isCurrentPostEvent])
 //    {
 //        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: attending, nil];
 //    }
+//    else
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Report", nil];
+//    }
+
     
     
     
@@ -645,16 +682,20 @@ static const float FixedDistanceOfMoreFromText = 295.0;
 
 - (IBAction)likePost:(id)sender
 {
-    UIButton *btn = (UIButton*) sender;
+//    UIButton *btn = (UIButton*) sender;
     
     //If like button is pushed then set the pushed variable to NO and change the
     //colour of the image.
     if([self.post liked])
     {
-        [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+//        if(btn.tag != 1)
+//        {
+//            [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//            
+//            //Add the thumbs up selected version of image.
+//            [btn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
+//        }
+
         
         [self.post setLiked:NO];
         
@@ -666,9 +707,13 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     }
     else
     {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+//        if(btn.tag != 1)
+//        {
+//            [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
+//            //Add the thumbs up selected version of image.
+//            [btn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
+//        }
+
         
         [self.post setLiked:YES];
         
@@ -679,11 +724,10 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         ++self.post.likes;
     }
     
-    //Update the UI.
-    [self refreshInformationLabel];
+    [self setLikeImageToButton];
     
     //Update post in local database.
-    [GLPPostManager updatePostWithLiked: self.post];
+    [GLPPostManager updatePostWithLiked:self.post];
     
     [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.post.remoteKey numberOfLikes:self.post.likes andNumberOfComments:self.post.commentsCount];
     
@@ -769,6 +813,30 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     
     [self.delegate viewPostImage:clickedImageView.image];
 }
+- (IBAction)attendOrNotAttendToEvent:(id)sender
+{
+    if(_goingButton.tag == 1)
+    {
+        //Not attend.
+        [self notAttending];
+//        [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+//        _goingButton.tag = 2;
+        [self makeButtonUnselected];
+        
+    }
+    else if(_goingButton.tag == 2)
+    {
+        //Attend.
+        [self attending];
+        [self makeButtonSelected];
+//        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+//        _goingButton.tag = 1;
+
+    }
+    
+}
+
+
 
 /**
  Sends a post notification to timeline view controller to update dynamically the number of likes.
@@ -829,7 +897,7 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         [self deleteCurrentPost];
         
         
-        [_delegate removePostWithPost:_post];
+//        [_delegate removePostWithPost:_post];
 
     }
     else if ([selectedButtonTitle isEqualToString:@"Report"])
@@ -869,11 +937,11 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         
         if(success)
         {
-            NSLog(@"Like for post %d succeed.",postRemoteKey);
+            NSLog(@"Like %d for post %d succeed.",like, postRemoteKey);
         }
         else
         {
-            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+            NSLog(@"Like %d for post %d not succeed.",like, postRemoteKey);
         }
         
         
@@ -889,9 +957,13 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         
         if(success)
         {
+            //Update local database.
+            [GLPPostManager updatePostAttending:self.post];
         }
         else
         {
+            [self makeButtonUnselected];
+
             //Error message.
             [WebClientHelper showStandardError];
         }
@@ -908,11 +980,13 @@ static const float FixedDistanceOfMoreFromText = 295.0;
         
         if(success)
         {
-            
-//            [self makeButtonUnselected:currentButton];
+            //Update local database.
+            [GLPPostManager updatePostAttending:self.post];
         }
         else
         {
+            [self makeButtonSelected];
+
             //Error message.
             [WebClientHelper showStandardError];
         }
@@ -920,15 +994,56 @@ static const float FixedDistanceOfMoreFromText = 295.0;
     }];
 }
 
+-(void)makeButtonSelected
+{
+    [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+    _goingButton.tag = 1;
+}
+
+-(void)makeButtonUnselected
+{
+    [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+    _goingButton.tag = 2;
+}
+
 -(void)deleteCurrentPost
 {
+    
+    if(_post.remoteKey == 0)
+    {
+        BOOL postPending = [[GLPPostOperationManager sharedInstance] cancelPostWithKey:_post.key];
+        
+        
+        if(!postPending)
+        {
+            [self deletePostFromServer];
+        }
+        else
+        {
+            [_delegate removePostWithPost:_post];
+        }
+    }
+    else
+    {
+        [self deletePostFromServer];
+    }
+}
+
+-(void)deletePostFromServer
+{
     [[WebClient sharedInstance] deletePostWithRemoteKey:_post.remoteKey callbackBlock:^(BOOL success) {
-       
+        
         if(!success)
         {
-            //TODO: Maybe bring back the post.
-            
+            [WebClientHelper showFailedToDeletePostError];
+            return;
         }
+        
+        [_delegate removePostWithPost:_post];
+        
+        
+        //Delete post from database.
+        [GLPPostManager deletePostWithPost:self.post];
         
     }];
 }

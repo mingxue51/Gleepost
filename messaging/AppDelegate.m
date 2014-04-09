@@ -35,6 +35,11 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPPushManager.h"
 #import "GLPFacebookConnect.h"
+#import "ContactsViewController.h"
+#import "GroupViewController.h"
+#import "GLPPrivateProfileViewController.h"
+#import "GLPProfileViewController.h"
+#import "ContactsManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -167,29 +172,163 @@ static NSString * const kCustomURLHost      = @"verify";
 
 - (void)receivePushNotification:(NSDictionary *)json
 {
+    //    GLPTabBarController *tabVC = nil;
+    //
+    //    DDLogInfo(@"Root VC: %@", NSStringFromClass([self.window.rootViewController class]));
+    //    if([self.window.rootViewController isKindOfClass:[GLPTabBarController class]]) {
+    //        tabVC = (GLPTabBarController *)self.window.rootViewController;
+    //    } else {
+    //        UINavigationController *rootNavVC = (UINavigationController *)self.window.rootViewController;
+    //        for(UIViewController *vc in rootNavVC.viewControllers) {
+    //            DDLogInfo(@"Child VC: %@", NSStringFromClass([vc class]));
+    //            if([vc isKindOfClass:[GLPTabBarController class]]) {
+    //                tabVC = (GLPTabBarController *) vc;
+    //            }
+    //        }
+    //    }
+    
+    
+    
     DDLogInfo(@"Receive push notification: %@", json);
     
-    if(!json[@"conv"]) {
-        DDLogError(@"Converstion id does not exist, abort");
+    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"]) {
+        
+        DDLogError(@"Converstion id or group id or added user or accepted user does not exist, abort");
         return;
     }
     
-    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[json[@"conv"] integerValue]];
+    if(json[@"conv"])
+    {
+        [self navigateToConversationWithJson:json];
+    }
+    else if(json[@"group-id"])
+    {
+        [self navigateToGroupWithJson:json];
+    }
+    else if(json[@"adder-id"])
+    {
+        [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"adder-id"] integerValue]];
+    }
+    else if (json[@"accepter-id"])
+    {
+        [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"accepter-id"] integerValue]];
+    }
+    else if (json[@"version"])
+    {
+        NSString *jsonVersion = json[@"version"];
+        
+        NSString *actualVersion = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+        
+        if(![jsonVersion isEqualToString:actualVersion])
+        {
+            [self navigateToGleepostApp];
+
+        }
+
+    }
+}
+
+-(void)navigateToGleepostApp
+{
+//    UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
     
-//    GLPTabBarController *tabVC = nil;
+//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[_tabBarController.selectedIndex] class]));
+//    UINavigationController *navVC = _tabBarController.viewControllers[_tabBarController.selectedIndex];
 //    
-//    DDLogInfo(@"Root VC: %@", NSStringFromClass([self.window.rootViewController class]));
-//    if([self.window.rootViewController isKindOfClass:[GLPTabBarController class]]) {
-//        tabVC = (GLPTabBarController *)self.window.rootViewController;
-//    } else {
-//        UINavigationController *rootNavVC = (UINavigationController *)self.window.rootViewController;
-//        for(UIViewController *vc in rootNavVC.viewControllers) {
-//            DDLogInfo(@"Child VC: %@", NSStringFromClass([vc class]));
-//            if([vc isKindOfClass:[GLPTabBarController class]]) {
-//                tabVC = (GLPTabBarController *) vc;
-//            }
-//        }
-//    }
+//    DDLogInfo(@"Private Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+//    UINavigationController *currentVC = navVC.viewControllers[0];
+    
+    [NSThread detachNewThreadSelector:@selector(openUrl:) toTarget:self withObject:nil];
+}
+
+-(void)openUrl:(id)sender
+{
+    //Navigate to the user in AppStore.
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/gb/app/gleepost/id820569024?mt=8&uo=4"]];
+}
+
+-(void)navigateToUsersProfileWithJson:(NSDictionary *)json withRemoteKey:(int)remoteKey
+{
+//    DDLogDebug(@"JSON: %@", json);
+    
+//    int remoteKey = [json[@"adder-id"] integerValue];
+    
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 4) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:4];
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    
+    DDLogInfo(@"Private Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    GLPPrivateProfileViewController *privateProfileVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPPrivateProfileViewController"];
+    
+    DDLogDebug(@"Remote Key push notification: %d", remoteKey);
+    
+    privateProfileVC.selectedUserId = remoteKey;
+    
+    [[ContactsManager sharedInstance] refreshContacts];
+    
+//    groupVC.group = group;
+//    groupVC.fromPushNotification = YES;
+    
+    [navVC setViewControllers:@[profileVC, privateProfileVC] animated:NO];
+    
+}
+
+-(void)navigateToGroupWithJson:(NSDictionary *)json
+{
+//    GLPGroup *group = [[GLPGroup alloc] initFromPushNotificationWithRemoteKey:[json[@"group-id"] integerValue]];
+    
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 4) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:4];
+    }
+    
+//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
+//    UINavigationController *navVC = _tabBarController.viewControllers[3];
+//    
+//    DDLogInfo(@"Contacts VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+//    ContactsViewController *contactsVC = navVC.viewControllers[0];
+//    
+//    GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+//    groupVC.group = group;
+//    groupVC.fromPushNotification = YES;
+    
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    
+    DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    //Navigate to notifications.
+    profileVC.fromPushNotification = YES;
+    
+    
+    [navVC setViewControllers:@[profileVC] animated:NO];
+
+//    [navVC setViewControllers:@[contactsVC, groupVC] animated:NO];
+}
+
+-(void)navigateToConversationWithJson:(NSDictionary *)json
+{
+    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[json[@"conv"] integerValue]];
     
     if(!_tabBarController) {
         DDLogError(@"Cannot find tab bar VC, abort");
@@ -214,7 +353,6 @@ static NSString * const kCustomURLHost      = @"verify";
     
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:NO];
 }
-
 
 # pragma mark - Handle custom URL Scheme (gleepost://)
 

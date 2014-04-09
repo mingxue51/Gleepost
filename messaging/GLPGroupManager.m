@@ -12,6 +12,7 @@
 #import "DatabaseManager.h"
 #import "SessionManager.h"
 #import "GLPMemberDao.h"
+#import "GroupOperationManager.h"
 
 @implementation GLPGroupManager
 
@@ -20,16 +21,27 @@
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback
 {
+
+    NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
     
     //Find all the groups that contain real images and save them.
-    
     NSMutableArray *pendingGroups = [[self findGroupsWithRealImagesWithGroups:groups] mutableCopy];
     
-    NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
+    DDLogDebug(@"Pending groups: %@", pendingGroups);
+    
+
+    
+    //Add any new images that are uploading in GroupOperationManager.
+//    localEntities = [self addPendingImagesIfExistWithGroups:localEntities].mutableCopy;
     
 //    localEntities = [self overwriteGroups:localEntities withImagesGroups:localGroupsWithImages];
     
     [localEntities addObjectsFromArray:pendingGroups];
+    
+    localEntities = [GLPGroupManager orderMembersByNameWithMembers:localEntities].mutableCopy;
+    
+    
+    
     
     localCallback(localEntities);
     
@@ -41,7 +53,6 @@
             return;
         }
         
-        
         //Store only groups that are not exist into the database.
 
         [GLPGroupDao saveGroups:serverGroups];
@@ -51,8 +62,15 @@
         NSMutableArray *finalRemoteGroups = [serverGroups mutableCopy];
         
 //        [GLPGroupManager removePendingGroupsIfExist:pendingGroups withRemoteGroups:finalRemoteGroups];
-                
+        
+        //Add any new images that are uploading in GroupOperationManager.
+//        finalRemoteGroups = [self addPendingImagesIfExistWithGroups:finalRemoteGroups].mutableCopy;
+        
+        
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
+        
+        finalRemoteGroups = [GLPGroupManager orderMembersByNameWithMembers:finalRemoteGroups].mutableCopy;
+
         
         remoteCallback(YES, finalRemoteGroups);
 
@@ -343,9 +361,7 @@
     [[WebClient sharedInstance] getPostsGroupsFeedWithTag:tag callback:^(BOOL success, NSArray *posts) {
        
         if(success)
-        {
-            DDLogDebug(@"Feed posts: %@", posts);
-            
+        {            
             callback(YES, posts);
             
         }
@@ -392,9 +408,9 @@
     }
     
     
-    NSArray *finalSections = [self findValidSections:groups];
+    NSArray *finalSections = [GLPGroupManager findValidSections:groups];
     
-    NSDictionary *categorisedGroups = [self categoriseByLetterWithSections:finalSections andGroups:groups];
+    NSDictionary *categorisedGroups = [GLPGroupManager categoriseByLetterWithSections:finalSections andGroups:groups];
     
     
     
@@ -566,6 +582,22 @@
     return nil;
 }
 
++(NSArray *)addPendingImagesIfExistWithGroups:(NSArray *)groups
+{
+    for(GLPGroup *g in groups)
+    {
+        UIImage *pendingImg = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:g.remoteKey];
+        
+        if(pendingImg)
+        {
+            g.finalImage = pendingImg;
+        }
+        
+    }
+    
+    return groups;
+}
+
 #pragma mark - Group members methods
 
 + (void)loadMembersWithGroupRemoteKey:(int)groupRemoteKey withLocalCallback:(void (^)(NSArray *members))localCallback remoteCallback:(void (^)(BOOL success, NSArray *members))remoteCallback
@@ -582,6 +614,8 @@
         {
             [GLPMemberDao saveMembers:members];
             
+            members = [GLPGroupManager orderMembersByNameWithMembers:members];
+            
             remoteCallback(success, members);
             
         }
@@ -591,6 +625,15 @@
         }
         
     }];
+}
+
++(NSArray *)orderMembersByNameWithMembers:(NSArray *)members
+{
+    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+    NSArray *sortedArray = [members sortedArrayUsingDescriptors:descriptors];
+    
+    return sortedArray;
 }
 
 #pragma mark - Notifications methods

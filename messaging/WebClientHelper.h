@@ -31,5 +31,8 @@
 + (void)commentWillUploadedLater;
 +(void)showOutOfBoundsError;
 
++(void)showFailedToDeletePostError;
+
++ (void)failedToSendEmailResettingPassword;
 
 @end

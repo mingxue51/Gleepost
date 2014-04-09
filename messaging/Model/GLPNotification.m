@@ -32,7 +32,7 @@
 {
     switch (self.notificationType) {
         case kGLPNotificationTypeAcceptedYou:
-            return [NSString stringWithFormat:@"Your are now contacts"];
+            return [NSString stringWithFormat:@"Your are now friends"];
         case kGLPNotificationTypeCommented:
             return [NSString stringWithFormat:@"%@ commented on your post", self.user.name];
         case kGLPNotificationTypeLiked:
@@ -40,7 +40,7 @@
         case kGLPNotificationTypeAddedYou:
             return [NSString stringWithFormat:@"Contact invite from %@",self.user.name];
         case kGLPNotificationTypeAddedGroup:
-            return [NSString stringWithFormat:@"User %@ added you to a new group", self.user.name];
+            return [NSString stringWithFormat:@"%@ added you to a group", self.user.name];
         default:
             return @"Something happened";
     }

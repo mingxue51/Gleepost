@@ -213,7 +213,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
                 _imageStatus = GLPImageStatusFailed;
                 
                 NSLog(@"Error occured. Post image cannot be uploaded.");
-                #warning TODO: show user an error(?)
             }
         }];
     }

@@ -9,6 +9,7 @@
 #import "GLPPostOperationManager.h"
 #import "GLPImageUploaderManager.h"
 #import "GLPPostUploaderManager.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPPostOperationManager ()
 
@@ -53,7 +54,11 @@ static GLPPostOperationManager *instance = nil;
         _imageUploader = [[GLPImageUploaderManager alloc] init];
         _postUploader = [[GLPPostUploaderManager alloc] init];
         _checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForPostUpload:) userInfo:nil repeats:YES];
-        [_checkForUploadingTimer setTolerance:5.0f];
+        
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [_checkForUploadingTimer setTolerance:5.0f];
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
 
@@ -133,6 +138,29 @@ static GLPPostOperationManager *instance = nil;
     //Upload image with timestasmp.
     [_imageUploader uploadImage:image withTimestamp:timestamp];
     [_checkForUploadingTimer fire];
+}
+
+/**
+ Cancel uploading post.
+ 
+ @param postKey the post's local database key.
+ 
+ @return YES if post pending, returns NO if the post is already uploaded.
+ 
+ */
+-(BOOL)cancelPostWithKey:(int)postKey
+{
+    NSDate *timestamp = [_postUploader cancelPendingPostWithKey:postKey];
+    
+    if(!timestamp)
+    {
+        return NO;
+    }
+
+    //Remove image from progress of uploading.
+    [_imageUploader cancelImageWithTimestamp:timestamp];
+    
+    return YES;
 }
 
 -(void)uploadTextPost:(GLPPost*)post

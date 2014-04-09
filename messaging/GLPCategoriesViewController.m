@@ -12,6 +12,7 @@
 #import "SessionManager.h"
 #import "CategoryManager.h"
 #import "UIImage+StackBlur.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPCategoriesViewController ()
 
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) NSMutableDictionary *categoriesImages;
 @property (strong, nonatomic) NSMutableDictionary *categoriesSelectedImages;
+@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 @property (strong, nonatomic) GLPCategory *selectedCategory;
 @end
 
@@ -35,6 +37,8 @@
     
     [self configTableView];
     
+    [self configAppearance];
+    
 
     
 //    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
@@ -44,6 +48,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)configAppearance
+{
+    if([GLPiOS6Helper isIOS6])
+    {
+        [_topImageView setBackgroundColor:[UIColor clearColor]];
+    }
 }
 
 -(void)configTableView
@@ -202,6 +214,11 @@
             cat.uiSelected = NO;
         }
     }
+}
+
+-(void)setImageToTopImage:(UIImage *)image
+{
+    [_topImageView setImage:image];
 }
 
 - (IBAction)hideViewController:(id)sender

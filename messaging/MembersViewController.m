@@ -28,7 +28,7 @@
 @property (assign, nonatomic) int selectedUserId;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UILabel *addMembersLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *addNewMembersBg;
 
 @end
 
@@ -43,12 +43,14 @@
     
     [self configurateView];
     
-    [self configureTopView];
 }
 
--(void)viewDidAppear:(BOOL)animated
+
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    
+    [self configureTopView];
     
     [self loadMembers];
 }
@@ -67,19 +69,19 @@
         [_groupImageView setImageWithURL:[NSURL URLWithString:_group.groupImageUrl]];
     }
     
-    [_addMembersLabel setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:24.0f]];
+    [_addNewMembersBg setImage:[UIImage imageNamed:@"add_members_bg"]];
 
-    
     [ShapeFormatterHelper setCornerRadiusWithView:_addNewMembersView andValue:5];
     
 //    [ShapeFormatterHelper setRoundedView:_groupImageView toDiameter:_groupImageView.frame.size.height];
     
     CGRect imageFrame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
     
-    [ShapeFormatterHelper setTwoLeftCornerRadius:_groupImageView withViewFrame:imageFrame withValue:10];
+    [ShapeFormatterHelper setTwoLeftCornerRadius:_groupImageView withViewFrame:imageFrame withValue:8];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewMember:)];
     [tap setNumberOfTapsRequired:1];
+    
     [_addNewMembersView addGestureRecognizer:tap];
     
 }
@@ -116,10 +118,9 @@
     
     GLPUser *currentMember = self.members[indexPath.row];
     
-    [contactCell setName:currentMember.name withImageUrl:currentMember.profileImageUrl];
+    [contactCell setMember:currentMember withGroup:_group];
     
     return contactCell;
-
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -157,10 +158,13 @@
         
     } remoteCallback:^(BOOL success, NSArray *members) {
         
-        self.members = members;
-        
-        [self.tableView reloadData];
-        
+        if(success)
+        {
+            self.members = members;
+            
+            [self.tableView reloadData];
+            
+        }
     }];
     
 //    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
@@ -179,6 +183,8 @@
 
 -(void)addNewMember:(id)sender
 {
+    [_addNewMembersBg setImage:[UIImage imageNamed:@"add_members_bg_press_down"]];
+    
     [self performSegueWithIdentifier:@"add members" sender:self];
 }
 
@@ -195,6 +201,7 @@
         GLPSearchUsersViewController *suvc = segue.destinationViewController;
         suvc.searchForMembers = YES;
         suvc.group = _group;
+        suvc.alreadyMembers = _members;
     }
 }
 

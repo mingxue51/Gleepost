@@ -12,6 +12,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPCommentDao.h"
 #import "WebClientHelper.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -44,7 +45,11 @@
         
         _checkForUploadingCommentTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForCommentUpload:) userInfo:nil repeats:YES];
         
-        [_checkForUploadingCommentTimer setTolerance:5.0f];
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [_checkForUploadingCommentTimer setTolerance:5.0f];
+        }
+        
         [_checkForUploadingCommentTimer fire];
 
         
@@ -152,9 +157,48 @@
     
 }
 
+/**
+ Cancels the pending post (if post exist) with all its comments (if comments exist).
+ 
+ @param postKey the post's local database key.
+ 
+ @return nil if post does not exist, otherwise returns the post with the timestamp in an NSDictionary.
+ 
+ */
+-(NSDate *)cancelPendingPostWithKey:(int)postKey
+{
+    NSDictionary *postTimestamp = [self isPostInQueueWithKey:postKey];
+    
+    if(!postTimestamp)
+    {
+        return nil;
+    }
+    
+    GLPPost *post = [postTimestamp objectForKey:@"Post"];
+    NSDate *timestamp = [postTimestamp objectForKey:@"Timestamp"];
+    
+    
+    //Remove post from queue.
+    [self removePostWithTimestamp:timestamp];
+    
+    //Remove post from local database.
+    [GLPPostManager deletePostWithPost:post];
+    
+    //Remove comments from queue.
+    [self removeCommentsWithPostKey:postKey];
+    
+    return timestamp;
+}
 
-
--(BOOL)isPostInQueueWithKey:(int)postKey
+/**
+ Returns an NSDictionary that contains post and timestamp.
+ 
+ @param postKey the post's local database key.
+ 
+ @return NSDictionary.
+ 
+ */
+-(NSDictionary *)isPostInQueueWithKey:(int)postKey
 {
     for(NSDate *timestamp in _readyPosts)
     {
@@ -162,11 +206,13 @@
         
         if(post.key == postKey)
         {
-            return YES;
+            NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:post,  @"Post", timestamp, @"Timestamp", nil];
+            
+            return dictionary;
         }
     }
     
-    return NO;
+    return nil;
 }
 
 -(void)setCommentInQueue:(GLPComment *)comment
@@ -233,6 +279,17 @@
     }
     DDLogDebug(@"New list of comments: %@", _pendingComments);
 
+}
+
+/**
+ This method is called in case user cancel the post uploading.
+ 
+ @param postKey the post's local database key.
+ 
+ */
+-(void)removeCommentsWithPostKey:(int)postKey
+{
+    [_pendingComments removeObjectForKey:[NSNumber numberWithInt:postKey]];
 }
 
 /**

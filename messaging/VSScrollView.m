@@ -512,7 +512,7 @@
     }
     else
     {
-        frame.origin.x += 60.0;
+        frame.origin.x += 42.0;
     }
     
 //    [myScrollView scrollRectToVisible:[self frameForPosition:position] animated:YES];

@@ -22,15 +22,14 @@
     
     //Load remote comments.
     [[WebClient sharedInstance] getCommentsForPost:post withCallbackBlock:^(BOOL success, NSArray *comments) {
-        //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(success) {
             
             //Save new comments in database.
             [GLPCommentManager saveCommentsInDb:comments];
+            
            
             //If there are comments in db and not in server show them.
-            
             remoteCallback(success, [self addLocalComments:localComments toRemoteComments:comments]);
             
         } else {
@@ -63,7 +62,7 @@
     {
         if(localComment.remoteKey == 0)
         {
-            [finalComments setObject:localComment atIndexedSubscript:0];
+            [finalComments insertObject:localComment atIndex:0];
         }
     }
     

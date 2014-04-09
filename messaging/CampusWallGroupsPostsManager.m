@@ -8,6 +8,8 @@
 
 #import "CampusWallGroupsPostsManager.h"
 #import "WebClient.h"
+#import "GLPPostManager.h"
+#import "GLPGroupManager.h"
 
 @interface CampusWallGroupsPostsManager ()
 
@@ -68,6 +70,8 @@ static CampusWallGroupsPostsManager *instance = nil;
 -(void)setPosts:(NSMutableArray *)posts
 {
     _posts = posts;
+    
+    [GLPPostManager setFakeKeysToPrivateProfilePosts:_posts];
 }
 
 
@@ -83,7 +87,6 @@ static CampusWallGroupsPostsManager *instance = nil;
 -(NSArray *)addNewPosts:(NSMutableArray *)recentPosts
 {
     NSMutableArray *recent = [[NSMutableArray alloc] init];
-    GLPPost *foundPost = nil;
     BOOL found = NO;
     
     //Find new posts.
@@ -148,6 +151,35 @@ static CampusWallGroupsPostsManager *instance = nil;
 -(int)numberOfPosts
 {
     return _posts.count;
+}
+
+-(BOOL)isTextPostExist
+{
+    for(GLPPost *p in _posts)
+    {
+        if(![p imagePost])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+-(void)removePostAtIndex:(int)index
+{
+    [_posts removeObjectAtIndex:index];
+}
+
+#pragma mark - Client
+
+-(void)loadGroupPosts
+{
+    [GLPGroupManager loadGroupsFeedWithCallback:^(BOOL success, NSArray *posts) {
+       
+        [self setPosts:posts.mutableCopy];
+        
+    }];
 }
 
 @end

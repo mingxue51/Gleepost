@@ -50,6 +50,7 @@ NSString *NOTHING_HAPPENING;
     
     if(self)
     {
+        //280
         [self setFrame:CGRectMake(0, 0, 320.0f, 280.0f)];
         
         [self setDataSource:self];
@@ -61,6 +62,7 @@ NSString *NOTHING_HAPPENING;
         
         [self initialiseObjects];
         
+        
         [self loadEvents];
         
         
@@ -68,8 +70,8 @@ NSString *NOTHING_HAPPENING;
 //        [self.scrollView setScrollEnabled:YES];
 //        [self.scrollView setContentSize:CGSizeMake(500.0f, 150.0f)];
 //        
-//        self.scrollView.layer.borderColor = [UIColor redColor].CGColor;
-//        self.scrollView.layer.borderWidth = 2.0f;
+//        self.layer.borderColor = [UIColor redColor].CGColor;
+//        self.layer.borderWidth = 2.0f;
         
     }
     
@@ -147,12 +149,14 @@ NSString *NOTHING_HAPPENING;
     
     [loadingLabel setTextColor:[UIColor whiteColor]];
     
+    [loadingLabel setBackgroundColor:[UIColor clearColor]];
+    
     [loadingLabel setText:@"Loading events..."];
     
     [self addSubview:loadingLabel];
 }
 
--(void)hideLoadingLabel
+-(void )hideLoadingLabel
 {
     for(UIView *v in [self subviews])
     {
@@ -249,7 +253,7 @@ NSString *NOTHING_HAPPENING;
 //        return 50.0;
 //        
 //    }
-    return 18.0;
+    return 5.0;
 }
 
 

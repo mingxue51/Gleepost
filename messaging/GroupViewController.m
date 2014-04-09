@@ -10,7 +10,6 @@
 #import "GLPPost.h"
 #import "AppearanceHelper.h"
 #import "GLPGroupManager.h"
-#import "PostCell.h"
 #import "GLPPostManager.h"
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
@@ -26,7 +25,9 @@
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
 #import "MembersViewController.h"
-#import "GroupUploaderManager.h"
+#import "GroupOperationManager.h"
+#import "SessionManager.h"
+#import "GLPiOS6Helper.h"
 
 @interface GroupViewController ()
 
@@ -90,9 +91,16 @@ const int NUMBER_OF_ROWS = 2;
     
     [self loadPosts];
     
+    if(_fromPushNotification)
+    {
+        [self loadGroupData];
+    }
+    
+    
 //    [self loadMembers];
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
+    [self configureNotifications];
 
     
 }
@@ -101,8 +109,6 @@ const int NUMBER_OF_ROWS = 2;
 {
     [super viewWillAppear:animated];
     
-    [self configureNotifications];
-
     [self configureNavigationBar];
     
     [self configureNavigationItems];
@@ -118,9 +124,14 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self removeNotifications];
     
     [super viewWillDisappear:animated];
+}
+
+-(void)dealloc
+{
+    [self removeNotifications];
+
 }
 
 #pragma mark - Configuration methods
@@ -150,13 +161,22 @@ const int NUMBER_OF_ROWS = 2;
 
 }
 
+
 -(void)configureTableView
 {
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
-    [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+    }
+    else
+    {
+        [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
+    }
+    
 }
 
 -(void)initialiseObjects
@@ -183,19 +203,46 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)configureNavigationItems
 {
+    int buttonX = 10;
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        buttonX = 0;
+    }
+    
     UIImage *createPostImg = [UIImage imageNamed:@"new_post_groups"];
     
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:createPostImg forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(10, 0, 35, 35)];
+//<<<<<<< HEAD
+    [btnBack setFrame:CGRectMake(23, 0, 35, 35)];
+    btnBack.exclusiveTouch = YES;
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
+    
+    UIButton *rangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rangeBtn addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
+    [rangeBtn setBackgroundImage:nil forState:UIControlStateNormal];
+    [rangeBtn setFrame:CGRectMake(0, 0, 35, 35)];
+    
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width+20, btnBack.frame.size.height)];
+//=======
+//    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
+//    
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
+//    
+//    
+//>>>>>>> ios6-support
     [view addSubview:btnBack];
+    [view addSubview:rangeBtn];
+    
     
     UIBarButtonItem *createPostButton = [[UIBarButtonItem alloc] initWithCustomView:view];
     
+    
     self.navigationItem.rightBarButtonItem = createPostButton;
+    
 }
 
 -(void)configureNavigationBar
@@ -232,12 +279,16 @@ const int NUMBER_OF_ROWS = 2;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_GROUP_POST_DELETED object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_POST_DELETED object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -294,6 +345,16 @@ const int NUMBER_OF_ROWS = 2;
     //    [self.tableView reloadData];
     
     
+}
+
+//TODO: NOT USED.
+-(void)deletePost:(NSNotification *)notification
+{
+    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    
+    DDLogDebug(@"Delete POST! %@", notification);
+    
+    [self removeTableViewPostWithIndex:index];
 }
 
 #pragma mark - GLPNewElementsIndicatorView
@@ -391,6 +452,15 @@ const int NUMBER_OF_ROWS = 2;
     }
 }
 
+-(void)removeTableViewPostWithIndex:(int)index
+{
+    NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
+    
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+2 inSection:0]];
+    
+    [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -403,9 +473,9 @@ const int NUMBER_OF_ROWS = 2;
 {
 //    if(self.selectedTabStatus == kGLPPosts)
 //    {
-        int i = (self.posts.count == 0) ? 0 : 1;
-        
-        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + i;
+//        int i = (self.posts.count == 0) ? 0 : 1;
+    
+        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count +1 /*+ i*/;
 //    }
 //    else
 //    {
@@ -428,7 +498,9 @@ const int NUMBER_OF_ROWS = 2;
 //        [loadingCell updateWithStatus:self.loadingCellStatus];
 //        return loadingCell;
         
-        return [self cellWithMessage:@"Loading posts"];
+        return [self cellWithMessage:@"No more posts"];
+        
+        
     }
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
@@ -460,6 +532,8 @@ const int NUMBER_OF_ROWS = 2;
 //        }
         
         [profileView setDelegate:self];
+
+        [self loadPendingImageIfExist];
         
         [profileView initialiseElementsWithGroupInformation:self.group withGroupImage:_groupImage];
         
@@ -473,7 +547,7 @@ const int NUMBER_OF_ROWS = 2;
         buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
         buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [buttonsView setDelegate:self];
+        [buttonsView setDelegate:self fromPushNotification:NO];
         
         return buttonsView;
         
@@ -573,7 +647,6 @@ const int NUMBER_OF_ROWS = 2;
 
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row - 2 == self.posts.count) {
@@ -600,11 +673,11 @@ const int NUMBER_OF_ROWS = 2;
                 
                 if([currentPost imagePost])
                 {
-                    return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+                    return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
                 }
                 else
                 {
-                    return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
+                    return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
                 }
             }
 //        }
@@ -639,6 +712,19 @@ const int NUMBER_OF_ROWS = 2;
     }
 }
 
+
+-(void)loadPendingImageIfExist
+{
+    UIImage *img = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:_group.remoteKey];
+    
+    if(!img)
+    {
+        return;
+    }
+    
+    _groupImage = img;
+}
+
 #pragma mark - Client
 
 -(void)loadPosts
@@ -662,6 +748,25 @@ const int NUMBER_OF_ROWS = 2;
         else
         {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
+        }
+        
+    }];
+}
+
+-(void)loadGroupData
+{
+    [[WebClient sharedInstance] getGroupDescriptionWithId:_group.remoteKey withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errormMessage) {
+        
+        if(success)
+        {
+            _group = group;
+            self.title = _group.name;
+            
+            [self refreshCellViewWithIndex:0];
+        }
+        else
+        {
+            [WebClientHelper showStandardError];
         }
         
     }];
@@ -892,6 +997,32 @@ const int NUMBER_OF_ROWS = 2;
     
 }
 
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    
+    int index;
+    
+    
+    for(index = 0; index < self.posts.count; ++index)
+    {
+        GLPPost *p = [self.posts objectAtIndex:index];
+        
+        if(p.remoteKey == post.remoteKey)
+        {
+
+            break;
+        }
+    }
+    
+    [self.posts removeObjectAtIndex:index];
+    
+    [self removeTableViewPostWithIndex:index];
+    
+}
+
 #pragma mark - FDTakeController delegate
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dictionary
@@ -904,13 +1035,12 @@ const int NUMBER_OF_ROWS = 2;
     [self refreshCellViewWithIndex:0];
     
     
-    
-    
     //Communicate with server to change the image.
-    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
+//    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
+//    
+//    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
     
-    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
-    
+    [[GroupOperationManager sharedInstance] changeGroupImageWithImage:_groupImage withGroup:_group];
     
 }
 
@@ -922,12 +1052,12 @@ const int NUMBER_OF_ROWS = 2;
     
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if([selectedButtonTitle isEqualToString:@"Show image"])
+    if([selectedButtonTitle isEqualToString:@"View image"])
     {
         //Show image.
         [self showImage];
     }
-    else if([selectedButtonTitle isEqualToString:@"Change image"])
+    else if([selectedButtonTitle isEqualToString:@"Change image"] || [selectedButtonTitle isEqualToString:@"Add image"])
     {
         //Change image.
         
@@ -961,22 +1091,35 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)showInformationMenu:(id)sender
 {
-    
-    [self addGroupImage:sender];
-    
     UIActionSheet *actionSheet = nil;
     
-    actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Show image", @"Change image", nil];
+    BOOL hasImage = [self addGroupImage:sender];
+    
+    if(_group.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
+    {
+        if(hasImage)
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
+        }
+        else
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Add image", nil];
+        }
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", nil];
+    }
+    
+
+    
     
     [actionSheet showInView:[self.view window]];
-
 }
 
 
 
-
 #pragma mark - View image delegate
-
 
 -(void)viewPostImage:(UIImage*)postImage
 {
@@ -1051,13 +1194,23 @@ const int NUMBER_OF_ROWS = 2;
 
 #pragma  mark - Helpers
 
--(void)addGroupImage:(id)sender
+/**
+ Takes the image and add it to groupImage.
+ 
+ @param sender
+ 
+ @return returns NO if there group does not contain any image, otherwise returns YES.
+ 
+ */
+-(BOOL)addGroupImage:(id)sender
 {
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
     _groupImage = clickedImageView.image;
+    
+    return (clickedImageView.tag == 0) ? NO : YES;
 }
 
 
@@ -1110,7 +1263,10 @@ const int NUMBER_OF_ROWS = 2;
     vc.image = _groupImage;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
@@ -1154,6 +1310,8 @@ const int NUMBER_OF_ROWS = 2;
         ViewPostViewController *vpvc = segue.destinationViewController;
         
         vpvc.post = self.selectedPost;
+        
+        vpvc.groupController = self;
         
         vpvc.commentJustCreated = self.commentCreated;
     }

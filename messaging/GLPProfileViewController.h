@@ -15,12 +15,15 @@
 #import "NotificationCell.h"
 #import "ButtonNavigationDelegate.h"
 #import "ProfileTableViewCell.h"
+#import "PostCell.h"
 
-@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, ButtonNavigationDelegate, ProfileTableViewCellDelegate>
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, ButtonNavigationDelegate, ProfileTableViewCellDelegate, RemovePostCellDelegate>
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;
 @property (assign, nonatomic) int selectedUserId;
+@property (assign, nonatomic) BOOL fromPushNotification;
+
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)logout:(id)sender;

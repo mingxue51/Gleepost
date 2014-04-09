@@ -68,8 +68,6 @@
     [self configureSegment];
     
     [self configNotifications];
-    
-
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -279,9 +277,6 @@
     
     NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
     
-    DDLogDebug(@"Index path of updated group: %d : %d", indexPath.row, indexPath.section);
-    
-    
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
 }
@@ -445,7 +440,10 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
+    
+    DDLogInfo(@"Received memory warning. ContactsViewController.");
 }
 
 -(void) navigateToProfileContact: (id)sender
@@ -459,9 +457,10 @@
 -(void) loadContacts
 {
 
-    [ContactsManager loadContactsWithLocalCallback:^(NSArray *contacts) {
+    [[ContactsManager sharedInstance] loadContactsWithLocalCallback:^(NSArray *contacts) {
         
         NSDictionary *allContacts = [[ContactsManager sharedInstance] findConfirmedContacts];
+        
         
         //TODO: Find the issue and fix it.
         
@@ -477,14 +476,12 @@
         
         [self showContacts:allContacts];
 
-        
     }];
     
 }
 
 -(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
 {
-    
     if(createdGroup)
     {
         //Add the new group in order to preserve it as is.
@@ -587,6 +584,8 @@
     self.users = [categorisedContacts objectForKey:@"Contacts"];
     self.usersStr = [categorisedContacts objectForKey:@"ContactsUserNames"];
     
+    [self.categorisedUsers removeAllObjects];
+    
     if(self.users.count>0)
     {
         self.sections = [NSMutableArray arrayWithObjects: @"a", @"b", @"c", @"d", @"e", @"f", @"g", @"h", @"i", @"j", @"k", @"l", @"m", @"n", @"o", @"p", @"q", @"r", @"s", @"t", @"u", @"v", @"w", @"x", @"y", @"z", nil];
@@ -599,7 +598,7 @@
 }
 
 -(void)showGroups
-{
+{    
     if(self.groups.count > 0)
     {
         NSDictionary *result = [GLPGroupManager processGroups:_groups];
@@ -619,6 +618,19 @@
 -(void)reloadNewGroupWithGroup:(GLPGroup *)group
 {
     [self loadGroupsWithGroup:group];
+}
+
+
+//TODO: Do that later.
+/**
+ We need to delete first number of sections and then rows (?).
+ */
+-(void)deleteGroupWithRemoteKey:(int)remoteKey
+{
+//    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
+//    DDLogDebug(@"IndexPath: %d : %d", indexPath.row, indexPath.section);
+//    
+//    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationRight];
 }
 
 #pragma mark - Table view data source
@@ -884,8 +896,10 @@
 -(void)groupDeletedWithData:(GLPGroup *)group
 {
     [GLPGroupManager deleteGroup:group];
+
+//    [self deleteGroupWithRemoteKey:group.remoteKey];
     
-    [self reloadNewGroupWithGroup:group];
+    [self reloadNewGroupWithGroup:nil];
 }
 
 #pragma mark - Navigation

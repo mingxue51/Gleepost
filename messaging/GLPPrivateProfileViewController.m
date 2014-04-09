@@ -26,8 +26,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPConversationViewController.h"
 #import "GLPApplicationHelper.h"
-
-
+#import "GLPiOS6Helper.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -98,8 +97,6 @@
     
     if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
     {
-        //TODO: Set in table view contact as in contacts.
-        
         self.contact = YES;
     }
     else
@@ -131,7 +128,7 @@
     
     [self initialiseObjects];
     
-    
+    [self loadUsersInformation];
 
     
     // Uncomment the following line to preserve selection between presentations.
@@ -193,18 +190,6 @@
     
     self.profileImage = nil;
     
-    if(self.contact)
-    {
-        //If the user is contact then load data from ContactsManager.
-        [self loadAndSetContactDetails];
-
-    }
-    else
-    {
-        //Load user's details from server.
-        [self loadAndSetUserDetails];
-    }
-    
 
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
@@ -240,6 +225,14 @@
 
 -(void)configureView
 {
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        
+        return;
+    }
+    
     [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     
     //Add new colour in the bottom of the table view.
@@ -331,6 +324,20 @@
 
     
 }
+-(void)loadUsersInformation
+{
+    if(self.contact)
+    {
+        //If the user is contact then load data from ContactsManager.
+        [self loadAndSetContactDetails];
+        
+    }
+    else
+    {
+        //Load user's details from server.
+        [self loadAndSetUserDetails];
+    }
+}
 
 - (UIStatusBarStyle) preferredStatusBarStyle
 {
@@ -340,7 +347,11 @@
 #pragma mark - Client methods
 
 
-//TODO: Load first user from local database and the from server.
+/**
+ 
+ Loads first user from local database and then from server.
+ 
+ */
 
 -(void)loadAndSetUserDetails
 {
@@ -503,8 +514,10 @@
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
     vc.image = clickedImageView.image;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
@@ -563,24 +576,8 @@
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
-        [profileView setDelegate:self];
-        
-        if(self.profileImage && self.profileUser)
-        {
-            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-        }
-        else if(self.profileImage && !self.profileUser)
-        {
-            [profileView initialiseProfileImage:self.profileImage];
-        }
-        else
-        {
-            [profileView initialiseElementsWithUserDetails:self.profileUser];
-        }
-        
-        profileView.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        return profileView;
+        return  [self configureProfileViewCell:profileView];
 
     }
     else if (indexPath.row == 1)
@@ -708,11 +705,11 @@
                         
             if([currentPost imagePost])
             {
-                return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+                return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
             }
             else
             {
-                return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
+                return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
             }
         }
 
@@ -724,6 +721,35 @@
     }
     
     return 70.0f;
+}
+
+-(ProfileTableViewCell *)configureProfileViewCell:(ProfileTableViewCell *)cell
+{
+    [cell setDelegate:self];
+    
+    if(self.profileImage && self.profileUser)
+    {
+        DDLogDebug(@"Private profile: Image / user ready.");
+        
+        [cell initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
+    }
+    else if(self.profileImage && !self.profileUser)
+    {
+        DDLogDebug(@"Private profile: Image ready not user.");
+        
+        [cell initialiseProfileImage:self.profileImage];
+    }
+    else if((!self.profileImage && self.profileUser) || (!self.profileImage && !self.profileUser))
+    {
+        DDLogDebug(@"Private profile: Last choise. %@ : %@", self.profileImage, self.profileUser);
+        
+        [cell initialiseElementsWithUserDetails:self.profileUser];
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    
+    return cell;
 }
 
 #pragma mark - Table view refresh methods
@@ -845,6 +871,8 @@
          */
         
         vc.commentJustCreated = self.commentCreated;
+        
+        vc.isFromCampusLive = NO;
         
         vc.post = self.selectedPost;
         

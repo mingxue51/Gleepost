@@ -34,7 +34,7 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 290.0f)];
+        [self setFrame:CGRectMake(0, 0, 320.0f, 340.0f)];
         
         
         for(UIView * v in self.subviews)

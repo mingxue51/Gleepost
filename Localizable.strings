@@ -6,4 +6,8 @@
   Copyright (c) 2014 Gleepost. All rights reserved.
 */
 
-"MSG" = "New message from %@";
+"MSG" = "Message from %@: %@";
+"GROUP" = "%@ added you to group: %@.";
+"added_you" = "%@ added you as a contact.";
+"accepted_you" = "%@ accepted your contact request.";
+"NEW_CONV" = "You've been paired into a radom chat with %@.";

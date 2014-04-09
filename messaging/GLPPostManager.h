@@ -26,5 +26,7 @@
 +(void)loadEventsRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback;
 + (void)setFakeKeysToPrivateProfilePosts:(NSArray *)privateProfilePosts;
 + (void)setFakeKeyToPost:(GLPPost *)post;
++ (void)updatePostAttending:(GLPPost*)post;
++(void)deletePostWithPost:(GLPPost *)post;
 
 @end

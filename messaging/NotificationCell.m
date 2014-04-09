@@ -66,7 +66,6 @@ float const kMarginBetweenBorderAndContent = 15;
 
 - (void)awakeFromNib
 {
-    
 }
 
 - (void)configureButtonsView
@@ -84,6 +83,8 @@ float const kMarginBetweenBorderAndContent = 15;
     
     // common stuff
     self.contentLabel.text = [notification notificationTypeDescription];
+
+
     
     [ShapeFormatterHelper setRoundedView:self.image toDiameter:self.image.frame.size.height];
     [self.image setImageWithURL:[NSURL URLWithString:notification.user.profileImageUrl] placeholderImage:nil];
@@ -114,26 +115,27 @@ float const kMarginBetweenBorderAndContent = 15;
     // added you event
     if(notification.notificationType == kGLPNotificationTypeAddedYou)
     {
-        self.buttonsView.hidden = NO;
         
-        float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? CGRectGetMaxY(self.image.frame) : CGRectGetMaxY(self.contentLabel.frame);
-        CGRectSetY(self.buttonsView, biggestView + kMarginBetweenContentAndButtonsView);
+        //If the contact is added from profile view (using push notification) convert the cell to: "You are now friends".
         
-        [self configureButtonsView];
-        
+        if([[ContactsManager sharedInstance] isUserContactWithId:notification.user.remoteKey])
+        {
+            [self showYouAreNowFriendsView];
+        }
+        else
+        {
+            self.buttonsView.hidden = NO;
+            
+            float biggestView = (self.image.frame.size.height >= self.contentLabel.frame.size.height) ? CGRectGetMaxY(self.image.frame) : CGRectGetMaxY(self.contentLabel.frame);
+            CGRectSetY(self.buttonsView, biggestView + kMarginBetweenContentAndButtonsView);
+            
+            [self configureButtonsView];
+        }
     }
     
     else if(notification.notificationType == kGLPNotificationTypeAcceptedYou)
     {
-        self.friendsLinkImageView.hidden = NO;
-        self.myImage.hidden = NO;
-        
-        NSString *currentProfile = [SessionManager sharedInstance].user.profileImageUrl;
-        [ShapeFormatterHelper setRoundedView:self.myImage toDiameter:self.myImage.frame.size.height];
-        [self.myImage setImageWithURL:[NSURL URLWithString:currentProfile] placeholderImage:nil];
-        
-        CGRectSetX(self.contentLabel, kMarginBetweenBorderAndContent + kTwoProfileImagesWidth + kMarginBetweenProfileImageAndContent);
-        self.contentLabel.textAlignment = NSTextAlignmentRight;
+        [self showYouAreNowFriendsView];
         
     } else if(notification.notificationType == kGLPNotificationTypeCommented ||
               notification.notificationType == kGLPNotificationTypeLiked)
@@ -151,6 +153,19 @@ float const kMarginBetweenBorderAndContent = 15;
         [self.contentLabel sizeToFit];
     }
     
+}
+
+-(void)showYouAreNowFriendsView
+{
+    self.friendsLinkImageView.hidden = NO;
+    self.myImage.hidden = NO;
+    
+    NSString *currentProfile = [SessionManager sharedInstance].user.profileImageUrl;
+    [ShapeFormatterHelper setRoundedView:self.myImage toDiameter:self.myImage.frame.size.height];
+    [self.myImage setImageWithURL:[NSURL URLWithString:currentProfile] placeholderImage:nil];
+    
+    CGRectSetX(self.contentLabel, kMarginBetweenBorderAndContent + kTwoProfileImagesWidth + kMarginBetweenProfileImageAndContent);
+    self.contentLabel.textAlignment = NSTextAlignmentRight;
 }
 
 - (void)acceptButtonClick
@@ -188,9 +203,23 @@ float const kMarginBetweenBorderAndContent = 15;
 {
     float maxW = [NotificationCell getContentLabelMaxWidthforNotification:notification];
     
-    CGSize maximumLabelSize = CGSizeMake(maxW, FLT_MAX);
-    UIFont *font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:15.0];
-    return [content sizeWithFont: font constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
+//    CGSize maximumLabelSize = CGSizeMake(maxW, FLT_MAX);
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    
+    
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxW, CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+    CGSize size = rect.size;
+    
+    return size;
+    
+//    return [content sizeWithFont: font constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 }
 
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification

@@ -12,7 +12,7 @@
 
 @synthesize remoteKey = _remoteKey;
 @synthesize key = _key;
-
+@synthesize isFromPushNotification = _isFromPushNotification;
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey
 {
@@ -23,6 +23,20 @@
         _name = name;
         _remoteKey = remoteKey;
     }
+    
+    return self;
+}
+
+- (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+    
+    self.remoteKey = remoteKey;
+    _isFromPushNotification = YES;
+//    _title = @"Loading conversation";
     
     return self;
 }

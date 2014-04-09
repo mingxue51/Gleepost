@@ -53,9 +53,45 @@
     imageView.layer.mask = maskLayer;
 }
 
++(void)setTwoBottomCornerRadius:(UIView *)view withViewFrame:(CGRect)frame withValue:(int)value
+{
+    UIBezierPath *maskPath;
+    maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds byRoundingCorners:(UIRectCornerBottomLeft | UIRectCornerBottomRight) cornerRadii:CGSizeMake(value, value)];
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = frame;
+    maskLayer.path = maskPath.CGPath;
+    view.layer.mask = maskLayer;
+}
+
++(void)setTopCornerRadius:(UIView *)view withViewFrame:(CGRect)frame withValue:(int)value
+{
+    UIBezierPath *maskPath;
+    maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(value, value)];
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//    maskLayer.frame = frame;
+    maskLayer.path = maskPath.CGPath;
+    view.layer.mask = maskLayer;
+}
+
 +(void)setCornerRadiusWithView:(UIView*)imageView andValue:(int)value
 {
     imageView.layer.cornerRadius = value;
+}
+
++(void)setElement:(UIView *)element withExtraHeight:(float)height
+{    
+    CGRect frame = element.frame;
+    
+    [element setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, height)];
+}
+
++(void)setElement:(UIView *)element withExtraY:(float)y
+{
+    CGRect frame = element.frame;
+    
+    [element setFrame:CGRectMake(frame.origin.x, y, frame.size.width, frame.size.height)];
 }
 
 @end

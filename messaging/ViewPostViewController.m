@@ -15,7 +15,6 @@
 #import "CommentCell.h"
 #import "NSString+Utils.h"
 #import "ViewPostTableView.h"
-#import "PostCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
@@ -31,6 +30,7 @@
 #import "GLPPostManager.h"
 #import "GLPApplicationHelper.h"
 
+
 @interface ViewPostViewController ()
 
 @property (strong, nonatomic) NSMutableArray *comments;
@@ -38,7 +38,6 @@
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 
 @property (weak, nonatomic) IBOutlet ViewPostTableView *tableView;
-@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
@@ -70,7 +69,6 @@ static BOOL likePushed;
     [self initialiseElements];
     
     
-    
     [self registerCells];
     
 
@@ -81,7 +79,6 @@ static BOOL likePushed;
 
     
     [self fillPostWithKey];
-
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
@@ -119,10 +116,11 @@ static BOOL likePushed;
     [self registerNotifications];
 
     
+    [self sendStatistics];
+
    // [self loadComments];
 
-    [self sendViewToGAI:NSStringFromClass([self class])];
-    [self sendViewToFlurry:NSStringFromClass([self class])];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -149,6 +147,15 @@ static BOOL likePushed;
     
 
     [super viewWillDisappear:animated];
+}
+
+-(void)sendStatistics
+{
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+    
+    [self sendView:NSStringFromClass([self class]) withId:self.post.remoteKey];
+
 }
 
 
@@ -189,9 +196,6 @@ static BOOL likePushed;
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    self.contentLabel.text = self.post.content;
-    [self.contentLabel sizeToFit];
     
     self.comments = [[NSMutableArray alloc] init];
 
@@ -527,9 +531,11 @@ static bool firstTime = YES;
 
 -(void)loadComments
 {
+    DDLogDebug(@"Post remote key: %d", self.post.remoteKey);
+    
     if(self.post.remoteKey == 0)
     {
-        //TODO: Load comments from operation manager.
+        //Load comments from operation manager.
         [self loadLocalComments];
     }
     else
@@ -546,6 +552,8 @@ static bool firstTime = YES;
 {
     NSAssert(self.post.key != 0, @"Post needs to have post key.");
     
+    DDLogInfo(@"Loading local comments from comment uploader.");
+    
     GLPCommentUploader *uploader = [[GLPCommentUploader alloc] init];
     
     self.comments = [uploader pendingCommentsWithPostKey:self.post.key].mutableCopy;
@@ -557,15 +565,15 @@ static bool firstTime = YES;
 {
     //[WebClientHelper showStandardLoaderWithTitle:@"Loading posts" forView:self.view];
     
-    
+    DDLogInfo(@"Loading comments from database and from server.");
+
     
     [GLPCommentManager loadCommentsWithLocalCallback:^(NSArray *comments) {
         
         self.comments = [comments mutableCopy];
         
         [self viewCommentsWithScroll:scroll];
-
-
+        
         
     } remoteCallback:^(BOOL success, NSArray *comments) {
         
@@ -573,6 +581,7 @@ static bool firstTime = YES;
         self.comments = [comments mutableCopy];
         
         [self viewCommentsWithScroll:scroll];
+        
         
     } withPost:self.post];
     
@@ -677,7 +686,7 @@ static bool firstTime = YES;
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-            [postViewCell postFromNotifications:YES];
+            [postViewCell postFromNotifications:NO];
         }
         else
         {
@@ -757,11 +766,13 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:YES isViewPost:YES];
+            return [PostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
+            
+//            return 650;
         }
         else
         {
-            return [PostCell getCellHeightWithContent:self.post.content image:NO isViewPost:YES];
+            return [PostCell getCellHeightWithContent:self.post image:NO isViewPost:YES];
         }
         //return 200;
     }
@@ -807,6 +818,25 @@ static bool firstTime = YES;
     return YES;
 }
 */
+
+
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+    if(_groupController)
+    {
+        [_groupController removePostWithPost:post];
+    }
+    else
+    {
+        [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    }
+    
+    
+    // Pop-up view controller.
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 #pragma mark - Form management

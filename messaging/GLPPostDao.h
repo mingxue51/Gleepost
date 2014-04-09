@@ -21,5 +21,7 @@
 +(void)updateLikedStatusWithPost:(GLPPost*)entity inDb:(FMDatabase*)db;
 +(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db;
 +(NSArray*)likedPostsInDb:(FMDatabase*)db;
++(void)updatePostAttending:(GLPPost*)entity db:(FMDatabase *)db;
++(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db;
 
 @end

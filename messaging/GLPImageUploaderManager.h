@@ -14,5 +14,6 @@
 
 -(NSString*)urlWithTimestamp:(NSDate*)timestamp;
 -(void)removeUrlWithTimestamp:(NSDate*)timestamp;
+-(void)cancelImageWithTimestamp:(NSDate *)timestamp;
 
 @end

@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ContactsManager.h"
 #import "WebClient.h"
@@ -20,6 +21,7 @@
 #import "ContactsManager.h"
 #import "ConversationManager.h"
 #import "GLPLiveConversationsManager.h"
+
 
 @interface ProfileTableViewCell ()
 
@@ -44,6 +46,7 @@
 
 @property (strong, nonatomic) GLPGroup *currentGroup;
 
+@property (weak, nonatomic) IBOutlet UIImageView *profileBackImage;
 
 @end
 
@@ -97,20 +100,45 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     
     
-    
     [self formatProfileImage];
+    
+    //        [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
     
     if(image)
     {
         [self.profileImage setImage:image];
+        [_profileBackImage setHidden:NO];
+
+        //Add gesture to show menu.
+        [self addGestureToGroupImageWithImage:YES];
     }
     else if(group.groupImageUrl)
     {
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl]];
+        
+        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+            [_profileBackImage setHidden:NO];
+            
+        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        
+
+
+        
+        //Add gesture to show menu.
+        [self addGestureToGroupImageWithImage:YES];
+    }
+    else
+    {
+//        [_profileBackImage setHidden:YES];
+        [self.profileImage setImage:nil];
+        
+        //Add gesture to show menu.
+        [self addGestureToGroupImageWithImage:NO];
     }
     
-    //Add gesture to show menu.
-    [self addGestureToGroupImage];
+
 
 }
 
@@ -123,11 +151,13 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     [self.profileImage setImage:image];
 }
 
--(void)addGestureToGroupImage
+-(void)addGestureToGroupImageWithImage:(BOOL)imageAvailable
 {
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(showInformationMenu:)];
     [tap setNumberOfTapsRequired:1];
     [self.profileImage addGestureRecognizer:tap];
+    
+    self.profileImage.tag = (imageAvailable) ?  1 : 0;
 }
 
 
@@ -146,6 +176,12 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 
 #pragma mark - User methods
 
+
+/**
+ 
+ TODO: Call that method from Profile VC when after refactoring image prefetching.
+ 
+ */
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image
 {
     if(user == nil)
@@ -166,17 +202,20 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     
     [self formatProfileImage];
 
-    
-    
+
     
     if([user.profileImageUrl isEqualToString:@""])
     {
         //Set default image.
-        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image"]];
+        [self.profileImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
     else
     {
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+        
         [self.profileImage setImage:image];
+        
 //        [self.coverProfileImage setImage:image];
     }
     
@@ -223,13 +262,20 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     {
         
         //Fetch the image from the server and add it to the image view.
-        //[self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//            
+//            [_profileBackImage setHidden:NO];
+//            
+//        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
-        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            
-//            [self.coverProfileImage setImage:image];
-            
-        }];
+        
+        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//            
+////            [self.coverProfileImage setImage:image];
+//            
+//        }];
         
         //TODO: Create shadow to the image.
         
@@ -272,6 +318,8 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     self.profileImage.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
     
     
+
+    
     //Set default image.
    [self.profileImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     
@@ -285,18 +333,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     [self.busySwitch setHidden:YES];
 }
 
--(void)updateImageWithUrl:(NSString*)url
-{
-//    [self.profileImage setImageWithURL:[NSURL URLWithString:url]];
-    
-    [self.profileImage setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil
-    
-    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-        
-//        [self.coverProfileImage setImage:image];
-        
-    }];
-}
 
 -(void)setDelegate:(UIViewController <ProfileTableViewCellDelegate> *)delegate
 {

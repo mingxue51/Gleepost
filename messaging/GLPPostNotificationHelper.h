@@ -41,4 +41,8 @@
 
 +(NSArray *)parseNotification:(NSNotification *)notification withPostsArrayForNewProfileImage:(NSArray *)posts;
 
++(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts;
+
++(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey;
+
 @end

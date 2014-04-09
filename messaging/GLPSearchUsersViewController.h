@@ -13,5 +13,6 @@
 @interface GLPSearchUsersViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, GLPSearchUserCellDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
+@property (strong, nonatomic) NSArray *alreadyMembers;
 @property (assign, nonatomic) BOOL searchForMembers;
 @end

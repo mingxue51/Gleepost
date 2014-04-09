@@ -62,6 +62,7 @@
 +(NSString*)parseRegisterErrorMessage:(NSString*)error;
 +(NSString*)parseLoginErrorMessage:(NSString*)error;
 + (NSString *)parseFBRegisterErrorMessage:(NSString *)error;
++(NSString *)parseLoadingGroupErrorMessage:(NSString *)error;
 
 // images
 +(NSString*)parseImageUrl:(NSDictionary*)url;

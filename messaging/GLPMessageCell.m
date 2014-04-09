@@ -218,6 +218,7 @@ static const CGFloat kBottomMargin = 7;
         view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
         imageView.hidden = YES;
         label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
     } else {
         view.backgroundColor = [UIColor clearColor];
         imageView.hidden = NO;

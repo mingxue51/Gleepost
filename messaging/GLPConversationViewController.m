@@ -651,6 +651,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     if(_isEmptyConversation) {
         [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
             _conversation = conversation;
+            _isEmptyConversation = NO;
             [self createMessageFromForm];
         }];
     } else {

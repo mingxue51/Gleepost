@@ -10,6 +10,7 @@
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
 #import "NSMutableArray+QueueAdditions.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPImageUploaderManager ()
 
@@ -43,7 +44,11 @@ const NSString *IMAGE_PENDING = @"PENDING";
         _pendingTimestamps = [[NSMutableArray alloc] init];
         _pendingImages = [[NSMutableDictionary alloc] init];
         _checker = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(startUploadImage:) userInfo:nil repeats:YES];
-        [_checker setTolerance:5.0f];
+        
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [_checker setTolerance:5.0f];
+        }
         
         [_checker fire];
         
@@ -124,6 +129,19 @@ const NSString *IMAGE_PENDING = @"PENDING";
 -(void)removeUrlWithTimestamp:(NSDate*)timestamp
 {
     [_uploadedImages removeObjectForKey:timestamp];
+}
+
+/**
+ Removes the image with a particular timestamp from pending and uploaded images data structures.
+ 
+ @param timestamp.
+ 
+ */
+-(void)cancelImageWithTimestamp:(NSDate *)timestamp
+{
+    [_pendingImages removeObjectForKey:timestamp];
+    [_uploadedImages removeObjectForKey:timestamp];
+    [_pendingTimestamps removeObject:timestamp];
 }
 
 

@@ -40,19 +40,30 @@
         }
         
         
-        // take only new posts
-        NSMutableArray *userPosts = [NSMutableArray array];
-        
-        for (GLPPost *newPost in posts)
-        {
-            if(newPost.author.remoteKey == remoteKey)
-            {
-                [userPosts addObject:newPost];
+        //Find all the event posts that the user attends.
+        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
+            
+            if(!success) {
+                callback(NO, nil);
+                return;
             }
             
-        }
-    
-        callback(YES, userPosts);
+            
+            // take only new posts
+            NSMutableArray *userPosts = [NSMutableArray array];
+            
+            for (GLPPost *newPost in posts)
+            {
+                if(newPost.author.remoteKey == remoteKey)
+                {
+                    [userPosts addObject:newPost];
+                }
+                
+            }
+            
+            callback(YES, userPosts);
+        }];
+
     }];
 }
 
@@ -66,50 +77,109 @@
             return;
         }
         
-        // take only new posts
-        NSMutableArray *newPosts = [NSMutableArray array];
-        for (GLPPost *newPost in posts) {
-            
-            if(newPost.remoteKey == post.remoteKey) {
-                break;
+        
+        //Find all the event posts that the user attends.
+        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
+           
+            if(!success) {
+                callback(NO, NO, nil);
+                return;
             }
             
-            if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
-            {
-                continue;
+            // take only new posts
+            NSMutableArray *newPosts = [NSMutableArray array];
+            for (GLPPost *newPost in posts) {
+                
+                if(newPost.remoteKey == post.remoteKey) {
+                    break;
+                }
+                
+                if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
+                {
+                    continue;
+                }
+                
+                //If newPost is contained to already posted posts then continue.
+                //Avoid duplications.
+                //            if([GLPPostManager isPost:newPost containedInArray:posts])
+                //            {
+                //                continue;
+                //            }
+                
+                
+                
+                [newPosts addObject:newPost];
             }
             
-            //If newPost is contained to already posted posts then continue.
-            //Avoid duplications.
-//            if([GLPPostManager isPost:newPost containedInArray:posts])
+            //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
+            
+            NSLog(@"remote posts %d", newPosts.count);
+            
+            if(!newPosts || newPosts.count == 0) {
+                callback(YES, NO, nil);
+                return;
+            }
+            
+            // only new posts loaded, means it may remain some
+            BOOL remain = newPosts.count == posts.count;
+            
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for (GLPPost *newPost in newPosts) {
+                    [GLPPostDao save:newPost inDb:db];
+                }
+            }];
+            
+            callback(YES, remain, newPosts);
+            
+            
+        }];
+        
+        
+        
+//        // take only new posts
+//        NSMutableArray *newPosts = [NSMutableArray array];
+//        for (GLPPost *newPost in posts) {
+//            
+//            if(newPost.remoteKey == post.remoteKey) {
+//                break;
+//            }
+//            
+//            if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
 //            {
 //                continue;
 //            }
-            
-
-            
-            [newPosts addObject:newPost];
-        }
-        
-        //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
-        
-        NSLog(@"remote posts %d", newPosts.count);
-        
-        if(!newPosts || newPosts.count == 0) {
-            callback(YES, NO, nil);
-            return;
-        }
-        
-        // only new posts loaded, means it may remain some
-        BOOL remain = newPosts.count == posts.count;
-        
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            for (GLPPost *newPost in newPosts) {
-                [GLPPostDao save:newPost inDb:db];
-            }
-        }];
-        
-        callback(YES, remain, newPosts);
+//            
+//            //If newPost is contained to already posted posts then continue.
+//            //Avoid duplications.
+////            if([GLPPostManager isPost:newPost containedInArray:posts])
+////            {
+////                continue;
+////            }
+//            
+//
+//            
+//            [newPosts addObject:newPost];
+//        }
+//        
+//        //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
+//        
+//        NSLog(@"remote posts %d", newPosts.count);
+//        
+//        if(!newPosts || newPosts.count == 0) {
+//            callback(YES, NO, nil);
+//            return;
+//        }
+//        
+//        // only new posts loaded, means it may remain some
+//        BOOL remain = newPosts.count == posts.count;
+//        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            for (GLPPost *newPost in newPosts) {
+//                [GLPPostDao save:newPost inDb:db];
+//            }
+//        }];
+//        
+//        callback(YES, remain, newPosts);
     }];
 }
 
@@ -148,6 +218,7 @@
             remoteCallback(NO, NO, nil);
             return;
         }
+    
         
         NSLog(@"remote posts %d", posts.count);
         
@@ -156,34 +227,70 @@
             return;
         }
         
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        //Find all the event posts that the user attends.
+        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
             
-            // get list of posts with liked=YES
-//            NSArray* likedPosts = [GLPPostDao likedPostsInDb:db];
             
-            // clean posts table
-            [GLPPostDao deleteAllInDb:db];
-            
-            //Set liked to the database if the user liked from other device (?)
-            for(GLPPost *post in posts)
+            if(!success)
             {
-//                NSInteger res = [likedPosts indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-//                    
-//                    return ((GLPPost *)obj).remoteKey == post.remoteKey;
-//                    
-//                }];
-//                
-//                if(res != NSNotFound) {
-//                    post.liked = YES;
-//                }
-                
-                [GLPPostDao save:post inDb:db];
+                remoteCallback(NO, NO, nil);
+                return;
             }
+            
+            
+            
+            
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                
+                // clean posts table
+                [GLPPostDao deleteAllInDb:db];
+                
+                //Set liked to the database if the user liked from other device (?)
+                for(GLPPost *post in posts)
+                {
+                    
+                    [GLPPostDao save:post inDb:db];
+                }
+            }];
+            
+            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+            
+            remoteCallback(YES, remains, posts);
+            
+            
         }];
         
-        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
         
-        remoteCallback(YES, remains, posts);
+        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            
+//            // get list of posts with liked=YES
+////            NSArray* likedPosts = [GLPPostDao likedPostsInDb:db];
+//            
+//            // clean posts table
+//            [GLPPostDao deleteAllInDb:db];
+//            
+//            //Set liked to the database if the user liked from other device (?)
+//            for(GLPPost *post in posts)
+//            {
+////                NSInteger res = [likedPosts indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+////                    
+////                    return ((GLPPost *)obj).remoteKey == post.remoteKey;
+////                    
+////                }];
+////                
+////                if(res != NSNotFound) {
+////                    post.liked = YES;
+////                }
+//                
+//                [GLPPostDao save:post inDb:db];
+//            }
+//        }];
+//        
+//        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+//        
+//        remoteCallback(YES, remains, posts);
     }];
 }
 
@@ -215,22 +322,51 @@
             return;
         }
         
-        NSLog(@"remote posts %d", posts.count);
         
-        if(!posts || posts.count == 0) {
-            callback(YES, NO, nil);
-            return;
-        }
-        
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            for(GLPPost *post in posts) {
-                [GLPPostDao save:post inDb:db];
+        //Find all the event posts that the user attends.
+        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
+           
+            if(!success)
+            {
+                callback(NO, NO, nil);
             }
+            
+            NSLog(@"remote posts %d", posts.count);
+            
+            if(!posts || posts.count == 0) {
+                callback(YES, NO, nil);
+                return;
+            }
+            
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+                for(GLPPost *post in posts) {
+                    [GLPPostDao save:post inDb:db];
+                }
+            }];
+            
+            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+            
+            callback(YES, remains, posts);
+            
+            
         }];
         
-        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
-        
-        callback(YES, remains, posts);
+//        NSLog(@"remote posts %d", posts.count);
+//        
+//        if(!posts || posts.count == 0) {
+//            callback(YES, NO, nil);
+//            return;
+//        }
+//        
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            for(GLPPost *post in posts) {
+//                [GLPPostDao save:post inDb:db];
+//            }
+//        }];
+//        
+//        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+//        
+//        callback(YES, remains, posts);
     }];
 }
 
@@ -271,6 +407,38 @@
         
         callback(YES, eventPosts);
     }];
+}
+
++(void)addAttendingToEventPosts:(NSArray *)posts callback:(void (^) (BOOL success, NSArray* posts))callback
+{
+    [[WebClient sharedInstance] userAttendingLivePostsWithCallbackBlock:^(BOOL success, NSArray *postsIds) {
+       
+        if(success)
+        {
+            [GLPPostManager formatEventPosts:posts withPostIds:postsIds];
+            
+            callback(YES, posts);
+        }
+        else
+        {
+            callback(NO, nil);
+        }
+        
+    }];
+}
+
++(void)formatEventPosts:(NSArray *)posts withPostIds:(NSArray *)postsIds
+{
+    for(GLPPost *p in posts)
+    {
+        for(NSNumber *n in postsIds)
+        {
+            if([n integerValue] == p.remoteKey)
+            {
+                p.attended = YES;
+            }
+        }
+    }
 }
 
 //+(void)getNewPostsAndSaveToDatabaseWithOldPosts:(NSArray*)localEntities
@@ -439,6 +607,20 @@
     }];
 }
 
++(void)updatePostAttending:(GLPPost*)post
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao updatePostAttending:post db:db];
+    }];
+}
+
++(void)deletePostWithPost:(GLPPost *)post
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao deletePostWithPost:post db:db];
+    }];
+}
+
 
 // update local post to either sent or error
 + (void)updatePostAfterSending:(GLPPost *)post
@@ -463,7 +645,6 @@
     //Take the last key of the current campus wall posts from database.
     [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
        
-        
         if(posts.count != 0)
         {
             GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
@@ -472,6 +653,7 @@
 
 
     }];
+    
     
     for(GLPPost *post in profilePosts)
     {
@@ -488,8 +670,12 @@
     //Take the last key of the current campus wall posts from database.
     [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
         
-        GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
-        lastPostIndex = lastPost.key;
+        if(posts.count != 0)
+        {
+            GLPPost *lastPost = [posts objectAtIndex:posts.count-1];
+            lastPostIndex = lastPost.key;
+        }
+
         
     }];
     

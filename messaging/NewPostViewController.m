@@ -167,11 +167,15 @@
 {
     [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
     
-    [self.simpleNavBar setTranslucent:NO];
-    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
-    self.simpleNavBar.tintColor = [UIColor blackColor];
+    self.simpleNavBar.tag = 1;
     
-    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
+    [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
+    
+//    [self.simpleNavBar setTranslucent:NO];
+//    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
+//    self.simpleNavBar.tintColor = [UIColor blackColor];
+//    
+//    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
@@ -444,6 +448,8 @@
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
 {
+    [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
+    
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
 
     _hasImage = YES;

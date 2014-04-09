@@ -53,6 +53,8 @@
 #import "GLPGroupManager.h"
 #import "CampusWallGroupsPostsManager.h"
 #import "GLPiOS6Helper.h"
+#import "TableViewHelper.h"
+#import "GLPFlurryVisibleCellProcessor.h"
 
 @interface GLPTimelineViewController ()
 
@@ -113,6 +115,11 @@
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
 @property (assign, nonatomic) BOOL groupsMode;
 
+//Extra view will present to hide the change of background during the viewing of new post.
+@property (strong, nonatomic) UIImageView *topImageView;
+
+/** Captures the visibility of current cells. */
+@property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
 
 @end
 
@@ -120,7 +127,7 @@
 @implementation GLPTimelineViewController
 
 //Constants.
-const float TOP_OFFSET = 225.0f;
+const float TOP_OFFSET = 280.0f;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -159,6 +166,7 @@ const float TOP_OFFSET = 225.0f;
     
     [self loadInitialPosts];
     
+
     [WalkThroughHelper showCampusWallMessage];
     
     //Find the sunset sunrise for preparation of the new chat.
@@ -166,7 +174,7 @@ const float TOP_OFFSET = 225.0f;
     
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -208,7 +216,9 @@ const float TOP_OFFSET = 225.0f;
 //    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
     
     [AppearanceHelper setUnselectedColourForTabbarItem:self.homeTabbarItem];
-
+    
+    //Hide temporary top image view.
+    [_topImageView setHidden:YES];
     
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
@@ -273,6 +283,14 @@ const float TOP_OFFSET = 225.0f;
     self.postIndexToReload = -1;
     
     self.groupsMode = NO;
+    
+    //Initialize temporary top image view.
+    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
+    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    
+    [self.view addSubview:_topImageView];
+    
+    _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
 }
 
 
@@ -284,6 +302,8 @@ const float TOP_OFFSET = 225.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPShowEvent" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+
 }
 
 
@@ -397,7 +417,6 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)refreshPostsWithNewProfileImage:(NSNotification *)notification
 {
-
     NSArray *postsIndexes = [GLPPostNotificationHelper parseNotification:notification withPostsArrayForNewProfileImage:self.posts];
     
     //Update all the user's posts in campus wall.
@@ -405,6 +424,28 @@ const float TOP_OFFSET = 225.0f;
     for(NSNumber *number in postsIndexes)
     {
         [self refreshCellViewWithIndex:number.integerValue];
+    }
+}
+
+-(void)deletePost:(NSNotification *)notification
+{
+    int index = -1;
+    
+    if(_groupsMode)
+    {
+        
+        index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:[[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy];
+        
+    }
+    else
+    {
+        index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    }
+    
+    
+    if(index != -1)
+    {
+        [self removeTableViewPostWithIndex:index];
     }
     
 }
@@ -421,6 +462,9 @@ const float TOP_OFFSET = 225.0f;
     //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
     //[[GLPMessagesLoader sharedInstance] loadConversations];
     [[GLPProfileLoader sharedInstance] loadUserData];
+    
+    //Load groups' posts.
+    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
 
 }
 
@@ -430,20 +474,24 @@ const float TOP_OFFSET = 225.0f;
     //Hide for now the navigation bar.
 //    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-
-//    [self.navigationController.navigationBar setTranslucent:NO];
+//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
+//
+////    [self.navigationController.navigationBar setTranslucent:NO];
+//    
+//    //Sets colour to navigation items.
+//    self.navigationController.navigationBar.tintColor = tabColour;
+//    
+//    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
+//
+//    
+//    //Set the  colour of navigation bar's title.
+//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
+//    
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
     
-    //Sets colour to navigation items.
-    self.navigationController.navigationBar.tintColor = tabColour;
+    [AppearanceHelper setNavigationBarColour:self];
     
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-
-    
-    //Set the  colour of navigation bar's title.
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
-    
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
+    [AppearanceHelper setNavigationBarFontFor:self];
     
     
     //Set to all the application the status bar text white.
@@ -496,6 +544,9 @@ const float TOP_OFFSET = 225.0f;
     [self setCustomBackgroundToTableView];
     
     [self setButtonsToNavigationBar];
+    
+    //Show temporary top image view.
+    [_topImageView setHidden:NO];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -520,71 +571,74 @@ const float TOP_OFFSET = 225.0f;
     
     if([GLPiOS6Helper isIOS6])
     {
-        [GLPiOS6Helper configureTabbarController:self.tabBarController];
-        
-        NSArray *items = self.tabBarController.tabBar.items;
-        
-        
-        UITabBarItem *item = [items objectAtIndex:0];
-                
-        item.image = [UIImage imageNamed:@"bird-house-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        self.homeTabbarItem = item;
-        
-        
-        
-        item = [items objectAtIndex:1];
-        
-        item.image = [UIImage imageNamed:@"message-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"message-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:2];
-        
-        item.image = [UIImage imageNamed:@"proximity-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:3];
-        
-        item.image = [UIImage imageNamed:@"man-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"man-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
-        item = [items objectAtIndex:4];
-        
-        item.image = [UIImage imageNamed:@"id-card-7"];
-        
-        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-        
-//        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        
-        
-        [AppearanceHelper setUnselectedColourForTabbarItem:item];
         
         return;
+        
+//        [GLPiOS6Helper configureTabbarController:self.tabBarController];
+//        
+//        NSArray *items = self.tabBarController.tabBar.items;
+//        
+//        
+//        UITabBarItem *item = [items objectAtIndex:0];
+//                
+////        item.image = [UIImage imageNamed:@"bird-house-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        self.homeTabbarItem = item;
+//        
+//        
+//        
+//        item = [items objectAtIndex:1];
+//        
+////        item.image = [UIImage imageNamed:@"message-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"message-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:2];
+//        
+////        item.image = [UIImage imageNamed:@"proximity-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:3];
+//        
+////        item.image = [UIImage imageNamed:@"man-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"man-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+//        
+//        
+//        item = [items objectAtIndex:4];
+//        
+////        item.image = [UIImage imageNamed:@"id-card-7"];
+////        
+////        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+//        
+////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//        
+//        
+//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
+        
+        
     }
     
     // set selected and unselected icons
@@ -671,7 +725,8 @@ const float TOP_OFFSET = 225.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showEventPost:) name:@"GLPShowEvent" object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPostsWithNewProfileImage:) name:@"GLPProfileImageChanged" object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
 }
 
 - (void)configTableView
@@ -830,7 +885,8 @@ const float TOP_OFFSET = 225.0f;
         return;
     }
     
-    [self startLoading];
+//    [self startLoading];
+    [self showLoadingIndicator];
     
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
@@ -863,12 +919,16 @@ const float TOP_OFFSET = 225.0f;
 //                [self clearBottomView];
 //            }
             
+            [self addFooterIfNeeded];
+            
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self.tableView reloadData];
         }
         
-        [self stopLoading];
+        
+//        [self stopLoading];
+        [self hideLoadingIndicator];
     }];
 }
 
@@ -895,7 +955,6 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)clearBottomView
 {
-    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 }
 
@@ -999,6 +1058,8 @@ const float TOP_OFFSET = 225.0f;
             else {
                 [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
             }
+            
+            [self addFooterIfNeeded];
         }
     }];
 }
@@ -1090,14 +1151,17 @@ const float TOP_OFFSET = 225.0f;
         return;
     }
     
-    [self startLoading];
+    [self showLoadingIndicator];
     
-    if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
-    {
-//        self.posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy;
-        
-        [self.tableView reloadData];
-    }
+//    if(![[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+//    {
+//        DDLogDebug(@"Post are not empty.");
+//        
+//        [self.tableView reloadData];
+//    }
+    
+    [self.tableView reloadData];
+
     
     
     [GLPGroupManager loadGroupsFeedWithCallback:^(BOOL success, NSArray *posts) {
@@ -1116,14 +1180,15 @@ const float TOP_OFFSET = 225.0f;
         
         [[GLPPostImageLoader sharedInstance] addPostsImages:[[CampusWallGroupsPostsManager sharedInstance] allPosts]];
         
+        [self addFooterIfNeeded];
+        
         [self.tableView reloadData];
         
         self.firstLoadSuccessful = YES;
 //        [self startReloadingCronImmediately:NO];
 
         
-        [self stopLoading];
-
+        [self hideLoadingIndicator];
         
     }];
     
@@ -1203,6 +1268,8 @@ const float TOP_OFFSET = 225.0f;
         }
         
         
+        [self addFooterIfNeeded];
+        
         self.firstLoadSuccessful = YES;
         //        [self startReloadingCronImmediately:NO];
         
@@ -1214,8 +1281,6 @@ const float TOP_OFFSET = 225.0f;
         
         
     }];
-    
-    //TODO change that when it will be supported from server.
     
 //    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
 //        [self stopLoading];
@@ -1258,6 +1323,38 @@ const float TOP_OFFSET = 225.0f;
 //    }];
 }
 
+-(void)addFooterIfNeeded
+{
+    int numberOfPosts = 0;
+    
+    if(_groupsMode)
+    {
+        numberOfPosts = [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+    }
+    else
+    {
+        numberOfPosts = self.posts.count;
+    }
+    
+    
+    if(numberOfPosts == 0 || (numberOfPosts == 1 && [[CampusWallGroupsPostsManager sharedInstance] isTextPostExist]))
+    {
+        [self addTableViewFooterWithSize:2];
+    }
+    else if (numberOfPosts == 1 && ![[CampusWallGroupsPostsManager sharedInstance] isTextPostExist])
+    {
+        [self addTableViewFooterWithSize:1];
+    }
+    else if (numberOfPosts == 2 && [[CampusWallGroupsPostsManager sharedInstance] isTextPostExist])
+    {
+        [self addTableViewFooterWithSize:0.4];
+    }
+    else
+    {
+        [self removeTableViewFooter];
+    }
+}
+
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
     DDLogDebug(@"Is loading: %d", self.isLoading);
@@ -1292,11 +1389,11 @@ const float TOP_OFFSET = 225.0f;
         
         if(success)
         {
-            NSLog(@"Like for post %d succeed.",postRemoteKey);
+            NSLog(@"Timeline Like for post %d succeed.",postRemoteKey);
         }
         else
         {
-            NSLog(@"Like for post %d not succeed.",postRemoteKey);
+            NSLog(@"Timeline for post %d not succeed.",postRemoteKey);
         }
         
         
@@ -1366,6 +1463,16 @@ const float TOP_OFFSET = 225.0f;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
+-(void)showLoadingIndicator
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+-(void)hideLoadingIndicator
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
 - (void)showLoadingError:(NSString *)message
 {
     [TSMessage showNotificationInViewController:self title:@"Loading failed" subtitle:message type:TSMessageNotificationTypeError];
@@ -1382,6 +1489,9 @@ const float TOP_OFFSET = 225.0f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    [_flurryVisibleProcessor resetVisibleCells];
+    
+    
     CGFloat currentOffset = scrollView.contentOffset.y;
     CGFloat differenceFromStart = self.startContentOffset - currentOffset;
     CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
@@ -1471,6 +1581,38 @@ const float TOP_OFFSET = 225.0f;
 }
 
 
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    for (GLPPost *p in visiblePosts)
+    {
+        DDLogDebug(@"Visible post: %@", p);
+    }
+    
+    [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        for (GLPPost *p in visiblePosts)
+        {
+            DDLogDebug(@"Visible post: %@", p);
+        }
+        
+        [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+    }
+}
+
+
+
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
     //[self contract];
@@ -1534,7 +1676,14 @@ const float TOP_OFFSET = 225.0f;
 {
     if(_groupsMode)
     {
-        return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+        {
+            return 1;
+        }
+        else
+        {
+            return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
+        }
     }
     else
     {
@@ -1552,6 +1701,14 @@ const float TOP_OFFSET = 225.0f;
             GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
             [loadingCell updateWithStatus:self.loadingCellStatus];
             return loadingCell;
+        }
+    }
+    
+    if(_groupsMode)
+    {
+        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+        {
+            return [TableViewHelper generateCellWithMessage:@"No more group posts."];
         }
     }
 
@@ -1589,9 +1746,6 @@ const float TOP_OFFSET = 225.0f;
 //    {
 //        post = self.posts[indexPath.row];
 //    }
-    
-    
-    
     
     
     if([post imagePost])
@@ -1668,6 +1822,16 @@ const float TOP_OFFSET = 225.0f;
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
+    
+    if(_groupsMode)
+    {
+        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
+        {
+            return 100.0f;
+        }
+    }
+    
+    
     //float height = [[self.postsHeight objectAtIndex:indexPath.row] floatValue];
     
     //static float imageSize = 300;
@@ -1687,21 +1851,14 @@ const float TOP_OFFSET = 225.0f;
     if([currentPost imagePost])
     {
         //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
-        //return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:YES];
-        //return [PostCell getCellHeightWithContent:currentPost.content andImage:YES];
-        
-        //return [PostCell getCellHeightWithContent:currentPost.content image:YES];
-        return [PostCell getCellHeightWithContent:currentPost.content image:YES isViewPost:NO];
+
+        return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
     }
     else
     {
         //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
-        //return [PostCell getCellHeightWithContent:currentPost.content andImage:NO];
         
-        //        return [PostCell getCellHeightWithContent:[PostCell findTheNeededText:currentPost.content] andImage:NO];
-        
-        return [PostCell getCellHeightWithContent:currentPost.content image:NO isViewPost:NO];
-        //return TEXT_CELL_HEIGHT;
+        return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
     }
     
 
@@ -1807,7 +1964,6 @@ const float TOP_OFFSET = 225.0f;
         
     }];
     
-    
 }
 
 
@@ -1880,21 +2036,29 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-    int index;
+//    int index;
     
-    for(index = 0; index < self.posts.count; ++index)
-    {
-        GLPPost *p = [self.posts objectAtIndex:index];
-        
-        if(p.remoteKey == post.remoteKey)
-        {
-            [self.posts removeObject:p];
-            
-            [self removeTableViewPostWithIndex:index];
+    self.isLoading = YES;
+    
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    
+    self.isLoading = NO;
 
-            return;
-        }
-    }
+    
+//    for(index = 0; index < self.posts.count; ++index)
+//    {
+//        GLPPost *p = [self.posts objectAtIndex:index];
+//        
+//        if(p.remoteKey == post.remoteKey)
+//        {
+//            [self.posts removeObject:p];
+//            
+//            [self removeTableViewPostWithIndex:index];
+//            
+//
+//            return;
+//        }
+//    }
     
 }
 
@@ -1906,12 +2070,51 @@ const float TOP_OFFSET = 225.0f;
 {
     if(_groupsMode)
     {
-        [self loadGroupsFeed];
+//        [self loadGroupsFeed];
+        [self loadInitialGroupsPosts];
     }
     else
     {
         [self loadInitialPosts];
     }
+}
+
+
+#pragma mark - UI methods
+
+-(void)addTableViewFooterWithSize:(float)sizeFactor
+{
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 240*sizeFactor)];
+    
+    [imgView setBackgroundColor:[UIColor whiteColor]];
+    
+    self.tableView.tableFooterView = imgView;
+}
+
+-(void)removeTableViewFooter
+{
+    self.tableView.tableFooterView = nil;
+}
+
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+    }
+    
+    return visiblePosts;
 }
 
 #pragma mark - View image delegate
@@ -1925,7 +2128,10 @@ const float TOP_OFFSET = 225.0f;
     vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     vc.modalPresentationStyle = UIModalPresentationCustom;
     
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [vc setTransitioningDelegate:self.transitionViewImageController];
+    }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
@@ -1954,8 +2160,17 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
-    self.selectedPost = self.posts[postIndex];
-    self.postIndexToReload = postIndex;
+    if(_groupsMode)
+    {
+        self.selectedPost = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:postIndex];
+    }
+    else
+    {
+        self.selectedPost = self.posts[postIndex];
+        self.postIndexToReload = postIndex;
+    }
+    
+
    
     ++self.selectedPost.commentsCount;
 
@@ -2332,6 +2547,9 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)loadGroupsFeed
 {
+    //Initialise categories to all.
+    [[SessionManager sharedInstance] setCurrentCategory:nil];
+
     _groupsMode = YES;
     [self updateTitleView];
     [self loadInitialGroupsPosts];
@@ -2339,6 +2557,10 @@ const float TOP_OFFSET = 225.0f;
 
 -(void)loadRegularPosts
 {
+    //Initialise categories to all.
+    [[SessionManager sharedInstance] setCurrentCategory:nil];
+
+    
     _groupsMode = NO;
     
     [self updateTitleView];
@@ -2356,6 +2578,27 @@ const float TOP_OFFSET = 225.0f;
     {
         [self scrollToTheNavigationBar];
     }
+    
+    
+    /**
+     Takes screenshot from the current view controller to bring the sense of the transparency after the load
+     of the NewPostViewController.
+     */
+//    UIGraphicsBeginImageContext(self.view.window.bounds.size);
+//    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+//    
+//    // vc.view.backgroundColor = [UIColor clearColor];
+//    vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
+//    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    [self presentViewController:vc animated:YES completion:nil];
+    
+    
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
@@ -2375,11 +2618,22 @@ const float TOP_OFFSET = 225.0f;
     cvc.delegate = self;
 //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
-    
-    [cvc.blurBack setImage:[image stackBlur:10.0f]];
-    
-    [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+    if([GLPiOS6Helper isIOS6])
+    {
+        [cvc.blurBack setImage:[image stackBlur:10.0f]];
+        //Crop image to add it at the top image view.
+        UIImage *topImage = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 30, 320, 62)];
+        [cvc setImageToTopImage:[topImage stackBlur:10.0f]];
+        
+    }
+    else
+    {
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
+        [cvc.blurBack setImage:[image stackBlur:10.0f]];
+        [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+
+    }
+
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:cvc animated:YES completion:nil];

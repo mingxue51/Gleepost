@@ -476,19 +476,19 @@ static BOOL likePushed;
 {
     for(GLPPost* currentPost in self.posts)
     {
-        UIImageView* userImage = [[UIImageView alloc] init];
-
-        NSURL * url = [NSURL URLWithString:[currentPost.imagesUrls objectAtIndex:0]];
+//        UIImageView* userImage = [[UIImageView alloc] init];
+//
+//        NSURL * url = [NSURL URLWithString:[currentPost.imagesUrls objectAtIndex:0]];
 
         //Fetch post image from the server.
-        [userImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
-         {
-             //NSLog(@"Downloading...");
-         }
-                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
-         {
-             [self.postsImages addObject:image];
-         }];
+//        [userImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, NSUInteger expectedSize)
+//         {
+//             //NSLog(@"Downloading...");
+//         }
+//                         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+//         {
+//             [self.postsImages addObject:image];
+//         }];
     }
 }
 
@@ -508,16 +508,16 @@ static BOOL likePushed;
                 NSURL * url = [NSURL URLWithString:user.profileImageUrl];
                 
                 //Fetch post image from the server.
-                [userImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
-                 {
-                     //NSLog(@"Downloading...");
-                 }
-                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
-                 {
-                     [self.usersImages addObject:image];
-                     
-
-                 }];
+//                [userImage setImageWithURL:url placeholderImage:nil options:SDWebImageProgressiveDownload progress:^(NSUInteger receivedSize, long long expectedSize)
+//                 {
+//                     //NSLog(@"Downloading...");
+//                 }
+//                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType)
+//                 {
+//                     [self.usersImages addObject:image];
+//                     
+//
+//                 }];
                 
                
             }

@@ -37,6 +37,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *thumpsUpBtn;
 @property (weak, nonatomic) IBOutlet UIButton *commentBtn;
+@property (weak, nonatomic) IBOutlet UIButton *wideCommentBtn;
 @property (weak, nonatomic) IBOutlet UIButton *shareBtn;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfCommentsLbl;
@@ -45,8 +46,16 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UILabel *eventTime;
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 
+@property (weak, nonatomic) IBOutlet UIView *likeCommentView;
+@property (weak, nonatomic) IBOutlet UIImageView *likeCommentBackImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *topBackgroundImageView;
+
+@property (weak, nonatomic) IBOutlet UIView *eventView;
+@property (weak, nonatomic) IBOutlet UIView *mainView;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *goingButton;
 
 @property (assign, nonatomic) UIViewController<RemovePostCellDelegate,NewCommentDelegate, ViewImageDelegate> *delegate;
 
@@ -64,7 +73,7 @@ extern const float TEXT_CELL_HEIGHT;
 
 -(void) updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex;
 
-+ (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
++ (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
 
 -(void)setPostOnline:(BOOL)online;
 

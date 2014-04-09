@@ -32,6 +32,7 @@
 #define GLPNOTIFICATION_NETWORK_UPDATE                  @"GLPNetworkStatusUpdate"
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
+#define GLPNOTIFICATION_POST_DELETED                    @"GLPPostDeleted"
 
 #define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
 

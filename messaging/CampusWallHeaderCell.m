@@ -9,18 +9,22 @@
 #import "CampusWallHeaderCell.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "NSDate+TimeAgo.h"
 #import "AppearanceHelper.h"
 #import "NSDate+HumanizedTime.h"
 #import "EventBarView.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "ImageFormatterHelper.h"
+#import "ReflectedImageView.h"
+#import "UIImage+Alpha.h"
 
 @interface CampusWallHeaderCell ()
 
 
 //@property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIImageView *eventImage;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLbl;
 @property (weak, nonatomic) IBOutlet UILabel *timeLbl;
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
@@ -36,10 +40,10 @@
 
 @implementation CampusWallHeaderCell
 
-const float CELL_WIDTH = 198.0; //
-const float CELL_HEIGHT = 132.0; //Change the height
+const float CELL_WIDTH = 230.0; //198
+const float CELL_HEIGHT = 215.0; //Change the height //132
 const float TITLE_LABEL_MAX_WIDTH = 180.0;
-const float TITLE_LABEL_MAX_HEIGHT = 61.0;
+const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(id)initWithIdentifier:(NSString *)identifier
 {
@@ -58,10 +62,16 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
         
         
         //Format the image.
-        [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.height];
+//        [ShapeFormatterHelper setRoundedView:self.eventImage toDiameter:self.eventImage.frame.size.height];
         
-        _profileImage.layer.borderWidth = 1.0;
-        _profileImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        [ShapeFormatterHelper setCornerRadiusWithView:self.eventImage andValue:self.eventImage.frame.size.height];
+        
+        
+        
+        [self formatEventImage];
+        
+//        _eventImage.layer.borderWidth = 1.0;
+//        _eventImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
         
     }
     
@@ -85,9 +95,44 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 }
 
 -(void)setDataInElements:(GLPPost *)postData
-{    
-    //Set user's image.
-    [_profileImage setImageWithURL:[NSURL URLWithString:postData.author.profileImageUrl] placeholderImage:nil];
+{
+    
+    NSURL *imgUrl = nil;
+    
+    if(postData.imagesUrls)
+    {
+       imgUrl = [NSURL URLWithString:postData.imagesUrls[0]];
+        
+        //Set post's image.
+        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
+    
+    
+
+    
+    
+//    [_eventImage setImageWithURL:imgUrl placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//        
+//        //Create the reflection effect.
+//        //TODO: Fix that, only add image when the image is loaded.
+////        [_reflectedEventImage reflectionImageWithImage:_eventImage.image];
+//        
+//        UIImage *croppedImg = image;
+//        
+//        croppedImg = [ImageFormatterHelper cropImage:croppedImg withRect:CGRectMake(0, 0, croppedImg.size.width, croppedImg.size.height-300)];
+//        
+//        [croppedImg setAlpha:0.5];
+////        
+////        UIImage *finalImg = [ImageFormatterHelper addImageToImage:image withImage2:croppedImg withImageView:_eventImage andRect:CGRectMake(0, 0, croppedImg.size.width, croppedImg.size.height-300)];
+//        
+//        UIImage *finalImg = [ImageFormatterHelper maskImage:image withMask:image];
+//        
+//        
+//        [_eventImage setImage:finalImg];
+//        
+//    }];
+    
+    
     
     CGSize labelSize = [CampusWallHeaderCell getContentLabelSizeForContent:postData.eventTitle];
     
@@ -105,7 +150,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
     //Select the going button if the user is attending,
     if(_postData.attended)
     {
-        
         [self makeButtonSelected:_goingBtn];
     }
     else
@@ -150,8 +194,49 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
     
     [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
     
+    [self configureGoingButton];
+    
  
 //    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
+}
+
+-(void)formatEventImage
+{
+    //Resize the image.
+//    [ImageFormatterHelper imageWithImage:<#(UIImage *)#> scaledToWidth:<#(float)#>]
+    
+    
+    //Set alpha to a specific part of the image.
+    
+    //http://stackoverflow.com/questions/14107979/blur-an-image-of-specific-part-rectangular-circular
+    
+    //Format the image.
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(7.0f, 7.0f)];
+    
+
+}
+
+
+-(void)configureGoingButton
+{
+    if([self.postData.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
+    {
+        [_goingBtn setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
+        [_goingBtn setEnabled:NO];
+    }
+    else if(self.postData.attended)
+    {
+        [_goingBtn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        _goingBtn.tag = 1;
+        [_goingBtn setEnabled:YES];
+    }
+    else
+    {
+        [_goingBtn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+        _goingBtn.tag = 2;
+        [_goingBtn setEnabled:YES];
+    }
+    
 }
 
 -(void)setTimeWithTime:(NSDate *)date
@@ -185,7 +270,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 {
     UIButton *currentButton = (UIButton*)sender;
     
-    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+//    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
+    if(currentButton.tag == 2)
     {
         
         //Communicate with server to attend post.
@@ -235,12 +321,18 @@ const float TITLE_LABEL_MAX_HEIGHT = 61.0;
 
 -(void)makeButtonUnselected:(UIButton *)btn
 {
-    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
+//    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
+    
+    [btn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+    btn.tag = 2;
 }
 
 -(void)makeButtonSelected:(UIButton *)btn
 {
-    [btn setTitleColor:[UIColor colorWithRed:0.0/255.0 green:236.0/255.0 blue:172.0/255.0 alpha:1.0f] forState:UIControlStateNormal];
+//    [btn setTitleColor:[UIColor colorWithRed:0.0/255.0 green:236.0/255.0 blue:172.0/255.0 alpha:1.0f] forState:UIControlStateNormal];
+    
+    [btn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+    btn.tag = 1;
     
 }
 

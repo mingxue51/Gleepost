@@ -167,7 +167,13 @@ static DatabaseManager *instance = nil;
              comments integer, \
              sendStatus integer, \
              author_key integer, \
-             liked integer);"];
+             liked integer, \
+             attending integer);"];
+            
+            // post images
+            [db executeUpdate:@"create table post_images ( \
+             post_remote_key integer, \
+             image_url text);"];
             
             // categories
             [db executeUpdate:@"create table categories ( \
@@ -176,11 +182,6 @@ static DatabaseManager *instance = nil;
              post_remote_key integer, \
              tag text, \
              name text);"];
-            
-            // post images
-            [db executeUpdate:@"create table post_images ( \
-             post_remote_key integer, \
-             image_url text);"];
             
             // notifications
             [db executeUpdate:@"create table notifications ( \

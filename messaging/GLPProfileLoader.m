@@ -216,6 +216,7 @@ static GLPProfileLoader *instance = nil;
 {
     _contactsImages = [[NSMutableDictionary alloc] init];
     _userDetails = [[GLPUser alloc] init];
+    _userImage = [[UIImage alloc] init];
     self.loadingImagesExecuting = NO;
 }
 

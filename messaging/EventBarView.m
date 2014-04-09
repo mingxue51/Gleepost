@@ -15,8 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bar3;
 @property (weak, nonatomic) IBOutlet UIImageView *bar4;
 
-
-
 @end
 
 @implementation EventBarView
@@ -38,6 +36,7 @@
     [super awakeFromNib];
     
     [self initialiseElements];
+    
 }
 
 -(void)initialiseElements
@@ -46,6 +45,7 @@
     _bar2.tag = 2;
     _bar3.tag = 3;
     _bar4.tag = 4;
+    
 }
 
 
@@ -64,6 +64,7 @@
     {
         [self activateBarWithTag:i];
     }
+    
 }
 
 -(void)decreaseBarLevel:(int)level
@@ -84,21 +85,42 @@
 
 -(void)deactivateBarWithTag:(int)tag
 {
-    UIImageView *imgView = [self.subviews objectAtIndex:tag-1];
+//    UIImageView *imgView = [self.subviews objectAtIndex:tag-1];
     
-    [imgView setImage:[UIImage imageNamed:@"bar1"]];
+    UIImageView *imgView = [self subviewWithTag:tag];
+    
+    
+//    [imgView setImage:[UIImage imageNamed:@"bar1"]];
+    
+    
+    [imgView setHidden:YES];
 }
 
 -(void)activateBarWithTag:(int)tag
 {
-    UIImageView *imgView = [self.subviews objectAtIndex:tag-1];
+//    UIImageView *imgView = [self.subviews objectAtIndex:tag-1];
     
-    [imgView setImage:[UIImage imageNamed:@"bar1_selected"]];
+//    [imgView setImage:[UIImage imageNamed:@"bar1_selected"]];
+    
+    UIImageView *imgView = [self subviewWithTag:tag];
+        
+    [imgView setHidden:NO];
+    
+//    [imgView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d",tag]]];
+
 }
 
--(void)decreaseBar
+-(UIImageView *)subviewWithTag:(int)tag
 {
+    for(UIView *view in self.subviews)
+    {
+        if(view.tag == tag)
+        {
+            return (UIImageView *)view;
+        }
+    }
     
+    return nil;
 }
 
 /*

@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile_picture_under.png" translatesAutoresizingMaskIntoConstraints="NO" id="T5e-qk-kvc">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile_picture_under.png" translatesAutoresizingMaskIntoConstraints="NO" id="T5e-qk-kvc">
                         <rect key="frame" x="98" y="15" width="141" height="142"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -104,6 +104,7 @@
                 <outlet property="groupDescriptionLbl" destination="yxQ-Od-fAb" id="9kH-hQ-Y7A"/>
                 <outlet property="inContacts" destination="IKf-TV-37q" id="u8c-Fh-Zfp"/>
                 <outlet property="messageButton" destination="9Ku-3o-aV6" id="cFq-2z-yUI"/>
+                <outlet property="profileBackImage" destination="T5e-qk-kvc" id="vFZ-Mj-9gf"/>
                 <outlet property="profileImage" destination="vfr-tr-ebJ" id="XfS-uB-Iju"/>
                 <outlet property="universityLabel" destination="OFz-Vf-2bJ" id="f7k-w3-1Ym"/>
             </connections>

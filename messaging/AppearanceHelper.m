@@ -79,10 +79,30 @@
 
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar
 {
-    [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+
+    if([GLPiOS6Helper isIOS6])
+    {
+        [navigationBar setTintColor:[AppearanceHelper defaultGleepostColour]];
+        CGRectSetH(navigationBar, 60.0f);
+        CGRectMoveY(navigationBar, -19.0f);
+        
+        [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+    }
+    else
+    {
+        if(navigationBar.tag == 1)
+        {
+            CGRectSetH(navigationBar, 60.0f);
+            CGRectMoveY(navigationBar, -22.0f);
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
+        }
+        else
+        {
+            [navigationBar setTintColor:[UIColor whiteColor]];
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+        }
+    }
     
-    
-    [navigationBar setTintColor:[UIColor whiteColor]];
 }
 
 
@@ -139,7 +159,7 @@
 
 +(void)setCustomBackgroundToTableView:(UITableView *)tableView
 {
-    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile_background_main"]];
+    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
     
     [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     
