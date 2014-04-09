@@ -89,8 +89,8 @@
     <resources>
         <image name="active_tab.png" width="51" height="51"/>
         <image name="idle_tab.png" width="51" height="51"/>
-        <image name="mypost_btn_selected.png" width="229" height="69"/>
-        <image name="notification_btn.png" width="229" height="69"/>
+        <image name="mypost_btn_selected.png" width="306" height="80"/>
+        <image name="notification_btn.png" width="316" height="90"/>
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
     </resources>
 </document>
