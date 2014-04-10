@@ -373,6 +373,10 @@
 		58AB404B18AE45D000DEED31 /* theater_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AB404618AE45D000DEED31 /* theater_category.png */; };
 		58AB404C18AE45D000DEED31 /* music_category.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AB404718AE45D000DEED31 /* music_category.png */; };
 		58AB404E18AE66C000DEED31 /* navigation_bar_stanford_final.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AB404D18AE66C000DEED31 /* navigation_bar_stanford_final.png */; };
+		58ACD1D018F599E200BD576B /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ACD1C818F599E200BD576B /* DCCrossHairView.m */; };
+		58ACD1D118F599E200BD576B /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ACD1CA18F599E200BD576B /* DCFrameView.m */; };
+		58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ACD1CC18F599E200BD576B /* DCIntrospect.m */; };
+		58ACD1D318F599E200BD576B /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ACD1CF18F599E200BD576B /* DCStatusBarOverlay.m */; };
 		58AD86A318929F2200016C6D /* about_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD869B18929F2200016C6D /* about_button.png */; };
 		58AD86A418929F2200016C6D /* active_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD869C18929F2200016C6D /* active_tab.png */; };
 		58AD86A518929F2200016C6D /* bg_middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD869D18929F2200016C6D /* bg_middle.png */; };
@@ -1181,6 +1185,15 @@
 		58AB404618AE45D000DEED31 /* theater_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = theater_category.png; sourceTree = "<group>"; };
 		58AB404718AE45D000DEED31 /* music_category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = music_category.png; sourceTree = "<group>"; };
 		58AB404D18AE66C000DEED31 /* navigation_bar_stanford_final.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_stanford_final.png; sourceTree = "<group>"; };
+		58ACD1C718F599E200BD576B /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCrossHairView.h; sourceTree = "<group>"; };
+		58ACD1C818F599E200BD576B /* DCCrossHairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCCrossHairView.m; sourceTree = "<group>"; };
+		58ACD1C918F599E200BD576B /* DCFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCFrameView.h; sourceTree = "<group>"; };
+		58ACD1CA18F599E200BD576B /* DCFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCFrameView.m; sourceTree = "<group>"; };
+		58ACD1CB18F599E200BD576B /* DCIntrospect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCIntrospect.h; sourceTree = "<group>"; };
+		58ACD1CC18F599E200BD576B /* DCIntrospect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCIntrospect.m; sourceTree = "<group>"; };
+		58ACD1CD18F599E200BD576B /* DCIntrospectSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCIntrospectSettings.h; sourceTree = "<group>"; };
+		58ACD1CE18F599E200BD576B /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
+		58ACD1CF18F599E200BD576B /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		58AD869B18929F2200016C6D /* about_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_button.png; sourceTree = "<group>"; };
 		58AD869C18929F2200016C6D /* active_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = active_tab.png; sourceTree = "<group>"; };
 		58AD869D18929F2200016C6D /* bg_middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_middle.png; sourceTree = "<group>"; };
@@ -2524,6 +2537,22 @@
 			name = "Transition Delegate View Notifications";
 			sourceTree = "<group>";
 		};
+		58ACD1C618F599AC00BD576B /* DCIntrospect */ = {
+			isa = PBXGroup;
+			children = (
+				58ACD1C718F599E200BD576B /* DCCrossHairView.h */,
+				58ACD1C818F599E200BD576B /* DCCrossHairView.m */,
+				58ACD1C918F599E200BD576B /* DCFrameView.h */,
+				58ACD1CA18F599E200BD576B /* DCFrameView.m */,
+				58ACD1CB18F599E200BD576B /* DCIntrospect.h */,
+				58ACD1CC18F599E200BD576B /* DCIntrospect.m */,
+				58ACD1CD18F599E200BD576B /* DCIntrospectSettings.h */,
+				58ACD1CE18F599E200BD576B /* DCStatusBarOverlay.h */,
+				58ACD1CF18F599E200BD576B /* DCStatusBarOverlay.m */,
+			);
+			name = DCIntrospect;
+			sourceTree = "<group>";
+		};
 		58AD869A18929EB700016C6D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -2899,6 +2928,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				58ACD1C618F599AC00BD576B /* DCIntrospect */,
 				5834902618BF80670087CC3A /* FDTakeViewControllerImagePicker */,
 				5867FF5618B64D180080AD9D /* Copy Label */,
 				580FF15018AA6D810026B65B /* Time formatter */,
@@ -4248,6 +4278,7 @@
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
 				589EAD1118A40416005B2F4C /* SignUpThreeView.m in Sources */,
 				80C92AA218C0C040001CB621 /* GLPMessageCell.m in Sources */,
+				58ACD1D018F599E200BD576B /* DCCrossHairView.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
 				586458B41808393B00B1B19C /* PostCell.m in Sources */,
 				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
@@ -4293,6 +4324,7 @@
 				581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */,
 				805358CC182EF37600579079 /* GLPPostDao.m in Sources */,
 				5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */,
+				58ACD1D118F599E200BD576B /* DCFrameView.m in Sources */,
 				58A6744F184F9BB500E3FE45 /* TransitionDelegateViewNotifications.m in Sources */,
 				805676461805B742006E058E /* MessageCell.m in Sources */,
 				8087E433180ED6F700938264 /* _GLPMessage.m in Sources */,
@@ -4366,6 +4398,7 @@
 				5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */,
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
+				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
@@ -4419,6 +4452,7 @@
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
 				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,
+				58ACD1D318F599E200BD576B /* DCStatusBarOverlay.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

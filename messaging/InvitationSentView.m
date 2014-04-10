@@ -17,8 +17,6 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        CGRect screenSizeVar = [self screenSize];
-        
         UIImageView *invitationSent = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"send"]];
         
         invitationSent.frame = CGRectMake(35, 200, 250, 140);
@@ -121,10 +119,7 @@
 	loadingView.opaque = NO;
 	loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[aSuperview addSubview:loadingView];
-    
-	const CGFloat DEFAULT_LABEL_WIDTH = 280.0;
-	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
-	CGRect labelFrame = CGRectMake(0, 0, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+
     
 
 	

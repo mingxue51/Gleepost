@@ -25,6 +25,7 @@ const float TABBAR_OFFSET_HEIGHT = 5.0f;
 @synthesize profileNotificationsCount=_profileNotificationsCount;
 
 static BOOL isViewDidDisappearCalled = YES;
+static BOOL isViewDidLayoutSubviews = NO;
 
 - (void)viewDidLoad
 {
@@ -36,14 +37,22 @@ static BOOL isViewDidDisappearCalled = YES;
     
     [self setDelegate:self];
     
-    
+}
+
+- (void)viewDidLayoutSubviews
+{
     CGRect frame = self.tabBar.frame;
 
-    if(![GLPiOS6Helper isIOS6])
+    if(!isViewDidLayoutSubviews)
     {
-        [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+TABBAR_OFFSET_HEIGHT, frame.size.width, frame.size.height-TABBAR_OFFSET_HEIGHT)];
+        if(![GLPiOS6Helper isIOS6])
+        {
+            [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+TABBAR_OFFSET_HEIGHT, frame.size.width, frame.size.height-TABBAR_OFFSET_HEIGHT)];
+        }
+        isViewDidLayoutSubviews = YES;
     }
     
+
 }
 
 

@@ -1583,6 +1583,11 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
     NSArray *visiblePosts = [self snapshotVisibleCells];
