@@ -91,8 +91,16 @@
         NSString *token = json[@"value"];
         NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
-        loadData(user, token, expirationDate, ^(BOOL success) {
-            callback(success, responseFromServer);
+        loadData(user, token, expirationDate, ^(BOOL success, NSString *response) {
+            
+            if(success)
+            {
+                callback(YES, response);
+            }
+            else
+            {
+                callback(NO, response);
+            }
         });
     }
     else
@@ -219,19 +227,24 @@
 }
 
 # pragma mark - Helper function for loading user data
-void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^callback)(BOOL success)) {
+void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^callback)(BOOL success, NSString *response)) {
 //    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
     
     NSString *userEmail = user.email;
     
     NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
-        
+    
+    NSLog(@"GLPLoginManager : user remoteKey: %d", user.remoteKey);
+    
+    
     // fetch additional info
     // user details
     [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
         
         if(!success) {
-            callback(NO);
+            
+            NSLog(@"GLPLoginManager : Failed to load user information.");
+            callback(NO, @"Failed to load information.");
             return;
         }
         
@@ -239,7 +252,7 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
         [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
          
             if(!success) {
-                callback(NO);
+                callback(NO, @"Failed to load contacts.");
                 return;
             }
             
@@ -247,7 +260,7 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
             
             [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
             
-            callback(YES);
+            callback(YES, @"Success.");
         }];
     }];
 }

@@ -123,20 +123,18 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Logging in" forView:self.view];
     
-    email = [self saveLocallyUniversityEmail:email];
-    
-//    __weak GLPLoginSignUpViewController *weakSelf = self;
-    
-    //If user's email is not locally saved or user didn't type it prompt a window to add his email.
-    if(!email)
-    {
-        NSLog(@"University Email id required for Facebook Login");
-//        [weakSelf askUserForEmailAddressAgain:NO];
-        [self askUserForEmailAddressAgain:NO];
-
-        
-        return;
-    }
+//    email = [self saveLocallyUniversityEmail:email];
+//    
+//    //If user's email is not locally saved or user didn't type it prompt a window to add his email.
+//    if(!email)
+//    {
+//        NSLog(@"University Email id required for Facebook Login");
+//
+//        [self askUserForEmailAddressAgain:NO];
+//
+//        
+//        return;
+//    }
     
     
     [[GLPFacebookConnect sharedConnection] openSessionWithEmailOrNil:email completionHandler:^(BOOL success, NSString *name, NSString *response) {
@@ -160,7 +158,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
+                        [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:serverResponse];
                 }
             }];
             
