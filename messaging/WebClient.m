@@ -765,6 +765,8 @@ static WebClient *instance = nil;
         }
         
         NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:json];
+        
+        DDLogDebug(@"Conversations: %@", conversations);
         callback(YES, conversations);
     }];
 }

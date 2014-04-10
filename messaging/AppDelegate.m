@@ -39,6 +39,8 @@
 #import "GLPPrivateProfileViewController.h"
 #import "GLPProfileViewController.h"
 #import "ContactsManager.h"
+#import "ViewPostViewController.h"
+#import "GLPPostManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -183,7 +185,7 @@ static NSString * const kCustomURLHost      = @"verify";
     
     DDLogInfo(@"Receive push notification: %@", json);
     
-    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"]) {
+    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"] && !json[@"liker-id"] && !json[@"commenter-id"]) {
         
         DDLogError(@"Converstion id or group id or added user or accepted user does not exist, abort");
         return;
@@ -219,12 +221,78 @@ static NSString * const kCustomURLHost      = @"verify";
     }
     else if (json[@"liker-id"])
     {
-        
+        [self navigateToPostWithJson:json];
     }
     else if (json[@"commenter-id"])
     {
-        
+        [self navigateToPostWithJson:json];
     }
+}
+
+# pragma mark - Navigation from push notifications
+
+
+-(void)navigateToPostWithJson:(NSDictionary *)json
+{
+    int postRemoteKey = [json[@"post-id"] integerValue];
+    
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 4) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:4];
+    }
+    
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    
+    DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    //Navigate to notifications.
+    profileVC.fromPushNotification = YES;
+    
+    ViewPostViewController *viewPostVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
+    
+    viewPostVC.isViewPostNotifications = YES;
+    
+    
+    DDLogDebug(@"Post Remote Key push notification: %d", postRemoteKey);
+
+    [self navigateToPostWithPostRemoteKey:postRemoteKey withProfileVC:profileVC withViewPostVC:viewPostVC andBasicVC:navVC];
+    
+}
+
+-(void)navigateToPostWithPostRemoteKey:(int)remoteKey withProfileVC:(GLPProfileViewController *)profileVC withViewPostVC:(ViewPostViewController *)viewPostVC andBasicVC:(UINavigationController *)basicVC
+{
+    
+    //Load post.
+//    [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:self];
+    
+    [GLPPostManager loadPostWithRemoteKey:remoteKey callback:^(BOOL success, GLPPost *post) {
+        
+//        [WebClientHelper hideStandardLoaderForView:self.view];
+        
+        if(success)
+        {
+            viewPostVC.post = post;
+            //Add loaded post to view post VC.
+            [viewPostVC setHidesBottomBarWhenPushed:YES];
+            [basicVC setViewControllers:@[profileVC, viewPostVC] animated:NO];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+        }
+    }];
+    
+
+
 }
 
 -(void)navigateToGleepostApp

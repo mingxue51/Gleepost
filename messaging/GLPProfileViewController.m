@@ -1254,6 +1254,10 @@
                         //Add the date of the notification to the view post view controller.
                         self.commentNotificationDate = notification.date;
                     }
+                    else
+                    {
+                        self.commentNotificationDate = nil;
+                    }
                     
                     [self performSegueWithIdentifier:@"view post" sender:self];
                 }
