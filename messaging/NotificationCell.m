@@ -145,6 +145,8 @@ float const kMarginBetweenBorderAndContent = 15;
         
         NSString *imageName = notification.notificationType == kGLPNotificationTypeLiked ? @"internal_notification_cell_liked" : @"internal_notification_cell_commented";
         self.pictoImageView.image = [UIImage imageNamed:imageName];
+        [self.contentLabel sizeToFit];
+
     }
     else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
     {

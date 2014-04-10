@@ -244,6 +244,7 @@ static NSString * const kCustomURLHost      = @"verify";
     if(_tabBarController.selectedIndex != 4) {
         UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
         [currentNavigationVC popToRootViewControllerAnimated:NO];
+
         [_tabBarController setSelectedIndex:4];
     }
     
@@ -253,6 +254,9 @@ static NSString * const kCustomURLHost      = @"verify";
     
     DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:profileVC.view];
+
     
     //Navigate to notifications.
     profileVC.fromPushNotification = YES;
@@ -272,18 +276,17 @@ static NSString * const kCustomURLHost      = @"verify";
 {
     
     //Load post.
-//    [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:self];
     
     [GLPPostManager loadPostWithRemoteKey:remoteKey callback:^(BOOL success, GLPPost *post) {
         
-//        [WebClientHelper hideStandardLoaderForView:self.view];
+        [WebClientHelper hideStandardLoaderForView:profileVC.view];
         
         if(success)
         {
             viewPostVC.post = post;
             //Add loaded post to view post VC.
             [viewPostVC setHidesBottomBarWhenPushed:YES];
-            [basicVC setViewControllers:@[profileVC, viewPostVC] animated:NO];
+            [basicVC setViewControllers:@[profileVC, viewPostVC] animated:YES];
         }
         else
         {
