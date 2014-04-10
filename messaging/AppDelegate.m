@@ -216,7 +216,14 @@ static NSString * const kCustomURLHost      = @"verify";
             [self navigateToGleepostApp];
 
         }
-
+    }
+    else if (json[@"liker-id"])
+    {
+        
+    }
+    else if (json[@"commenter-id"])
+    {
+        
     }
 }
 

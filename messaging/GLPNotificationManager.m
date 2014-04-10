@@ -184,38 +184,40 @@
     
     __block NSArray *unreadNotifications = nil;
 
-    
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        
+        //    [DatabaseManager run:^(FMDatabase *db) {
         
         
         unreadNotifications = [GLPNotificationDao findUnreadNotifications:db];
         
+        
+        
+        //    }];
+        
+        if(unreadNotifications.count != 0)
+        {
+            GLPNotification *lastNotification = [unreadNotifications objectAtIndex:0];
+            
+            DDLogInfo(@"Last notification with content: %d", lastNotification.notificationType);
+            
+            [[WebClient sharedInstance] markNotificationsReadWithLastNotificationRemoteKey:lastNotification.remoteKey withCallbackBlock:^(BOOL success) {
+                
+                if(success)
+                {
+                    DDLogInfo(@"Notifications mark as read.");
+                }
+                
+            }];
+            
+            [GLPNotificationDao markNotificationsRead:db];
+            
+        }
 
-
+        
     }];
     
-    if(unreadNotifications.count != 0)
-    {
-        GLPNotification *lastNotification = [unreadNotifications objectAtIndex:0];
-        
-        DDLogInfo(@"Last notification with content: %d", lastNotification.notificationType);
-        
-        
-        [[WebClient sharedInstance] markNotificationsReadWithLastNotificationRemoteKey:lastNotification.remoteKey withCallbackBlock:^(BOOL success) {
-            
-            if(success)
-            {
-                DDLogInfo(@"Notifications mark as read.");
-            }
-            
-        }];
-        
-        
-        
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            [GLPNotificationDao markNotificationsRead:db];
-        }];
-    }
     
 
 

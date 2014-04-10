@@ -119,8 +119,6 @@ static GLPPostImageLoader *instance = nil;
             {
                 //Inform Campus Wall.
                 [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInt:p.remoteKey] andImage:image];
-                
-                DDLogDebug(@"Image exist in cache.");
             }
             else
             {
@@ -130,8 +128,6 @@ static GLPPostImageLoader *instance = nil;
                 
                 if(newPost == YES && (posts.count-1) == i)
                 {
-                    DDLogDebug(@"Image doesn't exist in cache.");
-
                     [self startConsume];
                 }
             }

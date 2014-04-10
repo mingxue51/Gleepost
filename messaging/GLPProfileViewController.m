@@ -903,6 +903,7 @@
     
     if(self.selectedTabStatus == kGLPSettings) {
         [self notificationsTabClick];
+        [self.tableView reloadData];
     }
     else
     {
@@ -916,9 +917,10 @@
 - (void)loadUnreadInternalNotifications
 {
     DDLogInfo(@"Load new internal notifications");
-    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
+//    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
     
     NSArray *notifications = [GLPNotificationManager unreadNotifications];
+    _unreadNotificationsCount = notifications.count;
     if(notifications.count == 0 || self.selectedTabStatus != kGLPSettings) {
         return;
     }
@@ -932,12 +934,13 @@
         [indexPaths addObject:[NSIndexPath indexPathForRow:i + 2 inSection:0]];
         
         //ADDED.
-//        ++i;
+        ++i;
+        
     }
+
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
     
-//    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
     _tabButtonEnabled = YES;
     

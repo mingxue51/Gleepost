@@ -1559,7 +1559,7 @@ static WebClient *instance = nil;
     [params setObject:[NSNumber numberWithInt:remoteKey] forKey:@"seen"];
     
     [self putPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogInfo(@"Mark notifications read success: %@",responseObject);
+        DDLogInfo(@"Mark notifications read success.");
         
         if(callback) {
             callback(YES);
