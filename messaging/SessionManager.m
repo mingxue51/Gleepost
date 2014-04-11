@@ -267,6 +267,10 @@ static SessionManager *instance = nil;
     DDLogError(@"User name: %@ Email: %@", _user.name, _user.email);
     
 //    NSDictionary *usersData = [NSDictionary dictionaryWithObjectsAndKeys:_user.name, _user.email, nil];
+    if(!_user.email)
+    {
+        return;
+    }
     
     NSMutableDictionary *usersData = [NSMutableDictionary dictionaryWithDictionary:_usersData];
     [usersData setObject:_user.name forKey:_user.email];
