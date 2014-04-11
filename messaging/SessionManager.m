@@ -96,7 +96,7 @@ static SessionManager *instance = nil;
     
     self.user = user;
     self.token = token;
-    self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", user.remoteKey], @"token": token};
+    self.authParameters = @{@"id": [NSString stringWithFormat:@"%ld", (long)user.remoteKey], @"token": token};
     
     // save session
     self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
@@ -169,7 +169,7 @@ static SessionManager *instance = nil;
 {
     _user = user;
     _token = self.data[@"user.token"];
-    _authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
+    _authParameters = @{@"id": [NSString stringWithFormat:@"%li", (long)self.user.remoteKey], @"token": self.token};
 }
 
 
