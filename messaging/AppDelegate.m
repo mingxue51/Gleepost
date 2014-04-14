@@ -234,7 +234,7 @@ static NSString * const kCustomURLHost      = @"verify";
 
 -(void)navigateToPostWithJson:(NSDictionary *)json
 {
-    int postRemoteKey = [json[@"post-id"] integerValue];
+    NSInteger postRemoteKey = [json[@"post-id"] integerValue];
     
     if(!_tabBarController) {
         DDLogError(@"Cannot find tab bar VC, abort");
@@ -266,13 +266,13 @@ static NSString * const kCustomURLHost      = @"verify";
     viewPostVC.isViewPostNotifications = YES;
     
     
-    DDLogDebug(@"Post Remote Key push notification: %d", postRemoteKey);
+    DDLogDebug(@"Post Remote Key push notification: %d", (int)postRemoteKey);
 
     [self navigateToPostWithPostRemoteKey:postRemoteKey withProfileVC:profileVC withViewPostVC:viewPostVC andBasicVC:navVC];
     
 }
 
--(void)navigateToPostWithPostRemoteKey:(int)remoteKey withProfileVC:(GLPProfileViewController *)profileVC withViewPostVC:(ViewPostViewController *)viewPostVC andBasicVC:(UINavigationController *)basicVC
+-(void)navigateToPostWithPostRemoteKey:(NSInteger)remoteKey withProfileVC:(GLPProfileViewController *)profileVC withViewPostVC:(ViewPostViewController *)viewPostVC andBasicVC:(UINavigationController *)basicVC
 {
     
     //Load post.
@@ -317,7 +317,7 @@ static NSString * const kCustomURLHost      = @"verify";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/gb/app/gleepost/id820569024?mt=8&uo=4"]];
 }
 
--(void)navigateToUsersProfileWithJson:(NSDictionary *)json withRemoteKey:(int)remoteKey
+-(void)navigateToUsersProfileWithJson:(NSDictionary *)json withRemoteKey:(NSInteger)remoteKey
 {
 //    DDLogDebug(@"JSON: %@", json);
     
