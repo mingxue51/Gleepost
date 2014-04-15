@@ -368,6 +368,8 @@
         
         GLPConversation *conversation = indexPath.section == 0 ? _liveConversations[indexPath.row] : _regularConversations[indexPath.row];
         
+        DDLogDebug(@"Conversation: %@", conversation);
+        
         MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
         //cell.conversation = conversation;
         cell.userName.text = conversation.title;
@@ -393,8 +395,6 @@
     }
     
     return nil;
-    
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -406,7 +406,7 @@
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }
 
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
         return [GLPLoadMoreCell height];
