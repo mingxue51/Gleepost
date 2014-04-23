@@ -17,5 +17,6 @@
 - (BOOL)handleOpenURL:(NSURL *)url;
 - (void)logout;
 - (NSString *)facebookLoginToken;
+-(void)inviteFriendsViaFBToGroupWithRemoteKey:(int)groupRemoteKey;
 
 @end

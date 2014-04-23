@@ -179,6 +179,7 @@ static WebClient *instance = nil;
     }];
 }
 
+#pragma mark - Facebook
 
 - (void)registerViaFacebookToken:(NSString *)token
                   withEmailOrNil:(NSString *)email
@@ -725,6 +726,43 @@ static WebClient *instance = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         callbackBlock(NO, nil);
+    }];
+}
+
+- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    params[@"users"] = [users componentsJoinedByString:@","];
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/users", group.remoteKey];
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        callback(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO);
+    }];
+}
+
+//TODO: Redundant code with add users and add users to group. (total 3 methods)
+
+-(void)inviteUsersViaFacebookWithGroupRemoteKey:(int)groupRemoteKey andUsersFacebookIds:(NSArray *)fbIds withCallbackBlock:(void (^) (BOOL success))callback
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    params[@"fbusers"] = [fbIds componentsJoinedByString:@","];
+    
+    NSString *path = [NSString stringWithFormat:@"networks/%d/users", groupRemoteKey];
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"After facebook invitations: %@", responseObject);
+        
+        callback(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogDebug(@"After facebook invitations ERROR: %@", error);
+        
+        callback(NO);
     }];
 }
 
@@ -1641,23 +1679,6 @@ static WebClient *instance = nil;
         callback(users);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callback(nil);
-    }];
-}
-
-
-# pragma mark - Groups
-
-- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback
-{
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
-    params[@"users"] = [users componentsJoinedByString:@","];
-    
-    NSString *path = [NSString stringWithFormat:@"networks/%d/users", group.remoteKey];
-    
-    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        callback(YES);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callback(NO);
     }];
 }
 

@@ -15,6 +15,7 @@
 #import "ContactsManager.h"
 #import "SessionManager.h"
 #import "GLPPrivateProfileViewController.h"
+#import "GLPFacebookConnect.h"
 
 @interface GLPSearchUsersViewController ()
 
@@ -53,6 +54,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     [self configureButtons];
     
     [self configureUI];
+    
+    [self configureNavigationBar];
 
 }
 
@@ -105,6 +108,15 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     _submitButton.enabled = NO;
 }
 
+-(void)configureNavigationBar
+{
+    //Add navigation buttons to let the user to invite friends from facebook.
+    UIBarButtonItem *inviteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(inviteFriendsToFB:)];
+    
+    self.navigationItem.rightBarButtonItem = inviteButton;
+    
+}
+
 -(void)configureUI
 {
     if(!_searchForMembers)
@@ -112,6 +124,13 @@ static NSString *const SEARCH_USERS_STR = @"Search";
         [_submitButton setHidden:YES];
     }
         
+}
+
+# pragma mark - Facebook
+
+-(void)inviteFriendsToFB:(id)sender
+{
+    [[GLPFacebookConnect sharedConnection] inviteFriendsViaFBToGroupWithRemoteKey:_group.remoteKey];
 }
 
 # pragma mark - Searching

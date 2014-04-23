@@ -685,10 +685,10 @@
 		C0090C2318A8F90A00153878 /* arraow-right.png in Resources */ = {isa = PBXBuildFile; fileRef = C0090C2118A8F90A00153878 /* arraow-right.png */; };
 		C0090C2418A8F90A00153878 /* arrow-left.png in Resources */ = {isa = PBXBuildFile; fileRef = C0090C2218A8F90A00153878 /* arrow-left.png */; };
 		C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D083183CE2C80001B76E /* UIViewController+Flurry.m */; };
+		C014D08718433C990001B76E /* GLPFacebookConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D08618433C960001B76E /* GLPFacebookConnect.m */; };
 		C02120431850AA1200831872 /* GLPPostUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = C02120421850AA1200831872 /* GLPPostUploader.m */; };
 		C02DB4DC18AE56CA0077FDEB /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = C02DB4DA18AE56CA0077FDEB /* add.png */; };
 		C02DB4DD18AE56CA0077FDEB /* message.png in Resources */ = {isa = PBXBuildFile; fileRef = C02DB4DB18AE56CA0077FDEB /* message.png */; };
-		C014D08718433C990001B76E /* GLPFacebookConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = C014D08618433C960001B76E /* GLPFacebookConnect.m */; };
 		C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */ = {isa = PBXBuildFile; fileRef = C04613971834E87000B422A3 /* UIViewController+GAI.m */; };
 		D23E342C04344F0B93695525 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D6C24A4DFC4BA5B92AFE98 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -1657,12 +1657,12 @@
 		C0090C2218A8F90A00153878 /* arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-left.png"; sourceTree = "<group>"; };
 		C014D082183CE2C80001B76E /* UIViewController+Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Flurry.h"; sourceTree = "<group>"; };
 		C014D083183CE2C80001B76E /* UIViewController+Flurry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Flurry.m"; sourceTree = "<group>"; };
+		C014D08518433C950001B76E /* GLPFacebookConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFacebookConnect.h; sourceTree = "<group>"; };
+		C014D08618433C960001B76E /* GLPFacebookConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFacebookConnect.m; sourceTree = "<group>"; };
 		C02120411850AA1200831872 /* GLPPostUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploader.h; sourceTree = "<group>"; };
 		C02120421850AA1200831872 /* GLPPostUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostUploader.m; sourceTree = "<group>"; };
 		C02DB4DA18AE56CA0077FDEB /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		C02DB4DB18AE56CA0077FDEB /* message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message.png; sourceTree = "<group>"; };
-		C014D08518433C950001B76E /* GLPFacebookConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFacebookConnect.h; sourceTree = "<group>"; };
-		C014D08618433C960001B76E /* GLPFacebookConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFacebookConnect.m; sourceTree = "<group>"; };
 		C04613961834E87000B422A3 /* UIViewController+GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GAI.h"; sourceTree = "<group>"; };
 		C04613971834E87000B422A3 /* UIViewController+GAI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GAI.m"; sourceTree = "<group>"; };
 		FF972496B7AD4044B85FE95E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -3281,7 +3281,6 @@
 				584CF66B182289B500EFABB8 /* ContactsManager.h */,
 				584CF66C182289B500EFABB8 /* ContactsManager.m */,
 				80666C3D1806D43200E4E515 /* Database */,
-
 				C014D08518433C950001B76E /* GLPFacebookConnect.h */,
 				C014D08618433C960001B76E /* GLPFacebookConnect.m */,
 				80AB894B17C26ECA0053E784 /* SessionManager.h */,
@@ -4538,7 +4537,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "5EF3122E-18C1-4761-ABEB-15957B8FD1D9";
+				PROVISIONING_PROFILE = "343E67BC-7770-40EB-AABC-0DA5862CAFC9";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4565,7 +4564,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "5EF3122E-18C1-4761-ABEB-15957B8FD1D9";
+				PROVISIONING_PROFILE = "343E67BC-7770-40EB-AABC-0DA5862CAFC9";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4578,15 +4577,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -4598,15 +4597,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
