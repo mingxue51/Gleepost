@@ -184,4 +184,14 @@
     [alert show];
 }
 
++ (void)showInvitedFriendsToGroupViaFBWithNumberOfFriends:(NSInteger)numberOfFriends
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friends invited to group!"
+                                                    message:[NSString stringWithFormat:@"You have invited %ld facebook friends to this group", (long)numberOfFriends]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

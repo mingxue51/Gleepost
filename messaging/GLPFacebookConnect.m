@@ -15,6 +15,8 @@
 #import "WebClient.h"
 #import "NSError+FBError.h"
 #import "FBWebDialogs.h"
+#import "WebClientHelper.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface GLPFacebookConnect () {
     void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
@@ -192,15 +194,30 @@
                                                               DDLogInfo(@"User canceled request.");
                                                           } else
                                                           {
-                                                              DDLogInfo(@"Request Sent to facebook :%@", resultURL);
-                                                              
-                                                              NSArray * fbIds = [self parseUsersFacebookIdsWithDictionary:[self parseURLParams:[resultURL query]]];
-                                                              
-                                                              
-                                                              [self informAPIAboutInvitationWithFBIds:fbIds];
+                                                              [self manageFacebookInvitationsResult:resultURL];
+                                                              [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"SHOW_KEYBOARD" object:nil userInfo:nil];
+
                                                           }
                                                       }}
                                               friendCache:nil];
+    
+}
+
+-(void)manageFacebookInvitationsResult:(NSURL *)resultURL
+{
+    DDLogInfo(@"Request Sent to facebook :%@", resultURL);
+    
+    NSDictionary *resultDictionary = [self parseURLParams:[resultURL query]];
+    
+    if(![resultDictionary objectForKey:@"error_code"])
+    {
+        DDLogDebug(@"Result dictionary: %@", resultDictionary);
+        
+        NSArray * fbIds = [self parseUsersFacebookIdsWithDictionary:[self parseURLParams:[resultURL query]]];
+        
+        
+        [self informAPIAboutInvitationWithFBIds:fbIds];
+    }
 }
 
 - (NSDictionary*)parseURLParams:(NSString *)query
@@ -238,13 +255,18 @@
 {
     [[WebClient sharedInstance] inviteUsersViaFacebookWithGroupRemoteKey:_groupRemoteKey andUsersFacebookIds:fbIds withCallbackBlock:^(BOOL success) {
        
+        //TODO: Create a pop up message to show to user the friends that he invited.
+        
         if(success)
         {
             DDLogInfo(@"User had invited friends final success.");
+            [WebClientHelper showInvitedFriendsToGroupViaFBWithNumberOfFriends:fbIds.count];
+            
         }
         else
         {
             DDLogInfo(@"Problem to invite friends.");
+            [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"There was a problem inviting your selected facebook friends"];
         }
         
     }];

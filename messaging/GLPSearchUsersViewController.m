@@ -67,6 +67,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:_searchTextfield selector:@selector(becomeFirstResponder) name:@"SHOW_KEYBOARD" object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -74,6 +76,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:_searchTextfield name:@"SHOW_KEYBOARD" object:nil];
+
 }
 
 # pragma mark - Configuration
@@ -130,6 +134,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 
 -(void)inviteFriendsToFB:(id)sender
 {
+    [_searchTextfield resignFirstResponder];
+
     [[GLPFacebookConnect sharedConnection] inviteFriendsViaFBToGroupWithRemoteKey:_group.remoteKey];
 }
 
