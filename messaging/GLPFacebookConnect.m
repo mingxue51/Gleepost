@@ -17,6 +17,7 @@
 #import "FBWebDialogs.h"
 #import "WebClientHelper.h"
 #import "NSNotificationCenter+Utils.h"
+#import "FBFrictionlessRecipientCache.h"
 
 @interface GLPFacebookConnect () {
     void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
@@ -24,6 +25,9 @@
     NSInteger _facebookId;
     NSInteger _groupRemoteKey;
 }
+
+/** Instance used for cached user's friends. */
+@property (strong, nonatomic) FBFrictionlessRecipientCache *friendCache;
 
 @end
 
@@ -37,6 +41,19 @@
     });
     
     return sharedConnection;
+}
+
+-(id)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _friendCache = [[FBFrictionlessRecipientCache alloc] init];
+        [_friendCache prefetchAndCacheForSession:nil];
+    }
+    
+    return self;
 }
 
 - (void)openSessionWithEmailOrNil:(NSString *)email completionHandler:(void (^)(BOOL success, NSString *name, NSString *response))completionHandler {
@@ -192,14 +209,16 @@
                                                           {
                                                               // Case B: User clicked the "x" icon
                                                               DDLogInfo(@"User canceled request.");
+                                                              [self showKeyboardToThePreviousView];
+
                                                           } else
                                                           {
                                                               [self manageFacebookInvitationsResult:resultURL];
-                                                              [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"SHOW_KEYBOARD" object:nil userInfo:nil];
+                                                              [self showKeyboardToThePreviousView];
 
                                                           }
                                                       }}
-                                              friendCache:nil];
+                                              friendCache:_friendCache];
     
 }
 
@@ -220,6 +239,8 @@
     }
 }
 
+#pragma mark - Helpers
+
 - (NSDictionary*)parseURLParams:(NSString *)query
 {
     NSArray *pairs = [query componentsSeparatedByString:@"&"];
@@ -231,6 +252,11 @@
         [params setObject:val forKey:[kv objectAtIndex:0]];
     }
     return params;
+}
+
+-(void)showKeyboardToThePreviousView
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"SHOW_KEYBOARD" object:nil userInfo:nil];
 }
 
 -(NSArray *)parseUsersFacebookIdsWithDictionary:(NSDictionary *)resultDictionary
