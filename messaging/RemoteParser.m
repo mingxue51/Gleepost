@@ -389,8 +389,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
     post.commentsCount = [json[@"comment_count"] integerValue];
 
-    
-
     post.likes = [json[@"like_count"] integerValue];
     
     post.dislikes = [json[@"hates"] integerValue];
@@ -407,6 +405,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     post.popularity = [json[@"popularity"] integerValue];
+    post.attendees = [json[@"attendee_count"] integerValue];
     
     NSArray *jsonArray = json[@"images"];
     

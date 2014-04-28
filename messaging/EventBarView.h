@@ -12,6 +12,8 @@
 
 -(void)increaseBarLevel:(int)level;
 -(void)decreaseBarLevel:(int)level;
-
+-(void)increaseLevel;
+-(void)decreaseLevel;
+-(void)setLevelWithPopularity:(int)popularity;
 
 @end

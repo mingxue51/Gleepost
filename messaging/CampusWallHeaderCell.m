@@ -106,10 +106,11 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
         //Set post's image.
         [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
-    
-    
+    else
+    {
+        [_eventImage setImage:nil];
+    }
 
-    
     
 //    [_eventImage setImageWithURL:imgUrl placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
 //        
@@ -143,7 +144,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     [self setTimeWithTime:postData.dateEventStarts];
   
     
-    [_eventBarView increaseBarLevel:postData.popularity];
+//    [_eventBarView increaseBarLevel:postData.popularity];
+    [_eventBarView setLevelWithPopularity:postData.popularity];
     
 //    [_attendingLbl setText:@"0"];
     
@@ -270,9 +272,13 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 {
     UIButton *currentButton = (UIButton*)sender;
     
+
+    
 //    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
     if(currentButton.tag == 2)
     {
+        
+        [_eventBarView increaseLevel];
         
         //Communicate with server to attend post.
         
@@ -281,6 +287,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             if(success)
             {
                 _postData.attended = YES;
+
             }
             else
             {
@@ -296,6 +303,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     }
     else
     {
+        
+        [_eventBarView decreaseLevel];
         
         //Communicate with server to remove your attendance form the post.
         
