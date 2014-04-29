@@ -223,24 +223,12 @@
         [lbl removeFromSuperview];
         
     }];
-    
-//    [UIView animateWithDuration:0.7f animations:^{
-//        
-//        CGRectSetY(lbl, 90.0f);
-//        
-//    } completion:^(BOOL finished) {
-//        
-//        [lbl setHidden:YES];
-//        
-//        [lbl removeFromSuperview];
-//        
-//    }];
+
 }
 
 -(UILabel*)createLabelAndAddItToCurrentViewWithText:(NSString *)text
 {
     UILabel *attendeesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 160.0f, [self widthForText:text], 20.0f)];
-    
     
     [attendeesLbl setText:text];
     
@@ -253,9 +241,7 @@
     [attendeesLbl setHidden:YES];
     
     [[self superview] addSubview:attendeesLbl];
-    
-//    [self addSubview:attendeesLbl];
-    
+        
     return attendeesLbl;
 }
 
