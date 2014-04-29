@@ -235,7 +235,6 @@
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
 		58536EDA18BE83DE0036FD00 /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58A379C018BE3C6300E30949 /* gleepost.cer */; };
 		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
-		585882CB190E6369000BFBF9 /* thermometer_shadow_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CA190E6369000BFBF9 /* thermometer_shadow_2.png */; };
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
@@ -1001,7 +1000,6 @@
 		58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTemporaryUserInformationManager.h; sourceTree = "<group>"; };
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
 		58536EDB18BE84210036FD00 /* gleepost-dev.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
-		585882CA190E6369000BFBF9 /* thermometer_shadow_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow_2.png; sourceTree = "<group>"; };
 		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
@@ -2497,7 +2495,6 @@
 				589CE50418D222790046DAD2 /* thermometer_color.png */,
 				581B8BBA190C282600A74260 /* thermometer_ball.png */,
 				589CE50018D21CFF0046DAD2 /* thermometer.png */,
-				585882CA190E6369000BFBF9 /* thermometer_shadow_2.png */,
 				585882CD190E8B49000BFBF9 /* thermometer_shadow.png */,
 				589CE50218D21FB40046DAD2 /* clock.png */,
 			);
@@ -4047,7 +4044,6 @@
 				5829F48F18B1546300A7B871 /* pending_request.png in Resources */,
 				58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */,
 				588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */,
-				585882CB190E6369000BFBF9 /* thermometer_shadow_2.png in Resources */,
 				582128381891AA0C00BF36E5 /* gleepost_logo_headerOld.png in Resources */,
 				587248AF18C64C5200B98484 /* members_selected_old.png in Resources */,
 				58AD86A718929F2200016C6D /* idle_tab.png in Resources */,

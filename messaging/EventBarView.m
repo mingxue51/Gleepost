@@ -8,6 +8,7 @@
 // TODO: Comments!
 
 #import "EventBarView.h"
+#import "AppearanceHelper.h"
 
 @interface EventBarView ()
 
@@ -148,9 +149,11 @@
 
 }
 
--(void)increaseLevel
+-(void)increaseLevelWithNumberOfAttendees:(NSInteger)number
 {
     CGRect circleFrame = _circleThermometerImageView.frame;
+    
+    [self animateNumberOfAttendees:number];
     
     if(circleFrame.size.height == 0.00001f)
     {
@@ -200,6 +203,74 @@
     [self animate];
 }
 
+#pragma mark - Animations
+
+-(void)animateNumberOfAttendees:(NSInteger)number
+{
+    UILabel *lbl = [self createLabelAndAddItToCurrentViewWithText:[NSString stringWithFormat:@"%d",number]];
+    
+    [lbl setHidden:NO];
+
+    
+    [UIView animateWithDuration:0.7f delay:0.0f options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        
+        CGRectSetY(lbl, 90.0f);
+        
+    } completion:^(BOOL finished) {
+        
+        [lbl setHidden:YES];
+        
+        [lbl removeFromSuperview];
+        
+    }];
+    
+//    [UIView animateWithDuration:0.7f animations:^{
+//        
+//        CGRectSetY(lbl, 90.0f);
+//        
+//    } completion:^(BOOL finished) {
+//        
+//        [lbl setHidden:YES];
+//        
+//        [lbl removeFromSuperview];
+//        
+//    }];
+}
+
+-(UILabel*)createLabelAndAddItToCurrentViewWithText:(NSString *)text
+{
+    UILabel *attendeesLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 160.0f, [self widthForText:text], 20.0f)];
+    
+    
+    [attendeesLbl setText:text];
+    
+    [attendeesLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:18.0]];
+    
+    [attendeesLbl setTextColor:[AppearanceHelper defaultGleepostColour]];
+    
+    [attendeesLbl setTextAlignment:NSTextAlignmentCenter];
+    
+    [attendeesLbl setHidden:YES];
+    
+    [[self superview] addSubview:attendeesLbl];
+    
+//    [self addSubview:attendeesLbl];
+    
+    return attendeesLbl;
+}
+
+-(float)widthForText:(NSString *)string
+{
+    if(string.length == 3)
+    {
+        return 35.0f;
+    }
+    else
+    {
+        return 25.0f;
+    }
+}
+
 -(void)animateCircleWithHeight:(float)height andY:(float)y
 {
     [UIView animateWithDuration:1.0f animations:^
@@ -229,6 +300,8 @@
 
      }];
 }
+
+#pragma mark - Methods not used
 
 -(void)increaseBarLevel:(int)level
 {

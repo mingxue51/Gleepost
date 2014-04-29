@@ -278,7 +278,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     if(currentButton.tag == 2)
     {
         
-        [_eventBarView increaseLevel];
+        [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees+1];
         
         //Communicate with server to attend post.
         
@@ -287,7 +287,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             if(success)
             {
                 _postData.attended = YES;
-
+                ++_postData.attendees;
             }
             else
             {
@@ -313,6 +313,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             if(success)
             {
                 _postData.attended = NO;
+                --_postData.attendees;
 
                 [self makeButtonUnselected:currentButton];
             }

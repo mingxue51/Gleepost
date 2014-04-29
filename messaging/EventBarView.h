@@ -12,7 +12,7 @@
 
 -(void)increaseBarLevel:(int)level;
 -(void)decreaseBarLevel:(int)level;
--(void)increaseLevel;
+-(void)increaseLevelWithNumberOfAttendees:(NSInteger)number;
 -(void)decreaseLevel;
 -(void)setLevelWithPopularity:(int)popularity;
 
