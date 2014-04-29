@@ -23,6 +23,7 @@
 #import "SessionManager.h"
 #import "WebClientHelper.h"
 #import "GLPPostOperationManager.h"
+#import "GLPFacebookConnect.h"
 
 
 @interface PostCell()
@@ -629,7 +630,18 @@ static const float FixedBottomTextViewHeight = 100;
     
     if([self isCurrentPostBelongsToCurrentUser])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+        if([self isCurrentPostEvent])
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share", nil];
+        }
+        else
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+        }
+    }
+    else if([self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share", nil];
     }
     
     
@@ -800,6 +812,19 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+-(void)sharePostToFacebook
+{
+    NSArray *items = @[[NSString stringWithFormat:@"%@",self.post.content],[NSURL URLWithString:self.post.imagesUrls[0]]];
+    
+    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    
+    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    
+    shareItems.excludedActivityTypes = excludeActivities;
+    
+    [self.delegate presentViewController:shareItems animated:YES completion:nil];
+}
+
 -(void)viewPostImage:(id)sender
 {
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
@@ -874,17 +899,12 @@ static const float FixedBottomTextViewHeight = 100;
     
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if([selectedButtonTitle isEqualToString:@"Going"])
+    if([selectedButtonTitle isEqualToString:@"Share"])
     {
-        //RSVP post.
-        [self attending];
+        //Share post.
+        [[GLPFacebookConnect sharedConnection] sharePostWithPost:nil];
+//        [self sharePostToFacebook];
 
-    }
-    else if([selectedButtonTitle isEqualToString:@"Not Going"])
-    {
-        //Not attending.
-        [self notAttending];
-        
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
     {

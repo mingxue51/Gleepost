@@ -12,9 +12,9 @@
 #import "FBSessionTokenCachingStrategy.h"
 #import "FBRequestConnection.h"
 #import "FBGraphUser.h"
-#import "WebClient.h"
 #import "NSError+FBError.h"
-
+#import "FBShareDialogParams.h"
+#import "FBDialogs.h"
 
 @interface GLPFacebookConnect () {
     void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
@@ -152,6 +152,125 @@
     FBSessionTokenCachingStrategy *tokenCachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
     NSLog(@"FB Token: %@", [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey]);
     return [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey];
+}
+
+
+#pragma mark - Share post
+
+-(void)sharePostWithPost:(GLPPost *)post
+{
+    NSArray *permissions = @[@"publish_actions"];
+    
+    [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+        
+        
+//        DDLogDebug(@"Sesssion: %@, Error: %@", session, error);
+        
+    }];
+    
+    // NOTE: pre-filling fields associated with Facebook posts,
+    // unless the user manually generated the content earlier in the workflow of your app,
+    // can be against the Platform policies: https://developers.facebook.com/policy
+    
+    // Put together the dialog parameters
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   @"Sharing Tutorial", @"name",
+                                   @"Build great social apps and get more installs.", @"caption",
+                                   @"Allow your users to share stories on Facebook from your app using the iOS SDK.", @"description",
+                                   @"https://developers.facebook.com/docs/ios/share/", @"link",
+                                   @"http://i.imgur.com/g3Qc1HN.png", @"picture",
+                                   nil];
+    
+    // Make the request
+    [FBRequestConnection startWithGraphPath:@"/me/feed"
+                                 parameters:params
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (!error)
+                              {
+                                  // Link posted successfully to Facebook
+                                  DDLogDebug(@"%@",[NSString stringWithFormat:@"result: %@", result]);
+                              } else
+                              {
+                                  // An error occurred, we need to handle the error
+                                  // See: https://developers.facebook.com/docs/ios/errors
+                                  DDLogDebug(@"%@",[NSString stringWithFormat:@"%@", error.description]);
+                              }
+                          }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Check if the Facebook app is installed and we can present the share dialog
+//    FBShareDialogParams *params = [[FBShareDialogParams alloc] init];
+//    params.link = [NSURL URLWithString:@"https://www.gleepost.com"];
+//    params.name = post.eventTitle;
+//    params.caption = @"Build great social apps and get more installs.";
+//    params.picture = [NSURL URLWithString:post.imagesUrls[0]];
+//    params.description = post.content;
+//    
+//    // If the Facebook app is installed and we can present the share dialog
+//    if ([FBDialogs canPresentShareDialogWithParams:params]) {
+//        // Present the share dialog
+//        DDLogDebug(@"Present share dialog.");
+//        
+//        // Present share dialog
+//        [FBDialogs presentShareDialogWithLink:params.link
+//                                         name:params.name
+//                                      caption:nil
+//                                  description:params.description
+//                                      picture:params.picture
+//                                  clientState:nil
+//                                      handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+//                                          if(error) {
+//                                              // An error occurred, we need to handle the error
+//                                              // See: https://developers.facebook.com/docs/ios/errors
+//                                              DDLogDebug(@"%@",[NSString stringWithFormat:@"Error publishing story: %@", error.description]);
+//                                              
+//                                          } else {
+//                                              // Success
+//                                              NSLog(@"result %@", results);
+//                                          }
+//                                      }];
+//        
+//    } else {
+//    }
+    
+    
+    
+    
+//    NSMutableDictionary<FBGraphObject> *object =
+//    [FBGraphObject openGraphObjectForPostWithType:@"gleepost:listing"
+//                                            title:@"White DS handheld games console - EXCELLENT CONDITION"
+//                                            image:@"https://gleepost.com/uploads/3cff298bc1d418dfea9a5851329388ec.jpg"
+//                                              url:@"http://samples.ogp.me/247259768714869"
+//                                      description:@"WHITE DS - INCLUDING TWO GAMES, A SPARE STYLUS & CHARGER. [BOX NOT INCLUDED] EXCELLENT CONDITION!!!!"];
+//    
+//    
+//     
+//     [FBRequestConnection startForPostWithGraphPath:@"me/objects/gleepost:listing"
+//                                        graphObject:object
+//                                  completionHandler:^(FBRequestConnection *connection,
+//                                                      id result,
+//                                                      NSError *error) {
+//                                      // handle the result
+//                                      
+//                                      if(error)
+//                                      {
+//                                          DDLogDebug(@"ERROR: %@", error);
+//                                      }
+//                                      else
+//                                      {
+//                                          DDLogDebug(@"RESULT: %@", result);
+//                                      }
+//                                  }];
 }
 
 @end
