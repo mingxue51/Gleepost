@@ -87,7 +87,8 @@ static DatabaseManager *instance = nil;
              course text, \
              network_id integer, \
              network_name text, \
-             tagline text);"];
+             tagline text, \
+             email text);"]; //e-mail is used for now just for the logged in user.
             
             // contacts
             [db executeUpdate:@"create table contacts ( \
