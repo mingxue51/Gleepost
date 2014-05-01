@@ -132,6 +132,7 @@
     {
         _fbName = [_facebookLoginInfo objectForKey:@"Name"];
         [super emailTextField].text = [_facebookLoginInfo objectForKey:@"Email"];
+    
         _facebookMode = YES;
         
         [self hideSignUpViewAndShowVerification];
