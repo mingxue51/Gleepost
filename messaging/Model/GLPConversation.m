@@ -120,7 +120,6 @@
     _lastUpdate = message.date;
 }
 
-
 # pragma mark - Copy
 
 -(id)copyWithZone:(NSZone *)zone

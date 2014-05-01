@@ -22,6 +22,7 @@
     entity.networkId = [resultSet intForColumn:@"network_id"];
     entity.networkName = [resultSet stringForColumn:@"network_name"];
     entity.personalMessage = [resultSet stringForColumn:@"tagline"];
+    entity.email = [resultSet stringForColumn:@"email"];
 }
 
 + (GLPUser *)createUserFromResultSet:(FMResultSet *)resultSet

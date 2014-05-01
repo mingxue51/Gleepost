@@ -285,9 +285,6 @@ static BOOL visibility = NO;
 	loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[aSuperview addSubview:loadingView];
     
-	const CGFloat DEFAULT_LABEL_WIDTH = 280.0;
-	const CGFloat DEFAULT_LABEL_HEIGHT = 50.0;
-    
 	// Set up the fade-in animation
 	CATransition *animation = [CATransition animation];
 	[animation setType:kCATransitionFade];

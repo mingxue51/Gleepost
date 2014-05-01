@@ -80,8 +80,6 @@ static BOOL likePushed;
     
     [self fillPostWithKey];
     
-
-    
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
 
@@ -103,18 +101,16 @@ static BOOL likePushed;
        //Scroll to the bottom only when new comment posted.
         [self scrollToTheEndAnimated:YES];
     }
-    else
+    else if(self.commentNotificationDate)
     {
-        if(self.commentNotificationDate)
-        {
-            int commentIndex = [self findIndexOfComment];
-            
-            //Scroll to a particular comment if it is appropriate.
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:commentIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
-        }
-
+        int commentIndex = [self findIndexOfComment];
+        
+        //Scroll to a particular comment if it is appropriate.
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:commentIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
+
     
+
     [self registerNotifications];
 
     
@@ -688,7 +684,7 @@ static bool firstTime = YES;
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-            [postViewCell postFromNotifications:NO];
+            [postViewCell postFromNotifications:_isViewPostNotifications];
         }
         else
         {

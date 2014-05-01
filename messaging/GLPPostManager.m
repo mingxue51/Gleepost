@@ -370,7 +370,7 @@
     }];
 }
 
-+(void)loadPostWithRemoteKey:(int)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
++(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
 {
     [[WebClient sharedInstance] getPostWithRemoteKey:remoteKey withCallbackBlock:^(BOOL success, GLPPost *post) {
        

@@ -374,9 +374,9 @@ static WebClient *instance = nil;
 //    
 //}
 
--(void)getPostWithRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
+-(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/", remoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%d/", (int)remoteKey];
     
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -765,6 +765,8 @@ static WebClient *instance = nil;
         }
         
         NSArray *conversations = [RemoteParser parseConversationsFilterByLive:YES fromJson:json];
+        
+        DDLogDebug(@"Conversations: %@", conversations);
         callback(YES, conversations);
     }];
 }
@@ -1559,7 +1561,7 @@ static WebClient *instance = nil;
     [params setObject:[NSNumber numberWithInt:remoteKey] forKey:@"seen"];
     
     [self putPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogInfo(@"Mark notifications read success: %@",responseObject);
+        DDLogInfo(@"Mark notifications read success.");
         
         if(callback) {
             callback(YES);

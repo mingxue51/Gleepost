@@ -54,6 +54,7 @@
 #import "CampusWallGroupsPostsManager.h"
 #import "GLPiOS6Helper.h"
 #import "TableViewHelper.h"
+#import "GLPFlurryVisibleCellProcessor.h"
 
 @interface GLPTimelineViewController ()
 
@@ -117,6 +118,9 @@
 //Extra view will present to hide the change of background during the viewing of new post.
 @property (strong, nonatomic) UIImageView *topImageView;
 
+/** Captures the visibility of current cells. */
+@property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
+
 @end
 
 
@@ -162,7 +166,6 @@ const float TOP_OFFSET = 280.0f;
     [self loadInitialPosts];
     
 
-    
     [WalkThroughHelper showCampusWallMessage];
     
     //Find the sunset sunrise for preparation of the new chat.
@@ -285,6 +288,8 @@ const float TOP_OFFSET = 280.0f;
     [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
     
     [self.view addSubview:_topImageView];
+    
+    _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
 }
 
 
@@ -1483,6 +1488,9 @@ const float TOP_OFFSET = 280.0f;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    [_flurryVisibleProcessor resetVisibleCells];
+    
+    
     CGFloat currentOffset = scrollView.contentOffset.y;
     CGFloat differenceFromStart = self.startContentOffset - currentOffset;
     CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
@@ -1570,6 +1578,43 @@ const float TOP_OFFSET = 280.0f;
     }
     
 }
+
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    for (GLPPost *p in visiblePosts)
+    {
+        DDLogDebug(@"Visible post: %@", p);
+    }
+    
+    [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        for (GLPPost *p in visiblePosts)
+        {
+            DDLogDebug(@"Visible post: %@", p);
+        }
+        
+        [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+    }
+}
+
 
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
@@ -2053,6 +2098,27 @@ const float TOP_OFFSET = 280.0f;
 -(void)removeTableViewFooter
 {
     self.tableView.tableFooterView = nil;
+}
+
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+    }
+    
+    return visiblePosts;
 }
 
 #pragma mark - View image delegate
