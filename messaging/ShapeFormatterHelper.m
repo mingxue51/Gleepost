@@ -94,4 +94,17 @@
     [element setFrame:CGRectMake(frame.origin.x, y, frame.size.width, frame.size.height)];
 }
 
+/**
+ Method used for test purposes.
+ 
+ @param view
+ @param colour
+ */
++(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour
+{
+    [view.layer setBorderColor:colour.CGColor];
+    [view.layer setBorderWidth:2.0f];
+    
+}
+
 @end

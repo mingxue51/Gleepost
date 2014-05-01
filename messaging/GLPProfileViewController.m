@@ -263,7 +263,7 @@
 {
     //TODO: Make a new object view no more, message to be able to apply it to all empty spaces.
     
-    _nomatchesView = [TableViewHelper generateNoMoreLabelWithText:@"No more notifications" withFrame:CGRectMake(0.0f, 200.0f, 320.0f, 50.0f) andTableView:self.tableView];
+    _nomatchesView = [TableViewHelper generateNoMoreLabelWithText:@"No more notifications" withFrame:CGRectMake(0.0f, 320.0f, 320.0f, 50.0f) andTableView:self.tableView];
     [self.tableView insertSubview:_nomatchesView belowSubview:self.tableView];
 }
 
@@ -1083,6 +1083,9 @@
 
     if(self.selectedTabStatus == kGLPPosts)
     {
+        [_nomatchesView setHidden:YES];
+
+        
         return self.numberOfRows + self.posts.count;
     }
     else

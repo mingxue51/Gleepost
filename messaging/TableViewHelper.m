@@ -7,6 +7,7 @@
 //
 
 #import "TableViewHelper.h"
+#import "ShapeFormatterHelper.h"
 
 @implementation TableViewHelper
 
@@ -34,7 +35,7 @@
     UIView *nomatchesView = [[UIView alloc] initWithFrame:rect];
     nomatchesView.backgroundColor = [UIColor clearColor];
     
-    UILabel *matchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,320,320)];
+    UILabel *matchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
     matchesLabel.font = [UIFont boldSystemFontOfSize:18];
     matchesLabel.numberOfLines = 1;
     matchesLabel.lineBreakMode = NSLineBreakByCharWrapping;
@@ -47,6 +48,9 @@
     //Here is the text for when there are no results
     matchesLabel.text = message;
     
+//    [ShapeFormatterHelper setBorderToView:matchesLabel withColour:[UIColor redColor]];
+//    
+//    [ShapeFormatterHelper setBorderToView:nomatchesView withColour:[UIColor blueColor]];
     
     nomatchesView.hidden = YES;
     [nomatchesView addSubview:matchesLabel];
