@@ -814,15 +814,28 @@ static const float FixedBottomTextViewHeight = 100;
 
 -(void)sharePostToFacebook
 {
-    NSArray *items = @[[NSString stringWithFormat:@"%@",self.post.content],[NSURL URLWithString:self.post.imagesUrls[0]]];
+    //Fetch from the cache to avoid redundant download.
     
-    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    [[SDImageCache sharedImageCache] queryDiskCacheForKey:self.post.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
+
+        NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content], image];
+        
+        
+        UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+        
+        NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+        
+        shareItems.excludedActivityTypes = excludeActivities;
+        
+        [self.delegate presentViewController:shareItems animated:YES completion:nil];
+        
+    }];
     
-    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+//    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.post.imagesUrls[0]]];
+//    UIImage *img = [[UIImage alloc] initWithData:data];
     
-    shareItems.excludedActivityTypes = excludeActivities;
     
-    [self.delegate presentViewController:shareItems animated:YES completion:nil];
+
 }
 
 -(void)viewPostImage:(id)sender
@@ -902,8 +915,8 @@ static const float FixedBottomTextViewHeight = 100;
     if([selectedButtonTitle isEqualToString:@"Share"])
     {
         //Share post.
-        [[GLPFacebookConnect sharedConnection] sharePostWithPost:nil];
-//        [self sharePostToFacebook];
+        //[[GLPFacebookConnect sharedConnection] sharePostWithPost:nil];
+        [self sharePostToFacebook];
 
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
