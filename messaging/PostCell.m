@@ -830,12 +830,6 @@ static const float FixedBottomTextViewHeight = 100;
         [self.delegate presentViewController:shareItems animated:YES completion:nil];
         
     }];
-    
-//    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.post.imagesUrls[0]]];
-//    UIImage *img = [[UIImage alloc] initWithData:data];
-    
-    
-
 }
 
 -(void)viewPostImage:(id)sender
