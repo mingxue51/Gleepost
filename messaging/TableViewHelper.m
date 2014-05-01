@@ -29,4 +29,29 @@
     return cell;
 }
 
++(UIView *)generateNoMoreLabelWithText:(NSString *)message withFrame:(CGRect)rect andTableView:(UITableView *)tableView
+{
+    UIView *nomatchesView = [[UIView alloc] initWithFrame:rect];
+    nomatchesView.backgroundColor = [UIColor clearColor];
+    
+    UILabel *matchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,320,320)];
+    matchesLabel.font = [UIFont boldSystemFontOfSize:18];
+    matchesLabel.numberOfLines = 1;
+    matchesLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    matchesLabel.shadowColor = [UIColor lightTextColor];
+    matchesLabel.textColor = [UIColor darkGrayColor];
+    matchesLabel.shadowOffset = CGSizeMake(0, 1);
+    matchesLabel.backgroundColor = [UIColor clearColor];
+    matchesLabel.textAlignment =  NSTextAlignmentCenter;
+    
+    //Here is the text for when there are no results
+    matchesLabel.text = message;
+    
+    
+    nomatchesView.hidden = YES;
+    [nomatchesView addSubview:matchesLabel];
+    
+    return nomatchesView;
+}
+
 @end

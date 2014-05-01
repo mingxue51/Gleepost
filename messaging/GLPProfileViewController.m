@@ -42,6 +42,7 @@
 #import "GLPiOS6Helper.h"
 #import "GroupViewController.h"
 #import "ContactsManager.h"
+#import "TableViewHelper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -86,6 +87,8 @@
 @property (assign, nonatomic) BOOL tabButtonEnabled;
 
 @property (strong, nonatomic) GLPGroup *groupToNavigate;
+
+@property (strong, nonatomic) UIView *nomatchesView;
 
 @end
 
@@ -134,7 +137,8 @@
 //    [self configureNavigationBar];
 
     [self configTabbar];
-    
+
+    [self setUpNoMoreMessage];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -255,6 +259,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
 }
 
+-(void)setUpNoMoreMessage
+{
+    //TODO: Make a new object view no more, message to be able to apply it to all empty spaces.
+    
+    _nomatchesView = [TableViewHelper generateNoMoreLabelWithText:@"No more notifications" withFrame:CGRectMake(0.0f, 200.0f, 320.0f, 50.0f) andTableView:self.tableView];
+    [self.tableView insertSubview:_nomatchesView belowSubview:self.tableView];
+}
 
 #pragma mark - Notifications
 
@@ -1076,6 +1087,15 @@
     }
     else
     {
+        if(_notifications.count == 0)
+        {
+            [_nomatchesView setHidden:NO];
+        }
+        else
+        {
+            [_nomatchesView setHidden:YES];
+        }
+        
         return self.numberOfRows + _notifications.count;
     }
 }
