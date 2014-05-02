@@ -5,10 +5,13 @@
 //  Created by Silouanos on 12/02/2014.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
-// TODO: Comments!
+// The current class manage all animations of the thermometer bar in CampusWallHeaderCell.
+
 
 #import "EventBarView.h"
 #import "AppearanceHelper.h"
+#import "LevelView.h"
+#import "ThermometerCircleView.h"
 
 @interface EventBarView ()
 
@@ -17,14 +20,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bar3;
 @property (weak, nonatomic) IBOutlet UIImageView *bar4;
 
-@property (strong, nonatomic) UIImageView *levelImageView;
-@property (strong, nonatomic) UIImageView *levelImageShadowView;
-@property (strong, nonatomic) UIImageView *circleThermometerImageView;
-@property (assign, nonatomic) float height;
-@property (assign, nonatomic) float currentHeight;
-@property (assign, nonatomic) int popularity;
+@property (strong, nonatomic) ThermometerCircleView *circleThermometerImageView;
 
-@property (weak, nonatomic) IBOutlet UIView *levelView;
+@property (weak, nonatomic) IBOutlet LevelView *levelView;
 
 @end
 
@@ -34,8 +32,6 @@
 -(void)awakeFromNib
 {
     [super awakeFromNib];
-    
-//    [self initialiseElements];
     
     [self configureViews];
 }
@@ -59,94 +55,18 @@
 
 -(void)configureThermometerShadow
 {
-    _levelImageShadowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thermometer_shadow"]];
-    _levelImageShadowView.center = _levelView.center;
-    //    _levelImageView.contentMode = UIViewContentModeBottom;
-    
-    _levelImageShadowView.contentMode = UIViewContentModeScaleToFill;
-    
-//    _height = CGRectGetHeight(_levelImageShadowView.bounds);
-    
-    _height = 87.0f;
-
-    
-    DDLogDebug(@"HEIGHT: %f", _height);
-    
-    
-    CGRect frame = _levelImageShadowView.frame;
-    
-//    frame.size.height = 0.00001;
-    frame.size.height = 87.0;
-
-    frame.origin.x = 3;
-    frame.size.width = 10.0f;
-    //    frame.origin.y += _height;
-    
-    _currentHeight = frame.origin.y = 0.0f;
-    
-    _levelImageShadowView.frame = frame;
-    _levelImageShadowView.clipsToBounds = YES;
-    
-    _levelView.clipsToBounds = YES;
-    
-
-    
-    [_levelView addSubview:_levelImageShadowView];
-    
-    [self bringSubviewToFront:_levelImageShadowView];
-
+    [_levelView configureThermometerShadowWithSuperView:self];
 }
 
 -(void)configureThermometer
 {
-    _levelImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thermometer_color"]];
-
-    _levelImageView.center = _levelView.center;
-
-    
-    _levelImageView.contentMode = UIViewContentModeScaleToFill;
-
-    CGRect frame = _levelImageView.frame;
-
-    frame.origin.x = 5;
-    frame.size.width = 6.0f;
-    
-    [_levelImageView setFrame:frame];
-    _levelImageView.clipsToBounds = YES;
-    
-    _levelView.clipsToBounds = YES;
-    
-    [_levelView addSubview:_levelImageView];
+    [_levelView configureThermometer];
 }
-
 
 
 -(void)configureThermometerCircleItem
 {
-    _circleThermometerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thermometer_ball"]];
-    //    _levelImageView.contentMode = UIViewContentModeBottom;
-    _circleThermometerImageView.center = self.center;
-    _circleThermometerImageView.contentMode = UIViewContentModeScaleToFill;
-    
-    
-    CGRect frame = _circleThermometerImageView.frame;
-    
-    frame.origin.x = 4.0f;
-    frame.size.width = 8.0f;
-    frame.size.height = 0.00001f;
-//    frame.origin.y = 87.0f;
-    frame.origin.y = 95.0f;
-
-    
-    _circleThermometerImageView.frame = frame;
-    _circleThermometerImageView.clipsToBounds = YES;
-    
-    self.clipsToBounds = YES;
-    
-    [self addSubview:_circleThermometerImageView];
-    
-    [self bringSubviewToFront:_circleThermometerImageView];
-
+    _circleThermometerImageView = [[ThermometerCircleView alloc] initWithSuperView:self];
 }
 
 -(void)increaseLevelWithNumberOfAttendees:(NSInteger)number
@@ -157,13 +77,11 @@
     
     if(circleFrame.size.height == 0.00001f)
     {
-        [self animateCircleWithHeight:8.0f andY:87.0f];
+        [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f];
     }
     else
     {
-        _currentHeight -= 1;
-        
-        [self animate];
+        [_levelView animateLevelViewUp];
     }
 }
 
@@ -171,15 +89,14 @@
 {
     CGRect circleFrame = _circleThermometerImageView.frame;
 
-    if(circleFrame.size.height != 0.00001f && _currentHeight == 0)
+    if(circleFrame.size.height != 0.00001f && [_levelView isCurrentHeightZero])
     {
-        [self animateCircleWithHeight:0.00001f andY:95.0f];
+        [_circleThermometerImageView animateCircleWithHeight:0.00001f andY:95.0f];
     }
     else
     {
-        _currentHeight +=1;
         
-        [self animate];
+        [_levelView animateLevelViewDown];
     }
 }
 
@@ -191,16 +108,13 @@
  */
 -(void)setLevelWithPopularity:(int)popularity
 {
-    _popularity = popularity;
-    
     if(popularity > 0)
     {
-        [self animateCircleWithHeight:8.0f andY:87.0f];
+        [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f];
     }
     
-    _currentHeight -= popularity;
-    
-    [self animate];
+    [_levelView initialiseHeightWithPopularity:popularity];
+
 }
 
 #pragma mark - Animations
@@ -255,36 +169,6 @@
     {
         return 25.0f;
     }
-}
-
--(void)animateCircleWithHeight:(float)height andY:(float)y
-{
-    [UIView animateWithDuration:1.0f animations:^
-     {
-         
-         CGRect frame = _circleThermometerImageView.frame;
-         frame.size.height = height;
-         frame.origin.y = y;
-         
-         _circleThermometerImageView.frame = frame;
-         
-     }];
-}
-
--(void)animate
-{
-    [UIView animateWithDuration:1.0f animations:^
-     {
-         
-         CGRect frame = _levelImageShadowView.frame;
-         frame.size.height = _height;
-         //         frame.origin.y -= _height;
-         frame.origin.y = _currentHeight;
-         
-//         _levelImageView.frame = frame;
-         _levelImageShadowView.frame = frame;
-
-     }];
 }
 
 #pragma mark - Methods not used
@@ -367,35 +251,35 @@
  TODO: NOT USED.
  */
 
--(void)configureThermometerLevelItem
-{
-    _levelImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thermometer_color"]];
-    _levelImageView.center = _levelView.center;
-    //    _levelImageView.contentMode = UIViewContentModeBottom;
-    
-    _levelImageView.contentMode = UIViewContentModeScaleToFill;
-    
-    _height = CGRectGetHeight(_levelImageView.bounds);
-    
-    DDLogDebug(@"HEIGHT: %f", _height);
-    
-    
-    CGRect frame = _levelImageView.frame;
-    
-    frame.size.height = 0.00001;
-    frame.origin.x = 3;
-    frame.size.width = 10.0f;
-    //    frame.origin.y += _height;
-    
-    _currentHeight = frame.origin.y = 87.0f;
-    
-    _levelImageView.frame = frame;
-    _levelImageView.clipsToBounds = YES;
-    
-    _levelView.clipsToBounds = YES;
-    
-    [_levelView addSubview:_levelImageView];
-}
+//-(void)configureThermometerLevelItem
+//{
+//    _levelImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"thermometer_color"]];
+//    _levelImageView.center = _levelView.center;
+//    //    _levelImageView.contentMode = UIViewContentModeBottom;
+//    
+//    _levelImageView.contentMode = UIViewContentModeScaleToFill;
+//    
+//    _height = CGRectGetHeight(_levelImageView.bounds);
+//    
+//    DDLogDebug(@"HEIGHT: %f", _height);
+//    
+//    
+//    CGRect frame = _levelImageView.frame;
+//    
+//    frame.size.height = 0.00001;
+//    frame.origin.x = 3;
+//    frame.size.width = 10.0f;
+//    //    frame.origin.y += _height;
+//    
+//    _currentHeight = frame.origin.y = 87.0f;
+//    
+//    _levelImageView.frame = frame;
+//    _levelImageView.clipsToBounds = YES;
+//    
+//    _levelView.clipsToBounds = YES;
+//    
+//    [_levelView addSubview:_levelImageView];
+//}
 
 /*
 // Only override drawRect: if you perform custom drawing.

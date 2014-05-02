@@ -66,6 +66,8 @@
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
 		581B8BBB190C282600A74260 /* thermometer_ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 581B8BBA190C282600A74260 /* thermometer_ball.png */; };
+		581BD8651913D57A006F8BCD /* LevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BD8641913D57A006F8BCD /* LevelView.m */; };
+		581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BD8671913E05E006F8BCD /* ThermometerCircleView.m */; };
 		581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */; };
 		581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311C188EFE6800BAA082 /* GLPCategory.m */; };
 		581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311F188F068600BAA082 /* GLPCategoryDao.m */; };
@@ -757,6 +759,10 @@
 		581AAF0C181DA88700F091A9 /* InvitationSentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationSentView.h; sourceTree = "<group>"; };
 		581AAF0D181DA88700F091A9 /* InvitationSentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationSentView.m; sourceTree = "<group>"; };
 		581B8BBA190C282600A74260 /* thermometer_ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_ball.png; sourceTree = "<group>"; };
+		581BD8631913D57A006F8BCD /* LevelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelView.h; sourceTree = "<group>"; };
+		581BD8641913D57A006F8BCD /* LevelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelView.m; sourceTree = "<group>"; };
+		581BD8661913E05E006F8BCD /* ThermometerCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThermometerCircleView.h; sourceTree = "<group>"; };
+		581BD8671913E05E006F8BCD /* ThermometerCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThermometerCircleView.m; sourceTree = "<group>"; };
 		581C3118188EFE0400BAA082 /* GLPCategoryDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryDaoParser.h; sourceTree = "<group>"; };
 		581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryDaoParser.m; sourceTree = "<group>"; };
 		581C311B188EFE6800BAA082 /* GLPCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategory.h; sourceTree = "<group>"; };
@@ -2073,6 +2079,10 @@
 			children = (
 				582A663418AB963700006419 /* EventBarView.h */,
 				582A663518AB963700006419 /* EventBarView.m */,
+				581BD8631913D57A006F8BCD /* LevelView.h */,
+				581BD8641913D57A006F8BCD /* LevelView.m */,
+				581BD8661913E05E006F8BCD /* ThermometerCircleView.h */,
+				581BD8671913E05E006F8BCD /* ThermometerCircleView.m */,
 			);
 			name = Thermometer;
 			sourceTree = "<group>";
@@ -4255,6 +4265,7 @@
 				582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
+				581BD8651913D57A006F8BCD /* LevelView.m in Sources */,
 				582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */,
 				58FB7CBE18565AAA002C6A00 /* ProfileMutualTableViewCell.m in Sources */,
 				80666C401806D45700E4E515 /* ConversationManager.m in Sources */,
@@ -4366,6 +4377,7 @@
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
+				581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
@@ -4552,8 +4564,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -4572,8 +4584,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -15,5 +15,7 @@
 -(void)increaseLevelWithNumberOfAttendees:(NSInteger)number;
 -(void)decreaseLevel;
 -(void)setLevelWithPopularity:(int)popularity;
+//-(void)setFixedHeight:(float)height;
+//-(void)setCurrentHeight:(float)currentHeight;
 
 @end
