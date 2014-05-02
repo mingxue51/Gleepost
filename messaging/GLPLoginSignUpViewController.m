@@ -21,7 +21,7 @@
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
 @property (strong, nonatomic) NSDictionary *fbLoginInfo;
-@property (strong, nonatomic) NSString *fbEmail;
+@property (strong, nonatomic) NSString *universityEmail;
 
 @end
 
@@ -98,6 +98,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 -(NSString *)saveLocallyUniversityEmail:(NSString *)email
 {
+    DDLogDebug(@"saveLocallyUniversityEmail: %@", email);
+    
     if(email)
     {
         UICKeyChainStore *store = [UICKeyChainStore keyChainStore];
@@ -124,6 +126,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [WebClientHelper showStandardLoaderWithTitle:@"Logging in" forView:self.view];
     
     email = [self saveLocallyUniversityEmail:email];
+    _universityEmail = email;
 //    
 //    //If user's email is not locally saved or user didn't type it prompt a window to add his email.
 //    if(!email)
@@ -158,7 +161,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
-                        [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:serverResponse];
+                    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:serverResponse];
                 }
             }];
             
@@ -180,12 +183,58 @@ static NSString * const kOkButtonTitle       = @"Ok";
             {
                 [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
             }
+            else if([response isEqualToString:@"registered"])
+            {
+                //Ask user to put his password.
+                [self askUserForPassword];
+            }
             else
             {
                 NSLog(@"Cannot login through facebook");
                 [WebClientHelper showStandardError];
             }
         }
+    }];
+}
+
+/**
+ Called after user typed his password.
+ This method associates gleepost account with facebook account and then tries to login to the app
+ using user's credentials.
+ 
+ @password user's password
+ 
+ */
+-(void)associateGleepostAccountWithFacebookWithPassword:(NSString *)password
+{
+    [WebClientHelper showStandardLoaderWithTitle:@"Associating account with facebook" forView:self.view];
+
+    
+    [[GLPFacebookConnect sharedConnection] associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:password withCallbackBlock:^(BOOL success) {
+       
+        [WebClientHelper hideStandardLoaderForView:self.view];
+
+        if(success)
+        {
+            //Login user.
+            [GLPLoginManager loginWithIdentifier:_universityEmail andPassword:password shouldRemember:NO callback:^(BOOL success, NSString *errorMessage) {
+                
+                if(success)
+                {
+                    [self performSegueWithIdentifier:@"start" sender:self];
+                }
+                else
+                {
+                    [WebClientHelper showStandardError];
+                }
+                
+            }];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Association Error" andContent:@"There was a problem associating your account with facebook."];
+        }
+        
     }];
 }
 
@@ -199,12 +248,37 @@ static NSString * const kOkButtonTitle       = @"Ok";
                                              cancelButtonTitle:kCancelButtonTitle
                                              otherButtonTitles:kSignUpButtonTitle, nil];
     
+    _emailPromptAlertView.tag = 0;
+    
     [_emailPromptAlertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
     UITextField *textField = [_emailPromptAlertView textFieldAtIndex:0];
     textField.returnKeyType = UIReturnKeyDone;
     textField.delegate = self;
     
     [_emailPromptAlertView show];
+}
+
+/**
+ Call this method in case the user is already sign up via regular way.
+ Asking for password in order to authenticate the user.
+ */
+-(void)askUserForPassword
+{
+    NSString *alertMessage = @"You already signed up with Gleepost, please type your password in order to continue";
+    
+    UIAlertView *passwordPromptAlertView = [[UIAlertView alloc] initWithTitle:@"Password Required"
+                                                                      message:alertMessage
+                                                                     delegate:self
+                                                            cancelButtonTitle:kCancelButtonTitle
+                                                            otherButtonTitles:kSignUpButtonTitle, nil];
+    
+    passwordPromptAlertView.tag = 1;
+    
+    [passwordPromptAlertView setAlertViewStyle:UIAlertViewStyleSecureTextInput];
+    
+    
+
+    [passwordPromptAlertView show];
 }
 
 
@@ -216,13 +290,34 @@ static NSString * const kOkButtonTitle       = @"Ok";
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
     [alertView dismissWithClickedButtonIndex:-1 animated:YES];
     
     NSString *buttonText = [alertView buttonTitleAtIndex:buttonIndex];
-    NSString *universityEmail = [alertView textFieldAtIndex:0].text;
+
+    if(alertView.tag == 0)
+    {
+        //E-mail alert view.
+        NSString *universityEmail = [alertView textFieldAtIndex:0].text;
+        
+        if ([buttonText isEqualToString:kSignUpButtonTitle])
+        {
+            [self registerViaFacebookWithEmailOrNil:universityEmail];
+        }
+    }
+    else
+    {
+        //Password alert view.
+        NSString *password = [alertView textFieldAtIndex:0].text;
+        
+        if ([buttonText isEqualToString:kSignUpButtonTitle])
+        {
+            //Associate gleepost account with facebook.
+            [self associateGleepostAccountWithFacebookWithPassword:password];
+        }
+    }
     
-    if ([buttonText isEqualToString:kSignUpButtonTitle])
-        [self registerViaFacebookWithEmailOrNil:universityEmail];
+
 }
 
 - (void)didReceiveMemoryWarning

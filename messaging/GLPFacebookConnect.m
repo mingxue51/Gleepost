@@ -148,6 +148,16 @@
     }];
 }
 
+-(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback
+{
+    
+    [[WebClient sharedInstance] associateWithFacebookAccountUsingFBToken:[self facebookLoginToken] withEMail:_universityEmail withPassword:password andCallbackBlock:^(BOOL success) {
+        
+        callback(success);
+        
+    }];
+}
+
 - (NSString *)facebookLoginToken {
     FBSessionTokenCachingStrategy *tokenCachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
     NSLog(@"FB Token: %@", [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey]);

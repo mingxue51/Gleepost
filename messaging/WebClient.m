@@ -203,6 +203,30 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)associateWithFacebookAccountUsingFBToken:(NSString *)fbToken withEMail:(NSString *)email withPassword:(NSString *)password
+                                andCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:fbToken, @"fbtoken", email, @"email", password, @"pass",nil];
+    
+    [self postPath:@"profile/facebook" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"Explicit accosiation with facebook success: %@.", responseObject);
+
+        
+        callbackBlock(YES);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogDebug(@"Explicit accosiation with facebook failed: %@", error);
+
+        
+        callbackBlock(NO);
+        
+    }];
+    
+}
+
 - (void)registerWithName:(NSString *)name surname:(NSString*)surname email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
 {
     __weak NSString *weakEmail = email;

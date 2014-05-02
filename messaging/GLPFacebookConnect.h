@@ -17,5 +17,6 @@
 - (BOOL)handleOpenURL:(NSURL *)url;
 - (void)logout;
 - (NSString *)facebookLoginToken;
+-(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback;
 
 @end
