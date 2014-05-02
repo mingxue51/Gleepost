@@ -323,7 +323,6 @@
 		58960EBF18A197E5005FC433 /* CustomPushTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 58960EBE18A197E5005FC433 /* CustomPushTransitioningDelegate.m */; };
 		5898328E17F8A27A008CB807 /* ProfileScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5898328D17F8A27A008CB807 /* ProfileScrollView.m */; };
 		5898329517F8F111008CB807 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5898329417F8F111008CB807 /* QuartzCore.framework */; };
-		589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 589890A917FF33B3007C9CF9 /* MessageUI.framework */; };
 		5898DF5318057AF70095C7BD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5898DF5218057AF70095C7BD /* Images.xcassets */; };
 		589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642917EC871100F64B30 /* ProfileViewController.m */; };
 		589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642F17EC88DC00F64B30 /* ContactsViewController.m */; };
@@ -443,6 +442,7 @@
 		58E27E0D18A6CD5000D8BB24 /* man-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E27E0918A6CD5000D8BB24 /* man-7@2x.png */; };
 		58E27E0E18A6CD5000D8BB24 /* message-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E27E0A18A6CD5000D8BB24 /* message-7@2x.png */; };
 		58E27E0F18A6CD5000D8BB24 /* proximity-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E27E0B18A6CD5000D8BB24 /* proximity-7@2x.png */; };
+		58E3B6011912C55200BFABF9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 589890A917FF33B3007C9CF9 /* MessageUI.framework */; };
 		58E3DAB31884053600B9B048 /* blades.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB21884053600B9B048 /* blades.png */; };
 		58E3DAB71884055E00B9B048 /* pole.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB61884055E00B9B048 /* pole.png */; };
 		58E3DABD1884059100B9B048 /* cloud1.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAB81884059100B9B048 /* cloud1.png */; };
@@ -1659,13 +1659,12 @@
 				585FF58D18AFAF07009462AD /* CoreLocation.framework in Frameworks */,
 				582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */,
 				582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */,
-				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
+				58E3B6011912C55200BFABF9 /* MessageUI.framework in Frameworks */,
 				80F316D31828129700DE6884 /* CoreImage.framework in Frameworks */,
 				58143D6B1821014C00B76E5D /* Security.framework in Frameworks */,
 				807C4D1C180B2D15003D67E6 /* SystemConfiguration.framework in Frameworks */,
 				58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */,
 				80C8BA4D181030BF004F70DB /* libsqlite3.0.dylib in Frameworks */,
-				589890AA17FF33B3007C9CF9 /* MessageUI.framework in Frameworks */,
 				5841316217FF2F9C00A3278D /* Twitter.framework in Frameworks */,
 				5898329517F8F111008CB807 /* QuartzCore.framework in Frameworks */,
 				80AB891B17C267F50053E784 /* UIKit.framework in Frameworks */,
@@ -3673,7 +3672,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = GLP;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Gleepost;
 				TargetAttributes = {
 					80AB891617C267F50053E784 = {
@@ -4544,8 +4543,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -4564,8 +4563,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

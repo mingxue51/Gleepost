@@ -150,7 +150,6 @@ const float TOP_OFFSET = 280.0f;
     [self configTableView];
 
     [self configHeader];
-    
 
     [self configTabbarFormat];
     
@@ -2116,7 +2115,13 @@ const float TOP_OFFSET = 280.0f;
     
     for (NSIndexPath *path in paths)
     {
-        [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+        }
+        
     }
     
     return visiblePosts;
@@ -2556,6 +2561,7 @@ const float TOP_OFFSET = 280.0f;
     [[SessionManager sharedInstance] setCurrentCategory:nil];
 
     _groupsMode = YES;
+    [self.tableView reloadData];
     [self updateTitleView];
     [self loadInitialGroupsPosts];
 }
