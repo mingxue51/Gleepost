@@ -2115,7 +2115,13 @@ const float TOP_OFFSET = 280.0f;
     
     for (NSIndexPath *path in paths)
     {
-        [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+        }
+        
     }
     
     return visiblePosts;
