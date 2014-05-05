@@ -40,7 +40,7 @@
 
 @property (strong, nonatomic) NSAttributedString *contentAttributeText;
 @property (assign, nonatomic) BOOL freshPost;
-@property (assign, nonatomic) BOOL isViewPostNotifications;
+@property (assign, nonatomic) BOOL imageNeedsToLoadAgain;
 
 @end
 
@@ -57,7 +57,7 @@ const float TEXT_CELL_HEIGHT = 192;
     if(self)
     {
         self.isViewPost = NO;
-        self.isViewPostNotifications = NO;
+        self.imageNeedsToLoadAgain = NO;
         
 
         
@@ -143,12 +143,12 @@ static const float FixedBottomTextViewHeight = 100;
         //Set live image.
         [self.postImage setImage:postData.tempImage];
     }
-    else if(postData.finalImage==nil && !self.isViewPostNotifications)
+    else if(postData.finalImage==nil && !self.imageNeedsToLoadAgain)
     {
         [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
-    if(self.isViewPostNotifications)
+    if(self.imageNeedsToLoadAgain)
     {
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
@@ -522,9 +522,9 @@ static const float FixedBottomTextViewHeight = 100;
     }
 }
 
--(void)postFromNotifications:(BOOL)notifications
+-(void)reloadImage:(BOOL)loadImage
 {
-    self.isViewPostNotifications = notifications;
+    self.imageNeedsToLoadAgain = loadImage;
 }
 
 -(void)layoutSubviews
@@ -814,22 +814,34 @@ static const float FixedBottomTextViewHeight = 100;
 
 -(void)sharePostToFacebook
 {
-    //Fetch from the cache to avoid redundant download.
-    
-    [[SDImageCache sharedImageCache] queryDiskCacheForKey:self.post.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
+    if(self.post.imagesUrls[0] != nil)
+    {
+        //Fetch from the cache to avoid redundant download.
 
-        NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content], image];
-        
-        
-        UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-        
-        NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
-        
-        shareItems.excludedActivityTypes = excludeActivities;
-        
-        [self.delegate presentViewController:shareItems animated:YES completion:nil];
-        
-    }];
+        [[SDImageCache sharedImageCache] queryDiskCacheForKey:self.post.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
+            
+            NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content], image];
+            [self sharePostToFacebookWithItems:items];
+            
+        }];
+    }
+    else
+    {
+        NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content]];
+        [self sharePostToFacebookWithItems:items];
+    }
+
+}
+
+-(void)sharePostToFacebookWithItems:(NSArray *)items
+{
+    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    
+    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    
+    shareItems.excludedActivityTypes = excludeActivities;
+    
+    [self.delegate presentViewController:shareItems animated:YES completion:nil];
 }
 
 -(void)viewPostImage:(id)sender
@@ -909,8 +921,8 @@ static const float FixedBottomTextViewHeight = 100;
     if([selectedButtonTitle isEqualToString:@"Share"])
     {
         //Share post.
-        //[[GLPFacebookConnect sharedConnection] sharePostWithPost:nil];
-        [self sharePostToFacebook];
+        [[GLPFacebookConnect sharedConnection] sharePostWithPost:self.post];
+        //[self sharePostToFacebook];
 
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])

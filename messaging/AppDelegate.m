@@ -40,9 +40,13 @@
 #import "GLPPrivateProfileViewController.h"
 #import "GLPProfileViewController.h"
 #import "ContactsManager.h"
+#import "FBAppCall.h"
+#import "ViewPostViewController.h"
+#import "GLPPostManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
+static NSString * const kCustomURLViewPost  = @"viewpost";
 
 @implementation AppDelegate
 
@@ -362,6 +366,35 @@ static NSString * const kCustomURLHost      = @"verify";
     
     DDLogInfo(@"URL scheme: %@",[url scheme]);
     
+    
+    //Handle navigate to post in case user shared post event.
+    
+//    if([[url scheme] isEqualToString:kCustomURLViewPost])
+//    {
+//        //Navigate to post.
+//        [self navigateToPostWithUrl:url];
+//        
+//        canHandleURLScheme = YES;
+//    }
+    
+    canHandleURLScheme = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call) {
+        if([[call appLinkData] targetURL] != nil) {
+            // get the object ID string from the deep link URL
+            // we use the substringFromIndex so that we can delete the leading '/' from the targetURL
+            NSString *objectId = [[[call appLinkData] targetURL].path substringFromIndex:1];
+            
+            // now handle the deep link
+            // write whatever code you need to show a view controller that displays the object, etc.
+            
+            [self navigateToPostWithContent:objectId];
+            
+        } else {
+            //
+            DDLogInfo(@"%@",[NSString stringWithFormat:@"Unhandled deep link: %@", [[call appLinkData] targetURL]]);
+        }
+    }];
+    
+    
     if ([[url scheme] isEqualToString:kCustomURLScheme] && [[url host] isEqualToString:kCustomURLHost]) {
         canHandleURLScheme = YES;
         NSLog(@"handle URL : %@", url);
@@ -411,6 +444,74 @@ static NSString * const kCustomURLHost      = @"verify";
     
     
     return canHandleURLScheme || canHandleFBUrl;
+}
+
+-(void)navigateToPostWithContent:(NSString *)postUrlContent
+{
+    if([[SessionManager sharedInstance] isLogged])
+    {
+        NSArray* foo = [postUrlContent componentsSeparatedByString: @"/"];
+        NSString* postRemoteKey = [foo objectAtIndex: 3];
+        
+        DDLogDebug(@"Post remote key: %@", postRemoteKey);
+        
+        [self navigateToPostWithRemoteKey:[postRemoteKey integerValue]];
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Failed to load post from facebook"
+                                    message:@"You need to be logged in, to see gleepost post"
+                                   delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
+    
+}
+
+-(void)navigateToPostWithRemoteKey:(NSInteger)remoteKey
+{
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+//    if(_tabBarController.selectedIndex != 1) {
+//        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+//        [currentNavigationVC popToRootViewControllerAnimated:NO];
+//        [_tabBarController setSelectedIndex:1];
+//    }
+    
+    UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+    
+//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[1] class]));
+//    UINavigationController *navVC = _tabBarController.viewControllers[1];
+    
+    DDLogInfo(@"Current VC: %@", NSStringFromClass([currentNavigationVC class]));
+    ViewPostViewController *viewPostVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
+
+    
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:currentNavigationVC.view];
+    
+    [GLPPostManager loadPostWithRemoteKey:remoteKey callback:^(BOOL sucess, GLPPost *post) {
+        
+        [WebClientHelper hideStandardLoaderForView:currentNavigationVC.view];
+        
+        if(sucess)
+        {
+            
+            viewPostVC.post = post;
+            viewPostVC.isFromCampusLive = YES;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewPostVC];
+            navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [currentNavigationVC presentViewController:navigationController animated:YES completion:nil];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+        }
+    }];
+    
+    
 }
 
 # pragma mark - Facebook login handling
