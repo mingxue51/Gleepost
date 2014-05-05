@@ -82,6 +82,7 @@
 
 // facebook
 +(BOOL)isAccountVerified:(NSDictionary *)json;
++(BOOL)isAccountRegistered:(NSDictionary *)json;
 +(NSString *)parseFBStatusFromAPI:(NSDictionary *)json;
 
 

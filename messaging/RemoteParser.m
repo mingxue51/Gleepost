@@ -998,6 +998,21 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
 }
 
++(BOOL)isAccountRegistered:(NSDictionary *)json
+{
+    NSString *status = json[@"status"];
+    
+    if([status isEqualToString:@"registered"])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+
 +(NSString *)parseFBStatusFromAPI:(NSDictionary *)json
 {
     NSString *status = json[@"status"];

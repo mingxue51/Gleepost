@@ -83,25 +83,36 @@
     
     if([RemoteParser isAccountVerified:json])
     {
-        GLPUser *user = [[GLPUser alloc] init];
-        user.remoteKey = [json[@"id"] integerValue];
-        user.name = name;
-        user.email = email;
-        //TODO: Take name surname here.
-        NSString *token = json[@"value"];
-        NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
         
-        loadData(user, token, expirationDate, ^(BOOL success, NSString *response) {
+        if([RemoteParser isAccountRegistered:json])
+        {
+            //User registered.
+            callback(NO, json[@"status"]);
+        }
+        else
+        {
+            GLPUser *user = [[GLPUser alloc] init];
+            user.remoteKey = [json[@"id"] integerValue];
+            user.name = name;
+            user.email = email;
+            //TODO: Take name surname here.
+            NSString *token = json[@"value"];
+            NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
             
-            if(success)
-            {
-                callback(YES, response);
-            }
-            else
-            {
-                callback(NO, response);
-            }
-        });
+            loadData(user, token, expirationDate, ^(BOOL success, NSString *response) {
+                
+                if(success)
+                {
+                    callback(YES, response);
+                }
+                else
+                {
+                    callback(NO, response);
+                }
+            });
+        }
+        
+
     }
     else
     {

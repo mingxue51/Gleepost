@@ -152,6 +152,11 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 {
                     [self performSegueWithIdentifier:@"start" sender:self];
                 }
+                else if([serverResponse isEqualToString:@"registered"])
+                {
+                    //Ask user to put his password.
+                    [self askUserForPassword];
+                }
                 else if(!success && [serverResponse isEqualToString:@"unverified"])
                 {
                     //Pop up the verification view.
@@ -167,7 +172,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
             
         } else
         {
-            DDLogDebug(@"logged in not successfully via facebook.");
+            DDLogDebug(@"logged in not successfully via facebook: %@", response);
             
             if ([response rangeOfString:@"Email is required"].location != NSNotFound)
             {
@@ -182,11 +187,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
             } else if([response rangeOfString:@"To use your Facebook account"].location != NSNotFound)
             {
                 [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
-            }
-            else if([response isEqualToString:@"registered"])
-            {
-                //Ask user to put his password.
-                [self askUserForPassword];
             }
             else
             {
