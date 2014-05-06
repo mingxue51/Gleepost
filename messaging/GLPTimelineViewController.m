@@ -55,6 +55,7 @@
 #import "GLPiOS6Helper.h"
 #import "TableViewHelper.h"
 #import "GLPFlurryVisibleCellProcessor.h"
+#import "EmptyMessage.h"
 
 @interface GLPTimelineViewController ()
 
@@ -120,6 +121,8 @@
 
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
+
+@property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
 
 @end
 
@@ -290,6 +293,7 @@ const float TOP_OFFSET = 280.0f;
     [self.view addSubview:_topImageView];
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
+    _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
 }
 
 
@@ -1682,15 +1686,20 @@ const float TOP_OFFSET = 280.0f;
     {
         if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
         {
+            [_emptyGroupPostsMessage showEmptyMessageView];
+            
             return 1;
         }
         else
         {
+            [_emptyGroupPostsMessage hideEmptyMessageView];
+            
             return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
         }
     }
     else
     {
+        [_emptyGroupPostsMessage hideEmptyMessageView];
         return self.posts.count + 1;
     }
 
@@ -1712,7 +1721,7 @@ const float TOP_OFFSET = 280.0f;
     {
         if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
         {
-            return [TableViewHelper generateCellWithMessage:@"No more group posts."];
+            return [TableViewHelper generateCellWithMessage:@""];
         }
     }
 

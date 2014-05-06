@@ -290,6 +290,7 @@
 		58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 58808EFC1807070D00E415C1 /* FadeInCustomSegue.m */; };
 		58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2C18CDE70400EB3435 /* group_posts_selected.png */; };
 		58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */; };
+		5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5885A66619190A18009FEAD4 /* EmptyMessage.m */; };
 		588794BC18A81EA9002EEC8A /* icon_like_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 588794BA18A81EA9002EEC8A /* icon_like_old.png */; };
 		588794BD18A81EA9002EEC8A /* icon_comment_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 588794BB18A81EA9002EEC8A /* icon_comment_old.png */; };
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
@@ -1073,6 +1074,8 @@
 		58808EFC1807070D00E415C1 /* FadeInCustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeInCustomSegue.m; sourceTree = "<group>"; };
 		58837D2C18CDE70400EB3435 /* group_posts_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_posts_selected.png; sourceTree = "<group>"; };
 		58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts_background_main_2.png; sourceTree = "<group>"; };
+		5885A66519190A18009FEAD4 /* EmptyMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyMessage.h; sourceTree = "<group>"; };
+		5885A66619190A18009FEAD4 /* EmptyMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyMessage.m; sourceTree = "<group>"; };
 		588794BA18A81EA9002EEC8A /* icon_like_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_like_old.png; sourceTree = "<group>"; };
 		588794BB18A81EA9002EEC8A /* icon_comment_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_comment_old.png; sourceTree = "<group>"; };
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
@@ -2312,6 +2315,15 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		5885A664191909B9009FEAD4 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				5885A66519190A18009FEAD4 /* EmptyMessage.h */,
+				5885A66619190A18009FEAD4 /* EmptyMessage.m */,
+			);
+			name = Message;
+			sourceTree = "<group>";
+		};
 		588DE5D218A8FA2A001D344D /* New Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -3062,6 +3074,7 @@
 		8096E4E817C2CBEA00C7BF60 /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				5885A664191909B9009FEAD4 /* Message */,
 				8096E4E917C2CBEF00C7BF60 /* Cell */,
 			);
 			name = Table;
@@ -4210,6 +4223,7 @@
 				80C8BA591810340E004F70DB /* GLPUserDao.m in Sources */,
 				80809AF01895DAB90077D227 /* GLPTableViewController.m in Sources */,
 				582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */,
+				5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */,
 				588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */,
 				58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */,
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,

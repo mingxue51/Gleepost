@@ -28,6 +28,7 @@
 #import "GroupOperationManager.h"
 #import "SessionManager.h"
 #import "GLPiOS6Helper.h"
+#import "EmptyMessage.h"
 
 @interface GroupViewController ()
 
@@ -56,7 +57,7 @@
 
 @property (strong, nonatomic) UIImage *groupImage;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
-
+@property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
 
 @end
 
@@ -192,13 +193,15 @@ const int NUMBER_OF_ROWS = 2;
 //    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     self.isLoading = NO;
 //    self.firstLoadSuccessful = NO;
-    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
+    
+    _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
 }
 
 -(void)configureNavigationItems
@@ -475,7 +478,16 @@ const int NUMBER_OF_ROWS = 2;
 //    {
 //        int i = (self.posts.count == 0) ? 0 : 1;
     
-        self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count +1 /*+ i*/;
+    if(self.posts.count == 0)
+    {
+        [_emptyPostsMessage showEmptyMessageView];
+    }
+    else
+    {
+        [_emptyPostsMessage hideEmptyMessageView];
+    }
+    
+    self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count +1 /*+ i*/;
 //    }
 //    else
 //    {
@@ -498,7 +510,7 @@ const int NUMBER_OF_ROWS = 2;
 //        [loadingCell updateWithStatus:self.loadingCellStatus];
 //        return loadingCell;
         
-        return [self cellWithMessage:@"No more posts"];
+        return [self cellWithMessage:@"Loading..."];
         
         
     }
@@ -650,6 +662,8 @@ const int NUMBER_OF_ROWS = 2;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row - 2 == self.posts.count) {
+        
+        
         
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }

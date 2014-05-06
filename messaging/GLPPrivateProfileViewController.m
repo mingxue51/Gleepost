@@ -27,6 +27,7 @@
 #import "GLPConversationViewController.h"
 #import "GLPApplicationHelper.h"
 #import "GLPiOS6Helper.h"
+#import "EmptyMessage.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -55,6 +56,8 @@
 
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) GLPUser *emptyConversationUser;
+
+@property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
 
 @end
 
@@ -200,6 +203,7 @@
     
     self.posts = [[NSArray alloc] init];
 
+    _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
 
 }
 
@@ -545,6 +549,16 @@
 //    }
 //    else if(self.selectedTabStatus == kGLPPosts)
 //    {
+    
+    if(self.posts.count == 0)
+    {
+        [_emptyPostsMessage showEmptyMessageView];
+    }
+    else
+    {
+        [_emptyPostsMessage hideEmptyMessageView];
+    }
+    
         self.currentNumberOfRows = self.numberOfRows + self.posts.count;
         return self.currentNumberOfRows; /** + Number of user's posts. */
 //    }

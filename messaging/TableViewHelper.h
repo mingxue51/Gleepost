@@ -12,6 +12,5 @@
 
 +(UITableViewCell *)generateCellWithMessage:(NSString *)message;
 +(UITableViewCell *)generateEmptyCellWithHeight:(float)height;
-+(UIView *)generateNoMoreLabelWithText:(NSString *)message withFrame:(CGRect)rect andTableView:(UITableView *)tableView;
 
 @end

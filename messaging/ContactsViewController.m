@@ -27,6 +27,7 @@
 #import "GroupCell.h"
 #import "NewGroupViewController.h"
 #import "GLPSearchUsersViewController.h"
+#import "EmptyMessage.h"
 
 @interface ContactsViewController ()
 
@@ -48,6 +49,9 @@
 @property (strong, nonatomic) GLPGroup *selectedGroup;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *groupsContactsSegment;
+
+@property (strong, nonatomic) EmptyMessage *emptyContactsMessage;
+@property (strong, nonatomic) EmptyMessage *emptyGroupsMessage;
 
 @end
 
@@ -348,6 +352,10 @@
     _groups = [[NSMutableArray alloc] init];
     self.groupsStr = [[NSMutableArray alloc] init];
     
+    _emptyContactsMessage = [[EmptyMessage alloc] initWithText:@"You have no contacts" withPosition:EmptyMessagePositionCenter andTableView:self.tableView];
+    
+    _emptyGroupsMessage = [[EmptyMessage alloc] initWithText:@"You have no groups" withPosition:EmptyMessagePositionCenter andTableView:self.tableView];
+    
 
 }
 
@@ -641,10 +649,36 @@
     
     if (_isContactsView)
     {
+        
+        [_emptyGroupsMessage hideEmptyMessageView];
+        
+        if(_users.count == 0)
+        {
+            [_emptyContactsMessage showEmptyMessageView];
+        }
+        else
+        {
+            [_emptyContactsMessage hideEmptyMessageView];
+        }
+        
+        
         return self.sections.count;
     }
     else
     {
+        
+        [_emptyContactsMessage hideEmptyMessageView];
+        
+        if(_groups.count == 0)
+        {
+            [_emptyGroupsMessage showEmptyMessageView];
+        }
+        else
+        {
+            [_emptyGroupsMessage hideEmptyMessageView];
+        }
+        
+        
         return _groupSections.count;
     }
     
@@ -699,14 +733,13 @@
     
     if(_isContactsView)
     {
-        
+
         NSArray *sectionArray = [self.usersStr filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF beginswith[c] %@", [self.sections objectAtIndex:section]]];
         
         return [sectionArray count];
     }
     else
     {
-
 //        if(section == 0)
 //        {
 //            return 1;

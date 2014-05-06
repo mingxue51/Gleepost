@@ -42,7 +42,7 @@
 #import "GLPiOS6Helper.h"
 #import "GroupViewController.h"
 #import "ContactsManager.h"
-#import "TableViewHelper.h"
+#import "EmptyMessage.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -88,8 +88,8 @@
 
 @property (strong, nonatomic) GLPGroup *groupToNavigate;
 
-@property (strong, nonatomic) UIView *nomatchesView;
-
+@property (strong, nonatomic) EmptyMessage *emptyNotificationsMessage;
+@property (strong, nonatomic) EmptyMessage *emptyMyPostsMessage;
 @end
 
 
@@ -137,8 +137,6 @@
 //    [self configureNavigationBar];
 
     [self configTabbar];
-
-    [self setUpNoMoreMessage];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -259,13 +257,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
 }
 
--(void)setUpNoMoreMessage
-{
-    //TODO: Make a new object view no more, message to be able to apply it to all empty spaces.
-    
-    _nomatchesView = [TableViewHelper generateNoMoreLabelWithText:@"No more notifications" withFrame:CGRectMake(0.0f, 320.0f, 320.0f, 50.0f) andTableView:self.tableView];
-    [self.tableView insertSubview:_nomatchesView belowSubview:self.tableView];
-}
+//-(void)setUpNoMoreMessage
+//{
+//    _nomatchesView = [TableViewHelper generateNoMoreLabelWithText:@"No more notifications" withFrame:CGRectMake(0.0f, 320.0f, 320.0f, 50.0f) andTableView:self.tableView];
+//    [self.tableView insertSubview:_nomatchesView belowSubview:self.tableView];
+//}
 
 #pragma mark - Notifications
 
@@ -478,6 +474,9 @@
     
     _postUploaded = NO;
 
+    _emptyNotificationsMessage = [[EmptyMessage alloc] initWithText:@"No more notifications" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    
+    _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
 }
 
@@ -1060,8 +1059,6 @@
     {
         self.user = [usersData objectAtIndex:0];
         
-        DDLogDebug(@"GLPProfileViewController : %@", self.user);
-        
         self.userImage = [usersData objectAtIndex:1];
 //        [self.tableView reloadData];
         [self refreshFirstCell];
@@ -1083,20 +1080,30 @@
 
     if(self.selectedTabStatus == kGLPPosts)
     {
-        [_nomatchesView setHidden:YES];
-
+        [_emptyNotificationsMessage hideEmptyMessageView];
+        
+        if(self.posts.count == 0)
+        {
+            [_emptyMyPostsMessage showEmptyMessageView];
+        }
+        else
+        {
+            [_emptyMyPostsMessage hideEmptyMessageView];
+        }
         
         return self.numberOfRows + self.posts.count;
     }
     else
     {
+        [_emptyMyPostsMessage hideEmptyMessageView];
+        
         if(_notifications.count == 0)
         {
-            [_nomatchesView setHidden:NO];
+            [_emptyNotificationsMessage showEmptyMessageView];
         }
         else
         {
-            [_nomatchesView setHidden:YES];
+            [_emptyNotificationsMessage hideEmptyMessageView];
         }
         
         return self.numberOfRows + _notifications.count;
