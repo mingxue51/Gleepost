@@ -35,18 +35,18 @@
     switch (position)
     {
         case EmptyMessagePositionTop:
-            
+            yPosition = 50.0f;
             break;
             
         case EmptyMessagePositionCenter:
-            yPosition = 200.0f;
+            yPosition = [self positionForCenter];
             break;
         case EmptyMessagePositionBottom:
-            yPosition = 320.0f;
+            yPosition = [self positionForBottom];
             break;
             
         case EmptyMessagePositionFurtherBottom:
-            yPosition = 400.0f;
+            yPosition = [self positionForFurtherBottom];
             break;
             
         default:
@@ -54,9 +54,21 @@
     }
     
     self.emptyMessageView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, yPosition, 320.0f, 50.0f)];
+}
 
-    
-    
+-(float)positionForCenter
+{
+    return (IS_IPHONE_5) ? 200.0f : 180.0f;
+}
+
+-(float)positionForBottom
+{
+    return (IS_IPHONE_5) ? 320.0f : 300.0f;
+}
+
+-(float)positionForFurtherBottom
+{
+    return (IS_IPHONE_5) ? 400.0f : 350.0f;
 }
 
 -(void)generateEmptyMessageViewWithText:(NSString *)text
