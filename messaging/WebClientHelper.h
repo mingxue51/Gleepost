@@ -34,5 +34,6 @@
 +(void)showFailedToDeletePostError;
 
 + (void)failedToSendEmailResettingPassword;
++ (void)showNeedsFacebookAppError;
 
 @end

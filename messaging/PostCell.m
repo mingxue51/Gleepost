@@ -632,7 +632,7 @@ static const float FixedBottomTextViewHeight = 100;
     {
         if([self isCurrentPostEvent])
         {
-            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share", nil];
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share to Facebook", @"More options", nil];
         }
         else
         {
@@ -641,7 +641,7 @@ static const float FixedBottomTextViewHeight = 100;
     }
     else if([self isCurrentPostEvent])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share to Facebook", @"More options", nil];
     }
     
     
@@ -812,7 +812,8 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
--(void)sharePostToFacebook
+
+-(void)sharePostToSocialMedia
 {
     if(self.post.imagesUrls[0] != nil)
     {
@@ -821,23 +822,25 @@ static const float FixedBottomTextViewHeight = 100;
         [[SDImageCache sharedImageCache] queryDiskCacheForKey:self.post.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
             
             NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content], image];
-            [self sharePostToFacebookWithItems:items];
+            [self sharePostToSocialMediaWithItems:items];
             
         }];
     }
     else
     {
         NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content]];
-        [self sharePostToFacebookWithItems:items];
+        [self sharePostToSocialMediaWithItems:items];
     }
 
 }
 
--(void)sharePostToFacebookWithItems:(NSArray *)items
+-(void)sharePostToSocialMediaWithItems:(NSArray *)items
 {
     UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     
-    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypePostToFacebook, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    
+    //UIActivityTypePostToFlickr UIActivityTypeSaveToCameraRoll
     
     shareItems.excludedActivityTypes = excludeActivities;
     
@@ -918,12 +921,15 @@ static const float FixedBottomTextViewHeight = 100;
     
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if([selectedButtonTitle isEqualToString:@"Share"])
+    if([selectedButtonTitle isEqualToString:@"Share to Facebook"])
     {
         //Share post.
         [[GLPFacebookConnect sharedConnection] sharePostWithPost:self.post];
-        //[self sharePostToFacebook];
 
+    }
+    else if (@"More options")
+    {
+        [self sharePostToSocialMedia];
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
     {
