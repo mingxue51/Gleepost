@@ -278,24 +278,42 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     if(currentButton.tag == 2)
     {
         
-        [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees+1];
         
         //Communicate with server to attend post.
         
-        [[WebClient sharedInstance] postAttendInPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
-            
+        [[WebClient sharedInstance] attendEvent:YES withPostRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
+           
             if(success)
             {
                 _postData.attended = YES;
                 ++_postData.attendees;
+                [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees+1 andPopularity:popularity];
+
             }
             else
             {
                 //Error message.
                 [WebClientHelper showStandardError];
             }
+
             
         }];
+        
+        
+//        [[WebClient sharedInstance] postAttendInPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
+//            
+//            if(success)
+//            {
+//                _postData.attended = YES;
+//                ++_postData.attendees;
+//            }
+//            else
+//            {
+//                //Error message.
+//                [WebClientHelper showStandardError];
+//            }
+//
+//        }];
         
         [self makeButtonSelected:currentButton];
 
@@ -304,18 +322,19 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     else
     {
         
-        [_eventBarView decreaseLevel];
         
         //Communicate with server to remove your attendance form the post.
         
-        [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
+        
+        [[WebClient sharedInstance] attendEvent:NO withPostRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
             
             if(success)
             {
-                _postData.attended = NO;
-                --_postData.attendees;
-
+                _postData.attended = YES;
+                ++_postData.attendees;
                 [self makeButtonUnselected:currentButton];
+                [_eventBarView decreaseLevelWithPopularity:popularity];
+
             }
             else
             {
@@ -323,7 +342,26 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
                 [WebClientHelper showStandardError];
             }
             
+            
         }];
+        
+        
+//        [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
+//            
+//            if(success)
+//            {
+//                _postData.attended = NO;
+//                --_postData.attendees;
+//
+//                [self makeButtonUnselected:currentButton];
+//            }
+//            else
+//            {
+//                //Error message.
+//                [WebClientHelper showStandardError];
+//            }
+//            
+//        }];
     }
     
 }

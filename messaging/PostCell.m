@@ -948,22 +948,22 @@ static const float FixedBottomTextViewHeight = 100;
     self.post.attended = YES;
 
     
-    [[WebClient sharedInstance] postAttendInPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            //Update local database.
-            [GLPPostManager updatePostAttending:self.post];
-        }
-        else
-        {
-            [self makeButtonUnselected];
-
-            //Error message.
-            [WebClientHelper showStandardError];
-        }
-        
-    }];
+//    [[WebClient sharedInstance] postAttendInPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
+//        
+//        if(success)
+//        {
+//            //Update local database.
+//            [GLPPostManager updatePostAttending:self.post];
+//        }
+//        else
+//        {
+//            [self makeButtonUnselected];
+//
+//            //Error message.
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//    }];
 }
 
 -(void)notAttending
@@ -971,22 +971,22 @@ static const float FixedBottomTextViewHeight = 100;
     
     self.post.attended = NO;
 
-    [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            //Update local database.
-            [GLPPostManager updatePostAttending:self.post];
-        }
-        else
-        {
-            [self makeButtonSelected];
-
-            //Error message.
-            [WebClientHelper showStandardError];
-        }
-        
-    }];
+//    [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
+//        
+//        if(success)
+//        {
+//            //Update local database.
+//            [GLPPostManager updatePostAttending:self.post];
+//        }
+//        else
+//        {
+//            [self makeButtonSelected];
+//
+//            //Error message.
+//            [WebClientHelper showStandardError];
+//        }
+//        
+//    }];
 }
 
 -(void)makeButtonSelected

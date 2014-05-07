@@ -120,8 +120,45 @@
          
          //         _levelImageView.frame = frame;
          _levelImageShadowView.frame = frame;
-         
+
      }];
+    
+
+}
+
+-(void)animateLevelViewDownWithPopularity:(NSInteger)popularity
+{
+    DDLogDebug(@"Down height: %lf Popularity: %ld", _currentHeight, (long)popularity);
+    
+    _currentHeight =  _currentHeight + popularity;
+    
+    
+    [self animateWithDelay:NO];
+}
+
+-(void)animateLevelViewUpWithPopularity:(NSInteger)popularity andDelay:(BOOL)delay
+{
+    _currentHeight -= (popularity - (-_currentHeight));
+    
+    
+    [self animateWithDelay:delay];
+}
+
+-(void)animateWithDelay:(BOOL)delay
+{
+    [UIView animateWithDuration:1.0f delay:(delay) ? 0.7f : 0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        CGRect frame = _levelImageShadowView.frame;
+        frame.size.height = _height;
+        //         frame.origin.y -= _height;
+        frame.origin.y = _currentHeight;
+        
+        //         _levelImageView.frame = frame;
+        _levelImageShadowView.frame = frame;
+        
+        
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)initialiseHeightWithPopularity:(NSInteger)popularity

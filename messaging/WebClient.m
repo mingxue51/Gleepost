@@ -512,6 +512,36 @@ static WebClient *instance = nil;
     }];
 }
 
+-(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:(attend) ? @"true" : @"false" forKey:@"attending"];
+    
+    
+    [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSInteger popularity = [RemoteParser parseNewPopularity:responseObject];
+        
+        DDLogDebug(@"New Popularity: %ld", (long)popularity);
+        
+        callbackBlock(YES, popularity);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        callbackBlock(NO, 0);
+    }];
+}
+
+-(void)notAttendEventWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
+{
+    
+}
+
+
+//TODO: DEPRECATED.
 -(void)postAttendInPostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/attending", postRemoteKey];
@@ -532,6 +562,7 @@ static WebClient *instance = nil;
     }];
 }
 
+//TODO: DEPRECATED.
 -(void)removeAttendFromPostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/attending", postRemoteKey];

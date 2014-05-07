@@ -659,6 +659,25 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return array;
 }
 
+#pragma mark - Attendees
+
++(NSInteger)parseNewPopularity:(NSDictionary *)json
+{
+    return [json[@"popularity"] integerValue];
+}
+
++(NSArray *)parseAttendees:(NSDictionary *)json
+{
+    NSArray *usersJson = json[@"attendees"];
+    
+    return [RemoteParser parseUsersFromJson:usersJson];
+}
+
++(NSInteger)parseAttendeesCount:(NSDictionary *)json
+{
+    return [json[@"attendee_count"] integerValue];
+}
+
 
 //+(NSString *)parseEventTime:(NSDate *)date
 //{

@@ -69,23 +69,60 @@
     _circleThermometerImageView = [[ThermometerCircleView alloc] initWithSuperView:self];
 }
 
--(void)increaseLevelWithNumberOfAttendees:(NSInteger)number
+-(void)increaseLevelWithNumberOfAttendees:(NSInteger)number andPopularity:(NSInteger)popularity
 {
     CGRect circleFrame = _circleThermometerImageView.frame;
     
     [self animateNumberOfAttendees:number];
     
+    
+    
     if(circleFrame.size.height == 0.00001f)
     {
         [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f];
+
+        
+        if(popularity > 1)
+        {
+            [_levelView animateLevelViewUpWithPopularity:popularity andDelay:YES];
+        }
+        
     }
     else
+    {
+//        [_levelView animateLevelViewUp];
+        
+        [_levelView animateLevelViewUpWithPopularity:popularity andDelay:NO];
+        
+    }
+}
+
+
+-(void)animateAllTogetherWithPopularity:(NSInteger)popularity
+{
+//    [UIView animateWithDuration:1.0f animations:^{
+//        
+//        CGRect frame = self.frame;
+//        frame.size.height = 8.0f;
+//        frame.origin.y = 87.0f;
+//        
+//        self.frame = frame;
+//        
+//    } completion:^(BOOL finished) {
+//        
+//        if(popularity > 1)
+//        {
+//        }
+//        
+//    }];
+    
+    if(popularity > 1)
     {
         [_levelView animateLevelViewUp];
     }
 }
 
--(void)decreaseLevel
+-(void)decreaseLevelWithPopularity:(NSInteger)popularity
 {
     CGRect circleFrame = _circleThermometerImageView.frame;
 
@@ -95,8 +132,14 @@
     }
     else
     {
+     
+        if(popularity == 0)
+        {
+            [_circleThermometerImageView animateCircleWithHeight:0.00001f andY:95.0f];
+        }
         
-        [_levelView animateLevelViewDown];
+        [_levelView animateLevelViewDownWithPopularity:popularity];
+//        [_levelView animateLevelViewDown];
     }
 }
 
