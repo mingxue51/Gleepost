@@ -12,9 +12,10 @@
 #import "FBSessionTokenCachingStrategy.h"
 #import "FBRequestConnection.h"
 #import "FBGraphUser.h"
-#import "WebClient.h"
 #import "NSError+FBError.h"
-
+#import "FBShareDialogParams.h"
+#import "FBDialogs.h"
+#import "WebClientHelper.h"
 
 @interface GLPFacebookConnect () {
     void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
@@ -162,6 +163,83 @@
     FBSessionTokenCachingStrategy *tokenCachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
     NSLog(@"FB Token: %@", [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey]);
     return [tokenCachingStrategy fetchTokenInformation][FBTokenInformationTokenKey];
+}
+
+
+#pragma mark - Share post
+
+-(void)sharePostWithPost:(GLPPost *)post
+{
+    id<FBOpenGraphAction> action = [self generateShareActionWithPost:post];
+    
+    // Check if the Facebook app is installed and we can present the share dialog
+    FBOpenGraphActionShareDialogParams *params = [self generateParametersWithAction:action];
+
+    
+    // If the Facebook app is installed and we can present the share dialog
+    if([FBDialogs canPresentShareDialogWithOpenGraphActionParams:params])
+    {
+        // Show the share dialog
+        [self presentDialogWithOpenGraphAction:action withActionType:@"gleepost:post" andObjectName:@"event"];
+        
+        // If the Facebook app is NOT installed and we can't present the share dialog
+    } else
+    {
+        // FALLBACK GOES HERE
+        [WebClientHelper showNeedsFacebookAppError];
+    }
+    
+}
+
+-(void)presentDialogWithOpenGraphAction:(id<FBOpenGraphAction>)action withActionType:(NSString *)actionType andObjectName:(NSString *)objectName
+{
+    [FBDialogs presentShareDialogWithOpenGraphAction:action
+                                          actionType:actionType
+                                 previewPropertyName:objectName
+                                             handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+                                                 
+                                                 if(error)
+                                                 {
+                                                     DDLogInfo(@"%@",[NSString stringWithFormat:@"Error publishing story: %@", error.description]);
+                                                 }
+                                                 else
+                                                 {
+                                                     DDLogInfo(@"Share completed %@", results);
+                                                 }
+                                             }];
+}
+
+-(id<FBOpenGraphAction>)generateShareActionWithPost:(GLPPost *)post
+{
+    NSMutableDictionary<FBGraphObject> *object =
+    (NSMutableDictionary<FBGraphObject> *)[FBGraphObject openGraphObjectForPostWithType:@"gleepost:event"
+                                                                                  title:post.eventTitle
+                                                                                  image:post.imagesUrls[0]
+                                                                                    url:[NSString stringWithFormat:@"%@posts/%ld", @"https://m.facebook.com/apps/gleepost/", (long)post.remoteKey]
+                                                                            description:post.content];
+    
+    
+    // Create an action
+    id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
+    
+    // Link the object to the action
+    [action setObject:object forKey:@"event"];
+    
+    return action;
+}
+
+-(FBOpenGraphActionShareDialogParams *)generateParametersWithAction:(id<FBOpenGraphAction>)action
+{
+    FBOpenGraphActionShareDialogParams *params = [[FBOpenGraphActionShareDialogParams alloc] init];
+    params.action = action;
+    params.actionType = @"gleepost:post";
+    
+    return params;
+}
+
+-(void)publishPostWithPost:(GLPPost *)post
+{
+    
 }
 
 @end

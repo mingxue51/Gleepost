@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WebClient.h"
 
 @interface GLPFacebookConnect : NSObject
 
@@ -18,5 +19,6 @@
 - (void)logout;
 - (NSString *)facebookLoginToken;
 -(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback;
+-(void)sharePostWithPost:(GLPPost *)post;
 
 @end

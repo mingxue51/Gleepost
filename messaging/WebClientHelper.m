@@ -184,4 +184,21 @@
     [alert show];
 }
 
+#pragma mark - Facebook 
+
++ (void)showNeedsFacebookAppError
+{
+    [self showAlertWithTitle:@"Oops!" andMessage:@"To share a post you need to have installed Facebook app on your device"];
+}
+
++ (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

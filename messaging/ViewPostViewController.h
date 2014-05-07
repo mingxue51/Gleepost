@@ -29,6 +29,6 @@
 //-(float) calculateCommentSize: (NSString*) content;
 -(void)navigateToProfile: (id)sender;
 -(void)viewPostImage:(UIImage*)postImage;
-
+-(void)reloadImage:(BOOL)loadImage;
 
 @end
