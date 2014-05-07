@@ -195,8 +195,8 @@
     NSMutableDictionary* params =   [NSMutableDictionary dictionaryWithObjectsAndKeys: nil];
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:nil
-                                                  message:[NSString stringWithFormat:@"I just smashed friends! Can you beat it?"]
-                                                    title:@"Gleeeeeeepost!!!!"
+                                                  message:[NSString stringWithFormat:@"Invite friends to Gleepost"]
+                                                    title:nil
                                                parameters:params
                                                   handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
                                                       if (error)
@@ -213,6 +213,8 @@
 
                                                           } else
                                                           {
+                                                              DDLogInfo(@"Request has been sent.");
+
                                                               [self manageFacebookInvitationsResult:resultURL];
                                                               [self showKeyboardToThePreviousView];
 
@@ -224,14 +226,10 @@
 
 -(void)manageFacebookInvitationsResult:(NSURL *)resultURL
 {
-    DDLogInfo(@"Request Sent to facebook :%@", resultURL);
-    
     NSDictionary *resultDictionary = [self parseURLParams:[resultURL query]];
     
     if(![resultDictionary objectForKey:@"error_code"])
     {
-        DDLogDebug(@"Result dictionary: %@", resultDictionary);
-        
         NSArray * fbIds = [self parseUsersFacebookIdsWithDictionary:[self parseURLParams:[resultURL query]]];
         
         
