@@ -18,6 +18,6 @@
 -(BOOL)isCurrentHeightZero;
 -(void)initialiseHeightWithPopularity:(NSInteger)popularity;
 -(void)animateLevelViewUpWithPopularity:(NSInteger)popularity andDelay:(BOOL)delay;
--(void)animateLevelViewDownWithPopularity:(NSInteger)popularity;
+-(void)animateLevelViewDownWithPopularity:(NSInteger)popularity andDelay:(BOOL)delay;
 
 @end

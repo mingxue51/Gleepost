@@ -287,7 +287,9 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             {
                 _postData.attended = YES;
                 ++_postData.attendees;
-                [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees+1 andPopularity:popularity];
+                [self makeButtonSelected:currentButton];
+                [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees andPopularity:popularity];
+
 
             }
             else
@@ -298,26 +300,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
             
         }];
-        
-        
-//        [[WebClient sharedInstance] postAttendInPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
-//            
-//            if(success)
-//            {
-//                _postData.attended = YES;
-//                ++_postData.attendees;
-//            }
-//            else
-//            {
-//                //Error message.
-//                [WebClientHelper showStandardError];
-//            }
-//
-//        }];
-        
-        [self makeButtonSelected:currentButton];
-
-        
     }
     else
     {
@@ -330,8 +312,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             
             if(success)
             {
-                _postData.attended = YES;
-                ++_postData.attendees;
+                _postData.attended = NO;
+                --_postData.attendees;
                 [self makeButtonUnselected:currentButton];
                 [_eventBarView decreaseLevelWithPopularity:popularity];
 
@@ -344,24 +326,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             
             
         }];
-        
-        
-//        [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:_postData.remoteKey callbackBlock:^(BOOL success) {
-//            
-//            if(success)
-//            {
-//                _postData.attended = NO;
-//                --_postData.attendees;
-//
-//                [self makeButtonUnselected:currentButton];
-//            }
-//            else
-//            {
-//                //Error message.
-//                [WebClientHelper showStandardError];
-//            }
-//            
-//        }];
     }
     
 }

@@ -947,46 +947,44 @@ static const float FixedBottomTextViewHeight = 100;
 {
     self.post.attended = YES;
 
-    
-//    [[WebClient sharedInstance] postAttendInPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
-//        
-//        if(success)
-//        {
-//            //Update local database.
-//            [GLPPostManager updatePostAttending:self.post];
-//        }
-//        else
-//        {
-//            [self makeButtonUnselected];
-//
-//            //Error message.
-//            [WebClientHelper showStandardError];
-//        }
-//        
-//    }];
+    [[WebClient sharedInstance] attendEvent:YES withPostRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
+       
+        if(success)
+        {
+            //Update local database.
+            [GLPPostManager updatePostAttending:self.post];
+        }
+        else
+        {
+            [self makeButtonUnselected];
+            
+            [WebClientHelper showStandardError];
+
+        }
+        
+    }];
 }
 
 -(void)notAttending
 {
     
     self.post.attended = NO;
-
-//    [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
-//        
-//        if(success)
-//        {
-//            //Update local database.
-//            [GLPPostManager updatePostAttending:self.post];
-//        }
-//        else
-//        {
-//            [self makeButtonSelected];
-//
-//            //Error message.
-//            [WebClientHelper showStandardError];
-//        }
-//        
-//    }];
+    
+    [[WebClient sharedInstance] attendEvent:NO withPostRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
+        
+        if(success)
+        {
+            //Update local database.
+            [GLPPostManager updatePostAttending:self.post];
+        }
+        else
+        {
+            [self makeButtonSelected];
+            
+            [WebClientHelper showStandardError];            
+        }
+        
+    }];
 }
 
 -(void)makeButtonSelected

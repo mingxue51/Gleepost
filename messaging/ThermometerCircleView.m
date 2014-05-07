@@ -58,18 +58,32 @@
 
 #pragma mark - Animations
 
--(void)animateCircleWithHeight:(float)height andY:(float)y
+-(void)animateCircleWithHeight:(float)height andY:(float)y withDelay:(BOOL)delay
 {
-    [UIView animateWithDuration:1.0f animations:^
-     {
-         
-         CGRect frame = self.frame;
-         frame.size.height = height;
-         frame.origin.y = y;
-         
-         self.frame = frame;
-         
-     }];
+
+//    [UIView animateWithDuration:1.0f animations:^
+//     {
+//         
+//         CGRect frame = self.frame;
+//         frame.size.height = height;
+//         frame.origin.y = y;
+//         
+//         self.frame = frame;
+//         
+//     }];
+
+    [UIView animateWithDuration:1.0f delay:(delay) ? 0.7f : 0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+       
+        CGRect frame = self.frame;
+        frame.size.height = height;
+        frame.origin.y = y;
+        
+        self.frame = frame;
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+    
 }
 
 /*

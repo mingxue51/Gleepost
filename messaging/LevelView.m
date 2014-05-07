@@ -126,14 +126,19 @@
 
 }
 
--(void)animateLevelViewDownWithPopularity:(NSInteger)popularity
+-(void)animateLevelViewDownWithPopularity:(NSInteger)popularity andDelay:(BOOL)delay
 {
-    DDLogDebug(@"Down height: %lf Popularity: %ld", _currentHeight, (long)popularity);
+    if(popularity == 0)
+    {
+        _currentHeight = 0;
+    }
+    else
+    {
+        _currentHeight =  _currentHeight + popularity;
+    }
     
-    _currentHeight =  _currentHeight + popularity;
     
-    
-    [self animateWithDelay:NO];
+    [self animateWithDelay:delay];
 }
 
 -(void)animateLevelViewUpWithPopularity:(NSInteger)popularity andDelay:(BOOL)delay

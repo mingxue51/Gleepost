@@ -12,6 +12,6 @@
 @interface ThermometerCircleView : UIImageView
 
 -(id)initWithSuperView:(EventBarView *)superView;
--(void)animateCircleWithHeight:(float)height andY:(float)y;
+-(void)animateCircleWithHeight:(float)height andY:(float)y withDelay:(BOOL)delay;
 
 @end

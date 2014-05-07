@@ -79,7 +79,7 @@
     
     if(circleFrame.size.height == 0.00001f)
     {
-        [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f];
+        [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f withDelay:NO];
 
         
         if(popularity > 1)
@@ -97,48 +97,31 @@
     }
 }
 
-
--(void)animateAllTogetherWithPopularity:(NSInteger)popularity
-{
-//    [UIView animateWithDuration:1.0f animations:^{
-//        
-//        CGRect frame = self.frame;
-//        frame.size.height = 8.0f;
-//        frame.origin.y = 87.0f;
-//        
-//        self.frame = frame;
-//        
-//    } completion:^(BOOL finished) {
-//        
-//        if(popularity > 1)
-//        {
-//        }
-//        
-//    }];
-    
-    if(popularity > 1)
-    {
-        [_levelView animateLevelViewUp];
-    }
-}
-
 -(void)decreaseLevelWithPopularity:(NSInteger)popularity
 {
     CGRect circleFrame = _circleThermometerImageView.frame;
 
     if(circleFrame.size.height != 0.00001f && [_levelView isCurrentHeightZero])
     {
-        [_circleThermometerImageView animateCircleWithHeight:0.00001f andY:95.0f];
+        [_circleThermometerImageView animateCircleWithHeight:0.00001f andY:95.0f withDelay:NO];
     }
     else
     {
      
         if(popularity == 0)
         {
-            [_circleThermometerImageView animateCircleWithHeight:0.00001f andY:95.0f];
+            
+            [_levelView animateLevelViewDownWithPopularity:popularity andDelay:NO];
+
+            [_circleThermometerImageView animateCircleWithHeight:0.00001f andY:95.0f withDelay:YES];
+            
+
+        }
+        else
+        {
+            [_levelView animateLevelViewDownWithPopularity:popularity andDelay:NO];
         }
         
-        [_levelView animateLevelViewDownWithPopularity:popularity];
 //        [_levelView animateLevelViewDown];
     }
 }
@@ -153,7 +136,7 @@
 {
     if(popularity > 0)
     {
-        [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f];
+        [_circleThermometerImageView animateCircleWithHeight:8.0f andY:87.0f withDelay:NO];
     }
     
     [_levelView initialiseHeightWithPopularity:popularity];

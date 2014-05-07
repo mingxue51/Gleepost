@@ -535,12 +535,6 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)notAttendEventWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
-{
-    
-}
-
-
 //TODO: DEPRECATED.
 -(void)postAttendInPostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
