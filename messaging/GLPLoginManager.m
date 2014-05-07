@@ -71,8 +71,11 @@
     }];
 }
 
+/**
+ Returns the e-mail only when the user is unverified.
+ */
 
-+ (void)loginFacebookUserWithName:(NSString *)name withEmail:(NSString *)email response:(NSString *)response callback:(void (^)(BOOL success, NSString *responseFromServer))callback {
++ (void)loginFacebookUserWithName:(NSString *)name withEmail:(NSString *)email response:(NSString *)response callback:(void (^)(BOOL success, NSString *status, NSString *email))callback {
     
     NSDictionary *json = (NSDictionary *)response;
     
@@ -80,6 +83,7 @@
  
     
     NSString *responseFromServer = [RemoteParser parseFBStatusFromAPI:json];
+    NSString *emailJson = json[@"email"];
     
     if([RemoteParser isAccountVerified:json])
     {
@@ -87,7 +91,7 @@
         if([RemoteParser isAccountRegistered:json])
         {
             //User registered.
-            callback(NO, json[@"status"]);
+            callback(NO, json[@"status"], nil);
         }
         else
         {
@@ -103,11 +107,11 @@
                 
                 if(success)
                 {
-                    callback(YES, response);
+                    callback(YES, response, nil);
                 }
                 else
                 {
-                    callback(NO, response);
+                    callback(NO, response, nil);
                 }
             });
         }
@@ -117,7 +121,7 @@
     else
     {
         //Unverified.
-        callback(NO, responseFromServer);
+        callback(NO, responseFromServer, emailJson);
     }
     
 

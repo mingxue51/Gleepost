@@ -927,7 +927,7 @@ static const float FixedBottomTextViewHeight = 100;
         [[GLPFacebookConnect sharedConnection] sharePostWithPost:self.post];
 
     }
-    else if (@"More options")
+    else if ([selectedButtonTitle isEqualToString: @"More options"])
     {
         [self sharePostToSocialMedia];
     }

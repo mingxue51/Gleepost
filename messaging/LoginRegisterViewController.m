@@ -730,7 +730,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
         
         if (success) {
             NSLog(@"logged in successfully via facebook");
-            [GLPLoginManager loginFacebookUserWithName:name withEmail:email response:response callback:^(BOOL success, NSString *re) {
+            [GLPLoginManager loginFacebookUserWithName:name withEmail:email response:response callback:^(BOOL success, NSString *re, NSString *email) {
                 if (success)    [weakSelf performSegueWithIdentifier:@"start" sender:weakSelf];
                 else            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
             }];

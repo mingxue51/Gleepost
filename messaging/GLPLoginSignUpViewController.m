@@ -106,10 +106,14 @@ static NSString * const kOkButtonTitle       = @"Ok";
         [store setString:email forKey:@"facebook.email"];
         [store synchronize];
         
+        DDLogDebug(@"E-mail saved: %@", email);
+        
         return email;
     }
     else
     {
+        DDLogDebug(@"E-mail retrieved: %@", [self loadUniversityEmail]);
+
         return [self loadUniversityEmail];
     }
 }
@@ -146,18 +150,18 @@ static NSString * const kOkButtonTitle       = @"Ok";
         
         if (success)
         {
-            [GLPLoginManager loginFacebookUserWithName:name withEmail:email response:response callback:^(BOOL success, NSString *serverResponse) {
+            [GLPLoginManager loginFacebookUserWithName:name withEmail:email response:response callback:^(BOOL success, NSString *status, NSString *email) {
                 
                 if (success)
                 {
                     [self performSegueWithIdentifier:@"start" sender:self];
                 }
-                else if([serverResponse isEqualToString:@"registered"])
+                else if([status isEqualToString:@"registered"])
                 {
                     //Ask user to put his password.
                     [self askUserForPassword];
                 }
-                else if(!success && [serverResponse isEqualToString:@"unverified"])
+                else if(!success && [status isEqualToString:@"unverified"])
                 {
                     //Pop up the verification view.
                     _fbLoginInfo = [NSDictionary dictionaryWithObjectsAndKeys:name, @"Name", email, @"Email", nil];
@@ -166,7 +170,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:serverResponse];
+                    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:status];
                 }
             }];
             
