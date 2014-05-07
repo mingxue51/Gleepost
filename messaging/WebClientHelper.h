@@ -35,5 +35,6 @@
 
 + (void)failedToSendEmailResettingPassword;
 + (void)showNeedsFacebookAppError;
++ (void)showInvitedFriendsToGroupViaFBWithNumberOfFriends:(NSInteger)numberOfFriends;
 
 @end
