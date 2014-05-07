@@ -121,6 +121,9 @@
             if(friends)
             {
                 [self inviteFriends];
+                
+                //[self fetchFriends];
+                //[self getFriends];
             }
             else
             {
@@ -271,6 +274,65 @@
 }
 
 #pragma mark - Invite friends
+
+-(void)inviteFriendsViaFBToGroupWithRemoteKey:(int)groupRemoteKey
+{
+    
+    _groupRemoteKey = groupRemoteKey;
+    
+    NSArray *permissions = @[@"read_friendlists"];
+    
+    [FBSession openActiveSessionWithReadPermissions:permissions allowLoginUI:YES
+                                  completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                      
+                                      if (error)
+                                      {
+                                          NSString *errorMessage = nil;
+                                          
+                                          if([error fberrorShouldNotifyUser])
+                                          {
+                                              errorMessage = [error fberrorUserMessage];
+                                          }
+                                          
+                                          NSLog(@"FBSession connectWithFacebook failed :%@", errorMessage);
+                                          [FBSession.activeSession closeAndClearTokenInformation];
+                                          
+                                      } else
+                                      {
+                                          [self sessionStateChanged:session
+                                                              state:status
+                                                              error:error
+                                                         friendList:YES];
+                                      }
+                                  }];
+    
+    
+    
+    
+    
+    //    /* make the API call */
+    //    [FBRequestConnection startWithGraphPath:@"/{friendlist-id}"
+    //                                 parameters:nil
+    //                                 HTTPMethod:@"GET"
+    //                          completionHandler:^(
+    //                                              FBRequestConnection *connection,
+    //                                              id result,
+    //                                              NSError *error
+    //                                              ) {
+    //
+    //                              if(error)
+    //                              {
+    //                                  DDLogDebug(@"Error fb invite: %@", error);
+    //                              }
+    //                              else
+    //                              {
+    //                                  DDLogDebug(@"RESULT fb invite: %@", result);
+    //                              }
+    //
+    //                              /* handle the result */
+    //                          }];
+    
+}
 
 -(void)inviteFriends
 {
@@ -485,63 +547,20 @@
      }];
 }
 
--(void)inviteFriendsViaFBToGroupWithRemoteKey:(int)groupRemoteKey
+-(void)getFriends
 {
-    
-    _groupRemoteKey = groupRemoteKey;
-    
-    NSArray *permissions = @[@"read_friendlists"];
-    
-    [FBSession openActiveSessionWithReadPermissions:permissions allowLoginUI:YES
-                                  completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                      
-                                      if (error)
-                                      {
-                                          NSString *errorMessage = nil;
-                                          
-                                          if([error fberrorShouldNotifyUser])
-                                          {
-                                              errorMessage = [error fberrorUserMessage];
-                                          }
-                                          
-                                          NSLog(@"FBSession connectWithFacebook failed :%@", errorMessage);
-                                          [FBSession.activeSession closeAndClearTokenInformation];
-                                          
-                                      } else
-                                      {
-                                          [self sessionStateChanged:session
-                                                              state:status
-                                                              error:error
-                                                         friendList:YES];
-                                      }
-                                  }];
-    
-    
-    
-    
-    
-    //    /* make the API call */
-    //    [FBRequestConnection startWithGraphPath:@"/{friendlist-id}"
-    //                                 parameters:nil
-    //                                 HTTPMethod:@"GET"
-    //                          completionHandler:^(
-    //                                              FBRequestConnection *connection,
-    //                                              id result,
-    //                                              NSError *error
-    //                                              ) {
-    //
-    //                              if(error)
-    //                              {
-    //                                  DDLogDebug(@"Error fb invite: %@", error);
-    //                              }
-    //                              else
-    //                              {
-    //                                  DDLogDebug(@"RESULT fb invite: %@", result);
-    //                              }
-    //
-    //                              /* handle the result */
-    //                          }];
-    
+    FBRequest* friendsRequest = [FBRequest requestForMyFriends];
+    [friendsRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
+                                                  NSDictionary* result,
+                                                  NSError *error) {
+        NSArray* friends = [result objectForKey:@"data"];
+        NSLog(@"Found: %i friends", friends.count);
+        for (NSDictionary<FBGraphUser>* friend in friends) {
+            NSLog(@"I have a friend named %@ with id %@ and image url: %@", friend.name, friend.id, [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal", friend.id]);
+        }
+    }];
 }
+
+
 
 @end

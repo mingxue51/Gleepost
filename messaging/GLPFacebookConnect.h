@@ -21,5 +21,6 @@
 -(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback;
 -(void)sharePostWithPost:(GLPPost *)post;
 -(void)inviteFriendsViaFBToGroupWithRemoteKey:(int)groupRemoteKey;
+-(void)fetchFriends;
 
 @end
