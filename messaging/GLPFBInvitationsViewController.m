@@ -18,7 +18,11 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) NSArray *facebookFriends;
+/** This will hold only the filtered facebook friends */
+@property (strong, nonatomic) NSMutableArray *facebookFriends;
+
+/** This will hold all facebook friends */
+@property (strong, nonatomic) NSArray *constantFacebookFriends;
 
 @property (strong, nonatomic) NSMutableArray *checkedFriends;
 
@@ -73,7 +77,8 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
         
         if(success)
         {
-            _facebookFriends = fbFriends;
+            _facebookFriends = fbFriends.mutableCopy;
+            _constantFacebookFriends = fbFriends;
             
             [self.tableView reloadData];
         }
@@ -150,6 +155,48 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     cell.delegate = self;
     
     return cell;
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    // remove all data that belongs to previous search
+    
+    [_facebookFriends removeAllObjects];
+    
+    if([searchText isEqualToString:@""] || searchText == nil)
+    {
+        _facebookFriends = _constantFacebookFriends.mutableCopy;
+        
+        [self.tableView reloadData];
+        return;
+    }
+    
+    for(GLPUser *user in _constantFacebookFriends)
+    {
+        NSRange r = [user.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        
+        if(r.location != NSNotFound)
+        {
+            //that is we are checking only the start of the names.
+            
+            if(r.location== 0)
+            {
+                [_facebookFriends addObject:user];
+            }
+        }
+    }
+    
+    [self.tableView reloadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self searchBar:searchBar textDidChange:@""];
+    
+    [searchBar setText:@""];
+    [searchBar resignFirstResponder];
 }
 
 #pragma mark - GLPSearchUserCellDelegate

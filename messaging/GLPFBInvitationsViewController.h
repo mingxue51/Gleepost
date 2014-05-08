@@ -10,7 +10,7 @@
 #import "GLPSearchUserCell.h"
 #import "GLPGroup.h"
 
-@interface GLPFBInvitationsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, GLPSearchUserCellDelegate>
+@interface GLPFBInvitationsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, GLPSearchUserCellDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
 
