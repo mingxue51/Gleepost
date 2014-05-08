@@ -203,7 +203,7 @@
 
 + (void)showSuccessfullyInvitedFriends:(NSString *)friends
 {
-    [self showAlertWithTitle:@"Invitation completed" andMessage:[NSString stringWithFormat:@"You have successfuly invited: %@",friends]];
+    [self showAlertWithTitle:@"Invitation completed" andMessage:[NSString stringWithFormat:@"You have successfully invited: %@",friends]];
 }
 
 + (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message

@@ -24,6 +24,7 @@
 		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
+		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */; };
@@ -703,6 +704,7 @@
 		1172680D1888068E008F5391 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
+		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
@@ -1918,6 +1920,7 @@
 		583CE324189FFFB100E78C08 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				5806C760191BFA5D005C907E /* fb_login.png */,
 				582A664718ABD37D00006419 /* verified.png */,
 				5839261D18A020F600439398 /* connect_fb_button.png */,
 				5839261B18A020E800439398 /* skip_button.png */,
@@ -3934,6 +3937,7 @@
 				C02DB4DD18AE56CA0077FDEB /* message.png in Resources */,
 				5843328F180F09C900BD9F74 /* Gleepost2.png in Resources */,
 				580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */,
+				5806C761191BFA5D005C907E /* fb_login.png in Resources */,
 				806E3D801832B1960063AACE /* NotificationBackgroundWarning.png in Resources */,
 				583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */,
 				5890D23818482DC300E293DD /* profile@2x.png in Resources */,

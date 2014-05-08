@@ -10,6 +10,7 @@
 #import "GLPUser.h"
 #import "GLPFacebookConnect.h"
 #import "WebClientHelper.h"
+#import "AppearanceHelper.h"
 
 @interface GLPFBInvitationsViewController ()
 
@@ -57,6 +58,8 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     CGRectSetY(_navigationBar, 0.0f);
     
     CGRectAddH(_navigationBar, 21.0f);
+    
+    [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
     
 }
 

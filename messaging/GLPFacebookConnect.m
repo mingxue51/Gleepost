@@ -424,18 +424,16 @@
 -(void)informAPIAboutInvitationWithFBIds:(NSArray *)fbIds
 {
     [[WebClient sharedInstance] inviteUsersViaFacebookWithGroupRemoteKey:_group.remoteKey andUsersFacebookIds:fbIds withCallbackBlock:^(BOOL success) {
-       
-        //TODO: Create a pop up message to show to user the friends that he invited.
         
         if(success)
         {
-            DDLogInfo(@"User had invited friends final success.");
-            [WebClientHelper showInvitedFriendsToGroupViaFBWithNumberOfFriends:fbIds.count];
+            DDLogInfo(@"Association with api success.");
+//            [WebClientHelper showInvitedFriendsToGroupViaFBWithNumberOfFriends:fbIds.count];
             
         }
         else
         {
-            DDLogInfo(@"Problem to invite friends.");
+            DDLogInfo(@"Problem to associate with api.");
             [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"There was a problem inviting your selected facebook friends"];
         }
         
@@ -642,6 +640,7 @@
                                                               else
                                                               {
                                                                   DDLogInfo(@"Request Sent.");
+                                                                  [self informAPIAboutInvitationWithFBIds:friendIDs];
                                                                   completionCallback(@"sent");
                                                               }
                                                           }
