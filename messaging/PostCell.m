@@ -344,7 +344,7 @@ static const float FixedBottomTextViewHeight = 100;
 //   }
 //   else
 //   {
-       if([self isCurrentPostBelongsToCurrentUser] /*|| [self isCurrentPostEvent]*/)
+       if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
        {
            [_moreBtn setHidden:NO];
            
