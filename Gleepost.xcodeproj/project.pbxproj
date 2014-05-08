@@ -271,6 +271,7 @@
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
+		586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */; };
 		58711A6B18C6586D00798F13 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58711A6A18C6586D00798F13 /* ContactCell.xib */; };
 		587248A618C6223300B98484 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 587248A518C6223300B98484 /* GroupViewController.m */; };
 		587248AD18C64C5200B98484 /* group_posts_selected_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 587248A918C64C5200B98484 /* group_posts_selected_old.png */; };
@@ -1053,6 +1054,8 @@
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
+		586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFBInvitationsViewController.h; sourceTree = "<group>"; };
+		586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFBInvitationsViewController.m; sourceTree = "<group>"; };
 		58711A6A18C6586D00798F13 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		587248A418C6223300B98484 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		587248A518C6223300B98484 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
@@ -2216,6 +2219,15 @@
 			name = "Copy Label";
 			sourceTree = "<group>";
 		};
+		586F6EF6191BADFB00BDF558 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */,
+				586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */,
+			);
+			name = Facebook;
+			sourceTree = "<group>";
+		};
 		587248A318C6220800B98484 /* Group Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -3232,6 +3244,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				586F6EF6191BADFB00BDF558 /* Facebook */,
 				80E93FB318C8BD43008769CB /* Contacts */,
 				80E93FAF18C8BD0E008769CB /* Groups */,
 				587248A318C6220800B98484 /* Group Classes */,
@@ -4398,6 +4411,7 @@
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
+				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,

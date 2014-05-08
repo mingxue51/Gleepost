@@ -20,7 +20,8 @@
 - (NSString *)facebookLoginToken;
 -(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback;
 -(void)sharePostWithPost:(GLPPost *)post;
--(void)inviteFriendsViaFBToGroupWithRemoteKey:(int)groupRemoteKey;
+-(void)inviteFriendsViaFBToGroupWithRemoteKey:(GLPGroup* )group completionHandler:(void (^)(BOOL success, NSArray *fbFriends))completionHandler;
 -(void)fetchFriends;
+-(void)sendRequestToFriendWithFriendsIds:(NSArray *)friendIDs withCompletionCallback:(void (^) (NSString *status))completionCallback;
 
 @end
