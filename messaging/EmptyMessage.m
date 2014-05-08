@@ -80,7 +80,7 @@
     matchesLabel.numberOfLines = 1;
     matchesLabel.lineBreakMode = NSLineBreakByCharWrapping;
     matchesLabel.shadowColor = [UIColor lightTextColor];
-    matchesLabel.textColor = [UIColor darkGrayColor];
+    matchesLabel.textColor = [UIColor colorWithRed:247.0f/255.0f green:247.0f/255.0f blue:247.0f/255.0f alpha:1.0f];
     matchesLabel.shadowOffset = CGSizeMake(0, 1);
     matchesLabel.backgroundColor = [UIColor clearColor];
     matchesLabel.textAlignment =  NSTextAlignmentCenter;

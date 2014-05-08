@@ -24,6 +24,8 @@
 		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
+		5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75A191BF603005C907E /* mypost_btn_selected.png */; };
+		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */; };
@@ -405,8 +407,6 @@
 		58D19D9418C7668000CB13CC /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9318C7668000CB13CC /* CreateGroupCell.xib */; };
 		58D19D9618C766C000CB13CC /* create_new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9518C766C000CB13CC /* create_new_group.png */; };
 		58D19D9918C7672C00CB13CC /* CreateNewGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D19D9818C7672C00CB13CC /* CreateNewGroupCell.m */; };
-		58D30ADC18F6E4DF00A898EB /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30AD818F6E4DF00A898EB /* notification_btn_selected.png */; };
-		58D30ADD18F6E4DF00A898EB /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30AD918F6E4DF00A898EB /* mypost_btn_selected.png */; };
 		58D30ADE18F6E4DF00A898EB /* mypost_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30ADA18F6E4DF00A898EB /* mypost_btn.png */; };
 		58D30ADF18F6E4DF00A898EB /* notification_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30ADB18F6E4DF00A898EB /* notification_btn.png */; };
 		58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */; };
@@ -695,6 +695,8 @@
 		1172680D1888068E008F5391 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
+		5806C75A191BF603005C907E /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
+		5806C75B191BF603005C907E /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
@@ -1232,8 +1234,6 @@
 		58D19D9518C766C000CB13CC /* create_new_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_new_group.png; sourceTree = "<group>"; };
 		58D19D9718C7672C00CB13CC /* CreateNewGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateNewGroupCell.h; sourceTree = "<group>"; };
 		58D19D9818C7672C00CB13CC /* CreateNewGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateNewGroupCell.m; sourceTree = "<group>"; };
-		58D30AD818F6E4DF00A898EB /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
-		58D30AD918F6E4DF00A898EB /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		58D30ADA18F6E4DF00A898EB /* mypost_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn.png; sourceTree = "<group>"; };
 		58D30ADB18F6E4DF00A898EB /* notification_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn.png; sourceTree = "<group>"; };
 		58D30BEA1815CED0006346F8 /* timebar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar1.png; path = "../../Gleepost Data/NewChating/timebar1.png"; sourceTree = "<group>"; };
@@ -2549,8 +2549,8 @@
 		58AD869A18929EB700016C6D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				58D30AD818F6E4DF00A898EB /* notification_btn_selected.png */,
-				58D30AD918F6E4DF00A898EB /* mypost_btn_selected.png */,
+				5806C75A191BF603005C907E /* mypost_btn_selected.png */,
+				5806C75B191BF603005C907E /* notification_btn_selected.png */,
 				58D30ADA18F6E4DF00A898EB /* mypost_btn.png */,
 				58D30ADB18F6E4DF00A898EB /* notification_btn.png */,
 				5829F49118B1565900A7B871 /* accept_user.png */,
@@ -3780,6 +3780,7 @@
 				80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */,
 				58289EFB18D7595000228EFF /* going.png in Resources */,
 				58E3DAC5188405DB00B9B048 /* blimp.png in Resources */,
+				5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */,
 				5890D23618482DC300E293DD /* messages@2x.png in Resources */,
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
 				582A664618AB9BC400006419 /* bar4_selected.png in Resources */,
@@ -3956,7 +3957,6 @@
 				58AABA921892F0F60058A552 /* category_bg.png in Resources */,
 				58DC0245180437A70008993A /* bubble3.png in Resources */,
 				58272F831896824500CD7522 /* fake_nav_background.png in Resources */,
-				58D30ADD18F6E4DF00A898EB /* mypost_btn_selected.png in Resources */,
 				80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */,
 				80DDAA6417CE77D70034C0EF /* get_posts.json in Resources */,
 				583CE33018A0061100E78C08 /* signin-button.png in Resources */,
@@ -3989,12 +3989,12 @@
 				588794BD18A81EA9002EEC8A /* icon_comment_old.png in Resources */,
 				589CE50518D222790046DAD2 /* thermometer_color.png in Resources */,
 				5866F16618844869007484CF /* pole_night.png in Resources */,
+				5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */,
 				583EAB7918119688003D68B3 /* add_contact.png in Resources */,
 				582A664018AB9BC400006419 /* bar2.png in Resources */,
 				58F6CF2518CE6F8100ABE244 /* group_posts.png in Resources */,
 				806E3D7E1832B1960063AACE /* NotificationBackgroundSuccessIcon.png in Resources */,
 				584E8E2D18A2EB3D005AEF91 /* message-7_old2@2x.png in Resources */,
-				58D30ADC18F6E4DF00A898EB /* notification_btn_selected.png in Resources */,
 				80E7478417CE9F4C001957E5 /* get_comments.json in Resources */,
 				80A21D4418AD136200559BF6 /* internal_notification_cell_commented.png in Resources */,
 				589EAD1318A418C2005B2F4C /* SignUpFourView.xib in Resources */,

@@ -43,6 +43,7 @@
 #import "GroupViewController.h"
 #import "ContactsManager.h"
 #import "EmptyMessage.h"
+#import "TableViewHelper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -474,7 +475,7 @@
     
     _postUploaded = NO;
 
-    _emptyNotificationsMessage = [[EmptyMessage alloc] initWithText:@"No more notifications" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    _emptyNotificationsMessage = [[EmptyMessage alloc] initWithText:@"You have no notifications" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
     _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
@@ -1095,6 +1096,8 @@
     }
     else
     {
+        NSInteger extraRow = 0;
+        
         [_emptyMyPostsMessage hideEmptyMessageView];
         
         if(_notifications.count == 0)
@@ -1104,9 +1107,10 @@
         else
         {
             [_emptyNotificationsMessage hideEmptyMessageView];
+            extraRow = 1;
         }
         
-        return self.numberOfRows + _notifications.count;
+        return self.numberOfRows + _notifications.count + extraRow;
     }
 }
 
@@ -1186,6 +1190,13 @@
     {
         if(self.selectedTabStatus == kGLPSettings)
         {
+            if(_notifications.count != 0 && (indexPath.row - 2) == _notifications.count)
+            {
+                DDLogDebug(@"Notifications count: %lu : %ld", (unsigned long)_notifications.count, (long)indexPath.row);
+                
+                return [TableViewHelper generateCellWithMessage:@"You have no more notifications"];
+            }
+            
             notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
             notificationCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
@@ -1321,6 +1332,11 @@
     {
         if(self.selectedTabStatus == kGLPSettings)
         {
+            if(_notifications.count != 0 && (indexPath.row - 2) == _notifications.count)
+            {
+                return 50.0f;
+            }
+            
             GLPNotification *notification = _notifications[indexPath.row - 2];
             return [NotificationCell getCellHeightForNotification:notification];
         }
