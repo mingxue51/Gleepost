@@ -217,7 +217,7 @@
     if([FBDialogs canPresentShareDialogWithOpenGraphActionParams:params])
     {
         // Show the share dialog
-        [self presentDialogWithOpenGraphAction:action withActionType:@"gleepost:post" andObjectName:@"event"];
+        [self presentDialogWithOpenGraphAction:action withActionType:@"gleepost:share" andObjectName:@"event"];
         
         // If the Facebook app is NOT installed and we can't present the share dialog
     } else
@@ -269,7 +269,7 @@
 {
     FBOpenGraphActionShareDialogParams *params = [[FBOpenGraphActionShareDialogParams alloc] init];
     params.action = action;
-    params.actionType = @"gleepost:post";
+    params.actionType = @"gleepost:share";
     
     return params;
 }

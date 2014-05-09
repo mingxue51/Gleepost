@@ -1312,7 +1312,7 @@
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vBe-VX-oaK">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vBe-VX-oaK" id="Hze-rW-T5v">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -3160,6 +3160,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="109" width="320" height="459"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="Kim-Rb-8bg" customClass="GLPSearchUserCell">
                                         <rect key="frame" x="0.0" y="22" width="320" height="44"/>
@@ -3169,13 +3170,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_image_bg.png" id="IPh-XZ-ut2">
-                                                    <rect key="frame" x="15" y="4" width="35" height="35"/>
+                                                    <rect key="frame" x="10" y="2" width="40" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lcQ-fh-Cj3">
-                                                    <rect key="frame" x="58" y="4" width="209" height="35"/>
+                                                    <rect key="frame" x="60" y="4" width="209" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -3379,15 +3380,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="lQn-ic-ohV"/>
-        <segue reference="WK7-hw-eyD"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="PCe-7s-A56"/>
-        <segue reference="WhX-ZL-dQD"/>
         <segue reference="OVn-Bm-tTd"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="Vyz-Un-MGO"/>
+        <segue reference="PCe-7s-A56"/>
+        <segue reference="0xq-5H-6eX"/>
+        <segue reference="WhX-ZL-dQD"/>
+        <segue reference="lQn-ic-ohV"/>
+        <segue reference="Nh6-Tl-qmR"/>
     </inferredMetricsTieBreakers>
 </document>
