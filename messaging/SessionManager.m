@@ -27,6 +27,8 @@
 
 @property (strong, nonatomic) NSString *dataPlistLoggedInPath;
 @property (assign, nonatomic) BOOL currentUserFirstTime;
+/** TODO: Bad variable. */
+@property (assign, nonatomic) BOOL showGroupsBadge;
 @property (strong, nonatomic) NSDictionary *usersData;
 
 
@@ -75,6 +77,7 @@ static SessionManager *instance = nil;
     self.dataPlistLoggedInPath = [rootPath2 stringByAppendingString:GLPLoggedInUsersFileName];
     
     _currentUserFirstTime = NO;
+    _showGroupsBadge = NO;
     _authParameters = [NSDictionary dictionary];
     
     //Set default category.
@@ -224,21 +227,22 @@ static SessionManager *instance = nil;
             {
                 DDLogDebug(@"USER EXIST!");
                 _currentUserFirstTime = NO;
-                
+                _showGroupsBadge = NO;
                 return;
             }
         }
         
         //If the current user is not in the dictionary then is his first time. Otherwise it's not.
         _currentUserFirstTime = YES;
-        
+        _showGroupsBadge = YES;
         [self saveLoggedInUsersData];
 
     }
     else
     {
         _currentUserFirstTime = YES;
-        
+        _showGroupsBadge = YES;
+
         [self saveLoggedInUsersData];
     }
 }
@@ -292,7 +296,20 @@ static SessionManager *instance = nil;
 
 -(BOOL)isFirstTimeLoggedIn
 {
+    DDLogDebug(@"isFirstTimeLoggedIn: %d", _currentUserFirstTime);
     return _currentUserFirstTime;
+}
+
+-(BOOL)showGroupsBadge
+{
+    if(_showGroupsBadge)
+    {
+        _showGroupsBadge = NO;
+        
+        return YES;
+    }
+    
+    return _showGroupsBadge;
 }
 
 -(void)firstTimeLoggedInActivate

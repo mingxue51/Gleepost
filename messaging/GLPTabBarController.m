@@ -100,13 +100,12 @@ static BOOL isViewDidLayoutSubviews = NO;
  */
 -(void)updateGroupBadge
 {
-    if([[SessionManager sharedInstance] isFirstTimeLoggedIn])
+    if([[SessionManager sharedInstance] showGroupsBadge])
     {
         [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
            
             if(success)
             {
-                DDLogDebug(@"Groups: %@", groups);
                 [self updateGroupsContactsBadge:groups.count];
             }
             
