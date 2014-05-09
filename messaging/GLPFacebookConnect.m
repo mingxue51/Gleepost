@@ -443,9 +443,8 @@
 
 -(void)associateCurrentAccountWithFacebook
 {
-    NSDictionary *authParams = [[SessionManager sharedInstance] authParameters];
-    
-    [[WebClient sharedInstance] associateWithFacebookAccountUsingFBToken:[self facebookLoginToken] withEMail:authParams[@"id"] withPassword:authParams[@"token"] andCallbackBlock:^(BOOL success) {
+    [[WebClient sharedInstance] associateWithFacebookAccountUsingFBToken:[self facebookLoginToken] withCallbackBlock:^(BOOL success) {
+       
         
         if(success)
         {

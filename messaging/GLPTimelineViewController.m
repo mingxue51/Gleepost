@@ -1982,7 +1982,7 @@ const float TOP_OFFSET = 280.0f;
  */
 -(void)scrollToTheNavigationBarFromNotification:(id)notification
 {
-    [self scrollToTheNavigationBar];
+    [self scrollToTheTop];
 }
 
 

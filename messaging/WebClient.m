@@ -207,8 +207,6 @@ static WebClient *instance = nil;
 - (void)associateWithFacebookAccountUsingFBToken:(NSString *)fbToken withEMail:(NSString *)email withPassword:(NSString *)password
                                 andCallbackBlock:(void (^) (BOOL success))callbackBlock
 {
-    DDLogDebug(@"Token: %@, Email: %@, Pass: %@", fbToken, email, password);
-    
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:fbToken, @"fbtoken", email, @"email", password, @"pass",nil];
     
     [self postPath:@"profile/facebook" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -223,6 +221,25 @@ static WebClient *instance = nil;
         
         DDLogDebug(@"Explicit accosiation with facebook failed: %@", error);
 
+        
+        callbackBlock(NO);
+        
+    }];
+    
+}
+
+- (void)associateWithFacebookAccountUsingFBToken:(NSString *)fbToken withCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:[SessionManager sharedInstance].authParameters];
+    
+    params[@"fbToken"] = fbToken;
+    
+    [self postPath:@"profile/facebook" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         callbackBlock(NO);
         

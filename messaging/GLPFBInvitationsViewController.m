@@ -29,6 +29,7 @@
 @property (assign, nonatomic) NSInteger checkedFriendsCount;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *inviteButton;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
@@ -133,6 +134,28 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     }];
 }
 
+-(IBAction)tableViewClicked:(id)sender
+{
+    [self hideKeyboardFromSearchBarIfNeeded];
+}
+
+-(void)hideKeyboardFromSearchBarIfNeeded
+{
+    if([self.searchBar isFirstResponder]) {
+        [self.searchBar resignFirstResponder];
+    }
+}
+
+#pragma mark - UIScrollViewDelegate Methods
+
+
+//TODO: That not works. Never called.
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self hideKeyboardFromSearchBarIfNeeded];
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -191,13 +214,6 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self searchBar:searchBar textDidChange:@""];
-    
-    [searchBar setText:@""];
-    [searchBar resignFirstResponder];
-}
 
 #pragma mark - GLPSearchUserCellDelegate
 
