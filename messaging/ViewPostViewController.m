@@ -42,7 +42,7 @@
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-
+@property (assign, nonatomic) BOOL needsToLoadAgainTheImage;
 
 - (IBAction)addCommentButtonClick:(id)sender;
 
@@ -278,7 +278,7 @@ static BOOL likePushed;
     if(self.isFromCampusLive)
     {
         [self addCustomBackButton];
-
+        self.needsToLoadAgainTheImage = YES;
     }
     
     
@@ -685,6 +685,7 @@ static bool firstTime = YES;
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             [postViewCell postFromNotifications:_isViewPostNotifications];
+            // [postViewCell reloadImage:self.needsToLoadAgainTheImage];
         }
         else
         {
@@ -1136,6 +1137,11 @@ static bool firstTime = YES;
     {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
+}
+
+-(void)reloadImage:(BOOL)loadImage
+{
+    _needsToLoadAgainTheImage = loadImage;
 }
 
 //- (void)backButtonClick

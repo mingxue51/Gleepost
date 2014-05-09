@@ -1595,11 +1595,6 @@ const float TOP_OFFSET = 280.0f;
     
     NSArray *visiblePosts = [self snapshotVisibleCells];
     
-    for (GLPPost *p in visiblePosts)
-    {
-        DDLogDebug(@"Visible post: %@", p);
-    }
-    
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     
 }
@@ -1609,11 +1604,6 @@ const float TOP_OFFSET = 280.0f;
     if(decelerate == 0)
     {
         NSArray *visiblePosts = [self snapshotVisibleCells];
-        
-        for (GLPPost *p in visiblePosts)
-        {
-            DDLogDebug(@"Visible post: %@", p);
-        }
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     }

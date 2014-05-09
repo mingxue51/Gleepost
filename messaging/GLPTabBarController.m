@@ -9,6 +9,8 @@
 #import "GLPTabBarController.h"
 #import "ChatViewAnimationController.h"
 #import "GLPiOS6Helper.h"
+#import "SessionManager.h"
+#import "WebClient.h"
 
 @interface GLPTabBarController ()
 
@@ -51,8 +53,6 @@ static BOOL isViewDidLayoutSubviews = NO;
         }
         isViewDidLayoutSubviews = YES;
     }
-    
-
 }
 
 
@@ -68,7 +68,10 @@ static BOOL isViewDidLayoutSubviews = NO;
         
         //Added new notification center. This is temporary called just from AppDelegate.
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatCountBadge:) name:GLPNOTIFICATION_CONVERSATION_COUNT object:nil];
-
+        
+        
+        [self updateGroupBadge];
+        
         
         isViewDidDisappearCalled = NO;
     }
@@ -86,6 +89,40 @@ static BOOL isViewDidLayoutSubviews = NO;
 
 }
 
+
+/**
+ This method checks if it's the first time that user logged in.
+ If it is, sends request to server and checks if user has groups
+ which means that he comes from facebook group invitation.
+ If it has then adds a badge with the number of groups belogn to.
+ 
+ TODO: Change that later. Bad object oriented approach.
+ */
+-(void)updateGroupBadge
+{
+    if([[SessionManager sharedInstance] isFirstTimeLoggedIn])
+    {
+        [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
+           
+            if(success)
+            {
+                DDLogDebug(@"Groups: %@", groups);
+                [self updateGroupsContactsBadge:groups.count];
+            }
+            
+        }];
+    }
+
+}
+
+-(void)updateGroupsContactsBadge:(NSInteger)numberOfGroups
+{
+    if(self.selectedIndex == 3) {
+        return;
+    }
+    
+    [self updateBadgeContentForIndex:3 count:numberOfGroups];
+}
 
 - (void)updateProfileBadge:(NSNotification *)notification
 {
@@ -187,7 +224,7 @@ static BOOL isViewDidLayoutSubviews = NO;
 
 
 #pragma mark - Custom UIBarButtonItem
-#pragma mark - DELETE THIS
+#pragma mark DELETE THIS
 
 -(void) createAndAddCustomUIBarButtonItemWithImage:(UIImage*)buttonImage highlightImage:(UIImage*)highlightImage
 {

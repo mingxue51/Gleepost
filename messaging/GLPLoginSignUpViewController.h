@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLPLoginSignUpViewController : UIViewController
+@interface GLPLoginSignUpViewController : UIViewController <UINavigationControllerDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
 @end

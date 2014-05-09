@@ -139,4 +139,12 @@
     return object;
 }
 
+# pragma mark - Other
+
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Remote Key: %ld, Message: %@, Participants: %@", (long)self.remoteKey, _lastMessage, self.participants];
+}
+
+
 @end

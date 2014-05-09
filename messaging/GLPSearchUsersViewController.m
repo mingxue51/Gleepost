@@ -15,6 +15,8 @@
 #import "ContactsManager.h"
 #import "SessionManager.h"
 #import "GLPPrivateProfileViewController.h"
+#import "GLPFacebookConnect.h"
+#import "GLPFBInvitationsViewController.h"
 
 @interface GLPSearchUsersViewController ()
 
@@ -24,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UILabel *countLabel;
+
+@property (strong, nonatomic) UIButton *facebookButton;
 
 @property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) NSMutableDictionary *checkedUsers;
@@ -53,6 +57,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     [self configureButtons];
     
     [self configureUI];
+    
+    [self configureNavigationBar];
 
 }
 
@@ -64,6 +70,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:_searchTextfield selector:@selector(becomeFirstResponder) name:@"SHOW_KEYBOARD" object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -71,6 +79,8 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:_searchTextfield name:@"SHOW_KEYBOARD" object:nil];
+
 }
 
 # pragma mark - Configuration
@@ -96,6 +106,14 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     _shouldAnimateEndLoading = NO;
     
     _activityIndicator.hidden = YES;
+    
+    //TODO: Move this code from here to the EmptyMessage class that is on an other branch.
+    
+    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(35.0f, 50.0f, 250.0f, 60.0f)];
+    [_facebookButton setImage:[UIImage imageNamed:@"fb_invite"] forState:UIControlStateNormal];
+    [_facebookButton setHidden:YES];
+    [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
+    [self.tableView insertSubview:_facebookButton aboveSubview:self.tableView];
 }
 
 -(void)configureButtons
@@ -105,6 +123,15 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     _submitButton.enabled = NO;
 }
 
+-(void)configureNavigationBar
+{
+    //Add navigation buttons to let the user to invite friends from facebook.
+//    UIBarButtonItem *inviteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(inviteFriendsToFB:)];
+//    
+//    self.navigationItem.rightBarButtonItem = inviteButton;
+    
+}
+
 -(void)configureUI
 {
     if(!_searchForMembers)
@@ -112,6 +139,24 @@ static NSString *const SEARCH_USERS_STR = @"Search";
         [_submitButton setHidden:YES];
     }
         
+}
+
+# pragma mark - Facebook
+
+-(void)inviteFriendsToFB:(id)sender
+{
+    [_searchTextfield resignFirstResponder];
+
+//    [[GLPFacebookConnect sharedConnection] inviteFriendsViaFBToGroupWithRemoteKey:_group.remoteKey];
+    [self showInvitationsViewController];
+}
+
+-(void)showInvitationsViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPFBInvitationsViewController *fbVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPFBInvitationsViewController"];
+    fbVC.group = self.group;
+    [self presentViewController:fbVC animated:YES completion:nil];
 }
 
 # pragma mark - Searching
@@ -227,6 +272,17 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if(_users.count == 0)
+    {
+        //Show facebook button to invite friends.
+        [_facebookButton setHidden:NO];
+    }
+    else
+    {
+        //Hide facebook button.
+        [_facebookButton setHidden:YES];
+    }
+    
     return _users.count;
 }
 

@@ -23,6 +23,7 @@
 #import "SessionManager.h"
 #import "WebClientHelper.h"
 #import "GLPPostOperationManager.h"
+#import "GLPFacebookConnect.h"
 
 
 @interface PostCell()
@@ -39,7 +40,7 @@
 
 @property (strong, nonatomic) NSAttributedString *contentAttributeText;
 @property (assign, nonatomic) BOOL freshPost;
-@property (assign, nonatomic) BOOL isViewPostNotifications;
+@property (assign, nonatomic) BOOL imageNeedsToLoadAgain;
 
 @end
 
@@ -56,7 +57,7 @@ const float TEXT_CELL_HEIGHT = 192;
     if(self)
     {
         self.isViewPost = NO;
-        self.isViewPostNotifications = NO;
+        self.imageNeedsToLoadAgain = NO;
         
 
         
@@ -142,12 +143,12 @@ static const float FixedBottomTextViewHeight = 100;
         //Set live image.
         [self.postImage setImage:postData.tempImage];
     }
-    else if(postData.finalImage==nil && !self.isViewPostNotifications)
+    else if(postData.finalImage==nil && !self.imageNeedsToLoadAgain)
     {
         [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
-    if(self.isViewPostNotifications)
+    if(self.imageNeedsToLoadAgain)
     {
         [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
@@ -343,7 +344,7 @@ static const float FixedBottomTextViewHeight = 100;
 //   }
 //   else
 //   {
-       if([self isCurrentPostBelongsToCurrentUser] /*|| [self isCurrentPostEvent]*/)
+       if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
        {
            [_moreBtn setHidden:NO];
            
@@ -521,9 +522,9 @@ static const float FixedBottomTextViewHeight = 100;
     }
 }
 
--(void)postFromNotifications:(BOOL)notifications
+-(void)reloadImage:(BOOL)loadImage
 {
-    self.isViewPostNotifications = notifications;
+    self.imageNeedsToLoadAgain = loadImage;
 }
 
 -(void)layoutSubviews
@@ -629,7 +630,18 @@ static const float FixedBottomTextViewHeight = 100;
     
     if([self isCurrentPostBelongsToCurrentUser])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+        if([self isCurrentPostEvent])
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share to Facebook", @"More options", nil];
+        }
+        else
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+        }
+    }
+    else if([self isCurrentPostEvent])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share to Facebook", @"More options", nil];
     }
     
     
@@ -800,6 +812,41 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+
+-(void)sharePostToSocialMedia
+{
+    if(self.post.imagesUrls[0] != nil)
+    {
+        //Fetch from the cache to avoid redundant download.
+
+        [[SDImageCache sharedImageCache] queryDiskCacheForKey:self.post.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
+            
+            NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content], image];
+            [self sharePostToSocialMediaWithItems:items];
+            
+        }];
+    }
+    else
+    {
+        NSArray *items = @[[NSString stringWithFormat:@"\"%@\" shared via #Gleepost",self.post.content]];
+        [self sharePostToSocialMediaWithItems:items];
+    }
+
+}
+
+-(void)sharePostToSocialMediaWithItems:(NSArray *)items
+{
+    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    
+    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypePostToFacebook, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    
+    //UIActivityTypePostToFlickr UIActivityTypeSaveToCameraRoll
+    
+    shareItems.excludedActivityTypes = excludeActivities;
+    
+    [self.delegate presentViewController:shareItems animated:YES completion:nil];
+}
+
 -(void)viewPostImage:(id)sender
 {
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
@@ -874,17 +921,15 @@ static const float FixedBottomTextViewHeight = 100;
     
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if([selectedButtonTitle isEqualToString:@"Going"])
+    if([selectedButtonTitle isEqualToString:@"Share to Facebook"])
     {
-        //RSVP post.
-        [self attending];
+        //Share post.
+        [[GLPFacebookConnect sharedConnection] sharePostWithPost:self.post];
 
     }
-    else if([selectedButtonTitle isEqualToString:@"Not Going"])
+    else if ([selectedButtonTitle isEqualToString: @"More options"])
     {
-        //Not attending.
-        [self notAttending];
-        
+        [self sharePostToSocialMedia];
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
     {

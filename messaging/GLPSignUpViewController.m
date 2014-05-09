@@ -11,6 +11,7 @@
 #import "WebClient.h"
 #import "GLPLoginManager.h"
 #import "GLPTemporaryUserInformationManager.h"
+#import "GLPFacebookConnect.h"
 
 @interface GLPSignUpViewController ()
 
@@ -30,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *messageLlbl;
 @property (weak, nonatomic) IBOutlet UILabel *messageAgainLbl;
 
+@property (strong, nonatomic) NSString *fbName;
+@property (assign, nonatomic) BOOL facebookMode;
 
 @end
 
@@ -41,11 +44,14 @@
     [super viewDidLoad];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
     
     [self initialiseObjects];
     
-    [self formatElements];
+    if(!_facebookLoginInfo)
+    {
+        [self formatElements];
+        
+    }
 }
 
 
@@ -53,7 +59,6 @@
 {
     
     [_messageLlbl setText:[NSString stringWithFormat:@"Verification email sent to: %@. Please click on the link in the email to verify that you're at Stanford.",[super email]]];
-    
 
 }
 
@@ -71,16 +76,24 @@
     [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
 }
 
-//TODO: Issue with keyboard.
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if(![_nameTextField isFirstResponder])
+    [self configureViews];
+
+    
+    if(![_nameTextField isFirstResponder] && !_facebookMode)
     {
         [_nameTextField becomeFirstResponder];
     }
+    else if(_facebookMode)
+    {
+//        [_nameTextField resignFirstResponder];
+        [[super emailTextField] resignFirstResponder];
+    }
+
     
 }
 
@@ -88,10 +101,18 @@
 {
     [super viewDidAppear:animated];
     
-    if(![_nameTextField isFirstResponder])
-    {
-        [_nameTextField becomeFirstResponder];
-    }
+    
+    
+//    if(![_nameTextField isFirstResponder] && !_facebookMode)
+//    {
+//        [_nameTextField becomeFirstResponder];
+//    }
+//    else
+//    {
+////        [self hideKeyboard];
+//    }
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -99,6 +120,31 @@
 //    [_nameTextField becomeFirstResponder];
 
     [super viewWillDisappear:animated];
+}
+
+-(void)configureViews
+{
+    DDLogDebug(@"GLPSignUpViewController FB INFO: %@", _facebookLoginInfo);
+    
+    
+    //Load verification view if the user needs to verified from facebook login.
+    if(_facebookLoginInfo)
+    {
+        _fbName = [_facebookLoginInfo objectForKey:@"Name"];
+        [super emailTextField].text = [_facebookLoginInfo objectForKey:@"Email"];
+    
+        _facebookMode = YES;
+        
+        [self hideSignUpViewAndShowVerification];
+        
+
+//        [_signUpView setHidden:YES];
+//        [_verifyView setHidden:NO];
+    }
+    else
+    {
+        _facebookMode = NO;
+    }
 }
 
 -(void)initialiseObjects
@@ -245,7 +291,33 @@
 
 -(IBAction)loginUser:(id)sender
 {
-    [super loginUserFromLoginScreen:NO];
+    if(_facebookMode)
+    {
+//        DDLogDebug(@"Facebook info: %@ : %@ :%@ Token: %@", _fbName, _fbResponse, [super emailTextField].text, [[GLPFacebookConnect sharedConnection] facebookLoginToken]);
+        
+        //Login user and get from server the token and the remote key.
+        //If this code reached means that the user is unverified.
+        
+        [[WebClient sharedInstance] registerViaFacebookToken:[[GLPFacebookConnect sharedConnection] facebookLoginToken] withEmailOrNil:[super emailTextField].text andCallbackBlock:^(BOOL success, NSString *responseObject) {
+            
+            if(success)
+            {
+                
+                [self loadDataAfterFacebookLoginWithServerResponse:responseObject];
+            }
+            else
+            {
+                DDLogError(@"Failed to register to facebook.");
+            }
+            
+        }];
+    }
+    else
+    {
+        [super loginUserFromLoginScreen:NO];
+    }
+    
+    
 //    
 //    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self.view];
 //    
@@ -265,6 +337,27 @@
 //    }];
 }
 
+-(void)loadDataAfterFacebookLoginWithServerResponse:(NSString *)response
+{
+    //Load data if that's success.
+    
+    [GLPLoginManager loginFacebookUserWithName:_fbName withEmail:[super emailTextField].text response:response callback:^(BOOL success, NSString *serverResponse, NSString *email) {
+        
+        if (success)
+        {
+            [self performSegueWithIdentifier:@"start" sender:self];
+        }
+        else if(!success && [serverResponse isEqualToString:@"unverified"])
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"You still unverified."];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
+        }
+    }];
+}
+
 - (IBAction)resendVerification:(id)sender
 {
     [WebClientHelper showStandardLoaderWithTitle:@"Resending verification email" forView:self.view];
@@ -275,7 +368,6 @@
         
         if(success)
         {
-            
             [self showResendMessage];
 
         }

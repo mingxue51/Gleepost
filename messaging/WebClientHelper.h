@@ -34,5 +34,9 @@
 +(void)showFailedToDeletePostError;
 
 + (void)failedToSendEmailResettingPassword;
-
++ (void)showNeedsFacebookAppError;
++ (void)showInvitedFriendsToGroupViaFBWithNumberOfFriends:(NSInteger)numberOfFriends;
++ (void)showProblemLoadingFBFriends;
++ (void)showProblemInvitingFBFriends;
++ (void)showSuccessfullyInvitedFriends:(NSString *)friends;
 @end

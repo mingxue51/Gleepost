@@ -65,6 +65,7 @@
 
 +(NSString*)parseRegisterErrorMessage:(NSString*)error;
 +(NSString*)parseLoginErrorMessage:(NSString*)error;
++ (NSString *)parseFBRegisterErrorMessage:(NSString *)error;
 +(NSString *)parseLoadingGroupErrorMessage:(NSString *)error;
 
 // images
@@ -82,5 +83,11 @@
 
 // invite message
 + (NSString *)parseMessageFromJson:(NSDictionary *)json;
+
+// facebook
++(BOOL)isAccountVerified:(NSDictionary *)json;
++(BOOL)isAccountRegistered:(NSDictionary *)json;
++(NSString *)parseFBStatusFromAPI:(NSDictionary *)json;
+
 
 @end

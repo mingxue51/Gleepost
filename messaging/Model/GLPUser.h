@@ -13,6 +13,8 @@
 @property (strong, nonatomic) NSString *personalMessage;
 @property (strong, nonatomic) NSString *email;
 
+
+-(id)initWithName:(NSString *)name withId:(NSInteger)key andImageUrl:(NSString *)imgUrl;
 - (BOOL)hasProfilePicture;
 
 

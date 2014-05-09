@@ -1000,7 +1000,54 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return json[@"message"];
 }
 
+#pragma mark - Facebook
 
++(BOOL)isAccountVerified:(NSDictionary *)json
+{
+    NSString *status = json[@"status"];
+    
+    if([status isEqualToString:@"unverified"])
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
++(BOOL)isAccountRegistered:(NSDictionary *)json
+{
+    NSString *status = json[@"status"];
+    
+    if([status isEqualToString:@"registered"])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+
++(NSString *)parseFBStatusFromAPI:(NSDictionary *)json
+{
+    NSString *status = json[@"status"];
+    
+    return status;
+}
+
++ (NSString *)parseFBRegisterErrorMessage:(NSString *)error {
+    if ([error rangeOfString:@"Email required"].location != NSNotFound)
+        return @"Facebook user does not have a Gleepost account assciated. Email is required.";
+    else if ([error rangeOfString:@"unverified"].location != NSNotFound)
+        return @"Facebook account is not verified.";
+    else if ([error rangeOfString:@"Invalid email"].location != NSNotFound)
+        return @"Invalid email address entered. Valid university email required.";
+    else
+        return @"Unknown error occured";
+}
 
 
 @end

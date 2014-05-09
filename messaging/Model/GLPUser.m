@@ -15,6 +15,19 @@
     return self;
 }
 
+-(id)initWithName:(NSString *)name withId:(NSInteger)key andImageUrl:(NSString *)imgUrl
+{
+    self = [super init];
+    if(self)
+    {
+        self.name = name;
+        self.key = key;
+        self.profileImageUrl = imgUrl;
+    }
+    
+    return self;
+}
+
 - (BOOL)hasProfilePicture
 {
     return _profileImageUrl && ![_profileImageUrl isEqualToString:@""];

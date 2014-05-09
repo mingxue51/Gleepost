@@ -21,6 +21,8 @@
 #import "GLPProfileLoader.h"
 #import "UICKeyChainStore.h"
 #import "GLPPushManager.h"
+#import "GLPFacebookConnect.h"
+#import "RemoteParser.h"
 
 @implementation GLPLoginManager
 
@@ -59,7 +61,9 @@
                 userWithDetials.email = identifier;
                 
                 [self rememberUser:shouldRemember withIdentifier:identifier andPassword:password];
-                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
+//                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
+                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+
                 
                 callback(YES, errorMessage);
             }];
@@ -67,7 +71,63 @@
     }];
 }
 
-+ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate contacts:(NSArray *)contacts
+/**
+ Returns the e-mail only when the user is unverified.
+ */
+
++ (void)loginFacebookUserWithName:(NSString *)name withEmail:(NSString *)email response:(NSString *)response callback:(void (^)(BOOL success, NSString *status, NSString *email))callback {
+    
+    NSDictionary *json = (NSDictionary *)response;
+    
+    DDLogDebug(@"FB RESPONSE: %@", json);
+ 
+    
+    NSString *responseFromServer = [RemoteParser parseFBStatusFromAPI:json];
+    NSString *emailJson = json[@"email"];
+    
+    if([RemoteParser isAccountVerified:json])
+    {
+        
+        if([RemoteParser isAccountRegistered:json])
+        {
+            //User registered.
+            callback(NO, json[@"status"], nil);
+        }
+        else
+        {
+            GLPUser *user = [[GLPUser alloc] init];
+            user.remoteKey = [json[@"id"] integerValue];
+            user.name = name;
+            user.email = email;
+            //TODO: Take name surname here.
+            NSString *token = json[@"value"];
+            NSDate *expirationDate = [RemoteParser parseDateFromString:json[@"expiry"]];
+            
+            loadData(user, token, expirationDate, ^(BOOL success, NSString *response) {
+                
+                if(success)
+                {
+                    callback(YES, response, nil);
+                }
+                else
+                {
+                    callback(NO, response, nil);
+                }
+            });
+        }
+        
+
+    }
+    else
+    {
+        //Unverified.
+        callback(NO, responseFromServer, emailJson);
+    }
+    
+
+}
+
++ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts
 {
     [[DatabaseManager sharedInstance] initDatabase];
     
@@ -179,6 +239,45 @@
     BOOL autologin = number ? [number boolValue] : NO;
     
     return autologin && [[SessionManager sharedInstance] isUserSessionValidForAutoLogin];
+}
+
+# pragma mark - Helper function for loading user data
+void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^callback)(BOOL success, NSString *response)) {
+//    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+    
+    NSString *userEmail = user.email;
+    
+    NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
+    
+    NSLog(@"GLPLoginManager : user remoteKey: %d", user.remoteKey);
+    
+    
+    // fetch additional info
+    // user details
+    [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
+        
+        if(!success) {
+            
+            NSLog(@"GLPLoginManager : Failed to load user information.");
+            callback(NO, @"Failed to load information.");
+            return;
+        }
+        
+        // load contacts
+        [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
+         
+            if(!success) {
+                callback(NO, @"Failed to load contacts.");
+                return;
+            }
+            
+            userWithDetials.email = userEmail;
+            
+            [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+            
+            callback(YES, @"Success.");
+        }];
+    }];
 }
 
 @end

@@ -15,6 +15,7 @@
 #import "GLPThemeManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import "GLPPushManager.h"
+#import "GLPFacebookConnect.h"
 
 @interface SessionManager()
 
@@ -88,11 +89,12 @@ static SessionManager *instance = nil;
 
 - (void)registerUser:(GLPUser *)user withToken:(NSString *)token andExpirationDate:(NSDate *)expirationDate
 {
+    
     NSAssert(!self.user, @"An user is already registered in the session");
     
     self.user = user;
     self.token = token;
-    self.authParameters = @{@"id": [NSString stringWithFormat:@"%d", user.remoteKey], @"token": token};
+    self.authParameters = @{@"id": [NSString stringWithFormat:@"%ld", (long)user.remoteKey], @"token": token};
     
     // save session
     self.data[@"user.remoteKey"] = [NSNumber numberWithInteger:self.user.remoteKey];
@@ -117,6 +119,9 @@ static SessionManager *instance = nil;
     
     [self.data removeAllObjects];
     [[NSFileManager defaultManager] removeItemAtPath:self.dataPlistPath error:nil];
+    
+    // closing Facebook active session on clean up
+    [[GLPFacebookConnect sharedConnection] logout];
 }
 
 - (BOOL)isSessionValid
@@ -162,7 +167,7 @@ static SessionManager *instance = nil;
 {
     _user = user;
     _token = self.data[@"user.token"];
-    _authParameters = @{@"id": [NSString stringWithFormat:@"%d", self.user.remoteKey], @"token": self.token};
+    _authParameters = @{@"id": [NSString stringWithFormat:@"%li", (long)self.user.remoteKey], @"token": self.token};
 }
 
 
@@ -204,7 +209,7 @@ static SessionManager *instance = nil;
 -(void)firstTimeLoggedIn
 {
     
-    // load dictionnary data from saved file or create new one
+    // load dictionary data from saved file or create new one
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistLoggedInPath] == YES)
     {
         
@@ -260,6 +265,10 @@ static SessionManager *instance = nil;
     DDLogError(@"User name: %@ Email: %@", _user.name, _user.email);
     
 //    NSDictionary *usersData = [NSDictionary dictionaryWithObjectsAndKeys:_user.name, _user.email, nil];
+    if(!_user.email)
+    {
+        return;
+    }
     
     NSMutableDictionary *usersData = [NSMutableDictionary dictionaryWithDictionary:_usersData];
     [usersData setObject:_user.name forKey:_user.email];

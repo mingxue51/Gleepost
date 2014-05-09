@@ -29,7 +29,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>gleepost</string>
+				<string>fb230797090361137</string>
 			</array>
 		</dict>
 	</array>
@@ -57,6 +57,10 @@
 	<false/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDefault</string>
+	<key>FacebookAppID</key>
+	<string>230797090361137</string>
+	<key>FacebookDisplayName</key>
+	<string>Gleepost</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
