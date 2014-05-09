@@ -191,6 +191,21 @@
     [self showAlertWithTitle:@"Oops!" andMessage:@"To share a post you need to have installed Facebook app on your device"];
 }
 
++ (void)showProblemLoadingFBFriends
+{
+    [self showAlertWithTitle:@"Error" andMessage:@"There was an error loading your facebook friends"];
+}
+
++ (void)showProblemInvitingFBFriends
+{
+    [self showAlertWithTitle:@"Error" andMessage:@"There was a problem inviting your selected facebook friends"];
+}
+
++ (void)showSuccessfullyInvitedFriends:(NSString *)friends
+{
+    [self showAlertWithTitle:@"Invitation completed" andMessage:[NSString stringWithFormat:@"You have successfully invited: %@",friends]];
+}
+
 + (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message
 {
    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title

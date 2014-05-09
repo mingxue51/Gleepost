@@ -96,6 +96,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     return shouldReturn;
 }
 
+//TODO: Remove that is it's not used.
 -(NSString *)saveLocallyUniversityEmail:(NSString *)email
 {
     DDLogDebug(@"saveLocallyUniversityEmail: %@", email);

@@ -22,9 +22,10 @@
 
 @interface GLPFacebookConnect () {
     void (^_openCompletionHandler)(BOOL, NSString *, NSString *);
+    void (^_inviteFriendsCompletionHandler) (BOOL, NSArray*);
     NSString *_universityEmail;
     NSInteger _facebookId;
-    NSInteger _groupRemoteKey;
+    GLPGroup *_group;
 }
 
 /** Instance used for cached user's friends. */
@@ -120,7 +121,10 @@
             
             if(friends)
             {
-                [self inviteFriends];
+                //[self inviteFriends];
+                
+                //[self fetchFriends];
+                [self getFriends];
             }
             else
             {
@@ -272,6 +276,66 @@
 
 #pragma mark - Invite friends
 
+-(void)inviteFriendsViaFBToGroupWithRemoteKey:(GLPGroup* )group completionHandler:(void (^)(BOOL success, NSArray *fbFriends))completionHandler
+{
+    
+    _group = group;
+    _inviteFriendsCompletionHandler = completionHandler;
+    
+    NSArray *permissions = @[@"read_friendlists"];
+    
+    [FBSession openActiveSessionWithReadPermissions:permissions allowLoginUI:YES
+                                  completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                      
+                                      if (error)
+                                      {
+                                          NSString *errorMessage = nil;
+                                          
+                                          if([error fberrorShouldNotifyUser])
+                                          {
+                                              errorMessage = [error fberrorUserMessage];
+                                          }
+                                          
+                                          NSLog(@"FBSession connectWithFacebook failed :%@", errorMessage);
+                                          [FBSession.activeSession closeAndClearTokenInformation];
+                                          
+                                      } else
+                                      {
+                                          [self sessionStateChanged:session
+                                                              state:status
+                                                              error:error
+                                                         friendList:YES];
+                                      }
+                                  }];
+    
+    
+    
+    
+    
+    //    /* make the API call */
+    //    [FBRequestConnection startWithGraphPath:@"/{friendlist-id}"
+    //                                 parameters:nil
+    //                                 HTTPMethod:@"GET"
+    //                          completionHandler:^(
+    //                                              FBRequestConnection *connection,
+    //                                              id result,
+    //                                              NSError *error
+    //                                              ) {
+    //
+    //                              if(error)
+    //                              {
+    //                                  DDLogDebug(@"Error fb invite: %@", error);
+    //                              }
+    //                              else
+    //                              {
+    //                                  DDLogDebug(@"RESULT fb invite: %@", result);
+    //                              }
+    //
+    //                              /* handle the result */
+    //                          }];
+    
+}
+
 -(void)inviteFriends
 {
     NSMutableDictionary* params =   [NSMutableDictionary dictionaryWithObjectsAndKeys: nil];
@@ -359,19 +423,17 @@
 
 -(void)informAPIAboutInvitationWithFBIds:(NSArray *)fbIds
 {
-    [[WebClient sharedInstance] inviteUsersViaFacebookWithGroupRemoteKey:_groupRemoteKey andUsersFacebookIds:fbIds withCallbackBlock:^(BOOL success) {
-       
-        //TODO: Create a pop up message to show to user the friends that he invited.
+    [[WebClient sharedInstance] inviteUsersViaFacebookWithGroupRemoteKey:_group.remoteKey andUsersFacebookIds:fbIds withCallbackBlock:^(BOOL success) {
         
         if(success)
         {
-            DDLogInfo(@"User had invited friends final success.");
-            [WebClientHelper showInvitedFriendsToGroupViaFBWithNumberOfFriends:fbIds.count];
+            DDLogInfo(@"Association with api success.");
+//            [WebClientHelper showInvitedFriendsToGroupViaFBWithNumberOfFriends:fbIds.count];
             
         }
         else
         {
-            DDLogInfo(@"Problem to invite friends.");
+            DDLogInfo(@"Problem to associate with api.");
             [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"There was a problem inviting your selected facebook friends"];
         }
         
@@ -485,63 +547,108 @@
      }];
 }
 
--(void)inviteFriendsViaFBToGroupWithRemoteKey:(int)groupRemoteKey
+-(void)getFriends
 {
+    NSMutableArray *fbFriends = [[NSMutableArray alloc] init];
     
-    _groupRemoteKey = groupRemoteKey;
-    
-    NSArray *permissions = @[@"read_friendlists"];
-    
-    [FBSession openActiveSessionWithReadPermissions:permissions allowLoginUI:YES
-                                  completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                      
-                                      if (error)
-                                      {
-                                          NSString *errorMessage = nil;
-                                          
-                                          if([error fberrorShouldNotifyUser])
-                                          {
-                                              errorMessage = [error fberrorUserMessage];
-                                          }
-                                          
-                                          NSLog(@"FBSession connectWithFacebook failed :%@", errorMessage);
-                                          [FBSession.activeSession closeAndClearTokenInformation];
-                                          
-                                      } else
-                                      {
-                                          [self sessionStateChanged:session
-                                                              state:status
-                                                              error:error
-                                                         friendList:YES];
-                                      }
-                                  }];
-    
-    
-    
-    
-    
-    //    /* make the API call */
-    //    [FBRequestConnection startWithGraphPath:@"/{friendlist-id}"
-    //                                 parameters:nil
-    //                                 HTTPMethod:@"GET"
-    //                          completionHandler:^(
-    //                                              FBRequestConnection *connection,
-    //                                              id result,
-    //                                              NSError *error
-    //                                              ) {
-    //
-    //                              if(error)
-    //                              {
-    //                                  DDLogDebug(@"Error fb invite: %@", error);
-    //                              }
-    //                              else
-    //                              {
-    //                                  DDLogDebug(@"RESULT fb invite: %@", result);
-    //                              }
-    //
-    //                              /* handle the result */
-    //                          }];
-    
+    FBRequest* friendsRequest = [FBRequest requestForMyFriends];
+    [friendsRequest startWithCompletionHandler: ^(FBRequestConnection *connection,
+                                                  NSDictionary* result,
+                                                  NSError *error) {
+        
+        
+        if(error)
+        {
+            _inviteFriendsCompletionHandler(NO, nil);
+            return;
+        }
+        
+        NSArray* friends = [result objectForKey:@"data"];
+        
+        for (NSDictionary<FBGraphUser>* friend in friends)
+        {
+            GLPUser *user = [[GLPUser alloc] initWithName:friend.name withId:[friend.id integerValue] andImageUrl:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal", friend.id]];
+            
+            [fbFriends addObject:user];
+        }
+        
+        _inviteFriendsCompletionHandler(YES, fbFriends);
+        
+    }];
 }
+
+-(void)sendRequestToFriendWithFriendsIds:(NSArray *)friendIDs withCompletionCallback:(void (^) (NSString *status))completionCallback
+{
+    // Normally this won't be hardcoded but will be context specific, i.e. players you are in a match with, or players who recently played the game etc
+//    NSArray *friendIDs = [[NSArray alloc] initWithObjects:
+//                                 @"1474356782", nil];
+    
+//    SBJsonWriter *jsonWriter = [SBJsonWriter new];
+//    NSDictionary *challenge =  [NSDictionary dictionaryWithObjectsAndKeys: [NSString stringWithFormat:@"%d", nScore], @"challenge_score", nil];
+//    NSString *challengeStr = [jsonWriter stringWithObject:challenge];
+    
+    NSString *challengeStr = @"Invitation test.";
+
+    
+    
+    // Create a dictionary of key/value pairs which are the parameters of the dialog
+    
+    // 1. No additional parameters provided - enables generic Multi-friend selector
+    NSMutableDictionary* params =   [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                     // 2. Optionally provide a 'to' param to direct the request at a specific user
+                                     [friendIDs componentsJoinedByString:@","], @"to", // Ali
+                                     // 3. Suggest friends the user may want to request, could be game context specific?
+                                     //[suggestedFriends componentsJoinedByString:@","], @"suggestions",
+                                     challengeStr, @"data",
+                                     nil];
+    
+    
+    
+    if (_friendCache == NULL) {
+        _friendCache = [[FBFrictionlessRecipientCache alloc] init];
+    }
+    
+    [_friendCache prefetchAndCacheForSession:nil];
+    
+    [FBWebDialogs presentRequestsDialogModallyWithSession:nil
+                                                  message:[NSString stringWithFormat:@"Join me at group '%@' at Gleepost.", _group.name]
+                                                    title:@"Group invitation at gleepost."
+                                               parameters:params
+                                                  handler:^(FBWebDialogResult result,
+                                                            NSURL *resultURL,
+                                                            NSError *error) {
+                                                      
+                                                      if (error) {
+                                                          // Case A: Error launching the dialog or sending request.
+                                                          DDLogInfo(@"Error sending request.");
+                                                          completionCallback(@"error");
+                                                      } else {
+                                                          if (result == FBWebDialogResultDialogNotCompleted) {
+                                                              // Case B: User clicked the "x" icon
+                                                              DDLogInfo(@"User canceled request.");
+                                                              completionCallback(@"canceled");
+                                                          } else {
+                                                              
+                                                            
+                                                              NSDictionary *finalResult = [self parseURLParams:[resultURL query]];
+                                                              
+                                                              if([finalResult objectForKey:@"error_code"])
+                                                              {
+                                                                  DDLogInfo(@"User canceled request.");
+                                                                  completionCallback(@"canceled");
+                                                              }
+                                                              else
+                                                              {
+                                                                  DDLogInfo(@"Request Sent.");
+                                                                  [self informAPIAboutInvitationWithFBIds:friendIDs];
+                                                                  completionCallback(@"sent");
+                                                              }
+                                                          }
+                                                      }
+                                                  }
+                                              friendCache:_friendCache];
+}
+
+
 
 @end

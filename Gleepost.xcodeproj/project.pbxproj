@@ -24,6 +24,7 @@
 		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
+		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */; };
@@ -271,6 +272,7 @@
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
+		586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */; };
 		58711A6B18C6586D00798F13 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58711A6A18C6586D00798F13 /* ContactCell.xib */; };
 		587248A618C6223300B98484 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 587248A518C6223300B98484 /* GroupViewController.m */; };
 		587248AD18C64C5200B98484 /* group_posts_selected_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 587248A918C64C5200B98484 /* group_posts_selected_old.png */; };
@@ -702,6 +704,7 @@
 		1172680D1888068E008F5391 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
+		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
@@ -1053,6 +1056,8 @@
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
+		586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFBInvitationsViewController.h; sourceTree = "<group>"; };
+		586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFBInvitationsViewController.m; sourceTree = "<group>"; };
 		58711A6A18C6586D00798F13 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		587248A418C6223300B98484 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		587248A518C6223300B98484 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
@@ -1915,6 +1920,7 @@
 		583CE324189FFFB100E78C08 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				5806C760191BFA5D005C907E /* fb_login.png */,
 				582A664718ABD37D00006419 /* verified.png */,
 				5839261D18A020F600439398 /* connect_fb_button.png */,
 				5839261B18A020E800439398 /* skip_button.png */,
@@ -2214,6 +2220,15 @@
 				5867FF5818B64D320080AD9D /* CopyLabel.m */,
 			);
 			name = "Copy Label";
+			sourceTree = "<group>";
+		};
+		586F6EF6191BADFB00BDF558 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */,
+				586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */,
+			);
+			name = Facebook;
 			sourceTree = "<group>";
 		};
 		587248A318C6220800B98484 /* Group Classes */ = {
@@ -3232,6 +3247,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				586F6EF6191BADFB00BDF558 /* Facebook */,
 				80E93FB318C8BD43008769CB /* Contacts */,
 				80E93FAF18C8BD0E008769CB /* Groups */,
 				587248A318C6220800B98484 /* Group Classes */,
@@ -3921,6 +3937,7 @@
 				C02DB4DD18AE56CA0077FDEB /* message.png in Resources */,
 				5843328F180F09C900BD9F74 /* Gleepost2.png in Resources */,
 				580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */,
+				5806C761191BFA5D005C907E /* fb_login.png in Resources */,
 				806E3D801832B1960063AACE /* NotificationBackgroundWarning.png in Resources */,
 				583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */,
 				5890D23818482DC300E293DD /* profile@2x.png in Resources */,
@@ -4398,6 +4415,7 @@
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
+				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,

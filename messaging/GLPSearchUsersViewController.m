@@ -16,6 +16,7 @@
 #import "SessionManager.h"
 #import "GLPPrivateProfileViewController.h"
 #import "GLPFacebookConnect.h"
+#import "GLPFBInvitationsViewController.h"
 
 @interface GLPSearchUsersViewController ()
 
@@ -148,7 +149,16 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 {
     [_searchTextfield resignFirstResponder];
 
-    [[GLPFacebookConnect sharedConnection] inviteFriendsViaFBToGroupWithRemoteKey:_group.remoteKey];
+//    [[GLPFacebookConnect sharedConnection] inviteFriendsViaFBToGroupWithRemoteKey:_group.remoteKey];
+    [self showInvitationsViewController];
+}
+
+-(void)showInvitationsViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPFBInvitationsViewController *fbVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPFBInvitationsViewController"];
+    fbVC.group = self.group;
+    [self presentViewController:fbVC animated:YES completion:nil];
 }
 
 # pragma mark - Searching
