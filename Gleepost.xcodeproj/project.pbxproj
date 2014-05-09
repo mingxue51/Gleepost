@@ -67,6 +67,9 @@
 		581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */; };
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
+		581B8BBB190C282600A74260 /* thermometer_ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 581B8BBA190C282600A74260 /* thermometer_ball.png */; };
+		581BD8651913D57A006F8BCD /* LevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BD8641913D57A006F8BCD /* LevelView.m */; };
+		581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581BD8671913E05E006F8BCD /* ThermometerCircleView.m */; };
 		581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */; };
 		581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311C188EFE6800BAA082 /* GLPCategory.m */; };
 		581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311F188F068600BAA082 /* GLPCategoryDao.m */; };
@@ -237,6 +240,7 @@
 		58536EDA18BE83DE0036FD00 /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58A379C018BE3C6300E30949 /* gleepost.cer */; };
 		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
+		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585E724418B2C07C009034DE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 585E724318B2C07C009034DE /* splash.png */; };
@@ -758,6 +762,11 @@
 		581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollContactsOperation.m; sourceTree = "<group>"; };
 		581AAF0C181DA88700F091A9 /* InvitationSentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationSentView.h; sourceTree = "<group>"; };
 		581AAF0D181DA88700F091A9 /* InvitationSentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationSentView.m; sourceTree = "<group>"; };
+		581B8BBA190C282600A74260 /* thermometer_ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_ball.png; sourceTree = "<group>"; };
+		581BD8631913D57A006F8BCD /* LevelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelView.h; sourceTree = "<group>"; };
+		581BD8641913D57A006F8BCD /* LevelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelView.m; sourceTree = "<group>"; };
+		581BD8661913E05E006F8BCD /* ThermometerCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThermometerCircleView.h; sourceTree = "<group>"; };
+		581BD8671913E05E006F8BCD /* ThermometerCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThermometerCircleView.m; sourceTree = "<group>"; };
 		581C3118188EFE0400BAA082 /* GLPCategoryDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryDaoParser.h; sourceTree = "<group>"; };
 		581C3119188EFE0400BAA082 /* GLPCategoryDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryDaoParser.m; sourceTree = "<group>"; };
 		581C311B188EFE6800BAA082 /* GLPCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategory.h; sourceTree = "<group>"; };
@@ -1003,6 +1012,7 @@
 		58536EDB18BE84210036FD00 /* gleepost-dev.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
 		585B319E191C452600B66380 /* BusyFreeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusyFreeSwitch.h; sourceTree = "<group>"; };
 		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
+		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
@@ -1714,13 +1724,6 @@
 			name = "ProfileView Settings";
 			sourceTree = "<group>";
 		};
-		580C7AC418985D9F007495EE /* Splash */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Splash;
-			sourceTree = "<group>";
-		};
 		580FF15018AA6D810026B65B /* Time formatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -2074,6 +2077,19 @@
 				5851B5DA18258FB800AA9103 /* TransitionDelegate.m */,
 			);
 			name = "Transition Delegate New Post";
+			sourceTree = "<group>";
+		};
+		585882CC190E6A11000BFBF9 /* Thermometer */ = {
+			isa = PBXGroup;
+			children = (
+				582A663418AB963700006419 /* EventBarView.h */,
+				582A663518AB963700006419 /* EventBarView.m */,
+				581BD8631913D57A006F8BCD /* LevelView.h */,
+				581BD8641913D57A006F8BCD /* LevelView.m */,
+				581BD8661913E05E006F8BCD /* ThermometerCircleView.h */,
+				581BD8671913E05E006F8BCD /* ThermometerCircleView.m */,
+			);
+			name = Thermometer;
 			sourceTree = "<group>";
 		};
 		585DF77317ECA70C00FBFC35 /* Chat Images */ = {
@@ -2501,7 +2517,9 @@
 				58940FB918D2083900FED5AF /* gleepost_logo_header.png */,
 				589EAD1F18A436D5005B2F4C /* top_image_campus_wall.png */,
 				589CE50418D222790046DAD2 /* thermometer_color.png */,
+				581B8BBA190C282600A74260 /* thermometer_ball.png */,
 				589CE50018D21CFF0046DAD2 /* thermometer.png */,
+				585882CD190E8B49000BFBF9 /* thermometer_shadow.png */,
 				589CE50218D21FB40046DAD2 /* clock.png */,
 			);
 			name = "Campus Live";
@@ -2784,7 +2802,6 @@
 				583CE324189FFFB100E78C08 /* Login */,
 				58729ACB189BFDFE0041022C /* Navigation */,
 				5832C4CA189994EA004FC4F6 /* Settings */,
-				580C7AC418985D9F007495EE /* Splash */,
 				58272F811896823800CD7522 /* Fake Navigation Bar */,
 				58AD86BD1892DFB100016C6D /* New Chat */,
 				58AD869A18929EB700016C6D /* Profile */,
@@ -3329,6 +3346,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				585882CC190E6A11000BFBF9 /* Thermometer */,
 				58428E3018A27DF600B82E4B /* Register */,
 				80809AED1895DA680077D227 /* Tables */,
 				80AB896817C2808A0053E784 /* UIPlaceHolderTextView.h */,
@@ -3339,8 +3357,6 @@
 				80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */,
 				58272F7E1896807900CD7522 /* FakeNavigationBar.h */,
 				58272F7F1896807900CD7522 /* FakeNavigationBar.m */,
-				582A663418AB963700006419 /* EventBarView.h */,
-				582A663518AB963700006419 /* EventBarView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3940,6 +3956,7 @@
 				58289EFF18D75BB000228EFF /* clock_post.png in Resources */,
 				8096E4F217C2D00F00C7BF60 /* navigation_fullblack.png in Resources */,
 				584332AA180F343200BD9F74 /* bottom_background_private_profile.png in Resources */,
+				581B8BBB190C282600A74260 /* thermometer_ball.png in Resources */,
 				58FB7CB4185654C8002C6A00 /* ProfileViewButtonsTableViewCell.xib in Resources */,
 				58AD86AA18929F2200016C6D /* posts_button.png in Resources */,
 				58361C36184CBF6700FEFC49 /* profiletext_background.png in Resources */,
@@ -3982,6 +3999,7 @@
 				5834FF4118B4FE480092C52D /* campus_wall_background_main_old.png in Resources */,
 				5829F48D18B1546300A7B871 /* add_user.png in Resources */,
 				58E27E0E18A6CD5000D8BB24 /* message-7@2x.png in Resources */,
+				585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */,
 				584F1BF118DA3C2C00F43ABF /* nav_bar_title_button.png in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
@@ -4265,6 +4283,7 @@
 				582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
+				581BD8651913D57A006F8BCD /* LevelView.m in Sources */,
 				582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */,
 				58FB7CBE18565AAA002C6A00 /* ProfileMutualTableViewCell.m in Sources */,
 				80666C401806D45700E4E515 /* ConversationManager.m in Sources */,
@@ -4377,6 +4396,7 @@
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
 				585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */,
+				581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,

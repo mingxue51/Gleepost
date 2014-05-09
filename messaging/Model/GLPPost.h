@@ -28,6 +28,7 @@
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) NSArray *categories;
 @property (assign, nonatomic) int popularity;
+@property (assign, nonatomic) NSInteger attendees;
 @property (assign, nonatomic) BOOL attended;
 
 //In case post has group information.

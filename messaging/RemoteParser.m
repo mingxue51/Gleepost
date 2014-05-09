@@ -389,8 +389,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
     post.commentsCount = [json[@"comment_count"] integerValue];
 
-    
-
     post.likes = [json[@"like_count"] integerValue];
     
     post.dislikes = [json[@"hates"] integerValue];
@@ -407,6 +405,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     post.popularity = [json[@"popularity"] integerValue];
+    post.attendees = [json[@"attendee_count"] integerValue];
     
     NSArray *jsonArray = json[@"images"];
     
@@ -658,6 +657,25 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return array;
+}
+
+#pragma mark - Attendees
+
++(NSInteger)parseNewPopularity:(NSDictionary *)json
+{
+    return [json[@"popularity"] integerValue];
+}
+
++(NSArray *)parseAttendees:(NSDictionary *)json
+{
+    NSArray *usersJson = json[@"attendees"];
+    
+    return [RemoteParser parseUsersFromJson:usersJson];
+}
+
++(NSInteger)parseAttendeesCount:(NSDictionary *)json
+{
+    return [json[@"attendee_count"] integerValue];
 }
 
 

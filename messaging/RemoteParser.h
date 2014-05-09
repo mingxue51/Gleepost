@@ -46,6 +46,10 @@
 +(NSString*)parseCategoriesToTags:(NSArray*)categories;
 +(NSArray *)parseLivePostsIds:(NSArray *)jsonIds;
 
+// attendees
+
++(NSInteger)parseNewPopularity:(NSDictionary *)json;
+
 // groups
 + (GLPGroup *)parseGroupFromJson:(NSDictionary *)json;
 + (NSArray *)parseGroupsFromJson:(NSArray *)json;

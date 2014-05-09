@@ -947,9 +947,8 @@ static const float FixedBottomTextViewHeight = 100;
 {
     self.post.attended = YES;
 
-    
-    [[WebClient sharedInstance] postAttendInPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
-        
+    [[WebClient sharedInstance] attendEvent:YES withPostRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
+       
         if(success)
         {
             //Update local database.
@@ -958,9 +957,9 @@ static const float FixedBottomTextViewHeight = 100;
         else
         {
             [self makeButtonUnselected];
-
-            //Error message.
+            
             [WebClientHelper showStandardError];
+
         }
         
     }];
@@ -970,8 +969,8 @@ static const float FixedBottomTextViewHeight = 100;
 {
     
     self.post.attended = NO;
-
-    [[WebClient sharedInstance] removeAttendFromPostWithRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success) {
+    
+    [[WebClient sharedInstance] attendEvent:NO withPostRemoteKey:self.post.remoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
         
         if(success)
         {
@@ -981,9 +980,8 @@ static const float FixedBottomTextViewHeight = 100;
         else
         {
             [self makeButtonSelected];
-
-            //Error message.
-            [WebClientHelper showStandardError];
+            
+            [WebClientHelper showStandardError];            
         }
         
     }];
