@@ -27,7 +27,7 @@
 
 
 static NSString * const kCancelButtonTitle   = @"Cancel";
-static NSString * const kSignUpButtonTitle   = @"Sign Up";
+static NSString * const kSignUpButtonTitle   = @"Login";
 static NSString * const kOkButtonTitle       = @"Ok";
 
 @implementation GLPLoginSignUpViewController
@@ -245,7 +245,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)askUserForEmailAddressAgain:(BOOL)askingAgain
 {
-    NSString *alertMessage = (askingAgain) ? @"Invalid email address. Please enter your valid university email address to sign up" : @"Please enter your valid university email address to sign up";
+    NSString *alertMessage = (askingAgain) ? @"Invalid email address. Please enter your valid university email address to login" : @"Please enter your valid university email address to login";
     
     _emailPromptAlertView = [[UIAlertView alloc] initWithTitle:@"Email Required"
                                                        message:alertMessage
