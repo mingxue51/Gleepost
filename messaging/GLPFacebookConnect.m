@@ -630,7 +630,7 @@
     [_friendCache prefetchAndCacheForSession:nil];
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:nil
-                                                  message:[NSString stringWithFormat:@"Join me at group '%@' at Gleepost.", _group.name]
+                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on Gleepost.", _group.name]
                                                     title:@"Group invitation at gleepost."
                                                parameters:params
                                                   handler:^(FBWebDialogResult result,
