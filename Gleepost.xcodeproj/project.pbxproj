@@ -236,6 +236,7 @@
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
 		58536EDA18BE83DE0036FD00 /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58A379C018BE3C6300E30949 /* gleepost.cer */; };
 		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
+		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585E724418B2C07C009034DE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 585E724318B2C07C009034DE /* splash.png */; };
@@ -1000,6 +1001,8 @@
 		58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTemporaryUserInformationManager.h; sourceTree = "<group>"; };
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
 		58536EDB18BE84210036FD00 /* gleepost-dev.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
+		585B319E191C452600B66380 /* BusyFreeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusyFreeSwitch.h; sourceTree = "<group>"; };
+		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
@@ -2724,6 +2727,8 @@
 				58FB7CAA18565053002C6A00 /* ProfileViewTableViewCell.xib */,
 				58FB7CAC18565089002C6A00 /* ProfileTableViewCell.h */,
 				58FB7CAD18565089002C6A00 /* ProfileTableViewCell.m */,
+				585B319E191C452600B66380 /* BusyFreeSwitch.h */,
+				585B319F191C452600B66380 /* BusyFreeSwitch.m */,
 			);
 			name = ProfileView;
 			sourceTree = "<group>";
@@ -4371,6 +4376,7 @@
 				586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
+				585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,

@@ -32,8 +32,6 @@ extern const float PROFILE_CELL_HEIGHT;
 
 
 
-@property (assign, nonatomic) BOOL isBusy;
-
 
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user;
 -(void)initialiseElementsWithUserDetails:(GLPUser *)user withImage:(UIImage*)image;

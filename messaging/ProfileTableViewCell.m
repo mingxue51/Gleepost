@@ -21,7 +21,7 @@
 #import "ContactsManager.h"
 #import "ConversationManager.h"
 #import "GLPLiveConversationsManager.h"
-
+#import "BusyFreeSwitch.h"
 
 @interface ProfileTableViewCell ()
 
@@ -34,7 +34,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *messageButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *inContacts;
-@property (weak, nonatomic) IBOutlet UISwitch *busySwitch;
+@property (weak, nonatomic) IBOutlet BusyFreeSwitch *busySwitch;
 @property (weak, nonatomic) IBOutlet UILabel *busyLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *groupDescriptionLbl;
@@ -192,10 +192,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     }
     
     self.currentUser = user;
-    
-    
-    [self getBusyStatus];
-    
 
     
     [self.universityLabel setText:user.networkName];
@@ -239,13 +235,9 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         return;
     }
     
-    [self getBusyStatus];
-
     
     self.currentUser = user;
     
-    [self.busySwitch setOn:!self.isBusy];
-
     
     [self.universityLabel setText:user.networkName];
 
@@ -367,8 +359,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
         [self.busyLabel setHidden:NO];
         [self.busySwitch setHidden:NO];
         
-        //Load data for busy switch.
-//        [self getBusyStatus];
         
         //Add selector to profile image view.
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeProfileImage:)];
@@ -506,32 +496,6 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
 }
 
 #pragma mark - Client
-
-- (IBAction)setBusyStatus:(id)sender
-{
-    UISwitch *s = (UISwitch*)sender;
-    
-    
-    [[WebClient sharedInstance] setBusyStatus:!s.isOn callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            //Do something.
-            self.isBusy = !s.isOn;
-        }
-    }];
-}
-
--(void)getBusyStatus
-{
-    [[WebClient sharedInstance] getBusyStatus:^(BOOL success, BOOL status) {
-        
-        if(success)
-        {
-            [self.busySwitch setOn:!status];
-        }
-    }];
-}
 
 - (IBAction)addUser:(id)sender
 {
