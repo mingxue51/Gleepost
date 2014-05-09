@@ -107,12 +107,10 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     
     _activityIndicator.hidden = YES;
     
-    //TODO: Move this code from here to the EmpryMessage class that is on an other branch.
+    //TODO: Move this code from here to the EmptyMessage class that is on an other branch.
     
-    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 50.0f, 320.0f, 50.0f)];
-    [_facebookButton setTitle:@"Invite your friends via Facebook!" forState:UIControlStateNormal];
-    _facebookButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [_facebookButton setTitleColor:[UIColor colorWithRed:64.0f/255.0f green:83.0f/255.0f blue:130.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(35.0f, 50.0f, 250.0f, 60.0f)];
+    [_facebookButton setImage:[UIImage imageNamed:@"fb_invite"] forState:UIControlStateNormal];
     [_facebookButton setHidden:YES];
     [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView insertSubview:_facebookButton aboveSubview:self.tableView];
