@@ -109,11 +109,16 @@ static NSString *const SEARCH_USERS_STR = @"Search";
     
     //TODO: Move this code from here to the EmptyMessage class that is on an other branch.
     
-    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(35.0f, 50.0f, 250.0f, 60.0f)];
-    [_facebookButton setImage:[UIImage imageNamed:@"fb_invite"] forState:UIControlStateNormal];
-    [_facebookButton setHidden:YES];
-    [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
-    [self.tableView insertSubview:_facebookButton aboveSubview:self.tableView];
+    if(_searchForMembers)
+    {
+        _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(35.0f, 50.0f, 250.0f, 60.0f)];
+        [_facebookButton setImage:[UIImage imageNamed:@"fb_invite"] forState:UIControlStateNormal];
+        [_facebookButton setHidden:YES];
+        [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
+        [self.tableView insertSubview:_facebookButton aboveSubview:self.tableView];
+    }
+    
+
 }
 
 -(void)configureButtons
@@ -272,16 +277,21 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(_users.count == 0)
+    if(_searchForMembers)
     {
-        //Show facebook button to invite friends.
-        [_facebookButton setHidden:NO];
+        if(_users.count == 0)
+        {
+            //Show facebook button to invite friends.
+            [_facebookButton setHidden:NO];
+        }
+        else
+        {
+            //Hide facebook button.
+            [_facebookButton setHidden:YES];
+        }
     }
-    else
-    {
-        //Hide facebook button.
-        [_facebookButton setHidden:YES];
-    }
+    
+
     
     return _users.count;
 }

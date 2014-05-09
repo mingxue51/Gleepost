@@ -684,8 +684,8 @@ static bool firstTime = YES;
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-            [postViewCell postFromNotifications:_isViewPostNotifications];
-            // [postViewCell reloadImage:self.needsToLoadAgainTheImage];
+//            [postViewCell postFromNotifications:_isViewPostNotifications];
+            [postViewCell reloadImage:self.needsToLoadAgainTheImage];
         }
         else
         {
