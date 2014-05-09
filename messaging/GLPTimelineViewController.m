@@ -306,6 +306,8 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPShowEvent" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+
 
 }
 
@@ -730,6 +732,8 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPostsWithNewProfileImage:) name:@"GLPProfileImageChanged" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToTheNavigationBarFromNotification:) name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
 }
 
 - (void)configTableView
@@ -1967,6 +1971,18 @@ const float TOP_OFFSET = 280.0f;
         
     }];
     
+}
+
+/**
+ This method is called from the GLPTabBarController class
+ When the home tab button pressed twice.
+ 
+ @param notification
+ 
+ */
+-(void)scrollToTheNavigationBarFromNotification:(id)notification
+{
+    [self scrollToTheNavigationBar];
 }
 
 

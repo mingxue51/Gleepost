@@ -28,6 +28,7 @@ const float TABBAR_OFFSET_HEIGHT = 5.0f;
 
 static BOOL isViewDidDisappearCalled = YES;
 static BOOL isViewDidLayoutSubviews = NO;
+static NSInteger lastTabbarIndex = 0;
 
 - (void)viewDidLoad
 {
@@ -207,6 +208,17 @@ static BOOL isViewDidLayoutSubviews = NO;
 
 - (BOOL)tabBarController:(UITabBarController*)tabBarController shouldSelectViewController:(UIViewController*)viewController
 {
+    //If user pushed twice the home tab bar button the send notification to
+    //GLPTimelineViewController.
+    
+    if(lastTabbarIndex == 0 && viewController.tabBarItem.tag == 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+    }
+    
+    lastTabbarIndex = viewController.tabBarItem.tag;
+
+    
     if(viewController.tabBarItem.tag == 2)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];

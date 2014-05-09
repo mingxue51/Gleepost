@@ -33,6 +33,7 @@
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
 #define GLPNOTIFICATION_POST_DELETED                    @"GLPPostDeleted"
+#define GLPNOTIFICATION_HOME_TAPPED_TWICE               @"GLPHomeTabbedTwice"
 
 #define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
 

@@ -125,6 +125,7 @@
                 
                 //[self fetchFriends];
                 [self getFriends];
+                [self associateCurrentAccountWithFacebook];
             }
             else
             {
@@ -440,6 +441,25 @@
     }];
 }
 
+-(void)associateCurrentAccountWithFacebook
+{
+    NSDictionary *authParams = [[SessionManager sharedInstance] authParameters];
+    
+    [[WebClient sharedInstance] associateWithFacebookAccountUsingFBToken:[self facebookLoginToken] withEMail:authParams[@"id"] withPassword:authParams[@"token"] andCallbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            DDLogDebug(@"Associated with facebook account");
+        }
+        else
+        {
+            DDLogDebug(@"Not able to associated with facebook account");
+        }
+        
+        
+    }];
+}
+
 -(void)fetchFriendsWithSession:(FBSession *)session
 {
     __block NSString *requestID = nil;
@@ -648,6 +668,8 @@
                                                   }
                                               friendCache:_friendCache];
 }
+
+
 
 
 
