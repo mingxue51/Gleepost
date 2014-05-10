@@ -160,7 +160,10 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 else if([status isEqualToString:@"registered"])
                 {
                     //Ask user to put his password.
-                    [self askUserForPassword];
+//                    [self askUserForPassword];
+                    _universityEmail = [self saveLocallyUniversityEmail:email];
+
+                    [self askUserForEmailAndPasswordAskAgain:NO];
                 }
                 else if(!success && [status isEqualToString:@"unverified"])
                 {
@@ -215,8 +218,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [WebClientHelper showStandardLoaderWithTitle:@"Associating account with facebook" forView:self.view];
 
     
-    [[GLPFacebookConnect sharedConnection] associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:password withCallbackBlock:^(BOOL success) {
-       
+    [[GLPFacebookConnect sharedConnection] associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:password andEmail:_universityEmail withCallbackBlock:^(BOOL success) {
+        
         [WebClientHelper hideStandardLoaderForView:self.view];
 
         if(success)
@@ -237,7 +240,10 @@ static NSString * const kOkButtonTitle       = @"Ok";
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Association Error" andContent:@"There was a problem associating your account with facebook."];
+            
+            //Ask again to fill information.
+            [self askUserForEmailAndPasswordAskAgain:YES];
+            
         }
         
     }];
@@ -281,17 +287,51 @@ static NSString * const kOkButtonTitle       = @"Ok";
     
     [passwordPromptAlertView setAlertViewStyle:UIAlertViewStyleSecureTextInput];
     
-    
-
     [passwordPromptAlertView show];
 }
 
+-(void)askUserForEmailAndPasswordAskAgain:(BOOL)askAgain
+{
+    NSString *alertMessage = (!askAgain) ? @"You already signed up with Gleepost, please type your password in order to continue" : @"Authentication failed, please check your e-mail or password and try again";
+    
+    UIAlertView *passwordPromptAlertView = [[UIAlertView alloc] initWithTitle:@"Password Required"
+                                                                      message:alertMessage
+                                                                     delegate:self
+                                                            cancelButtonTitle:kCancelButtonTitle
+                                                            otherButtonTitles:kSignUpButtonTitle, nil];
+    
+    
+    passwordPromptAlertView.tag = 1;
+    
+    
+    [passwordPromptAlertView setAlertViewStyle:UIAlertViewStyleLoginAndPasswordInput];
+    
+    if(_universityEmail)
+    {
+        [[passwordPromptAlertView textFieldAtIndex:0] setText:_universityEmail];
+
+    }
+    
+    [passwordPromptAlertView show];
+}
 
 # pragma mark - UIAlertViewDelegate
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
     UITextField *textField = ((UITextField*)[alertView textFieldAtIndex:0]);
     return ![NSString isStringEmpty:textField.text];
+}
+
+- (void)didPresentAlertView:(UIAlertView *)alertView
+{
+    if(alertView.tag == 1)
+    {
+        if(!_universityEmail)
+        {
+            UITextField *passwordField = [alertView textFieldAtIndex:1];
+            [passwordField becomeFirstResponder];
+        }
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -313,7 +353,13 @@ static NSString * const kOkButtonTitle       = @"Ok";
     else
     {
         //Password alert view.
-        NSString *password = [alertView textFieldAtIndex:0].text;
+        NSString *email = [alertView textFieldAtIndex:0].text;
+        NSString *password = [alertView textFieldAtIndex:1].text;
+        
+        _universityEmail = email;
+
+        DDLogDebug(@"New email and Pass: %@ : %@", email, password);
+        
         
         if ([buttonText isEqualToString:kSignUpButtonTitle])
         {
@@ -338,9 +384,12 @@ static NSString * const kOkButtonTitle       = @"Ok";
     if([segue.identifier isEqualToString:@"show signup"])
     {
         GLPSignUpViewController *signUpVC = segue.destinationViewController;
-        
-        signUpVC.facebookLoginInfo = _fbLoginInfo;
-        
+        if(_fbLoginInfo)
+        {
+            signUpVC.parentVC = self;
+            signUpVC.facebookLoginInfo = _fbLoginInfo;
+        }
+
     }
 }
 

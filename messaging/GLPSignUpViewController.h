@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "GLPRegisterViewController.h"
 #import "FDTakeController.h"
+#import "GLPLoginSignUpViewController.h"
 
 @interface GLPSignUpViewController : GLPRegisterViewController <UINavigationControllerDelegate, FDTakeDelegate>
 
 @property (strong, nonatomic) NSDictionary *facebookLoginInfo;
+@property (weak, nonatomic) GLPLoginSignUpViewController *parentVC;
 
 @end

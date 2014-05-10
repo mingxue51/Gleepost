@@ -10,4 +10,6 @@
 
 @interface GLPLoginSignUpViewController : UIViewController <UINavigationControllerDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
+- (void)askUserForEmailAddressAgain:(BOOL)askingAgain;
+
 @end

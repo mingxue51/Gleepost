@@ -187,10 +187,10 @@
     }];
 }
 
--(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback
+-(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password andEmail:(NSString *)email withCallbackBlock:(void (^) (BOOL success))callback
 {
     
-    [[WebClient sharedInstance] associateWithFacebookAccountUsingFBToken:[self facebookLoginToken] withEMail:_universityEmail withPassword:password andCallbackBlock:^(BOOL success) {
+    [[WebClient sharedInstance] associateWithFacebookAccountUsingFBToken:[self facebookLoginToken] withEMail:email withPassword:password andCallbackBlock:^(BOOL success) {
         
         callback(success);
         

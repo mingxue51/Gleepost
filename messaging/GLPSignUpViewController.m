@@ -33,6 +33,7 @@
 
 @property (strong, nonatomic) NSString *fbName;
 @property (assign, nonatomic) BOOL facebookMode;
+@property (weak, nonatomic) IBOutlet UIButton *wrongEmailFbLogin;
 
 @end
 
@@ -52,6 +53,27 @@
         [self formatElements];
         
     }
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configureViews];
+    
+    
+    if(![_nameTextField isFirstResponder] && !_facebookMode)
+    {
+        [_nameTextField becomeFirstResponder];
+    }
+    else if(_facebookMode)
+    {
+        //        [_nameTextField resignFirstResponder];
+        [[super emailTextField] resignFirstResponder];
+    }
+    
+    
 }
 
 
@@ -76,26 +98,6 @@
     [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
 }
 
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self configureViews];
-
-    
-    if(![_nameTextField isFirstResponder] && !_facebookMode)
-    {
-        [_nameTextField becomeFirstResponder];
-    }
-    else if(_facebookMode)
-    {
-//        [_nameTextField resignFirstResponder];
-        [[super emailTextField] resignFirstResponder];
-    }
-
-    
-}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -135,7 +137,7 @@
     
         _facebookMode = YES;
         
-        [self hideSignUpViewAndShowVerification];
+        [self hideSignUpViewAndShowVerificationAfterFBLogin];
         
 
 //        [_signUpView setHidden:YES];
@@ -379,6 +381,18 @@
     }];
 
 }
+/**
+ User send action to this method only in case he type wrong
+ credentials during facebook login.
+ */
+- (IBAction)retypeEmailAndPass:(id)sender
+{
+    
+    [self.parentVC askUserForEmailAddressAgain:NO];
+    
+    [super dismissModalView];
+    
+}
 
 #pragma mark - UI methods
 
@@ -399,6 +413,15 @@
         [self setUpMessageLabels];
         
     }];
+}
+
+-(void)hideSignUpViewAndShowVerificationAfterFBLogin
+{
+    [self hideSignUpViewAndShowVerification];
+    
+    [_wrongEmailFbLogin setHidden:NO];
+    
+    
 }
 
 -(void)hideKeyboard

@@ -56,6 +56,11 @@
 
 - (IBAction)dismissModalView:(id)sender
 {
+    [self dismissModalView];
+}
+
+-(void)dismissModalView
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

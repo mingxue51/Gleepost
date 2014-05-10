@@ -31,4 +31,6 @@
 
 -(BOOL)isPasswordValid;
 
+-(void)dismissModalView;
+
 @end

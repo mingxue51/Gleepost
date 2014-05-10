@@ -18,7 +18,7 @@
 - (BOOL)handleOpenURL:(NSURL *)url;
 - (void)logout;
 - (NSString *)facebookLoginToken;
--(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password withCallbackBlock:(void (^) (BOOL success))callback;
+-(void)associateAlreadyRegisteredAccountWithFacebookTokenWithPassword:(NSString *)password andEmail:(NSString *)email withCallbackBlock:(void (^) (BOOL success))callback;
 -(void)sharePostWithPost:(GLPPost *)post;
 -(void)inviteFriendsViaFBToGroupWithRemoteKey:(GLPGroup* )group completionHandler:(void (^)(BOOL success, NSArray *fbFriends))completionHandler;
 -(void)fetchFriends;
