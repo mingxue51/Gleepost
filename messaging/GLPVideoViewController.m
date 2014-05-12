@@ -17,17 +17,17 @@
 
 @interface GLPVideoViewController ()
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *continueBarButton;
+@property (weak, nonatomic) IBOutlet UIButton *continueBarButton;
 
 @property (weak, nonatomic) IBOutlet UIView *cameraView;
 
 @property (strong, nonatomic) IBOutlet VideoProgressView *progressView;
 
 @property (assign, nonatomic) BOOL recording;
+
+@property (weak, nonatomic) IBOutlet UILabel *titleLable;
 
 @end
 
@@ -58,12 +58,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoIsReady:) name:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProcessButton:) name:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCurrentSecondToTitleText:) name:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil];
 }
 
 -(void)initialiseObjects
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil];
+
 }
 
 -(void)configureProgressBar
@@ -73,7 +77,7 @@
 
 -(void)configureNavigationBar
 {
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
+
 }
 
 -(void)removeObservers
@@ -161,6 +165,7 @@
     DDLogDebug(@"Error: %@, Video Dict: %@", error, videoDict);
     
     [_progressView stopProgress];
+    [self showPreviewTitleText];
     
     NSString *videoPath = [videoDict objectForKey:PBJVisionVideoPathKey];
     
@@ -196,7 +201,26 @@
  */
 -(void)showProcessButton:(id)sender
 {
-    [_continueBarButton setEnabled:YES];
+    [_continueBarButton setHidden:NO];
+}
+
+
+#pragma mark - Title
+
+-(void)showPreviewTitleText
+{
+    [_titleLable setText:@"New Video"];
+}
+
+-(void)showCurrentSecondToTitleText:(NSNotification *)sender
+{
+    NSDictionary *dict = sender.userInfo;
+    
+    NSNumber *seconds = [dict objectForKey:@"seconds"];
+    
+    DDLogDebug(@"Notification: %@", seconds);
+    
+    [_titleLable setText:[NSString stringWithFormat:@"%d", seconds.integerValue]];
 }
 
 - (void)didReceiveMemoryWarning

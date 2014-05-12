@@ -12,7 +12,7 @@
 
 @property (assign, nonatomic) float currentProgress;
 @property (strong, nonatomic) NSTimer *timer;
-
+@property (assign, nonatomic) int currentIntProgress;
 @end
 
 @implementation VideoProgressView
@@ -28,6 +28,7 @@ const float MIN_SECONDS = 5.0f;
     if(self)
     {
         [self initialiseObjects];
+        [self formatProgressView];
     }
     
     return self;
@@ -37,6 +38,12 @@ const float MIN_SECONDS = 5.0f;
 {
     _currentProgress = 0.0f;
     [self setProgress:0.0f animated:NO];
+}
+
+-(void)formatProgressView
+{
+    [self setTransform:CGAffineTransformMakeScale(1.0, 22.0)];
+
 }
 
 /**
@@ -68,6 +75,15 @@ const float MIN_SECONDS = 5.0f;
     _currentProgress += 0.01f;
     float progress = _currentProgress / MAX_SECONDS;
     
+    DDLogDebug(@"Current progress: %f", _currentProgress);
+
+//    if(_currentProgress == (NSInteger) _currentProgress)
+//    {
+//        DDLogDebug(@"Current progress in: %f", _currentProgress);
+    
+        [self informMainViewSeconds:(NSInteger)_currentProgress];
+//    }
+    
     if([self doesReachedThreshold])
     {
         [self informMainViewToShowProcessButton];
@@ -97,6 +113,11 @@ const float MIN_SECONDS = 5.0f;
 {
     //Post notification to GLPVideoViewController.
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
+}
+
+-(void)informMainViewSeconds:(NSInteger)seconds
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil userInfo:@{@"seconds":[NSNumber numberWithInt:seconds]}];
 }
 
 -(BOOL)doesCameraNeedsToEnd

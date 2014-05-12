@@ -38,6 +38,7 @@
 #define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
 #define GLPNOTIFICATION_CAMERA_LIMIT_REACHED            @"GLPCameraLimitReached"
 #define GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED            @"GLPCameraThresholdReached"
+#define GLPNOTIFICATION_SECONDS_TEXT_TITLE            @"GLPSecondsTextTitle"
 
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

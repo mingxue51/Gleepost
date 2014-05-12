@@ -1589,27 +1589,48 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar tag="1" contentMode="scaleToFill" translucent="NO" id="hb3-hP-ago">
+                            <view contentMode="scaleToFill" id="ABR-3S-wAa">
                                 <rect key="frame" x="0.0" y="21" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="barTintColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem title="New Video" id="XMq-e2-flv">
-                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="hpd-Tu-pfs">
-                                            <color key="tintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <action selector="dismissModalView:" destination="Pxp-nL-r26" id="Vgu-nQ-Dmv"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Continue" id="eP0-RD-6hO">
-                                            <color key="tintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <action selector="videoIsReady:" destination="Pxp-nL-r26" id="epf-hE-g6s"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="wcF-ok-CIu" customClass="VideoProgressView">
+                                        <rect key="frame" x="-1" y="21" width="320" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="progressTintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="trackTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </progressView>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GkK-SD-heB">
+                                        <rect key="frame" x="233" y="5" width="87" height="33"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Continue">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="videoIsReady:" destination="Pxp-nL-r26" eventType="touchUpInside" id="bqN-Wo-hNi"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Video" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cfN-VF-GIo">
+                                        <rect key="frame" x="106" y="11" width="109" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="v46-lx-eDL">
+                                        <rect key="frame" x="12" y="7" width="61" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissModalView:" destination="Pxp-nL-r26" eventType="touchUpInside" id="evN-LW-lPf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </view>
                             <view contentMode="scaleToFill" id="R4y-K4-xjD">
                                 <rect key="frame" x="0.0" y="418" width="320" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1619,19 +1640,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" id="mBY-O7-yOs">
-                                <rect key="frame" x="0.0" y="82" width="320" height="328"/>
+                                <rect key="frame" x="0.0" y="65" width="320" height="354"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="awn-1C-IJD" appends="YES" id="SRo-rL-Hgc"/>
                                 </connections>
                             </view>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="wcF-ok-CIu" customClass="VideoProgressView">
-                                <rect key="frame" x="0.0" y="65" width="320" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="progressTintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="trackTintColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                            </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="063-vE-n9E">
                                 <rect key="frame" x="20" y="427" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1647,10 +1662,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="mBY-O7-yOs" id="Oua-zy-Irl"/>
-                        <outlet property="continueBarButton" destination="eP0-RD-6hO" id="yPe-OD-hqB"/>
+                        <outlet property="continueBarButton" destination="GkK-SD-heB" id="Pzu-4D-GIK"/>
                         <outlet property="longPressGestureRecognizer" destination="awn-1C-IJD" id="ibK-Kp-Gvr"/>
-                        <outlet property="navigationBar" destination="hb3-hP-ago" id="y0i-JX-zFK"/>
                         <outlet property="progressView" destination="wcF-ok-CIu" id="idN-13-g9z"/>
+                        <outlet property="titleLable" destination="cfN-VF-GIo" id="bda-yX-9s9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Igz-qe-NZu" userLabel="First Responder" sceneMemberID="firstResponder"/>
