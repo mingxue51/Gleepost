@@ -1060,7 +1060,6 @@ const int NUMBER_OF_ROWS = 2;
 
 #pragma mark - Action Sheet delegate
 
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
@@ -1076,28 +1075,6 @@ const int NUMBER_OF_ROWS = 2;
         //Change image.
         
         [self.fdTakeController takePhotoOrChooseFromLibrary];
-
-    }
-    
-    
-}
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
-{
-    for (UIView *subview in actionSheet.subviews)
-    {
-        if ([subview isKindOfClass:[UIButton class]])
-        {
-            UIButton *btn = (UIButton*)subview;
-            
-            if([btn.titleLabel.text isEqualToString:@"Cancel"])
-            {
-                
-            }
-            else
-            {
-            }
-        }
     }
 }
 

@@ -346,7 +346,6 @@
 
 - (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title
 {
-    DDLogDebug(@"DATE! : %@ with title: %@",date, title);
     _eventDateStart = date;
     _eventTitle = title;
     
@@ -398,9 +397,8 @@
 
 -(void)popUpTimeSelectorWithCategory:(GLPCategory *)category
 {
-        
-        //Pop up the time selector.
-        [self performSegueWithIdentifier:@"pick date" sender:self];
+    //Pop up the time selector.
+    [self performSegueWithIdentifier:@"pick date" sender:self];
 }
 
 -(BOOL)isGroupPost
@@ -439,9 +437,11 @@
 }
 
 
-- (IBAction)addImage:(id)sender
+- (IBAction)addImageOrImage:(id)sender
 {
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Capture Media" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add an image", @"Capture a video", nil];
+ 
+    [actionSheet showInView:[self.view window]];
 }
 
 #pragma mark - FDTakeController delegate
@@ -459,13 +459,44 @@
     //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
+#pragma mark - Action Sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if([selectedButtonTitle isEqualToString:@"Add an image"])
+    {
+        //Add image.
+        [self.fdTakeController takePhotoOrChooseFromLibrary];
+
+    }
+    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
+    {
+        //Capture a video.
+        DDLogDebug(@"Capture a video.");
+        [self performSegueWithIdentifier:@"capture video" sender:self];
+        
+    }
+}
+
 #pragma mark - Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    PickDateEventViewController *pickDateViewController = segue.destinationViewController;
     
-    pickDateViewController.delegate = self;
+    if([segue.identifier isEqualToString:@"pick date"])
+    {
+        PickDateEventViewController *pickDateViewController = segue.destinationViewController;
+        
+        pickDateViewController.delegate = self;
+    }
+    else if ([segue.identifier isEqualToString:@"capture video"])
+    {
+        
+    }
+
 }
 
 

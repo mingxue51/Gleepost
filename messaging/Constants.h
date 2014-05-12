@@ -36,7 +36,7 @@
 #define GLPNOTIFICATION_HOME_TAPPED_TWICE               @"GLPHomeTabbedTwice"
 
 #define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
-
+#define GLPNOTIFICATION_CAMERA_LIMIT_REACHED            @"GLPCameraLimitReached"
 
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
@@ -44,7 +44,7 @@
 #define GLP_TEST_WEBSERVICE_VERSION                 @"1"
 #define GLP_TEST_SERVER_URL                                ([NSString stringWithFormat:@"https://dev.gleepost.com/api/v%@/", GLP_TEST_WEBSERVICE_VERSION])
 
-#define GLP_BASE_URL                                GLP_BASE_SERVER_URL
+#define GLP_BASE_URL                                GLP_TEST_SERVER_URL
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
 #define GLP_APP_FONT_BOLD                           @"Khmer UI"

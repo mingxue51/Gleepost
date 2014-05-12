@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -347,7 +347,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="addImage:" destination="Pdc-xo-P59" eventType="touchUpInside" id="b42-Yv-KY3"/>
+                                    <action selector="addImageOrImage:" destination="Pdc-xo-P59" eventType="touchUpInside" id="Cwo-GU-Zde"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="MjW-ox-aXf">
@@ -439,6 +439,7 @@
                         <outlet property="questionsCategoryBtn" destination="ZVx-gQ-zaI" id="awn-q7-DBG"/>
                         <outlet property="simpleNavBar" destination="zv2-o0-Fnh" id="fFo-3E-mrp"/>
                         <segue destination="kg4-Pr-bdC" kind="modal" identifier="pick date" id="Mks-9Y-nbp"/>
+                        <segue destination="Pxp-nL-r26" kind="modal" identifier="capture video" id="1TU-9z-lbJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3e3-Ln-DsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1432,7 +1433,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BM6-Wh-xSC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2803" y="-2649"/>
+            <point key="canvasLocation" x="2992" y="-2653"/>
         </scene>
         <!--Private Profile View Controller-->
         <scene sceneID="P30-Ag-1tr">
@@ -1580,6 +1581,85 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2342" y="-2351"/>
         </scene>
+        <!--Video View Controller-->
+        <scene sceneID="5gh-tY-0rJ">
+            <objects>
+                <viewController id="Pxp-nL-r26" customClass="GLPVideoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jvD-vz-PP7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar tag="1" contentMode="scaleToFill" translucent="NO" id="hb3-hP-ago">
+                                <rect key="frame" x="0.0" y="21" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="barTintColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem title="New Video" id="XMq-e2-flv">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="hpd-Tu-pfs">
+                                            <color key="tintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="dismissModalView:" destination="Pxp-nL-r26" id="Vgu-nQ-Dmv"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="eP0-RD-6hO">
+                                            <color key="tintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="videoIsReady:" destination="Pxp-nL-r26" id="epf-hE-g6s"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <view contentMode="scaleToFill" id="R4y-K4-xjD">
+                                <rect key="frame" x="0.0" y="418" width="320" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="063-vE-n9E">
+                                        <rect key="frame" x="9" y="7" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" backgroundImage="temporary_change_camera.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="changeCamera:" destination="Pxp-nL-r26" eventType="touchUpInside" id="D94-BV-RMc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="awn-1C-IJD" appends="YES" id="g2D-nt-ksn"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" id="mBY-O7-yOs">
+                                <rect key="frame" x="0.0" y="82" width="320" height="328"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="wcF-ok-CIu" customClass="VideoProgressView">
+                                <rect key="frame" x="0.0" y="65" width="320" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="progressTintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="trackTintColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="cameraView" destination="mBY-O7-yOs" id="Oua-zy-Irl"/>
+                        <outlet property="longPressGestureRecognizer" destination="awn-1C-IJD" id="ibK-Kp-Gvr"/>
+                        <outlet property="navigationBar" destination="hb3-hP-ago" id="y0i-JX-zFK"/>
+                        <outlet property="progressView" destination="wcF-ok-CIu" id="idN-13-g9z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Igz-qe-NZu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="awn-1C-IJD">
+                    <connections>
+                        <action selector="handleLongPressedGesture:" destination="Pxp-nL-r26" id="9Zh-jI-zOx"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="2992" y="-1995"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="4na-1o-QCI">
             <objects>
@@ -1640,7 +1720,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cqv-6P-p50" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="296" y="-3175"/>
+            <point key="canvasLocation" x="496" y="-3321"/>
         </scene>
         <!--Chat View Controller - Chat-->
         <scene sceneID="3ge-kZ-632">
@@ -3388,6 +3468,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="sign_up.png" width="564" height="116"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="skip_button.png" width="440" height="108"/>
+        <image name="temporary_change_camera.png" width="128" height="128"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
         <image name="user_image_bg.png" width="74" height="74"/>
         <image name="verified.png" width="550" height="120"/>
@@ -3402,12 +3483,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <segue reference="GTC-XV-iI1"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="icH-IF-qcr"/>
-        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="t02-Sh-BtB"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="woK-8Q-gjw"/>
         <segue reference="lQn-ic-ohV"/>
         <segue reference="PCe-7s-A56"/>
         <segue reference="WhX-ZL-dQD"/>
-        <segue reference="XMX-SH-Gag"/>
         <segue reference="MWr-28-zFw"/>
     </inferredMetricsTieBreakers>
 </document>
