@@ -42,7 +42,7 @@ const float MAX_SECONDS = 12.0f;
  */
 -(void)startProgress
 {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgressBar:) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateProgressBar:) userInfo:nil repeats:YES];
 }
 
 
@@ -63,7 +63,7 @@ const float MAX_SECONDS = 12.0f;
 
 -(void)updateProgressBar:(id)sender
 {
-    _currentProgress += 0.1f;
+    _currentProgress += 0.01f;
     float progress = _currentProgress / MAX_SECONDS;
     
     if([self doesCameraNeedsToEnd])

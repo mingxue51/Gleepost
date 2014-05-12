@@ -19,7 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
-@property (strong, nonatomic) IBOutlet UILongPressGestureRecognizer *longPressGestureRecognizer;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet UIView *cameraView;
 
