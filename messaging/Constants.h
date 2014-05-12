@@ -37,6 +37,8 @@
 
 #define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
 #define GLPNOTIFICATION_CAMERA_LIMIT_REACHED            @"GLPCameraLimitReached"
+#define GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED            @"GLPCameraThresholdReached"
+
 
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])

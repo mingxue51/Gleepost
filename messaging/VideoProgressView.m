@@ -18,6 +18,8 @@
 @implementation VideoProgressView
 
 const float MAX_SECONDS = 12.0f;
+const float MIN_SECONDS = 5.0f;
+
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -66,6 +68,11 @@ const float MAX_SECONDS = 12.0f;
     _currentProgress += 0.01f;
     float progress = _currentProgress / MAX_SECONDS;
     
+    if([self doesReachedThreshold])
+    {
+        [self informMainViewToShowProcessButton];
+    }
+    
     if([self doesCameraNeedsToEnd])
     {
         [self informCameraToStop];
@@ -82,16 +89,24 @@ const float MAX_SECONDS = 12.0f;
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
 }
 
+/**
+ This method is called when the recording duration is more that 5 seconds.
+ This method informs the main view to enable the continue button.
+ */
+-(void)informMainViewToShowProcessButton
+{
+    //Post notification to GLPVideoViewController.
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
+}
+
 -(BOOL)doesCameraNeedsToEnd
 {
-    if(_currentProgress >= MAX_SECONDS)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+    return (_currentProgress >= MAX_SECONDS) ? YES : NO;
+}
+
+-(BOOL)doesReachedThreshold
+{
+    return (_currentProgress >= MIN_SECONDS) ? YES : NO;
 }
 
 /*

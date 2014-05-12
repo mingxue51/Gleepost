@@ -1601,7 +1601,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <action selector="dismissModalView:" destination="Pxp-nL-r26" id="Vgu-nQ-Dmv"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Done" id="eP0-RD-6hO">
+                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Continue" id="eP0-RD-6hO">
                                             <color key="tintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
                                                 <action selector="videoIsReady:" destination="Pxp-nL-r26" id="epf-hE-g6s"/>
@@ -1613,18 +1613,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <view contentMode="scaleToFill" id="R4y-K4-xjD">
                                 <rect key="frame" x="0.0" y="418" width="320" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="063-vE-n9E">
-                                        <rect key="frame" x="9" y="7" width="40" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" backgroundImage="temporary_change_camera.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="changeCamera:" destination="Pxp-nL-r26" eventType="touchUpInside" id="D94-BV-RMc"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="awn-1C-IJD" appends="YES" id="g2D-nt-ksn"/>
@@ -1634,6 +1622,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="82" width="320" height="328"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="awn-1C-IJD" appends="YES" id="SRo-rL-Hgc"/>
+                                </connections>
                             </view>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="wcF-ok-CIu" customClass="VideoProgressView">
                                 <rect key="frame" x="0.0" y="65" width="320" height="2"/>
@@ -1641,11 +1632,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="progressTintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="trackTintColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="063-vE-n9E">
+                                <rect key="frame" x="20" y="427" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" backgroundImage="temporary_change_camera.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="changeCamera:" destination="Pxp-nL-r26" eventType="touchUpInside" id="D94-BV-RMc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="mBY-O7-yOs" id="Oua-zy-Irl"/>
+                        <outlet property="continueBarButton" destination="eP0-RD-6hO" id="yPe-OD-hqB"/>
                         <outlet property="longPressGestureRecognizer" destination="awn-1C-IJD" id="ibK-Kp-Gvr"/>
                         <outlet property="navigationBar" destination="hb3-hP-ago" id="y0i-JX-zFK"/>
                         <outlet property="progressView" destination="wcF-ok-CIu" id="idN-13-g9z"/>

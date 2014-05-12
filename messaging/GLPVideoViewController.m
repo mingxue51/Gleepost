@@ -21,6 +21,8 @@
 
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *continueBarButton;
+
 @property (weak, nonatomic) IBOutlet UIView *cameraView;
 
 @property (strong, nonatomic) IBOutlet VideoProgressView *progressView;
@@ -30,8 +32,6 @@
 @end
 
 @implementation GLPVideoViewController
-
-const NSInteger MAXIMUM_DURATION = 12;
 
 - (void)viewDidLoad
 {
@@ -48,14 +48,22 @@ const NSInteger MAXIMUM_DURATION = 12;
     [self setUpCamperaObjects];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [self removeObservers];
+}
+
 -(void)configureNofications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoIsReady:) name:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProcessButton:) name:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
 }
 
 -(void)initialiseObjects
 {
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
 }
 
 -(void)configureProgressBar
@@ -66,6 +74,11 @@ const NSInteger MAXIMUM_DURATION = 12;
 -(void)configureNavigationBar
 {
     [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
+}
+
+-(void)removeObservers
+{
+    
 }
 
 -(void)setUpCamperaObjects
@@ -175,6 +188,15 @@ const NSInteger MAXIMUM_DURATION = 12;
     [self dismissViewControllerAnimated:YES completion:^{
        
     }];
+}
+
+/**
+ This method is called in order to enable the option to the user
+ stop ther recording.
+ */
+-(void)showProcessButton:(id)sender
+{
+    [_continueBarButton setEnabled:YES];
 }
 
 - (void)didReceiveMemoryWarning
