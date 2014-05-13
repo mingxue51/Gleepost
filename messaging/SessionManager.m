@@ -27,8 +27,7 @@
 
 @property (strong, nonatomic) NSString *dataPlistLoggedInPath;
 @property (assign, nonatomic) BOOL currentUserFirstTime;
-/** TODO: Bad variable. */
-@property (assign, nonatomic) BOOL showGroupsBadge;
+
 @property (strong, nonatomic) NSDictionary *usersData;
 
 
@@ -77,7 +76,6 @@ static SessionManager *instance = nil;
     self.dataPlistLoggedInPath = [rootPath2 stringByAppendingString:GLPLoggedInUsersFileName];
     
     _currentUserFirstTime = NO;
-    _showGroupsBadge = NO;
     _authParameters = [NSDictionary dictionary];
     
     //Set default category.
@@ -221,27 +219,24 @@ static SessionManager *instance = nil;
         
         DDLogError(@"Users DATA: %@", _usersData);
         
-        for(NSString *key in _usersData)
+        for(NSString *remoteKey in _usersData)
         {
-            if([key isEqualToString:_user.email])
+            if([remoteKey isEqualToString:[NSString stringWithFormat:@"%ld", (long) _user.remoteKey]])
             {
                 DDLogDebug(@"USER EXIST!");
                 _currentUserFirstTime = NO;
-                _showGroupsBadge = NO;
                 return;
             }
         }
         
         //If the current user is not in the dictionary then is his first time. Otherwise it's not.
         _currentUserFirstTime = YES;
-        _showGroupsBadge = YES;
         [self saveLoggedInUsersData];
 
     }
     else
     {
         _currentUserFirstTime = YES;
-        _showGroupsBadge = YES;
 
         [self saveLoggedInUsersData];
     }
@@ -264,18 +259,8 @@ static SessionManager *instance = nil;
 
 -(void)saveLoggedInUsersData
 {
-    //Key email.
-    //Value name.
-    DDLogError(@"User name: %@ Email: %@", _user.name, _user.email);
-    
-//    NSDictionary *usersData = [NSDictionary dictionaryWithObjectsAndKeys:_user.name, _user.email, nil];
-    if(!_user.email)
-    {
-        return;
-    }
-    
     NSMutableDictionary *usersData = [NSMutableDictionary dictionaryWithDictionary:_usersData];
-    [usersData setObject:_user.name forKey:_user.email];
+    [usersData setObject:_user.name forKey:[NSString stringWithFormat:@"%ld", (long)_user.remoteKey]];
     
     
     NSString *error;
@@ -296,20 +281,7 @@ static SessionManager *instance = nil;
 
 -(BOOL)isFirstTimeLoggedIn
 {
-    DDLogDebug(@"isFirstTimeLoggedIn: %d", _currentUserFirstTime);
     return _currentUserFirstTime;
-}
-
--(BOOL)showGroupsBadge
-{
-    if(_showGroupsBadge)
-    {
-        _showGroupsBadge = NO;
-        
-        return YES;
-    }
-    
-    return _showGroupsBadge;
 }
 
 -(void)firstTimeLoggedInActivate

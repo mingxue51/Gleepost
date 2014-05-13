@@ -28,6 +28,5 @@
 - (void)cleanSession;
 -(BOOL)isFirstTimeLoggedIn;
 -(void)firstTimeLoggedInActivate;
--(BOOL)showGroupsBadge;
 
 @end

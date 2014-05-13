@@ -101,7 +101,7 @@ static NSInteger lastTabbarIndex = 0;
  */
 -(void)updateGroupBadge
 {
-    if([[SessionManager sharedInstance] showGroupsBadge])
+    if([[SessionManager sharedInstance] isFirstTimeLoggedIn])
     {
         [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
            
