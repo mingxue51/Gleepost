@@ -1640,7 +1640,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <action selector="done:" destination="xR2-qF-eYq" eventType="touchUpInside" id="JWl-Cw-ASz"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" id="LAU-8z-BQ1">
+                                    <view contentMode="scaleAspectFill" id="LAU-8z-BQ1">
                                         <rect key="frame" x="0.0" y="43" width="320" height="354"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1730,7 +1730,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="mBY-O7-yOs" id="XVF-5Z-2A1"/>
@@ -3526,7 +3526,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="default_user_image2.png" width="1000" height="1000"/>
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="fb_login.png" width="564" height="116"/>
-        <image name="fb_login.png§" width="265" height="266"/>
+        <image name="fb_login.png§" width="24" height="24"/>
         <image name="finished.png" width="600" height="120"/>
         <image name="gleepost_logo_header.png" width="148" height="49"/>
         <image name="glp-quote.png" width="488" height="76"/>

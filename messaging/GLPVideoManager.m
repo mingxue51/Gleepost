@@ -10,6 +10,55 @@
 
 #import "GLPVideoManager.h"
 
+@interface GLPVideoManager ()
+
+@property (strong, nonatomic) NSMutableDictionary *localSavedVideos;
+
+@end
+
 @implementation GLPVideoManager
+
+static GLPVideoManager *instance = nil;
+
++(GLPVideoManager *)sharedInstance
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[GLPVideoManager alloc] init];
+    });
+    
+    return instance;
+}
+
+-(id)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+        [self initialiseObjects];
+    }
+    
+    return self;
+}
+
+-(void)initialiseObjects
+{
+    _localSavedVideos = [[NSMutableDictionary alloc] init];
+}
+
+#pragma mark - Modifiers
+
+-(void)addVideoWithPath:(NSString *)path
+{
+    NSDate *timestamp = [NSDate date];
+    
+    [_localSavedVideos setObject:path forKey:timestamp];
+}
+
+
+
+
+
 
 @end

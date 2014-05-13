@@ -10,4 +10,6 @@
 
 @interface GLPVideoManager : NSObject
 
++(GLPVideoManager *)sharedInstance;
+
 @end

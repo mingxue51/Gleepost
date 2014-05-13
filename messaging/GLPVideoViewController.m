@@ -124,6 +124,7 @@
 {
     _previewVC = [[PBJVideoPlayerController alloc] init];
     _previewVC.delegate = _videoPreviewView;
+//    _previewVC set;
     _previewVC.view.frame = _previewView.bounds;
     [_previewView addSubview:_previewVC.view];
 }
