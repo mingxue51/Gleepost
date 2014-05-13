@@ -37,8 +37,11 @@
 
 #define GLPNOTIFICATION_CONVERSATION_COUNT              @"GLPConversationCount"
 #define GLPNOTIFICATION_CAMERA_LIMIT_REACHED            @"GLPCameraLimitReached"
-#define GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED            @"GLPCameraThresholdReached"
-#define GLPNOTIFICATION_SECONDS_TEXT_TITLE            @"GLPSecondsTextTitle"
+#define GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED        @"GLPCameraThresholdReached"
+#define GLPNOTIFICATION_SECONDS_TEXT_TITLE              @"GLPSecondsTextTitle"
+
+#define GLPNOTIFICATION_DISMISS_VIDEO_VC                @"GLPDismissVideoVC"
+#define GLPNOTIFICATION_CONTINUE_TO_PREVIEW             @"GLPContinueToPreview"
 
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

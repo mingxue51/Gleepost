@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PBJVision.h"
+#import "PBJVideoPlayerController.h"
 
 @interface GLPVideoViewController : UIViewController<PBJVisionDelegate, UIGestureRecognizerDelegate>
 

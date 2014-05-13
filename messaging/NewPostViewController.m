@@ -26,6 +26,7 @@
 #import "PickDateEventViewController.h"
 #import "GroupViewController.h"
 #import "GLPTimelineViewController.h"
+#import "GLPVideoViewController.h"
 
 @interface NewPostViewController ()
 
@@ -80,7 +81,7 @@
 
 
 
-    [self.contentTextView becomeFirstResponder];
+//    [self.contentTextView becomeFirstResponder];
     
     _categories = [NSMutableArray array];
     
@@ -122,10 +123,21 @@
     self.fdTakeController.delegate = self;
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.contentTextView resignFirstResponder];
+    
+    [super viewWillDisappear:animated];
+}
+
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
     
+//    [self.contentTextView resignFirstResponder];
+    
+    [super viewDidDisappear:animated];
+
+
 //    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
 }
 
@@ -475,13 +487,11 @@
     else if([selectedButtonTitle isEqualToString:@"Capture a video"])
     {
         //Capture a video.
-        DDLogDebug(@"Capture a video.");
         [self performSegueWithIdentifier:@"capture video" sender:self];
-        
     }
 }
 
-#pragma mark - Segue
+#pragma mark - VC Navigation
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -497,6 +507,16 @@
         
     }
 
+}
+
+-(void)navigateToVideoController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPVideoViewController *videoVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPVideoViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:videoVC];
+//    navigationController.navigationBarHidden = YES;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 

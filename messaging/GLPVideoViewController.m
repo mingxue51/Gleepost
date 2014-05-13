@@ -14,20 +14,31 @@
 #import "AppearanceHelper.h"
 #import <AssetsLibrary/ALAsset.h>
 #import "VideoProgressView.h"
+#import "VideoCaptureView.h"
+#import "VideoPreviewView.h"
 
 @interface GLPVideoViewController ()
 
-@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
+@property (weak, nonatomic) IBOutlet VideoCaptureView *videoView;
 
-@property (weak, nonatomic) IBOutlet UIButton *continueBarButton;
+@property (weak, nonatomic) IBOutlet VideoPreviewView *videoPreviewView;
+
 
 @property (weak, nonatomic) IBOutlet UIView *cameraView;
+
+@property (weak, nonatomic) IBOutlet UIView *previewView;
+
+@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
 @property (strong, nonatomic) IBOutlet VideoProgressView *progressView;
 
 @property (assign, nonatomic) BOOL recording;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLable;
+
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
+
+@property (weak, nonatomic) IBOutlet UIButton *continueBarButton;
 
 @end
 
@@ -37,55 +48,55 @@
 {
     [super viewDidLoad];
     
-    [self initialiseObjects];
-    
     [self configureNofications];
+  
+    [self setUpCameraObjects];
     
-    [self configureNavigationBar];
+    [self setUpPreviewView];
     
-    [self configureProgressBar];
-    
-    [self setUpCamperaObjects];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [self removeObservers];
+    
+    [super viewDidDisappear:animated];
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES];
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO];
+
+    [super viewWillDisappear:animated];
+}
+
+#pragma mark - Configuration
 
 -(void)configureNofications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoIsReady:) name:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showProcessButton:) name:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCurrentSecondToTitleText:) name:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil];
-}
-
--(void)initialiseObjects
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMERA_LIMIT_REACHED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMERA_THRESHOLD_REACHED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil];
-
-}
-
--(void)configureProgressBar
-{
-    
-}
-
--(void)configureNavigationBar
-{
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissModalView:) name:GLPNOTIFICATION_DISMISS_VIDEO_VC object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoIsReady:) name:GLPNOTIFICATION_CONTINUE_TO_PREVIEW object:nil];
 }
 
 -(void)removeObservers
 {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_DISMISS_VIDEO_VC object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONTINUE_TO_PREVIEW object:nil];
 }
 
--(void)setUpCamperaObjects
+/**
+ This method is called in this main video view controller because there was 
+ a problem when I was trying to include it in the view class.
+ */
+-(void)setUpCameraObjects
 {
     _longPressGestureRecognizer.enabled = YES;
     [_longPressGestureRecognizer setDelegate:self];
@@ -96,7 +107,7 @@
 //    CMTime maximumTime = CMTimeMake(MAXIMUM_DURATION, 1);
 //    maximumTime.epoch = 0;
 //    maximumTime.flags = kCMTimeFlags_Valid;
-    vision.delegate = self;
+    vision.delegate = _videoView;
     [vision setCameraMode:PBJCameraModeVideo];
     [vision setCameraDevice:PBJCameraDeviceBack];
     [vision setCameraOrientation:PBJCameraOrientationPortrait];
@@ -109,107 +120,44 @@
     [vision startPreview];
 }
 
-- (IBAction)handleLongPressedGesture:(id)sender
+-(void)setUpPreviewView
 {
-    switch (_longPressGestureRecognizer.state)
-    {
-        case UIGestureRecognizerStateBegan:
-        {
-            if (!_recording)
-            {
-                [[PBJVision sharedInstance] startVideoCapture];
-                _recording = YES;
-            }
-            else
-            {
-                [[PBJVision sharedInstance] resumeVideoCapture];
-            }
-            
-            [_progressView startProgress];
-            
-            break;
-        }
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed:
-        {
-            [[PBJVision sharedInstance] pauseVideoCapture];
-            [_progressView pauseProgress];
-            break;
-        }
-        default:
-            break;
-    }
-}
-- (IBAction)changeCamera:(id)sender
-{
-    PBJVision *vision = [PBJVision sharedInstance];
-
-    PBJCameraDevice cameraType;
-    
-    if(vision.cameraDevice == PBJCameraDeviceFront)
-    {
-        cameraType = PBJCameraDeviceBack;
-    }
-    else
-    {
-        cameraType = PBJCameraDeviceFront;
-    }
-    
-    
-    [vision setCameraDevice:cameraType];
+    _previewVC = [[PBJVideoPlayerController alloc] init];
+    _previewVC.delegate = _videoPreviewView;
+    _previewVC.view.frame = _previewView.bounds;
+    [_previewView addSubview:_previewVC.view];
 }
 
-- (void)vision:(PBJVision *)vision capturedVideo:(NSDictionary *)videoDict error:(NSError *)error
-{
-    DDLogDebug(@"Error: %@, Video Dict: %@", error, videoDict);
-    
-    [_progressView stopProgress];
-    [self showPreviewTitleText];
-    
-    NSString *videoPath = [videoDict objectForKey:PBJVisionVideoPathKey];
-    
-    ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+#pragma mark - Preview view
 
-    
-    [library writeVideoAtPathToSavedPhotosAlbum:[NSURL URLWithString:videoPath] completionBlock:^(NSURL *assetURL, NSError *error1) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Saved!" message: @"Saved to the camera roll."
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:@"OK", nil];
-        [alert show];
-    }];
-}
-
-- (IBAction)videoIsReady:(id)sender
+-(void)previewTheVideoWithPath:(NSString *)path
 {
-    [[PBJVision sharedInstance] endVideoCapture];
-    [_progressView stopProgress];
+    _previewVC.videoPath = path;
+    [_previewVC playFromBeginning];
 }
 
 
-- (IBAction)dismissModalView:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-       
-    }];
-}
+#pragma mark - Notifications
 
 /**
- This method is called in order to enable the option to the user
- stop ther recording.
+ This method is called when the user finished the capture.
+ This method hides the VideoCaptureView and shows the VideoPreviewView.
  */
--(void)showProcessButton:(id)sender
+- (void)videoIsReady:(NSNotification *)notification
 {
-    [_continueBarButton setHidden:NO];
-}
-
-
-#pragma mark - Title
-
--(void)showPreviewTitleText
-{
-    [_titleLable setText:@"New Video"];
+//    [[PBJVision sharedInstance] endVideoCapture];
+//    [_progressView stopProgress];
+    NSDictionary *dict = notification.userInfo;
+    
+    NSString *path = [dict objectForKey:@"path"];
+    
+    
+    DDLogInfo(@"Video ready for preview with path: %@", path);
+    
+    [self previewTheVideoWithPath:path];
+    
+    [_videoView setHidden:YES];
+    [_videoPreviewView setHidden:NO];
 }
 
 -(void)showCurrentSecondToTitleText:(NSNotification *)sender
@@ -218,16 +166,24 @@
     
     NSNumber *seconds = [dict objectForKey:@"seconds"];
     
-    DDLogDebug(@"Notification: %@", seconds);
-    
-    [_titleLable setText:[NSString stringWithFormat:@"%d", seconds.integerValue]];
+    [_titleLable setText:[NSString stringWithFormat:@"%ld", (long)seconds.integerValue]];
 }
+
+- (void)dismissModalView:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+       
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
 #pragma mark - Navigation

@@ -224,6 +224,7 @@
 		584CF66F1823017B00EFABB8 /* GLPNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584CF66E1823017B00EFABB8 /* GLPNotificationCell.xib */; };
 		584CF675182303FC00EFABB8 /* accept_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CF673182303FC00EFABB8 /* accept_contact.png */; };
 		584CF676182303FC00EFABB8 /* ignore_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CF674182303FC00EFABB8 /* ignore_contact.png */; };
+		584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584DC5001922475A00CEE096 /* VideoCaptureView.m */; };
 		584E8E2A18A2EB3D005AEF91 /* bird-house-7_old2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E8E2518A2EB3D005AEF91 /* bird-house-7_old2@2x.png */; };
 		584E8E2B18A2EB3D005AEF91 /* id-card-7_old2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E8E2618A2EB3D005AEF91 /* id-card-7_old2@2x.png */; };
 		584E8E2C18A2EB3D005AEF91 /* man-7_old2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E8E2718A2EB3D005AEF91 /* man-7_old2@2x.png */; };
@@ -242,6 +243,8 @@
 		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
+		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
+		585C514819227B13000910DA /* GLPVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoManager.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585E724418B2C07C009034DE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 585E724318B2C07C009034DE /* splash.png */; };
@@ -1006,6 +1009,8 @@
 		584CF66E1823017B00EFABB8 /* GLPNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPNotificationCell.xib; sourceTree = "<group>"; };
 		584CF673182303FC00EFABB8 /* accept_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_contact.png; sourceTree = "<group>"; };
 		584CF674182303FC00EFABB8 /* ignore_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ignore_contact.png; sourceTree = "<group>"; };
+		584DC4FF1922475A00CEE096 /* VideoCaptureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCaptureView.h; sourceTree = "<group>"; };
+		584DC5001922475A00CEE096 /* VideoCaptureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCaptureView.m; sourceTree = "<group>"; };
 		584E8E2518A2EB3D005AEF91 /* bird-house-7_old2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7_old2@2x.png"; sourceTree = "<group>"; };
 		584E8E2618A2EB3D005AEF91 /* id-card-7_old2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card-7_old2@2x.png"; sourceTree = "<group>"; };
 		584E8E2718A2EB3D005AEF91 /* man-7_old2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "man-7_old2@2x.png"; sourceTree = "<group>"; };
@@ -1029,6 +1034,10 @@
 		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
 		585B319E191C452600B66380 /* BusyFreeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusyFreeSwitch.h; sourceTree = "<group>"; };
 		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
+		585C514319227006000910DA /* VideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewView.h; sourceTree = "<group>"; };
+		585C514419227006000910DA /* VideoPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPreviewView.m; sourceTree = "<group>"; };
+		585C514619227B13000910DA /* GLPVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoManager.h; sourceTree = "<group>"; };
+		585C514719227B13000910DA /* GLPVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoManager.m; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
@@ -2634,6 +2643,12 @@
 				58A75EBE1921097A0082F316 /* VideoProgressView.m */,
 				58A75EBA1920EFA50082F316 /* GLPVideoViewController.h */,
 				58A75EBB1920EFA50082F316 /* GLPVideoViewController.m */,
+				584DC4FF1922475A00CEE096 /* VideoCaptureView.h */,
+				584DC5001922475A00CEE096 /* VideoCaptureView.m */,
+				585C514319227006000910DA /* VideoPreviewView.h */,
+				585C514419227006000910DA /* VideoPreviewView.m */,
+				585C514619227B13000910DA /* GLPVideoManager.h */,
+				585C514719227B13000910DA /* GLPVideoManager.m */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -4332,6 +4347,7 @@
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
 				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
 				58428E2D18A26DF300B82E4B /* RegisterPositionHelper.m in Sources */,
+				585C514819227B13000910DA /* GLPVideoManager.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */,
@@ -4427,6 +4443,7 @@
 				58BF03E918F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m in Sources */,
 				58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
+				585C514519227006000910DA /* VideoPreviewView.m in Sources */,
 				580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
@@ -4530,6 +4547,7 @@
 				5867FF5918B64D320080AD9D /* CopyLabel.m in Sources */,
 				80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */,
 				808F6B65187D92DB0062FE39 /* GLPMessageProcessor.m in Sources */,
+				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,

@@ -75,14 +75,9 @@ const float MIN_SECONDS = 5.0f;
     _currentProgress += 0.01f;
     float progress = _currentProgress / MAX_SECONDS;
     
-    DDLogDebug(@"Current progress: %f", _currentProgress);
 
-//    if(_currentProgress == (NSInteger) _currentProgress)
-//    {
-//        DDLogDebug(@"Current progress in: %f", _currentProgress);
     
-        [self informMainViewSeconds:(NSInteger)_currentProgress];
-//    }
+    [self informMainViewSeconds:(NSInteger)_currentProgress];
     
     if([self doesReachedThreshold])
     {
@@ -117,7 +112,7 @@ const float MIN_SECONDS = 5.0f;
 
 -(void)informMainViewSeconds:(NSInteger)seconds
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil userInfo:@{@"seconds":[NSNumber numberWithInt:seconds]}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SECONDS_TEXT_TITLE object:nil userInfo:@{@"seconds":[NSNumber numberWithInteger:seconds]}];
 }
 
 -(BOOL)doesCameraNeedsToEnd
