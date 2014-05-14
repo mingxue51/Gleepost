@@ -430,6 +430,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
+    DDLogDebug(@"VIDEO: %@", json[@"videos"]);
+    
+    post.videosUrls = [RemoteParser parseVideos:json[@"videos"]];
+    
     
     //Parse categories.
     post.categories = [self parseCategoriesFromJson:json[@"categories"] forPost:post];
@@ -473,6 +477,31 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     
     return post;
+}
+
++(NSArray *)parseVideos:(NSArray *)jsonArray
+{
+    if(jsonArray == (id)[NSNull null])
+    {
+        return nil;
+    }
+    else
+    {
+        if(jsonArray.count > 0)
+        {
+            NSMutableArray *videosUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
+            
+            for(NSString *url in jsonArray)
+            {
+                [videosUrls addObject:url];
+            }
+            return videosUrls;
+        }
+        else
+        {
+            return [NSArray array];
+        }
+    }
 }
 
 +(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json

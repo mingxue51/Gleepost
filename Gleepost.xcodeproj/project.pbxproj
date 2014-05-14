@@ -244,7 +244,7 @@
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
 		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
-		585C514819227B13000910DA /* GLPVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoManager.m */; };
+		585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoUploadManager.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585E724418B2C07C009034DE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 585E724318B2C07C009034DE /* splash.png */; };
@@ -479,6 +479,8 @@
 		58E3DAC9188405FB00B9B048 /* background_day_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAC8188405FB00B9B048 /* background_day_old.png */; };
 		58E4555C1840091B001A5D80 /* GLPLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E4555B1840091B001A5D80 /* GLPLike.m */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
+		58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F562A41923A5ED00841918 /* GLPVideoUploader.m */; };
+		58F562A71923E5D400841918 /* PostVideoCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F562A61923E5D400841918 /* PostVideoCellView.xib */; };
 		58F6CF2518CE6F8100ABE244 /* group_posts.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F6CF2418CE6F8100ABE244 /* group_posts.png */; };
 		58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */; };
 		58F8C33118A4FC1E005EC7ED /* GLPRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */; };
@@ -1038,8 +1040,8 @@
 		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
 		585C514319227006000910DA /* VideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewView.h; sourceTree = "<group>"; };
 		585C514419227006000910DA /* VideoPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPreviewView.m; sourceTree = "<group>"; };
-		585C514619227B13000910DA /* GLPVideoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoManager.h; sourceTree = "<group>"; };
-		585C514719227B13000910DA /* GLPVideoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoManager.m; sourceTree = "<group>"; };
+		585C514619227B13000910DA /* GLPVideoUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploadManager.h; sourceTree = "<group>"; };
+		585C514719227B13000910DA /* GLPVideoUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoUploadManager.m; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
@@ -1357,6 +1359,9 @@
 		58E4555B1840091B001A5D80 /* GLPLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLike.m; sourceTree = "<group>"; };
 		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
 		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
+		58F562A31923A5ED00841918 /* GLPVideoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploader.h; sourceTree = "<group>"; };
+		58F562A41923A5ED00841918 /* GLPVideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoUploader.m; sourceTree = "<group>"; };
+		58F562A61923E5D400841918 /* PostVideoCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostVideoCellView.xib; sourceTree = "<group>"; };
 		58F6CF2418CE6F8100ABE244 /* group_posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_posts.png; sourceTree = "<group>"; };
 		58F8C32C18A4FB4B005EC7ED /* GLPSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSignUpViewController.h; sourceTree = "<group>"; };
 		58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSignUpViewController.m; sourceTree = "<group>"; };
@@ -2109,6 +2114,7 @@
 				58299EA6184636160045427E /* GLPPostNotificationHelper.h */,
 				58299EA7184636160045427E /* GLPPostNotificationHelper.m */,
 				58D0E26B1850FC24005879F4 /* ViewImageDelegate.h */,
+				58F562A61923E5D400841918 /* PostVideoCellView.xib */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
@@ -2653,8 +2659,6 @@
 				584DC5001922475A00CEE096 /* VideoCaptureView.m */,
 				585C514319227006000910DA /* VideoPreviewView.h */,
 				585C514419227006000910DA /* VideoPreviewView.m */,
-				585C514619227B13000910DA /* GLPVideoManager.h */,
-				585C514719227B13000910DA /* GLPVideoManager.m */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -2725,6 +2729,17 @@
 				58AE5FB61923821E00C4D59D /* PBJVideoView.m */,
 			);
 			name = PBJVideoPlayer;
+			sourceTree = "<group>";
+		};
+		58AE5FB91923A45400C4D59D /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				585C514619227B13000910DA /* GLPVideoUploadManager.h */,
+				585C514719227B13000910DA /* GLPVideoUploadManager.m */,
+				58F562A31923A5ED00841918 /* GLPVideoUploader.h */,
+				58F562A41923A5ED00841918 /* GLPVideoUploader.m */,
+			);
+			name = Video;
 			sourceTree = "<group>";
 		};
 		58B865CF180D9DD200BB18AF /* Notifications */ = {
@@ -3423,6 +3438,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58AE5FB91923A45400C4D59D /* Video */,
 				58CEA1E518C694E9009FDF2C /* Groups */,
 				584CF66B182289B500EFABB8 /* ContactsManager.h */,
 				584CF66C182289B500EFABB8 /* ContactsManager.m */,
@@ -4254,6 +4270,7 @@
 				C02DB4DC18AE56CA0077FDEB /* add.png in Resources */,
 				80A21D4618AD136200559BF6 /* internal_notification_cell_liked.png in Resources */,
 				584E8E2E18A2EB3D005AEF91 /* proximity-7_old2@2x.png in Resources */,
+				58F562A71923E5D400841918 /* PostVideoCellView.xib in Resources */,
 				5893BA0518200CA50003589E /* notificationicon.png in Resources */,
 				589CE50C18D227910046DAD2 /* the_bar2.png in Resources */,
 				584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */,
@@ -4365,7 +4382,7 @@
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
 				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
 				58428E2D18A26DF300B82E4B /* RegisterPositionHelper.m in Sources */,
-				585C514819227B13000910DA /* GLPVideoManager.m in Sources */,
+				585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */,
@@ -4542,6 +4559,7 @@
 				5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
 				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,
+				58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */,
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,

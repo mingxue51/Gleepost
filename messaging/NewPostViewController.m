@@ -116,6 +116,8 @@
 {
     [super viewDidAppear:animated];
     
+    [self setUpNotifications];
+    
     [self.contentTextView becomeFirstResponder];
 
     self.fdTakeController = [[FDTakeController alloc] init];
@@ -135,6 +137,7 @@
     
 //    [self.contentTextView resignFirstResponder];
     
+    [self removeNotifications];
     [super viewDidDisappear:animated];
 
 
@@ -143,6 +146,16 @@
 
 
 #pragma mark - Configuration
+
+-(void)setUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoReadyForUpload:) name:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil];
+}
+
+-(void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil];
+}
 
 -(void)configureObjects
 {
@@ -260,7 +273,7 @@
         {
             NSAssert(_group, @"Group should exist to create a new group post.");
             
-            DDLogDebug(@"GROUP REMOTE KEY: %d", _group.remoteKey);
+            DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)_group.remoteKey);
             
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart title:_eventTitle andGroup:_group];
         }
@@ -489,6 +502,23 @@
         //Capture a video.
         [self performSegueWithIdentifier:@"capture video" sender:self];
     }
+}
+
+#pragma mark - Video
+
+/**
+ This method is called when the user finished the video.
+ 
+ @param notification the notification contains the video path.
+ */
+-(void)videoReadyForUpload:(NSNotification *)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    NSString *videoPath = [dict objectForKey:@"video path"];
+    
+    
+    [_postUploader uploadVideoInPath:videoPath];
 }
 
 #pragma mark - VC Navigation

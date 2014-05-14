@@ -29,6 +29,8 @@
 @interface PostCell()
 
 @property (strong, nonatomic) GLPPost *post;
+@property (weak, nonatomic) IBOutlet UIView *videoView;
+@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 @property (assign, nonatomic) int postIndex;
 @property (assign, nonatomic) float initialPostContentLabelY;
 @property (assign, nonatomic) float initialPostContentLabelHeight;
@@ -120,40 +122,46 @@ static const float FixedBottomTextViewHeight = 100;
     }
     
     
-    UIImage *userImage;
-    
-    //Add the default image.
-    userImage = [UIImage imageNamed:@"default_user_image"];
+    if(postData.videosUrls && postData.videosUrls.count > 0)
+    {
+        [self setUpPreviewView];
+        self.imageAvailable = YES;
+    }
+    else
+    {
+        [self.postImage setHidden:NO];
 
+        [_videoView setHidden:YES];
+        
+        if(url!=nil && postData.tempImage==nil /**added**/ && postData.finalImage!=nil)
+        {
+            // Here we use the new provided setImageWithURL: method to load the web image
+            //TODO: Removed for now.
+            //[self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            
+            //New approach.
+            [self.postImage setImage:postData.finalImage];
+            
+            
+            //[self setPostOnline:YES];
+        }
+        else if(postData.tempImage != nil)
+        {
+            //Set live image.
+            [self.postImage setImage:postData.tempImage];
+        }
+        else if(postData.finalImage==nil && !self.imageNeedsToLoadAgain)
+        {
+            [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        }
+        
+        if(self.imageNeedsToLoadAgain)
+        {
+            [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        }
+    }
     
-    if(url!=nil && postData.tempImage==nil /**added**/ && postData.finalImage!=nil)
-    {
-        // Here we use the new provided setImageWithURL: method to load the web image
-        //TODO: Removed for now.
-        //[self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
-        //New approach.
-        [self.postImage setImage:postData.finalImage];
-        
-        
-        //[self setPostOnline:YES];
-    }
-    else if(postData.tempImage != nil)
-    {
-        //Set live image.
-        [self.postImage setImage:postData.tempImage];
-    }
-    else if(postData.finalImage==nil && !self.imageNeedsToLoadAgain)
-    {
-        [self.postImage setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    }
-    
-    if(self.imageNeedsToLoadAgain)
-    {
-        [self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
-        
-    }
+
     
     
     NSURL *userImageUrl = [NSURL URLWithString:postData.author.profileImageUrl];
@@ -246,6 +254,49 @@ static const float FixedBottomTextViewHeight = 100;
     
     [self formatBottomView];
     
+}
+
+#pragma mark - Video player
+
+-(void)setUpPreviewView
+{
+//    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+//    {
+//        return;
+//    }
+    
+    [_videoView setHidden:NO];
+    [self.postImage setHidden:YES];
+    _previewVC = [[PBJVideoPlayerController alloc] init];
+    [_previewVC setMute:YES];
+    _previewVC.delegate = self;
+    [_previewVC setPlaybackLoops:YES];
+    _previewVC.view.frame = _videoView.bounds;
+    [_videoView addSubview:_previewVC.view];
+    
+    _previewVC.videoPath = [[self.post videosUrls] objectAtIndex:0];
+    
+    [_previewVC playFromBeginning];
+}
+
+#pragma mark - PBJVideoPlayerControllerDelegate
+
+- (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
+{
+}
+
+- (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
+{
+    
+}
+
+- (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
+{
+    
+}
+
+- (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
+{
 }
 
 #pragma mark - Format UI
@@ -492,26 +543,31 @@ static const float FixedBottomTextViewHeight = 100;
         }
         
         [self.mainViewHeight setConstant:labelSize.height + FixedBottomTextViewHeight];
-        
-
     }
     else
     {
+        
         //Change the height of the label.
         [self setElement:self.contentLbl size:labelSize];
         
 //        [self setElement:self.moreBtn y:labelSize.height];
         
         [self setElement:_likeCommentView y:labelSize.height];
-        
+
         
         if([self isCurrentPostEvent])
         {
             [ShapeFormatterHelper setElement:_mainView withExtraY:83];
+            DDLogDebug(@"Video Post PostCell Event: %@", self.post.videosUrls);
+
         }
         else
         {
+
             [ShapeFormatterHelper setElement:_mainView withExtraY:5];
+            
+            DDLogDebug(@"Post in PostCell: %@ : %f", self.post.imagesUrls, _mainView.frame.origin.y);
+
         }
 
         //Change the size of top background view.

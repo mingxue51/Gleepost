@@ -91,6 +91,7 @@
         {
             [[PBJVision sharedInstance] pauseVideoCapture];
             [_progressView pauseProgress];
+
             break;
         }
         default:
@@ -120,8 +121,8 @@
 {
     DDLogDebug(@"Error: %@, Video Dict: %@", error, videoDict);
     
-    [_progressView stopProgress];
-    [self showPreviewTitleText];
+//    [self stopVideo];
+    
     
     NSString *videoPath = [videoDict objectForKey:PBJVisionVideoPathKey];
     [self notifyMainVCVideoIsReadyWithVideoPath:videoPath];
@@ -131,18 +132,20 @@
     
     [library writeVideoAtPathToSavedPhotosAlbum:[NSURL URLWithString:videoPath] completionBlock:^(NSURL *assetURL, NSError *error1) {
 
-        
-        
-        
     }];
 }
 
+/**
+ This method is called the following cases:
+ 1) The user decide to finish the video.
+ 2) The time expired and VideoProgressView sends notification to stop.
+ 
+ @param sender the button or the notification.
+ 
+ */
 - (IBAction)videoIsReady:(id)sender
 {
-    [[PBJVision sharedInstance] endVideoCapture];
-    [_progressView stopProgress];
-    [self showPreviewTitleText];
-    
+    [self stopVideo];
 }
 
 -(IBAction)goBackToNewPostViewController:(id)sender
@@ -171,10 +174,19 @@
     [_continueBarButton setHidden:NO];
 }
 
+-(void)stopVideo
+{
+    [[PBJVision sharedInstance] endVideoCapture];
+    [_progressView stopProgress];
+    [self showPreviewNavigationBar];
+    _recording = NO;
+}
+
 #pragma mark - Title
 
--(void)showPreviewTitleText
+-(void)showPreviewNavigationBar
 {
+    [_continueBarButton setHidden:YES];
     [_titleLable setText:@"New Video"];
 }
 

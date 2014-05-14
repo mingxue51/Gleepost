@@ -140,7 +140,6 @@ const float TOP_OFFSET = 280.0f;
     if(self)
     {
         [self configNotifications];
-        
     }
     
     return self;
@@ -743,6 +742,9 @@ const float TOP_OFFSET = 280.0f;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCellView" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+
+    
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
     // refresh control
@@ -898,7 +900,10 @@ const float TOP_OFFSET = 280.0f;
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
         self.posts = [localPosts mutableCopy];
-        
+//        
+//        GLPPost *p = self.posts[0];
+//        p.videosUrls =  [[NSArray alloc] initWithObjects:@"http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov", nil];
+//        self.posts[0] = p;
         //[[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
         [self.tableView reloadData];
@@ -906,6 +911,10 @@ const float TOP_OFFSET = 280.0f;
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         if(success) {
             self.posts = [remotePosts mutableCopy];
+            
+//            GLPPost *p = self.posts[0];
+//            p.videosUrls =  [[NSArray alloc] initWithObjects:@"http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov", nil];
+//            self.posts[0] = p;
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
 
@@ -1722,6 +1731,7 @@ const float TOP_OFFSET = 280.0f;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+//    static NSString *CellIdentifierWithVideo = @"VideoCell";
 //    static NSString *CellIdentifierHeader = @"CampusWallHeader";
     
     //Header cell.
@@ -1755,13 +1765,21 @@ const float TOP_OFFSET = 280.0f;
 //    }
     
     
-    if([post imagePost])
+    if([post imagePost] || [post isVideoPost])
     {
+        DDLogDebug(@"Image: %@ : Video: %@", post, post.videosUrls);
+        
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
         postCell.imageAvailable = YES;
         
     }
+//    else if ([post isVideoPost])
+//    {
+//        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithVideo forIndexPath:indexPath];
+//        postCell.imageAvailable = YES;
+//
+//    }
     else
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
@@ -1855,7 +1873,7 @@ const float TOP_OFFSET = 280.0f;
 //        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
     GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
     
-    if([currentPost imagePost])
+    if([currentPost imagePost] || [currentPost isVideoPost])
     {
         //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
 

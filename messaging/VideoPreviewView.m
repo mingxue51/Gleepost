@@ -23,25 +23,20 @@
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"videoPlayerReady");
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"videoPlayerPlaybackStateDidChange");
     
 }
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"videoPlayerPlaybackWillStartFromBeginning");
     
 }
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"videoPlayerPlaybackDidEnd");
-    
 }
 
 #pragma mark - Selectors
@@ -49,6 +44,11 @@
 -(IBAction)done:(id)sender
 {
     
+}
+
+-(IBAction)goBack:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
 }
 
 /*

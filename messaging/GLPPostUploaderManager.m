@@ -532,4 +532,69 @@
 
 }
 
+-(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoUrl:(NSString*)url
+{
+    //Post ready to be uploaded.
+    
+    void (^_uploadVideoContentBlock)(GLPPost*);
+    
+    GLPPost *post = nil;
+    
+    @synchronized(_readyPosts)
+    {
+        post = [_readyPosts objectForKey:timestamp];
+        post.videosUrls = [[NSArray alloc] initWithObjects:url, nil];
+        
+        _uploadVideoContentBlock = ^(GLPPost* post){
+            
+            //Notify GLPTimelineViewController after finish.
+//            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
+//                                                                                                                            @"imageUrl":[post.imagesUrls objectAtIndex:0],
+//                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
+        };
+    }
+    
+    
+    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, [post.videosUrls objectAtIndex:0]);
+    
+    
+    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
+    
+    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
+        
+        
+        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        post.remoteKey = success ? remoteKey : 0;
+        
+        NSLog(@"!!Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
+        
+        
+        [GLPPostManager updatePostAfterSending:post];
+        
+        //        self.incomingKey = _incomingPost.key;
+        //        self.incomingRemoteKey = remoteKey;
+        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
+        //        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
+        
+        //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
+        
+        
+        if(success)
+        {
+            _uploadVideoContentBlock(post);
+            
+            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+            
+            //Add post to uploaded posts.
+            [_uploadedPosts addObject:post];
+            
+            //Remove post from the NSDictionary.
+            [self removePostWithTimestamp:timestamp];
+        }
+        
+        //        [self cleanUpPost];
+    }];
+}
+
+
 @end

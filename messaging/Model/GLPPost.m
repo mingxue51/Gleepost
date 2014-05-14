@@ -33,9 +33,19 @@
     return self;
 }
 
--(BOOL) imagePost
+-(BOOL)imagePost
 {
     if (imagesUrls == nil || [imagesUrls count] == 0)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
+-(BOOL)isVideoPost
+{
+    if(_videosUrls == nil || [_videosUrls count] == 0)
     {
         return NO;
     }

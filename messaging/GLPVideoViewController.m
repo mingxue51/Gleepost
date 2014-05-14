@@ -33,13 +33,13 @@
 
 @property (strong, nonatomic) IBOutlet VideoProgressView *progressView;
 
-@property (assign, nonatomic) BOOL recording;
-
 @property (weak, nonatomic) IBOutlet UILabel *titleLable;
 
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet UIButton *continueBarButton;
+
+@property (strong, nonatomic) NSString *videoPath;
 
 @end
 
@@ -85,12 +85,16 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissModalView:) name:GLPNOTIFICATION_DISMISS_VIDEO_VC object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoIsReady:) name:GLPNOTIFICATION_CONTINUE_TO_PREVIEW object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCaptureView:) name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
+
 }
 
 -(void)removeObservers
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_DISMISS_VIDEO_VC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONTINUE_TO_PREVIEW object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
+
 }
 
 /**
@@ -101,8 +105,6 @@
 {
     _longPressGestureRecognizer.enabled = YES;
     [_longPressGestureRecognizer setDelegate:self];
-    
-    _recording = NO;
     
     PBJVision *vision = [PBJVision sharedInstance];
 //    CMTime maximumTime = CMTimeMake(MAXIMUM_DURATION, 1);
@@ -119,6 +121,7 @@
     
     [self.cameraView.layer addSublayer:[vision previewLayer]];
     [vision startPreview];
+    
 }
 
 -(void)setUpPreviewView
@@ -134,7 +137,10 @@
 
 -(void)previewTheVideoWithPath:(NSString *)path
 {
+    //Example url: http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov
+    
     _previewVC.videoPath = path;
+    
     [_previewVC playFromBeginning];
 }
 
@@ -153,22 +159,37 @@
     
     NSString *path = [dict objectForKey:@"path"];
     
+    _videoPath = path;
     
     DDLogInfo(@"Video ready for preview with path: %@", path);
     
     [self previewTheVideoWithPath:path];
     
-    [_videoView setHidden:YES];
-    [_videoPreviewView setHidden:NO];
+    [self showPreviewView];
 }
 
--(void)showCurrentSecondToTitleText:(NSNotification *)sender
+-(void)showCurrentSecondToTitleText:(NSNotification *)notification
 {
-    NSDictionary *dict = sender.userInfo;
+    NSDictionary *dict = notification.userInfo;
     
     NSNumber *seconds = [dict objectForKey:@"seconds"];
     
     [_titleLable setText:[NSString stringWithFormat:@"%ld", (long)seconds.integerValue]];
+}
+
+-(void)showCaptureView:(NSNotification *)notification
+{
+//    [self setUpCameraObjects];
+    if([[PBJVision sharedInstance] isCaptureSessionActive])
+    {
+        DDLogDebug(@"Capture session active.");
+    }
+    else
+    {
+        DDLogDebug(@"Capture session not active.");
+    }
+    
+    [self showCaptureView];
 }
 
 - (void)dismissModalView:(id)sender
@@ -183,6 +204,30 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UI methods
+
+-(void)showPreviewView
+{
+    [_videoView setHidden:YES];
+    [_videoPreviewView setHidden:NO];
+    
+}
+
+-(void)showCaptureView
+{
+    [_videoPreviewView setHidden:YES];
+    [_videoView setHidden:NO];
+}
+
+-(IBAction)saveVideo:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+       
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil userInfo:@{@"video path": _videoPath}];
+        
+    }];
 }
 
 

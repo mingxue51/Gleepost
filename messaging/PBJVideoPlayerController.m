@@ -81,6 +81,26 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
 
 #pragma mark - getters/setters
 
+/**
+ Custom method. Fix that later.
+ */
+-(void)setMute:(BOOL)mute
+{
+//    [_player setMuted:mute];
+    
+//    NSArray *audioTracks = [asset tracksWithMediaType:AVMediaTypeAudio];
+    
+    NSMutableArray *allAudioParams = [NSMutableArray array];
+    AVMutableAudioMixInputParameters *audioInputParams = [AVMutableAudioMixInputParameters audioMixInputParameters];
+    [allAudioParams addObject:audioInputParams];
+    [audioInputParams setVolume:(mute) ? 0.0 : 1.0 atTime:kCMTimeZero];
+    
+    AVMutableAudioMix *audioMix = [AVMutableAudioMix audioMix];
+    [audioMix setInputParameters:allAudioParams];
+    
+    [_playerItem setAudioMix:audioMix];
+}
+
 - (NSString *)videoPath
 {
     return _videoPath;
@@ -236,6 +256,17 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     [self _setPlayerItem:nil];
 }
 
+//-(id)init
+//{
+//    self = [super init];
+//    
+//    if(self)
+//    {
+//    }
+//    
+//    return self;
+//}
+
 #pragma mark - view lifecycle
 
 - (void)loadView
@@ -243,7 +274,8 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     // AVPlayer
     _player = [[AVPlayer alloc] init];
     _player.actionAtItemEnd = AVPlayerActionAtItemEndPause;
-
+    
+    
     // AVPlayer KVO
     [_player addObserver:self forKeyPath:PBJVideoPlayerControllerRateKey options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:(__bridge void *)(PBJVideoPlayerObserverContext)];
 

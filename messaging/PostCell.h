@@ -11,6 +11,7 @@
 #import "GLPPost.h"
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
+#import "PBJVideoPlayerController.h"
 
 
 
@@ -22,7 +23,7 @@
 
 
 
-@interface PostCell : UITableViewCell <UIActionSheetDelegate>
+@interface PostCell : UITableViewCell <UIActionSheetDelegate, PBJVideoPlayerControllerDelegate>
 
 extern const float IMAGE_CELL_HEIGHT;
 extern const float TEXT_CELL_HEIGHT;

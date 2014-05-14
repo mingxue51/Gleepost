@@ -143,6 +143,8 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)markNotificationsReadWithLastNotificationRemoteKey:(int)remoteKey withCallbackBlock:(void (^)(BOOL success))callback;
 
+// video
+-(void)uploadVideo:(NSData *)videoData callback:(void (^)(BOOL success, NSString *videoUrl))callback;
 
 // groups
 
