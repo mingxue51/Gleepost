@@ -12,7 +12,7 @@
 
 @property (assign, nonatomic) float currentProgress;
 @property (strong, nonatomic) NSTimer *timer;
-@property (assign, nonatomic) int currentIntProgress;
+@property (assign, nonatomic) float currentCountDownProgress;
 @end
 
 @implementation VideoProgressView
@@ -37,13 +37,13 @@ const float MIN_SECONDS = 5.0f;
 -(void)initialiseObjects
 {
     _currentProgress = 0.0f;
+    _currentCountDownProgress = MAX_SECONDS;
     [self setProgress:0.0f animated:NO];
 }
 
 -(void)formatProgressView
 {
     [self setTransform:CGAffineTransformMakeScale(1.0, 22.0)];
-
 }
 
 /**
@@ -73,11 +73,10 @@ const float MIN_SECONDS = 5.0f;
 -(void)updateProgressBar:(id)sender
 {
     _currentProgress += 0.01f;
+    _currentCountDownProgress -= 0.01f;
     float progress = _currentProgress / MAX_SECONDS;
     
-
-    
-    [self informMainViewSeconds:(NSInteger)_currentProgress];
+    [self informMainViewSeconds:(NSInteger)_currentCountDownProgress];
     
     if([self doesReachedThreshold])
     {

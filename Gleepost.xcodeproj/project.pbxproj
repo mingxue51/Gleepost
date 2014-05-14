@@ -407,6 +407,8 @@
 		58AD86BF1892DFC400016C6D /* add_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BE1892DFC400016C6D /* add_button_old.png */; };
 		58AD86C11892DFD100016C6D /* profile_botton.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86C01892DFD100016C6D /* profile_botton.png */; };
 		58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */; };
+		58AE5FB71923821E00C4D59D /* PBJVideoPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AE5FB41923821E00C4D59D /* PBJVideoPlayerController.m */; };
+		58AE5FB81923821E00C4D59D /* PBJVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AE5FB61923821E00C4D59D /* PBJVideoView.m */; };
 		58B1161D180D8491000E9555 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B1161C180D8491000E9555 /* ProfileView.m */; };
 		58B1BC9818EB13E9000ECB6C /* more.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1BC9718EB13E9000ECB6C /* more.png */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
@@ -1256,6 +1258,10 @@
 		58AD86C01892DFD100016C6D /* profile_botton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_botton.png; sourceTree = "<group>"; };
 		58AD86C21892E0F200016C6D /* GLPIntroducedProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPIntroducedProfile.h; sourceTree = "<group>"; };
 		58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPIntroducedProfile.m; sourceTree = "<group>"; };
+		58AE5FB31923821E00C4D59D /* PBJVideoPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBJVideoPlayerController.h; sourceTree = "<group>"; };
+		58AE5FB41923821E00C4D59D /* PBJVideoPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBJVideoPlayerController.m; sourceTree = "<group>"; };
+		58AE5FB51923821E00C4D59D /* PBJVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBJVideoView.h; sourceTree = "<group>"; };
+		58AE5FB61923821E00C4D59D /* PBJVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBJVideoView.m; sourceTree = "<group>"; };
 		58B1161B180D8491000E9555 /* ProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
 		58B1161C180D8491000E9555 /* ProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		58B1BC9718EB13E9000ECB6C /* more.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more.png; sourceTree = "<group>"; };
@@ -2710,6 +2716,17 @@
 			name = "New Chat";
 			sourceTree = "<group>";
 		};
+		58AE5FB21923820A00C4D59D /* PBJVideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				58AE5FB31923821E00C4D59D /* PBJVideoPlayerController.h */,
+				58AE5FB41923821E00C4D59D /* PBJVideoPlayerController.m */,
+				58AE5FB51923821E00C4D59D /* PBJVideoView.h */,
+				58AE5FB61923821E00C4D59D /* PBJVideoView.m */,
+			);
+			name = PBJVideoPlayer;
+			sourceTree = "<group>";
+		};
 		58B865CF180D9DD200BB18AF /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -3048,6 +3065,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				58AE5FB21923820A00C4D59D /* PBJVideoPlayer */,
 				587805A51920E2CE0002472B /* VideoRecorder */,
 				58ACD1C618F599AC00BD576B /* DCIntrospect */,
 				5834902618BF80670087CC3A /* FDTakeViewControllerImagePicker */,
@@ -4473,9 +4491,11 @@
 				5834903E18BF80670087CC3A /* FDTakeController.m in Sources */,
 				11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
+				58AE5FB71923821E00C4D59D /* PBJVideoPlayerController.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */,
 				C014D08718433C990001B76E /* GLPFacebookConnect.m in Sources */,
+				58AE5FB81923821E00C4D59D /* PBJVideoView.m in Sources */,
 				584332A0180F30DC00BD9F74 /* PrivateProfileViewController.m in Sources */,
 				589EAD1618A41918005B2F4C /* SignUpFourView.m in Sources */,
 				58960EBF18A197E5005FC433 /* CustomPushTransitioningDelegate.m in Sources */,

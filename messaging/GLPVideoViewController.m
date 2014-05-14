@@ -16,6 +16,7 @@
 #import "VideoProgressView.h"
 #import "VideoCaptureView.h"
 #import "VideoPreviewView.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPVideoViewController ()
 
@@ -124,7 +125,7 @@
 {
     _previewVC = [[PBJVideoPlayerController alloc] init];
     _previewVC.delegate = _videoPreviewView;
-//    _previewVC set;
+    [_previewVC setPlaybackLoops:YES];
     _previewVC.view.frame = _previewView.bounds;
     [_previewView addSubview:_previewVC.view];
 }
