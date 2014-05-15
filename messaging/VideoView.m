@@ -44,20 +44,26 @@
     [_previewVC setPlaybackLoops:NO];
     _previewVC.view.frame = _videoView.bounds;
     [_videoView addSubview:_previewVC.view];
-    
 }
 
 -(IBAction)video:(id)sender
 {
-    _previewVC.videoPath = _url;
-    [_previewVC playFromBeginning];
+    if(_playButton.tag == 0)
+    {
+        [self startVideoFromBeggining];
+    }
+    else
+    {
+        [self resumeVideo];
+    }
+
 }
 
 #pragma mark - Animation
 
 -(void)setHiddenToPlayButton:(BOOL)hidden
 {
-    [UIView animateWithDuration:1.0f animations:^{
+    [UIView animateWithDuration:0.3f animations:^{
         
         [self.playButton setAlpha:(hidden) ? 0.0f : 1.0f];
         
@@ -77,7 +83,7 @@
 {
     if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused)
     {
-        [self setHiddenToPlayButton:NO];
+        [self pauseVideo];
     }
 }
 
@@ -88,7 +94,33 @@
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
 {
+    [self endVideo];
+}
+
+#pragma mark - Playback operations
+
+-(void)pauseVideo
+{
     [self setHiddenToPlayButton:NO];
+    [_playButton setTag:1];
+}
+
+-(void)resumeVideo
+{
+    [self setHiddenToPlayButton:YES];
+    [_previewVC playFromCurrentTime];
+}
+
+-(void)endVideo
+{
+    [self setHiddenToPlayButton:NO];
+    [_playButton setTag:0];
+}
+
+-(void)startVideoFromBeggining
+{
+    _previewVC.videoPath = _url;
+    [_previewVC playFromBeginning];
 }
 
 /*

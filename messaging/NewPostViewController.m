@@ -26,7 +26,6 @@
 #import "PickDateEventViewController.h"
 #import "GroupViewController.h"
 #import "GLPTimelineViewController.h"
-#import "GLPVideoViewController.h"
 
 @interface NewPostViewController ()
 
@@ -34,6 +33,7 @@
 //IBOutlets.
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
 @property (weak, nonatomic) IBOutlet UILabel *categoriesLbl;
+@property (weak, nonatomic) IBOutlet UIView *videoView;
 
 //Category buttons.
 @property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
@@ -55,6 +55,8 @@
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
 @property (strong, nonatomic) NSString *eventTitle;
+@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -102,8 +104,9 @@
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureObjects];
-    [self configureNavigationBar];
     [self configureCategoryButtons];
+    [self configureNavigationBar];
+    [self formatNavigationButtons];
     [self configureLabel];
 
 //    [self generateCategoryButtons];
@@ -117,6 +120,8 @@
     [super viewDidAppear:animated];
     
     [self setUpNotifications];
+
+    [self formatStatusBar];
     
     [self.contentTextView becomeFirstResponder];
 
@@ -184,26 +189,17 @@
 
 -(void)configureNavigationBar
 {
-    [self formatNavigationBar];
-    [self formatNavigationButtons];
-}
-
--(void)formatNavigationBar
-{
+    
     [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
     
     self.simpleNavBar.tag = 1;
     
     [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
-    
-//    [self.simpleNavBar setTranslucent:NO];
-//    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
-//    self.simpleNavBar.tintColor = [UIColor blackColor];
-//    
-//    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
 
+-(void)formatStatusBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 -(void)formatNavigationButtons
@@ -473,6 +469,9 @@
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
 {
+    //Remove video preview view if is on the addImageButton.
+    [self removeVideoPreviewView];
+    
     [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
@@ -481,6 +480,7 @@
     
     self.imgToUpload = photo;
     [_postUploader uploadImageToQueue:self.imgToUpload];
+    
     //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
@@ -499,9 +499,14 @@
     }
     else if([selectedButtonTitle isEqualToString:@"Capture a video"])
     {
+        //Remove video preview view if is on the addImageButton.
+        [self removeVideoPreviewView];
+        
         //Capture a video.
         [self performSegueWithIdentifier:@"capture video" sender:self];
     }
+    
+
 }
 
 #pragma mark - Video
@@ -517,8 +522,54 @@
     
     NSString *videoPath = [dict objectForKey:@"video path"];
     
+    [self showVideoToButtonWithPath:videoPath];
     
     [_postUploader uploadVideoInPath:videoPath];
+}
+
+-(void)showVideoToButtonWithPath:(NSString *)videoPath
+{
+    _previewVC = [[PBJVideoPlayerController alloc] init];
+    _previewVC.delegate = self;
+    [_previewVC setPlaybackLoops:YES];
+    _previewVC.view.frame = _addImageButton.bounds;
+    [_addImageButton addSubview:_previewVC.view];
+    
+    _previewVC.videoPath = videoPath;
+    
+    [_previewVC playFromBeginning];
+}
+
+-(void)removeVideoPreviewView
+{
+    if(_previewVC)
+    {
+        [_previewVC.view removeFromSuperview];
+        _previewVC = nil;
+    }
+}
+
+#pragma mark - PBJVideoPlayerControllerDelegate
+
+- (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
+{
+}
+
+- (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
+{
+    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused)
+    {
+        [self addImageOrImage:nil];
+    }
+}
+
+- (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
+{
+    
+}
+
+- (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
+{
 }
 
 #pragma mark - VC Navigation

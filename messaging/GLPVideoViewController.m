@@ -55,6 +55,8 @@
     
     [self setUpPreviewView];
     
+    [self configureNavigationBar];
+    
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -95,6 +97,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONTINUE_TO_PREVIEW object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
 
+}
+
+-(void)configureNavigationBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 /**

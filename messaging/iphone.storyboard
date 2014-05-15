@@ -422,6 +422,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
+                            <view contentMode="scaleToFill" id="epv-o8-OpP">
+                                <rect key="frame" x="240" y="164" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -438,6 +443,7 @@
                         <outlet property="postNavBarBtn" destination="yS1-L1-XRL" id="03q-jG-a13"/>
                         <outlet property="questionsCategoryBtn" destination="ZVx-gQ-zaI" id="awn-q7-DBG"/>
                         <outlet property="simpleNavBar" destination="zv2-o0-Fnh" id="fFo-3E-mrp"/>
+                        <outlet property="videoView" destination="epv-o8-OpP" id="xjY-bi-Hwh"/>
                         <segue destination="kg4-Pr-bdC" kind="modal" identifier="pick date" id="Mks-9Y-nbp"/>
                         <segue destination="Pxp-nL-r26" kind="modal" identifier="capture video" id="1TU-9z-lbJ"/>
                     </connections>
@@ -1719,7 +1725,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="mBY-O7-yOs" id="XVF-5Z-2A1"/>

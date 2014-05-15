@@ -1731,7 +1731,6 @@ const float TOP_OFFSET = 280.0f;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
-//    static NSString *CellIdentifierWithVideo = @"VideoCell";
 //    static NSString *CellIdentifierHeader = @"CampusWallHeader";
     
     //Header cell.
@@ -1767,8 +1766,6 @@ const float TOP_OFFSET = 280.0f;
     
     if([post imagePost] || [post isVideoPost])
     {
-        DDLogDebug(@"Image: %@ : Video: %@", post, post.videosUrls);
-        
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
         postCell.imageAvailable = YES;
