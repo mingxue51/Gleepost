@@ -60,10 +60,31 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <view hidden="YES" contentMode="scaleToFill" id="8SO-X2-c6L">
+                            <view hidden="YES" contentMode="scaleToFill" id="8SO-X2-c6L" customClass="VideoView">
                                 <rect key="frame" x="4" y="0.0" width="312" height="190"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" id="2sB-XC-29j">
+                                        <rect key="frame" x="0.0" y="0.0" width="312" height="190"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ToB-cr-2JB">
+                                        <rect key="frame" x="0.0" y="0.0" width="312" height="190"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="gleepost_play_button.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="video:" destination="8SO-X2-c6L" eventType="touchUpInside" id="3mt-0I-bj6"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="playButton" destination="ToB-cr-2JB" id="KNj-cu-yEJ"/>
+                                    <outlet property="videoView" destination="2sB-XC-29j" id="uu8-TL-kEE"/>
+                                </connections>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dxO-eC-D7E">
                                 <rect key="frame" x="306" y="193" width="10" height="10"/>
@@ -269,6 +290,7 @@
     </objects>
     <resources>
         <image name="clock.png" width="24" height="24"/>
+        <image name="gleepost_play_button.png" width="65" height="78"/>
         <image name="going.png" width="142" height="64"/>
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>

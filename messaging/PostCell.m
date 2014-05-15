@@ -24,13 +24,13 @@
 #import "WebClientHelper.h"
 #import "GLPPostOperationManager.h"
 #import "GLPFacebookConnect.h"
-
+#import "VideoView.h"
 
 @interface PostCell()
 
 @property (strong, nonatomic) GLPPost *post;
-@property (weak, nonatomic) IBOutlet UIView *videoView;
-@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+@property (weak, nonatomic) IBOutlet VideoView *videoView;
+//@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 @property (assign, nonatomic) int postIndex;
 @property (assign, nonatomic) float initialPostContentLabelY;
 @property (assign, nonatomic) float initialPostContentLabelHeight;
@@ -124,14 +124,12 @@ static const float FixedBottomTextViewHeight = 100;
     
     if(postData.videosUrls && postData.videosUrls.count > 0)
     {
-        [self setUpPreviewView];
+        [self showVideoView];
         self.imageAvailable = YES;
     }
     else
     {
-        [self.postImage setHidden:NO];
-
-        [_videoView setHidden:YES];
+        [self hideVideoView];
         
         if(url!=nil && postData.tempImage==nil /**added**/ && postData.finalImage!=nil)
         {
@@ -258,45 +256,17 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma mark - Video player
 
--(void)setUpPreviewView
+-(void)showVideoView
 {
-//    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
-//    {
-//        return;
-//    }
-    
     [_videoView setHidden:NO];
     [self.postImage setHidden:YES];
-    _previewVC = [[PBJVideoPlayerController alloc] init];
-    [_previewVC setMute:YES];
-    _previewVC.delegate = self;
-    [_previewVC setPlaybackLoops:YES];
-    _previewVC.view.frame = _videoView.bounds;
-    [_videoView addSubview:_previewVC.view];
-    
-    _previewVC.videoPath = [[self.post videosUrls] objectAtIndex:0];
-    
-    [_previewVC playFromBeginning];
+    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0]];
 }
 
-#pragma mark - PBJVideoPlayerControllerDelegate
-
-- (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
+-(void)hideVideoView
 {
-}
-
-- (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
-{
-    
-}
-
-- (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
-{
-    
-}
-
-- (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
-{
+    [_videoView setHidden:YES];
+    [self.postImage setHidden:NO];
 }
 
 #pragma mark - Format UI
@@ -558,16 +528,10 @@ static const float FixedBottomTextViewHeight = 100;
         if([self isCurrentPostEvent])
         {
             [ShapeFormatterHelper setElement:_mainView withExtraY:83];
-            DDLogDebug(@"Video Post PostCell Event: %@", self.post.videosUrls);
-
         }
         else
         {
-
             [ShapeFormatterHelper setElement:_mainView withExtraY:5];
-            
-            DDLogDebug(@"Post in PostCell: %@ : %f", self.post.imagesUrls, _mainView.frame.origin.y);
-
         }
 
         //Change the size of top background view.
