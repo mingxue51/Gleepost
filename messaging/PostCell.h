@@ -57,7 +57,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *goingButton;
 
-@property (assign, nonatomic) UIViewController<RemovePostCellDelegate,NewCommentDelegate, ViewImageDelegate> *delegate;
+@property (assign, nonatomic) UIViewController <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate> *delegate;
 
 @property BOOL isViewPost;
 @property BOOL imageAvailable;
@@ -75,9 +75,10 @@ extern const float TEXT_CELL_HEIGHT;
 
 + (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
 
+-(void)reloadImage:(BOOL)loadImage;
+
 -(void)setPostOnline:(BOOL)online;
 
--(void)reloadImage:(BOOL)loadImage;
 
 
 @end
