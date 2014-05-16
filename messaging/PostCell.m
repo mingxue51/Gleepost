@@ -295,6 +295,7 @@ static const float FixedBottomTextViewHeight = 100;
     
 }
 
+//TODO: MOVED.
 -(void)setLikeImageToButton
 {
     if(self.post.liked)
@@ -318,12 +319,14 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+//TODO: MOVED.
 -(void)initFormatLabelsObjects
 {
     _contentAttributeText = [[NSAttributedString alloc] initWithString:self.post.content
                                                             attributes:@{ NSKernAttributeName : @(0.3f)}];
 }
 
+//TODO: MOVED.
 -(void)configureGoingButton
 {
     if(!self.post.eventTitle)
@@ -355,6 +358,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+//TODO: MOVED.
 -(void)hideMoreButtonIfNecessary
 {
     
@@ -378,6 +382,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+//TODO: MOVED.
 -(void)setTimeWithTime:(NSDate *)date
 {
     if ([[NSDate date] compare:date] == NSOrderedDescending) {
@@ -393,11 +398,13 @@ static const float FixedBottomTextViewHeight = 100;
     }
 }
 
+//TODO: MOVED.
 -(void)formatUsersImage
 {
     [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
 }
 
+//TODO: MOVED.
 -(void)formatPostImage
 {
 //    [ShapeFormatterHelper setCornerRadiusWithView:self.postImage andValue:8];
@@ -420,6 +427,7 @@ static const float FixedBottomTextViewHeight = 100;
 //    self.contentView.layer.borderWidth = 0.5f;
 }
 
+//TODO: MOVED.
 -(void)formatBottomView
 {
     [ShapeFormatterHelper setTwoBottomCornerRadius:_likeCommentBackImageView withViewFrame:_likeCommentBackImageView.frame withValue:10];
@@ -427,6 +435,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma mark - Online indicator
 
+//TODO: MOVED.
 -(void)updateOnlinePost:(int)remoteKey
 {
     if(remoteKey!=0)
@@ -442,6 +451,7 @@ static const float FixedBottomTextViewHeight = 100;
     }
 }
 
+//TODO: MOVED.
 -(void)hideIndicator
 {
     [self.uploadedIndicator setAlpha:1.0];
@@ -457,6 +467,7 @@ static const float FixedBottomTextViewHeight = 100;
   
 }
 
+//TODO: MOVED.
 -(void)blinkIndicator
 {
     [self.uploadedIndicator setAlpha:1.0];
@@ -470,6 +481,7 @@ static const float FixedBottomTextViewHeight = 100;
     }];
 }
 
+//TODO: MOVED.
 -(void)setPostOnline:(BOOL)online
 {
     if(online)
@@ -484,6 +496,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma mark - Accessors
 
+//TODO: MOVED.
 -(void)setNewPositions
 {
     
@@ -542,11 +555,13 @@ static const float FixedBottomTextViewHeight = 100;
     }
 }
 
+//TODO: MOVED.
 -(void)reloadImage:(BOOL)loadImage
 {
     self.imageNeedsToLoadAgain = loadImage;
 }
 
+//TODO: MOVED.
 -(void)layoutSubviews
 {
     [super layoutSubviews];
@@ -562,7 +577,7 @@ static const float FixedBottomTextViewHeight = 100;
     [self.numberOfLikesLbl setText:[NSString stringWithFormat:@"%d",self.post.likes]];
 }
 
-
+//TODO: MOVED.
 + (CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
 {
     UIFont *font = nil;
@@ -601,7 +616,7 @@ static const float FixedBottomTextViewHeight = 100;
     
     return size;
 }
-
+//TODO: MOVED.
 + (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
 {
     // initial height
@@ -642,6 +657,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma - mark Selector methods
 
+//TODO: MOVED.
 -(IBAction)viewMoreMenu:(id)sender
 {
     //Pop up a bottom menu.
@@ -707,6 +723,7 @@ static const float FixedBottomTextViewHeight = 100;
     [actionSheet showInView:[_delegate.view window]];
 }
 
+//TODO: MOVED.
 - (IBAction)likePost:(id)sender
 {
 //    UIButton *btn = (UIButton*) sender;
@@ -761,6 +778,7 @@ static const float FixedBottomTextViewHeight = 100;
     [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPLikedPostUdated" withObject:self remoteKey:self.post.remoteKey withLiked:self.post.liked];
 }
 
+//TODO: MOVED.
 - (IBAction)commentPost:(id)sender
 {
     //Hide navigation bar.
@@ -832,7 +850,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
-
+//TODO: MOVED.
 -(void)sharePostToSocialMedia
 {
     if(self.post.imagesUrls[0] != nil)
@@ -854,6 +872,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+//TODO: MOVED.
 -(void)sharePostToSocialMediaWithItems:(NSArray *)items
 {
     UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
@@ -867,6 +886,7 @@ static const float FixedBottomTextViewHeight = 100;
     [self.delegate presentViewController:shareItems animated:YES completion:nil];
 }
 
+//TODO: MOVED.
 -(void)viewPostImage:(id)sender
 {
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
@@ -917,11 +937,13 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma mark - Helper methods
 
+//TODO: MOVED.
 -(BOOL)isCurrentPostBelongsToCurrentUser
 {
     return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
 }
 
+//TODO: MOVED.
 -(BOOL)isCurrentPostEvent
 {
     if(self.post.eventTitle == nil)
@@ -936,6 +958,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma mark - Action Sheet delegate
 
+//TODO: MOVED.
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
@@ -970,6 +993,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 }
 
+//TODO: MOVED.
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet
 {
     for (UIView *subview in actionSheet.subviews)
@@ -991,6 +1015,7 @@ static const float FixedBottomTextViewHeight = 100;
 
 #pragma mark - Client
 
+//TODO: MOVED.
 -(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
 {
     [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
@@ -1008,6 +1033,7 @@ static const float FixedBottomTextViewHeight = 100;
     }];
 }
 
+//TODO: MOVED.
 -(void)attending
 {
     self.post.attended = YES;
@@ -1030,6 +1056,7 @@ static const float FixedBottomTextViewHeight = 100;
     }];
 }
 
+//TODO: MOVED.
 -(void)notAttending
 {
     
@@ -1052,21 +1079,23 @@ static const float FixedBottomTextViewHeight = 100;
     }];
 }
 
+//TODO: MOVED.
 -(void)makeButtonSelected
 {
     [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
     _goingButton.tag = 1;
 }
 
+//TODO: MOVED.
 -(void)makeButtonUnselected
 {
     [_goingButton setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
     _goingButton.tag = 2;
 }
 
+//TODO: MOVED.
 -(void)deleteCurrentPost
 {
-    
     if(_post.remoteKey == 0)
     {
         BOOL postPending = [[GLPPostOperationManager sharedInstance] cancelPostWithKey:_post.key];
@@ -1087,6 +1116,7 @@ static const float FixedBottomTextViewHeight = 100;
     }
 }
 
+//TODO: MOVED.
 -(void)deletePostFromServer
 {
     [[WebClient sharedInstance] deletePostWithRemoteKey:_post.remoteKey callbackBlock:^(BOOL success) {

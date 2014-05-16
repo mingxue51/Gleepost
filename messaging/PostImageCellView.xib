@@ -267,7 +267,7 @@
         <image name="going.png" width="142" height="64"/>
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>
-        <image name="more.png" width="68" height="21"/>
+        <image name="more.png" width="11" height="43"/>
         <image name="post_bottom_bg.png" width="636" height="66"/>
         <image name="post_top_bg.png" width="636" height="659"/>
     </resources>

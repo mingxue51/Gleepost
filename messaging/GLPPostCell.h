@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
 #import "ViewImageDelegate.h"
+#import "MainPostView.h"
 
 @protocol RemovePostCellDelegate <NSObject>
 
@@ -26,7 +27,7 @@
 
 @end
 
-@interface GLPPostCell : UITableViewCell <UIActionSheetDelegate>
+@interface GLPPostCell : UITableViewCell <MainPostViewDelegate>
 
 extern const float IMAGE_CELL_HEIGHT;
 extern const float TEXT_CELL_HEIGHT;
@@ -34,7 +35,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (assign, nonatomic) UIViewController <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate> *delegate;
 
 
--(void)updateWithPostData:(GLPPost *)postData withPostIndex:(int)postIndex;
+-(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index;
 
 +(CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
 
