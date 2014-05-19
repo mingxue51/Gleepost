@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3nq-qG-n6x">
-                        <rect key="frame" x="10" y="10" width="300" height="390"/>
+                        <rect key="frame" x="10" y="15" width="300" height="390"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -24,7 +24,7 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZY-ao-KSb" customClass="TopPostView">
-                        <rect key="frame" x="10" y="10" width="300" height="93"/>
+                        <rect key="frame" x="10" y="15" width="300" height="93"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Labelasd ads asd as dsa das dsa das das dasd adas" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="nqe-5G-JTa">
@@ -42,7 +42,7 @@
                                 <rect key="frame" x="28" y="46" width="239" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.75686274509803919" green="0.75686274509803919" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -52,11 +52,11 @@
                             <outlet property="eventTitleLbl" destination="nqe-5G-JTa" id="qMz-uh-J7T"/>
                         </connections>
                     </view>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCQ-SX-55v" customClass="MainPostView">
-                        <rect key="frame" x="10" y="83" width="300" height="316"/>
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCQ-SX-55v" customClass="MainPostView">
+                        <rect key="frame" x="10" y="88" width="300" height="316"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i0H-Wa-ioj">
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i0H-Wa-ioj">
                                 <rect key="frame" x="0.0" y="7" width="300" height="190"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -102,14 +102,14 @@
                                 <rect key="frame" x="53" y="205" width="165" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.82745098039215681" green="0.18823529411764706" blue="0.2627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GUe-OU-BSE">
                                 <rect key="frame" x="53" y="228" width="165" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="0.80784313725490198" green="0.80784313725490198" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="aX2-C1-hEz">
@@ -146,17 +146,17 @@
                                         <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qK5-yt-6we">
-                                        <rect key="frame" x="54" y="9" width="27" height="21"/>
+                                        <rect key="frame" x="62" y="9" width="27" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="11" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wp0-MB-hxp">
                                         <rect key="frame" x="164" y="9" width="27" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTn-eI-Mdl" userLabel="Button back like">
@@ -170,7 +170,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ze-7F-x8n">
-                                        <rect key="frame" x="23" y="12" width="16" height="14"/>
+                                        <rect key="frame" x="34" y="12" width="16" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="icon_like.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -210,7 +210,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NR-Mx-RHV">
-                                        <rect key="frame" x="261" y="9" width="25" height="16"/>
+                                        <rect key="frame" x="243" y="9" width="25" height="16"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="share.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -249,9 +249,11 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="i0H-Wa-ioj" firstAttribute="top" secondItem="jCQ-SX-55v" secondAttribute="top" constant="7" id="4kv-0Y-nBe"/>
                             <constraint firstItem="ASk-mZ-O68" firstAttribute="top" secondItem="aX2-C1-hEz" secondAttribute="bottom" constant="8" id="T84-xK-d76"/>
                             <constraint firstAttribute="width" constant="300" id="arU-sf-g4b"/>
                             <constraint firstAttribute="height" constant="316" id="gMJ-Fr-UtF"/>
+                            <constraint firstItem="i0H-Wa-ioj" firstAttribute="leading" secondItem="jCQ-SX-55v" secondAttribute="leading" id="gXF-lG-RHd"/>
                         </constraints>
                         <connections>
                             <outlet property="backgroundImageHeight" destination="EZw-eh-zsu" id="1cr-cb-rux"/>
@@ -269,6 +271,8 @@
                             <outlet property="mainViewHeight" destination="gMJ-Fr-UtF" id="qb1-ZR-Ynw"/>
                             <outlet property="moreBtn" destination="yaz-qM-IJt" id="KfZ-RF-xqP"/>
                             <outlet property="nameLbl" destination="ksK-Rs-vLX" id="AdP-Zl-XTT"/>
+                            <outlet property="postImageDistanceFromLeftConstrain" destination="gXF-lG-RHd" id="41P-2a-z1W"/>
+                            <outlet property="postImageDistanceFromTopConstrain" destination="4kv-0Y-nBe" id="PST-IK-IDU"/>
                             <outlet property="postImageView" destination="i0H-Wa-ioj" id="UYH-Rr-G6o"/>
                             <outlet property="socialView" destination="ASk-mZ-O68" id="UW7-Fd-LSY"/>
                             <outlet property="timePostLbl" destination="GUe-OU-BSE" id="nge-vN-1EC"/>
@@ -277,11 +281,11 @@
                         </connections>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="3nq-qG-n6x" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="KZk-Is-jV7"/>
                     <constraint firstItem="jCQ-SX-55v" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="83" id="SCs-Pl-H83"/>
-                    <constraint firstItem="3nq-qG-n6x" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="10" id="wQN-BY-b7Q"/>
+                    <constraint firstItem="3nq-qG-n6x" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="15" id="wQN-BY-b7Q"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

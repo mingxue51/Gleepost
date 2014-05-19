@@ -11,7 +11,6 @@
 #import "GLPPrivateProfileViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
-#import "PostCell.h"
 #import "ProfileAboutTableViewCell.h"
 #import "ProfileButtonsTableViewCell.h"
 #import "ProfileMutualTableViewCell.h"
@@ -217,7 +216,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"ButtonsCell"];
     
     //Register posts.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
@@ -579,7 +578,7 @@
 //    static NSString *CellIdentifierMutual = @"MutualCell";
     
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     
     ProfileButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
@@ -637,7 +636,7 @@
                 //Set this class as delegate.
                 postViewCell.delegate = self;
                 
-                [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
+                [postViewCell setPost:post withPostIndex:indexPath.row];
                 
                 if(indexPath.row > 5)
                 {
@@ -719,11 +718,11 @@
                         
             if([currentPost imagePost])
             {
-                return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
             }
             else
             {
-                return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
             }
         }
 

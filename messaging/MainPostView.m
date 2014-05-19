@@ -62,6 +62,15 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
 
+/** Image constrains. */
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageWidthConstrain;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageDistanceFromTopConstrain;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageDistanceFromLeftConstrain;
+
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageDistanceFromRightConstrain;
+
 @property (strong, nonatomic) GLPPost *post;
 
 @property (assign, nonatomic) BOOL mediaAvailable;
@@ -164,11 +173,16 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
 }
 
+/**
+ TODO: Fix that method. Tide up the code.
+ */
+
 -(void)setNewHeightDependingOnLabelHeight:(float)height
 {
     float fixedTopBackgroundHeight = 0.0f;
     float fixedBottomViewHeight = 0.0f;
     float backgroundImageViewHeight = 0.0f;
+
     
     if(_mediaAvailable)
     {
@@ -186,10 +200,23 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if([self isCurrentPostEvent])
     {
         [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+        
+        [_postImageDistanceFromTopConstrain setConstant:7];
+        [_postImageDistanceFromLeftConstrain setConstant:0];
+        
+//        [_postImageWidthConstrain setConstant:300];
+
     }
     else
     {
         [_backgroundImageHeight setConstant:backgroundImageViewHeight - 85.0f];
+
+        
+        [_postImageDistanceFromTopConstrain setConstant:10];
+
+        [_postImageDistanceFromLeftConstrain setConstant:0];
+        
+//        [_postImageWidthConstrain setConstant:280];
     }
     
     [_contentLabelHeightConstrain setConstant:height];
@@ -214,6 +241,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
 
 }
+
 
 #pragma mark - Media
 
@@ -335,7 +363,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
-    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[UIColor colorWithRed:235.0f/255.0f green:235.0f/255.0f blue:235.0f/255.0f alpha:1.0f] andWidth:0.5f];
+    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[UIColor colorWithRed:235.0f/255.0f green:235.0f/255.0f blue:235.0f/255.0f alpha:1.0f] andWidth:1.0f];
     
     _contentLbl.attributedText = contentAttributeText;
 }

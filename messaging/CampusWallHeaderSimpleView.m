@@ -34,7 +34,7 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 340.0f)];
+        [self setFrame:CGRectMake(0, 0, 320.0f, 341.0f)];
         
         
         for(UIView * v in self.subviews)
@@ -60,7 +60,7 @@
 {
     //    [self.userName setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_APP_FONT_BOLD] size:14.0f]];
     
-    [_stanfordLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:18.0f]];
+//    [_stanfordLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:18.0f]];
 
 }
 
