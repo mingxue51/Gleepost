@@ -60,6 +60,8 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
+
 @property (strong, nonatomic) GLPPost *post;
 
 @property (assign, nonatomic) BOOL mediaAvailable;
@@ -72,8 +74,12 @@
 
 @implementation MainPostView
 
-const float FIXED_TOP_BACKGROUND_HEIGHT = 70;
-const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
+const float FIXED_TOP_TEXT_BACKGROUND_HEIGHT = 70;
+const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 100;
+
+const float FIXED_TOP_MEDIA_BACKGROUND_HEIGHT = 250;
+const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
+
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -93,6 +99,17 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     _mediaAvailable = NO;
 }
 
+-(void)configureMediaAvailable
+{
+    if((_post.imagesUrls && _post.imagesUrls.count > 0) || (_post.videosUrls && _post.videosUrls.count > 0))
+    {
+        _mediaAvailable = YES;
+    }
+    else
+    {
+        _mediaAvailable = NO;
+    }
+}
 
 #pragma mark - Modifiers
 
@@ -108,6 +125,8 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     [_contentLbl setText:post.content];
     
     [_nameLbl setText:post.author.name];
+    
+    [self configureMediaAvailable];
     
     [self addGesturesToElements];
     
@@ -136,16 +155,53 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     
     [self configureMoreButton];
 
-
+    
+//    [ShapeFormatterHelper setBorderToView:_contentLbl withColour:[UIColor redColor]];
+    
+//    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
+    
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor]];
+    
 }
 
 -(void)setNewHeightDependingOnLabelHeight:(float)height
 {
+    float fixedTopBackgroundHeight = 0.0f;
+    float fixedBottomViewHeight = 0.0f;
+    float backgroundImageViewHeight = 0.0f;
+    
+    if(_mediaAvailable)
+    {
+        fixedTopBackgroundHeight = FIXED_TOP_MEDIA_BACKGROUND_HEIGHT;
+        fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
+        backgroundImageViewHeight = 360.0f + height;
+    }
+    else
+    {
+        fixedTopBackgroundHeight = FIXED_TOP_TEXT_BACKGROUND_HEIGHT;
+        fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
+        backgroundImageViewHeight = 170.0f + height;
+    }
+    
+    if([self isCurrentPostEvent])
+    {
+        [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+    }
+    else
+    {
+        [_backgroundImageHeight setConstant:backgroundImageViewHeight - 75.0f];
+    }
+    
     [_contentLabelHeightConstrain setConstant:height];
-    [_topBackgroundHeightConstrain setConstant:height+FIXED_TOP_BACKGROUND_HEIGHT];
     
-    [_distanceFromTopView setConstant:16];
+//    [_topBackgroundHeightConstrain setConstant:height+ (_mediaAvailable) ? FIXED_TOP_MEDIA_BACKGROUND_HEIGHT : FIXED_TOP_TEXT_BACKGROUND_HEIGHT];
     
+
+    [_topBackgroundHeightConstrain setConstant:height + fixedTopBackgroundHeight];
+
+    
+//    [_distanceFromTopView setConstant:16];
+
     if([self isCurrentPostEvent])
     {
         [self.distanceFromTop setConstant:81];
@@ -154,8 +210,8 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     {
         [self.distanceFromTop setConstant:5];
     }
-    
-    [self.mainViewHeight setConstant:height + FIXED_BOTTOM_VIEW_HEIGHT];
+
+    [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
 
 }
 
@@ -168,10 +224,8 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     if(_post.imagesUrls.count > 0)
     {
         imageUrl = [NSURL URLWithString:_post.imagesUrls[0]];
-        _mediaAvailable = YES;
         [self hideVideoView];
     }
-    
     
     if(imageUrl!=nil && _post.tempImage==nil /**added**/ && _post.finalImage!=nil)
     {
@@ -281,7 +335,7 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     
     _contentLbl.attributedText = contentAttributeText;
     
-    [ShapeFormatterHelper setTwoBottomCornerRadius:_socialView withViewFrame:_socialView.frame withValue:10];
+//    [ShapeFormatterHelper setTwoBottomCornerRadius:_socialView withViewFrame:_socialView.frame withValue:10];
 
 }
 
@@ -650,6 +704,13 @@ const float FIXED_BOTTOM_VIEW_HEIGHT = 100;
     shareItems.excludedActivityTypes = excludeActivities;
     
     [_delegate showShareViewWithItems:shareItems];
+}
+
+#pragma mark - Temporary methods
+
+-(NSString *)content
+{
+    return _contentLbl.text;
 }
 
 /*

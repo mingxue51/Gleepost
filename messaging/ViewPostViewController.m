@@ -202,7 +202,7 @@ static BOOL likePushed;
 -(void)registerCells
 {
     //Register nib files in table view.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
@@ -674,7 +674,7 @@ static bool firstTime = YES;
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     
     CommentCell *cell;
     
@@ -703,15 +703,14 @@ static bool firstTime = YES;
         
         
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-        [tap setNumberOfTapsRequired:1];
-        [postViewCell.userImageView addGestureRecognizer:tap];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+//        [tap setNumberOfTapsRequired:1];
+//        [postViewCell.userImageView addGestureRecognizer:tap];
         
         
-        postViewCell.isViewPost = YES;
-        [postViewCell updateWithPostData:_post withPostIndex:indexPath.row];
+        [postViewCell setIsViewPost:YES];
+        [postViewCell setPost:_post withPostIndex:indexPath.row];
         
-    
         
         return postViewCell;
 
@@ -765,13 +764,13 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [PostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
+            return [GLPPostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
             
 //            return 650;
         }
         else
         {
-            return [PostCell getCellHeightWithContent:self.post image:NO isViewPost:YES];
+            return [GLPPostCell getCellHeightWithContent:self.post image:NO isViewPost:YES];
         }
         //return 200;
     }

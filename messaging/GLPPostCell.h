@@ -41,5 +41,6 @@ extern const float TEXT_CELL_HEIGHT;
 
 -(void)reloadImage:(BOOL)loadImage;
 
+-(void)setIsViewPost:(BOOL)isViewPost;
 
 @end

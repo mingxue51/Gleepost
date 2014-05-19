@@ -48,8 +48,8 @@
 
 @implementation PostCell
 
-const float IMAGE_CELL_HEIGHT = 372;
-const float TEXT_CELL_HEIGHT = 192;
+//const float IMAGE_CELL_HEIGHT = 372;
+//const float TEXT_CELL_HEIGHT = 192;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -78,10 +78,10 @@ const float TEXT_CELL_HEIGHT = 192;
 }
 
 
-static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
-static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
-static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 80;
-static const float FixedSizeOfNonEventTextCell = TEXT_CELL_HEIGHT - 80;
+//static const float FixedSizeOfTextCell = TEXT_CELL_HEIGHT; //110 before.
+//static const float FixedSizeOfImageCell = IMAGE_CELL_HEIGHT;
+//static const float FixedSizeOfNonEventImageCell = IMAGE_CELL_HEIGHT - 80;
+//static const float FixedSizeOfNonEventTextCell = TEXT_CELL_HEIGHT - 80;
 static const float PostContentLabelMaxWidth = 300;
 static const float FiveLinesLimit = 101.0; //76
 static const float FixedDistanceOfMoreFromText = 250; //295
@@ -617,32 +617,32 @@ static const float FixedBottomTextViewHeight = 100;
     return size;
 }
 //TODO: MOVED.
-+ (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
-{
-    // initial height
-    float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
-    
-    
-    if(isImage)
-    {
-        if(!post.eventTitle)
-        {
-            height = FixedSizeOfNonEventImageCell;
-        }
-    }
-    else
-    {
-        if(!post.eventTitle)
-        {
-            height = FixedSizeOfNonEventTextCell;
-        }
-    }
-    
-    // add content label height
-    height += [PostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height;
-    
-    return height;
-}
+//+ (CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
+//{
+//    // initial height
+//    float height = (isImage) ? FixedSizeOfImageCell : FixedSizeOfTextCell;
+//    
+//    
+//    if(isImage)
+//    {
+//        if(!post.eventTitle)
+//        {
+//            height = FixedSizeOfNonEventImageCell;
+//        }
+//    }
+//    else
+//    {
+//        if(!post.eventTitle)
+//        {
+//            height = FixedSizeOfNonEventTextCell;
+//        }
+//    }
+//    
+//    // add content label height
+//    height += [PostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height;
+//    
+//    return height;
+//}
 
 -(void)setElement:(UIView*)element size:(CGSize)size
 {

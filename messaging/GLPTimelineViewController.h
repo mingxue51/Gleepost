@@ -12,7 +12,7 @@
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 #import "NewPostDelegate.h"
-#import "PostCell.h"
+#import "GLPPostCell.h"
 
 @interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, NewPostDelegate, RemovePostCellDelegate>
 

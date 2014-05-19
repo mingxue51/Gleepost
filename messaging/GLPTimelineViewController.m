@@ -738,11 +738,11 @@ const float TOP_OFFSET = 280.0f;
 - (void)configTableView
 {
     //Register nib files in table view.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCellView" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCellView" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
 
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
@@ -1736,7 +1736,7 @@ const float TOP_OFFSET = 280.0f;
     //Header cell.
 //    CampusWallHeader *campusWallHeader;
     
-    PostCell *postCell;
+    GLPPostCell *postCell;
 
 //    if(indexPath.row == 0)
 //    {
@@ -1768,7 +1768,7 @@ const float TOP_OFFSET = 280.0f;
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
-        postCell.imageAvailable = YES;
+//        postCell.imageAvailable = YES;
         
     }
 //    else if ([post isVideoPost])
@@ -1781,7 +1781,7 @@ const float TOP_OFFSET = 280.0f;
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         
-        postCell.imageAvailable = NO;
+//        postCell.imageAvailable = NO;
         
     }
     
@@ -1789,18 +1789,20 @@ const float TOP_OFFSET = 280.0f;
     //TODO: For each post take the status of the button like. (Obviously from the server).
     //TODO: In updateWithPostData information take the status of the like button.
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-    [tap setNumberOfTapsRequired:1];
-    [postCell.userImageView addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+//    [tap setNumberOfTapsRequired:1];
+//    [postCell.userImageView addGestureRecognizer:tap];
     
     
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [postCell.postImage addGestureRecognizer:tap];
+//    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
+//    [tap setNumberOfTapsRequired:1];
+//    [postCell.postImage addGestureRecognizer:tap];
     
     postCell.delegate = self;
     
-    [postCell updateWithPostData:post withPostIndex:indexPath.row];
+//    [postCell updateWithPostData:post withPostIndex:indexPath.row];
+    
+    [postCell setPost:post withPostIndex:indexPath.row];
     
     [self.tableView bringSubviewToFront:self.reNavBar];
     
@@ -1874,13 +1876,13 @@ const float TOP_OFFSET = 280.0f;
     {
         //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
 
-        return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+        return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
     }
     else
     {
         //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         
-        return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+        return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
     }
     
 

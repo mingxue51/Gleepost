@@ -29,4 +29,6 @@
 
 -(void)setNewHeightDependingOnLabelHeight:(float)height;
 
+-(NSString *)content;
+
 @end

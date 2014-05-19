@@ -15,11 +15,12 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPPostCell ()
 
-@property BOOL isViewPost;
-@property BOOL imageAvailable;
+@property (assign, nonatomic)  BOOL isViewPost;
+@property (assign, nonatomic) BOOL imageAvailable;
 
 @property (weak, nonatomic) IBOutlet TopPostView *topView;
 @property (weak, nonatomic) IBOutlet MainPostView *mainView;
@@ -69,23 +70,23 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
     _imageNeedsToLoadAgain = NO;
 }
 
+
 #pragma mark - Modifiers
 
 -(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index
 {
-    
     _post = post;
     _postIndex = index;
     
+    [self configureTopView];
+
     //Set elements to top view.
     [_topView setElementsWithPost:_post];
-    
     
     //Set elements to main view.
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
     [_mainView setDelegate:self];
 
-    [self configureTopView];
     
 }
 
@@ -104,15 +105,15 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 }
 
 -(void)configureTopView
-{
-    if(![self isCurrentPostEvent])
+{    
+    if([self isCurrentPostEvent])
     {
-        //Hide elements on top, bring other elements up and make the cell smaller.
-        [_topView setHidden:YES];
+        [_topView setHidden:NO];
     }
     else
     {
-        [_topView setHidden:NO];
+        //Hide elements on top, bring other elements up and make the cell smaller.
+        [_topView setHidden:YES];
     }
 }
 
@@ -121,6 +122,11 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 -(void)reloadImage:(BOOL)loadImage
 {
     self.imageNeedsToLoadAgain = loadImage;
+}
+
+-(void)setIsViewPost:(BOOL)isViewPost
+{
+    _isViewPost = isViewPost;
 }
 
 #pragma mark - Helper methods
@@ -132,7 +138,7 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 
 -(BOOL)isCurrentPostEvent
 {
-    if(self.post.eventTitle == nil)
+    if(_post.eventTitle == nil)
     {
         return NO;
     }
