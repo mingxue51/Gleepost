@@ -94,6 +94,12 @@
     [element setFrame:CGRectMake(frame.origin.x, y, frame.size.width, frame.size.height)];
 }
 
++(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour andWidth:(float)width
+{
+    [view.layer setBorderColor:colour.CGColor];
+    [view.layer setBorderWidth:width];
+}
+
 /**
  Method used for test purposes.
  
@@ -104,7 +110,6 @@
 {
     [view.layer setBorderColor:colour.CGColor];
     [view.layer setBorderWidth:2.0f];
-    
 }
 
 @end

@@ -48,8 +48,8 @@ const float IMAGE_CELL_HEIGHT = 420;
 const float TEXT_CELL_HEIGHT = 210;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
-const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 80;
-const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
+const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 94;
+const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 85;
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -76,6 +76,8 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 {
     _post = post;
     _postIndex = index;
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+
     
     [self configureTopView];
 
@@ -224,14 +226,11 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
     {
         font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
         maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
-        
-        
     }
     else
     {
         font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
         maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
-        
     }
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,

@@ -50,7 +50,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImageView;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topBackgroundHeightConstrain;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeightConstrain;
 
@@ -128,7 +128,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self configureMediaAvailable];
     
-    
     _viewPost = viewPost;
     
     [self configureIfComesFromViewPost];
@@ -190,7 +189,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        [_backgroundImageHeight setConstant:backgroundImageViewHeight - 75.0f];
+        [_backgroundImageHeight setConstant:backgroundImageViewHeight - 85.0f];
     }
     
     [_contentLabelHeightConstrain setConstant:height];
@@ -198,7 +197,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //    [_topBackgroundHeightConstrain setConstant:height+ (_mediaAvailable) ? FIXED_TOP_MEDIA_BACKGROUND_HEIGHT : FIXED_TOP_TEXT_BACKGROUND_HEIGHT];
     
 
-    [_topBackgroundHeightConstrain setConstant:height + fixedTopBackgroundHeight];
+//    [_topBackgroundHeightConstrain setConstant:height + fixedTopBackgroundHeight];
 
     
 //    [_distanceFromTopView setConstant:16];
@@ -333,11 +332,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
 
     [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
-        
-    _contentLbl.attributedText = contentAttributeText;
     
-//    [ShapeFormatterHelper setTwoBottomCornerRadius:_socialView withViewFrame:_socialView.frame withValue:10];
-
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
+    
+    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[UIColor colorWithRed:235.0f/255.0f green:235.0f/255.0f blue:235.0f/255.0f alpha:1.0f] andWidth:0.5f];
+    
+    _contentLbl.attributedText = contentAttributeText;
 }
 
 -(void)setTimeWithDate:(NSDate *)date
@@ -423,7 +423,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
     {
         [_moreBtn setHidden:NO];
-        
     }
     else
     {
@@ -464,7 +463,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(navigateToProfile:)];
     [tap setNumberOfTapsRequired:1];
     [_userImageView addGestureRecognizer:tap];
-
 }
 
 #pragma mark - UI changes

@@ -377,6 +377,8 @@ const float TOP_OFFSET = 280.0f;
 -(void)updateRealImage:(NSNotification*)notification
 {
     
+    DDLogDebug(@"updateRealImage: %@", notification.userInfo);
+    
     GLPPost *currentPost = nil;
     int index = -1;
     if(_groupsMode)
@@ -904,7 +906,7 @@ const float TOP_OFFSET = 280.0f;
 //        GLPPost *p = self.posts[0];
 //        p.videosUrls =  [[NSArray alloc] initWithObjects:@"http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov", nil];
 //        self.posts[0] = p;
-        //[[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+        [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
         [self.tableView reloadData];
         

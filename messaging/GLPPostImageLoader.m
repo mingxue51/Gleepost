@@ -106,7 +106,8 @@ static GLPPostImageLoader *instance = nil;
 {
     __block BOOL newPost = NO;
  
-
+    __block BOOL readyToConsume = NO;
+    
     for(int i = 0; i<posts.count; ++i)
     {
         GLPPost *p = [posts objectAtIndex:i];
@@ -126,7 +127,14 @@ static GLPPostImageLoader *instance = nil;
                 
                 newPost = [self addPostImageInQueueWithPost:p];
                 
-                if(newPost == YES && (posts.count-1) == i)
+                if(newPost)
+                {
+                    readyToConsume = YES;
+                }
+                
+                #warning fix here.
+                
+                if(readyToConsume /*&& (posts.count-1) == i*/)
                 {
                     [self startConsume];
                 }
@@ -188,6 +196,8 @@ static GLPPostImageLoader *instance = nil;
     {
         if(p.imagesUrls)
         {
+            DDLogDebug(@"Image not in cached: %@", p.imagesUrls[0]);
+
             [_imagesNotStarted enqueue:currentRemoteKey];
             
             [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
@@ -236,6 +246,8 @@ static GLPPostImageLoader *instance = nil;
         NSData *data = [NSData dataWithContentsOfURL:imageUrl];
         UIImage *img = [[UIImage alloc] initWithData:data];
         
+        
+        DDLogDebug(@"Image ready: %@", img);
         
 //        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
         

@@ -14,10 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="3nq-qG-n6x">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3nq-qG-n6x">
                         <rect key="frame" x="10" y="10" width="300" height="390"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="390" id="EZw-eh-zsu"/>
                             <constraint firstAttribute="width" constant="300" id="qoa-tU-Ouc"/>
@@ -122,8 +122,8 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
-                                <rect key="frame" x="226" y="205" width="70" height="32"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
+                                <rect key="frame" x="226" y="1000" width="70" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="aZu-KK-Pkv"/>
@@ -159,6 +159,16 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTn-eI-Mdl" userLabel="Button back like">
+                                        <rect key="frame" x="0.0" y="5" width="81" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="asB-ng-pED"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ze-7F-x8n">
                                         <rect key="frame" x="23" y="12" width="16" height="14"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -169,6 +179,16 @@
                                             <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="elv-e9-ses"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OW5-9V-qeb" userLabel="Button back comment">
+                                        <rect key="frame" x="95" y="5" width="111" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="HRG-ZZ-vLz"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4HT-5v-R3a">
                                         <rect key="frame" x="129" y="10" width="19" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -177,6 +197,16 @@
                                         </state>
                                         <connections>
                                             <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="W8P-8l-IgX"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2b7-62-Ogm" userLabel="Button back share">
+                                        <rect key="frame" x="214" y="6" width="86" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="sharePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="XHd-Qw-gIv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NR-Mx-RHV">
@@ -192,8 +222,8 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-gT-Nhx">
-                                <rect key="frame" x="283" y="241" width="7" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-gT-Nhx">
+                                <rect key="frame" x="283" y="211" width="7" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="7" id="Icv-rk-Lz5"/>
@@ -206,17 +236,27 @@
                                     <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="N70-Ij-NZ0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yaz-qM-IJt">
+                                <rect key="frame" x="241" y="208" width="55" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="lRX-f6-q0O"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ASk-mZ-O68" firstAttribute="top" secondItem="aX2-C1-hEz" secondAttribute="bottom" constant="8" id="T84-xK-d76"/>
                             <constraint firstAttribute="width" constant="300" id="arU-sf-g4b"/>
-                            <constraint firstItem="CRJ-gT-Nhx" firstAttribute="top" secondItem="NqB-Nx-PIG" secondAttribute="bottom" constant="4" id="dZI-LD-3QN"/>
                             <constraint firstAttribute="height" constant="316" id="gMJ-Fr-UtF"/>
                         </constraints>
                         <connections>
                             <outlet property="backgroundImageHeight" destination="EZw-eh-zsu" id="1cr-cb-rux"/>
-                            <outlet property="commentBtn" destination="4HT-5v-R3a" id="bOr-TX-rpo"/>
+                            <outlet property="backgroundImageView" destination="3nq-qG-n6x" id="gQO-6m-i2n"/>
+                            <outlet property="commentBtn" destination="OW5-9V-qeb" id="whH-IB-0fe"/>
                             <outlet property="commentsLbl" destination="Wp0-MB-hxp" id="seR-0L-Shv"/>
                             <outlet property="contentLabelHeightConstrain" destination="yjS-9B-ZHv" id="CiW-qj-Yix"/>
                             <outlet property="contentLbl" destination="aX2-C1-hEz" id="4pl-Rv-IzQ"/>
@@ -227,7 +267,7 @@
                             <outlet property="likeBtn" destination="2ze-7F-x8n" id="Fov-Mc-qzA"/>
                             <outlet property="likesLbl" destination="qK5-yt-6we" id="xmi-N8-4tC"/>
                             <outlet property="mainViewHeight" destination="gMJ-Fr-UtF" id="qb1-ZR-Ynw"/>
-                            <outlet property="moreBtn" destination="CRJ-gT-Nhx" id="RZs-cq-sfI"/>
+                            <outlet property="moreBtn" destination="yaz-qM-IJt" id="KfZ-RF-xqP"/>
                             <outlet property="nameLbl" destination="ksK-Rs-vLX" id="AdP-Zl-XTT"/>
                             <outlet property="postImageView" destination="i0H-Wa-ioj" id="UYH-Rr-G6o"/>
                             <outlet property="socialView" destination="ASk-mZ-O68" id="UW7-Fd-LSY"/>
@@ -237,7 +277,7 @@
                         </connections>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="3nq-qG-n6x" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="KZk-Is-jV7"/>
                     <constraint firstItem="jCQ-SX-55v" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="83" id="SCs-Pl-H83"/>
@@ -257,7 +297,6 @@
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>
         <image name="more.png" width="11" height="43"/>
-        <image name="post_background.png" width="596" height="860"/>
         <image name="share.png" width="41" height="30"/>
     </resources>
 </document>

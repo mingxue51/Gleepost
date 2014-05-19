@@ -14,9 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="264"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="pUZ-sK-xp5">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pUZ-sK-xp5">
                         <rect key="frame" x="10" y="10" width="300" height="245"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="245" id="3Ar-JH-FaU"/>
                             <constraint firstAttribute="width" constant="300" id="owp-VF-QTZ"/>
@@ -64,7 +65,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UserNameg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxh-pG-jkv">
-                                <rect key="frame" x="56" y="1" width="255" height="22"/>
+                                <rect key="frame" x="56" y="1" width="171" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -163,6 +164,16 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4zn-z3-00R">
+                                        <rect key="frame" x="218" y="2" width="82" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="sharePost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="Mch-2M-fDg"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UCr-ze-2T6">
                                         <rect key="frame" x="258" y="12" width="22" height="16"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -195,8 +206,8 @@
                                 <rect key="frame" x="305" y="-6" width="10" height="10"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l4K-xD-V8U">
-                                <rect key="frame" x="220" y="6" width="70" height="32"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l4K-xD-V8U">
+                                <rect key="frame" x="220" y="1000" width="70" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="going.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -205,14 +216,25 @@
                                     <action selector="goingToEvent:" destination="lnW-OL-CTy" eventType="touchUpInside" id="WOz-RC-Bho"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5N-iC-5o5">
-                                <rect key="frame" x="283" y="52" width="7" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5N-iC-5o5">
+                                <rect key="frame" x="283" y="8" width="7" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="more.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="moreOptions:" destination="lnW-OL-CTy" eventType="touchUpInside" id="2CE-pH-Ojo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ilj-WV-nkn">
+                                <rect key="frame" x="234" y="5" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="moreOptions:" destination="lnW-OL-CTy" eventType="touchUpInside" id="6ZT-Mz-UyP"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -224,6 +246,7 @@
                         </constraints>
                         <connections>
                             <outlet property="backgroundImageHeight" destination="3Ar-JH-FaU" id="hEP-Mj-Q58"/>
+                            <outlet property="backgroundImageView" destination="pUZ-sK-xp5" id="3hQ-cK-Qx8"/>
                             <outlet property="commentBtn" destination="2ws-C9-0Cf" id="Vor-VY-zIJ"/>
                             <outlet property="commentsLbl" destination="w3J-A5-7w9" id="J00-8R-ea3"/>
                             <outlet property="contentLabelHeightConstrain" destination="ODJ-JE-cl4" id="ubY-LZ-HP2"/>
@@ -234,7 +257,7 @@
                             <outlet property="likeBtn" destination="SMo-Nc-dV3" id="6KB-HP-MQy"/>
                             <outlet property="likesLbl" destination="Guf-kH-3QR" id="Bhh-S9-3P7"/>
                             <outlet property="mainViewHeight" destination="DGF-8Y-R96" id="LTD-fR-Vgz"/>
-                            <outlet property="moreBtn" destination="P5N-iC-5o5" id="sd9-XM-Qy0"/>
+                            <outlet property="moreBtn" destination="Ilj-WV-nkn" id="LiX-GG-3DL"/>
                             <outlet property="nameLbl" destination="yxh-pG-jkv" id="GE9-jf-6ZB"/>
                             <outlet property="socialView" destination="RLb-ca-bOp" id="KHN-Cs-7D2"/>
                             <outlet property="timePostLbl" destination="fIE-VY-MZi" id="gjv-V0-W5u"/>
@@ -242,7 +265,7 @@
                         </connections>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="leading" secondItem="zkh-v9-3LC" secondAttribute="leading" constant="10" id="WRt-7D-tF5"/>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="10" id="h6G-9Z-r0M"/>
@@ -261,7 +284,6 @@
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>
         <image name="more.png" width="11" height="43"/>
-        <image name="post_background.png" width="596" height="860"/>
         <image name="separator_line.png" width="592" height="1"/>
         <image name="share.png" width="41" height="30"/>
     </resources>
