@@ -34,7 +34,7 @@
 
 -(void)setElementsWithPost:(GLPPost *)post
 {
-    [_eventTimeLbl setText:post.eventTitle];
+    [_eventTitleLbl setText:post.eventTitle];
     
     [self setEventTimeWithTime:post.dateEventStarts];
 }

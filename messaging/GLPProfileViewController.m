@@ -496,7 +496,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
     //Register posts.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
@@ -1123,7 +1123,7 @@
     static NSString *CellIdentifierNotification = @"GLPNotCell";
     
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     
     ProfileTwoButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
@@ -1224,8 +1224,7 @@
                 //Set this class as delegate.
                 postViewCell.delegate = self;
                 
-                [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
-        
+                [postViewCell setPost:post withPostIndex:indexPath.row];
                 
                 //Add separator line to posts' cells.
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
@@ -1346,11 +1345,11 @@
             
             if([currentPost imagePost])
             {
-                return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
             }
             else
             {
-                return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
             }
         }
     }
@@ -1373,6 +1372,11 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"GLPProfileViewController : navigateToUsersProfileWithRemoteKey: %ld", (long)remoteKey);
 }
 
 #pragma mark - New comment delegate

@@ -128,7 +128,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self configureMediaAvailable];
     
-    [self addGesturesToElements];
     
     _viewPost = viewPost;
     
@@ -154,6 +153,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self configureGoingButton];
     
     [self configureMoreButton];
+    
+    [self addGesturesToElements];
 
     
 //    [ShapeFormatterHelper setBorderToView:_contentLbl withColour:[UIColor redColor]];
@@ -174,13 +175,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     {
         fixedTopBackgroundHeight = FIXED_TOP_MEDIA_BACKGROUND_HEIGHT;
         fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
-        backgroundImageViewHeight = 360.0f + height;
+        backgroundImageViewHeight = 390.0f + height;
     }
     else
     {
         fixedTopBackgroundHeight = FIXED_TOP_TEXT_BACKGROUND_HEIGHT;
         fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-        backgroundImageViewHeight = 170.0f + height;
+        backgroundImageViewHeight = 190.0f + height;
     }
     
     if([self isCurrentPostEvent])
@@ -204,11 +205,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
     if([self isCurrentPostEvent])
     {
-        [self.distanceFromTop setConstant:81];
+        [self.distanceFromTop setConstant:100]; //81
     }
     else
     {
-        [self.distanceFromTop setConstant:5];
+        [self.distanceFromTop setConstant:15];
     }
 
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
@@ -331,8 +332,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
 
-    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:8];
-    
+    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
+        
     _contentLbl.attributedText = contentAttributeText;
     
 //    [ShapeFormatterHelper setTwoBottomCornerRadius:_socialView withViewFrame:_socialView.frame withValue:10];
@@ -445,10 +446,25 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)addGesturesToElements
 {
+    [self addGestureToPostImage];
+    
+    [self addGestureToProfileImage];
+}
+
+-(void)addGestureToPostImage
+{
     //Add selector to post image.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(viewPostImage:)];
     [tap setNumberOfTapsRequired:1];
     [_postImageView addGestureRecognizer:tap];
+}
+
+-(void)addGestureToProfileImage
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(navigateToProfile:)];
+    [tap setNumberOfTapsRequired:1];
+    [_userImageView addGestureRecognizer:tap];
+
 }
 
 #pragma mark - UI changes

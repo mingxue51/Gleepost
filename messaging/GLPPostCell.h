@@ -27,12 +27,19 @@
 
 @end
 
+@protocol GLPPostCellDelegate <NSObject>
+
+@required
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey;
+
+@end
+
 @interface GLPPostCell : UITableViewCell <MainPostViewDelegate>
 
 extern const float IMAGE_CELL_HEIGHT;
 extern const float TEXT_CELL_HEIGHT;
 
-@property (assign, nonatomic) UIViewController <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate> *delegate;
+@property (assign, nonatomic) UIViewController <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate> *delegate;
 
 
 -(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index;

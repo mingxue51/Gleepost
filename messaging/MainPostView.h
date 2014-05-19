@@ -14,6 +14,7 @@
 @required
 
 -(void)viewPostImage:(id)sender;
+-(void)navigateToProfile:(id)sender;
 -(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet;
 -(void)showShareViewWithItems:(UIActivityViewController *)shareItems;
 -(void)deleteCurrentPost;

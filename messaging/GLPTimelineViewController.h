@@ -14,7 +14,7 @@
 #import "NewPostDelegate.h"
 #import "GLPPostCell.h"
 
-@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, NewPostDelegate, RemovePostCellDelegate>
+@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, NewPostDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
 
 @property BOOL readyToReloadPosts;
 

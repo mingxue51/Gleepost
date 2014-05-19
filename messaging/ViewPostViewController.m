@@ -836,6 +836,11 @@ static bool firstTime = YES;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"ViewPostViewController : navigateToUsersProfileWithRemoteKey");
+}
+
 
 #pragma mark - Form management
 

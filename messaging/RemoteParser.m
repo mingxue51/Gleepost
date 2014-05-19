@@ -430,8 +430,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
-    DDLogDebug(@"VIDEO: %@", json[@"videos"]);
-    
     post.videosUrls = [RemoteParser parseVideos:json[@"videos"]];
     
     

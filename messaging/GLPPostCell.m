@@ -15,7 +15,6 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
-#import "ShapeFormatterHelper.h"
 
 @interface GLPPostCell ()
 
@@ -45,9 +44,9 @@
 
 @implementation GLPPostCell
 
-const float IMAGE_CELL_HEIGHT = 372;
-const float TEXT_CELL_HEIGHT = 192;
-const float POST_CONTENT_LABEL_MAX_WIDTH = 300;
+const float IMAGE_CELL_HEIGHT = 420;
+const float TEXT_CELL_HEIGHT = 210;
+const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
 const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 80;
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
@@ -82,12 +81,11 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 
     //Set elements to top view.
     [_topView setElementsWithPost:_post];
+
+    [_mainView setDelegate:self];
     
     //Set elements to main view.
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
-    [_mainView setDelegate:self];
-
-    
 }
 
 #pragma mark - Configuration
@@ -152,11 +150,22 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 
 -(void)viewPostImage:(id)sender
 {
+    DDLogDebug(@"viewPostImage");
+    
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
     [self.delegate viewPostImage:clickedImageView.image];
+}
+
+-(void)navigateToProfile:(id)sender
+{
+    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+
+    NSInteger userRemoteKey = incomingImage.view.tag;
+    
+    [self.delegate navigateToUsersProfileWithRemoteKey:userRemoteKey];
 }
 
 -(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet
@@ -213,15 +222,15 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
     
     if(isImage)
     {
-        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
+        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
         maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
         
         
     }
     else
     {
-        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
-        maxWidth = 264;
+        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
+        maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
         
     }
     
@@ -239,7 +248,6 @@ const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
     {
         return CGSizeMake(size.width, FIVE_LINES_LIMIT);
     }
-    
     
     return size;
 }

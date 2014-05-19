@@ -92,7 +92,7 @@
 
 @property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 
-@property int selectedUserId;
+@property (assign, nonatomic) NSInteger selectedUserId;
 
 //Used when there is new comment.
 @property (assign, nonatomic) BOOL commentCreated;
@@ -1785,31 +1785,13 @@ const float TOP_OFFSET = 280.0f;
         
     }
     
-    
-    //TODO: For each post take the status of the button like. (Obviously from the server).
-    //TODO: In updateWithPostData information take the status of the like button.
-    
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-//    [tap setNumberOfTapsRequired:1];
-//    [postCell.userImageView addGestureRecognizer:tap];
-    
-    
-//    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
-//    [tap setNumberOfTapsRequired:1];
-//    [postCell.postImage addGestureRecognizer:tap];
-    
     postCell.delegate = self;
-    
-//    [postCell updateWithPostData:post withPostIndex:indexPath.row];
     
     [postCell setPost:post withPostIndex:indexPath.row];
     
     [self.tableView bringSubviewToFront:self.reNavBar];
     
-    
     return postCell;
-    
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2385,6 +2367,38 @@ const float TOP_OFFSET = 280.0f;
         [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     
+}
+
+#pragma mark GLPPostCellDelegate
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"Navigate to user's profile with remote key: %ld", (long)remoteKey);
+    
+    //Decide where to navigate. Private or open profile.
+    
+    self.selectedUserId = remoteKey;
+    
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    {
+        self.selectedUserId = -1;
+        
+        //Navigate to profile view controller.
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    {
+        //Navigate to private profile view controller.
+        
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
+    }
+    else
+    {
+        //Navigate to private view controller.
+        
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
+    }
 }
 
 /**
