@@ -290,7 +290,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     else
     {
         fixedTopBackgroundHeight = 25.0f;
-        backgroundImageViewHeight -= 85.0f;
+        backgroundImageViewHeight -= 75.0f;
     }
     
     //Set constrains.
@@ -310,7 +310,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 380.0f + height;
+    backgroundImageViewHeight = 390.0f + height;
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
     
@@ -327,7 +327,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
         
-        backgroundImageViewHeight -= 65.0f;
+        backgroundImageViewHeight -= 70.0f;
         
         distanceFromTop = 25.0f;
     }
@@ -500,7 +500,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
-    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[UIColor colorWithRed:235.0f/255.0f green:235.0f/255.0f blue:235.0f/255.0f alpha:1.0f] andWidth:1.0f];
+    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];
     
     _contentLbl.attributedText = contentAttributeText;
 }

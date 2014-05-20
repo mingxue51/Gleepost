@@ -39,7 +39,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhg-cc-Ny7">
-                                <rect key="frame" x="35" y="50" width="195" height="17"/>
+                                <rect key="frame" x="30" y="50" width="195" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.75686274509803919" green="0.75686274509803919" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
@@ -168,7 +168,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ASk-mZ-O68">
-                                <rect key="frame" x="0.0" y="276" width="300" height="40"/>
+                                <rect key="frame" x="0.0" y="280" width="300" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="niH-Ah-jH3">
@@ -257,7 +257,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="i0H-Wa-ioj" firstAttribute="top" secondItem="jCQ-SX-55v" secondAttribute="top" constant="7" id="4kv-0Y-nBe"/>
-                            <constraint firstItem="ASk-mZ-O68" firstAttribute="top" secondItem="aX2-C1-hEz" secondAttribute="bottom" constant="10" id="T84-xK-d76"/>
+                            <constraint firstItem="ASk-mZ-O68" firstAttribute="top" secondItem="aX2-C1-hEz" secondAttribute="bottom" constant="15" id="T84-xK-d76"/>
                             <constraint firstItem="p9l-bX-fhh" firstAttribute="top" secondItem="i0H-Wa-ioj" secondAttribute="bottom" constant="3" id="W8j-JO-JMz"/>
                             <constraint firstAttribute="width" constant="300" id="arU-sf-g4b"/>
                             <constraint firstAttribute="height" constant="316" id="gMJ-Fr-UtF"/>

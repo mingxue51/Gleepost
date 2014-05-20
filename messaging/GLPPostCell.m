@@ -45,11 +45,11 @@
 
 @implementation GLPPostCell
 
-const float IMAGE_CELL_HEIGHT = 400;
+const float IMAGE_CELL_HEIGHT = 405;
 const float VIDEO_CELL_HEIGHT = 495;
 const float TEXT_CELL_HEIGHT = 205;
-const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 60;
-const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 85;
+const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 70;
+const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 75;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
 
@@ -297,7 +297,7 @@ const float FIVE_LINES_LIMIT = 101.0;
     
     if(!post.eventTitle)
     {
-        height -= 60;
+        height -= 63;
     }
     
     if(isViewPost)
