@@ -1227,9 +1227,9 @@
                 [postViewCell setPost:post withPostIndex:indexPath.row];
                 
                 //Add separator line to posts' cells.
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                [postViewCell addSubview:line];
+//                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+//                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+//                [postViewCell addSubview:line];
                 
             }
             
@@ -1345,14 +1345,10 @@
             
             if([currentPost imagePost] || [currentPost isVideoPost])
             {
-//                DDLogDebug(@"Image post: %@ : %f", currentPost.content, [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO]);
-                
                 return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
             }
             else
             {
-//                DDLogDebug(@"Text post: %@ : %f", currentPost.content, [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO]);
-
                 return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
             }
         }
