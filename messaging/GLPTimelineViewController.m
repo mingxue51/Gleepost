@@ -744,7 +744,7 @@ const float TOP_OFFSET = 280.0f;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCellView" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
 
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
@@ -1733,6 +1733,8 @@ const float TOP_OFFSET = 280.0f;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
+
 //    static NSString *CellIdentifierHeader = @"CampusWallHeader";
     
     //Header cell.
@@ -1766,12 +1768,16 @@ const float TOP_OFFSET = 280.0f;
 //    }
     
     
-    if([post imagePost] || [post isVideoPost])
+    if([post imagePost])
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
 //        postCell.imageAvailable = YES;
         
+    }
+    else if ([post isVideoPost])
+    {
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
 //    else if ([post isVideoPost])
 //    {

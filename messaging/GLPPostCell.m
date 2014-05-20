@@ -15,6 +15,7 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPPostCell ()
 
@@ -44,9 +45,10 @@
 
 @implementation GLPPostCell
 
-const float IMAGE_CELL_HEIGHT = 415;
+const float IMAGE_CELL_HEIGHT = 385;
+const float VIDEO_CELL_HEIGHT = 485;
 const float TEXT_CELL_HEIGHT = 205;
-const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 94;
+const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 60;
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 85;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
@@ -88,6 +90,10 @@ const float FIVE_LINES_LIMIT = 101.0;
     
     //Set elements to main view.
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
+    
+    
+//    [ShapeFormatterHelper setBorderToView:_mainView withColour:[UIColor redColor]];
+//    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];
 }
 
 #pragma mark - Configuration
@@ -101,7 +107,9 @@ const float FIVE_LINES_LIMIT = 101.0;
 {
     CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable];
     
-    [_mainView setNewHeightDependingOnLabelHeight:labelSize.height];
+//    [_mainView setNewHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
+    [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
+
 }
 
 -(void)configureTopView
@@ -253,6 +261,11 @@ const float FIVE_LINES_LIMIT = 101.0;
 
 +(CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
 {
+    if([post isVideoPost])
+    {
+        return [self getVideoCellHeightWithPost:post isViewPost:isViewPost];
+    }
+    
     // initial height
     float height = (isImage) ? IMAGE_CELL_HEIGHT : TEXT_CELL_HEIGHT;
     
@@ -274,6 +287,23 @@ const float FIVE_LINES_LIMIT = 101.0;
     
     // add content label height
     height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height;
+    
+    return height;
+}
+
++(CGFloat)getVideoCellHeightWithPost:(GLPPost *)post isViewPost:(BOOL)isViewPost
+{
+    float height = VIDEO_CELL_HEIGHT;
+    
+    if(!post.eventTitle)
+    {
+        height -= 60;
+    }
+    
+    if(isViewPost)
+    {
+        height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:YES].height;
+    }
     
     return height;
 }

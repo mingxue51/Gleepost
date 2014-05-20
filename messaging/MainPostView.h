@@ -28,7 +28,9 @@
 
 -(void)setElementsWithPost:(GLPPost *)post withViewPost:(BOOL)viewPost;
 
--(void)setNewHeightDependingOnLabelHeight:(float)height;
+//-(void)setNewHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost;
+
+-(void)setHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost;
 
 -(NSString *)content;
 

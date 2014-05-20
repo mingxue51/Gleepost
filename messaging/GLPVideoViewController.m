@@ -24,20 +24,11 @@
 
 @property (weak, nonatomic) IBOutlet VideoPreviewView *videoPreviewView;
 
-
 @property (weak, nonatomic) IBOutlet UIView *cameraView;
 
 @property (weak, nonatomic) IBOutlet UIView *previewView;
 
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
-
-@property (strong, nonatomic) IBOutlet VideoProgressView *progressView;
-
-@property (weak, nonatomic) IBOutlet UILabel *titleLable;
-
-@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *longPressGestureRecognizer;
-
-@property (weak, nonatomic) IBOutlet UIButton *continueBarButton;
 
 @property (strong, nonatomic) NSString *videoPath;
 
@@ -110,9 +101,6 @@
  */
 -(void)setUpCameraObjects
 {
-    _longPressGestureRecognizer.enabled = YES;
-    [_longPressGestureRecognizer setDelegate:self];
-    
     PBJVision *vision = [PBJVision sharedInstance];
 //    CMTime maximumTime = CMTimeMake(MAXIMUM_DURATION, 1);
 //    maximumTime.epoch = 0;
@@ -175,15 +163,6 @@
     [self showPreviewView];
 }
 
--(void)showCurrentSecondToTitleText:(NSNotification *)notification
-{
-    NSDictionary *dict = notification.userInfo;
-    
-    NSNumber *seconds = [dict objectForKey:@"seconds"];
-    
-    [_titleLable setText:[NSString stringWithFormat:@"%ld", (long)seconds.integerValue]];
-}
-
 -(void)showCaptureView:(NSNotification *)notification
 {
 //    [self setUpCameraObjects];
@@ -236,7 +215,6 @@
         
     }];
 }
-
 
 
 /*

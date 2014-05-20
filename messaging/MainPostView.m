@@ -69,6 +69,10 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageDistanceFromLeftConstrain;
 
+/** Constrains have to do with video. */
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceUserViewFromThePostImageConstrain;
+
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageDistanceFromRightConstrain;
 
 @property (strong, nonatomic) GLPPost *post;
@@ -173,22 +177,33 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
 }
 
-/**
- TODO: Fix that method. Tide up the code.
- */
 
--(void)setNewHeightDependingOnLabelHeight:(float)height
+-(void)setNewHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost
 {
+    
+//    if([_post isVideoPost] && !isViewPost)
+//    {
+//        [self setPositionsOfVideo];
+//        
+//        return;
+//    }
+    
     float fixedTopBackgroundHeight = 0.0f;
     float fixedBottomViewHeight = 0.0f;
     float backgroundImageViewHeight = 0.0f;
 
     
-    if(_mediaAvailable)
+    if([_post imagePost])
     {
         fixedTopBackgroundHeight = FIXED_TOP_MEDIA_BACKGROUND_HEIGHT;
         fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
         backgroundImageViewHeight = 390.0f + height;
+    }
+    else if ([_post isVideoPost])
+    {
+        backgroundImageViewHeight = 510.0f;
+//        [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+        
     }
     else
     {
@@ -207,7 +222,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //        [_postImageWidthConstrain setConstant:300];
 
     }
-    else
+    else if(![self isCurrentPostEvent])
     {
         [_backgroundImageHeight setConstant:backgroundImageViewHeight - 85.0f];
 
@@ -231,7 +246,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
     if([self isCurrentPostEvent])
     {
-        [self.distanceFromTop setConstant:100]; //81
+        [self.distanceFromTop setConstant:85]; //81
     }
     else
     {
@@ -242,6 +257,123 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 }
 
+-(void)setHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost
+{
+    if([_post imagePost])
+    {
+        [self setPositionsForImagePostWithHeight:height];
+    }
+    else if ([_post isVideoPost])
+    {
+        [self setPositionsForVideo];
+    }
+    else
+    {
+        [self setPositionsForTextPostWithHeight:height];
+    }
+    
+}
+
+-(void)setPositionsForTextPostWithHeight:(float)height
+{
+    float fixedTopBackgroundHeight = 0.0f;
+    float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
+    float backgroundImageViewHeight = 0.0f;
+
+    backgroundImageViewHeight = 190.0f + height;
+
+    
+    if([self isCurrentPostEvent])
+    {
+        fixedTopBackgroundHeight = 100.0f;
+    }
+    else
+    {
+        fixedTopBackgroundHeight = 25.0f;
+        backgroundImageViewHeight -= 85.0f;
+    }
+    
+    //Set constrains.
+    [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+    
+    [_distanceFromTop setConstant:fixedTopBackgroundHeight];
+    
+    [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
+
+    [_contentLabelHeightConstrain setConstant:height];
+
+}
+
+-(void)setPositionsForImagePostWithHeight:(float)height
+{
+    float backgroundImageViewHeight = 0.0f;
+    float fixedBottomViewHeight = 0.0f;
+    float distanceFromTop = 0.0f;
+    
+    backgroundImageViewHeight = 370.0f + height;
+    fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
+
+    
+    if([self isCurrentPostEvent])
+    {
+        [_postImageDistanceFromTopConstrain setConstant:0];
+        [_postImageDistanceFromLeftConstrain setConstant:0];
+        distanceFromTop = 85.0f;
+    }
+    else
+    {
+        
+        [_postImageDistanceFromTopConstrain setConstant:0];
+        
+        [_postImageDistanceFromLeftConstrain setConstant:0];
+        
+        backgroundImageViewHeight -= 60.0f;
+        
+        distanceFromTop = 25.0f;
+    }
+    
+    [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+    
+    [_contentLabelHeightConstrain setConstant:height];
+    
+    [self.distanceFromTop setConstant:distanceFromTop];
+    
+    [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
+}
+
+-(void)setPositionsForVideo
+{
+    float fixedBottomViewHeight = 400.0f;
+    float backgroundImageViewHeight = 490.0f;
+    float distanceFromTop = 0.0f;
+    
+    if([self isCurrentPostEvent])
+    {
+        backgroundImageViewHeight = 470.0f;
+        distanceFromTop = 85.0f;
+    }
+    else
+    {
+        backgroundImageViewHeight -= 80;
+        distanceFromTop = 25.0f;
+    }
+    
+    [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+    
+    [self.distanceFromTop setConstant:distanceFromTop];
+    
+    [self.mainViewHeight setConstant:0.0f + fixedBottomViewHeight];
+    
+    
+//    [_contentLabelHeightConstrain setConstant:height];
+    
+    /** TODO: use them later. */
+    
+//    [_postImageDistanceFromTopConstrain setConstant:7];
+//    [_postImageDistanceFromLeftConstrain setConstant:0];
+    
+
+}
 
 #pragma mark - Media
 
@@ -352,9 +484,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)formatElements
 {
-    NSAttributedString *contentAttributeText = [[NSAttributedString alloc] initWithString:_contentLbl.text
-                                                            attributes:@{ NSKernAttributeName : @(0.3f)}];
+    NSAttributedString *contentAttributeText = nil;
     
+    if(_contentLbl)
+    {
+       contentAttributeText = [[NSAttributedString alloc] initWithString:_contentLbl.text attributes:@{ NSKernAttributeName : @(0.3f)}];
+    }
+    
+
     [ShapeFormatterHelper setRoundedView:_indicatorImageView toDiameter:_indicatorImageView.frame.size.height];
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];

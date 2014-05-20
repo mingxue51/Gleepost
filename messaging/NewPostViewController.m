@@ -57,6 +57,7 @@
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
+@property (assign, nonatomic) BOOL inCategorySelection;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -303,6 +304,9 @@
 
 -(IBAction)selectCategory:(id)sender
 {
+    
+    _inCategorySelection = YES;
+    
     UIButton *currentButton = (UIButton*)sender;
     
     if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
@@ -557,7 +561,7 @@
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
 {
-    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused)
+    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused && !_inCategorySelection)
     {
         [self addImageOrImage:nil];
     }

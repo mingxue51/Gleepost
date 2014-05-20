@@ -23,8 +23,8 @@
                             <constraint firstAttribute="width" constant="300" id="owp-VF-QTZ"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJM-2L-W3q" customClass="TopPostView">
-                        <rect key="frame" x="10" y="15" width="300" height="100"/>
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJM-2L-W3q" customClass="TopPostView">
+                        <rect key="frame" x="10" y="15" width="300" height="85"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Test text event asdas dad sad asd as das da adas" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="c8y-Xv-Q7R">
@@ -46,7 +46,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separator_line.png" translatesAutoresizingMaskIntoConstraints="NO" id="X3l-B5-lUc">
-                                <rect key="frame" x="30" y="82" width="240" height="1"/>
+                                <rect key="frame" x="30" y="83" width="240" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -269,7 +269,7 @@
                 <constraints>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="leading" secondItem="zkh-v9-3LC" secondAttribute="leading" constant="10" id="WRt-7D-tF5"/>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="15" id="h6G-9Z-r0M"/>
-                    <constraint firstItem="lnW-OL-CTy" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="111" id="sQF-Y3-fHR"/>
+                    <constraint firstItem="lnW-OL-CTy" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="116" id="sQF-Y3-fHR"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

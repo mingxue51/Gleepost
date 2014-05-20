@@ -240,6 +240,7 @@
 		585AE262192B70A800174CED /* cancel_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE261192B70A800174CED /* cancel_recording.png */; };
 		585AE264192B70E100174CED /* go_to_preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE263192B70E100174CED /* go_to_preview.png */; };
 		585AE266192B71BB00174CED /* save_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE265192B71BB00174CED /* save_recording.png */; };
+		585AE268192B841900174CED /* PostVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AE267192B841900174CED /* PostVideoCell.xib */; };
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
 		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
 		585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoUploadManager.m */; };
@@ -1036,6 +1037,7 @@
 		585AE261192B70A800174CED /* cancel_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_recording.png; sourceTree = "<group>"; };
 		585AE263192B70E100174CED /* go_to_preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go_to_preview.png; sourceTree = "<group>"; };
 		585AE265192B71BB00174CED /* save_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save_recording.png; sourceTree = "<group>"; };
+		585AE267192B841900174CED /* PostVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostVideoCell.xib; sourceTree = "<group>"; };
 		585B319E191C452600B66380 /* BusyFreeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusyFreeSwitch.h; sourceTree = "<group>"; };
 		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
 		585C514319227006000910DA /* VideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewView.h; sourceTree = "<group>"; };
@@ -2285,6 +2287,7 @@
 			isa = PBXGroup;
 			children = (
 				58E1E5E91926222F007ACB4F /* PostImageCell.xib */,
+				585AE267192B841900174CED /* PostVideoCell.xib */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -3983,6 +3986,7 @@
 				806E3D781832B1960063AACE /* NotificationBackgroundErrorIcon.png in Resources */,
 				5839261E18A020F600439398 /* connect_fb_button.png in Resources */,
 				58B9507318B2AF1E00EBA231 /* b.wav in Resources */,
+				585AE268192B841900174CED /* PostVideoCell.xib in Resources */,
 				58FD708418905B680024E8A1 /* news_category_old.png in Resources */,
 				58AB404B18AE45D000DEED31 /* theater_category.png in Resources */,
 				58AB404C18AE45D000DEED31 /* music_category.png in Resources */,
