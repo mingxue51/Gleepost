@@ -159,9 +159,7 @@ const float FIVE_LINES_LIMIT = 101.0;
 #pragma mark - MainPostViewDelegate
 
 -(void)viewPostImage:(id)sender
-{
-    DDLogDebug(@"viewPostImage");
-    
+{    
     UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;

@@ -42,6 +42,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
 
+@property (weak, nonatomic) IBOutlet UIButton *shareBtn;
+
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 
 @property (weak, nonatomic) IBOutlet VideoView *videoView;
@@ -165,6 +167,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self configureGoingButton];
     
     [self configureMoreButton];
+    
+    [self configureShareButton];
     
     [self addGesturesToElements];
 
@@ -585,13 +589,30 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)configureMoreButton
 {
-    if([self isCurrentPostBelongsToCurrentUser] || [self isCurrentPostEvent])
+    if([self isCurrentPostBelongsToCurrentUser])
     {
         [_moreBtn setHidden:NO];
     }
     else
     {
         [_moreBtn setHidden:YES];
+    }
+}
+
+-(void)configureShareButton
+{
+    if([self isCurrentPostEvent])
+    {
+        DDLogDebug(@"configureShareButton NO");
+        
+        [_shareBtn setHidden:NO];
+    }
+    else
+    {
+        
+        DDLogDebug(@"configureShareButton YES");
+
+        [_shareBtn setHidden:YES];
     }
 }
 
@@ -705,11 +726,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_delegate commentButtonSelected];
 }
 
-#warning implementation pending.
-
 -(IBAction)sharePost:(id)sender
 {
+    UIActionSheet *actionSheet = nil;
     
+    actionSheet = [[UIActionSheet alloc]initWithTitle:@"Share Post" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share to Facebook", @"More options", nil];
+    
+    [_delegate showViewOptionsWithActionSheer:actionSheet];
+
 }
 
 -(IBAction)goingToEvent:(id)sender
@@ -738,21 +762,24 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     UIActionSheet *actionSheet = nil;
     
-    if([self isCurrentPostBelongsToCurrentUser])
-    {
-        if([self isCurrentPostEvent])
-        {
-            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share to Facebook", @"More options", nil];
-        }
-        else
-        {
-            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
-        }
-    }
-    else if([self isCurrentPostEvent])
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share to Facebook", @"More options", nil];
-    }
+    actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
+    
+    
+//    if([self isCurrentPostBelongsToCurrentUser])
+//    {
+//        if([self isCurrentPostEvent])
+//        {
+//            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share to Facebook", @"More options", nil];
+//        }
+//        else
+//        {
+//            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
+//        }
+//    }
+//    else if([self isCurrentPostEvent])
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share to Facebook", @"More options", nil];
+//    }
     
     [_delegate showViewOptionsWithActionSheer:actionSheet];
 }

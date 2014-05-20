@@ -259,6 +259,7 @@
                             <outlet property="mainViewHeight" destination="DGF-8Y-R96" id="LTD-fR-Vgz"/>
                             <outlet property="moreBtn" destination="Ilj-WV-nkn" id="LiX-GG-3DL"/>
                             <outlet property="nameLbl" destination="yxh-pG-jkv" id="GE9-jf-6ZB"/>
+                            <outlet property="shareBtn" destination="4zn-z3-00R" id="6We-Lq-SHi"/>
                             <outlet property="socialView" destination="RLb-ca-bOp" id="KHN-Cs-7D2"/>
                             <outlet property="timePostLbl" destination="fIE-VY-MZi" id="gjv-V0-W5u"/>
                             <outlet property="userImageView" destination="rLa-G4-0ZA" id="xx0-Yg-HfD"/>

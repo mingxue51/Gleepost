@@ -234,6 +234,7 @@
                             <outlet property="likesLbl" destination="I2a-Lq-hHs" id="W9y-eo-vdg"/>
                             <outlet property="mainViewHeight" destination="1vf-rj-c0O" id="hug-q8-1gF"/>
                             <outlet property="nameLbl" destination="vGG-vo-Jhi" id="I0Z-vy-RCK"/>
+                            <outlet property="shareBtn" destination="a5B-BX-KpO" id="m2N-Zx-HPL"/>
                             <outlet property="timePostLbl" destination="6NQ-iY-jQb" id="zqQ-0G-Gb1"/>
                             <outlet property="userImageView" destination="1XF-hU-YVI" id="XoW-0i-eiO"/>
                             <outlet property="videoView" destination="LLM-rG-GAs" id="q2n-A5-Zaq"/>
