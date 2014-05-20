@@ -1212,7 +1212,7 @@
             {
                 GLPPost *post = self.posts[indexPath.row-2];
                 
-                if([post imagePost])
+                if([post imagePost] || [post isVideoPost])
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
                 }
@@ -1343,12 +1343,16 @@
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
             
-            if([currentPost imagePost])
+            if([currentPost imagePost] || [currentPost isVideoPost])
             {
+//                DDLogDebug(@"Image post: %@ : %f", currentPost.content, [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO]);
+                
                 return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
             }
             else
             {
+//                DDLogDebug(@"Text post: %@ : %f", currentPost.content, [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO]);
+
                 return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
             }
         }

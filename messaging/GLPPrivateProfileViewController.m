@@ -624,7 +624,7 @@
             {
                 GLPPost *post = self.posts[indexPath.row-2];
 
-                if([post imagePost])
+                if([post imagePost] || [post isVideoPost])
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
                 }
@@ -716,7 +716,7 @@
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
                         
-            if([currentPost imagePost])
+            if([currentPost imagePost] || [currentPost isVideoPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
             }

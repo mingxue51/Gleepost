@@ -235,7 +235,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        [self.distanceFromTop setConstant:15];
+        [self.distanceFromTop setConstant:25];
     }
 
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];

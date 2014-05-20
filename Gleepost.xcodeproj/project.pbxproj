@@ -236,6 +236,10 @@
 		58536EDA18BE83DE0036FD00 /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58A379C018BE3C6300E30949 /* gleepost.cer */; };
 		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
+		585AE260192B6FFC00174CED /* camera_front_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE25F192B6FFC00174CED /* camera_front_back.png */; };
+		585AE262192B70A800174CED /* cancel_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE261192B70A800174CED /* cancel_recording.png */; };
+		585AE264192B70E100174CED /* go_to_preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE263192B70E100174CED /* go_to_preview.png */; };
+		585AE266192B71BB00174CED /* save_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE265192B71BB00174CED /* save_recording.png */; };
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
 		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
 		585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoUploadManager.m */; };
@@ -372,7 +376,6 @@
 		58A75EB81920E7780082F316 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58A75EB71920E7780082F316 /* MobileCoreServices.framework */; };
 		58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A75EBB1920EFA50082F316 /* GLPVideoViewController.m */; };
 		58A75EBF1921097A0082F316 /* VideoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A75EBE1921097A0082F316 /* VideoProgressView.m */; };
-		58A75EC219211D830082F316 /* temporary_change_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A75EC119211D830082F316 /* temporary_change_camera.png */; };
 		58AA61E4192A87100098E4FB /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E3192A87100098E4FB /* add_new_post.png */; };
 		58AA61E6192A87350098E4FB /* show_categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E5192A87350098E4FB /* show_categories.png */; };
 		58AA61E8192A87540098E4FB /* nav_bar_title_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E7192A87540098E4FB /* nav_bar_title_button.png */; };
@@ -1029,6 +1032,10 @@
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
 		58536EDB18BE84210036FD00 /* gleepost-dev.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
 		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
+		585AE25F192B6FFC00174CED /* camera_front_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_front_back.png; sourceTree = "<group>"; };
+		585AE261192B70A800174CED /* cancel_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_recording.png; sourceTree = "<group>"; };
+		585AE263192B70E100174CED /* go_to_preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go_to_preview.png; sourceTree = "<group>"; };
+		585AE265192B71BB00174CED /* save_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save_recording.png; sourceTree = "<group>"; };
 		585B319E191C452600B66380 /* BusyFreeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusyFreeSwitch.h; sourceTree = "<group>"; };
 		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
 		585C514319227006000910DA /* VideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewView.h; sourceTree = "<group>"; };
@@ -1219,7 +1226,6 @@
 		58A75EBB1920EFA50082F316 /* GLPVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoViewController.m; sourceTree = "<group>"; };
 		58A75EBD1921097A0082F316 /* VideoProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoProgressView.h; sourceTree = "<group>"; };
 		58A75EBE1921097A0082F316 /* VideoProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoProgressView.m; sourceTree = "<group>"; };
-		58A75EC119211D830082F316 /* temporary_change_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = temporary_change_camera.png; sourceTree = "<group>"; };
 		58AA61E3192A87100098E4FB /* add_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post.png; sourceTree = "<group>"; };
 		58AA61E5192A87350098E4FB /* show_categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_categories.png; sourceTree = "<group>"; };
 		58AA61E7192A87540098E4FB /* nav_bar_title_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button.png; sourceTree = "<group>"; };
@@ -2655,8 +2661,11 @@
 		58A75EC019211D7B0082F316 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				585AE265192B71BB00174CED /* save_recording.png */,
+				585AE263192B70E100174CED /* go_to_preview.png */,
+				585AE261192B70A800174CED /* cancel_recording.png */,
+				585AE25F192B6FFC00174CED /* camera_front_back.png */,
 				585C9EF919250CA000382FFB /* gleepost_play_button.png */,
-				58A75EC119211D830082F316 /* temporary_change_camera.png */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -4029,6 +4038,7 @@
 				5890D23718482DC300E293DD /* profile.png in Resources */,
 				58DC0248180437A70008993A /* lightbublle.png in Resources */,
 				58289EF618D7522B00228EFF /* post_top_bg.png in Resources */,
+				585AE260192B6FFC00174CED /* camera_front_back.png in Resources */,
 				582A663F18AB9BC400006419 /* bar1.png in Resources */,
 				5843329A180F181700BD9F74 /* next.png in Resources */,
 				8096E4D717C2BC9000C7BF60 /* navigation_bar_buttons.png in Resources */,
@@ -4049,6 +4059,7 @@
 				58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */,
 				58AD86BC1892D6E500016C6D /* GLPIntroducedProfile.xib in Resources */,
 				8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */,
+				585AE266192B71BB00174CED /* save_recording.png in Resources */,
 				58AB404818AE45D000DEED31 /* all_category.png in Resources */,
 				80A21D4718AD136200559BF6 /* internal_notification_cell_liked@2x.png in Resources */,
 				58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */,
@@ -4188,13 +4199,13 @@
 				589CE50118D21CFF0046DAD2 /* thermometer.png in Resources */,
 				580C7AB318983C4C007495EE /* all_category_selected.png in Resources */,
 				5866F15F18844869007484CF /* background_night.png in Resources */,
+				585AE264192B70E100174CED /* go_to_preview.png in Resources */,
 				5824C42618E5AD8B006D4484 /* new_post_groups.png in Resources */,
 				58FD708318905B680024E8A1 /* for-sale_category_old.png in Resources */,
 				58289EFD18D7598900228EFF /* going_expired.png in Resources */,
 				5824C42A18E5B2EB006D4484 /* refresh_campus_live_new.png in Resources */,
 				5834FF4118B4FE480092C52D /* campus_wall_background_main_old.png in Resources */,
 				5829F48D18B1546300A7B871 /* add_user.png in Resources */,
-				58A75EC219211D830082F316 /* temporary_change_camera.png in Resources */,
 				58AA61E8192A87540098E4FB /* nav_bar_title_button.png in Resources */,
 				58E27E0E18A6CD5000D8BB24 /* message-7@2x.png in Resources */,
 				585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */,
@@ -4219,6 +4230,7 @@
 				80A21D4418AD136200559BF6 /* internal_notification_cell_commented.png in Resources */,
 				589EAD1318A418C2005B2F4C /* SignUpFourView.xib in Resources */,
 				586659BE17F1B17E00A0354E /* camera_icon@2x.png in Resources */,
+				585AE262192B70A800174CED /* cancel_recording.png in Resources */,
 				80E7478A17CEA2C4001957E5 /* post_comments.json in Resources */,
 				58AD86B21892B0A700016C6D /* profile_picture_under.png in Resources */,
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
