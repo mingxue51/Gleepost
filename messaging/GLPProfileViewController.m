@@ -498,6 +498,8 @@
     //Register posts.
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
@@ -1118,6 +1120,7 @@
 {
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
     static NSString *CellIdentifierNotification = @"GLPNotCell";
@@ -1212,9 +1215,13 @@
             {
                 GLPPost *post = self.posts[indexPath.row-2];
                 
-                if([post imagePost] || [post isVideoPost])
+                if([post imagePost])
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+                }
+                else if ([post isVideoPost])
+                {
+                    postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
                 }
                 else
                 {

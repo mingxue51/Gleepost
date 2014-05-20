@@ -217,7 +217,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [_backgroundImageHeight setConstant:backgroundImageViewHeight];
         
         [_postImageDistanceFromTopConstrain setConstant:7];
-        [_postImageDistanceFromLeftConstrain setConstant:0];
+//        [_postImageDistanceFromLeftConstrain setConstant:0];
         
 //        [_postImageWidthConstrain setConstant:300];
 
@@ -229,7 +229,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         [_postImageDistanceFromTopConstrain setConstant:10];
 
-        [_postImageDistanceFromLeftConstrain setConstant:0];
+//        [_postImageDistanceFromLeftConstrain setConstant:0];
         
 //        [_postImageWidthConstrain setConstant:280];
     }
@@ -310,24 +310,24 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 370.0f + height;
+    backgroundImageViewHeight = 380.0f + height;
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
     
     if([self isCurrentPostEvent])
     {
         [_postImageDistanceFromTopConstrain setConstant:0];
-        [_postImageDistanceFromLeftConstrain setConstant:0];
-        distanceFromTop = 85.0f;
+//        [_postImageDistanceFromLeftConstrain setConstant:0];
+        distanceFromTop = 95.0f;
     }
     else
     {
         
         [_postImageDistanceFromTopConstrain setConstant:0];
         
-        [_postImageDistanceFromLeftConstrain setConstant:0];
+//        [_postImageDistanceFromLeftConstrain setConstant:0];
         
-        backgroundImageViewHeight -= 60.0f;
+        backgroundImageViewHeight -= 65.0f;
         
         distanceFromTop = 25.0f;
     }
@@ -344,17 +344,17 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 -(void)setPositionsForVideo
 {
     float fixedBottomViewHeight = 400.0f;
-    float backgroundImageViewHeight = 490.0f;
+    float backgroundImageViewHeight = 480.0f;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
     {
-        backgroundImageViewHeight = 470.0f;
+//        backgroundImageViewHeight = 490.0f;
         distanceFromTop = 85.0f;
     }
     else
     {
-        backgroundImageViewHeight -= 80;
+        backgroundImageViewHeight -= 63;
         distanceFromTop = 25.0f;
     }
     

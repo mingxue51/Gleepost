@@ -241,11 +241,11 @@
 		585AE264192B70E100174CED /* go_to_preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE263192B70E100174CED /* go_to_preview.png */; };
 		585AE266192B71BB00174CED /* save_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE265192B71BB00174CED /* save_recording.png */; };
 		585AE268192B841900174CED /* PostVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AE267192B841900174CED /* PostVideoCell.xib */; };
+		585AE26A192BC0BB00174CED /* gleepost_play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE269192BC0BB00174CED /* gleepost_play_button.png */; };
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
 		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
 		585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoUploadManager.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
-		585C9EFA19250CA000382FFB /* gleepost_play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 585C9EF919250CA000382FFB /* gleepost_play_button.png */; };
 		585C9EFD1925460800382FFB /* GLPPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C9EFC1925460800382FFB /* GLPPostCell.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585E724418B2C07C009034DE /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 585E724318B2C07C009034DE /* splash.png */; };
@@ -1038,6 +1038,7 @@
 		585AE263192B70E100174CED /* go_to_preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go_to_preview.png; sourceTree = "<group>"; };
 		585AE265192B71BB00174CED /* save_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save_recording.png; sourceTree = "<group>"; };
 		585AE267192B841900174CED /* PostVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostVideoCell.xib; sourceTree = "<group>"; };
+		585AE269192BC0BB00174CED /* gleepost_play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button.png; sourceTree = "<group>"; };
 		585B319E191C452600B66380 /* BusyFreeSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusyFreeSwitch.h; sourceTree = "<group>"; };
 		585B319F191C452600B66380 /* BusyFreeSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusyFreeSwitch.m; sourceTree = "<group>"; };
 		585C514319227006000910DA /* VideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewView.h; sourceTree = "<group>"; };
@@ -1047,7 +1048,6 @@
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
-		585C9EF919250CA000382FFB /* gleepost_play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button.png; sourceTree = "<group>"; };
 		585C9EFB1925460800382FFB /* GLPPostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostCell.h; sourceTree = "<group>"; };
 		585C9EFC1925460800382FFB /* GLPPostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostCell.m; sourceTree = "<group>"; };
 		585DF77517ECAC1400FBFC35 /* ChatMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageTableViewCell.h; sourceTree = "<group>"; };
@@ -2668,7 +2668,7 @@
 				585AE263192B70E100174CED /* go_to_preview.png */,
 				585AE261192B70A800174CED /* cancel_recording.png */,
 				585AE25F192B6FFC00174CED /* camera_front_back.png */,
-				585C9EF919250CA000382FFB /* gleepost_play_button.png */,
+				585AE269192BC0BB00174CED /* gleepost_play_button.png */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -4194,7 +4194,6 @@
 				583CE33018A0061100E78C08 /* signin-button.png in Resources */,
 				584CF675182303FC00EFABB8 /* accept_contact.png in Resources */,
 				58DC0249180437A70008993A /* pull_down_button.png in Resources */,
-				585C9EFA19250CA000382FFB /* gleepost_play_button.png in Resources */,
 				58428E2F18A27D9300B82E4B /* LoginView.xib in Resources */,
 				80A5C48F18C9D3D4000F8E39 /* notification5.json in Resources */,
 				58FB7C8E18560D08002C6A00 /* PostsProfileTabView.xib in Resources */,
@@ -4338,6 +4337,7 @@
 				589EAD3318A449DF005B2F4C /* sign_in.png in Resources */,
 				5819E65518C7AE14003361B3 /* uselected_segment.png in Resources */,
 				802DCE4D18AA885600A23511 /* internal_notification_cell_new_friend.png in Resources */,
+				585AE26A192BC0BB00174CED /* gleepost_play_button.png in Resources */,
 				58DAD7801859FBD20016D838 /* proximity-7-old@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

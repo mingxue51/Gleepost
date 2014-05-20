@@ -45,8 +45,8 @@
 
 @implementation GLPPostCell
 
-const float IMAGE_CELL_HEIGHT = 385;
-const float VIDEO_CELL_HEIGHT = 485;
+const float IMAGE_CELL_HEIGHT = 400;
+const float VIDEO_CELL_HEIGHT = 495;
 const float TEXT_CELL_HEIGHT = 205;
 const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 60;
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 85;

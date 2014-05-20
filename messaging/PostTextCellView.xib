@@ -23,26 +23,26 @@
                             <constraint firstAttribute="width" constant="300" id="owp-VF-QTZ"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJM-2L-W3q" customClass="TopPostView">
-                        <rect key="frame" x="10" y="15" width="300" height="85"/>
+                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJM-2L-W3q" customClass="TopPostView">
+                        <rect key="frame" x="10" y="12" width="300" height="85"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Test text event asdas dad sad asd as das da adas" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="c8y-Xv-Q7R">
-                                <rect key="frame" x="10" y="8" width="280" height="45"/>
+                                <rect key="frame" x="10" y="0.0" width="280" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
                                 <color key="textColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GLOBAL g" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCr-X2-nFh">
-                                <rect key="frame" x="34" y="57" width="195" height="17"/>
+                                <rect key="frame" x="35" y="50" width="195" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="zuP-sW-WZr">
-                                <rect key="frame" x="10" y="58" width="15" height="15"/>
+                                <rect key="frame" x="10" y="51" width="15" height="15"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separator_line.png" translatesAutoresizingMaskIntoConstraints="NO" id="X3l-B5-lUc">
@@ -52,7 +52,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="100" id="28r-V0-aX1"/>
+                            <constraint firstAttribute="height" constant="85" id="28r-V0-aX1"/>
                             <constraint firstAttribute="width" constant="300" id="rhx-9R-xUA"/>
                         </constraints>
                         <connections>
@@ -65,14 +65,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UserNameg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxh-pG-jkv">
-                                <rect key="frame" x="56" y="1" width="171" height="22"/>
+                                <rect key="frame" x="54" y="6" width="165" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.82745098039215681" green="0.18823529411764706" blue="0.2627450980392157" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="A minute ago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fIE-VY-MZi">
-                                <rect key="frame" x="56" y="25" width="154" height="15"/>
+                                <rect key="frame" x="54" y="25" width="165" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
                                 <color key="textColor" red="0.80784313730000001" green="0.80784313730000001" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -269,6 +269,7 @@
                 <constraints>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="leading" secondItem="zkh-v9-3LC" secondAttribute="leading" constant="10" id="WRt-7D-tF5"/>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="15" id="h6G-9Z-r0M"/>
+                    <constraint firstItem="eJM-2L-W3q" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="12" id="kyn-Ln-awf"/>
                     <constraint firstItem="lnW-OL-CTy" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="116" id="sQF-Y3-fHR"/>
                 </constraints>
             </tableViewCellContentView>
