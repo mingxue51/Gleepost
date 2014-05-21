@@ -39,4 +39,8 @@
 + (void)showProblemLoadingFBFriends;
 + (void)showProblemInvitingFBFriends;
 + (void)showSuccessfullyInvitedFriends:(NSString *)friends;
+
++ (void)showSaveImageMessage;
++ (void)showErrorSavingImageWithMessage:(NSString *)errorMessage;
+
 @end

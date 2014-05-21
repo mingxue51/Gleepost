@@ -283,7 +283,7 @@
                             <outlet property="postImageDistanceFromLeftConstrain" destination="gXF-lG-RHd" id="41P-2a-z1W"/>
                             <outlet property="postImageDistanceFromTopConstrain" destination="4kv-0Y-nBe" id="PST-IK-IDU"/>
                             <outlet property="postImageView" destination="i0H-Wa-ioj" id="UYH-Rr-G6o"/>
-                            <outlet property="shareBtn" destination="2b7-62-Ogm" id="wMS-9f-A1Z"/>
+                            <outlet property="shareBtn" destination="7NR-Mx-RHV" id="e4v-Mw-gwB"/>
                             <outlet property="socialView" destination="ASk-mZ-O68" id="UW7-Fd-LSY"/>
                             <outlet property="timePostLbl" destination="GUe-OU-BSE" id="nge-vN-1EC"/>
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>

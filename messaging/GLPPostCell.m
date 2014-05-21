@@ -48,10 +48,12 @@
 const float IMAGE_CELL_HEIGHT = 405;
 const float VIDEO_CELL_HEIGHT = 495;
 const float TEXT_CELL_HEIGHT = 205;
+const float FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL = VIDEO_CELL_HEIGHT - 63;
 const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 70;
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 75;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
+const float ONE_LINE_LIMIT = 16.0;
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -105,7 +107,7 @@ const float FIVE_LINES_LIMIT = 101.0;
  */
 -(void)setNewPositions
 {
-    CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost isImage:self.imageAvailable];
+    CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost cellType:[self findCellType]];
     
 //    [_mainView setNewHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
     [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
@@ -153,6 +155,22 @@ const float FIVE_LINES_LIMIT = 101.0;
     else
     {
         return YES;
+    }
+}
+
+-(GLPCellType)findCellType
+{
+    if([_post isVideoPost])
+    {
+        return kVideoCell;
+    }
+    else if([_post imagePost])
+    {
+        return kImageCell;
+    }
+    else
+    {
+        return kTextCell;
     }
 }
 
@@ -222,22 +240,16 @@ const float FIVE_LINES_LIMIT = 101.0;
 
 #pragma mark - Static methods
 
-+(CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost isImage:(BOOL)isImage
++(CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost cellType:(GLPCellType)cellType
 {
     UIFont *font = nil;
     
     int maxWidth = 0;
     
-    if(isImage)
-    {
-        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
-        maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
-    }
-    else
-    {
-        font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
-        maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
-    }
+    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
+    maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
+
+
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,
                                                                                                          NSKernAttributeName : @(0.3f)}];
@@ -248,34 +260,53 @@ const float FIVE_LINES_LIMIT = 101.0;
     
     CGSize size = rect.size;
     
-    
-    if(size.height > FIVE_LINES_LIMIT && !isViewPost)
+    if(cellType == kVideoCell)
     {
-        return CGSizeMake(size.width, FIVE_LINES_LIMIT);
+        if(size.height > ONE_LINE_LIMIT && !isViewPost)
+        {
+            return CGSizeMake(size.width, ONE_LINE_LIMIT);
+        }
+    }
+    else
+    {
+        if(size.height > FIVE_LINES_LIMIT && !isViewPost)
+        {
+            return CGSizeMake(size.width, FIVE_LINES_LIMIT);
+        }
     }
     
     return size;
 }
 
-+(CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost
++(CGFloat)getCellHeightWithContent:(GLPPost *)post cellType:(GLPCellType)cellType isViewPost:(BOOL)isViewPost
 {
-    if([post isVideoPost])
-    {
-        return [self getVideoCellHeightWithPost:post isViewPost:isViewPost];
-    }
+//    if([post isVideoPost])
+//    {
+//        return [GLPPostCell getVideoCellHeightWithPost:post isViewPost:isViewPost];
+//    }
+    
+    float height = [GLPPostCell getConstantHeightOfCellWithType:cellType];
+    
     
     // initial height
-    float height = (isImage) ? IMAGE_CELL_HEIGHT : TEXT_CELL_HEIGHT;
+//    float height = (isImage) ? IMAGE_CELL_HEIGHT : TEXT_CELL_HEIGHT;
     
     
-    if(isImage)
+    if(cellType == kImageCell)
     {
         if(!post.eventTitle)
         {
             height = FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL;
         }
     }
-    else
+    else if (cellType == kVideoCell)
+    {
+        if(!post.eventTitle)
+        {
+            height = FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL;
+        }
+    }
+    else if(cellType == kTextCell)
     {
         if(!post.eventTitle)
         {
@@ -284,7 +315,7 @@ const float FIVE_LINES_LIMIT = 101.0;
     }
     
     // add content label height
-    height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:isImage].height;
+    height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost cellType:cellType].height;
     
     return height;
 }
@@ -300,10 +331,26 @@ const float FIVE_LINES_LIMIT = 101.0;
     
     if(isViewPost)
     {
-        height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:YES].height;
+//        height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost isImage:YES].height;
     }
     
     return height;
+}
+
++(float)getConstantHeightOfCellWithType:(GLPCellType)cellType
+{
+    if(cellType == kVideoCell)
+    {
+        return VIDEO_CELL_HEIGHT;
+    }
+    else if (cellType == kImageCell)
+    {
+        return IMAGE_CELL_HEIGHT;
+    }
+    else
+    {
+        return TEXT_CELL_HEIGHT;
+    }
 }
 
 #pragma mark - Client

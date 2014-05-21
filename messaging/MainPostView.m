@@ -269,7 +269,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else if ([_post isVideoPost])
     {
-        [self setPositionsForVideo];
+        [self setPositionsForVideoWithHeight:height];
     }
     else
     {
@@ -345,10 +345,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
 }
 
--(void)setPositionsForVideo
+-(void)setPositionsForVideoWithHeight:(float)height
 {
     float fixedBottomViewHeight = 400.0f;
-    float backgroundImageViewHeight = 480.0f;
+    float backgroundImageViewHeight = 480.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
@@ -369,7 +369,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self.mainViewHeight setConstant:0.0f + fixedBottomViewHeight];
     
     
-//    [_contentLabelHeightConstrain setConstant:height];
+    [_contentLabelHeightConstrain setConstant:height];
     
     /** TODO: use them later. */
     
@@ -380,6 +380,23 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 }
 
 #pragma mark - Media
+
+-(void)savePostImage
+{
+    UIImageWriteToSavedPhotosAlbum(_postImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+}
+
+- (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+{
+    if(error)
+    {
+        [WebClientHelper showErrorSavingImageWithMessage:error.description];
+    }
+    else
+    {
+        [WebClientHelper showSaveImageMessage];
+    }
+}
 
 -(void)setPostImage
 {
@@ -603,15 +620,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     if([self isCurrentPostEvent])
     {
-        DDLogDebug(@"configureShareButton NO");
-        
         [_shareBtn setHidden:NO];
     }
     else
     {
-        
-        DDLogDebug(@"configureShareButton YES");
-
         [_shareBtn setHidden:YES];
     }
 }
@@ -762,8 +774,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     UIActionSheet *actionSheet = nil;
     
-    actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
-    
+    if([_post imagePost])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Save image", nil];
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
+    }
     
 //    if([self isCurrentPostBelongsToCurrentUser])
 //    {
@@ -868,6 +886,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         //Delete post.
         [_delegate deleteCurrentPost];
     }
+    else if ([selectedButtonTitle isEqualToString:@"Save image"])
+    {
+        //Save image to camera roll.
+        [self savePostImage];
+    }
     else if ([selectedButtonTitle isEqualToString:@"Report"])
     {
         //Report post.
@@ -903,9 +926,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
     
-    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypePostToFacebook, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypePostToFacebook, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo, UIActivityTypeSaveToCameraRoll];
     
-    //UIActivityTypePostToFlickr UIActivityTypeSaveToCameraRoll
+    //UIActivityTypePostToFlickr
     
     shareItems.excludedActivityTypes = excludeActivities;
     

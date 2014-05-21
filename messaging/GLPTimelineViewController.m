@@ -1862,17 +1862,21 @@ const float TOP_OFFSET = 280.0f;
 //        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
     GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
     
-    if([currentPost imagePost] || [currentPost isVideoPost])
+    if([currentPost imagePost])
     {
         //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
 
-        return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+    }
+    else if ([currentPost isVideoPost])
+    {
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
     }
     else
     {
         //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         
-        return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
     }
     
 

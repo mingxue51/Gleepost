@@ -1350,13 +1350,17 @@
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
             
-            if([currentPost imagePost] || [currentPost isVideoPost])
+            if([currentPost imagePost])
             {
-                return [GLPPostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+            }
+            else if ([currentPost isVideoPost])
+            {
+                [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
             }
             else
             {
-                return [GLPPostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
             }
         }
     }

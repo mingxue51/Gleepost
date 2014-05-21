@@ -9,7 +9,7 @@
         <scene sceneID="lmt-qG-jWu">
             <objects>
                 <tableViewController id="dVx-sR-2uM" customClass="GLPTimelineViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="300" sectionHeaderHeight="22" sectionFooterHeight="22" id="TGO-Ce-vPE">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="300" sectionHeaderHeight="22" sectionFooterHeight="22" id="TGO-Ce-vPE">
                         <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392156862745" green="0.81176470588235294" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="22" width="320" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0jM-IB-88k" id="tTq-Ib-cEY">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Rqf-Bf-RZU">
@@ -72,7 +72,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kfe-OO-VW7">
-                                            <rect key="frame" x="60" y="37" width="250" height="57"/>
+                                            <rect key="frame" x="60" y="37" width="250" height="56"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -108,7 +108,7 @@
                                 <rect key="frame" x="0.0" y="172" width="320" height="418"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1k4-n4-YrX" id="LKV-37-DYf">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="418"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="417"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V5i-IF-Wrz">
@@ -3525,7 +3525,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="add_members_bg.png" width="516" height="112"/>
         <image name="add_photo_btn.png" width="172" height="168"/>
         <image name="back.png" width="23" height="37"/>
-        <image name="bird-house-7.png" width="30" height="30"/>
+        <image name="bird-house-7.png" width="20" height="20"/>
         <image name="camera_front_back.png" width="100" height="111"/>
         <image name="cancel_recording.png" width="100" height="111"/>
         <image name="category_bg.png" width="630" height="525"/>
@@ -3543,13 +3543,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="glp-quote.png" width="488" height="76"/>
         <image name="go_to_preview.png" width="100" height="111"/>
         <image name="hoovertall.png" width="388" height="1137"/>
-        <image name="id-card-7.png" width="30" height="30"/>
+        <image name="id-card-7.png" width="15" height="21"/>
         <image name="login-button.png" width="442" height="98"/>
         <image name="login_bg.png" width="640" height="1136"/>
         <image name="login_checkbox_unchecked" width="24" height="24"/>
         <image name="loginwithfacebook.png" width="422" height="80"/>
-        <image name="man-7.png" width="30" height="30"/>
-        <image name="message-7.png" width="30" height="30"/>
+        <image name="man-7.png" width="21" height="20"/>
+        <image name="message-7.png" width="22" height="21"/>
         <image name="message-user.png" width="254" height="185"/>
         <image name="message_cell_error.png" width="13" height="17"/>
         <image name="next_button_bg.png" width="588" height="136"/>
@@ -3557,7 +3557,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="pick_pic.png" width="312" height="311"/>
         <image name="private_profile_background.png" width="640" height="724"/>
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
-        <image name="proximity-7.png" width="30" height="30"/>
+        <image name="proximity-7.png" width="25" height="24"/>
         <image name="save_recording.png" width="247" height="237"/>
         <image name="search_users_checkbox_unselected" width="27" height="27"/>
         <image name="search_users_disabled_save_button" width="301" height="51"/>

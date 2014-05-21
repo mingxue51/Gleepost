@@ -11,6 +11,12 @@
 #import "ViewImageDelegate.h"
 #import "MainPostView.h"
 
+typedef NS_ENUM(NSInteger, GLPCellType) {
+    kTextCell,
+    kImageCell,
+    kVideoCell
+};
+
 @protocol RemovePostCellDelegate <NSObject>
 
 -(void)removePostWithPost:(GLPPost *)post;
@@ -36,6 +42,8 @@
 
 @interface GLPPostCell : UITableViewCell <MainPostViewDelegate>
 
+
+
 extern const float IMAGE_CELL_HEIGHT;
 extern const float TEXT_CELL_HEIGHT;
 
@@ -44,7 +52,7 @@ extern const float TEXT_CELL_HEIGHT;
 
 -(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index;
 
-+(CGFloat)getCellHeightWithContent:(GLPPost *)post image:(BOOL)isImage isViewPost:(BOOL)isViewPost;
++(CGFloat)getCellHeightWithContent:(GLPPost *)post cellType:(GLPCellType)cellType isViewPost:(BOOL)isViewPost;
 
 -(void)reloadImage:(BOOL)loadImage;
 

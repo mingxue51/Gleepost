@@ -206,6 +206,8 @@ static BOOL likePushed;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
@@ -672,6 +674,7 @@ static bool firstTime = YES;
 {    
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
     
     GLPPostCell *postViewCell;
@@ -680,12 +683,16 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
-        if(_post.imagesUrls.count>0)
+        if([_post imagePost])
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
 //            [postViewCell postFromNotifications:_isViewPostNotifications];
             [postViewCell reloadImage:self.needsToLoadAgainTheImage];
+        }
+        else if ([_post isVideoPost])
+        {
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
         }
         else
         {
@@ -764,13 +771,17 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [GLPPostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kImageCell isViewPost:YES];
             
 //            return 650;
         }
+        else if([self.post isVideoPost])
+        {
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kVideoCell isViewPost:YES];
+        }
         else
         {
-            return [GLPPostCell getCellHeightWithContent:self.post image:NO isViewPost:YES];
+             return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES];
         }
         //return 200;
     }
