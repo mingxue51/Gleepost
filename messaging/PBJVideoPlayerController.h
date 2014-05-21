@@ -56,6 +56,7 @@ typedef NS_ENUM(NSInteger, PBJVideoPlayerBufferingState) {
 - (void)pause;
 - (void)stop;
 - (void)setMute:(BOOL)mute;
+- (void)resetVideo;
 
 @end
 

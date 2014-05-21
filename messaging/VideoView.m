@@ -40,10 +40,32 @@
 
 -(void)setUpPreviewWithUrl:(NSString *)url
 {
-    _url = url;
-    [_previewVC setPlaybackLoops:NO];
-    _previewVC.view.frame = _videoView.bounds;
-    [_videoView addSubview:_previewVC.view];
+#warning important issue here. when playing video.
+    
+//    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+//    {
+        DDLogDebug(@"Playing VideoView url : %@", url);
+//        [_videoView setHidden:YES];
+//        [_previewVC stop];
+//        [self endVideo];
+//        [_previewVC setVideoPath:url];
+//        [_previewVC resetVideo];
+//    }
+//    else
+//    {
+        _url = url;
+        
+        [_previewVC setPlaybackLoops:NO];
+        _previewVC.view.frame = _videoView.bounds;
+        [_videoView addSubview:_previewVC.view];
+//        [self startVideoFromBeggining];
+//    }
+    
+
+    
+//    _previewVC.videoPath = _url;
+//    [_previewVC pause];
+
 }
 
 -(IBAction)video:(id)sender
@@ -90,6 +112,7 @@
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
 {
     [self setHiddenToPlayButton:YES];
+    [_videoView setHidden:NO];
 }
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer

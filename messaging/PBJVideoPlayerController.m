@@ -363,6 +363,11 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     [_delegate videoPlayerPlaybackDidEnd:self];
 }
 
+- (void)resetVideo
+{
+//    [self loadView];
+}
+
 #pragma mark - main queue helper
 
 typedef void (^PBJVideoPlayerBlock)();

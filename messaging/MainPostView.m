@@ -447,6 +447,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)showVideoView
 {
+    DDLogDebug(@"Video url: %@, Post content: %@", self.post.videosUrls[0], self.post.content);
+    
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
     [_videoView setUpPreviewWithUrl:self.post.videosUrls[0]];

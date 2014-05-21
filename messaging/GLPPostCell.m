@@ -83,6 +83,7 @@ const float ONE_LINE_LIMIT = 16.0;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 
     
+    
     [self configureTopView];
 
     //Set elements to top view.
