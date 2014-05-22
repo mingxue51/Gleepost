@@ -11,6 +11,7 @@
 
 @interface VideoView : UIView <PBJVideoPlayerControllerDelegate>
 
--(void)setUpPreviewWithUrl:(NSString *)url;
+-(void)setUpPreviewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey;
+//-(void)initialisePreviewWithUrl:(NSString *)url;
 
 @end

@@ -8,13 +8,16 @@
 
 #import "VideoView.h"
 #import "ShapeFormatterHelper.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface VideoView ()
 
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+//@property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
 @property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @end
 
 @implementation VideoView
@@ -26,11 +29,36 @@
     if(self)
     {
         [self initialiseObjects];
+//        [self initVideo];
+//        [self configureNotifications];
     }
     
     return self;
 }
 
+//-(void)initVideo
+//{
+//    _moviewPlayer = [[MPMoviePlayerController alloc] init];
+//    
+//    [_moviewPlayer prepareToPlay];
+//    [_moviewPlayer.view setFrame: self.bounds];  // player's frame must match parent's
+//    [self addSubview: _moviewPlayer.view];
+//}
+
+//-(void)initialisePreviewWithUrl:(NSString *)url
+//{
+//    
+////    [_playButton setHidden:YES];
+//    [_thumbnailImageView setImage:nil];
+//    [self bringSubviewToFront:_thumbnailImageView];
+//    [self bringSubviewToFront:_playButton];
+//    
+//    
+//    
+//    _moviewPlayer.contentURL = [NSURL URLWithString:url];
+//    [_moviewPlayer requestThumbnailImagesAtTimes:@[[NSNumber numberWithFloat:1.0f]] timeOption:MPMovieTimeOptionExact];
+//    
+//}
 
 -(void)initialiseObjects
 {
@@ -38,13 +66,30 @@
     _previewVC.delegate = self;
 }
 
--(void)setUpPreviewWithUrl:(NSString *)url
+-(void)configureNotifications
 {
-#warning important issue here. when playing video.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(thumbnailReceived:) name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
+}
+
+-(void)thumbnailReceived:(NSNotification *)notification
+{
+    DDLogDebug(@"Image: %@", notification.userInfo);
+    
+    NSDictionary *result = notification.userInfo;
+    
+    UIImage *thumbnail = [result objectForKey:@"MPMoviePlayerThumbnailImageKey"];
+    
+    [_thumbnailImageView setImage:thumbnail];
+    
+}
+
+
+
+-(void)setUpPreviewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
+{
     
 //    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
 //    {
-        DDLogDebug(@"Playing VideoView url : %@", url);
 //        [_videoView setHidden:YES];
 //        [_previewVC stop];
 //        [self endVideo];
@@ -53,23 +98,58 @@
 //    }
 //    else
 //    {
-        _url = url;
+    
+    [_videoView setAlpha:0.0f];
+
+    
+    _url = url;
+    
+    [_previewVC setPlaybackLoops:NO];
+    
+    
+
+    if([self isPreviewViewInVideoViewWithRemoteKey:remoteKey])
+    {
+        DDLogDebug(@"Preview already exists");
+    }
+    else
+    {
+
         
-        [_previewVC setPlaybackLoops:NO];
-        _previewVC.view.frame = _videoView.bounds;
-        [_videoView addSubview:_previewVC.view];
-//        [self startVideoFromBeggining];
-//    }
+//        [_previewVC setVideoPath:_url];
+    }
     
-
+    [_previewVC.view removeFromSuperview];
     
-//    _previewVC.videoPath = _url;
-//    [_previewVC pause];
+    _previewVC.view.tag = remoteKey;
+    _previewVC.view.frame = _videoView.bounds;
+    [_videoView addSubview:_previewVC.view];
+    
+    [_previewVC setVideoPath:_url];
 
+
+
+
+}
+
+-(BOOL)isPreviewViewInVideoViewWithRemoteKey:(NSInteger)remoteKey
+{
+    for(UIView *view in _videoView.subviews)
+    {
+        if(view.tag == remoteKey)
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 -(IBAction)video:(id)sender
 {
+//    [_moviewPlayer play];
+
+    
     if(_playButton.tag == 0)
     {
         [self startVideoFromBeggining];
@@ -99,6 +179,8 @@
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
+    
+
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
@@ -118,6 +200,13 @@
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
 {
     [self endVideo];
+}
+
+-(void)videoPlayerNewVideoReady:(PBJVideoPlayerController *)videoPlayer
+{
+    DDLogDebug(@"videoPlayerNewVideoReady");
+    [_videoView setAlpha:1.0f];
+
 }
 
 #pragma mark - Playback operations
@@ -142,7 +231,7 @@
 
 -(void)startVideoFromBeggining
 {
-    _previewVC.videoPath = _url;
+//    [_previewVC setVideoPath:_url];
     [_previewVC playFromBeginning];
 }
 

@@ -260,7 +260,7 @@ static const float FixedBottomTextViewHeight = 100;
 {
     [_videoView setHidden:NO];
     [self.postImage setHidden:YES];
-    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0]];
+//    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0]];
 }
 
 -(void)hideVideoView
