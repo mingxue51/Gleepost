@@ -9,6 +9,7 @@
 #import "VideoView.h"
 #import "ShapeFormatterHelper.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface VideoView ()
 
@@ -90,7 +91,9 @@
     
 //    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
 //    {
-//        [_videoView setHidden:YES];
+    
+          [_videoView setHidden:YES];
+    [self setHiddenToPlayButton:NO];
 //        [_previewVC stop];
 //        [self endVideo];
 //        [_previewVC setVideoPath:url];
@@ -99,7 +102,7 @@
 //    else
 //    {
     
-    [_videoView setAlpha:0.0f];
+//    [_videoView setAlpha:0.0f];
 
     
     _url = url;
@@ -125,9 +128,7 @@
     _previewVC.view.frame = _videoView.bounds;
     [_videoView addSubview:_previewVC.view];
     
-    [_previewVC setVideoPath:_url];
-
-
+//    [_previewVC setVideoPath:_url];
 
 
 }
@@ -179,7 +180,7 @@
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
-    
+    [_videoView setHidden:NO];
 
 }
 
@@ -194,7 +195,6 @@
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
 {
     [self setHiddenToPlayButton:YES];
-    [_videoView setHidden:NO];
 }
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
@@ -205,7 +205,7 @@
 -(void)videoPlayerNewVideoReady:(PBJVideoPlayerController *)videoPlayer
 {
     DDLogDebug(@"videoPlayerNewVideoReady");
-    [_videoView setAlpha:1.0f];
+//    [_videoView setAlpha:1.0f];
 
 }
 
@@ -231,7 +231,7 @@
 
 -(void)startVideoFromBeggining
 {
-//    [_previewVC setVideoPath:_url];
+    [_previewVC setVideoPath:_url];
     [_previewVC playFromBeginning];
 }
 
