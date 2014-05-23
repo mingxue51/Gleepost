@@ -7,6 +7,7 @@
 //  This class is used to manage preview of video in PostCell.
 
 #import "VideoView.h"
+#import "GLPVideoLoaderManager.h"
 #import "ShapeFormatterHelper.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
@@ -14,11 +15,13 @@
 @interface VideoView ()
 
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
-//@property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
+@property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
 @property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *playImageView;
+@property (assign, nonatomic) NSInteger remoteKey;
 @end
 
 @implementation VideoView
@@ -30,6 +33,7 @@
     if(self)
     {
         [self initialiseObjects];
+        
 //        [self initVideo];
 //        [self configureNotifications];
     }
@@ -84,7 +88,48 @@
     
 }
 
+-(void)setUpVideoViewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
+{
+    _remoteKey = remoteKey;
+    
+    [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:remoteKey];
+    
+    PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:remoteKey];
+    
+    if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+    {
+        [self setHiddenToPlayImage:YES];
+    }
+    else
+    {
+        [self setHiddenToPlayImage:NO];
+    }
+//    previewVC.delegate = self;
+    
+//    [previewVC.view removeFromSuperview];
+    
+    
+    previewVC.view.frame = _videoView.bounds;
+    [_videoView addSubview:previewVC.view];
+    
+    
 
+}
+
+#pragma mark - Video operations
+
+-(void)playVideo
+{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPlayVideo" object:self userInfo:@{@"RemoteKey": [NSNumber numberWithInteger:_remoteKey]}
+     ];
+}
+
+-(void)pauseVideo
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPauseVideo" object:self userInfo:@{@"RemoteKey": [NSNumber numberWithInteger:_remoteKey]}
+     ];
+}
 
 -(void)setUpPreviewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
 {
@@ -93,7 +138,7 @@
 //    {
     
           [_videoView setHidden:YES];
-    [self setHiddenToPlayButton:NO];
+    [self setHiddenToPlayImage:NO];
 //        [_previewVC stop];
 //        [self endVideo];
 //        [_previewVC setVideoPath:url];
@@ -110,17 +155,6 @@
     [_previewVC setPlaybackLoops:NO];
     
     
-
-    if([self isPreviewViewInVideoViewWithRemoteKey:remoteKey])
-    {
-        DDLogDebug(@"Preview already exists");
-    }
-    else
-    {
-
-        
-//        [_previewVC setVideoPath:_url];
-    }
     
     [_previewVC.view removeFromSuperview];
     
@@ -133,42 +167,46 @@
 
 }
 
--(BOOL)isPreviewViewInVideoViewWithRemoteKey:(NSInteger)remoteKey
-{
-    for(UIView *view in _videoView.subviews)
-    {
-        if(view.tag == remoteKey)
-        {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-
 -(IBAction)video:(id)sender
 {
 //    [_moviewPlayer play];
 
-    
     if(_playButton.tag == 0)
     {
-        [self startVideoFromBeggining];
+        [self setHiddenToPlayImage:YES];
+        [self playVideo];
+        
     }
     else
     {
-        [self resumeVideo];
+        [self setHiddenToPlayImage:NO];
+        [self pauseVideo];
+//        _playButton.tag = 0;
     }
+    
+    
+    
+//    if(_playButton.tag == 0)
+//    {
+//        [self startVideoFromBeggining];
+//    }
+//    else
+//    {
+//        [self resumeVideo];
+//    }
 
 }
 
 #pragma mark - Animation
 
--(void)setHiddenToPlayButton:(BOOL)hidden
+-(void)setHiddenToPlayImage:(BOOL)hidden
 {
+    _playButton.tag = (hidden) ? 1 : 0;
+    
     [UIView animateWithDuration:0.3f animations:^{
         
-        [self.playButton setAlpha:(hidden) ? 0.0f : 1.0f];
+//        [self.playButton setAlpha:(hidden) ? 0.0f : 1.0f];
+        [self.playImageView setHidden:hidden];
         
     } completion:^(BOOL finished) {
         
@@ -194,7 +232,7 @@
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
 {
-    [self setHiddenToPlayButton:YES];
+//    [self setHiddenToPlayButton:YES];
 }
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
@@ -211,27 +249,27 @@
 
 #pragma mark - Playback operations
 
--(void)pauseVideo
-{
-    [self setHiddenToPlayButton:NO];
-    [_playButton setTag:1];
-}
+//-(void)pauseVideo
+//{
+//    [self setHiddenToPlayButton:NO];
+//    [_playButton setTag:1];
+//}
 
 -(void)resumeVideo
 {
-    [self setHiddenToPlayButton:YES];
+//    [self setHiddenToPlayButton:YES];
     [_previewVC playFromCurrentTime];
 }
 
 -(void)endVideo
 {
-    [self setHiddenToPlayButton:NO];
+//    [self setHiddenToPlayButton:NO];
     [_playButton setTag:0];
 }
 
 -(void)startVideoFromBeggining
 {
-    [_previewVC setVideoPath:_url];
+//    [_previewVC setVideoPath:_url];
     [_previewVC playFromBeginning];
 }
 

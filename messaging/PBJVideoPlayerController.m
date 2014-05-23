@@ -28,7 +28,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#define LOG_PLAYER 0
+#define LOG_PLAYER 1
 #if !defined(NDEBUG) && LOG_PLAYER
 #   define DLog(fmt, ...) NSLog((@"player: " fmt), ##__VA_ARGS__);
 #else

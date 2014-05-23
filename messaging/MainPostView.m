@@ -451,7 +451,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
-    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
+    [_videoView setUpVideoViewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
+//    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
 //    [_videoView initialisePreviewWithUrl:self.post.videosUrls[0]];
 }
 

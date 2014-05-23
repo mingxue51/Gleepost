@@ -75,14 +75,18 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nte-mL-STQ">
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nte-mL-STQ">
                                         <rect key="frame" x="0.0" y="0.0" width="298" height="298"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gleepost_play_button.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZHf-L3-yJT">
+                                        <rect key="frame" x="74" y="75" width="149" height="149"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rb0-M2-uUE">
                                         <rect key="frame" x="0.0" y="0.0" width="298" height="298"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="gleepost_play_button.png">
+                                        <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -93,6 +97,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="playButton" destination="rb0-M2-uUE" id="zEN-jj-4tX"/>
+                                    <outlet property="playImageView" destination="ZHf-L3-yJT" id="y3v-c7-a3I"/>
                                     <outlet property="thumbnailImageView" destination="nte-mL-STQ" id="11u-Ga-vqN"/>
                                     <outlet property="videoView" destination="Jd2-ka-kpE" id="lAD-sq-Keg"/>
                                 </connections>

@@ -261,6 +261,7 @@
 		586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */ = {isa = PBXBuildFile; fileRef = 586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */; };
 		586458B1180834AC00B1B19C /* PostWithImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586458B0180834AC00B1B19C /* PostWithImageCell.m */; };
 		586458B41808393B00B1B19C /* PostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586458B31808393B00B1B19C /* PostCell.m */; };
+		58655D0B192F822500266141 /* GLPVideoLoaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58655D0A192F822500266141 /* GLPVideoLoaderManager.m */; };
 		5865813218059DAD005814B4 /* Bubbles.m in Sources */ = {isa = PBXBuildFile; fileRef = 5865813118059DAD005814B4 /* Bubbles.m */; };
 		586581371805F210005814B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586581361805F210005814B4 /* MessageTableViewCell.m */; };
 		586659A417F1A20800A0354E /* chat_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 586659A317F1A20800A0354E /* chat_background.png */; };
@@ -1074,6 +1075,8 @@
 		586458B0180834AC00B1B19C /* PostWithImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostWithImageCell.m; sourceTree = "<group>"; };
 		586458B21808393B00B1B19C /* PostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCell.h; sourceTree = "<group>"; };
 		586458B31808393B00B1B19C /* PostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCell.m; sourceTree = "<group>"; };
+		58655D09192F822500266141 /* GLPVideoLoaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoLoaderManager.h; sourceTree = "<group>"; };
+		58655D0A192F822500266141 /* GLPVideoLoaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoLoaderManager.m; sourceTree = "<group>"; };
 		5865813018059DAD005814B4 /* Bubbles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bubbles.h; sourceTree = "<group>"; };
 		5865813118059DAD005814B4 /* Bubbles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bubbles.m; sourceTree = "<group>"; };
 		586581351805F210005814B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
@@ -3111,6 +3114,8 @@
 				5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */,
 				58BF03E718F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.h */,
 				58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */,
+				58655D09192F822500266141 /* GLPVideoLoaderManager.h */,
+				58655D0A192F822500266141 /* GLPVideoLoaderManager.m */,
 			);
 			name = Processors;
 			sourceTree = "<group>";
@@ -4601,6 +4606,7 @@
 				583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */,
 				58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
+				58655D0B192F822500266141 /* GLPVideoLoaderManager.m in Sources */,
 				80E396381858D87600391922 /* GLPLiveConversation.m in Sources */,
 				58E1E5EE19262851007ACB4F /* TopPostView.m in Sources */,
 				58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */,

@@ -56,6 +56,7 @@
 #import "TableViewHelper.h"
 #import "GLPFlurryVisibleCellProcessor.h"
 #import "EmptyMessage.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -376,9 +377,6 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    
-    DDLogDebug(@"updateRealImage: %@", notification.userInfo);
-    
     GLPPost *currentPost = nil;
     int index = -1;
     if(_groupsMode)
@@ -919,7 +917,7 @@ const float TOP_OFFSET = 280.0f;
 //            self.posts[0] = p;
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-
+            [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
             
