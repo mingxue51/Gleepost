@@ -100,11 +100,12 @@
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     int date = [entity.date timeIntervalSince1970];
+    int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending) values(%@, %d, %d, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -113,9 +114,11 @@
                      entity.sendStatus,
                      entity.author.remoteKey,
                      entity.liked,
-                     entity.attended];
+                     entity.attended,
+                     entity.eventTitle,
+                     eventDate];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -125,7 +128,9 @@
                      entity.sendStatus,
                      entity.author.remoteKey,
                      entity.liked,
-                     entity.attended];
+                     entity.attended,
+                     entity.eventTitle,
+                     eventDate];
     }
     
     entity.key = [db lastInsertRowId];

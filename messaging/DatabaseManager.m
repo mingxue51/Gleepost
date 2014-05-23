@@ -169,6 +169,8 @@ static DatabaseManager *instance = nil;
              sendStatus integer, \
              author_key integer, \
              liked integer, \
+             event_title text, \
+             event_date integer, \
              attending integer);"];
             
             // post images

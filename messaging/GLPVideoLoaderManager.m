@@ -45,6 +45,13 @@ static GLPVideoLoaderManager *instance = nil;
     return self;
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPlayVideo" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPauseVideo" object:nil];
+
+}
+
 #pragma mark - Configuration
 
 -(void)initialiseObjects
@@ -64,7 +71,10 @@ static GLPVideoLoaderManager *instance = nil;
  */
 -(void)addVideoPosts:(NSArray *)posts
 {
-    [NSThread detachNewThreadSelector:@selector(addVideos:) toTarget:self withObject:posts];
+    if(!TARGET_IPHONE_SIMULATOR)
+    {
+        [NSThread detachNewThreadSelector:@selector(addVideos:) toTarget:self withObject:posts];
+    }
     
 
 }

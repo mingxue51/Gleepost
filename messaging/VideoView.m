@@ -90,27 +90,32 @@
 
 -(void)setUpVideoViewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
 {
-    _remoteKey = remoteKey;
-    
-    [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:remoteKey];
-    
-    PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:remoteKey];
-    
-    if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+    if(!TARGET_IPHONE_SIMULATOR)
     {
-        [self setHiddenToPlayImage:YES];
+        _remoteKey = remoteKey;
+        
+        [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:remoteKey];
+        
+        PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:remoteKey];
+        
+        if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+        {
+            [self setHiddenToPlayImage:YES];
+        }
+        else
+        {
+            [self setHiddenToPlayImage:NO];
+        }
+        //    previewVC.delegate = self;
+        
+        //    [previewVC.view removeFromSuperview];
+        
+        
+        previewVC.view.frame = _videoView.bounds;
+        [_videoView addSubview:previewVC.view];
     }
-    else
-    {
-        [self setHiddenToPlayImage:NO];
-    }
-//    previewVC.delegate = self;
     
-//    [previewVC.view removeFromSuperview];
-    
-    
-    previewVC.view.frame = _videoView.bounds;
-    [_videoView addSubview:previewVC.view];
+
     
     
 

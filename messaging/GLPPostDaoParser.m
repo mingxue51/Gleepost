@@ -25,9 +25,9 @@
     entity.commentsCount = [resultSet intForColumn:@"comments"];
     entity.liked = [resultSet boolForColumn:@"liked"];
     entity.attended = [resultSet boolForColumn:@"attending"];
-    
+    entity.eventTitle = [resultSet stringForColumn:@"event_title"];
+    entity.dateEventStarts = [resultSet dateForColumn:@"event_date"];
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
-    
     entity.categories = [GLPCategoryDao findByPostRemoteKey:entity.remoteKey db:db];
 }
 
