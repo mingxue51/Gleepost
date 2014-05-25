@@ -84,9 +84,6 @@ static ContactsManager *instance = nil;
             //Store contacts into an array.
             self.contacts = contacts;
             
-            DDLogDebug(@"Remote contacts: %@", contacts);
-
-            
             [GLPContactDao deleteTable];
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {

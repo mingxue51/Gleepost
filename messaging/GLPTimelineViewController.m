@@ -160,11 +160,13 @@ const float TOP_OFFSET = 280.0f;
     
     [self initialiseObjects];
     
-    //TODO: Remove this later.
-    [[ContactsManager sharedInstance] refreshContacts];
+
     
     
-    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
+//    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
+    
+    NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
+    [t fire];
     
     [self loadInitialPosts];
     
@@ -466,6 +468,9 @@ const float TOP_OFFSET = 280.0f;
     //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
     //[[GLPMessagesLoader sharedInstance] loadConversations];
     [[GLPProfileLoader sharedInstance] loadUserData];
+    
+    //TODO: Remove this later.
+    [[ContactsManager sharedInstance] refreshContacts];
     
     //Load groups' posts.
     [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];

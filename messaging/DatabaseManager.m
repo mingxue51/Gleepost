@@ -178,6 +178,11 @@ static DatabaseManager *instance = nil;
              post_remote_key integer, \
              image_url text);"];
             
+            // post videos
+            [db executeUpdate:@"create table post_videos ( \
+             post_remote_key integer, \
+             video_url text);"];
+            
             // categories
             [db executeUpdate:@"create table categories ( \
              key integer primary key autoincrement, \
