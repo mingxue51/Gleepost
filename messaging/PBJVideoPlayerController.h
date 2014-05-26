@@ -67,6 +67,4 @@ typedef NS_ENUM(NSInteger, PBJVideoPlayerBufferingState) {
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer;
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer;
-//NEW METHOD.
-- (void)videoPlayerNewVideoReady:(PBJVideoPlayerController *)videoPlayer;
 @end

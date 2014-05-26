@@ -235,7 +235,6 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
 
     [_player replaceCurrentItemWithPlayerItem:_playerItem];
     
-    [_delegate videoPlayerNewVideoReady:self];
 }
 
 #pragma mark - init
