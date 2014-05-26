@@ -146,6 +146,8 @@
 		5834903A18BF80670087CC3A /* FDTake.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902718BF80670087CC3A /* FDTake.strings */; };
 		5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902B18BF80670087CC3A /* InfoPlist.strings */; };
 		5834903E18BF80670087CC3A /* FDTakeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5834903218BF80670087CC3A /* FDTakeController.m */; };
+		583491F71933FFE900E44B4A /* GLPWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583491F61933FFE900E44B4A /* GLPWalkthroughViewController.m */; };
+		583491FA1934040200E44B4A /* WalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583491F91934040200E44B4A /* WalkthroughViewController.m */; };
 		5834FF4118B4FE480092C52D /* campus_wall_background_main_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834FF4018B4FE480092C52D /* campus_wall_background_main_old.png */; };
 		5834FF4418B502D20092C52D /* profile_background_main.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834FF4318B502D20092C52D /* profile_background_main.png */; };
 		58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58361C32184CAE8D00FEFC49 /* ReflectedImageView.m */; };
@@ -912,6 +914,10 @@
 		5834903718BF80670087CC3A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/FDTake.strings; sourceTree = "<group>"; };
 		5834903818BF80670087CC3A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/FDTake.strings"; sourceTree = "<group>"; };
 		5834903918BF80670087CC3A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/FDTake.strings"; sourceTree = "<group>"; };
+		583491F51933FFE900E44B4A /* GLPWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWalkthroughViewController.h; sourceTree = "<group>"; };
+		583491F61933FFE900E44B4A /* GLPWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPWalkthroughViewController.m; sourceTree = "<group>"; };
+		583491F81934040200E44B4A /* WalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkthroughViewController.h; sourceTree = "<group>"; };
+		583491F91934040200E44B4A /* WalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalkthroughViewController.m; sourceTree = "<group>"; };
 		5834FF4018B4FE480092C52D /* campus_wall_background_main_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = campus_wall_background_main_old.png; sourceTree = "<group>"; };
 		5834FF4318B502D20092C52D /* profile_background_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_background_main.png; sourceTree = "<group>"; };
 		58361C31184CAE8D00FEFC49 /* ReflectedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflectedImageView.h; sourceTree = "<group>"; };
@@ -1939,6 +1945,17 @@
 				5834903218BF80670087CC3A /* FDTakeController.m */,
 			);
 			path = FDTakeViewControllerImagePicker;
+			sourceTree = "<group>";
+		};
+		583491F41933FC3D00E44B4A /* Walkthrough */ = {
+			isa = PBXGroup;
+			children = (
+				583491F51933FFE900E44B4A /* GLPWalkthroughViewController.h */,
+				583491F61933FFE900E44B4A /* GLPWalkthroughViewController.m */,
+				583491F81934040200E44B4A /* WalkthroughViewController.h */,
+				583491F91934040200E44B4A /* WalkthroughViewController.m */,
+			);
+			name = Walkthrough;
 			sourceTree = "<group>";
 		};
 		5834FF4218B502AE0092C52D /* Backgrounds */ = {
@@ -3457,6 +3474,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				583491F41933FC3D00E44B4A /* Walkthrough */,
 				58A75EB91920EF800082F316 /* Video */,
 				586F6EF6191BADFB00BDF558 /* Facebook */,
 				80E93FB318C8BD43008769CB /* Contacts */,
@@ -4463,6 +4481,7 @@
 				58E1E5F11926285E007ACB4F /* MainPostView.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
 				58FB7C8A18560B6B002C6A00 /* AboutProfileView.m in Sources */,
+				583491FA1934040200E44B4A /* WalkthroughViewController.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
 				58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */,
 				58428E3318A27E0F00B82E4B /* LoginView.m in Sources */,
@@ -4602,6 +4621,7 @@
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,
 				58F9C63F18C522CA004A237E /* GLPGroup.m in Sources */,
+				583491F71933FFE900E44B4A /* GLPWalkthroughViewController.m in Sources */,
 				580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */,
 				583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */,
 				58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */,

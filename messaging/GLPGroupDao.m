@@ -164,7 +164,7 @@
 {
     BOOL removed = [db executeUpdateWithFormat:@"delete from groups where remoteKey=%d", group.remoteKey];
     
-    DDLogDebug(@"Group with key %d removed status %d.", group.remoteKey, removed);
+    DDLogInfo(@"Group with key %d removed status %d.", group.remoteKey, removed);
 }
 
 +(void)updateGroupSendingData:(GLPGroup *)entity db:(FMDatabase *)db
@@ -187,7 +187,6 @@
                    entity.key];
     }
     
-    DDLogDebug(@"Group with title %@ and url %@ updated successfully", entity.name, entity.groupImageUrl);
 }
 
 +(void)updateGroupWithRemoteKey:(GLPGroup *)entity db:(FMDatabase *)db
@@ -200,7 +199,7 @@
                    entity.remoteKey];
         
     
-    DDLogDebug(@"Group with title %@ and url %@ updated successfully", entity.name, entity.groupImageUrl);
+    DDLogInfo(@"Group with title %@ and url %@ updated successfully", entity.name, entity.groupImageUrl);
 }
 
 
@@ -245,9 +244,7 @@
 
 +(void)cleanTable:(FMDatabase*)db
 {
-    BOOL removed = [db executeUpdateWithFormat:@"delete from groups"];
-    
-    DDLogDebug(@"All the groups list removed %d.", removed);
+    [db executeUpdateWithFormat:@"delete from groups"];
 }
 
 

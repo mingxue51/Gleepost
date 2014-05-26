@@ -102,7 +102,7 @@ static GLPPostImageLoader *instance = nil;
 
 #pragma mark - Modifiers
 
--(void)addPostsImages:(NSArray*)posts
+-(void)addPostsImages:(NSArray *)posts
 {
     
     posts = [self findImagePosts:posts];
@@ -125,7 +125,7 @@ static GLPPostImageLoader *instance = nil;
                 [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInt:p.remoteKey] andImage:image];
             }
             else
-            {
+            {                
                 //Check if some posts are already in.
                 
                 newPost = [self addPostImageInQueueWithPost:p];
@@ -257,14 +257,13 @@ static GLPPostImageLoader *instance = nil;
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
-        DDLogDebug(@"Image ready: %@", img);
+//        DDLogDebug(@"Image ready: %@", img);
         
-//        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
         
         
         if(img)
         {
-            //TODO: Save image with image url.
+            //Save image with image url.
             [[SDImageCache sharedImageCache] storeImage:img forKey:urlStr];
 
             
