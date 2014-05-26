@@ -23,6 +23,7 @@
 #import "GLPPushManager.h"
 #import "GLPFacebookConnect.h"
 #import "RemoteParser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation GLPLoginManager
 

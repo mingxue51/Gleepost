@@ -905,10 +905,7 @@ const float TOP_OFFSET = 280.0f;
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
         self.posts = [localPosts mutableCopy];
-//        
-//        GLPPost *p = self.posts[0];
-//        p.videosUrls =  [[NSArray alloc] initWithObjects:@"http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov", nil];
-//        self.posts[0] = p;
+
         [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
         [self.tableView reloadData];
@@ -916,11 +913,7 @@ const float TOP_OFFSET = 280.0f;
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         if(success) {
             self.posts = [remotePosts mutableCopy];
-            
-//            GLPPost *p = self.posts[0];
-//            p.videosUrls =  [[NSArray alloc] initWithObjects:@"http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov", nil];
-//            self.posts[0] = p;
-            
+
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;

@@ -104,6 +104,9 @@ static GLPPostImageLoader *instance = nil;
 
 -(void)addPostsImages:(NSArray*)posts
 {
+    
+    posts = [self findImagePosts:posts];
+    
     __block BOOL newPost = NO;
  
     __block BOOL readyToConsume = NO;
@@ -131,13 +134,12 @@ static GLPPostImageLoader *instance = nil;
                 {
                     readyToConsume = YES;
                 }
-                
-                #warning fix here.
-                
-                if(readyToConsume /*&& (posts.count-1) == i*/)
-                {
-                    [self startConsume];
-                }
+
+            }
+            
+            if(readyToConsume && posts.count - 1 == i)
+            {
+                [self startConsume];
             }
             
         }];
@@ -194,22 +196,30 @@ static GLPPostImageLoader *instance = nil;
     
     if(![_loadingImages objectForKey:currentRemoteKey])
     {
-        if(p.imagesUrls)
-        {
-            DDLogDebug(@"Image not in cached: %@", p.imagesUrls[0]);
-
-            [_imagesNotStarted enqueue:currentRemoteKey];
-            
-            [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
-//            newPost = YES;
-            
-            return YES;
-        }
+        [_imagesNotStarted enqueue:currentRemoteKey];
+        
+        [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
+        
+        return YES;
     }
     
     return NO;
 }
 
+-(NSArray *)findImagePosts:(NSArray *)posts
+{
+    NSMutableArray *imagePosts = [[NSMutableArray alloc] init];
+    
+    for(GLPPost *p in posts)
+    {
+        if([p imagePost])
+        {
+            [imagePosts addObject:p];
+        }
+    }
+    
+    return imagePosts;
+}
 
 #pragma mark - Selectors
 
