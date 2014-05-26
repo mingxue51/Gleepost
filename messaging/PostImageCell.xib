@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -39,7 +39,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xhg-cc-Ny7">
-                                <rect key="frame" x="30" y="50" width="195" height="17"/>
+                                <rect key="frame" x="30" y="48" width="195" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.75686274509803919" green="0.75686274509803919" blue="0.75686274509803919" alpha="1" colorSpace="calibratedRGB"/>
@@ -131,7 +131,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yaz-qM-IJt">
-                                        <rect key="frame" x="243" y="10" width="55" height="30"/>
+                                        <rect key="frame" x="227" y="10" width="71" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -266,7 +266,7 @@
                         <connections>
                             <outlet property="backgroundImageHeight" destination="EZw-eh-zsu" id="1cr-cb-rux"/>
                             <outlet property="backgroundImageView" destination="3nq-qG-n6x" id="gQO-6m-i2n"/>
-                            <outlet property="commentBtn" destination="OW5-9V-qeb" id="whH-IB-0fe"/>
+                            <outlet property="commentBtn" destination="4HT-5v-R3a" id="S97-4r-iLB"/>
                             <outlet property="commentsLbl" destination="Wp0-MB-hxp" id="seR-0L-Shv"/>
                             <outlet property="contentLabelHeightConstrain" destination="yjS-9B-ZHv" id="CiW-qj-Yix"/>
                             <outlet property="contentLbl" destination="aX2-C1-hEz" id="4pl-Rv-IzQ"/>
@@ -288,6 +288,7 @@
                             <outlet property="timePostLbl" destination="GUe-OU-BSE" id="nge-vN-1EC"/>
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>
                             <outlet property="videoView" destination="nvU-aO-Tut" id="tD9-kO-Yid"/>
+                            <outlet property="wideCommentBtn" destination="OW5-9V-qeb" id="TBP-H1-wvC"/>
                         </connections>
                     </view>
                 </subviews>

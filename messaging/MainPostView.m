@@ -38,6 +38,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *commentBtn;
 
+@property (weak, nonatomic) IBOutlet UIButton *wideCommentBtn;
+
 @property (weak, nonatomic) IBOutlet UIButton *goingBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
@@ -275,7 +277,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     {
         [self setPositionsForTextPostWithHeight:height];
     }
-    
 }
 
 -(void)setPositionsForTextPostWithHeight:(float)height
@@ -347,7 +348,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)setPositionsForVideoWithHeight:(float)height
 {
-    float fixedBottomViewHeight = 400.0f;
+    float fixedBottomViewHeight = 410.0f;
     float backgroundImageViewHeight = 480.0f + height;
     float distanceFromTop = 0.0f;
     
@@ -366,10 +367,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self.distanceFromTop setConstant:distanceFromTop];
     
-    [self.mainViewHeight setConstant:0.0f + fixedBottomViewHeight];
+    [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
     
     
     [_contentLabelHeightConstrain setConstant:height];
+    
     
     /** TODO: use them later. */
     
@@ -447,8 +449,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)showVideoView
 {
-    DDLogDebug(@"Video url: %@, Post content: %@", self.post.videosUrls[0], self.post.content);
-    
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
     [_videoView setUpVideoViewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
@@ -574,7 +574,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         //Hide comment button.
         [_commentBtn setEnabled:NO];
-//        [self.wideCommentBtn setEnabled:NO];
+        [_wideCommentBtn setEnabled:NO];
     }
 }
 
@@ -727,6 +727,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         ++self.post.likes;
     }
     
+    //Update like label.
+    [_likesLbl setText:[NSString stringWithFormat:@"%ld", (long)_post.likes]];
+    
     [self setLikeImageToButton];
     
     //Update post in local database.
@@ -778,30 +781,18 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     UIActionSheet *actionSheet = nil;
     
-    if([_post imagePost])
+    if([_post imagePost] && [self isCurrentPostBelongsToCurrentUser])
     {
         actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Save image", nil];
     }
-    else
+    else if([_post imagePost] && ![self isCurrentPostBelongsToCurrentUser])
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Save image", nil];
+    }
+    else if (![_post imagePost] && [self isCurrentPostBelongsToCurrentUser])
     {
         actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
     }
-    
-//    if([self isCurrentPostBelongsToCurrentUser])
-//    {
-//        if([self isCurrentPostEvent])
-//        {
-//            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: @"Share to Facebook", @"More options", nil];
-//        }
-//        else
-//        {
-//            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles: nil];
-//        }
-//    }
-//    else if([self isCurrentPostEvent])
-//    {
-//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Share to Facebook", @"More options", nil];
-//    }
     
     [_delegate showViewOptionsWithActionSheer:actionSheet];
 }

@@ -277,8 +277,6 @@
         
         
     }
-    DDLogDebug(@"New list of comments: %@", _pendingComments);
-
 }
 
 /**

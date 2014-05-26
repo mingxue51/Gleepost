@@ -209,11 +209,6 @@
 
 +(void)insertVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
 {
-    if([entity isVideoPost])
-    {
-        return;
-    }
-    
     for(NSString* videoUrl in entity.videosUrls)
     {
         [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url) values(%d, %@)",

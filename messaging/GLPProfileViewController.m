@@ -1356,7 +1356,7 @@
             }
             else if ([currentPost isVideoPost])
             {
-                [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
             }
             else
             {

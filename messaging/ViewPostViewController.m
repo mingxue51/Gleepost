@@ -771,17 +771,17 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [GLPPostCell getCellHeightWithContent:self.post cellType:kImageCell isViewPost:YES];
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kImageCell isViewPost:YES] + 10.0f;
             
 //            return 650;
         }
         else if([self.post isVideoPost])
         {
-            return [GLPPostCell getCellHeightWithContent:self.post cellType:kVideoCell isViewPost:YES];
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kVideoCell isViewPost:YES] + 10.0f;
         }
         else
         {
-             return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES];
+             return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES] + 10.0f;
         }
         //return 200;
     }

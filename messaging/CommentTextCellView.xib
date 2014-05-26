@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -54,14 +54,25 @@
                             <constraint firstAttribute="height" constant="36" id="nY4-MI-lGC"/>
                         </constraints>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gvE-ot-nUC">
+                        <rect key="frame" x="0.0" y="78" width="320" height="1"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.86666666670000003" green="0.93725490199999995" blue="0.93725490199999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="320" id="LWH-QU-zwC"/>
+                            <constraint firstAttribute="height" constant="1" id="MNw-ok-umb"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="a3r-59-00Z" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" constant="5" id="4ST-NB-wPO"/>
                     <constraint firstItem="30Z-0M-DB7" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" constant="4" id="7vL-6x-Xwo"/>
                     <constraint firstItem="3Xl-hr-3LV" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" constant="5" id="Bfu-qY-gmb"/>
+                    <constraint firstItem="gvE-ot-nUC" firstAttribute="leading" secondItem="9Pj-FO-wfU" secondAttribute="leading" id="JYt-KD-qrZ"/>
                     <constraint firstItem="a3r-59-00Z" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="10" id="JiV-e5-iQq"/>
                     <constraint firstAttribute="trailing" secondItem="30Z-0M-DB7" secondAttribute="trailing" constant="5" id="SKs-7d-X0a"/>
                     <constraint firstItem="3Xl-hr-3LV" firstAttribute="leading" secondItem="9Pj-FO-wfU" secondAttribute="leading" constant="5" id="Zdy-lN-Byc"/>
+                    <constraint firstItem="gvE-ot-nUC" firstAttribute="top" secondItem="w27-LX-izE" secondAttribute="bottom" constant="15" id="bRR-U2-f2d"/>
                     <constraint firstItem="w27-LX-izE" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="10" id="hPV-qV-rH5"/>
                     <constraint firstItem="w27-LX-izE" firstAttribute="top" secondItem="a3r-59-00Z" secondAttribute="bottom" id="qvz-MB-Bbe"/>
                 </constraints>

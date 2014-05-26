@@ -58,33 +58,12 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
 
 -(void)setComment:(GLPComment*)comment
 {
-    
-    //Set the height of the label.
-    //    CGSize contentSize = [CommentCell getContentLabelSizeForContent:comment.content];
-    //
-    //
-    //    CGRect frameSize = self.contentLabel.frame;
-    //
-    //    self.contentLabel.frame = CGRectMake(self.contentLabel.frame.origin.x, self.contentLabel.frame.origin.y, self.contentLabel.frame.size.width, contentSize.height);
-    //
-    //    frameSize = self.contentLabel.frame;
-    //
-    //    float contentHeight = contentSize.height;
-    //
-    //    self.contentLabel.frame = CGRectMake(self.contentLabel.frame.origin.x, self.contentLabel.frame.origin.y, self.contentLabel.frame.size.width, contentHeight);
-    
-    
-    
     //Add user's remote key as an image tag.
     self.userImageView.tag = comment.author.remoteKey;
     
     
     //Set comment's content.
     [self.contentLabel setText:comment.content];
-    
-    
-//    [self setCellHeight:comment.content];
-
     
     
     if([comment.author.profileImageUrl isEqualToString:@""])
@@ -120,15 +99,6 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
     [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
     
     [self formatCommentElements];
-    
-    
-//    self.contentView.layer.borderColor = [UIColor redColor].CGColor;
-//    self.contentView.layer.borderWidth = 1.0f;
-//    
-//    self.contentLabel.layer.borderColor = [UIColor blackColor].CGColor;
-//    self.contentLabel.layer.borderWidth = 1.0f;
-    
-    
 }
 
 -(void)formatCommentElements
