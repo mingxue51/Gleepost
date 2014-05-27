@@ -16,6 +16,9 @@
 
 @implementation GLPPostDao
 
+
+#pragma mark - Load operations
+
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db
 {
     // order by date, and if date is similar, second ordering by remoteKey
@@ -27,20 +30,9 @@
         [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
     }
     
-    //Fetch post images from database.
-    for(GLPPost *currentPost in result)
-    {
-        FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select image_url from post_images where post_remote_key=%d",currentPost.remoteKey];
-        
-        NSMutableArray *imagesUrl = [NSMutableArray array];
-        
-        while ([imagesResultSet next])
-        {
-            [imagesUrl addObject:[imagesResultSet stringForColumn:@"image_url"]];
-            
-            currentPost.imagesUrls = [imagesUrl mutableCopy];
-        }
-    }
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
     
     return result;
 }
@@ -61,6 +53,11 @@
         [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
     }
     
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+
+    
     return result;
 }
 
@@ -80,9 +77,48 @@
         [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
     }
     
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    
+    
     return result;
 }
 
++(void)loadImagesWithPosts:(NSMutableArray *)posts withDb:(FMDatabase *)db
+{
+    for(GLPPost *currentPost in posts)
+    {
+        FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select image_url from post_images where post_remote_key=%d", currentPost.remoteKey];
+        
+        NSMutableArray *imagesUrl = [NSMutableArray array];
+        
+        while ([imagesResultSet next])
+        {
+            [imagesUrl addObject:[imagesResultSet stringForColumn:@"image_url"]];
+            
+            currentPost.imagesUrls = [imagesUrl mutableCopy];
+        }
+    }
+}
+
++(void)loadVideosWithPosts:(NSMutableArray *)posts withDb:(FMDatabase *)db
+{
+    for(GLPPost *currentPost in posts)
+    {
+        FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select video_url from post_videos where post_remote_key=%d", currentPost.remoteKey];
+        
+        NSMutableArray *videosUrl = [NSMutableArray array];
+        
+        while ([imagesResultSet next])
+        {
+            [videosUrl addObject:[imagesResultSet stringForColumn:@"video_url"]];
+            
+            currentPost.videosUrls = [videosUrl mutableCopy];
+        }
+    }
+}
 
 +(NSArray*)likedPostsInDb:(FMDatabase*)db
 {
@@ -97,14 +133,17 @@
     return result;
 }
 
+#pragma mark - Save operations
+
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     int date = [entity.date timeIntervalSince1970];
+    int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending) values(%@, %d, %d, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -113,9 +152,11 @@
                      entity.sendStatus,
                      entity.author.remoteKey,
                      entity.liked,
-                     entity.attended];
+                     entity.attended,
+                     entity.eventTitle,
+                     eventDate];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -125,15 +166,28 @@
                      entity.sendStatus,
                      entity.author.remoteKey,
                      entity.liked,
-                     entity.attended];
+                     entity.attended,
+                     entity.eventTitle,
+                     eventDate];
     }
     
     entity.key = [db lastInsertRowId];
     
     
+    [GLPPostDao insertCategoriesWithEntity:entity andDb:db];
+    
+    [GLPPostDao insertImagesWithEntity:entity andDb:db];
+
+    [GLPPostDao insertVideosWithEntity:entity andDb:db];
+    
+    //Save the author.
+    [GLPUserDao saveIfNotExist:entity.author db:db];
+}
+
++(void)insertCategoriesWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
+{
     if(entity.remoteKey != 0)
     {
-        
         //Insert post's categories.
         for(GLPCategory *category in entity.categories)
         {
@@ -141,21 +195,29 @@
             [GLPCategoryDao saveCategoryIfNotExist:category db:db];
         }
     }
+}
 
-    
-     
-    //Insert images
++(void)insertImagesWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
+{
     for(NSString* imageUrl in entity.imagesUrls)
     {
         [db executeUpdateWithFormat:@"insert into post_images (post_remote_key, image_url) values(%d, %@)",
          entity.remoteKey,
          imageUrl];
     }
-    
-    //Save the author.
-    [GLPUserDao saveIfNotExist:entity.author db:db];
 }
 
++(void)insertVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
+{
+    for(NSString* videoUrl in entity.videosUrls)
+    {
+        [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url) values(%d, %@)",
+         entity.remoteKey,
+         videoUrl];
+    }
+}
+
+#pragma mark - Update operations
 
 +(void)updateLikedStatusWithPost:(GLPPost*)entity inDb:(FMDatabase*)db
 {
@@ -205,6 +267,8 @@
     }
 }
 
+#pragma makr - Delete operations
+
 +(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db
 {
     [db executeUpdateWithFormat:@"delete from posts where remoteKey=%d",
@@ -216,6 +280,8 @@
     [db executeUpdateWithFormat:@"delete from posts"];
     
     [db executeUpdateWithFormat:@"delete from post_images"];
+    
+    [db executeUpdateWithFormat:@"delete from post_videos"];
 }
 
 @end

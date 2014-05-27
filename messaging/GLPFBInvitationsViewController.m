@@ -65,7 +65,6 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     CGRectAddH(_navigationBar, 21.0f);
     
     [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
-    
 }
 
 -(void)fetchFacebookFriends

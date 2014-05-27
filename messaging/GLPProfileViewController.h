@@ -15,9 +15,9 @@
 #import "NotificationCell.h"
 #import "ButtonNavigationDelegate.h"
 #import "ProfileTableViewCell.h"
-#import "PostCell.h"
+#import "GLPPostCell.h"
 
-@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, ButtonNavigationDelegate, ProfileTableViewCellDelegate, RemovePostCellDelegate>
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, ButtonNavigationDelegate, ProfileTableViewCellDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;

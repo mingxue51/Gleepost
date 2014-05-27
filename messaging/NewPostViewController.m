@@ -33,6 +33,7 @@
 //IBOutlets.
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
 @property (weak, nonatomic) IBOutlet UILabel *categoriesLbl;
+@property (weak, nonatomic) IBOutlet UIView *videoView;
 
 //Category buttons.
 @property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
@@ -54,6 +55,9 @@
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
 @property (strong, nonatomic) NSString *eventTitle;
+@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+
+@property (assign, nonatomic) BOOL inCategorySelection;
 
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -80,7 +84,7 @@
 
 
 
-    [self.contentTextView becomeFirstResponder];
+//    [self.contentTextView becomeFirstResponder];
     
     _categories = [NSMutableArray array];
     
@@ -101,8 +105,9 @@
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureObjects];
-    [self configureNavigationBar];
     [self configureCategoryButtons];
+    [self configureNavigationBar];
+    [self formatNavigationButtons];
     [self configureLabel];
 
 //    [self generateCategoryButtons];
@@ -115,6 +120,10 @@
 {
     [super viewDidAppear:animated];
     
+    [self setUpNotifications];
+
+    [self formatStatusBar];
+    
     [self.contentTextView becomeFirstResponder];
 
     self.fdTakeController = [[FDTakeController alloc] init];
@@ -122,15 +131,37 @@
     self.fdTakeController.delegate = self;
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self.contentTextView resignFirstResponder];
+    
+    [super viewWillDisappear:animated];
+}
+
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
     
+//    [self.contentTextView resignFirstResponder];
+    
+    [self removeNotifications];
+    [super viewDidDisappear:animated];
+
+
 //    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
 }
 
 
 #pragma mark - Configuration
+
+-(void)setUpNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoReadyForUpload:) name:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil];
+}
+
+-(void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil];
+}
 
 -(void)configureObjects
 {
@@ -159,26 +190,17 @@
 
 -(void)configureNavigationBar
 {
-    [self formatNavigationBar];
-    [self formatNavigationButtons];
-}
-
--(void)formatNavigationBar
-{
+    
     [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
     
     self.simpleNavBar.tag = 1;
     
     [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
-    
-//    [self.simpleNavBar setTranslucent:NO];
-//    [self.simpleNavBar setFrame:CGRectMake(0.f, 0.f, 320.f, 65.f)];
-//    self.simpleNavBar.tintColor = [UIColor blackColor];
-//    
-//    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor], UITextAttributeTextColor, [UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, nil]];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
 
+-(void)formatStatusBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 -(void)formatNavigationButtons
@@ -248,7 +270,7 @@
         {
             NSAssert(_group, @"Group should exist to create a new group post.");
             
-            DDLogDebug(@"GROUP REMOTE KEY: %d", _group.remoteKey);
+            DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)_group.remoteKey);
             
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart title:_eventTitle andGroup:_group];
         }
@@ -282,6 +304,9 @@
 
 -(IBAction)selectCategory:(id)sender
 {
+    
+    _inCategorySelection = YES;
+    
     UIButton *currentButton = (UIButton*)sender;
     
     if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
@@ -346,7 +371,6 @@
 
 - (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title
 {
-    DDLogDebug(@"DATE! : %@ with title: %@",date, title);
     _eventDateStart = date;
     _eventTitle = title;
     
@@ -398,9 +422,8 @@
 
 -(void)popUpTimeSelectorWithCategory:(GLPCategory *)category
 {
-        
-        //Pop up the time selector.
-        [self performSegueWithIdentifier:@"pick date" sender:self];
+    //Pop up the time selector.
+    [self performSegueWithIdentifier:@"pick date" sender:self];
 }
 
 -(BOOL)isGroupPost
@@ -439,15 +462,20 @@
 }
 
 
-- (IBAction)addImage:(id)sender
+- (IBAction)addImageOrImage:(id)sender
 {
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Capture Media" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add an image", @"Capture a video", nil];
+ 
+    [actionSheet showInView:[self.view window]];
 }
 
 #pragma mark - FDTakeController delegate
 
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
 {
+    //Remove video preview view if is on the addImageButton.
+    [self removeVideoPreviewView];
+    
     [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
@@ -456,16 +484,124 @@
     
     self.imgToUpload = photo;
     [_postUploader uploadImageToQueue:self.imgToUpload];
+    
     //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
-#pragma mark - Segue
+#pragma mark - Action Sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if([selectedButtonTitle isEqualToString:@"Add an image"])
+    {
+        //Add image.
+        [self.fdTakeController takePhotoOrChooseFromLibrary];
+
+    }
+    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
+    {
+        //Remove video preview view if is on the addImageButton.
+        [self removeVideoPreviewView];
+        
+        //Capture a video.
+        [self performSegueWithIdentifier:@"capture video" sender:self];
+    }
+    
+
+}
+
+#pragma mark - Video
+
+/**
+ This method is called when the user finished the video.
+ 
+ @param notification the notification contains the video path.
+ */
+-(void)videoReadyForUpload:(NSNotification *)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    NSString *videoPath = [dict objectForKey:@"video path"];
+    
+    [self showVideoToButtonWithPath:videoPath];
+    
+    [_postUploader uploadVideoInPath:videoPath];
+}
+
+-(void)showVideoToButtonWithPath:(NSString *)videoPath
+{
+    _previewVC = [[PBJVideoPlayerController alloc] init];
+    _previewVC.delegate = self;
+    [_previewVC setPlaybackLoops:YES];
+    _previewVC.view.frame = _addImageButton.bounds;
+    [_addImageButton addSubview:_previewVC.view];
+    
+    _previewVC.videoPath = videoPath;
+    
+    [_previewVC playFromBeginning];
+}
+
+-(void)removeVideoPreviewView
+{
+    if(_previewVC)
+    {
+        [_previewVC.view removeFromSuperview];
+        _previewVC = nil;
+    }
+}
+
+#pragma mark - PBJVideoPlayerControllerDelegate
+
+- (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
+{
+}
+
+- (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
+{
+    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused && !_inCategorySelection)
+    {
+        [self addImageOrImage:nil];
+    }
+}
+
+- (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
+{
+    
+}
+
+- (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
+{
+}
+
+#pragma mark - VC Navigation
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    PickDateEventViewController *pickDateViewController = segue.destinationViewController;
     
-    pickDateViewController.delegate = self;
+    if([segue.identifier isEqualToString:@"pick date"])
+    {
+        PickDateEventViewController *pickDateViewController = segue.destinationViewController;
+        
+        pickDateViewController.delegate = self;
+    }
+    else if ([segue.identifier isEqualToString:@"capture video"])
+    {
+        
+    }
+
+}
+
+-(void)navigateToVideoController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPVideoViewController *videoVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPVideoViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:videoVC];
+//    navigationController.navigationBarHidden = YES;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 

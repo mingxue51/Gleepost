@@ -56,6 +56,7 @@
 #import "TableViewHelper.h"
 #import "GLPFlurryVisibleCellProcessor.h"
 #import "EmptyMessage.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -92,7 +93,7 @@
 
 @property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 
-@property int selectedUserId;
+@property (assign, nonatomic) NSInteger selectedUserId;
 
 //Used when there is new comment.
 @property (assign, nonatomic) BOOL commentCreated;
@@ -140,7 +141,6 @@ const float TOP_OFFSET = 280.0f;
     if(self)
     {
         [self configNotifications];
-        
     }
     
     return self;
@@ -160,11 +160,13 @@ const float TOP_OFFSET = 280.0f;
     
     [self initialiseObjects];
     
-    //TODO: Remove this later.
-    [[ContactsManager sharedInstance] refreshContacts];
+
     
     
-    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
+//    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
+    
+    NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
+    [t fire];
     
     [self loadInitialPosts];
     
@@ -377,7 +379,6 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    
     GLPPost *currentPost = nil;
     int index = -1;
     if(_groupsMode)
@@ -467,6 +468,9 @@ const float TOP_OFFSET = 280.0f;
     //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
     //[[GLPMessagesLoader sharedInstance] loadConversations];
     [[GLPProfileLoader sharedInstance] loadUserData];
+    
+    //TODO: Remove this later.
+    [[ContactsManager sharedInstance] refreshContacts];
     
     //Load groups' posts.
     [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
@@ -739,9 +743,12 @@ const float TOP_OFFSET = 280.0f;
 - (void)configTableView
 {
     //Register nib files in table view.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
@@ -898,17 +905,17 @@ const float TOP_OFFSET = 280.0f;
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
         self.posts = [localPosts mutableCopy];
-        
-        //[[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+
+        [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
         [self.tableView reloadData];
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         if(success) {
             self.posts = [remotePosts mutableCopy];
-            
-            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
 
+            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+            [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             [self.tableView reloadData];
             
@@ -1722,12 +1729,14 @@ const float TOP_OFFSET = 280.0f;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
+
 //    static NSString *CellIdentifierHeader = @"CampusWallHeader";
     
     //Header cell.
 //    CampusWallHeader *campusWallHeader;
     
-    PostCell *postCell;
+    GLPPostCell *postCell;
 
 //    if(indexPath.row == 0)
 //    {
@@ -1759,40 +1768,34 @@ const float TOP_OFFSET = 280.0f;
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
-        postCell.imageAvailable = YES;
+//        postCell.imageAvailable = YES;
         
     }
+    else if ([post isVideoPost])
+    {
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
+    }
+//    else if ([post isVideoPost])
+//    {
+//        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithVideo forIndexPath:indexPath];
+//        postCell.imageAvailable = YES;
+//
+//    }
     else
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
         
-        postCell.imageAvailable = NO;
+//        postCell.imageAvailable = NO;
         
     }
     
-    
-    //TODO: For each post take the status of the button like. (Obviously from the server).
-    //TODO: In updateWithPostData information take the status of the like button.
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-    [tap setNumberOfTapsRequired:1];
-    [postCell.userImageView addGestureRecognizer:tap];
-    
-    
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFullPostImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [postCell.postImage addGestureRecognizer:tap];
-    
     postCell.delegate = self;
     
-    [postCell updateWithPostData:post withPostIndex:indexPath.row];
+    [postCell setPost:post withPostIndex:indexPath.row];
     
     [self.tableView bringSubviewToFront:self.reNavBar];
     
-    
     return postCell;
-    
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1859,13 +1862,17 @@ const float TOP_OFFSET = 280.0f;
     {
         //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
 
-        return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+    }
+    else if ([currentPost isVideoPost])
+    {
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
     }
     else
     {
         //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
         
-        return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
     }
     
 
@@ -2368,6 +2375,38 @@ const float TOP_OFFSET = 280.0f;
         [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     
+}
+
+#pragma mark GLPPostCellDelegate
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"Navigate to user's profile with remote key: %ld", (long)remoteKey);
+    
+    //Decide where to navigate. Private or open profile.
+    
+    self.selectedUserId = remoteKey;
+    
+    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    {
+        self.selectedUserId = -1;
+        
+        //Navigate to profile view controller.
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
+    {
+        //Navigate to private profile view controller.
+        
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
+    }
+    else
+    {
+        //Navigate to private view controller.
+        
+        [self performSegueWithIdentifier:@"view new private profile" sender:self];
+    }
 }
 
 /**

@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
+@property (strong, nonatomic) NSArray *videosUrls;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;
@@ -34,7 +35,8 @@
 //In case post has group information.
 @property (strong, nonatomic) GLPGroup *group;
 
--(BOOL) imagePost;
+-(BOOL)imagePost;
 -(BOOL)isGroupPost;
+-(BOOL)isVideoPost;
 
 @end

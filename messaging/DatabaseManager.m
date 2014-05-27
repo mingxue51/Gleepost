@@ -169,12 +169,19 @@ static DatabaseManager *instance = nil;
              sendStatus integer, \
              author_key integer, \
              liked integer, \
+             event_title text, \
+             event_date integer, \
              attending integer);"];
             
             // post images
             [db executeUpdate:@"create table post_images ( \
              post_remote_key integer, \
              image_url text);"];
+            
+            // post videos
+            [db executeUpdate:@"create table post_videos ( \
+             post_remote_key integer, \
+             video_url text);"];
             
             // categories
             [db executeUpdate:@"create table categories ( \

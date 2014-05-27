@@ -147,10 +147,11 @@ const int NUMBER_OF_ROWS = 2;
     
     //Register posts.
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     //Register contacts' cells.
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
@@ -517,10 +518,11 @@ const int NUMBER_OF_ROWS = 2;
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellVideoIdentifier = @"VideoCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     ProfileTableViewCell *profileView;
     ProfileTwoButtonsTableViewCell *buttonsView;
     
@@ -566,48 +568,37 @@ const int NUMBER_OF_ROWS = 2;
     }
     else if (indexPath.row >= 2)
     {
-        
-//        if(self.selectedTabStatus == kGLPSettings)
-//        {
-//            //Imeplement members cell.
-//            contactCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierContact forIndexPath:indexPath];
-//            
-//            GLPUser *currentMember = self.members[indexPath.row - 2];
-//            
-//            [contactCell setName:currentMember.name withImageUrl:currentMember.profileImageUrl];
-//            
-//            return contactCell;
-//        }
-//        else
-//        {
-            if(self.posts.count != 0)
+        if(self.posts.count != 0)
+        {
+            GLPPost *post = self.posts[indexPath.row-2];
+            
+            if([post imagePost])
             {
-                GLPPost *post = self.posts[indexPath.row-2];
-                
-                if([post imagePost])
-                {
-                    postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-                }
-                else
-                {
-                    postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-                }
-                
-                //Set this class as delegate.
-                postViewCell.delegate = self;
-                
-                [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
-                
-                
-                if(indexPath.row - 2  != self.posts.count)
-                {
-                    //Add separator line to posts' cells.
-                    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                    line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                    [postViewCell addSubview:line];
-                }
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             }
-//        }
+            else if ([post isVideoPost])
+            {
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
+            }
+            else
+            {
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+            }
+            
+            //Set this class as delegate.
+            postViewCell.delegate = self;
+            
+            [postViewCell setPost:post withPostIndex:indexPath.row];
+            
+            if(indexPath.row - 2  != self.posts.count)
+            {
+                //Add separator line to posts' cells.
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+                [postViewCell addSubview:line];
+            }
+        }
+
 
         
         return postViewCell;
@@ -687,11 +678,15 @@ const int NUMBER_OF_ROWS = 2;
                 
                 if([currentPost imagePost])
                 {
-                    return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+                }
+                else if ([currentPost isVideoPost])
+                {
+                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
                 }
                 else
                 {
-                    return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
                 }
             }
 //        }
@@ -1060,7 +1055,6 @@ const int NUMBER_OF_ROWS = 2;
 
 #pragma mark - Action Sheet delegate
 
-
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
@@ -1076,28 +1070,6 @@ const int NUMBER_OF_ROWS = 2;
         //Change image.
         
         [self.fdTakeController takePhotoOrChooseFromLibrary];
-
-    }
-    
-    
-}
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
-{
-    for (UIView *subview in actionSheet.subviews)
-    {
-        if ([subview isKindOfClass:[UIButton class]])
-        {
-            UIButton *btn = (UIButton*)subview;
-            
-            if([btn.titleLabel.text isEqualToString:@"Cancel"])
-            {
-                
-            }
-            else
-            {
-            }
-        }
     }
 }
 

@@ -202,10 +202,12 @@ static BOOL likePushed;
 -(void)registerCells
 {
     //Register nib files in table view.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
@@ -672,20 +674,25 @@ static bool firstTime = YES;
 {    
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     
     CommentCell *cell;
     
     if(indexPath.row == 0)
     {
-        if(_post.imagesUrls.count>0)
+        if([_post imagePost])
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
 //            [postViewCell postFromNotifications:_isViewPostNotifications];
             [postViewCell reloadImage:self.needsToLoadAgainTheImage];
+        }
+        else if ([_post isVideoPost])
+        {
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
         }
         else
         {
@@ -703,15 +710,14 @@ static bool firstTime = YES;
         
         
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-        [tap setNumberOfTapsRequired:1];
-        [postViewCell.userImageView addGestureRecognizer:tap];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
+//        [tap setNumberOfTapsRequired:1];
+//        [postViewCell.userImageView addGestureRecognizer:tap];
         
         
-        postViewCell.isViewPost = YES;
-        [postViewCell updateWithPostData:_post withPostIndex:indexPath.row];
+        [postViewCell setIsViewPost:YES];
+        [postViewCell setPost:_post withPostIndex:indexPath.row];
         
-    
         
         return postViewCell;
 
@@ -765,13 +771,17 @@ static bool firstTime = YES;
     {
         if([self.post imagePost])
         {
-            return [PostCell getCellHeightWithContent:self.post image:YES isViewPost:YES];
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kImageCell isViewPost:YES] + 10.0f;
             
 //            return 650;
         }
+        else if([self.post isVideoPost])
+        {
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kVideoCell isViewPost:YES] + 10.0f;
+        }
         else
         {
-            return [PostCell getCellHeightWithContent:self.post image:NO isViewPost:YES];
+             return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES] + 10.0f;
         }
         //return 200;
     }
@@ -835,6 +845,11 @@ static bool firstTime = YES;
     
     // Pop-up view controller.
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"ViewPostViewController : navigateToUsersProfileWithRemoteKey");
 }
 
 

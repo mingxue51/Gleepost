@@ -47,7 +47,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
 //    [self.eventsBtn setImageEdgeInsets:UIEdgeInsetsMake(showCategoriesEdge, showCategoriesEdge, showCategoriesEdge, showCategoriesEdge)];
 //    [self.createPostBtn setImageEdgeInsets:UIEdgeInsetsMake(createPostEdge, createPostEdge, createPostEdge, createPostEdge)];
     
-    [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:18.0f]];
+//    [_titleLbl setFont:[UIFont fontWithName:GLP_APP_FONT_BOLD size:18.0f]];
     
     //Add gesture to cardinal wall label.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(loadGroupsFeed:)];
@@ -67,7 +67,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
 
 -(void)loadGroupsFeed:(id)sender
 {
-    if([self.titleLbl.text isEqualToString:@"Cardinal Wall"])
+    if([self.titleLbl.text isEqualToString:@"Stanford Wall"])
     {
         [UIView animateWithDuration:1.0f animations:^{
             
@@ -96,7 +96,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
 
 -(void)groupFeedDisabled
 {
-    [self.titleLbl setText:@"Cardinal Wall"];
+    [self.titleLbl setText:@"Stanford Wall"];
     [self.createPostBtn setHidden:NO];
 }
 

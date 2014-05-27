@@ -26,6 +26,8 @@
 
 +(void)setElement:(UIView *)element withExtraY:(float)y;
 
++(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour andWidth:(float)width;
+
 +(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour;
 
 @end

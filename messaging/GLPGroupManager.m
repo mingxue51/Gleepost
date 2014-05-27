@@ -603,9 +603,7 @@
 + (void)loadMembersWithGroupRemoteKey:(int)groupRemoteKey withLocalCallback:(void (^)(NSArray *members))localCallback remoteCallback:(void (^)(BOOL success, NSArray *members))remoteCallback
 {
     NSArray *localMembers = [GLPMemberDao findMembersWithGroupRemoteKey:groupRemoteKey];
-    
-    DDLogDebug(@"LOCAL MEMBERS: %@", localMembers);
-    
+        
     localCallback(localMembers);
     
     [[WebClient sharedInstance] getMembersWithGroupRemoteKey:groupRemoteKey withCallbackBlock:^(BOOL success, NSArray *members) {

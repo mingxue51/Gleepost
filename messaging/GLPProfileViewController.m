@@ -496,7 +496,9 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
     //Register posts.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
@@ -1118,12 +1120,13 @@
 {
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
     static NSString *CellIdentifierNotification = @"GLPNotCell";
     
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     
     ProfileTwoButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
@@ -1216,6 +1219,10 @@
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
                 }
+                else if ([post isVideoPost])
+                {
+                    postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
+                }
                 else
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
@@ -1224,13 +1231,12 @@
                 //Set this class as delegate.
                 postViewCell.delegate = self;
                 
-                [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
-        
+                [postViewCell setPost:post withPostIndex:indexPath.row];
                 
                 //Add separator line to posts' cells.
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                [postViewCell addSubview:line];
+//                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+//                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+//                [postViewCell addSubview:line];
                 
             }
             
@@ -1346,11 +1352,15 @@
             
             if([currentPost imagePost])
             {
-                return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+            }
+            else if ([currentPost isVideoPost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
             }
             else
             {
-                return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
             }
         }
     }
@@ -1373,6 +1383,11 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"GLPProfileViewController : navigateToUsersProfileWithRemoteKey: %ld", (long)remoteKey);
 }
 
 #pragma mark - New comment delegate

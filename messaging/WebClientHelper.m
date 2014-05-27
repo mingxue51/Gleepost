@@ -184,6 +184,18 @@
     [alert show];
 }
 
+#pragma mark - Media
+
++ (void)showSaveImageMessage
+{
+    [self showAlertWithTitle:@"Image saved" andMessage:@"The image has been saved to your camera roll!"];
+}
+
++ (void)showErrorSavingImageWithMessage:(NSString *)errorMessage
+{
+    [self showAlertWithTitle:@"Error saving image" andMessage:errorMessage];
+}
+
 #pragma mark - Facebook 
 
 + (void)showNeedsFacebookAppError
@@ -206,20 +218,20 @@
     [self showAlertWithTitle:@"Invitation completed" andMessage:[NSString stringWithFormat:@"You have successfully invited: %@",friends]];
 }
 
++ (void)showInvitedFriendsToGroupViaFBWithNumberOfFriends:(NSInteger)numberOfFriends
+{
+    [self showAlertWithTitle:@"Friends invited to group!" andMessage:[NSString stringWithFormat:@"You have invited %ld facebook friends to this group", (long)numberOfFriends]];
+}
+
 + (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message
 {
-   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
-
+    
     [alert show];
-}
-
-+ (void)showInvitedFriendsToGroupViaFBWithNumberOfFriends:(NSInteger)numberOfFriends
-{
-    [self showAlertWithTitle:@"Friends invited to group!" andMessage:[NSString stringWithFormat:@"You have invited %ld facebook friends to this group", (long)numberOfFriends]];
 }
 
 @end

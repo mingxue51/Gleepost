@@ -11,7 +11,6 @@
 #import "GLPPrivateProfileViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
-#import "PostCell.h"
 #import "ProfileAboutTableViewCell.h"
 #import "ProfileButtonsTableViewCell.h"
 #import "ProfileMutualTableViewCell.h"
@@ -217,7 +216,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"ButtonsCell"];
     
     //Register posts.
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCellView" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
@@ -579,7 +578,7 @@
 //    static NSString *CellIdentifierMutual = @"MutualCell";
     
     
-    PostCell *postViewCell;
+    GLPPostCell *postViewCell;
     
     ProfileButtonsTableViewCell *buttonsView;
     ProfileTableViewCell *profileView;
@@ -625,7 +624,7 @@
             {
                 GLPPost *post = self.posts[indexPath.row-2];
 
-                if([post imagePost])
+                if([post imagePost] || [post isVideoPost])
                 {
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
                 }
@@ -637,20 +636,20 @@
                 //Set this class as delegate.
                 postViewCell.delegate = self;
                 
-                [postViewCell updateWithPostData:post withPostIndex:indexPath.row];
+                [postViewCell setPost:post withPostIndex:indexPath.row];
                 
                 if(indexPath.row > 5)
                 {
                     [self clearBottomView];
                 }
                 
-                if(indexPath.row -1 != self.posts.count)
-                {
-                    //Add separator line to posts' cells.
-                    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                    line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                    [postViewCell addSubview:line];
-                }
+//                if(indexPath.row -1 != self.posts.count)
+//                {
+//                    //Add separator line to posts' cells.
+//                    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
+//                    line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+//                    [postViewCell addSubview:line];
+//                }
                 
 
                 
@@ -719,11 +718,15 @@
                         
             if([currentPost imagePost])
             {
-                return [PostCell getCellHeightWithContent:currentPost image:YES isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+            }
+            else if ([currentPost isVideoPost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
             }
             else
             {
-                return [PostCell getCellHeightWithContent:currentPost image:NO isViewPost:NO];
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
             }
         }
 

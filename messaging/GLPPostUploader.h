@@ -16,5 +16,6 @@
 -(void)uploadImageToQueue:(UIImage*)image;
 -(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray*)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title;
 -(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andGroup:(GLPGroup *)group;
+-(void)uploadVideoInPath:(NSString *)path;
 
 @end

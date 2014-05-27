@@ -371,7 +371,12 @@ static WebClient *instance = nil;
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+    //TODO: add a new param url rather than call second method after the post request.
     
+    if(post.videosUrls)
+    {
+        [params setObject:post.videosUrls[0] forKey:@"url"];
+    }
     
     if(post.dateEventStarts)
     {
@@ -1624,16 +1629,39 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"networks/%d", remoteKey];
     
     [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
-        
-        
+
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-       
-        
         
     }];
+}
+
+#pragma mark - Video
+
+-(void)uploadVideo:(NSData *)videoData callback:(void (^)(BOOL success, NSString *videoUrl))callback
+{
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%d_video.mp4", self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+    }];
     
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+        callback(YES, response);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
 }
 
 

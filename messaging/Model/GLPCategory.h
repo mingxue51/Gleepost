@@ -11,7 +11,7 @@
 
 @interface GLPCategory : GLPEntity
 
-@property (assign, nonatomic) int postRemoteKey;
+@property (assign, nonatomic) NSInteger postRemoteKey;
 @property (strong, nonatomic) NSString *tag;
 @property (strong, nonatomic) NSString *name;
 @property (assign, nonatomic) BOOL uiSelected;

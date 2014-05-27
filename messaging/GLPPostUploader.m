@@ -14,6 +14,7 @@
 #import "GLPPostManager.h"
 #import "GLPQueueManager.h"
 #import "GLPPostOperationManager.h"
+#import "GLPVideoUploadManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 @interface GLPPostUploader() {
     GLPPost         *_post;
     UIImage         *_postImage;
+    NSString        *_videoPath;
     GLPImageStatus   _imageStatus;
     NSString        *_imageURL;
     
@@ -80,6 +82,14 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 //    [gum uploadImage:image withTimestamp:[NSDate date]];
     
 //    [[GLPQueueManager sharedInstance]uploadImage:image withId:1];
+}
+
+-(void)uploadVideoInPath:(NSString *)path
+{
+    timestamp = [NSDate date];
+    _videoPath = path;
+    
+    [[GLPVideoUploadManager sharedInstance] uploadVideo:path withTimestamp:timestamp];
 }
 
 //ADDED.
@@ -148,7 +158,16 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
         
+        
         //        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
+    }
+    else if(_videoPath)
+    {
+        post.date = [NSDate date];
+        post.videosUrls = [[NSArray alloc] initWithObjects:_videoPath, nil];
+        [GLPPostManager createLocalPost:post];
+        
+        [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
     }
     else
     {

@@ -102,11 +102,15 @@ static GLPPostImageLoader *instance = nil;
 
 #pragma mark - Modifiers
 
--(void)addPostsImages:(NSArray*)posts
+-(void)addPostsImages:(NSArray *)posts
 {
+    
+    posts = [self findImagePosts:posts];
+    
     __block BOOL newPost = NO;
  
-
+    __block BOOL readyToConsume = NO;
+    
     for(int i = 0; i<posts.count; ++i)
     {
         GLPPost *p = [posts objectAtIndex:i];
@@ -121,15 +125,21 @@ static GLPPostImageLoader *instance = nil;
                 [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInt:p.remoteKey] andImage:image];
             }
             else
-            {
+            {                
                 //Check if some posts are already in.
                 
                 newPost = [self addPostImageInQueueWithPost:p];
                 
-                if(newPost == YES && (posts.count-1) == i)
+                if(newPost)
                 {
-                    [self startConsume];
+                    readyToConsume = YES;
                 }
+
+            }
+            
+            if(readyToConsume && posts.count - 1 == i)
+            {
+                [self startConsume];
             }
             
         }];
@@ -186,20 +196,30 @@ static GLPPostImageLoader *instance = nil;
     
     if(![_loadingImages objectForKey:currentRemoteKey])
     {
-        if(p.imagesUrls)
-        {
-            [_imagesNotStarted enqueue:currentRemoteKey];
-            
-            [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
-//            newPost = YES;
-            
-            return YES;
-        }
+        [_imagesNotStarted enqueue:currentRemoteKey];
+        
+        [_loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
+        
+        return YES;
     }
     
     return NO;
 }
 
+-(NSArray *)findImagePosts:(NSArray *)posts
+{
+    NSMutableArray *imagePosts = [[NSMutableArray alloc] init];
+    
+    for(GLPPost *p in posts)
+    {
+        if([p imagePost])
+        {
+            [imagePosts addObject:p];
+        }
+    }
+    
+    return imagePosts;
+}
 
 #pragma mark - Selectors
 
@@ -237,12 +257,13 @@ static GLPPostImageLoader *instance = nil;
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
-//        NSLog(@"Image is ready for post:%d Image: %@ at %@ from thread: %@",[remoteKey integerValue], img, [NSDate date], [NSThread currentThread]);
+//        DDLogDebug(@"Image ready: %@", img);
+        
         
         
         if(img)
         {
-            //TODO: Save image with image url.
+            //Save image with image url.
             [[SDImageCache sharedImageCache] storeImage:img forKey:urlStr];
 
             

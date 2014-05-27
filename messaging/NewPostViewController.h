@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
 #import "NewPostDelegate.h"
+#import "GLPVideoViewController.h"
 
-@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate>
+@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate>
 
 //@property (weak, nonatomic) GLPTimelineViewController *delegate;
 @property (weak, nonatomic) UIViewController <NewPostDelegate> *delegate;

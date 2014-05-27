@@ -99,11 +99,11 @@ static GLPPostOperationManager *instance = nil;
         {
             NSString *url = [_imageUploader urlWithTimestamp:t];
             
-            DDLogCInfo(@"Ready URL: %@",url);
+            DDLogInfo(@"Ready URL: %@",url);
             
             if(url)
             {
-                DDLogCInfo(@"Post ready for upload!");
+                DDLogInfo(@"Post ready for upload!");
                 
                 //Post ready for uploading.
                 [_postUploader uploadPostWithTimestamp:t andImageUrl:url];
