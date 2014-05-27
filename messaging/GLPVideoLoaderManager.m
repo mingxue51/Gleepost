@@ -75,8 +75,6 @@ static GLPVideoLoaderManager *instance = nil;
     {
         [NSThread detachNewThreadSelector:@selector(addVideos:) toTarget:self withObject:posts];
     }
-    
-
 }
 
 #pragma mark - Notifications

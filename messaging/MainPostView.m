@@ -315,7 +315,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 390.0f + height;
+    backgroundImageViewHeight = 395.0f + height;
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
     
@@ -348,8 +348,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)setPositionsForVideoWithHeight:(float)height
 {
-    float fixedBottomViewHeight = 410.0f;
-    float backgroundImageViewHeight = 480.0f + height;
+    float fixedBottomViewHeight = 412.0f;
+    float backgroundImageViewHeight = 482.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
@@ -359,7 +359,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        backgroundImageViewHeight -= 63;
+        backgroundImageViewHeight -= 61;
         distanceFromTop = 25.0f;
     }
     
@@ -372,6 +372,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [_contentLabelHeightConstrain setConstant:height];
     
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor]];
     
     /** TODO: use them later. */
     
