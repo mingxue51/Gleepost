@@ -932,6 +932,8 @@
     DDLogInfo(@"Load new internal notifications");
 //    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
     
+    BOOL isNotification = (_notifications.count != 0);
+    
     NSArray *notifications = [GLPNotificationManager unreadNotifications];
     _unreadNotificationsCount = notifications.count;
     if(notifications.count == 0 || self.selectedTabStatus != kGLPSettings) {
@@ -950,8 +952,18 @@
         ++i;
         
     }
+    
+    if(isNotification)
+    {
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    else
+    {
+        [self.tableView reloadData];
+    }
+    
+    
 
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
     
 //    [self.tableView reloadData];
     

@@ -871,17 +871,6 @@ const float TOP_OFFSET = 280.0f;
     self.navigationItem.titleView = label;
 }
 
-#pragma mark - Conversations
-
-//- (void)loadConversations
-//{
-//    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
-//
-//    } remoteCallback:^(BOOL success, NSArray *conversations) {
-//      
-//    }];
-//}
-
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
