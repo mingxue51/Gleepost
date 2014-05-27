@@ -212,7 +212,7 @@ static GLPPostImageLoader *instance = nil;
     
     for(GLPPost *p in posts)
     {
-        if([p imagePost])
+        if([p imagePost] && !p.finalImage)
         {
             [imagePosts addObject:p];
         }

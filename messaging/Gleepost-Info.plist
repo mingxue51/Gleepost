@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.0</string>
+	<string>1.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,7 +34,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>594</string>
+	<string>727</string>
+	<key>FacebookAppID</key>
+	<string>230797090361137</string>
+	<key>FacebookDisplayName</key>
+	<string>Gleepost</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -57,10 +61,6 @@
 	<false/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDefault</string>
-	<key>FacebookAppID</key>
-	<string>230797090361137</string>
-	<key>FacebookDisplayName</key>
-	<string>Gleepost</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
