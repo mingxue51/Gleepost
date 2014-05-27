@@ -116,7 +116,7 @@
 
 -(void)loadGroupsFeed:(id)sender
 {
-    if([self.stanfordLbl.text isEqualToString:@"Cardinal Wall"])
+    if([self.stanfordLbl.text isEqualToString:@"Stanford Wall"])
     {
         [UIView animateWithDuration:1.0f animations:^{
             
@@ -145,7 +145,7 @@
 
 -(void)groupFeedDisabled
 {
-    [self.stanfordLbl setText:@"Cardinal Wall"];
+    [self.stanfordLbl setText:@"Stanford Wall"];
     [self.createPostBtn setHidden:NO];
 }
 

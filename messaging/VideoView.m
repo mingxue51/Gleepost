@@ -5,6 +5,7 @@
 //  Created by Silouanos on 15/05/2014.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //  This class is used to manage preview of video in PostCell.
+//  For different implementation of this calss find more on video branch.
 
 #import "VideoView.h"
 #import "GLPVideoLoaderManager.h"
@@ -33,37 +34,10 @@
     if(self)
     {
         [self initialiseObjects];
-        
-//        [self initVideo];
-//        [self configureNotifications];
     }
     
     return self;
 }
-
-//-(void)initVideo
-//{
-//    _moviewPlayer = [[MPMoviePlayerController alloc] init];
-//    
-//    [_moviewPlayer prepareToPlay];
-//    [_moviewPlayer.view setFrame: self.bounds];  // player's frame must match parent's
-//    [self addSubview: _moviewPlayer.view];
-//}
-
-//-(void)initialisePreviewWithUrl:(NSString *)url
-//{
-//    
-////    [_playButton setHidden:YES];
-//    [_thumbnailImageView setImage:nil];
-//    [self bringSubviewToFront:_thumbnailImageView];
-//    [self bringSubviewToFront:_playButton];
-//    
-//    
-//    
-//    _moviewPlayer.contentURL = [NSURL URLWithString:url];
-//    [_moviewPlayer requestThumbnailImagesAtTimes:@[[NSNumber numberWithFloat:1.0f]] timeOption:MPMovieTimeOptionExact];
-//    
-//}
 
 -(void)initialiseObjects
 {
@@ -71,22 +45,6 @@
     _previewVC.delegate = self;
 }
 
--(void)configureNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(thumbnailReceived:) name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
-}
-
--(void)thumbnailReceived:(NSNotification *)notification
-{
-    DDLogDebug(@"Image: %@", notification.userInfo);
-    
-    NSDictionary *result = notification.userInfo;
-    
-    UIImage *thumbnail = [result objectForKey:@"MPMoviePlayerThumbnailImageKey"];
-    
-    [_thumbnailImageView setImage:thumbnail];
-    
-}
 
 -(void)setUpVideoViewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
 {
@@ -98,6 +56,8 @@
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:remoteKey];
         
+        previewVC.delegate = self;
+        
         if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
         {
             [self setHiddenToPlayImage:YES];
@@ -106,18 +66,11 @@
         {
             [self setHiddenToPlayImage:NO];
         }
-        //    previewVC.delegate = self;
-        
-        //    [previewVC.view removeFromSuperview];
         
         
         previewVC.view.frame = _videoView.bounds;
         [_videoView addSubview:previewVC.view];
     }
-    
-
-    
-    
 
 }
 
@@ -136,45 +89,8 @@
      ];
 }
 
--(void)setUpPreviewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
-{
-    
-//    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
-//    {
-    
-          [_videoView setHidden:YES];
-    [self setHiddenToPlayImage:NO];
-//        [_previewVC stop];
-//        [self endVideo];
-//        [_previewVC setVideoPath:url];
-//        [_previewVC resetVideo];
-//    }
-//    else
-//    {
-    
-//    [_videoView setAlpha:0.0f];
-
-    
-    _url = url;
-    
-    [_previewVC setPlaybackLoops:NO];
-    
-    
-    
-    [_previewVC.view removeFromSuperview];
-    
-    _previewVC.view.tag = remoteKey;
-    _previewVC.view.frame = _videoView.bounds;
-    [_videoView addSubview:_previewVC.view];
-    
-//    [_previewVC setVideoPath:_url];
-
-
-}
-
 -(IBAction)video:(id)sender
 {
-//    [_moviewPlayer play];
 
     if(_playButton.tag == 0)
     {
@@ -186,19 +102,7 @@
     {
         [self setHiddenToPlayImage:NO];
         [self pauseVideo];
-//        _playButton.tag = 0;
     }
-    
-    
-    
-//    if(_playButton.tag == 0)
-//    {
-//        [self startVideoFromBeggining];
-//    }
-//    else
-//    {
-//        [self resumeVideo];
-//    }
 
 }
 
@@ -210,7 +114,6 @@
     
     [UIView animateWithDuration:0.3f animations:^{
         
-//        [self.playButton setAlpha:(hidden) ? 0.0f : 1.0f];
         [self.playImageView setHidden:hidden];
         
     } completion:^(BOOL finished) {
@@ -245,13 +148,6 @@
     [self endVideo];
 }
 
--(void)videoPlayerNewVideoReady:(PBJVideoPlayerController *)videoPlayer
-{
-    DDLogDebug(@"videoPlayerNewVideoReady");
-//    [_videoView setAlpha:1.0f];
-
-}
-
 #pragma mark - Playback operations
 
 //-(void)pauseVideo
@@ -269,7 +165,8 @@
 -(void)endVideo
 {
 //    [self setHiddenToPlayButton:NO];
-    [_playButton setTag:0];
+//    [_playButton setTag:0];
+    [self setHiddenToPlayImage:NO];
 }
 
 -(void)startVideoFromBeggining
