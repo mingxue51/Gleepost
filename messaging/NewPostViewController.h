@@ -11,7 +11,7 @@
 #import "NewPostDelegate.h"
 #import "GLPVideoViewController.h"
 
-@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate>
+@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate>
 
 //@property (weak, nonatomic) GLPTimelineViewController *delegate;
 @property (weak, nonatomic) UIViewController <NewPostDelegate> *delegate;
@@ -20,8 +20,7 @@
 //Used only if the class is call from the groups view controller.
 @property (strong, nonatomic) GLPGroup *group;
 
-- (IBAction)addImage:(id)sender;
-- (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title;
+-(void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title;
 -(void)cancelSelectingDateForEvent;
 
 

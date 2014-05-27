@@ -86,7 +86,7 @@
         CGRectSetH(navigationBar, 60.0f);
         CGRectMoveY(navigationBar, -19.0f);
         
-        [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+        [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
     }
     else
     {
@@ -94,12 +94,12 @@
         {
             CGRectSetH(navigationBar, 60.0f);
             CGRectMoveY(navigationBar, -22.0f);
-            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
         }
         else
         {
             [navigationBar setTintColor:[UIColor whiteColor]];
-            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
         }
     }
     

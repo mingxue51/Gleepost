@@ -26,15 +26,17 @@
 #import "PickDateEventViewController.h"
 #import "GroupViewController.h"
 #import "GLPTimelineViewController.h"
+#import "ShapeFormatterHelper.h"
+#import "GLPSelectCategoryViewController.h"
 
 @interface NewPostViewController ()
 
 
 //IBOutlets.
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
-@property (weak, nonatomic) IBOutlet UILabel *categoriesLbl;
-@property (weak, nonatomic) IBOutlet UIView *videoView;
-
+@property (weak, nonatomic) IBOutlet UILabel *charactersLeftLbl;
+@property (weak, nonatomic) IBOutlet UIView *textFieldView;
+@property (weak, nonatomic) IBOutlet UIView *navigateToCategoriesView;
 //Category buttons.
 @property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
 @property (weak, nonatomic) IBOutlet UIButton *newsCategoryBtn;
@@ -44,7 +46,6 @@
 @property (strong, nonatomic) GLPCategory *eventCategory;
 
 //Navigation bar.
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelNavBarBtn;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *postNavBarBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
@@ -58,7 +59,7 @@
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
 @property (assign, nonatomic) BOOL inCategorySelection;
-
+@property (assign, nonatomic) NSInteger remainingNumberOfCharacters;
 //@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)cancelButtonClick:(id)sender;
@@ -68,6 +69,9 @@
 
 @implementation NewPostViewController
 
+const NSString *CHARACTERS_LEFT = @"Characters Left";
+const NSInteger MAX_NO_OF_CHARACTERS = 70;
+const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 @synthesize delegate;
 @synthesize postUploader=_postUploader;
@@ -81,12 +85,7 @@
 {
     [super viewDidLoad];
 //    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-
-
-
-//    [self.contentTextView becomeFirstResponder];
     
-    _categories = [NSMutableArray array];
     
     if(NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1)
     {
@@ -98,22 +97,34 @@
         [self.view addSubview:imageViewBlack];
         [self.view sendSubviewToBack:imageViewBlack];
     }
-    
-    
 
     
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureObjects];
+    
     [self configureCategoryButtons];
+    
     [self configureNavigationBar];
-    [self formatNavigationButtons];
+    
     [self configureLabel];
-
+    
+    [self configureViewsPositions];
+    
+    [self configureViewsGestures];
+    
+    [self configureTextView];
+    
+    [self formatNavigationButtons];
+    
+    [self formatBackgroundViews];
+    
+    [self formatTextView];
+    
+    
 //    [self generateCategoryButtons];
     
-    _postUploader = [[GLPPostUploader alloc] init];
-    _hasImage = NO;
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -165,7 +176,11 @@
 
 -(void)configureObjects
 {
+    _categories = [NSMutableArray array];
+    _postUploader = [[GLPPostUploader alloc] init];
+    _hasImage = NO;
     _eventDateStart = nil;
+    _remainingNumberOfCharacters = MAX_NO_OF_CHARACTERS;
 }
 
 -(void)configureCategoryButtons
@@ -188,14 +203,82 @@
 
 }
 
+-(void)formatTextView
+{
+    _contentTextView.placeholderColor = [UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0];
+}
+
+-(void)configureTextView
+{
+    _contentTextView.delegate = self;
+}
+
+-(void)formatBackgroundViews
+{
+    [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:5];
+    [ShapeFormatterHelper setCornerRadiusWithView:_navigateToCategoriesView andValue:5];
+
+    
+//    [ShapeFormatterHelper setBorderToView:_textFieldBackgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];
+    
+}
+
+-(void)configureViewsPositions
+{
+    if(!IS_IPHONE_5)
+    {
+        CGRectAddH(_textFieldView, -50.0);
+        CGRectMoveY(_navigateToCategoriesView, -50.0);
+        CGRectMoveY(_charactersLeftLbl, -52.0);
+    }
+}
+
+-(void)configureViewsGestures
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToCategories:)];
+    [tap setNumberOfTapsRequired:1];
+    [_navigateToCategoriesView addGestureRecognizer:tap];
+}
+
 -(void)configureNavigationBar
 {
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.title = @"New Post";
+    [self configureLeftBarButton];
+    [self configureRightBarButton];
     
-    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
+//    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
+//    
+//    self.simpleNavBar.tag = 1;
+//    
+//    [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
+}
+
+-(void)configureLeftBarButton
+{
+    UIImage *backIcon = [UIImage imageNamed:@"cancel_new_post.png"];
     
-    self.simpleNavBar.tag = 1;
+    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBack addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnBack setBackgroundImage:backIcon forState:UIControlStateNormal];
+    [btnBack setFrame:CGRectMake(0, 0, 17, 17)];
     
-    [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
+    
+    self.navigationItem.leftBarButtonItem = backButton;
+}
+
+-(void)configureRightBarButton
+{
+    UIButton *btnPost=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btnPost addTarget:self action:@selector(postButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btnPost setTitle:@"Post" forState:UIControlStateNormal];
+    [btnPost setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btnPost setFrame:CGRectMake(0, 0, 40, 17)];
+    
+    UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithCustomView:btnPost];
+    
+    self.navigationItem.rightBarButtonItem = postButton;
 }
 
 -(void)formatStatusBar
@@ -205,19 +288,15 @@
 
 -(void)formatNavigationButtons
 {
-    UIFont *font = [UIFont fontWithName:GLP_TITLE_FONT size:17.0f];
-    [self.cancelNavBarBtn setTitleTextAttributes:@{NSFontAttributeName: font}
-                                     forState:UIControlStateNormal];
+    UIFont *font = [UIFont fontWithName:GLP_TITLE_FONT size:18.0f];
     
-    
-    font = [UIFont fontWithName:GLP_TITLE_FONT size:22.0f];
     [self.postNavBarBtn setTitleTextAttributes:@{NSFontAttributeName: font}
                                         forState:UIControlStateNormal];
 }
 
 -(void)configureLabel
 {
-    [self.categoriesLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:14.0f]];
+    [_charactersLeftLbl setText:[NSString stringWithFormat:@"%ld %@", (long)MAX_NO_OF_CHARACTERS, CHARACTERS_LEFT]];
 }
 
 //TODO: Not used. Use this later if there is a need.
@@ -348,6 +427,13 @@
 {
     [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
     [btn.layer setBorderColor:[AppearanceHelper defaultGleepostColour].CGColor];
+}
+
+-(void)navigateToCategories:(id)sender
+{
+    [self performSegueWithIdentifier:@"show categories" sender:self];
+    
+//    [self navigateToCategoriesViewController];
 }
 
 #pragma mark - PickDateEvent delegate
@@ -576,6 +662,31 @@
 {
 }
 
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    [self setNumberOfCharacters:textView.text.length];
+}
+
+#pragma makr - Text text view
+
+-(void)setNumberOfCharacters:(NSInteger)numberOfChars
+{
+    _remainingNumberOfCharacters = MAX_NO_OF_CHARACTERS - numberOfChars;
+    
+    [_charactersLeftLbl setText:[NSString stringWithFormat:@"%d %@", _remainingNumberOfCharacters , CHARACTERS_LEFT]];
+    
+    if(_remainingNumberOfCharacters < 0)
+    {
+        [_charactersLeftLbl setTextColor:[UIColor redColor]];
+    }
+    else
+    {
+        [_charactersLeftLbl setTextColor:[UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0f]];
+    }
+}
+
 #pragma mark - VC Navigation
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -587,7 +698,7 @@
         
         pickDateViewController.delegate = self;
     }
-    else if ([segue.identifier isEqualToString:@"capture video"])
+    else if ([segue.identifier isEqualToString:@"show categories"])
     {
         
     }
@@ -604,6 +715,17 @@
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
+-(void)navigateToCategoriesViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPSelectCategoryViewController *videoVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
+    videoVC.modalTransitionStyle = UIModalPresentationCustom;
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:videoVC];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self presentViewController:navigationController animated:YES completion:nil];
+    [self.navigationController pushViewController:videoVC animated:YES];
+    
+}
 
 
 

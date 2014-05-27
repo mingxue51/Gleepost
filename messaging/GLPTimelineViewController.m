@@ -2542,16 +2542,23 @@ const float TOP_OFFSET = 280.0f;
         //If iOS7
         
         //Hide navigation items and add NewPostViewController's items.
-        [self hideNavigationBarAndButtonWithNewTitle:@"New Post"];
+//        [self hideNavigationBarAndButtonWithNewTitle:@"New Post"];
+        
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//        NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+//        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+//        vc.delegate = self;
+//        [vc setTransitioningDelegate:self.transitionController];
+//        vc.modalPresentationStyle= UIModalPresentationCustom;
+//        [self.view setBackgroundColor:[UIColor whiteColor]];
+//        [self presentViewController:vc animated:YES completion:nil];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-        vc.delegate = self;
-        [vc setTransitioningDelegate:self.transitionController];
-        vc.modalPresentationStyle= UIModalPresentationCustom;
-        [self.view setBackgroundColor:[UIColor whiteColor]];
-        [self presentViewController:vc animated:YES completion:nil];
+        ChatViewAnimationController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navigationController animated:YES completion:nil];
+        
     }
     else
     {

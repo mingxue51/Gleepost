@@ -491,6 +491,11 @@
 		58E3DAC9188405FB00B9B048 /* background_day_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAC8188405FB00B9B048 /* background_day_old.png */; };
 		58E4555C1840091B001A5D80 /* GLPLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E4555B1840091B001A5D80 /* GLPLike.m */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
+		58F0F0BE1934D6DF0032450F /* cancel_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BD1934D6DF0032450F /* cancel_new_post.png */; };
+		58F0F0C01934DD780032450F /* textfield_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BF1934DD780032450F /* textfield_background.png */; };
+		58F0F0C21934F91E0032450F /* categories_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C11934F91E0032450F /* categories_image.png */; };
+		58F0F0C41934F9320032450F /* right_arrow_navigation.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C31934F9320032450F /* right_arrow_navigation.png */; };
+		58F0F0C7193507D40032450F /* GLPSelectCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */; };
 		58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F562A41923A5ED00841918 /* GLPVideoUploader.m */; };
 		58F6CF2518CE6F8100ABE244 /* group_posts.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F6CF2418CE6F8100ABE244 /* group_posts.png */; };
 		58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */; };
@@ -1389,6 +1394,12 @@
 		58E4555B1840091B001A5D80 /* GLPLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLike.m; sourceTree = "<group>"; };
 		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
 		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
+		58F0F0BD1934D6DF0032450F /* cancel_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_new_post.png; sourceTree = "<group>"; };
+		58F0F0BF1934DD780032450F /* textfield_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfield_background.png; sourceTree = "<group>"; };
+		58F0F0C11934F91E0032450F /* categories_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categories_image.png; sourceTree = "<group>"; };
+		58F0F0C31934F9320032450F /* right_arrow_navigation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_arrow_navigation.png; sourceTree = "<group>"; };
+		58F0F0C5193507D40032450F /* GLPSelectCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectCategoryViewController.h; sourceTree = "<group>"; };
+		58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectCategoryViewController.m; sourceTree = "<group>"; };
 		58F562A31923A5ED00841918 /* GLPVideoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploader.h; sourceTree = "<group>"; };
 		58F562A41923A5ED00841918 /* GLPVideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoUploader.m; sourceTree = "<group>"; };
 		58F6CF2418CE6F8100ABE244 /* group_posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_posts.png; sourceTree = "<group>"; };
@@ -2471,6 +2482,10 @@
 		588DE5D218A8FA2A001D344D /* New Post */ = {
 			isa = PBXGroup;
 			children = (
+				58F0F0C31934F9320032450F /* right_arrow_navigation.png */,
+				58F0F0C11934F91E0032450F /* categories_image.png */,
+				58F0F0BF1934DD780032450F /* textfield_background.png */,
+				58F0F0BD1934D6DF0032450F /* cancel_new_post.png */,
 				588DE5D318A8FA40001D344D /* add_photo_btn.png */,
 			);
 			name = "New Post";
@@ -2484,6 +2499,8 @@
 				588DE5D818A96552001D344D /* PickDateEventViewController.h */,
 				588DE5D918A96552001D344D /* PickDateEventViewController.m */,
 				58B90F2218C8E9B200FA0955 /* NewPostDelegate.h */,
+				58F0F0C5193507D40032450F /* GLPSelectCategoryViewController.h */,
+				58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */,
 			);
 			name = "New post Classes";
 			sourceTree = "<group>";
@@ -3994,6 +4011,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58536EDA18BE83DE0036FD00 /* gleepost.cer in Resources */,
+				58F0F0C01934DD780032450F /* textfield_background.png in Resources */,
 				582A664518AB9BC400006419 /* bar3_selected.png in Resources */,
 				802DCE4B18AA883300A23511 /* internal_notification_cell_accept_button.png in Resources */,
 				588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */,
@@ -4028,6 +4046,7 @@
 				58FD708418905B680024E8A1 /* news_category_old.png in Resources */,
 				58AB404B18AE45D000DEED31 /* theater_category.png in Resources */,
 				58AB404C18AE45D000DEED31 /* music_category.png in Resources */,
+				58F0F0C41934F9320032450F /* right_arrow_navigation.png in Resources */,
 				80AB898F17C2ADA60053E784 /* line.png in Resources */,
 				58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */,
 				58DC023A1804379A0008993A /* new_chat_background.png in Resources */,
@@ -4198,6 +4217,7 @@
 				58FB7C9E18561722002C6A00 /* locked.png in Resources */,
 				585AE272192BF35600174CED /* proximity-7@2x.png in Resources */,
 				8096E4E517C2C88500C7BF60 /* like.png in Resources */,
+				58F0F0C21934F91E0032450F /* categories_image.png in Resources */,
 				5866F16018844869007484CF /* blimp_night.png in Resources */,
 				8096E4E717C2CA6800C7BF60 /* pic.png in Resources */,
 				582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */,
@@ -4239,6 +4259,7 @@
 				80B2A4321833C8C7002AB1F0 /* timeline_new_post_indicator_background.png in Resources */,
 				58E27E0718A6CD1500D8BB24 /* bird-house-7-old3@2x.png in Resources */,
 				589CE50118D21CFF0046DAD2 /* thermometer.png in Resources */,
+				58F0F0BE1934D6DF0032450F /* cancel_new_post.png in Resources */,
 				580C7AB318983C4C007495EE /* all_category_selected.png in Resources */,
 				5866F15F18844869007484CF /* background_night.png in Resources */,
 				585AE264192B70E100174CED /* go_to_preview.png in Resources */,
@@ -4641,6 +4662,7 @@
 				58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */,
 				58729AC7189BCB290041022C /* SettingsViewController.m in Sources */,
 				58729ACA189BFC430041022C /* ChangePasswordViewController.m in Sources */,
+				58F0F0C7193507D40032450F /* GLPSelectCategoryViewController.m in Sources */,
 				5824C42D18E5B4D8006D4484 /* TableViewHelper.m in Sources */,
 				80CE307417CE4E4D003007D0 /* JsonParser.m in Sources */,
 				5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */,

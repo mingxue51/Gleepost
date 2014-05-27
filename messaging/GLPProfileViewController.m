@@ -932,6 +932,7 @@
     DDLogInfo(@"Load new internal notifications");
 //    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
     
+    //Check if is the first notification that arrives.
     BOOL isNotification = (_notifications.count != 0);
     
     NSArray *notifications = [GLPNotificationManager unreadNotifications];
