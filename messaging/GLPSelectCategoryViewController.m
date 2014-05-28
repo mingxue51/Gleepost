@@ -7,8 +7,14 @@
 //
 
 #import "GLPSelectCategoryViewController.h"
+#import "AppearanceHelper.h"
+#import "ATNavigationCategories.h"
 
 @interface GLPSelectCategoryViewController ()
+
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+
+
 
 @end
 
@@ -26,8 +32,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    [self configureNavigationBar];
+
 }
+
+-(void)configureNavigationBar
+{
+//    [self.navigationBar setBackgroundColor:[UIColor clearColor]];
+    
+    self.navigationBar.tag = 1;
+    
+    [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
+
+}
+
+
+#pragma mark - Selectors
+
+- (IBAction)goBack:(id)sender
+{
+//    DDLogDebug(@"GO back!");
+//    ATNavigationCategories *t = [self.transitioningDelegate animationControllerForDismissedController:self];
+//    
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {

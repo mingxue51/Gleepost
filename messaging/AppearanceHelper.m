@@ -92,7 +92,7 @@
     {
         if(navigationBar.tag == 1)
         {
-            CGRectSetH(navigationBar, 60.0f);
+            CGRectSetH(navigationBar, 65.0f);
             CGRectMoveY(navigationBar, -22.0f);
             [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
         }

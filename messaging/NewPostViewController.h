@@ -23,5 +23,7 @@
 -(void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title;
 -(void)cancelSelectingDateForEvent;
 
+-(void)hideKeyboard;
+-(void)showKeyboard;
 
 @end

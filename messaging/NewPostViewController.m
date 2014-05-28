@@ -28,6 +28,8 @@
 #import "GLPTimelineViewController.h"
 #import "ShapeFormatterHelper.h"
 #import "GLPSelectCategoryViewController.h"
+#import "TDNavigationCategories.h"
+#import "GLPiOS6Helper.h"
 
 @interface NewPostViewController ()
 
@@ -57,6 +59,9 @@
 @property (strong, nonatomic) NSDate *eventDateStart;
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+
+@property (strong, nonatomic) TDNavigationCategories *transitionViewCategories;
+
 
 @property (assign, nonatomic) BOOL inCategorySelection;
 @property (assign, nonatomic) NSInteger remainingNumberOfCharacters;
@@ -161,6 +166,17 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 //    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
 }
 
+-(void)hideKeyboard
+{
+    [self.contentTextView resignFirstResponder];
+
+}
+
+-(void)showKeyboard
+{
+    [self.contentTextView becomeFirstResponder];
+
+}
 
 #pragma mark - Configuration
 
@@ -176,6 +192,7 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)configureObjects
 {
+    _transitionViewCategories = [[TDNavigationCategories alloc] init];
     _categories = [NSMutableArray array];
     _postUploader = [[GLPPostUploader alloc] init];
     _hasImage = NO;
@@ -431,9 +448,9 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)navigateToCategories:(id)sender
 {
-    [self performSegueWithIdentifier:@"show categories" sender:self];
+//    [self performSegueWithIdentifier:@"show categories" sender:self];
     
-//    [self navigateToCategoriesViewController];
+    [self navigateToCategoriesViewController];
 }
 
 #pragma mark - PickDateEvent delegate
@@ -718,12 +735,25 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 -(void)navigateToCategoriesViewController
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPSelectCategoryViewController *videoVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
-    videoVC.modalTransitionStyle = UIModalPresentationCustom;
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:videoVC];
-//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-//    [self presentViewController:navigationController animated:YES completion:nil];
-    [self.navigationController pushViewController:videoVC animated:YES];
+    GLPSelectCategoryViewController *categoriesVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
+    categoriesVC.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+
+    categoriesVC.modalPresentationStyle = UIModalPresentationCustom;
+    
+    
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [categoriesVC setTransitioningDelegate:_transitionViewCategories];
+    }
+    
+
+    [self presentViewController:categoriesVC animated:YES completion:nil];
+    
+    
+    
+    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:videoVC];
+    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self.navigationController pushViewController:categoriesVC animated:YES];
     
 }
 

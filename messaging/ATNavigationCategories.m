@@ -13,6 +13,8 @@
 
 @implementation ATNavigationCategories
 
+const float ANIMATION_TIME = 0.5;
+
 //===================================================================
 // - UIViewControllerAnimatedTransitioning
 //===================================================================
@@ -33,50 +35,44 @@
     NewPostViewController *fromVC = (NewPostViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     
-//    toVC.view.alpha = 0.0;
-    CGRectSetX(toVC.view, 320.0f);
     
-    [inView addSubview:toVC.view];
+    [toVC.view setBackgroundColor:[UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0f]];
     
-    
-    [UIView animateWithDuration:0.5f animations:^{
+    if([self isPresenting])
+    {
+        CGRectSetX(toVC.view, 320.0f);
         
-        CGRectSetX(toVC.view, 0.0f);
-        CGRectSetX(fromVC.view, -320.0f);
-        
-    } completion:^(BOOL finished) {
-    
-    }];
-    
-    
-    //    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    //[toVC.view setFrame:CGRectMake(0, screenRect.size.height, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
-    
-    
-    //UIViewAnimationOptionTransitionCrossDissolve
-    //    toVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-        
-        toVC.view.alpha = 1.0;
+        [inView addSubview:toVC.view];
         
         
-    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:ANIMATION_TIME animations:^{
+            
+            CGRectSetX(toVC.view, 0.0f);
+            CGRectSetX(fromVC.view, -320.0f);
+            
+        } completion:^(BOOL finished) {
+            [transitionContext completeTransition:YES];
+
+        }];
+    }
+    else
+    {        
+        CGRectSetX(toVC.view, -320.0f);
+                
+        [inView addSubview:toVC.view];
         
-        [transitionContext completeTransition:YES];
         
-    }];
-    
-    
-    //    [UIView animateWithDuration:0.25f
-    //                     animations:^{
-    //
-    //                         [toVC.view setFrame:CGRectMake(0, 0, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
-    //                     }
-    //                     completion:^(BOOL finished) {
-    //                         [transitionContext completeTransition:YES];
-    //                     }];
+        [UIView animateWithDuration:ANIMATION_TIME animations:^{
+            
+            CGRectSetX(toVC.view, 0.0f);
+            CGRectSetX(fromVC.view, 320.0f);
+            
+        } completion:^(BOOL finished) {
+            [transitionContext completeTransition:YES];
+            
+        }];
+    }
+
 }
 
 @end

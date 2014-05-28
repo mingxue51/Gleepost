@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -793,11 +793,47 @@
             <objects>
                 <viewController storyboardIdentifier="GLPSelectCategoryViewController" id="EY1-Je-RIf" customClass="GLPSelectCategoryViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gzK-Nh-D8K">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yN2-PS-aNH">
+                                <rect key="frame" x="20" y="112" width="160" height="68"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </imageView>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" backIndicatorImage="chat_background_default.png" id="Rep-P0-mhb">
+                                <rect key="frame" x="0.0" y="21" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <navigationItem title="Categories" id="C7s-1Q-Gft">
+                                        <barButtonItem key="leftBarButtonItem" style="plain" id="cJg-Ze-EJA">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4jT-pz-zVb">
+                                                <rect key="frame" x="16" y="13" width="17" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="cancel_new_post.png" backgroundImage="cancel_new_post.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="goBack:" destination="EY1-Je-RIf" eventType="touchUpInside" id="QEB-zW-kJ0"/>
+                                                </connections>
+                                            </button>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="O3v-wy-Pcs">
+                                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="0gl-db-iX0"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <size key="freeformSize" width="320" height="200"/>
+                    <connections>
+                        <outlet property="navigationBar" destination="Rep-P0-mhb" id="dYa-0j-rJW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gSm-cz-G9a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3620,7 +3656,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="default_user_image2.png" width="1000" height="1000"/>
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="fb_login.png" width="564" height="116"/>
-        <image name="fb_login.png§" width="31" height="31"/>
+        <image name="fb_login.png§" width="320" height="568"/>
         <image name="finished.png" width="600" height="120"/>
         <image name="gleepost_logo_header.png" width="148" height="49"/>
         <image name="glp-quote.png" width="488" height="76"/>
@@ -3665,14 +3701,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="GTC-XV-iI1"/>
-        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="Ptj-MX-g8C"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="n2N-Iw-72J"/>
+        <segue reference="WhX-ZL-dQD"/>
+        <segue reference="PCe-7s-A56"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="lQn-ic-ohV"/>
         <segue reference="WK7-hw-eyD"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="PCe-7s-A56"/>
-        <segue reference="WhX-ZL-dQD"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="n2N-Iw-72J"/>
     </inferredMetricsTieBreakers>
 </document>
