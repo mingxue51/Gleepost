@@ -8,7 +8,7 @@
 
 #import "TransitionDelegateViewImage.h"
 #import "AnimatedTransitioningViewImage.h"
-
+#import "ATNavigationCategories.h"
 
 @implementation TransitionDelegateViewImage
 
@@ -27,11 +27,15 @@
 //    AnimatedTransitioning *controller = [[AnimatedTransitioning alloc]init];
 //    controller.isPresenting = NO;
 //    return controller;
-
     
     NSLog(@"animationControllerForDismissedController");
+
+    ATNavigationCategories *controller = [[ATNavigationCategories alloc]init];
+    controller.isPresenting = YES;
+    return controller;
     
-    return nil;
+    
+//    return nil;
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {

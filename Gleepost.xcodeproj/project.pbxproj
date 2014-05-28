@@ -496,6 +496,10 @@
 		58F0F0C21934F91E0032450F /* categories_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C11934F91E0032450F /* categories_image.png */; };
 		58F0F0C41934F9320032450F /* right_arrow_navigation.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C31934F9320032450F /* right_arrow_navigation.png */; };
 		58F0F0C7193507D40032450F /* GLPSelectCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */; };
+		58F294FD19353C3E00A638BA /* NewPostCategoriesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58F294FC19353C3E00A638BA /* NewPostCategoriesView.xib */; };
+		58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950019353C9300A638BA /* NewPostCategoriesView.m */; };
+		58F2950519355A1600A638BA /* ATNavigationCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950419355A1600A638BA /* ATNavigationCategories.m */; };
+		58F2950819355A2F00A638BA /* TDNavigationCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950719355A2F00A638BA /* TDNavigationCategories.m */; };
 		58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F562A41923A5ED00841918 /* GLPVideoUploader.m */; };
 		58F6CF2518CE6F8100ABE244 /* group_posts.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F6CF2418CE6F8100ABE244 /* group_posts.png */; };
 		58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */; };
@@ -1400,6 +1404,13 @@
 		58F0F0C31934F9320032450F /* right_arrow_navigation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_arrow_navigation.png; sourceTree = "<group>"; };
 		58F0F0C5193507D40032450F /* GLPSelectCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectCategoryViewController.h; sourceTree = "<group>"; };
 		58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectCategoryViewController.m; sourceTree = "<group>"; };
+		58F294FC19353C3E00A638BA /* NewPostCategoriesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewPostCategoriesView.xib; sourceTree = "<group>"; };
+		58F294FF19353C9300A638BA /* NewPostCategoriesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostCategoriesView.h; sourceTree = "<group>"; };
+		58F2950019353C9300A638BA /* NewPostCategoriesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostCategoriesView.m; sourceTree = "<group>"; };
+		58F2950319355A1600A638BA /* ATNavigationCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATNavigationCategories.h; sourceTree = "<group>"; };
+		58F2950419355A1600A638BA /* ATNavigationCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATNavigationCategories.m; sourceTree = "<group>"; };
+		58F2950619355A2F00A638BA /* TDNavigationCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNavigationCategories.h; sourceTree = "<group>"; };
+		58F2950719355A2F00A638BA /* TDNavigationCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNavigationCategories.m; sourceTree = "<group>"; };
 		58F562A31923A5ED00841918 /* GLPVideoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploader.h; sourceTree = "<group>"; };
 		58F562A41923A5ED00841918 /* GLPVideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoUploader.m; sourceTree = "<group>"; };
 		58F6CF2418CE6F8100ABE244 /* group_posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_posts.png; sourceTree = "<group>"; };
@@ -2959,6 +2970,34 @@
 			name = Night;
 			sourceTree = "<group>";
 		};
+		58F294FB19353C0700A638BA /* New post */ = {
+			isa = PBXGroup;
+			children = (
+				58F294FC19353C3E00A638BA /* NewPostCategoriesView.xib */,
+			);
+			name = "New post";
+			sourceTree = "<group>";
+		};
+		58F294FE19353C6F00A638BA /* New post */ = {
+			isa = PBXGroup;
+			children = (
+				58F294FF19353C9300A638BA /* NewPostCategoriesView.h */,
+				58F2950019353C9300A638BA /* NewPostCategoriesView.m */,
+			);
+			name = "New post";
+			sourceTree = "<group>";
+		};
+		58F2950219354A4400A638BA /* Animated Transitioning */ = {
+			isa = PBXGroup;
+			children = (
+				58F2950319355A1600A638BA /* ATNavigationCategories.h */,
+				58F2950419355A1600A638BA /* ATNavigationCategories.m */,
+				58F2950619355A2F00A638BA /* TDNavigationCategories.h */,
+				58F2950719355A2F00A638BA /* TDNavigationCategories.m */,
+			);
+			name = "Animated Transitioning";
+			sourceTree = "<group>";
+		};
 		58FB7C8418560AE0002C6A00 /* Profile Tabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -3464,6 +3503,7 @@
 		80AB893E17C26D040053E784 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				58F2950219354A4400A638BA /* Animated Transitioning */,
 				803FF9961897D921000B1955 /* Delegate */,
 				8057E33A1834C1040089F4D9 /* Processors */,
 				58808EF31806F4C100E415C1 /* Animations */,
@@ -3607,6 +3647,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58F294FE19353C6F00A638BA /* New post */,
 				58E1E5EB1926283C007ACB4F /* Post */,
 				58BB77FA1924EFA50046885B /* Video */,
 				585882CC190E6A11000BFBF9 /* Thermometer */,
@@ -3730,6 +3771,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				58F294FB19353C0700A638BA /* New post */,
 				5871E43A192621D6009B5A74 /* Post */,
 				58428E2A18A2668500B82E4B /* Register */,
 				58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */,
@@ -4059,6 +4101,7 @@
 				58A122B017ECC8F300E2AB4B /* MessageBox2.png in Resources */,
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
 				582A664118AB9BC400006419 /* bar3.png in Resources */,
+				58F294FD19353C3E00A638BA /* NewPostCategoriesView.xib in Resources */,
 				8096E4D317C2BA3000C7BF60 /* clock_old.png in Resources */,
 				589EAD2818A43A12005B2F4C /* campus_live_cell_bg_old.png in Resources */,
 				80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */,
@@ -4461,6 +4504,7 @@
 				80B2A4251833824F002AB1F0 /* GLPNotificationDao.m in Sources */,
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
+				58F2950519355A1600A638BA /* ATNavigationCategories.m in Sources */,
 				80733471183BAD3B00C6D74A /* GLPPushManager.m in Sources */,
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
@@ -4497,6 +4541,7 @@
 				585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
+				58F2950819355A2F00A638BA /* TDNavigationCategories.m in Sources */,
 				58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */,
 				5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */,
 				58E1E5F11926285E007ACB4F /* MainPostView.m in Sources */,
@@ -4706,6 +4751,7 @@
 				808F6B65187D92DB0062FE39 /* GLPMessageProcessor.m in Sources */,
 				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,
+				58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */,
 				80C4CAB817CFE24700AFA80C /* RegisterViewController.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
 				589EAD0C18A3C54E005B2F4C /* SignUpTwoView.m in Sources */,

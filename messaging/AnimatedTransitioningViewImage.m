@@ -20,6 +20,11 @@
     return 0.25f;
 }
 
+- (void)animationEnded:(BOOL) transitionCompleted
+{
+    DDLogDebug(@"transitionCompleted");
+}
+
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
     
     UIView *inView = [transitionContext containerView];
