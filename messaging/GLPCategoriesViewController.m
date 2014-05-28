@@ -40,7 +40,6 @@
     [self configAppearance];
     
 
-    
 //    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
 }
 

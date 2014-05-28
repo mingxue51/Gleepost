@@ -56,7 +56,7 @@ const float ANIMATION_TIME = 0.5;
         }];
     }
     else
-    {        
+    {
         CGRectSetX(toVC.view, -320.0f);
                 
         [inView addSubview:toVC.view];

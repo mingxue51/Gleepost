@@ -19,7 +19,6 @@
 
 NSString * const kGLPCategoryCell = @"CategoryCell";
 
-
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
@@ -38,11 +37,11 @@ NSString * const kGLPCategoryCell = @"CategoryCell";
 {
     if(category.uiSelected)
     {
-        [self.categoryNameLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17.0]];
+        [self.categoryNameLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:24.0]];
     }
     else
     {
-        [self.categoryNameLbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0]];
+        [self.categoryNameLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:20.0]];
     }
     
     [self.categoryImage setImage:image];
