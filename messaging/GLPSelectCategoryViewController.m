@@ -14,6 +14,7 @@
 #import "CategoryManager.h"
 #import "TableViewHelper.h"
 #import "PendingPost.h"
+#import "WebClientHelper.h"
 
 @interface GLPSelectCategoryViewController ()<SetEventInformationCellDelegate>
 
@@ -251,11 +252,33 @@
     
 }
 
+-(void)datePickerUpdatedWithPendingPost:(PendingPost *)pendingPost
+{
+    _pendingPost = pendingPost;
+}
+
+-(void)eventTextViewUpdatedWithPendingPost:(PendingPost *)pendingPost
+{
+    _pendingPost = pendingPost;
+}
+
 #pragma mark - Selectors
 
 - (IBAction)goBack:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)eventTitleDateDone:(id)sender
+{
+    if([self checkFields])
+    {
+        [self dismissViewControllerAnimated:YES completion:^{
+           
+            [_delegate eventPostReadyWith:_pendingPost.eventTitle andEventDate:_pendingPost.currentDate];
+            
+        }];
+    }
 }
 
 
@@ -295,10 +318,6 @@
         
         [self.tableView setNeedsLayout];
     }];
-    
-    
-
-    
 }
 
 - (void)keyboardWillHide:(NSNotification *)note
@@ -321,6 +340,30 @@
     } completion:^(BOOL finished) {
         [self.tableView setNeedsLayout];
     }];
+}
+
+#pragma mark - Helper methods
+
+-(BOOL)checkFields
+{
+    GLPPendingPostReady pendingPostStatus = [_pendingPost isPostReady];
+    
+    if(pendingPostStatus == kPostReady)
+    {
+        return YES;
+    }
+    else if (pendingPostStatus == kTitleMissing)
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Please type event title to continue"];
+        
+        return NO;
+    }
+    else
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Please select date of your event to continue"];
+     
+        return NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning

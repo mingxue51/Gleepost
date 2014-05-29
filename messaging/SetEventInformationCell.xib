@@ -81,6 +81,9 @@ AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
 </mutableData>
                         </timeZone>
+                        <connections>
+                            <action selector="datePickerUpdated:" destination="QYz-qH-cRe" eventType="valueChanged" id="znR-0d-yzh"/>
+                        </connections>
                     </datePicker>
                 </subviews>
                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>

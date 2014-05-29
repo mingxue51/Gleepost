@@ -45,6 +45,7 @@
 #define GLPNOTIFICATION_SHOW_CAPTURE_VIEW               @"GLPShowCaptureView"
 #define GLPNOTIFICATION_RECEIVE_VIDEO_PATH              @"GLPReceiveVideoPath"
 
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 

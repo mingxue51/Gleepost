@@ -18,13 +18,21 @@
  
  */
 
+typedef NS_ENUM(NSInteger, GLPPendingPostReady) {
+    kPostReady,
+    kDateMissing,
+    kTitleMissing
+};
+
 @interface PendingPost : NSObject
 
 @property (strong, nonatomic) NSString *eventTitle;
 @property (assign, nonatomic) NSInteger numberOfCharacters;
 @property (strong, nonatomic) NSDate *currentDate;
 @property (assign, nonatomic, getter = isDatePickerHidden) BOOL datePickerHidden;
+
 -(id)initWithPost:(GLPPost *)post;
 -(void)resetFields;
+-(GLPPendingPostReady)isPostReady;
 
 @end

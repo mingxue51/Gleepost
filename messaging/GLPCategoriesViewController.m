@@ -89,7 +89,7 @@
 //        }
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"No Category" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -137,6 +137,8 @@
     
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+#warning change that approach. Do it as we are doing that in GLPSelectCategoryVC.
     
     [UIView animateWithDuration:0.25 animations:^{
         
@@ -194,7 +196,7 @@
     {
         if(!_selectedCategory)
         {
-            if([cat.tag isEqualToString:@"all"])
+            if([cat.tag isEqualToString:@"no"])
             {
                 cat.uiSelected = YES;
             }

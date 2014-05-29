@@ -46,6 +46,7 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
     
     if(self)
     {
+        [self configureNotifications];
     }
     
     return self;
@@ -133,6 +134,14 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 }
 
+-(void)configureNotifications
+{
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillShow:)
+//                                                 name:GLPNOTIFICATION_DONE_EVENT
+//                                               object:nil];
+}
+
 #pragma makr - Text text view
 
 -(void)setNumberOfCharacters:(NSInteger)numberOfChars
@@ -159,6 +168,8 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
     _pendingPost.eventTitle = textView.text;
     
     [self setNumberOfCharacters:textView.text.length];
+    
+    [_delegate eventTextViewUpdatedWithPendingPost:_pendingPost];
 }
 
 #pragma mark - Selectors
@@ -183,6 +194,11 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 }
 
+- (IBAction)datePickerUpdated:(id)sender
+{
+    _pendingPost.currentDate = [_datePicker date];
+    [_delegate datePickerUpdatedWithPendingPost:_pendingPost];
+}
 
 - (void)awakeFromNib
 {

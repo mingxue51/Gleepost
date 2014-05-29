@@ -59,12 +59,32 @@
     return copy;
 }
 
+-(GLPPendingPostReady)isPostReady
+{
+    if([_eventTitle isEqualToString:@""])
+    {
+        return kTitleMissing;
+    }
+    
+    if(!_currentDate)
+    {
+        return kDateMissing;
+    }
+    
+    return kPostReady;
+}
+
 -(void)resetFields
 {
     _datePickerHidden = YES;
     _eventTitle = @"";
     _numberOfCharacters = 0;
-    _currentDate = [[NSDate alloc] init];
+    _currentDate = nil;
+}
+
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"Title: %@, Date: %@", _eventTitle, _currentDate];
 }
 
 @end

@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol GLPSelectCategoryViewControllerDelegate <NSObject>
+
+@required
+-(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate;
+
+@end
+
 @interface GLPSelectCategoryViewController : UIViewController
+
+@property (assign, nonatomic) UIViewController <GLPSelectCategoryViewControllerDelegate> *delegate;
 
 @end

@@ -31,7 +31,7 @@
 #import "TDNavigationCategories.h"
 #import "GLPiOS6Helper.h"
 
-@interface NewPostViewController ()
+@interface NewPostViewController () <GLPSelectCategoryViewControllerDelegate>
 
 
 //IBOutlets.
@@ -472,6 +472,14 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 }
 
+#pragma mark - GLPSelectCategoryViewControllerDelegate
+
+-(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate
+{
+    _eventTitle = eventTitle;
+    _eventDateStart = eventDate;
+}
+
 - (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title
 {
     _eventDateStart = date;
@@ -736,6 +744,7 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPSelectCategoryViewController *categoriesVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
+    [categoriesVC setDelegate:self];
     categoriesVC.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
 
     categoriesVC.modalPresentationStyle = UIModalPresentationCustom;

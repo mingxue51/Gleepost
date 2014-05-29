@@ -1959,7 +1959,7 @@ const float TOP_OFFSET = 280.0f;
     
     [UIView animateWithDuration:0.5f animations:^{
         
-        [self.tableView setContentOffset:CGPointMake(0,TOP_OFFSET)];
+        [self.tableView setContentOffset:CGPointMake(0, TOP_OFFSET)];
         
         
     } completion:^(BOOL finished) {

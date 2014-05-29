@@ -816,6 +816,9 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Done" id="O3v-wy-Pcs">
                                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="eventTitleDateDone:" destination="EY1-Je-RIf" id="GD7-JG-THF"/>
+                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>

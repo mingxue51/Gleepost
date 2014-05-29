@@ -14,6 +14,8 @@
 
 @required
 -(void)showDatePickerWithPendingPost:(PendingPost *)pendingPost withHiddenDatePicker:(BOOL)hidden;
+-(void)datePickerUpdatedWithPendingPost:(PendingPost *)pendingPost;
+-(void)eventTextViewUpdatedWithPendingPost:(PendingPost *)pendingPost;
 
 @end
 
