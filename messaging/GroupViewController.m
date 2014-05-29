@@ -20,7 +20,6 @@
 #import "ContactUserCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
-#import "NewPostViewController.h"
 #import "WebClientHelper.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"

@@ -171,6 +171,8 @@
                      eventDate];
     }
     
+    DDLogDebug(@"Post: %@ with status: %d", entity, postSaved);
+    
     entity.key = [db lastInsertRowId];
     
     

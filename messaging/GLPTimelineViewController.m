@@ -7,7 +7,6 @@
 
 #import "GLPTimelineViewController.h"
 #import "ViewPostViewController.h"
-#import "NewPostViewController.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
@@ -1022,6 +1021,8 @@ const float TOP_OFFSET = 280.0f;
         }
     }
     
+    DDLogDebug(@"Non uploaded posts: %@\n All posts: %@", notUploadedPosts, self.posts);
+    
     [self startLoading];
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
@@ -1033,6 +1034,9 @@ const float TOP_OFFSET = 280.0f;
         }
         
         if(posts.count > 0) {
+            
+            DDLogDebug(@"New posts: %@", posts);
+            
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
             //New methodology of loading images.
@@ -2554,8 +2558,9 @@ const float TOP_OFFSET = 280.0f;
 //        [self presentViewController:vc animated:YES completion:nil];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        ChatViewAnimationController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+        NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        [newPostVC setDelegate:self];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
         

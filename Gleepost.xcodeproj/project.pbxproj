@@ -1307,7 +1307,6 @@
 		58B90F1B18C81DF800FA0955 /* GLPOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPOperationManager.m; sourceTree = "<group>"; };
 		58B90F1D18C8216200FA0955 /* GroupUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupUploaderManager.h; sourceTree = "<group>"; };
 		58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupUploaderManager.m; sourceTree = "<group>"; };
-		58B90F2218C8E9B200FA0955 /* NewPostDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewPostDelegate.h; sourceTree = "<group>"; };
 		58B9507218B2AF1E00EBA231 /* b.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = b.wav; sourceTree = "<group>"; };
 		58BB77FB1924F0600046885B /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
 		58BB77FC1924F0600046885B /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoView.m; sourceTree = "<group>"; };
@@ -2506,7 +2505,6 @@
 				80AB895C17C277D40053E784 /* NewPostViewController.m */,
 				588DE5D818A96552001D344D /* PickDateEventViewController.h */,
 				588DE5D918A96552001D344D /* PickDateEventViewController.m */,
-				58B90F2218C8E9B200FA0955 /* NewPostDelegate.h */,
 				58F0F0C5193507D40032450F /* GLPSelectCategoryViewController.h */,
 				58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */,
 			);
