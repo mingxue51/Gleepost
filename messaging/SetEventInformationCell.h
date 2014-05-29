@@ -8,11 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+@class PendingPost;
+
+@protocol SetEventInformationCellDelegate <NSObject>
+
+@required
+-(void)showDatePickerWithPendingPost:(PendingPost *)pendingPost withHiddenDatePicker:(BOOL)hidden;
+
+@end
+
 @interface SetEventInformationCell : UITableViewCell
 
 extern NSString * const kGLPSetInformationCell;
 extern float const INFORMATION_CELL_HEIGHT;
+extern float const INFORMATION_DATE_PICKER_HEIGHT;
 
--(void)initialiseElements;
+
+-(void)initialiseElementsWithDelegate:(UIViewController<SetEventInformationCellDelegate> *)delegate withPendingPost:(PendingPost *)pendingPost;
+-(void)setHiddenToDatePicker:(BOOL)hidden;
 
 @end

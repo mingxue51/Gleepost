@@ -13,8 +13,9 @@
 #import "SetEventInformationCell.h"
 #import "CategoryManager.h"
 #import "TableViewHelper.h"
+#import "PendingPost.h"
 
-@interface GLPSelectCategoryViewController ()
+@interface GLPSelectCategoryViewController ()<SetEventInformationCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
@@ -29,6 +30,10 @@
 @property (assign, nonatomic, getter = isActionCellVisible) BOOL actionCellVisible;
 
 @property (strong, nonatomic) NSIndexPath *actionCellIndexPath;
+
+@property (assign, nonatomic, getter = isDatePickerVisible) BOOL datePickerVisible;
+
+@property (strong, nonatomic) PendingPost *pendingPost;
 
 @end
 
@@ -45,8 +50,20 @@
     [self initialiseObjects];
     
     [self loadCategories];
+    
+    [self initialiseNotifications];
 
 }
+
+//-(void)viewWillDisappear:(BOOL)animated
+//{
+//    [self unregisterNotifications];
+//
+//    
+//    [self viewWillDisappear:animated];
+//
+//    
+//}
 
 -(void)registerCells
 {
@@ -62,6 +79,8 @@
     _selectedCategory = nil;
     _actionCellIndexPath = nil;
     _actionCellVisible = NO;
+    _datePickerVisible = NO;
+    _pendingPost = [[PendingPost alloc] init];
 }
 
 -(void)configureNavigationBar
@@ -83,7 +102,7 @@
         [_categories addObject:category];
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"No Category" andPostRemoteKey:0]];
     
     for(GLPCategory *category in _categories)
     {
@@ -96,6 +115,26 @@
     
     [self.tableView reloadData];
 }
+
+-(void)initialiseNotifications
+{
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+//-(void)unregisterNotifications
+//{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+//}
 
 #pragma mark - Table view
 
@@ -120,30 +159,32 @@
     {
         SetEventInformationCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPSetInformationCell forIndexPath:indexPath];
         
-        [cell initialiseElements];
+        [cell initialiseElementsWithDelegate:self withPendingPost:_pendingPost.copy];
+//        [cell setHiddenToDatePicker:[self isDatePickerVisible]];
+//        [cell initialiseElementsWithDelegate:self];
         
         return cell;
     }
-    
 
-    
     
     GLPCategoryCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPCategoryCell forIndexPath:indexPath];
     
-    
-    
-    
     [cell updateCategory:category withImage:[_categoriesImages objectForKey:category.tag]];
     
-    
-
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Depending on kind of notification navigate to the appropriate view.
+
+    //If No category is selected then go back to the main new post view.
+    if(indexPath.row == _categories.count-1)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        return;
+    }
     
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
 
@@ -151,6 +192,10 @@
     {
         //Remove cell.
         _actionCellVisible = NO;
+        
+        _datePickerVisible = NO;
+        
+        [_pendingPost resetFields];
         
         [_categories removeObjectAtIndex:_actionCellIndexPath.row];
         
@@ -172,47 +217,111 @@
         
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
     }
-    
 
 
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if([self isActionCellVisible])
-//    {
-//        return 200.0f;
-//    }
-//    else
-//    {
     
     GLPCategory *c = _categories[indexPath.row];
     
-    if([c.tag isEqualToString:@"action cell"])
+    if([c.tag isEqualToString:@"action cell"] && ![self isDatePickerVisible])
     {
         return INFORMATION_CELL_HEIGHT;
+    }
+    else if ([c.tag isEqualToString:@"action cell"] && [self isDatePickerVisible])
+    {
+        return INFORMATION_DATE_PICKER_HEIGHT;
     }
     else
     {
         return 50.0f;
     }
-    
-//    }
 }
+#pragma mark - SetEventInformationCellDelegate
 
+-(void)showDatePickerWithPendingPost:(PendingPost *)post withHiddenDatePicker:(BOOL)hidden
+{
+    _pendingPost = post;
+    
+    _datePickerVisible = !hidden;
+    
+    [self.tableView reloadRowsAtIndexPaths:@[_actionCellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+}
 
 #pragma mark - Selectors
 
 - (IBAction)goBack:(id)sender
 {
-//    DDLogDebug(@"GO back!");
-//    ATNavigationCategories *t = [self.transitioningDelegate animationControllerForDismissedController:self];
-//    
-
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark - form management
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+	// get a rect for the textView frame
+	CGRect containerFrame = CGRectMake(10.0f, 34.0f, 300.0f, 80.0f);
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    
+	CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = keyboardBounds.origin.y - self.tableView.frame.origin.y;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+//        self.formView.frame = containerFrame;
+        self.tableView.frame = tableViewFrame;
+
+        
+        [self.tableView setContentOffset:CGPointMake(0, 65.0f)];
+
+        
+    } completion:^(BOOL finished) {
+        
+
+        
+        [self.tableView setNeedsLayout];
+    }];
+    
+    
+
     
 }
 
+- (void)keyboardWillHide:(NSNotification *)note
+{
+    
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = CGRectMake(10.0f, 34.0f, 300.0f, 80.0f);
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+    
+	CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = 487.0f;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        self.tableView.frame = tableViewFrame;
+        
+    } completion:^(BOOL finished) {
+        [self.tableView setNeedsLayout];
+    }];
+}
 
 - (void)didReceiveMemoryWarning
 {

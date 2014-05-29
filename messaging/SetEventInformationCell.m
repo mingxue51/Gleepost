@@ -9,6 +9,8 @@
 #import "SetEventInformationCell.h"
 #import "GCPlaceholderTextView.h"
 #import "ShapeFormatterHelper.h"
+#import "PendingPost.h"
+
 
 @interface SetEventInformationCell () <UITextViewDelegate>
 
@@ -17,6 +19,12 @@
 @property (weak, nonatomic) IBOutlet GCPlaceholderTextView *textView;
 
 @property (assign, nonatomic) NSInteger remainingNumberOfCharacters;
+
+@property (assign, nonatomic) UIViewController <SetEventInformationCellDelegate>* delegate;
+
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+
+@property (strong, nonatomic) PendingPost *pendingPost;
 
 @end
 
@@ -27,6 +35,8 @@ const NSInteger MAX_NO_OF_CHARACTERS_EVENT_TITLE = 25;
 const float LIGHT_GRAY_RGB = 176.0f/255.0f;
 
 float const INFORMATION_CELL_HEIGHT = 150.0f;
+
+float const INFORMATION_DATE_PICKER_HEIGHT = 400.0f;
 
 NSString *const kGLPSetInformationCell = @"InformationCell";
 
@@ -43,16 +53,63 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 #pragma mark - Initialisations
 
--(void)initialiseElements
+-(void)initialiseElementsWithDelegate:(UIViewController<SetEventInformationCellDelegate> *)delegate withPendingPost:(PendingPost *)pendingPost
 {
+
     [self configureTextView];
     [self configureCharactersLeftLabel];
     [self clearAllElements];
+    [self setUpDatePicker];
+ 
+    _pendingPost = pendingPost;
+
+    
+    [self setObjectsWithPost:pendingPost];
+        
+    
+    
+    _delegate = delegate;
+}
+
+-(void)setHiddenToDatePicker:(BOOL)hidden
+{
+    [_datePicker setHidden:hidden];
 }
 
 -(void)initialiseObjects
 {
     _remainingNumberOfCharacters = MAX_NO_OF_CHARACTERS_EVENT_TITLE;
+}
+
+-(void)setObjectsWithPost:(PendingPost *)post
+{
+    [_textView setText:post.eventTitle];
+//    [_datePicker setDate:post.currentDate];
+    [self setNumberOfCharacters:post.numberOfCharacters];
+    [self setHiddenToDatePicker:[_pendingPost isDatePickerHidden]];
+}
+
+-(void)setUpDatePicker
+{
+    
+    NSDate* now = [NSDate date];
+    
+    // Get current NSDate without seconds & milliseconds, so that I can better compare the chosen date to the minimum & maximum dates.
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents* nowWithoutSecondsComponents = [calendar components:
+                                                     (NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit) fromDate:now] ;
+    
+    NSDate* nowWithoutSeconds = [calendar dateFromComponents:nowWithoutSecondsComponents] ;
+    
+    _datePicker.minimumDate = nowWithoutSeconds;
+    
+    
+    //TODO: Uncomment the following code to set maximum date. More here: http://stackoverflow.com/questions/14694452/uidatepicker-set-maximum-date
+    //    NSDateComponents* addOneMonthComponents = [NSDateComponents new] ;
+    //    addOneMonthComponents.month = 1 ;
+    //    NSDate* oneMonthFromNowWithoutSeconds = [calendar dateByAddingComponents:addOneMonthComponents toDate:nowWithoutSeconds options:0] ;
+    //    picker.maximumDate = oneMonthFromNowWithoutSeconds ;
 }
 
 -(void)configureCharactersLeftLabel
@@ -98,6 +155,9 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
+    _pendingPost.numberOfCharacters = textView.text.length;
+    _pendingPost.eventTitle = textView.text;
+    
     [self setNumberOfCharacters:textView.text.length];
 }
 
@@ -105,7 +165,22 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 - (IBAction)addTimeToEvent:(id)sender
 {
-    DDLogDebug(@"addTimeToEvent");
+    if([_datePicker isHidden])
+    {
+        _pendingPost.datePickerHidden = NO;
+        [_datePicker setHidden:NO];
+        [_delegate showDatePickerWithPendingPost:_pendingPost withHiddenDatePicker:NO];
+        
+    }
+    else
+    {
+        _pendingPost.datePickerHidden = YES;
+        [_datePicker setHidden:YES];
+        [_delegate showDatePickerWithPendingPost:_pendingPost withHiddenDatePicker:YES];
+
+    }
+    
+
 }
 
 

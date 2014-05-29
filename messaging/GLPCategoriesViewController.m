@@ -89,7 +89,7 @@
 //        }
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"No Category" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -126,7 +126,7 @@
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
     
-    if([selectedCategory.tag isEqualToString:@"all"])
+    if([selectedCategory.tag isEqualToString:@"no"])
     {
         [[SessionManager sharedInstance] setCurrentCategory:nil];
     }
