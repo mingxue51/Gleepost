@@ -175,7 +175,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self addGesturesToElements];
 
     
-//    [ShapeFormatterHelper setBorderToView:_contentLbl withColour:[UIColor redColor]];
+    [ShapeFormatterHelper setBorderToView:_indicatorImageView withColour:[UIColor redColor]];
     
 //    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
     
@@ -469,7 +469,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)updateIndicatorWithRemoteKey:(NSInteger)remoteKey
 {
-    if(remoteKey!=0)
+    if(remoteKey != 0)
     {
         [_indicatorImageView setAlpha:0.0];
     }

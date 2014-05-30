@@ -343,7 +343,7 @@ const float TOP_OFFSET = 280.0f;
     
     int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
     int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
-    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+    NSString *urlImage = [dict objectForKey:@"imageUrl"];
     
     int index = 0;
     
@@ -353,7 +353,11 @@ const float TOP_OFFSET = 280.0f;
     {
         if(key == p.key)
         {
-            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            if(urlImage && ![urlImage isEqualToString:@""])
+            {
+                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            }
+            
             p.remoteKey = remoteKey;
             uploadedPost = p;
 //            p.tempImage = nil;
@@ -996,8 +1000,6 @@ const float TOP_OFFSET = 280.0f;
 
 - (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
 {
-    DDLogDebug(@"loadEarlierPostsAndSaveScrollingState : isLoading: %d", self.isLoading);
-    
     if(self.isLoading) {
         return;
     }
@@ -1023,7 +1025,6 @@ const float TOP_OFFSET = 280.0f;
         }
     }
     
-    DDLogDebug(@"Non uploaded posts: %@\n All posts: %@", notUploadedPosts, self.posts);
     
     [self startLoading];
     
@@ -1036,8 +1037,6 @@ const float TOP_OFFSET = 280.0f;
         }
         
         if(posts.count > 0) {
-            
-            DDLogDebug(@"New posts: %@", posts);
             
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
@@ -1266,8 +1265,7 @@ const float TOP_OFFSET = 280.0f;
         
         //        self.posts = posts.mutableCopy;
         
-        
-        DDLogDebug(@"Recent posts: %d", recentPosts.count);
+
 
         [[GLPPostImageLoader sharedInstance] addPostsImages:recentPosts];
 
@@ -1366,8 +1364,6 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
-    DDLogDebug(@"reloadNewImagePostWithPost: Is loading: %d", self.isLoading);
-    
     //TODO: REMOVED! IT'S IMPORTANT!
     
 //    if(self.isLoading) {

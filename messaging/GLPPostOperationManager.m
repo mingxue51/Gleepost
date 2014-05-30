@@ -165,7 +165,7 @@ static GLPPostOperationManager *instance = nil;
 
 -(void)uploadTextPost:(GLPPost*)post
 {
-    
+    [_postUploader uploadTextPost:post];
 }
 
 -(void)stopTimer

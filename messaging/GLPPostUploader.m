@@ -171,7 +171,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     }
     else
     {
-        [self createLocalAndUploadPost:post];
+//        [self createLocalAndUploadPost:post];
+        [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
     }
     
     return post;
