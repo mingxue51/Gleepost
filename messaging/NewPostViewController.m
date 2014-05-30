@@ -246,6 +246,8 @@
     return UIStatusBarStyleLightContent;
 }
 
+#pragma mark - Selectors
+
 - (IBAction)cancelButtonClick:(id)sender
 {
 //    [self.delegate setNavigationBarName];
@@ -300,7 +302,6 @@
 }
 
 
-#pragma mark - Selectors
 
 -(IBAction)selectCategory:(id)sender
 {
