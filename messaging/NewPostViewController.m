@@ -375,7 +375,8 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart andTitle:_eventTitle];
         }
         
-        
+        [delegate reloadNewImagePostWithPost:inPost];
+
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
         [self dismissViewControllerAnimated:YES completion:^{
@@ -383,12 +384,12 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
             {
 //                inPost.tempImage = self.imgToUpload;
                 //inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
-                [delegate reloadNewImagePostWithPost:inPost];
+//                [delegate reloadNewImagePostWithPost:inPost];
             }
             else
             {
                 //[delegate reloadNewLocalPosts];
-                [delegate reloadNewImagePostWithPost:inPost];
+//                [delegate reloadNewImagePostWithPost:inPost];
             }
             
         }];

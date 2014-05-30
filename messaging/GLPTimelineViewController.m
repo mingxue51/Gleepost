@@ -996,6 +996,8 @@ const float TOP_OFFSET = 280.0f;
 
 - (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
 {
+    DDLogDebug(@"loadEarlierPostsAndSaveScrollingState : isLoading: %d", self.isLoading);
+    
     if(self.isLoading) {
         return;
     }
@@ -1364,13 +1366,14 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
-    DDLogDebug(@"Is loading: %d", self.isLoading);
+    DDLogDebug(@"reloadNewImagePostWithPost: Is loading: %d", self.isLoading);
     
     //TODO: REMOVED! IT'S IMPORTANT!
     
 //    if(self.isLoading) {
 //        return;
 //    }
+    
     
     self.isLoading = YES;
     
@@ -1384,7 +1387,6 @@ const float TOP_OFFSET = 280.0f;
     
     
     self.isLoading = NO;
-    
     //Bring the fake navigation bar to from because is hidden by new cell.
 //    [self.tableView bringSubviewToFront:self.reNavBar];
 
