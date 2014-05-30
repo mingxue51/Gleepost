@@ -315,7 +315,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 395.0f + height;
+    backgroundImageViewHeight = 398.0f + height;
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
     
@@ -332,7 +332,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
         
-        backgroundImageViewHeight -= 70.0f;
+        backgroundImageViewHeight -= 69.0f;
         
         distanceFromTop = 25.0f;
     }
