@@ -472,6 +472,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if(remoteKey != 0)
     {
         [_indicatorImageView setAlpha:0.0];
+        [self.layer removeAllAnimations];
     }
     else
     {

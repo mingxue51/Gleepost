@@ -144,17 +144,6 @@
     
     NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
     
-    
-    for(GLPPost *postC in posts)
-    {
-        if(postC.remoteKey == [remoteKey integerValue])
-        {
-            DDLogDebug(@"FOUND! Remote Key: %d, Content: %@", postC.remoteKey, postC.content);
-        }
-    }
-    
-
-    
     GLPPost *post = [[GLPPost alloc] init];
     
     //Find the index of the post.
@@ -167,12 +156,7 @@
     
     [self deletePostWithPost:post posts:posts andIndex:index];
     
-
-    
-    DDLogDebug(@"Post to be deleted: %@", post);
-    
     return index;
-    
 }
 
 +(void)deletePostWithPost:(GLPPost *)post posts:(NSMutableArray *)posts andIndex:(int)index

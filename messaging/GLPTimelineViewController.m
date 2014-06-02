@@ -1470,11 +1470,15 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)showLoadingIndicator
 {
+    self.isLoading = YES;
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 -(void)hideLoadingIndicator
 {
+    self.isLoading = NO;
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

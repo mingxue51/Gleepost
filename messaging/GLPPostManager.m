@@ -91,7 +91,6 @@
             for (GLPPost *newPost in posts) {
                 
                 if(newPost.remoteKey == post.remoteKey) {
-                    DDLogDebug(@"New post: %@ %d, Old post: %@ %d", newPost, newPost.remoteKey, post, post.remoteKey);
                     
                     break;
                 }
@@ -116,7 +115,7 @@
             
             //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
             
-            NSLog(@"remote posts %d", newPosts.count);
+            DDLogInfo(@"remote posts %d", newPosts.count);
             
             if(!newPosts || newPosts.count == 0) {
                 callback(YES, NO, nil);
