@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLPWalkthroughViewController : UIViewController <UIPageViewControllerDataSource>
+@interface GLPWalkthroughViewController : UIViewController <UIPageViewControllerDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
 
-@property (strong, nonatomic) NSArray *pageTitles;
-@property (strong, nonatomic) NSArray *pageImages;
 
 @end

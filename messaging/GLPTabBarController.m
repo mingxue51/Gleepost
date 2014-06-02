@@ -54,6 +54,12 @@ static NSInteger lastTabbarIndex = 0;
         }
         isViewDidLayoutSubviews = YES;
     }
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    ChatViewAnimationController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPWalkthroughViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 
