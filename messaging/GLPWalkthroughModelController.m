@@ -12,11 +12,12 @@
 @interface GLPWalkthroughModelController ()
 
 @property (readonly, strong, nonatomic) NSArray *pageData;
-@property (assign, nonatomic) NSInteger currentIndex;
+
 @end
 
 @implementation GLPWalkthroughModelController
 
+@synthesize pageData = _pageData;
 
 -(id)init
 {
@@ -32,8 +33,19 @@
 
 -(void)initialiseData
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    _pageData = [[dateFormatter monthSymbols] copy];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    _pageData = [[dateFormatter monthSymbols] copy];
+    
+    [self loadXibs];
+}
+
+-(void)loadXibs
+{
+    UIView *firstView = [[[NSBundle mainBundle] loadNibNamed:@"WTFirstScreen" owner:self options:nil] lastObject];
+    UIView *secondView = [[[NSBundle mainBundle] loadNibNamed:@"WTSecondScreen" owner:self options:nil] lastObject];
+    
+    _pageData = [[NSArray alloc] initWithObjects:firstView, secondView, nil];
+
 }
 
 - (GLPWalkthoughDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard
@@ -46,6 +58,7 @@
     // Create a new view controller and pass suitable data.
     GLPWalkthoughDataViewController *dataViewController = [storyboard instantiateViewControllerWithIdentifier:@"GLPWalkthoughDataViewController"];
     dataViewController.dataObject = self.pageData[index];
+    [dataViewController setView:self.pageData[index]];
     return dataViewController;
 }
 
@@ -56,10 +69,10 @@
     return [self.pageData indexOfObject:viewController.dataObject];
 }
 
--(NSInteger)getCurrentIndexWithData:(NSString *)month
-{
-    return [self.pageData indexOfObject:month];
-}
+//-(NSInteger)getCurrentIndexWithData:(NSString *)month
+//{
+//    return [self.pageData indexOfObject:month];
+//}
 
 -(NSInteger)numberOfViews
 {
@@ -70,41 +83,36 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
+    
     NSUInteger index = [self indexOfViewController:(GLPWalkthoughDataViewController *)viewController];
+    
+    
     if ((index == 0) || (index == NSNotFound)) {
         return nil;
     }
-    
-    
-    _currentIndex = index;
+    DDLogDebug(@"pageViewController before index: %ld", (long)index);
+
     index--;
+    
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
+
     NSUInteger index = [self indexOfViewController:(GLPWalkthoughDataViewController *)viewController];
+   
     if (index == NSNotFound) {
         return nil;
     }
-    _currentIndex = index;
+    DDLogDebug(@"pageViewController after index: %ld", (long)index);
 
     index++;
+    
     if (index == [self.pageData count]) {
         return nil;
     }
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
-}
-
-- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
-{
-    return 12;
-}
-
-- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
-{
-    
-    return 0;
 }
 
 /*

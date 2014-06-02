@@ -13,6 +13,6 @@
 @property (strong, nonatomic) id dataObject;
 @property (weak, nonatomic) IBOutlet UILabel *dataLabel;
 
--(NSString *)currentMonth;
+-(NSInteger)currentViewTag;
 
 @end

@@ -13,7 +13,7 @@
 
 - (GLPWalkthoughDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
 - (NSUInteger)indexOfViewController:(GLPWalkthoughDataViewController *)viewController;
--(NSInteger)getCurrentIndexWithData:(NSString *)month;
+//-(NSInteger)getCurrentIndexWithData:(NSString *)month;
 -(NSInteger)numberOfViews;
 
 @end

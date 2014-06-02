@@ -10,6 +10,8 @@
 
 @interface GLPWalkthoughDataViewController ()
 
+@property (strong, nonatomic) IBOutlet UIView *walkthroughView;
+
 @end
 
 @implementation GLPWalkthoughDataViewController
@@ -34,14 +36,17 @@
 {
     [super viewWillAppear:animated];
     
-    _dataLabel.text = [self.dataObject description];
+//    _dataLabel.text = [self.dataObject description];
+    
+//    [self.view addSubview:self.dataObject];
     [self.navigationController setNavigationBarHidden:YES];
 
 }
 
--(NSString *)currentMonth
+
+-(NSInteger)currentViewTag
 {
-    return _dataLabel.text;
+    return self.view.tag;
 }
 
 - (void)didReceiveMemoryWarning

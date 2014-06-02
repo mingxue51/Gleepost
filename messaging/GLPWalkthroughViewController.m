@@ -10,6 +10,7 @@
 #import "GLPWalkthoughDataViewController.h"
 #import "GLPWalkthroughModelController.h"
 #import "FXPageControl.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPWalkthroughViewController ()
 
@@ -17,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet FXPageControl *pageControl;
 
 @end
-
 
 
 @implementation GLPWalkthroughViewController
@@ -36,39 +36,50 @@
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     self.pageViewController.delegate = self;
     
-//    [self.pageViewController.view setBackgroundColor:[UIColor blackColor]];
+    [self.pageViewController.view setBackgroundColor:[UIColor whiteColor]];
     
     GLPWalkthoughDataViewController *startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     [self.pageViewController.navigationController setNavigationBarHidden:YES];
     self.pageViewController.dataSource = self.modelController;
-    
+
+
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
-    [self.view bringSubviewToFront:_pageControl];
-    
-    [self configurePageControl];
+
     
     // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
     CGRect pageViewRect = self.view.bounds;
-    self.pageViewController.view.frame = pageViewRect;
+//    self.pageViewController.view.frame = pageViewRect;
     
     [self.pageViewController didMoveToParentViewController:self];
     
     // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
+    
+    [self configurePageControl];
+
+    [self formatStatusBar];
+    
+    [self.pageViewController.view setFrame:CGRectMake(0, 0, 320, 700)];
+
 }
 
 #pragma mark - Configuration
 
 -(void)configurePageControl
 {
+    [self.view bringSubviewToFront:_pageControl];
     [_pageControl setNumberOfPages:[_modelController numberOfViews]];
-    [_pageControl setSelectedDotColor:[UIColor blueColor]];
+    [_pageControl setSelectedDotColor:[UIColor colorWithR:16.0f withG:126.0f andB:250.f]];
     [_pageControl setDotColor:[UIColor whiteColor]];
     [_pageControl setDotSize:10.0f];
-    
+}
+
+-(void)formatStatusBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (GLPWalkthroughModelController *)modelController
@@ -110,7 +121,7 @@
     GLPWalkthoughDataViewController *currentViewController = (GLPWalkthoughDataViewController *)[self.pageViewController.viewControllers lastObject];
     
 
-    self.pageControl.currentPage = [_modelController getCurrentIndexWithData:[currentViewController currentMonth]];
+    self.pageControl.currentPage = [currentViewController currentViewTag] - 1;
 }
 
 - (void)didReceiveMemoryWarning
