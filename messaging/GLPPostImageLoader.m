@@ -139,6 +139,8 @@ static GLPPostImageLoader *instance = nil;
             
             if(readyToConsume && posts.count - 1 == i)
             {
+                DDLogInfo(@"Image loader starts consuming");
+                
                 [self startConsume];
             }
             

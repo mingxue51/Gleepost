@@ -175,7 +175,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self addGesturesToElements];
 
     
-    [ShapeFormatterHelper setBorderToView:_indicatorImageView withColour:[UIColor redColor]];
+//    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
 //    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
     
@@ -652,6 +652,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self addGestureToPostImage];
     
     [self addGestureToProfileImage];
+    
+    [self addGesturesToLabels];
+}
+
+-(void)addGesturesToLabels
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(likePost:)];
+    [tap setNumberOfTapsRequired:1];
+    [_likesLbl addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(commentPost:)];
+    [tap setNumberOfTapsRequired:1];
+    [_commentsLbl addGestureRecognizer:tap];
 }
 
 -(void)addGestureToPostImage
