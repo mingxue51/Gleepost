@@ -232,8 +232,8 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)formatBackgroundViews
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:5];
-    [ShapeFormatterHelper setCornerRadiusWithView:_navigateToCategoriesView andValue:5];
+    [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:4];
+    [ShapeFormatterHelper setCornerRadiusWithView:_navigateToCategoriesView andValue:4];
 
     
 //    [ShapeFormatterHelper setBorderToView:_textFieldBackgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];

@@ -25,13 +25,14 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 
 @property (strong, nonatomic) PendingPost *pendingPost;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundTextImageView;
 
 @end
 
 @implementation SetEventInformationCell
 
 const NSString *CHARACTERS_LEFT_EVENT_TITLE = @"Characters Left";
-const NSInteger MAX_NO_OF_CHARACTERS_EVENT_TITLE = 25;
+const NSInteger MAX_NO_OF_CHARACTERS_EVENT_TITLE = 40;
 const float LIGHT_GRAY_RGB = 176.0f/255.0f;
 
 float const INFORMATION_CELL_HEIGHT = 150.0f;
@@ -118,11 +119,11 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 -(void)configureTextView
 {
-    [_textView setBackgroundColor:[UIColor whiteColor]];
+    [_textView setBackgroundColor:[UIColor clearColor]];
     _textView.clipsToBounds = YES;
     _textView.placeholderColor = [UIColor blackColor];
     _textView.delegate = self;
-    [ShapeFormatterHelper setCornerRadiusWithView:_textView andValue:5];
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundTextImageView andValue:4];
 }
 
 -(void)clearAllElements

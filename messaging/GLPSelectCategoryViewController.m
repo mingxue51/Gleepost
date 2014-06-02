@@ -213,7 +213,21 @@
         
         [indexPaths addObject: _actionCellIndexPath];
         
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        
+//        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    
+
+        
+//        UITableViewCell * theCell = (UITableViewCell *)[tableView
+//                                                        cellForRowAtIndexPath:indexPath];
+//        
+//        CGPoint tableViewCenter = [tableView contentOffset];
+//        tableViewCenter.y += tableView.frame.size.height/2;
+//        
+//        [tableView setContentOffset:CGPointMake(0,1100) animated:YES];
+//    
+//        CGRectSetH(tableView, 900);
     }
 
 
