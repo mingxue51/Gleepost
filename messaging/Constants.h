@@ -45,6 +45,7 @@
 #define GLPNOTIFICATION_SHOW_CAPTURE_VIEW               @"GLPShowCaptureView"
 #define GLPNOTIFICATION_RECEIVE_VIDEO_PATH              @"GLPReceiveVideoPath"
 
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 
@@ -57,7 +58,7 @@
 #define GLP_APP_FONT_BOLD                           @"Khmer UI"
 #define GLP_UNIVERS_LIGHT_BOLD                      @"Univers 45 Light"
 #define GLP_UNIVERS_CE_LIGHT                        @"Univers CE 45 Light"
-#define GLP_TITLE_FONT                              @"Whitney-Medium"
+#define GLP_TITLE_FONT                              @"HelveticaNeue"
 #define GLP_MESSAGE_FONT                            @"HelveticaNeue"
 
 #define kGLPNumberOfPosts                           20

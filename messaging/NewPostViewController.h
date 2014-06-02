@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
-#import "NewPostDelegate.h"
 #import "GLPVideoViewController.h"
+@class GLPPost;
+@class GLPGroup;
 
-@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate>
+@protocol NewPostDelegate <NSObject>
+
+@required
+-(void)reloadNewImagePostWithPost:(GLPPost *)post;
+
+@end
+
+@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate>
 
 //@property (weak, nonatomic) GLPTimelineViewController *delegate;
 @property (weak, nonatomic) UIViewController <NewPostDelegate> *delegate;
@@ -20,9 +28,10 @@
 //Used only if the class is call from the groups view controller.
 @property (strong, nonatomic) GLPGroup *group;
 
-- (IBAction)addImage:(id)sender;
-- (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title;
+-(void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title;
 -(void)cancelSelectingDateForEvent;
 
+-(void)hideKeyboard;
+-(void)showKeyboard;
 
 @end

@@ -245,6 +245,10 @@
                                     <constraint firstAttribute="width" constant="300" id="FM8-ev-6hA"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T7Q-9J-oka">
+                                <rect key="frame" x="280" y="350" width="10" height="10"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -261,6 +265,7 @@
                             <outlet property="contentLabelHeightConstrain" destination="Cue-S2-lvF" id="KC2-6l-kQF"/>
                             <outlet property="contentLbl" destination="Rvv-XG-fjZ" id="TxQ-VK-gUP"/>
                             <outlet property="distanceFromTop" destination="B5y-Ak-BzZ" id="ELf-C6-Bp4"/>
+                            <outlet property="indicatorImageView" destination="T7Q-9J-oka" id="Imd-QC-TJo"/>
                             <outlet property="likeBtn" destination="gBB-WE-Jqk" id="d5Y-jn-8FS"/>
                             <outlet property="likesLbl" destination="I2a-Lq-hHs" id="W9y-eo-vdg"/>
                             <outlet property="mainViewHeight" destination="1vf-rj-c0O" id="hug-q8-1gF"/>

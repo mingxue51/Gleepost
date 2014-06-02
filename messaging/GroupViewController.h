@@ -11,10 +11,10 @@
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 #import "ButtonNavigationDelegate.h"
-#import "NewPostDelegate.h"
 #import "ProfileTableViewCell.h"
 #import "FDTakeController.h"
 #import "GLPPostCell.h"
+#import "NewPostViewController.h"
 
 
 @interface GroupViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate, ButtonNavigationDelegate, NewPostDelegate, UIActionSheetDelegate, ProfileTableViewCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate>

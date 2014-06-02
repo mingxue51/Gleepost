@@ -40,7 +40,6 @@
     [self configAppearance];
     
 
-    
 //    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
 }
 
@@ -90,7 +89,7 @@
 //        }
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -127,7 +126,7 @@
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
     
-    if([selectedCategory.tag isEqualToString:@"all"])
+    if([selectedCategory.tag isEqualToString:@"no"])
     {
         [[SessionManager sharedInstance] setCurrentCategory:nil];
     }
@@ -138,6 +137,8 @@
     
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+#warning change that approach. Do it as we are doing that in GLPSelectCategoryVC.
     
     [UIView animateWithDuration:0.25 animations:^{
         
@@ -195,7 +196,7 @@
     {
         if(!_selectedCategory)
         {
-            if([cat.tag isEqualToString:@"all"])
+            if([cat.tag isEqualToString:@"no"])
             {
                 cat.uiSelected = YES;
             }

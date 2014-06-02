@@ -8,7 +8,7 @@
 
 #import "TransitionDelegateViewImage.h"
 #import "AnimatedTransitioningViewImage.h"
-
+#import "ATNavigationCategories.h"
 
 @implementation TransitionDelegateViewImage
 
@@ -27,9 +27,8 @@
 //    AnimatedTransitioning *controller = [[AnimatedTransitioning alloc]init];
 //    controller.isPresenting = NO;
 //    return controller;
-
     
-    NSLog(@"animationControllerForDismissedController");
+    
     
     return nil;
 }

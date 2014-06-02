@@ -86,23 +86,42 @@
         CGRectSetH(navigationBar, 60.0f);
         CGRectMoveY(navigationBar, -19.0f);
         
-        [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+        [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
     }
     else
     {
+        
+        //Tag = 1 is used for custom navigation bars. (with white background)
+        //Tag = 2 is used for default navigation bars. (with white background)
+        //Tag = 0 is used for all navigation bars. (with other than white background)
         if(navigationBar.tag == 1)
         {
-            CGRectSetH(navigationBar, 60.0f);
+            CGRectSetH(navigationBar, 65.0f);
             CGRectMoveY(navigationBar, -22.0f);
-            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
+        }
+        else if (navigationBar.tag == 2)
+        {
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor blackColor], UITextAttributeTextColor, nil]];
         }
         else
         {
             [navigationBar setTintColor:[UIColor whiteColor]];
-            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
         }
     }
     
+}
+
++(void)setNavigationBarFormatForNewPostViews:(UINavigationBar *)navigationBar
+{
+    [AppearanceHelper setNavigationBarFontForNavigationBar:navigationBar];
+    
+    [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
+                            forBarPosition:UIBarPositionAny
+                                barMetrics:UIBarMetricsDefault];
+    
+    [navigationBar setShadowImage:[UIImage new]];
 }
 
 

@@ -91,8 +91,10 @@
             for (GLPPost *newPost in posts) {
                 
                 if(newPost.remoteKey == post.remoteKey) {
+                    
                     break;
                 }
+                
                 
                 if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
                 {
@@ -113,7 +115,7 @@
             
             //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
             
-            NSLog(@"remote posts %d", newPosts.count);
+            DDLogInfo(@"remote posts %d", newPosts.count);
             
             if(!newPosts || newPosts.count == 0) {
                 callback(YES, NO, nil);
@@ -181,6 +183,15 @@
 //        
 //        callback(YES, remain, newPosts);
     }];
+}
+
++(NSArray *)removeLastPost:(NSArray *)posts
+{
+    NSMutableArray *m = [[NSMutableArray alloc] initWithArray:posts];
+    
+    [m removeObjectAtIndex:0];
+    
+    return m.mutableCopy;
 }
 
 +(BOOL)isPost:(GLPPost*)post containedInArray:(NSArray*)posts
@@ -624,7 +635,9 @@
 
 // update local post to either sent or error
 + (void)updatePostAfterSending:(GLPPost *)post
-{    
+{
+    DDLogDebug(@"Update post after sending: %@", post);
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPPostDao updatePostSendingData:post inDb:db];
     }];

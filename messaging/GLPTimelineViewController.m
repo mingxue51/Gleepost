@@ -7,7 +7,6 @@
 
 #import "GLPTimelineViewController.h"
 #import "ViewPostViewController.h"
-#import "NewPostViewController.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
@@ -344,7 +343,7 @@ const float TOP_OFFSET = 280.0f;
     
     int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
     int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
-    NSString * urlImage = [dict objectForKey:@"imageUrl"];
+    NSString *urlImage = [dict objectForKey:@"imageUrl"];
     
     int index = 0;
     
@@ -354,7 +353,11 @@ const float TOP_OFFSET = 280.0f;
     {
         if(key == p.key)
         {
-            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            if(urlImage && ![urlImage isEqualToString:@""])
+            {
+                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            }
+            
             p.remoteKey = remoteKey;
             uploadedPost = p;
 //            p.tempImage = nil;
@@ -871,17 +874,6 @@ const float TOP_OFFSET = 280.0f;
     self.navigationItem.titleView = label;
 }
 
-#pragma mark - Conversations
-
-//- (void)loadConversations
-//{
-//    [ConversationManager loadConversationsWithLocalCallback:^(NSArray *conversations) {
-//
-//    } remoteCallback:^(BOOL success, NSArray *conversations) {
-//      
-//    }];
-//}
-
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
@@ -1033,6 +1025,7 @@ const float TOP_OFFSET = 280.0f;
         }
     }
     
+    
     [self startLoading];
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
@@ -1044,6 +1037,7 @@ const float TOP_OFFSET = 280.0f;
         }
         
         if(posts.count > 0) {
+            
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
             //New methodology of loading images.
@@ -1271,8 +1265,7 @@ const float TOP_OFFSET = 280.0f;
         
         //        self.posts = posts.mutableCopy;
         
-        
-        DDLogDebug(@"Recent posts: %d", recentPosts.count);
+
 
         [[GLPPostImageLoader sharedInstance] addPostsImages:recentPosts];
 
@@ -1371,13 +1364,12 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 {
-    DDLogDebug(@"Is loading: %d", self.isLoading);
-    
     //TODO: REMOVED! IT'S IMPORTANT!
     
 //    if(self.isLoading) {
 //        return;
 //    }
+    
     
     self.isLoading = YES;
     
@@ -1391,7 +1383,6 @@ const float TOP_OFFSET = 280.0f;
     
     
     self.isLoading = NO;
-    
     //Bring the fake navigation bar to from because is hidden by new cell.
 //    [self.tableView bringSubviewToFront:self.reNavBar];
 
@@ -1479,11 +1470,15 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)showLoadingIndicator
 {
+    self.isLoading = YES;
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 -(void)hideLoadingIndicator
 {
+    self.isLoading = NO;
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1970,7 +1965,7 @@ const float TOP_OFFSET = 280.0f;
     
     [UIView animateWithDuration:0.5f animations:^{
         
-        [self.tableView setContentOffset:CGPointMake(0,TOP_OFFSET)];
+        [self.tableView setContentOffset:CGPointMake(0, TOP_OFFSET)];
         
         
     } completion:^(BOOL finished) {
@@ -2553,16 +2548,24 @@ const float TOP_OFFSET = 280.0f;
         //If iOS7
         
         //Hide navigation items and add NewPostViewController's items.
-        [self hideNavigationBarAndButtonWithNewTitle:@"New Post"];
+//        [self hideNavigationBarAndButtonWithNewTitle:@"New Post"];
+        
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//        NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+//        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+//        vc.delegate = self;
+//        [vc setTransitioningDelegate:self.transitionController];
+//        vc.modalPresentationStyle= UIModalPresentationCustom;
+//        [self.view setBackgroundColor:[UIColor whiteColor]];
+//        [self presentViewController:vc animated:YES completion:nil];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-        vc.delegate = self;
-        [vc setTransitioningDelegate:self.transitionController];
-        vc.modalPresentationStyle= UIModalPresentationCustom;
-        [self.view setBackgroundColor:[UIColor whiteColor]];
-        [self presentViewController:vc animated:YES completion:nil];
+        NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        [newPostVC setDelegate:self];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navigationController animated:YES completion:nil];
+        
     }
     else
     {

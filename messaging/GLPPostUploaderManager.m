@@ -421,8 +421,11 @@
     }];
 }
 
--(void)uploadTextPost:(GLPPost*)textPost
+-(void)uploadTextPost:(GLPPost *)textPost
 {
+    
+    [GLPPostManager createLocalPost:textPost];
+
     //Post ready to be uploaded.
     
     void (^_uploadContentBlock)(GLPPost*);
@@ -432,17 +435,15 @@
     {
         _uploadContentBlock = ^(GLPPost* post){
             
-            NSLog(@"Into uploadContentBlock");
-            
             //Notify GLPTimelineViewController after finish.
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-                                                                                                                            @"imageUrl":[post.imagesUrls objectAtIndex:0],
+                                                                                                                            @"imageUrl":@"",
                                                                                                                             @"key":[NSNumber numberWithInt:post.key]}];
         };
     }
     
     
-    NSLog(@"Post uploading task started with post content: %@.",textPost.content);
+    DDLogInfo(@"Text post uploading task started with post content: %@.",textPost.content);
     
     
     [[WebClient sharedInstance] createPost:textPost callbackBlock:^(BOOL success, int remoteKey) {
@@ -451,7 +452,7 @@
         textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         textPost.remoteKey = success ? remoteKey : 0;
         
-        NSLog(@"Post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
+        DDLogInfo(@"Text post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
         
         
         [GLPPostManager updatePostAfterSending:textPost];
@@ -546,9 +547,9 @@
         _uploadVideoContentBlock = ^(GLPPost* post){
             
             //Notify GLPTimelineViewController after finish.
-//            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-//                                                                                                                            @"imageUrl":[post.imagesUrls objectAtIndex:0],
-//                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
+                                                                                                                            @"videoUrl":@"",
+                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
         };
     }
     
@@ -564,7 +565,7 @@
         post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         post.remoteKey = success ? remoteKey : 0;
         
-        NSLog(@"!!Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
+        NSLog(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
         
         
         [GLPPostManager updatePostAfterSending:post];
