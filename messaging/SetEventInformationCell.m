@@ -36,7 +36,7 @@ const float LIGHT_GRAY_RGB = 176.0f/255.0f;
 
 float const INFORMATION_CELL_HEIGHT = 150.0f;
 
-float const INFORMATION_DATE_PICKER_HEIGHT = 400.0f;
+float const INFORMATION_DATE_PICKER_HEIGHT = 370.0f;
 
 NSString *const kGLPSetInformationCell = @"InformationCell";
 
@@ -46,7 +46,6 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
     
     if(self)
     {
-        [self configureNotifications];
     }
     
     return self;
@@ -92,7 +91,6 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 -(void)setUpDatePicker
 {
-    
     NSDate* now = [NSDate date];
     
     // Get current NSDate without seconds & milliseconds, so that I can better compare the chosen date to the minimum & maximum dates.
@@ -134,13 +132,6 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
 
 }
 
--(void)configureNotifications
-{
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:GLPNOTIFICATION_DONE_EVENT
-//                                               object:nil];
-}
 
 #pragma makr - Text text view
 
@@ -190,8 +181,6 @@ NSString *const kGLPSetInformationCell = @"InformationCell";
         [_delegate showDatePickerWithPendingPost:_pendingPost withHiddenDatePicker:YES];
 
     }
-    
-
 }
 
 - (IBAction)datePickerUpdated:(id)sender

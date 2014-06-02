@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, GLPPendingPostReady) {
 @property (strong, nonatomic) NSDate *currentDate;
 @property (assign, nonatomic, getter = isDatePickerHidden) BOOL datePickerHidden;
 
--(id)initWithPost:(GLPPost *)post;
 -(void)resetFields;
 -(GLPPendingPostReady)isPostReady;
 

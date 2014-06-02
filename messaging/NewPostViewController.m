@@ -264,11 +264,9 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     [self configureLeftBarButton];
     [self configureRightBarButton];
     
-//    [self.simpleNavBar setBackgroundColor:[UIColor clearColor]];
-//    
-//    self.simpleNavBar.tag = 1;
-//    
-//    [AppearanceHelper setNavigationBarFontForNavigationBar:self.simpleNavBar];
+    self.navigationController.navigationBar.tag = 2;
+    
+    [AppearanceHelper setNavigationBarFormatForNewPostViews:self.navigationController.navigationBar];
 }
 
 -(void)configureLeftBarButton

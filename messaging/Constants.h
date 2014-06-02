@@ -58,7 +58,7 @@
 #define GLP_APP_FONT_BOLD                           @"Khmer UI"
 #define GLP_UNIVERS_LIGHT_BOLD                      @"Univers 45 Light"
 #define GLP_UNIVERS_CE_LIGHT                        @"Univers CE 45 Light"
-#define GLP_TITLE_FONT                              @"HelveticaNeue-Bold"
+#define GLP_TITLE_FONT                              @"HelveticaNeue"
 #define GLP_MESSAGE_FONT                            @"HelveticaNeue"
 
 #define kGLPNumberOfPosts                           20

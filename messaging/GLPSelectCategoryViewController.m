@@ -86,12 +86,9 @@
 
 -(void)configureNavigationBar
 {
-//    [self.navigationBar setBackgroundColor:[UIColor clearColor]];
-    
     self.navigationBar.tag = 1;
-    
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
 
+    [AppearanceHelper setNavigationBarFormatForNewPostViews:_navigationBar];
 }
 
 -(void)loadCategories
@@ -131,11 +128,11 @@
                                                object:nil];
 }
 
-//-(void)unregisterNotifications
-//{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-//}
+-(void)unregisterNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
 
 #pragma mark - Table view
 
@@ -224,7 +221,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     GLPCategory *c = _categories[indexPath.row];
     
     if([c.tag isEqualToString:@"action cell"] && ![self isDatePickerVisible])
@@ -266,6 +262,8 @@
 
 - (IBAction)goBack:(id)sender
 {
+    [self unregisterNotifications];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

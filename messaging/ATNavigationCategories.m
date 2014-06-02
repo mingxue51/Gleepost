@@ -25,7 +25,7 @@ const float ANIMATION_TIME = 0.5;
 
 - (void)animationEnded:(BOOL) transitionCompleted
 {
-    DDLogDebug(@"animationEnded");
+
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {

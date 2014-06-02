@@ -29,8 +29,6 @@
     //    return controller;
     
     
-    NSLog(@"animationControllerForDismissedController");
-
     //Here retrieve the very first view controller by just creating a new class to create the animation.
     
     ATNavigationCategories *controller = [[ATNavigationCategories alloc]init];
@@ -42,14 +40,12 @@
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
     
-    NSLog(@"interactionControllerForPresentation");
     
     return nil;
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
     
-    NSLog(@"interactionControllerForDismissal");
     return nil;
 }
 @end

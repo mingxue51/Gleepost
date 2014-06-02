@@ -28,5 +28,6 @@
 +(UIColor *)colourForTableViewSeparatorLines;
 +(void)setSegmentFontWithSegment:(UISegmentedControl *)segment;
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar;
++(void)setNavigationBarFormatForNewPostViews:(UINavigationBar *)navigationBar;
 
 @end

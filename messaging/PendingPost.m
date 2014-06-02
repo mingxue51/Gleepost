@@ -9,26 +9,8 @@
 #import "PendingPost.h"
 #import "GLPPost.h"
 
-@interface PendingPost ()
-
-
-
-@end
 
 @implementation PendingPost
-
--(id)initWithPost:(GLPPost *)post
-{
-    self = [super init];
-    
-    if(self)
-    {
-        
-    }
-    
-    return self;
-    
-}
 
 -(id)init
 {
@@ -42,6 +24,10 @@
     return self;
 }
 
+/**
+ Implement copyWithZone method in order to copy each object that is encapsulated 
+ to PendingPost object and not just the reference of the PendingPost object.
+ */
 - (id)copyWithZone:(NSZone *)zone
 {
     PendingPost *copy = [[[self class] alloc] init];
