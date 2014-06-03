@@ -179,8 +179,7 @@
     //If No category is selected then go back to the main new post view.
     if(indexPath.row == _categories.count-1)
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
+        [self goBack:nil];
         return;
     }
     

@@ -253,7 +253,7 @@ NSString *NOTHING_HAPPENING;
 //        return 50.0;
 //        
 //    }
-    return 5.0;
+    return 10.0;
 }
 
 

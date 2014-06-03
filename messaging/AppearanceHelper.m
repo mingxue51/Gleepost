@@ -152,6 +152,11 @@
 
 }
 
++ (UIColor *)tintGleepostColour
+{
+    return [UIColor colorWithRed:221.0f/255.0f green:71.0f/255.0f blue:84.0f/255.0f alpha:1.0f];
+}
+
 +(UIColor*)colourForNotFocusedItems
 {
     return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
