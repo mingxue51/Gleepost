@@ -34,6 +34,6 @@
 
 -(NSString *)content;
 
-- (void)setImageNeedsToReload:(BOOL)imageNeedsToReload;
+- (void)setMediaNeedsToReload:(BOOL)imageNeedsToReload;
 
 @end

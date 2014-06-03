@@ -1218,11 +1218,11 @@
             
             [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:self.view];
             
-            [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL sucess, GLPPost *post) {
+            [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL success, GLPPost *post) {
                 
                 [WebClientHelper hideStandardLoaderForView:self.view];
                 
-                if(sucess)
+                if(success)
                 {
                     self.selectedPost = post;
                     
@@ -1423,7 +1423,7 @@
         vc.commentJustCreated = self.commentCreated;
         vc.commentNotificationDate = self.commentNotificationDate;
         
-        [vc reloadImage:([self.selectedPost imagePost]) ? YES : NO];
+        [vc reloadImage:([self.selectedPost imagePost] || [self.selectedPost isVideoPost]) ? YES : NO];
         
         vc.post = self.selectedPost;
         vc.isFromCampusLive = NO;

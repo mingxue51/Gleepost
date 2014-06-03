@@ -37,7 +37,7 @@
 
 
 /** Other variables. */
-@property (assign, nonatomic) BOOL imageNeedsToLoadAgain;
+@property (assign, nonatomic) BOOL mediaNeedsToReload;
 @property (strong, nonatomic) GLPPost *post;
 @property (assign, nonatomic) NSInteger postIndex;
 
@@ -70,7 +70,7 @@ const float ONE_LINE_LIMIT = 18.0;
 -(void)initialiseObjects
 {
     _isViewPost = NO;
-    _imageNeedsToLoadAgain = NO;
+    _mediaNeedsToReload = NO;
 }
 
 
@@ -91,7 +91,7 @@ const float ONE_LINE_LIMIT = 18.0;
 
     [_mainView setDelegate:self];
     
-    [_mainView setImageNeedsToReload:_imageNeedsToLoadAgain];
+    [_mainView setMediaNeedsToReload:_mediaNeedsToReload];
     
     //Set elements to main view.
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
@@ -132,9 +132,9 @@ const float ONE_LINE_LIMIT = 18.0;
 
 #pragma mark - Modifiers
 
--(void)reloadImage:(BOOL)loadImage
+-(void)reloadMedia:(BOOL)loadMedia
 {
-    self.imageNeedsToLoadAgain = loadImage;
+    self.mediaNeedsToReload = loadMedia;
 }
 
 -(void)setIsViewPost:(BOOL)isViewPost
