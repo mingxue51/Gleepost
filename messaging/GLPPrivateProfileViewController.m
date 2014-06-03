@@ -198,8 +198,6 @@
     
     //[[ContactsManager sharedInstance] loadContactsFromDatabase];
     
-    self.selectedTabStatus = kGLPAbout;
-    
     self.posts = [[NSArray alloc] init];
 
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];

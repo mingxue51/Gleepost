@@ -58,7 +58,11 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
         
         if(push)
         {
-            [self viewSettingsButton];
+//            [self viewSettingsButton];
+
+            #warning test that if works.
+            
+            [self viewSettings:nil];
         }
     }
     else if([delegate isKindOfClass:[GroupViewController class]])
@@ -86,8 +90,6 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     
     [self setGreenToNavigator:self.postsLine];
     
-    
-    
     if(_isProfileViewController)
     {
         [self showProfileButtonsPostsSelected];
@@ -112,37 +114,37 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
     if(_isProfileViewController)
     {
         [self showProfileButtonsNotificationsSelected];
-        [_delegate viewSectionWithId:kGLPSettings];
+        [_delegate viewSectionWithId:kGLPNotifications];
 
     }
     else
     {
-        [_delegate viewSectionWithId:kGLPSettings];
+        [_delegate viewSectionWithId:kGLPMembers];
 
 //        [self showGroupButtonsMembersSelected];
     }
 }
 
--(void)viewSettingsButton
-{
-    [self setGrayToNavigators];
-    
-    [self setGreenToNavigator:self.settingsLine];
-    
-    
-    if(_isProfileViewController)
-    {
-        [self showProfileButtonsNotificationsSelected];
-        [_delegate viewSectionWithId:kGLPSettings];
-        
-    }
-    else
-    {
-        [_delegate viewSectionWithId:kGLPSettings];
-        
-        //        [self showGroupButtonsMembersSelected];
-    }
-}
+//-(void)viewSettingsButton
+//{
+//    [self setGrayToNavigators];
+//    
+//    [self setGreenToNavigator:self.settingsLine];
+//    
+//    
+//    if(_isProfileViewController)
+//    {
+//        [self showProfileButtonsNotificationsSelected];
+//        [_delegate viewSectionWithId:kGLPSettings];
+//        
+//    }
+//    else
+//    {
+//        [_delegate viewSectionWithId:kGLPSettings];
+//        
+//        //        [self showGroupButtonsMembersSelected];
+//    }
+//}
 
 
 -(void)setGreenToNavigator:(UIImageView*)navigator

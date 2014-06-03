@@ -54,14 +54,6 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
     [self setCurrentUserStatusWithUser:self.currentUser];
 }
 
-- (IBAction)viewAbout:(id)sender
-{
-    [self setGrayToNavigators];
-
-    [self setGreenToNavigator:self.aboutLine];
-    
-    [_delegate viewSectionWithId:kGLPAbout];
-}
 
 - (IBAction)viewPosts:(id)sender
 {
@@ -72,15 +64,6 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
 
     [_delegate viewSectionWithId:kGLPPosts];
 
-}
-
-- (IBAction)viewMutual:(id)sender
-{
-    [self setGrayToNavigators];
-
-    [self setGreenToNavigator:self.mutualLine];
-
-    [_delegate viewSectionWithId:kGLPMutual];
 }
 
 
