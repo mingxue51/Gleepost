@@ -91,6 +91,8 @@ const float ONE_LINE_LIMIT = 18.0;
 
     [_mainView setDelegate:self];
     
+    [_mainView setImageNeedsToReload:_imageNeedsToLoadAgain];
+    
     //Set elements to main view.
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
     

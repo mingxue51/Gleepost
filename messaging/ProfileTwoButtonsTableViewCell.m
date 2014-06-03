@@ -83,7 +83,6 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
 
 #pragma mark - Selectors
 
-
 - (IBAction)viewPosts:(id)sender
 {
     [self setGrayToNavigators];

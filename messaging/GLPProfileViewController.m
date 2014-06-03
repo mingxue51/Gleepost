@@ -1423,6 +1423,8 @@
         vc.commentJustCreated = self.commentCreated;
         vc.commentNotificationDate = self.commentNotificationDate;
         
+        [vc reloadImage:([self.selectedPost imagePost]) ? YES : NO];
+        
         vc.post = self.selectedPost;
         vc.isFromCampusLive = NO;
         vc.isViewPostNotifications = YES;

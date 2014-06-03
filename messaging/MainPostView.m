@@ -382,6 +382,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 }
 
+- (void)setImageNeedsToReload:(BOOL)imageNeedsToReload
+{
+    _imageNeedsToLoadAgain = imageNeedsToReload;
+}
+
 #pragma mark - Media
 
 -(void)savePostImage
