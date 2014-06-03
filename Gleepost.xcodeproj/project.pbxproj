@@ -244,6 +244,7 @@
 		585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 585B319F191C452600B66380 /* BusyFreeSwitch.m */; };
 		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
 		585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoUploadManager.m */; };
+		585C784E193DF3B2007E699B /* WTSecondScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C784D193DF3B2007E699B /* WTSecondScreenView.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585C9EFD1925460800382FFB /* GLPPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C9EFC1925460800382FFB /* GLPPostCell.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
@@ -1067,6 +1068,8 @@
 		585C514419227006000910DA /* VideoPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPreviewView.m; sourceTree = "<group>"; };
 		585C514619227B13000910DA /* GLPVideoUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploadManager.h; sourceTree = "<group>"; };
 		585C514719227B13000910DA /* GLPVideoUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoUploadManager.m; sourceTree = "<group>"; };
+		585C784C193DF3B2007E699B /* WTSecondScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTSecondScreenView.h; sourceTree = "<group>"; };
+		585C784D193DF3B2007E699B /* WTSecondScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTSecondScreenView.m; sourceTree = "<group>"; };
 		585C7CD7181688CD00173C38 /* LiveChatsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveChatsView.h; sourceTree = "<group>"; };
 		585C7CD8181688CD00173C38 /* LiveChatsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveChatsView.m; sourceTree = "<group>"; };
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
@@ -2209,6 +2212,15 @@
 				581BD8671913E05E006F8BCD /* ThermometerCircleView.m */,
 			);
 			name = Thermometer;
+			sourceTree = "<group>";
+		};
+		585C784F193DF3B8007E699B /* Walkthrough */ = {
+			isa = PBXGroup;
+			children = (
+				585C784C193DF3B2007E699B /* WTSecondScreenView.h */,
+				585C784D193DF3B2007E699B /* WTSecondScreenView.m */,
+			);
+			name = Walkthrough;
 			sourceTree = "<group>";
 		};
 		585DF77317ECA70C00FBFC35 /* Chat Images */ = {
@@ -3705,6 +3717,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				585C784F193DF3B8007E699B /* Walkthrough */,
 				58F294FE19353C6F00A638BA /* New post */,
 				58E1E5EB1926283C007ACB4F /* Post */,
 				58BB77FA1924EFA50046885B /* Video */,
@@ -4777,6 +4790,7 @@
 				5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */,
 				58A75EBF1921097A0082F316 /* VideoProgressView.m in Sources */,
 				80323E1A189A788400968FE9 /* GLPConversationViewController.m in Sources */,
+				585C784E193DF3B2007E699B /* WTSecondScreenView.m in Sources */,
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
 				80C92AA918C0CC6F001CB621 /* GLPDateFormatterHelper.m in Sources */,
 				582A663618AB963700006419 /* EventBarView.m in Sources */,
