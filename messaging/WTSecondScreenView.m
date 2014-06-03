@@ -39,8 +39,6 @@
 
 - (IBAction)getStartedPushed:(id)sender
 {
-//    [_delegate exitWalkthrough];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_DISMISS_WALKTHROUGH object:nil];
 }
 

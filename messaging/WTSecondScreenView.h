@@ -8,15 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol WTSecondScreenViewDelegate <NSObject>
-
-- (void)exitWalkthrough;
-
-@end
-
 @interface WTSecondScreenView : UIView
 
-@property (assign, nonatomic) UIViewController <WTSecondScreenViewDelegate> *delegate;
 
 
 @end

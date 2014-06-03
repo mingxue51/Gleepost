@@ -47,7 +47,6 @@
 #import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
-#import "WalkThroughHelper.h"
 #import "AnimationDayController.h"
 #import "GLPGroupManager.h"
 #import "CampusWallGroupsPostsManager.h"
@@ -173,7 +172,7 @@ const float TOP_OFFSET = 280.0f;
     [self loadInitialPosts];
     
 
-    [WalkThroughHelper showCampusWallMessage];
+//    [WalkThroughHelper showCampusWallMessage];
     
     //Find the sunset sunrise for preparation of the new chat.
     [AnimationDayController sharedInstance];

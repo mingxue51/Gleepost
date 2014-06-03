@@ -14,7 +14,6 @@
 #import "GLPConversation.h"
 #import "GLPLiveConversationsManager.h"
 #import "GLPConversationViewController.h"
-#import "WalkThroughHelper.h"
 #import "SessionManager.h"
 #import "UIAlertView+Blocks.h"
 #import "SoundHelper.h"
@@ -81,14 +80,14 @@ float const NEW_CHAT_DELAY = 2.0;
     [self.view addSubview:self.chatStanfordAnimations];
     [self.view sendSubviewToBack:self.chatStanfordAnimations];
     
-    if([WalkThroughHelper isReadyToShowRandomChat])
-    {
+//    if([WalkThroughHelper isReadyToShowRandomChat])
+//    {
         [self startRegularRandomChatOperation];
-    }
-    else
-    {
-        [WalkThroughHelper showRandomChatMessageWithDelegate:self];
-    }
+//    }
+//    else
+//    {
+//        [WalkThroughHelper showRandomChatMessageWithDelegate:self];
+//    }
 }
 
 -(void)startRegularRandomChatOperation
