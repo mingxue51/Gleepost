@@ -256,7 +256,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="160" id="DGF-8Y-R96" userLabel="Height - (160) - Main Post Views"/>
                             <constraint firstItem="rsP-k7-Q9f" firstAttribute="top" secondItem="fIE-VY-MZi" secondAttribute="bottom" constant="5" id="p08-tc-yCM"/>
-                            <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="rsP-k7-Q9f" secondAttribute="bottom" constant="15" id="zyu-XP-4ra"/>
+                            <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="rsP-k7-Q9f" secondAttribute="bottom" constant="10" id="zyu-XP-4ra"/>
                         </constraints>
                         <connections>
                             <outlet property="backgroundImageHeight" destination="3Ar-JH-FaU" id="hEP-Mj-Q58"/>

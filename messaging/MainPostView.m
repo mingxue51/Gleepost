@@ -286,7 +286,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
     float backgroundImageViewHeight = 0.0f;
 
-    backgroundImageViewHeight = 199.0f + height;
+    backgroundImageViewHeight = 190.0f + height;
 
     
     if([self isCurrentPostEvent])
@@ -296,14 +296,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:17 withBasicValue:distanceFromTop];
         
         if([TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle])
-        {            
+        {
             backgroundImageViewHeight -= 15;
         }
     }
     else
     {
         distanceFromTop = 25.0f;
-        backgroundImageViewHeight -= 75.0f;
+        backgroundImageViewHeight -= 77.0f;
     }
     
     //Set constrains.
@@ -323,7 +323,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 398.0f + height;
+    backgroundImageViewHeight = 378.0f + height;    //398
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
     
@@ -350,7 +350,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
         
-        backgroundImageViewHeight -= 69.0f;
+        backgroundImageViewHeight -= 70.0f;
         
         distanceFromTop = 25.0f;
     }
@@ -367,7 +367,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 -(void)setPositionsForVideoWithHeight:(float)height
 {
     float fixedBottomViewHeight = 412.0f;
-    float backgroundImageViewHeight = 500.0f + height;
+    float backgroundImageViewHeight = 495.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
@@ -384,7 +384,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        backgroundImageViewHeight -= 74;
+        backgroundImageViewHeight -= 75;
         distanceFromTop = 25.0f;
     }
     
