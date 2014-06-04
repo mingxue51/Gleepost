@@ -46,9 +46,12 @@
 @implementation GLPPostCell
 
 const float IMAGE_CELL_HEIGHT = 413;
-const float VIDEO_CELL_HEIGHT = 498;
-const float TEXT_CELL_HEIGHT = 205;
-const float FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL = VIDEO_CELL_HEIGHT - 62;
+const float VIDEO_CELL_HEIGHT = 510;        //498
+const float TEXT_CELL_HEIGHT = 209;
+const float IMAGE_CELL_ONE_LINE_HEIGHT = IMAGE_CELL_HEIGHT - 15;
+const float VIDEO_CELL_ONE_LINE_HEIGHT = VIDEO_CELL_HEIGHT - 21;
+const float TEXT_CELL_ONE_LINE_HEIGHT = TEXT_CELL_HEIGHT - 15;
+const float FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL = VIDEO_CELL_HEIGHT - 75; //65
 const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 69;
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 75;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
@@ -288,7 +291,7 @@ const float ONE_LINE_LIMIT = 18.0;
 //        return [GLPPostCell getVideoCellHeightWithPost:post isViewPost:isViewPost];
 //    }
     
-    float height = [GLPPostCell getConstantHeightOfCellWithType:cellType];
+    float height = [GLPPostCell getConstantHeightOfCellWithType:cellType wihtPost:post];
     
     
     // initial height
@@ -340,18 +343,35 @@ const float ONE_LINE_LIMIT = 18.0;
     return height;
 }
 
-+(float)getConstantHeightOfCellWithType:(GLPCellType)cellType
++(float)getConstantHeightOfCellWithType:(GLPCellType)cellType wihtPost:(GLPPost *)post
 {
+    BOOL oneLineEventTitle = [TopPostView isTitleTextOneLineOfCodeWithContent:post.eventTitle];
+    
     if(cellType == kVideoCell)
     {
+        if(oneLineEventTitle)
+        {
+            return VIDEO_CELL_ONE_LINE_HEIGHT;
+        }
+        
         return VIDEO_CELL_HEIGHT;
     }
     else if (cellType == kImageCell)
     {
+        if(oneLineEventTitle)
+        {
+            return IMAGE_CELL_ONE_LINE_HEIGHT;
+        }
+        
         return IMAGE_CELL_HEIGHT;
     }
     else
     {
+        if(oneLineEventTitle)
+        {
+            return TEXT_CELL_ONE_LINE_HEIGHT;
+        }
+        
         return TEXT_CELL_HEIGHT;
     }
 }

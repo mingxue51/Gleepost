@@ -19,6 +19,7 @@
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
 #import "WebClientHelper.h"
+#import "TopPostView.h"
 
 @interface MainPostView ()
 
@@ -281,27 +282,34 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)setPositionsForTextPostWithHeight:(float)height
 {
-    float fixedTopBackgroundHeight = 0.0f;
+    float distanceFromTop = 0.0f;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
     float backgroundImageViewHeight = 0.0f;
 
-    backgroundImageViewHeight = 190.0f + height;
+    backgroundImageViewHeight = 199.0f + height;
 
     
     if([self isCurrentPostEvent])
     {
-        fixedTopBackgroundHeight = 100.0f;
+        distanceFromTop = 105.0f;
+        
+        distanceFromTop = [self configureDistanceFromTopDependingOnFactor:17 withBasicValue:distanceFromTop];
+        
+        if([TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle])
+        {            
+            backgroundImageViewHeight -= 15;
+        }
     }
     else
     {
-        fixedTopBackgroundHeight = 25.0f;
+        distanceFromTop = 25.0f;
         backgroundImageViewHeight -= 75.0f;
     }
     
     //Set constrains.
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
     
-    [_distanceFromTop setConstant:fixedTopBackgroundHeight];
+    [_distanceFromTop setConstant:distanceFromTop];
     
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
 
@@ -323,7 +331,17 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     {
         [_postImageDistanceFromTopConstrain setConstant:0];
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
-        distanceFromTop = 95.0f;
+        
+
+        distanceFromTop = 95;
+
+        distanceFromTop = [self configureDistanceFromTopDependingOnFactor:15 withBasicValue:distanceFromTop];
+
+        if([TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle])
+        {
+            backgroundImageViewHeight -= 15.0f;
+        }
+        
     }
     else
     {
@@ -349,17 +367,24 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 -(void)setPositionsForVideoWithHeight:(float)height
 {
     float fixedBottomViewHeight = 412.0f;
-    float backgroundImageViewHeight = 482.0f + height;
+    float backgroundImageViewHeight = 500.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
     {
 //        backgroundImageViewHeight = 490.0f;
-        distanceFromTop = 85.0f;
+        distanceFromTop = 100.0f;  //85
+        
+        distanceFromTop = [self configureDistanceFromTopDependingOnFactor:21.0f withBasicValue:distanceFromTop];
+        
+        if([TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle])
+        {
+            backgroundImageViewHeight -= 21.0f;
+        }
     }
     else
     {
-        backgroundImageViewHeight -= 61;
+        backgroundImageViewHeight -= 74;
         distanceFromTop = 25.0f;
     }
     
@@ -380,6 +405,30 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //    [_postImageDistanceFromLeftConstrain setConstant:0];
     
 
+}
+
+/**
+ Finds and returns the distance from top depending on the number of lines of title
+ and the factor that is passed as a parameter. Each factor is different depending
+ on each different post cell.
+ 
+ @param factor.
+ 
+ @return the final distance from top.
+ */
+- (float)configureDistanceFromTopDependingOnFactor:(float)factor withBasicValue:(float)basicValue
+{
+    BOOL oneLineOfTitle = [TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle];
+    
+    if(oneLineOfTitle)
+    {
+        return (basicValue - factor);
+    }
+
+    
+    return basicValue;
+    
+    
 }
 
 - (void)setMediaNeedsToReload:(BOOL)imageNeedsToReload

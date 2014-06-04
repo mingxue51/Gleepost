@@ -12,5 +12,7 @@
 @interface TopPostView : UIView
 
 -(void)setElementsWithPost:(GLPPost *)post;
++ (float)getContentLabelSizeForContent:(NSString *)content;
++ (BOOL)isTitleTextOneLineOfCodeWithContent:(NSString *)content;
 
 @end

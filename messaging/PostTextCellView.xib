@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pUZ-sK-xp5">
-                        <rect key="frame" x="10" y="15" width="300" height="245"/>
+                        <rect key="frame" x="10" y="10" width="300" height="245"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -23,41 +23,55 @@
                             <constraint firstAttribute="width" constant="300" id="owp-VF-QTZ"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJM-2L-W3q" customClass="TopPostView">
-                        <rect key="frame" x="10" y="12" width="300" height="85"/>
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eJM-2L-W3q" customClass="TopPostView">
+                        <rect key="frame" x="10" y="16" width="300" height="85"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Test text event asdas dad sad asd as das da adas" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="c8y-Xv-Q7R">
-                                <rect key="frame" x="10" y="0.0" width="280" height="45"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LhW-jF-MuF">
+                                <rect key="frame" x="10" y="28" width="280" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GLOBAL g" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCr-X2-nFh">
+                                        <rect key="frame" x="19" y="0.0" width="195" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="zuP-sW-WZr">
+                                        <rect key="frame" x="0.0" y="4" width="15" height="15"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separator_line.png" translatesAutoresizingMaskIntoConstraints="NO" id="X3l-B5-lUc">
+                                        <rect key="frame" x="20" y="32" width="240" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Test text event asdas dad sad asd as das da adas" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="c8y-Xv-Q7R">
+                                <rect key="frame" x="10" y="0.0" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="Bj2-TR-hrA"/>
+                                    <constraint firstAttribute="height" constant="21" id="d5K-8V-396"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.054901960784313725" green="0.054901960784313725" blue="0.054901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GLOBAL g" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCr-X2-nFh">
-                                <rect key="frame" x="30" y="50" width="195" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
-                                <color key="textColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="zuP-sW-WZr">
-                                <rect key="frame" x="10" y="51" width="15" height="15"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separator_line.png" translatesAutoresizingMaskIntoConstraints="NO" id="X3l-B5-lUc">
-                                <rect key="frame" x="30" y="80" width="240" height="1"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="85" id="28r-V0-aX1"/>
+                            <constraint firstItem="c8y-Xv-Q7R" firstAttribute="top" secondItem="eJM-2L-W3q" secondAttribute="top" id="3p4-lj-h2k"/>
+                            <constraint firstItem="LhW-jF-MuF" firstAttribute="top" secondItem="c8y-Xv-Q7R" secondAttribute="bottom" constant="7" id="XsF-0m-QK0"/>
                             <constraint firstAttribute="width" constant="300" id="rhx-9R-xUA"/>
                         </constraints>
                         <connections>
                             <outlet property="eventTimeLbl" destination="qCr-X2-nFh" id="p5N-UR-UFM"/>
                             <outlet property="eventTitleLbl" destination="c8y-Xv-Q7R" id="1Uc-NC-6wq"/>
+                            <outlet property="eventTitleLblHeight" destination="d5K-8V-396" id="icL-4C-Ndu"/>
                         </connections>
                     </view>
                     <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lnW-OL-CTy" customClass="MainPostView">
@@ -270,8 +284,8 @@
                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="pUZ-sK-xp5" firstAttribute="leading" secondItem="zkh-v9-3LC" secondAttribute="leading" constant="10" id="WRt-7D-tF5"/>
-                    <constraint firstItem="pUZ-sK-xp5" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="15" id="h6G-9Z-r0M"/>
-                    <constraint firstItem="eJM-2L-W3q" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="12" id="kyn-Ln-awf"/>
+                    <constraint firstItem="pUZ-sK-xp5" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="10" id="h6G-9Z-r0M"/>
+                    <constraint firstItem="eJM-2L-W3q" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="15" id="kyn-Ln-awf"/>
                     <constraint firstItem="lnW-OL-CTy" firstAttribute="top" secondItem="zkh-v9-3LC" secondAttribute="top" constant="116" id="sQF-Y3-fHR"/>
                 </constraints>
             </tableViewCellContentView>
