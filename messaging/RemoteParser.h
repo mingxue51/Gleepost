@@ -42,7 +42,6 @@
 + (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts;
 + (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
-+(GLPPost*)parseIndividualPostFromJson:(NSDictionary*)json;
 +(NSString*)parseCategoriesToTags:(NSArray*)categories;
 +(NSArray *)parseLivePostsIds:(NSArray *)jsonIds;
 

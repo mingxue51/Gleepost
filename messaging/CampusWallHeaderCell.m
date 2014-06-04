@@ -34,14 +34,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLbl;
 @property (weak, nonatomic) IBOutlet EventBarView *eventBarView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelWidth;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 @end
 
 
 @implementation CampusWallHeaderCell
 
-const float CELL_WIDTH = 230.0; //198
-const float CELL_HEIGHT = 215.0; //Change the height //132
+const float CELL_WIDTH = 220.0; //198
+const float CELL_HEIGHT = 210.0; //Change the height //132
 const float TITLE_LABEL_MAX_WIDTH = 180.0;
 const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
@@ -52,26 +53,14 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     if (self)
     {
-//        [self setFrame:CGRectMake(0, 0, 30, 50)];
-        
         [self setBackgroundColor:[UIColor clearColor]];
         
-//        [ShapeFormatterHelper setCornerRadiusWithView:self.contentView andValue:17.0f];
-        
-//        [ShapeFormatterHelper setCornerRadiusWithView:self andValue:17.0f];
+        [self formatElements];
         
         
-        //Format the image.
-//        [ShapeFormatterHelper setRoundedView:self.eventImage toDiameter:self.eventImage.frame.size.height];
-        
-//        [ShapeFormatterHelper setCornerRadiusWithView:self.eventImage andValue:self.eventImage.frame.size.height];
-        
-        
-        
-        [self formatEventImage];
-        
-//        _eventImage.layer.borderWidth = 1.0;
-//        _eventImage.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//        [ShapeFormatterHelper setBorderToView:_eventTitleLbl withColour:[UIColor redColor] andWidth:1.0f];
+//        
+//        [ShapeFormatterHelper setBorderToView:_timeLbl withColour:[UIColor redColor] andWidth:1.0f];
         
     }
     
@@ -139,12 +128,16 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     [_eventTitleLbl setText:postData.eventTitle];
     
+    
     [_titleLabelWidth setConstant: labelSize.height];
     
     [self setTimeWithTime:postData.dateEventStarts];
   
     
 //    [_eventBarView increaseBarLevel:postData.popularity];
+    
+    DDLogDebug(@"Post data with content: %@ : %d", postData.eventTitle, postData.popularity);
+    
     [_eventBarView setLevelWithPopularity:postData.popularity];
     
 //    [_attendingLbl setText:@"0"];
@@ -196,10 +189,24 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
     
+    
+
+    
     [self configureGoingButton];
     
  
 //    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
+}
+
+- (void)formatElements
+{
+    [self formatEventImage];
+    [self formatBackgroundImage];
+}
+
+- (void)formatBackgroundImage
+{
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
 }
 
 -(void)formatEventImage
@@ -213,7 +220,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     //http://stackoverflow.com/questions/14107979/blur-an-image-of-specific-part-rectangular-circular
     
     //Format the image.
-    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(7.0f, 7.0f)];
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(5.0f, 5.0f)];
     
 
 }

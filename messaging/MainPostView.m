@@ -83,7 +83,7 @@
 
 @property (assign, nonatomic) BOOL mediaAvailable;
 
-@property (assign, nonatomic, getter = doesImageNeedLoadAgain) BOOL imageNeedsToLoadAgain;
+@property (assign, nonatomic, getter = doesMediaNeedLoadAgain) BOOL mediaNeedsToReload;
 
 @property (assign, nonatomic, getter = isViewPost) BOOL viewPost;
 
@@ -382,6 +382,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 }
 
+- (void)setMediaNeedsToReload:(BOOL)imageNeedsToReload
+{
+    _mediaNeedsToReload = imageNeedsToReload;
+}
+
 #pragma mark - Media
 
 -(void)savePostImage
@@ -428,12 +433,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         //Set live image.
         [_postImageView setImage:_post.tempImage];
     }
-    else if(_post.finalImage==nil && !self.imageNeedsToLoadAgain)
+    else if(_post.finalImage==nil && !self.mediaNeedsToReload)
     {
         [_postImageView setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
-    if([self doesImageNeedLoadAgain])
+    if([self doesMediaNeedLoadAgain])
     {
         [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }

@@ -12,10 +12,11 @@
 
 typedef enum {
     
-    kGLPAbout,
     kGLPPosts,
-    kGLPMutual,
-    kGLPSettings,
+    kGLPNotifications,
+    kGLPMembers,
+    
+    /*kGLPSettings,*/
     
 }GLPSelectedTab;
 

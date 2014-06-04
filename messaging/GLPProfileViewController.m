@@ -101,22 +101,6 @@
 @synthesize unreadNotificationsCount=_unreadNotificationsCount;
 
 
-- (void)backButtonTapped {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    
-    if (self)
-    {
-        // Custom initialization
-//        [self setNeedsStatusBarAppearanceUpdate];
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -164,7 +148,7 @@
 
     if(_fromPushNotification)
     {
-        self.selectedTabStatus = kGLPSettings;
+        self.selectedTabStatus = kGLPNotifications;
         
 //        [self.tableView reloadData];
     }
@@ -177,7 +161,7 @@
     [self loadInternalNotifications];
     
     
-    if(self.selectedTabStatus == kGLPSettings)
+    if(self.selectedTabStatus == kGLPNotifications)
     {
         [self notificationsTabClick];
     }
@@ -325,14 +309,6 @@
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
-//    UIButton *notView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-//    [notView setBackgroundImage: [UIImage imageNamed:@"bell"]forState:UIControlStateNormal];
-//    [notView addTarget:self action:@selector(popUpNotifications:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-//    UIBarButtonItem *bellButton = [[UIBarButtonItem alloc] initWithCustomView:notView];
-    
-    
     //Create the custom bell icon with notification dot.
     
     UIButton *bellBtn=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -344,26 +320,6 @@
     
     self.navigationItem.rightBarButtonItem = settingsButton;
 
-    
-//    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showSettings:)];
-    
-//    UIBarButtonItem *settingsBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings_btn"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSettings:)];
-    
-//    NSLog(@"BACK button: %d", self.navigationController.viewControllers.count);
-    
-//    if(!self.fromCampusWall)
-//    {
-//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
-//        
-//        self.navigationItem.rightBarButtonItem = settingsButton;
-//    }
-//    else
-//    {
-//        //Add both buttons on the right.
-//        self.navigationItem.rightBarButtonItems = @[settingsButton, [[UIBarButtonItem alloc] initWithCustomView:self.notificationView]];
-//    }
-    
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.notificationView];
 }
 
 -(void)configureNavigationBar
@@ -373,38 +329,6 @@
     
 
     //Change the format of the navigation bar.
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-
-    
-//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    
-    
-    
-    //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    
-    //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-    
-    //    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    
-    //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor redColor]]];
-   
-//    [AppearanceHelper setNavigationBarColour:self];
-//    [AppearanceHelper setNavigationBarFontFor:self];
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-//
-//    
-//
-//
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-//
-//    
-//    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    
-    
     
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
@@ -412,18 +336,11 @@
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
     [AppearanceHelper setNavigationBarColour:self];
-    
-    
-    
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
     [AppearanceHelper setNavigationBarFontFor:self];
     
     [self.navigationController.navigationBar setTranslucent:NO];
-    
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
@@ -914,7 +831,7 @@
     
     DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
     
-    if(self.selectedTabStatus == kGLPSettings) {
+    if(self.selectedTabStatus == kGLPNotifications) {
         [self notificationsTabClick];
         [self.tableView reloadData];
     }
@@ -937,7 +854,7 @@
     
     NSArray *notifications = [GLPNotificationManager unreadNotifications];
     _unreadNotificationsCount = notifications.count;
-    if(notifications.count == 0 || self.selectedTabStatus != kGLPSettings) {
+    if(notifications.count == 0 || self.selectedTabStatus != kGLPNotifications) {
         return;
     }
     
@@ -1048,7 +965,7 @@
 {
     DDLogInfo(@"Receive internal notifications");
     
-    if(self.selectedTabStatus == kGLPSettings) {
+    if(self.selectedTabStatus == kGLPNotifications) {
         [self loadUnreadInternalNotifications];
         _unreadNotificationsCount = 0;
     } else {
@@ -1192,7 +1109,7 @@
         }
         
         
-        if(self.selectedTabStatus == kGLPSettings)
+        if(self.selectedTabStatus == kGLPNotifications)
         {
 //            if(_notifications.count < 5)
 //            {
@@ -1204,7 +1121,7 @@
     }
     else if (indexPath.row >= 2)
     {
-        if(self.selectedTabStatus == kGLPSettings)
+        if(self.selectedTabStatus == kGLPNotifications)
         {
             if(_notifications.count != 0 && (indexPath.row - 2) == _notifications.count)
             {
@@ -1301,11 +1218,11 @@
             
             [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:self.view];
             
-            [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL sucess, GLPPost *post) {
+            [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL success, GLPPost *post) {
                 
                 [WebClientHelper hideStandardLoaderForView:self.view];
                 
-                if(sucess)
+                if(success)
                 {
                     self.selectedPost = post;
                     
@@ -1349,7 +1266,7 @@
     }
     else if(indexPath.row >= 2)
     {
-        if(self.selectedTabStatus == kGLPSettings)
+        if(self.selectedTabStatus == kGLPNotifications)
         {
             if(_notifications.count != 0 && (indexPath.row - 2) == _notifications.count)
             {
@@ -1486,7 +1403,7 @@
     
     self.selectedTabStatus = selectedTab;
     
-    if(selectedTab == kGLPSettings) {
+    if(selectedTab == kGLPNotifications) {
         [self notificationsTabClick];
     }
     
@@ -1505,6 +1422,8 @@
         ViewPostViewController *vc = segue.destinationViewController;
         vc.commentJustCreated = self.commentCreated;
         vc.commentNotificationDate = self.commentNotificationDate;
+        
+        [vc reloadImage:([self.selectedPost imagePost] || [self.selectedPost isVideoPost]) ? YES : NO];
         
         vc.post = self.selectedPost;
         vc.isFromCampusLive = NO;

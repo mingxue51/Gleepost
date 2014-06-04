@@ -1164,7 +1164,7 @@ const int NUMBER_OF_ROWS = 2;
     
 //    self.selectedTabStatus = selectedTab;
     
-    if(selectedTab == kGLPSettings)
+    if(selectedTab == kGLPMembers)
     {
         //Navigate to members view controller.
         [self performSegueWithIdentifier:@"view members" sender:self];

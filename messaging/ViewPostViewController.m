@@ -42,7 +42,7 @@
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-@property (assign, nonatomic) BOOL needsToLoadAgainTheImage;
+@property (assign, nonatomic, getter = doesMediaNeedsToReload) BOOL mediaNeedsToReload;
 
 - (IBAction)addCommentButtonClick:(id)sender;
 
@@ -280,7 +280,7 @@ static BOOL likePushed;
     if(self.isFromCampusLive)
     {
         [self addCustomBackButton];
-        self.needsToLoadAgainTheImage = YES;
+        self.mediaNeedsToReload = YES;
     }
     
     
@@ -688,11 +688,15 @@ static bool firstTime = YES;
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
 //            [postViewCell postFromNotifications:_isViewPostNotifications];
-            [postViewCell reloadImage:self.needsToLoadAgainTheImage];
+            [postViewCell reloadMedia:self.mediaNeedsToReload];
         }
         else if ([_post isVideoPost])
         {
+            DDLogDebug(@"Video post : View post!");
+            
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
+//            [postViewCell reloadMedia:self.mediaNeedsToReload];
+
         }
         else
         {
@@ -1156,7 +1160,7 @@ static bool firstTime = YES;
 
 -(void)reloadImage:(BOOL)loadImage
 {
-    _needsToLoadAgainTheImage = loadImage;
+    _mediaNeedsToReload = loadImage;
 }
 
 //- (void)backButtonClick

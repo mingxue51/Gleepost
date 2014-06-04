@@ -27,8 +27,8 @@
                         <rect key="frame" x="10" y="22" width="300" height="67"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Labelasd ads asd as dsa das dsa das das dasd adas" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="nqe-5G-JTa">
-                                <rect key="frame" x="10" y="0.0" width="290" height="44"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Labelasd ads asd as dsa das dsa das das dasd adas" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="nqe-5G-JTa">
+                                <rect key="frame" x="10" y="0.0" width="280" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -57,11 +57,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i0H-Wa-ioj">
-                                <rect key="frame" x="10" y="7" width="280" height="190"/>
+                                <rect key="frame" x="1" y="7" width="298" height="190"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="190" id="MD9-4z-Cxp"/>
-                                    <constraint firstAttribute="width" constant="280" id="SCj-qf-WEQ"/>
+                                    <constraint firstAttribute="width" constant="298" id="SCj-qf-WEQ"/>
                                 </constraints>
                             </imageView>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-aO-Tut" customClass="VideoView">
@@ -105,7 +105,7 @@
                                         <rect key="frame" x="54" y="6" width="165" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" red="0.82745098039215681" green="0.18823529411764706" blue="0.2627450980392157" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.8666666666666667" green="0.27843137254901962" blue="0.32941176470588235" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zBQ-cm-AFU">
@@ -275,7 +275,7 @@
                             <constraint firstItem="p9l-bX-fhh" firstAttribute="top" secondItem="i0H-Wa-ioj" secondAttribute="bottom" constant="3" id="W8j-JO-JMz"/>
                             <constraint firstAttribute="width" constant="300" id="arU-sf-g4b"/>
                             <constraint firstAttribute="height" constant="316" id="gMJ-Fr-UtF"/>
-                            <constraint firstItem="i0H-Wa-ioj" firstAttribute="leading" secondItem="jCQ-SX-55v" secondAttribute="leading" constant="10" id="gXF-lG-RHd"/>
+                            <constraint firstItem="i0H-Wa-ioj" firstAttribute="leading" secondItem="jCQ-SX-55v" secondAttribute="leading" constant="1" id="gXF-lG-RHd"/>
                         </constraints>
                         <connections>
                             <outlet property="backgroundImageHeight" destination="EZw-eh-zsu" id="1cr-cb-rux"/>

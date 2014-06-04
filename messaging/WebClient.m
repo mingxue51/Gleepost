@@ -456,7 +456,7 @@ static WebClient *instance = nil;
         
         
         
-        GLPPost *post = [RemoteParser parseIndividualPostFromJson:responseObject];
+        GLPPost *post = [RemoteParser parsePostFromJson:responseObject];
         
         callbackBlock(YES, post);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

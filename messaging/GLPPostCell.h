@@ -54,7 +54,7 @@ extern const float TEXT_CELL_HEIGHT;
 
 +(CGFloat)getCellHeightWithContent:(GLPPost *)post cellType:(GLPCellType)cellType isViewPost:(BOOL)isViewPost;
 
--(void)reloadImage:(BOOL)loadImage;
+-(void)reloadMedia:(BOOL)loadMedia;
 
 -(void)setIsViewPost:(BOOL)isViewPost;
 

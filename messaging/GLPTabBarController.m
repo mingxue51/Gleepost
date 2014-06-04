@@ -17,6 +17,8 @@
 @property (assign, nonatomic) NSInteger messagesCount;
 @property (assign, nonatomic) NSInteger profileNotificationsCount;
 
+@property (assign, nonatomic, getter = didShowGroupBadge) BOOL showGroupBadge;
+
 @end
 
 @implementation GLPTabBarController
@@ -37,6 +39,8 @@ static NSInteger lastTabbarIndex = 0;
     
     _messagesCount = 0;
     _profileNotificationsCount = 0;
+    
+    _showGroupBadge = NO;
     
     [self setDelegate:self];
     
@@ -106,7 +110,7 @@ static NSInteger lastTabbarIndex = 0;
  */
 -(void)updateGroupBadge
 {
-    if([[SessionManager sharedInstance] isFirstTimeLoggedIn])
+    if([[SessionManager sharedInstance] isFirstTimeLoggedIn] && ![self didShowGroupBadge])
     {
         [[WebClient sharedInstance] getGroupswithCallbackBlock:^(BOOL success, NSArray *groups) {
            
@@ -117,6 +121,8 @@ static NSInteger lastTabbarIndex = 0;
             
         }];
     }
+    
+    _showGroupBadge = YES;
 
 }
 

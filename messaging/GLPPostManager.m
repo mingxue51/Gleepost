@@ -387,7 +387,7 @@
        
         if(success)
         {
-            NSLog(@"Got post with content: %@", post.content);
+            DDLogInfo(@"Got post with content: %@ : %@", post.content, post.videosUrls);
             
             callback(success,post);
         }
