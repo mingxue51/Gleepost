@@ -17,6 +17,7 @@
 #import "GLPUserDao.h"
 #import "GLPTemporaryUserInformationManager.h"
 #import "AppearanceHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPRegisterViewController ()
 
@@ -35,6 +36,8 @@
     [self formatTextFields];
     
     [self configureNavigationBar];
+    
+    [self formatStatusBar];
     
 }
 
@@ -205,14 +208,20 @@
     textFieldFrame.size.height+=5;
     [textField setFrame:textFieldFrame];
     
-    [textField setBackgroundColor:[UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f]];
+//    [textField setBackgroundColor:[UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f]];
+    [textField setBackgroundColor:[UIColor clearColor]];
 //    [textField setBackground:[UIImage imageNamed:@"email_field"]];
     [textField setTextColor:[UIColor lightGrayColor]];
 
-    textField.layer.borderWidth = 1.0f;
-    textField.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
+//    textField.layer.borderWidth = 1.0f;
+//    textField.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
     
-    textField.layer.cornerRadius = 5;
+    
+    textField.borderStyle = UITextBorderStyleNone;
+    
+    
+    
+//    textField.layer.cornerRadius = 5;
     textField.clipsToBounds = YES;
     
     textField.delegate = self;
@@ -228,7 +237,13 @@
 -(void)configureNavigationBar
 {
     
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+//    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+    
+    [_simpleNavigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
+                       forBarPosition:UIBarPositionAny
+                           barMetrics:UIBarMetricsDefault];
+    
+    [_simpleNavigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0]]];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -273,6 +288,9 @@
     return YES;
 }
 
-
+-(void)formatStatusBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
 
 @end

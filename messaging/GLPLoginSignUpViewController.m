@@ -16,12 +16,15 @@
 #import "NSString+Utils.h"
 #import "GLPSignUpViewController.h"
 #import "UICKeyChainStore.h"
+#import "RegisterAnimationsView.h"
 
 @interface GLPLoginSignUpViewController ()
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
 @property (strong, nonatomic) NSDictionary *fbLoginInfo;
 @property (strong, nonatomic) NSString *universityEmail;
+
+@property (weak, nonatomic) IBOutlet RegisterAnimationsView *animationsView;
 
 @end
 
@@ -37,6 +40,14 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [super viewDidLoad];
     
     [self configNavigationBar];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self formatStatusBar];
 }
 
 - (IBAction)facebookLogin:(id)sender
@@ -69,6 +80,12 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+}
+
+-(void)formatStatusBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 # pragma mark - UITextFieldDelegate
