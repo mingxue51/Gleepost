@@ -47,7 +47,6 @@
 #import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
-#import "WalkThroughHelper.h"
 #import "AnimationDayController.h"
 #import "GLPGroupManager.h"
 #import "CampusWallGroupsPostsManager.h"
@@ -56,6 +55,7 @@
 #import "GLPFlurryVisibleCellProcessor.h"
 #import "EmptyMessage.h"
 #import "GLPVideoLoaderManager.h"
+#import "GLPWalkthroughViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -124,6 +124,8 @@
 
 @property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
 
+@property (assign, nonatomic, getter = isWalkthroughFinished) BOOL walkthroughFinished;
+
 @end
 
 
@@ -148,7 +150,7 @@ const float TOP_OFFSET = 280.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-     
+    
     [self configTableView];
 
     [self configHeader];
@@ -170,7 +172,7 @@ const float TOP_OFFSET = 280.0f;
     [self loadInitialPosts];
     
 
-    [WalkThroughHelper showCampusWallMessage];
+//    [WalkThroughHelper showCampusWallMessage];
     
     //Find the sunset sunrise for preparation of the new chat.
     [AnimationDayController sharedInstance];
@@ -201,6 +203,7 @@ const float TOP_OFFSET = 280.0f;
         [self startReloadingCronImmediately:YES];
     }
     
+    [self showWalkthroughIfNeeded];
 
     //TODO: Delete that.
     if(self.postIndexToReload!=-1)
@@ -295,6 +298,8 @@ const float TOP_OFFSET = 280.0f;
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
+    
+    _walkthroughFinished = NO;
 }
 
 
@@ -310,6 +315,20 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
 
 
+}
+
+- (void)showWalkthroughIfNeeded
+{
+    if([[SessionManager sharedInstance] isFirstTimeLoggedIn] && ![self isWalkthroughFinished])
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        GLPWalkthroughViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPWalkthroughViewController"];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navigationController animated:YES completion:nil];
+    }
+    
+    _walkthroughFinished = YES;
 }
 
 

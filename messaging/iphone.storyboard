@@ -3399,12 +3399,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <!--Walkthrough View Controller-->
         <scene sceneID="PK2-zh-uXy">
             <objects>
-                <viewController id="pFL-bj-WQg" customClass="GLPWalkthroughViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPWalkthroughViewController" id="pFL-bj-WQg" customClass="GLPWalkthroughViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ndj-Nx-ELj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="VWw-Kj-qOz" customClass="FXPageControl">
+                                <rect key="frame" x="0.0" y="453" width="320" height="70"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="pageControl" destination="VWw-Kj-qOz" id="9vB-WD-oCt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NAA-Cr-HxO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3416,17 +3426,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <pageViewController storyboardIdentifier="WalkthroughPageVC" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="c98-Ea-h2i" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WJN-Nc-Zut" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-675" y="-883"/>
+            <point key="canvasLocation" x="-571" y="-883"/>
         </scene>
-        <!--Walkthrough View Controller-->
+        <!--Walkthough Data View Controller-->
         <scene sceneID="NoB-Lh-l5V">
             <objects>
-                <viewController storyboardIdentifier="WalkthroughViewController" id="Gbp-xi-EdD" customClass="WalkthroughViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPWalkthoughDataViewController" id="Gbp-xi-EdD" customClass="GLPWalkthoughDataViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dBv-Dk-YkX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EJV-dG-gJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

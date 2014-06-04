@@ -40,6 +40,8 @@ static NSInteger lastTabbarIndex = 0;
     
     [self setDelegate:self];
     
+    
+
 }
 
 - (void)viewDidLayoutSubviews
@@ -54,6 +56,9 @@ static NSInteger lastTabbarIndex = 0;
         }
         isViewDidLayoutSubviews = YES;
     }
+    
+
+
 }
 
 

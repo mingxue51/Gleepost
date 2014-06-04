@@ -7,77 +7,152 @@
 //
 
 #import "GLPWalkthroughViewController.h"
-#import "WalkthroughViewController.h"
+#import "GLPWalkthoughDataViewController.h"
+#import "GLPWalkthroughModelController.h"
+#import "FXPageControl.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPWalkthroughViewController ()
 
+@property (readonly, strong, nonatomic) GLPWalkthroughModelController *modelController;
+@property (weak, nonatomic) IBOutlet FXPageControl *pageControl;
+
 @end
 
+
 @implementation GLPWalkthroughViewController
+
+@synthesize modelController = _modelController;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self.navigationController setNavigationBarHidden:YES];
+    
+    [self configurePageViewController];
+    
+    [self configurePageControl];
+
+    [self formatStatusBar];
+    
+    [self configureNotifications];
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self releaseNotifications];
+    
+    [super viewDidDisappear:animated];
+}
+
+#pragma mark - Configuration
+
+- (void)configurePageViewController
+{
     // Create page view controller
-    self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"WalkthroughPageVC"];
-    self.pageViewController.dataSource = self;
+	// Do any additional setup after loading the view, typically from a nib.
+    // Configure the page view controller and add it as a child view controller.
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    self.pageViewController.delegate = self;
+    
+    [self.pageViewController.view setBackgroundColor:[UIColor blackColor]];
+    
+    GLPWalkthoughDataViewController *startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
+    NSArray *viewControllers = @[startingViewController];
+    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [self.pageViewController.navigationController setNavigationBarHidden:YES];
+    self.pageViewController.dataSource = self.modelController;
+    
+    
+    [self addChildViewController:self.pageViewController];
+    [self.view addSubview:self.pageViewController.view];
+    
+    
+    // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
+    //    CGRect pageViewRect = self.view.bounds;
+    //    self.pageViewController.view.frame = pageViewRect;
+    
+    [self.pageViewController didMoveToParentViewController:self];
+    
+    // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
+    self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
+    
+    [self.pageViewController.view setFrame:CGRectMake(0, 0, 320, 700)];
+
 }
 
-- (WalkthroughViewController *)viewControllerAtIndex:(NSUInteger)index
+- (void)configurePageControl
 {
-    if (([self.pageTitles count] == 0) || (index >= [self.pageTitles count])) {
-        return nil;
+    [self.view bringSubviewToFront:_pageControl];
+    [_pageControl setNumberOfPages:[_modelController numberOfViews]];
+    [_pageControl setSelectedDotColor:[UIColor colorWithR:16.0f withG:126.0f andB:250.f]];
+    [_pageControl setDotColor:[UIColor whiteColor]];
+    [_pageControl setDotSize:10.0f];
+    
+    // Set user interaction enabled to YES if you decide to navigate between different view
+    // via page control.
+    [_pageControl setUserInteractionEnabled:NO];
+}
+
+- (void)configureNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissViewController:) name:GLPNOTIFICATION_DISMISS_WALKTHROUGH object:nil];
+}
+
+- (void)releaseNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_DISMISS_WALKTHROUGH object:nil];
+}
+
+-(void)formatStatusBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+- (GLPWalkthroughModelController *)modelController
+{
+    // Return the model controller object, creating it if necessary.
+    // In more complex implementations, the model controller may be passed to the view controller.
+    if (!_modelController)
+    {
+        _modelController = [[GLPWalkthroughModelController alloc] init];
     }
-    
-    // Create a new view controller and pass suitable data.
-    WalkthroughViewController *pageContentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"WalkthroughViewController"];
-    pageContentViewController.imageFile = self.pageImages[index];
-    pageContentViewController.titleText = self.pageTitles[index];
-    pageContentViewController.pageIndex = index;
-    
-    return pageContentViewController;
+    return _modelController;
 }
 
-#pragma mark - Page View Controller Data Source
+#pragma mark - UIPageViewController delegate methods
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+/*
+ - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
+ {
+ 
+ }
+ */
+
+- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
-    NSUInteger index = ((WalkthroughViewController*) viewController).pageIndex;
+    // Set the spine position to "min" and the page view controller's view controllers array to contain just one view controller. Setting the spine position to 'UIPageViewControllerSpineLocationMid' in landscape orientation sets the doubleSided property to YES, so set it to NO here.
+    UIViewController *currentViewController = self.pageViewController.viewControllers[0];
+    NSArray *viewControllers = @[currentViewController];
+    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     
-    if ((index == 0) || (index == NSNotFound)) {
-        return nil;
-    }
-    
-    index--;
-    return [self viewControllerAtIndex:index];
+    self.pageViewController.doubleSided = NO;
+    return UIPageViewControllerSpineLocationMin;
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+- (void)pageViewController:(UIPageViewController *)viewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
-    NSUInteger index = ((WalkthroughViewController*) viewController).pageIndex;
+//    if (!completed){return;}
     
-    if (index == NSNotFound) {
-        return nil;
-    }
+    // Find index of current page
     
-    index++;
-    if (index == [self.pageTitles count]) {
-        return nil;
-    }
-    return [self viewControllerAtIndex:index];
-}
+    GLPWalkthoughDataViewController *currentViewController = (GLPWalkthoughDataViewController *)[self.pageViewController.viewControllers lastObject];
+    
 
-- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
-{
-    return [self.pageTitles count];
+    self.pageControl.currentPage = [currentViewController currentViewTag] - 1;
 }
-
-- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
-{
-    return 0;
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -85,7 +160,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Selectors
 
+- (void)dismissViewController:(id)notification
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 /*
 #pragma mark - Navigation
