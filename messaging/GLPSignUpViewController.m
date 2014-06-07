@@ -12,6 +12,8 @@
 #import "GLPLoginManager.h"
 #import "GLPTemporaryUserInformationManager.h"
 #import "GLPFacebookConnect.h"
+#import "ShapeFormatterHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPSignUpViewController ()
 
@@ -21,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 
@@ -126,8 +129,6 @@
 
 -(void)configureViews
 {
-    DDLogDebug(@"GLPSignUpViewController FB INFO: %@", _facebookLoginInfo);
-    
     
     //Load verification view if the user needs to verified from facebook login.
     if(_facebookLoginInfo)
@@ -169,7 +170,10 @@
     [super formatTextField:_nameTextField];
     
     [super formatTextField:_surnameTextField];
+    
+    [self formatPickImage];
 }
+
 
 
 
@@ -179,7 +183,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)pickTheImage:(id)sender
+-(IBAction)pickTheImage:(id)sender
 {
     [_fdTakeController takePhotoOrChooseFromLibrary];
 
@@ -392,6 +396,14 @@
     
     [super dismissModalView];
     
+}
+
+#pragma mark - Format
+
+- (void)formatPickImage
+{
+    [ShapeFormatterHelper setBorderToView:_profileImageButton withColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0] andWidth:1.5f];
+    [ShapeFormatterHelper setCornerRadiusWithView:_profileImageButton andValue:4];
 }
 
 #pragma mark - UI methods

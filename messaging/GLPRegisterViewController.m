@@ -211,7 +211,7 @@
 //    [textField setBackgroundColor:[UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f]];
     [textField setBackgroundColor:[UIColor clearColor]];
 //    [textField setBackground:[UIImage imageNamed:@"email_field"]];
-    [textField setTextColor:[UIColor lightGrayColor]];
+    [textField setTextColor:[AppearanceHelper colourForLines]];
 
 //    textField.layer.borderWidth = 1.0f;
 //    textField.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;

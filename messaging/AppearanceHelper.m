@@ -9,6 +9,7 @@
 #import "AppearanceHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GLPiOS6Helper.h"
+#import "UIColor+GLPAdditions.h"
 
 @implementation AppearanceHelper
 
@@ -157,15 +158,23 @@
     return [UIColor colorWithRed:221.0f/255.0f green:71.0f/255.0f blue:84.0f/255.0f alpha:1.0f];
 }
 
-+(UIColor*)colourForNotFocusedItems
++ (UIColor*)colourForNotFocusedItems
 {
-    return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
+    return [UIColor colorWithR:227.0 withG:227.0 andB:227.0];
+    
+//    return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
+}
+
++ (UIColor *)colourForLines
+{
+    return [UIColor colorWithR:229.0 withG:229.0 andB:229.0];
 }
 
 +(UIColor *)colourForTableViewSeparatorLines
 {
     return [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
 }
+
 
 +(void)showTabBar:(UIViewController*)controller
 {

@@ -312,6 +312,7 @@
 		587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23BE17EA195D00E0DDFF /* imgbar.png */; };
 		587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23C117EA195D00E0DDFF /* tabbar_tab.png */; };
 		587EA4A417F9C4A0005B3286 /* ContactUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 587EA4A317F9C4A0005B3286 /* ContactUserCell.m */; };
+		587F2DFE19431CE2001F0931 /* pick_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 587F2DFD19431CE2001F0931 /* pick_pic.png */; };
 		58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58808EF51806F58400E415C1 /* PopUpMessage.m */; };
 		58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 58808EFC1807070D00E415C1 /* FadeInCustomSegue.m */; };
 		58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2C18CDE70400EB3435 /* group_posts_selected.png */; };
@@ -384,7 +385,7 @@
 		589EAD2518A43761005B2F4C /* icon_like_pushed_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2318A43761005B2F4C /* icon_like_pushed_old.png */; };
 		589EAD2818A43A12005B2F4C /* campus_live_cell_bg_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2718A43A12005B2F4C /* campus_live_cell_bg_old.png */; };
 		589EAD2B18A445A7005B2F4C /* GLPLoginSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD2A18A445A7005B2F4C /* GLPLoginSignUpViewController.m */; };
-		589EAD2E18A4472D005B2F4C /* pick_pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2D18A4472D005B2F4C /* pick_pic.png */; };
+		589EAD2E18A4472D005B2F4C /* pick_pic_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2D18A4472D005B2F4C /* pick_pic_old.png */; };
 		589EAD3018A44736005B2F4C /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2F18A44736005B2F4C /* login_bg.png */; };
 		589EAD3318A449DF005B2F4C /* sign_in.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD3118A449DF005B2F4C /* sign_in.png */; };
 		589EAD3418A449DF005B2F4C /* sign_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD3218A449DF005B2F4C /* sign_up.png */; };
@@ -1175,6 +1176,7 @@
 		587D23C117EA195D00E0DDFF /* tabbar_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_tab.png; sourceTree = "<group>"; };
 		587EA4A217F9C4A0005B3286 /* ContactUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUserCell.h; sourceTree = "<group>"; };
 		587EA4A317F9C4A0005B3286 /* ContactUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUserCell.m; sourceTree = "<group>"; };
+		587F2DFD19431CE2001F0931 /* pick_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pick_pic.png; sourceTree = "<group>"; };
 		58808EF41806F58400E415C1 /* PopUpMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpMessage.h; sourceTree = "<group>"; };
 		58808EF51806F58400E415C1 /* PopUpMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpMessage.m; sourceTree = "<group>"; };
 		58808EFB1807070D00E415C1 /* FadeInCustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FadeInCustomSegue.h; sourceTree = "<group>"; };
@@ -1268,7 +1270,7 @@
 		589EAD2718A43A12005B2F4C /* campus_live_cell_bg_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = campus_live_cell_bg_old.png; sourceTree = "<group>"; };
 		589EAD2918A445A7005B2F4C /* GLPLoginSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoginSignUpViewController.h; sourceTree = "<group>"; };
 		589EAD2A18A445A7005B2F4C /* GLPLoginSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoginSignUpViewController.m; sourceTree = "<group>"; };
-		589EAD2D18A4472D005B2F4C /* pick_pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pick_pic.png; sourceTree = "<group>"; };
+		589EAD2D18A4472D005B2F4C /* pick_pic_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pick_pic_old.png; sourceTree = "<group>"; };
 		589EAD2F18A44736005B2F4C /* login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg.png; sourceTree = "<group>"; };
 		589EAD3118A449DF005B2F4C /* sign_in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_in.png; sourceTree = "<group>"; };
 		589EAD3218A449DF005B2F4C /* sign_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_up.png; sourceTree = "<group>"; };
@@ -2789,7 +2791,8 @@
 				589EAD3118A449DF005B2F4C /* sign_in.png */,
 				589EAD3218A449DF005B2F4C /* sign_up.png */,
 				5897350D193F775E0048BA85 /* sign_in_up.png */,
-				589EAD2D18A4472D005B2F4C /* pick_pic.png */,
+				587F2DFD19431CE2001F0931 /* pick_pic.png */,
+				589EAD2D18A4472D005B2F4C /* pick_pic_old.png */,
 				589EAD2F18A44736005B2F4C /* login_bg.png */,
 				583CE33B18A019AC00E78C08 /* hoovertall.png */,
 			);
@@ -4408,6 +4411,7 @@
 				586659C017F1B35F00A0354E /* camera_icon.png in Resources */,
 				58DC0247180437A70008993A /* bubble5.png in Resources */,
 				58AABA921892F0F60058A552 /* category_bg.png in Resources */,
+				587F2DFE19431CE2001F0931 /* pick_pic.png in Resources */,
 				58DC0245180437A70008993A /* bubble3.png in Resources */,
 				58272F831896824500CD7522 /* fake_nav_background.png in Resources */,
 				80DDAA6217CE5CD80034C0EF /* post_login.json in Resources */,
@@ -4523,7 +4527,7 @@
 				58DB02A818105C86001C021A /* blackholder1.png in Resources */,
 				5866F16918844F05007484CF /* blades_night_copy.png in Resources */,
 				589A73B71936427800D518DF /* speaker_category.png in Resources */,
-				589EAD2E18A4472D005B2F4C /* pick_pic.png in Resources */,
+				589EAD2E18A4472D005B2F4C /* pick_pic_old.png in Resources */,
 				58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */,
 				58AD86A818929F2200016C6D /* mutual_button.png in Resources */,
 				58615764193CD3C1009BAD33 /* WTSecondScreen.xib in Resources */,

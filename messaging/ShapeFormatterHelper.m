@@ -11,7 +11,7 @@
 @implementation ShapeFormatterHelper
 
 
-+(void)setRoundedView:(UIImageView *)roundedView toDiameter:(float)newSize
++(void)setRoundedView:(UIView *)roundedView toDiameter:(float)newSize
 {
     roundedView.clipsToBounds = YES;
     
