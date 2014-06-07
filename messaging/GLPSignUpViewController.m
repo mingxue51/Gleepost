@@ -46,9 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
+        
     [self initialiseObjects];
     
     if(!_facebookLoginInfo)
