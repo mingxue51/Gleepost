@@ -20,11 +20,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *surnameTextField;
-@property (weak, nonatomic) IBOutlet UIButton *backButton;
+//@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
-
+//@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundProfileImage;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 
 @property (strong, nonatomic) UIImage *finalProfileImage;
@@ -46,7 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     [self initialiseObjects];
     
     if(!_facebookLoginInfo)
@@ -80,9 +80,7 @@
 
 -(void)setUpMessageLabels
 {
-    
-    [_messageLlbl setText:[NSString stringWithFormat:@"Verification email sent to: %@. Please click on the link in the email to verify that you're at Stanford.",[super email]]];
-
+    [_messageLlbl setText:[NSString stringWithFormat:@"We have sent you an email to: %@ to verify that this is your email address.", [super email]]];
 }
 
 -(void)showErrorVerifyUser
@@ -161,6 +159,10 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
     [tap setNumberOfTapsRequired:1];
     [_profileImage addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
+    [tap setNumberOfTapsRequired:1];
+    [_backgroundProfileImage addGestureRecognizer:tap];
 }
 
 -(void)formatElements
@@ -171,9 +173,6 @@
     
     [self formatPickImage];
 }
-
-
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -192,7 +191,8 @@
 - (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dict
 {
     _finalProfileImage = photo;
-    [self.profileImage setImage:photo];
+    [self.profileImage setImage:nil];
+    [self.backgroundProfileImage setImage:photo];
     
 //    [super uploadImageAndSetUserImage:photo];
     
@@ -255,7 +255,7 @@
             if(success)
             {
                 //Navigate to home.
-                NSLog(@"User register successful with remote Key: %d", remoteKey);
+                DDLogInfo(@"User register successful with remote Key: %d", remoteKey);
 //                [self performSegueWithIdentifier:@"verify" sender:self];
                 
                 //Update the image and the image in temporary user information manager.
@@ -267,7 +267,7 @@
             }
             else
             {
-                NSLog(@"User not registered.");
+                DDLogInfo(@"User not registered.");
                 
                 if ([responseMessage rangeOfString:@"Invalid Email"].location != NSNotFound)
                 {
@@ -306,7 +306,6 @@
             
             if(success)
             {
-                
                 [self loadDataAfterFacebookLoginWithServerResponse:responseObject];
             }
             else
@@ -400,8 +399,8 @@
 
 - (void)formatPickImage
 {
-    [ShapeFormatterHelper setBorderToView:_profileImageButton withColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0] andWidth:1.5f];
-    [ShapeFormatterHelper setCornerRadiusWithView:_profileImageButton andValue:4];
+    [ShapeFormatterHelper setBorderToView:_backgroundProfileImage withColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0] andWidth:1.5f];
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundProfileImage andValue:4];
 }
 
 #pragma mark - UI methods
@@ -422,6 +421,8 @@
         
         [self setUpMessageLabels];
         
+        [self showMinimiseButton];
+        
     }];
 }
 
@@ -431,7 +432,11 @@
     
     [_wrongEmailFbLogin setHidden:NO];
     
-    
+}
+
+- (void)showMinimiseButton
+{
+    [super configureNavigationBarForVerificationView];
 }
 
 -(void)hideKeyboard

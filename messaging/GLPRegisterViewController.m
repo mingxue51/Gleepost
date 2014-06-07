@@ -22,6 +22,7 @@
 @interface GLPRegisterViewController ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @end
 
@@ -244,6 +245,13 @@
                            barMetrics:UIBarMetricsDefault];
     
     [_simpleNavigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0]]];
+}
+
+- (void)configureNavigationBarForVerificationView
+{
+    [_backButton setImage:[UIImage imageNamed:@"verification_minimize"] forState:UIControlStateNormal];
+    
+    _simpleNavigationBar.topItem.title = @"Almost done!";
 }
 
 #pragma mark - UITextFieldDelegate

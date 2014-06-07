@@ -1978,37 +1978,46 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" id="4jV-fi-i4R">
-                                <rect key="frame" x="10" y="82" width="300" height="313"/>
+                                <rect key="frame" x="10" y="70" width="300" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PCt-10-pAK">
-                                        <rect key="frame" x="13" y="10" width="274" height="85"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sometimes messages never make it, like in Romeo and Juliet for example." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Chb-o8-Tbb">
-                                        <rect key="frame" x="52" y="95" width="191" height="38"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="verification_rocket.png" id="L4R-ye-onk">
+                                        <rect key="frame" x="99" y="0.0" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We have sent you an email to: %@ to verify that this is your email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PCt-10-pAK">
+                                        <rect key="frame" x="13" y="100" width="274" height="96"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
+                                        <color key="textColor" red="0.72156862745098038" green="0.72156862745098038" blue="0.72156862745098038" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SJX-K4-7IV">
-                                        <rect key="frame" x="-2" y="155" width="304" height="58"/>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1jx-oN-V8X">
+                                        <rect key="frame" x="3" y="196" width="294" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <fontDescription key="fontDescription" name="KannadaSangamMN-Bold" family="Kannada Sangam MN" pointSize="25"/>
-                                        <state key="normal" image="verified.png">
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <state key="normal" title="Wrong e-mail?">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="retypeEmailAndPass:" destination="y37-Te-OgN" eventType="touchUpInside" id="uj6-mu-ZLE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SJX-K4-7IV">
+                                        <rect key="frame" x="9" y="230" width="280" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
+                                        <state key="normal" title="I'm verified, let me in!" backgroundImage="login_button.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="loginUser:" destination="y37-Te-OgN" eventType="touchUpInside" id="xWp-oL-iUT"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dBk-ct-Hd9">
-                                        <rect key="frame" x="38" y="131" width="223" height="30"/>
+                                        <rect key="frame" x="38" y="300" width="223" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <fontDescription key="fontDescription" name="KannadaSangamMN-Bold" family="Kannada Sangam MN" pointSize="15"/>
                                         <state key="normal" title="Resend Verification Email">
@@ -2019,20 +2028,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <action selector="resendVerification:" destination="y37-Te-OgN" eventType="touchUpInside" id="hwu-Ma-weA"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1jx-oN-V8X">
-                                        <rect key="frame" x="3" y="218" width="294" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <fontDescription key="fontDescription" name="KannadaSangamMN-Bold" family="Kannada Sangam MN" pointSize="15"/>
-                                        <state key="normal" title="Wrong e-mail during facebook login?">
-                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="retypeEmailAndPass:" destination="y37-Te-OgN" eventType="touchUpInside" id="uj6-mu-ZLE"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HSu-p2-ixw">
-                                        <rect key="frame" x="56" y="216" width="182" height="77"/>
+                                        <rect key="frame" x="56" y="332" width="182" height="77"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
@@ -2044,16 +2041,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="10" y="82" width="300" height="284"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3b1-Mt-qsL">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Krc-kZ-TEX">
                                         <rect key="frame" x="7" y="74" width="72" height="72"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="pickTheImage:" destination="y37-Te-OgN" eventType="touchUpInside" id="W47-6X-jCe"/>
-                                        </connections>
-                                    </button>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
                                     <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pick_pic.png" id="23h-yZ-O7u">
                                         <rect key="frame" x="23" y="90" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2141,14 +2133,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="backButton" destination="Yr9-YB-4mT" id="4Jd-TU-Tog"/>
+                        <outlet property="backButton" destination="Yr9-YB-4mT" id="9sT-0i-UrL"/>
+                        <outlet property="backgroundProfileImage" destination="Krc-kZ-TEX" id="BJj-5E-XtK"/>
                         <outlet property="emailTextField" destination="f8B-6f-Yc4" id="ys3-ek-2W1"/>
                         <outlet property="messageAgainLbl" destination="HSu-p2-ixw" id="eoK-wn-l5r"/>
                         <outlet property="messageLlbl" destination="PCt-10-pAK" id="JPq-hd-GXc"/>
                         <outlet property="nameTextField" destination="IXc-b4-ZdO" id="TWw-Cm-qB4"/>
                         <outlet property="passwordTextField" destination="ZC7-sU-3dm" id="dWG-Zq-X2N"/>
                         <outlet property="profileImage" destination="23h-yZ-O7u" id="0Ds-Jw-cwY"/>
-                        <outlet property="profileImageButton" destination="3b1-Mt-qsL" id="tTs-Fc-XJt"/>
                         <outlet property="signUpView" destination="joQ-7R-Cgg" id="PBq-Uc-SRf"/>
                         <outlet property="simpleNavigationBar" destination="nHD-eE-cbn" id="pea-UQ-Vgm"/>
                         <outlet property="surnameTextField" destination="Wni-S6-5O1" id="hBO-mR-jfb"/>
@@ -3792,7 +3784,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="skip_button.png" width="440" height="108"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
         <image name="user_image_bg.png" width="74" height="74"/>
-        <image name="verified.png" width="550" height="120"/>
+        <image name="verification_rocket.png" width="185" height="149"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

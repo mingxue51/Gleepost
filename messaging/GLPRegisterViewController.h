@@ -13,9 +13,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
--(NSString*)email;
+-(NSString *)email;
 
--(NSString*)password;
+-(NSString *)password;
 
 -(void)loginUserFromLoginScreen:(BOOL)shouldRemember;
 
@@ -32,5 +32,7 @@
 -(BOOL)isPasswordValid;
 
 -(void)dismissModalView;
+
+- (void)configureNavigationBarForVerificationView;
 
 @end
