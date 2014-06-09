@@ -48,7 +48,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(id)initWithIdentifier:(NSString *)identifier
 {
-    
     self =  [super initWithIdentifier:identifier];
     
     if (self)

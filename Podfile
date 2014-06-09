@@ -1,4 +1,4 @@
-platform :ios, '6.0'
+platform :ios, '6.1'
 pod 'AFNetworking',	  '~> 1.3.1'
 pod 'AFHTTPRequestOperationLogger',	'~> 0.10.0'
 pod 'MBProgressHUD', '~> 0.8'

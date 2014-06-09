@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GBInfiniteScrollView.h"
 
-@interface RegisterAnimationsView : UIView
+
+@interface RegisterAnimationsView : UIView <GBInfiniteScrollViewDataSource, GBInfiniteScrollViewDelegate>
 
 @end

@@ -8,6 +8,7 @@
 
 #import "RegisterAnimationsView.h"
 
+
 @interface RegisterAnimationsView ()
 
 @property (strong, nonatomic) NSArray *imageViews;
@@ -17,7 +18,9 @@
 
 @property (assign, nonatomic) NSInteger preTranslation;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scroll;
+@property (strong, nonatomic) GBInfiniteScrollView *infiniteScrollView;
+
+@property (strong, nonatomic) NSArray *scrollableImages;
 
 @property (strong, nonatomic) NSTimer *timer;
 @property (nonatomic, strong) NSDate *startTime;
@@ -35,9 +38,57 @@
     if (self)
     {
         [self initialiseElements];
-        [self configureGestures];
+        
+        [self loadScrollerImages];
+        
+        [self initialiseScrollView];
+        
+//        [self configureGestures];
     }
     return self;
+}
+
+- (void)loadScrollerImages
+{
+    NSMutableArray *mutableImages = [[NSMutableArray alloc] init];
+    
+    [mutableImages addObject:[UIImage imageNamed:@"baseball"]];
+    [mutableImages addObject:[UIImage imageNamed:@"bowling"]];
+    [mutableImages addObject:[UIImage imageNamed:@"bullseye"]];
+    [mutableImages addObject:[UIImage imageNamed:@"calendar"]];
+    [mutableImages addObject:[UIImage imageNamed:@"camping"]];
+    [mutableImages addObject:[UIImage imageNamed:@"donut"]];
+    [mutableImages addObject:[UIImage imageNamed:@"drink"]];
+    [mutableImages addObject:[UIImage imageNamed:@"eggpaint"]];
+    [mutableImages addObject:[UIImage imageNamed:@"fireside"]];
+    [mutableImages addObject:[UIImage imageNamed:@"golf"]];
+    
+    _scrollableImages = [[NSArray alloc] initWithArray:mutableImages copyItems:YES];
+}
+
+- (void)initialiseScrollView
+{
+    _infiniteScrollView = [[GBInfiniteScrollView alloc] initWithFrame:self.bounds];
+    
+//    [_infiniteScrollView setDebug:YES];
+//    [_infiniteScrollView setVerboseDebug:YES];
+    
+    _infiniteScrollView.infiniteScrollViewDataSource = self;
+    _infiniteScrollView.infiniteScrollViewDelegate = self;
+    
+    _infiniteScrollView.pageIndex = 0;
+    
+    [_infiniteScrollView setInterval:2.0f];
+    
+//    [_infiniteScrollView setPagingEnabled:NO];
+
+    
+    [_infiniteScrollView reloadData];
+    
+    [_infiniteScrollView startAutoScroll];
+    
+    
+    [self addSubview:_infiniteScrollView];
 }
 
 - (void)configureGestures
@@ -46,17 +97,64 @@
     [self addGestureRecognizer:panGestureRecognizer];
 }
 
-- (void)awakeFromNib
+#pragma mark - GBInfiniteScrollViewDataSource
+
+- (NSInteger)numberOfPagesInInfiniteScrollView:(GBInfiniteScrollView *)infiniteScrollView
 {
-    _startOffset = CGPointMake(0.0, 0.0);
-    
-    _destinationOffset = CGPointMake(100.0, 0.0);
-    
-    [_scroll setContentSize:CGSizeMake(_scroll.frame.size.width+2200, _scroll.frame.size.height)];
-    
-    
-    [self doAnimatedScrollTo:CGPointMake(2000.0, 0.0)];
+    return 11;
 }
+
+- (GBInfiniteScrollViewPage *)infiniteScrollView:(GBInfiniteScrollView *)infiniteScrollView pageAtIndex:(NSUInteger)index;
+{
+    
+//    GBPageRecord *record = [self.data objectAtIndex:index];
+    GBInfiniteScrollViewPage *page = [infiniteScrollView dequeueReusablePage];
+    
+    if (page == nil) {
+          page = [[GBInfiniteScrollViewPage alloc] initWithFrame:self.bounds style:GBInfiniteScrollViewNonPageStyleImage];
+//        page = [[GBInfiniteScrollViewPage alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 75.0) style:GBInfiniteScrollViewNonPageStyleImage];
+
+        
+//        DDLogDebug(@"Bounds: %f : %f - %f : %f", self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
+    }
+    
+//    page.textLabel.text = @"test!";
+    page.imageView.image = [_scrollableImages objectAtIndex:index];
+    page.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    page.textLabel.text = @"HELLO!";
+        //    page.textLabel.textColor = [UIColor blueColor];
+//    page.textLabel.textColor = record.textColor;
+//    page.contentView.backgroundColor = record.backgroundColor;
+//    page.textLabel.font = [UIFont fontWithName: @"HelveticaNeue-UltraLight" size:128.0f];
+    
+    
+    
+    return page;
+}
+
+#pragma mark - GBInfiniteScrollViewDelegate
+
+- (void)infiniteScrollViewDidScrollNextPage:(GBInfiniteScrollView *)infiniteScrollView
+{
+}
+
+- (void)infiniteScrollViewDidScrollPreviousPage:(GBInfiniteScrollView *)infiniteScrollView
+{
+}
+
+
+
+//- (void)awakeFromNib
+//{
+//    _startOffset = CGPointMake(0.0, 0.0);
+//    
+//    _destinationOffset = CGPointMake(100.0, 0.0);
+//    
+//    [_scroll setContentSize:CGSizeMake(_scroll.frame.size.width+2200, _scroll.frame.size.height)];
+//    
+//    
+//    [self doAnimatedScrollTo:CGPointMake(2000.0, 0.0)];
+//}
 
 - (void)initialiseElements
 {
@@ -79,89 +177,89 @@
 //    [UIScrollView commitAnimations];
 }
 
-#pragma mark - Animations
-
-- (void) animateScroll:(NSTimer *)timerParam
-{
-    const NSTimeInterval duration = 10.2;
-    
-    NSTimeInterval timeRunning = - [_startTime timeIntervalSinceNow];
-    
-
-    
-    
-    if (timeRunning >= duration)
-    {
-        
-        [_scroll setContentOffset:_destinationOffset animated:YES];
-        [_timer invalidate];
-        _timer = nil;
-        return;
-    }
-	CGPoint offset = [_scroll contentOffset];
-	offset.y = _startOffset.y + (_destinationOffset.y - _startOffset.y) * timeRunning / duration;
-	[_scroll setContentOffset:offset animated:YES];
-}
-
-- (void) doAnimatedScrollTo:(CGPoint)offset
-{
-    self.startTime = [NSDate date];
-    _startOffset = _scroll.contentOffset;
-    
-    _destinationOffset = offset;
-    
-    if (!_timer)
-    {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01
-                                         target:self
-                                       selector:@selector(animateScroll:)
-                                       userInfo:nil
-                                        repeats:YES];
-    }
-}
-
-#pragma mark - Gestures
-
-- (void)dragView:(UIPanGestureRecognizer *)panGestureRecognizer
-{
-    
-    [self doAnimatedScrollTo:CGPointMake(2000.0, 0.0)];
-
-//    CGPoint translation = [panGestureRecognizer translationInView:panGestureRecognizer.view];
-//    CGPoint velocity = [panGestureRecognizer velocityInView:panGestureRecognizer.view];
-//    CGPoint location = [panGestureRecognizer locationInView:self];
-//    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan)
+//#pragma mark - Animations
+//
+//- (void) animateScroll:(NSTimer *)timerParam
+//{
+//    const NSTimeInterval duration = 10.2;
+//    
+//    NSTimeInterval timeRunning = - [_startTime timeIntervalSinceNow];
+//    
+//
+//    
+//    
+//    if (timeRunning >= duration)
 //    {
-//        DDLogDebug(@"Began: Translation %f : %f, Velocity: %f : %f", translation.x, translation.y, velocity.x, velocity.y);
 //        
-//        [UIView animateWithDuration:2.0 delay:0
-//                            options:UIViewAnimationOptionCurveEaseOut
-//                         animations:^ {
-////                             _img.center = location;
-////                             _img2.center = location;
-//                         }
-//                         completion:NULL];
-//        
-//        _preTranslation = translation.x;
+//        [_scroll setContentOffset:_destinationOffset animated:YES];
+//        [_timer invalidate];
+//        _timer = nil;
+//        return;
 //    }
-//    else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged)
+//	CGPoint offset = [_scroll contentOffset];
+//	offset.y = _startOffset.y + (_destinationOffset.y - _startOffset.y) * timeRunning / duration;
+//	[_scroll setContentOffset:offset animated:YES];
+//}
+//
+//- (void) doAnimatedScrollTo:(CGPoint)offset
+//{
+//    self.startTime = [NSDate date];
+//    _startOffset = _scroll.contentOffset;
+//    
+//    _destinationOffset = offset;
+//    
+//    if (!_timer)
 //    {
-//        DDLogDebug(@"Changed: Translation %f : %f, Velocity: %f : %f, Location: %f : %f", translation.x, translation.y, velocity.x, velocity.y, location.x, location.y);
-//        if(_preTranslation != translation.x)
-//        {
-//            [_img setCenter:CGPointMake(_img.center.x + translation.x, _img.center.y)];
-//        }
-//        
-//        DDLogDebug(@"Image point: %f", _img.center.x);
-//        
-////        _img.center = location;
-////        _img2.center = location;
+//        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01
+//                                         target:self
+//                                       selector:@selector(animateScroll:)
+//                                       userInfo:nil
+//                                        repeats:YES];
 //    }
-//    else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded)
-//    {
-//        DDLogDebug(@"Ended: Translation %f : %f, Velocity: %f : %f", translation.x, translation.y, velocity.x, velocity.y);
-//    }
-}
+//}
+//
+//#pragma mark - Gestures
+//
+//- (void)dragView:(UIPanGestureRecognizer *)panGestureRecognizer
+//{
+//    
+//    [self doAnimatedScrollTo:CGPointMake(2000.0, 0.0)];
+//
+////    CGPoint translation = [panGestureRecognizer translationInView:panGestureRecognizer.view];
+////    CGPoint velocity = [panGestureRecognizer velocityInView:panGestureRecognizer.view];
+////    CGPoint location = [panGestureRecognizer locationInView:self];
+////    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan)
+////    {
+////        DDLogDebug(@"Began: Translation %f : %f, Velocity: %f : %f", translation.x, translation.y, velocity.x, velocity.y);
+////        
+////        [UIView animateWithDuration:2.0 delay:0
+////                            options:UIViewAnimationOptionCurveEaseOut
+////                         animations:^ {
+//////                             _img.center = location;
+//////                             _img2.center = location;
+////                         }
+////                         completion:NULL];
+////        
+////        _preTranslation = translation.x;
+////    }
+////    else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged)
+////    {
+////        DDLogDebug(@"Changed: Translation %f : %f, Velocity: %f : %f, Location: %f : %f", translation.x, translation.y, velocity.x, velocity.y, location.x, location.y);
+////        if(_preTranslation != translation.x)
+////        {
+////            [_img setCenter:CGPointMake(_img.center.x + translation.x, _img.center.y)];
+////        }
+////        
+////        DDLogDebug(@"Image point: %f", _img.center.x);
+////        
+//////        _img.center = location;
+//////        _img2.center = location;
+////    }
+////    else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded)
+////    {
+////        DDLogDebug(@"Ended: Translation %f : %f, Velocity: %f : %f", translation.x, translation.y, velocity.x, velocity.y);
+////    }
+//}
 
 
 

@@ -2505,11 +2505,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <view contentMode="scaleToFill" id="jhq-nW-Iw7" customClass="RegisterAnimationsView">
                                 <rect key="frame" x="0.0" y="239" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <subviews>
+                                    <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="uhf-go-SJI" customClass="GBInfiniteScrollView">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </scrollView>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="img" destination="anh-kj-9mz" id="zEZ-1r-GCI"/>
                                     <outlet property="img2" destination="hjV-gI-asn" id="3M9-To-w5e"/>
-                                    <outlet property="scroll" destination="jlu-Dt-Juj" id="MOI-gb-Nkw"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="caF-ir-mSy">
@@ -3793,12 +3798,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="GTC-XV-iI1"/>
+        <segue reference="aP2-oN-YHg"/>
         <segue reference="Ptj-MX-g8C"/>
+        <segue reference="C5K-bl-yN1"/>
         <segue reference="uet-Cl-mZq"/>
         <segue reference="rCT-Ex-vO8"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="C5K-bl-yN1"/>
         <segue reference="PCe-7s-A56"/>
         <segue reference="WhX-ZL-dQD"/>
         <segue reference="Nh6-Tl-qmR"/>
