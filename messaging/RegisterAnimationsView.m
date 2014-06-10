@@ -7,7 +7,7 @@
 //
 
 #import "RegisterAnimationsView.h"
-
+#import "ShapeFormatterHelper.h"
 
 @interface RegisterAnimationsView ()
 
@@ -18,7 +18,7 @@
 
 @property (assign, nonatomic) NSInteger preTranslation;
 
-@property (strong, nonatomic) GBInfiniteScrollView *infiniteScrollView;
+@property (strong, nonatomic) InfiniteScrollViewPicker *infiniteScrollView;
 
 @property (strong, nonatomic) NSArray *scrollableImages;
 
@@ -68,27 +68,37 @@
 
 - (void)initialiseScrollView
 {
-    _infiniteScrollView = [[GBInfiniteScrollView alloc] initWithFrame:self.bounds];
+    _infiniteScrollView = [[InfiniteScrollViewPicker alloc] initWithFrame:self.bounds];
     
-//    [_infiniteScrollView setDebug:YES];
-//    [_infiniteScrollView setVerboseDebug:YES];
-    
-    _infiniteScrollView.infiniteScrollViewDataSource = self;
-    _infiniteScrollView.infiniteScrollViewDelegate = self;
-    
-    _infiniteScrollView.pageIndex = 0;
-    
-    [_infiniteScrollView setInterval:2.0f];
-    
-//    [_infiniteScrollView setPagingEnabled:NO];
-
-    
-    [_infiniteScrollView reloadData];
-    
-    [_infiniteScrollView startAutoScroll];
-    
+    [_infiniteScrollView setItemSize:CGSizeMake(70.0f, 70.0f)];
+    [_infiniteScrollView setAnimationSpeed:kMedium];
+    [_infiniteScrollView setAutomaticScrollEnabled:YES];
+    [_infiniteScrollView setImageArray:_scrollableImages];
+    [_infiniteScrollView setSelectedItem:0];
     
     [self addSubview:_infiniteScrollView];
+    
+//    _infiniteScrollView = [[GBInfiniteScrollView alloc] initWithFrame:self.bounds];
+//    
+////    [_infiniteScrollView setDebug:YES];
+////    [_infiniteScrollView setVerboseDebug:YES];
+//    
+//    _infiniteScrollView.infiniteScrollViewDataSource = self;
+//    _infiniteScrollView.infiniteScrollViewDelegate = self;
+//    
+//    _infiniteScrollView.pageIndex = 0;
+//    
+//    [_infiniteScrollView setInterval:2.0f];
+//    
+////    [_infiniteScrollView setPagingEnabled:NO];
+//
+//    
+//    [_infiniteScrollView reloadData];
+//    
+//    [_infiniteScrollView startAutoScroll];
+//    
+//    
+//    [self addSubview:_infiniteScrollView];
 }
 
 - (void)configureGestures
@@ -96,52 +106,6 @@
     UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragView:)];
     [self addGestureRecognizer:panGestureRecognizer];
 }
-
-#pragma mark - GBInfiniteScrollViewDataSource
-
-- (NSInteger)numberOfPagesInInfiniteScrollView:(GBInfiniteScrollView *)infiniteScrollView
-{
-    return 11;
-}
-
-- (GBInfiniteScrollViewPage *)infiniteScrollView:(GBInfiniteScrollView *)infiniteScrollView pageAtIndex:(NSUInteger)index;
-{
-    
-//    GBPageRecord *record = [self.data objectAtIndex:index];
-    GBInfiniteScrollViewPage *page = [infiniteScrollView dequeueReusablePage];
-    
-    if (page == nil) {
-          page = [[GBInfiniteScrollViewPage alloc] initWithFrame:self.bounds style:GBInfiniteScrollViewNonPageStyleImage];
-//        page = [[GBInfiniteScrollViewPage alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 75.0) style:GBInfiniteScrollViewNonPageStyleImage];
-
-        
-//        DDLogDebug(@"Bounds: %f : %f - %f : %f", self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
-    }
-    
-//    page.textLabel.text = @"test!";
-    page.imageView.image = [_scrollableImages objectAtIndex:index];
-    page.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    page.textLabel.text = @"HELLO!";
-        //    page.textLabel.textColor = [UIColor blueColor];
-//    page.textLabel.textColor = record.textColor;
-//    page.contentView.backgroundColor = record.backgroundColor;
-//    page.textLabel.font = [UIFont fontWithName: @"HelveticaNeue-UltraLight" size:128.0f];
-    
-    
-    
-    return page;
-}
-
-#pragma mark - GBInfiniteScrollViewDelegate
-
-- (void)infiniteScrollViewDidScrollNextPage:(GBInfiniteScrollView *)infiniteScrollView
-{
-}
-
-- (void)infiniteScrollViewDidScrollPreviousPage:(GBInfiniteScrollView *)infiniteScrollView
-{
-}
-
 
 
 //- (void)awakeFromNib

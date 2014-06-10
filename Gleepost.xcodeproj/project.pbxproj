@@ -44,6 +44,8 @@
 		580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15518AA74400026B65B /* CampusLiveManager.m */; };
 		5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */; };
 		5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0BB18870C740066D4CE /* GLPProfileLoader.m */; };
+		58119CC51947992700C2687B /* InfiniteScrollViewPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 58119CC21947992700C2687B /* InfiniteScrollViewPicker.m */; };
+		58119CC61947992700C2687B /* UIView+viewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58119CC41947992700C2687B /* UIView+viewController.m */; };
 		58143D691821013200B76E5D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D681821013200B76E5D /* CFNetwork.framework */; };
 		58143D6B1821014C00B76E5D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58143D6A1821014C00B76E5D /* Security.framework */; };
 		58143D7018212AE900B76E5D /* +_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58143D6F18212AE900B76E5D /* +_old.png */; };
@@ -804,6 +806,10 @@
 		5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessagesLoader.m; sourceTree = "<group>"; };
 		5810F0BA18870C740066D4CE /* GLPProfileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileLoader.h; sourceTree = "<group>"; };
 		5810F0BB18870C740066D4CE /* GLPProfileLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileLoader.m; sourceTree = "<group>"; };
+		58119CC11947992700C2687B /* InfiniteScrollViewPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfiniteScrollViewPicker.h; sourceTree = "<group>"; };
+		58119CC21947992700C2687B /* InfiniteScrollViewPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfiniteScrollViewPicker.m; sourceTree = "<group>"; };
+		58119CC31947992700C2687B /* UIView+viewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+viewController.h"; sourceTree = "<group>"; };
+		58119CC41947992700C2687B /* UIView+viewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+viewController.m"; sourceTree = "<group>"; };
 		58143D681821013200B76E5D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		58143D6A1821014C00B76E5D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		58143D6F18212AE900B76E5D /* +_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "+_old.png"; sourceTree = "<group>"; };
@@ -1917,6 +1923,17 @@
 			name = "Time formatter";
 			sourceTree = "<group>";
 		};
+		58119CC01947991900C2687B /* InfiniteScrollViewPicker */ = {
+			isa = PBXGroup;
+			children = (
+				58119CC11947992700C2687B /* InfiniteScrollViewPicker.h */,
+				58119CC21947992700C2687B /* InfiniteScrollViewPicker.m */,
+				58119CC31947992700C2687B /* UIView+viewController.h */,
+				58119CC41947992700C2687B /* UIView+viewController.m */,
+			);
+			name = InfiniteScrollViewPicker;
+			sourceTree = "<group>";
+		};
 		5821278A189161C800BF36E5 /* VSScroller */ = {
 			isa = PBXGroup;
 			children = (
@@ -1999,7 +2016,7 @@
 			name = Fonts;
 			sourceTree = "<group>";
 		};
-		5827B88B1945C82300DFC76E /* GBInfiniteScrollView */ = {
+		5827B88B1945C82300DFC76E /* GBInfiniteScrollView TO BE DELETED */ = {
 			isa = PBXGroup;
 			children = (
 				5827B88C1945C85F00DFC76E /* GBInfiniteScrollView.h */,
@@ -2007,7 +2024,7 @@
 				5827B88E1945C85F00DFC76E /* GBInfiniteScrollViewPage.h */,
 				5827B88F1945C85F00DFC76E /* GBInfiniteScrollViewPage.m */,
 			);
-			name = GBInfiniteScrollView;
+			name = "GBInfiniteScrollView TO BE DELETED";
 			sourceTree = "<group>";
 		};
 		582B405018AD6FA400BC4285 /* Sounds */ = {
@@ -3393,7 +3410,8 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				5827B88B1945C82300DFC76E /* GBInfiniteScrollView */,
+				58119CC01947991900C2687B /* InfiniteScrollViewPicker */,
+				5827B88B1945C82300DFC76E /* GBInfiniteScrollView TO BE DELETED */,
 				5861575C193CC363009BAD33 /* FXPageControl */,
 				58AE5FB21923820A00C4D59D /* PBJVideoPlayer */,
 				587805A51920E2CE0002472B /* VideoRecorder */,
@@ -4872,6 +4890,7 @@
 				58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
 				58752FDF18A44BC100F6F09B /* GLPSingInViewController.m in Sources */,
+				58119CC51947992700C2687B /* InfiniteScrollViewPicker.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
 				58B90F1F18C8216300FA0955 /* GroupUploaderManager.m in Sources */,
 				5834903E18BF80670087CC3A /* FDTakeController.m in Sources */,
@@ -4984,6 +5003,7 @@
 				80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */,
 				58F9EC6719377E1000714432 /* PendingPost.m in Sources */,
 				5890D214184763E700E293DD /* GLPThemeManager.m in Sources */,
+				58119CC61947992700C2687B /* UIView+viewController.m in Sources */,
 				80C8BA72181048E9004F70DB /* GLPMessageDaoParser.m in Sources */,
 				585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */,
 				58D19D9918C7672C00CB13CC /* CreateNewGroupCell.m in Sources */,
@@ -5141,8 +5161,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -5161,8 +5181,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DAEC17B5-2EB4-4EA6-A31E-B8B9B6F1B9A5";
+				PROVISIONING_PROFILE = "2106272A-2587-4426-A895-67468D76280A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2106272A-2587-4426-A895-67468D76280A";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
