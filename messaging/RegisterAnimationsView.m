@@ -62,6 +62,7 @@
     [mutableImages addObject:[UIImage imageNamed:@"eggpaint"]];
     [mutableImages addObject:[UIImage imageNamed:@"fireside"]];
     [mutableImages addObject:[UIImage imageNamed:@"golf"]];
+    [mutableImages addObject:[UIImage imageNamed:@"guitar"]];
     
     _scrollableImages = [[NSArray alloc] initWithArray:mutableImages copyItems:YES];
 }
@@ -75,6 +76,7 @@
     [_infiniteScrollView setAutomaticScrollEnabled:YES];
     [_infiniteScrollView setImageArray:_scrollableImages];
     [_infiniteScrollView setSelectedItem:0];
+    [_infiniteScrollView setDistanceBetweenElements:10];
     
     [self addSubview:_infiniteScrollView];
     

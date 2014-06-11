@@ -12,9 +12,10 @@
 
 typedef NS_ENUM(NSInteger, ISVAnimationSpeed) {
     kSlow = 20,
-    kMedium = 50,
+    kMedium = 1,
     kFast = 100
 };
+
 
 @interface InfiniteScrollViewPicker : UIScrollView <UIScrollViewDelegate>
 {
@@ -30,10 +31,13 @@ typedef NS_ENUM(NSInteger, ISVAnimationSpeed) {
 @property (nonatomic) float heightOffset;
 @property (nonatomic) float positionRatio;
 
+
 - (void)setAutomaticScrollEnabled:(BOOL)automaticAnimationEnabled;
 
 - (void)setAnimationSpeed:(ISVAnimationSpeed)animationSpeed;
 
 - (void)setSelectedItem:(int)index;
+
+- (void)setDistanceBetweenElements:(NSInteger)distance;
 
 @end

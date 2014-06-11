@@ -14,8 +14,10 @@
 @property (assign, nonatomic) CGPoint destinationOffset;
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic, getter = isAutomaticScrollEnabled) BOOL automaticScrollEnabled;
-@property (assign, nonatomic, getter = isAnimationEnabled) BOOL animationEnabled;
+//@property (assign, nonatomic, getter = isAnimationEnabled) BOOL animationEnabled;
 @property (assign, nonatomic) ISVAnimationSpeed animationSpeed;
+@property (assign, nonatomic) NSInteger distanceBetweenElements;
+@property (strong, nonatomic) NSDictionary *animationSpeedDictionary;
 
 @end
 
@@ -34,8 +36,6 @@
     {
         [self initialiseObjects];
         
-        
-        
         [self startAutomaticScrolling];
     }
     return self;
@@ -53,12 +53,14 @@
     alphaOfobjs = 1.0;
     heightOffset = 0.0;
     positionRatio = 1.0;
+    _distanceBetweenElements = 1;
     
     _imageArray = [[NSMutableArray alloc] init];
     imageStore = [[NSMutableArray alloc] init];
+    _animationSpeedDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithFloat:0.05], [NSNumber numberWithInt:kSlow], [NSNumber numberWithFloat:0.03], [NSNumber numberWithInt:kMedium], [NSNumber numberWithFloat:0.01], [NSNumber numberWithInt:kFast], nil];
     
     _automaticScrollEnabled = YES;
-    _animationEnabled = YES;
+//    _animationEnabled = YES;
     
     _animationSpeed = kSlow;
 }
@@ -67,29 +69,34 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if([self isAnimationEnabled])
-    {
-        [self stopAutomaticScrolling];
-
-        _animationEnabled = NO;
-    }
-    else
-    {
-        [self startAutomaticScrolling];
-        _animationEnabled = YES;
-    }
+    [self stopAutomaticScrolling];
+    
+//    _animationEnabled = NO;
+    
+//    if([self isAnimationEnabled])
+//    {
+//        [self stopAutomaticScrolling];
+//
+//        _animationEnabled = NO;
+//    }
+//    else
+//    {
+//        [self startAutomaticScrolling];
+//        _animationEnabled = YES;
+//    }
     
     
     [super touchesBegan:touches withEvent:event];
 }
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"DEBUG: Touches ending" );
-
-    if([self isAnimationEnabled])
-    {
-        [self startAutomaticScrolling];
-    }
+//    if([self isAnimationEnabled])
+//    {
+    
+    [self startAutomaticScrolling];
+//    _animationEnabled = YES;
+//    }
     
     [super touchesEnded:touches withEvent:event];
 }
@@ -107,7 +114,9 @@
     
     offset.x = offset.x + _destinationOffset.x;
     
-	[self setContentOffset:offset animated:YES];
+//    DDLogDebug(@"offset: %f", offset.x);
+    
+	[self setContentOffset:offset animated:NO];
 }
 
 - (void)doAnimatedScrollTo:(CGPoint)offset
@@ -116,7 +125,8 @@
     
     if (![_timer isValid])
     {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.05
+        
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:[self animationSpeed:_animationSpeed]
                                          target:self
                                        selector:@selector(animateScroll:)
                                        userInfo:nil
@@ -135,9 +145,7 @@
 {
     _automaticScrollEnabled = YES;
     
-    NSLog(@"Animation speed: %d", _animationSpeed);
-    
-    [self doAnimatedScrollTo:CGPointMake(_animationSpeed, self.contentOffset.y)];
+    [self doAnimatedScrollTo:CGPointMake(1.0, self.contentOffset.y)];
 }
 
 
@@ -145,18 +153,21 @@
 
 - (void)initInfiniteScrollViewWithSelectedItem:(int)index
 {
-    if (_itemSize.width == 0 && _itemSize.height == 0)
-    {
-        if (_imageArray.count > 0)
-        {
-            _itemSize = [(UIImage *)[_imageArray objectAtIndex:0] size];
-        }
-        else
-        {
-//            _itemSize = CGSizeMake(self.frame.size.height/2, self.frame.size.height/2);
-            _itemSize = CGSizeMake(self.frame.size.height - 5 , self.frame.size.height - 5);
-        }
-    }
+//    if (_itemSize.width == 0 && _itemSize.height == 0)
+//    {
+//        if (_imageArray.count > 0)
+//        {
+//            _itemSize = [(UIImage *)[_imageArray objectAtIndex:0] size];
+//        }
+//        else
+//        {
+////            _itemSize = CGSizeMake(self.frame.size.height/2, self.frame.size.height/2);
+//            _itemSize = CGSizeMake(self.frame.size.height - 5 , self.frame.size.height - 5);
+//        }
+//    }
+    
+    _itemSize = CGSizeMake(self.frame.size.height - 5 , self.frame.size.height - 5);
+
     
     
     NSAssert((_itemSize.height < self.frame.size.height), @"item's height must not bigger than scrollpicker's height");
@@ -225,6 +236,18 @@
     [self startAutomaticScrolling];
 }
 
+- (void)setDistanceBetweenElements:(NSInteger)distance
+{
+    _distanceBetweenElements = distance;
+}
+
+#pragma mark - Helpers
+
+- (float)animationSpeed:(ISVAnimationSpeed)animationSpeed
+{
+    return [[_animationSpeedDictionary objectForKey:[NSNumber numberWithInt:animationSpeed]] floatValue];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -233,13 +256,22 @@
     {
         float sectionSize = _imageArray.count * _itemSize.width;
         
+        
         if (self.contentOffset.x <= (sectionSize - sectionSize/2))
         {
+            DDLogDebug(@"Section size + : %f, content offset: %f", sectionSize, self.contentOffset.x);
+
             self.contentOffset = CGPointMake(sectionSize * 2 - sectionSize/2, 0);
         }
         else if (self.contentOffset.x >= (sectionSize * 3 + sectionSize/2))
         {
-            self.contentOffset = CGPointMake(sectionSize * 2 + sectionSize/2, 0);
+            DDLogDebug(@"Section size -: %f, content offset: %f", sectionSize, self.contentOffset.x);
+
+            self.contentOffset = CGPointMake(sectionSize * 2 + sectionSize/2 - _distanceBetweenElements*_imageArray.count, 0);
+//            self.contentOffset = CGPointMake(self.contentOffset.x - 10, 0);
+            
+            DDLogDebug(@"Section size after: %f", self.contentOffset.x);
+            
         }
 
         [self reloadView:self.contentOffset.x];
@@ -250,19 +282,19 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {    
-    if([self isAnimationEnabled])
-    {
+//    if([self isAnimationEnabled])
+//    {
         [self startAutomaticScrolling];
-    }
+//    }
     
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if([self isAnimationEnabled])
-    {
+//    if([self isAnimationEnabled])
+//    {
         [self stopAutomaticScrolling];
-    }
+//    }
     
     
 }
@@ -283,7 +315,7 @@
         if (i > 0)
         {
             UIView *pBlock = [imageStore objectAtIndex:i-1];
-            cBlock.frame = CGRectMake(pBlock.frame.origin.x + pBlock.frame.size.width, cBlock.frame.origin.y, cBlock.frame.size.width, cBlock.frame.size.height);
+            cBlock.frame = CGRectMake(pBlock.frame.origin.x + pBlock.frame.size.width + _distanceBetweenElements, cBlock.frame.origin.y, cBlock.frame.size.width, cBlock.frame.size.height);
         }
     }
 
