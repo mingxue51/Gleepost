@@ -28,6 +28,7 @@
 #import "NewGroupViewController.h"
 #import "GLPSearchUsersViewController.h"
 #import "EmptyMessage.h"
+#import "GLPButton.h"
 
 @interface ContactsViewController ()
 
@@ -192,10 +193,9 @@
 {
     UIImage *addGroupIcon = [UIImage imageNamed:@"settings_btn"];
     
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    GLPButton *btnBack=[[GLPButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25) andKind:kRightImage];
     [btnBack addTarget:self action:@selector(popUpCreateView:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:addGroupIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
     
     UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(popUpCreateView:)];
     

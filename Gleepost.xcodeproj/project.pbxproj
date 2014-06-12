@@ -156,6 +156,7 @@
 		5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5839262018A0256A00439398 /* SignUpWithNameViewController.m */; };
 		5839CC8918A5737500FA43A1 /* glp-quote-old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839CC8818A5737500FA43A1 /* glp-quote-old.png */; };
 		5839CC8B18A5BF0C00FA43A1 /* univers-45-light-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5839CC8A18A5BE9600FA43A1 /* univers-45-light-bold.ttf */; };
+		583B567B194A40B900CC5D37 /* UINavigationBar+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 583B567A194A40B900CC5D37 /* UINavigationBar+Utils.m */; };
 		583C725E17EF2E5600820761 /* MessageBox2small.png in Resources */ = {isa = PBXBuildFile; fileRef = 583C725D17EF2E5600820761 /* MessageBox2small.png */; };
 		583CE326189FFFBA00E78C08 /* loginbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE325189FFFBA00E78C08 /* loginbg.png */; };
 		583CE32C18A0056A00E78C08 /* loginnew2.png in Resources */ = {isa = PBXBuildFile; fileRef = 583CE32B18A0056A00E78C08 /* loginnew2.png */; };
@@ -410,6 +411,7 @@
 		58A75EB81920E7780082F316 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58A75EB71920E7780082F316 /* MobileCoreServices.framework */; };
 		58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A75EBB1920EFA50082F316 /* GLPVideoViewController.m */; };
 		58A75EBF1921097A0082F316 /* VideoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A75EBE1921097A0082F316 /* VideoProgressView.m */; };
+		58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A855C01949BA8C0059CF57 /* GLPButton.m */; };
 		58AA61E4192A87100098E4FB /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E3192A87100098E4FB /* add_new_post.png */; };
 		58AA61E6192A87350098E4FB /* show_categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E5192A87350098E4FB /* show_categories.png */; };
 		58AA61E8192A87540098E4FB /* nav_bar_title_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E7192A87540098E4FB /* nav_bar_title_button.png */; };
@@ -974,6 +976,8 @@
 		5839262018A0256A00439398 /* SignUpWithNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpWithNameViewController.m; sourceTree = "<group>"; };
 		5839CC8818A5737500FA43A1 /* glp-quote-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glp-quote-old.png"; sourceTree = "<group>"; };
 		5839CC8A18A5BE9600FA43A1 /* univers-45-light-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "univers-45-light-bold.ttf"; sourceTree = "<group>"; };
+		583B5679194A40B900CC5D37 /* UINavigationBar+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Utils.h"; sourceTree = "<group>"; };
+		583B567A194A40B900CC5D37 /* UINavigationBar+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Utils.m"; sourceTree = "<group>"; };
 		583C725D17EF2E5600820761 /* MessageBox2small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageBox2small.png; sourceTree = "<group>"; };
 		583CE325189FFFBA00E78C08 /* loginbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginbg.png; sourceTree = "<group>"; };
 		583CE32B18A0056A00E78C08 /* loginnew2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginnew2.png; sourceTree = "<group>"; };
@@ -1324,6 +1328,8 @@
 		58A75EBB1920EFA50082F316 /* GLPVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoViewController.m; sourceTree = "<group>"; };
 		58A75EBD1921097A0082F316 /* VideoProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoProgressView.h; sourceTree = "<group>"; };
 		58A75EBE1921097A0082F316 /* VideoProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoProgressView.m; sourceTree = "<group>"; };
+		58A855BF1949BA8C0059CF57 /* GLPButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPButton.h; sourceTree = "<group>"; };
+		58A855C01949BA8C0059CF57 /* GLPButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPButton.m; sourceTree = "<group>"; };
 		58AA61E3192A87100098E4FB /* add_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post.png; sourceTree = "<group>"; };
 		58AA61E5192A87350098E4FB /* show_categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_categories.png; sourceTree = "<group>"; };
 		58AA61E7192A87540098E4FB /* nav_bar_title_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button.png; sourceTree = "<group>"; };
@@ -3858,6 +3864,8 @@
 				80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */,
 				58272F7E1896807900CD7522 /* FakeNavigationBar.h */,
 				58272F7F1896807900CD7522 /* FakeNavigationBar.m */,
+				58A855BF1949BA8C0059CF57 /* GLPButton.h */,
+				58A855C01949BA8C0059CF57 /* GLPButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -4129,6 +4137,8 @@
 		80E7478517CEA08F001957E5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				583B5679194A40B900CC5D37 /* UINavigationBar+Utils.h */,
+				583B567A194A40B900CC5D37 /* UINavigationBar+Utils.m */,
 				80E7478617CEA0A5001957E5 /* NSString+Utils.h */,
 				80E7478717CEA0A5001957E5 /* NSString+Utils.m */,
 				80666C521806E11000E4E515 /* GLPMessage+CellLogic.h */,
@@ -4917,6 +4927,7 @@
 				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,
 				58F9C63F18C522CA004A237E /* GLPGroup.m in Sources */,
 				583491F71933FFE900E44B4A /* GLPWalkthroughViewController.m in Sources */,
+				583B567B194A40B900CC5D37 /* UINavigationBar+Utils.m in Sources */,
 				580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */,
 				583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */,
 				58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */,
@@ -5024,6 +5035,7 @@
 				58BB77FD1924F0600046885B /* VideoView.m in Sources */,
 				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
 				5844293318BCD17600DFEAF4 /* GLPCommentUploader.m in Sources */,
+				58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
 				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,

@@ -28,6 +28,7 @@
 #import "SessionManager.h"
 #import "GLPiOS6Helper.h"
 #import "EmptyMessage.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GroupViewController ()
 
@@ -218,7 +219,6 @@ const int NUMBER_OF_ROWS = 2;
     UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
     [btnBack addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:createPostImg forState:UIControlStateNormal];
-//<<<<<<< HEAD
     [btnBack setFrame:CGRectMake(23, 0, 35, 35)];
     btnBack.exclusiveTouch = YES;
     
@@ -229,22 +229,29 @@ const int NUMBER_OF_ROWS = 2;
     [rangeBtn setFrame:CGRectMake(0, 0, 35, 35)];
     
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width+20, btnBack.frame.size.height)];
-//=======
-//    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
-//    
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
-//    
-//    
-//>>>>>>> ios6-support
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 0, btnBack.frame.size.width+20, btnBack.frame.size.height)];
+
     [view addSubview:btnBack];
     [view addSubview:rangeBtn];
+    
+//    [ShapeFormatterHelper setBorderToView:view withColour:[UIColor redColor] andWidth:1.0];
+//    
+//    [ShapeFormatterHelper setBorderToView:btnBack withColour:[UIColor blackColor] andWidth:1.0f];
     
     
     UIBarButtonItem *createPostButton = [[UIBarButtonItem alloc] initWithCustomView:view];
     
     
     self.navigationItem.rightBarButtonItem = createPostButton;
+    
+    
+    //=======
+    //    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
+    //
+    //    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
+    //
+    //
+    //>>>>>>> ios6-support
     
 }
 

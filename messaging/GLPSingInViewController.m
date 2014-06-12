@@ -111,6 +111,7 @@
 //    [self.simpleNavBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:GLP_APP_FONT size:20.0f], UITextAttributeFont, nil]];
 //}
 
+
 - (IBAction)forgotPassword:(id)sender
 {
     if([self isEmalValid])

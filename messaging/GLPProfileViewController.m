@@ -44,6 +44,7 @@
 #import "ContactsManager.h"
 #import "EmptyMessage.h"
 #import "TableViewHelper.h"
+#import "GLPButton.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -302,23 +303,26 @@
 {
     UIImage *settingsIcon = [UIImage imageNamed:@"settings_btn"];
     
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
+    GLPButton *btnBack=[[GLPButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25) andKind:kRightImage];
     [btnBack addTarget:self action:@selector(showSettings:) forControlEvents:UIControlEventTouchUpInside];
     [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
+    
+//    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
     
     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
     //Create the custom bell icon with notification dot.
     
-    UIButton *bellBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [bellBtn addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
-    [bellBtn setBackgroundImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
-    [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
+//    UIButton *bellBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+//    [bellBtn addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
+//    [bellBtn setBackgroundImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
+//    [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
     
     
     
     self.navigationItem.rightBarButtonItem = settingsButton;
+    
+    
 
 }
 

@@ -18,6 +18,7 @@
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
 #import "GLPiOS6Helper.h"
+#import "ShapeFormatterHelper.h"
 
 @implementation NewCommentView
 
@@ -85,7 +86,7 @@
         
         UIColor *buttonsColour = [UIColor whiteColor];
         
-        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 60, 30)];
+        UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 50, 30)];
         
         [cancelButton setTitleColor:buttonsColour forState:UIControlStateNormal];
         
@@ -116,7 +117,8 @@
         [self.commentTextView addGestureRecognizer:singleTap];
         
         //Add comment button.
-        UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 25, 60, 30)];
+        UIButton *commentButton = [[UIButton alloc] initWithFrame:CGRectMake(275, 25, 35, 30)];
+        
         [commentButton setTitle:@"Post" forState:UIControlStateNormal];
         
         [commentButton setTitleColor:buttonsColour forState:UIControlStateNormal];
