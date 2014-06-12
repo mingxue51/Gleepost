@@ -14,6 +14,8 @@
 @property (assign, nonatomic) CGPoint destinationOffset;
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic, getter = isAutomaticScrollEnabled) BOOL automaticScrollEnabled;
+
+//TODO: create a play/pause mode.
 //@property (assign, nonatomic, getter = isAnimationEnabled) BOOL animationEnabled;
 @property (assign, nonatomic) ISVAnimationSpeed animationSpeed;
 @property (assign, nonatomic) NSInteger distanceBetweenElements;
@@ -256,22 +258,13 @@
     {
         float sectionSize = _imageArray.count * _itemSize.width;
         
-        
         if (self.contentOffset.x <= (sectionSize - sectionSize/2))
         {
-            DDLogDebug(@"Section size + : %f, content offset: %f", sectionSize, self.contentOffset.x);
-
             self.contentOffset = CGPointMake(sectionSize * 2 - sectionSize/2, 0);
         }
         else if (self.contentOffset.x >= (sectionSize * 3 + sectionSize/2))
         {
-            DDLogDebug(@"Section size -: %f, content offset: %f", sectionSize, self.contentOffset.x);
-
             self.contentOffset = CGPointMake(sectionSize * 2 + sectionSize/2 - _distanceBetweenElements*_imageArray.count, 0);
-//            self.contentOffset = CGPointMake(self.contentOffset.x - 10, 0);
-            
-            DDLogDebug(@"Section size after: %f", self.contentOffset.x);
-            
         }
 
         [self reloadView:self.contentOffset.x];
