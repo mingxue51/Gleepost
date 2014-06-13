@@ -9,8 +9,12 @@
 #import "AnimatedTransitioningViewCategories.h"
 #import "GLPTimelineViewController.h"
 #import "GLPCategoriesViewController.h"
+#import "SKBounceAnimation.h"
 
 @implementation AnimatedTransitioningViewCategories
+
+const float ANIMATION_TIME_2 = 0.5;
+
 //===================================================================
 // - UIViewControllerAnimatedTransitioning
 //===================================================================
@@ -19,18 +23,16 @@
     return 0.25f;
 }
 
+- (void)animationEnded:(BOOL)transitionCompleted
+{
+    
+}
+
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
     
-    UIView *inView = [transitionContext containerView];
-    GLPCategoriesViewController *toVC = (GLPCategoriesViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-//    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    //    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    
-    toVC.view.alpha = 0.0;
-    
-    [inView addSubview:toVC.view];
-    
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    //    CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     //[toVC.view setFrame:CGRectMake(0, screenRect.size.height, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
     
@@ -38,26 +40,64 @@
     //UIViewAnimationOptionTransitionCrossDissolve
     //    toVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    
+    UIView *inView = [transitionContext containerView];
+    GLPCategoriesViewController *toVC = (GLPCategoriesViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    
+    
+    if([self isPresenting])
+    {
+        toVC.view.alpha = 0.0;
         
+        [inView addSubview:toVC.view];
+        
+        
+        NSString *keyPath = @"position.y";
+        id finalValue = [NSNumber numberWithFloat:300];
+        
+        SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
+        bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
         toVC.view.alpha = 1.0;
+        bounceAnimation.toValue = finalValue;
+        bounceAnimation.duration = 0.5f;
+        bounceAnimation.numberOfBounces = 4;
+        bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
+        bounceAnimation.shouldOvershoot = YES;
         
+        [toVC.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
         
-    } completion:^(BOOL finished) {
+        [toVC.view.layer setValue:finalValue forKeyPath:keyPath];
         
         [transitionContext completeTransition:YES];
+    }
+    else
+    {
+        DDLogDebug(@"Animation completed.");
         
-    }];
+        [inView addSubview:toVC.view];
+        
+        
+        NSString *keyPath = @"position.y";
+        id finalValue = [NSNumber numberWithFloat:0];
+        
+        SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
+        bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
+        toVC.view.alpha = 1.0;
+        bounceAnimation.toValue = finalValue;
+        bounceAnimation.duration = 0.5f;
+        bounceAnimation.numberOfBounces = 4;
+        bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
+        bounceAnimation.shouldOvershoot = YES;
+        
+        [toVC.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
+        
+        [toVC.view.layer setValue:finalValue forKeyPath:keyPath];
+        
+        [transitionContext completeTransition:YES];
+    }
     
-    
-    //    [UIView animateWithDuration:0.25f
-    //                     animations:^{
-    //
-    //                         [toVC.view setFrame:CGRectMake(0, 0, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
-    //                     }
-    //                     completion:^(BOOL finished) {
-    //                         [transitionContext completeTransition:YES];
-    //                     }];
+
 }
 
 

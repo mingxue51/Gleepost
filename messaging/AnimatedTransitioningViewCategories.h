@@ -10,6 +10,6 @@
 
 @interface AnimatedTransitioningViewCategories : NSObject <UIViewControllerAnimatedTransitioning>
 
-@property (nonatomic, assign) BOOL isPresenting;
+@property (nonatomic, assign, getter = isPresenting) BOOL presenting;
 
 @end

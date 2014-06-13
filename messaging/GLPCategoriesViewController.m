@@ -138,19 +138,24 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-#warning change that approach. Do it as we are doing that in GLPSelectCategoryVC.
     
-    [UIView animateWithDuration:0.25 animations:^{
+    [self dismissViewControllerAnimated:YES completion:^{
         
-        //Inform campus wall that
         [self.delegate refreshPostsWithNewCategory];
-        self.view.alpha = 0;
-        
-    } completion:^(BOOL b){
-        
-        [self dismissViewControllerAnimated:NO completion:^{
-        }];
     }];
+
+    
+//    [UIView animateWithDuration:0.25 animations:^{
+//        
+//        //Inform campus wall that
+//        [self.delegate refreshPostsWithNewCategory];
+//        self.view.alpha = 0;
+//        
+//    } completion:^(BOOL b){
+//        
+//        [self dismissViewControllerAnimated:NO completion:^{
+//        }];
+//    }];
     
 }
 
