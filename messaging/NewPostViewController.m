@@ -30,6 +30,7 @@
 #import "GLPSelectCategoryViewController.h"
 #import "TDNavigationCategories.h"
 #import "GLPiOS6Helper.h"
+#import "UINavigationBar+Utils.h"
 
 @interface NewPostViewController () <GLPSelectCategoryViewControllerDelegate>
 
@@ -271,29 +272,12 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)configureLeftBarButton
 {
-    UIImage *backIcon = [UIImage imageNamed:@"cancel_new_post.png"];
-    
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnBack setBackgroundImage:backIcon forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(0, 0, 17, 17)];
-    
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
-    
-    self.navigationItem.leftBarButtonItem = backButton;
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel_new_post" withButtonSize:CGSizeMake(17, 17) withSelector:@selector(cancelButtonClick:) andTarget:self];
 }
 
 -(void)configureRightBarButton
 {
-    UIButton *btnPost=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnPost addTarget:self action:@selector(postButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [btnPost setTitle:@"Post" forState:UIControlStateNormal];
-    [btnPost setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btnPost setFrame:CGRectMake(0, 0, 40, 17)];
-    
-    UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithCustomView:btnPost];
-    
-    self.navigationItem.rightBarButtonItem = postButton;
+    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"Post" withButtonSize:CGSizeMake(40, 17) withSelector:@selector(postButtonClick:) andTarget:self];
 }
 
 -(void)formatStatusBar

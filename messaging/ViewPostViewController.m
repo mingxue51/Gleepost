@@ -285,8 +285,6 @@ static BOOL likePushed;
     
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
-    
 }
 
 -(void)addCustomBackButton

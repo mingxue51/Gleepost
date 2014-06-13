@@ -28,7 +28,7 @@
 #import "NewGroupViewController.h"
 #import "GLPSearchUsersViewController.h"
 #import "EmptyMessage.h"
-#import "GLPButton.h"
+#import "UINavigationBar+Utils.h"
 
 @interface ContactsViewController ()
 
@@ -191,22 +191,12 @@
 
 -(void)configureCreateGroupButton
 {
-    UIImage *addGroupIcon = [UIImage imageNamed:@"settings_btn"];
-    
-    GLPButton *btnBack=[[GLPButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25) andKind:kRightImage];
-    [btnBack addTarget:self action:@selector(popUpCreateView:) forControlEvents:UIControlEventTouchUpInside];
-    [btnBack setBackgroundImage:addGroupIcon forState:UIControlStateNormal];
-    
-    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(popUpCreateView:)];
-    
-    self.navigationItem.rightBarButtonItem = groupButton;
+    [self.navigationController.navigationBar setSystemButton:kRight withBarButtonSystemItem:UIBarButtonSystemItemAdd withSelector:@selector(popUpCreateView:) andTarget:self];
 }
 
 -(void)configureSearchContactButton
 {
-    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchForNewContacts:)];
-    
-    self.navigationItem.rightBarButtonItem = groupButton;
+    [self.navigationController.navigationBar setSystemButton:kRight withBarButtonSystemItem:UIBarButtonSystemItemSearch withSelector:@selector(searchForNewContacts:) andTarget:self];
 }
 
 -(void)configureSegment

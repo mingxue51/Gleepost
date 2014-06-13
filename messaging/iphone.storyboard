@@ -346,10 +346,10 @@
                                 <items>
                                     <navigationItem title="New Post" id="jdE-oB-Qko">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="jZo-Pj-qOL">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xMT-5n-Mvk">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xMT-5n-Mvk" customClass="GLPButton">
                                                 <rect key="frame" x="16" y="13" width="17" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" image="cancel_new_post.png" backgroundImage="cancel_new_post.png">
+                                                <state key="normal" image="cancel_new_post.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -623,7 +623,7 @@
                                     <navigationItem title="Settings" id="xFl-z2-cRh">
                                         <barButtonItem key="rightBarButtonItem" style="plain" id="eUY-Nj-Yf0">
                                             <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JmY-6e-rXb" customClass="GLPButton">
-                                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                                                <rect key="frame" x="254" y="2" width="50" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Done">
@@ -816,7 +816,7 @@
                                 <items>
                                     <navigationItem title="Categories" id="C7s-1Q-Gft">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="cJg-Ze-EJA">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4jT-pz-zVb">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4jT-pz-zVb" customClass="GLPButton">
                                                 <rect key="frame" x="16" y="13" width="11" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="back_black.png">
@@ -827,11 +827,19 @@
                                                 </connections>
                                             </button>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Done" id="O3v-wy-Pcs">
-                                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <connections>
-                                                <action selector="eventTitleDateDone:" destination="EY1-Je-RIf" id="GD7-JG-THF"/>
-                                            </connections>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="4AK-Rm-ZEF">
+                                            <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KrD-97-eT6" customClass="GLPButton">
+                                                <rect key="frame" x="254" y="2" width="50" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Done">
+                                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="eventTitleDateDone:" destination="EY1-Je-RIf" eventType="touchUpInside" id="QsH-iv-LiA"/>
+                                                </connections>
+                                            </button>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
@@ -908,7 +916,7 @@
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" style="plain" id="iG3-l4-nyA">
                                             <button key="customView" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3bx-jt-OIj" customClass="GLPButton">
-                                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                                                <rect key="frame" x="254" y="2" width="50" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" title="Save">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1123,7 +1131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t9q-pk-LJp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2768" y="-4111"/>
+            <point key="canvasLocation" x="2881" y="-4111"/>
         </scene>
         <!--Add Comment View Controller-->
         <scene sceneID="lf3-ch-FK3">
@@ -3806,15 +3814,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="PCe-7s-A56"/>
-        <segue reference="uet-Cl-mZq"/>
-        <segue reference="fah-A8-Ky9"/>
+        <segue reference="GTC-XV-iI1"/>
         <segue reference="Ptj-MX-g8C"/>
-        <segue reference="rCT-Ex-vO8"/>
-        <segue reference="XMX-SH-Gag"/>
         <segue reference="C5K-bl-yN1"/>
-        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="PCe-7s-A56"/>
         <segue reference="WhX-ZL-dQD"/>
+        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="n2N-Iw-72J"/>
     </inferredMetricsTieBreakers>
 </document>

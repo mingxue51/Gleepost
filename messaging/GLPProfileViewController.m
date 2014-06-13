@@ -45,6 +45,7 @@
 #import "EmptyMessage.h"
 #import "TableViewHelper.h"
 #import "GLPButton.h"
+#import "UINavigationBar+Utils.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -301,26 +302,22 @@
 
 -(void)addNavigationButtons
 {
-    UIImage *settingsIcon = [UIImage imageNamed:@"settings_btn"];
-    
-    GLPButton *btnBack=[[GLPButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25) andKind:kRightImage];
-    [btnBack addTarget:self action:@selector(showSettings:) forControlEvents:UIControlEventTouchUpInside];
-    [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-    
-//    [btnBack setFrame:CGRectMake(0, 0, 25, 25)];
-    
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
-    
-    //Create the custom bell icon with notification dot.
-    
-//    UIButton *bellBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-//    [bellBtn addTarget:self action:@selector(logout:) forControlEvents:UIControlEventTouchUpInside];
-//    [bellBtn setBackgroundImage:[UIImage imageNamed:@"bell"] forState:UIControlStateNormal];
-//    [bellBtn setFrame:CGRectMake(0, 0, 30, 30)];
+//    UIImage *settingsIcon = [UIImage imageNamed:@"settings_btn"];
+//    
+//    GLPButton *btnBack=[[GLPButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25) andKind:kRightImage];
+//    [btnBack addTarget:self action:@selector(showSettings:) forControlEvents:UIControlEventTouchUpInside];
+//    [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
+//    
+//    
+//    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
     
     
+//    [self.navigationController.navigationBar setButtonOnRightWithImageName:@"settings_btn" withButtonSize:CGSizeMake(25, 25) withSelector:@selector(showSettings:) andTarget:self];
     
-    self.navigationItem.rightBarButtonItem = settingsButton;
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"settings_btn" withButtonSize:CGSizeMake(25, 25) withSelector:@selector(showSettings:) andTarget:self];
+    
+    
+//    self.navigationItem.rightBarButtonItem = settingsButton;
     
     
 

@@ -97,6 +97,15 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         [initVC presentViewController:signInVC animated:NO completion:nil];
     }
 
+    
+//    UIImage *backButtonImage = [[UIImage imageNamed:@"tabbar_tab"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 100, 0, 0)];
+//    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage  forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-10, backButtonImage.size.height/2) forBarMetrics:UIBarMetricsDefault];
+    
+    
+    
+
+    
     return YES;
 }
 

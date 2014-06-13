@@ -11,40 +11,72 @@
 
 @implementation UINavigationBar (Utils)
 
-- (void)setButtonOnLeft:(BOOL)left withImageName:(NSString *)image withSelector:(SEL)selector andTarget:(UIViewController *)navController
+- (void)setButton:(GLPButtonType)type withImageOrTitle:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
 {
-    UIImage *img = [UIImage imageNamed:image];
     
-    UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftBtn addTarget:navController action:selector forControlEvents:UIControlEventTouchUpInside];
-    [leftBtn setBackgroundImage:img forState:UIControlStateNormal];
-    [leftBtn setFrame:CGRectMake(0, 10, 19, 19)];
-    [ShapeFormatterHelper setBorderToView:leftBtn withColour:[UIColor blackColor] andWidth:1.0f];
+    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     
     
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btn addTarget:navController action:selector forControlEvents:UIControlEventTouchUpInside];
+    [btn setFrame:CGRectMake(0, 0, size.width, size.height)];
+    btn.exclusiveTouch = YES;
     
-    UIView *leftButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 38)];
-    [ShapeFormatterHelper setBorderToView:leftButtonView withColour:[UIColor redColor] andWidth:1.0f];
+    UIBarButtonItem *barButtonItem = nil;
+
     
-    leftButtonView.bounds = CGRectOffset(leftButtonView.bounds, 5, 0);
-    [leftButtonView addSubview:leftBtn];
-    
-    
-    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:leftButtonView];
-    
-    UINavigationItem *nav = [self.items lastObject];
-    
-    if(left)
+    if(type == kText)
     {
-        nav.leftBarButtonItem = leftBarButton;
+        [btn setTitle:imageOrTitle forState:UIControlStateNormal];
+        
+        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        
+        [fixedSpace setWidth:-11];
+        
+        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        
+        navController.navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
+        
     }
     else
     {
-        nav.rightBarButtonItem = leftBarButton;
+        [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
+
+        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        
+        if(type == kLeft)
+        {
+            [fixedSpace setWidth:-8];
+            navController.navigationItem.leftBarButtonItems = @[fixedSpace, barButtonItem];
+            
+        }
+        else if (type == kRight)
+        {
+            [fixedSpace setWidth:-10];
+            navController.navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
+        }
+    }
+}
+
+- (void)setSystemButton:(GLPButtonType)type withBarButtonSystemItem:(UIBarButtonSystemItem)systemItem withSelector:(SEL)selector andTarget:(UIViewController *)navController
+{
+    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:selector];
+    
+    UIBarButtonItem *fixedSpaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    
+    if(type == kLeft)
+    {
+        [fixedSpaceButton setWidth:-8];
+
+        navController.navigationItem.leftBarButtonItems = @[fixedSpaceButton, groupButton];
+    }
+    else if (type == kRight)
+    {
+        [fixedSpaceButton setWidth:-10];
+
+        navController.navigationItem.rightBarButtonItems = @[fixedSpaceButton, groupButton];
     }
     
-    
-    [self setItems:@[nav]];
 }
 
 @end

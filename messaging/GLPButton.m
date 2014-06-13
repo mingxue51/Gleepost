@@ -5,90 +5,34 @@
 //  Created by Σιλουανός on 12/6/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  This class is used only when we place navigation items from storyboard.
+//
 
 #import "GLPButton.h"
 
-@interface GLPButton ()
-
-@property (assign, nonatomic) GLPNavButtonType buttonKind;
-
-@end
-
 @implementation GLPButton
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        _buttonKind = kText;
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        _buttonKind = kText;
-    }
-    
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame andKind:(GLPNavButtonType)kind
-{
-    self = [super initWithFrame:frame];
-    
-    if(self)
-    {
-        _buttonKind = kind;
-    }
-    
-    return self;
-}
 
 
 - (UIEdgeInsets)alignmentRectInsets
 {
     UIEdgeInsets insets;
     
-    DDLogDebug(@"alignmentRectInsets");
-    
     //If tag = 0 then it means that the current button is the left.
     //else the current button is the right.
     
-    if(_buttonKind == kText)
+    //The left's button X from the left edge (in storyboard) should be 16 from the right side.
+    //The right's button X from the right edge (in storyboard) should be 304 from the left side.
+    
+    
+    if(self.tag == 0)
     {
-        
-        //TODO: Do those dynamically.
-        
-        if(self.tag == 0)
-        {
-            insets = UIEdgeInsetsMake(0, 5.0f, 0, 0);
-        }
-        else
-        {
-            insets = UIEdgeInsetsMake(0, 0, 0, 20.0f);
-        }
+        insets = UIEdgeInsetsMake(0, 10.0f, 0, 0);
     }
-    else if (_buttonKind == kLeftImage)
+    else
     {
-        CGRectSetX(self, 10);
+        insets = UIEdgeInsetsMake(0, 0, 0, 18.0f);
     }
-    else if (_buttonKind == kRightImage)
-    {
-        //x + width = 310
-        
-       // CGRectSetX(self, 310 - self.frame.size.width);
-        
-        [self setFrame:CGRectMake(310 - self.frame.size.width, self.frame.origin.y, self.frame.size.width, self.frame.size.height)];
-        
-        DDLogDebug(@"Dimensions: %f : %f", self.frame.size.width, self.frame.origin.x);
-
-    }
+    
     
 
     

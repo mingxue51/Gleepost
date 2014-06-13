@@ -8,14 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, GLPNavButtonType) {
-    kLeftImage,
-    kRightImage,
-    kText
-};
 
 @interface GLPButton : UIButton
 
-- (id)initWithFrame:(CGRect)frame andKind:(GLPNavButtonType)kind;
 
 @end

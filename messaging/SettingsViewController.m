@@ -16,6 +16,7 @@
 #import "SessionManager.h"
 #import "ChangePasswordViewController.h"
 #import "AppearanceHelper.h"
+#import "UINavigationBar+Utils.h"
 
 @interface SettingsViewController () <MFMessageComposeViewControllerDelegate>
 
@@ -96,6 +97,7 @@ const int CORNER_VALUE = 16;
 {
     
     [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+
     
 //
 //    

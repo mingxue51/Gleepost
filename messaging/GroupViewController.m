@@ -29,6 +29,7 @@
 #import "GLPiOS6Helper.h"
 #import "EmptyMessage.h"
 #import "ShapeFormatterHelper.h"
+#import "UINavigationBar+Utils.h"
 
 @interface GroupViewController ()
 
@@ -213,36 +214,10 @@ const int NUMBER_OF_ROWS = 2;
     {
         buttonX = 0;
     }
-    
-    UIImage *createPostImg = [UIImage imageNamed:@"new_post_groups"];
-    
-    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btnBack addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
-    [btnBack setBackgroundImage:createPostImg forState:UIControlStateNormal];
-    [btnBack setFrame:CGRectMake(23, 0, 35, 35)];
-    btnBack.exclusiveTouch = YES;
-    
-    
-    UIButton *rangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rangeBtn addTarget:self action:@selector(createNewPost:) forControlEvents:UIControlEventTouchUpInside];
-    [rangeBtn setBackgroundImage:nil forState:UIControlStateNormal];
-    [rangeBtn setFrame:CGRectMake(0, 0, 35, 35)];
-    
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 0, btnBack.frame.size.width+20, btnBack.frame.size.height)];
-
-    [view addSubview:btnBack];
-    [view addSubview:rangeBtn];
-    
-//    [ShapeFormatterHelper setBorderToView:view withColour:[UIColor redColor] andWidth:1.0];
 //    
-//    [ShapeFormatterHelper setBorderToView:btnBack withColour:[UIColor blackColor] andWidth:1.0f];
+//    [self.navigationController.navigationBar setButtonOnRightWithImageName:@"new_post_groups" withButtonSize:CGSizeMake(35, 35) withSelector:@selector(createNewPost:) andTarget:self];
     
-    
-    UIBarButtonItem *createPostButton = [[UIBarButtonItem alloc] initWithCustomView:view];
-    
-    
-    self.navigationItem.rightBarButtonItem = createPostButton;
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(35, 35) withSelector:@selector(createNewPost:) andTarget:self];
     
     
     //=======
