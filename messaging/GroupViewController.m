@@ -1248,21 +1248,14 @@ const int NUMBER_OF_ROWS = 2;
         
         return;
     }
-    
-    //Pop up the creation view.
+
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    NewPostViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-    
-    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
-    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
-    //    [navigationController setNavigationBarHidden:YES];
-    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    
-    cvc.group = _group;
-    [cvc setDelegate:self];
-    
-    [self presentViewController:cvc animated:YES completion:nil];
+    NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+    newPostVC.group = _group;
+    [newPostVC setDelegate:self];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 
