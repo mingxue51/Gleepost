@@ -31,7 +31,7 @@
     //Here retrieve the very first view controller by just creating a new class to create the animation.
     
     
-    DDLogDebug(@"HERE!");
+    DDLogDebug(@"Dismiss animation");
     AnimatedTransitioningViewCategories *controller = [[AnimatedTransitioningViewCategories alloc] init];
     controller.presenting = NO;
     
