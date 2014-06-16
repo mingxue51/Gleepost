@@ -73,6 +73,16 @@
     [self configureSegment];
     
     [self configNotifications];
+    
+    
+//    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithTitle:@"B" style:UIBar target:self action:@selector(goBack:)];
+//    
+//    [self.navigationItem setBackBarButtonItem: backBtn];
+}
+
+- (void)goBack:(id)sender
+{
+    DDLogDebug(@"Go back!");
 }
 
 -(void)viewDidAppear:(BOOL)animated

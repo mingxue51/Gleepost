@@ -461,6 +461,7 @@
 		58D0E51918D092C1004DF10D /* add_member_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E51818D092C1004DF10D /* add_member_icon.png */; };
 		58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */; };
 		58D0E52118D10E98004DF10D /* GLPMemberDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D0E52018D10E98004DF10D /* GLPMemberDao.m */; };
+		58D0E523194EF1A100C4D70B /* back_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D0E522194EF1A100C4D70B /* back_btn.png */; };
 		58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */; };
 		58D19D9418C7668000CB13CC /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9318C7668000CB13CC /* CreateGroupCell.xib */; };
 		58D19D9618C766C000CB13CC /* create_new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9518C766C000CB13CC /* create_new_group.png */; };
@@ -1401,6 +1402,7 @@
 		58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMemberDaoParser.m; sourceTree = "<group>"; };
 		58D0E51F18D10E98004DF10D /* GLPMemberDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMemberDao.h; sourceTree = "<group>"; };
 		58D0E52018D10E98004DF10D /* GLPMemberDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMemberDao.m; sourceTree = "<group>"; };
+		58D0E522194EF1A100C4D70B /* back_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_btn.png; sourceTree = "<group>"; };
 		58D113D418857D3A00C6B953 /* GLPPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostImageLoader.h; sourceTree = "<group>"; };
 		58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostImageLoader.m; sourceTree = "<group>"; };
 		58D19D9318C7668000CB13CC /* CreateGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateGroupCell.xib; sourceTree = "<group>"; };
@@ -2578,10 +2580,11 @@
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
 			isa = PBXGroup;
 			children = (
+				58FD707B18905B440024E8A1 /* Design v1 */,
 				58615765193CD411009BAD33 /* Walkthrough */,
 				80B120CD18B073E2006C1E30 /* Conversations */,
 				802DCE4718AA87E800A23511 /* Internal notifications */,
-				58FD707B18905B440024E8A1 /* Design v1 */,
+				58D0E520194EF17400C4D70B /* New Group */,
 				5890D22618482D8600E293DD /* New Tabbar */,
 				5890D20E1847618F00E293DD /* Themes */,
 				584CF672182303B500EFABB8 /* Notifications */,
@@ -3035,6 +3038,21 @@
 			name = Groups;
 			sourceTree = "<group>";
 		};
+		58D0E520194EF17400C4D70B /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
+		58D0E521194EF18400C4D70B /* Back */ = {
+			isa = PBXGroup;
+			children = (
+				58D0E522194EF1A100C4D70B /* back_btn.png */,
+			);
+			name = Back;
+			sourceTree = "<group>";
+		};
 		58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -3279,6 +3297,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				58D0E521194EF18400C4D70B /* Back */,
 				58E18B851945CEE30029C764 /* Log in Sign up */,
 				5897351A193FA0850048BA85 /* Sign up */,
 				58C45A72193C9077009FEE6E /* Navigation bar */,
@@ -4611,6 +4630,7 @@
 				587248AD18C64C5200B98484 /* group_posts_selected_old.png in Resources */,
 				806E3D7B1832B1960063AACE /* NotificationBackgroundMessage@2x.png in Resources */,
 				5843329B180F181700BD9F74 /* password.png in Resources */,
+				58D0E523194EF1A100C4D70B /* back_btn.png in Resources */,
 				5897350A193F74710048BA85 /* glp-quote.png in Resources */,
 				587F2E00194362A7001F0931 /* verification_rocket.png in Resources */,
 				58FB7CA318563CC4002C6A00 /* default_user_image2.png in Resources */,

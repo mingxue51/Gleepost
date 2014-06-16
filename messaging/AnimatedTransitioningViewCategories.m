@@ -13,7 +13,7 @@
 
 @implementation AnimatedTransitioningViewCategories
 
-const float ANIMATION_TIME_2 = 0.5;
+const float CATEGORIES_ANIMATION_TIME = 0.8;
 
 //===================================================================
 // - UIViewControllerAnimatedTransitioning
@@ -46,9 +46,6 @@ const float ANIMATION_TIME_2 = 0.5;
     UIViewController *toVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
     
-    
-    DDLogDebug(@"To view: %@, from view: %@", toVC.class, fromVC.class);
-    
     if([self isPresenting])
     {
         toVC.view.alpha = 0.0;
@@ -63,7 +60,7 @@ const float ANIMATION_TIME_2 = 0.5;
         bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
         toVC.view.alpha = 1.0;
         bounceAnimation.toValue = finalValue;
-        bounceAnimation.duration = 0.5f;
+        bounceAnimation.duration = CATEGORIES_ANIMATION_TIME;
         bounceAnimation.numberOfBounces = 4;
         bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
         bounceAnimation.shouldOvershoot = YES;
@@ -76,8 +73,6 @@ const float ANIMATION_TIME_2 = 0.5;
     }
     else
     {
-        DDLogDebug(@"Animation completed.");
-        
 //        [inView addSubview:fromVC.view];
         [transitionContext completeTransition:YES];
 
