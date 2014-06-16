@@ -466,7 +466,7 @@ typedef void (^PBJVideoPlayerBlock)();
     } else if ( context == (__bridge void *)(PBJVideoPlayerItemObserverContext) ) {
     
         if (_playerItem.playbackBufferEmpty) {
-            DLog(@"playback buffer is empty");
+            DLog(@"playback buffer is empty. Playback state: %d. Buffering state: %d.", self.playbackState, self.bufferingState);
         }
 
         AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];

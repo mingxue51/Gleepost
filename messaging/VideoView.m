@@ -148,7 +148,10 @@
     {
         DDLogDebug(@"PBJVideoPlayerBufferingStateDelayed : %@", _post.content);
     }
-//    else if (videoPlayer.playbackState == PB)
+    else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStateFailed)
+    {
+        DDLogDebug(@"PBJVideoPlayerPlaybackStateFailed : %@", _post.content);
+    }
 }
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
