@@ -28,11 +28,8 @@ const float CATEGORIES_ANIMATION_TIME = 0.8;
     
 }
 
-- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
-    
-
-    UIViewController *fromVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    
+- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
+{
     //    CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     //[toVC.view setFrame:CGRectMake(0, screenRect.size.height, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
@@ -73,7 +70,8 @@ const float CATEGORIES_ANIMATION_TIME = 0.8;
     }
     else
     {
-//        [inView addSubview:fromVC.view];
+        //The transition is done in the view controller.
+        
         [transitionContext completeTransition:YES];
 
         

@@ -2716,7 +2716,7 @@ const float TOP_OFFSET = 280.0f;
     }
     else
     {
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 48, 320, 312)]; //0 63 320 302
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
 
