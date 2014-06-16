@@ -19,7 +19,7 @@
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item;
 +(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour;
 +(UIColor*)colourForNotFocusedItems;
-+ (UIColor *)colourForLines;
++ (UIColor *)colourForRegisterTextFields;
 +(UIColor*)defaultGleepostColour;
 + (UIColor *)tintGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;

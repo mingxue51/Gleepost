@@ -12,6 +12,7 @@
 #import "ShapeFormatterHelper.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
+#import "GLPPost.h"
 
 @interface VideoView ()
 
@@ -23,6 +24,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *playImageView;
 @property (assign, nonatomic) NSInteger remoteKey;
+
+@property (strong, nonatomic) GLPPost *post;
+
 @end
 
 @implementation VideoView
@@ -33,7 +37,7 @@
     
     if(self)
     {
-        [self initialiseObjects];
+        //[self initialiseObjects];
     }
     
     return self;
@@ -46,15 +50,16 @@
 }
 
 
--(void)setUpVideoViewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey
+-(void)setUpVideoViewWithUrl:(NSString *)url withPost:(GLPPost *)post
 {
-    if(!TARGET_IPHONE_SIMULATOR)
+    if(ON_DEVICE)
     {
-        _remoteKey = remoteKey;
+        _remoteKey = post.remoteKey;
+        _post = post;
         
-        [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:remoteKey];
+        [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:_remoteKey];
         
-        PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:remoteKey];
+        PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
         previewVC.delegate = self;
         
@@ -126,16 +131,24 @@
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
+    DDLogDebug(@"videoPlayerReady : %@", _post.content);
+    
     [_videoView setHidden:NO];
-
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
 {
     if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused)
     {
+        DDLogDebug(@"PBJVideoPlayerPlaybackStatePaused : %@", _post.content);
+
         [self pauseVideo];
     }
+    else if(videoPlayer.playbackState == PBJVideoPlayerBufferingStateDelayed)
+    {
+        DDLogDebug(@"PBJVideoPlayerBufferingStateDelayed : %@", _post.content);
+    }
+//    else if (videoPlayer.playbackState == PB)
 }
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
@@ -145,6 +158,8 @@
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
 {
+    DDLogDebug(@"videoPlayerPlaybackDidEnd : %@", _post.content);
+
     [self endVideo];
 }
 

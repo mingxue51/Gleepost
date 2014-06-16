@@ -165,9 +165,9 @@
 //    return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
 }
 
-+ (UIColor *)colourForLines
++ (UIColor *)colourForRegisterTextFields
 {
-    return [UIColor colorWithR:229.0 withG:229.0 andB:229.0];
+    return [UIColor colorWithR:187.0 withG:186.0 andB:196.0];
 }
 
 +(UIColor *)colourForTableViewSeparatorLines

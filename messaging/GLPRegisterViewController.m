@@ -208,25 +208,11 @@
     CGRect textFieldFrame = textField.frame;
     textFieldFrame.size.height+=5;
     [textField setFrame:textFieldFrame];
-    
-//    [textField setBackgroundColor:[UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f]];
     [textField setBackgroundColor:[UIColor clearColor]];
-//    [textField setBackground:[UIImage imageNamed:@"email_field"]];
-    [textField setTextColor:[AppearanceHelper colourForLines]];
-
-//    textField.layer.borderWidth = 1.0f;
-//    textField.layer.borderColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f].CGColor;
-    
-    
+    [textField setTextColor:[AppearanceHelper colourForRegisterTextFields]];
     textField.borderStyle = UITextBorderStyleNone;
-    
-    
-    
-//    textField.layer.cornerRadius = 5;
     textField.clipsToBounds = YES;
-    
     textField.delegate = self;
-    
 }
 
 -(void)formatTextFields

@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "PBJVideoPlayerController.h"
+@class GLPPost;
 
 @interface VideoView : UIView <PBJVideoPlayerControllerDelegate>
 
 //-(void)setUpPreviewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey;
 //-(void)initialisePreviewWithUrl:(NSString *)url;
--(void)setUpVideoViewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey;
+-(void)setUpVideoViewWithUrl:(NSString *)url withPost:(GLPPost *)post;
 
 @end

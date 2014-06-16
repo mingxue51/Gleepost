@@ -3814,15 +3814,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="GTC-XV-iI1"/>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="Ptj-MX-g8C"/>
         <segue reference="C5K-bl-yN1"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="J6b-Ty-4qO"/>
         <segue reference="WK7-hw-eyD"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="PCe-7s-A56"/>
         <segue reference="WhX-ZL-dQD"/>
-        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="n2N-Iw-72J"/>
     </inferredMetricsTieBreakers>
 </document>
