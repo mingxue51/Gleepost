@@ -233,6 +233,8 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
         _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     }
 
+    DDLogDebug(@"Ready to play!");
+    
     [_player replaceCurrentItemWithPlayerItem:_playerItem];
     
 }
@@ -364,6 +366,11 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     [_delegate videoPlayerPlaybackDidEnd:self];
 }
 
+- (BOOL)isVideoLoaded
+{
+    return [_playerItem isPlaybackLikelyToKeepUp];
+}
+
 - (void)resetVideo
 {
 //    [self loadView];
@@ -461,27 +468,44 @@ typedef void (^PBJVideoPlayerBlock)();
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ( context == (__bridge void *)(PBJVideoPlayerObserverContext) ) {
-    
-    
+        
+        
     } else if ( context == (__bridge void *)(PBJVideoPlayerItemObserverContext) ) {
     
         if (_playerItem.playbackBufferEmpty) {
-            DLog(@"playback buffer is empty. Playback state: %d. Buffering state: %d.", self.playbackState, self.bufferingState);
+//            DLog(@"playback buffer is empty. Playback state: %d. Buffering state: %d.", self.playbackState, self.bufferingState);
+        }
+        
+        if([_playerItem isPlaybackLikelyToKeepUp])
+        {
+            DLog(@"Playback buffer not stall.");
+            [_delegate readyToPlay:YES];
+        }
+        else
+        {
+            [_delegate readyToPlay:NO];
         }
 
         AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
+        
         switch (status)
         {
             case AVPlayerStatusReadyToPlay:
             {
+                DDLogDebug(@"AVPlayerStatusReadyToPlay");
+                
                 _videoView.playerLayer.backgroundColor = [[UIColor blackColor] CGColor];
                 [_videoView.playerLayer setPlayer:_player];
+            
                 _videoView.playerLayer.hidden = NO;
                 [_delegate videoPlayerReady:self];
                 break;
             }
             case AVPlayerStatusFailed:
             {
+                
+//                DDLogDebug(@"AVPlayerStatusFailed");
+
                 _playbackState = PBJVideoPlayerPlaybackStateFailed;
                 [_delegate videoPlayerPlaybackStateDidChange:self];
                 break;
@@ -492,7 +516,7 @@ typedef void (^PBJVideoPlayerBlock)();
         }
         
     } else {
-    
+
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	
     }

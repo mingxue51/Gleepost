@@ -415,6 +415,7 @@
 		58AA61E4192A87100098E4FB /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E3192A87100098E4FB /* add_new_post.png */; };
 		58AA61E6192A87350098E4FB /* show_categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E5192A87350098E4FB /* show_categories.png */; };
 		58AA61E8192A87540098E4FB /* nav_bar_title_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E7192A87540098E4FB /* nav_bar_title_button.png */; };
+		58AAA98A19509C4900CFEC4B /* default_thumbnail.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AAA98919509C4900CFEC4B /* default_thumbnail.png */; };
 		58AABA921892F0F60058A552 /* category_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AABA911892F0F60058A552 /* category_bg.png */; };
 		58AB404818AE45D000DEED31 /* all_category_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AB404318AE45D000DEED31 /* all_category_old.png */; };
 		58AB404918AE45D000DEED31 /* party_category_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AB404418AE45D000DEED31 /* party_category_old.png */; };
@@ -1333,6 +1334,7 @@
 		58AA61E3192A87100098E4FB /* add_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post.png; sourceTree = "<group>"; };
 		58AA61E5192A87350098E4FB /* show_categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_categories.png; sourceTree = "<group>"; };
 		58AA61E7192A87540098E4FB /* nav_bar_title_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button.png; sourceTree = "<group>"; };
+		58AAA98919509C4900CFEC4B /* default_thumbnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_thumbnail.png; sourceTree = "<group>"; };
 		58AABA911892F0F60058A552 /* category_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = category_bg.png; sourceTree = "<group>"; };
 		58AB404318AE45D000DEED31 /* all_category_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_category_old.png; sourceTree = "<group>"; };
 		58AB404418AE45D000DEED31 /* party_category_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = party_category_old.png; sourceTree = "<group>"; };
@@ -2896,6 +2898,7 @@
 		58A75EC019211D7B0082F316 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				58AAA98919509C4900CFEC4B /* default_thumbnail.png */,
 				585AE265192B71BB00174CED /* save_recording.png */,
 				585AE263192B70E100174CED /* go_to_preview.png */,
 				585AE261192B70A800174CED /* cancel_recording.png */,
@@ -4636,6 +4639,7 @@
 				58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */,
 				58AD86A818929F2200016C6D /* mutual_button.png in Resources */,
 				58615764193CD3C1009BAD33 /* WTSecondScreen.xib in Resources */,
+				58AAA98A19509C4900CFEC4B /* default_thumbnail.png in Resources */,
 				58E1E5F619262FF1007ACB4F /* share.png in Resources */,
 				5829F48E18B1546300A7B871 /* in_contacts.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,

@@ -13,6 +13,9 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import "GLPPost.h"
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @interface VideoView ()
 
@@ -61,6 +64,8 @@
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
+        NSAssert(previewVC != nil, @"previewVC needs to be not nil");
+        
         previewVC.delegate = self;
         
         if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
@@ -75,6 +80,10 @@
         
         previewVC.view.frame = _videoView.bounds;
         [_videoView addSubview:previewVC.view];
+        
+        
+        [self setHiddenLoader:[previewVC isVideoLoaded]];
+        
     }
 
 }
@@ -83,7 +92,6 @@
 
 -(void)playVideo
 {
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPlayVideo" object:self userInfo:@{@"RemoteKey": [NSNumber numberWithInteger:_remoteKey]}
      ];
 }
@@ -96,7 +104,6 @@
 
 -(IBAction)video:(id)sender
 {
-
     if(_playButton.tag == 0)
     {
         [self setHiddenToPlayImage:YES];
@@ -108,7 +115,6 @@
         [self setHiddenToPlayImage:NO];
         [self pauseVideo];
     }
-
 }
 
 #pragma mark - Animation
@@ -127,13 +133,33 @@
     }];
 }
 
+- (void)setHiddenLoader:(BOOL)hidden
+{
+    if(hidden)
+    {
+        [_thumbnailImageView setHidden:YES];
+        [self setHiddenToPlayImage:NO];
+    }
+    else
+    {
+        [_thumbnailImageView setHidden:NO];
+        [_thumbnailImageView setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"default_thumbnail"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        [self setHiddenToPlayImage:YES];
+    }
+}
+
 #pragma mark - PBJVideoPlayerControllerDelegate
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"videoPlayerReady : %@", _post.content);
-    
     [_videoView setHidden:NO];
+}
+
+- (void)readyToPlay:(BOOL)ready
+{
+    DDLogDebug(@"Post ready to play: %@ : %d", _post.content, ready);
+    [self setHiddenLoader:YES];
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer

@@ -49,7 +49,6 @@ static GLPVideoLoaderManager *instance = nil;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPlayVideo" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPauseVideo" object:nil];
-
 }
 
 #pragma mark - Configuration
@@ -126,32 +125,31 @@ static GLPVideoLoaderManager *instance = nil;
     }
 }
 
--(PBJVideoPlayerController *)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
+- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"GLPVideoLoaderManager : In addVideoWithUrl");
+//    DDLogDebug(@"GLPVideoLoaderManager : In addVideoWithUrl");
     
     PBJVideoPlayerController *foundVideoViewController = [self videoWithPostRemoteKey:remoteKey];
     
     if(foundVideoViewController)
     {
         //Already in the list.
-        DDLogDebug(@"Found video view controller already in list!");
+//        DDLogDebug(@"Found video view controller already in list!");
         
-        return foundVideoViewController;
+//        return foundVideoViewController;
     }
     else
     {
         PBJVideoPlayerController *videoViewController = [[PBJVideoPlayerController alloc] init];
         [videoViewController setPlaybackLoops:NO];
         [videoViewController setVideoPath:videoUrl];
-        
         [videoViewController.view setBounds:CGRectMake(0, 0, 298, 298)];
         
-        DDLogDebug(@"Video ready: %@", videoViewController.view);
-
+//        DDLogDebug(@"Video not found but ready: %@", videoUrl);
+        
         [_videoViews setObject:videoViewController forKey:[NSNumber numberWithInteger:remoteKey]];
         
-        return nil;
+//        return nil;
     }
 
 }
