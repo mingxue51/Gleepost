@@ -24,15 +24,18 @@
 @property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
-@property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *loadingImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *playImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (assign, nonatomic) NSInteger remoteKey;
 
 @property (strong, nonatomic) GLPPost *post;
 
+@property (strong, nonatomic) NSString *temporaryThumbnailUrl;
 @end
 
 @implementation VideoView
+
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -40,7 +43,7 @@
     
     if(self)
     {
-        //[self initialiseObjects];
+        [self initialiseObjects];
     }
     
     return self;
@@ -48,8 +51,10 @@
 
 -(void)initialiseObjects
 {
-    _previewVC = [[PBJVideoPlayerController alloc] init];
-    _previewVC.delegate = self;
+//    _previewVC = [[PBJVideoPlayerController alloc] init];
+//    _previewVC.delegate = self;
+    
+    _temporaryThumbnailUrl = @"https://cdn-assets-hall-com.s3.amazonaws.com/production/private/halls/531a19171d16bead700004e8/user_uploaded_files/default_thumbnail.png?AWSAccessKeyId=17VVCSSS3H6YGDY9H3G2&Expires=1403044633&Signature=sZMzPWs503329REQDCEbgKQQmic%3D&response-content-type=image%2Fpng";
 }
 
 
@@ -84,6 +89,8 @@
         
         [self setHiddenLoader:[previewVC isVideoLoaded]];
         
+        [self loadThumbnail];
+        
     }
 
 }
@@ -107,14 +114,19 @@
     if(_playButton.tag == 0)
     {
         [self setHiddenToPlayImage:YES];
+        [self setHiddenThumbnail:YES];
         [self playVideo];
-        
     }
     else
     {
         [self setHiddenToPlayImage:NO];
         [self pauseVideo];
     }
+}
+
+- (void)loadThumbnail
+{
+    [_thumbnailImageView setImageWithURL:[NSURL URLWithString:_temporaryThumbnailUrl]];
 }
 
 #pragma mark - Animation
@@ -137,16 +149,21 @@
 {
     if(hidden)
     {
-        [_thumbnailImageView setHidden:YES];
+        [_loadingImageView setHidden:YES];
         [self setHiddenToPlayImage:NO];
     }
     else
     {
-        [_thumbnailImageView setHidden:NO];
-        [_thumbnailImageView setImageWithURL:nil placeholderImage:[UIImage imageNamed:@"default_thumbnail"] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [_loadingImageView setHidden:NO];
+        [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         
         [self setHiddenToPlayImage:YES];
     }
+}
+
+- (void)setHiddenThumbnail:(BOOL)hidden
+{
+    [_thumbnailImageView setHidden:hidden];
 }
 
 #pragma mark - PBJVideoPlayerControllerDelegate
@@ -211,6 +228,7 @@
 //    [self setHiddenToPlayButton:NO];
 //    [_playButton setTag:0];
     [self setHiddenToPlayImage:NO];
+    [self setHiddenThumbnail:NO];
 }
 
 -(void)startVideoFromBeggining
