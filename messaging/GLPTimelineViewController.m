@@ -191,6 +191,7 @@ const float TOP_OFFSET = 280.0f;
     [self configNavigationBar];
     
     
+    
    // [self configStatusbarBackground];
 
 }
@@ -212,6 +213,9 @@ const float TOP_OFFSET = 280.0f;
 //        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.postIndexToReload inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         
     }
+    
+    [self reloadVisibleCells];
+
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -2164,6 +2168,18 @@ const float TOP_OFFSET = 280.0f;
     return visiblePosts;
 }
 
+
+/**
+ This method reloads visible cells.
+ */
+
+- (void)reloadVisibleCells
+{
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
+}
+
 #pragma mark - View image delegate
 
 
@@ -2719,7 +2735,6 @@ const float TOP_OFFSET = 280.0f;
         image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
-
     }
 
     

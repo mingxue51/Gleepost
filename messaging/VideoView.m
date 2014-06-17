@@ -62,6 +62,8 @@
 {
     if(ON_DEVICE)
     {
+        DDLogDebug(@"Video View : %@", post.content);
+        
         _remoteKey = post.remoteKey;
         _post = post;
         
