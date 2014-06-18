@@ -1148,7 +1148,7 @@
             </objects>
             <point key="canvasLocation" x="1409" y="-2768"/>
         </scene>
-        <!--Messages View Controller - Inbox-->
+        <!--Messages View Controller - Messenger-->
         <scene sceneID="jiV-g0-n2q">
             <objects>
                 <tableViewController id="YmE-8s-Xvy" customClass="MessagesViewController" sceneMemberID="viewController">
@@ -1170,7 +1170,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wAt-zH-YqC">
-                                            <rect key="frame" x="60" y="6" width="174" height="21"/>
+                                            <rect key="frame" x="60" y="5" width="174" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1205,7 +1205,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Inbox" id="BGx-PU-5yR">
+                    <navigationItem key="navigationItem" title="Messenger" id="BGx-PU-5yR">
                         <barButtonItem key="backBarButtonItem" title=" " id="rEs-vB-Mh9"/>
                     </navigationItem>
                     <connections>
@@ -1214,7 +1214,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gl6-cL-T39" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="969" y="-145"/>
+            <point key="canvasLocation" x="975" y="392"/>
         </scene>
         <!--Conversation View Controller - ViewTopicViewController-->
         <scene sceneID="etG-PG-ZFM">
@@ -3158,10 +3158,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1068" y="2025"/>
         </scene>
-        <!--Contacts View Controller-->
+        <!--Groups View Controller - My Groups-->
         <scene sceneID="ozd-vh-bGg">
             <objects>
-                <tableViewController id="29g-P3-71n" customClass="ContactsViewController" sceneMemberID="viewController">
+                <tableViewController id="29g-P3-71n" customClass="GroupsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="u2T-TE-5Mf">
                         <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3199,24 +3199,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <outlet property="delegate" destination="29g-P3-71n" id="5MN-r5-CTb"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="JK0-T1-yyj">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="My Groups" id="JK0-T1-yyj">
                         <barButtonItem key="backBarButtonItem" title=" " id="AGK-Fz-O0P"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="Rgb-RP-fmV">
-                            <rect key="frame" x="85" y="8" width="151" height="29"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Groups"/>
-                                <segment title="Contacts"/>
-                            </segments>
-                            <connections>
-                                <action selector="barSegmentTouched:" destination="29g-P3-71n" eventType="valueChanged" id="o1q-et-B7m"/>
-                            </connections>
-                        </segmentedControl>
                     </navigationItem>
                     <connections>
                         <outlet property="contactsTableView" destination="u2T-TE-5Mf" id="A9j-E7-u38"/>
-                        <outlet property="groupsContactsSegment" destination="Rgb-RP-fmV" id="QZq-un-vkq"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view profile" id="4IA-qk-kaG"/>
                         <segue destination="sIa-ky-63T" kind="push" identifier="view group" id="n9o-DN-8oU"/>
                         <segue destination="iKQ-TK-fBb" kind="push" identifier="search contacts" id="l58-qa-Cof"/>
@@ -3811,15 +3798,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="GTC-XV-iI1"/>
         <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
         <segue reference="htZ-EL-79i"/>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="n9o-DN-8oU"/>
+        <segue reference="J6b-Ty-4qO"/>
         <segue reference="l58-qa-Cof"/>
         <segue reference="4IA-qk-kaG"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="UCY-3t-8FQ"/>
+        <segue reference="n9o-DN-8oU"/>
+        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="XMX-SH-Gag"/>
     </inferredMetricsTieBreakers>
 </document>

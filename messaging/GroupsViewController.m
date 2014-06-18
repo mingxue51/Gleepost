@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "ContactsViewController.h"
+#import "GroupsViewController.h"
 #import "ContactUserCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import <QuartzCore/QuartzCore.h>
@@ -30,7 +30,7 @@
 #import "EmptyMessage.h"
 #import "UINavigationBar+Utils.h"
 
-@interface ContactsViewController ()
+@interface GroupsViewController ()
 
 @property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) NSMutableArray *usersStr;
@@ -49,14 +49,14 @@
 @property (strong, nonatomic) NSArray *groupSections;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *groupsContactsSegment;
+//@property (weak, nonatomic) IBOutlet UISegmentedControl *groupsContactsSegment;
 
 @property (strong, nonatomic) EmptyMessage *emptyContactsMessage;
 @property (strong, nonatomic) EmptyMessage *emptyGroupsMessage;
 
 @end
 
-@implementation ContactsViewController
+@implementation GroupsViewController
 
 - (void)viewDidLoad
 {
@@ -70,7 +70,7 @@
     
     [self configureTableView];
     
-    [self configureSegment];
+//    [self configureSegment];
     
     [self configNotifications];
     
@@ -114,13 +114,6 @@
     
     
 //    [self setCustomBackgroundToTableView];
-
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
 
 }
 
@@ -180,9 +173,6 @@
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-    
-    
-
     //    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
 }
 
@@ -227,7 +217,7 @@
 //    
 //    [self.groupsContactsSegment setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor lightGrayColor], UITextAttributeTextColor, nil] forState:UIControlStateNormal];
     
-    [AppearanceHelper setSegmentFontWithSegment:_groupsContactsSegment];
+//    [AppearanceHelper setSegmentFontWithSegment:_groupsContactsSegment];
     
     
     

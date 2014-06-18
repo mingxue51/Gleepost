@@ -10,7 +10,7 @@
 #import "GroupCreatedDelegate.h"
 #import "GroupDeletedDelegate.h"
 
-@interface ContactsViewController : UITableViewController <GroupCreatedDelegate, GroupDeletedDelegate>
+@interface GroupsViewController : UITableViewController <GroupCreatedDelegate, GroupDeletedDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sections;
 

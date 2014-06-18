@@ -21,10 +21,11 @@
 #import "ImageFormatterHelper.h"
 #import "GLPLoadMoreCell.h"
 #import "GLPMessagesLoader.h"
+#import "TableViewHelper.h"
 
 // debug
 #include <stdlib.h>
-#include "RemoteParser.h"
+#import "RemoteParser.h"
 #import "GLPNotification.h"
 #import "GLPNotificationManager.h"
 
@@ -340,16 +341,6 @@
     return count != 0 ? count : 1; // if no rows, then add 1 for the "no more" row
 }
 
-- (UITableViewCell *)cellWithMessage:(NSString *)message {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.textLabel.text = message;
-    cell.textLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
-    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [UIColor grayColor];
-    cell.userInteractionEnabled = NO;
-    return cell;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
@@ -358,17 +349,16 @@
     
     if (indexPath.section == 0 && indexPath.row == 0 && _liveConversations.count == 0) {
         
-        return [self cellWithMessage:@"You have no more chats."];
+        return [TableViewHelper generateCellWithMessage:@"You have no more chats"];
         
     }else if (indexPath.section == 1 && indexPath.row == 0 && _regularConversations.count == 0){
         
-        return [self cellWithMessage:@"You have no more messages."];
+        return [TableViewHelper generateCellWithMessage:@"You have no more messages"];
         
     }else {
         
         GLPConversation *conversation = indexPath.section == 0 ? _liveConversations[indexPath.row] : _regularConversations[indexPath.row];
         
-        DDLogDebug(@"Conversation: %@", conversation);
         
         MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
         //cell.conversation = conversation;

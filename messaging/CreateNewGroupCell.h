@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ContactsViewController.h"
+#import "GroupsViewController.h"
 #import "GroupCreatedDelegate.h"
 
 @interface CreateNewGroupCell : UITableViewCell <UIAlertViewDelegate>

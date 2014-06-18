@@ -372,7 +372,7 @@
 		589A73BC1936527000D518DF /* SetEventInformationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 589A73BB1936527000D518DF /* SetEventInformationCell.m */; };
 		589A73BE193652A800D518DF /* SetEventInformationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589A73BD193652A800D518DF /* SetEventInformationCell.xib */; };
 		589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642917EC871100F64B30 /* ProfileViewController.m */; };
-		589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642F17EC88DC00F64B30 /* ContactsViewController.m */; };
+		589C643017EC88DD00F64B30 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589C642F17EC88DC00F64B30 /* GroupsViewController.m */; };
 		589CE50118D21CFF0046DAD2 /* thermometer.png in Resources */ = {isa = PBXBuildFile; fileRef = 589CE50018D21CFF0046DAD2 /* thermometer.png */; };
 		589CE50518D222790046DAD2 /* thermometer_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 589CE50418D222790046DAD2 /* thermometer_color.png */; };
 		589CE50B18D227910046DAD2 /* the_bar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 589CE50718D227910046DAD2 /* the_bar1.png */; };
@@ -1280,8 +1280,8 @@
 		589A73BD193652A800D518DF /* SetEventInformationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetEventInformationCell.xib; sourceTree = "<group>"; };
 		589C642817EC871000F64B30 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		589C642917EC871100F64B30 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
-		589C642E17EC88DB00F64B30 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
-		589C642F17EC88DC00F64B30 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
+		589C642E17EC88DB00F64B30 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
+		589C642F17EC88DC00F64B30 /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
 		589CE50018D21CFF0046DAD2 /* thermometer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer.png; sourceTree = "<group>"; };
 		589CE50418D222790046DAD2 /* thermometer_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_color.png; sourceTree = "<group>"; };
 		589CE50718D227910046DAD2 /* the_bar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = the_bar1.png; sourceTree = "<group>"; };
@@ -2616,8 +2616,8 @@
 		587EA49D17F9B5A3005B3286 /* Contacts Classes */ = {
 			isa = PBXGroup;
 			children = (
-				589C642E17EC88DB00F64B30 /* ContactsViewController.h */,
-				589C642F17EC88DC00F64B30 /* ContactsViewController.m */,
+				589C642E17EC88DB00F64B30 /* GroupsViewController.h */,
+				589C642F17EC88DC00F64B30 /* GroupsViewController.m */,
 				587EA4A217F9C4A0005B3286 /* ContactUserCell.h */,
 				587EA4A317F9C4A0005B3286 /* ContactUserCell.m */,
 			);
@@ -5079,7 +5079,7 @@
 				805358CF182EF41000579079 /* GLPPostDaoParser.m in Sources */,
 				587248A618C6223300B98484 /* GroupViewController.m in Sources */,
 				58BB77FD1924F0600046885B /* VideoView.m in Sources */,
-				589C643017EC88DD00F64B30 /* ContactsViewController.m in Sources */,
+				589C643017EC88DD00F64B30 /* GroupsViewController.m in Sources */,
 				5844293318BCD17600DFEAF4 /* GLPCommentUploader.m in Sources */,
 				58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
