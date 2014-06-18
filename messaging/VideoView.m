@@ -63,8 +63,6 @@
 {
     if(ON_DEVICE)
     {
-        DDLogDebug(@"Video View : %@", post.content);
-        
         _remoteKey = post.remoteKey;
         _post = post;
         
@@ -73,34 +71,16 @@
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
-        DDLogDebug(@"Playback status: %d", previewVC.playbackState);
-
         NSAssert(previewVC != nil, @"previewVC cannot be nil");
         
         previewVC.delegate = self;
         
-        
-//        if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
-//        {
-//            [self setHiddenToPlayImage:YES];
-//        }
-//        else
-//        {
-//            [self setHiddenToPlayImage:NO];
-//        }
-        
-        
         previewVC.view.frame = _videoView.bounds;
         [_videoView addSubview:previewVC.view];
-        
-        
-//        [self setHiddenLoader:[previewVC isVideoLoaded]];
         
         [self loadThumbnail];
         
         [self configurePlaybackElementsWithPreviewVC:previewVC];
-
-        
     }
 
 }
@@ -114,7 +94,6 @@
     }
     else
     {
-//        [self setHiddenLoader:[previewVC isVideoLoaded]];
         [self showLoadingElements];
     }
 }
@@ -150,7 +129,9 @@
 
 - (void)loadThumbnail
 {
-    [_thumbnailImageView setImageWithURL:[NSURL URLWithString:_temporaryThumbnailUrl]];
+    //TODO: this is going to be changed when the thumbnail is going to be supported by the sever.
+    
+    [_thumbnailImageView setImage:[UIImage imageNamed:@"default_thumbnail"]];
 }
 
 #pragma mark - Animation
@@ -260,21 +241,7 @@
 {
     if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused)
     {
-        DDLogDebug(@"PBJVideoPlayerPlaybackStatePaused : %@", _post.content);
-
         [self pauseVideo];
-    }
-    else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePlaying)
-    {
-        DDLogDebug(@"PBJVideoPlayerPlaybackStatePlaying : %@", _post.content);
-    }
-    else if(videoPlayer.playbackState == PBJVideoPlayerBufferingStateDelayed)
-    {
-        DDLogDebug(@"PBJVideoPlayerBufferingStateDelayed : %@", _post.content);
-    }
-    else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStateFailed)
-    {
-        DDLogDebug(@"PBJVideoPlayerPlaybackStateFailed : %@", _post.content);
     }
 }
 
