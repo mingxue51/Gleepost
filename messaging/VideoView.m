@@ -75,35 +75,48 @@
         
         DDLogDebug(@"Playback status: %d", previewVC.playbackState);
 
-        
         NSAssert(previewVC != nil, @"previewVC cannot be nil");
         
         previewVC.delegate = self;
         
         
-        [self configurePlaybackWithStatus:previewVC.playbackState];
-
-        
-        if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
-        {
-            [self setHiddenToPlayImage:YES];
-        }
-        else
-        {
-            [self setHiddenToPlayImage:NO];
-        }
+//        if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+//        {
+//            [self setHiddenToPlayImage:YES];
+//        }
+//        else
+//        {
+//            [self setHiddenToPlayImage:NO];
+//        }
         
         
         previewVC.view.frame = _videoView.bounds;
         [_videoView addSubview:previewVC.view];
         
         
-        [self setHiddenLoader:[previewVC isVideoLoaded]];
+//        [self setHiddenLoader:[previewVC isVideoLoaded]];
         
         [self loadThumbnail];
         
+        [self configurePlaybackElementsWithPreviewVC:previewVC];
+
+        
     }
 
+}
+
+- (void)configurePlaybackElementsWithPreviewVC:(PBJVideoPlayerController *)previewVC
+{
+    if([previewVC isVideoLoaded])
+    {
+        [self hideLoadingElements];
+        [self configurePlaybackWithStatus:previewVC.playbackState];
+    }
+    else
+    {
+//        [self setHiddenLoader:[previewVC isVideoLoaded]];
+        [self showLoadingElements];
+    }
 }
 
 #pragma mark - Video operations
@@ -161,15 +174,28 @@
     if(hidden)
     {
         [_loadingImageView setHidden:YES];
-        [self setHiddenToPlayImage:NO];
+//        [self setHiddenToPlayImage:NO];
     }
     else
     {
         [_loadingImageView setHidden:NO];
         [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         
-        [self setHiddenToPlayImage:YES];
+//        [self setHiddenToPlayImage:YES];
     }
+}
+
+- (void)showLoadingElements
+{
+    [_loadingImageView setHidden:NO];
+    [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self setHiddenToPlayImage:YES];
+}
+
+- (void)hideLoadingElements
+{
+    [_loadingImageView setHidden:YES];
+    
 }
 
 - (void)setHiddenThumbnail:(BOOL)hidden
@@ -184,12 +210,34 @@
  In more detail in each playback state are performed the following actions:
  PBJVideoPlayerPlaybackStateStopped : Thumbnail and play button are shown.
  PBJVideoPlayerPlaybackStatePlaying : Thumbnail and play button are hidden.
- PBJVideoPlayerPlaybackStatePaused  : 
+ PBJVideoPlayerPlaybackStatePaused  : Thumbnail hidden and play button shown.
+ 
+ @param playbackState
  
  */
-- (void)configurePlaybackWithStatus:(PBJVideoPlayerPlaybackState *)playbackState
+- (void)configurePlaybackWithStatus:(PBJVideoPlayerPlaybackState)playbackStatus
 {
-    
+    switch (playbackStatus) {
+        case PBJVideoPlayerPlaybackStateStopped:
+            [self setHiddenToPlayImage:NO];
+            [self setHiddenThumbnail:NO];
+            break;
+            
+        case PBJVideoPlayerPlaybackStatePlaying:
+            [self setHiddenToPlayImage:YES];
+            [self setHiddenThumbnail:YES];
+            break;
+            
+            case PBJVideoPlayerPlaybackStatePaused:
+            [self setHiddenToPlayImage:NO];
+            [self setHiddenThumbnail:YES];
+            break;
+            
+
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - PBJVideoPlayerControllerDelegate
@@ -217,7 +265,7 @@
     }
     else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePlaying)
     {
-        DDLogDebug(@"PBJVideoPlayerPlaybackStatePlaying : %@, %d", _post.content, _previewVC.playbackState);
+        DDLogDebug(@"PBJVideoPlayerPlaybackStatePlaying : %@", _post.content);
     }
     else if(videoPlayer.playbackState == PBJVideoPlayerBufferingStateDelayed)
     {
@@ -254,7 +302,7 @@
 -(void)resumeVideo
 {
 //    [self setHiddenToPlayButton:YES];
-    [_previewVC playFromCurrentTime];
+    //[_previewVC playFromCurrentTime];
 }
 
 -(void)endVideo
@@ -268,7 +316,7 @@
 -(void)startVideoFromBeggining
 {
 //    [_previewVC setVideoPath:_url];
-    [_previewVC playFromBeginning];
+    //[_previewVC playFromBeginning];
 }
 
 #pragma mark - Help methods
