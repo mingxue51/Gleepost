@@ -174,14 +174,14 @@
     if(hidden)
     {
         [_loadingImageView setHidden:YES];
-//        [self setHiddenToPlayImage:NO];
+        [self setHiddenToPlayImage:NO];
     }
     else
     {
         [_loadingImageView setHidden:NO];
         [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         
-//        [self setHiddenToPlayImage:YES];
+        [self setHiddenToPlayImage:YES];
     }
 }
 
@@ -247,12 +247,13 @@
     [_videoView setHidden:NO];
 }
 
-- (void)readyToPlay:(BOOL)ready
+- (void)readyToPlay:(BOOL)ready withPlayerController:(PBJVideoPlayerController *)videoPlayer
 {
     DDLogDebug(@"Post ready to play: %@ : %d", _post.content, ready);
     
     //When the ready to play is YES it means that the video is fetched as a whole and is ready for playback.
     [self setHiddenLoader:ready];
+//    [self configurePlaybackElementsWithPreviewVC:videoPlayer];
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer

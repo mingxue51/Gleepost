@@ -478,11 +478,11 @@ typedef void (^PBJVideoPlayerBlock)();
         
         if([_playerItem isPlaybackLikelyToKeepUp])
         {
-            [_delegate readyToPlay:YES];
+            [_delegate readyToPlay:YES withPlayerController:self];
         }
         else
         {
-            [_delegate readyToPlay:NO];
+            [_delegate readyToPlay:NO withPlayerController:self];
         }
 
         AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
