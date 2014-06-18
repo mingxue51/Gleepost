@@ -1947,7 +1947,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="PLg-Hd-LQL" customClass="ChatViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Goc-qg-8RS">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -3026,7 +3026,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="Zeb-oB-v8D">
             <objects>
                 <navigationController definesPresentationContext="YES" id="6si-v1-awl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="4" title="My Profile" image="id-card-7.png" id="mk5-Fz-dnk"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="My Profile" image="id-card-7.png" id="mk5-Fz-dnk"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="LgP-AE-5yh">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -3456,7 +3456,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="SEo-vv-EHO">
             <objects>
                 <navigationController definesPresentationContext="YES" id="nPe-gR-zdL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" title="Group" image="man-7.png" id="jH4-pF-r6f"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="Group" image="man-7.png" id="jH4-pF-r6f"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="JFZ-5E-qD0">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
@@ -3532,7 +3532,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <connections>
                         <segue destination="492-SX-bb8" kind="relationship" relationship="viewControllers" id="bfd-4N-YS1"/>
                         <segue destination="cfX-Wb-77k" kind="relationship" relationship="viewControllers" id="9Rq-6W-xjS"/>
-                        <segue destination="Mum-dy-WxM" kind="relationship" relationship="viewControllers" id="GQm-ug-KXq"/>
                         <segue destination="nPe-gR-zdL" kind="relationship" relationship="viewControllers" id="3w5-bL-Q6B"/>
                         <segue destination="6si-v1-awl" kind="relationship" relationship="viewControllers" id="HTN-xd-67d"/>
                     </connections>

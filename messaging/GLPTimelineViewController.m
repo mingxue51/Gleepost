@@ -705,21 +705,10 @@ const float TOP_OFFSET = 280.0f;
 
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
-    
+
+
     
     item = [items objectAtIndex:2];
-    
-    item.image = [[UIImage imageNamed:@"proximity-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"proximity-7"];
-    
-    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-    
-    item = [items objectAtIndex:3];
     
     item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
@@ -730,7 +719,7 @@ const float TOP_OFFSET = 280.0f;
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
 
     
-    item = [items objectAtIndex:4];
+    item = [items objectAtIndex:3];
     
     item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     

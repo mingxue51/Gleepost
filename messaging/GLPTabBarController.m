@@ -29,7 +29,6 @@ const float TABBAR_OFFSET_HEIGHT = 5.0f;
 @synthesize profileNotificationsCount=_profileNotificationsCount;
 
 static BOOL isViewDidDisappearCalled = YES;
-static BOOL isViewDidLayoutSubviews = NO;
 static NSInteger lastTabbarIndex = 0;
 
 - (void)viewDidLoad
@@ -47,24 +46,6 @@ static NSInteger lastTabbarIndex = 0;
     
 
 }
-
-- (void)viewDidLayoutSubviews
-{
-    CGRect frame = self.tabBar.frame;
-
-    if(!isViewDidLayoutSubviews)
-    {
-        if(![GLPiOS6Helper isIOS6])
-        {
-//            [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+TABBAR_OFFSET_HEIGHT, frame.size.width, frame.size.height-TABBAR_OFFSET_HEIGHT)];
-        }
-        isViewDidLayoutSubviews = YES;
-    }
-    
-
-
-}
-
 
 //TODO: BUG: View will appear called multible times.
 - (void)viewWillAppear:(BOOL)animated
@@ -128,21 +109,21 @@ static NSInteger lastTabbarIndex = 0;
 
 -(void)updateGroupsContactsBadge:(NSInteger)numberOfGroups
 {
-    if(self.selectedIndex == 3) {
+    if(self.selectedIndex == 2) {
         return;
     }
     
-    [self updateBadgeContentForIndex:3 count:numberOfGroups];
+    [self updateBadgeContentForIndex:2 count:numberOfGroups];
 }
 
 - (void)updateProfileBadge:(NSNotification *)notification
 {
-    if(self.selectedIndex == 4) {
+    if(self.selectedIndex == 3) {
         return;
     }
     
     _profileNotificationsCount++;
-    [self updateBadgeForIndex:4 count:_profileNotificationsCount];
+    [self updateBadgeForIndex:3 count:_profileNotificationsCount];
 }
 
 - (void)updateChatBadge:(NSNotification *)notification
@@ -206,8 +187,6 @@ static NSInteger lastTabbarIndex = 0;
             break;
         case 2:
         case 3:
-            break;
-        case 4:
             _profileNotificationsCount = 0;
             break;
     }
@@ -228,18 +207,6 @@ static NSInteger lastTabbarIndex = 0;
     }
     
     lastTabbarIndex = viewController.tabBarItem.tag;
-
-    
-    if(viewController.tabBarItem.tag == 2)
-    {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        ChatViewAnimationController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewAnimation"];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
-        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:navigationController animated:YES completion:nil];
-        
-        return NO;
-    }
     
     return YES;
 }

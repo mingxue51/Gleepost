@@ -252,7 +252,7 @@
 {
     NSArray *items = self.tabBarController.tabBar.items;
     
-    self.contactsTabbarItem = [items objectAtIndex:3];
+    self.contactsTabbarItem = [items objectAtIndex:2];
 }
 
 -(void)configNotifications
