@@ -296,8 +296,6 @@
     NSArray *items = self.tabBarController.tabBar.items;
     
     self.profileTabbarItem = [items objectAtIndex:4];
-    
-    [self.profileTabbarItem setTitle:@" "];
 }
 
 -(void)addNavigationButtons

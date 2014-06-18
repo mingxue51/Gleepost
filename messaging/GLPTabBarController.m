@@ -56,7 +56,7 @@ static NSInteger lastTabbarIndex = 0;
     {
         if(![GLPiOS6Helper isIOS6])
         {
-            [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+TABBAR_OFFSET_HEIGHT, frame.size.width, frame.size.height-TABBAR_OFFSET_HEIGHT)];
+//            [self.tabBar setFrame:CGRectMake(frame.origin.x, frame.origin.y+TABBAR_OFFSET_HEIGHT, frame.size.width, frame.size.height-TABBAR_OFFSET_HEIGHT)];
         }
         isViewDidLayoutSubviews = YES;
     }

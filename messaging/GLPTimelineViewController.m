@@ -161,9 +161,6 @@ const float TOP_OFFSET = 280.0f;
     
     [self initialiseObjects];
     
-
-    
-    
 //    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
     
     NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
@@ -687,7 +684,10 @@ const float TOP_OFFSET = 280.0f;
     
     item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
     
-    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     
     self.homeTabbarItem = item;
     
@@ -699,7 +699,9 @@ const float TOP_OFFSET = 280.0f;
     
     item.selectedImage = [UIImage imageNamed:@"message-7"];
     
-    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+    
+    
+//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
 
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
@@ -723,7 +725,7 @@ const float TOP_OFFSET = 280.0f;
     
     item.selectedImage = [UIImage imageNamed:@"man-7"];
     
-    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
 
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
 
@@ -734,7 +736,7 @@ const float TOP_OFFSET = 280.0f;
     
     item.selectedImage = [UIImage imageNamed:@"id-card-7"];
     
-    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
 
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
