@@ -13,23 +13,30 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
 #import "GLPPost.h"
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @interface VideoView ()
 
-@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+//@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 @property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
 @property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
-@property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *loadingImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *playImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (assign, nonatomic) NSInteger remoteKey;
+//@property (assign, nonatomic, getter = hasVideoStarted) BOOL videoStarted;
 
 @property (strong, nonatomic) GLPPost *post;
 
+@property (strong, nonatomic) NSString *temporaryThumbnailUrl;
 @end
 
 @implementation VideoView
+
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -37,7 +44,7 @@
     
     if(self)
     {
-        //[self initialiseObjects];
+        [self initialiseObjects];
     }
     
     return self;
@@ -45,8 +52,10 @@
 
 -(void)initialiseObjects
 {
-    _previewVC = [[PBJVideoPlayerController alloc] init];
-    _previewVC.delegate = self;
+//    _previewVC = [[PBJVideoPlayerController alloc] init];
+//    _previewVC.delegate = self;
+    
+    _temporaryThumbnailUrl = @"https://cdn-assets-hall-com.s3.amazonaws.com/production/private/halls/531a19171d16bead700004e8/user_uploaded_files/default_thumbnail.png?AWSAccessKeyId=17VVCSSS3H6YGDY9H3G2&Expires=1403044633&Signature=sZMzPWs503329REQDCEbgKQQmic%3D&response-content-type=image%2Fpng";
 }
 
 
@@ -54,36 +63,66 @@
 {
     if(ON_DEVICE)
     {
+        DDLogDebug(@"Video View : %@", post.content);
+        
         _remoteKey = post.remoteKey;
         _post = post;
+        
         
         [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:_remoteKey];
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
+        DDLogDebug(@"Playback status: %d", previewVC.playbackState);
+
+        NSAssert(previewVC != nil, @"previewVC cannot be nil");
+        
         previewVC.delegate = self;
         
-        if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
-        {
-            [self setHiddenToPlayImage:YES];
-        }
-        else
-        {
-            [self setHiddenToPlayImage:NO];
-        }
+        
+//        if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+//        {
+//            [self setHiddenToPlayImage:YES];
+//        }
+//        else
+//        {
+//            [self setHiddenToPlayImage:NO];
+//        }
         
         
         previewVC.view.frame = _videoView.bounds;
         [_videoView addSubview:previewVC.view];
+        
+        
+//        [self setHiddenLoader:[previewVC isVideoLoaded]];
+        
+        [self loadThumbnail];
+        
+        [self configurePlaybackElementsWithPreviewVC:previewVC];
+
+        
     }
 
+}
+
+- (void)configurePlaybackElementsWithPreviewVC:(PBJVideoPlayerController *)previewVC
+{
+    if([previewVC isVideoLoaded])
+    {
+        [self hideLoadingElements];
+        [self configurePlaybackWithStatus:previewVC.playbackState];
+    }
+    else
+    {
+//        [self setHiddenLoader:[previewVC isVideoLoaded]];
+        [self showLoadingElements];
+    }
 }
 
 #pragma mark - Video operations
 
 -(void)playVideo
 {
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPlayVideo" object:self userInfo:@{@"RemoteKey": [NSNumber numberWithInteger:_remoteKey]}
      ];
 }
@@ -96,19 +135,22 @@
 
 -(IBAction)video:(id)sender
 {
-
     if(_playButton.tag == 0)
     {
         [self setHiddenToPlayImage:YES];
+        [self setHiddenThumbnail:YES];
         [self playVideo];
-        
     }
     else
     {
         [self setHiddenToPlayImage:NO];
         [self pauseVideo];
     }
+}
 
+- (void)loadThumbnail
+{
+    [_thumbnailImageView setImageWithURL:[NSURL URLWithString:_temporaryThumbnailUrl]];
 }
 
 #pragma mark - Animation
@@ -127,13 +169,91 @@
     }];
 }
 
+- (void)setHiddenLoader:(BOOL)hidden
+{
+    if(hidden)
+    {
+        [_loadingImageView setHidden:YES];
+        [self setHiddenToPlayImage:NO];
+    }
+    else
+    {
+        [_loadingImageView setHidden:NO];
+        [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        [self setHiddenToPlayImage:YES];
+    }
+}
+
+- (void)showLoadingElements
+{
+    [_loadingImageView setHidden:NO];
+    [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [self setHiddenToPlayImage:YES];
+}
+
+- (void)hideLoadingElements
+{
+    [_loadingImageView setHidden:YES];
+    
+}
+
+- (void)setHiddenThumbnail:(BOOL)hidden
+{
+    [_thumbnailImageView setHidden:hidden];
+}
+
+
+/**
+ This method change the status of each element in video view depending on the playback state.
+ 
+ In more detail in each playback state are performed the following actions:
+ PBJVideoPlayerPlaybackStateStopped : Thumbnail and play button are shown.
+ PBJVideoPlayerPlaybackStatePlaying : Thumbnail and play button are hidden.
+ PBJVideoPlayerPlaybackStatePaused  : Thumbnail hidden and play button shown.
+ 
+ @param playbackState
+ 
+ */
+- (void)configurePlaybackWithStatus:(PBJVideoPlayerPlaybackState)playbackStatus
+{
+    switch (playbackStatus) {
+        case PBJVideoPlayerPlaybackStateStopped:
+            [self setHiddenToPlayImage:NO];
+            [self setHiddenThumbnail:NO];
+            break;
+            
+        case PBJVideoPlayerPlaybackStatePlaying:
+            [self setHiddenToPlayImage:YES];
+            [self setHiddenThumbnail:YES];
+            break;
+            
+            case PBJVideoPlayerPlaybackStatePaused:
+            [self setHiddenToPlayImage:NO];
+            [self setHiddenThumbnail:YES];
+            break;
+            
+
+            
+        default:
+            break;
+    }
+}
+
 #pragma mark - PBJVideoPlayerControllerDelegate
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"videoPlayerReady : %@", _post.content);
-    
     [_videoView setHidden:NO];
+}
+
+- (void)readyToPlay:(BOOL)ready withPlayerController:(PBJVideoPlayerController *)videoPlayer
+{
+    DDLogDebug(@"Post ready to play: %@ : %d", _post.content, ready);
+    
+    //When the ready to play is YES it means that the video is fetched as a whole and is ready for playback.
+    [self setHiddenLoader:ready];
+//    [self configurePlaybackElementsWithPreviewVC:videoPlayer];
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
@@ -144,16 +264,25 @@
 
         [self pauseVideo];
     }
+    else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+    {
+        DDLogDebug(@"PBJVideoPlayerPlaybackStatePlaying : %@", _post.content);
+    }
     else if(videoPlayer.playbackState == PBJVideoPlayerBufferingStateDelayed)
     {
         DDLogDebug(@"PBJVideoPlayerBufferingStateDelayed : %@", _post.content);
     }
-//    else if (videoPlayer.playbackState == PB)
+    else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStateFailed)
+    {
+        DDLogDebug(@"PBJVideoPlayerPlaybackStateFailed : %@", _post.content);
+    }
 }
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
 {
 //    [self setHiddenToPlayButton:YES];
+    
+    DDLogDebug(@"Video started from the beginning");
 }
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
@@ -174,7 +303,7 @@
 -(void)resumeVideo
 {
 //    [self setHiddenToPlayButton:YES];
-    [_previewVC playFromCurrentTime];
+    //[_previewVC playFromCurrentTime];
 }
 
 -(void)endVideo
@@ -182,12 +311,20 @@
 //    [self setHiddenToPlayButton:NO];
 //    [_playButton setTag:0];
     [self setHiddenToPlayImage:NO];
+    [self setHiddenThumbnail:NO];
 }
 
 -(void)startVideoFromBeggining
 {
 //    [_previewVC setVideoPath:_url];
-    [_previewVC playFromBeginning];
+    //[_previewVC playFromBeginning];
+}
+
+#pragma mark - Help methods
+
+- (void)hasVideoStarted
+{
+
 }
 
 /*

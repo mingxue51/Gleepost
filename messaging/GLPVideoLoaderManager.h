@@ -16,7 +16,7 @@
 
 
 -(void)addVideoPosts:(NSArray *)posts;
--(PBJVideoPlayerController *)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
+- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
 -(PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey;
 
 
