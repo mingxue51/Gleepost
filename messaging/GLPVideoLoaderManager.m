@@ -80,8 +80,6 @@ static GLPVideoLoaderManager *instance = nil;
 
 -(void)playVideo:(NSNotification *)notification
 {
-    DDLogDebug(@"playVideo: %@", notification);
-    
     NSDictionary *notificationDict = notification.userInfo;
     
     NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
@@ -156,7 +154,11 @@ static GLPVideoLoaderManager *instance = nil;
 
 -(PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey
 {
-    return [_videoViews objectForKey:[NSNumber numberWithInteger:remoteKey]];
+    PBJVideoPlayerController *v =[_videoViews objectForKey:[NSNumber numberWithInteger:remoteKey]];
+    
+    DDLogDebug(@"Video status: %d", v.playbackState);
+    
+    return v;
 }
 
 #pragma mark - Helpers

@@ -478,7 +478,6 @@ typedef void (^PBJVideoPlayerBlock)();
         
         if([_playerItem isPlaybackLikelyToKeepUp])
         {
-            DLog(@"Playback buffer not stall.");
             [_delegate readyToPlay:YES];
         }
         else
@@ -492,8 +491,6 @@ typedef void (^PBJVideoPlayerBlock)();
         {
             case AVPlayerStatusReadyToPlay:
             {
-                DDLogDebug(@"AVPlayerStatusReadyToPlay");
-                
                 _videoView.playerLayer.backgroundColor = [[UIColor blackColor] CGColor];
                 [_videoView.playerLayer setPlayer:_player];
             
@@ -503,9 +500,6 @@ typedef void (^PBJVideoPlayerBlock)();
             }
             case AVPlayerStatusFailed:
             {
-                
-//                DDLogDebug(@"AVPlayerStatusFailed");
-
                 _playbackState = PBJVideoPlayerPlaybackStateFailed;
                 [_delegate videoPlayerPlaybackStateDidChange:self];
                 break;

@@ -19,7 +19,7 @@
 
 @interface VideoView ()
 
-@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
+//@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 @property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
 @property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *playImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (assign, nonatomic) NSInteger remoteKey;
+//@property (assign, nonatomic, getter = hasVideoStarted) BOOL videoStarted;
 
 @property (strong, nonatomic) GLPPost *post;
 
@@ -67,13 +68,21 @@
         _remoteKey = post.remoteKey;
         _post = post;
         
+        
         [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:_remoteKey];
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
-        NSAssert(previewVC != nil, @"previewVC needs to be not nil");
+        DDLogDebug(@"Playback status: %d", previewVC.playbackState);
+
+        
+        NSAssert(previewVC != nil, @"previewVC cannot be nil");
         
         previewVC.delegate = self;
+        
+        
+        [self configurePlaybackWithStatus:previewVC.playbackState];
+
         
         if(previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
         {
@@ -168,6 +177,21 @@
     [_thumbnailImageView setHidden:hidden];
 }
 
+
+/**
+ This method change the status of each element in video view depending on the playback state.
+ 
+ In more detail in each playback state are performed the following actions:
+ PBJVideoPlayerPlaybackStateStopped : Thumbnail and play button are shown.
+ PBJVideoPlayerPlaybackStatePlaying : Thumbnail and play button are hidden.
+ PBJVideoPlayerPlaybackStatePaused  : 
+ 
+ */
+- (void)configurePlaybackWithStatus:(PBJVideoPlayerPlaybackState *)playbackState
+{
+    
+}
+
 #pragma mark - PBJVideoPlayerControllerDelegate
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
@@ -178,7 +202,9 @@
 - (void)readyToPlay:(BOOL)ready
 {
     DDLogDebug(@"Post ready to play: %@ : %d", _post.content, ready);
-    [self setHiddenLoader:YES];
+    
+    //When the ready to play is YES it means that the video is fetched as a whole and is ready for playback.
+    [self setHiddenLoader:ready];
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
@@ -188,6 +214,10 @@
         DDLogDebug(@"PBJVideoPlayerPlaybackStatePaused : %@", _post.content);
 
         [self pauseVideo];
+    }
+    else if (videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+    {
+        DDLogDebug(@"PBJVideoPlayerPlaybackStatePlaying : %@, %d", _post.content, _previewVC.playbackState);
     }
     else if(videoPlayer.playbackState == PBJVideoPlayerBufferingStateDelayed)
     {
@@ -202,6 +232,8 @@
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
 {
 //    [self setHiddenToPlayButton:YES];
+    
+    DDLogDebug(@"Video started from the beginning");
 }
 
 - (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
@@ -237,6 +269,13 @@
 {
 //    [_previewVC setVideoPath:_url];
     [_previewVC playFromBeginning];
+}
+
+#pragma mark - Help methods
+
+- (void)hasVideoStarted
+{
+
 }
 
 /*
