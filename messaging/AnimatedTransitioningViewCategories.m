@@ -9,8 +9,12 @@
 #import "AnimatedTransitioningViewCategories.h"
 #import "GLPTimelineViewController.h"
 #import "GLPCategoriesViewController.h"
+#import "SKBounceAnimation.h"
 
 @implementation AnimatedTransitioningViewCategories
+
+const float CATEGORIES_ANIMATION_TIME = 0.8;
+
 //===================================================================
 // - UIViewControllerAnimatedTransitioning
 //===================================================================
@@ -19,18 +23,14 @@
     return 0.25f;
 }
 
-- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
+- (void)animationEnded:(BOOL)transitionCompleted
+{
     
-    UIView *inView = [transitionContext containerView];
-    GLPCategoriesViewController *toVC = (GLPCategoriesViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-//    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    
-    
-    toVC.view.alpha = 0.0;
-    
-    [inView addSubview:toVC.view];
-    
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+}
+
+- (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
+{
+    //    CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     //[toVC.view setFrame:CGRectMake(0, screenRect.size.height, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
     
@@ -38,26 +38,75 @@
     //UIViewAnimationOptionTransitionCrossDissolve
     //    toVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    
+    UIView *inView = [transitionContext containerView];
+    UIViewController *toVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    
+    if([self isPresenting])
+    {
+        toVC.view.alpha = 0.0;
         
+        [inView addSubview:toVC.view];
+        
+        
+        NSString *keyPath = @"position.y";
+        id finalValue = [NSNumber numberWithFloat:300];
+        
+        SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
+        bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
         toVC.view.alpha = 1.0;
+        bounceAnimation.toValue = finalValue;
+        bounceAnimation.duration = CATEGORIES_ANIMATION_TIME;
+        bounceAnimation.numberOfBounces = 4;
+        bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
+        bounceAnimation.shouldOvershoot = YES;
         
+        [toVC.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
         
-    } completion:^(BOOL finished) {
+        [toVC.view.layer setValue:finalValue forKeyPath:keyPath];
         
         [transitionContext completeTransition:YES];
+    }
+    else
+    {
+        //The transition is done in the view controller.
         
-    }];
+        [transitionContext completeTransition:YES];
+
+        
+//        [UIView animateWithDuration:2.0f animations:^{
+//        
+//            inView.alpha = 0.0;
+//
+//        } completion:^(BOOL finished) {
+//
+//            
+//            
+//        }];
+        
+        
+        
+        
+//        NSString *keyPath = @"position.y";
+//        id finalValue = [NSNumber numberWithFloat:0];
+//        
+//        SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
+//        bounceAnimation.fromValue = [NSNumber numberWithFloat:fromVC.view.center.x];
+//        fromVC.view.alpha = 1.0;
+//        bounceAnimation.toValue = finalValue;
+//        bounceAnimation.duration = 0.5f;
+//        bounceAnimation.numberOfBounces = 4;
+//        bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
+//        bounceAnimation.shouldOvershoot = YES;
+//        
+//        [fromVC.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
+//        
+//        [fromVC.view.layer setValue:finalValue forKeyPath:keyPath];
+        
+    }
     
-    
-    //    [UIView animateWithDuration:0.25f
-    //                     animations:^{
-    //
-    //                         [toVC.view setFrame:CGRectMake(0, 0, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
-    //                     }
-    //                     completion:^(BOOL finished) {
-    //                         [transitionContext completeTransition:YES];
-    //                     }];
+
 }
 
 

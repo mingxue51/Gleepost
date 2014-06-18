@@ -26,11 +26,11 @@
     
     if(self.tag == 0)
     {
-        insets = UIEdgeInsetsMake(0, 10.0f, 0, 0);
+        insets = UIEdgeInsetsMake(0, 6.0f, 0, 0); //10
     }
     else
     {
-        insets = UIEdgeInsetsMake(0, 0, 0, 18.0f);
+        insets = UIEdgeInsetsMake(0, 0, 0, 12.0f); //18
     }
     
     return insets;

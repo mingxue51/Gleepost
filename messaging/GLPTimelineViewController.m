@@ -2659,12 +2659,16 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)showCategories:(id)sender
 {
-//    [self scrollToTheTop];
-    
-    
     if([self.reNavBar isHidden])
     {
         [self scrollToTheNavigationBar];
+        
+        [self performSelector:@selector(showCategoriesViewController) withObject:nil afterDelay:0.5];
+        
+    }
+    else
+    {
+        [self showCategoriesViewController];
     }
     
     
@@ -2688,9 +2692,15 @@ const float TOP_OFFSET = 280.0f;
     
     
     
+
+    
+}
+
+- (void)showCategoriesViewController
+{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
-
+    
     /**
      Takes screenshot from the current view controller to bring the sense of the transparency after the load
      of the NewPostViewController.
@@ -2701,10 +2711,10 @@ const float TOP_OFFSET = 280.0f;
     UIGraphicsEndImageContext();
     
     
-    cvc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
+    cvc.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     cvc.delegate = self;
-//    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
     if([GLPiOS6Helper isIOS6])
     {
@@ -2716,16 +2726,14 @@ const float TOP_OFFSET = 280.0f;
     }
     else
     {
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 63, 320, 302)];
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 48, 320, 312)]; //0 63 320 302
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
-
+        
     }
-
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
     [self presentViewController:cvc animated:YES completion:nil];
-    
 }
 
 -(void)showEventPost:(NSNotification*)notification

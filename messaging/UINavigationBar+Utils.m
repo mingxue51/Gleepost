@@ -31,7 +31,7 @@
         
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         
-        [fixedSpace setWidth:-11];
+        [fixedSpace setWidth:-7];
         
         barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
         
@@ -46,13 +46,13 @@
         
         if(type == kLeft)
         {
-            [fixedSpace setWidth:-8];
+            [fixedSpace setWidth:-4];
             navController.navigationItem.leftBarButtonItems = @[fixedSpace, barButtonItem];
             
         }
         else if (type == kRight)
         {
-            [fixedSpace setWidth:-10];
+            [fixedSpace setWidth:-5];
             navController.navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
         }
     }
@@ -60,19 +60,19 @@
 
 - (void)setSystemButton:(GLPButtonType)type withBarButtonSystemItem:(UIBarButtonSystemItem)systemItem withSelector:(SEL)selector andTarget:(UIViewController *)navController
 {
-    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:self action:selector];
+    UIBarButtonItem *groupButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:systemItem target:navController action:selector];
     
     UIBarButtonItem *fixedSpaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     
     if(type == kLeft)
     {
-        [fixedSpaceButton setWidth:-8];
+        [fixedSpaceButton setWidth:-4];
 
         navController.navigationItem.leftBarButtonItems = @[fixedSpaceButton, groupButton];
     }
     else if (type == kRight)
     {
-        [fixedSpaceButton setWidth:-10];
+        [fixedSpaceButton setWidth:-5]; //6
 
         navController.navigationItem.rightBarButtonItems = @[fixedSpaceButton, groupButton];
     }

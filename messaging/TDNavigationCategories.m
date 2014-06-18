@@ -31,6 +31,8 @@
     
     //Here retrieve the very first view controller by just creating a new class to create the animation.
     
+    DDLogDebug(@"Finished new post animation");
+    
     ATNavigationCategories *controller = [[ATNavigationCategories alloc]init];
     controller.presenting = NO;
     return controller;

@@ -535,15 +535,16 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VJg-9l-69Q">
-                                <rect key="frame" x="0.0" y="63" width="320" height="302"/>
+                                <rect key="frame" x="0.0" y="48" width="320" height="312"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="category_bg.png" id="DhH-lh-3JV">
-                                <rect key="frame" x="0.0" y="53" width="320" height="312"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.49999999999999961" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="DhH-lh-3JV">
+                                <rect key="frame" x="0.0" y="48" width="320" height="312"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="MGx-Bk-zFC">
-                                <rect key="frame" x="0.0" y="63" width="320" height="302"/>
+                                <rect key="frame" x="0.0" y="58" width="320" height="302"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3308,13 +3309,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController storyboardIdentifier="GroupViewController" id="sIa-ky-63T" customClass="GroupViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="XpL-qe-E6V">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="OjE-uB-bza">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OjE-uB-bza" id="KYN-hY-M0k">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -3328,7 +3329,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="9aI-2W-x8z">
-                        <barButtonItem key="backBarButtonItem" title=" " id="Q0a-VY-a2V" userLabel="Bar Button Item -"/>
+                        <barButtonItem key="backBarButtonItem" id="Q0a-VY-a2V" userLabel="Bar Button Item -"/>
                     </navigationItem>
                     <connections>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="IeZ-i8-4wD"/>
@@ -3338,18 +3339,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZeS-u2-wb8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2048" y="2758"/>
+            <point key="canvasLocation" x="2046" y="2848"/>
         </scene>
         <!--Members View Controller-->
         <scene sceneID="CCf-Pg-1xa">
             <objects>
                 <viewController id="9bg-aO-bMl" customClass="MembersViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4wS-ou-SXr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="twu-HW-Ewl">
-                                <rect key="frame" x="0.0" y="90" width="320" height="429"/>
+                                <rect key="frame" x="0.0" y="90" width="320" height="365"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
@@ -3760,7 +3761,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="cancel_new_post.png" width="100" height="111"/>
         <image name="cancel_recording.png" width="100" height="111"/>
         <image name="categories_image.png" width="44" height="39"/>
-        <image name="category_bg.png" width="630" height="525"/>
         <image name="chat_background_default.png" width="640" height="1136"/>
         <image name="comment.png" width="19" height="17"/>
         <image name="comment_image.png" width="39" height="34"/>
@@ -3814,15 +3814,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fah-A8-Ky9"/>
-        <segue reference="Ptj-MX-g8C"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="WK7-hw-eyD"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="PCe-7s-A56"/>
-        <segue reference="WhX-ZL-dQD"/>
+        <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
+        <segue reference="htZ-EL-79i"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="GTC-XV-iI1"/>
+        <segue reference="n9o-DN-8oU"/>
+        <segue reference="l58-qa-Cof"/>
+        <segue reference="4IA-qk-kaG"/>
+        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="XMX-SH-Gag"/>
     </inferredMetricsTieBreakers>
 </document>

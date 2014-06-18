@@ -13,6 +13,7 @@
 #import "CategoryManager.h"
 #import "UIImage+StackBlur.h"
 #import "GLPiOS6Helper.h"
+#import "SKBounceAnimation.h"
 
 @interface GLPCategoriesViewController ()
 
@@ -138,19 +139,41 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-#warning change that approach. Do it as we are doing that in GLPSelectCategoryVC.
+    [self.delegate refreshPostsWithNewCategory];
+
     
-    [UIView animateWithDuration:0.25 animations:^{
-        
-        //Inform campus wall that
-        [self.delegate refreshPostsWithNewCategory];
-        self.view.alpha = 0;
-        
-    } completion:^(BOOL b){
-        
-        [self dismissViewControllerAnimated:NO completion:^{
-        }];
-    }];
+//    NSString *keyPath = @"position.y";
+//    id finalValue = [NSNumber numberWithFloat:0];
+//    
+//    SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
+//    bounceAnimation.fromValue = [NSNumber numberWithFloat:self.view.center.x];
+//    bounceAnimation.toValue = finalValue;
+//    bounceAnimation.duration = 3.5f;
+//    bounceAnimation.numberOfBounces = 4;
+//    bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
+//    bounceAnimation.shouldOvershoot = YES;
+//    
+//    [self.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
+//    
+//    [self.view.layer setValue:finalValue forKeyPath:keyPath];
+
+    
+    [self hideViewController:nil];
+    
+    
+
+    
+//    [UIView animateWithDuration:1.0 animations:^{
+//        
+//        //Inform campus wall that
+//        [self.delegate refreshPostsWithNewCategory];
+//        self.view.alpha = 0;
+//        
+//    } completion:^(BOOL b){
+//        
+//        [self dismissViewControllerAnimated:NO completion:^{
+//        }];
+//    }];
     
 }
 
@@ -224,16 +247,52 @@
 
 - (IBAction)hideViewController:(id)sender
 {
-    [UIView animateWithDuration:0.25 animations:^{
+    
+    typedef void (^AnimationBlock)();
+    
+    
+    AnimationBlock firstAnimation = ^{
         
-        self.view.alpha = 0;
+        [self.view setCenter: CGPointMake(self.view.center.x, self.view.center.y+50)];
         
-    } completion:^(BOOL b){
         
-        //        self.view.alpha = 1;
-        [self dismissViewControllerAnimated:NO completion:^{
-        }];
-    }];
+    };
+    AnimationBlock secondAnimation = ^{
+        
+        [self.view setCenter: CGPointMake(self.view.center.x, self.view.center.y-950)];
+        
+        
+    };
+    
+    
+    
+    
+    [UIView animateWithDuration:0.1 animations:firstAnimation
+     
+                     completion:^(BOOL finished) {
+                         
+                         [UIView animateWithDuration:1 animations:secondAnimation completion:^(BOOL finished) {
+                             
+                             
+                             //            [UIView animateWithDuration:0.5 animations:thirdAnimation];
+                             
+                             [self dismissViewControllerAnimated:YES completion:nil];
+                             
+                         }];
+                         
+                     }];
+    
+    
+//    [UIView animateWithDuration:0.25 animations:^{
+//        
+//        self.view.alpha = 0;
+//        
+//    } completion:^(BOOL b){
+//        
+//        //        self.view.alpha = 1;
+//        [self dismissViewControllerAnimated:NO completion:^{
+//        }];
+//    }];
 }
 
 

@@ -103,7 +103,6 @@ const int NUMBER_OF_ROWS = 2;
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
     [self configureNotifications];
-
     
 }
 

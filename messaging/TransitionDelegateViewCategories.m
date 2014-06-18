@@ -17,7 +17,7 @@
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     AnimatedTransitioningViewCategories *controller = [[AnimatedTransitioningViewCategories alloc]init];
-    controller.isPresenting = YES;
+    controller.presenting = YES;
     return controller;
 }
 
@@ -28,9 +28,14 @@
     //    return controller;
     
     
-    NSLog(@"animationControllerForDismissedController");
+    //Here retrieve the very first view controller by just creating a new class to create the animation.
     
-    return nil;
+    
+    DDLogDebug(@"Dismiss animation");
+    AnimatedTransitioningViewCategories *controller = [[AnimatedTransitioningViewCategories alloc] init];
+    controller.presenting = NO;
+    
+    return controller;
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
