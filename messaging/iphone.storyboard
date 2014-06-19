@@ -1153,7 +1153,7 @@
             <objects>
                 <tableViewController id="YmE-8s-Xvy" customClass="MessagesViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="F17-dd-HHj">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1891,12 +1891,62 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="YmE-8s-Xvy" kind="relationship" relationship="rootViewController" id="tSS-Vr-HAQ"/>
+                        <segue destination="1Zx-2q-fHs" kind="relationship" relationship="rootViewController" id="lul-KU-XDF"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ei1-ms-7dx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="444" y="-145"/>
+        </scene>
+        <!--Messenger View Controller - Messenger-->
+        <scene sceneID="Uco-yr-g2s">
+            <objects>
+                <viewController id="1Zx-2q-fHs" customClass="MessengerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fLa-qr-854">
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="q8B-XA-Azi">
+                                <rect key="frame" x="0.0" y="35" width="320" height="420"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="50" minY="0.0" maxX="10" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="vab-o5-CMq">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vab-o5-CMq" id="tFc-mi-DNL">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="1Zx-2q-fHs" id="bEU-ps-WsP"/>
+                                    <outlet property="delegate" destination="1Zx-2q-fHs" id="Q2c-cJ-Og4"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" id="PUF-wP-Kh0">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Messenger" id="qUL-gV-kuK">
+                        <barButtonItem key="backBarButtonItem" title=" " id="1ML-5f-4HH"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="segmentView" destination="PUF-wP-Kh0" id="tWX-UY-GSj"/>
+                        <outlet property="tableView" destination="q8B-XA-Azi" id="SmZ-0Q-sI3"/>
+                        <segue destination="p7E-nR-kMk" kind="push" identifier="view topic" id="rdb-8v-KiD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9jc-eZ-7CU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="975" y="-248"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="OUI-su-CjG">
@@ -2989,7 +3039,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -3754,7 +3804,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="fb_login_bg.png" width="600" height="90"/>
         <image name="fb_login_img.png" width="23" height="47"/>
-        <image name="fb_login_img_sm.png" width="457" height="496"/>
+        <image name="fb_login_img_sm.png" width="265" height="266"/>
         <image name="gleepost_logo_registration.png" width="393" height="130"/>
         <image name="glp-quote.png" width="505" height="82"/>
         <image name="go_to_preview.png" width="100" height="111"/>
@@ -3798,15 +3848,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="GTC-XV-iI1"/>
         <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
         <segue reference="htZ-EL-79i"/>
         <segue reference="J6b-Ty-4qO"/>
-        <segue reference="l58-qa-Cof"/>
-        <segue reference="4IA-qk-kaG"/>
-        <segue reference="n9o-DN-8oU"/>
-        <segue reference="UFN-Sk-0kH"/>
+        <segue reference="GTC-XV-iI1"/>
         <segue reference="XMX-SH-Gag"/>
+        <segue reference="n9o-DN-8oU"/>
+        <segue reference="4IA-qk-kaG"/>
+        <segue reference="l58-qa-Cof"/>
+        <segue reference="rdb-8v-KiD"/>
     </inferredMetricsTieBreakers>
 </document>

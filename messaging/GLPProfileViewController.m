@@ -1045,6 +1045,8 @@
     }
 }
 
+#pragma mark - Table view delegate
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifierWithImage = @"ImageCell";

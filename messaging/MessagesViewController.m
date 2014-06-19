@@ -360,26 +360,26 @@
         GLPConversation *conversation = indexPath.section == 0 ? _liveConversations[indexPath.row] : _regularConversations[indexPath.row];
         
         
-        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-        //cell.conversation = conversation;
-        cell.userName.text = conversation.title;
-        cell.userName.font = [UIFont fontWithName:GLP_TITLE_FONT size:14.0f];
-        
-        cell.content.text = [conversation getLastMessageOrDefault];
-        cell.content.textColor = [UIColor grayColor];
-        cell.content.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0f];
-        cell.content.numberOfLines = 2;
-        
-        
-        cell.time.text = [conversation getLastUpdateOrDefault];
-        cell.time.textColor = [UIColor grayColor];
-        cell.time.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
-        
-        cell.unreadImageView.hidden = !conversation.hasUnreadMessages;
+//        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+//        //cell.conversation = conversation;
+//        cell.userName.text = conversation.title;
+//        cell.userName.font = [UIFont fontWithName:GLP_TITLE_FONT size:14.0f];
+//        
+//        cell.content.text = [conversation getLastMessageOrDefault];
+//        cell.content.textColor = [UIColor grayColor];
+//        cell.content.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0f];
+//        cell.content.numberOfLines = 2;
+//        
+//        
+//        cell.time.text = [conversation getLastUpdateOrDefault];
+//        cell.time.textColor = [UIColor grayColor];
+//        cell.time.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+//        
+//        cell.unreadImageView.hidden = !conversation.hasUnreadMessages;
         
         // add profile image
-        [cell.userImage configureWithConversation:conversation];
-        return cell;
+//        [cell.userImage configureWithConversation:conversation];
+//        return cell;
 
 
     }
