@@ -178,7 +178,7 @@
 
 + (UIColor *)colourForRegisterTextFields
 {
-    return [UIColor colorWithR:187.0 withG:186.0 andB:196.0];
+    return [UIColor colorWithR:200.0 withG:200.0 andB:200.0];  //187 186 196
 }
 
 +(UIColor *)colourForTableViewSeparatorLines

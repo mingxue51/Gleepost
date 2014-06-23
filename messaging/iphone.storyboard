@@ -2232,10 +2232,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="WCb-j0-2Aq">
-                                <rect key="frame" x="20" y="190" width="280" height="50"/>
+                                <rect key="frame" x="20" y="220" width="280" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
-                                <state key="normal" title="Log in" backgroundImage="login_button.png">
+                                <state key="normal" title="Log in" backgroundImage="login_button_blue.png">
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -2251,13 +2251,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="Sign in" id="6sP-Ey-lj8">
+                                    <navigationItem title="Log in" id="6sP-Ey-lj8">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="GaU-9l-SaA">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4pb-NZ-5h5" customClass="GLPButton">
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="cancel.png">
+                                                <state key="normal" image="cancel_red.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -2281,7 +2281,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="M9g-r2-Q4I">
-                                <rect key="frame" x="82" y="252" width="147" height="23"/>
+                                <rect key="frame" x="82" y="282" width="147" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -3794,6 +3794,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="cancel.png" width="30" height="32"/>
         <image name="cancel_new_post.png" width="100" height="111"/>
         <image name="cancel_recording.png" width="100" height="111"/>
+        <image name="cancel_red.png" width="39" height="39"/>
         <image name="categories_image.png" width="44" height="39"/>
         <image name="chat_background_default.png" width="640" height="1136"/>
         <image name="comment.png" width="19" height="17"/>
@@ -3813,6 +3814,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="login-button.png" width="442" height="98"/>
         <image name="login_bg.png" width="640" height="1136"/>
         <image name="login_button.png" width="570" height="100"/>
+        <image name="login_button_blue.png" width="570" height="100"/>
         <image name="login_checkbox_unchecked" width="24" height="24"/>
         <image name="login_separator_line.png" width="570" height="3"/>
         <image name="loginwithfacebook.png" width="422" height="80"/>
@@ -3848,15 +3850,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
         <segue reference="htZ-EL-79i"/>
         <segue reference="J6b-Ty-4qO"/>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="XMX-SH-Gag"/>
+        <segue reference="l58-qa-Cof"/>
         <segue reference="n9o-DN-8oU"/>
         <segue reference="4IA-qk-kaG"/>
-        <segue reference="l58-qa-Cof"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="rdb-8v-KiD"/>
     </inferredMetricsTieBreakers>
 </document>
