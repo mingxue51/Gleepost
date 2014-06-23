@@ -60,6 +60,31 @@
 
 }
 
++ (void)setWhiteNavigationBarFormat:(UINavigationBar *)navigationBar
+{    
+    if([GLPiOS6Helper isIOS6])
+    {
+        //        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"] forBarMetrics:UIBarMetricsDefault];
+        
+        [navigationBar setTintColor:[AppearanceHelper defaultGleepostColour]];
+        //       [[UINavigationBar appearance] setTintColor:[AppearanceHelper defaultGleepostColour]];
+        
+        //        [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+        
+        
+        
+    }
+    else
+    {
+        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
+                           forBarPosition:UIBarPositionAny
+                               barMetrics:UIBarMetricsDefault];
+        
+    }
+    
+    [navigationBar setShadowImage:[UIImage new]];
+}
+
 +(void)setNavigationBarFontFor: (UIViewController *)controller
 {
 //    [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_APP_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
@@ -161,12 +186,16 @@
 {
 //    return [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
     return [UIColor colorWithRed:28.0/255.0f green:207.0/255.0f blue:208.0/255.0f alpha:1.0];
-
 }
 
-+ (UIColor *)tintGleepostColour
++ (UIColor *)grayGleepostColour
 {
-    return [UIColor colorWithRed:221.0f/255.0f green:71.0f/255.0f blue:84.0f/255.0f alpha:1.0f];
+    return [UIColor colorWithR:152 withG:152 andB:152];
+}
+
++ (UIColor *)redGleepostColour
+{
+    return [UIColor colorWithR:241 withG:91 andB:104]; //221, 71, 84
 }
 
 + (UIColor*)colourForNotFocusedItems

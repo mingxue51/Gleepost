@@ -34,8 +34,9 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 341.0f)];
+        [self setFrame:CGRectMake(0, 0, 320.0f, 205.0f)]; //341
         
+//        [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor]];
         
         for(UIView * v in self.subviews)
         {

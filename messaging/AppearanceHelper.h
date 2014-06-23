@@ -14,14 +14,16 @@
 + (void)setNavigationBarBackgroundImageFor:(UIViewController *)controller imageName:(NSString *)imageName forBarMetrics:(UIBarMetrics)barMetrics;
 + (void)setNavigationBarBlurBackgroundFor:(UIViewController *)contoller WithImage:(NSString*)imageName;
 + (void)setNavigationBarColour:(UIViewController *)controller;
++ (void)setWhiteNavigationBarFormat:(UINavigationBar *)navigationBar;
 +(void)setNavigationBarFontFor: (UIViewController *)controller;
 +(void)formatTextWithLabel:(UILabel*)label withSize:(float)size;
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item;
 +(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour;
 +(UIColor*)colourForNotFocusedItems;
 + (UIColor *)colourForRegisterTextFields;
++ (UIColor *)grayGleepostColour;
 +(UIColor*)defaultGleepostColour;
-+ (UIColor *)tintGleepostColour;
++ (UIColor *)redGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;
 +(void)hideTabBar:(UIViewController*)controller;
 +(void)setFormatForLoginNavigationBar:(UIViewController*)viewController;

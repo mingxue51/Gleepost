@@ -41,9 +41,9 @@
 
 @implementation CampusWallHeaderCell
 
-const float CELL_WIDTH = 220.0; //198
-const float CELL_HEIGHT = 210.0; //Change the height //132
-const float TITLE_LABEL_MAX_WIDTH = 180.0;
+const float CELL_WIDTH = 180.0; //220
+const float CELL_HEIGHT = 150.0; //Change the height //132
+const float TITLE_LABEL_MAX_WIDTH = 145.0;
 const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(id)initWithIdentifier:(NSString *)identifier
@@ -134,8 +134,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
   
     
 //    [_eventBarView increaseBarLevel:postData.popularity];
-    
-    DDLogDebug(@"Post data with content: %@ : %d", postData.eventTitle, postData.popularity);
+ 
     
     [_eventBarView setLevelWithPopularity:postData.popularity];
     
@@ -205,7 +204,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 - (void)formatBackgroundImage
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:10];
 }
 
 -(void)formatEventImage
@@ -219,9 +218,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     //http://stackoverflow.com/questions/14107979/blur-an-image-of-specific-part-rectangular-circular
     
     //Format the image.
-    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(5.0f, 5.0f)];
-    
-
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(10.0f, 10.0f)];
 }
 
 

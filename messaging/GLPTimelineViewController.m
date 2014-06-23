@@ -56,6 +56,8 @@
 #import "EmptyMessage.h"
 #import "GLPVideoLoaderManager.h"
 #import "GLPWalkthroughViewController.h"
+#import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
 
 @interface GLPTimelineViewController ()
 
@@ -110,14 +112,14 @@
 
 //Header.
 @property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
-@property (strong, nonatomic) FakeNavigationBar *reNavBar;
+//@property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 //Groups.
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
 @property (assign, nonatomic) BOOL groupsMode;
 
 //Extra view will present to hide the change of background during the viewing of new post.
-@property (strong, nonatomic) UIImageView *topImageView;
+//@property (strong, nonatomic) UIImageView *topImageView;
 
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
@@ -161,22 +163,14 @@ const float TOP_OFFSET = 280.0f;
     
     [self initialiseObjects];
     
-//    [NSThread detachNewThreadSelector:@selector(startLoadingContents:) toTarget:self withObject:nil];
-    
     NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
     [t fire];
     
     [self loadInitialPosts];
     
-
-//    [WalkThroughHelper showCampusWallMessage];
     
     //Find the sunset sunrise for preparation of the new chat.
     [AnimationDayController sharedInstance];
-    
-    
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -225,7 +219,7 @@ const float TOP_OFFSET = 280.0f;
     [AppearanceHelper setUnselectedColourForTabbarItem:self.homeTabbarItem];
     
     //Hide temporary top image view.
-    [_topImageView setHidden:YES];
+//    [_topImageView setHidden:YES];
     
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
@@ -239,8 +233,6 @@ const float TOP_OFFSET = 280.0f;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self stopReloadingCron];
-//    [self.navigationController setNavigationBarHidden:NO
-//                                             animated:YES];
 }
 
 //- (BOOL)prefersStatusBarHidden
@@ -292,10 +284,10 @@ const float TOP_OFFSET = 280.0f;
     self.groupsMode = NO;
     
     //Initialize temporary top image view.
-    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
-    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-    
-    [self.view addSubview:_topImageView];
+//    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
+//    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+//    
+//    [self.view addSubview:_topImageView];
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
@@ -500,38 +492,6 @@ const float TOP_OFFSET = 280.0f;
 
 }
 
--(void)configNavigationBar
-{
-    
-    //Hide for now the navigation bar.
-//    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
-//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-//
-////    [self.navigationController.navigationBar setTranslucent:NO];
-//    
-//    //Sets colour to navigation items.
-//    self.navigationController.navigationBar.tintColor = tabColour;
-//    
-//    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"chat_background_default" forBarMetrics:UIBarMetricsDefault];
-//
-//    
-//    //Set the  colour of navigation bar's title.
-//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Light" size:20.0f], UITextAttributeFont, nil]];
-//    
-//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper colourForNotFocusedItems]]];
-    
-    [AppearanceHelper setNavigationBarColour:self];
-    
-    [AppearanceHelper setNavigationBarFontFor:self];
-    
-    
-    //Set to all the application the status bar text white.
-
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-}
-
 - (void)configAppearance
 {
     //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
@@ -576,10 +536,8 @@ const float TOP_OFFSET = 280.0f;
     
     [self setCustomBackgroundToTableView];
     
-    [self setButtonsToNavigationBar];
-    
     //Show temporary top image view.
-    [_topImageView setHidden:NO];
+//    [_topImageView setHidden:NO];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -591,12 +549,12 @@ const float TOP_OFFSET = 280.0f;
         return;
     }
     
-    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
+//    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
+//    
+//    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     
-    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
-    
-    [self.tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-    [self.tableView setBackgroundView:backImgView];
+    [self.tableView setBackgroundColor:[AppearanceHelper colourForTableViewSeparatorLines]];
+//    [self.tableView setBackgroundView:backImgView];
 }
 
 -(void)configTabbarFormat
@@ -789,15 +747,16 @@ const float TOP_OFFSET = 280.0f;
     self.tableView.tableHeaderView = self.campusWallHeader;
     
     //Add fake navigation bar to view.
-    array = [[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBar" owner:self options:nil];
-    
-    self.reNavBar = [array objectAtIndex:0];
-    [self.reNavBar formatElements];
-    [self.reNavBar setDelegate:self];
-    [self.tableView addSubview:self.reNavBar];
-    [self.tableView bringSubviewToFront:self.reNavBar];
-    
-    [self.reNavBar setHidden:YES];
+    //TODO: Remove the code.
+//    array = [[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBar" owner:self options:nil];
+//    
+//    self.reNavBar = [array objectAtIndex:0];
+//    [self.reNavBar formatElements];
+//    [self.reNavBar setDelegate:self];
+//    [self.tableView addSubview:self.reNavBar];
+//    [self.tableView bringSubviewToFront:self.reNavBar];
+//    
+//    [self.reNavBar setHidden:YES];
 }
 
 - (void)configNewElementsIndicatorView
@@ -813,28 +772,30 @@ const float TOP_OFFSET = 280.0f;
 
 #pragma mark - Navigation bar
 
--(void) setButtonsToNavigationBar
+-(void)configNavigationBar
 {
-    //UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"+"]];
-    //imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y, 32.0, 32.0);
+    
+    //    [AppearanceHelper setNavigationBarColour:self];
+    
+    //    [AppearanceHelper setWhiteNavigationBarFormat:self.navigationController.navigationBar];
+    
+    float buttonsSize = 30.0;
+    
+    [self.navigationController.navigationBar whiteBackgroundFormat];
+    
+    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
+    
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
     
     
-//    UIButton *btnBack=[UIButton buttonWithType:UIButtonTypeContactAdd];
-//    [btnBack addTarget:self action:@selector(newPostButtonClick) forControlEvents:UIControlEventTouchUpInside];
-//    [btnBack setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
-//    
-//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
-
-
-    UIBarButtonItem *tagsButton = [[UIBarButtonItem alloc] initWithTitle:@"Tags" style:UIBarButtonItemStyleBordered target:self action:@selector(showCategories:)];
+    //    [AppearanceHelper setNavigationBarFontFor:self];
     
     
+    //Set to all the application the status bar text white.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
-    UIBarButtonItem *i = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newPostButtonClick)];
-    [i setTintColor:[[GLPThemeManager sharedInstance] colorForTabBar]];
-    
-    self.navigationItem.leftBarButtonItem = tagsButton;
-    self.navigationItem.rightBarButtonItem = i;
 }
 
 -(void)setNavigationBarName
@@ -1522,50 +1483,52 @@ const float TOP_OFFSET = 280.0f;
     self.lastContentOffset = currentOffset;
     
     
-    [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
+//    [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
     
     
 //    [self.campusWallHeader setPositionToNavBar:CGPointMake(0.0f, scrollView.contentOffset.y)];
     
-    if(scrollView.contentOffset.y >= TOP_OFFSET)
-    {
-        //[self contract];
+    //TODO: Remove unnecessary code.
     
-        [UIView animateWithDuration:0.1f animations:^{
-            
-            [self.reNavBar setAlpha:1.0f];
-            
-            //Bring reNavBar to front to avoid problems of hiding the view.
-            [self.tableView bringSubviewToFront:self.reNavBar];
-
-            
-        } completion:^(BOOL finished) {
-            
-            [self.reNavBar setHidden:NO];
-
-        }];
-        
-        //[self.campusWallHeader showFakeNavigationBar];
-            
-    }
-    else
-    {
-        //[self expand];
-        
-        [UIView animateWithDuration:0.1f animations:^{
-            
-            [self.reNavBar setAlpha:0.0f];
-            
-        } completion:^(BOOL finished) {
-            
-            [self.reNavBar setHidden:YES];
-
-        }];
-        
-        
-       // [self.campusWallHeader hideFakeNavigationBar];
-
-    }
+//    if(scrollView.contentOffset.y >= TOP_OFFSET)
+//    {
+//        //[self contract];
+//    
+//        [UIView animateWithDuration:0.1f animations:^{
+//            
+//            [self.reNavBar setAlpha:1.0f];
+//            
+//            //Bring reNavBar to front to avoid problems of hiding the view.
+//            [self.tableView bringSubviewToFront:self.reNavBar];
+//
+//            
+//        } completion:^(BOOL finished) {
+//            
+//            [self.reNavBar setHidden:NO];
+//
+//        }];
+//        
+//        //[self.campusWallHeader showFakeNavigationBar];
+//            
+//    }
+//    else
+//    {
+//        //[self expand];
+//        
+//        [UIView animateWithDuration:0.1f animations:^{
+//            
+//            [self.reNavBar setAlpha:0.0f];
+//            
+//        } completion:^(BOOL finished) {
+//            
+//            [self.reNavBar setHidden:YES];
+//
+//        }];
+//        
+//        
+//       // [self.campusWallHeader hideFakeNavigationBar];
+//
+//    }
 
     
     if(scrollView.contentOffset.y >= 180.0f)
@@ -1803,7 +1766,7 @@ const float TOP_OFFSET = 280.0f;
     
     [postCell setPost:post withPostIndex:indexPath.row];
     
-    [self.tableView bringSubviewToFront:self.reNavBar];
+//    [self.tableView bringSubviewToFront:self.reNavBar];
     
     return postCell;
 }
@@ -2196,8 +2159,6 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)setPreviousViewToNavigationBar
 {
-    [self setButtonsToNavigationBar];
-    
     [self configAppearance];
 }
 
@@ -2666,17 +2627,22 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)showCategories:(id)sender
 {
-    if([self.reNavBar isHidden])
-    {
-        [self scrollToTheNavigationBar];
-        
-        [self performSelector:@selector(showCategoriesViewController) withObject:nil afterDelay:0.5];
-        
-    }
-    else
-    {
-        [self showCategoriesViewController];
-    }
+    //TODO: Remove unnecessary code.
+    
+//    if([self.reNavBar isHidden])
+//    {
+//        [self scrollToTheNavigationBar];
+//        
+//        [self performSelector:@selector(showCategoriesViewController) withObject:nil afterDelay:0.5];
+//        
+//    }
+//    else
+//    {
+//        [self showCategoriesViewController];
+//    }
+    
+    [self showCategoriesViewController];
+
     
     
     /**
@@ -2758,14 +2724,16 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)updateTitleView
 {
+    //TODO: Remove unnecessary code.
+    
     if(_groupsMode)
     {
-        [self.reNavBar groupFeedEnabled];
+//        [self.reNavBar groupFeedEnabled];
         [self.campusWallHeader groupFeedEnabled];
     }
     else
     {
-        [self.reNavBar groupFeedDisabled];
+//        [self.reNavBar groupFeedDisabled];
         [self.campusWallHeader groupFeedDisabled];
 
     }

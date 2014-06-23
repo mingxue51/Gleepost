@@ -140,7 +140,7 @@ static BOOL likePushed;
     
     if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
     {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
+//        [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
     
 
