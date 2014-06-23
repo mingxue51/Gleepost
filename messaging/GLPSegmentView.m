@@ -94,25 +94,25 @@
 - (void)leftButtonSelected
 {
     [_leftBtn setBackgroundColor:[UIColor whiteColor]];
-    [_leftBtn setTintColor:[AppearanceHelper defaultGleepostColour]];
+    [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 }
 
 - (void)leftButtonUnselected
 {
-    [_leftBtn setBackgroundColor:[UIColor colorWithR:229.0 withG:229.0 andB:229.0]];
-    [_leftBtn setTintColor:[UIColor grayColor]];
+    [_leftBtn setBackgroundColor:[AppearanceHelper colourForTableViewSeparatorLines]];
+    [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
 }
 
 - (void)rightButtonUnselected
 {
-    [_rightBtn setBackgroundColor:[UIColor colorWithR:229.0 withG:229.0 andB:229.0]];
-    [_rightBtn setTintColor:[UIColor grayColor]];
+    [_rightBtn setBackgroundColor:[AppearanceHelper colourForTableViewSeparatorLines]];
+    [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
 }
 
 - (void)rightButtonSelected
 {
     [_rightBtn setBackgroundColor:[UIColor whiteColor]];
-    [_rightBtn setTintColor:[AppearanceHelper defaultGleepostColour]];
+    [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 }
 
 

@@ -198,11 +198,16 @@
     return [UIColor colorWithR:241 withG:91 andB:104]; //221, 71, 84
 }
 
-+ (UIColor*)colourForNotFocusedItems
++ (UIColor *)colourForNotFocusedItems
 {
     return [UIColor colorWithR:227.0 withG:227.0 andB:227.0];
     
 //    return [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f];
+}
+
++ (UIColor *)colourForUnselectedSegment
+{
+    return [UIColor colorWithR:175.0 withG:175.0 andB:175.0];
 }
 
 + (UIColor *)colourForRegisterTextFields

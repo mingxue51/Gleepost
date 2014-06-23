@@ -15,7 +15,8 @@
 #import "UIViewController+Flurry.h"
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
-
+#import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
 
 
 @interface MessengerViewController ()
@@ -158,8 +159,25 @@
 
 - (void)configureNavigationBar
 {
-    [AppearanceHelper setNavigationBarColour:self];
-    [AppearanceHelper setNavigationBarFontFor:self];
+//    [AppearanceHelper setNavigationBarColour:self];
+//    [AppearanceHelper setNavigationBarFontFor:self];
+    
+    float buttonsSize = 30.0;
+    
+    [self.navigationController.navigationBar whiteBackgroundFormat];
+    
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(viewNewMessageView) andTarget:self];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+#pragma mark - Selectors
+
+- (void)viewNewMessageView
+{
+    DDLogDebug(@"viewNewMessageView");
 }
 
 #pragma mark - Table view data source
