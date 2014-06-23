@@ -198,6 +198,11 @@
     return [UIColor colorWithR:241 withG:91 andB:104]; //221, 71, 84
 }
 
++ (UIColor *)blueGleepostColour
+{
+    return [UIColor colorWithR:52 withG:152 andB:258];
+}
+
 + (UIColor *)colourForNotFocusedItems
 {
     return [UIColor colorWithR:227.0 withG:227.0 andB:227.0];
@@ -215,7 +220,7 @@
     return [UIColor colorWithR:200.0 withG:200.0 andB:200.0];  //187 186 196
 }
 
-+(UIColor *)colourForTableViewSeparatorLines
++(UIColor *)lightGrayGleepostColour
 {
     return [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
 }

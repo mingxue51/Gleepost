@@ -549,7 +549,7 @@
     }
     else
     {
-        self.tableView.separatorColor = [AppearanceHelper colourForTableViewSeparatorLines];
+        self.tableView.separatorColor = [AppearanceHelper lightGrayGleepostColour];
     }
 
     
@@ -808,7 +808,7 @@
 -(void)addSeparatorLineToCell:(GroupCell *)cell
 {
     UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 47.0f, 320, 1)];
-    line.backgroundColor = [AppearanceHelper colourForTableViewSeparatorLines];
+    line.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
     [cell addSubview:line];
 }
 

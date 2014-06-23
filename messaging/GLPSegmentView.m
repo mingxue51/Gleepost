@@ -99,13 +99,13 @@
 
 - (void)leftButtonUnselected
 {
-    [_leftBtn setBackgroundColor:[AppearanceHelper colourForTableViewSeparatorLines]];
+    [_leftBtn setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
     [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
 }
 
 - (void)rightButtonUnselected
 {
-    [_rightBtn setBackgroundColor:[AppearanceHelper colourForTableViewSeparatorLines]];
+    [_rightBtn setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
     [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
 }
 

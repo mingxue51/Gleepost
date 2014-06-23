@@ -443,19 +443,22 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.liked = NO;
     
-    for(NSDictionary *userLiked in usersLiked)
+    if(usersLiked && usersLiked != (id)[NSNull null])
     {
-        
-        NSDictionary *dict = [userLiked objectForKey:@"by"];
-
-        NSNumber *userRemoteKey = [dict objectForKey:@"id"];
-        
-        if([userRemoteKey integerValue] == [[SessionManager sharedInstance]user].remoteKey)
+        for(NSDictionary *userLiked in usersLiked)
         {
-            post.liked = YES;
-            break;
+            
+            NSDictionary *dict = [userLiked objectForKey:@"by"];
+            
+            NSNumber *userRemoteKey = [dict objectForKey:@"id"];
+            
+            if([userRemoteKey integerValue] == [[SessionManager sharedInstance]user].remoteKey)
+            {
+                post.liked = YES;
+                break;
+            }
+            
         }
-        
     }
     
 

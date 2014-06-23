@@ -553,7 +553,7 @@ const float TOP_OFFSET = 280.0f;
 //    
 //    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     
-    [self.tableView setBackgroundColor:[AppearanceHelper colourForTableViewSeparatorLines]];
+    [self.tableView setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
 //    [self.tableView setBackgroundView:backImgView];
 }
 

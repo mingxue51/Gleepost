@@ -63,6 +63,10 @@ float const CONVERSATION_CELL_HEIGHT = 70.0;
     {
         [self formatReceivedNewMessage];
     }
+    else
+    {
+        [self formatRegularMessage];
+    }
     
     [_userImage configureWithConversation:conversation];
 }
@@ -71,8 +75,16 @@ float const CONVERSATION_CELL_HEIGHT = 70.0;
 {
     [_time setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0]];
     [_userName setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0]];
-    [_userName setTextColor:[AppearanceHelper defaultGleepostColour]];
+    [_userName setTextColor:[AppearanceHelper blueGleepostColour]];
     [_content setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:15.0]];
+}
+
+- (void)formatRegularMessage
+{
+    [_time setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:10.0]];
+    [_userName setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];
+    [_userName setTextColor:[UIColor blackColor]];
+    [_content setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0]];
 }
 
 @end

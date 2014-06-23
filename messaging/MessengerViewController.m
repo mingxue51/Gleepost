@@ -159,9 +159,6 @@
 
 - (void)configureNavigationBar
 {
-//    [AppearanceHelper setNavigationBarColour:self];
-//    [AppearanceHelper setNavigationBarFontFor:self];
-    
     float buttonsSize = 30.0;
     
     [self.navigationController.navigationBar whiteBackgroundFormat];

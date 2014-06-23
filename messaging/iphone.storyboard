@@ -1308,7 +1308,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.0" green="0.77772241710000001" blue="0.1647396246" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_cell_error.png" id="e8w-3F-ezb" userLabel="message cell error image view">
                                                     <rect key="frame" x="296" y="20" width="13" height="17"/>
@@ -1438,7 +1438,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -3039,7 +3039,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -3855,10 +3855,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <segue reference="n2N-Iw-72J"/>
         <segue reference="l58-qa-Cof"/>
         <segue reference="n9o-DN-8oU"/>
-        <segue reference="rCT-Ex-vO8"/>
         <segue reference="C5K-bl-yN1"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="uet-Cl-mZq"/>
         <segue reference="rdb-8v-KiD"/>
+        <segue reference="icH-IF-qcr"/>
+        <segue reference="woK-8Q-gjw"/>
     </inferredMetricsTieBreakers>
 </document>

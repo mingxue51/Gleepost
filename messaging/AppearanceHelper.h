@@ -23,6 +23,7 @@
 + (UIColor *)colourForUnselectedSegment;
 + (UIColor *)colourForRegisterTextFields;
 + (UIColor *)grayGleepostColour;
++ (UIColor *)blueGleepostColour;
 +(UIColor*)defaultGleepostColour;
 + (UIColor *)redGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;
@@ -30,7 +31,7 @@
 +(void)setFormatForLoginNavigationBar:(UIViewController*)viewController;
 +(UIColor*)colourOfTheFakeNavigationBar;
 +(void)setCustomBackgroundToTableView:(UITableView *)tableView;
-+(UIColor *)colourForTableViewSeparatorLines;
++(UIColor *)lightGrayGleepostColour;
 +(void)setSegmentFontWithSegment:(UISegmentedControl *)segment;
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar;
 +(void)setNavigationBarFormatForNewPostViews:(UINavigationBar *)navigationBar;

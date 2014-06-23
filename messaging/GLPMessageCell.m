@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ShapeFormatterHelper.h"
 #import "GLPDateFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @interface GLPMessageCell()
 
@@ -215,9 +216,10 @@ static const CGFloat kBottomMargin = 7;
     label.text = _message.content;
     
     if(_isOnLeftSide) {
-        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
+//        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
+        view.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
         imageView.hidden = YES;
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
     } else {
         view.backgroundColor = [UIColor clearColor];
