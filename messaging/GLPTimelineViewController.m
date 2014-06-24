@@ -781,7 +781,7 @@ const float TOP_OFFSET = 280.0f;
     
     float buttonsSize = 30.0;
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     
@@ -955,6 +955,9 @@ const float TOP_OFFSET = 280.0f;
     {
         [self loadEarlierPostsAndSaveScrollingState:NO];
     }
+    
+    //Load campus live events posts.
+    [_campusWallHeader reloadData];
 }
 
 - (void)loadEarlierPostsFromCron

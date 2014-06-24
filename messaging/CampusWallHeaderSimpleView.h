@@ -17,5 +17,6 @@
 -(void)formatElements;
 -(void)groupFeedEnabled;
 -(void)groupFeedDisabled;
+- (void)reloadData;
 
 @end

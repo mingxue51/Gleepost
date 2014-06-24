@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *eventsBtn;
 @property (weak, nonatomic) IBOutlet UIButton *createPostBtn;
+@property (weak, nonatomic) IBOutlet UILabel *currentCategoryLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *stanfordLbl;
 @property (weak, nonatomic) IBOutlet UIImageView *backTagsImgView;
@@ -34,7 +35,7 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 205.0f)]; //341
+        [self setFrame:CGRectMake(0, 0, 320.0f, 215.0f)]; //341
         
 //        [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor]];
         
@@ -48,12 +49,39 @@
             }
         }
         
+        [self addObservers];
+        
     }
     
     return self;
 }
 
+- (void)dealloc
+{
+    //Remove observers of notifications.
+    [self removeObservers];
+}
 
+#pragma mark - Notifications
+
+- (void)addObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCategoryLabel:) name:GLPNOTIFICATION_UPDATE_CATEGORY_LABEL object:nil];
+}
+
+- (void)removeObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_UPDATE_CATEGORY_LABEL object:nil];
+
+}
+
+- (void)updateCategoryLabel:(NSNotification *)notification
+{
+    NSDictionary *dict = [notification userInfo];
+    NSString *category = [dict objectForKey:@"Category"];
+    
+    [_currentCategoryLbl setText:[NSString stringWithFormat:@"%@ posts", category]];
+}
 
 #pragma mark - Fake Navigation Bar
 
@@ -151,6 +179,11 @@
 }
 
 -(IBAction)clearAndReloadData:(id)sender
+{
+    [_scrollViewHeader clearViews];
+}
+
+- (void)reloadData
 {
     [_scrollViewHeader clearViews];
 }

@@ -9,7 +9,7 @@
 #import "MessageTableViewCell.h"
 #import "AppearanceHelper.h"
 
-float const CONVERSATION_CELL_HEIGHT = 70.0;
+float const CONVERSATION_CELL_HEIGHT = 65.0;
 
 @interface MessageTableViewCell ()
 
@@ -73,18 +73,18 @@ float const CONVERSATION_CELL_HEIGHT = 70.0;
 
 - (void)formatReceivedNewMessage
 {
-    [_time setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:10.0]];
-    [_userName setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0]];
+    [_time setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13.0]];
+    [_userName setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17.0]];
     [_userName setTextColor:[AppearanceHelper blueGleepostColour]];
-    [_content setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:15.0]];
+    [_content setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0]];
 }
 
 - (void)formatRegularMessage
 {
-    [_time setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:10.0]];
-    [_userName setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];
+    [_time setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0]];
+    [_userName setFont:[UIFont fontWithName:@"HelveticaNeue" size:17.0]];
     [_userName setTextColor:[UIColor blackColor]];
-    [_content setFont:[UIFont fontWithName:@"HelveticaNeue" size:15.0]];
+    [_content setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];
 }
 
 @end

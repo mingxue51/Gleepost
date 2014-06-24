@@ -136,6 +136,8 @@
         [[SessionManager sharedInstance] setCurrentCategory:[_categories objectAtIndex:indexPath.row]];
     }
     
+    [self informCampusLiveWithCategory:selectedCategory];
+    
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -182,6 +184,13 @@
     return 50.0f;
 }
 
+
+#pragma mark - Post notifications
+
+- (void)informCampusLiveWithCategory:(GLPCategory *)category
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_UPDATE_CATEGORY_LABEL object:nil userInfo:@{@"Category": category.name}];
+}
 
 #pragma mark - Helper methods
 
@@ -263,8 +272,6 @@
         
         
     };
-    
-    
     
     
     [UIView animateWithDuration:0.1 animations:firstAnimation

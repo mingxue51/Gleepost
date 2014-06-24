@@ -43,7 +43,7 @@
 
 const float CELL_WIDTH = 180.0; //220
 const float CELL_HEIGHT = 150.0; //Change the height //132
-const float TITLE_LABEL_MAX_WIDTH = 145.0;
+const float TITLE_LABEL_MAX_WIDTH = 160.0;
 const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(id)initWithIdentifier:(NSString *)identifier
@@ -93,6 +93,10 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
         
         //Set post's image.
         [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
+    else if([postData isVideoPost])
+    {
+        [self loadThumbnail];
     }
     else
     {
@@ -149,6 +153,13 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     {
         [self makeButtonUnselected:_goingBtn];
     }
+}
+
+- (void)loadThumbnail
+{
+    //TODO: this is going to be changed when the thumbnail is going to be supported by the sever.
+    
+    [_eventImage setImage:[UIImage imageNamed:@"default_thumbnail"]];
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

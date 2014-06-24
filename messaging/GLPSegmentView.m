@@ -17,12 +17,18 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *rightBtn;
 
+@property (weak, nonatomic) IBOutlet UIImageView *slideImageView;
+
+@property (assign, nonatomic) CGPoint slideImageViewPosition;
+
 @property (assign, nonatomic) ConversationType conversationType;
 
 @end
 
 
 @implementation GLPSegmentView
+
+const float ANIMATION_DURATION = 0.3;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -53,6 +59,8 @@
 {
     [ShapeFormatterHelper setCornerRadiusWithView:self andValue:4];
     
+    [ShapeFormatterHelper setCornerRadiusWithView:_slideImageView andValue:4];
+    
     [ShapeFormatterHelper setCornerRadiusWithView:_rightBtn andValue:4];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_leftBtn andValue:4];
@@ -82,39 +90,47 @@
     if(_conversationType == kPrivate)
     {
         [self leftButtonSelected];
-        [self rightButtonUnselected];
     }
     else
     {
         [self rightButtonSelected];
-        [self leftButtonUnselected];
     }
 }
 
 - (void)leftButtonSelected
 {
-    [_leftBtn setBackgroundColor:[UIColor whiteColor]];
-    [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-}
+    
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        
+        CGRectSetX(_slideImageView, _leftBtn.frame.origin.x);
+        
+        
+    } completion:^(BOOL finished) {
+       
+        [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
+        
+    }];
 
-- (void)leftButtonUnselected
-{
-    [_leftBtn setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-    [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
-}
+    
 
-- (void)rightButtonUnselected
-{
-    [_rightBtn setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-    [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
+
 }
 
 - (void)rightButtonSelected
 {
-    [_rightBtn setBackgroundColor:[UIColor whiteColor]];
-    [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-}
+    [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+        
+        CGRectSetX(_slideImageView, _rightBtn.frame.origin.x);
+        
+        
+    } completion:^(BOOL finished) {
+        
+        [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
+    }];
 
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

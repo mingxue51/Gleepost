@@ -101,8 +101,8 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gleepost_play_button.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZHf-L3-yJT">
-                                        <rect key="frame" x="74" y="75" width="149" height="149"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gleepost_play_button.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZHf-L3-yJT">
+                                        <rect key="frame" x="104" y="108" width="90" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rb0-M2-uUE">
@@ -140,7 +140,7 @@
                                         <rect key="frame" x="54" y="5" width="165" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" red="0.86666666670000003" green="0.2784313725" blue="0.3294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.94509803921568625" green="0.35686274509803922" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1XF-hU-YVI">
@@ -318,7 +318,7 @@
     </objects>
     <resources>
         <image name="clock.png" width="31" height="31"/>
-        <image name="gleepost_play_button.png" width="65" height="78"/>
+        <image name="gleepost_play_button.png" width="133" height="160"/>
         <image name="icon_comment.png" width="36" height="33"/>
         <image name="icon_like.png" width="34" height="31"/>
         <image name="more.png" width="11" height="43"/>

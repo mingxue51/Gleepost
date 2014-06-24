@@ -47,6 +47,8 @@
 
 #define GLPNOTIFICATION_DISMISS_WALKTHROUGH             @"GLPDismissWalkthrough"
 
+#define GLPNOTIFICATION_UPDATE_CATEGORY_LABEL           @"GLPUpdateCategoryLabel"
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 

@@ -245,7 +245,7 @@
 		585AE264192B70E100174CED /* go_to_preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE263192B70E100174CED /* go_to_preview.png */; };
 		585AE266192B71BB00174CED /* save_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE265192B71BB00174CED /* save_recording.png */; };
 		585AE268192B841900174CED /* PostVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AE267192B841900174CED /* PostVideoCell.xib */; };
-		585AE26A192BC0BB00174CED /* gleepost_play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE269192BC0BB00174CED /* gleepost_play_button.png */; };
+		585AE26A192BC0BB00174CED /* gleepost_play_button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE269192BC0BB00174CED /* gleepost_play_button_red.png */; };
 		585AE26C192BF1FD00174CED /* bird-house-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE26B192BF1FD00174CED /* bird-house-7@2x.png */; };
 		585AE271192BF35600174CED /* message-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE26D192BF35600174CED /* message-7@2x.png */; };
 		585AE272192BF35600174CED /* proximity-7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE26E192BF35600174CED /* proximity-7@2x.png */; };
@@ -330,6 +330,7 @@
 		5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5885A66619190A18009FEAD4 /* EmptyMessage.m */; };
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
 		588D854019599735002F516A /* send_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 588D853F19599735002F516A /* send_button_background.png */; };
+		588D85421959D9C0002F516A /* gleepost_play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 588D85411959D9C0002F516A /* gleepost_play_button.png */; };
 		588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 588DE5D318A8FA40001D344D /* add_photo_btn.png */; };
 		588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588DE5D918A96552001D344D /* PickDateEventViewController.m */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
@@ -1112,7 +1113,7 @@
 		585AE263192B70E100174CED /* go_to_preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go_to_preview.png; sourceTree = "<group>"; };
 		585AE265192B71BB00174CED /* save_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save_recording.png; sourceTree = "<group>"; };
 		585AE267192B841900174CED /* PostVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostVideoCell.xib; sourceTree = "<group>"; };
-		585AE269192BC0BB00174CED /* gleepost_play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button.png; sourceTree = "<group>"; };
+		585AE269192BC0BB00174CED /* gleepost_play_button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button_red.png; sourceTree = "<group>"; };
 		585AE26B192BF1FD00174CED /* bird-house-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7@2x.png"; sourceTree = "<group>"; };
 		585AE26D192BF35600174CED /* message-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message-7@2x.png"; sourceTree = "<group>"; };
 		585AE26E192BF35600174CED /* proximity-7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "proximity-7@2x.png"; sourceTree = "<group>"; };
@@ -1232,6 +1233,7 @@
 		5885A66619190A18009FEAD4 /* EmptyMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyMessage.m; sourceTree = "<group>"; };
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
 		588D853F19599735002F516A /* send_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_button_background.png; sourceTree = "<group>"; };
+		588D85411959D9C0002F516A /* gleepost_play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button.png; sourceTree = "<group>"; };
 		588DE5D318A8FA40001D344D /* add_photo_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_photo_btn.png; sourceTree = "<group>"; };
 		588DE5D818A96552001D344D /* PickDateEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickDateEventViewController.h; sourceTree = "<group>"; };
 		588DE5D918A96552001D344D /* PickDateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickDateEventViewController.m; sourceTree = "<group>"; };
@@ -2936,7 +2938,8 @@
 				585AE263192B70E100174CED /* go_to_preview.png */,
 				585AE261192B70A800174CED /* cancel_recording.png */,
 				585AE25F192B6FFC00174CED /* camera_front_back.png */,
-				585AE269192BC0BB00174CED /* gleepost_play_button.png */,
+				585AE269192BC0BB00174CED /* gleepost_play_button_red.png */,
+				588D85411959D9C0002F516A /* gleepost_play_button.png */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -4543,6 +4546,7 @@
 				5890D23518482DC300E293DD /* messages.png in Resources */,
 				58FB7C9E18561722002C6A00 /* locked.png in Resources */,
 				585AE272192BF35600174CED /* proximity-7@2x.png in Resources */,
+				588D85421959D9C0002F516A /* gleepost_play_button.png in Resources */,
 				8096E4E517C2C88500C7BF60 /* like.png in Resources */,
 				58F0F0C21934F91E0032450F /* categories_image.png in Resources */,
 				5866F16018844869007484CF /* blimp_night.png in Resources */,
@@ -4750,7 +4754,7 @@
 				5819E65518C7AE14003361B3 /* uselected_segment.png in Resources */,
 				802DCE4D18AA885600A23511 /* internal_notification_cell_new_friend.png in Resources */,
 				589A73B91936437400D518DF /* music_category.png in Resources */,
-				585AE26A192BC0BB00174CED /* gleepost_play_button.png in Resources */,
+				585AE26A192BC0BB00174CED /* gleepost_play_button_red.png in Resources */,
 				58DAD7801859FBD20016D838 /* proximity-7-old@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
