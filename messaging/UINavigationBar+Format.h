@@ -11,12 +11,13 @@
 typedef NS_ENUM(NSInteger, GLPColour) {
     kRed,
     kBlack,
-    kWhite
+    kWhite,
+    kGreen
 };
 
 @interface UINavigationBar (Format)
 
-- (void)whiteBackgroundFormat;
+- (void)whiteBackgroundFormatWithShadow:(BOOL)shadow;
 - (void)setFontFormatWithColour:(GLPColour)colour;
 
 @end

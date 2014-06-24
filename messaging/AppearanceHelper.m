@@ -203,6 +203,16 @@
     return [UIColor colorWithR:52 withG:152 andB:258];
 }
 
++ (UIColor *)greenGleepostColour
+{
+    return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
+}
+
++ (UIColor *)blackGleepostColour
+{
+    return [UIColor colorWithR:54.0 withG:47.0 andB:45.0];
+}
+
 + (UIColor *)colourForNotFocusedItems
 {
     return [UIColor colorWithR:227.0 withG:227.0 andB:227.0];

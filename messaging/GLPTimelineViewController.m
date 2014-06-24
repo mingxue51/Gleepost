@@ -781,7 +781,7 @@ const float TOP_OFFSET = 280.0f;
     
     float buttonsSize = 30.0;
     
-    [self.navigationController.navigationBar whiteBackgroundFormat];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     

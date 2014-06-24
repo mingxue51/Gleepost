@@ -97,14 +97,16 @@ static const CGFloat kBottomMargin = 7;
     // text view
     {
         UIView *view = [UIView new];
-        view.layer.cornerRadius = 12.0;
+//        view.layer.cornerRadius = 12.0;
+        [ShapeFormatterHelper setCornerRadiusWithView:view andValue:5];
         
         UIImageView *imageView = [UIImageView new];
         imageView.image = [UIImage imageNamed:@"yourchatbubble4"];
         imageView.layer.masksToBounds = YES;
-        imageView.layer.cornerRadius = 12.0;
-        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
-        imageView.layer.borderWidth = 2;
+//        imageView.layer.cornerRadius = 12.0;
+        [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:5];
+//        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
+//        imageView.layer.borderWidth = 2;
         
         UILabel *label = [UILabel new];
         label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
@@ -222,9 +224,13 @@ static const CGFloat kBottomMargin = 7;
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
     } else {
-        view.backgroundColor = [UIColor clearColor];
-        imageView.hidden = NO;
-        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+//        view.backgroundColor = [UIColor clearColor];
+        imageView.hidden = YES;
+        view.backgroundColor = [AppearanceHelper blueGleepostColour];
+//        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+
     }
     
     UIButton *errorButton = self.contentView.subviews[3];

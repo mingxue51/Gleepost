@@ -9,10 +9,12 @@
 #import "UINavigationBar+Format.h"
 #import "GLPiOS6Helper.h"
 #import "AppearanceHelper.h"
+#import "ImageFormatterHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @implementation UINavigationBar (Format)
 
-- (void)whiteBackgroundFormat
+- (void)whiteBackgroundFormatWithShadow:(BOOL)shadow
 {
     if([GLPiOS6Helper isIOS6])
     {
@@ -22,9 +24,6 @@
         //       [[UINavigationBar appearance] setTintColor:[AppearanceHelper defaultGleepostColour]];
         
         //        [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-        
-        
-        
     }
     else
     {
@@ -34,7 +33,14 @@
         
     }
     
-    [self setShadowImage:[UIImage new]];
+    if(shadow)
+    {
+        [self setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0]]];
+    }
+    else
+    {
+        [self setShadowImage:[UIImage new]];
+    }
 }
 
 - (void)setFontFormatWithColour:(GLPColour)colour
@@ -58,7 +64,7 @@
     
     if(glpColour == kBlack)
     {
-        tintColour = [UIColor blackColor];
+        tintColour = [AppearanceHelper blackGleepostColour];
     }
     else if (glpColour == kRed)
     {
@@ -67,6 +73,10 @@
     else if (glpColour == kWhite)
     {
         tintColour = [UIColor whiteColor];
+    }
+    else if (glpColour == kGreen)
+    {
+        tintColour = [AppearanceHelper greenGleepostColour];
     }
     
     return tintColour;

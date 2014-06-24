@@ -1225,15 +1225,15 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="9Eq-0j-BH2">
-                                <rect key="frame" x="0.0" y="526" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="3v9-7h-mSC">
-                                        <rect key="frame" x="269" y="1" width="45" height="40"/>
+                                        <rect key="frame" x="254" y="8" width="60" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <state key="normal" title="Send">
-                                            <color key="titleColor" red="0.13835117100160432" green="0.40754368890819737" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                        <state key="normal" title="Send" backgroundImage="send_button_background.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1241,7 +1241,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" id="3aj-QJ-wDM" customClass="HPGrowingTextView">
-                                        <rect key="frame" x="9" y="6" width="255" height="30"/>
+                                        <rect key="frame" x="10" y="7" width="237" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
@@ -1249,7 +1249,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" id="CuF-td-RD0">
-                                <rect key="frame" x="0.0" y="60" width="320" height="465"/>
+                                <rect key="frame" x="0.0" y="60" width="320" height="457"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -3805,7 +3805,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="fb_login_bg.png" width="600" height="90"/>
         <image name="fb_login_img.png" width="23" height="47"/>
-        <image name="fb_login_img_sm.png" width="300" height="65"/>
+        <image name="fb_login_img_sm.png" width="265" height="266"/>
         <image name="gleepost_logo_registration.png" width="393" height="130"/>
         <image name="glp-quote.png" width="505" height="82"/>
         <image name="go_to_preview.png" width="100" height="111"/>
@@ -3834,6 +3834,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="search_users_disabled_save_button" width="301" height="51"/>
         <image name="search_users_textfield_background" width="301" height="44"/>
         <image name="search_users_textfield_icon" width="52" height="52"/>
+        <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="41" height="30"/>
         <image name="share_image.png" width="20" height="17"/>
         <image name="sign_in_up.png" width="290" height="90"/>
@@ -3853,12 +3854,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <segue reference="fah-A8-Ky9"/>
         <segue reference="JXK-Z8-Y8u"/>
         <segue reference="n2N-Iw-72J"/>
-        <segue reference="l58-qa-Cof"/>
+        <segue reference="rdb-8v-KiD"/>
+        <segue reference="woK-8Q-gjw"/>
+        <segue reference="icH-IF-qcr"/>
         <segue reference="n9o-DN-8oU"/>
+        <segue reference="l58-qa-Cof"/>
         <segue reference="C5K-bl-yN1"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="rdb-8v-KiD"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="woK-8Q-gjw"/>
     </inferredMetricsTieBreakers>
 </document>

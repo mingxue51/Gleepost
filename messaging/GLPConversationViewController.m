@@ -35,8 +35,6 @@
 
 #import "CurrentChatButton.h"
 
-
-
 #import "LiveChatsView.h"
 #import "ContactsManager.h"
 #import "GLPProfileViewController.h"
@@ -44,6 +42,8 @@
 #import "GLPThemeManager.h"
 #import "GLPIntroducedProfile.h"
 #import "SoundHelper.h"
+#import "UINavigationBar+Format.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPConversationViewController ()
 
@@ -117,7 +117,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         
         if(screenRect.size.height == 568.0)
         {
-            [self.tableView setFrame:CGRectMake(0, 0, 320, 460)];
+            [self.tableView setFrame:CGRectMake(0, 0, 320, 455)];
 
         }
         else
@@ -201,7 +201,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
         
         //Set colour to the view.
-        [titleLabelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [titleLabelBtn setTitleColor:[AppearanceHelper blackGleepostColour] forState:UIControlStateNormal];
         
         //Set navigation to profile selector.
         titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
@@ -224,8 +224,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar setTranslucent:NO];
     
-    [AppearanceHelper setNavigationBarFontFor:self];
-    [AppearanceHelper setNavigationBarColour:self];
+//    [AppearanceHelper setNavigationBarFontFor:self];
+//    [AppearanceHelper setNavigationBarColour:self];
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar setFontFormatWithColour:kGreen];
+    
 }
 
 -(void)addCustomBackButton
@@ -273,6 +277,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)configureForm
 {
+
     self.formTextView.isScrollable = NO;
     self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
 	self.formTextView.minNumberOfLines = 1;
@@ -283,16 +288,23 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     
     self.formTextView.backgroundColor = [UIColor whiteColor];
-    self.formTextView.placeholder = @"Your message";
+    self.formTextView.placeholder = @"Type a message";
     
+
     // center vertically because textview height varies from ios version to screen
     CGRect formTextViewFrame = self.formTextView.frame;
+    
     formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
     self.formTextView.frame = formTextViewFrame;
+    CGRectSetH(self.formTextView, 35.0);
     
     self.formTextView.tag = 100;
     
-    self.formTextView.layer.cornerRadius = 5;
+
+    
+    self.formTextView.layer.cornerRadius = 4;
+    
+//    [ShapeFormatterHelper setCornerRadiusWithView:self.formTextView.internalTextView andValue:5];
 }
 
 - (void)configureTableView

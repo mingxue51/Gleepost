@@ -24,6 +24,8 @@
 + (UIColor *)colourForRegisterTextFields;
 + (UIColor *)grayGleepostColour;
 + (UIColor *)blueGleepostColour;
++ (UIColor *)greenGleepostColour;
++ (UIColor *)blackGleepostColour;
 +(UIColor*)defaultGleepostColour;
 + (UIColor *)redGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;
