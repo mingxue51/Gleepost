@@ -10,6 +10,6 @@
 #import "NewGroupViewController.h"
 #import "GroupCollectionViewCell.h"
 
-@interface GLPGroupsViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GroupCreatedDelegate, GroupDeletedDelegate, UISearchBarDelegate,UIScrollViewDelegate>
+@interface GLPGroupsViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GroupCreatedDelegate, GroupDeletedDelegate, UISearchBarDelegate>
 
 @end

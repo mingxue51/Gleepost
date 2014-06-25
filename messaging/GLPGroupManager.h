@@ -29,6 +29,8 @@
 
 +(NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey withCategorisedGroups:(NSMutableDictionary *)dictionary;
 
++ (NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey inGroups:(NSArray *)groups;
+
 +(void)loadGroupsFeedWithCallback:(void (^) (BOOL success, NSArray *posts))callback;
 
 

@@ -32,7 +32,7 @@
 
 @property (strong, nonatomic) EmptyMessage *emptyGroupsMessage;
 
-//@property (strong, nonatomic) UITapGestureRecognizer *tap;
+@property (strong, nonatomic) UITapGestureRecognizer *tap;
 
 @end
 
@@ -44,19 +44,13 @@
     
     [self configTabbar];
     
+    [self configureGestures];
+    
     [self initialiseObjects];
     
     [self registerViews];
     
     [self configNotifications];
-    
-//    _tap = [[UITapGestureRecognizer alloc]
-//                                   initWithTarget:self
-//            action:@selector(viewTouched:)];
-//    
-//    _tap.cancelsTouchesInView = NO;
-//
-//    [self.view addGestureRecognizer:_tap];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -112,15 +106,17 @@
 {
     //Change the format of the navigation bar.
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)configureNavigationButton
 {
-    [self.navigationController.navigationBar setSystemButton:kRight withBarButtonSystemItem:UIBarButtonSystemItemAdd withSelector:@selector(popUpCreateView:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_group" withButtonSize:CGSizeMake(25, 25) withSelector:@selector(popUpCreateView:) andTarget:self];
 }
 
 - (void)configTabbar
@@ -140,6 +136,17 @@
     [self.collectionView registerNib:[UINib nibWithNibName:@"GroupCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"GroupCell"];
 }
 
+- (void)configureGestures
+{
+    _tap = [[UITapGestureRecognizer alloc]
+            initWithTarget:self
+            action:@selector(viewTouched:)];
+    
+    _tap.cancelsTouchesInView = NO;
+    
+    [_collectionView addGestureRecognizer:_tap];
+}
+
 #pragma mark - Notifications
 
 -(void)updateGroupRemoteKeyAndImage:(NSNotification *)notification
@@ -151,16 +158,18 @@
         return;
     }
     
-    //    [self.tableView reloadData];
+//    [self.collectionView reloadData];
     
-//    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
+    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey inGroups:_groups];
+    
+    DDLogDebug(@"Reload with index path: %d", indexPath.row);
     
     
     //TODO: Reload specific rows in the collection view.
     
 //    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
     
-//    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:indexPath.row inSection:indexPath.section]]];
+    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -177,6 +186,8 @@
     
     GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
+    [cell setDelegate:self];
+    
     [cell setGroupData:[_filteredGroups objectAtIndex:indexPath.row]];
     
     return cell;
@@ -186,6 +197,11 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([_searchBar isFirstResponder])
+    {
+        return;
+    }
+    
     self.selectedGroup = [_filteredGroups objectAtIndex:indexPath.row];
     
     [self performSegueWithIdentifier:@"view group" sender:self];
@@ -241,28 +257,17 @@
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
+    //We are setting a delay here because otherwise setCancelsTouchesInView is called after the touch to
+    //the collection view.
+    
+    [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
 }
 
 
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-//    [_tap setCancelsTouchesInView:YES];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    DDLogDebug(@"touchesEnded");
-    
-    // If not dragging, send event to next responder
-    if (!_collectionView.dragging)
-    {
-        [self hideKeyboardFromSearchBarIfNeeded];
-        [self.nextResponder touchesEnded: touches withEvent:event];
-
-    }
-    else
-        [super touchesEnded: touches withEvent: event];
+    [_tap setCancelsTouchesInView:YES];
 }
 
 #pragma mark - Keyboard management
@@ -295,7 +300,9 @@
 {
     [GLPGroupManager deleteGroup:group];
     
-    //    [self deleteGroupWithRemoteKey:group.remoteKey];
+    //[self deleteGroupWithRemoteKey:group.remoteKey];
+    
+    //[self removeGroupFromCollectionViewWithRemoteKey:group.remoteKey];
     
     [self reloadNewGroupWithGroup:nil];
 }
@@ -313,6 +320,8 @@
         [_groups addObject:createdGroup];
         [_filteredGroups addObject:createdGroup];
     }
+    
+    DDLogDebug(@"Load groups with group: %@", createdGroup);
     
     
     [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
@@ -362,6 +371,25 @@
 //        _groupSections = [[NSMutableArray alloc] init];
 //    }
 //}
+
+- (void)removeGroupFromCollectionViewWithRemoteKey:(NSInteger)groupRemoteKey
+{
+    NSIndexPath *indexPath = nil;
+    
+    for(int i = 0; i < _groups.count; ++i)
+    {
+        GLPGroup *g = _groups[i];
+        
+        if(g.remoteKey == groupRemoteKey)
+        {
+            indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+        }
+        
+    }
+    
+    
+    [_collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+}
 
 
 -(void)reloadNewGroupWithGroup:(GLPGroup *)group

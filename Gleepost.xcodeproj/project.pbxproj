@@ -334,6 +334,7 @@
 		588D858D1959FB49002F516A /* GroupCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 588D858C1959FB49002F516A /* GroupCollectionViewCell.xib */; };
 		588D85901959FEA8002F516A /* GroupCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 588D858F1959FEA8002F516A /* GroupCollectionViewCell.m */; };
 		588D8592195A0140002F516A /* leave_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 588D8591195A0140002F516A /* leave_group.png */; };
+		588D8594195B26C4002F516A /* new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 588D8593195B26C4002F516A /* new_group.png */; };
 		588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 588DE5D318A8FA40001D344D /* add_photo_btn.png */; };
 		588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588DE5D918A96552001D344D /* PickDateEventViewController.m */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
@@ -1239,6 +1240,7 @@
 		588D858E1959FEA8002F516A /* GroupCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCollectionViewCell.h; sourceTree = "<group>"; };
 		588D858F1959FEA8002F516A /* GroupCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCollectionViewCell.m; sourceTree = "<group>"; };
 		588D8591195A0140002F516A /* leave_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leave_group.png; sourceTree = "<group>"; };
+		588D8593195B26C4002F516A /* new_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_group.png; sourceTree = "<group>"; };
 		588DE5D318A8FA40001D344D /* add_photo_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_photo_btn.png; sourceTree = "<group>"; };
 		588DE5D818A96552001D344D /* PickDateEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickDateEventViewController.h; sourceTree = "<group>"; };
 		588DE5D918A96552001D344D /* PickDateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickDateEventViewController.m; sourceTree = "<group>"; };
@@ -2548,6 +2550,7 @@
 		587248A818C64BFB00B98484 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				588D8593195B26C4002F516A /* new_group.png */,
 				5824C42518E5AD8B006D4484 /* new_post_groups.png */,
 				588D8591195A0140002F516A /* leave_group.png */,
 				5819E65218C7AE14003361B3 /* selected_segment.png */,
@@ -4394,6 +4397,7 @@
 				584AD53018576C5A006589BF /* in-contacts.png in Resources */,
 				58940FBC18D218F800FED5AF /* campus_live_cell_bg.png in Resources */,
 				58AA61E4192A87100098E4FB /* add_new_post.png in Resources */,
+				588D8594195B26C4002F516A /* new_group.png in Resources */,
 				58433299180F181700BD9F74 /* email.png in Resources */,
 				583CE326189FFFBA00E78C08 /* loginbg.png in Resources */,
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,

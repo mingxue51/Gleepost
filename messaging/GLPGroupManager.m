@@ -558,6 +558,9 @@
  
  @return the index path of the group.
  
+ This method is not used in that version of the app because we are not using sections anymore to represent
+ groups.
+ 
  */
 
 +(NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey withCategorisedGroups:(NSMutableDictionary *)dictionary
@@ -577,6 +580,21 @@
             ++row;
         }
         row = 0;
+    }
+    
+    return nil;
+}
+
++ (NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey inGroups:(NSArray *)groups
+{
+    for(int i = 0; i < groups.count; ++i)
+    {
+        GLPGroup *g =  groups[i];
+        
+        if(g.remoteKey == remoteKey)
+        {
+            return [NSIndexPath indexPathForItem:i inSection:0];
+        }
     }
     
     return nil;

@@ -146,6 +146,29 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
     }];
 }
 
+#pragma mark - Selectors
+
+- (IBAction)quitGroup:(id)sender
+{
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to leave the group?" message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Leave",nil];
+    
+    //    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    if(buttonIndex == 0)
+    {
+        return;
+    }
+    
+    
+    [self quitFromGroup];
+}
+
 #pragma mark - Client
 
 -(void)quitFromGroup
@@ -159,7 +182,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
         }
         else
         {
-            DDLogInfo(@"Failed to quit user from group: %@", _groupName.text);
+            DDLogError(@"Failed to quit user from group: %@", _groupName.text);
         }
         
     }];
