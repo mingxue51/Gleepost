@@ -1,13 +1,14 @@
 //
-//  GroupCell.h
+//  GroupCollectionViewCell.h
 //  Gleepost
 //
-//  Created by Silouanos on 05/03/2014.
+//  Created by Σιλουανός on 24/6/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "GLPGroup.h"
+
+@class GLPGroup;
 
 @protocol GroupDeletedDelegate <NSObject>
 
@@ -16,7 +17,9 @@
 
 @end
 
-@interface GroupCell : UITableViewCell <UIAlertViewDelegate>
+extern const CGSize GROUP_COLLECTION_CELL_DIMENSIONS;
+
+@interface GroupCollectionViewCell : UICollectionViewCell <UIAlertViewDelegate>
 
 -(void)setGroupData:(GLPGroup *)groupData;
 -(void)setDelegate:(UIViewController <GroupDeletedDelegate> *)delegate;

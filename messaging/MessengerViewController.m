@@ -68,7 +68,6 @@
     [self configureNotifications];
     
     [self configureNavigationBar];
-
     
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];

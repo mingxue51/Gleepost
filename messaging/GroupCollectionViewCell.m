@@ -1,61 +1,60 @@
 //
-//  GroupCell.m
+//  GroupCollectionViewCell.m
 //  Gleepost
 //
-//  Created by Silouanos on 05/03/2014.
+//  Created by Σιλουανός on 24/6/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "GroupCell.h"
+#import "GroupCollectionViewCell.h"
+#import "WebClient.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
-#import "WebClient.h"
 
-@interface GroupCell ()
+@interface GroupCollectionViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *groupImage;
 
 @property (weak, nonatomic) IBOutlet UILabel *groupName;
+
+@property (weak, nonatomic) IBOutlet UILabel *groupDescription;
 
 @property (weak, nonatomic) UIViewController <GroupDeletedDelegate> *delegate;
 
 @property (strong, nonatomic) GLPGroup *groupData;
 
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
 
 @end
 
+const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
 
-@implementation GroupCell
+@implementation GroupCollectionViewCell
 
--(id) initWithCoder:(NSCoder *)aDecoder
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        //[self createElements];
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
     }
-    
     return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 -(void)awakeFromNib
 {
     [super awakeFromNib];
     
+    [self formatElements];
+}
+
+- (void)formatElements
+{
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
 
-    
+    [ShapeFormatterHelper setCornerRadiusWithView:self andValue:5];
 }
 
 -(void)setGroupData:(GLPGroup *)groupData
@@ -68,10 +67,10 @@
     _groupName.tag = groupData.remoteKey;
     
     //Add user's name.
-//    [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
-    
     [ShapeFormatterHelper setRoundedView:_uploadedIndicator toDiameter:_uploadedIndicator.frame.size.height];
-
+    
+    [_groupDescription setText:_groupData.groupDescription];
+    
     if(groupData.finalImage)
     {
         [_groupImage setImage:groupData.finalImage];
@@ -80,11 +79,11 @@
     {
         [_groupImage setImage:[UIImage imageNamed:@"default_user_image2"]];
     }
-//    else if (groupData.finalImage && groupData.groupImageUrl)
-//    {
-//        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:groupData.finalImage];
-//        groupData.finalImage = nil;
-//    }
+    //    else if (groupData.finalImage && groupData.groupImageUrl)
+    //    {
+    //        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:groupData.finalImage];
+    //        groupData.finalImage = nil;
+    //    }
     else
     {
         
@@ -95,7 +94,7 @@
     if(groupData.sendStatus == kSendStatusLocal)
     {
         //Hide exit and show blink indicator.
-//        [self hideExitButton];
+        //        [self hideExitButton];
         [self blinkIndicator];
         [_exitButton setHidden:YES];
     }
@@ -103,39 +102,10 @@
     {
         //Show exit button.
         [self hideIndicator];
-//        [self showExitButton];
+        //        [self showExitButton];
         [_exitButton setHidden:NO];
     }
 }
-
--(void)setDelegate:(UIViewController <GroupDeletedDelegate> *)delegate
-{
-    _delegate = delegate;
-}
-
-#pragma mark - Selectors
-
-- (IBAction)quitGroup:(id)sender
-{
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to leave the group?" message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Leave",nil];
-    
-//    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    
-    if(buttonIndex == 0)
-    {
-        return;
-    }
-    
-    
-    [self quitFromGroup];
-}
-
 
 #pragma mark - Online indicator
 
@@ -143,18 +113,18 @@
 {
     [self.uploadedIndicator setAlpha:1.0];
     
-//    [_exitButton setAlpha:0.0f];
-//    [_exitButton setHidden:NO];
-
+    //    [_exitButton setAlpha:0.0f];
+    //    [_exitButton setHidden:NO];
+    
     [UIView animateWithDuration:0.5 delay:0.0 options:(UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut) animations:^{
         
-//        [_exitButton setAlpha:1.0f];
+        //        [_exitButton setAlpha:1.0f];
         [self.uploadedIndicator setAlpha:0.0];
         
     } completion:^(BOOL finished) {
         
-//        [_exitButton setAlpha:1.0f];
-
+        //        [_exitButton setAlpha:1.0f];
+        
         [_uploadedIndicator setHidden:YES];
         
     }];
@@ -176,38 +146,6 @@
     }];
 }
 
--(void)hideExitButton
-{
-    [UIView animateWithDuration:0.5f animations:^{
-        
-        [_exitButton setAlpha:0.0f];
-
-        
-    } completion:^(BOOL finished){
-       
-        [_exitButton setHidden:YES];
-        
-    }];
-    
-}
-
--(void)showExitButton
-{
-    [_exitButton setHidden:NO];
-    [_exitButton setAlpha:1.0f];
-
-    
-//    [UIView animateWithDuration:0.5f animations:^{
-//        
-//        
-//        
-//    } completion:^(BOOL finished){
-//        
-//        
-//    }];
-}
-
-
 #pragma mark - Client
 
 -(void)quitFromGroup
@@ -227,5 +165,13 @@
     }];
 }
 
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
 
 @end

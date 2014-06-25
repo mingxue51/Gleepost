@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
-#import "GroupCreatedDelegate.h"
+
+@class GLPGroup;
+
+@protocol GroupCreatedDelegate <NSObject>
+
+@optional
+-(void)groupCreatedWithData:(GLPGroup *)group;
+-(void)popUpCreateView;
+
+@end
 
 @interface NewGroupViewController : UIViewController <FDTakeDelegate>
 

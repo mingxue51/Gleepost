@@ -248,7 +248,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 -(void)addRandomChatAddUser
 {
-    
     UIImage *img = [UIImage imageNamed:@"add_button"];
     
     UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -277,7 +276,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)configureForm
 {
-
     self.formTextView.isScrollable = NO;
     self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
 	self.formTextView.minNumberOfLines = 1;
@@ -834,6 +832,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)profileImageClickForMessage:(GLPMessage *)message
 {
     [self navigateToUserProfile:message.author];
+}
+- (void)errorButtonClickForMessage:(GLPMessage *)message
+{
+    //TODO: Implement that.
+    DDLogDebug(@"Message: %@ not sent.", message.content);
 }
 
 @end

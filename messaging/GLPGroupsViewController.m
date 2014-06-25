@@ -1,0 +1,411 @@
+//
+//  GLPGroupsViewController.m
+//  Gleepost
+//
+//  Created by Σιλουανός on 24/6/14.
+//  Copyright (c) 2014 Gleepost. All rights reserved.
+//
+
+#import "GLPGroupsViewController.h"
+#import "GLPGroup.h"
+#import "AppearanceHelper.h"
+#import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
+#import "GLPGroupManager.h"
+#import "EmptyMessage.h"
+#import "GroupViewController.h"
+#import "UIViewController+Flurry.h"
+#import "UIViewController+GAI.h"
+
+@interface GLPGroupsViewController ()
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+@property (strong, nonatomic) UITabBarItem *groupTabbarItem;
+
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+
+@property (strong, nonatomic) NSMutableArray *groups;
+@property (strong, nonatomic) NSMutableArray *filteredGroups;
+@property (strong, nonatomic) NSArray *groupSections;
+@property (strong, nonatomic) GLPGroup *selectedGroup;
+
+@property (strong, nonatomic) EmptyMessage *emptyGroupsMessage;
+
+//@property (strong, nonatomic) UITapGestureRecognizer *tap;
+
+@end
+
+@implementation GLPGroupsViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self configTabbar];
+    
+    [self initialiseObjects];
+    
+    [self registerViews];
+    
+    [self configNotifications];
+    
+//    _tap = [[UITapGestureRecognizer alloc]
+//                                   initWithTarget:self
+//            action:@selector(viewTouched:)];
+//    
+//    _tap.cancelsTouchesInView = NO;
+//
+//    [self.view addGestureRecognizer:_tap];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self loadGroupsWithGroup:nil];
+    
+    [self sendViewToGAI:NSStringFromClass([self class])];
+    
+    [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configNavigationBar];
+    
+    [self configureNavigationButton];
+
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    
+    [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    
+    //    [self setCustomBackgroundToTableView];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
+}
+
+#pragma mark - Configuration
+
+-(void)initialiseObjects
+{
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    _groups = [[NSMutableArray alloc] init];
+    _filteredGroups = [[NSMutableArray alloc] init];
+
+//    _emptyGroupsMessage = [[EmptyMessage alloc] initWithText:@"You have no groups" withPosition:EmptyMessagePositionCenter andTableView:self.tableView];
+    
+}
+
+- (void)configNavigationBar
+{
+    //Change the format of the navigation bar.
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+- (void)configureNavigationButton
+{
+    [self.navigationController.navigationBar setSystemButton:kRight withBarButtonSystemItem:UIBarButtonSystemItemAdd withSelector:@selector(popUpCreateView:) andTarget:self];
+}
+
+- (void)configTabbar
+{
+    NSArray *items = self.tabBarController.tabBar.items;
+    
+    _groupTabbarItem = [items objectAtIndex:2];
+}
+
+- (void)configNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupRemoteKeyAndImage:) name:@"GLPGroupUploaded" object:nil];
+}
+
+- (void)registerViews
+{
+    [self.collectionView registerNib:[UINib nibWithNibName:@"GroupCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"GroupCell"];
+}
+
+#pragma mark - Notifications
+
+-(void)updateGroupRemoteKeyAndImage:(NSNotification *)notification
+{
+    int remoteKey = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+    
+    if(remoteKey == -1)
+    {
+        return;
+    }
+    
+    //    [self.tableView reloadData];
+    
+//    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey withCategorisedGroups:_categorisedGroups];
+    
+    
+    //TODO: Reload specific rows in the collection view.
+    
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
+    
+//    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:indexPath.row inSection:indexPath.section]]];
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return _filteredGroups.count;
+}
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"GroupCell";
+    
+    GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    
+    [cell setGroupData:[_filteredGroups objectAtIndex:indexPath.row]];
+    
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedGroup = [_filteredGroups objectAtIndex:indexPath.row];
+    
+    [self performSegueWithIdentifier:@"view group" sender:self];
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return GROUP_COLLECTION_CELL_DIMENSIONS;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(10.0, 5.0, 0.0, 5.0);
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+    
+    // remove all data that belongs to previous search
+    
+    [_filteredGroups removeAllObjects];
+    
+    if([searchText isEqualToString:@""] || searchText == nil)
+    {
+        _filteredGroups = _groups.mutableCopy;
+        
+        [_collectionView reloadData];
+        return;
+    }
+    
+    for(GLPUser *user in _groups)
+    {
+        NSRange r = [user.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        
+        if(r.location != NSNotFound)
+        {
+            //that is we are checking only the start of the names.
+            
+            if(r.location== 0)
+            {
+                [_filteredGroups addObject:user];
+            }
+        }
+    }
+    
+    [_collectionView reloadData];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+}
+
+
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+//    [_tap setCancelsTouchesInView:YES];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    DDLogDebug(@"touchesEnded");
+    
+    // If not dragging, send event to next responder
+    if (!_collectionView.dragging)
+    {
+        [self hideKeyboardFromSearchBarIfNeeded];
+        [self.nextResponder touchesEnded: touches withEvent:event];
+
+    }
+    else
+        [super touchesEnded: touches withEvent: event];
+}
+
+#pragma mark - Keyboard management
+
+- (void)viewTouched:(id)sender
+{
+    [self hideKeyboardFromSearchBarIfNeeded];
+}
+
+-(void)hideKeyboardFromSearchBarIfNeeded
+{
+    if([self.searchBar isFirstResponder]) {
+        [self.searchBar resignFirstResponder];
+    }
+}
+
+#pragma mark - Group Created Delegate
+
+//TODO: Make those methods more efficient.
+
+-(void)groupCreatedWithData:(GLPGroup *)group
+{
+    [self reloadNewGroupWithGroup:group];
+    
+    //    [self createNewGroupWithGroup:group];
+}
+
+
+-(void)groupDeletedWithData:(GLPGroup *)group
+{
+    [GLPGroupManager deleteGroup:group];
+    
+    //    [self deleteGroupWithRemoteKey:group.remoteKey];
+    
+    [self reloadNewGroupWithGroup:nil];
+}
+
+#pragma mark - Client methods
+
+-(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
+{
+    if(createdGroup)
+    {
+        //Add the new group in order to preserve it as is.
+        //We are doing that because the new group has a real image
+        //in order to create better user experience for the user.
+        
+        [_groups addObject:createdGroup];
+        [_filteredGroups addObject:createdGroup];
+    }
+    
+    
+    [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
+        
+        _groups = groups.mutableCopy;
+        _filteredGroups = groups.mutableCopy;
+        
+//        [self showGroups];
+        
+        
+        [_collectionView reloadData];
+        
+    } remoteCallback:^(BOOL success, NSArray *groups) {
+        
+        if(!success)
+        {
+            return;
+        }
+        
+        _groups = groups.mutableCopy;
+        _filteredGroups = groups.mutableCopy;
+
+//        [self showGroups];
+        
+        
+        [_collectionView reloadData];
+        
+    }];
+}
+
+#pragma mark - UI loaders
+
+//-(void)showGroups
+//{
+//    if(self.groups.count > 0)
+//    {
+//        NSDictionary *result = [GLPGroupManager processGroups:_groups];
+//        
+//        _groupsStr = [result objectForKey:@"GroupNames"];
+//        _categorisedGroups = [result objectForKey:@"CategorisedGroups"];
+//        _groupSections = [result objectForKey:@"Sections"];
+//    }
+//    else
+//    {
+//        _groupsStr = [[NSMutableArray alloc] init];
+//        _categorisedGroups = [[NSMutableDictionary alloc] init];
+//        _groupSections = [[NSMutableArray alloc] init];
+//    }
+//}
+
+
+-(void)reloadNewGroupWithGroup:(GLPGroup *)group
+{
+    [self loadGroupsWithGroup:group];
+}
+
+
+#pragma mark - Navigation
+
+//Call this when there is a need to pass elements to the next controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    //Hide tabbar.
+    // [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    
+    if([segue.identifier isEqualToString:@"view group"])
+    {
+        GroupViewController *gvc = segue.destinationViewController;
+        
+        gvc.group = self.selectedGroup;
+    }
+}
+
+-(void)popUpCreateView:(id)sender
+{
+    //Pop up the creation view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    NewGroupViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupViewController"];
+    
+    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
+    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
+    //    [navigationController setNavigationBarHidden:YES];
+    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [cvc setDelegate:self];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

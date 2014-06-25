@@ -23,7 +23,6 @@
 #import "GLPGroup.h"
 #import "GLPGroupManager.h"
 #import "GroupViewController.h"
-#import "CreateNewGroupCell.h"
 #import "GroupCell.h"
 #import "NewGroupViewController.h"
 #import "GLPSearchUsersViewController.h"
