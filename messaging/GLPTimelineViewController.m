@@ -783,7 +783,8 @@ const float TOP_OFFSET = 280.0f;
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
+//    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
+    [self.navigationController.navigationBar setCampusWallFontFormat];
     
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
     

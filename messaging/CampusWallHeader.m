@@ -26,7 +26,7 @@
 @property (assign, nonatomic) int currentPostion;
 
 @property (weak, nonatomic) IBOutlet UILabel *happeningLbl;
-
+@property (weak, nonatomic) IBOutlet UIView *boringView;
 //@property (assign, nonatomic) BOOL readyToAutomaticallyScroll;
 //@property (strong, nonatomic) NSTimer *checkLatestEvent;
 //@property (strong, nonatomic) NSTimer *runAutomaticScroll;
@@ -41,6 +41,8 @@ NSString *HAPPENING_TOMORROW_MSG;
 NSString *HAPPENING_THIS_WEEK_MSG;
 NSString *HAPPENED_TODAY;
 NSString *NOTHING_HAPPENING;
+NSString *BORING_IMAGE;
+
 
 @synthesize posts = _posts;
 
@@ -86,6 +88,7 @@ NSString *NOTHING_HAPPENING;
     HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
     HAPPENED_TODAY = @"Happened Earlier";
     NOTHING_HAPPENING = @"Nothing happening on campus!";
+    BORING_IMAGE = @"calendar_boring";
 }
 
 //-(void)initialiseObjects
@@ -125,7 +128,12 @@ NSString *NOTHING_HAPPENING;
             
             if(_posts.count == 0)
             {
-                [_happeningLbl setText:NOTHING_HAPPENING];
+                [_happeningLbl setText:@""];
+                [self showEmptyView];
+            }
+            else
+            {
+                [self hideEmptyView];
             }
             
 //            [self scrollToPosition:1];
@@ -207,9 +215,17 @@ NSString *NOTHING_HAPPENING;
         }];
         
     }];
-   
+}
+
+- (void)showEmptyView
+{
     
-    
+    [_boringView setHidden:NO];
+}
+
+- (void)hideEmptyView
+{
+    [_boringView setHidden:YES];
 
 }
 

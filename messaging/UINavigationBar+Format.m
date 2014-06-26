@@ -35,7 +35,7 @@
     
     if(shadow)
     {
-        [self setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:240.0 withG:240.0 andB:240.0]]];
+        [self setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:230.0 withG:230.0 andB:230.0]]];
     }
     else
     {
@@ -56,6 +56,19 @@
     
 
     [self setTintColor:[self colourWithGLPColour:colour]];
+}
+
+- (void)setCampusWallFontFormat
+{
+    if([GLPiOS6Helper isIOS6])
+    {
+        return;
+    }
+    
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:22.0f], UITextAttributeFont, [self colourWithGLPColour:kRed], UITextAttributeTextColor, nil]];
+    
+    
+    [self setTintColor:[self colourWithGLPColour:kRed]];
 }
 
 - (UIColor *)colourWithGLPColour:(GLPColour)glpColour

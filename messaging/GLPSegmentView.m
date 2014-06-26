@@ -17,6 +17,10 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *rightBtn;
 
+@property (weak, nonatomic) IBOutlet UILabel *leftLbl;
+
+@property (weak, nonatomic) IBOutlet UILabel *rightLbl;
+
 @property (weak, nonatomic) IBOutlet UIImageView *slideImageView;
 
 @property (assign, nonatomic) CGPoint slideImageViewPosition;
@@ -28,7 +32,7 @@
 
 @implementation GLPSegmentView
 
-const float ANIMATION_DURATION = 0.3;
+const float ANIMATION_DURATION = 0.1;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -48,6 +52,7 @@ const float ANIMATION_DURATION = 0.3;
     
     [self configuration];
     [self formatElements];
+    [self configureGesturesToLabels];
 }
 
 - (void)configuration
@@ -55,6 +60,17 @@ const float ANIMATION_DURATION = 0.3;
     _conversationType = kButtonLeft;
     
     [self reloadButtonsFormat];
+}
+
+- (void)configureGesturesToLabels
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leftBtnPressed:)];
+    [tap setNumberOfTapsRequired:1];
+    [_leftLbl addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightBtnPressed:)];
+    [tap setNumberOfTapsRequired:1];
+    [_rightLbl addGestureRecognizer:tap];
 }
 
 - (void)formatElements
@@ -158,6 +174,12 @@ const float ANIMATION_DURATION = 0.3;
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
         
+        [_leftLbl setTextColor:[UIColor blackColor]];
+        [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
+        
+        [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
+        [_rightLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
+        
     }];
 }
 
@@ -174,6 +196,15 @@ const float ANIMATION_DURATION = 0.3;
 
         [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
+        
+        
+        
+        
+        [_rightLbl setTextColor:[UIColor blackColor]];
+        [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
+        
+        [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
+        [_leftLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
     }];
 
 }

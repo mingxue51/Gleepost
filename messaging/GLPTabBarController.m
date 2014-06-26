@@ -11,6 +11,8 @@
 #import "GLPiOS6Helper.h"
 #import "SessionManager.h"
 #import "WebClient.h"
+#import "ImageFormatterHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPTabBarController ()
 
@@ -43,6 +45,13 @@ static NSInteger lastTabbarIndex = 0;
     
     [self setDelegate:self];
     
+    [self.tabBar setBackgroundImage:[UIImage imageNamed:@"messageboxwhite"]];
+
+    
+    [self.tabBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:230.0 withG:230.0 andB:230.0]]];
+    
+//    self.tabBar.layer.borderWidth = 1.0;
+//    self.tabBar.layer.borderColor = [UIColor redColor].CGColor;
     
 
 }

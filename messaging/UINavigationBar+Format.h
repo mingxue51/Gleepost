@@ -19,5 +19,6 @@ typedef NS_ENUM(NSInteger, GLPColour) {
 
 - (void)whiteBackgroundFormatWithShadow:(BOOL)shadow;
 - (void)setFontFormatWithColour:(GLPColour)colour;
+- (void)setCampusWallFontFormat;
 
 @end

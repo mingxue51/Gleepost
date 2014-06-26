@@ -165,7 +165,7 @@
 
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item
 {    
-    float rgb = 210.0;
+    float rgb = 200.0;
     
     UIColor *colour = [UIColor colorWithR:rgb withG:rgb andB:rgb];
 

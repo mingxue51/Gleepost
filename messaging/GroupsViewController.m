@@ -106,9 +106,9 @@
 
     
     //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
     
-    [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    [AppearanceHelper setSelectedColourForTabbarItem:self.contactsTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     
     
     
@@ -242,6 +242,8 @@
     NSArray *items = self.tabBarController.tabBar.items;
     
     self.contactsTabbarItem = [items objectAtIndex:2];
+    
+    DDLogDebug(@"TABBAR: %@", self.contactsTabbarItem);
 }
 
 -(void)configNotifications

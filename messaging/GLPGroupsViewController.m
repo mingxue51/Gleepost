@@ -16,6 +16,7 @@
 #import "GroupViewController.h"
 #import "UIViewController+Flurry.h"
 #import "UIViewController+GAI.h"
+#import "ImageFormatterHelper.h"
 
 @interface GLPGroupsViewController ()
 
@@ -51,6 +52,24 @@
     [self registerViews];
     
     [self configNotifications];
+    
+//    for (UIView *subView in self.searchBar.subviews)
+//    {
+//        for (UIView *secondLevelSubview in subView.subviews){
+//            if ([secondLevelSubview isKindOfClass:[UITextField class]])
+//            {
+//                UITextField *searchBarTextField = (UITextField *)secondLevelSubview;
+//                
+//                //set font color here
+//                [searchBarTextField setBackgroundColor:[UIColor redColor]];
+//                
+//                break;
+//            }
+//        }
+//    }
+    
+//    [_searchBar setSearchFieldBackgroundImage:[ImageFormatterHelper generateImageWithColour:[UIColor blackColor]] forState:UIControlStateNormal];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -73,9 +92,9 @@
     [self configureNavigationButton];
 
     //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
+    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
     
-    [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0]];
+    [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     
     //    [self setCustomBackgroundToTableView];
 }

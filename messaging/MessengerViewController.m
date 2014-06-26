@@ -70,8 +70,11 @@
     [self configureNavigationBar];
     
     //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];
-    [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[UIColor colorWithR:75.0 withG:208.0 andB:210.0]];
+//    self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];
+//    [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[UIColor colorWithR:75.0 withG:208.0 andB:210.0]];
+    
+    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+    [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     
     
     if(self.needsReloadConversations) {
