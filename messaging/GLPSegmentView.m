@@ -21,7 +21,7 @@
 
 @property (assign, nonatomic) CGPoint slideImageViewPosition;
 
-@property (assign, nonatomic) ConversationType conversationType;
+@property (assign, nonatomic) ButtonType conversationType;
 
 @end
 
@@ -44,13 +44,15 @@ const float ANIMATION_DURATION = 0.3;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     [self configuration];
     [self formatElements];
 }
 
 - (void)configuration
 {
-    _conversationType = kPrivate;
+    _conversationType = kButtonLeft;
     
     [self reloadButtonsFormat];
 }
@@ -66,28 +68,78 @@ const float ANIMATION_DURATION = 0.3;
     [ShapeFormatterHelper setCornerRadiusWithView:_leftBtn andValue:4];
 }
 
+#pragma mark - Modifiers
+
+/**
+ If this method is not called then the titles of the buttons will be the default ones. (Private - Group)
+ */
+- (void)setRightButtonTitle:(NSString *)rightTitle andLeftButtonTitle:(NSString *)leftTitle
+{
+    [_rightBtn setTitle:rightTitle forState:UIControlStateNormal];
+    
+    [_leftBtn setTitle:leftTitle forState:UIControlStateNormal];
+}
+
+- (void)selectRightButton
+{
+    _conversationType = kButtonRight;
+    [self reloadButtonsFormat];
+}
+
+- (void)selectLeftButton
+{
+    _conversationType = kButtonLeft;
+    [self reloadButtonsFormat];
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    //Make sure that the slider is on the right side.
+    
+    [self refreshSlider];
+    
+    
+}
+
 #pragma mark - Actions
 
 - (IBAction)leftBtnPressed:(id)sender
 {
-    _conversationType = kPrivate;
+    _conversationType = kButtonLeft;
     [self reloadButtonsFormat];
 }
 
 - (IBAction)rightBtnPressed:(id)sender
 {
-    _conversationType = kGroup;
+    _conversationType = kButtonRight;
     [self reloadButtonsFormat];
 
 }
 
 #pragma mark - Format buttons
 
+- (void)refreshSlider
+{
+    [_slideImageView setHidden:YES];
+    
+    if(_conversationType == kButtonLeft)
+    {
+        CGRectSetX(_slideImageView, _leftBtn.frame.origin.x);
+    }
+    else
+    {
+        CGRectSetX(_slideImageView, _rightBtn.frame.origin.x);
+    }
+    
+    [_slideImageView setHidden:NO];
+    
+}
+
 - (void)reloadButtonsFormat
 {
-    [_delegate segmentSwitched:_conversationType];
-    
-    if(_conversationType == kPrivate)
+    if(_conversationType == kButtonLeft)
     {
         [self leftButtonSelected];
     }
@@ -104,17 +156,14 @@ const float ANIMATION_DURATION = 0.3;
         
         CGRectSetX(_slideImageView, _leftBtn.frame.origin.x);
         
-        
     } completion:^(BOOL finished) {
-       
+        
+        [_delegate segmentSwitched:_conversationType];
+
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
         
     }];
-
-    
-
-
 }
 
 - (void)rightButtonSelected
@@ -126,6 +175,8 @@ const float ANIMATION_DURATION = 0.3;
         
     } completion:^(BOOL finished) {
         
+        [_delegate segmentSwitched:_conversationType];
+
         [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
     }];

@@ -16,8 +16,9 @@
 #import "ButtonNavigationDelegate.h"
 #import "ProfileTableViewCell.h"
 #import "GLPPostCell.h"
+#import "ProfileTopViewCell.h"
 
-@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, ButtonNavigationDelegate, ProfileTableViewCellDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, FDTakeDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, /*ButtonNavigationDelegate, ProfileTableViewCellDelegate, */ RemovePostCellDelegate, GLPPostCellDelegate, ProfileTopViewCellDelegate>
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -25,7 +26,6 @@
 @property (assign, nonatomic) BOOL fromPushNotification;
 
 
--(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)logout:(id)sender;
 -(void)changeProfileImage:(id)sender;
 

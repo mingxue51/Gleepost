@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *notificationsBtn;
 @property (weak, nonatomic) IBOutlet UILabel *notificationsCountLbl;
 
+
 @property (assign, nonatomic) BOOL isProfileViewController;
 
 @end

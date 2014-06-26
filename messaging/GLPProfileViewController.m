@@ -14,7 +14,6 @@
 #import "SessionManager.h"
 #import "GLPPostManager.h"
 #import "WebClientHelper.h"
-#import "ProfileTwoButtonsTableViewCell.h"
 #import "ProfileSettingsTableViewCell.h"
 #import "AppearanceHelper.h"
 #import "PopUpNotificationsViewController.h"
@@ -22,7 +21,6 @@
 #import "GLPPrivateProfileViewController.h"
 #import "LoginRegisterViewController.h"
 #import "ViewPostViewController.h"
-#import "NotificationsView.h"
 #import "GLPNotificationManager.h"
 #import "GLPThemeManager.h"
 #import "GLPLoginManager.h"
@@ -46,6 +44,7 @@
 #import "TableViewHelper.h"
 #import "GLPButton.h"
 #import "UINavigationBar+Utils.h"
+#import "UINavigationBar+Format.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -57,7 +56,9 @@
 
 @property (strong, nonatomic) NSMutableArray *posts;
 
-@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
+//@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
+
+@property (assign, nonatomic) ButtonType selectedTab;
 
 @property (assign, nonatomic) BOOL fromCampusWall;
 
@@ -66,8 +67,6 @@
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 
 @property (strong, nonatomic) UIImage *uploadedImage;
-
-@property (strong, nonatomic) NotificationsView *notificationView;
 
 @property (assign, nonatomic) NSInteger unreadNotificationsCount;
 
@@ -125,6 +124,7 @@
 
     [self configTabbar];
     
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -150,7 +150,7 @@
 
     if(_fromPushNotification)
     {
-        self.selectedTabStatus = kGLPNotifications;
+        _selectedTab = kButtonRight;
         
 //        [self.tableView reloadData];
     }
@@ -158,12 +158,12 @@
     
     [self setUpNotifications];
     
-    [self setCustomBackgroundToTableView];
+//    [self setCustomBackgroundToTableView];
     
     [self loadInternalNotifications];
     
     
-    if(self.selectedTabStatus == kGLPNotifications)
+    if(_selectedTab == kButtonRight)
     {
         [self notificationsTabClick];
     }
@@ -300,48 +300,23 @@
 
 -(void)addNavigationButtons
 {
-//    UIImage *settingsIcon = [UIImage imageNamed:@"settings_btn"];
-//    
-//    GLPButton *btnBack=[[GLPButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25) andKind:kRightImage];
-//    [btnBack addTarget:self action:@selector(showSettings:) forControlEvents:UIControlEventTouchUpInside];
-//    [btnBack setBackgroundImage:settingsIcon forState:UIControlStateNormal];
-//    
-//    
-//    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btnBack];
-    
-    
-//    [self.navigationController.navigationBar setButtonOnRightWithImageName:@"settings_btn" withButtonSize:CGSizeMake(25, 25) withSelector:@selector(showSettings:) andTarget:self];
-    
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"settings_btn" withButtonSize:CGSizeMake(25, 25) withSelector:@selector(showSettings:) andTarget:self];
-    
-    
-//    self.navigationItem.rightBarButtonItem = settingsButton;
-    
-    
-
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"settings_btn" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(showSettings:) andTarget:self];
 }
 
 -(void)configureNavigationBar
 {
-
     [self addNavigationButtons];
-    
 
     //Change the format of the navigation bar.
-    
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
     
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-    [AppearanceHelper setNavigationBarColour:self];
     
-    [AppearanceHelper setNavigationBarFontFor:self];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 
@@ -369,11 +344,11 @@
     
     //self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
-    self.selectedTabStatus = kGLPPosts;
+    _selectedTab = kButtonLeft;
     
     self.posts = [[NSMutableArray alloc] init];
     
-    self.numberOfRows = 2;
+    self.numberOfRows = 1;
     
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
@@ -399,15 +374,12 @@
 
 -(void)registerTableViewCells
 {
-    //Register notifications' nib file.
-    
-    self.notificationView = [[[NSBundle mainBundle] loadNibNamed:@"NotificationsUIView" owner:self options:nil] objectAtIndex:0];
-    
-    [self.notificationView setDelegate:self];
-    
     //Register nib files in table view.
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileTopViewCell"];
+
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
@@ -459,7 +431,7 @@
     if(currentPost)
     {
         //Find in which index the post exist and refresh it.
-        if(self.selectedTabStatus == kGLPPosts)
+        if(_selectedTab == kButtonLeft)
         {
             [self refreshCellViewWithIndex:index + 2];
         }
@@ -830,7 +802,7 @@
     
     DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
     
-    if(self.selectedTabStatus == kGLPNotifications) {
+    if(_selectedTab == kButtonRight) {
         [self notificationsTabClick];
         [self.tableView reloadData];
     }
@@ -853,7 +825,7 @@
     
     NSArray *notifications = [GLPNotificationManager unreadNotifications];
     _unreadNotificationsCount = notifications.count;
-    if(notifications.count == 0 || self.selectedTabStatus != kGLPNotifications) {
+    if(notifications.count == 0 || _selectedTab != kButtonRight) {
         return;
     }
     
@@ -964,7 +936,7 @@
 {
     DDLogInfo(@"Receive internal notifications");
     
-    if(self.selectedTabStatus == kGLPNotifications) {
+    if(_selectedTab == kButtonRight) {
         [self loadUnreadInternalNotifications];
         _unreadNotificationsCount = 0;
     } else {
@@ -1009,8 +981,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
-    if(self.selectedTabStatus == kGLPPosts)
+    if(_selectedTab == kButtonLeft)
     {
         [_emptyNotificationsMessage hideEmptyMessageView];
         
@@ -1052,15 +1023,19 @@
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
-    static NSString *CellIdentifierProfile = @"ProfileCell";
-    static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
+//    static NSString *CellIdentifierProfile = @"ProfileCell";
+    static NSString *CellIdentifierProfile = @"ProfileTopViewCell";
+    
+//    static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
     static NSString *CellIdentifierNotification = @"GLPNotCell";
     
     
     GLPPostCell *postViewCell;
     
-    ProfileTwoButtonsTableViewCell *buttonsView;
-    ProfileTableViewCell *profileView;
+//    ProfileTwoButtonsTableViewCell *buttonsView;
+//    ProfileTableViewCell *profileView;
+    ProfileTopViewCell *profileView;
+    
 //    ProfileSettingsTableViewCell *profileSettingsView;
     NotificationCell *notificationCell;
     
@@ -1069,6 +1044,12 @@
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
         [profileView setDelegate:self];
+        [profileView comesFromPushNotification:_fromPushNotification];
+        
+        if(_fromPushNotification)
+        {
+            _fromPushNotification = NO;
+        }
 
 //        [profileView updateImageWithUrl:self.profileImageUrl];
 //        if(_userImage)
@@ -1077,8 +1058,24 @@
 //        }
 //        else
 //        {
-            [profileView initialiseElementsWithUserDetails:self.user];
+//            [profileView initialiseElementsWithUserDetails:self.user];
 //        }
+        
+        
+        
+        [profileView setUserData:self.user];
+        
+        if(_unreadNotificationsCount > 0)
+        {
+            [profileView showNotificationBubbleWithNotificationCount:_unreadNotificationsCount];
+        }
+        else
+        {
+            [profileView hideNotificationBubble];
+        }
+        
+
+
         
         
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1087,44 +1084,32 @@
         return profileView;
         
     }
-    else if (indexPath.row == 1)
+//    else if (indexPath.row == 1)
+//    {
+//        buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
+//        buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        
+//        if(_unreadNotificationsCount > 0) {
+//            [buttonsView showNotificationBubbleWithNotificationCount:_unreadNotificationsCount];
+//        } else {
+//            [buttonsView hideNotificationBubble];
+//        }
+//        
+//        [buttonsView setDelegate:self fromPushNotification:_fromPushNotification];
+//        
+//        if(_fromPushNotification)
+//        {
+//            _fromPushNotification = NO;
+//        }
+//
+//        return buttonsView;
+//    }
+    else if (indexPath.row >= 1)
     {
-        buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
-        buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        
-        if(_unreadNotificationsCount > 0) {
-//            buttonsView.notificationsBubbleImageView.hidden = NO;
-            [buttonsView showNotificationBubbleWithNotificationCount:_unreadNotificationsCount];
-        } else {
-            [buttonsView hideNotificationBubble];
-//            buttonsView.notificationsBubbleImageView.hidden = YES;
-        }
-        
-        [buttonsView setDelegate:self fromPushNotification:_fromPushNotification];
-        
-        if(_fromPushNotification)
+        if(_selectedTab == kButtonRight)
         {
-//            [buttonsView viewSettingsButton];
-            _fromPushNotification = NO;
-        }
-        
-        
-        if(self.selectedTabStatus == kGLPNotifications)
-        {
-//            if(_notifications.count < 5)
-//            {
-//                [self setBottomView];
-//            }
-        }
-        
-        return buttonsView;
-    }
-    else if (indexPath.row >= 2)
-    {
-        if(self.selectedTabStatus == kGLPNotifications)
-        {
-            if(_notifications.count != 0 && (indexPath.row - 2) == _notifications.count)
+            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
             {
                 DDLogDebug(@"Notifications count: %lu : %ld", (unsigned long)_notifications.count, (long)indexPath.row);
                 
@@ -1134,17 +1119,17 @@
             notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
             notificationCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            GLPNotification *notification = _notifications[indexPath.row - 2];
+            GLPNotification *notification = _notifications[indexPath.row - 1];
             [notificationCell updateWithNotification:notification];
             notificationCell.delegate = self;
             
             return notificationCell;
         }
-        else if(self.selectedTabStatus == kGLPPosts)
+        else if(_selectedTab == kButtonLeft)
         {
             if(self.posts.count != 0)
             {
-                GLPPost *post = self.posts[indexPath.row-2];
+                GLPPost *post = self.posts[indexPath.row-1];
                 
                 if([post imagePost])
                 {
@@ -1184,13 +1169,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row < 2) {
+    if(indexPath.row < 1) {
         return;
     }
     
     // click on post cell
-    if(self.selectedTabStatus == kGLPPosts) {
-        self.selectedPost = self.posts[indexPath.row-2];
+    if(_selectedTab == kLeft) {
+        self.selectedPost = self.posts[indexPath.row-1];
         //    self.selectedIndex = indexPath.row;
         //    self.postIndexToReload = indexPath.row-2;
         self.commentCreated = NO;
@@ -1199,7 +1184,7 @@
     }
     // click on internal notification cell
     else {
-        GLPNotification *notification = _notifications[indexPath.row - 2];
+        GLPNotification *notification = _notifications[indexPath.row - 1];
         
         // go to the contact detail ?
         if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
@@ -1259,27 +1244,27 @@
 {
     if(indexPath.row == 0)
     {
-        return PROFILE_CELL_HEIGHT;
+        return PROFILE_TOP_VIEW_HEIGHT;
     }
-    else if(indexPath.row == 1)
+//    else if(indexPath.row == 1)
+//    {
+//        return TWO_BUTTONS_CELL_HEIGHT;
+//    }
+    else if(indexPath.row >= 1)
     {
-        return TWO_BUTTONS_CELL_HEIGHT;
-    }
-    else if(indexPath.row >= 2)
-    {
-        if(self.selectedTabStatus == kGLPNotifications)
+        if(_selectedTab == kButtonRight)
         {
-            if(_notifications.count != 0 && (indexPath.row - 2) == _notifications.count)
+            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
             {
                 return 50.0f;
             }
             
-            GLPNotification *notification = _notifications[indexPath.row - 2];
+            GLPNotification *notification = _notifications[indexPath.row - 1];
             return [NotificationCell getCellHeightForNotification:notification];
         }
-        else if (self.selectedTabStatus == kGLPPosts)
+        else if (_selectedTab == kButtonLeft)
         {
-            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
+            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
             
             if([currentPost imagePost])
             {
@@ -1325,7 +1310,7 @@
 
 -(void)setPreviousViewToNavigationBar
 {
-    [self.notificationView setHidden:NO];
+   // [self.notificationView setHidden:NO];
 }
 
 -(void)setPreviousNavigationBarName
@@ -1336,7 +1321,7 @@
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
 {
     [self.navigationItem setTitle:newTitle];
-    [self.notificationView setHidden:YES];
+    //[self.notificationView setHidden:YES];
 }
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
@@ -1363,7 +1348,6 @@
 {
     [self.fdTakeController takePhotoOrChooseFromLibrary];
 }
-
 
 #pragma mark - Table view refresh methods
 
@@ -1395,21 +1379,44 @@
 
 #pragma  mark - Button Navigation Delegate
 
--(void)viewSectionWithId:(GLPSelectedTab) selectedTab
+//-(void)viewSectionWithId:(GLPSelectedTab) selectedTab
+//{
+//    
+//    if(!_tabButtonEnabled) {
+//        return;
+//    }
+//    
+//    self.selectedTabStatus = selectedTab;
+//    
+//    if(selectedTab == kGLPNotifications) {
+//        [self notificationsTabClick];
+//    }
+//    
+//    [self.tableView reloadData];
+//}
+
+#pragma mark - ProfileTopViewCellDelegate
+
+- (void)segmentSwitchedWithButtonType:(ButtonType)buttonType
 {
-    
     if(!_tabButtonEnabled) {
         return;
     }
     
-    self.selectedTabStatus = selectedTab;
+    _selectedTab = buttonType;
     
-    if(selectedTab == kGLPNotifications) {
+    if(_selectedTab == kButtonRight) {
         [self notificationsTabClick];
     }
     
     [self.tableView reloadData];
 }
+
+//TODO:
+//- (void)changeProfileImage:(id)sender
+//{
+//    
+//}
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

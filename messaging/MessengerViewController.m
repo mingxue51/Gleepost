@@ -25,11 +25,13 @@
 
 @property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
 
+@property (strong, nonatomic) GLPSegmentView *sView;
+
 @property (strong, nonatomic) NSMutableArray *privateConversations;
 
 @property (strong, nonatomic) NSMutableArray *groupConversations;
 
-@property (assign, nonatomic) ConversationType conversationType;
+@property (assign, nonatomic) ButtonType conversationType;
 
 @property (strong, nonatomic) GLPConversation *selectedConversation;
 
@@ -68,6 +70,16 @@
     [self configureNotifications];
     
     [self configureNavigationBar];
+    
+    if(_conversationType == kButtonLeft)
+    {
+        [_sView selectLeftButton];
+    }
+    else
+    {
+        [_sView selectRightButton];
+    }
+    
     
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];
@@ -124,6 +136,8 @@
     
     CGRectSetX(view, 10);
     
+    _sView = view;
+    
     [_segmentView addSubview:view];
 
 }
@@ -132,7 +146,7 @@
 {
     _privateConversations = [[NSMutableArray alloc] init];
     _groupConversations = [[NSMutableArray alloc] init];
-    _conversationType = kPrivate;
+    _conversationType = kButtonLeft;
     
     // various control init
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
@@ -189,11 +203,11 @@
 {
     switch (_conversationType)
     {
-        case kPrivate:
+        case kButtonLeft:
             return _privateConversations.count;
             break;
             
-        case kGroup:
+        case kButtonRight:
             return _groupConversations.count;
             break;
             
@@ -213,7 +227,7 @@
     
     messageCell = [tableView dequeueReusableCellWithIdentifier:messageCellIdentifier forIndexPath:indexPath];
     
-    GLPConversation *conversation = (_conversationType == kPrivate) ? _privateConversations[indexPath.row] : _groupConversations[indexPath.row];
+    GLPConversation *conversation = (_conversationType == kButtonLeft) ? _privateConversations[indexPath.row] : _groupConversations[indexPath.row];
     
     [messageCell initialiseWithConversation: conversation];
     
@@ -225,7 +239,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    self.selectedConversation = (_conversationType == kPrivate) ? _privateConversations[indexPath.row] : _groupConversations[indexPath.row];
+    self.selectedConversation = (_conversationType == kButtonLeft) ? _privateConversations[indexPath.row] : _groupConversations[indexPath.row];
     
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }
@@ -237,7 +251,7 @@
 
 #pragma mark - GLPSegmentViewDelegate
 
-- (void)segmentSwitched:(ConversationType)conversationsType
+- (void)segmentSwitched:(ButtonType)conversationsType
 {
     _conversationType = conversationsType;
     
@@ -297,7 +311,7 @@
     
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:conversationRemoteKey];
     
-    NSMutableArray *array = (_conversationType == kPrivate) ? _privateConversations : _groupConversations;
+    NSMutableArray *array = (_conversationType == kButtonLeft) ? _privateConversations : _groupConversations;
     
     NSUInteger index = [array indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         if(((GLPConversation *)obj).remoteKey == conversation.remoteKey) {

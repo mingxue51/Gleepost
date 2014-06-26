@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, ConversationType) {
-    kPrivate,
-    kGroup
+typedef NS_ENUM(NSInteger, ButtonType) {
+    kButtonRight,
+    kButtonLeft
 };
 
 @protocol GLPSegmentViewDelegate <NSObject>
 
 @required
-- (void)segmentSwitched:(ConversationType)conversationsType;
+- (void)segmentSwitched:(ButtonType)conversationsType;
 
 @end
 
@@ -26,5 +26,8 @@ typedef NS_ENUM(NSInteger, ConversationType) {
 @property (assign, nonatomic) id<GLPSegmentViewDelegate> delegate;
 
 - (void)configuration;
+- (void)setRightButtonTitle:(NSString *)rightTitle andLeftButtonTitle:(NSString *)leftTitle;
+- (void)selectRightButton;
+- (void)selectLeftButton;
 
 @end
