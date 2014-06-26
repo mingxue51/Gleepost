@@ -122,8 +122,6 @@ const float ANIMATION_DURATION = 0.3;
 
 - (void)refreshSlider
 {
-    [_slideImageView setHidden:YES];
-    
     if(_conversationType == kButtonLeft)
     {
         CGRectSetX(_slideImageView, _leftBtn.frame.origin.x);
@@ -132,9 +130,6 @@ const float ANIMATION_DURATION = 0.3;
     {
         CGRectSetX(_slideImageView, _rightBtn.frame.origin.x);
     }
-    
-    [_slideImageView setHidden:NO];
-    
 }
 
 - (void)reloadButtonsFormat

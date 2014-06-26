@@ -109,8 +109,24 @@
 - (void)configureMainImageView
 {
     [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageView.frame.size.height];
+    
+    [self addGestureToMainImageView];
 }
 
+
+- (void)addGestureToMainImageView
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainImageViewTouched:)];
+    [tap setNumberOfTapsRequired:1];
+    [_mainImageView addGestureRecognizer:tap];
+}
+
+#pragma mark - Receivers
+
+- (void)mainImageViewTouched:(id)sender
+{
+    [_subClassdelegate mainImageViewTouched];
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

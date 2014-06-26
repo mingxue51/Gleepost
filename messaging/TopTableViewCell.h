@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TopTableViewCellDelegate <NSObject>
+
+@required
+- (void)mainImageViewTouched;
+
+@end
 
 @interface TopTableViewCell : UITableViewCell
+
+@property (weak, nonatomic) UITableViewCell<TopTableViewCellDelegate> *subClassdelegate;
 
 - (void)setImageWithUrl:(NSString *)url;
 - (void)setDownloadedImage:(UIImage *)image;

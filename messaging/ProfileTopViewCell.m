@@ -62,6 +62,8 @@ const float PROFILE_TOP_VIEW_HEIGHT = 245.0;
 {
     [super awakeFromNib];
     
+    [super setSubClassdelegate:self];
+    
     [self configureSegmentView];
     
     [_notificationLabel setHidden:YES];
@@ -119,6 +121,14 @@ const float PROFILE_TOP_VIEW_HEIGHT = 245.0;
 {
     [_delegate segmentSwitchedWithButtonType:conversationsType];
 }
+
+#pragma mark - TopTableViewCellDelegate
+
+- (void)mainImageViewTouched
+{
+    [_delegate changeProfileImage:nil];
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

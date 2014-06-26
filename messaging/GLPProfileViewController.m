@@ -56,8 +56,6 @@
 
 @property (strong, nonatomic) NSMutableArray *posts;
 
-//@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
-
 @property (assign, nonatomic) ButtonType selectedTab;
 
 @property (assign, nonatomic) BOOL fromCampusWall;
@@ -195,8 +193,6 @@
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
-
-
 
 -(void)dealloc
 {
@@ -1342,12 +1338,6 @@
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
-#pragma mark - ProfileTableViewCellDelegate
-
--(void)changeProfileImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-}
 
 #pragma mark - Table view refresh methods
 
@@ -1412,11 +1402,10 @@
     [self.tableView reloadData];
 }
 
-//TODO:
-//- (void)changeProfileImage:(id)sender
-//{
-//    
-//}
+- (void)changeProfileImage:(id)sender
+{
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+}
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

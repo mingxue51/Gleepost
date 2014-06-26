@@ -20,7 +20,7 @@
 
 @end
 
-@interface ProfileTopViewCell : TopTableViewCell <GLPSegmentViewDelegate>
+@interface ProfileTopViewCell : TopTableViewCell <GLPSegmentViewDelegate, TopTableViewCellDelegate>
 
 extern const float PROFILE_TOP_VIEW_HEIGHT;
 

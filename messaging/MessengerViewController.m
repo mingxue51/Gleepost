@@ -25,8 +25,6 @@
 
 @property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
 
-@property (strong, nonatomic) GLPSegmentView *sView;
-
 @property (strong, nonatomic) NSMutableArray *privateConversations;
 
 @property (strong, nonatomic) NSMutableArray *groupConversations;
@@ -70,16 +68,6 @@
     [self configureNotifications];
     
     [self configureNavigationBar];
-    
-    if(_conversationType == kButtonLeft)
-    {
-        [_sView selectLeftButton];
-    }
-    else
-    {
-        [_sView selectRightButton];
-    }
-    
     
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];
@@ -136,10 +124,7 @@
     
     CGRectSetX(view, 10);
     
-    _sView = view;
-    
     [_segmentView addSubview:view];
-
 }
 
 - (void)initialiseObjects

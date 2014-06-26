@@ -48,6 +48,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
     [super awakeFromNib];
     
     [self formatElements];
+    
+    
 }
 
 - (void)formatElements
@@ -91,6 +93,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
         
     }
     
+    DDLogDebug(@"Send status group: %d", groupData.sendStatus);
+    
     if(groupData.sendStatus == kSendStatusLocal)
     {
         //Hide exit and show blink indicator.
@@ -101,8 +105,10 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
     else
     {
         //Show exit button.
-        [self hideIndicator];
+//        [self hideIndicator];
         //        [self showExitButton];
+        [_uploadedIndicator setHidden:YES];
+
         [_exitButton setHidden:NO];
     }
 }

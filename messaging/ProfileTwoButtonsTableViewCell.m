@@ -60,8 +60,6 @@ const float TWO_BUTTONS_CELL_HEIGHT = 50.0f;
         if(push)
         {
 //            [self viewSettingsButton];
-
-            #warning test that if works.
             
             [self viewSettings:nil];
         }
