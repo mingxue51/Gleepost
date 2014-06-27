@@ -101,8 +101,8 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 //    UIImage *backButtonImage = [[UIImage imageNamed:@"tabbar_tab"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 100, 0, 0)];
 //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage  forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-10, backButtonImage.size.height/2) forBarMetrics:UIBarMetricsDefault];
-    
-//    [UINavigationBar appearance].tintColor = [UIColor blackColor];
+        
+    //That changes the default back button image.
     [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final"];
     [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final"];
 

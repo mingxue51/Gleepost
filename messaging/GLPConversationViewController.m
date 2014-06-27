@@ -102,20 +102,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         DDLogDebug(@"Contact already requested.");
         [self disableAddUserButton];
     }
-    
-    [self configureBackButton];
-    
+        
     _isFirstLoaded = YES;
-}
-
-- (void)configureBackButton
-{
-//    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
-    
-//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"12" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
-//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_black"] style:UIBarButtonItemStylePlain target:nil action:nil];
-
 }
 
 -(void) viewWillAppear:(BOOL)animated

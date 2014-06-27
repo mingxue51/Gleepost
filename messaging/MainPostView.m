@@ -182,6 +182,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor]];
     
+//    [ShapeFormatterHelper setBorderToView:_commentBtn withColour:[UIColor redColor]];
+//    
+//    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor blackColor]];
+//    
+//    [ShapeFormatterHelper setBorderToView:_shareBtn withColour:[UIColor greenColor]];
+    
+    
 }
 
 
