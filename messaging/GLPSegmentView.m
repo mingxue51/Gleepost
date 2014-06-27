@@ -13,9 +13,9 @@
 
 @interface GLPSegmentView ()
 
-@property (weak, nonatomic) IBOutlet UIButton *leftBtn;
-
-@property (weak, nonatomic) IBOutlet UIButton *rightBtn;
+//@property (weak, nonatomic) IBOutlet UIButton *leftBtn;
+//
+//@property (weak, nonatomic) IBOutlet UIButton *rightBtn;
 
 @property (weak, nonatomic) IBOutlet UILabel *leftLbl;
 
@@ -78,10 +78,6 @@ const float ANIMATION_DURATION = 0.1;
     [ShapeFormatterHelper setCornerRadiusWithView:self andValue:4];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_slideImageView andValue:4];
-    
-    [ShapeFormatterHelper setCornerRadiusWithView:_rightBtn andValue:4];
-    
-    [ShapeFormatterHelper setCornerRadiusWithView:_leftBtn andValue:4];
 }
 
 #pragma mark - Modifiers
@@ -91,9 +87,9 @@ const float ANIMATION_DURATION = 0.1;
  */
 - (void)setRightButtonTitle:(NSString *)rightTitle andLeftButtonTitle:(NSString *)leftTitle
 {
-    [_rightBtn setTitle:rightTitle forState:UIControlStateNormal];
+    [_rightLbl setText:rightTitle];
     
-    [_leftBtn setTitle:leftTitle forState:UIControlStateNormal];
+    [_leftLbl setText:leftTitle];
 }
 
 - (void)selectRightButton
@@ -140,11 +136,11 @@ const float ANIMATION_DURATION = 0.1;
 {
     if(_conversationType == kButtonLeft)
     {
-        CGRectSetX(_slideImageView, _leftBtn.frame.origin.x);
+        CGRectSetX(_slideImageView, _leftLbl.frame.origin.x);
     }
     else
     {
-        CGRectSetX(_slideImageView, _rightBtn.frame.origin.x);
+        CGRectSetX(_slideImageView, _rightLbl.frame.origin.x);
     }
 }
 
@@ -165,14 +161,11 @@ const float ANIMATION_DURATION = 0.1;
     
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         
-        CGRectSetX(_slideImageView, _leftBtn.frame.origin.x);
+        CGRectSetX(_slideImageView, _leftLbl.frame.origin.x);
         
     } completion:^(BOOL finished) {
         
         [_delegate segmentSwitched:_conversationType];
-
-        [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_rightBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
         
         [_leftLbl setTextColor:[UIColor blackColor]];
         [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
@@ -187,17 +180,12 @@ const float ANIMATION_DURATION = 0.1;
 {
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         
-        CGRectSetX(_slideImageView, _rightBtn.frame.origin.x);
+        CGRectSetX(_slideImageView, _rightLbl.frame.origin.x);
         
         
     } completion:^(BOOL finished) {
         
         [_delegate segmentSwitched:_conversationType];
-
-        [_rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_leftBtn setTitleColor:[AppearanceHelper colourForUnselectedSegment] forState:UIControlStateNormal];
-        
-        
         
         
         [_rightLbl setTextColor:[UIColor blackColor]];

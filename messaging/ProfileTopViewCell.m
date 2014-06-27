@@ -79,7 +79,7 @@ const float PROFILE_TOP_VIEW_HEIGHT = 245.0;
 
 - (void)loadSegmentView
 {
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSegmentView" owner:self options:nil];
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPProfileSegmentView" owner:self options:nil];
     
     GLPSegmentView *view = [array lastObject];
     [view setDelegate:self];

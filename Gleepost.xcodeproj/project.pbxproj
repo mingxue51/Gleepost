@@ -320,6 +320,7 @@
 		587CEA5C195C9F0C0043E5E2 /* calendar_boring.png in Resources */ = {isa = PBXBuildFile; fileRef = 587CEA5B195C9F0C0043E5E2 /* calendar_boring.png */; };
 		587CEA63195CA1470043E5E2 /* boring_message1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587CEA61195CA1470043E5E2 /* boring_message1.png */; };
 		587CEA64195CA1470043E5E2 /* boring_message2.png in Resources */ = {isa = PBXBuildFile; fileRef = 587CEA62195CA1470043E5E2 /* boring_message2.png */; };
+		587CEA67195CECE70043E5E2 /* GLPProfileSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */; };
 		587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23BE17EA195D00E0DDFF /* imgbar.png */; };
 		587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23C117EA195D00E0DDFF /* tabbar_tab.png */; };
 		587EA4A417F9C4A0005B3286 /* ContactUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 587EA4A317F9C4A0005B3286 /* ContactUserCell.m */; };
@@ -1227,6 +1228,7 @@
 		587CEA5B195C9F0C0043E5E2 /* calendar_boring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar_boring.png; sourceTree = "<group>"; };
 		587CEA61195CA1470043E5E2 /* boring_message1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boring_message1.png; sourceTree = "<group>"; };
 		587CEA62195CA1470043E5E2 /* boring_message2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boring_message2.png; sourceTree = "<group>"; };
+		587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPProfileSegmentView.xib; sourceTree = "<group>"; };
 		587D23BE17EA195D00E0DDFF /* imgbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imgbar.png; sourceTree = "<group>"; };
 		587D23C117EA195D00E0DDFF /* tabbar_tab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_tab.png; sourceTree = "<group>"; };
 		587EA4A217F9C4A0005B3286 /* ContactUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUserCell.h; sourceTree = "<group>"; };
@@ -2630,6 +2632,15 @@
 				587805AC1920E2CE0002472B /* CaptureManager.m */,
 			);
 			path = AVCam;
+			sourceTree = "<group>";
+		};
+		587CEA65195CECD30043E5E2 /* Segments */ = {
+			isa = PBXGroup;
+			children = (
+				584D208A1953472200E571DF /* GLPSegmentView.xib */,
+				587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */,
+			);
+			name = Segments;
 			sourceTree = "<group>";
 		};
 		587D23B317EA193F00E0DDFF /* NewImages */ = {
@@ -4083,6 +4094,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				587CEA65195CECD30043E5E2 /* Segments */,
 				588D859C195B5EBC002F516A /* Top view cells */,
 				58615760193CD38D009BAD33 /* Walkthrough */,
 				58F294FB19353C0700A638BA /* New post */,
@@ -4101,7 +4113,6 @@
 				58D19D9318C7668000CB13CC /* CreateGroupCell.xib */,
 				5819E64A18C79E98003361B3 /* GroupCell.xib */,
 				58A75FBF19523BC80060060D /* MessageCell.xib */,
-				584D208A1953472200E571DF /* GLPSegmentView.xib */,
 				588D858C1959FB49002F516A /* GroupCollectionViewCell.xib */,
 			);
 			name = Interfaces;
@@ -4544,6 +4555,7 @@
 				8096E4DD17C2C61500C7BF60 /* back_button.png in Resources */,
 				58D0E51918D092C1004DF10D /* add_member_icon.png in Resources */,
 				8096E4DF17C2C6CF00C7BF60 /* add_comment.png in Resources */,
+				587CEA67195CECE70043E5E2 /* GLPProfileSegmentView.xib in Resources */,
 				58D30ADF18F6E4DF00A898EB /* notification_btn.png in Resources */,
 				802DCE4418AA32D000A23511 /* notification3.json in Resources */,
 				588D859E195B5ED6002F516A /* ProfileTopViewCell.xib in Resources */,
