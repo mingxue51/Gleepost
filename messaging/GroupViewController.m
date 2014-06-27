@@ -30,6 +30,7 @@
 #import "EmptyMessage.h"
 #import "ShapeFormatterHelper.h"
 #import "UINavigationBar+Utils.h"
+#import "UINavigationBar+Format.h"
 
 @interface GroupViewController ()
 
@@ -236,25 +237,18 @@ const int NUMBER_OF_ROWS = 2;
     [self.navigationController setNavigationBarHidden:NO
                                              animated:YES];
     
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarColour:self];
-
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [AppearanceHelper setNavigationBarFontFor:self];
-    
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     //Set title.
     self.title = _group.name;
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
 }
 

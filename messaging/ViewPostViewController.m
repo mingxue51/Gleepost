@@ -29,7 +29,7 @@
 #import "GLPCommentManager.h"
 #import "GLPPostManager.h"
 #import "GLPApplicationHelper.h"
-
+#import "UINavigationBar+Format.h"
 
 @interface ViewPostViewController ()
 
@@ -256,26 +256,25 @@ static BOOL likePushed;
 
     
     self.navigationItem.title = @"View Post";
-
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
     
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
 //    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarColour:self];
+//    [AppearanceHelper setNavigationBarColour:self];
     
 
     
 //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
-    [AppearanceHelper setNavigationBarFontFor:self];
+//    [AppearanceHelper setNavigationBarFontFor:self];
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
     [self.navigationController.navigationBar setTranslucent:NO];
-    
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    
+        
     
     if(self.isFromCampusLive)
     {
@@ -284,7 +283,7 @@ static BOOL likePushed;
     }
     
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 -(void)addCustomBackButton

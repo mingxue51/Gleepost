@@ -103,7 +103,14 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         [self disableAddUserButton];
     }
     
+    [self configureBackButton];
+    
     _isFirstLoaded = YES;
+}
+
+- (void)configureBackButton
+{
+    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
 }
 
 -(void) viewWillAppear:(BOOL)animated

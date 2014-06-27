@@ -27,6 +27,7 @@
 #import "GLPApplicationHelper.h"
 #import "GLPiOS6Helper.h"
 #import "EmptyMessage.h"
+#import "UINavigationBar+Format.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -279,7 +280,6 @@
 -(void)configureNavigationBar
 {
 //    [self setNeedsStatusBarAppearanceUpdate];
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 
     //Change the format of the navigation bar.
 //    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
@@ -309,18 +309,9 @@
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    [AppearanceHelper setNavigationBarColour:self];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    
-    
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    [AppearanceHelper setNavigationBarFontFor:self];
-    
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
 
     

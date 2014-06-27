@@ -72,7 +72,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="calendar_boring.png" translatesAutoresizingMaskIntoConstraints="NO" id="u0x-a4-dN0">
-                            <rect key="frame" x="58" y="35" width="204" height="105"/>
+                            <rect key="frame" x="58" y="33" width="204" height="105"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="boring_message2.png" translatesAutoresizingMaskIntoConstraints="NO" id="m50-bS-Ca8">
@@ -132,7 +132,7 @@
         <image name="add_new_post.png" width="65" height="65"/>
         <image name="boring_message1.png" width="236" height="50"/>
         <image name="boring_message2.png" width="364" height="22"/>
-        <image name="calendar_boring.png" width="310" height="292"/>
+        <image name="calendar_boring.png" width="266" height="266"/>
         <image name="nav_bar_title_button.png" width="300" height="65"/>
         <image name="pin.png" width="17" height="24"/>
         <image name="show_categories.png" width="65" height="65"/>

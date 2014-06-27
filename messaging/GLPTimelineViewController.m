@@ -799,11 +799,6 @@ const float TOP_OFFSET = 280.0f;
     
 }
 
--(void)setNavigationBarName
-{
-    [self.navigationItem setTitle:@"Campus Wall"];
-}
-
 
 /**
  Not used.
@@ -2168,13 +2163,13 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)setPreviousNavigationBarName
 {
-    [self.navigationItem setTitle:@"Campus Wall"];
+    [self.navigationItem setTitle:@"Stanford Wall"];
 }
 
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
 {
     [self.navigationItem setTitle:newTitle];
-    self.navigationItem.rightBarButtonItem = nil;
+//    self.navigationItem.rightBarButtonItem = nil;
 }
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex

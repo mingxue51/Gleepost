@@ -61,7 +61,7 @@
         //Add fake navigation bar.
         UIImageView *navBar = [[UIImageView alloc] init];
         
-        [navBar setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+        [navBar setBackgroundColor:[UIColor whiteColor]];
         
         [navBar setFrame:CGRectMake(0, 0, 320, 64)];
         
@@ -78,13 +78,13 @@
         [label setBackgroundColor:[UIColor clearColor]];
         
         
-        [label setTextColor:[UIColor whiteColor]];
+        [label setTextColor:[UIColor blackColor]];
         
         [self addSubview:label];
         
         
         
-        UIColor *buttonsColour = [UIColor whiteColor];
+        UIColor *buttonsColour = [UIColor blackColor];
         
         UIButton *cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 25, 50, 30)];
         

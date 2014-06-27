@@ -58,6 +58,8 @@
     
     [self configureTabbar];
     
+    [self configureBackButton];
+    
 
 }
 
@@ -171,6 +173,11 @@
     [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(viewNewMessageView) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)configureBackButton
+{
+    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
 }
 
 #pragma mark - Selectors
