@@ -232,7 +232,7 @@
                                             <action selector="sharePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="juO-fl-1G0"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OW5-9V-qeb" userLabel="Button back comment">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OW5-9V-qeb" userLabel="Button back comment">
                                         <rect key="frame" x="97" y="5" width="99" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
@@ -242,6 +242,9 @@
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="NiW-c1-RRu"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2b7-62-Ogm" userLabel="Button back share">
                                         <rect key="frame" x="214" y="6" width="86" height="30"/>
@@ -254,7 +257,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="HRG-ZZ-vLz"/>
+                                            <action selector="sharePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="dia-vl-VhP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTn-eI-Mdl" userLabel="Button back like">
@@ -318,6 +321,7 @@
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>
                             <outlet property="videoView" destination="nvU-aO-Tut" id="tD9-kO-Yid"/>
                             <outlet property="wideCommentBtn" destination="OW5-9V-qeb" id="TBP-H1-wvC"/>
+                            <outlet property="wideShareBtn" destination="2b7-62-Ogm" id="7wU-yp-hCA"/>
                         </connections>
                     </view>
                 </subviews>

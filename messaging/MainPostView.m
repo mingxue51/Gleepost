@@ -41,6 +41,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *wideCommentBtn;
 
+@property (weak, nonatomic) IBOutlet UIButton *wideShareBtn;
+           
 @property (weak, nonatomic) IBOutlet UIButton *goingBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *moreBtn;
@@ -685,14 +687,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)configureShareButton
 {
-    if([self isCurrentPostEvent])
-    {
-        [_shareBtn setHidden:NO];
-    }
-    else
-    {
-        [_shareBtn setHidden:YES];
-    }
+    [_shareBtn setHidden:NO];
+    [_wideShareBtn setHidden:NO];
+    
+//    if([self isCurrentPostEvent])
+//    {
+//        [_shareBtn setHidden:NO];
+//        [_wideShareBtn setHidden:NO];
+//    }
+//    else
+//    {
+//        [_shareBtn setHidden:YES];
+//        [_wideShareBtn setHidden:YES];
+//    }
 }
 
 -(void)setCategories

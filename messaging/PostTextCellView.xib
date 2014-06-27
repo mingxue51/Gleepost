@@ -278,6 +278,7 @@
                             <outlet property="timePostLbl" destination="fIE-VY-MZi" id="gjv-V0-W5u"/>
                             <outlet property="userImageView" destination="rLa-G4-0ZA" id="xx0-Yg-HfD"/>
                             <outlet property="wideCommentBtn" destination="51d-yj-djx" id="B6h-QI-s6E"/>
+                            <outlet property="wideShareBtn" destination="4zn-z3-00R" id="51v-oC-aje"/>
                         </connections>
                     </view>
                 </subviews>

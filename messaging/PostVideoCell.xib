@@ -300,6 +300,7 @@
                             <outlet property="userImageView" destination="1XF-hU-YVI" id="XoW-0i-eiO"/>
                             <outlet property="videoView" destination="LLM-rG-GAs" id="q2n-A5-Zaq"/>
                             <outlet property="wideCommentBtn" destination="eAO-z2-iqY" id="Bpe-IT-5f0"/>
+                            <outlet property="wideShareBtn" destination="a5B-BX-KpO" id="JgX-Fn-GYx"/>
                         </connections>
                     </view>
                 </subviews>

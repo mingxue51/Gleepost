@@ -69,6 +69,7 @@
 -(void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPCategoryCell" bundle:nil] forCellReuseIdentifier:kGLPCategoryCell];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"SetEventInformationCell" bundle:nil] forCellReuseIdentifier:kGLPSetInformationCell];
     
 }
@@ -166,6 +167,7 @@
 
     
     GLPCategoryCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPCategoryCell forIndexPath:indexPath];
+    category.uiSelected = NO;
     
     [cell updateCategory:category withImage:[_categoriesImages objectForKey:category.tag]];
     

@@ -8,10 +8,19 @@
 
 #import "CategoryManager.h"
 
+typedef NS_ENUM(NSInteger, CategoryOrder) {
+    
+    kSpeakersOrder = 0,
+    kTheaterOrder = 1,
+    kSportsOrder = 2,
+    kPartiesOrder = 3,
+    kMusicOrder = 4
+};
+
 @interface CategoryManager ()
 
 @property (strong, nonatomic) NSDictionary *categories;
-
+@property (strong, nonatomic) NSArray *categoriesInOrder;
 
 @end
 
@@ -40,20 +49,40 @@ static CategoryManager *instance = nil;
         //Initialise categories.
         NSMutableDictionary *tempDict = [NSMutableDictionary dictionary];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers] forKey:[NSNumber numberWithInt:kGLPSpeakers]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers] forKey:[NSNumber numberWithInt:kSpeakersOrder]];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic] forKey:[NSNumber numberWithInt:kGLPMusic]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic] forKey:[NSNumber numberWithInt:kMusicOrder]];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater] forKey:[NSNumber numberWithInt:kGLPTheater]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater] forKey:[NSNumber numberWithInt:kTheaterOrder]];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports] forKey:[NSNumber numberWithInt:kGLPSports]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports] forKey:[NSNumber numberWithInt:kSportsOrder]];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties] forKey:[NSNumber numberWithInt:kGLPParties]];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties] forKey:[NSNumber numberWithInt:kPartiesOrder]];
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
+        
+        [self setCategoriesInOrder];
     }
     
     return self;
+}
+
+- (void)setCategoriesInOrder
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    [array addObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers]];
+    
+    [array addObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater]];
+    
+    [array addObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports]];
+    
+    [array addObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties]];
+    
+    [array addObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic]];
+    
+    _categoriesInOrder = array.mutableCopy;
+    
 }
 
 -(GLPCategory*)categoryWithTag:(NSString*)tag
@@ -101,14 +130,14 @@ static CategoryManager *instance = nil;
 
 -(NSArray*)getCategories
 {
-    NSMutableArray *categories = [NSMutableArray array];
+//    NSMutableArray *categories = [NSMutableArray array];
+//    
+//    for(NSNumber *remoteKey in _categories)
+//    {
+//        [categories addObject: [_categories objectForKey:remoteKey]];
+//    }
     
-    for(NSNumber *remoteKey in _categories)
-    {
-        [categories addObject: [_categories objectForKey:remoteKey]];
-    }
-    
-    return categories;
+    return _categoriesInOrder;
 }
 
 -(GLPCategory *)generateEventCategory

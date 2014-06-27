@@ -93,8 +93,6 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
         
     }
     
-    DDLogDebug(@"Send status group: %d", groupData.sendStatus);
-    
     if(groupData.sendStatus == kSendStatusLocal)
     {
         //Hide exit and show blink indicator.

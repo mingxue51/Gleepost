@@ -86,6 +86,8 @@
         
 //        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
 //        {
+        
+        DDLogDebug(@"Category: %@", category);
             [_categories addObject:category];
 //        }
     }
