@@ -110,7 +110,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)configureBackButton
 {
-    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
+//    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
+    
+//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"12" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_black"] style:UIBarButtonItemStylePlain target:nil action:nil];
+
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -227,12 +232,14 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     }
     
     
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    [self.navigationController.navigationBar setTranslucent:NO];
+//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    [self.navigationController.navigationBar setTranslucent:NO];
     
 //    [AppearanceHelper setNavigationBarFontFor:self];
 //    [AppearanceHelper setNavigationBarColour:self];
+    
+    
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kGreen];

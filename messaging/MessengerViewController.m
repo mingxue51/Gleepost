@@ -177,7 +177,18 @@
 
 - (void)configureBackButton
 {
-    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
+//    self.navigationController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"back_black"]]];
+    
+//    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"12" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+//        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_black"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+//    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@""
+//                                                                 style:UIBarButtonItemStylePlain
+//                                                                target:nil
+//                                                                action:nil];
+//    [self.navigationItem setBackBarButtonItem:backItem];
+
 }
 
 #pragma mark - Selectors

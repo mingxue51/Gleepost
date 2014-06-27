@@ -200,7 +200,7 @@
 
 + (UIColor *)blueGleepostColour
 {
-    return [UIColor colorWithR:52 withG:152 andB:258];
+    return [UIColor colorWithR:52 withG:152 andB:218];
 }
 
 + (UIColor *)greenGleepostColour

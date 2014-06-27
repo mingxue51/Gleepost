@@ -102,8 +102,9 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 //    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage  forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-10, backButtonImage.size.height/2) forBarMetrics:UIBarMetricsDefault];
     
-    
-    
+//    [UINavigationBar appearance].tintColor = [UIColor blackColor];
+    [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final"];
+    [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final"];
 
     
     return YES;

@@ -55,7 +55,7 @@
     [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:22.0f], UITextAttributeFont, [self colourWithGLPColour:colour], UITextAttributeTextColor, nil]];
     
 
-    [self setTintColor:[self colourWithGLPColour:colour]];
+    [self setTintColor:[AppearanceHelper blueGleepostColour]];
 }
 
 - (void)setCampusWallFontFormat

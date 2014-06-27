@@ -348,6 +348,7 @@
 		58902473195D743C00084E2F /* calendar_boring_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 58902472195D743C00084E2F /* calendar_boring_3.png */; };
 		58902475195D77F000084E2F /* calendar_boring4.png in Resources */ = {isa = PBXBuildFile; fileRef = 58902474195D77F000084E2F /* calendar_boring4.png */; };
 		58902479195D8ACF00084E2F /* calendar_boring.png in Resources */ = {isa = PBXBuildFile; fileRef = 58902478195D8ACF00084E2F /* calendar_boring.png */; };
+		58902487195D9D6400084E2F /* back_final@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58902486195D9D6400084E2F /* back_final@2x.png */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
 		5890D2181847676A00E293DD /* GLPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D2171847676A00E293DD /* GLPTheme.m */; };
 		5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D21A1847692B00E293DD /* GLPStanfordTheme.m */; };
@@ -1268,6 +1269,7 @@
 		58902472195D743C00084E2F /* calendar_boring_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar_boring_3.png; sourceTree = "<group>"; };
 		58902474195D77F000084E2F /* calendar_boring4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar_boring4.png; sourceTree = "<group>"; };
 		58902478195D8ACF00084E2F /* calendar_boring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar_boring.png; sourceTree = "<group>"; };
+		58902486195D9D6400084E2F /* back_final@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final@2x.png"; sourceTree = "<group>"; };
 		5890D212184763E700E293DD /* GLPThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPThemeManager.h; sourceTree = "<group>"; };
 		5890D213184763E700E293DD /* GLPThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPThemeManager.m; sourceTree = "<group>"; };
 		5890D2161847676A00E293DD /* GLPTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTheme.h; sourceTree = "<group>"; };
@@ -2609,6 +2611,7 @@
 		58729ACB189BFDFE0041022C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				58902486195D9D6400084E2F /* back_final@2x.png */,
 				587CEA57195C44750043E5E2 /* settings_btn.png */,
 				58F9EC631937580900714432 /* back_black.png */,
 				58729ACE189C1A4A0041022C /* settings_btn_old.png */,
@@ -4591,6 +4594,7 @@
 				5890D23318482DC300E293DD /* home.png in Resources */,
 				58DAD77F1859FBD20016D838 /* message-7-old@2x.png in Resources */,
 				8096E4E317C2C88500C7BF60 /* comments.png in Resources */,
+				58902487195D9D6400084E2F /* back_final@2x.png in Resources */,
 				589EAD1818A41B37005B2F4C /* SignUpFiveView.xib in Resources */,
 				589EAD3018A44736005B2F4C /* login_bg.png in Resources */,
 				58428E4618A2ADA400B82E4B /* SignUpOneView.xib in Resources */,
