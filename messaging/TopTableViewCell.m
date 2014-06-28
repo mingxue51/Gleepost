@@ -64,6 +64,14 @@
 
 }
 
+#pragma mark - Accessors
+
+- (UIImage *)mainImageViewImage
+{
+    return _mainImageView.image;
+}
+
+
 #pragma mark - Modifiers
 
 - (void)setImageWithUrl:(NSString *)url

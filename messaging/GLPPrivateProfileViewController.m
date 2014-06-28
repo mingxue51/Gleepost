@@ -184,11 +184,10 @@
 
 #pragma mark - Configuration
 
-
 -(void)initialiseObjects
 {
     //Initialise rows with 3 because About cell is presented first.
-    self.numberOfRows = 2;
+    self.numberOfRows = 1;
     
     
     self.profileImage = nil;
@@ -210,9 +209,9 @@
 {
     //Register nib files in table view.
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PrivateProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"PrivateProfileTopViewCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"ButtonsCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"ButtonsCell"];
     
     //Register posts.
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
@@ -220,9 +219,9 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewAboutTableViewCell" bundle:nil] forCellReuseIdentifier:@"AboutCell"];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewMutualTableViewCell" bundle:nil] forCellReuseIdentifier:@"MutualCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewAboutTableViewCell" bundle:nil] forCellReuseIdentifier:@"AboutCell"];
+//    
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewMutualTableViewCell" bundle:nil] forCellReuseIdentifier:@"MutualCell"];
 }
 
 -(void)configureView
@@ -235,7 +234,7 @@
         return;
     }
     
-    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     //Add new colour in the bottom of the table view.
 //    UIImageView *bottomImageView = [[UIImageView alloc] init];
@@ -299,12 +298,7 @@
 //    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     
-    
-    
-    
-    
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
+
     
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
@@ -489,22 +483,22 @@
     
     if(currentPost)
     {
-        [self refreshCellViewWithIndex:index+2];
+        [self refreshCellViewWithIndex:index+1];
     }
     
 }
 
-#pragma mark - ProfileTableViewCellDelegate
+#pragma mark - PrivateProfileTableViewCellDelegate
 
--(void)showFullProfileImage:(id)sender
+- (void)viewProfileImage:(UIImage *)image
 {
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-    
-    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+//    
+//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = clickedImageView.image;
+    vc.image = image;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     if(![GLPiOS6Helper isIOS6])
     {
@@ -561,16 +555,20 @@
 {
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
-    static NSString *CellIdentifierProfile = @"ProfileCell";
-    static NSString *CellIdentifierButtons = @"ButtonsCell";
+//    static NSString *CellIdentifierProfile = @"ProfileCell";
+//    static NSString *CellIdentifierButtons = @"ButtonsCell";
+    
+    static NSString *CellIdentifierProfile = @"PrivateProfileTopViewCell";
+    
 //    static NSString *CellIdentifierAbout = @"AboutCell";
 //    static NSString *CellIdentifierMutual = @"MutualCell";
     
     
     GLPPostCell *postViewCell;
     
-    ProfileButtonsTableViewCell *buttonsView;
-    ProfileTableViewCell *profileView;
+//    ProfileButtonsTableViewCell *buttonsView;
+    PrivateProfileTopViewCell *profileView;
+//    ProfileTableViewCell *profileView;
 //    ProfileAboutTableViewCell *profileAboutView;
 //    ProfileMutualTableViewCell *profileMutualView;
     
@@ -582,17 +580,17 @@
         return  [self configureProfileViewCell:profileView];
 
     }
-    else if (indexPath.row == 1)
-    {
-        buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierButtons forIndexPath:indexPath];
-        buttonsView.currentUser = self.profileUser;
-        buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [buttonsView setDelegate:self];
-        
-        return buttonsView;
-    }
-    else if (indexPath.row >= 2)
+//    else if (indexPath.row == 1)
+//    {
+//        buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierButtons forIndexPath:indexPath];
+//        buttonsView.currentUser = self.profileUser;
+//        buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        [buttonsView setDelegate:self];
+//        
+//        return buttonsView;
+//    }
+    else if (indexPath.row >= 1)
     {
 //        if(self.selectedTabStatus == kGLPAbout)
 //        {
@@ -611,7 +609,7 @@
 //        {
             if(self.posts.count != 0)
             {
-                GLPPost *post = self.posts[indexPath.row-2];
+                GLPPost *post = self.posts[indexPath.row-1];
 
                 if([post imagePost] || [post isVideoPost])
                 {
@@ -666,17 +664,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //TODO: implement manual reloading
-    if(indexPath.row-2 == self.posts.count) {
+    if(indexPath.row-1 == self.posts.count) {
         return;
     }
-    else if(indexPath.row < 2)
+    else if(indexPath.row < 1)
     {
         return;
     }
     
-    self.selectedPost = self.posts[indexPath.row-2];
+    self.selectedPost = self.posts[indexPath.row-1];
 //    self.selectedIndex = indexPath.row;
-    self.postIndexToReload = indexPath.row-2;
+    self.postIndexToReload = indexPath.row-1;
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
@@ -686,13 +684,13 @@
 {
     if(indexPath.row == 0)
     {
-        return PROFILE_CELL_HEIGHT;
+        return PRIVATE_PROFILE_TOP_VIEW_HEIGHT;
     }
-    else if(indexPath.row == 1)
-    {
-        return BUTTONS_CELL_HEIGHT;
-    }
-    else if(indexPath.row >= 2)
+//    else if(indexPath.row == 1)
+//    {
+//        return BUTTONS_CELL_HEIGHT;
+//    }
+    else if(indexPath.row >= 1)
     {
 //        if(self.selectedTabStatus == kGLPAbout)
 //        {
@@ -703,7 +701,7 @@
         
         if(self.posts.count != 0 && self.posts)
         {
-            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
+            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
                         
             if([currentPost imagePost])
             {
@@ -729,28 +727,32 @@
     return 70.0f;
 }
 
--(ProfileTableViewCell *)configureProfileViewCell:(ProfileTableViewCell *)cell
+- (PrivateProfileTopViewCell *)configureProfileViewCell:(PrivateProfileTopViewCell *)cell
 {
     [cell setDelegate:self];
     
-    if(self.profileImage && self.profileUser)
-    {
-        DDLogDebug(@"Private profile: Image / user ready.");
-        
-        [cell initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-    }
-    else if(self.profileImage && !self.profileUser)
-    {
-        DDLogDebug(@"Private profile: Image ready not user.");
-        
-        [cell initialiseProfileImage:self.profileImage];
-    }
-    else if((!self.profileImage && self.profileUser) || (!self.profileImage && !self.profileUser))
-    {
-        DDLogDebug(@"Private profile: Last choise. %@ : %@", self.profileImage, self.profileUser);
-        
-        [cell initialiseElementsWithUserDetails:self.profileUser];
-    }
+    [cell setUserData:_profileUser];
+
+    //TODO: If image is pre-fetched, then call other method.
+    
+//    if(self.profileImage && self.profileUser)
+//    {
+//        DDLogDebug(@"Private profile: Image / user ready.");
+//        
+//        [cell setUserData:_profileUser];
+//    }
+//    else if(self.profileImage && !self.profileUser)
+//    {
+//        DDLogDebug(@"Private profile: Image ready not user.");
+//        
+//        [cell initialiseProfileImage:self.profileImage];
+//    }
+//    else if((!self.profileImage && self.profileUser) || (!self.profileImage && !self.profileUser))
+//    {
+//        DDLogDebug(@"Private profile: Last choise. %@ : %@", self.profileImage, self.profileUser);
+//        
+//        [cell initialiseElementsWithUserDetails:self.profileUser];
+//    }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -759,7 +761,6 @@
 }
 
 #pragma mark - Table view refresh methods
-
 
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
 {
@@ -838,7 +839,7 @@
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
-    self.selectedPost = self.posts[postIndex-2];
+    self.selectedPost = self.posts[postIndex-1];
     
 //    self.postIndexToReload = postIndex;
     

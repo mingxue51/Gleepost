@@ -24,5 +24,5 @@
 - (void)setTitleWithString:(NSString *)title;
 - (void)setSubtitleWithString:(NSString *)subtitle;
 - (void)setSmallSubtitleWithString:(NSString *)smallSubtitle;
-
+- (UIImage *)mainImageViewImage;
 @end

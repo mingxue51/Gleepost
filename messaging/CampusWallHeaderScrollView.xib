@@ -132,7 +132,7 @@
         <image name="add_new_post.png" width="65" height="65"/>
         <image name="boring_message1.png" width="236" height="50"/>
         <image name="boring_message2.png" width="364" height="22"/>
-        <image name="calendar_boring.png" width="266" height="266"/>
+        <image name="calendar_boring.png" width="272" height="272"/>
         <image name="nav_bar_title_button.png" width="300" height="65"/>
         <image name="pin.png" width="17" height="24"/>
         <image name="show_categories.png" width="65" height="65"/>

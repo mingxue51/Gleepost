@@ -70,16 +70,29 @@ static CategoryManager *instance = nil;
 - (void)setCategoriesInOrder
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
+//    
+//    [array addObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers]];
+//    
+//    [array addObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater]];
+//    
+//    [array addObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports]];
+//    
+//    [array addObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties]];
+//    
+//    [array addObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic]];
     
-    [array addObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers]];
     
-    [array addObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater]];
+    // get all keys into array
+    NSArray * categoriesKey = [_categories allKeys];
     
-    [array addObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports]];
+    // sort it
+    NSArray *sortedCategoriesKeys = [categoriesKey sortedArrayUsingSelector:@selector(compare:)];
     
-    [array addObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties]];
     
-    [array addObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic]];
+    for(NSNumber *key in sortedCategoriesKeys)
+    {
+        [array addObject:[_categories objectForKey:key]];
+    }
     
     _categoriesInOrder = array.mutableCopy;
     

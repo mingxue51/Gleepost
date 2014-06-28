@@ -64,19 +64,13 @@ static BOOL likePushed;
 {
     [super viewDidLoad];
     
-//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-
     [self initialiseElements];
     
-    
     [self registerCells];
-    
 
     [self.tableView initTableView];
     
-    
     [self configureForm];
-
     
     [self fillPostWithKey];
     
