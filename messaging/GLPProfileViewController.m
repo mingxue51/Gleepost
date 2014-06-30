@@ -428,7 +428,7 @@
         //Find in which index the post exist and refresh it.
         if(_selectedTab == kButtonLeft)
         {
-            [self refreshCellViewWithIndex:index + 2];
+            [self refreshCellViewWithIndex:index + 1];
         }
     }
     
@@ -1068,9 +1068,6 @@
         {
             [profileView hideNotificationBubble];
         }
-        
-
-
         
         
         profileView.selectionStyle = UITableViewCellSelectionStyleNone;

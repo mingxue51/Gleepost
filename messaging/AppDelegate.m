@@ -269,8 +269,8 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     }
     
     
-    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
-    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[3];
     
     DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPProfileViewController *profileVC = navVC.viewControllers[0];
@@ -348,14 +348,14 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         return;
     }
     
-    if(_tabBarController.selectedIndex != 4) {
+    if(_tabBarController.selectedIndex != 3) {
         UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
         [currentNavigationVC popToRootViewControllerAnimated:NO];
-        [_tabBarController setSelectedIndex:4];
+        [_tabBarController setSelectedIndex:3];
     }
     
-    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
-    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[3];
     
     DDLogInfo(@"Private Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPProfileViewController *profileVC = navVC.viewControllers[0];
@@ -384,10 +384,10 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         return;
     }
     
-    if(_tabBarController.selectedIndex != 4) {
+    if(_tabBarController.selectedIndex != 3) {
         UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
         [currentNavigationVC popToRootViewControllerAnimated:NO];
-        [_tabBarController setSelectedIndex:4];
+        [_tabBarController setSelectedIndex:3];
     }
     
 //    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
@@ -401,8 +401,8 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 //    groupVC.fromPushNotification = YES;
     
     
-    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[4] class]));
-    UINavigationController *navVC = _tabBarController.viewControllers[4];
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[3];
     
     DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPProfileViewController *profileVC = navVC.viewControllers[0];

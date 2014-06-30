@@ -12,6 +12,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SessionManager.h"
 #import "ShapeFormatterHelper.h"
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface NotificationCell()
 
@@ -87,7 +88,8 @@ float const kMarginBetweenBorderAndContent = 15;
 
     
     [ShapeFormatterHelper setRoundedView:self.image toDiameter:self.image.frame.size.height];
-    [self.image setImageWithURL:[NSURL URLWithString:notification.user.profileImageUrl] placeholderImage:nil];
+    
+    [self.image setImageWithURL:[NSURL URLWithString:notification.user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     // center content label vertically regarding the image
     CGSize contentLabelSize = [NotificationCell getContentLabelSizeForContent:self.contentLabel.text forNotification:notification];
