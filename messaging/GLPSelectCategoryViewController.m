@@ -206,6 +206,10 @@
     {
         //Add cell.
         
+        _selectedCategory = _categories[indexPath.row];
+        
+        DDLogDebug(@"Selected category: %@", _selectedCategory);
+        
         [_categories insertObject:[[GLPCategory alloc] initWithTag:@"action cell" name:@"" andPostRemoteKey:0] atIndex:indexPath.row + 1];
         
         _actionCellIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0];
@@ -288,7 +292,7 @@
     {
         [self dismissViewControllerAnimated:YES completion:^{
            
-            [_delegate eventPostReadyWith:_pendingPost.eventTitle andEventDate:_pendingPost.currentDate];
+            [_delegate eventPostReadyWith:_pendingPost.eventTitle andEventDate:_pendingPost.currentDate andCategory:_selectedCategory];
             
         }];
     }

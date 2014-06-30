@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class GLPCategory;
 
 @protocol GLPSelectCategoryViewControllerDelegate <NSObject>
 
 @required
--(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate;
+-(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate andCategory:(GLPCategory *)category;
 
 @end
 

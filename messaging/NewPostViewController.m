@@ -458,10 +458,11 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 #pragma mark - GLPSelectCategoryViewControllerDelegate
 
--(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate
+-(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate andCategory:(GLPCategory *)category
 {
     _eventTitle = eventTitle;
     _eventDateStart = eventDate;
+    [_categories addObject:category];
 }
 
 - (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title

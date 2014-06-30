@@ -371,6 +371,9 @@ static WebClient *instance = nil;
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
     [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+    
+    DDLogDebug(@"Params: %@, Categories: %@", params, post.categories);
+    
     //TODO: add a new param url rather than call second method after the post request.
     
     if(post.videosUrls)
