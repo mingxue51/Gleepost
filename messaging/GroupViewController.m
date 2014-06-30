@@ -16,7 +16,6 @@
 #import "ViewPostViewController.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
-#import "ProfileTwoButtonsTableViewCell.h"
 #import "ContactUserCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
@@ -65,7 +64,7 @@
 
 @implementation GroupViewController
 
-const int NUMBER_OF_ROWS = 2;
+const int NUMBER_OF_ROWS = 1;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -121,6 +120,7 @@ const int NUMBER_OF_ROWS = 2;
 - (void)viewDidDisappear:(BOOL)animated
 {
     
+    
     [super viewDidDisappear:animated];
 }
 
@@ -142,9 +142,13 @@ const int NUMBER_OF_ROWS = 2;
 {
     //Register nib files in table view.
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
+    
+    
 
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"GroupTopViewCell" bundle:nil] forCellReuseIdentifier:@"GroupTopViewCell"];
     
     //Register posts.
     
@@ -155,7 +159,7 @@ const int NUMBER_OF_ROWS = 2;
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     //Register contacts' cells.
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
     
     
     
@@ -184,7 +188,7 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)initialiseObjects
 {
-    [self.view setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
 //    self.selectedTabStatus = kGLPPosts;
     
     
@@ -232,12 +236,6 @@ const int NUMBER_OF_ROWS = 2;
 
 -(void)configureNavigationBar
 {
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
-
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:YES];
-    
-//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
@@ -286,7 +284,7 @@ const int NUMBER_OF_ROWS = 2;
     
     if(currentPost)
     {
-        [self refreshCellViewWithIndex:index+2];
+        [self refreshCellViewWithIndex:index+1];
     }
 }
 
@@ -298,9 +296,7 @@ const int NUMBER_OF_ROWS = 2;
     int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
-    int index = 2;
-    
-    DDLogDebug(@"Post Uploaded: %@", urlImage);
+    int index = 1;
     
     GLPPost *uploadedPost = nil;
     
@@ -378,7 +374,7 @@ const int NUMBER_OF_ROWS = 2;
 - (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
 {
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for(int i = 2; i < count+2; i++) {
+    for(int i = 1; i < count+1; i++) {
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
     
@@ -434,7 +430,7 @@ const int NUMBER_OF_ROWS = 2;
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
-    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+2 inSection:0]];
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+1 inSection:0]];
     
     [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
 }
@@ -477,7 +473,7 @@ const int NUMBER_OF_ROWS = 2;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Try to load previous posts.
-    if(indexPath.row-2 == self.posts.count) {
+    if(indexPath.row-1 == self.posts.count) {
         
 //        DDLogDebug(@"Rows: %d, Count: %d", indexPath.row, self.posts.count);
         
@@ -493,16 +489,14 @@ const int NUMBER_OF_ROWS = 2;
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellVideoIdentifier = @"VideoCell";
-    static NSString *CellIdentifierProfile = @"ProfileCell";
-    static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
+    static NSString *CellGroupIdentifier = @"GroupTopViewCell";
     
     GLPPostCell *postViewCell;
-    ProfileTableViewCell *profileView;
-    ProfileTwoButtonsTableViewCell *buttonsView;
+    GroupTopViewCell *groupTopViewCell;
     
     if(indexPath.row == 0)
     {
-        profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
+        groupTopViewCell = [tableView dequeueReusableCellWithIdentifier:CellGroupIdentifier forIndexPath:indexPath];
         
 //        [profileView setPrivateProfileDelegate:self];
         
@@ -519,32 +513,25 @@ const int NUMBER_OF_ROWS = 2;
 //            [profileView initialiseElementsWithUserDetails:self.profileUser];
 //        }
         
-        [profileView setDelegate:self];
+        [groupTopViewCell setDelegate:self];
 
         [self loadPendingImageIfExist];
         
-        [profileView initialiseElementsWithGroupInformation:self.group withGroupImage:_groupImage];
+        groupTopViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        profileView.selectionStyle = UITableViewCellSelectionStyleNone;
+        [groupTopViewCell setGroupData:_group];
         
-        return profileView;
+        [groupTopViewCell setDownloadedImage:_groupImage];
         
-    }
-    else if(indexPath.row == 1)
-    {
-        buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
-        buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        [buttonsView setDelegate:self fromPushNotification:NO];
-        
-        return buttonsView;
+        return groupTopViewCell;
         
     }
-    else if (indexPath.row >= 2)
+    else if (indexPath.row >= 1)
     {
         if(self.posts.count != 0)
         {
-            GLPPost *post = self.posts[indexPath.row-2];
+            GLPPost *post = self.posts[indexPath.row-1];
             
             if([post imagePost])
             {
@@ -574,7 +561,6 @@ const int NUMBER_OF_ROWS = 2;
         }
 
 
-        
         return postViewCell;
     }
     
@@ -595,18 +581,18 @@ const int NUMBER_OF_ROWS = 2;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    if(indexPath.row < 2)
+    if(indexPath.row < 1)
     {
         return;
     }
     
 //    if(self.selectedTabStatus == kGLPPosts)
 //    {
-        if(indexPath.row-2 == self.posts.count) {
+        if(indexPath.row-1 == self.posts.count) {
             return;
         }
         
-        self.selectedPost = self.posts[indexPath.row-2];
+        self.selectedPost = self.posts[indexPath.row-1];
         //    self.postIndexToReload = indexPath.row-2;
         self.commentCreated = NO;
         [self performSegueWithIdentifier:@"view post" sender:self];
@@ -626,7 +612,7 @@ const int NUMBER_OF_ROWS = 2;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row - 2 == self.posts.count) {
+    if(indexPath.row - 1 == self.posts.count) {
         
         
         
@@ -635,20 +621,16 @@ const int NUMBER_OF_ROWS = 2;
     
     if(indexPath.row == 0)
     {
-        return PROFILE_CELL_HEIGHT;
+        return GROUP_TOP_VIEW_HEIGHT;
     }
-    else if(indexPath.row == 1)
-    {
-        return TWO_BUTTONS_CELL_HEIGHT;
-    }
-    else if(indexPath.row >= 2)
+    else if(indexPath.row >= 1)
     {
         
 //        if(self.selectedTabStatus == kGLPPosts)
 //        {
             if(self.posts.count != 0 && self.posts)
             {
-                GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-2];
+                GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
                 
                 if([currentPost imagePost])
                 {
@@ -689,8 +671,8 @@ const int NUMBER_OF_ROWS = 2;
     //    if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusFinished) {
 
     
-    if(indexPath.row - 2 == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
-        NSLog(@"Load previous posts cell activated");
+    if(indexPath.row - 1 == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
+        DDLogInfo(@"Load previous posts cell activated");
         [self loadPreviousPosts];
     }
 }
@@ -1047,38 +1029,6 @@ const int NUMBER_OF_ROWS = 2;
     }
 }
 
-#pragma mark - ProfileTableViewCellDelegate
-
--(void)showInformationMenu:(id)sender
-{
-    UIActionSheet *actionSheet = nil;
-    
-    BOOL hasImage = [self addGroupImage:sender];
-    
-    if(_group.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
-    {
-        if(hasImage)
-        {
-            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
-        }
-        else
-        {
-            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Add image", nil];
-        }
-    }
-    else
-    {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", nil];
-    }
-    
-
-    
-    
-    [actionSheet showInView:[self.view window]];
-}
-
-
-
 #pragma mark - View image delegate
 
 -(void)viewPostImage:(UIImage*)postImage
@@ -1132,14 +1082,11 @@ const int NUMBER_OF_ROWS = 2;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
-#pragma  mark - Button Navigation Delegate
+#pragma  mark - GroupTopViewCellDelegate
 
--(void)viewSectionWithId:(GLPSelectedTab) selectedTab
+- (void)segmentSwitchedWithButtonType:(ButtonType)buttonType
 {
-    
-//    self.selectedTabStatus = selectedTab;
-    
-    if(selectedTab == kGLPMembers)
+    if(buttonType == kButtonRight)
     {
         //Navigate to members view controller.
         [self performSegueWithIdentifier:@"view members" sender:self];
@@ -1149,7 +1096,31 @@ const int NUMBER_OF_ROWS = 2;
     {
         [self.tableView reloadData];
     }
+}
+
+- (void)showGroupImageOptionsWithImage:(UIImage *)image
+{
+    UIActionSheet *actionSheet = nil;
     
+    BOOL hasImage = [self addGroupImage:image];
+    
+    if(_group.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
+    {
+        if(hasImage)
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
+        }
+        else
+        {
+            actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Add image", nil];
+        }
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", nil];
+    }
+    
+    [actionSheet showInView:[self.view window]];
 }
 
 #pragma  mark - Helpers
@@ -1162,15 +1133,15 @@ const int NUMBER_OF_ROWS = 2;
  @return returns NO if there group does not contain any image, otherwise returns YES.
  
  */
--(BOOL)addGroupImage:(id)sender
+-(BOOL)addGroupImage:(UIImage *)image
 {
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+//    
+//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
-    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
+    _groupImage = image;
     
-    _groupImage = clickedImageView.image;
-    
-    return (clickedImageView.tag == 0) ? NO : YES;
+    return (_groupImage) ? YES : NO;
 }
 
 

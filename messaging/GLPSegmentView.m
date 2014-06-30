@@ -95,13 +95,13 @@ const float ANIMATION_DURATION = 0.1;
 - (void)selectRightButton
 {
     _conversationType = kButtonRight;
-    [self reloadButtonsFormat];
+    [self refreshSlider];
 }
 
 - (void)selectLeftButton
 {
     _conversationType = kButtonLeft;
-    [self reloadButtonsFormat];
+    [self refreshSlider];
 }
 
 -(void)layoutSubviews
@@ -137,21 +137,38 @@ const float ANIMATION_DURATION = 0.1;
     if(_conversationType == kButtonLeft)
     {
         CGRectSetX(_slideImageView, _leftLbl.frame.origin.x);
+        
+        [_leftLbl setTextColor:[UIColor blackColor]];
+        [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
+        
+        [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
+        [_rightLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
     }
     else
     {
         CGRectSetX(_slideImageView, _rightLbl.frame.origin.x);
+        
+        [_rightLbl setTextColor:[UIColor blackColor]];
+        [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
+        
+        [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
+        [_leftLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
     }
 }
 
 - (void)reloadButtonsFormat
 {
+    
     if(_conversationType == kButtonLeft)
     {
+        DDLogDebug(@"reloadButtonsFormat kButtonLeft");
+
         [self leftButtonSelected];
     }
     else
     {
+        DDLogDebug(@"reloadButtonsFormat kButtonRight");
+
         [self rightButtonSelected];
     }
 }
