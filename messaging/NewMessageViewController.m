@@ -1,32 +1,31 @@
 //
 //  NewMessageViewController.m
-//  messaging
+//  Gleepost
 //
-//  Created by Lukas on 8/19/13.
-//  Copyright (c) 2013 Gleepost. All rights reserved.
+//  Created by Σιλουανός on 1/7/14.
+//  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
 #import "NewMessageViewController.h"
-#import "SessionManager.h"
-#import "MBProgressHUD.h"
+#import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
+#import "GLPNameCell.h"
+#import "NSString+Utils.h"
 #import "WebClient.h"
-#import "UIPlaceHolderTextView.h"
-
+#import "GLPLiveConversationsManager.h"
+#import "SessionManager.h"
+#import "GLPConversationViewController.h"
 
 @interface NewMessageViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
-@property (weak, nonatomic) IBOutlet UIView *titleLimitView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
-@property (strong, nonatomic) NSMutableArray *usersNames;
-@property (strong, nonatomic) TITokenFieldView *tokenFieldView;
-@property (strong, nonatomic) UIPlaceHolderTextView *messageView;
-@property (assign, nonatomic) CGFloat keyboardHeight;
+@property (strong, nonatomic) NSMutableArray *searchedUsers;
 
+@property (strong, nonatomic) UITapGestureRecognizer *tap;
 
-
-- (IBAction)cancelButtonClick:(id)sender;
-- (IBAction)sendButtonClick:(id)sender;
+@property (strong, nonatomic) GLPConversation *conversation;
 
 @end
 
@@ -36,175 +35,250 @@
 {
     [super viewDidLoad];
     
-    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar.png"] forBarMetrics:UIBarMetricsDefault];
-    [self setBackgroundToNavigationBar];
+    [self configureNavigationBar];
     
+    [self registerTableViewCells];
     
-    //TODO: Problem here.
-//    self.usersNames = [NSArray arrayWithObjects:@"Lukas", @"Patrick", @"Tade", @"Tosh", nil];
-
-    float aboveHeight = self.titleLimitView.frame.origin.y + 1;
-    self.tokenFieldView = [[TITokenFieldView alloc] initWithFrame:CGRectMake(0, aboveHeight, self.view.bounds.size.width, self.view.bounds.size.height - aboveHeight)];
-	[self.tokenFieldView setSourceArray:self.usersNames];
-	[self.view addSubview:self.tokenFieldView];
-	
-	[self.tokenFieldView.tokenField setDelegate:self];
-//	[self.tokenFieldView.tokenField addTarget:self action:@selector(tokenFieldFrameDidChange:) forControlEvents:TITokenFieldControlEventFrameDidChange];
-	[self.tokenFieldView.tokenField setTokenizingCharacters:[NSCharacterSet characterSetWithCharactersInString:@",;."]]; // Default is a comma
-    [self.tokenFieldView.tokenField setPromptText:@"To:"];
-	[self.tokenFieldView.tokenField setPlaceholder:@"Type a name"];
-	
-//	UIButton * addButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-//	[addButton addTarget:self action:@selector(showContactsPicker:) forControlEvents:UIControlEventTouchUpInside];
-//	[self.tokenFieldView.tokenField setRightView:addButton];
-//	[self.tokenFieldView.tokenField addTarget:self action:@selector(tokenFieldChangedEditing:) forControlEvents:UIControlEventEditingDidBegin];
-//	[self.tokenFieldView.tokenField addTarget:self action:@selector(tokenFieldChangedEditing:) forControlEvents:UIControlEventEditingDidEnd];
-	
-    self.messageView = [[UIPlaceHolderTextView alloc] initWithFrame:self.tokenFieldView.contentView.bounds];
-	[self.messageView setScrollEnabled:NO];
-	[self.messageView setAutoresizingMask:UIViewAutoresizingNone];
-	[self.messageView setDelegate:self];
-	[self.messageView setFont:[UIFont systemFontOfSize:15]];
-    self.messageView.placeholder = @"Your message";
-	[self.tokenFieldView.contentView addSubview:self.messageView];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	
-    [self.titleTextField becomeFirstResponder];
-	// You can call this on either the view on the field.
-	// They both do the same thing.
-//	[self.tokenFieldView becomeFirstResponder];
+    [self initiliaseObjects];
+    
+    [self configureGestures];
+    
 }
 
--(void) setBackgroundToNavigationBar
+- (void)initiliaseObjects
 {
-//    UIImage *img = [UIImage imageNamed:@"navigationbar_4"];
-    UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
-    
-    
-    
-    [bar setBackgroundColor:[UIColor clearColor]];
-    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
-    [bar setTranslucent:YES];
-    
-    
-    //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-    
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-    
-    [self.navigationController.navigationBar insertSubview:bar atIndex:1];
+    _searchedUsers = [[NSMutableArray alloc] init];
 }
 
-- (IBAction)titleTextField:(id)sender {
+- (void)registerTableViewCells
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPNameCell" bundle:nil] forCellReuseIdentifier:@"GLPNameCell"];
 }
 
-- (IBAction)cancelButtonClick:(id)sender
+- (void)configureGestures
+{
+    _tap = [[UITapGestureRecognizer alloc]
+            initWithTarget:self
+            action:@selector(viewTouched:)];
+    
+    _tap.cancelsTouchesInView = NO;
+    
+    [_tableView addGestureRecognizer:_tap];
+}
+
+- (void)configureNavigationBar
+{
+    float buttonsSize = 30.0;
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+    
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"x_red" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissViewController) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"group_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(navigateToGroupMessageController) andTarget:self];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _searchedUsers.count;
+}
+
+
+#pragma mark - Table view delegate
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *userCellIdentifier = @"GLPNameCell";
+    
+    GLPNameCell *userCell = nil;
+    
+    userCell = [tableView dequeueReusableCellWithIdentifier:userCellIdentifier forIndexPath:indexPath];
+    
+    [userCell setUserData:_searchedUsers[indexPath.row]];
+    
+    return userCell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    //Start new conversation or continue if existed.
+    
+    [self startNewConversationWithUser:_searchedUsers[indexPath.row]];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NAME_CELL_HEIGHT;
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    // remove all data that belongs to previous search
+    
+    [_searchedUsers removeAllObjects];
+    
+    if(![searchText isNotBlank])
+    {
+        [_tableView reloadData];
+        
+        return;
+    }
+    
+
+    [self searchUserWithName:searchText];
+    
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    //We are setting a delay here because otherwise setCancelsTouchesInView is called after the touch to
+    //the collection view.
+    
+    [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
+}
+
+
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [_tap setCancelsTouchesInView:YES];
+}
+
+#pragma mark - Search users
+
+- (void)searchUserWithName:(NSString *)userName
+{
+    
+    if(![userName isNotBlank]) {
+        return;
+    }
+    
+    DDLogInfo(@"Start user search");
+    
+    
+    [[WebClient sharedInstance] searchUserByName:userName callback:^(NSArray *users) {
+        
+//        if(_requestsCount == 0) {
+//            _activityIndicator.hidden = YES;
+//            [_activityIndicator stopAnimating];
+//            _searchButton.hidden = NO;
+//        }
+        
+        if(!users) {
+            return;
+        }
+        
+        NSLog(@"Search users by name count: %d", users.count);
+        
+        
+//        for(GLPUser *user in users)
+//        {
+//            NSNumber *index = [user remoteKeyNumber];
+//            
+//            if(!_checkedUsers[index])
+//            {
+//                _checkedUsers[index] = [NSNumber numberWithBool:NO];
+//            }
+//        }
+        
+        _searchedUsers = [users mutableCopy];
+        
+        [_tableView reloadData];
+    }];
+}
+
+#pragma mark - Keyboard management
+
+- (void)viewTouched:(id)sender
+{
+    [self hideKeyboardFromSearchBarIfNeeded];
+}
+
+-(void)hideKeyboardFromSearchBarIfNeeded
+{
+    if([self.searchBar isFirstResponder]) {
+        [self.searchBar resignFirstResponder];
+    }
+}
+
+#pragma mark - Selectors
+
+- (void)dismissViewController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)sendButtonClick:(id)sender
+
+- (void)startNewConversationWithUser:(GLPUser *)user
 {
-//    Topic *topic = [[Topic alloc] init];
-//    topic.title = self.titleTextField.text;
-//    topic.date = [NSDate date];
-//    
-//    NSArray *users = [NSArray array];//  [NSArray arrayWithObjects:[SessionManager sharedInstance].user, nil];
-//    topic.users = users;
-//    
-//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    hud.labelText = @"Creating post";
-//    hud.detailsLabelText = @"Please wait few seconds";
-//
-//    WebClient *client = [WebClient sharedInstance];
-//    [client createTopic:topic callbackBlock:^(BOOL success) {
-//        [hud hide:YES];
-//        
-//        if(success) {
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//        } else {
-//            
-//        }
-//    }];
-}
-
-
-
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-	
-	CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	self.keyboardHeight = keyboardRect.size.height > keyboardRect.size.width ? keyboardRect.size.width : keyboardRect.size.height;
-	[self resizeViews];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-	self.keyboardHeight = 0;
-	[self resizeViews];
-}
-
-- (void)resizeViews {
-    int tabBarOffset = self.tabBarController == nil ?  0 : self.tabBarController.tabBar.frame.size.height;
-	[_tokenFieldView setFrame:((CGRect){_tokenFieldView.frame.origin, {self.view.bounds.size.width, self.view.bounds.size.height + tabBarOffset - _keyboardHeight}})];
-	[_messageView setFrame:_tokenFieldView.contentView.bounds];
-}
-
-- (BOOL)tokenField:(TITokenField *)tokenField willRemoveToken:(TIToken *)token {
-	
-	if ([token.title isEqualToString:@"Tom Irving"]){
-		return NO;
-	}
-	
-	return YES;
-}
-
-- (void)tokenFieldChangedEditing:(TITokenField *)tokenField {
-	// There's some kind of annoying bug where UITextFieldViewModeWhile/UnlessEditing doesn't do anything.
-	[tokenField setRightViewMode:(tokenField.editing ? UITextFieldViewModeAlways : UITextFieldViewModeNever)];
-}
-
-- (void)tokenFieldFrameDidChange:(TITokenField *)tokenField {
-	[self textViewDidChange:self.messageView];
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-	
-	CGFloat oldHeight = self.tokenFieldView.frame.size.height - self.tokenFieldView.tokenField.frame.size.height;
-	CGFloat newHeight = textView.contentSize.height + textView.font.lineHeight;
-	
-	CGRect newTextFrame = textView.frame;
-	newTextFrame.size = textView.contentSize;
-	newTextFrame.size.height = newHeight;
-	
-	CGRect newFrame = self.tokenFieldView.contentView.frame;
-	newFrame.size.height = newHeight;
-	
-	if (newHeight < oldHeight){
-		newTextFrame.size.height = oldHeight;
-		newFrame.size.height = oldHeight;
-	}
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findRegularByParticipant:user];
     
-	[self.tokenFieldView.contentView setFrame:newFrame];
-	[textView setFrame:newTextFrame];
-	[self.tokenFieldView updateContentSize];
+    DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
+    
+    if(!conversation)
+    {
+        DDLogInfo(@"Create empty conversation");
+        
+        NSArray *part = [[NSArray alloc] initWithObjects:user, [SessionManager sharedInstance].user, nil];
+        conversation = [[GLPConversation alloc] initWithParticipants:part];
+    }
+    
+    [self navigateToConversationViewControllerWithConversation:conversation];
 }
 
-- (void)showContactsPicker:(id)sender {
-	
-	// Show some kind of contacts picker in here.
-	// For now, here's how to add and customize tokens.
-	
-	NSArray * names = self.usersNames;
-	
-	TIToken * token = [_tokenFieldView.tokenField addTokenWithTitle:[names objectAtIndex:(arc4random() % names.count)]];
-	[token setAccessoryType:TITokenAccessoryTypeDisclosureIndicator];
-	// If the size of the token might change, it's a good idea to layout again.
-	[_tokenFieldView.tokenField layoutTokensAnimated:YES];
-	
-	NSUInteger tokenCount = _tokenFieldView.tokenField.tokens.count;
-	[token setTintColor:((tokenCount % 3) == 0 ? [TIToken redTintColor] : ((tokenCount % 2) == 0 ? [TIToken greenTintColor] : [TIToken blueTintColor]))];
+- (void)navigateToGroupMessageController
+{
+    
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - Navigation
+
+- (void)navigateToConversationViewControllerWithConversation:(GLPConversation *)conversation
+{
+    _conversation = conversation;
+    
+    [self performSegueWithIdentifier:@"view conversation" sender:self];
+
+}
+
+
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"view conversation"])
+    {
+//        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        GLPConversationViewController *vt = segue.destinationViewController;
+        vt.conversation = _conversation;
+    }
+}
+
 
 @end

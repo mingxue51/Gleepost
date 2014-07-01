@@ -1,5 +1,5 @@
 //
-//  NewMessageViewController.h
+//  GLPNameCell.h
 //  Gleepost
 //
 //  Created by Σιλουανός on 1/7/14.
@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewMessageViewController : UIViewController <UITableViewDataSource, UITabBarDelegate, UISearchBarDelegate>
+@class GLPUser;
+
+@interface GLPNameCell : UITableViewCell
+
+extern const float NAME_CELL_HEIGHT;
+
+
+- (void)setUserData:(GLPUser *)user;
 
 @end

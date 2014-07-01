@@ -17,6 +17,7 @@
 #import "UIColor+GLPAdditions.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
+#import "NewMessageViewController.h"
 
 
 @interface MessengerViewController ()
@@ -177,7 +178,12 @@
 
 - (void)viewNewMessageView
 {
-    DDLogDebug(@"viewNewMessageView");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    NewMessageViewController *newMessageVC = [storyboard instantiateViewControllerWithIdentifier:@"NewMessageViewController"];
+//    [newPostVC setDelegate:self];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newMessageVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
