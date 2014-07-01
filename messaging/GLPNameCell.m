@@ -24,7 +24,7 @@
 
 @implementation GLPNameCell
 
-const float NAME_CELL_HEIGHT = 60;
+const float NAME_CELL_HEIGHT = 50;
 
 - (void)awakeFromNib
 {
