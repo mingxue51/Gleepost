@@ -30,6 +30,8 @@
 #import "ShapeFormatterHelper.h"
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
+#import "BOZPongRefreshControl.h"
+#import "GLPRefreshControl.h"
 
 @interface GroupViewController ()
 
@@ -59,6 +61,10 @@
 @property (strong, nonatomic) UIImage *groupImage;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
+
+@property (strong, nonatomic) GLPRefreshControl *glpRefreshControl;
+
+//@property (strong, nonatomic) BOZPongRefreshControl *pongRefreshControl;
 
 @end
 
@@ -104,7 +110,30 @@ const int NUMBER_OF_ROWS = 1;
     [self.tableView setTableFooterView:[[UIView alloc] init]];
     [self configureNotifications];
     
+    
+    
+    CGFloat customRefreshControlHeight = 50.0f;
+    CGFloat customRefreshControlWidth = 320.0f;
+    CGRect customRefreshControlFrame = CGRectMake(0.0f,
+                                                  -customRefreshControlHeight,
+                                                  customRefreshControlWidth,
+                                                  customRefreshControlHeight);
+    
+    _glpRefreshControl = [[GLPRefreshControl alloc] initWithFrame:customRefreshControlFrame];
+    
+    [_glpRefreshControl addTarget:self
+                                  action:@selector(loadEarlierPostsFromPullToRefresh)
+                        forControlEvents:UIControlEventValueChanged];
+    
+    [self.tableView addSubview:_glpRefreshControl];
 }
+
+//- (void)viewDidLayoutSubviews
+//{
+//    self.pongRefreshControl = [BOZPongRefreshControl attachToTableView:self.tableView
+//                                                     withRefreshTarget:self
+//                                                      andRefreshAction:@selector(loadEarlierPostsFromPullToRefresh)];
+//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -135,6 +164,22 @@ const int NUMBER_OF_ROWS = 1;
     [self removeNotifications];
 
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+//    [self.pongRefreshControl scrollViewDidScroll];
+}
+
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//    [self.pongRefreshControl scrollViewDidEndDragging];
+    
+    [_glpRefreshControl containingScrollViewDidEndDragging:scrollView];
+
+}
+
+
 
 #pragma mark - Configuration methods
 
@@ -172,8 +217,8 @@ const int NUMBER_OF_ROWS = 1;
 -(void)configureTableView
 {
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+//    self.refreshControl = [[UIRefreshControl alloc] init];
+//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
     if([GLPiOS6Helper isIOS6])
     {
@@ -831,6 +876,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     //Added to support groups' feed.
     [self loadEarlierPostsAndSaveScrollingState:NO];
+    
 }
 
 - (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
@@ -865,6 +911,8 @@ const int NUMBER_OF_ROWS = 1;
     
     [GLPGroupManager loadRemotePostsBefore:remotePost withGroupRemoteKey:_group.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
+//        [_pongRefreshControl finishedLoading];
+
 
         if(!success) {
             //                [self showLoadingError:@"Failed to load new posts"];
@@ -912,7 +960,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = YES;
     
-    [self.refreshControl beginRefreshing];
+//    [self.refreshControl beginRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
@@ -920,7 +968,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = NO;
     
-    [self.refreshControl endRefreshing];
+//    [self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

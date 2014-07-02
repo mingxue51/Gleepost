@@ -16,7 +16,7 @@
 #import "GroupTopViewCell.h"
 
 
-@interface GroupViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate, NewPostDelegate, UIActionSheetDelegate, GroupTopViewCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
+@interface GroupViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate, NewPostDelegate, UIActionSheetDelegate, GroupTopViewCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
 @property (assign, nonatomic) BOOL fromPushNotification;

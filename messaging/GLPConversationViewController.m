@@ -97,12 +97,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         [self loadInitialMessages];
     }
     
-    if([[ContactsManager sharedInstance] isContactWithIdRequested:[_conversation getUniqueParticipant].remoteKey])
-    {
-        DDLogDebug(@"Contact already requested.");
-        [self disableAddUserButton];
-    }
-        
+    
+    //This is not needed because we have not contacts on this version.
+    
+//    if([[ContactsManager sharedInstance] isContactWithIdRequested:[_conversation getUniqueParticipant].remoteKey])
+//    {
+//        DDLogDebug(@"Contact already requested.");
+//        [self disableAddUserButton];
+//    }
+    
     _isFirstLoaded = YES;
 }
 
@@ -661,11 +664,24 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     }
     
     if(_isEmptyConversation) {
-        [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
-            _conversation = conversation;
-            _isEmptyConversation = NO;
-            [self createMessageFromForm];
-        }];
+        
+        //Bring support of group conversation.
+        
+        if(_conversation.isGroup)
+        {
+            //Create new group conversation.
+            
+        }
+        else
+        {
+            [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
+                _conversation = conversation;
+                _isEmptyConversation = NO;
+                [self createMessageFromForm];
+            }];
+        }
+        
+
     } else {
         [self createMessageFromForm];
     }

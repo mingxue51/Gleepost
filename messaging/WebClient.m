@@ -1151,6 +1151,18 @@ static WebClient *instance = nil;
     return conversation;
 }
 
+- (GLPConversation *)synchronousCreateConversationWithUsers:(NSArray *)users
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    
+    params[@"random"] = @"false";
+    
+    __block GLPConversation *conversation = nil;
+
+    
+}
+
 - (void)createConversation:(void (^)(GLPConversation *conversation))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];

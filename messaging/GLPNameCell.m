@@ -2,15 +2,15 @@
 //  GLPNameCell.m
 //  Gleepost
 //
-//  Created by Σιλουανός on 1/7/14.
+//  Created by Σιλουανός on 2/7/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
 #import "GLPNameCell.h"
+#import "GLPUser.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
-#import "GLPUser.h"
 
 @interface GLPNameCell ()
 
@@ -26,11 +26,22 @@
 
 const float NAME_CELL_HEIGHT = 50;
 
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        // Initialization code
+    }
+    return self;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
     [self configureMainImageView];
+    
 }
 
 #pragma mark - Modifiers
@@ -59,12 +70,21 @@ const float NAME_CELL_HEIGHT = 50;
     }
 }
 
+#pragma mark - Accessors
+
+- (GLPUser *)user
+{
+    return _user;
+}
+
 #pragma mark - Configuration
 
 - (void)configureMainImageView
 {
     [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageView.frame.size.height];
 }
+
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

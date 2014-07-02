@@ -9,7 +9,7 @@
 #import "NewMessageViewController.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
-#import "GLPNameCell.h"
+#import "GLPSimpleNameCell.h"
 #import "NSString+Utils.h"
 #import "WebClient.h"
 #import "GLPLiveConversationsManager.h"
@@ -35,14 +35,19 @@
 {
     [super viewDidLoad];
     
-    [self configureNavigationBar];
-    
     [self registerTableViewCells];
     
     [self initiliaseObjects];
     
     [self configureGestures];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configureNavigationBar];
 }
 
 - (void)initiliaseObjects
@@ -100,7 +105,7 @@
 {
     static NSString *userCellIdentifier = @"GLPNameCell";
     
-    GLPNameCell *userCell = nil;
+    GLPSimpleNameCell *userCell = nil;
     
     userCell = [tableView dequeueReusableCellWithIdentifier:userCellIdentifier forIndexPath:indexPath];
     
@@ -236,6 +241,7 @@
         
         NSArray *part = [[NSArray alloc] initWithObjects:user, [SessionManager sharedInstance].user, nil];
         conversation = [[GLPConversation alloc] initWithParticipants:part];
+        
     }
     
     [self navigateToConversationViewControllerWithConversation:conversation];
@@ -243,7 +249,7 @@
 
 - (void)navigateToGroupMessageController
 {
-    
+    [self performSegueWithIdentifier:@"view group" sender:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -277,6 +283,10 @@
         
         GLPConversationViewController *vt = segue.destinationViewController;
         vt.conversation = _conversation;
+    }
+    else if ([segue.identifier isEqualToString:@"view group"])
+    {
+        
     }
 }
 

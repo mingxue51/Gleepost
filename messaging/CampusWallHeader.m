@@ -108,7 +108,7 @@ NSString *BORING_IMAGE;
 
 -(void)loadEvents
 {
-    [self showLoadingLabel];
+//    [self showLoadingLabel];
     
     _posts = nil;
     
@@ -122,7 +122,7 @@ NSString *BORING_IMAGE;
 
             _posts = posts;
             
-            [self hideLoadingLabel];
+//            [self hideLoadingLabel];
 
             [self clearAndLoad];
             

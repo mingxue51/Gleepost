@@ -69,7 +69,11 @@
     // remove the current user
     _participants = [participants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey != %d", [SessionManager sharedInstance].user.remoteKey]];
     
+//    _isGroup = _participants.count > 1;
     _isGroup = _participants.count > 1;
+
+    DDLogDebug(@"Participants: %@", _participants);
+    
     _title = _isGroup ? @"Group chat" : [self getUniqueParticipant].name;
     
     _isLive = NO;

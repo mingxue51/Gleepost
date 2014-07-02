@@ -154,6 +154,31 @@ static GLPLiveConversationsManager *instance = nil;
     });
 }
 
+//- (void)createRegularConversationWithUsers:(NSArray *)users callback:(void (^)(GLPConversation *))callback
+//{
+//    DDLogInfo(@"Create regular conversation with users %@", users);
+//    
+//    dispatch_async(_queue, ^{
+//        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUser:user];
+//        if(!conversation) {
+//            DDLogWarn(@"Cannot create new regular conversation in server, abort");
+//            return;
+//        }
+//        
+//        BOOL success = [self internalAddConversation:conversation isEmpty:YES];
+//        DDLogInfo(@"Conversation created succesfully: %d", success);
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if(success) {
+//                callback(conversation);
+//            } else {
+//                callback(nil);
+//            }
+//        });
+//    });
+//
+//}
+
 - (void)addConversation:(GLPConversation *)conversation
 {
     DDLogInfo(@"Add conversation with remote key %d", conversation.remoteKey);
@@ -603,6 +628,8 @@ static GLPLiveConversationsManager *instance = nil;
     
     return conversations;
 }
+
+//TODO: Change live to group conversations.
 
 - (void)conversationsList:(void (^)(NSArray *liveConversations, NSArray *regularConversations))block
 {

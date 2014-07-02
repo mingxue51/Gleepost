@@ -58,6 +58,7 @@
 #import "GLPWalkthroughViewController.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
+#import "UIImage+animatedGIF.h"
 
 @interface GLPTimelineViewController ()
 
@@ -731,6 +732,28 @@ const float TOP_OFFSET = 280.0f;
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+    
+    
+ /**   UIImageView* animatedImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    animatedImageView.animationImages = [NSArray arrayWithObjects:
+                                         [UIImage imageNamed:@"loader5.gif"], nil];
+    animatedImageView.animationDuration = 2.0f;
+    animatedImageView.animationRepeatCount = 10;
+    [animatedImageView startAnimating];
+    */
+    
+    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(120, -5, 70, 70)];
+    [subView setImage: [UIImage animatedImageWithAnimatedGIFURL:[NSURL URLWithString:@"https://cdn-assets-hall-com.s3.amazonaws.com/production/private/halls/52eac33d9f1fb2a79e00017b/user_uploaded_files/loader5.gif?AWSAccessKeyId=17VVCSSS3H6YGDY9H3G2&Expires=1404335284&Signature=NxrSXLPvzFlxUXMHQ2NtIVMSrPU%3D&response-content-type=image%2Fgif"]]];
+    
+    [self.refreshControl insertSubview:subView atIndex:0];
+    
+    [self.refreshControl insertSubview:subView atIndex:1];
+    
+    [self.refreshControl insertSubview:subView atIndex:2];
+
+    
+    [self.refreshControl setBackgroundColor:[UIColor whiteColor]];
+    [self.refreshControl setTintColor:[UIColor whiteColor]];
 }
 
 -(void)configHeader
