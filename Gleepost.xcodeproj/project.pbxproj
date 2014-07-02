@@ -318,6 +318,7 @@
 		58774D331964972F0034A1C6 /* GLPRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 58774D321964972F0034A1C6 /* GLPRefreshControl.m */; };
 		58774D3619649BD80034A1C6 /* loader5.gif in Resources */ = {isa = PBXBuildFile; fileRef = 58774D3519649BD80034A1C6 /* loader5.gif */; };
 		58774D3919649C980034A1C6 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 58774D3819649C980034A1C6 /* UIImage+animatedGIF.m */; };
+		58774D3B1964A5C00034A1C6 /* loader2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 58774D3A1964A5C00034A1C6 /* loader2.gif */; };
 		587805AF1920E2CE0002472B /* AVCamRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805A81920E2CE0002472B /* AVCamRecorder.m */; };
 		587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AA1920E2CE0002472B /* AVCamUtilities.m */; };
 		587805B11920E2CE0002472B /* CaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AC1920E2CE0002472B /* CaptureManager.m */; };
@@ -1253,6 +1254,7 @@
 		58774D3519649BD80034A1C6 /* loader5.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loader5.gif; sourceTree = "<group>"; };
 		58774D3719649C980034A1C6 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		58774D3819649C980034A1C6 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
+		58774D3A1964A5C00034A1C6 /* loader2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loader2.gif; sourceTree = "<group>"; };
 		587805A71920E2CE0002472B /* AVCamRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamRecorder.h; sourceTree = "<group>"; };
 		587805A81920E2CE0002472B /* AVCamRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCamRecorder.m; sourceTree = "<group>"; };
 		587805A91920E2CE0002472B /* AVCamUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamUtilities.h; sourceTree = "<group>"; };
@@ -2696,6 +2698,7 @@
 		58774D3419649BAC0034A1C6 /* Refresh */ = {
 			isa = PBXGroup;
 			children = (
+				58774D3A1964A5C00034A1C6 /* loader2.gif */,
 				58774D3519649BD80034A1C6 /* loader5.gif */,
 			);
 			name = Refresh;
@@ -4523,6 +4526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58536EDA18BE83DE0036FD00 /* gleepost.cer in Resources */,
+				58774D3B1964A5C00034A1C6 /* loader2.gif in Resources */,
 				58F0F0C01934DD780032450F /* textfield_background.png in Resources */,
 				582A664518AB9BC400006419 /* bar3_selected.png in Resources */,
 				5861576A193CD47C009BAD33 /* walkthrough_view_1.png in Resources */,

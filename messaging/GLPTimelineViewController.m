@@ -742,8 +742,13 @@ const float TOP_OFFSET = 280.0f;
     [animatedImageView startAnimating];
     */
     
-    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(120, -5, 70, 70)];
-    [subView setImage: [UIImage animatedImageWithAnimatedGIFURL:[NSURL URLWithString:@"https://cdn-assets-hall-com.s3.amazonaws.com/production/private/halls/52eac33d9f1fb2a79e00017b/user_uploaded_files/loader5.gif?AWSAccessKeyId=17VVCSSS3H6YGDY9H3G2&Expires=1404335284&Signature=NxrSXLPvzFlxUXMHQ2NtIVMSrPU%3D&response-content-type=image%2Fgif"]]];
+    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(128, -2, 64, 64)];
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
+    
+    NSData *gifData = [NSData dataWithContentsOfFile: filePath];
+    
+    [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
     
     [self.refreshControl insertSubview:subView atIndex:0];
     
