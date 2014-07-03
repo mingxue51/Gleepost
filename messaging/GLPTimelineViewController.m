@@ -742,7 +742,7 @@ const float TOP_OFFSET = 280.0f;
     [animatedImageView startAnimating];
     */
     
-    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(128, -2, 64, 64)];
+    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(130, -2, 60, 60)];
     
     NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
     
