@@ -282,12 +282,12 @@ static BOOL likePushed;
 
 -(void)addCustomBackButton
 {
-    UIImage *img = [UIImage imageNamed:@"back"];
+    UIImage *img = [UIImage imageNamed:@"back_final"];
     
     UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
     [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:img forState:UIControlStateNormal];
-    [btn setFrame:CGRectMake(0, 0, 13, 21)];
+    [btn setFrame:CGRectMake(0, 0, 25, 25)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     

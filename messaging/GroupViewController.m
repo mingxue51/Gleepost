@@ -30,8 +30,9 @@
 #import "ShapeFormatterHelper.h"
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
-#import "BOZPongRefreshControl.h"
-#import "GLPRefreshControl.h"
+//#import "BOZPongRefreshControl.h"
+//#import "GLPRefreshControl.h"
+#import "UIRefreshControl+CustomLoader.h"
 
 @interface GroupViewController ()
 
@@ -62,9 +63,7 @@
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
 
-@property (strong, nonatomic) GLPRefreshControl *glpRefreshControl;
 
-//@property (strong, nonatomic) BOZPongRefreshControl *pongRefreshControl;
 
 @end
 
@@ -110,22 +109,6 @@ const int NUMBER_OF_ROWS = 1;
     [self.tableView setTableFooterView:[[UIView alloc] init]];
     [self configureNotifications];
     
-    
-    
-    CGFloat customRefreshControlHeight = 50.0f;
-    CGFloat customRefreshControlWidth = 320.0f;
-    CGRect customRefreshControlFrame = CGRectMake(0.0f,
-                                                  -customRefreshControlHeight,
-                                                  customRefreshControlWidth,
-                                                  customRefreshControlHeight);
-    
-    _glpRefreshControl = [[GLPRefreshControl alloc] initWithFrame:customRefreshControlFrame];
-    
-    [_glpRefreshControl addTarget:self
-                                  action:@selector(loadEarlierPostsFromPullToRefresh)
-                        forControlEvents:UIControlEventValueChanged];
-    
-    [self.tableView addSubview:_glpRefreshControl];
 }
 
 //- (void)viewDidLayoutSubviews
@@ -165,19 +148,6 @@ const int NUMBER_OF_ROWS = 1;
 
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-//    [self.pongRefreshControl scrollViewDidScroll];
-}
-
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-//    [self.pongRefreshControl scrollViewDidEndDragging];
-    
-    [_glpRefreshControl containingScrollViewDidEndDragging:scrollView];
-
-}
 
 
 
@@ -217,8 +187,8 @@ const int NUMBER_OF_ROWS = 1;
 -(void)configureTableView
 {
     // refresh control
-//    self.refreshControl = [[UIRefreshControl alloc] init];
-//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
+    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
     if([GLPiOS6Helper isIOS6])
     {
@@ -960,7 +930,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = YES;
     
-//    [self.refreshControl beginRefreshing];
+    [self.refreshControl beginRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
@@ -968,7 +938,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = NO;
     
-//    [self.refreshControl endRefreshing];
+    [self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

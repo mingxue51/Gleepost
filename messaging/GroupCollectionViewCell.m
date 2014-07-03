@@ -30,7 +30,7 @@
 
 @end
 
-const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {150.0, 150.0};
+const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
 
 @implementation GroupCollectionViewCell
 

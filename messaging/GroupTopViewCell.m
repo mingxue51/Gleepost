@@ -69,6 +69,7 @@ const float GROUP_TOP_VIEW_HEIGHT = 245.0;
     view.tag = 100;
     [view setDelegate:self];
     [view setRightButtonTitle:@"Members" andLeftButtonTitle:@"Posts"];
+    [view setSlideAnimationEnabled:NO];
 //    _segmentViewReference = view;
     
     [_segmentView addSubview:view];

@@ -29,5 +29,6 @@ typedef NS_ENUM(NSInteger, ButtonType) {
 - (void)setRightButtonTitle:(NSString *)rightTitle andLeftButtonTitle:(NSString *)leftTitle;
 - (void)selectRightButton;
 - (void)selectLeftButton;
+- (void)setSlideAnimationEnabled:(BOOL)enabled;
 
 @end

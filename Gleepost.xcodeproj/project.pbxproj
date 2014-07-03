@@ -319,6 +319,9 @@
 		58774D3619649BD80034A1C6 /* loader5.gif in Resources */ = {isa = PBXBuildFile; fileRef = 58774D3519649BD80034A1C6 /* loader5.gif */; };
 		58774D3919649C980034A1C6 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 58774D3819649C980034A1C6 /* UIImage+animatedGIF.m */; };
 		58774D3B1964A5C00034A1C6 /* loader2.gif in Resources */ = {isa = PBXBuildFile; fileRef = 58774D3A1964A5C00034A1C6 /* loader2.gif */; };
+		58774D3E196567B20034A1C6 /* GLPSearchBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58774D3D196567B20034A1C6 /* GLPSearchBar.xib */; };
+		58774D41196568350034A1C6 /* GLPSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 58774D40196568350034A1C6 /* GLPSearchBar.m */; };
+		58774D44196574260034A1C6 /* UIRefreshControl+CustomLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58774D43196574260034A1C6 /* UIRefreshControl+CustomLoader.m */; };
 		587805AF1920E2CE0002472B /* AVCamRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805A81920E2CE0002472B /* AVCamRecorder.m */; };
 		587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AA1920E2CE0002472B /* AVCamUtilities.m */; };
 		587805B11920E2CE0002472B /* CaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AC1920E2CE0002472B /* CaptureManager.m */; };
@@ -1255,6 +1258,11 @@
 		58774D3719649C980034A1C6 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		58774D3819649C980034A1C6 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
 		58774D3A1964A5C00034A1C6 /* loader2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loader2.gif; sourceTree = "<group>"; };
+		58774D3D196567B20034A1C6 /* GLPSearchBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPSearchBar.xib; sourceTree = "<group>"; };
+		58774D3F196568350034A1C6 /* GLPSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSearchBar.h; sourceTree = "<group>"; };
+		58774D40196568350034A1C6 /* GLPSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSearchBar.m; sourceTree = "<group>"; };
+		58774D42196574260034A1C6 /* UIRefreshControl+CustomLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIRefreshControl+CustomLoader.h"; sourceTree = "<group>"; };
+		58774D43196574260034A1C6 /* UIRefreshControl+CustomLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+CustomLoader.m"; sourceTree = "<group>"; };
 		587805A71920E2CE0002472B /* AVCamRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamRecorder.h; sourceTree = "<group>"; };
 		587805A81920E2CE0002472B /* AVCamRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCamRecorder.m; sourceTree = "<group>"; };
 		587805A91920E2CE0002472B /* AVCamUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamUtilities.h; sourceTree = "<group>"; };
@@ -2704,6 +2712,14 @@
 			name = Refresh;
 			sourceTree = "<group>";
 		};
+		58774D3C196567A60034A1C6 /* Custom search bar */ = {
+			isa = PBXGroup;
+			children = (
+				58774D3D196567B20034A1C6 /* GLPSearchBar.xib */,
+			);
+			name = "Custom search bar";
+			sourceTree = "<group>";
+		};
 		587805A51920E2CE0002472B /* VideoRecorder */ = {
 			isa = PBXGroup;
 			children = (
@@ -4125,6 +4141,8 @@
 				584D208D19534AC400E571DF /* GLPSegmentView.m */,
 				588D858E1959FEA8002F516A /* GroupCollectionViewCell.h */,
 				588D858F1959FEA8002F516A /* GroupCollectionViewCell.m */,
+				58774D3F196568350034A1C6 /* GLPSearchBar.h */,
+				58774D40196568350034A1C6 /* GLPSearchBar.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -4235,6 +4253,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				58774D3C196567A60034A1C6 /* Custom search bar */,
 				58CFC77019630F9500FF1E40 /* Simple name cells */,
 				587CEA65195CECD30043E5E2 /* Segments */,
 				588D859C195B5EBC002F516A /* Top view cells */,
@@ -4418,6 +4437,8 @@
 				11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */,
 				5861575D193CD162009BAD33 /* UIColor+GLPAdditions.h */,
 				5861575E193CD162009BAD33 /* UIColor+GLPAdditions.m */,
+				58774D42196574260034A1C6 /* UIRefreshControl+CustomLoader.h */,
+				58774D43196574260034A1C6 /* UIRefreshControl+CustomLoader.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -4569,6 +4590,7 @@
 				80AB898F17C2ADA60053E784 /* line.png in Resources */,
 				58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */,
 				58DC023A1804379A0008993A /* new_chat_background.png in Resources */,
+				58774D3E196567B20034A1C6 /* GLPSearchBar.xib in Resources */,
 				58DC0244180437A70008993A /* bubble2.png in Resources */,
 				58465DF9195882EB0021B0FF /* cards.png in Resources */,
 				80AB899117C2AE700053E784 /* navigation_bar@2x.png in Resources */,
@@ -5089,6 +5111,7 @@
 				5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */,
 				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
+				58774D41196568350034A1C6 /* GLPSearchBar.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
 				5819E64E18C79F2C003361B3 /* GroupCell.m in Sources */,
@@ -5288,6 +5311,7 @@
 				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
+				58774D44196574260034A1C6 /* UIRefreshControl+CustomLoader.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
 				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,
 				58465DF5195857190021B0FF /* UINavigationBar+Format.m in Sources */,

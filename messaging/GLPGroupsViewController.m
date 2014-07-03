@@ -24,7 +24,11 @@
 
 @property (strong, nonatomic) UITabBarItem *groupTabbarItem;
 
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) GLPSearchBar *glpSearchBar;
+
+@property (weak, nonatomic) IBOutlet UIView *searchBarView;
+
+//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) NSMutableArray *filteredGroups;
@@ -135,7 +139,7 @@
 
 - (void)configureNavigationButton
 {
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_group" withButtonSize:CGSizeMake(25, 25) withSelector:@selector(popUpCreateView:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_group" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(popUpCreateView:) andTarget:self];
 }
 
 - (void)configTabbar
@@ -153,6 +157,21 @@
 - (void)registerViews
 {
     [self.collectionView registerNib:[UINib nibWithNibName:@"GroupCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"GroupCell"];
+    
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
+    
+    GLPSearchBar *view = [array lastObject];
+    [view setDelegate:self];
+    
+    [view setPlaceholderWithText:@"Search for groups on campus"];
+    
+    view.tag = 101;
+    
+//    CGRectSetX(view, 10);
+    
+    _glpSearchBar = view;
+    
+    [_searchBarView addSubview:view];
 }
 
 - (void)configureGestures
@@ -216,7 +235,12 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([_searchBar isFirstResponder])
+//    if([_searchBar isFirstResponder])
+//    {
+//        return;
+//    }
+    
+    if([_glpSearchBar isTextFieldFirstResponder])
     {
         return;
     }
@@ -235,7 +259,7 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(10.0, 5.0, 0.0, 5.0);
+    return UIEdgeInsetsMake(10.0, 10.0, 0.0, 10.0);
 }
 
 #pragma mark - UISearchBarDelegate
@@ -289,6 +313,49 @@
     [_tap setCancelsTouchesInView:YES];
 }
 
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [_tap setCancelsTouchesInView:YES];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
+}
+
+- (void)typedText:(NSString *)searchText
+{
+    // remove all data that belongs to previous search
+    
+    [_filteredGroups removeAllObjects];
+    
+    if([searchText isEqualToString:@""] || searchText == nil)
+    {
+        _filteredGroups = _groups.mutableCopy;
+        
+        [_collectionView reloadData];
+        return;
+    }
+    
+    for(GLPUser *user in _groups)
+    {
+        NSRange r = [user.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        
+        if(r.location != NSNotFound)
+        {
+            //that is we are checking only the start of the names.
+            
+            if(r.location== 0)
+            {
+                [_filteredGroups addObject:user];
+            }
+        }
+    }
+    
+    [_collectionView reloadData];
+}
+
 #pragma mark - Keyboard management
 
 - (void)viewTouched:(id)sender
@@ -298,10 +365,35 @@
 
 -(void)hideKeyboardFromSearchBarIfNeeded
 {
-    if([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
+//    if([self.searchBar isFirstResponder]) {
+//        [self.searchBar resignFirstResponder];
+//    }
+    
+    if([_glpSearchBar isTextFieldFirstResponder])
+    {
+        [_glpSearchBar resignTextFieldFirstResponder];
     }
 }
+
+//- (BOOL)isSearchBarFirstResponder
+//{
+//    GLPSearchBar *view = nil;
+//    
+//    for(UIView *v in _searchBarView.subviews)
+//    {
+//        if(v.tag == 101)
+//        {
+//            view = (GLPSearchBar *)v;
+//        }
+//    }
+//    
+//    return [view isTextFieldFirstResponder];
+//}
+//
+//- (void)resignFirstResponder
+//{
+//    
+//}
 
 #pragma mark - Group Created Delegate
 

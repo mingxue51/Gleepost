@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NewGroupViewController.h"
 #import "GroupCollectionViewCell.h"
+#import "GLPSearchBar.h"
 
-@interface GLPGroupsViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GroupCreatedDelegate, GroupDeletedDelegate, UISearchBarDelegate>
+@interface GLPGroupsViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GroupCreatedDelegate, GroupDeletedDelegate, GLPSearchBarDelegate>
 
 @end

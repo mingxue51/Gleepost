@@ -58,7 +58,7 @@
 #import "GLPWalkthroughViewController.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
-#import "UIImage+animatedGIF.h"
+#import "UIRefreshControl+CustomLoader.h"
 
 @interface GLPTimelineViewController ()
 
@@ -730,7 +730,7 @@ const float TOP_OFFSET = 280.0f;
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
     
@@ -742,23 +742,19 @@ const float TOP_OFFSET = 280.0f;
     [animatedImageView startAnimating];
     */
     
-    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(130, -2, 60, 60)];
-    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
-    
-    NSData *gifData = [NSData dataWithContentsOfFile: filePath];
-    
-    [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
-    
-    [self.refreshControl insertSubview:subView atIndex:0];
-    
-    [self.refreshControl insertSubview:subView atIndex:1];
-    
-    [self.refreshControl insertSubview:subView atIndex:2];
-
-    
-    [self.refreshControl setBackgroundColor:[UIColor whiteColor]];
-    [self.refreshControl setTintColor:[UIColor whiteColor]];
+//    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(130, -2, 56, 56)];
+//    
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
+//    
+//    NSData *gifData = [NSData dataWithContentsOfFile: filePath];
+//    
+//    [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
+//    
+//    [self.refreshControl insertSubview:subView atIndex:1];
+//
+//    
+//    [self.refreshControl setBackgroundColor:[UIColor whiteColor]];
+//    [self.refreshControl setTintColor:[UIColor whiteColor]];
 }
 
 -(void)configHeader

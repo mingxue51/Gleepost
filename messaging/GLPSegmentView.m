@@ -27,6 +27,8 @@
 
 @property (assign, nonatomic) ButtonType conversationType;
 
+@property (assign, nonatomic, getter = isSlideAnimationEnabled) BOOL slideAnimationEnabled;
+
 @end
 
 
@@ -58,6 +60,8 @@ const float ANIMATION_DURATION = 0.1;
 - (void)configuration
 {
     _conversationType = kButtonLeft;
+    
+    _slideAnimationEnabled = YES;
     
     [self reloadButtonsFormat];
 }
@@ -102,6 +106,11 @@ const float ANIMATION_DURATION = 0.1;
 {
     _conversationType = kButtonLeft;
     [self refreshSlider];
+}
+
+- (void)setSlideAnimationEnabled:(BOOL)enabled
+{
+    _slideAnimationEnabled = enabled;
 }
 
 -(void)layoutSubviews
@@ -159,22 +168,37 @@ const float ANIMATION_DURATION = 0.1;
 - (void)reloadButtonsFormat
 {
     
+    if(![self isSlideAnimationEnabled])
+    {
+        [_delegate segmentSwitched:_conversationType];
+        return;
+    }
+    
     if(_conversationType == kButtonLeft)
     {
         DDLogDebug(@"reloadButtonsFormat kButtonLeft");
 
         [self leftButtonSelected];
+        
+        
     }
     else
     {
         DDLogDebug(@"reloadButtonsFormat kButtonRight");
 
         [self rightButtonSelected];
+        
     }
 }
 
 - (void)leftButtonSelected
 {
+    
+    [_leftLbl setTextColor:[UIColor blackColor]];
+    [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
+    
+    [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
+    [_rightLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
     
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         
@@ -184,17 +208,19 @@ const float ANIMATION_DURATION = 0.1;
         
         [_delegate segmentSwitched:_conversationType];
         
-        [_leftLbl setTextColor:[UIColor blackColor]];
-        [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
-        
-        [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
-        [_rightLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
+
         
     }];
 }
 
 - (void)rightButtonSelected
 {
+    [_rightLbl setTextColor:[UIColor blackColor]];
+    [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
+    
+    [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
+    [_leftLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
+    
     [UIView animateWithDuration:ANIMATION_DURATION animations:^{
         
         CGRectSetX(_slideImageView, _rightLbl.frame.origin.x);
@@ -205,11 +231,7 @@ const float ANIMATION_DURATION = 0.1;
         [_delegate segmentSwitched:_conversationType];
         
         
-        [_rightLbl setTextColor:[UIColor blackColor]];
-        [_rightLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:17.0]];
-        
-        [_leftLbl setFont:[UIFont fontWithName:@"HelveticaNeue-Regular" size:17.0]];
-        [_leftLbl setTextColor:[AppearanceHelper colourForUnselectedSegment]];
+
     }];
 
 }
