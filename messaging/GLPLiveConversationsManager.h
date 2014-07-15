@@ -21,6 +21,7 @@
 - (void)loadConversations;
 - (void)createRandomConversation:(void (^)(GLPConversation *conversation))callback;
 - (void)createRegularConversationWithUser:(GLPUser *)user callback:(void (^)(GLPConversation *conversation))callback;
+- (void)createRegularConversationWithUsers:(NSArray *)users callback:(void (^)(GLPConversation *))callback;
 - (void)addConversation:(GLPConversation *)conversation;
 - (void)endConversation:(GLPConversation *)conversation;
 - (void)randomToRegular:(GLPConversation *)detachedRegularConversation;

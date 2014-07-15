@@ -211,6 +211,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.titleView = titleLabelBtn;
     }
+    else
+    {
+        self.title = @"Group Chat";
+    }
     
 
     if([self isNewChat])
@@ -670,7 +674,14 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         if(_conversation.isGroup)
         {
             //Create new group conversation.
-            
+            [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUsers:_conversation.participants callback:^(GLPConversation *conversation) {
+               
+                _conversation = conversation;
+                _isEmptyConversation = NO;
+                
+                [self createMessageFromForm];
+                
+            }];
         }
         else
         {

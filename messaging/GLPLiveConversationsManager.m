@@ -154,30 +154,31 @@ static GLPLiveConversationsManager *instance = nil;
     });
 }
 
-//- (void)createRegularConversationWithUsers:(NSArray *)users callback:(void (^)(GLPConversation *))callback
-//{
-//    DDLogInfo(@"Create regular conversation with users %@", users);
-//    
-//    dispatch_async(_queue, ^{
-//        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUser:user];
-//        if(!conversation) {
-//            DDLogWarn(@"Cannot create new regular conversation in server, abort");
-//            return;
-//        }
-//        
-//        BOOL success = [self internalAddConversation:conversation isEmpty:YES];
-//        DDLogInfo(@"Conversation created succesfully: %d", success);
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if(success) {
-//                callback(conversation);
-//            } else {
-//                callback(nil);
-//            }
-//        });
-//    });
-//
-//}
+- (void)createRegularConversationWithUsers:(NSArray *)users callback:(void (^)(GLPConversation *conversation))callback
+{
+    DDLogInfo(@"Create regular conversation with users %@", users);
+    
+    dispatch_async(_queue, ^{
+        GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUsers:users];
+        
+        if(!conversation) {
+            DDLogWarn(@"Cannot create new regular conversation in server, abort");
+            return;
+        }
+        
+        BOOL success = [self internalAddConversation:conversation isEmpty:YES];
+        DDLogInfo(@"Conversation created succesfully: %d", success);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(success) {
+                callback(conversation);
+            } else {
+                callback(nil);
+            }
+        });
+    });
+
+}
 
 - (void)addConversation:(GLPConversation *)conversation
 {

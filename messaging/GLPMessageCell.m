@@ -9,6 +9,7 @@
 #import "GLPMessageCell.h"
 #import "GLPMessage+CellLogic.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "ShapeFormatterHelper.h"
 #import "GLPDateFormatterHelper.h"
 #import "AppearanceHelper.h"
@@ -162,9 +163,12 @@ static const CGFloat kBottomMargin = 7;
         CGRectSetXY(imageView, [self xForCurrentSide:kProfileImageViewSideMargin w:kProfileImageViewSize], kTopMargin + kProfileImageViewTopMargin);
         
         UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image3.png"];
-        if([_message.author hasProfilePicture]) {
-            [imageView setImageWithURL:[NSURL URLWithString:_message.author.profileImageUrl] placeholderImage:defaultProfilePicture];
-        } else {
+        
+        if([_message.author hasProfilePicture])
+        {
+            [imageView setImageWithURL:[NSURL URLWithString:_message.author.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        } else
+        {
             imageView.image = defaultProfilePicture;
         }
         

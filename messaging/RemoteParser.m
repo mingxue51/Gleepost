@@ -188,6 +188,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return conversations;
 }
 
++ (NSString *)generateParticipandsUserIdFormat:(NSArray *)users
+{
+    NSMutableString *parsedUsers = [[NSMutableString alloc] init];
+    
+    for(GLPUser *user in users)
+    {
+        [parsedUsers appendFormat:@"%ld,", (long)user.remoteKey];
+    }
+    
+    [parsedUsers deleteCharactersInRange:NSMakeRange(parsedUsers.length - 1, 1)];
+    
+    return parsedUsers;
+    
+}
 
 #pragma mark - Live conversations
 

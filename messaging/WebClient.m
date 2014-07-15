@@ -1155,11 +1155,25 @@ static WebClient *instance = nil;
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     
-    
     params[@"random"] = @"false";
-    
+    params[@"participants"] = [RemoteParser generateParticipandsUserIdFormat:users];
+
     __block GLPConversation *conversation = nil;
 
+    [self executeSynchronousRequestWithMethod:@"POST" path:@"conversations" params:params callback:^(BOOL success, id json) {
+        if(!success) {
+            return;
+        }
+        
+        @try {
+            conversation = [RemoteParser parseConversationFromJson:json];
+        } @catch (NSException *e) {
+            DDLogInfo(@"Parse conversation expcetion for json: %@", json);
+            conversation = nil;
+        }
+    }];
+    
+    return conversation;
     
 }
 

@@ -30,6 +30,7 @@
 //+ (NSArray *)parseConversationsFromJson:(NSArray *)jsonConversations;
 //+ (NSArray *)parseLiveConversationsFromJson:(NSArray *)jsonConversations;
 +(NSArray*)orderAndGetLastThreeConversations:(NSArray*)liveConversations;
++ (NSString *)generateParticipandsUserIdFormat:(NSArray *)users;
 
 // messages
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation;

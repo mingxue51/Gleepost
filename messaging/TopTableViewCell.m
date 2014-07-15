@@ -133,7 +133,7 @@
     }
     else
     {
-        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:0];
+        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:0    ];
     }
     
     

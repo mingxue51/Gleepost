@@ -72,6 +72,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)synchronousGetConversationsFilterByLive:(BOOL)live withCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 -(void)createRegularConversationWithUserRemoteKey:(int)remoteKey andCallback:(void (^) (BOOL sucess, GLPConversation *conversation ))callbackBlock;
 - (GLPConversation *)synchronousCreateConversationWithUser:(GLPUser *)user;
+- (GLPConversation *)synchronousCreateConversationWithUsers:(NSArray *)users;
 - (void)createConversation:(void (^)(GLPConversation *conversation))callback;
 
 
