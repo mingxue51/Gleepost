@@ -11,7 +11,6 @@
 #import "AFHTTPRequestOperationLogger.h"
 #import "SessionManager.h"
 #import "GLPLoginManager.h"
-#import "GLPBackgroundRequestsManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GAI.h"

@@ -12,9 +12,7 @@
 @interface GLPNotificationManager : NSObject
 
 + (void)loadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
-+ (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback;
-+(NSArray*)cleanNotificationsArray:(NSArray*)incomingNotifications;
-+ (void)saveNotifications:(NSArray *)notifications;
++ (NSArray*)cleanNotificationsArray:(NSArray*)incomingNotifications;
 
 // New
 + (NSMutableArray *)notifications;

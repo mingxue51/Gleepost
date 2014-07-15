@@ -27,36 +27,36 @@
 
 - (void)startRequest
 {
-    if(self.isCancelled) {
-        NSLog(@"Get notifications operation cancelled");
-        return;
-    }
-    
-    NSLog(@"Start get notifications request");
-    
-    [[WebClient sharedInstance] synchronousGetNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
-        if(success) {
-            NSLog(@"New notifications from get notifications request: %d", notifications.count);
-            
-            if(notifications.count > 0) {
-                
-                //Check if the same notification exist in database and if it is unread. If yes the don't call GLPNewNotifications.
-                NSArray* finalNotifications = [GLPNotificationManager cleanNotificationsArray:notifications];
-                
-                if(finalNotifications.count > 0)
-                {
-                    //Don't do anything.
-                    [GLPNotificationManager saveNotifications:finalNotifications];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
-                }
-                else
-                {
-
-                }
-            }
-        }
-    }];
+//    if(self.isCancelled) {
+//        NSLog(@"Get notifications operation cancelled");
+//        return;
+//    }
+//    
+//    NSLog(@"Start get notifications request");
+//    
+//    [[WebClient sharedInstance] synchronousGetNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+//        if(success) {
+//            NSLog(@"New notifications from get notifications request: %d", notifications.count);
+//            
+//            if(notifications.count > 0) {
+//                
+//                //Check if the same notification exist in database and if it is unread. If yes the don't call GLPNewNotifications.
+//                NSArray* finalNotifications = [GLPNotificationManager cleanNotificationsArray:notifications];
+//                
+//                if(finalNotifications.count > 0)
+//                {
+//                    //Don't do anything.
+////                    [GLPNotificationManager saveNotifications:finalNotifications];
+//                    
+//                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
+//                }
+//                else
+//                {
+//
+//                }
+//            }
+//        }
+//    }];
     
     // sleep for some times
     [NSThread sleepForTimeInterval:RELOAD_NOTIFICATIONS_INTERVAL_S];

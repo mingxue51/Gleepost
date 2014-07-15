@@ -90,6 +90,7 @@
 
 @property (strong, nonatomic) EmptyMessage *emptyNotificationsMessage;
 @property (strong, nonatomic) EmptyMessage *emptyMyPostsMessage;
+
 @end
 
 

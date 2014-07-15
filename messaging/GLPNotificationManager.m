@@ -41,7 +41,7 @@
 /**
  Removes notifications that are already saved and presented in the view controller.
  
- @param incomingNotifications the new notifications from the serer.
+ @param incomingNotifications the new notifications from the server.
  
  @return the new notifications.
  
@@ -91,51 +91,51 @@
     return finalNotifications;
 }
 
-+ (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback
-{
-    NSLog(@"Mark notifications read");
-    
-    // take the most recent unread notification, order being most recent DESC (or should be hopefully!)
-    GLPNotification *unreadNotification = nil;
-    for(GLPNotification *n in notifications) {
-        if(!n.seen) {
-            unreadNotification = n;
-            break;
-        }
-    }
-    
-    if(!unreadNotification) {
-        NSLog(@"No unread notifications");
-        callback(YES, nil);
-    }
-    
-    [[WebClient sharedInstance] markNotificationRead:unreadNotification callback:^(BOOL success, NSArray *newNotifications) {
-        
-        if(!success) {
-            callback(NO, nil);
-            return;
-        }
-        
-        // mark previous notifications as read
-        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-            for(GLPNotification *notification in notifications) {
-                if(!notification.seen) {
-                    notification.seen = YES;
-                    [GLPNotificationDao updateSeenStatus:notification inDb:db];
-                }
-            }
-        }];
-        
-        if(!newNotifications || newNotifications.count == 0) {
-            callback(YES, nil);
-            return;
-        }
-        
-        // save new notifications
-        [GLPNotificationManager saveNotifications:newNotifications];
-        callback(YES, newNotifications);
-    }];
-}
+//+ (void)markNotificationsRead:(NSArray *)notifications callback:(void (^)(BOOL success, NSArray *notifications))callback
+//{
+//    NSLog(@"Mark notifications read");
+//    
+//    // take the most recent unread notification, order being most recent DESC (or should be hopefully!)
+//    GLPNotification *unreadNotification = nil;
+//    for(GLPNotification *n in notifications) {
+//        if(!n.seen) {
+//            unreadNotification = n;
+//            break;
+//        }
+//    }
+//    
+//    if(!unreadNotification) {
+//        NSLog(@"No unread notifications");
+//        callback(YES, nil);
+//    }
+//    
+//    [[WebClient sharedInstance] markNotificationRead:unreadNotification callback:^(BOOL success, NSArray *newNotifications) {
+//        
+//        if(!success) {
+//            callback(NO, nil);
+//            return;
+//        }
+//        
+//        // mark previous notifications as read
+//        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            for(GLPNotification *notification in notifications) {
+//                if(!notification.seen) {
+//                    notification.seen = YES;
+//                    [GLPNotificationDao updateSeenStatus:notification inDb:db];
+//                }
+//            }
+//        }];
+//        
+//        if(!newNotifications || newNotifications.count == 0) {
+//            callback(YES, nil);
+//            return;
+//        }
+//        
+//        // save new notifications
+//        [GLPNotificationManager saveNotifications:newNotifications];
+//        callback(YES, newNotifications);
+//    }];
+//}
 
 + (NSMutableArray *)notifications
 {
@@ -170,31 +170,12 @@
 
 + (void)markAllNotificationsRead
 {
-
-    
-    //Mark notification read in the server side.
-//    [[WebClient sharedInstance] markNotificationsRead:^(BOOL success) {
-//        
-//        if(success)
-//        {
-//            DDLogInfo(@"Notifications mark as read.");
-//        }
-//        
-//    }];
-    
     __block NSArray *unreadNotifications = nil;
 
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        
-        //    [DatabaseManager run:^(FMDatabase *db) {
-        
-        
         unreadNotifications = [GLPNotificationDao findUnreadNotifications:db];
         
-        
-        
-        //    }];
         
         if(unreadNotifications.count != 0)
         {
@@ -212,15 +193,9 @@
             }];
             
             [GLPNotificationDao markNotificationsRead:db];
-            
         }
 
-        
     }];
-    
-    
-
-
 }
 
 + (void)ignoreNotification:(GLPNotification *)notification
@@ -291,14 +266,12 @@
                 
                 if(finalNotifications.count > 0)
                 {
-                    //Don't do anything.
+                    //Save notifications after the launch of the app.
                     [GLPNotificationManager saveNotifications:finalNotifications];
-                    
-//                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPNewNotifications" object:nil userInfo:@{@"count":[NSNumber numberWithInt:notifications.count]}];
                 }
                 else
                 {
-                    
+                    DDLogInfo(@"No new final notifications.");
                 }
                 
                 callback(success, notifications);
