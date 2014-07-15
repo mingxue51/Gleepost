@@ -127,7 +127,15 @@
 
 - (void)configureMainImageView
 {
-    [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageView.frame.size.height];
+    if(_mainImageView.tag == 0)
+    {
+        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageView.frame.size.height];
+    }
+    else
+    {
+        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:0];
+    }
+    
     
     [self addGestureToMainImageView];
 }
