@@ -346,21 +346,16 @@ static NSString *const SEARCH_USERS_STR = @"Search";
 
 - (void)overlayViewClickForUser:(GLPUser *)user
 {
-    DDLogInfo(@"click");
     _viewProfileUserRemoteKey = user.remoteKey;
     
     //TODO: Sil, i copy pasted this from GLPConversationViewController
     // but it's the profile VC that should manage the access,
     // or some independant class called GLPAccessManager or something like that
-    if(user.remoteKey == [[SessionManager sharedInstance]user].remoteKey) {
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:user.remoteKey]) {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-    else {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
+
+    [self performSegueWithIdentifier:@"view private profile" sender:self];
+ 
+    
+    
 }
 
 

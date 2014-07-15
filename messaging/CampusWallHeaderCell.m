@@ -215,7 +215,9 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 - (void)formatBackgroundImage
 {
-    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:10];
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
+    
+    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:0.4f];
 }
 
 -(void)formatEventImage
@@ -229,7 +231,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     //http://stackoverflow.com/questions/14107979/blur-an-image-of-specific-part-rectangular-circular
     
     //Format the image.
-    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(10.0f, 10.0f)];
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(5.0, 5.0)];
 }
 
 

@@ -367,23 +367,15 @@ static BOOL likePushed;
     //Decide where to navigate. Private or open.
     self.selectedUserId = incomingView.tag;
     
-    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
     {
         self.selectedUserId = -1;
-        //Navigate to profile view controller.
         
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
-    {
-        //Navigate to profile view controller.
-        
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
     else
-    {
-        //Navigate to private view controller.
-        
+    {        
         [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
     

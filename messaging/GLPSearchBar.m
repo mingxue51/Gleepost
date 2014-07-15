@@ -7,6 +7,7 @@
 //
 
 #import "GLPSearchBar.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPSearchBar ()
 
@@ -32,16 +33,38 @@
     
     if(self)
     {
-        
     }
     
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self configureTextFieldView];
+}
+
+- (void)configureTextFieldView
+{
+    [ShapeFormatterHelper setRoundedView:_textField toDiameter:5.0];
+    [self setLeftPaddingToTextField];
+    
+}
+
+- (void)setLeftPaddingToTextField
+{
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 20)];
+    _textField.leftView = paddingView;
+    _textField.leftViewMode = UITextFieldViewModeAlways;
 }
 
 - (void)setPlaceholderWithText:(NSString *)text
 {
     [_textField setPlaceholder:text];
 }
+
+
 
 #pragma mark - Accessors
 

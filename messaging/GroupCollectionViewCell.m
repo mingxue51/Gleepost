@@ -11,6 +11,7 @@
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "AppearanceHelper.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -57,6 +58,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
 
     [ShapeFormatterHelper setCornerRadiusWithView:self andValue:5];
+    
+    [ShapeFormatterHelper setBorderToView:self withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:0.4f];
 }
 
 -(void)setGroupData:(GLPGroup *)groupData

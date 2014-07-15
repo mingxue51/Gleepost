@@ -165,26 +165,17 @@ static const float CommentContentLabelMaxWidth = 217; //250 before
     
     //Decide where to navigate. Private or open.
     
-    
     self.delegate.selectedUserId = incomingView.tag;
+
     
-    if((self.delegate.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.delegate.selectedUserId] == kCurrentUser)
     {
         self.delegate.selectedUserId = -1;
-        //Navigate to profile view controller.
         
         [self.delegate performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.delegate.selectedUserId])
-    {
-        //Navigate to profile view controller.
-        
-        [self.delegate performSegueWithIdentifier:@"view private profile" sender:self];
-    }
     else
     {
-        //Navigate to private view controller.
-        
         [self.delegate performSegueWithIdentifier:@"view private profile" sender:self];
     }
 }

@@ -65,7 +65,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post content: %@ Group: %@ ", self.content, self.group];
+    return [NSString stringWithFormat:@"Post id: %ld, Date: %@, Group: %@ ", (long)self.remoteKey, self.date, self.group];
 }
 
 

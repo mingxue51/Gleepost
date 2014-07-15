@@ -235,6 +235,11 @@
     return [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
 }
 
++ (UIColor *)mediumGrayGleepostColour
+{
+    return [UIColor colorWithR:230.0 withG:230.0 andB:230.0];
+}
+
 
 +(void)showTabBar:(UIViewController*)controller
 {

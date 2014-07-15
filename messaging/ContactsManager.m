@@ -384,37 +384,53 @@ static ContactsManager *instance = nil;
     }];
 }
 
-/**
- If YES navigate to real profile, if no to private profile.
- */
--(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
-{
-    //[self refreshContacts];
+//TODO: This will be used for the GleepostSD app.
 
+///**
+// If YES navigate to real profile, if no to private profile.
+// */
+//-(BOOL)navigateToUnlockedProfileWithSelectedUserId:(int)selectedId
+//{
+//    //[self refreshContacts];
+//
+//    [self loadContactsFromDatabase];
+//    
+//    //Check if the user is already in contacts.
+//    //If yes show the regular profie view (unlocked).
+//    if([[ContactsManager sharedInstance] isUserContactWithId:selectedId])
+//    {        
+//        return YES;
+//    }
+//    else
+//    {
+//        //If no, check in database if the user is already requested.
+//        
+//        //If yes change the button of add user to user already requested.
+//        
+//        if([[ContactsManager sharedInstance] isContactWithIdRequested:selectedId])
+//        {
+//            
+//            return NO;
+//            
+//        }
+//        else
+//        {
+//            return NO;
+//        }
+//    }
+//}
+
+- (UserRelationship)userRelationshipWithId:(NSInteger)userId
+{
     [self loadContactsFromDatabase];
     
-    //Check if the user is already in contacts.
-    //If yes show the regular profie view (unlocked).
-    if([[ContactsManager sharedInstance] isUserContactWithId:selectedId])
-    {        
-        return YES;
+    if([SessionManager sharedInstance].user.remoteKey == userId)
+    {
+        return kCurrentUser;
     }
     else
     {
-        //If no, check in database if the user is already requested.
-        
-        //If yes change the button of add user to user already requested.
-        
-        if([[ContactsManager sharedInstance] isContactWithIdRequested:selectedId])
-        {
-            
-            return NO;
-            
-        }
-        else
-        {
-            return NO;
-        }
+        return kOtherUser;
     }
 }
 

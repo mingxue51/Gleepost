@@ -33,6 +33,8 @@
 //#import "BOZPongRefreshControl.h"
 //#import "GLPRefreshControl.h"
 #import "UIRefreshControl+CustomLoader.h"
+#import "ContactsManager.h"
+#import "GLPProfileViewController.h"
 
 @interface GroupViewController ()
 
@@ -565,14 +567,6 @@ const int NUMBER_OF_ROWS = 1;
             postViewCell.delegate = self;
             
             [postViewCell setPost:post withPostIndex:indexPath.row];
-            
-            if(indexPath.row - 2  != self.posts.count)
-            {
-                //Add separator line to posts' cells.
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-                [postViewCell addSubview:line];
-            }
         }
 
 
@@ -1141,6 +1135,27 @@ const int NUMBER_OF_ROWS = 1;
     [actionSheet showInView:[self.view window]];
 }
 
+#pragma mark GLPPostCellDelegate
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    //Decide where to navigate. Private or current profile.
+    
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:remoteKey] == kCurrentUser)
+    {
+        self.selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        self.selectedUserId = remoteKey;
+
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
+
 #pragma  mark - Helpers
 
 /**
@@ -1260,6 +1275,12 @@ const int NUMBER_OF_ROWS = 1;
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
         GLPPrivateProfileViewController *profileViewController = segue.destinationViewController;
+        
+        profileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if ([segue.identifier isEqualToString:@"view profile"])
+    {
+        GLPProfileViewController *profileViewController = segue.destinationViewController;
         
         profileViewController.selectedUserId = self.selectedUserId;
     }

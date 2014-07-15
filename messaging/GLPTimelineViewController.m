@@ -2350,66 +2350,23 @@ const float TOP_OFFSET = 280.0f;
     
 }
 
--(void)navigateToProfile:(id)sender
-{
-    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
-    
-    UIImageView *incomingView = (UIImageView*)incomingUser.view;
-    
-    //Decide where to navigate. Private or open profile.
-    
-    self.selectedUserId = incomingView.tag;
-    
-    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
-    {
-        self.selectedUserId = -1;
-        
-        //Navigate to profile view controller.
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
-    {
-        //Navigate to private profile view controller.
-        
-        [self performSegueWithIdentifier:@"view new private profile" sender:self];
-    }
-    else
-    {
-        //Navigate to private view controller.
-        
-        [self performSegueWithIdentifier:@"view new private profile" sender:self];
-    }
-    
-}
-
 #pragma mark GLPPostCellDelegate
 
 -(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"Navigate to user's profile with remote key: %ld", (long)remoteKey);
-    
-    //Decide where to navigate. Private or open profile.
+    //Decide where to navigate. Private or current profile.
     
     self.selectedUserId = remoteKey;
     
-    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey))
+    if([[ContactsManager sharedInstance] userRelationshipWithId:remoteKey] == kCurrentUser)
     {
         self.selectedUserId = -1;
         
-        //Navigate to profile view controller.
-        
         [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId])
-    {
-        //Navigate to private profile view controller.
-        
-        [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
     else
     {
-        //Navigate to private view controller.
+        self.selectedUserId = remoteKey;
         
         [self performSegueWithIdentifier:@"view new private profile" sender:self];
     }
@@ -2456,85 +2413,12 @@ const float TOP_OFFSET = 280.0f;
 //    }
 //}
 
-/**
- Navigates to a modal view to let user to add a comment.
- */
--(void)commentButtonPushed: (id)sender
-{
-    UIButton *btn = (UIButton*)sender;
-    
-    //Hide navigation bar.
-    [self hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
-    
-    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
-    loadingView.post = self.posts[btn.tag];
-    loadingView.postIndex = btn.tag;
-    //loadingView.delegate = self;
-    
-}
 
 //-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 //{
 //    self.selectedPost = self.posts[postIndex];
 //    [self performSegueWithIdentifier:@"view post" sender:self];
 //}
-
--(void)shareButtonPushed: (id)sender
-{
-    NSArray *items = @[[NSString stringWithFormat:@"%@",@"Share1"],[NSURL URLWithString:@"http://www.google.com"]];
-    
-    UIActivityViewController *shareItems = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
-    
-    NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypePostToWeibo, UIActivityTypeAddToReadingList, UIActivityTypeAirDrop, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
-    
-    /**
-     NSString *const UIActivityTypePostToFacebook;
-     NSString *const UIActivityTypePostToTwitter;
-     NSString *const UIActivityTypePostToWeibo;
-     NSString *const UIActivityTypeMessage;
-     NSString *const UIActivityTypeMail;
-     NSString *const UIActivityTypePrint;
-     NSString *const UIActivityTypeCopyToPasteboard;
-     NSString *const UIActivityTypeAssignToContact;
-     NSString *const UIActivityTypeSaveToCameraRoll;
-     NSString *const UIActivityTypeAddToReadingList;
-     NSString *const UIActivityTypePostToFlickr;
-     NSString *const UIActivityTypePostToVimeo;
-     NSString *const UIActivityTypePostToTencentWeibo;
-     NSString *const UIActivityTypeAirDrop;
-     */
-    /**
-     NSArray * activityItems = @[[NSString stringWithFormat:@"Some initial text."], [NSURL URLWithString:@"http://www.google.com"]];
-     NSArray * applicationActivities = nil;
-     NSArray * excludeActivities = @[UIActivityTypeAssignToContact, UIActivityTypeCopyToPasteboard, UIActivityTypePostToWeibo, UIActivityTypePrint, UIActivityTypeMessage];
-     
-     UIActivityViewController * activityController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:applicationActivities];
-     activityController.excludedActivityTypes = excludeActivities;
-     
-     */
-    
-    //   SLComposeViewController *t;
-    
-    //SLComposeViewController *fbController=[SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    
-    //    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-    //    {
-    //        // Device is able to send a Twitter message
-    //        NSLog(@"Able to use twitter.");
-    //
-    //    }
-    
-    //    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-    //    {
-    //        // Device is able to send a Twitter message
-    //        NSLog(@"Able to use facebook.");
-    //
-    //    }
-    
-    shareItems.excludedActivityTypes = excludeActivities;
-    
-    [self presentViewController:shareItems animated:YES completion:nil];
-}
 
 
 - (void)newPostButtonClick

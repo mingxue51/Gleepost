@@ -618,15 +618,16 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         UIButton *userButton = (UIButton*)sender;
         self.selectedUserId = userButton.tag;
     }
-    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey)) {
+    
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+    {
         self.selectedUserId = -1;
-        //Navigate to profile view controller.
+        
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId]) {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-    else {
+    else
+    {
         [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
 }
@@ -635,15 +636,14 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     self.selectedUserId = user.remoteKey;
     
-    if((self.selectedUserId == [[SessionManager sharedInstance]user].remoteKey)) {
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+    {
         self.selectedUserId = -1;
-        //Navigate to profile view controller.
+        
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
-    else if([[ContactsManager sharedInstance] navigateToUnlockedProfileWithSelectedUserId:self.selectedUserId]) {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-    else {
+    else
+    {
         [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
 }

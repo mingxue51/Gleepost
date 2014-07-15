@@ -57,7 +57,7 @@
 
 - (void)registerTableViewCells
 {
-    [self.tableView registerNib:[UINib nibWithNibName:@"GLPNameCell" bundle:nil] forCellReuseIdentifier:@"GLPNameCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPSimpleNameCell" bundle:nil] forCellReuseIdentifier:@"GLPNameCell"];
 }
 
 - (void)configureGestures
@@ -202,6 +202,8 @@
 //        }
         
         _searchedUsers = [users mutableCopy];
+        
+        DDLogDebug(@"Searched users: %@", _searchedUsers);
         
         [_tableView reloadData];
     }];
