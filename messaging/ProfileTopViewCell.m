@@ -56,6 +56,14 @@ const float PROFILE_TOP_VIEW_HEIGHT = 245.0;
     [super setSubtitleWithString:userData.networkName];
     
     [super setSmallSubtitleWithString:userData.personalMessage];
+    
+    //TODO: Complete the following with real data.
+    
+    [super setNumberOfPosts:20];
+    
+    [super setNumberOfMemberships:4];
+    
+    [super setNumberOfRsvps:50];
 }
 
 - (void)awakeFromNib

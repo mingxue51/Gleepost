@@ -24,5 +24,8 @@
 - (void)setTitleWithString:(NSString *)title;
 - (void)setSubtitleWithString:(NSString *)subtitle;
 - (void)setSmallSubtitleWithString:(NSString *)smallSubtitle;
+- (void)setNumberOfPosts:(NSInteger)number;
+- (void)setNumberOfMemberships:(NSInteger)number;
+- (void)setNumberOfRsvps:(NSInteger)number;
 - (UIImage *)mainImageViewImage;
 @end

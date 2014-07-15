@@ -27,6 +27,11 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *smallSubtitleLbl;
 
+@property (weak, nonatomic) IBOutlet UILabel *postsLbl;
+
+@property (weak, nonatomic) IBOutlet UILabel *membershipsLbl;
+
+@property (weak, nonatomic) IBOutlet UILabel *rsvpsLbl;
 
 @end
 
@@ -36,15 +41,6 @@
 @synthesize titleLbl = _titleLbl;
 @synthesize subtitleLbl = _subtitleLbl;
 @synthesize smallSubtitleLbl = _smallSubtitleLbl;
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -110,6 +106,21 @@
 - (void)setSmallSubtitleWithString:(NSString *)smallSubtitle
 {
     [_smallSubtitleLbl setText:smallSubtitle];
+}
+
+- (void)setNumberOfPosts:(NSInteger)number
+{
+    [_postsLbl setText:[NSString stringWithFormat:@"%ld", (long)number]];
+}
+
+- (void)setNumberOfMemberships:(NSInteger)number
+{
+    [_membershipsLbl setText:[NSString stringWithFormat:@"%ld", (long)number]];
+}
+
+- (void)setNumberOfRsvps:(NSInteger)number
+{
+    [_rsvpsLbl setText:[NSString stringWithFormat:@"%ld", (long)number]];
 }
 
 #pragma mark - Configuration
