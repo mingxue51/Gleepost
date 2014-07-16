@@ -1304,6 +1304,7 @@
 		5885A66519190A18009FEAD4 /* EmptyMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyMessage.h; sourceTree = "<group>"; };
 		5885A66619190A18009FEAD4 /* EmptyMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyMessage.m; sourceTree = "<group>"; };
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
+		588CDF6C197618CA00373EE3 /* gleepost2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost2.cer; sourceTree = "<group>"; };
 		588D853F19599735002F516A /* send_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send_button_background.png; sourceTree = "<group>"; };
 		588D85411959D9C0002F516A /* gleepost_play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button.png; sourceTree = "<group>"; };
 		588D85891959F8FD002F516A /* GLPGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupsViewController.h; sourceTree = "<group>"; };
@@ -2017,6 +2018,7 @@
 		11E2FBAF1856FCA9002EB2FA /* SSLCertificates */ = {
 			isa = PBXGroup;
 			children = (
+				588CDF6C197618CA00373EE3 /* gleepost2.cer */,
 				58536EDB18BE84210036FD00 /* gleepost-dev.cer */,
 				58A379C018BE3C6300E30949 /* gleepost.cer */,
 			);
