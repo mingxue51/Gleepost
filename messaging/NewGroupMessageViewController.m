@@ -222,7 +222,12 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
             return;
         }
         
-        NSLog(@"Search users by name count: %d", users.count);
+        if([self isCurrentUserFoundWithUsers:users])
+        {
+            return;
+        }
+        
+        DDLogInfo(@"Search users by name count: %d", users.count);
         
         
         //        for(GLPUser *user in users)
@@ -271,10 +276,8 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
 - (IBAction)addUsers:(id)sender
 {
     //Create new conversation with users.
-//    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findRegularByParticipant:user];
-    
-    GLPConversation *conversation = nil;
-    
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:_checkedUsers];
+        
     DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
     
     if(!conversation)
@@ -287,8 +290,10 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
         
         conversation = [[GLPConversation alloc] initWithParticipants:_checkedUsers];
         
-        _conversation = conversation;
     }
+    
+    _conversation = conversation;
+
     
     [self performSegueWithIdentifier:@"view conversation" sender:self];
 }
@@ -354,6 +359,13 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
     [_checkedUsers removeObjectAtIndex:removeIndex];
 }
 
+
+- (BOOL)isCurrentUserFoundWithUsers:(NSArray *)users
+{
+    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
+    
+    return (arrayResult.count == 1) ? YES : NO;
+}
 
 #pragma mark - Navigation
 

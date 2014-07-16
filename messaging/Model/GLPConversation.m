@@ -74,7 +74,7 @@
 
     DDLogDebug(@"Participants: %@", _participants);
     
-    _title = _isGroup ? @"Group chat" : [self getUniqueParticipant].name;
+    _title = _isGroup ? [self generateGroupTitle] : [self getUniqueParticipant].name;
     
     _isLive = NO;
     _isEnded = NO;
@@ -148,6 +148,22 @@
 -(NSString *)description
 {
     return [NSString stringWithFormat:@"Remote Key: %ld, Message: %@, Participants: %@", (long)self.remoteKey, _lastMessage, self.participants];
+}
+
+- (NSString *)generateGroupTitle
+{
+    NSMutableString *participantsNames = [[NSMutableString alloc] init];
+    
+    
+    for(GLPUser *user in _participants)
+    {
+        [participantsNames appendFormat:@"%@, ", user.name];
+    }
+    
+    [participantsNames deleteCharactersInRange:NSMakeRange(participantsNames.length - 2, 2)];
+    
+    return participantsNames;
+
 }
 
 

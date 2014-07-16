@@ -213,7 +213,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     }
     else
     {
-        self.title = @"Group Chat";
+        self.title = _conversation.title;
     }
     
 

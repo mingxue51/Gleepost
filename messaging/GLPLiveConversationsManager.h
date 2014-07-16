@@ -32,6 +32,8 @@
 - (void)resetLastShownMessageForConversation:(GLPConversation *)conversation;
 - (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey;
 - (GLPConversation *)findRegularByParticipant:(GLPUser *)participant;
+- (GLPConversation *)findOneToOneConversationWithParticipant:(GLPUser *)participant;
+- (GLPConversation *)findGroupConversationWithParticipants:(NSArray *)users;
 - (BOOL)conversationCanHavePreviousMessages:(GLPConversation *)conversation;
 - (GLPConversation *)oldestLiveConversation;
 - (NSInteger)conversationsCount;

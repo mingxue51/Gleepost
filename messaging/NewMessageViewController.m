@@ -188,7 +188,13 @@
             return;
         }
         
-        NSLog(@"Search users by name count: %d", users.count);
+        if([self isCurrentUserFoundWithUsers:users])
+        {
+            return;
+        }
+        
+        
+        DDLogInfo(@"Search users by name count: %d", users.count);
         
         
 //        for(GLPUser *user in users)
@@ -233,7 +239,7 @@
 
 - (void)startNewConversationWithUser:(GLPUser *)user
 {
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findRegularByParticipant:user];
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:user];
     
     DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
     
@@ -260,6 +266,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark - Helpers
+
+- (BOOL)isCurrentUserFoundWithUsers:(NSArray *)users
+{
+    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
+    
+    return (arrayResult.count == 1) ? YES : NO;
+}
 
 #pragma mark - Navigation
 

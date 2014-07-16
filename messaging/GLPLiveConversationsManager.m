@@ -580,7 +580,9 @@ static GLPLiveConversationsManager *instance = nil;
     __block GLPConversation *conversation = nil;
     
     dispatch_sync(_queue, ^{
+        
         NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            
             GLPConversation *attachedConversation = evaluatedObject;
             
 //            if(attachedConversation.isLive) {
@@ -588,7 +590,44 @@ static GLPLiveConversationsManager *instance = nil;
 //            }
             
             GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
+            
+            DDLogDebug(@"Attached participants: %@", attachedConversation.participants);
+            
+            
             return attachedParticipant.remoteKey == participant.remoteKey;
+        }]];
+        
+        DDLogInfo(@"Filtered array: %@", filteredArray);
+        
+        if(filteredArray.count == 0) {
+            DDLogInfo(@"Cannot found regular conversation that matches");
+            return;
+        }
+        
+        conversation = filteredArray[0];
+    });
+    
+    return conversation;
+}
+
+- (GLPConversation *)findOneToOneConversationWithParticipant:(GLPUser *)participant
+{
+    DDLogInfo(@"Find one to one conversation by participant %d - %@", participant.remoteKey, participant.name);
+
+    __block GLPConversation *conversation = nil;
+    
+    dispatch_sync(_queue, ^{
+        
+        NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            
+            GLPConversation *attachedConversation = evaluatedObject;
+            
+            NSArray *participants = attachedConversation.participants;
+            
+            GLPUser *attachedParticipant = [participants firstObject];
+            
+            return (attachedParticipant.remoteKey == participant.remoteKey) && (participants.count == 1);
+            
         }]];
         
         if(filteredArray.count == 0) {
@@ -600,6 +639,41 @@ static GLPLiveConversationsManager *instance = nil;
     });
     
     return conversation;
+    
+}
+
+- (GLPConversation *)findGroupConversationWithParticipants:(NSArray *)users
+{
+    NSMutableArray *foundUsers = [[NSMutableArray alloc] init];
+    
+    for(GLPConversation *conversation in [_conversations allValues])
+    {
+        NSArray *participants = conversation.participants;
+        
+        if(participants.count == 1)
+        {
+            continue;
+        }
+        
+        
+        for(GLPUser *pUser in participants)
+        {
+            for(GLPUser *inUser in users)
+            {
+                if(pUser.remoteKey == inUser.remoteKey)
+                {
+                    [foundUsers addObject:pUser];
+                }
+            }
+        }
+        
+        if(foundUsers.count == users.count)
+        {
+            return conversation;
+        }
+    }
+    
+    return nil;
 }
 
 //- (BOOL)isConversationSync:(GLPConversation *)conversation
