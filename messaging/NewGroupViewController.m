@@ -12,14 +12,21 @@
 #import "GroupOperationManager.h"
 #import "ShapeFormatterHelper.h"
 #import "AppearanceHelper.h"
+#import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
 
 @interface NewGroupViewController ()
-
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
 @property (weak, nonatomic) IBOutlet UITextField *groupNameTextField;
 
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *groupDescriptionTextView;
+
+@property (weak, nonatomic) IBOutlet UIView *mainView;
+
+@property (weak, nonatomic) IBOutlet UIView *dropDownView;
+
+@property (weak, nonatomic) IBOutlet UIView *selectGroupTypeView;
+
 
 @property (weak, nonatomic) UIViewController <GroupCreatedDelegate> *delegate;
 
@@ -45,6 +52,8 @@
     
     [self configureNavigationBar];
     
+    [self configureGesturesOnViews];
+    
 
     if(!IS_IPHONE_5) {
         CGFloat offset = -25;
@@ -56,11 +65,14 @@
     
 }
 
--(void)viewWillAppear:(BOOL)animated
+
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     [_groupNameTextField becomeFirstResponder];
+
+    
 }
 
 #pragma mark - Configuration
@@ -73,6 +85,13 @@
 
 }
 
+- (void)configureGesturesOnViews
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dropDownList)];
+    [tap setNumberOfTapsRequired:1];
+    [_selectGroupTypeView addGestureRecognizer:tap];
+}
+
 -(void)configureFDTakeController
 {
     self.fdTakeController = [[FDTakeController alloc] init];
@@ -80,37 +99,41 @@
     self.fdTakeController.delegate = self;
 }
 
--(void)configureProgressBar
-{
-    // Do any additional setup after loading the view.
-    
-    self.progress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-    self.progress.tag = 100;
-    [self.view addSubview:self.progress];
-    UINavigationBar *navBar = [self navBar];
-    
-    NSLayoutConstraint *constraint;
-    constraint = [NSLayoutConstraint constraintWithItem:self.progress attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:-0.5];
-    [self.view addConstraint:constraint];
-    
-    constraint = [NSLayoutConstraint constraintWithItem:self.progress attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
-    [self.view addConstraint:constraint];
-    
-    constraint = [NSLayoutConstraint constraintWithItem:self.progress attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-    [self.view addConstraint:constraint];
-    
-    [self.progress setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.progress.hidden = NO;
-    
-    [self.progress setProgress:1.0f];
-}
+//-(void)configureProgressBar
+//{
+//    // Do any additional setup after loading the view.
+//    
+//    self.progress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+//    self.progress.tag = 100;
+//    [self.view addSubview:self.progress];
+//    UINavigationBar *navBar = [self navBar];
+//    
+//    NSLayoutConstraint *constraint;
+//    constraint = [NSLayoutConstraint constraintWithItem:self.progress attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:-0.5];
+//    [self.view addConstraint:constraint];
+//    
+//    constraint = [NSLayoutConstraint constraintWithItem:self.progress attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+//    [self.view addConstraint:constraint];
+//    
+//    constraint = [NSLayoutConstraint constraintWithItem:self.progress attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+//    [self.view addConstraint:constraint];
+//    
+//    [self.progress setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    self.progress.hidden = NO;
+//    
+//    [self.progress setProgress:1.0f];
+//}
 
 -(void)configureNavigationBar
 {
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_navBar];
+//    [AppearanceHelper setNavigationBarFontForNavigationBar:_navBar];
 
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 #pragma mark - Selectors
@@ -147,7 +170,6 @@
         
         [_delegate groupCreatedWithData:group];
 
-        [self dismissModalView:nil];
     }
     else
     {

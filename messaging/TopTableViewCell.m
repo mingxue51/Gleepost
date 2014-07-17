@@ -133,7 +133,7 @@
     }
     else
     {
-        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:0    ];
+        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:0];
     }
     
     
@@ -153,6 +153,11 @@
 - (void)mainImageViewTouched:(id)sender
 {
     [_subClassdelegate mainImageViewTouched];
+}
+
+- (IBAction)bagdeButtonTouched:(id)sender
+{
+    [_subClassdelegate badgeTouched];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

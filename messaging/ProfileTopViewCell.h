@@ -17,6 +17,7 @@
 @required
 - (void)changeProfileImage:(id)sender;
 - (void)segmentSwitchedWithButtonType:(ButtonType)buttonType;
+- (void)badgeTouched;
 
 @end
 

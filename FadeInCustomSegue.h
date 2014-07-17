@@ -10,4 +10,7 @@
 
 @interface FadeInCustomSegue : UIStoryboardSegue
 
+@property CGPoint originatingPoint;
+
+
 @end

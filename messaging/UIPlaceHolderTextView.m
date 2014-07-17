@@ -7,6 +7,7 @@
 //
 
 #import "UIPlaceHolderTextView.h"
+#import "AppearanceHelper.h"
 
 @interface UIPlaceHolderTextView()
 
@@ -32,7 +33,7 @@
     }
     
     if (!self.placeholderColor) {
-        [self setPlaceholderColor:[UIColor lightGrayColor]];
+        [self setPlaceholderColor:[AppearanceHelper colourForRegisterTextFields]];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidChangeNotification object:nil];
@@ -40,10 +41,10 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    if( (self = [super initWithFrame:frame]) )
+    if((self = [super initWithFrame:frame]))
     {
         [self setPlaceholder:@""];
-        [self setPlaceholderColor:[UIColor lightGrayColor]];
+        [self setPlaceholderColor:[AppearanceHelper colourForRegisterTextFields]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidChangeNotification object:nil];
     }
     return self;
@@ -73,11 +74,11 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    if( [[self placeholder] length] > 0 )
+    if([[self placeholder] length] > 0)
     {
         if (_placeHolderLabel == nil )
         {
-            _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8,8,self.bounds.size.width - 16,0)];
+            _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 8, self.bounds.size.width - 16, 0)];
             _placeHolderLabel.lineBreakMode = NSLineBreakByWordWrapping;
             _placeHolderLabel.numberOfLines = 0;
             _placeHolderLabel.font = self.font;

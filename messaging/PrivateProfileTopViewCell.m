@@ -95,6 +95,11 @@ const float PRIVATE_PROFILE_TOP_VIEW_HEIGHT = 245;
     [_delegate viewProfileImage:[super mainImageViewImage]];
 }
 
+- (void)badgeTouched
+{
+    [_delegate badgeTouched];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];

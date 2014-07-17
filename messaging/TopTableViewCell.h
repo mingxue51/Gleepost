@@ -13,6 +13,9 @@
 @required
 - (void)mainImageViewTouched;
 
+@optional
+- (void)badgeTouched;
+
 @end
 
 @interface TopTableViewCell : UITableViewCell

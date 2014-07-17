@@ -45,6 +45,7 @@
 #import "GLPButton.h"
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
+#import "GLPBadgesViewController.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -123,6 +124,7 @@
 
     [self configTabbar];
     
+    [self formatTableView];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -309,7 +311,7 @@
     
     //Change the format of the navigation bar.
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -366,6 +368,11 @@
     
     _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
+}
+
+- (void)formatTableView
+{
+    [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
 }
 
 -(void)registerTableViewCells
@@ -1358,7 +1365,7 @@
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
-    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+2 inSection:0]];
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+1 inSection:0]];
     
     [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
 }
@@ -1402,6 +1409,11 @@
 - (void)changeProfileImage:(id)sender
 {
     [self.fdTakeController takePhotoOrChooseFromLibrary];
+}
+
+- (void)badgeTouched
+{
+    [self performSegueWithIdentifier:@"view badges" sender:self];
 }
 
 
@@ -1454,6 +1466,11 @@
         GroupViewController *groupVC = segue.destinationViewController;
         
         groupVC.group = _groupToNavigate;
+    }
+    else if ([segue.identifier isEqualToString:@"view badges"])
+    {
+        GLPBadgesViewController *bVC = segue.destinationViewController;
+        bVC.customTitle = @"My";
     }
 }
 

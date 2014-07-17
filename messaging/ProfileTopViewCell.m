@@ -14,7 +14,6 @@
 @property (strong, nonatomic) GLPUser *userData;
 
 @property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
-
 @property (weak, nonatomic) IBOutlet UIImageView *notificationImageView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationLabel;
 
@@ -135,6 +134,11 @@ const float PROFILE_TOP_VIEW_HEIGHT = 245.0;
 - (void)mainImageViewTouched
 {
     [_delegate changeProfileImage:nil];
+}
+
+- (void)badgeTouched
+{
+    [_delegate badgeTouched];
 }
 
 

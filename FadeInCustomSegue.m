@@ -13,10 +13,10 @@
 - (void) perform
 {
     
-//    [UIView transitionWithView:src.navigationController.view duration:0.2
+//    [UIView transitionWithView:[(UIViewController *)self.sourceViewController view] duration:0.2
 //                       options:UIViewAnimationOptionTransitionFlipFromLeft
 //                    animations:^{
-//                        [src.navigationController pushViewController:dst animated:NO];
+//                        [(UIViewController *)self.sourceViewController pushViewController: (UIViewController *)self.destinationViewController animated:NO];
 //                    }
 //                    completion:NULL];
     
@@ -26,19 +26,46 @@
 //    transition.duration = 1;
 //    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 //    transition.type = kCATransitionFade;
-//    transition.delegate = src;
-//    [src.view.layer addAnimation:transition forKey:nil];
-//    src.view.hidden = YES;
-//    dst.view.hidden = NO;
+//    transition.delegate = self.sourceViewController;
+//    [[(UIViewController *)self.sourceViewController view].layer addAnimation:transition forKey:nil];
+//    [(UIViewController *)self.sourceViewController view].hidden = YES;
+//    [(UIViewController *)self.destinationViewController view].hidden = NO;
   
     
-    CATransition* transition = [CATransition animation];
+//    CATransition* transition = [CATransition animation];
+//    
+//    transition.duration = 1.0;
+//    transition.type = kCATransitionFade;
+//    
+//    [[self.sourceViewController navigationController].view.layer addAnimation:transition forKey:kCATransition];
+//    [[self.sourceViewController navigationController] pushViewController:[self destinationViewController] animated:NO];
     
-    transition.duration = 1.0;
-    transition.type = kCATransitionFade;
+    UIViewController *sourceViewController = self.sourceViewController;
+    UIViewController *destinationViewController = self.destinationViewController;
     
-    [[self.sourceViewController navigationController].view.layer addAnimation:transition forKey:kCATransition];
-    [[self.sourceViewController navigationController] pushViewController:[self destinationViewController] animated:NO];
+    // Add the destination view as a subview, temporarily
+    [sourceViewController.view addSubview:destinationViewController.view];
+    
+    // Transformation start scale
+    destinationViewController.view.transform = CGAffineTransformMakeScale(0.05, 0.05);
+    
+    // Store original centre point of the destination view
+    CGPoint originalCenter = destinationViewController.view.center;
+    // Set center to start point of the button
+    destinationViewController.view.center = self.originatingPoint;
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         // Grow!
+                         destinationViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
+                         destinationViewController.view.center = originalCenter;
+                     }
+                     completion:^(BOOL finished){
+                         [destinationViewController.view removeFromSuperview]; // remove from temp super view
+                         [sourceViewController presentViewController:destinationViewController animated:NO completion:NULL]; // present VC
+                     }];
    
 }
 

@@ -17,6 +17,8 @@
 @required
 - (void)viewConversation:(GLPConversation *)conversation;
 - (void)viewProfileImage:(UIImage *)image;
+- (void)badgeTouched;
+
 
 @end
 

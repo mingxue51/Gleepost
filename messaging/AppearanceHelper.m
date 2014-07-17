@@ -240,7 +240,6 @@
     return [UIColor colorWithR:230.0 withG:230.0 andB:230.0];
 }
 
-
 +(void)showTabBar:(UIViewController*)controller
 {
     controller.tabBarController.tabBar.hidden = NO;
@@ -261,7 +260,7 @@
     
     [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     
-    [tableView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
+    [tableView setBackgroundColor:[UIColor whiteColor]];
     [tableView setBackgroundView:backImgView];
 }
 

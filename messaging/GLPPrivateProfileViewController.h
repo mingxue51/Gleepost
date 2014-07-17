@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "NSObject_ProfileEnums.h"
 #import "NewCommentDelegate.h"
-#import "ViewImageDelegate.h"
 #import "GLPConversation.h"
 #import "ProfileTableViewCell.h"
 #import "GLPPostCell.h"
 #import "PrivateProfileTopViewCell.h"
 
-@interface GLPPrivateProfileViewController : UITableViewController<NewCommentDelegate, ViewImageDelegate,  GLPPostCellDelegate, PrivateProfileTopViewCellDelegate>
+@interface GLPPrivateProfileViewController : UITableViewController<NewCommentDelegate, GLPPostCellDelegate, PrivateProfileTopViewCellDelegate>
 
 
 @property (assign, nonatomic) int selectedUserId;

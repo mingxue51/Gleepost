@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Stf-zL-Lr5">
-                        <rect key="frame" x="10" y="15" width="300" height="514"/>
+                        <rect key="frame" x="10" y="8" width="300" height="514"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -68,7 +68,7 @@
                             <outlet property="eventTitleLblHeight" destination="k8L-cD-7Uq" id="siW-3P-jC7"/>
                         </connections>
                     </view>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iK6-y7-w6w" customClass="MainPostView">
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iK6-y7-w6w" customClass="MainPostView">
                         <rect key="frame" x="10" y="85" width="300" height="425"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -306,8 +306,8 @@
                 </subviews>
                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstItem="iK6-y7-w6w" firstAttribute="top" secondItem="oa2-qe-OYc" secondAttribute="top" constant="85" id="B5y-Ak-BzZ"/>
-                    <constraint firstItem="Stf-zL-Lr5" firstAttribute="top" secondItem="oa2-qe-OYc" secondAttribute="top" constant="15" id="awH-sZ-bTg"/>
+                    <constraint firstItem="iK6-y7-w6w" firstAttribute="top" secondItem="oa2-qe-OYc" secondAttribute="top" constant="78" id="B5y-Ak-BzZ"/>
+                    <constraint firstItem="Stf-zL-Lr5" firstAttribute="top" secondItem="oa2-qe-OYc" secondAttribute="top" constant="8" id="awH-sZ-bTg"/>
                     <constraint firstItem="Stf-zL-Lr5" firstAttribute="leading" secondItem="oa2-qe-OYc" secondAttribute="leading" constant="10" id="bcI-ZL-9rm"/>
                 </constraints>
             </tableViewCellContentView>

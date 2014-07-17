@@ -28,6 +28,7 @@
 #import "GLPiOS6Helper.h"
 #import "EmptyMessage.h"
 #import "UINavigationBar+Format.h"
+#import "GLPBadgesViewController.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -73,11 +74,6 @@
     
     return self;
 }
-
-- (void)backButtonTapped {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
 
 - (void)viewDidLoad
 {
@@ -238,6 +234,9 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
+    [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
+
+    
     //Add new colour in the bottom of the table view.
 //    UIImageView *bottomImageView = [[UIImageView alloc] init];
 //    bottomImageView.backgroundColor = [UIColor whiteColor];
@@ -247,7 +246,7 @@
 //    [bottomImageView sendSubviewToBack:self.tableView];
     
     
-    [self setBottomView];
+//    [self setBottomView];
 
 }
 
@@ -509,6 +508,11 @@
     vc.modalPresentationStyle= UIModalPresentationCustom;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)badgeTouched
+{
+    [self performSegueWithIdentifier:@"view badges" sender:self];
 }
 
 -(void)unlockProfile
@@ -897,6 +901,11 @@
         
         GLPConversationViewController *vt = segue.destinationViewController;
         vt.conversation = _conversation;
+    }
+    else if ([segue.identifier isEqualToString:@"view badges"])
+    {
+        GLPBadgesViewController *bVC = segue.destinationViewController;
+        bVC.customTitle = [NSString stringWithFormat:@"%@'s", _profileUser.name];
     }
 }
 

@@ -17,6 +17,7 @@
 #import "UIViewController+Flurry.h"
 #import "UIViewController+GAI.h"
 #import "ImageFormatterHelper.h"
+#import "IntroNewGroupViewController.h"
 
 @interface GLPGroupsViewController ()
 
@@ -106,6 +107,7 @@
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
 }
 
 #pragma mark - Configuration
@@ -139,7 +141,7 @@
 
 - (void)configureNavigationButton
 {
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_group" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(popUpCreateView:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_group" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(popUpIntroView:) andTarget:self];
 }
 
 - (void)configTabbar
@@ -152,6 +154,8 @@
 - (void)configNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupRemoteKeyAndImage:) name:@"GLPGroupUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupCreatedWithNotification:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
 }
 
 - (void)registerViews
@@ -406,6 +410,17 @@
     //    [self createNewGroupWithGroup:group];
 }
 
+-(void)groupCreatedWithNotification:(NSNotification *)notification
+{
+    NSDictionary *dictionary = [notification userInfo];
+    
+    GLPGroup *group = [dictionary objectForKey:@"new group"];
+    
+    
+    [self reloadNewGroupWithGroup:group];
+    
+    //    [self createNewGroupWithGroup:group];
+}
 
 -(void)groupDeletedWithData:(GLPGroup *)group
 {
@@ -525,20 +540,14 @@
     }
 }
 
--(void)popUpCreateView:(id)sender
+- (void)popUpIntroView:(id)sender
 {
-    //Pop up the creation view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    NewGroupViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupViewController"];
-    
-    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
-    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
-    //    [navigationController setNavigationBarHidden:YES];
-    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [cvc setDelegate:self];
-    
-    [self presentViewController:cvc animated:YES completion:nil];
+    IntroNewGroupViewController *introNewGroupVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroNewGroupViewController"];
+//    [newPostVC setDelegate:self];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:introNewGroupVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

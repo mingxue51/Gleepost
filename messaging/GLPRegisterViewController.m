@@ -18,6 +18,7 @@
 #import "GLPTemporaryUserInformationManager.h"
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "IntroSegue.h"
 
 @interface GLPRegisterViewController ()
 
@@ -91,10 +92,13 @@
                 [self uploadImageAndSetUserImage:[[GLPTemporaryUserInformationManager sharedInstance] image]];
             }
 
-            
+            [self.view endEditing:YES];
             
             [self performSegueWithIdentifier:@"start" sender:self];
+
+            
         } else {
+            
             [WebClientHelper showStandardLoginErrorWithMessage:errorMessage];
         }
     }];
@@ -286,5 +290,13 @@
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
+
+// Prepare for the segue going forward
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    if([segue isKindOfClass:[FadeInCustomSegue class]]) {
+//        // Set the start point for the animation to center of the button for the animation
+//        ((FadeInCustomSegue *)segue).originatingPoint = _backButton.center;
+//    }
+//}
 
 @end
