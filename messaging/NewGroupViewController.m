@@ -10,10 +10,10 @@
 #import "UIPlaceHolderTextView.h"
 #import "WebClientHelper.h"
 #import "GroupOperationManager.h"
-#import "ShapeFormatterHelper.h"
-#import "AppearanceHelper.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
+#import "UIView+GLPDesign.h"
+#import "ShapeFormatterHelper.h"
 
 @interface NewGroupViewController ()
 
@@ -27,6 +27,19 @@
 
 @property (weak, nonatomic) IBOutlet UIView *selectGroupTypeView;
 
+@property (weak, nonatomic) IBOutlet UIView *selectImageView;
+
+@property (weak, nonatomic) IBOutlet UIView *nameDescriptionView;
+
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *groupTypesButtons;
+
+@property (weak, nonatomic) IBOutlet UILabel *selectedGroupLbl;
+
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *selectedImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *addGroupImageLbl;
 
 @property (weak, nonatomic) UIViewController <GroupCreatedDelegate> *delegate;
 
@@ -36,6 +49,12 @@
 @property (strong, nonatomic) UIProgressView *progress;
 
 @property (strong, nonatomic) NSDate *timestamp;
+
+@property (strong, nonatomic) NSDictionary *groupTypes;
+
+@property (strong, nonatomic) NSDictionary *selectedGroupType;
+
+//@property (strong, nonatomic) NSKeyValueChange
 
 @end
 
@@ -54,6 +73,13 @@
     
     [self configureGesturesOnViews];
     
+    [self formatViews];
+    
+    [self configureGroupTypeDictionary];
+    
+    [self formatSelectedGroup];
+    
+    [self setDataToGroupViews];
 
     if(!IS_IPHONE_5) {
         CGFloat offset = -25;
@@ -81,8 +107,6 @@
 {
     _groupDescriptionTextView.placeholder = @"Group description";
     
-    [ShapeFormatterHelper setCornerRadiusWithView:_groupDescriptionTextView andValue:5];
-
 }
 
 - (void)configureGesturesOnViews
@@ -90,6 +114,19 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dropDownList)];
     [tap setNumberOfTapsRequired:1];
     [_selectGroupTypeView addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectImage)];
+    [tap setNumberOfTapsRequired:1];
+    [_selectImageView addGestureRecognizer:tap];
+}
+
+- (void)formatViews
+{
+    [_selectGroupTypeView setGleepostStyleBorder];
+    [_selectImageView setGleepostStyleBorder];
+    [_nameDescriptionView setGleepostStyleBorder];
+    [_dropDownView setGleepostStyleBorder];
+    [ShapeFormatterHelper setTwoLeftCornerRadius:_selectedImageView withViewFrame:_selectedImageView.frame withValue:4];
 }
 
 -(void)configureFDTakeController
@@ -134,6 +171,59 @@
     [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+/**
+ Creates a new dictionary to store the name of each group type
+ and enum respectively.
+ 
+ */
+- (void)configureGroupTypeDictionary
+{
+    
+    NSMutableDictionary *tempDictionary = [[NSMutableDictionary alloc] init];
+    
+    [tempDictionary setObject:@"Public group" forKey:[NSNumber numberWithInteger:kPublicGroup]];
+    
+    [tempDictionary setObject:@"Private group" forKey:[NSNumber numberWithInteger:kPrivateGroup]];
+    
+    [tempDictionary setObject:@"Secret group" forKey:[NSNumber numberWithInteger: kSecretGroup]];
+    
+    _groupTypes = [[NSDictionary alloc] initWithDictionary:tempDictionary.mutableCopy];
+}
+
+/**
+ Create the selected group (from IntroNewGroupVC) in a dictionary.
+ */
+- (void)formatSelectedGroup
+{
+    NSString *selectedGroupStr = [_groupTypes objectForKey:[NSNumber numberWithInteger: _groupType]];
+    
+    _selectedGroupType = [[NSDictionary alloc] initWithObjectsAndKeys:selectedGroupStr, [NSNumber numberWithInteger:_groupType], nil];
+    
+}
+
+- (void)setDataToGroupViews
+{
+    int btnIndex = 0;
+
+    NSNumber *selectedGroupNumber = [[_selectedGroupType allKeys] objectAtIndex:0];
+    
+    [_selectedGroupLbl setText:[[_selectedGroupType allValues] objectAtIndex:0]];
+    
+    for(NSNumber *number in _groupTypes)
+    {
+        if(![number isEqualToNumber:selectedGroupNumber])
+        {
+            UIButton *currentButton = (UIButton *)[_groupTypesButtons objectAtIndex:btnIndex];
+            
+            [currentButton setTitle:[_groupTypes objectForKey:number] forState:UIControlStateNormal];
+            
+            currentButton.tag = [number integerValue];
+            
+            ++btnIndex;
+        }
+    }
 }
 
 #pragma mark - Selectors
@@ -182,6 +272,41 @@
     [self.fdTakeController takePhotoOrChooseFromLibrary];
 }
 
+- (void)dropDownList
+{
+    if(_dropDownView.tag == 0)
+    {
+        [self showOptionsMenu];
+    }
+    else
+    {
+        [self hideOptionsMenu];
+    }
+}
+
+- (void)selectImage
+{
+    [self performSegueWithIdentifier:@"show image selector" sender:self];
+}
+
+- (IBAction)selectedNewGroupType:(id)sender
+{
+    UIButton *btn = (UIButton *)sender;
+    
+    NSNumber *selectedBtnNumber = [NSNumber numberWithInteger:btn.tag];
+    
+    NSString *selectedBtnTitle = [_groupTypes objectForKey:selectedBtnNumber];
+    
+    _selectedGroupType = [[NSDictionary alloc] initWithObjectsAndKeys:selectedBtnTitle, selectedBtnNumber, nil];
+    
+    [self setDataToGroupViews];
+    
+    [self hideOptionsMenu];
+}
+
+
+#pragma mark - Helpers
+
 -(BOOL)isInformationValid
 {
     return ![_groupNameTextField.text isEqualToString:@""];
@@ -202,6 +327,44 @@
     return YES;
 }
 
+
+#pragma mark - UI methods
+
+- (void)showOptionsMenu
+{
+    _dropDownView.tag = 1;
+    
+    [_dropDownView setHidden:NO];
+    
+    _arrowImageView.layer.transform = CATransform3DMakeRotation(M_PI, 0, 0.0, 1.0);
+    
+    [UIView animateWithDuration:0.5 animations:^{
+       
+        CGRectSetY(_mainView, _mainView.frame.origin.y + 80);
+        
+        [_dropDownView setAlpha:1.0];
+        
+    }];
+}
+
+- (void)hideOptionsMenu
+{
+    _dropDownView.tag = 0;
+
+    _arrowImageView.layer.transform = CATransform3DMakeRotation(M_PI, 0, 0.0, 0.0);
+
+    [UIView animateWithDuration:0.5 animations:^{
+        
+        CGRectSetY(_mainView, _mainView.frame.origin.y - 80);
+
+        [_dropDownView setAlpha:0.0];
+
+    } completion:^(BOOL finished) {
+      
+        [_dropDownView setHidden:YES];
+        
+    }];
+}
 
 #pragma mark - FDTakeController delegate
 
@@ -227,6 +390,22 @@
     //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    [_selectedImageView setImage:image];
+    
+    [_addGroupImageLbl setHidden:YES];
+    
+    _groupImage = image;
+    
+    _timestamp = [NSDate date];
+    
+    //Add image to image uploader to start the uploading.
+    [[GroupOperationManager sharedInstance] uploadImage:_groupImage withTimestamp:_timestamp];
+}
+
 -(void)setDelegate:(UIViewController<GroupCreatedDelegate> *)delegate
 {
     _delegate = delegate;
@@ -236,6 +415,16 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"show image selector"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        
+        [imgSelectorVC setDelegate:self];
+    }
 }
 
 @end

@@ -221,7 +221,6 @@
     return _filteredGroups.count;
 }
 
-
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"GroupCell";
@@ -270,8 +269,6 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    
-    
     // remove all data that belongs to previous search
     
     [_filteredGroups removeAllObjects];

@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+extern const CGSize IMAGE_COLLECTION_CELL_DIMENSIONS;
+
+
 @interface ImageCollectionViewCell : UICollectionViewCell
+
+- (void)setImageViewImage:(UIImage *)image;
 
 @end

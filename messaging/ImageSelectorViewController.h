@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPImageSelectorLoader.h"
 
-@interface ImageSelectorViewController : UICollectionViewController
+@protocol ImageSelectorViewControllerDelegate <NSObject>
+
+- (void)takeImage:(UIImage *)image;
+
+@end
+
+@interface ImageSelectorViewController : UIViewController <GLPImageSelectorLoaderDelegate>
+
+@property (weak, nonatomic) UIViewController <ImageSelectorViewControllerDelegate> *delegate;
 
 @end

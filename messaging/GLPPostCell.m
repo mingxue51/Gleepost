@@ -84,8 +84,6 @@ const float ONE_LINE_LIMIT = 18.0;
     _post = post;
     _postIndex = index;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    
     
     [self configureTopView];
 

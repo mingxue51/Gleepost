@@ -134,6 +134,7 @@
 		582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404E18AD6EE300BC4285 /* AVFoundation.framework */; };
 		582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 582B405118AD6FAD00BC4285 /* mario.mp3 */; };
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
+		582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */; };
 		5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831B41018DB28BB00574A53 /* UIImage+Alpha.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */; };
@@ -502,6 +503,10 @@
 		58B90F1F18C8216300FA0955 /* GroupUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */; };
 		58B9507318B2AF1E00EBA231 /* b.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58B9507218B2AF1E00EBA231 /* b.wav */; };
 		58BB77FD1924F0600046885B /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BB77FC1924F0600046885B /* VideoView.m */; };
+		58BBACB01978796D00A8A265 /* ImageSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BBACAF1978796D00A8A265 /* ImageSelectorViewController.m */; };
+		58BBACB319787B9200A8A265 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58BBACB219787B9200A8A265 /* ImageCollectionViewCell.xib */; };
+		58BBACB719787BF400A8A265 /* ImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BBACB619787BF400A8A265 /* ImageCollectionViewCell.m */; };
+		58BBACBA19788D9C00A8A265 /* GLPImageSelectorLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BBACB919788D9C00A8A265 /* GLPImageSelectorLoader.m */; };
 		58BF03E918F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */; };
 		58C09A1B185B2CDD00648EB4 /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C09A1A185B2CDD00648EB4 /* bell.png */; };
 		58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */; };
@@ -999,6 +1004,8 @@
 		582B405118AD6FAD00BC4285 /* mario.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mario.mp3; sourceTree = "<group>"; };
 		582CE05918565D820024D065 /* GLPPrivateProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPrivateProfileViewController.h; sourceTree = "<group>"; };
 		582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPrivateProfileViewController.m; sourceTree = "<group>"; };
+		582E44D4197DB22B000BE3EC /* UIView+GLPDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GLPDesign.h"; sourceTree = "<group>"; };
+		582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GLPDesign.m"; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
 		5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		5831B41018DB28BB00574A53 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
@@ -1516,6 +1523,13 @@
 		58B9507218B2AF1E00EBA231 /* b.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = b.wav; sourceTree = "<group>"; };
 		58BB77FB1924F0600046885B /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
 		58BB77FC1924F0600046885B /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoView.m; sourceTree = "<group>"; };
+		58BBACAE1978796D00A8A265 /* ImageSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectorViewController.h; sourceTree = "<group>"; };
+		58BBACAF1978796D00A8A265 /* ImageSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectorViewController.m; sourceTree = "<group>"; };
+		58BBACB219787B9200A8A265 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
+		58BBACB519787BF400A8A265 /* ImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCollectionViewCell.h; sourceTree = "<group>"; };
+		58BBACB619787BF400A8A265 /* ImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCollectionViewCell.m; sourceTree = "<group>"; };
+		58BBACB819788D9C00A8A265 /* GLPImageSelectorLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageSelectorLoader.h; sourceTree = "<group>"; };
+		58BBACB919788D9C00A8A265 /* GLPImageSelectorLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageSelectorLoader.m; sourceTree = "<group>"; };
 		58BF03E718F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFlurryVisibleCellProcessor.h; sourceTree = "<group>"; };
 		58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFlurryVisibleCellProcessor.m; sourceTree = "<group>"; };
 		58C09A1A185B2CDD00648EB4 /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
@@ -3258,6 +3272,35 @@
 			name = Video;
 			sourceTree = "<group>";
 		};
+		58BBACAA1978791300A8A265 /* Custom media */ = {
+			isa = PBXGroup;
+			children = (
+				58BBACAE1978796D00A8A265 /* ImageSelectorViewController.h */,
+				58BBACAF1978796D00A8A265 /* ImageSelectorViewController.m */,
+			);
+			name = "Custom media";
+			sourceTree = "<group>";
+		};
+		58BBACB119787B7000A8A265 /* Collection views cells */ = {
+			isa = PBXGroup;
+			children = (
+				588D858C1959FB49002F516A /* GroupCollectionViewCell.xib */,
+				58BBACB219787B9200A8A265 /* ImageCollectionViewCell.xib */,
+			);
+			name = "Collection views cells";
+			sourceTree = "<group>";
+		};
+		58BBACB419787BD600A8A265 /* Collection views */ = {
+			isa = PBXGroup;
+			children = (
+				588D858E1959FEA8002F516A /* GroupCollectionViewCell.h */,
+				588D858F1959FEA8002F516A /* GroupCollectionViewCell.m */,
+				58BBACB519787BF400A8A265 /* ImageCollectionViewCell.h */,
+				58BBACB619787BF400A8A265 /* ImageCollectionViewCell.m */,
+			);
+			name = "Collection views";
+			sourceTree = "<group>";
+		};
 		58C45A72193C9077009FEE6E /* Navigation bar */ = {
 			isa = PBXGroup;
 			children = (
@@ -3700,6 +3743,8 @@
 				58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */,
 				58655D09192F822500266141 /* GLPVideoLoaderManager.h */,
 				58655D0A192F822500266141 /* GLPVideoLoaderManager.m */,
+				58BBACB819788D9C00A8A265 /* GLPImageSelectorLoader.h */,
+				58BBACB919788D9C00A8A265 /* GLPImageSelectorLoader.m */,
 			);
 			name = Processors;
 			sourceTree = "<group>";
@@ -4051,6 +4096,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				58BBACAA1978791300A8A265 /* Custom media */,
 				5891F81019773E7400065FFC /* Badges */,
 				583491F41933FC3D00E44B4A /* Walkthrough */,
 				58A75EB91920EF800082F316 /* Video */,
@@ -4165,6 +4211,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58BBACB419787BD600A8A265 /* Collection views */,
 				585C784F193DF3B8007E699B /* Walkthrough */,
 				58F294FE19353C6F00A638BA /* New post */,
 				58E1E5EB1926283C007ACB4F /* Post */,
@@ -4184,8 +4231,6 @@
 				58A855C01949BA8C0059CF57 /* GLPButton.m */,
 				584D208C19534AC400E571DF /* GLPSegmentView.h */,
 				584D208D19534AC400E571DF /* GLPSegmentView.m */,
-				588D858E1959FEA8002F516A /* GroupCollectionViewCell.h */,
-				588D858F1959FEA8002F516A /* GroupCollectionViewCell.m */,
 				58774D3F196568350034A1C6 /* GLPSearchBar.h */,
 				58774D40196568350034A1C6 /* GLPSearchBar.m */,
 			);
@@ -4298,6 +4343,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				58BBACB119787B7000A8A265 /* Collection views cells */,
 				58774D3C196567A60034A1C6 /* Custom search bar */,
 				58CFC77019630F9500FF1E40 /* Simple name cells */,
 				587CEA65195CECD30043E5E2 /* Segments */,
@@ -4319,7 +4365,6 @@
 				58D19D9318C7668000CB13CC /* CreateGroupCell.xib */,
 				5819E64A18C79E98003361B3 /* GroupCell.xib */,
 				58A75FBF19523BC80060060D /* MessageCell.xib */,
-				588D858C1959FB49002F516A /* GroupCollectionViewCell.xib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -4484,6 +4529,8 @@
 				5861575E193CD162009BAD33 /* UIColor+GLPAdditions.m */,
 				58774D42196574260034A1C6 /* UIRefreshControl+CustomLoader.h */,
 				58774D43196574260034A1C6 /* UIRefreshControl+CustomLoader.m */,
+				582E44D4197DB22B000BE3EC /* UIView+GLPDesign.h */,
+				582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -4958,6 +5005,7 @@
 				5897350A193F74710048BA85 /* glp-quote.png in Resources */,
 				587F2E00194362A7001F0931 /* verification_rocket.png in Resources */,
 				58FB7CA318563CC4002C6A00 /* default_user_image2.png in Resources */,
+				58BBACB319787B9200A8A265 /* ImageCollectionViewCell.xib in Resources */,
 				58DB02C318107CC8001C021A /* whiteholder3.png in Resources */,
 				58E27E0C18A6CD5000D8BB24 /* id-card-7-old3@2x.png in Resources */,
 				5829F49218B1565900A7B871 /* accept_user.png in Resources */,
@@ -5224,8 +5272,10 @@
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
 				581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */,
 				80728A52187C68A4008624B8 /* GLPWebSocketEvent.m in Sources */,
+				582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */,
 				582A664D18AC215C00006419 /* WalkThroughHelper.m in Sources */,
 				807C4D17180AF0F6003D67E6 /* LocalMessage.m in Sources */,
+				58BBACBA19788D9C00A8A265 /* GLPImageSelectorLoader.m in Sources */,
 				C014D084183CE2C80001B76E /* UIViewController+Flurry.m in Sources */,
 				5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */,
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
@@ -5307,6 +5357,7 @@
 				58655D0B192F822500266141 /* GLPVideoLoaderManager.m in Sources */,
 				5879AC851964360E0053262A /* GLPNameCell.m in Sources */,
 				80E396381858D87600391922 /* GLPLiveConversation.m in Sources */,
+				58BBACB01978796D00A8A265 /* ImageSelectorViewController.m in Sources */,
 				58E1E5EE19262851007ACB4F /* TopPostView.m in Sources */,
 				58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
@@ -5370,6 +5421,7 @@
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
 				5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */,
 				5867FF5918B64D320080AD9D /* CopyLabel.m in Sources */,
+				58BBACB719787BF400A8A265 /* ImageCollectionViewCell.m in Sources */,
 				80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */,
 				808F6B65187D92DB0062FE39 /* GLPMessageProcessor.m in Sources */,
 				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,

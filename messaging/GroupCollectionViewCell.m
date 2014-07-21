@@ -12,6 +12,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "AppearanceHelper.h"
+#import "UIView+GLPDesign.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -56,10 +57,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
 - (void)formatElements
 {
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
-
-    [ShapeFormatterHelper setCornerRadiusWithView:self andValue:5];
     
-    [ShapeFormatterHelper setBorderToView:self withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:0.4f];
+    [self setGleepostStyleBorder];
 }
 
 -(void)setGroupData:(GLPGroup *)groupData

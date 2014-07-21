@@ -79,7 +79,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
     // configuration
     [self configureHeader];
-    [self configureNavigationBar];
+    [self configureTitleNavigationBar];
     [self configureForm];
     [self configureTableView];
     [self initialiseObjects];
@@ -112,6 +112,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self configureNavigationBar];
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
 
@@ -191,20 +193,21 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.introduced = nil;
 }
 
-- (void)configureNavigationBar
+- (void)configureTitleNavigationBar
 {
     [self.navigationController setNavigationBarHidden:NO];
     
     // navigate to profile through navigation bar for user-to-user conversation
-    if(!_conversation.isGroup /*&& ![self isNewChat] */) {
+    if(!_conversation.isGroup /*&& ![self isNewChat] */)
+    {
         //Create a button instead of using the default title view for recognising gestures.
         UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [titleLabelBtn setTitle:_conversation.title forState:UIControlStateNormal];
-        [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:20.0f]];
+        [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:22.0f]];
         titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
         
         //Set colour to the view.
-        [titleLabelBtn setTitleColor:[AppearanceHelper blackGleepostColour] forState:UIControlStateNormal];
+        [titleLabelBtn setTitleColor:[AppearanceHelper greenGleepostColour] forState:UIControlStateNormal];
         
         //Set navigation to profile selector.
         titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
@@ -234,11 +237,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 //    [AppearanceHelper setNavigationBarFontFor:self];
 //    [AppearanceHelper setNavigationBarColour:self];
     
-    
-    
+}
+
+- (void)configureNavigationBar
+{
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kGreen];
-    
 }
 
 -(void)addCustomBackButton
@@ -325,7 +329,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     _conversation = conversation;
 
     [self configureHeader];
-    [self configureNavigationBar];
+    [self configureTitleNavigationBar];
+//    [self configureNavigationBar];
 }
 
 

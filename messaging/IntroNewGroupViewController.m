@@ -10,6 +10,7 @@
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 #import "ShapeFormatterHelper.h"
+#import "UIView+GLPDesign.h"
 
 @interface IntroNewGroupViewController ()
 
@@ -28,6 +29,8 @@
     [self configNavigationBar];
     
     [self configureViewsGestures];
+    
+    [self formatViews];
 }
 
 - (void)configNavigationBar
@@ -55,6 +58,13 @@
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectSecretGroup)];
     [tap setNumberOfTapsRequired:1];
     [_secretGroupView addGestureRecognizer:tap];
+}
+
+- (void)formatViews
+{
+    [_privateGroupView setGleepostStyleBorder];
+    [_publicGroupView setGleepostStyleBorder];
+    [_secretGroupView setGleepostStyleBorder];
 }
 
 #pragma mark - Selectors
@@ -126,6 +136,9 @@
         NewGroupViewController *newGroupViewController = segue.destinationViewController;
         
         [newGroupViewController setDelegate:self];
+        
+        //TODO: Change that dynamically.
+        newGroupViewController.groupType = kSecretGroup;
     }
     
     

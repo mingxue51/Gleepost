@@ -8,15 +8,30 @@
 
 #import "ImageCollectionViewCell.h"
 
+@interface ImageCollectionViewCell ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+
+@end
+
+
 @implementation ImageCollectionViewCell
 
-- (id)initWithFrame:(CGRect)frame
+const CGSize IMAGE_COLLECTION_CELL_DIMENSIONS = {90.0, 90.0};
+
+
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithCoder:aDecoder];
     if (self) {
         // Initialization code
     }
     return self;
+}
+
+- (void)setImageViewImage:(UIImage *)image
+{
+    [_imageView setImage:image];
 }
 
 /*

@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
+#import "ImageSelectorViewController.h"
+
+typedef NS_ENUM(NSUInteger, GroupType) {
+    kPublicGroup = 0,
+    kPrivateGroup = 1,
+    kSecretGroup = 2
+};
 
 @class GLPGroup;
 
@@ -19,7 +26,9 @@
 
 @end
 
-@interface NewGroupViewController : UIViewController <FDTakeDelegate>
+@interface NewGroupViewController : UIViewController <FDTakeDelegate, ImageSelectorViewControllerDelegate>
+
+@property (assign, nonatomic) GroupType groupType;
 
 -(void)setDelegate:(UIViewController<GroupCreatedDelegate> *)delegate;
 

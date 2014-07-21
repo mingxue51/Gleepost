@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol GLPImageSelectorLoaderDelegate <NSObject>
+
+@required
+- (void)imagesLoaded;
+
+@end
+
 @interface GLPImageSelectorLoader : NSObject
+
+@property (weak, nonatomic) UIViewController <GLPImageSelectorLoaderDelegate> *delegate;
+
+- (UIImage *)thumbnailAtIndex:(NSInteger)index;
+- (UIImage *)realImageAtIndex:(NSInteger)index;
+- (NSInteger)numberOfImages;
 
 @end
