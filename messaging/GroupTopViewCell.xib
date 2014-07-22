@@ -7,29 +7,29 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupTopViewCell" rowHeight="290" id="rrH-nH-I6I" customClass="GroupTopViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="290"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupTopViewCell" rowHeight="302" id="rrH-nH-I6I" customClass="GroupTopViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="302"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rrH-nH-I6I" id="G1a-lj-ifd">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="289"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="301"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hy-w6-aDe">
-                        <rect key="frame" x="0.0" y="1" width="320" height="170"/>
+                        <rect key="frame" x="0.0" y="1" width="320" height="190"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="170" id="1d6-KH-Q5T"/>
+                            <constraint firstAttribute="height" constant="190" id="1d6-KH-Q5T"/>
                             <constraint firstAttribute="width" constant="320" id="aee-nE-khx"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label asdkas d asd msal dmas ldsam dlasm dlasm daslm alsmd alskm dsalm " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="310" translatesAutoresizingMaskIntoConstraints="NO" id="7Eh-92-EaU">
-                        <rect key="frame" x="5" y="179" width="310" height="36"/>
+                        <rect key="frame" x="5" y="201" width="310" height="36"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FvJ-YK-DNz" customClass="GLPSegmentView">
-                        <rect key="frame" x="10" y="235" width="300" height="45"/>
+                        <rect key="frame" x="10" y="247" width="300" height="45"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>

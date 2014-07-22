@@ -21,7 +21,7 @@
 
 @implementation GroupTopViewCell
 
-const float GROUP_TOP_VIEW_HEIGHT = 290.0;
+const float GROUP_TOP_VIEW_HEIGHT = 302.0;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {

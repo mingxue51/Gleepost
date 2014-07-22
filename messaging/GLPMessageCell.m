@@ -39,14 +39,14 @@ static const CGFloat kProfileImageViewTopMargin = 9;
 static const CGFloat kProfileImageViewSideMargin = 6;
 static const CGFloat kProfileImageViewOppositeSideMargin = 6;
 static const CGFloat kTimeLabelBottomMargin = 0;
-static const CGFloat kContentLabelVerticalPadding = 10;
-static const CGFloat kContentLabelHorizontalPadding = 15;
+static const CGFloat kContentLabelVerticalPadding = 15; //10
+static const CGFloat kContentLabelHorizontalPadding = 20; //15
 static const CGFloat kErrorImageSideMargin = 6;
 static const CGFloat kOppositeSideMarginWithoutError = 30;
 static const CGFloat kOppositeSideMarginWithError = 10 + kErrorImageW + kErrorImageSideMargin;
 static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMargin + kProfileImageViewSize + kProfileImageViewOppositeSideMargin;
 static const CGFloat kTopMargin = 0;
-static const CGFloat kBottomMargin = 7;
+static const CGFloat kBottomMargin = 2; //7
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -91,7 +91,7 @@ static const CGFloat kBottomMargin = 7;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor lightGrayColor];
-        label.font = [UIFont fontWithName:GLP_APP_FONT_BOLD size:10.0f];
+        label.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
         [self.contentView addSubview:label];
     }
 
@@ -105,12 +105,12 @@ static const CGFloat kBottomMargin = 7;
         imageView.image = [UIImage imageNamed:@"yourchatbubble4"];
         imageView.layer.masksToBounds = YES;
 //        imageView.layer.cornerRadius = 12.0;
-        [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:5];
+        [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:4];
 //        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
 //        imageView.layer.borderWidth = 2;
         
         UILabel *label = [UILabel new];
-        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
+        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:17]; //16
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
@@ -186,7 +186,8 @@ static const CGFloat kBottomMargin = 7;
     if(_message.hasHeader) {
         label.hidden = NO;
         
-        label.text = [[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date];
+        label.text = [[[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date] uppercaseString];
+        
         _height += label.frame.size.height + kTimeLabelBottomMargin;
         
     } else {
@@ -271,7 +272,7 @@ static const CGFloat kBottomMargin = 7;
 
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
 {
-    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:16];
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:17];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     

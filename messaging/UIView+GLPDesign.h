@@ -11,5 +11,6 @@
 @interface UIView (GLPDesign)
 
 - (void)setGleepostStyleBorder;
+- (void)setGleepostStyleTopBorder;
 
 @end

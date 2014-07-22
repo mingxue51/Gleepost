@@ -44,6 +44,8 @@
 #import "SoundHelper.h"
 #import "UINavigationBar+Format.h"
 #import "ShapeFormatterHelper.h"
+#import "UIView+GLPDesign.h"
+
 
 @interface GLPConversationViewController ()
 
@@ -314,6 +316,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
     
     self.formTextView.layer.cornerRadius = 4;
+    
+    
+    [self.formView setGleepostStyleTopBorder];
     
 //    [ShapeFormatterHelper setCornerRadiusWithView:self.formTextView.internalTextView andValue:5];
 }

@@ -19,4 +19,12 @@
     [ShapeFormatterHelper setBorderToView:self withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:0.4f];
 }
 
+- (void)setGleepostStyleTopBorder
+{
+    CALayer *topBorder = [CALayer layer];
+    topBorder.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, 2.0f);
+    topBorder.backgroundColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+    [self.layer addSublayer:topBorder];
+}
+
 @end
