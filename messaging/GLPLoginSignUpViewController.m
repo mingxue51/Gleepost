@@ -17,12 +17,15 @@
 #import "GLPSignUpViewController.h"
 #import "UICKeyChainStore.h"
 #import "RegisterAnimationsView.h"
+#import "SessionManager.h"
 
 @interface GLPLoginSignUpViewController ()
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
 @property (strong, nonatomic) NSDictionary *fbLoginInfo;
 @property (strong, nonatomic) NSString *universityEmail;
+
+@property (weak, nonatomic) IBOutlet UIImageView *gleepostLogoImageView;
 
 @property (weak, nonatomic) IBOutlet RegisterAnimationsView *animationsView;
 
@@ -40,6 +43,15 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [super viewDidLoad];
     
     [self configNavigationBar];
+    
+    //If the mode is on development then make the secret change server gesture.
+    //Otherwise the server will be on live by default.
+    
+    if(DEV)
+    {
+        [self configureGestures];
+    }
+    
     
 }
 
@@ -77,9 +89,27 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+}
+
+- (void)configureGestures
+{
+    UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(changeServerMode:)];
+    [tap setMinimumPressDuration:3];
+    [tap setNumberOfTapsRequired:0];
+    [_gleepostLogoImageView addGestureRecognizer:tap];
+}
+
+- (void)changeServerMode:(UILongPressGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        [[SessionManager sharedInstance] switchServerMode];
+        [WebClientHelper showChangedModeServerMessageWithServerMode:[[SessionManager sharedInstance] serverMode]];
+
+    }
     
 }
 

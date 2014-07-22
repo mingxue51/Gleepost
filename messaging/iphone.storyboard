@@ -1135,7 +1135,7 @@
             </objects>
             <point key="canvasLocation" x="2881" y="-4111"/>
         </scene>
-        <!--Image Selector View Controller - Choose image-->
+        <!--Image Selector View Controller - Pick an image-->
         <scene sceneID="v3e-He-fEv">
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
@@ -1162,7 +1162,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Choose image" id="yui-yw-81A"/>
+                    <navigationItem key="navigationItem" title="Pick an image" id="yui-yw-81A"/>
                     <connections>
                         <outlet property="collectionView" destination="SoY-OL-TmF" id="BwC-4W-ID9"/>
                     </connections>
@@ -2644,7 +2644,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gleepost_logo_registration.png" id="5kk-tC-GA6">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gleepost_logo_registration.png" id="5kk-tC-GA6">
                                 <rect key="frame" x="40" y="50" width="240" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </imageView>
@@ -2731,6 +2731,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="animationsView" destination="jhq-nW-Iw7" id="GcY-ni-QpJ"/>
+                        <outlet property="gleepostLogoImageView" destination="5kk-tC-GA6" id="Pra-4i-ElM"/>
                         <segue destination="ILo-t4-uE9" kind="modal" identifier="show signin" modalTransitionStyle="coverVertical" id="e7g-lY-eHB"/>
                         <segue destination="y37-Te-OgN" kind="modal" identifier="show signup" modalTransitionStyle="coverVertical" id="6dT-Bx-6Jj"/>
                         <segue destination="WY8-qT-L1O" kind="modal" identifier="start" modalTransitionStyle="flipHorizontal" id="aP2-oN-YHg"/>
@@ -4110,11 +4111,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view hidden="YES" alpha="0.0" contentMode="scaleToFill" id="7p9-8v-8Kz">
-                                <rect key="frame" x="10" y="60" width="300" height="70"/>
+                                <rect key="frame" x="10" y="60" width="300" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rEi-xa-pU9">
-                                        <rect key="frame" x="10" y="0.0" width="280" height="35"/>
+                                        <rect key="frame" x="10" y="0.0" width="280" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Title1">
@@ -4125,12 +4126,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="94R-69-71a">
-                                        <rect key="frame" x="10" y="35" width="290" height="1"/>
+                                        <rect key="frame" x="10" y="40" width="290" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="81I-Zt-iR2">
-                                        <rect key="frame" x="10" y="35" width="280" height="35"/>
+                                        <rect key="frame" x="10" y="40" width="280" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Title2">
@@ -4264,16 +4265,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="aP2-oN-YHg"/>
+        <segue reference="2ju-Ui-QdM"/>
         <segue reference="icH-IF-qcr"/>
         <segue reference="ZVe-rT-wgG"/>
-        <segue reference="fah-A8-Ky9"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="mZt-yF-Elx"/>
         <segue reference="Txr-8X-v5l"/>
         <segue reference="lQn-ic-ohV"/>
         <segue reference="PMB-JP-q3M"/>
+        <segue reference="mZt-yF-Elx"/>
         <segue reference="n2N-Iw-72J"/>
-        <segue reference="QYo-sm-NOh"/>
         <segue reference="l58-qa-Cof"/>
+        <segue reference="QYo-sm-NOh"/>
     </inferredMetricsTieBreakers>
 </document>

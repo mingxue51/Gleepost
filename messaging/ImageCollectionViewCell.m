@@ -17,8 +17,8 @@
 
 @implementation ImageCollectionViewCell
 
-const CGSize IMAGE_COLLECTION_CELL_DIMENSIONS = {90.0, 90.0};
-
+const CGSize IMAGE_COLLECTION_CELL_DIMENSIONS = {100.0, 100.0};
+const CGFloat IMAGE_COLLECTION_CELL_MARGIN = 5.0;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {

@@ -135,6 +135,7 @@
 		582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 582B405118AD6FAD00BC4285 /* mario.mp3 */; };
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
 		582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */; };
+		582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */; };
 		5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831B41018DB28BB00574A53 /* UIImage+Alpha.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */; };
@@ -1006,6 +1007,8 @@
 		582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPrivateProfileViewController.m; sourceTree = "<group>"; };
 		582E44D4197DB22B000BE3EC /* UIView+GLPDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GLPDesign.h"; sourceTree = "<group>"; };
 		582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GLPDesign.m"; sourceTree = "<group>"; };
+		582E44D7197E1E7F000BE3EC /* GLPServerPathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPServerPathManager.h; sourceTree = "<group>"; };
+		582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPServerPathManager.m; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
 		5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		5831B41018DB28BB00574A53 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
@@ -4194,6 +4197,8 @@
 				58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */,
 				58B90F1A18C81DF800FA0955 /* GLPOperationManager.h */,
 				58B90F1B18C81DF800FA0955 /* GLPOperationManager.m */,
+				582E44D7197E1E7F000BE3EC /* GLPServerPathManager.h */,
+				582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -5362,6 +5367,7 @@
 				58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				584D208E19534AC400E571DF /* GLPSegmentView.m in Sources */,
+				582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */,
 				5823932718CB9A04001BC88C /* MembersViewController.m in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
 				80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */,

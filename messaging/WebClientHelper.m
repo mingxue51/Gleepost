@@ -234,4 +234,9 @@
     [alert show];
 }
 
++ (void)showChangedModeServerMessageWithServerMode:(NSString *)mode
+{
+    [WebClientHelper showAlertWithTitle:@"Success!" andMessage:[NSString stringWithFormat:@"The server mode has been changed to %@. Please kill the app and launch again to let this change to be applied.", mode]];
+}
+
 @end

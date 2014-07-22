@@ -28,5 +28,8 @@
 - (void)cleanSession;
 -(BOOL)isFirstTimeLoggedIn;
 -(void)firstTimeLoggedInActivate;
+- (void)switchServerMode;
+- (NSString *)serverPath;
+- (NSString *)serverMode;
 
 @end

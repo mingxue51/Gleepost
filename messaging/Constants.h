@@ -14,7 +14,7 @@
 #endif
 
 #define ENV_FAKE_API                    NO
-#define DEV                             NO
+#define DEV                             YES
 #define ENV_DEBUG                       NO
 #define ENV_FAKE_LIVE_CONVERSATIONS     NO
 
@@ -57,7 +57,8 @@
 #define GLP_TEST_WEBSERVICE_VERSION                 @"1"
 #define GLP_TEST_SERVER_URL                                ([NSString stringWithFormat:@"https://dev.gleepost.com/api/v%@/", GLP_TEST_WEBSERVICE_VERSION])
 
-#define GLP_BASE_URL                                GLP_TEST_SERVER_URL
+//The url is not changed from here anymore go to GLPServerPathManager for more.
+#define GLP_BASE_URL                                GLP_BASE_SERVER_URL
 
 #define GLP_APP_FONT                                @"Khmer Sangam MN"
 #define GLP_APP_FONT_BOLD                           @"Khmer UI"

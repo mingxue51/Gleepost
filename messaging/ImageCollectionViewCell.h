@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern const CGSize IMAGE_COLLECTION_CELL_DIMENSIONS;
-
+extern const CGFloat IMAGE_COLLECTION_CELL_MARGIN;
 
 @interface ImageCollectionViewCell : UICollectionViewCell
 

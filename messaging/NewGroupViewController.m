@@ -106,7 +106,6 @@
 -(void)configureTextView
 {
     _groupDescriptionTextView.placeholder = @"Group description";
-    
 }
 
 - (void)configureGesturesOnViews
@@ -338,9 +337,9 @@
     
     _arrowImageView.layer.transform = CATransform3DMakeRotation(M_PI, 0, 0.0, 1.0);
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
        
-        CGRectSetY(_mainView, _mainView.frame.origin.y + 80);
+        CGRectSetY(_mainView, _mainView.frame.origin.y + 90);
         
         [_dropDownView setAlpha:1.0];
         
@@ -353,9 +352,9 @@
 
     _arrowImageView.layer.transform = CATransform3DMakeRotation(M_PI, 0, 0.0, 0.0);
 
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         
-        CGRectSetY(_mainView, _mainView.frame.origin.y - 80);
+        CGRectSetY(_mainView, _mainView.frame.origin.y - 90);
 
         [_dropDownView setAlpha:0.0];
 

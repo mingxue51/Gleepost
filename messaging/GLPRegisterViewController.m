@@ -184,25 +184,25 @@
 
 -(void)setDefaultTextToEmailAndPassFields
 {
-    if(DEV) {
-        if([GLP_WEBSERVICE_VERSION floatValue] < 1.0) {
-            if(!ON_DEVICE) {
-                self.emailTextField.text = @"fingolfin@leeds.ac.uk";
-                self.passwordTextField.text = @"ihatemorgoth";
-            } else {
-                self.emailTextField.text = @"sc11pm@leeds.ac.uk";
-                self.passwordTextField.text = @"TestingPass";
-            }
-        } else {
-            if(ON_DEVICE) {
-                self.emailTextField.text = @"gleepost@stanford.edu";
-                self.passwordTextField.text = @"TestingPass";
-            } else {
-                self.emailTextField.text = @"gleepost123@stanford.edu";
-                self.passwordTextField.text = @"TestingPass";
-            }
-        }
-    }
+//    if(DEV) {
+//        if([GLP_WEBSERVICE_VERSION floatValue] < 1.0) {
+//            if(!ON_DEVICE) {
+//                self.emailTextField.text = @"fingolfin@leeds.ac.uk";
+//                self.passwordTextField.text = @"ihatemorgoth";
+//            } else {
+//                self.emailTextField.text = @"sc11pm@leeds.ac.uk";
+//                self.passwordTextField.text = @"TestingPass";
+//            }
+//        } else {
+//            if(ON_DEVICE) {
+//                self.emailTextField.text = @"gleepost@stanford.edu";
+//                self.passwordTextField.text = @"TestingPass";
+//            } else {
+//                self.emailTextField.text = @"gleepost123@stanford.edu";
+//                self.passwordTextField.text = @"TestingPass";
+//            }
+//        }
+//    }
 }
 
 #pragma mark - UI formatters

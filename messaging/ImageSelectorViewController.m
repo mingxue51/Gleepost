@@ -96,9 +96,19 @@
     return IMAGE_COLLECTION_CELL_DIMENSIONS;
 }
 
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionView *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return IMAGE_COLLECTION_CELL_MARGIN;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionView *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return IMAGE_COLLECTION_CELL_MARGIN;
+}
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(10.0, 10.0, 0.0, 10.0);
+    return UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0);
 }
 
 - (void)didReceiveMemoryWarning

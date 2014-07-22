@@ -16,6 +16,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "GLPPushManager.h"
 #import "GLPFacebookConnect.h"
+#import "GLPServerPathManager.h"
 
 @interface SessionManager()
 
@@ -30,8 +31,8 @@
 
 @property (strong, nonatomic) NSDictionary *usersData;
 
-
-@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+//Support the change of the server path by user.
+@property (strong, nonatomic) GLPServerPathManager *serverManager;
 
 @end
 
@@ -47,6 +48,9 @@ NSString * const GLPSessionFileName = @"GLPSession.plist";
 
 //Added to support first time tutorial.
 NSString * const GLPLoggedInUsersFileName = @"/GLPLoggedInUser.plist";
+
+//Added to support the change of the server path by user.
+//NSString * const GLPSavedServerPathFileName = @"GLPSavedServerPath.plist";
 
 static SessionManager *instance = nil;
 
@@ -75,11 +79,15 @@ static SessionManager *instance = nil;
     NSString *rootPath2 = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     self.dataPlistLoggedInPath = [rootPath2 stringByAppendingString:GLPLoggedInUsersFileName];
     
+
+    
     _currentUserFirstTime = NO;
     _authParameters = [NSDictionary dictionary];
     
     //Set default category.
     _currentCategory = nil;
+    
+    _serverManager = [[GLPServerPathManager alloc] init];
     
     
     [self loadData];
@@ -175,7 +183,7 @@ static SessionManager *instance = nil;
 
 - (void)loadData
 {
-    // load dictionnary data from saved file or create new one
+    // load dictionary data from saved file or create new one
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistPath] == YES) {
         self.data = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistPath];
         
@@ -287,6 +295,51 @@ static SessionManager *instance = nil;
 -(void)firstTimeLoggedInActivate
 {
     _currentUserFirstTime = NO;
+}
+
+#pragma mark - Server path methods
+//
+//- (void)loadServerPathData
+//{
+//    //Set the default server path as the live server.
+//    _serverPath = GLP_BASE_SERVER_URL;
+//
+//    if(!DEV)
+//    {
+//        return;
+//    }
+//    
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:self.dataPlistServerPath] == YES)
+//    {
+//        NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistServerPath];
+//        
+//        DDLogDebug(@"Server file path: %@", dictionary);
+//        
+//        //TODO: Load data to _serverPath variable string.
+//    }
+//    
+//    
+//    
+//}
+//
+//- (void)saveServerPathData
+//{
+//    
+//}
+//
+- (void)switchServerMode
+{
+    [_serverManager switchServerMode];
+}
+
+- (NSString *)serverPath
+{
+    return [_serverManager serverPath];
+}
+
+- (NSString *)serverMode
+{
+    return [_serverManager serverMode];
 }
 
 

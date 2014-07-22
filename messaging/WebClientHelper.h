@@ -43,4 +43,6 @@
 + (void)showSaveImageMessage;
 + (void)showErrorSavingImageWithMessage:(NSString *)errorMessage;
 
++ (void)showChangedModeServerMessageWithServerMode:(NSString *)mode;
+
 @end
