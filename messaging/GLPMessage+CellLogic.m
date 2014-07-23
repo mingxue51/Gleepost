@@ -16,6 +16,7 @@
 
 NSString * const kMessageCellIdentifier = @"kMessageCellIdentifier";
 NSString * const kMessageHasHeader = @"kMessageHasHeader";
+NSString * const kMessageNeedsProfileImage = @"kMessageNeedsProfileImage";
 NSString * const kMessageLeftCell = @"LeftCell";
 NSString * const kMessageRightCell = @"RightCell";
 
@@ -37,7 +38,25 @@ NSString * const kMessageRightCell = @"RightCell";
 
 - (BOOL)hasHeader
 {
+    
     NSString *value = objc_getAssociatedObject(self, &kMessageHasHeader);
+        
+    if(!value) {
+        return NO;
+    }
+    
+    return [value isEqualToString:@"YES"] ? YES : NO;
+}
+
+- (void)setNeedsProfileImage:(BOOL)needsProfileImage
+{
+    NSString *value = needsProfileImage ? @"YES" : @"NO";
+    objc_setAssociatedObject(self, &kMessageNeedsProfileImage, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)needsProfileImage
+{
+    NSString *value = objc_getAssociatedObject(self, &kMessageNeedsProfileImage);
     
     if(!value) {
         return NO;
@@ -48,14 +67,23 @@ NSString * const kMessageRightCell = @"RightCell";
 
 - (void)configureAsFirstMessage
 {
+    DDLogDebug(@"configureAsFirstMessage: %@", self.content);
+
+    
     self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
-    self.hasHeader = YES;
+//    self.hasHeader = YES;
+    self.needsProfileImage = YES;
+    self.hasHeader = [self followsPreviousMessage:self] ? NO : YES;
+
 }
 
 - (void)configureAsFollowingMessage:(GLPMessage *)message
 {
+    DDLogDebug(@"configureAsFollowingMessage: %@", self.content);
+
     self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
     self.hasHeader = [self followsPreviousMessage:message] ? NO : YES;
+    self.needsProfileImage = NO;
 }
 
 + (NSString *)getCellIdentifierForMessage:(GLPMessage *)message

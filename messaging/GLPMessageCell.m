@@ -157,7 +157,14 @@ static const CGFloat kBottomMargin = 2; //7
 {
     UIImageView *imageView = self.contentView.subviews[0];
     
-    if(_message.hasHeader) {
+//    if(_message.hasHeader) {
+    if(_message.needsProfileImage) {
+        
+        if(!_message.hasHeader)
+        {
+            _height += 20 + kTimeLabelBottomMargin;
+        }
+        
         imageView.hidden = NO;
         
         CGRectSetXY(imageView, [self xForCurrentSide:kProfileImageViewSideMargin w:kProfileImageViewSize], kTopMargin + kProfileImageViewTopMargin);
@@ -183,6 +190,8 @@ static const CGFloat kBottomMargin = 2; //7
 {
     UILabel *label = self.contentView.subviews[1];
 
+    DDLogDebug(@"configureTimeLabel: %@", _message.content);
+    
     if(_message.hasHeader) {
         label.hidden = NO;
         
@@ -296,7 +305,7 @@ static const CGFloat kBottomMargin = 2; //7
 {
     CGFloat height = kTopMargin;
     
-    if(message.hasHeader) {
+    if(message.hasHeader || message.needsProfileImage) {
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }
     
