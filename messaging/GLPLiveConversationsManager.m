@@ -349,6 +349,7 @@ static GLPLiveConversationsManager *instance = nil;
             
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             
+            //TODO: Temporary removed to fix a bug. https://www.pivotaltracker.com/story/show/75096330
             BOOL canHaveMorePreviousMessages = [_conversationsMessages[index] count] > 0 && [_conversationsCanHavePreviousMessages[index] boolValue];
 
             
@@ -356,7 +357,16 @@ static GLPLiveConversationsManager *instance = nil;
 //            [NSThread sleepForTimeInterval:10];
 //            DDLogInfo(@"Sleep ends");
             
-            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
+            //TODO: Temporary removed to fix a bug. https://www.pivotaltracker.com/story/show/75096330
+//            [self internalNotifyConversation:attachedConversation withNewMessages:hasNewMessages beingPreviousMessages:NO canHaveMorePreviousMessages:canHaveMorePreviousMessages];
+            
+            //Replaced by calling directly the notification method and making the newLocalMessage as YES in order
+            //to avoid useless inrernal notification caused by GLPTabBarViewController.
+            [self internalNotifyConversation:attachedConversation
+                                 newMessages:hasNewMessages
+                       beingPreviousMessages:NO
+                 canHaveMorePreviousMessages:canHaveMorePreviousMessages
+                             newLocalMessage:YES];
         });
     }];
 }
