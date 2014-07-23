@@ -35,9 +35,7 @@
 
 - (void)loadServerPathData
 {
-    NSString *path = [UICKeyChainStore stringForKey:@"serverpath"];
-    
-    DDLogDebug(@"Path loaded: %@", path);
+    NSString *path = [UICKeyChainStore stringForKey:@"serverpathkeychain" service:@"com.server.gleepost"];
     
     if(!path)
     {
@@ -49,8 +47,8 @@
 
 - (void)saveServerPathData
 {
-    UICKeyChainStore *store = [UICKeyChainStore keyChainStore];
-    [store setString:_serverPath forKey:@"serverpath"];
+    UICKeyChainStore *store = [[UICKeyChainStore alloc] initWithService:@"com.server.gleepost"];
+    [store setString:_serverPath forKey:@"serverpathkeychain"];
     [store synchronize];
 }
 
