@@ -92,6 +92,8 @@
 @property (strong, nonatomic) EmptyMessage *emptyNotificationsMessage;
 @property (strong, nonatomic) EmptyMessage *emptyMyPostsMessage;
 
+@property (assign, nonatomic) BOOL isPostFromNotifications;
+
 @end
 
 
@@ -113,6 +115,7 @@
 //    [self setBottomView];
 
     _tabButtonEnabled = YES;
+    _isPostFromNotifications = NO;
     
     [self configureTableView];
     
@@ -1267,35 +1270,22 @@
         // navigate to post.
         else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
             
-            DDLogInfo(@"Go to the post details.");
             
-            [WebClientHelper showStandardLoaderWithTitle:@"Loading post" forView:self.view];
+            self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+            self.selectedPost.content = @"Loading...";
+            self.isPostFromNotifications = YES;
             
-            [GLPPostManager loadPostWithRemoteKey:notification.postRemoteKey callback:^(BOOL success, GLPPost *post) {
-                
-                [WebClientHelper hideStandardLoaderForView:self.view];
-                
-                if(success)
-                {
-                    self.selectedPost = post;
-                    
-                    if(notification.notificationType == kGLPNotificationTypeCommented)
-                    {
-                        //Add the date of the notification to the view post view controller.
-                        self.commentNotificationDate = notification.date;
-                    }
-                    else
-                    {
-                        self.commentNotificationDate = nil;
-                    }
-                    
-                    [self performSegueWithIdentifier:@"view post" sender:self];
-                }
-                else
-                {
-                    [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
-                }
-            }];
+            if(notification.notificationType == kGLPNotificationTypeCommented)
+            {
+                //Add the date of the notification to the view post view controller.
+                self.commentNotificationDate = notification.date;
+            }
+            else
+            {
+                self.commentNotificationDate = nil;
+            }
+            
+            [self performSegueWithIdentifier:@"view post" sender:self];
         }
         //Navigate to group.
         else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
@@ -1501,6 +1491,7 @@
         vc.post = self.selectedPost;
         vc.isFromCampusLive = NO;
         vc.isViewPostNotifications = YES;
+        vc.isViewPostFromNotifications = self.isPostFromNotifications;
         self.selectedPost = nil;
         
     }

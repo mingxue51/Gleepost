@@ -33,6 +33,18 @@
     return self;
 }
 
+- (id)initWithRemoteKey:(NSInteger)remoteKey
+{
+    self = [super init];
+    
+    if(self)
+    {
+        self.remoteKey = remoteKey;
+    }
+    
+    return self;
+}
+
 -(BOOL)imagePost
 {
     if (imagesUrls == nil || [imagesUrls count] == 0)

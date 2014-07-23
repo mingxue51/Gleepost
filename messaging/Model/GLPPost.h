@@ -35,6 +35,7 @@
 //In case post has group information.
 @property (strong, nonatomic) GLPGroup *group;
 
+- (id)initWithRemoteKey:(NSInteger)remoteKey;
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;

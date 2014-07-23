@@ -22,7 +22,7 @@
 
 
 @property (strong, nonatomic) GLPPost *selectedPost;
-@property (assign, nonatomic) int selectedUserId;
+@property (assign, nonatomic) NSInteger selectedUserId;
 @property (assign, nonatomic) BOOL fromPushNotification;
 
 

@@ -74,6 +74,8 @@ static BOOL likePushed;
     
     [self fillPostWithKey];
     
+    [self selfLoadPost];
+    
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
 
@@ -120,8 +122,10 @@ static BOOL likePushed;
     [super viewWillAppear:animated];
     [self configureNavigationBar];
     
-    
-    [self loadComments];
+    if(![self comesFromNotifications])
+    {
+        [self loadComments];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -299,6 +303,47 @@ static BOOL likePushed;
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
+}
+
+
+/**
+ If post comes from notifications post is loaded in this method.
+ */
+- (void)selfLoadPost
+{
+    if([self comesFromNotifications])
+    {
+        //Load the post.
+        
+        self.title = @"Loading...";
+        
+        DDLogDebug(@"Post remote key: %ld", (unsigned long)_post.remoteKey);
+        
+        [GLPPostManager loadPostWithRemoteKey:_post.remoteKey callback:^(BOOL success, GLPPost *post) {
+            
+            self.title = @"View Post";
+            
+            if(success)
+            {
+                _post = post;
+                
+                [self loadComments];
+                
+                [self.tableView reloadData];
+            }
+            else
+            {
+                //[WebClientHelper showStandardError];
+                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Post may not exist anymore." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                
+                [alertView show];
+                
+//                [self.navigationController popViewControllerAnimated:YES];
+            }
+            
+        }];
+    }
 }
 
 #pragma mark - Social panel button methods
@@ -839,6 +884,12 @@ static bool firstTime = YES;
     DDLogDebug(@"ViewPostViewController : navigateToUsersProfileWithRemoteKey");
 }
 
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 #pragma mark - Form management
 
