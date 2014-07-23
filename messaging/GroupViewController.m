@@ -32,7 +32,6 @@
 #import "UINavigationBar+Format.h"
 //#import "BOZPongRefreshControl.h"
 //#import "GLPRefreshControl.h"
-#import "UIRefreshControl+CustomLoader.h"
 #import "ContactsManager.h"
 #import "GLPProfileViewController.h"
 
@@ -189,7 +188,7 @@ const int NUMBER_OF_ROWS = 1;
 -(void)configureTableView
 {
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
+    self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
     if([GLPiOS6Helper isIOS6])
@@ -200,7 +199,6 @@ const int NUMBER_OF_ROWS = 1;
     {
         [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
     }
-    
 }
 
 -(void)initialiseObjects
@@ -272,16 +270,12 @@ const int NUMBER_OF_ROWS = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_GROUP_POST_DELETED object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_POST_DELETED object:nil];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -313,6 +307,8 @@ const int NUMBER_OF_ROWS = 1;
     int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
+
+    
     int index = 1;
     
     GLPPost *uploadedPost = nil;
@@ -321,32 +317,24 @@ const int NUMBER_OF_ROWS = 1;
     {
         if(key == p.key)
         {
-            p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            
+            //If the post is text or video post don't add any url image.
+            if(![urlImage isEqualToString:@""])
+            {
+                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+            }
+            
             p.remoteKey = remoteKey;
             uploadedPost = p;
-            //            p.tempImage = nil;
             break;
         }
         ++index;
     }
     
-    
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    
-    //    [self.tableView reloadData];
-    
     
 }
 
-//TODO: NOT USED.
--(void)deletePost:(NSNotification *)notification
-{
-    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
-    
-    DDLogDebug(@"Delete POST! %@", notification);
-    
-    [self removeTableViewPostWithIndex:index];
-}
 
 #pragma mark - GLPNewElementsIndicatorView
 
@@ -552,6 +540,8 @@ const int NUMBER_OF_ROWS = 1;
             
             if([post imagePost])
             {
+                DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
+                
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             }
             else if ([post isVideoPost])
@@ -560,6 +550,8 @@ const int NUMBER_OF_ROWS = 1;
             }
             else
             {
+                DDLogDebug(@"Text post GVC: %@", post);
+
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
             }
             
@@ -952,6 +944,8 @@ const int NUMBER_OF_ROWS = 1;
 //    self.isLoading = YES;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    DDLogDebug(@"POST GROUP VC: %@", post.imagesUrls);
     
     NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
     

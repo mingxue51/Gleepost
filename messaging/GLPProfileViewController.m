@@ -114,6 +114,8 @@
 
     _tabButtonEnabled = YES;
     
+    [self configureTableView];
+    
     [self registerTableViewCells];
     
     [self initialiseObjects];
@@ -288,6 +290,13 @@
 //    
 //    self.tableView.tableFooterView = nil;
 //}
+
+- (void)configureTableView
+{
+    // refresh control
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(reloadContent) forControlEvents:UIControlEventValueChanged];
+}
 
 -(void)configTabbar
 {
@@ -483,13 +492,22 @@
 
 }
 
-
-
 -(void)postByUserInCampusWall:(NSNotification *)notification
 {
     //Set a boolean value YES in order to reload posts when user navigates back to profile.
     _postUploaded = YES;
-    
+}
+
+- (void)startLoading
+{
+    [self.refreshControl beginRefreshing];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)stopLoading
+{
+    [self.refreshControl endRefreshing];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - ProfileSettingsTableViewCellDelegate
@@ -792,30 +810,77 @@
 }
 
 
-# pragma mark - Internal notifications
+#pragma mark - Internal notifications
 
 - (void)loadInternalNotifications
 {
     DDLogInfo(@"Load internal notifications");
     _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
-    _notifications = [GLPNotificationManager notifications];
     
- 
+    DDLogDebug(@"Unread notifications: %ld", (unsigned long)_unreadNotificationsCount);
+    
+    //_notifications = [GLPNotificationManager notifications];
 
-    
-    DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
-    
-    if(_selectedTab == kButtonRight) {
-        [self notificationsTabClick];
-        [self.tableView reloadData];
-    }
-    else
-    {
-        if(_unreadNotificationsCount > 0)
-        {
+    [GLPNotificationManager loadNotificationsWithLocalCallback:^(BOOL success, NSArray *notifications) {
+        
+        _notifications = notifications.mutableCopy;
+        
+        
+        if(_selectedTab == kButtonRight) {
+            [self notificationsTabClick];
             [self.tableView reloadData];
         }
-    }
+        else
+        {
+            if(_unreadNotificationsCount > 0)
+            {
+                [self.tableView reloadData];
+            }
+        }
+
+        
+    } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
+        
+        _notifications = remoteNotifications.mutableCopy;
+        
+        
+        if(_selectedTab == kButtonRight) {
+            //[self notificationsTabClick];
+            [self.tableView reloadData];
+        }
+        else
+        {
+            if(_unreadNotificationsCount > 0)
+            {
+                [self.tableView reloadData];
+            }
+        }
+        
+    }];
+    
+    DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
+}
+
+- (void)refreshNotifications
+{
+    
+    [GLPNotificationManager loadNotificationsWithLocalCallback:^(BOOL success, NSArray *notifications) {
+        
+//        _notifications = notifications.mutableCopy;
+        
+
+        
+    } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
+        
+        _notifications = remoteNotifications.mutableCopy;
+        
+        [self.tableView reloadData];
+        
+        DDLogInfo(@"Notifications after remote refresh: %ld", (unsigned long)_notifications.count);
+
+        
+    }];
+    
 }
 
 - (void)loadUnreadInternalNotifications
@@ -944,6 +1009,8 @@
         _unreadNotificationsCount = 0;
     } else {
         [self loadInternalNotifications];
+        
+        //TODO: See that later.
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
@@ -1472,6 +1539,26 @@
         GLPBadgesViewController *bVC = segue.destinationViewController;
         bVC.customTitle = @"My";
     }
+}
+
+#pragma mark - Selectors
+
+- (void)reloadContent
+{
+    [self startLoading];
+    
+    if(_selectedTab == kButtonLeft)
+    {
+        DDLogDebug(@"Reload posts");
+        [self loadPosts];
+    }
+    else
+    {
+        DDLogDebug(@"Reload notifications");
+        [self refreshNotifications];
+    }
+    
+    [self stopLoading];
 }
 
 #pragma mark - Actions

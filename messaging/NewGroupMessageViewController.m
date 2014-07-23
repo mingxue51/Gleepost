@@ -32,6 +32,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation NewGroupMessageViewController
@@ -208,10 +210,11 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
     }
     
     DDLogInfo(@"Start user search");
-    
+    [_activityIndicator setHidden:NO];
     
     [[WebClient sharedInstance] searchUserByName:userName callback:^(NSArray *users) {
         
+        [_activityIndicator setHidden:YES];
         //        if(_requestsCount == 0) {
         //            _activityIndicator.hidden = YES;
         //            [_activityIndicator stopAnimating];
@@ -324,6 +327,18 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
     [_addSelectedButton setEnabled:NO];
     
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_TITLE] forState:UIControlStateNormal];
+}
+
+- (void)showAndAnimateIndicator
+{
+    [_activityIndicator setHidden:NO];
+    [_activityIndicator startAnimating];
+}
+
+- (void)hideIndicator
+{
+    [_activityIndicator setHidden:YES];
+    [_activityIndicator stopAnimating];
 }
 
 #pragma mark - Helpers

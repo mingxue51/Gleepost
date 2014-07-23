@@ -63,16 +63,13 @@
         _serverPath = GLP_BASE_SERVER_URL;
     }
     
-    DDLogDebug(@"Server switched: %@", _serverPath);
+    DDLogInfo(@"Server switched: %@", _serverPath);
     
     [self saveServerPathData];
 }
 
 - (NSString *)serverPath
 {
-    DDLogDebug(@"Get path: %@", _serverPath);
-
-    
     return _serverPath;
 }
 

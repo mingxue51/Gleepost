@@ -24,5 +24,6 @@
 + (void)saveNotification:(GLPNotification *)notification;
 + (void)clearAllNotifications;
 +(void)fetchNotificationsFromServerWithCallBack:(void (^) (BOOL success, NSArray *notifications))callback;
++ (void)loadNotificationsWithLocalCallback:(void (^) (BOOL success, NSArray *notifications))localCallback andRemoteCallback:(void (^) (BOOL success, NSArray *remoteNotifications))remoteCallback;
 
 @end

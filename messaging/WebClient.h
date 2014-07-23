@@ -132,6 +132,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 // notifications
 -(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
+- (void)getAllNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 
 - (void)markNotificationsRead:(void (^)(BOOL success))callback;

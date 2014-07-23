@@ -996,7 +996,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     notification.notificationType = type;
-    notification.seen = NO;
+    notification.seen = [json[@"seen"] boolValue];
     
     notification.remoteKey = [json[@"id"] integerValue];
     notification.postRemoteKey = json[@"post"] ? [json[@"post"] integerValue] : 0;

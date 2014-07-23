@@ -1706,6 +1706,22 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)getAllNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:[NSNumber numberWithBool:YES] forKey:@"include_seen"];
+    
+    [self getPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *items = [RemoteParser parseNotificationsFromJson:responseObject];
+        callback(YES, items);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
+
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self executeSynchronousRequestWithMethod:@"GET" path:@"notifications" params:self.sessionManager.authParameters callback:^(BOOL success, id json) {

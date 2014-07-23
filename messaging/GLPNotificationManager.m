@@ -285,5 +285,38 @@
     
 }
 
++ (void)loadNotificationsWithLocalCallback:(void (^) (BOOL success, NSArray *notifications))localCallback andRemoteCallback:(void (^) (BOOL success, NSArray *remoteNotifications))remoteCallback
+{
+    
+    __block NSArray *localNotifications = nil;
+    
+    [GLPNotificationManager loadNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+       
+        DDLogInfo(@"Local notifications count: %ld", (unsigned long)notifications.count);
+        
+        localNotifications = notifications;
+        
+        localCallback(success, localNotifications);
+        
+    }];
+    
+    
+    [[WebClient sharedInstance] getAllNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+       
+        if(success)
+        {
+            
+            DDLogInfo(@"Remote notifications count: %ld", (unsigned long)notifications.count);
+            
+            //Save notifications from server.
+            [GLPNotificationDao saveNotifications:notifications];
+            
+            remoteCallback(success, notifications);
+        }
+        
+        
+    }];
+}
+
 
 @end

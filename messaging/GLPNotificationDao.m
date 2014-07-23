@@ -10,7 +10,7 @@
 #import "GLPNotificationDaoParser.h"
 #import "FMDatabaseAdditions.h"
 #import "GLPUserDao.h"
-
+#import "DatabaseManager.h"
 
 @implementation GLPNotificationDao
 
@@ -74,6 +74,19 @@
     
     //Add the user to users table.
     [GLPUserDao saveIfNotExist:entity.user db:db];
+}
+
++ (void)saveNotifications:(NSArray *)notifications
+{
+    [DatabaseManager run:^(FMDatabase *db) {
+        
+        [GLPNotificationDao deleteAll:db];
+        
+        for(GLPNotification *notification in notifications)
+        {
+            [GLPNotificationDao save:notification inDb:db];
+        }
+    }];
 }
 
 +(int)parseGroupRemoteKeyWithEntity:(GLPNotification *)entity
