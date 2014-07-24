@@ -52,7 +52,7 @@ const float IMAGE_CELL_ONE_LINE_HEIGHT = IMAGE_CELL_HEIGHT - 15;
 const float VIDEO_CELL_ONE_LINE_HEIGHT = VIDEO_CELL_HEIGHT - 21;
 const float TEXT_CELL_ONE_LINE_HEIGHT = TEXT_CELL_HEIGHT - 15;
 const float FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL = VIDEO_CELL_HEIGHT - 75; //65
-const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 70;
+const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 60; //70
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 77;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
@@ -98,7 +98,7 @@ const float ONE_LINE_LIMIT = 18.0;
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
     
 
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
+    //[ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
 
 //    [ShapeFormatterHelper setBorderToView:_mainView withColour:[UIColor redColor]];
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];

@@ -311,7 +311,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        distanceFromTop = 25.0f;
+        distanceFromTop = 20.0f; //25
         backgroundImageViewHeight -= 77.0f;
     }
     
@@ -359,7 +359,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
         
-        backgroundImageViewHeight -= 70.0f;
+        backgroundImageViewHeight -= 60.0f; //70
         
         distanceFromTop = 25.0f;
     }
@@ -394,7 +394,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     else
     {
         backgroundImageViewHeight -= 75;
-        distanceFromTop = 25.0f;
+        distanceFromTop = 20.0f;
     }
     
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
