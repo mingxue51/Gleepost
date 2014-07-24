@@ -24,14 +24,16 @@
 {
     [super viewDidLoad];
     
-    
-    [self configureNavigationBar];
-    
     [self registerCollectionViewCells];
     
     [self initialiseObjects];
-    
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configureNavigationBar];
 }
 
 - (void)configureNavigationBar

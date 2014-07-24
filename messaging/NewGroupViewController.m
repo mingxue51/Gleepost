@@ -69,8 +69,6 @@
     
     [self configureFDTakeController];
     
-    [self configureNavigationBar];
-    
     [self configureGesturesOnViews];
     
     [self formatViews];
@@ -97,8 +95,13 @@
     [super viewDidAppear:animated];
     
     [_groupNameTextField becomeFirstResponder];
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
+    [self configureNavigationBar];
 }
 
 #pragma mark - Configuration

@@ -110,7 +110,7 @@
     
     ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
     [_assetsGroup setAssetsFilter:onlyPhotosFilter];
-    [_assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
+    [_assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:assetsEnumerationBlock];
     
     
 //    for(ALAsset *a in _assets)
