@@ -98,7 +98,7 @@ const float ONE_LINE_LIMIT = 18.0;
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
     
 
-    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
 
 //    [ShapeFormatterHelper setBorderToView:_mainView withColour:[UIColor redColor]];
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];

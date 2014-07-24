@@ -382,7 +382,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if([self isCurrentPostEvent])
     {
 //        backgroundImageViewHeight = 490.0f;
-        distanceFromTop = 100.0f;  //85
+        distanceFromTop = 93.0f;  //100
         
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:21.0f withBasicValue:distanceFromTop];
         
