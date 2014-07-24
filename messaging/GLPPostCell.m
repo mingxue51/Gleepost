@@ -45,7 +45,7 @@
 
 @implementation GLPPostCell
 
-const float IMAGE_CELL_HEIGHT = 393;        //413
+const float IMAGE_CELL_HEIGHT = 386;        //393
 const float VIDEO_CELL_HEIGHT = 510;        //498
 const float TEXT_CELL_HEIGHT = 200;
 const float IMAGE_CELL_ONE_LINE_HEIGHT = IMAGE_CELL_HEIGHT - 15;
@@ -98,7 +98,7 @@ const float ONE_LINE_LIMIT = 18.0;
     [_mainView setElementsWithPost:post withViewPost:_isViewPost];
     
 
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
+    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
 
 //    [ShapeFormatterHelper setBorderToView:_mainView withColour:[UIColor redColor]];
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];

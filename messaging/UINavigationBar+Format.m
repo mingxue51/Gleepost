@@ -52,8 +52,11 @@
         return;
     }
     
-    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_TITLE_FONT size:22.0f], UITextAttributeFont, [self colourWithGLPColour:colour], UITextAttributeTextColor, nil]];
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], UITextAttributeFont, [self colourWithGLPColour:colour], UITextAttributeTextColor, nil]];
     
+    NSString *string = self.topItem.title;
+    
+    self.topItem.title = [string uppercaseString];
 
     [self setTintColor:[AppearanceHelper blueGleepostColour]];
 }
@@ -65,8 +68,11 @@
         return;
     }
     
-    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:22.0f], UITextAttributeFont, [self colourWithGLPColour:kRed], UITextAttributeTextColor, nil]];
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0], UITextAttributeFont, [self colourWithGLPColour:kRed], UITextAttributeTextColor, nil]];
     
+    NSString *string = self.topItem.title;
+    
+    self.topItem.title = [string uppercaseString];
     
     [self setTintColor:[self colourWithGLPColour:kRed]];
 }

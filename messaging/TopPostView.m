@@ -41,7 +41,7 @@ const float ONE_LINE_HEIGHT = 20;
 
 -(void)setElementsWithPost:(GLPPost *)post
 {
-//    [ShapeFormatterHelper setBorderToView:_eventTitleLbl withColour:[UIColor redColor] andWidth:1.0f];
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0f];
     
     float height = [TopPostView getContentLabelSizeForContent:post.eventTitle];
     

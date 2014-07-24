@@ -300,7 +300,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     if([self isCurrentPostEvent])
     {
-        distanceFromTop = 105.0f;
+        distanceFromTop = 100.0f;
         
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:17 withBasicValue:distanceFromTop];
         
@@ -332,7 +332,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 378.0f + height;    //398
+    backgroundImageViewHeight = 371.0f + height;    //378.0f
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
     
@@ -342,7 +342,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
         
 
-        distanceFromTop = 95;
+        distanceFromTop = 83;
 
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:15 withBasicValue:distanceFromTop];
 

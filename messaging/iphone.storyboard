@@ -2280,7 +2280,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="147DB6A7-A38E-46DF-9274-266DA113218C">
+                                                <state key="normal" image="8156D7C6-AC9B-4937-9A40-D59537AADD37">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -3171,10 +3171,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="370" y="1391"/>
         </scene>
-        <!--New Group Message View Controller - New Group Message-->
+        <!--New Group Message View Controller - New Message-->
         <scene sceneID="STh-nh-eIM">
             <objects>
-                <viewController id="V9c-as-rrO" customClass="NewGroupMessageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewGroupMessageViewController" id="V9c-as-rrO" customClass="NewGroupMessageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P4Z-5C-Xzx">
                         <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -3227,7 +3227,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="New Group Message" id="syr-9x-bIc">
+                    <navigationItem key="navigationItem" title="New Message" id="syr-9x-bIc">
                         <barButtonItem key="backBarButtonItem" title=" " id="54b-s6-xbx"/>
                     </navigationItem>
                     <connections>
@@ -4195,7 +4195,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="147DB6A7-A38E-46DF-9274-266DA113218C" width="30" height="32">
+        <image name="8156D7C6-AC9B-4937-9A40-D59537AADD37" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz

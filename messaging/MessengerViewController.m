@@ -17,7 +17,7 @@
 #import "UIColor+GLPAdditions.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
-#import "NewMessageViewController.h"
+#import "NewGroupMessageViewController.h"
 
 
 @interface MessengerViewController ()
@@ -179,9 +179,9 @@
 - (void)viewNewMessageView
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    NewMessageViewController *newMessageVC = [storyboard instantiateViewControllerWithIdentifier:@"NewMessageViewController"];
+    NewGroupMessageViewController *newGroupMessageVC = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupMessageViewController"];
 //    [newPostVC setDelegate:self];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newMessageVC];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newGroupMessageVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
 }

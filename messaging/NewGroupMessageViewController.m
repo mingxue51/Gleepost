@@ -39,6 +39,7 @@
 @implementation NewGroupMessageViewController
 
 const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
+const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (void)viewDidLoad
 {
@@ -86,15 +87,15 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
 
 - (void)configureNavigationBar
 {
-    float buttonsSize = 30.0;
+//    float buttonsSize = 30.0;
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"x_red" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(goBack) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"x_red" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissViewController) andTarget:self];
     
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"one_one_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(goBack) andTarget:self];
+//    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"one_one_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(goBack) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -266,10 +267,11 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
 
 #pragma mark - Selectors
 
-- (void)goBack
+- (void)dismissViewController
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -278,16 +280,47 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
 
 - (IBAction)addUsers:(id)sender
 {
-    //Create new conversation with users.
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:_checkedUsers];
-        
+    
+    if(_checkedUsers.count == 1)
+    {
+        [self startConversationWithOneUser];
+    }
+    else
+    {
+        [self startGroupConversation];
+    }
+}
+
+- (void)startConversationWithOneUser
+{
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:_checkedUsers[0]];
+    
     DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
     
     if(!conversation)
     {
         DDLogInfo(@"Create empty conversation");
         
-//        NSArray *part = [[NSArray alloc] initWithObjects:user, [SessionManager sharedInstance].user, nil];
+        NSArray *part = [[NSArray alloc] initWithObjects:_checkedUsers[0], [SessionManager sharedInstance].user, nil];
+        conversation = [[GLPConversation alloc] initWithParticipants:part];
+        
+    }
+    
+    [self navigateToConversationViewControllerWithConversation:conversation];
+}
+
+- (void)startGroupConversation
+{
+    //Create new conversation with users.
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:_checkedUsers];
+    
+    DDLogInfo(@"Regular conversation with participants, conversation remote key: %d", conversation.remoteKey);
+    
+    if(!conversation)
+    {
+        DDLogInfo(@"Create empty conversation");
+        
+        //        NSArray *part = [[NSArray alloc] initWithObjects:user, [SessionManager sharedInstance].user, nil];
         
         [_checkedUsers addObject:[SessionManager sharedInstance].user];
         
@@ -295,8 +328,14 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
         
     }
     
-    _conversation = conversation;
+    [self navigateToConversationViewControllerWithConversation:conversation];
 
+}
+
+- (void)navigateToConversationViewControllerWithConversation:(GLPConversation *)conversation
+{
+    _conversation = conversation;
+    
     
     [self performSegueWithIdentifier:@"view conversation" sender:self];
 }
@@ -309,13 +348,26 @@ const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
     {
         [self resetAndDisableButton];
     }
-    else if(_checkedUsers.count > 1)
+    else if(_checkedUsers.count == 1)
     {
-        [self refreshAndEnableButton];
+        [self refreshEnableButtonAndAddOneToOneMessage];
+    }
+    else
+    {
+        [self refreshButtonForGroupMessage];
     }
 }
 
-- (void)refreshAndEnableButton
+- (void)refreshEnableButtonAndAddOneToOneMessage
+{
+    [_addSelectedButton setEnabled:YES];
+    
+    GLPUser *user = _checkedUsers[0];
+    
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@%@", FIXED_BUTTON_ONE_USER_TITLE, user.name] forState:UIControlStateNormal];
+}
+
+- (void)refreshButtonForGroupMessage
 {
     [_addSelectedButton setEnabled:YES];
  

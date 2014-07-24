@@ -31,9 +31,7 @@
 }
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
-{
-//    DDLogDebug(@"Current message: %@, Previous message: %@", self.content, message.content);
-    
+{    
     NSTimeInterval interval = [_date timeIntervalSinceDate:message.date];
     
     //If the inrerval is more than seven minutes the return YES, otherwise NO.
