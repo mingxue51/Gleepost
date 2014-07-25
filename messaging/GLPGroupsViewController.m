@@ -267,39 +267,12 @@
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)glpSearchBarDidBeginEditing:(UITextField *)textField
 {
-    // remove all data that belongs to previous search
-    
-    [_filteredGroups removeAllObjects];
-    
-    if([searchText isEqualToString:@""] || searchText == nil)
-    {
-        _filteredGroups = _groups.mutableCopy;
-        
-        [_collectionView reloadData];
-        return;
-    }
-    
-    for(GLPUser *user in _groups)
-    {
-        NSRange r = [user.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
-        
-        if(r.location != NSNotFound)
-        {
-            //that is we are checking only the start of the names.
-            
-            if(r.location== 0)
-            {
-                [_filteredGroups addObject:user];
-            }
-        }
-    }
-    
-    [_collectionView reloadData];
+    [_tap setCancelsTouchesInView:YES];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+- (void)glpSearchBarDidEndEditing:(UITextField *)textField
 {
     //We are setting a delay here because otherwise setCancelsTouchesInView is called after the touch to
     //the collection view.
@@ -307,25 +280,7 @@
     [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
 }
 
-
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    [_tap setCancelsTouchesInView:YES];
-}
-
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [_tap setCancelsTouchesInView:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
-}
-
-- (void)typedText:(NSString *)searchText
+- (void)textChanged:(NSString *)searchText
 {
     // remove all data that belongs to previous search
     
@@ -339,9 +294,9 @@
         return;
     }
     
-    for(GLPUser *user in _groups)
+    for(GLPGroup *group in _groups)
     {
-        NSRange r = [user.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        NSRange r = [group.name rangeOfString:searchText options:NSCaseInsensitiveSearch];
         
         if(r.location != NSNotFound)
         {
@@ -349,7 +304,7 @@
             
             if(r.location== 0)
             {
-                [_filteredGroups addObject:user];
+                [_filteredGroups addObject:group];
             }
         }
     }

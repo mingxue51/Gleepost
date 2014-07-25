@@ -24,15 +24,23 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
+//@property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
 
-@property (strong, nonatomic) NSMutableArray *privateConversations;
+@property (strong, nonatomic) NSMutableArray *conversations;
 
-@property (strong, nonatomic) NSMutableArray *groupConversations;
+@property (strong, nonatomic) NSMutableArray *filteredConversations;
 
-@property (assign, nonatomic) ButtonType conversationType;
+//@property (strong, nonatomic) NSMutableArray *groupConversations;
+
+//@property (assign, nonatomic) ButtonType conversationType;
+
+@property (strong, nonatomic) GLPSearchBar *glpSearchBar;
+
+@property (weak, nonatomic) IBOutlet UIView *searchBarView;
 
 @property (strong, nonatomic) GLPConversation *selectedConversation;
+
+@property (strong, nonatomic) UITapGestureRecognizer *tap;
 
 // reload conversations when user comes back from chat view, in order to update last message and last update
 @property (assign, nonatomic) BOOL needsReloadConversations;
@@ -58,6 +66,9 @@
     [self reloadConversations];
     
     [self configureTabbar];
+    
+    [self configureGestures];
+
 
 }
 
@@ -108,6 +119,17 @@
     [super viewWillDisappear:animated];
 }
 
+- (void)configureGestures
+{
+    _tap = [[UITapGestureRecognizer alloc]
+            initWithTarget:self
+            action:@selector(viewTouched:)];
+    
+    _tap.cancelsTouchesInView = NO;
+    
+    [_tableView addGestureRecognizer:_tap];
+}
+
 #pragma mark - Configuration
 
 - (void)registerTableViewCells
@@ -120,21 +142,35 @@
 
 - (void)registerViews
 {
-     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSegmentView" owner:self options:nil];
+//     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSegmentView" owner:self options:nil];
+//    
+//    GLPSegmentView *view = [array lastObject];
+//    [view setDelegate:self];
+//    
+//    CGRectSetX(view, 10);
+//    
+//    [_segmentView addSubview:view];
     
-    GLPSegmentView *view = [array lastObject];
+    
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
+    
+    GLPSearchBar *view = [array lastObject];
     [view setDelegate:self];
     
-    CGRectSetX(view, 10);
+    [view setPlaceholderWithText:@"Search for groups on campus"];
     
-    [_segmentView addSubview:view];
+    view.tag = 101;
+    
+    _glpSearchBar = view;
+    
+    [_searchBarView addSubview:view];
+    
 }
 
 - (void)initialiseObjects
 {
-    _privateConversations = [[NSMutableArray alloc] init];
-    _groupConversations = [[NSMutableArray alloc] init];
-    _conversationType = kButtonLeft;
+    _conversations = [[NSMutableArray alloc] init];
+    _filteredConversations = [[NSMutableArray alloc] init];
     
     // various control init
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
@@ -195,19 +231,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (_conversationType)
-    {
-        case kButtonLeft:
-            return _privateConversations.count;
-            break;
-            
-        case kButtonRight:
-            return _groupConversations.count;
-            break;
-            
-        default:
-            break;
-    }
+//    switch (_conversationType)
+//    {
+//        case kButtonLeft:
+//            return _privateConversations.count;
+//            break;
+//            
+//        case kButtonRight:
+//            return _groupConversations.count;
+//            break;
+//            
+//        default:
+//            break;
+//    }
+    
+    return _filteredConversations.count;
 }
 
 
@@ -221,7 +259,7 @@
     
     messageCell = [tableView dequeueReusableCellWithIdentifier:messageCellIdentifier forIndexPath:indexPath];
     
-    GLPConversation *conversation = (_conversationType == kButtonLeft) ? _privateConversations[indexPath.row] : _groupConversations[indexPath.row];
+    GLPConversation *conversation = _filteredConversations[indexPath.row];
     
     [messageCell initialiseWithConversation: conversation];
     
@@ -233,7 +271,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    self.selectedConversation = (_conversationType == kButtonLeft) ? _privateConversations[indexPath.row] : _groupConversations[indexPath.row];
+    self.selectedConversation = _filteredConversations[indexPath.row];
     
     [self performSegueWithIdentifier:@"view topic" sender:self];
 }
@@ -243,13 +281,72 @@
     return CONVERSATION_CELL_HEIGHT;
 }
 
-#pragma mark - GLPSegmentViewDelegate
+#pragma mark - Keyboard management
 
-- (void)segmentSwitched:(ButtonType)conversationsType
+- (void)viewTouched:(id)sender
 {
-    _conversationType = conversationsType;
+    [self hideKeyboardFromSearchBarIfNeeded];
+}
+
+-(void)hideKeyboardFromSearchBarIfNeeded
+{
+    //    if([self.searchBar isFirstResponder]) {
+    //        [self.searchBar resignFirstResponder];
+    //    }
     
-    [self.tableView reloadData];
+    if([_glpSearchBar isTextFieldFirstResponder])
+    {
+        [_glpSearchBar resignTextFieldFirstResponder];
+    }
+}
+
+#pragma mark - GLPSearchBarDelegate
+
+
+- (void)glpSearchBarDidEndEditing:(UITextField *)textField
+{
+    DDLogDebug(@"Searched text searchBarTextDidEndEditing: %@", textField.text);
+    
+    //We are setting a delay here because otherwise setCancelsTouchesInView is called after the touch to
+    //the collection view.
+    
+    [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
+}
+
+- (void)glpSearchBarDidBeginEditing:(UITextField *)textField
+{
+    DDLogDebug(@"Searched text textFieldDidBeginEditing: %@", textField.text);
+
+    [_tap setCancelsTouchesInView:YES];
+}
+
+- (void)textChanged:(NSString *)searchText
+{
+    // remove all data that belongs to previous search
+    
+    [_filteredConversations removeAllObjects];
+    
+    DDLogDebug(@"Searched text typedText: %@", searchText);
+    
+    
+    if([searchText isEqualToString:@""] || searchText == nil)
+    {
+        _filteredConversations = _conversations.mutableCopy;
+        
+        [_tableView reloadData];
+        
+        return;
+    }
+    
+    for(GLPConversation *conversation in _conversations)
+    {
+        if([self areParticipants:conversation.participants containedToSearchedText:searchText])
+        {
+            [_filteredConversations addObject:conversation];
+        }
+    }
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Conversations
@@ -267,7 +364,9 @@
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
         self.loadingCellStatus = kGLPLoadingCellStatusFinished;
 //        _liveConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:liveConversations]];
-        _privateConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
+        _conversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
+        //TODO: Maybe an issue here one there is a new message in a conversation.
+        _filteredConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self.tableView reloadData];
         [self stopLoading];
@@ -290,7 +389,8 @@
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
         self.loadingCellStatus = kGLPLoadingCellStatusFinished;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _privateConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
+        _conversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
+        _filteredConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:regularConversations]];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
 }
@@ -305,9 +405,10 @@
     
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:conversationRemoteKey];
     
-    NSMutableArray *array = (_conversationType == kButtonLeft) ? _privateConversations : _groupConversations;
+    NSMutableArray *array = _conversations;
     
     NSUInteger index = [array indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        
         if(((GLPConversation *)obj).remoteKey == conversation.remoteKey) {
             return YES;
         }
@@ -343,6 +444,28 @@
 - (void)conversationsSyncFromNotification:(NSNotification *)notification
 {
     [self reloadConversations];
+}
+
+#pragma mark - Helpers
+
+- (BOOL)areParticipants:(NSArray *)participants containedToSearchedText:(NSString *)searchedText
+{
+    for(GLPUser *user in participants)
+    {
+        NSRange r = [user.name rangeOfString:searchedText options:NSCaseInsensitiveSearch];
+        
+        if(r.location != NSNotFound)
+        {
+            //that is we are checking only the start of the names.
+            
+            if(r.location == 0)
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
 }
 
 #pragma mark - Refresh

@@ -43,6 +43,8 @@
     [super awakeFromNib];
     
     [self configureTextFieldView];
+    
+    [self configureTextField];
 }
 
 - (void)configureTextFieldView
@@ -50,6 +52,11 @@
     [ShapeFormatterHelper setRoundedView:_textField toDiameter:5.0];
     [self setLeftPaddingToTextField];
     
+}
+
+- (void)configureTextField
+{
+    [_textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)setLeftPaddingToTextField
@@ -82,27 +89,21 @@
 
 #pragma mark - UITextFieldDelegate
 
-//- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-//{
-//    [_delegate textFieldShouldBeginEditing:textField];
-//    
-//    return YES;
-//}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [_delegate textFieldDidBeginEditing:textField];
+    [_delegate glpSearchBarDidBeginEditing:textField];
 }
+
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [_delegate textFieldDidEndEditing:textField];
+    [_delegate glpSearchBarDidEndEditing:textField];
 }
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+
+- (void)textFieldDidChange:(UITextField *)textField
 {
-    [_delegate typedText:string];
-    
-    return YES;
+    [_delegate textChanged:textField.text];
 }
 
 /*

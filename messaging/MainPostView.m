@@ -138,6 +138,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     /** TODO: See if this assign is good. */
     _post = post;
     
+    [self showOrHideLikeLabel];
+    
+    [self showOrHideCommentsLabel];
+    
     [_likesLbl setText:[NSString stringWithFormat:@"%ld", (long)post.likes]];
 
     [_commentsLbl setText:[NSString stringWithFormat:@"%ld", (long)post.commentsCount]];
@@ -311,8 +315,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        distanceFromTop = 20.0f; //25
-        backgroundImageViewHeight -= 77.0f;
+        distanceFromTop = 10.0f; //25
+        backgroundImageViewHeight -= 87.0f;
     }
     
     //Set constrains.
@@ -359,7 +363,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
 //        [_postImageDistanceFromLeftConstrain setConstant:0];
         
-        backgroundImageViewHeight -= 60.0f; //70
+        backgroundImageViewHeight -= 57.0f; //70
         
         distanceFromTop = 25.0f;
     }
@@ -764,6 +768,37 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     _goingBtn.tag = 2;
 }
 
+
+/**
+ Shows or hides like label depending on how many likes there are on the post.
+ */
+- (void)showOrHideLikeLabel
+{
+    if(_post.likes == 0)
+    {
+        [_likesLbl setHidden:YES];
+    }
+    else
+    {
+        [_likesLbl setHidden:NO];
+    }
+}
+
+/**
+ Shows or hides comments label depending on how many comments there are on the post.
+ */
+- (void)showOrHideCommentsLabel
+{
+    if(_post.commentsCount == 0)
+    {
+        [_commentsLbl setHidden:YES];
+    }
+    else
+    {
+        [_commentsLbl setHidden:NO];
+    }
+}
+
 #pragma mark - Helper methods
 
 -(BOOL)isCurrentPostEvent
@@ -809,6 +844,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         //Increase the number of likes.
         ++self.post.likes;
     }
+    
+    [self showOrHideLikeLabel];
     
     //Update like label.
     [_likesLbl setText:[NSString stringWithFormat:@"%ld", (long)_post.likes]];

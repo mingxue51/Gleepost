@@ -11,9 +11,9 @@
 @protocol GLPSearchBarDelegate <NSObject>
 
 //- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
-- (void)textFieldDidBeginEditing:(UITextField *)textField;
-- (void)textFieldDidEndEditing:(UITextField *)textField;
-- (void)typedText:(NSString *)text;
+- (void)glpSearchBarDidBeginEditing:(UITextField *)textField;
+- (void)glpSearchBarDidEndEditing:(UITextField *)textField;
+- (void)textChanged:(NSString *)text;
 
 @end
 

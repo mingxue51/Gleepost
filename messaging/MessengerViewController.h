@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GLPSegmentView.h"
+#import "GLPSearchBar.h"
 
-@interface MessengerViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, GLPSegmentViewDelegate>
+@interface MessengerViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, GLPSearchBarDelegate>
 
 @end
