@@ -52,14 +52,12 @@
 
 
 static BOOL likePushed;
+
+
 @implementation ViewPostViewController
 
 @synthesize post=_post;
 
-
-- (void)backButtonTapped {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -253,7 +251,7 @@ static BOOL likePushed;
     //    [self setNeedsStatusBarAppearanceUpdate];
 
     
-    self.navigationItem.title = @"View Post";
+    self.navigationItem.title = @"VIEW POST";
     
 //    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
@@ -294,7 +292,7 @@ static BOOL likePushed;
     [btn setFrame:CGRectMake(0, 0, 25, 25)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-    
+        
     //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
 }
 
@@ -321,7 +319,7 @@ static BOOL likePushed;
         
         [GLPPostManager loadPostWithRemoteKey:_post.remoteKey callback:^(BOOL success, GLPPost *post) {
             
-            self.title = @"View Post";
+            self.title = @"VIEW POST";
             
             if(success)
             {
@@ -402,16 +400,12 @@ static BOOL likePushed;
 //    return nil;
 //}
 
-//TODO: Implement this in post cell.
--(void)navigateToProfile: (id)sender
+#pragma mark GLPPostCellDelegate
+
+-(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
 {
-    UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
-    
-    UIImageView *incomingView = (UIImageView*)incomingUser.view;
-    
     //Decide where to navigate. Private or open.
-    self.selectedUserId = incomingView.tag;
-    
+    self.selectedUserId = remoteKey;
     
     if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
     {
@@ -420,10 +414,9 @@ static BOOL likePushed;
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
     else
-    {        
+    {
         [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
-    
 }
 
 
@@ -720,11 +713,8 @@ static bool firstTime = YES;
         }
         else if ([_post isVideoPost])
         {
-            DDLogDebug(@"Video post : View post!");
-            
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
 //            [postViewCell reloadMedia:self.mediaNeedsToReload];
-
         }
         else
         {
@@ -877,11 +867,6 @@ static bool firstTime = YES;
     
     // Pop-up view controller.
     [self.navigationController popViewControllerAnimated:YES];
-}
-
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
-{
-    DDLogDebug(@"ViewPostViewController : navigateToUsersProfileWithRemoteKey");
 }
 
 #pragma mark - UIAlertViewDelegate

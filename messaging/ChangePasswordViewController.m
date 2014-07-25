@@ -53,7 +53,7 @@
         [_oldPassWord setSecureTextEntry:NO];
         [_passWord setSecureTextEntry:NO];
         
-        [_item2 setTitle:@"Change Name"];
+        [_item2 setTitle:@"CHANGE NAME"];
     }
 }
 

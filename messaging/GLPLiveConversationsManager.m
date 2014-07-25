@@ -84,13 +84,18 @@ static GLPLiveConversationsManager *instance = nil;
 {
     DDLogInfo(@"Load conversations");
     
+    [self showLoadingIndicator];
+    
     [[WebClient sharedInstance] getConversationsWithCallback:^(BOOL success, NSArray *conversations) {
         dispatch_async(_queue, ^{
             if(!success) {
                 DDLogError(@"Cannot load conversations");
                 _isSynchronizedWithRemote = NO;
+                [self hideLoadingIndicator];
                 return;
             }
+            
+            [self hideLoadingIndicator];
             
             DDLogInfo(@"Load conversations sucess, loaded conversations: %d", conversations.count);
             
@@ -1471,6 +1476,18 @@ static GLPLiveConversationsManager *instance = nil;
     _successfullyLoaded = NO;
     _isSynchronizedWithRemote = NO;
     _areConversationsSync = NO;
+}
+
+#pragma mark - UI
+
+- (void)showLoadingIndicator
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)hideLoadingIndicator
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 @end

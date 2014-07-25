@@ -59,7 +59,7 @@
 
 -(void)configurateView
 {
-    self.title = @"Members";
+    self.title = @"MEMBERS";
 }
 
 -(void)configureTopView

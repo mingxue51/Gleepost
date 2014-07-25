@@ -204,7 +204,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     {
         //Create a button instead of using the default title view for recognising gestures.
         UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [titleLabelBtn setTitle:_conversation.title forState:UIControlStateNormal];
+        [titleLabelBtn setTitle:[_conversation.title uppercaseString] forState:UIControlStateNormal];
         [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:22.0f]];
         titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
         
@@ -218,7 +218,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     }
     else
     {
-        self.title = _conversation.title;
+        self.title = [_conversation.title uppercaseString];
     }
     
 

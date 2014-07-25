@@ -261,7 +261,7 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 -(void)configureNavigationBar
 {
     [self.navigationController.navigationBar setTranslucent:NO];
-    self.title = @"New Post";
+    self.title = @"NEW POST";
     [self configureLeftBarButton];
     [self configureRightBarButton];
     

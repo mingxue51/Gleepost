@@ -149,6 +149,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_contentLbl setText:post.content];
     
     [_nameLbl setText:post.author.name];
+    _nameLbl.tag = _post.author.remoteKey;
     
     [self configureMediaAvailable];
     
@@ -737,6 +738,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(commentPost:)];
     [tap setNumberOfTapsRequired:1];
     [_commentsLbl addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(navigateToProfile:)];
+    [tap setNumberOfTapsRequired:1];
+    [_nameLbl addGestureRecognizer:tap];
 }
 
 -(void)addGestureToPostImage

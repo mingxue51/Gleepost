@@ -45,8 +45,8 @@
 @implementation GLPSearchUsersViewController
 
 static NSString * const kCellIdentifier = @"CellIdentifier";
-static NSString *const INVITE_GROUP_MEMBERS_STR = @"Invite Group Members";
-static NSString *const SEARCH_USERS_STR = @"Search";
+static NSString *const INVITE_GROUP_MEMBERS_STR = @"INVITE GROUP MEMBERS";
+static NSString *const SEARCH_USERS_STR = @"SEARCH";
 
 - (void)viewDidLoad
 {

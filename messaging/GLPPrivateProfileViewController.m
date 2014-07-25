@@ -347,7 +347,7 @@
         if(exist)
         {
             self.profileUser = user;
-            self.navigationItem.title = self.profileUser.name;
+            self.navigationItem.title = [self.profileUser.name uppercaseString];;
             [self.tableView reloadData];
         }
         
@@ -356,7 +356,7 @@
         if(success)
         {
             self.profileUser = user;
-            self.navigationItem.title = self.profileUser.name;
+            self.navigationItem.title = [self.profileUser.name uppercaseString];
             [self.tableView reloadData];
         }
         else
@@ -409,7 +409,7 @@
     {
         GLPUser *notCompletedUser = [[ContactsManager sharedInstance] contactWithRemoteKey:self.selectedUserId].user;
         
-        self.navigationItem.title = notCompletedUser.name;
+        self.navigationItem.title = [notCompletedUser.name uppercaseString];
         
         [self refreshFirstCell];
         

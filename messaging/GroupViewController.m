@@ -259,7 +259,7 @@ const int NUMBER_OF_ROWS = 1;
     
     
     //Set title.
-    self.title = _group.name;
+    self.title = [_group.name uppercaseString];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
@@ -726,7 +726,7 @@ const int NUMBER_OF_ROWS = 1;
         if(success)
         {
             _group = group;
-            self.title = _group.name;
+            self.title = [_group.name uppercaseString];
             
             [self refreshCellViewWithIndex:0];
         }

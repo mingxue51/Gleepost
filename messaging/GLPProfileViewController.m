@@ -185,10 +185,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
-    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
-    {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }
+//    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
+//    {
+//        [self.navigationController setNavigationBarHidden:YES animated:YES];
+//    }
     
     [super viewWillDisappear:animated];
 }

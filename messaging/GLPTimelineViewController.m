@@ -1627,48 +1627,48 @@ const float TOP_OFFSET = 280.0f;
 
 #pragma mark - Hidden navigation bar
 
--(void)expand
-{
-    if(self.hidden)
-    {
-        return;
-    }
-    
-    self.hidden = YES;
-
-    
-    [self.navigationController setNavigationBarHidden:YES
-                                             animated:NO];
-}
-
--(void)contract
-{
-    if(!self.hidden)
-    {
-        return;
-    }
-    
-    self.hidden = NO;
-    
-//    [self.tabBarController setTabBarHidden:NO
-//                                  animated:YES];
-    
-    
-    [self.navigationController setNavigationBarHidden:NO
-                                             animated:NO];
-}
-
-
-
--(void)hideNavigationbarElements
-{
-    [self.navigationController.navigationBar setBackgroundColor: [UIColor clearColor]];
-}
-
--(void)showNavigationbarElements
-{
-    [self configAppearance];
-}
+//-(void)expand
+//{
+//    if(self.hidden)
+//    {
+//        return;
+//    }
+//    
+//    self.hidden = YES;
+//
+//    
+//    [self.navigationController setNavigationBarHidden:YES
+//                                             animated:NO];
+//}
+//
+//-(void)contract
+//{
+//    if(!self.hidden)
+//    {
+//        return;
+//    }
+//    
+//    self.hidden = NO;
+//    
+////    [self.tabBarController setTabBarHidden:NO
+////                                  animated:YES];
+//    
+//    
+//    [self.navigationController setNavigationBarHidden:NO
+//                                             animated:NO];
+//}
+//
+//
+//
+//-(void)hideNavigationbarElements
+//{
+//    [self.navigationController.navigationBar setBackgroundColor: [UIColor clearColor]];
+//}
+//
+//-(void)showNavigationbarElements
+//{
+//    [self configAppearance];
+//}
 
 #pragma mark - Table view
 
@@ -1817,6 +1817,7 @@ const float TOP_OFFSET = 280.0f;
     self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row;
     self.commentCreated = NO;
+        
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 

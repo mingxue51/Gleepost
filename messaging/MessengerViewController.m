@@ -302,11 +302,8 @@
 
 #pragma mark - GLPSearchBarDelegate
 
-
 - (void)glpSearchBarDidEndEditing:(UITextField *)textField
 {
-    DDLogDebug(@"Searched text searchBarTextDidEndEditing: %@", textField.text);
-    
     //We are setting a delay here because otherwise setCancelsTouchesInView is called after the touch to
     //the collection view.
     
@@ -315,8 +312,6 @@
 
 - (void)glpSearchBarDidBeginEditing:(UITextField *)textField
 {
-    DDLogDebug(@"Searched text textFieldDidBeginEditing: %@", textField.text);
-
     [_tap setCancelsTouchesInView:YES];
 }
 
@@ -325,9 +320,6 @@
     // remove all data that belongs to previous search
     
     [_filteredConversations removeAllObjects];
-    
-    DDLogDebug(@"Searched text typedText: %@", searchText);
-    
     
     if([searchText isEqualToString:@""] || searchText == nil)
     {
