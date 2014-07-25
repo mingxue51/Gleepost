@@ -171,7 +171,8 @@ const float TOP_OFFSET = 280.0f;
     
     
     //Find the sunset sunrise for preparation of the new chat.
-    [AnimationDayController sharedInstance];
+    //TODO: That's will be used in GleepostSD app.
+//    [AnimationDayController sharedInstance];
 }
 
 -(void)viewWillAppear:(BOOL)animated
