@@ -30,6 +30,9 @@
 #import "GLPPostManager.h"
 #import "GLPApplicationHelper.h"
 #import "UINavigationBar+Format.h"
+#import "UIView+GLPDesign.h"
+#import "ShapeFormatterHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface ViewPostViewController ()
 
@@ -229,14 +232,18 @@ static BOOL likePushed;
 	self.commentGrowingTextView.delegate = self;
     self.commentGrowingTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     self.commentGrowingTextView.backgroundColor = [UIColor whiteColor];
-    self.commentGrowingTextView.placeholder = @"Your comment";
+    self.commentGrowingTextView.placeholder = @"Write a comment...";
     
     // center vertically because textview height varies from ios version to screen
     CGRect formTextViewFrame = self.commentGrowingTextView.frame;
     formTextViewFrame.origin.y = (self.commentFormView.frame.size.height - self.commentGrowingTextView.frame.size.height) / 2;
     self.commentGrowingTextView.frame = formTextViewFrame;
     
-    self.commentGrowingTextView.layer.cornerRadius = 5;
+    self.commentGrowingTextView.layer.cornerRadius = 4;
+    
+    [ShapeFormatterHelper setBorderToView:self.commentGrowingTextView withColour:[UIColor colorWithR:240.0 withG:240.0 andB:240.0] andWidth:1.0];
+    
+    [self.commentFormView setGleepostStyleTopBorder];
     
     //Set a selector to the send button.
     [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -284,12 +291,12 @@ static BOOL likePushed;
 
 -(void)addCustomBackButton
 {
-    UIImage *img = [UIImage imageNamed:@"back_final"];
+    UIImage *img = [UIImage imageNamed:@"cancel"];
     
     UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
     [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:img forState:UIControlStateNormal];
-    [btn setFrame:CGRectMake(0, 0, 25, 25)];
+    [btn setFrame:CGRectMake(0, 0, 19, 21)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
         

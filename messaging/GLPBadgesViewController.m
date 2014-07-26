@@ -29,7 +29,7 @@
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    self.title = [NSString stringWithFormat:@"%@ Badges", _customTitle];
+    self.title = [[NSString stringWithFormat:@"%@ Badges", _customTitle] uppercaseString];
 }
 
 - (void)didReceiveMemoryWarning

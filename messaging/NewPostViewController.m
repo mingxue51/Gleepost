@@ -272,7 +272,7 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)configureLeftBarButton
 {
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel_new_post" withButtonSize:CGSizeMake(17, 17) withSelector:@selector(cancelButtonClick:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(cancelButtonClick:) andTarget:self];
 }
 
 -(void)configureRightBarButton

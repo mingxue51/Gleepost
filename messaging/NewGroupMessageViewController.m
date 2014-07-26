@@ -93,7 +93,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"x_red" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissViewController) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
     
 //    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"one_one_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(goBack) andTarget:self];
     

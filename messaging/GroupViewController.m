@@ -132,8 +132,6 @@ const int NUMBER_OF_ROWS = 1;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    
-    
     [super viewDidDisappear:animated];
 }
 
@@ -148,8 +146,6 @@ const int NUMBER_OF_ROWS = 1;
     [self removeNotifications];
 
 }
-
-
 
 
 #pragma mark - Configuration methods
@@ -256,6 +252,12 @@ const int NUMBER_OF_ROWS = 1;
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+/*    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];*/
     
     
     //Set title.
@@ -1098,9 +1100,13 @@ const int NUMBER_OF_ROWS = 1;
         [self performSegueWithIdentifier:@"view members" sender:self];
         
     }
-    else
+    else if(buttonType == kButtonLeft)
     {
         [self.tableView reloadData];
+    }
+    else if (buttonType == kButtonMiddle)
+    {
+        DDLogDebug(@"Messages selected!");
     }
 }
 
@@ -1129,7 +1135,7 @@ const int NUMBER_OF_ROWS = 1;
     [actionSheet showInView:[self.view window]];
 }
 
-#pragma mark GLPPostCellDelegate
+#pragma mark - GLPPostCellDelegate
 
 -(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
 {

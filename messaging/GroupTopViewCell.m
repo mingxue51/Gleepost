@@ -13,9 +13,9 @@
 
 @property (strong, nonatomic) GLPGroup *group;
 
-@property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
+@property (weak, nonatomic) IBOutlet GLPThreeSegmentView *segmentView;
 
-@property (strong, nonatomic) GLPSegmentView *segmentViewReference;
+@property (strong, nonatomic) GLPThreeSegmentView *segmentViewReference;
 
 @end
 
@@ -55,7 +55,7 @@ const float GROUP_TOP_VIEW_HEIGHT = 302.0;
     {
         if(v.tag == 100)
         {
-            [(GLPSegmentView *)v selectLeftButton];
+            [(GLPThreeSegmentView *)v selectLeftButton];
         }
     }
     
@@ -63,9 +63,9 @@ const float GROUP_TOP_VIEW_HEIGHT = 302.0;
 
 - (void)configureSegmentView
 {
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPProfileSegmentView" owner:self options:nil];
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPGroupSegmentView" owner:self options:nil];
     
-    GLPSegmentView *view = [array lastObject];
+    GLPThreeSegmentView *view = [array lastObject];
     view.tag = 100;
     [view setDelegate:self];
     [view setRightButtonTitle:@"Members" andLeftButtonTitle:@"Posts"];

@@ -324,7 +324,7 @@
     //Change the format of the navigation bar.
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

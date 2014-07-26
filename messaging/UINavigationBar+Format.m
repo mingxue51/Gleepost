@@ -35,7 +35,7 @@
     
     if(shadow)
     {
-        [self setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:230.0 withG:230.0 andB:230.0]]];
+        [self setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
     }
     else
     {

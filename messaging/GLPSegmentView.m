@@ -126,13 +126,13 @@ const float ANIMATION_DURATION = 0.1;
 
 #pragma mark - Actions
 
-- (IBAction)leftBtnPressed:(id)sender
+- (void)leftBtnPressed:(id)sender
 {
     _conversationType = kButtonLeft;
     [self reloadButtonsFormat];
 }
 
-- (IBAction)rightBtnPressed:(id)sender
+- (void)rightBtnPressed:(id)sender
 {
     _conversationType = kButtonRight;
     [self reloadButtonsFormat];

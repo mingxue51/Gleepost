@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TopTableViewCell.h"
-#import "GLPSegmentView.h"
+#import "GLPThreeSegmentView.h"
 
 @class GLPGroup;
 

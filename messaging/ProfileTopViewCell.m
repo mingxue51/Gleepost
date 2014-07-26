@@ -21,7 +21,7 @@
 
 @implementation ProfileTopViewCell
 
-const float PROFILE_TOP_VIEW_HEIGHT = 245.0;
+const float PROFILE_TOP_VIEW_HEIGHT = 238;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

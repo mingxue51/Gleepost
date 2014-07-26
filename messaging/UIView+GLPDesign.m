@@ -22,7 +22,7 @@
 - (void)setGleepostStyleTopBorder
 {
     CALayer *topBorder = [CALayer layer];
-    topBorder.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, 2.0f);
+    topBorder.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, 1.0f);
     topBorder.backgroundColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
     [self.layer addSublayer:topBorder];
 }

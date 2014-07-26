@@ -46,7 +46,6 @@
 #import "ShapeFormatterHelper.h"
 #import "UIView+GLPDesign.h"
 
-
 @interface GLPConversationViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
@@ -313,10 +312,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     self.formTextView.tag = 100;
     
-
-    
     self.formTextView.layer.cornerRadius = 4;
-    
     
     [self.formView setGleepostStyleTopBorder];
     

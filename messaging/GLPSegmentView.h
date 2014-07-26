@@ -10,7 +10,8 @@
 
 typedef NS_ENUM(NSInteger, ButtonType) {
     kButtonRight,
-    kButtonLeft
+    kButtonLeft,
+    kButtonMiddle
 };
 
 @protocol GLPSegmentViewDelegate <NSObject>
