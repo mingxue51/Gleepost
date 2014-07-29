@@ -276,8 +276,6 @@ static BOOL likePushed;
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar setTranslucent:NO];
-        
     
     if(self.isFromCampusLive)
     {

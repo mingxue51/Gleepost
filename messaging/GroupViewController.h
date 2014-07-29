@@ -13,10 +13,11 @@
 #import "FDTakeController.h"
 #import "GLPPostCell.h"
 #import "NewPostViewController.h"
+#import "DescriptionSegmentGroupCell.h"
 //#import "GroupTopViewCell.h"
 
 
-@interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, NewPostDelegate, UIActionSheetDelegate/*, GroupTopViewCellDelegate */, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
+@interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, NewPostDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
 @property (assign, nonatomic) BOOL fromPushNotification;

@@ -67,6 +67,7 @@
 #define GLP_CAMPUS_WALL_TITLE_FONT                  @"HelveticaNeue-Medium"
 #define GLP_TITLE_FONT                              @"HelveticaNeue"
 #define GLP_MESSAGE_FONT                            @"HelveticaNeue"
+#define GLP_HELV_NEUE_LIGHT                         @"HelveticaNeue-Light"
 
 #define kGLPNumberOfPosts                           20
 

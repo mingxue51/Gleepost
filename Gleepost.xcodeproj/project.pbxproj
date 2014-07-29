@@ -307,6 +307,9 @@
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
 		586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */; };
+		586F9C4D198818E30093A946 /* DescriptionSegmentGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 586F9C4C198818E30093A946 /* DescriptionSegmentGroupCell.xib */; };
+		586F9C5019881A2B0093A946 /* DescriptionSegmentGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F9C4F19881A2B0093A946 /* DescriptionSegmentGroupCell.m */; };
+		586F9C5319882A400093A946 /* UILabel+Dimensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F9C5219882A400093A946 /* UILabel+Dimensions.m */; };
 		58711A6B18C6586D00798F13 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58711A6A18C6586D00798F13 /* ContactCell.xib */; };
 		587248A618C6223300B98484 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 587248A518C6223300B98484 /* GroupViewController.m */; };
 		587248AD18C64C5200B98484 /* group_posts_selected_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 587248A918C64C5200B98484 /* group_posts_selected_old.png */; };
@@ -1265,6 +1268,11 @@
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
 		586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFBInvitationsViewController.h; sourceTree = "<group>"; };
 		586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFBInvitationsViewController.m; sourceTree = "<group>"; };
+		586F9C4C198818E30093A946 /* DescriptionSegmentGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DescriptionSegmentGroupCell.xib; sourceTree = "<group>"; };
+		586F9C4E19881A2B0093A946 /* DescriptionSegmentGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DescriptionSegmentGroupCell.h; sourceTree = "<group>"; };
+		586F9C4F19881A2B0093A946 /* DescriptionSegmentGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DescriptionSegmentGroupCell.m; sourceTree = "<group>"; };
+		586F9C5119882A400093A946 /* UILabel+Dimensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Dimensions.h"; sourceTree = "<group>"; };
+		586F9C5219882A400093A946 /* UILabel+Dimensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Dimensions.m"; sourceTree = "<group>"; };
 		58711A6A18C6586D00798F13 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		587248A418C6223300B98484 /* GroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
 		587248A518C6223300B98484 /* GroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
@@ -2584,13 +2592,6 @@
 			name = Walkthrough;
 			sourceTree = "<group>";
 		};
-		58631791198701C3006D79E2 /* Top views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Top views";
-			sourceTree = "<group>";
-		};
 		586317961987220A006D79E2 /* Top Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2847,6 +2848,7 @@
 				584D208A1953472200E571DF /* GLPSegmentView.xib */,
 				587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */,
 				58919A4619830B0C0033E77A /* GLPGroupSegmentView.xib */,
+				586F9C4C198818E30093A946 /* DescriptionSegmentGroupCell.xib */,
 			);
 			name = Segments;
 			sourceTree = "<group>";
@@ -4044,6 +4046,8 @@
 				C0090C1F18A8BC2800153878 /* GLPLoadMoreCell.m */,
 				5819E64C18C79F2C003361B3 /* GroupCell.h */,
 				5819E64D18C79F2C003361B3 /* GroupCell.m */,
+				586F9C4E19881A2B0093A946 /* DescriptionSegmentGroupCell.h */,
+				586F9C4F19881A2B0093A946 /* DescriptionSegmentGroupCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -4411,7 +4415,6 @@
 			isa = PBXGroup;
 			children = (
 				5863179E19872F01006D79E2 /* Images */,
-				58631791198701C3006D79E2 /* Top views */,
 				58BBACB119787B7000A8A265 /* Collection views cells */,
 				58774D3C196567A60034A1C6 /* Custom search bar */,
 				58CFC77019630F9500FF1E40 /* Simple name cells */,
@@ -4600,6 +4603,8 @@
 				58774D43196574260034A1C6 /* UIRefreshControl+CustomLoader.m */,
 				582E44D4197DB22B000BE3EC /* UIView+GLPDesign.h */,
 				582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */,
+				586F9C5119882A400093A946 /* UILabel+Dimensions.h */,
+				586F9C5219882A400093A946 /* UILabel+Dimensions.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -4752,6 +4757,7 @@
 				583CE32C18A0056A00E78C08 /* loginnew2.png in Resources */,
 				806E3D851832B1960063AACE /* NotificationButtonBackground@2x.png in Resources */,
 				588CDF7719762A2A00373EE3 /* private_group.png in Resources */,
+				586F9C4D198818E30093A946 /* DescriptionSegmentGroupCell.xib in Resources */,
 				58FB7C96185614C5002C6A00 /* MutualProfileTabView.xib in Resources */,
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
 				582A664118AB9BC400006419 /* bar3.png in Resources */,
@@ -5313,6 +5319,7 @@
 				58D0E52118D10E98004DF10D /* GLPMemberDao.m in Sources */,
 				5890D21E1847693600E293DD /* GLPDefaultTheme.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
+				586F9C5319882A400093A946 /* UILabel+Dimensions.m in Sources */,
 				588D859B195B5DB2002F516A /* ProfileTopViewCell.m in Sources */,
 				5891F81319773E8600065FFC /* GLPBadgesViewController.m in Sources */,
 				580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */,
@@ -5464,6 +5471,7 @@
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
 				806E3D751832B1960063AACE /* TSMessage.m in Sources */,
 				807C4D1A180AF0F6003D67E6 /* WebEntity.m in Sources */,
+				586F9C5019881A2B0093A946 /* DescriptionSegmentGroupCell.m in Sources */,
 				5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
 				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,

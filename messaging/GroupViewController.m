@@ -72,7 +72,7 @@
 
 @implementation GroupViewController
 
-const int NUMBER_OF_ROWS = 0;
+const int NUMBER_OF_ROWS = 1;
 
 - (void)viewDidLoad
 {
@@ -105,7 +105,6 @@ const int NUMBER_OF_ROWS = 0;
     
     [self configureNotifications];
     
-    [self configureNavigationBar];
 
     
 }
@@ -122,6 +121,9 @@ const int NUMBER_OF_ROWS = 0;
     [super viewWillAppear:animated];
     
     [self configureNavigationItems];
+    
+    [self configureNavigationBar];
+
     
     [self.tableView reloadData];
 }
@@ -156,7 +158,7 @@ const int NUMBER_OF_ROWS = 0;
 
 //    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"GroupTopViewCell" bundle:nil] forCellReuseIdentifier:@"GroupTopViewCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"DescriptionSegmentGroupCell" bundle:nil] forCellReuseIdentifier:@"DescriptionSegmentGroupCell"];
     
     //Register posts.
     
@@ -484,7 +486,7 @@ const int NUMBER_OF_ROWS = 0;
         [_emptyPostsMessage hideEmptyMessageView];
     }
     
-    self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count /*+ i*/;
+    self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + 1 /*+ i*/;
 //    }
 //    else
 //    {
@@ -515,106 +517,72 @@ const int NUMBER_OF_ROWS = 0;
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellVideoIdentifier = @"VideoCell";
-    static NSString *CellGroupIdentifier = @"GroupTopViewCell";
+    static NSString *CellDescriptionGroupIdentifier = @"DescriptionSegmentGroupCell";
     
     GLPPostCell *postViewCell;
-//    GroupTopViewCell *groupTopViewCell;
+    DescriptionSegmentGroupCell *groupDescrViewCell;
     
-    if(self.posts.count != 0)
+    if(indexPath.row == 0)
     {
-        GLPPost *post = self.posts[indexPath.row];
+        groupDescrViewCell = [tableView dequeueReusableCellWithIdentifier:CellDescriptionGroupIdentifier forIndexPath:indexPath];
         
-        if([post imagePost])
-        {
-            DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
-            
-            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-        }
-        else if ([post isVideoPost])
-        {
-            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
-        }
-        else
-        {
-            DDLogDebug(@"Text post GVC: %@", post);
-            
-            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-        }
+//        [profileView setPrivateProfileDelegate:self];
         
-        //Set this class as delegate.
-        postViewCell.delegate = self;
-        
-        [postViewCell setPost:post withPostIndex:indexPath.row];
-    }
-    
-    
-    return postViewCell;
-    
-//    if(indexPath.row == 0)
-//    {
-//        groupTopViewCell = [tableView dequeueReusableCellWithIdentifier:CellGroupIdentifier forIndexPath:indexPath];
-//        
-////        [profileView setPrivateProfileDelegate:self];
-//        
-////        if(self.profileImage && self.profileUser)
-////        {
-////            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-////        }
-////        else if(self.profileImage && !self.profileUser)
-////        {
-////            [profileView initialiseProfileImage:self.profileImage];
-////        }
-////        else
-////        {
-////            [profileView initialiseElementsWithUserDetails:self.profileUser];
-////        }
-//        
-//        [groupTopViewCell setDelegate:self];
-//
-//        [self loadPendingImageIfExist];
-//        
-//        groupTopViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        
-//        [groupTopViewCell setGroupData:_group];
-//        
-//        [groupTopViewCell setDownloadedImage:_groupImage];
-//        
-//        
-//        return groupTopViewCell;
-//        
-//    }
-//    else if (indexPath.row >= 1)
-//    {
-//        if(self.posts.count != 0)
+//        if(self.profileImage && self.profileUser)
 //        {
-//            GLPPost *post = self.posts[indexPath.row-1];
-//            
-//            if([post imagePost])
-//            {
-//                DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
-//                
-//                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-//            }
-//            else if ([post isVideoPost])
-//            {
-//                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
-//            }
-//            else
-//            {
-//                DDLogDebug(@"Text post GVC: %@", post);
-//
-//                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-//            }
-//            
-//            //Set this class as delegate.
-//            postViewCell.delegate = self;
-//            
-//            [postViewCell setPost:post withPostIndex:indexPath.row];
+//            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
 //        }
-//
-//
-//        return postViewCell;
-//    }
+//        else if(self.profileImage && !self.profileUser)
+//        {
+//            [profileView initialiseProfileImage:self.profileImage];
+//        }
+//        else
+//        {
+//            [profileView initialiseElementsWithUserDetails:self.profileUser];
+//        }
+        
+        [groupDescrViewCell setDelegate:self];
+
+        [self loadPendingImageIfExist];
+        
+        groupDescrViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [groupDescrViewCell setGroupData:_group];
+        
+        return groupDescrViewCell;
+    }
+    else if (indexPath.row >= 1)
+    {
+        if(self.posts.count != 0)
+        {
+            GLPPost *post = self.posts[indexPath.row-1];
+            
+            if([post imagePost])
+            {
+                DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
+                
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+            }
+            else if ([post isVideoPost])
+            {
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
+            }
+            else
+            {
+                DDLogDebug(@"Text post GVC: %@", post);
+
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+            }
+            
+            //Set this class as delegate.
+            postViewCell.delegate = self;
+            
+            [postViewCell setPost:post withPostIndex:indexPath.row];
+        }
+
+
+        return postViewCell;
+    }
     
     return nil;
 }
@@ -638,28 +606,14 @@ const int NUMBER_OF_ROWS = 0;
         return;
     }
     
-//    if(self.selectedTabStatus == kGLPPosts)
-//    {
-        if(indexPath.row-1 == self.posts.count) {
-            return;
-        }
-        
-        self.selectedPost = self.posts[indexPath.row];
-        //    self.postIndexToReload = indexPath.row-2;
-        self.commentCreated = NO;
-        [self performSegueWithIdentifier:@"view post" sender:self];
-//    }
-//    else
-//    {
-//        GLPUser *member = self.members[indexPath.row - 2];
-//        
-//        self.selectedUserId = member.remoteKey;
-//        
-//        [self performSegueWithIdentifier:@"view private profile" sender:self];
-//
-//    }
+    if(indexPath.row-1 == self.posts.count) {
+        return;
+    }
     
-
+    self.selectedPost = self.posts[indexPath.row - 1];
+    //    self.postIndexToReload = indexPath.row-2;
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -671,59 +625,30 @@ const int NUMBER_OF_ROWS = 0;
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
-    
-    if(self.posts.count != 0 && self.posts)
+    if(indexPath.row == 0)
     {
-        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
-        
-        if([currentPost imagePost])
+        return [DescriptionSegmentGroupCell getCellHeightWithGroup:_group];
+    }
+    else if(indexPath.row >= 1)
+    {
+        if(self.posts.count != 0 && self.posts)
         {
-            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
-        }
-        else if ([currentPost isVideoPost])
-        {
-            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
-        }
-        else
-        {
-            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
+            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
+            
+            if([currentPost imagePost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+            }
+            else if ([currentPost isVideoPost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+            }
+            else
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
+            }
         }
     }
-    
-//    if(indexPath.row == 0)
-//    {
-//        return GROUP_TOP_VIEW_HEIGHT;
-//    }
-//    else if(indexPath.row >= 1)
-//    {
-//        
-////        if(self.selectedTabStatus == kGLPPosts)
-////        {
-//            if(self.posts.count != 0 && self.posts)
-//            {
-//                GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
-//                
-//                if([currentPost imagePost])
-//                {
-//                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
-//                }
-//                else if ([currentPost isVideoPost])
-//                {
-//                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
-//                }
-//                else
-//                {
-//                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
-//                }
-//            }
-////        }
-////        else
-////        {
-////            return CONTACT_CELL_HEIGHT;
-////        }
-//        
-//
-//    }
     
     return 70.0f;
 }

@@ -43,6 +43,8 @@
     
     [self configurateView];
     
+    [self configureNavigationBar];
+    
 }
 
 
@@ -93,6 +95,11 @@
     //Remove empty cells.
     [self.tableView setTableFooterView:[[UIView alloc] init]];
 
+}
+
+- (void)configureNavigationBar
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 

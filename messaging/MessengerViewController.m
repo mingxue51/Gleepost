@@ -157,7 +157,7 @@
     GLPSearchBar *view = [array lastObject];
     [view setDelegate:self];
     
-    [view setPlaceholderWithText:@"Search for groups on campus"];
+    [view setPlaceholderWithText:@"Search for conversations"];
     
     view.tag = 101;
     
