@@ -45,11 +45,9 @@ const int CORNER_VALUE = 16;
 {
     [super viewDidLoad];
     
-    
     [self configureView];
     
     [self loadInformation];
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated

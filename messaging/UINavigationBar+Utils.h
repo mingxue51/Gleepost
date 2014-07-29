@@ -26,4 +26,6 @@ typedef NS_ENUM(NSInteger, GLPButtonType) {
 
 - (void)setButton:(GLPButtonType)type withImageOrTitle:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
 
+- (void)setButton:(GLPButtonType)type withImage:(NSString *)image withButtonSize:(CGSize)size withSelector:(SEL)selector withTarget:(UIViewController *)viewController andNavigationItem:(UINavigationItem *)navigationItem;
+
 @end

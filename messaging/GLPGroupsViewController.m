@@ -29,6 +29,10 @@
 
 @property (weak, nonatomic) IBOutlet UIView *searchBarView;
 
+@property (weak, nonatomic) IBOutlet UIButton *rightNavigationButton;
+
+@property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
+
 //@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) NSMutableArray *groups;
@@ -92,6 +96,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
     [self configNavigationBar];
     
     [self configureNavigationButton];
@@ -101,7 +107,22 @@
     
     [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+
+    
     //    [self setCustomBackgroundToTableView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    //Make the navigation bar invisible before going to the view group VC
+    //in order to avoid problems with navigation bar during transition.
+    
+//    [self.navigationController.navigationBar invisible];
+    
+
+    
+    [super viewWillDisappear:animated];
 }
 
 -(void)dealloc
@@ -133,15 +154,14 @@
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    
-
+    [self.navigationController.navigationBar setTranslucent:NO];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)configureNavigationButton
 {
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_group" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(popUpIntroView:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImage:@"new_group" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
 }
 
 - (void)configTabbar
@@ -492,7 +512,7 @@
     }
 }
 
-- (void)popUpIntroView:(id)sender
+- (IBAction)popUpIntroView:(id)sender
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     IntroNewGroupViewController *introNewGroupVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroNewGroupViewController"];

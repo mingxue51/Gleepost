@@ -5,6 +5,8 @@
 //  Created by Σιλουανός on 30/6/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  This view is deprecated because we are using a regular view as header in GrouViewController rather than
+//  a cell. For more see at GroupTopView class.
 
 #import "GroupTopViewCell.h"
 #import "GLPGroup.h"

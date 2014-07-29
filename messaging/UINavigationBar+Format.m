@@ -43,6 +43,14 @@
     }
 }
 
+- (void)invisible
+{
+    [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.shadowImage = [UIImage new];
+    self.translucent = YES;
+    self.backgroundColor = [UIColor clearColor];
+}
+
 - (void)setFontFormatWithColour:(GLPColour)colour
 {
 

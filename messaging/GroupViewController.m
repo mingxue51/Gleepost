@@ -34,9 +34,9 @@
 //#import "GLPRefreshControl.h"
 #import "ContactsManager.h"
 #import "GLPProfileViewController.h"
+#import "GLPStretchedImageView.h"
 
 @interface GroupViewController ()
-
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSArray *members;
@@ -64,22 +64,15 @@
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) GLPStretchedImageView *strechedImageView;
 
 @end
 
 @implementation GroupViewController
 
-const int NUMBER_OF_ROWS = 1;
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+const int NUMBER_OF_ROWS = 0;
 
 - (void)viewDidLoad
 {
@@ -91,11 +84,14 @@ const int NUMBER_OF_ROWS = 1;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    [self configureTableView];
-    
     [self registerTableViewCells];
     
     [self initialiseObjects];
+    
+    [self configureTopImageView];
+
+    [self configureTableView];
+    
     
     [self loadPosts];
     
@@ -107,8 +103,10 @@ const int NUMBER_OF_ROWS = 1;
     
 //    [self loadMembers];
     
-    [self.tableView setTableFooterView:[[UIView alloc] init]];
     [self configureNotifications];
+    
+    [self configureNavigationBar];
+
     
 }
 
@@ -122,8 +120,6 @@ const int NUMBER_OF_ROWS = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self configureNavigationBar];
     
     [self configureNavigationItems];
     
@@ -160,7 +156,7 @@ const int NUMBER_OF_ROWS = 1;
 
 //    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"GroupTopViewCell" bundle:nil] forCellReuseIdentifier:@"GroupTopViewCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"GroupTopViewCell" bundle:nil] forCellReuseIdentifier:@"GroupTopViewCell"];
     
     //Register posts.
     
@@ -184,8 +180,8 @@ const int NUMBER_OF_ROWS = 1;
 -(void)configureTableView
 {
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+//    self.refreshControl = [[UIRefreshControl alloc] init];
+//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
     
     if([GLPiOS6Helper isIOS6])
     {
@@ -195,6 +191,31 @@ const int NUMBER_OF_ROWS = 1;
     {
         [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
     }
+    
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
+
+    
+    _tableView.contentInset = UIEdgeInsetsMake(185, 0, 0, 0);
+    
+    
+    [_tableView addSubview:_strechedImageView];
+
+}
+
+- (void)configureTopImageView
+{
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPStretchedImageView" owner:self options:nil];
+    
+    //Set delegate.
+    _strechedImageView = [array objectAtIndex:0];
+    
+//    CGRectSetY(_strechedImageView, -64.0);
+    
+    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
+
+    [_strechedImageView setImageUrl:_group.groupImageUrl];
+    
+    [_strechedImageView setTextInTitle:_group.name];
 }
 
 -(void)initialiseObjects
@@ -219,6 +240,8 @@ const int NUMBER_OF_ROWS = 1;
     self.fdTakeController.delegate = self;
     
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    
+//    _strechedImageView = [[GLPStretchedImageView alloc] init];
 }
 
 -(void)configureNavigationItems
@@ -249,21 +272,18 @@ const int NUMBER_OF_ROWS = 1;
 {
     
     //Change the format of the navigation bar.
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+//    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-/*    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
-                                                  forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.view.backgroundColor = [UIColor clearColor];*/
-    
+    [self.navigationController.navigationBar invisible];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+
     
     //Set title.
-    self.title = [_group.name uppercaseString];
+    self.title = @"";
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 }
 
@@ -310,7 +330,6 @@ const int NUMBER_OF_ROWS = 1;
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
 
-    
     int index = 1;
     
     GLPPost *uploadedPost = nil;
@@ -465,7 +484,7 @@ const int NUMBER_OF_ROWS = 1;
         [_emptyPostsMessage hideEmptyMessageView];
     }
     
-    self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count +1 /*+ i*/;
+    self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count /*+ i*/;
 //    }
 //    else
 //    {
@@ -499,73 +518,103 @@ const int NUMBER_OF_ROWS = 1;
     static NSString *CellGroupIdentifier = @"GroupTopViewCell";
     
     GLPPostCell *postViewCell;
-    GroupTopViewCell *groupTopViewCell;
+//    GroupTopViewCell *groupTopViewCell;
     
-    if(indexPath.row == 0)
+    if(self.posts.count != 0)
     {
-        groupTopViewCell = [tableView dequeueReusableCellWithIdentifier:CellGroupIdentifier forIndexPath:indexPath];
+        GLPPost *post = self.posts[indexPath.row];
         
-//        [profileView setPrivateProfileDelegate:self];
-        
-//        if(self.profileImage && self.profileUser)
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-//        }
-//        else if(self.profileImage && !self.profileUser)
-//        {
-//            [profileView initialiseProfileImage:self.profileImage];
-//        }
-//        else
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.profileUser];
-//        }
-        
-        [groupTopViewCell setDelegate:self];
-
-        [self loadPendingImageIfExist];
-        
-        groupTopViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        [groupTopViewCell setGroupData:_group];
-        
-        [groupTopViewCell setDownloadedImage:_groupImage];
-        
-        
-        return groupTopViewCell;
-        
-    }
-    else if (indexPath.row >= 1)
-    {
-        if(self.posts.count != 0)
+        if([post imagePost])
         {
-            GLPPost *post = self.posts[indexPath.row-1];
+            DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
             
-            if([post imagePost])
-            {
-                DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
-                
-                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
-            }
-            else if ([post isVideoPost])
-            {
-                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
-            }
-            else
-            {
-                DDLogDebug(@"Text post GVC: %@", post);
-
-                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-            }
-            
-            //Set this class as delegate.
-            postViewCell.delegate = self;
-            
-            [postViewCell setPost:post withPostIndex:indexPath.row];
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         }
-
-
-        return postViewCell;
+        else if ([post isVideoPost])
+        {
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
+        }
+        else
+        {
+            DDLogDebug(@"Text post GVC: %@", post);
+            
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+        }
+        
+        //Set this class as delegate.
+        postViewCell.delegate = self;
+        
+        [postViewCell setPost:post withPostIndex:indexPath.row];
     }
+    
+    
+    return postViewCell;
+    
+//    if(indexPath.row == 0)
+//    {
+//        groupTopViewCell = [tableView dequeueReusableCellWithIdentifier:CellGroupIdentifier forIndexPath:indexPath];
+//        
+////        [profileView setPrivateProfileDelegate:self];
+//        
+////        if(self.profileImage && self.profileUser)
+////        {
+////            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
+////        }
+////        else if(self.profileImage && !self.profileUser)
+////        {
+////            [profileView initialiseProfileImage:self.profileImage];
+////        }
+////        else
+////        {
+////            [profileView initialiseElementsWithUserDetails:self.profileUser];
+////        }
+//        
+//        [groupTopViewCell setDelegate:self];
+//
+//        [self loadPendingImageIfExist];
+//        
+//        groupTopViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        
+//        [groupTopViewCell setGroupData:_group];
+//        
+//        [groupTopViewCell setDownloadedImage:_groupImage];
+//        
+//        
+//        return groupTopViewCell;
+//        
+//    }
+//    else if (indexPath.row >= 1)
+//    {
+//        if(self.posts.count != 0)
+//        {
+//            GLPPost *post = self.posts[indexPath.row-1];
+//            
+//            if([post imagePost])
+//            {
+//                DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
+//                
+//                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
+//            }
+//            else if ([post isVideoPost])
+//            {
+//                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
+//            }
+//            else
+//            {
+//                DDLogDebug(@"Text post GVC: %@", post);
+//
+//                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
+//            }
+//            
+//            //Set this class as delegate.
+//            postViewCell.delegate = self;
+//            
+//            [postViewCell setPost:post withPostIndex:indexPath.row];
+//        }
+//
+//
+//        return postViewCell;
+//    }
     
     return nil;
 }
@@ -595,7 +644,7 @@ const int NUMBER_OF_ROWS = 1;
             return;
         }
         
-        self.selectedPost = self.posts[indexPath.row-1];
+        self.selectedPost = self.posts[indexPath.row];
         //    self.postIndexToReload = indexPath.row-2;
         self.commentCreated = NO;
         [self performSegueWithIdentifier:@"view post" sender:self];
@@ -622,40 +671,59 @@ const int NUMBER_OF_ROWS = 1;
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
-    if(indexPath.row == 0)
+    
+    if(self.posts.count != 0 && self.posts)
     {
-        return GROUP_TOP_VIEW_HEIGHT;
-    }
-    else if(indexPath.row >= 1)
-    {
+        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
         
-//        if(self.selectedTabStatus == kGLPPosts)
-//        {
-            if(self.posts.count != 0 && self.posts)
-            {
-                GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
-                
-                if([currentPost imagePost])
-                {
-                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
-                }
-                else if ([currentPost isVideoPost])
-                {
-                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
-                }
-                else
-                {
-                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
-                }
-            }
-//        }
-//        else
-//        {
-//            return CONTACT_CELL_HEIGHT;
-//        }
-        
-
+        if([currentPost imagePost])
+        {
+            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+        }
+        else if ([currentPost isVideoPost])
+        {
+            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+        }
+        else
+        {
+            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
+        }
     }
+    
+//    if(indexPath.row == 0)
+//    {
+//        return GROUP_TOP_VIEW_HEIGHT;
+//    }
+//    else if(indexPath.row >= 1)
+//    {
+//        
+////        if(self.selectedTabStatus == kGLPPosts)
+////        {
+//            if(self.posts.count != 0 && self.posts)
+//            {
+//                GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
+//                
+//                if([currentPost imagePost])
+//                {
+//                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+//                }
+//                else if ([currentPost isVideoPost])
+//                {
+//                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+//                }
+//                else
+//                {
+//                    return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
+//                }
+//            }
+////        }
+////        else
+////        {
+////            return CONTACT_CELL_HEIGHT;
+////        }
+//        
+//
+//    }
     
     return 70.0f;
 }
@@ -680,6 +748,25 @@ const int NUMBER_OF_ROWS = 1;
     }
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    if (yOffset < -kStretchedImageHeight)
+    {
+        CGRect f = _strechedImageView.frame;
+        f.origin.y = yOffset;
+        f.size.height =  -yOffset;
+        _strechedImageView.frame = f;
+        
+        [_strechedImageView setHeightOfTransImage:-yOffset];
+        
+        NSLog(@"OFFSET: %f", yOffset);
+        
+//        CGRectSetY(_lbl, -yOffset/2);
+    }
+}
 
 -(void)loadPendingImageIfExist
 {
@@ -728,7 +815,7 @@ const int NUMBER_OF_ROWS = 1;
         if(success)
         {
             _group = group;
-            self.title = [_group.name uppercaseString];
+            self.title = @"";
             
             [self refreshCellViewWithIndex:0];
         }
@@ -918,7 +1005,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = YES;
     
-    [self.refreshControl beginRefreshing];
+//    [self.refreshControl beginRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
@@ -926,7 +1013,7 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = NO;
     
-    [self.refreshControl endRefreshing];
+//    [self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

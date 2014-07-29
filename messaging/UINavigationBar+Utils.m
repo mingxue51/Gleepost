@@ -11,16 +11,15 @@
 
 @implementation UINavigationBar (Utils)
 
+
+#pragma mark - Default Navigation bar
+
 - (void)setButton:(GLPButtonType)type withImageOrTitle:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
 {
     
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
     
-    
-    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btn addTarget:navController action:selector forControlEvents:UIControlEventTouchUpInside];
-    [btn setFrame:CGRectMake(0, 0, size.width, size.height)];
-    btn.exclusiveTouch = YES;
+    UIButton *btn= [self generateButtonWithSize:size withSelector:selector andViewController:navController];
     
     UIBarButtonItem *barButtonItem = nil;
 
@@ -76,7 +75,63 @@
 
         navController.navigationItem.rightBarButtonItems = @[fixedSpaceButton, groupButton];
     }
+}
+
+#pragma mark - Storyboard Navigation bar
+
+
+/**
+ This method is used for navigation bars that have been created from storyboard. NOT the default ones.
+ 
+ @param type the type of the button.
+ @param image name of the image.
+ @param size the size of the navigation button.
+ @param selector the method to be called.
+ @param viewController the view controller.
+ @param navigationItem view controller's navigation item. (Note: Navigation item should be referenced from the storyboard to the navigation VC class, not the one from the default navigation bar.
+ 
+ */
+- (void)setButton:(GLPButtonType)type withImage:(NSString *)image withButtonSize:(CGSize)size withSelector:(SEL)selector withTarget:(UIViewController *)viewController andNavigationItem:(UINavigationItem *)navigationItem
+{
     
+    UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
+    
+    UIButton *btn= [self generateButtonWithSize:size withSelector:selector andViewController:viewController];
+    
+    UIBarButtonItem *barButtonItem = nil;
+    
+    [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
+    
+    barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    
+    if(type == kLeft)
+    {
+        [fixedSpace setWidth:-4];
+        navigationItem.leftBarButtonItems = @[fixedSpace, barButtonItem];
+        
+    }
+    else if (type == kRight)
+    {
+        [fixedSpace setWidth:-5];
+        navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
+    }
+}
+
+#pragma mark - Helpers
+
+- (UIBarButtonItem *)generateFixedSpaceBarButton
+{
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+}
+
+- (UIButton *)generateButtonWithSize:(CGSize)size withSelector:(SEL)selector andViewController:(UIViewController *)viewController
+{
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [btn addTarget:viewController action:selector forControlEvents:UIControlEventTouchUpInside];
+    [btn setFrame:CGRectMake(0, 0, size.width, size.height)];
+    btn.exclusiveTouch = YES;
+    
+    return btn;
 }
 
 @end
