@@ -38,5 +38,7 @@
 +(void)setSegmentFontWithSegment:(UISegmentedControl *)segment;
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar;
 +(void)setNavigationBarFormatForNewPostViews:(UINavigationBar *)navigationBar;
++ (void)makeBackDefaultButton;
++ (void)makeGlowBackButton;
 
 @end

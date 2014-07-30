@@ -304,4 +304,20 @@
 
     [contoller.navigationController.navigationBar setTranslucent:NO];
 }
+
+#pragma mark - Back button
+
++ (void)makeBackDefaultButton
+{
+    [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final"];
+    [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final"];
+    
+}
+
++ (void)makeGlowBackButton
+{
+    [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final_glow"];
+    [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final_glow"];
+}
+
 @end

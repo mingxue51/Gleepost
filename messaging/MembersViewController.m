@@ -16,6 +16,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPSearchUsersViewController.h"
 #import "GLPGroupManager.h"
+#import "AppearanceHelper.h"
 
 @interface MembersViewController ()
 
@@ -45,6 +46,7 @@
     
     [self configureNavigationBar];
     
+
 }
 
 
@@ -55,6 +57,10 @@
     [self configureTopView];
     
     [self loadMembers];
+    
+    [AppearanceHelper makeBackDefaultButton];
+
+
 }
 
 #pragma mark - Configuration

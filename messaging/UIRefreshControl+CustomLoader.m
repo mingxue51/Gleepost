@@ -23,6 +23,18 @@
     return self;
 }
 
+- (id)initWithCustomActivityIndicator
+{
+    self = [super init];
+    
+    if(self)
+    {
+        [self configureActivityInidicator];
+    }
+    
+    return self;
+}
+
 - (void)configureRefreshControl
 {
     UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(132, 0, 56, 56)];
@@ -39,5 +51,22 @@
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor whiteColor]];
 }
+
+- (void)configureActivityInidicator
+{
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    CGRectSetX(indicator, 145.0);
+    CGRectSetY(indicator, 15.0);
+    
+    [indicator startAnimating];
+    
+    [self insertSubview:indicator atIndex:1];
+    
+    [self setBackgroundColor:[UIColor whiteColor]];
+    [self setTintColor:[UIColor whiteColor]];
+}
+
+
 
 @end

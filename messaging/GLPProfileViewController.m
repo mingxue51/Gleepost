@@ -46,6 +46,7 @@
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
 #import "GLPBadgesViewController.h"
+#import "UIRefreshControl+CustomLoader.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -177,6 +178,9 @@
     {
         [self loadPosts];
     }
+    
+    [AppearanceHelper makeBackDefaultButton];
+
 //    [self.tableView reloadData];
 }
 
@@ -297,7 +301,7 @@
 - (void)configureTableView
 {
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl = [[UIRefreshControl alloc] initWithCustomActivityIndicator];
     [self.refreshControl addTarget:self action:@selector(reloadContent) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -325,6 +329,8 @@
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

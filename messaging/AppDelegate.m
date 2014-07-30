@@ -42,6 +42,7 @@
 #import "FBAppCall.h"
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
+#import "AppearanceHelper.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -102,8 +103,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-10, backButtonImage.size.height/2) forBarMetrics:UIBarMetricsDefault];
         
     //That changes the default back button image.
-    [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final"];
-    [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final"];
+    [AppearanceHelper makeBackDefaultButton];
 
     
     return YES;

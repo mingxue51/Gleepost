@@ -48,13 +48,11 @@ const float kStretchedImageHeight = 250;
 
 - (void)configureLabel
 {
-    _title = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 130.0, 320.0, 80.0)];
+    _title = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 130.0, 280.0, 80.0)];
     
     [_title setFont:_font];
     
     [_title setTextColor:[UIColor whiteColor]];
-    
-    [_title setText:@"Hello World Hello World Hello World Hello World Hello World Hello World "];
     
     [_title setTextAlignment:NSTextAlignmentCenter];
     
@@ -76,7 +74,7 @@ const float kStretchedImageHeight = 250;
     
     [_transImageView setBackgroundColor:[UIColor blackColor]];
     
-    [_transImageView setAlpha:0.2];
+    [_transImageView setAlpha:0.5 ];
     
     [_transImageView setClipsToBounds:YES];
     
@@ -103,9 +101,7 @@ const float kStretchedImageHeight = 250;
 
 - (float)getContentLabelSizeForContent:(NSString *)content
 {
-    DDLogDebug(@"FONT: %@", _font);
-
-    int maxWidth = self.frame.size.width;
+    int maxWidth = _title.frame.size.width;
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: _font}];
     

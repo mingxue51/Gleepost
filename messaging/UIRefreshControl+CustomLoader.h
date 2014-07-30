@@ -11,5 +11,6 @@
 @interface UIRefreshControl (CustomLoader)
 
 - (id)initWithCustomLoader;
+- (id)initWithCustomActivityIndicator;
 
 @end

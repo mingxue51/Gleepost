@@ -68,11 +68,16 @@
 
 @property (strong, nonatomic) GLPStretchedImageView *strechedImageView;
 
+//@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation GroupViewController
 
 const int NUMBER_OF_ROWS = 1;
+const float OFFSET_START_ANIMATING = 300.0;
 
 - (void)viewDidLoad
 {
@@ -92,6 +97,7 @@ const int NUMBER_OF_ROWS = 1;
 
     [self configureTableView];
     
+    [self configureActivityIndicator];
     
     [self loadPosts];
     
@@ -100,13 +106,11 @@ const int NUMBER_OF_ROWS = 1;
         [self loadGroupData];
     }
     
-    
 //    [self loadMembers];
     
     [self configureNotifications];
     
 
-    
 }
 
 //- (void)viewDidLayoutSubviews
@@ -130,6 +134,7 @@ const int NUMBER_OF_ROWS = 1;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    
     [super viewDidDisappear:animated];
 }
 
@@ -178,12 +183,43 @@ const int NUMBER_OF_ROWS = 1;
 
 }
 
+- (void)configureActivityIndicator
+{
+    //160, 46
+    
+//    CGRectSetXY(_activityIndicator, 160.0, 46.0);
+    
+}
+
 
 -(void)configureTableView
 {
     // refresh control
-//    self.refreshControl = [[UIRefreshControl alloc] init];
+//    _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(50, 150, 320, 60)];
+//    [_refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+
+    
+
+//    self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, 300, 320, 70)];
+//    [self.refreshControl setTintColor:[UIColor blackColor]];
 //    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+//    [_tableView addSubview: self.refreshControl];
+//    
+//    [_tableView bringSubviewToFront:self.refreshControl];
+    
+    
+//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+//        self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0); // This is the default and might not be necessary
+    
+//        self.headerContainerViewConstraint.constant = -self.topLayoutGuide.length;
+    
+//        self.tableView.tableHeaderView.frame = CGRectMake(self.tableView.tableHeaderView.frame.origin.x, self.tableView.tableHeaderView.frame.origin.y, self.tableView.tableHeaderView.frame.size.width, self.tableView.tableHeaderView.frame.size.height - self.topLayoutGuide.length);
+ //   }
+    
+//    [_activityIndicator setFrame:CGRectMake(50, 100, 320, 70)];
+    
+    
+
     
     if([GLPiOS6Helper isIOS6])
     {
@@ -243,6 +279,9 @@ const int NUMBER_OF_ROWS = 1;
     
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
+    
+//    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
 //    _strechedImageView = [[GLPStretchedImageView alloc] init];
 }
 
@@ -254,11 +293,11 @@ const int NUMBER_OF_ROWS = 1;
     {
         buttonX = 0;
     }
-//    
-//    [self.navigationController.navigationBar setButtonOnRightWithImageName:@"new_post_groups" withButtonSize:CGSizeMake(35, 35) withSelector:@selector(createNewPost:) andTarget:self];
     
     [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(35, 35) withSelector:@selector(createNewPost:) andTarget:self];
     
+    [AppearanceHelper makeGlowBackButton];
+
     
     //=======
     //    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
@@ -686,10 +725,29 @@ const int NUMBER_OF_ROWS = 1;
         _strechedImageView.frame = f;
         
         [_strechedImageView setHeightOfTransImage:-yOffset];
-        
-        NSLog(@"OFFSET: %f", yOffset);
-        
+    
 //        CGRectSetY(_lbl, -yOffset/2);
+    }
+        
+    if(yOffset < (-OFFSET_START_ANIMATING))
+    {
+        [_activityIndicator setHidden:NO];
+    }
+    else if(!self.isLoading)
+    {
+        [_activityIndicator setHidden:YES];
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    CGFloat yOffset  = scrollView.contentOffset.y;
+
+//    [self stopLoading];
+    
+    if(yOffset < (-OFFSET_START_ANIMATING) && !self.isLoading)
+    {
+        [self loadEarlierPostsFromPullToRefresh];
     }
 }
 
@@ -914,7 +972,8 @@ const int NUMBER_OF_ROWS = 1;
         // or scroll to the top
         else
         {
-           [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+            //This method cause problems.
+//           [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
         }
         
     }];
@@ -931,6 +990,8 @@ const int NUMBER_OF_ROWS = 1;
     self.isLoading = YES;
     
 //    [self.refreshControl beginRefreshing];
+    [_activityIndicator startAnimating];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
@@ -938,9 +999,21 @@ const int NUMBER_OF_ROWS = 1;
 {
     self.isLoading = NO;
     
+    [[NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(diactivateIndicator) userInfo:nil repeats:NO] fire];
+    
+    
 //    [self.refreshControl endRefreshing];
+    
+    [_activityIndicator stopAnimating];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
+
+- (void)diactivateIndicator
+{
+//    self.isIndicatorActive = NO;
+}
+
 
 #pragma mark - New Post Delegate
 
