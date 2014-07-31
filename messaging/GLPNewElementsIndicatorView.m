@@ -35,7 +35,7 @@
 
 - (id)initWithDelegate:(id<GLPNewElementsIndicatorViewDelegate>) delegate
 {
-    self = [super initWithFrame:CGRectMake(0, 0, 100, 30)];
+    self = [super initWithFrame:CGRectMake(0, 0, 160, 69)];
     if(!self) {
         return nil;
     }

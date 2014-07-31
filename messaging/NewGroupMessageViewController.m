@@ -20,14 +20,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-//
-//@property (strong, nonatomic) NSMutableArray *searchedUsers;
-//
-//@property (strong, nonatomic) NSMutableArray *checkedUsers;
-
-//@property (strong, nonatomic) UITapGestureRecognizer *tap;
-
 @property (strong, nonatomic) GLPConversation *conversation;
 
 @property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
@@ -37,7 +29,7 @@
 @implementation NewGroupMessageViewController
 
 const NSString *FIXED_BUTTON_TITLE = @"Add selected ";
-const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
+const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 
 - (void)viewDidLoad
 {
@@ -47,19 +39,12 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     
     [self initiliaseObjects];
     
-    [self configureGestures];
-    
     [self configureTableView];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-//    [_searchBar becomeFirstResponder];
-
     
     [self configureNavigationBar];
 }
@@ -82,26 +67,11 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     [self.tableView setTableFooterView:[[UIView alloc] init]];
 }
 
-- (void)configureGestures
-{
-//    _tap = [[UITapGestureRecognizer alloc]
-//            initWithTarget:self
-//            action:@selector(viewTouched:)];
-//    
-//    _tap.cancelsTouchesInView = NO;
-//    
-//    [_tableView addGestureRecognizer:_tap];
-}
-
 - (void)configureNavigationBar
 {
-//    float buttonsSize = 30.0;
-    
     [super configureNavigationBar];
     
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
-    
-//    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"one_one_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(goBack) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -117,7 +87,6 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 {
     return self.searchedUsers.count;
 }
-
 
 #pragma mark - Table view delegate
 
@@ -145,10 +114,6 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    //Start new conversation or continue if existed.
-    
-//    [self startNewConversationWithUser:_searchedUsers[indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -276,9 +241,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 {
     [_addSelectedButton setEnabled:YES];
     
-    GLPUser *user = self.checkedUsers[0];
-    
-    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@%@", FIXED_BUTTON_ONE_USER_TITLE, user.name] forState:UIControlStateNormal];
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_ONE_USER_TITLE] forState:UIControlStateNormal];
 }
 
 - (void)refreshButtonForGroupMessage
@@ -292,54 +255,8 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 {
     [_addSelectedButton setEnabled:NO];
     
-    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_TITLE] forState:UIControlStateNormal];
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_ONE_USER_TITLE] forState:UIControlStateNormal];
 }
-
-//- (void)showAndAnimateIndicator
-//{
-//    [_activityIndicator setHidden:NO];
-//    [_activityIndicator startAnimating];
-//}
-//
-//- (void)hideIndicator
-//{
-//    [_activityIndicator setHidden:YES];
-//    [_activityIndicator stopAnimating];
-//}
-
-#pragma mark - Helpers
-
-//- (BOOL)isUserSelected:(GLPUser *)user
-//{
-//    for(GLPUser *u in _checkedUsers)
-//    {
-//        if(u.remoteKey == user.remoteKey)
-//        {
-//            return YES;
-//        }
-//    }
-//    
-//    return NO;
-//}
-//
-//- (void)removeUser:(GLPUser *)user
-//{
-//    int removeIndex = 0;
-//    
-//    for(int i = 0; i < _checkedUsers.count; ++i)
-//    {
-//        GLPUser *u = _checkedUsers[i];
-//        
-//        if(u.remoteKey == user.remoteKey)
-//        {
-//            removeIndex = i;
-//            break;
-//        }
-//    }
-//    
-//    [_checkedUsers removeObjectAtIndex:removeIndex];
-//}
-
 
 #pragma mark - Navigation
 
@@ -357,6 +274,5 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
         vt.conversation = _conversation;
     }
 }
-
 
 @end
