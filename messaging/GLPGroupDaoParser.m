@@ -19,6 +19,7 @@
     entity.groupImageUrl = [resultSet stringForColumn:@"image_url"];
     entity.groupDescription = [resultSet stringForColumn:@"description"];
     entity.sendStatus = [resultSet intForColumn:@"send_status"];
+    entity.author.remoteKey = [resultSet intForColumn:@"user_remote_key"];
     
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     

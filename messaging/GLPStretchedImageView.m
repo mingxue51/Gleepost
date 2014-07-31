@@ -31,8 +31,6 @@ const float kStretchedImageHeight = 250;
         [self configureLabel];
         
         [self configureTransparentImageView];
-        
-        [self configureView];
     }
     
     return self;
@@ -40,11 +38,6 @@ const float kStretchedImageHeight = 250;
 
 #pragma mark - Configuration
 
-- (void)configureView
-{
-    
-
-}
 
 - (void)configureLabel
 {

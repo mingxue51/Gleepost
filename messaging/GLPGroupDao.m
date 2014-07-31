@@ -131,7 +131,7 @@
          entity.groupImageUrl,
          entity.sendStatus,
          0,
-         0];
+         entity.author.remoteKey];
         
     }
     else
@@ -143,7 +143,7 @@
          entity.groupImageUrl,
          entity.sendStatus,
          0,
-         0];
+         entity.author.remoteKey];
     }
 
     

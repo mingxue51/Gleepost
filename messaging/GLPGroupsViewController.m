@@ -62,6 +62,11 @@
     
     [self configNotifications];
     
+    //Change the colour of the tab bar.
+    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+    
+    [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[AppearanceHelper redGleepostColour]];
+    
 //    for (UIView *subView in self.searchBar.subviews)
 //    {
 //        for (UIView *secondLevelSubview in subView.subviews){
@@ -96,34 +101,30 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [self configNavigationBar];
     
     [self configureNavigationButton];
 
-    //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+
     
-    [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[AppearanceHelper redGleepostColour]];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
 
     
     //    [self setCustomBackgroundToTableView];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    //Make the navigation bar invisible before going to the view group VC
-    //in order to avoid problems with navigation bar during transition.
-    
-//    [self.navigationController.navigationBar invisible];
-    
-
-    
-    [super viewWillDisappear:animated];
-}
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    //Make the navigation bar invisible before going to the view group VC
+//    //in order to avoid problems with navigation bar during transition.
+//    
+////    [self.navigationController.navigationBar invisible];
+//    
+//
+//    
+//    [super viewWillDisappear:animated];
+//}
 
 -(void)dealloc
 {
@@ -428,9 +429,11 @@
         _filteredGroups = groups.mutableCopy;
         
 //        [self showGroups];
-        
+
         
         [_collectionView reloadData];
+        
+
         
     } remoteCallback:^(BOOL success, NSArray *groups) {
         

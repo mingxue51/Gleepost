@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "GLPImageView.h"
 
-@interface GLPStretchedImageView : GLPImageView
+
+@interface GLPStretchedImageView : GLPImageView <GLPImageViewDelegate>
 
 extern const float kStretchedImageHeight;
 

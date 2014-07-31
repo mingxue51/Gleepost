@@ -17,6 +17,7 @@
 #import "GLPPrivateProfileViewController.h"
 #import "GLPFacebookConnect.h"
 #import "GLPFBInvitationsViewController.h"
+#import "UINavigationBar+Format.h"
 
 @interface GLPSearchUsersViewController ()
 
@@ -59,7 +60,6 @@ static NSString *const SEARCH_USERS_STR = @"SEARCH";
     [self configureUI];
     
     [self configureNavigationBar];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -34,7 +34,6 @@
 //#import "GLPRefreshControl.h"
 #import "ContactsManager.h"
 #import "GLPProfileViewController.h"
-#import "GLPStretchedImageView.h"
 
 @interface GroupViewController ()
 
@@ -97,8 +96,6 @@ const float OFFSET_START_ANIMATING = 300.0;
 
     [self configureTableView];
     
-    [self configureActivityIndicator];
-    
     [self loadPosts];
     
     if(_fromPushNotification)
@@ -132,22 +129,11 @@ const float OFFSET_START_ANIMATING = 300.0;
     [self.tableView reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    
-    [super viewDidDisappear:animated];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    
-    [super viewWillDisappear:animated];
-}
 
 -(void)dealloc
 {
     [self removeNotifications];
-
+    [_tableView removeFromSuperview];
 }
 
 
@@ -182,15 +168,6 @@ const float OFFSET_START_ANIMATING = 300.0;
 
 
 }
-
-- (void)configureActivityIndicator
-{
-    //160, 46
-    
-//    CGRectSetXY(_activityIndicator, 160.0, 46.0);
-    
-}
-
 
 -(void)configureTableView
 {
@@ -254,6 +231,10 @@ const float OFFSET_START_ANIMATING = 300.0;
     [_strechedImageView setImageUrl:_group.groupImageUrl];
     
     [_strechedImageView setTextInTitle:_group.name];
+    
+    [_strechedImageView setDelegate:self];
+    
+    [_strechedImageView setGesture:YES];
 }
 
 -(void)initialiseObjects
@@ -296,8 +277,6 @@ const float OFFSET_START_ANIMATING = 300.0;
     
     [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(35, 35) withSelector:@selector(createNewPost:) andTarget:self];
     
-    [AppearanceHelper makeGlowBackButton];
-
     
     //=======
     //    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
@@ -598,8 +577,6 @@ const float OFFSET_START_ANIMATING = 300.0;
             
             if([post imagePost])
             {
-                DDLogDebug(@"Image post GVC: %@ - %@", post, post.imagesUrls);
-                
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             }
             else if ([post isVideoPost])
@@ -608,8 +585,6 @@ const float OFFSET_START_ANIMATING = 300.0;
             }
             else
             {
-                DDLogDebug(@"Text post GVC: %@", post);
-
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
             }
             
@@ -800,7 +775,9 @@ const float OFFSET_START_ANIMATING = 300.0;
             _group = group;
             self.title = @"";
             
-            [self refreshCellViewWithIndex:0];
+            //TODO: That should refresh the first cell plus the strecthed image view.
+            
+//            [self refreshCellViewWithIndex:0];
         }
         else
         {
@@ -809,25 +786,6 @@ const float OFFSET_START_ANIMATING = 300.0;
         
     }];
 }
-
-//-(void)loadMembers
-//{
-//    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
-//       
-//        if(success)
-//        {
-//            self.members = members;
-//            
-//            if(self.selectedTabStatus == kGLPSettings)
-//            {
-//                [self.tableView reloadData];
-//            }
-//        }
-//        
-//    }];
-//    
-//    
-//}
 
 #pragma mark - Previous posts
 
@@ -972,7 +930,7 @@ const float OFFSET_START_ANIMATING = 300.0;
         // or scroll to the top
         else
         {
-            //This method cause problems.
+            //This method causes problems.
 //           [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
         }
         
@@ -989,7 +947,6 @@ const float OFFSET_START_ANIMATING = 300.0;
 {
     self.isLoading = YES;
     
-//    [self.refreshControl beginRefreshing];
     [_activityIndicator startAnimating];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -999,19 +956,9 @@ const float OFFSET_START_ANIMATING = 300.0;
 {
     self.isLoading = NO;
     
-    [[NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(diactivateIndicator) userInfo:nil repeats:NO] fire];
-    
-    
-//    [self.refreshControl endRefreshing];
-    
     [_activityIndicator stopAnimating];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-
-- (void)diactivateIndicator
-{
-//    self.isIndicatorActive = NO;
 }
 
 
@@ -1031,9 +978,7 @@ const float OFFSET_START_ANIMATING = 300.0;
 //    self.isLoading = YES;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
-    
-    DDLogDebug(@"POST GROUP VC: %@", post.imagesUrls);
-    
+        
     NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
@@ -1045,13 +990,6 @@ const float OFFSET_START_ANIMATING = 300.0;
     
     //Bring the fake navigation bar to from because is hidden by new cell.
     //    [self.tableView bringSubviewToFront:self.reNavBar];
-    
-}
-
-#pragma mark - Selectors
-
--(void)viewGroupImageOptions:(id)sender
-{
     
 }
 
@@ -1122,21 +1060,20 @@ const float OFFSET_START_ANIMATING = 300.0;
     }
 }
 
-#pragma mark - View image delegate
+//-(void)viewPostImage:(UIImage*)postImage
+//{
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
+//    vc.image = postImage;
+//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+//    vc.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    [vc setTransitioningDelegate:self.transitionViewImageController];
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:vc animated:YES completion:nil];
+//}
 
--(void)viewPostImage:(UIImage*)postImage
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = postImage;
-    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    vc.modalPresentationStyle = UIModalPresentationCustom;
-    
-    [vc setTransitioningDelegate:self.transitionViewImageController];
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
-}
 
 #pragma mark - New comment delegate
 
@@ -1175,7 +1112,7 @@ const float OFFSET_START_ANIMATING = 300.0;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
-#pragma  mark - GroupTopViewCellDelegate
+#pragma  mark - DescriptionSegmentGroupCellDelegate
 
 - (void)segmentSwitchedWithButtonType:(ButtonType)buttonType
 {
@@ -1195,11 +1132,13 @@ const float OFFSET_START_ANIMATING = 300.0;
     }
 }
 
-- (void)showGroupImageOptionsWithImage:(UIImage *)image
+#pragma  mark - GLPImageViewDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
 {
     UIActionSheet *actionSheet = nil;
     
-    BOOL hasImage = [self addGroupImage:image];
+    BOOL hasImage = [self addGroupImage:imageView.image];
     
     if(_group.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
     {

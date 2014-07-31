@@ -7,9 +7,14 @@
 //
 
 #import "GLPImageView.h"
-
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+
+@interface GLPImageView ()
+
+@property (strong, nonatomic) UITapGestureRecognizer *imageGesture;
+
+@end
 
 @implementation GLPImageView
 
@@ -21,6 +26,18 @@
         // Initialization code
     }
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self configureImageView];
+}
+
+- (void)configureImageView
+{
+    [self setUserInteractionEnabled:YES];
 }
 
 - (void)setImageUrl:(NSString *)imageUrl
@@ -36,6 +53,32 @@
         [self setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     
+}
+
+- (void)setGesture:(BOOL)gesture
+{
+    if(gesture)
+    {
+        _imageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTouched)];
+        
+        [self addGestureRecognizer:_imageGesture];
+    }
+    else
+    {
+        if(_imageGesture)
+        {
+            [self removeGestureRecognizer:_imageGesture];
+        }
+    }
+
+}
+
+- (void)imageTouched
+{
+    if([_delegate respondsToSelector:@selector(imageTouchedWithImageView:)])
+    {
+        [_delegate imageTouchedWithImageView:self];
+    }
 }
 
 /*

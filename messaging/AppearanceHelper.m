@@ -314,10 +314,10 @@
     
 }
 
-+ (void)makeGlowBackButton
-{
-    [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final_glow"];
-    [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final_glow"];
-}
+//+ (void)makeGlowBackButton
+//{
+//    [UINavigationBar appearance].backIndicatorImage = [UIImage imageNamed:@"back_final_glow"];
+//    [UINavigationBar appearance].backIndicatorTransitionMaskImage = [UIImage imageNamed:@"back_final_glow"];
+//}
 
 @end
