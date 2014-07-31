@@ -212,7 +212,7 @@
     else if ([segue.identifier isEqualToString:@"add members"])
     {
         GLPSearchUsersViewController *suvc = segue.destinationViewController;
-        suvc.searchForMembers = YES;
+//        suvc.searchForMembers = YES;
         suvc.group = _group;
         suvc.alreadyMembers = _members;
     }

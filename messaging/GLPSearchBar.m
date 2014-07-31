@@ -13,30 +13,11 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
 @implementation GLPSearchBar
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-    }
-    
-    return self;
-}
 
 - (void)awakeFromNib
 {
@@ -87,18 +68,40 @@
     [_textField resignFirstResponder];
 }
 
-#pragma mark - UITextFieldDelegate
-
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)becomeTextFieldFirstResponder
 {
-    [_delegate glpSearchBarDidBeginEditing:textField];
+    [_textField becomeFirstResponder];
+}
+
+- (void)startActivityIndicator
+{
+    [_activityIndicator startAnimating];
+}
+
+- (void)stopActivityIndicator
+{
+    [_activityIndicator stopAnimating];
 }
 
 
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if([_delegate respondsToSelector:@selector(glpSearchBarDidBeginEditing:)])
+    {
+        [_delegate glpSearchBarDidBeginEditing:textField];
+
+    }
+    
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [_delegate glpSearchBarDidEndEditing:textField];
+    if([_delegate respondsToSelector:@selector(glpSearchBarDidEndEditing:)])
+    {
+        [_delegate glpSearchBarDidEndEditing:textField];
+    }
 }
 
 - (void)textFieldDidChange:(UITextField *)textField

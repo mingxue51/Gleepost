@@ -11,8 +11,11 @@
 @protocol GLPSearchBarDelegate <NSObject>
 
 //- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
+@optional
 - (void)glpSearchBarDidBeginEditing:(UITextField *)textField;
 - (void)glpSearchBarDidEndEditing:(UITextField *)textField;
+
+@required
 - (void)textChanged:(NSString *)text;
 
 @end
@@ -22,6 +25,9 @@
 @property (weak, nonatomic) UIViewController <GLPSearchBarDelegate> *delegate;
 
 - (BOOL)isTextFieldFirstResponder;
-- (void)setPlaceholderWithText:(NSString *)text;
+- (void)becomeTextFieldFirstResponder;
 - (void)resignTextFieldFirstResponder;
+- (void)setPlaceholderWithText:(NSString *)text;
+- (void)startActivityIndicator;
+- (void)stopActivityIndicator;
 @end

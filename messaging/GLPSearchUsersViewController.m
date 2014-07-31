@@ -58,7 +58,7 @@ static NSString *const SEARCH_USERS_STR = @"SEARCH";
     [self configureButtons];
     
     [self configureUI];
-    
+        
     [self configureNavigationBar];
 }
 
@@ -80,7 +80,6 @@ static NSString *const SEARCH_USERS_STR = @"SEARCH";
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:_searchTextfield name:@"SHOW_KEYBOARD" object:nil];
-
 }
 
 # pragma mark - Configuration
@@ -290,8 +289,6 @@ static NSString *const SEARCH_USERS_STR = @"SEARCH";
             [_facebookButton setHidden:YES];
         }
     }
-    
-
     
     return _users.count;
 }

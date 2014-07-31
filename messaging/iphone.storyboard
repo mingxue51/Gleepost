@@ -989,16 +989,75 @@
             </objects>
             <point key="canvasLocation" x="2373" y="-4111"/>
         </scene>
+        <!--Invite Users View Controller - ADD GROUP MEMBERS-->
+        <scene sceneID="46S-Nf-JqI">
+            <objects>
+                <viewController id="gs3-dw-jL3" customClass="GLPInviteUsersViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Tuz-Fp-a5O">
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="rD7-CC-WkH">
+                                <rect key="frame" x="0.0" y="45" width="320" height="226"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ibA-2N-5VE">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ibA-2N-5VE" id="ooY-Z1-F5X">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="30" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="gs3-dw-jL3" id="SjH-uC-Bqj"/>
+                                    <outlet property="delegate" destination="gs3-dw-jL3" id="msG-A2-8ms"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" id="MB8-dq-BRc">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XgD-hF-gt9">
+                                <rect key="frame" x="20" y="282" width="280" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Add selected" backgroundImage="add_button_background.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addUsers:" destination="gs3-dw-jL3" eventType="touchUpInside" id="ica-pP-CBU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="ADD GROUP MEMBERS" id="Da3-g9-cHg"/>
+                    <connections>
+                        <outlet property="addSelectedButton" destination="XgD-hF-gt9" id="DKs-2T-T3X"/>
+                        <outlet property="searchBarView" destination="MB8-dq-BRc" id="k4I-8a-Cu5"/>
+                        <outlet property="tableView" destination="rD7-CC-WkH" id="lXd-6c-Qd3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vZa-YM-7uX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2836" y="-4111"/>
+        </scene>
         <!--Search Users View Controller-->
         <scene sceneID="Gqn-cG-hYi">
             <objects>
                 <viewController storyboardIdentifier="GLPSearchUsersViewController" id="iKQ-TK-fBb" customClass="GLPSearchUsersViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9v9-To-eaE">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="QKV-G9-syf">
-                                <rect key="frame" x="0.0" y="60" width="320" height="395"/>
+                                <rect key="frame" x="0.0" y="60" width="320" height="444"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.41149154974489799" green="0.41149154974489799" blue="0.41149154974489799" alpha="0.27000000000000002" colorSpace="calibratedRGB"/>
@@ -1132,7 +1191,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t9q-pk-LJp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2881" y="-4111"/>
+            <point key="canvasLocation" x="3243" y="-4111"/>
         </scene>
         <!--Image Selector View Controller - PICK AN IMAGE-->
         <scene sceneID="v3e-He-fEv">
@@ -1474,7 +1533,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -2279,7 +2338,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="4D15101F-94B9-4C30-9642-F5C7F1F9BA8A">
+                                                <state key="normal" image="4ECE70BE-1C8A-45D5-B925-2400A51E7816">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -3136,7 +3195,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -3246,7 +3305,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -3713,7 +3772,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="tableView" destination="twu-HW-Ewl" id="HFp-WE-wgA"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="0xq-5H-6eX"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="Vyz-Un-MGO"/>
-                        <segue destination="iKQ-TK-fBb" kind="push" identifier="add members" id="WhX-ZL-dQD"/>
+                        <segue destination="gs3-dw-jL3" kind="push" identifier="add members" id="6aM-BE-RDh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zbU-67-4fK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4246,7 +4305,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="4D15101F-94B9-4C30-9642-F5C7F1F9BA8A" width="30" height="32">
+        <image name="4ECE70BE-1C8A-45D5-B925-2400A51E7816" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -4287,7 +4346,7 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <image name="down_arrow.png" width="23" height="14"/>
         <image name="fb_login_bg.png" width="600" height="90"/>
         <image name="fb_login_img.png" width="23" height="47"/>
-        <image name="fb_login_img_sm.png" width="30" height="30"/>
+        <image name="fb_login_img_sm.png" width="50" height="50"/>
         <image name="gleepost_logo_registration.png" width="393" height="130"/>
         <image name="glp-quote.png" width="505" height="82"/>
         <image name="go_to_preview.png" width="100" height="111"/>
@@ -4338,15 +4397,14 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="w3Q-IM-kd1"/>
-        <segue reference="WhX-ZL-dQD"/>
-        <segue reference="pjB-B1-HWm"/>
-        <segue reference="aP2-oN-YHg"/>
-        <segue reference="Ptj-MX-g8C"/>
-        <segue reference="rdb-8v-KiD"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="Ze9-pm-FNm"/>
         <segue reference="TV3-yd-KJQ"/>
         <segue reference="wR3-TA-URh"/>
+        <segue reference="Ptj-MX-g8C"/>
+        <segue reference="aP2-oN-YHg"/>
+        <segue reference="pjB-B1-HWm"/>
+        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="ZVe-rT-wgG"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

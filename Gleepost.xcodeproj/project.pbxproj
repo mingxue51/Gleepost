@@ -543,6 +543,8 @@
 		58D2809419294F15006AB7D7 /* post_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D2809319294F15006AB7D7 /* post_background.png */; };
 		58D28096192973D5006AB7D7 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D28095192973D5006AB7D7 /* clock.png */; };
 		58D301D61989BC37003EC08B /* back_final_glow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D301D51989BC37003EC08B /* back_final_glow@2x.png */; };
+		58D301DA1989C10E003EC08B /* GLPInviteUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D301D91989C10E003EC08B /* GLPInviteUsersViewController.m */; };
+		58D301DD1989C570003EC08B /* GLPSelectUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D301DC1989C570003EC08B /* GLPSelectUsersViewController.m */; };
 		58D30ADE18F6E4DF00A898EB /* mypost_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30ADA18F6E4DF00A898EB /* mypost_btn.png */; };
 		58D30ADF18F6E4DF00A898EB /* notification_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30ADB18F6E4DF00A898EB /* notification_btn.png */; };
 		58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */; };
@@ -1593,6 +1595,10 @@
 		58D2809319294F15006AB7D7 /* post_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = post_background.png; sourceTree = "<group>"; };
 		58D28095192973D5006AB7D7 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		58D301D51989BC37003EC08B /* back_final_glow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final_glow@2x.png"; sourceTree = "<group>"; };
+		58D301D81989C10E003EC08B /* GLPInviteUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPInviteUsersViewController.h; sourceTree = "<group>"; };
+		58D301D91989C10E003EC08B /* GLPInviteUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPInviteUsersViewController.m; sourceTree = "<group>"; };
+		58D301DB1989C570003EC08B /* GLPSelectUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectUsersViewController.h; sourceTree = "<group>"; };
+		58D301DC1989C570003EC08B /* GLPSelectUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectUsersViewController.m; sourceTree = "<group>"; };
 		58D30ADA18F6E4DF00A898EB /* mypost_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn.png; sourceTree = "<group>"; };
 		58D30ADB18F6E4DF00A898EB /* notification_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn.png; sourceTree = "<group>"; };
 		58D30BEA1815CED0006346F8 /* timebar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar1.png; path = "../../Gleepost Data/NewChating/timebar1.png"; sourceTree = "<group>"; };
@@ -3449,6 +3455,17 @@
 			name = Back;
 			sourceTree = "<group>";
 		};
+		58D301D71989C0DF003EC08B /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				58D301D81989C10E003EC08B /* GLPInviteUsersViewController.h */,
+				58D301D91989C10E003EC08B /* GLPInviteUsersViewController.m */,
+				58D301DB1989C570003EC08B /* GLPSelectUsersViewController.h */,
+				58D301DC1989C570003EC08B /* GLPSelectUsersViewController.m */,
+			);
+			name = Users;
+			sourceTree = "<group>";
+		};
 		58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -4170,6 +4187,7 @@
 		80AB893F17C26E540053E784 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				58D301D71989C0DF003EC08B /* Users */,
 				58BBACAA1978791300A8A265 /* Custom media */,
 				5891F81019773E7400065FFC /* Badges */,
 				583491F41933FC3D00E44B4A /* Walkthrough */,
@@ -5262,6 +5280,7 @@
 				583E6D5B18A10E8C001076CC /* VerificationViewController.m in Sources */,
 				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
+				58D301DA1989C10E003EC08B /* GLPInviteUsersViewController.m in Sources */,
 				58FB7C9118560D21002C6A00 /* PostsProfileView.m in Sources */,
 				5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */,
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
@@ -5270,6 +5289,7 @@
 				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
 				58428E2D18A26DF300B82E4B /* RegisterPositionHelper.m in Sources */,
 				585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */,
+				58D301DD1989C570003EC08B /* GLPSelectUsersViewController.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				58F2950819355A2F00A638BA /* TDNavigationCategories.m in Sources */,
