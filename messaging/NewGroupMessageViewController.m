@@ -20,19 +20,17 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-
-@property (strong, nonatomic) NSMutableArray *searchedUsers;
-
-@property (strong, nonatomic) NSMutableArray *checkedUsers;
+//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+//
+//@property (strong, nonatomic) NSMutableArray *searchedUsers;
+//
+//@property (strong, nonatomic) NSMutableArray *checkedUsers;
 
 //@property (strong, nonatomic) UITapGestureRecognizer *tap;
 
 @property (strong, nonatomic) GLPConversation *conversation;
 
 @property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
-
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -51,13 +49,16 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     
     [self configureGestures];
     
+    [self configureTableView];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [_searchBar becomeFirstResponder];
+//    [_searchBar becomeFirstResponder];
 
     
     [self configureNavigationBar];
@@ -65,13 +66,20 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (void)initiliaseObjects
 {
-    _searchedUsers = [[NSMutableArray alloc] init];
-    _checkedUsers = [[NSMutableArray alloc] init];
+    [super initialiseObjects];
+    
+    [super setDelegate:self];
 }
 
 - (void)registerTableViewCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPCheckNameCell" bundle:nil] forCellReuseIdentifier:@"GLPCheckNameCell"];
+}
+
+- (void)configureTableView
+{
+    //Remove empty cells.
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
 }
 
 - (void)configureGestures
@@ -89,9 +97,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 {
 //    float buttonsSize = 30.0;
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
-    
-    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    [super configureNavigationBar];
     
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
     
@@ -109,7 +115,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _searchedUsers.count;
+    return self.searchedUsers.count;
 }
 
 
@@ -122,7 +128,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     GLPCheckNameCell *userCell = nil;
     
     
-    GLPUser *currentUser = _searchedUsers[indexPath.row];
+    GLPUser *currentUser = self.searchedUsers[indexPath.row];
     
     BOOL checked = [self isUserSelected:currentUser];
     
@@ -154,7 +160,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (void)userCheckedWithUser:(GLPUser *)user
 {
-    [_checkedUsers addObject:user];
+    [self.checkedUsers addObject:user];
     
     [self updateButtonTitle];
 }
@@ -166,102 +172,11 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     [self updateButtonTitle];
 }
 
-#pragma mark - UISearchBarDelegate
+#pragma mark - GLPSelectUsersViewControllerDelegate
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)reloadTableView
 {
-    // remove all data that belongs to previous search
-    
-    [_searchedUsers removeAllObjects];
-    
-    if(![searchText isNotBlank])
-    {
-        [_tableView reloadData];
-        
-        return;
-    }
-    
-    
-    [self searchUserWithName:searchText];
-    
-}
-
-//- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-//{
-//    //We are setting a delay here because otherwise setCancelsTouchesInView is called after the touch to
-//    //the collection view.
-//    
-//    [_tap performSelector:@selector(setCancelsTouchesInView:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.1];
-//}
-//
-//
-//
-//- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-//{
-//    [_tap setCancelsTouchesInView:YES];
-//}
-
-#pragma mark - Search users
-
-- (void)searchUserWithName:(NSString *)userName
-{
-    
-    if(![userName isNotBlank]) {
-        return;
-    }
-    
-    DDLogInfo(@"Start user search");
-    [_activityIndicator setHidden:NO];
-    
-    [[WebClient sharedInstance] searchUserByName:userName callback:^(NSArray *users) {
-        
-        [_activityIndicator setHidden:YES];
-        //        if(_requestsCount == 0) {
-        //            _activityIndicator.hidden = YES;
-        //            [_activityIndicator stopAnimating];
-        //            _searchButton.hidden = NO;
-        //        }
-        
-        if(!users) {
-            return;
-        }
-        
-        if([self isCurrentUserFoundWithUsers:users])
-        {
-            return;
-        }
-        
-        DDLogInfo(@"Search users by name count: %d", users.count);
-        
-        
-        //        for(GLPUser *user in users)
-        //        {
-        //            NSNumber *index = [user remoteKeyNumber];
-        //
-        //            if(!_checkedUsers[index])
-        //            {
-        //                _checkedUsers[index] = [NSNumber numberWithBool:NO];
-        //            }
-        //        }
-        
-        _searchedUsers = [users mutableCopy];
-        
-        [_tableView reloadData];
-    }];
-}
-
-#pragma mark - Keyboard management
-
-- (void)viewTouched:(id)sender
-{
-    [self hideKeyboardFromSearchBarIfNeeded];
-}
-
--(void)hideKeyboardFromSearchBarIfNeeded
-{
-    if([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
-    }
+    [_tableView reloadData];
 }
 
 
@@ -280,8 +195,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (IBAction)addUsers:(id)sender
 {
-    
-    if(_checkedUsers.count == 1)
+    if(self.checkedUsers.count == 1)
     {
         [self startConversationWithOneUser];
     }
@@ -293,7 +207,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (void)startConversationWithOneUser
 {
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:_checkedUsers[0]];
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:self.checkedUsers[0]];
     
     DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
     
@@ -301,7 +215,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     {
         DDLogInfo(@"Create empty conversation");
         
-        NSArray *part = [[NSArray alloc] initWithObjects:_checkedUsers[0], [SessionManager sharedInstance].user, nil];
+        NSArray *part = [[NSArray alloc] initWithObjects:self.checkedUsers[0], [SessionManager sharedInstance].user, nil];
         conversation = [[GLPConversation alloc] initWithParticipants:part];
         
     }
@@ -312,7 +226,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 - (void)startGroupConversation
 {
     //Create new conversation with users.
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:_checkedUsers];
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:self.checkedUsers];
     
     DDLogInfo(@"Regular conversation with participants, conversation remote key: %d", conversation.remoteKey);
     
@@ -322,9 +236,9 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
         
         //        NSArray *part = [[NSArray alloc] initWithObjects:user, [SessionManager sharedInstance].user, nil];
         
-        [_checkedUsers addObject:[SessionManager sharedInstance].user];
+        [self.checkedUsers addObject:[SessionManager sharedInstance].user];
         
-        conversation = [[GLPConversation alloc] initWithParticipants:_checkedUsers];
+        conversation = [[GLPConversation alloc] initWithParticipants:self.checkedUsers];
         
     }
     
@@ -344,11 +258,11 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 
 - (void)updateButtonTitle
 {
-    if(_checkedUsers.count == 0)
+    if(self.checkedUsers.count == 0)
     {
         [self resetAndDisableButton];
     }
-    else if(_checkedUsers.count == 1)
+    else if(self.checkedUsers.count == 1)
     {
         [self refreshEnableButtonAndAddOneToOneMessage];
     }
@@ -362,7 +276,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 {
     [_addSelectedButton setEnabled:YES];
     
-    GLPUser *user = _checkedUsers[0];
+    GLPUser *user = self.checkedUsers[0];
     
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@%@", FIXED_BUTTON_ONE_USER_TITLE, user.name] forState:UIControlStateNormal];
 }
@@ -371,7 +285,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
 {
     [_addSelectedButton setEnabled:YES];
  
-    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@(%d)", FIXED_BUTTON_TITLE, _checkedUsers.count] forState:UIControlStateNormal];
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@(%d)", FIXED_BUTTON_TITLE, self.checkedUsers.count] forState:UIControlStateNormal];
 }
 
 - (void)resetAndDisableButton
@@ -381,58 +295,51 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Start conversation with ";
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_TITLE] forState:UIControlStateNormal];
 }
 
-- (void)showAndAnimateIndicator
-{
-    [_activityIndicator setHidden:NO];
-    [_activityIndicator startAnimating];
-}
-
-- (void)hideIndicator
-{
-    [_activityIndicator setHidden:YES];
-    [_activityIndicator stopAnimating];
-}
+//- (void)showAndAnimateIndicator
+//{
+//    [_activityIndicator setHidden:NO];
+//    [_activityIndicator startAnimating];
+//}
+//
+//- (void)hideIndicator
+//{
+//    [_activityIndicator setHidden:YES];
+//    [_activityIndicator stopAnimating];
+//}
 
 #pragma mark - Helpers
 
-- (BOOL)isUserSelected:(GLPUser *)user
-{
-    for(GLPUser *u in _checkedUsers)
-    {
-        if(u.remoteKey == user.remoteKey)
-        {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
+//- (BOOL)isUserSelected:(GLPUser *)user
+//{
+//    for(GLPUser *u in _checkedUsers)
+//    {
+//        if(u.remoteKey == user.remoteKey)
+//        {
+//            return YES;
+//        }
+//    }
+//    
+//    return NO;
+//}
+//
+//- (void)removeUser:(GLPUser *)user
+//{
+//    int removeIndex = 0;
+//    
+//    for(int i = 0; i < _checkedUsers.count; ++i)
+//    {
+//        GLPUser *u = _checkedUsers[i];
+//        
+//        if(u.remoteKey == user.remoteKey)
+//        {
+//            removeIndex = i;
+//            break;
+//        }
+//    }
+//    
+//    [_checkedUsers removeObjectAtIndex:removeIndex];
+//}
 
-- (void)removeUser:(GLPUser *)user
-{
-    int removeIndex = 0;
-    
-    for(int i = 0; i < _checkedUsers.count; ++i)
-    {
-        GLPUser *u = _checkedUsers[i];
-        
-        if(u.remoteKey == user.remoteKey)
-        {
-            removeIndex = i;
-            break;
-        }
-    }
-    
-    [_checkedUsers removeObjectAtIndex:removeIndex];
-}
-
-
-- (BOOL)isCurrentUserFoundWithUsers:(NSArray *)users
-{
-    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
-    
-    return (arrayResult.count == 1) ? YES : NO;
-}
 
 #pragma mark - Navigation
 

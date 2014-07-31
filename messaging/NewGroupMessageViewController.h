@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPCheckNameCell.h"
+#import "GLPSelectUsersViewController.h"
 
-@interface NewGroupMessageViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, GLPCheckNameCellDelegate>
+@interface NewGroupMessageViewController : GLPSelectUsersViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, GLPCheckNameCellDelegate, GLPSelectUsersViewControllerDelegate>
 
 @end

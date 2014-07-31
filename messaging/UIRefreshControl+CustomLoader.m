@@ -48,7 +48,11 @@
     
     [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
     
+    [self insertSubview:subView atIndex:0];
+    
     [self insertSubview:subView atIndex:1];
+    
+    [self insertSubview:subView atIndex:2];
 }
 
 - (void)configureActivityInidicator

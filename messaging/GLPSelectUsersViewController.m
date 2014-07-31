@@ -34,6 +34,11 @@
     
     _searchedUsers = [[NSMutableArray alloc] init];
     _checkedUsers = [[NSMutableArray alloc] init];
+    
+    if(!_alreadyMembers)
+    {
+        _alreadyMembers = [[NSArray alloc] init];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
