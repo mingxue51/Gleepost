@@ -143,6 +143,9 @@
 {
     [super viewWillAppear:animated];
     [self configureNavigationBar];
+    
+    [self hideNetworkErrorViewIfNeeded];
+
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
@@ -188,6 +191,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
+    
     
 //    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
 //    {
@@ -416,6 +420,10 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
 }
 
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
+}
 
 -(void)setUserDetails
 {

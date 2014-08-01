@@ -148,6 +148,12 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     self.fdTakeController.delegate = self;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self hideNetworkErrorViewIfNeeded];
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self.contentTextView resignFirstResponder];
@@ -160,9 +166,10 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     
 //    [self.contentTextView resignFirstResponder];
     
+    
     [self removeNotifications];
+    
     [super viewDidDisappear:animated];
-
 
 //    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
 }
@@ -322,6 +329,11 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 -(UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
+}
+
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
 }
 
 #pragma mark - Selectors

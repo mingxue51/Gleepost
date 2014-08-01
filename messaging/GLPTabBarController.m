@@ -85,6 +85,10 @@ static NSInteger lastTabbarIndex = 0;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissErrorView) name:GLPNOTIFICATION_DISMISS_ERROR_VIEW object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(temporaryHideErrorView) name:GLPNOTIFICATION_HIDE_ERROR_VIEW object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(temporaryShowErrorView:) name:GLPNOTIFICATION_SHOW_ERROR_VIEW object:nil];
+        
         [self updateGroupBadge];
         
         
@@ -105,6 +109,11 @@ static NSInteger lastTabbarIndex = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_DISMISS_ERROR_VIEW object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HIDE_ERROR_VIEW object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
+
 
 }
 
@@ -171,6 +180,30 @@ static NSInteger lastTabbarIndex = 0;
 {
     _shouldHideErrorView = YES;
     [self hideNoNetworkView];
+}
+
+- (void)temporaryHideErrorView
+{
+    [self hideNoNetworkView];
+}
+
+- (void)temporaryShowErrorView:(NSNotification *)notification
+{
+    NSDictionary *dic = [notification userInfo];
+    
+    NSNumber *number = dic[@"comingFromClass"];
+    
+    
+    if([number boolValue])
+    {
+        //Show error view with campus wall mode.
+        [self showErrorViewInViewIfNeeded];
+    }
+    else
+    {
+        //Show error view with messenger mode.
+        [self showErrorViewInMessengerViewIfNeeded];
+    }
 }
 
 - (void)updateProfileBadge:(NSNotification *)notification

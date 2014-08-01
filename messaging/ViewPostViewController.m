@@ -123,6 +123,8 @@ static BOOL likePushed;
     [super viewWillAppear:animated];
     [self configureNavigationBar];
     
+    [self hideNetworkErrorViewIfNeeded];
+    
     if(![self comesFromNotifications])
     {
         [self loadComments];
@@ -144,6 +146,11 @@ static BOOL likePushed;
     
 
     [super viewWillDisappear:animated];
+}
+
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
 }
 
 -(void)sendStatistics

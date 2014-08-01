@@ -116,6 +116,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [self configureNavigationBar];
     
+    [self hideNetworkErrorViewIfNeeded];
+    
     CGRect screenRect = [[UIScreen mainScreen] bounds];
 
     
@@ -258,6 +260,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
+}
+
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
 }
 
 -(void)addRandomChatAddUser

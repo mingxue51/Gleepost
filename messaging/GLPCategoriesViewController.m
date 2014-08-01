@@ -44,6 +44,20 @@
 //    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self hideNetworkErrorViewIfNeeded];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self showNetworkErrorViewIfNeeded];
+    
+    [super viewDidDisappear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -96,6 +110,16 @@
     
     [self setDefaultImages];
 
+}
+
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
+}
+
+- (void)showNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SHOW_ERROR_VIEW object:self userInfo:@{@"comingFromClass": [NSNumber numberWithBool:YES]}];
 }
 
 #pragma mark - Table view

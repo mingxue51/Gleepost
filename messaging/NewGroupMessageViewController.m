@@ -15,6 +15,7 @@
 #import "GLPConversationViewController.h"
 #import "GLPLiveConversationsManager.h"
 #import "SessionManager.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface NewGroupMessageViewController ()
 
@@ -47,6 +48,8 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     [super viewWillAppear:animated];
     
     [self configureNavigationBar];
+    
+    [self hideNetworkErrorViewIfNeeded];
 }
 
 - (void)initiliaseObjects
@@ -74,6 +77,13 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)hideNetworkErrorViewIfNeeded
+{
+//    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
+    
 }
 
 #pragma mark - Table view data source

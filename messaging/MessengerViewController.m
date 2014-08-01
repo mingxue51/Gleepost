@@ -80,6 +80,8 @@
     
     [self configureNavigationBar];
     
+    [self showNetworkErrorViewIfNeeded];
+    
     //Change the colour of the tab bar.
 //    self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];
 //    [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[UIColor colorWithR:75.0 withG:208.0 andB:210.0]];
@@ -209,6 +211,10 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
+- (void)showNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SHOW_ERROR_VIEW object:self userInfo:@{@"comingFromClass": [NSNumber numberWithBool:NO]}];
+}
 
 #pragma mark - Selectors
 

@@ -38,6 +38,13 @@
     [self setupRecognizers];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self hideNetworkErrorViewIfNeeded];
+}
+
 #pragma mark - Initialisers
 
 - (void)setupRecognizers
@@ -52,6 +59,10 @@
 //    [self.viewImage addGestureRecognizer:panSwipeRecognizer];
 }
 
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
+}
 
 #pragma mark - Gestures handles
 

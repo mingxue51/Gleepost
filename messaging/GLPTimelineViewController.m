@@ -183,10 +183,8 @@ const float TOP_OFFSET = 280.0f;
     
     [self configNavigationBar];
     
+    [self showNetworkErrorViewIfNeeded];
     
-    
-   // [self configStatusbarBackground];
-
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -308,8 +306,11 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+}
 
-
+- (void)showNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SHOW_ERROR_VIEW object:self userInfo:@{@"comingFromClass": [NSNumber numberWithBool:YES]}];
 }
 
 - (void)showWalkthroughIfNeeded

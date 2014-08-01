@@ -143,6 +143,7 @@
     
     [self configureNavigationBar];
 
+    [self hideNetworkErrorViewIfNeeded];
     
 //    [self.navigationController setNavigationBarHidden:NO
 //                                             animated:YES];
@@ -311,6 +312,7 @@
 
     
 }
+
 -(void)loadUsersInformation
 {
     if(self.contact)
@@ -324,6 +326,11 @@
         //Load user's details from server.
         [self loadAndSetUserDetails];
     }
+}
+
+- (void)hideNetworkErrorViewIfNeeded
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle
