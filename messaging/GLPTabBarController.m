@@ -13,11 +13,19 @@
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "GLPNetworkManager.h"
+#import "GLPNetworkErrorView.h"
 
 @interface GLPTabBarController ()
 
 @property (assign, nonatomic) NSInteger messagesCount;
 @property (assign, nonatomic) NSInteger profileNotificationsCount;
+@property (strong, nonatomic) GLPNetworkErrorView *networkErrorView;
+
+/** This variable prevents the error view to be shown when user presses
+    the dismiss button.
+ **/
+@property (assign, nonatomic) BOOL shouldHideErrorView;
 
 @property (assign, nonatomic, getter = didShowGroupBadge) BOOL showGroupBadge;
 
@@ -50,6 +58,10 @@ static NSInteger lastTabbarIndex = 0;
     
     [self.tabBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:230.0 withG:230.0 andB:230.0]]];
     
+    _networkErrorView = [[GLPNetworkErrorView alloc] init];
+    _shouldHideErrorView = NO;
+    _networkErrorView.tag = 100;
+    
 //    self.tabBar.layer.borderWidth = 1.0;
 //    self.tabBar.layer.borderColor = [UIColor redColor].CGColor;
     
@@ -69,6 +81,9 @@ static NSInteger lastTabbarIndex = 0;
         //Added new notification center. This is temporary called just from AppDelegate.
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatCountBadge:) name:GLPNOTIFICATION_CONVERSATION_COUNT object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissErrorView) name:GLPNOTIFICATION_DISMISS_ERROR_VIEW object:nil];
         
         [self updateGroupBadge];
         
@@ -86,6 +101,10 @@ static NSInteger lastTabbarIndex = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATION_COUNT object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_DISMISS_ERROR_VIEW object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
 
 }
 
@@ -123,6 +142,35 @@ static NSInteger lastTabbarIndex = 0;
     }
     
     [self updateBadgeContentForIndex:2 count:numberOfGroups];
+}
+
+#pragma mark - Notifications
+
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    DDLogInfo(@"GLPTabBarController status: %d", isNetwork);
+    
+    if(isNetwork)
+    {
+        if(_shouldHideErrorView)
+        {
+            _shouldHideErrorView = NO;
+            return;
+        }
+        
+        [self hideNoNetworkView];
+    }
+    else
+    {
+        [self showNoNetworkView];
+    }
+}
+
+- (void)dismissErrorView
+{
+    _shouldHideErrorView = YES;
+    [self hideNoNetworkView];
 }
 
 - (void)updateProfileBadge:(NSNotification *)notification
@@ -191,16 +239,103 @@ static NSInteger lastTabbarIndex = 0;
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     switch (item.tag) {
+        case 0:
+            [self showErrorViewInViewIfNeeded];
+            break;
         case 1:
+            [self showErrorViewInMessengerViewIfNeeded];
             _messagesCount = 0;
             break;
         case 2:
         case 3:
+            [self removeErrorViewFromViewIfNeeded];
             _profileNotificationsCount = 0;
             break;
     }
 
     [self updateBadgeContentForIndex:item.tag count:0];
+}
+
+#pragma mark - Helpers
+
+- (void)showErrorViewInViewIfNeeded
+{
+    [_networkErrorView moveViewBelowNavigationBar];
+
+    if(_shouldHideErrorView)
+    {
+        return;
+    }
+    else
+    {
+        if([_networkErrorView isHidden] && [[GLPNetworkManager sharedInstance] networkStatus] == kGLPNetworkStatusOffline)
+        {
+            [self showNoNetworkView];
+        }
+    }
+}
+
+- (void)showErrorViewInMessengerViewIfNeeded
+{
+    [self showErrorViewInViewIfNeeded];
+    
+    [_networkErrorView moveViewBelowSearchBar];
+}
+
+- (void)removeErrorViewFromViewIfNeeded
+{
+    if([_networkErrorView isHidden])
+    {
+        return;
+    }
+    
+    
+    [self hideNoNetworkView];
+}
+
+#pragma mark - UI
+
+- (void)showNoNetworkView
+{
+    
+    DDLogInfo(@"Show no network view.");
+    
+    [_networkErrorView setHidden:NO];
+    
+    NSArray *subViews = [[[UIApplication sharedApplication] keyWindow] subviews];
+
+    for(UIView *v in subViews)
+    {
+        if(v.tag == 100)
+        {
+            return;
+        }
+    }
+
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:_networkErrorView];
+}
+
+- (void)hideNoNetworkView
+{
+    
+    DDLogInfo(@"Hide network view");
+    
+    [_networkErrorView setHidden:YES];
+    
+}
+
+- (UIViewController *)currentViewController
+{
+    UINavigationController *currentNavigationVC = (UINavigationController *) self.selectedViewController;
+    
+    NSArray *viewControllers = currentNavigationVC.viewControllers;
+    
+    UIViewController *currentViewController = viewControllers[viewControllers.count - 1];
+    
+    DDLogDebug(@"Current view controller: %@", [currentViewController class]);
+    
+    return currentViewController;
 }
 
 #pragma mark - UITabBarControllerDelegate

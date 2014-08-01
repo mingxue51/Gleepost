@@ -1049,7 +1049,7 @@ static const float FixedBottomTextViewHeight = 100;
         {
             [self makeButtonUnselected];
             
-            [WebClientHelper showStandardError];
+//            [WebClientHelper showStandardError];
 
         }
         
@@ -1073,7 +1073,7 @@ static const float FixedBottomTextViewHeight = 100;
         {
             [self makeButtonSelected];
             
-            [WebClientHelper showStandardError];            
+//            [WebClientHelper showStandardError];            
         }
         
     }];

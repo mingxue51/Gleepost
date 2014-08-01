@@ -96,7 +96,6 @@ static ContactsManager *instance = nil;
         }
         else
         {
-            [WebClientHelper showStandardError];
         }
         
     }];

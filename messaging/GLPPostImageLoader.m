@@ -53,33 +53,7 @@ static GLPPostImageLoader *instance = nil;
         
         self.networkAvailable = YES;
 
-        //TODO: TEST.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
-
-        
-        
-        //Called when there is change in status.
-        
-        [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-
-            BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
-            
-            if(currentStatus)
-            {
-                self.networkAvailable = YES;
-                
-                DDLogInfo(@"Continue all operations of loading images.");
-
-                [self startConsume];
-            }
-            else
-            {
-                self.networkAvailable = NO;
-                //No network.
-                [self cancelOperations];
-            }
-        
-        }];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     }
     
     return self;
@@ -88,14 +62,23 @@ static GLPPostImageLoader *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    NSLog(@"updateNetworkStatus: %d", isNetwork);
     
     if(isNetwork)
     {
-        DDLogInfo(@"YES NETWORK!!!");
+        self.networkAvailable = YES;
+        
+        DDLogInfo(@"Continue all operations of loading images.");
+        
+        [self startConsume];
+
     } else
     {
-        DDLogInfo(@"NO NETWORK!!!");
+        DDLogDebug(@"Cancel all operations of loading images.");
+        
+        self.networkAvailable = NO;
+        //No network.
+        [self cancelOperations];
+
     }
 }
 

@@ -590,7 +590,7 @@
         if (success) {
             [self showMessageViewControllerWithBody:inviteMessage];
         } else {
-            [WebClientHelper showStandardError];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to invite friends."];
         }
     }];
 }
@@ -743,7 +743,7 @@
         }
         else
         {
-            [WebClientHelper showStandardError];
+//            [WebClientHelper showStandardError];
         }
         
         
@@ -769,7 +769,7 @@
             }
             else
             {
-                [WebClientHelper showStandardError];
+//                [WebClientHelper showStandardError];
             }
             
         }
@@ -813,7 +813,7 @@
         }
         else
         {
-            [WebClientHelper showStandardError];
+//            [WebClientHelper showStandardError];
         }
     }];
 }

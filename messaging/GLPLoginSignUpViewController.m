@@ -246,7 +246,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
             else
             {
                 NSLog(@"Cannot login through facebook");
-                [WebClientHelper showStandardError];
+                [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to login with Facebook."];
             }
         }
     }];
@@ -280,7 +280,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
-                    [WebClientHelper showStandardError];
+                    [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to login."];
                 }
                 
             }];

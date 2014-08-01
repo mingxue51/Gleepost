@@ -956,7 +956,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         {
             [self makeButtonSelected];
             
-            [WebClientHelper showStandardError];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Not attending to the event failed."];
         }
         
     }];
@@ -977,7 +977,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         {
             [self makeButtonUnselected];
             
-            [WebClientHelper showStandardError];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Attending to the event failed."];
             
         }
         

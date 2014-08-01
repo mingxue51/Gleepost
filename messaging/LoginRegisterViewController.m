@@ -744,7 +744,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 [weakSelf askUserForEmailAddressAgain:YES];
             } else {
                 NSLog(@"Cannot login through facebook");
-                [WebClientHelper showStandardError];
+//                [WebClientHelper showStandardError];
             }
         }
     }];

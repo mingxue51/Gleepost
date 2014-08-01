@@ -781,7 +781,7 @@ const float OFFSET_START_ANIMATING = 300.0;
         }
         else
         {
-            [WebClientHelper showStandardError];
+//            [WebClientHelper showStandardError];
         }
         
     }];

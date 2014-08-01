@@ -144,8 +144,7 @@
         }
         else
         {
-            NSLog(@"ERROR");
-            [WebClientHelper showStandardError];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Upload the image failed."];
             
         }
     }];

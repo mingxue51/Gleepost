@@ -311,7 +311,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             else
             {
                 //Error message.
-                [WebClientHelper showStandardError];
+                [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to attent to the event."];
             }
 
             
@@ -337,7 +337,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
             else
             {
                 //Error message.
-                [WebClientHelper showStandardError];
+//                [WebClientHelper showStandardError];
             }
             
             

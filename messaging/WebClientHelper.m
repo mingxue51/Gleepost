@@ -123,15 +123,15 @@
     [alert show];
 }
 
-+ (void)showStandardError
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network"
-                                                    message:@"Please check your internet connection"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-}
+//+ (void)showStandardError
+//{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network"
+//                                                    message:@"Please check your internet connection"
+//                                                   delegate:nil
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+//}
 
 + (void)showEmptyTextError
 {

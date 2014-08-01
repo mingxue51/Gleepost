@@ -1032,7 +1032,7 @@ const float TOP_OFFSET = 280.0f;
         [self stopLoading];
         
         if(!success) {
-            [self showLoadingError:@"Failed to load new posts"];
+//            [self showLoadingError:@"Failed to load new posts"];
             return;
         }
         
@@ -1484,7 +1484,7 @@ const float TOP_OFFSET = 280.0f;
 
 - (void)showLoadingError:(NSString *)message
 {
-    [TSMessage showNotificationInViewController:self title:@"Loading failed" subtitle:message type:TSMessageNotificationTypeError];
+    [TSMessage showNotificationInViewController:self title:@"Loading failed" subtitle:message type:TSMessageNotificationTypeWarning];
 }
 
 

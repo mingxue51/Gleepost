@@ -5,6 +5,12 @@
 //  Created by Σιλουανός on 30/7/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  This class is used for just as a parent class of View Controllers that have
+//  the functionality of selecting users.
+//  This class is used ONLY as a super class.
+
+//  Current children classes: GLPInviteUsersViewController, NewGroupMessageViewController.
+
 
 #import "GLPSelectUsersViewController.h"
 #import "UINavigationBar+Format.h"

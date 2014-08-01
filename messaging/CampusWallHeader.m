@@ -142,7 +142,7 @@ NSString *BORING_IMAGE;
         {
             [self hideLoadingLabel];
 
-            [WebClientHelper showStandardError];
+//            [WebClientHelper showStandardError];
         }
         
     }];

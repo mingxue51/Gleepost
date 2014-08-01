@@ -9,6 +9,8 @@
 //  the functionality of selecting users.
 //  This class is used ONLY as a super class.
 
+//  Current children classes: GLPInviteUsersViewController, NewGroupMessageViewController.
+
 #import <UIKit/UIKit.h>
 #import "GLPSearchBar.h"
 

@@ -154,7 +154,7 @@ const int CORNER_VALUE = 16;
         if (success) {
             [self showMessageViewControllerWithBody:inviteMessage];
         } else {
-            [WebClientHelper showStandardError];
+            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to invite friends."];
         }
     }];
 }

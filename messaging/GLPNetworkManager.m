@@ -49,7 +49,9 @@ static GLPNetworkManager *instance = nil;
     _state = kGLPNetworkManagerStateNeverStarted;
     _networkStatus = kGLPNetworkStatusUndefined;
     
+    //That it seems that is not working anymore.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+    
     
     return self;
 }
