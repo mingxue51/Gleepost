@@ -207,6 +207,8 @@
 		5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */; };
 		5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */; };
 		5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */; };
+		58459FB519901B2E00E7D3C2 /* FakeNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */; };
+		58459FB919901CF300E7D3C2 /* FakeNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */; };
 		58465DED19584CF60021B0FF /* cancel_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DEC19584CF60021B0FF /* cancel_red.png */; };
 		58465DEF19584D0E0021B0FF /* cancel_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DEE19584D0E0021B0FF /* cancel_black.png */; };
 		58465DF119584D590021B0FF /* login_button_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DF019584D590021B0FF /* login_button_blue.png */; };
@@ -1135,6 +1137,9 @@
 		5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDao.m; sourceTree = "<group>"; };
 		5844293A18BCE1EE00DFEAF4 /* GLPCommentDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentDaoParser.h; sourceTree = "<group>"; };
 		5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDaoParser.m; sourceTree = "<group>"; };
+		58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBarView.xib; sourceTree = "<group>"; };
+		58459FB719901CF300E7D3C2 /* FakeNavigationBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBarView.h; sourceTree = "<group>"; };
+		58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBarView.m; sourceTree = "<group>"; };
 		58465DEC19584CF60021B0FF /* cancel_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_red.png; sourceTree = "<group>"; };
 		58465DEE19584D0E0021B0FF /* cancel_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_black.png; sourceTree = "<group>"; };
 		58465DF019584D590021B0FF /* login_button_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_button_blue.png; sourceTree = "<group>"; };
@@ -2438,6 +2443,23 @@
 				5843329C180F200B00BD9F74 /* avatar.png */,
 			);
 			name = "Register Images";
+			sourceTree = "<group>";
+		};
+		58459FB319901B0F00E7D3C2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		58459FB619901CD400E7D3C2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				58459FB719901CF300E7D3C2 /* FakeNavigationBarView.h */,
+				58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		58465DF2195856FB0021B0FF /* UINavigationBar */ = {
@@ -4312,6 +4334,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58459FB619901CD400E7D3C2 /* Helpers */,
 				5863179A19872D70006D79E2 /* Images */,
 				586317961987220A006D79E2 /* Top Views */,
 				58919A4819830CED0033E77A /* Segments */,
@@ -4446,6 +4469,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				58459FB319901B0F00E7D3C2 /* Helpers */,
 				5863179E19872F01006D79E2 /* Images */,
 				58BBACB119787B7000A8A265 /* Collection views cells */,
 				58774D3C196567A60034A1C6 /* Custom search bar */,
@@ -5029,6 +5053,7 @@
 				58289EFD18D7598900228EFF /* going_expired.png in Resources */,
 				5824C42A18E5B2EB006D4484 /* refresh_campus_live_new.png in Resources */,
 				5829F48D18B1546300A7B871 /* add_user.png in Resources */,
+				58459FB519901B2E00E7D3C2 /* FakeNavigationBarView.xib in Resources */,
 				58AA61E8192A87540098E4FB /* nav_bar_title_button.png in Resources */,
 				58E27E0E18A6CD5000D8BB24 /* message-7-old3@2x.png in Resources */,
 				585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */,
@@ -5514,6 +5539,7 @@
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
 				588D8598195B5679002F516A /* TopTableViewCell.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
+				58459FB919901CF300E7D3C2 /* FakeNavigationBarView.m in Sources */,
 				587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */,
 				585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */,
 				581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */,

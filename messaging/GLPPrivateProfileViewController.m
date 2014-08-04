@@ -309,6 +309,7 @@
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
     
 }

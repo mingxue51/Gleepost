@@ -33,6 +33,8 @@
         
     }
     
+    [self setTranslucent:NO];
+    
     if(shadow)
     {
         [self setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
@@ -43,17 +45,8 @@
     }
 }
 
-- (void)invisible
-{
-    [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    self.shadowImage = [UIImage new];
-    self.translucent = YES;
-    self.backgroundColor = [UIColor clearColor];
-}
-
 - (void)setFontFormatWithColour:(GLPColour)colour
 {
-
     
     if([GLPiOS6Helper isIOS6])
     {
@@ -85,6 +78,46 @@
     [self setTintColor:[self colourWithGLPColour:kRed]];
 }
 
+#pragma mark - For group VC
+
+- (void)invisible
+{
+    [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.shadowImage = [UIImage new];
+    self.translucent = YES;
+    self.backgroundColor = [UIColor clearColor];
+    self.topItem.titleView = nil;
+    self.topItem.title = @"";
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+}
+
+- (void)makeVisibleWithTitle:(NSString *)title
+{
+//    [self.topItem.titleView setAlpha:0.0];
+//    [self setAlpha:0.0];
+    self.topItem.title = [title uppercaseString];
+//    self.topItem.titleView = [self generateViewWithLableWithTitle:title];
+    
+    [self whiteBackgroundFormatWithShadow:YES];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
+    
+    
+    
+//    [UIView animateWithDuration:0.5 animations:^{
+//       
+//        [self.topItem.titleView setAlpha:1.0];
+//
+//        [self setAlpha:1.0];
+//        
+//    }];
+//    
+}
+
+#pragma mark - Helpers
+
 - (UIColor *)colourWithGLPColour:(GLPColour)glpColour
 {
     UIColor *tintColour = nil;
@@ -107,6 +140,30 @@
     }
     
     return tintColour;
+}
+
+/**
+ 
+ */
+- (UIView *)generateViewWithLableWithTitle:(NSString *)title
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(85.0, 50.0, 150.0, 21.0)];
+    
+    [view setBackgroundColor:[UIColor clearColor]];
+    
+    [view setClipsToBounds:YES];
+    
+    UILabel *titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 150.0, 21.0)];
+    
+    [titleLbl setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0]];
+    
+    [titleLbl setTextAlignment:NSTextAlignmentCenter];
+    
+    [titleLbl setText:title];
+    
+    [view addSubview:titleLbl];
+    
+    return view;
 }
 
 @end

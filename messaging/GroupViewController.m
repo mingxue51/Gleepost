@@ -34,6 +34,7 @@
 //#import "GLPRefreshControl.h"
 #import "ContactsManager.h"
 #import "GLPProfileViewController.h"
+#import "FakeNavigationBarView.h"
 
 @interface GroupViewController ()
 
@@ -67,6 +68,10 @@
 
 @property (strong, nonatomic) GLPStretchedImageView *strechedImageView;
 
+@property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
+
+@property (assign, nonatomic, getter = isFakeNavigationBarVisible) BOOL fakeNavigationBarVisible;
+
 //@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -77,6 +82,7 @@
 
 const int NUMBER_OF_ROWS = 1;
 const float OFFSET_START_ANIMATING = 300.0;
+const float TOP_OFF_SET = 0.0;
 
 - (void)viewDidLoad
 {
@@ -124,11 +130,19 @@ const float OFFSET_START_ANIMATING = 300.0;
     [self configureNavigationItems];
     
     [self configureNavigationBar];
-
     
     [self.tableView reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if([self isFakeNavigationBarVisible])
+    {
+        [_fakeNavigationBar showNavigationBar];
+    }
+    
+    [super viewWillDisappear:animated];
+}
 
 -(void)dealloc
 {
@@ -260,6 +274,14 @@ const float OFFSET_START_ANIMATING = 300.0;
     
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
+    _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
+    
+    [self.view addSubview:_fakeNavigationBar];
+    
+    [_fakeNavigationBar showNavigationBar];
+    
+    _fakeNavigationBarVisible = NO;
+
     
 //    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
@@ -296,14 +318,27 @@ const float OFFSET_START_ANIMATING = 300.0;
     
 //    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar invisible];
+    
+    
+    
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    if([self isFakeNavigationBarVisible])
+    {
+        //_fakeNavigationBarVisible = NO;
+        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
+    }
+    else
+    {
+        //_fakeNavigationBarVisible = YES;
+        [self.navigationController.navigationBar invisible];
+
+    }
 
     
     //Set title.
     self.title = @"";
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 }
 
@@ -334,7 +369,7 @@ const float OFFSET_START_ANIMATING = 300.0;
     
     int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
     
-    
+#warning bug here.
     if(currentPost)
     {
         [self refreshCellViewWithIndex:index+1];
@@ -692,26 +727,12 @@ const float OFFSET_START_ANIMATING = 300.0;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat yOffset  = scrollView.contentOffset.y;
-    if (yOffset < -kStretchedImageHeight)
-    {
-        CGRect f = _strechedImageView.frame;
-        f.origin.y = yOffset;
-        f.size.height =  -yOffset;
-        _strechedImageView.frame = f;
-        
-        [_strechedImageView setHeightOfTransImage:-yOffset];
     
-//        CGRectSetY(_lbl, -yOffset/2);
-    }
+    [self configureStrechedImageViewWithOffset:yOffset];
         
-    if(yOffset < (-OFFSET_START_ANIMATING))
-    {
-        [_activityIndicator setHidden:NO];
-    }
-    else if(!self.isLoading)
-    {
-        [_activityIndicator setHidden:YES];
-    }
+    [self makeVisibleOrInvisibleActivityIndicatorWithOffset:yOffset];
+    
+    [self makeVisibleOrInvisibleNavigationBarWithOffset:yOffset];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -723,6 +744,62 @@ const float OFFSET_START_ANIMATING = 300.0;
     if(yOffset < (-OFFSET_START_ANIMATING) && !self.isLoading)
     {
         [self loadEarlierPostsFromPullToRefresh];
+    }
+}
+
+- (void)configureStrechedImageViewWithOffset:(float)offset
+{
+    if (offset < -kStretchedImageHeight)
+    {
+        CGRect f = _strechedImageView.frame;
+        f.origin.y = offset;
+        f.size.height =  -offset;
+        _strechedImageView.frame = f;
+        
+        [_strechedImageView setHeightOfTransImage:-offset];
+        
+        //        CGRectSetY(_lbl, -yOffset/2);
+    }
+}
+
+- (void)makeVisibleOrInvisibleActivityIndicatorWithOffset:(float)offset
+{
+    if(offset < (-OFFSET_START_ANIMATING))
+    {
+        [_activityIndicator setHidden:NO];
+    }
+    else if(!self.isLoading)
+    {
+        [_activityIndicator setHidden:YES];
+    }
+}
+
+- (void)makeVisibleOrInvisibleNavigationBarWithOffset:(float)offset
+{
+    if(offset >= TOP_OFF_SET)
+    {
+        if([self isFakeNavigationBarVisible])
+        {
+            return;
+        }
+        
+        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
+        
+        _fakeNavigationBarVisible = YES;
+        
+        DDLogDebug(@"Make navigation bar white.");
+    }
+    else
+    {
+        if(![self isFakeNavigationBarVisible])
+        {
+            return;
+        }
+        
+        [self.navigationController.navigationBar invisible];
+        
+        _fakeNavigationBarVisible = NO;
+        DDLogDebug(@"Make navigation bar invisible.");
     }
 }
 

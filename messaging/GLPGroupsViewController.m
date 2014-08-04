@@ -114,6 +114,7 @@
     //    [self setCustomBackgroundToTableView];
 }
 
+
 //- (void)viewWillDisappear:(BOOL)animated
 //{
 //    //Make the navigation bar invisible before going to the view group VC
