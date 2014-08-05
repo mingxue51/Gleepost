@@ -259,32 +259,13 @@ static BOOL likePushed;
 
 -(void)configureNavigationBar
 {
-    
-        //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    
-    //    [self setNeedsStatusBarAppearanceUpdate];
-
-    
     self.navigationItem.title = @"VIEW POST";
     
-//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
-    
-    //Change the format of the navigation bar.
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-//    [AppearanceHelper setNavigationBarColour:self];
-    
-
-    
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-//    [AppearanceHelper setNavigationBarFontFor:self];
-    
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
-    
 
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
         
-    
+
     if(self.isFromCampusLive)
     {
         [self addCustomBackButton];

@@ -299,7 +299,7 @@ const float TOP_OFF_SET = 0.0;
         buttonX = 0;
     }
     
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(35, 35) withSelector:@selector(createNewPost:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(createNewPost:) andTarget:self];
     
     
     //=======

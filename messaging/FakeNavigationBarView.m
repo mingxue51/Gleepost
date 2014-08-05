@@ -47,7 +47,7 @@
 
 - (void)initiliaseObjects
 {
-    _animationDuration = 0.3;
+    _animationDuration = 0.3 ;
 }
 
 - (void)configureView
