@@ -18,9 +18,12 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLbl;
 
+@property (assign, nonatomic) float animationDuration;
+
 @end
 
 @implementation FakeNavigationBarView
+
 
 - (id)initWithTitle:(NSString *)title
 {
@@ -30,7 +33,8 @@
     {
         _title = title;
         
-
+        [self initiliaseObjects];
+        
         [self configureView];
     }
     
@@ -41,15 +45,18 @@
 {
 }
 
+- (void)initiliaseObjects
+{
+    _animationDuration = 0.3;
+}
+
 - (void)configureView
 {
     FakeNavigationBarView *view = [[[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBarView" owner:self options:nil] objectAtIndex:0];
     
     [self setFrame:view.frame];
-    
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0];
-    
-    CGRectSetY(self, -84);
+        
+//    CGRectSetY(self, -84);
     
     [view setTitle:[_title uppercaseString]];
 
@@ -66,12 +73,38 @@
 
 - (void)hideNavigationBar
 {
-    [self setHidden:YES];
+    
+    [UIView animateWithDuration:_animationDuration delay:0.0 options:UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut  animations:^{
+        
+        [self setAlpha:0.0];
+
+        
+    } completion:^(BOOL finished) {
+        
+        [self setHidden:YES];
+
+    }];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
 }
 
 - (void)showNavigationBar
 {
+    [self setAlpha:0.0];
     [self setHidden:NO];
+    [UIView animateWithDuration:_animationDuration delay:0.0 options:UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut  animations:^{
+        
+        [self setAlpha:1.0];
+        
+    } completion:^(BOOL finished) {
+        
+//        [self setHidden:NO];
+
+    }];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
 }
 
 /*

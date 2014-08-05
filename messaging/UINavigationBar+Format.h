@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, GLPColour) {
 @interface UINavigationBar (Format)
 
 - (void)whiteBackgroundFormatWithShadow:(BOOL)shadow;
+- (void)whiteBackgroundFormatWithShadow:(BOOL)shadow andView:(UIView *)view;
 - (void)invisible;
 - (void)makeVisibleWithTitle:(NSString *)title;
 - (void)setFontFormatWithColour:(GLPColour)colour;

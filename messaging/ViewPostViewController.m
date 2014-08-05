@@ -279,10 +279,11 @@ static BOOL likePushed;
     
 //    [AppearanceHelper setNavigationBarFontFor:self];
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
     
+
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    
+        
     
     if(self.isFromCampusLive)
     {

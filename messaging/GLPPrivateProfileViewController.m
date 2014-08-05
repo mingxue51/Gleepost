@@ -274,7 +274,6 @@
 
 -(void)clearBottomView
 {
-    
     self.tableView.tableFooterView = nil;
 }
 

@@ -17,6 +17,7 @@
 #import "GLPSearchUsersViewController.h"
 #import "GLPGroupManager.h"
 #import "AppearanceHelper.h"
+#import "UINavigationBar+Format.h"
 
 @interface MembersViewController ()
 
@@ -41,14 +42,7 @@
     [super viewDidLoad];
 
     [self configurateTableView];
-    
-    [self configurateView];
-    
-    [self configureNavigationBar];
-    
-
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -58,17 +52,20 @@
     
     [self loadMembers];
     
+    
     [AppearanceHelper makeBackDefaultButton];
 
-
 }
 
-#pragma mark - Configuration
 
--(void)configurateView
+- (void)viewDidAppear:(BOOL)animated
 {
-    self.title = @"MEMBERS";
+    [super viewDidAppear:animated];
+    
+    [self configureNavigationBar];
+
 }
+#pragma mark - Configuration
 
 -(void)configureTopView
 {
@@ -105,6 +102,15 @@
 
 - (void)configureNavigationBar
 {
+//    self.title = @"MEMBERS";
+    
+    self.navigationController.navigationBar.topItem.title = @"MEMBERS";
+
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO andView:self.view];
+    
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 

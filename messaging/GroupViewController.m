@@ -136,10 +136,12 @@ const float TOP_OFF_SET = 0.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if([self isFakeNavigationBarVisible])
-    {
-        [_fakeNavigationBar showNavigationBar];
-    }
+//    if([self isFakeNavigationBarVisible])
+//    {
+//        [_fakeNavigationBar showNavigationBar];
+//    }
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
     
     [super viewWillDisappear:animated];
 }
@@ -278,7 +280,7 @@ const float TOP_OFF_SET = 0.0;
     
     [self.view addSubview:_fakeNavigationBar];
     
-    [_fakeNavigationBar showNavigationBar];
+    [_fakeNavigationBar setHidden:YES];
     
     _fakeNavigationBarVisible = NO;
 
@@ -319,25 +321,31 @@ const float TOP_OFF_SET = 0.0;
 //    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
     
-    
-    
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
     if([self isFakeNavigationBarVisible])
     {
         //_fakeNavigationBarVisible = NO;
-        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
+//        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
+//        [_fakeNavigationBar showNavigationBar];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
     }
     else
     {
         //_fakeNavigationBarVisible = YES;
-        [self.navigationController.navigationBar invisible];
+//        [self.navigationController.navigationBar invisible];
+//        [_fakeNavigationBar hideNavigationBar];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
     }
+    
+    [self.navigationController.navigationBar invisible];
+
 
     
     //Set title.
-    self.title = @"";
+    self.navigationController.navigationBar.topItem.title = @"";
     
 
 }
@@ -783,8 +791,12 @@ const float TOP_OFF_SET = 0.0;
             return;
         }
         
-        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
         
+//        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
+        
+        
+        [_fakeNavigationBar showNavigationBar];
+
         _fakeNavigationBarVisible = YES;
         
         DDLogDebug(@"Make navigation bar white.");
@@ -796,8 +808,11 @@ const float TOP_OFF_SET = 0.0;
             return;
         }
         
-        [self.navigationController.navigationBar invisible];
         
+//        [self.navigationController.navigationBar invisible];
+        
+        [_fakeNavigationBar hideNavigationBar];
+
         _fakeNavigationBarVisible = NO;
         DDLogDebug(@"Make navigation bar invisible.");
     }
@@ -1162,7 +1177,7 @@ const float TOP_OFF_SET = 0.0;
 
 -(void)setPreviousNavigationBarName
 {
-    [self.navigationItem setTitle:self.group.name];
+    [self.navigationItem setTitle:@""];
 }
 
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle

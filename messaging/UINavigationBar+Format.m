@@ -45,6 +45,29 @@
     }
 }
 
+/**
+ This method adds a black image view on top of the view controller view's
+ a white image in order. This kind of procedure is used when the parent view controller
+ has translucent navigation bar.
+ 
+ @param shadow
+ @param view view controller's view
+ 
+ */
+
+- (void)whiteBackgroundFormatWithShadow:(BOOL)shadow andView:(UIView *)view
+{
+    [self whiteBackgroundFormatWithShadow:shadow];
+    
+//    [self setTranslucent:YES];
+    UIView *imageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -64.0, 320.0, 64.0)];
+    
+    [imageView setBackgroundColor:[UIColor whiteColor]];
+    
+    [view addSubview:imageView];
+    
+}
+
 - (void)setFontFormatWithColour:(GLPColour)colour
 {
     
@@ -82,14 +105,16 @@
 
 - (void)invisible
 {
-    [self setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    
+    [self setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"]
+              forBarPosition:UIBarPositionAny
+                  barMetrics:UIBarMetricsDefault];
+    
     self.shadowImage = [UIImage new];
     self.translucent = YES;
-    self.backgroundColor = [UIColor clearColor];
+//    self.backgroundColor = [UIColor clearColor];
     self.topItem.titleView = nil;
     self.topItem.title = @"";
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
 }
 
 - (void)makeVisibleWithTitle:(NSString *)title
@@ -108,12 +133,12 @@
     
 //    [UIView animateWithDuration:0.5 animations:^{
 //       
-//        [self.topItem.titleView setAlpha:1.0];
+////        [self.topItem.titleView setAlpha:1.0];
 //
 //        [self setAlpha:1.0];
 //        
 //    }];
-//    
+    
 }
 
 #pragma mark - Helpers
