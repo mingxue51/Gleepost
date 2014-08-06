@@ -1816,12 +1816,16 @@ static WebClient *instance = nil;
 
 - (void)searchUserByName:(NSString *)name callback:(void (^)(NSArray *users))callback
 {
-    NSString *path = [NSString stringWithFormat:@"search/users/%@", name];
+    NSString *finalNameSurname = [RemoteParser generateServerUserNameTypeWithNameSurname:name];
+    
+    NSString *path = [NSString stringWithFormat:@"search/users/%@", finalNameSurname];
     [self getPath:path parameters:_sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogInfo(@"search: %@", responseObject);
         NSArray *users = [RemoteParser parseUsersFromJson:responseObject];
         callback(users);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
         callback(nil);
     }];
 }

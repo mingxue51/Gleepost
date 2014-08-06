@@ -91,6 +91,23 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return networkContent;
 }
 
++ (NSString *)generateServerUserNameTypeWithNameSurname:(NSString *)nameSurname
+{
+    NSRange range = [nameSurname rangeOfString:@" "];
+    
+    if(range.location == NSNotFound)
+    {
+        return nameSurname;
+    }
+    else
+    {
+        NSMutableString *finalStr = nameSurname.mutableCopy;
+        
+        [finalStr replaceCharactersInRange:range withString:@"%20"];
+        
+        return finalStr;
+    }
+}
 
 #pragma mark - Conversations
 
@@ -890,6 +907,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     return date;
 }
+
+
 
 #pragma mark - Error messages
 
