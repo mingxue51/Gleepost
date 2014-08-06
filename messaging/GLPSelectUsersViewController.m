@@ -35,9 +35,7 @@
 }
 
 - (void)initialiseObjects
-{
-    DDLogDebug(@"INITIALISED");
-    
+{    
     _searchedUsers = [[NSMutableArray alloc] init];
     _checkedUsers = [[NSMutableArray alloc] init];
     
