@@ -8,6 +8,7 @@
 
 #import "GLPStretchedImageView.h"
 #import "ShapeFormatterHelper.h"
+#import "NSString+Utils.h"
 
 @interface GLPStretchedImageView ()
 
@@ -88,6 +89,16 @@ const float kStretchedImageHeight = 250;
 - (void)setHeightOfTransImage:(float)height
 {
     CGRectSetH(_transImageView, height);
+}
+
+- (void)setImageUrl:(NSString *)imageUrl
+{
+    [super setImageUrl:imageUrl];
+    
+    if([imageUrl isEmpty] || !imageUrl)
+    {
+        [_transImageView setHidden:YES];
+    }
 }
 
 #pragma mark - Helpers

@@ -396,6 +396,8 @@
     //    [self createNewGroupWithGroup:group];
 }
 
+#pragma mark - GroupCollectionViewCellDelegate
+
 -(void)groupDeletedWithData:(GLPGroup *)group
 {
     [GLPGroupManager deleteGroup:group];
@@ -405,6 +407,11 @@
     //[self removeGroupFromCollectionViewWithRemoteKey:group.remoteKey];
     
     [self reloadNewGroupWithGroup:nil];
+}
+
+-(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet
+{
+    [actionSheet showInView:[self.view window]];
 }
 
 #pragma mark - Client methods

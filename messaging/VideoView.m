@@ -64,8 +64,8 @@
     if(ON_DEVICE)
     {
         _remoteKey = post.remoteKey;
-        _post = post;
         
+        _post = post;
         
         [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:_remoteKey];
         

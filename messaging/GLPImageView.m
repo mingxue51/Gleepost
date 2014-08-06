@@ -42,13 +42,15 @@
 
 - (void)setImageUrl:(NSString *)imageUrl
 {
-    if([imageUrl isEqualToString:@""])
-    {
+    if([imageUrl isEqualToString:@""] || !imageUrl)
+    {        
         //Set default image.
-        [self setImage:[UIImage imageNamed:@"default_user_image2"]];
+        [self setImage:[UIImage imageNamed:@"default_thumbnail"]];
     }
     else
     {
+        
+        
         //Fetch the image from the server and add it to the image view.
         [self setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }

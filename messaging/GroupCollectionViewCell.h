@@ -10,18 +10,19 @@
 
 @class GLPGroup;
 
-@protocol GroupDeletedDelegate <NSObject>
+@protocol GroupCollectionViewCellDelegate <NSObject>
 
 @required
 -(void)groupDeletedWithData:(GLPGroup *)group;
+-(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet;
 
 @end
 
 extern const CGSize GROUP_COLLECTION_CELL_DIMENSIONS;
 
-@interface GroupCollectionViewCell : UICollectionViewCell <UIAlertViewDelegate>
+@interface GroupCollectionViewCell : UICollectionViewCell <UIActionSheetDelegate>
 
 -(void)setGroupData:(GLPGroup *)groupData;
--(void)setDelegate:(UIViewController <GroupDeletedDelegate> *)delegate;
+-(void)setDelegate:(UIViewController <GroupCollectionViewCellDelegate> *)delegate;
 
 @end

@@ -22,7 +22,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *groupDescription;
 
-@property (weak, nonatomic) UIViewController <GroupDeletedDelegate> *delegate;
+@property (weak, nonatomic) UIViewController <GroupCollectionViewCellDelegate> *delegate;
 
 @property (strong, nonatomic) GLPGroup *groupData;
 
@@ -50,8 +50,6 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     [super awakeFromNib];
     
     [self formatElements];
-    
-    
 }
 
 - (void)formatElements
@@ -81,7 +79,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     }
     else if([groupData.groupImageUrl isEqualToString:@""] || !groupData.groupImageUrl)
     {
-        [_groupImage setImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_groupImage setImage:[UIImage imageNamed:@"default_thumbnail"]];
     }
     //    else if (groupData.finalImage && groupData.groupImageUrl)
     //    {
@@ -154,26 +152,66 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
 
 #pragma mark - Selectors
 
-- (IBAction)quitGroup:(id)sender
+- (IBAction)moreOptions:(id)sender
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to leave the group?" message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Leave",nil];
+//    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Are you sure you want to leave the group?" message:nil delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Leave",nil];
+//    
+//    
+//    [alert show];
     
-    //    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UIActionSheet *actionSheet = nil;
     
-    [alert show];
+    actionSheet = [[UIActionSheet alloc]initWithTitle:@"Group Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: @"Leave group", nil];
+    
+    [_delegate showViewOptionsWithActionSheer:actionSheet];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+
+#pragma mark - Action Sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if(buttonIndex == 0)
+    
+    if([selectedButtonTitle isEqualToString:@"Leave group"])
     {
-        return;
+        [self quitFromGroup];
     }
     
-    
-    [self quitFromGroup];
 }
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
+    for (UIView *subview in actionSheet.subviews)
+    {
+        if ([subview isKindOfClass:[UIButton class]])
+        {
+            UIButton *btn = (UIButton*)subview;
+            
+            if([btn.titleLabel.text isEqualToString:@"Leave group"])
+            {
+                btn.titleLabel.textColor = [AppearanceHelper redGleepostColour];
+            }
+            else
+            {
+                btn.titleLabel.textColor = [UIColor lightGrayColor];
+            }
+        }
+    }
+}
+
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    
+//    if(buttonIndex == 0)
+//    {
+//        return;
+//    }
+//    
+//    
+//    [self quitFromGroup];
+//}
 
 #pragma mark - Client
 

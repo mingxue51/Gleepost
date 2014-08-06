@@ -60,12 +60,18 @@
     [self whiteBackgroundFormatWithShadow:shadow];
     
 //    [self setTranslucent:YES];
-    UIView *imageView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -64.0, 320.0, 64.0)];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -64.0, 320.0, 64.0)];
     
-    [imageView setBackgroundColor:[UIColor whiteColor]];
+    [topView setBackgroundColor:[UIColor whiteColor]];
     
-    [view addSubview:imageView];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 63.0, 320.0, 1.0)];
     
+    imgView.image = [ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]];
+    
+    [topView addSubview:imgView];
+
+    
+    [view addSubview:topView];
 }
 
 - (void)setFontFormatWithColour:(GLPColour)colour

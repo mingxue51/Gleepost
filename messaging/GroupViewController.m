@@ -74,7 +74,7 @@
 
 //@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -82,7 +82,7 @@
 
 const int NUMBER_OF_ROWS = 1;
 const float OFFSET_START_ANIMATING = 300.0;
-const float TOP_OFF_SET = 0.0;
+const float TOP_OFF_SET = -64.0;
 
 - (void)viewDidLoad
 {
@@ -791,15 +791,10 @@ const float TOP_OFF_SET = 0.0;
             return;
         }
         
-        
-//        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
-        
-        
         [_fakeNavigationBar showNavigationBar];
 
         _fakeNavigationBarVisible = YES;
         
-        DDLogDebug(@"Make navigation bar white.");
     }
     else
     {
@@ -808,13 +803,9 @@ const float TOP_OFF_SET = 0.0;
             return;
         }
         
-        
-//        [self.navigationController.navigationBar invisible];
-        
         [_fakeNavigationBar hideNavigationBar];
 
         _fakeNavigationBarVisible = NO;
-        DDLogDebug(@"Make navigation bar invisible.");
     }
 }
 
