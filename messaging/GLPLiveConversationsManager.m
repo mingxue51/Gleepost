@@ -658,7 +658,7 @@ static GLPLiveConversationsManager *instance = nil;
 }
 
 - (GLPConversation *)findGroupConversationWithParticipants:(NSArray *)users
-{
+{    
     NSMutableArray *foundUsers = [[NSMutableArray alloc] init];
     
     for(GLPConversation *conversation in [_conversations allValues])
@@ -670,21 +670,31 @@ static GLPLiveConversationsManager *instance = nil;
             continue;
         }
         
-        
-        for(GLPUser *pUser in participants)
+        if(participants.count == users.count)
         {
-            for(GLPUser *inUser in users)
+            for(GLPUser *pUser in participants)
             {
-                if(pUser.remoteKey == inUser.remoteKey)
+                for(GLPUser *inUser in users)
                 {
-                    [foundUsers addObject:pUser];
-                }
-            }
+                    if(pUser.remoteKey == inUser.remoteKey)
+                    {
+                        [foundUsers addObject:inUser];
+                    }
+            }   }
+        }
+        else
+        {
+            [foundUsers removeAllObjects];
+            continue;
         }
         
         if(foundUsers.count == users.count)
         {
             return conversation;
+        }
+        else
+        {
+            [foundUsers removeAllObjects];
         }
     }
     

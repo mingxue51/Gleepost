@@ -116,12 +116,40 @@
     return removeIndex;
 }
 
-
+//TODO: DEPRECATED.
 - (BOOL)isCurrentUserFoundWithUsers:(NSArray *)users
 {
     NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
     
     return (arrayResult.count == 1) ? YES : NO;
+}
+
+/**
+ Removes the logged in user from the users array if logged in user exist.
+ This method also works when in the users list are more than one user, logged in user included.
+ 
+ @param users the searched users.
+ @return the filtered users.
+ 
+ */
+- (NSArray *)removeCurrentUserIfExistInUsers:(NSArray *)users
+{
+    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
+    
+    if(arrayResult.count == 0)
+    {
+        //User don't exist in the user's list.
+        return users;
+    }
+ 
+    return [self removeCurrentUserFromUsers:users];
+}
+
+- (NSArray *)removeCurrentUserFromUsers:(NSArray *)users
+{
+    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey != %d", [SessionManager sharedInstance].user.remoteKey]];
+    
+    return arrayResult;
 }
 
 - (NSArray *)getCheckedUsersRemoteKeys
@@ -173,10 +201,17 @@
 
 - (void)textChanged:(NSString *)searchText
 {
+    //IMPORTANT: A synchronized block added in order to avoid multible access from different threads
+    //on the same data structure.
     
-    // remove all data that belongs to previous search
+    @synchronized(_searchedUsers)
+    {
+        // remove all data that belongs to previous search
+        
+        [_searchedUsers removeAllObjects];
+    }
     
-    [_searchedUsers removeAllObjects];
+
     
     //If searchText is empty then just reload table view.
     if(![searchText isNotBlank])
@@ -216,12 +251,22 @@
             return;
         }
         
-        if([self isCurrentUserFoundWithUsers:users])
+        
+//        if([self isCurrentUserFoundWithUsers:users])
+//        {
+//            return;
+//        }
+        
+        users = [self removeCurrentUserIfExistInUsers:users];
+        
+        users = [self filterUsersWithFoundUsers:users];
+        
+        if(users.count == 0)
         {
             return;
         }
         
-        users = [self filterUsersWithFoundUsers:users];
+        DDLogDebug(@"Users after filtering: %@", users);
         
         DDLogInfo(@"Search users by name count: %lu", (unsigned long)users.count);
         
