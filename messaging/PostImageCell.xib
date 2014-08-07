@@ -129,16 +129,24 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-gT-Nhx">
-                                        <rect key="frame" x="270" y="11" width="28" height="27"/>
+                                        <rect key="frame" x="256" y="11" width="42" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="28" id="Icv-rk-Lz5"/>
+                                            <constraint firstAttribute="width" constant="42" id="Icv-rk-Lz5"/>
                                             <constraint firstAttribute="height" constant="27" id="S6y-3V-RU7"/>
                                         </constraints>
-                                        <inset key="contentEdgeInsets" minX="11" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" image="more.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions 7, 27 (w,h)">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="toolTip"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="N70-Ij-NZ0"/>
                                         </connections>
@@ -194,11 +202,20 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ze-7F-x8n">
-                                        <rect key="frame" x="34" y="12" width="16" height="14"/>
+                                        <rect key="frame" x="10" y="5" width="64" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="contentEdgeInsets" minX="24" minY="7" maxX="24" maxY="7"/>
                                         <state key="normal" image="icon_like.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions 16, 14 (w,h)">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="toolTip"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="elv-e9-ses"/>
                                         </connections>
@@ -239,20 +256,6 @@
                                         </attributedString>
                                         <connections>
                                             <action selector="sharePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="juO-fl-1G0"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTn-eI-Mdl" userLabel="Button back like">
-                                        <rect key="frame" x="0.0" y="5" width="87" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="NrF-AT-t92"/>
-                                            <constraint firstAttribute="width" constant="87" id="haa-YZ-OoA"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="asB-ng-pED"/>
                                         </connections>
                                     </button>
                                 </subviews>
