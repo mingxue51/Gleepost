@@ -142,9 +142,21 @@
 {
     ALAsset *asset = [_assets objectAtIndex:index];
     
+    
+    //Get the right orientation of the image.
+    UIImageOrientation orientation = UIImageOrientationUp;
+    
+    NSNumber *orientationValue = [asset valueForProperty:@"ALAssetPropertyOrientation"];
+    
+    if (orientationValue != nil) {
+        orientation = [orientationValue intValue];
+    }
+    
     ALAssetRepresentation *realSizeImage = [asset defaultRepresentation];
     
-    UIImage *img = [UIImage imageWithCGImage:[realSizeImage fullResolutionImage]];
+    CGFloat scale  = 1;
+
+    UIImage *img = [UIImage imageWithCGImage:[realSizeImage fullResolutionImage] scale:scale orientation:orientation];
     
     return img;
 }
