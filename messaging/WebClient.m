@@ -1825,7 +1825,6 @@ static WebClient *instance = nil;
         callback(users);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        
         callback(nil);
     }];
 }

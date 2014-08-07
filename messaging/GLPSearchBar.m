@@ -83,6 +83,11 @@
     [_activityIndicator stopAnimating];
 }
 
+- (void)addEmptyText
+{
+    [_textField setText:@""];
+}
+
 
 #pragma mark - UITextFieldDelegate
 

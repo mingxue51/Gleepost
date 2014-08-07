@@ -86,18 +86,19 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(self.searchedUsers.count == 0)
+    
+    [self showOrHideFacebookButton];
+    
+    if([self areSelectedUsersVisible])
     {
-        //Show facebook button to invite friends.
-        [_facebookButton setHidden:NO];
+        return self.checkedUsers.count;
     }
     else
     {
-        //Hide facebook button.
-        [_facebookButton setHidden:YES];
+        return self.searchedUsers.count;
     }
     
-    return self.searchedUsers.count;
+//    return self.searchedUsers.count;
 }
 
 
@@ -109,9 +110,19 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     
     GLPCheckNameCell *userCell = nil;
     
-    GLPUser *currentUser = self.searchedUsers[indexPath.row];
+    GLPUser *currentUser = nil;
+    BOOL checked = NO;
     
-    BOOL checked = [super isUserSelected:currentUser];
+    if([self areSelectedUsersVisible])
+    {
+        currentUser = self.checkedUsers[indexPath.row];
+        checked = YES;
+    }
+    else
+    {
+        currentUser = self.searchedUsers[indexPath.row];
+        checked = NO;
+    }
     
     userCell = [tableView dequeueReusableCellWithIdentifier:userCellIdentifier forIndexPath:indexPath];
     
@@ -143,12 +154,16 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 {
     [self.checkedUsers addObject:user];
     
+    [super userSelected];
+    
     [self updateButtonTitle];
 }
 
 - (void)userUncheckedWithUser:(GLPUser *)user
 {
-    [super removeUser:user];
+    NSInteger removedIndex = [super removeUser:user];
+    
+    [self removeCellWithIndex:removedIndex];
     
     [self updateButtonTitle];
 }
@@ -179,6 +194,30 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [_addSelectedButton setEnabled:NO];
     
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_TLT] forState:UIControlStateNormal];
+}
+
+- (void)removeCellWithIndex:(NSInteger)index
+{
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+- (void)showOrHideFacebookButton
+{
+    if(super.searchedUsers.count == 0 && super.checkedUsers.count == 0)
+    {
+        //Show facebook button to invite friends.
+        [_facebookButton setHidden:NO];
+        
+        DDLogDebug(@"Show facebook");
+    }
+    else
+    {
+        //Hide facebook button.
+        [_facebookButton setHidden:YES];
+        
+        DDLogDebug(@"Hide facebook");
+        
+    }
 }
 
 #pragma mark - GLPSelectUsersViewControllerDelegate

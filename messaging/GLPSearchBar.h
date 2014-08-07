@@ -30,4 +30,6 @@
 - (void)setPlaceholderWithText:(NSString *)text;
 - (void)startActivityIndicator;
 - (void)stopActivityIndicator;
+- (void)addEmptyText;
+
 @end

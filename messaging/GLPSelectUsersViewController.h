@@ -36,12 +36,15 @@
 
 @property (strong, nonatomic) NSArray *alreadyMembers;
 
+@property (assign, nonatomic, getter = areSelectedUsersVisible) BOOL selectedUsersVisible;
+
 - (void)initialiseObjects;
 - (void)configureNavigationBar;
 - (BOOL)isUserSelected:(GLPUser *)user;
-- (void)removeUser:(GLPUser *)user;
+- (NSInteger)removeUser:(GLPUser *)user;
 - (BOOL)isCurrentUserFoundWithUsers:(NSArray *)users;
 - (NSArray *)getCheckedUsersRemoteKeys;
 - (void)resignFirstResponderOfGlpSearchBar;
-
+- (void)userSelected;
+- (void)userRemoved;
 @end

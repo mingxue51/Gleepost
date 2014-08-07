@@ -25,6 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
 
+
 @end
 
 @implementation NewGroupMessageViewController
@@ -95,7 +96,14 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.searchedUsers.count;
+    if([self areSelectedUsersVisible])
+    {
+        return self.checkedUsers.count;
+    }
+    else
+    {
+        return self.searchedUsers.count;
+    }
 }
 
 #pragma mark - Table view delegate
@@ -106,10 +114,22 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     
     GLPCheckNameCell *userCell = nil;
     
+    GLPUser *currentUser = nil;
+    BOOL checked = NO;
     
-    GLPUser *currentUser = self.searchedUsers[indexPath.row];
+    if([self areSelectedUsersVisible])
+    {
+        currentUser = self.checkedUsers[indexPath.row];
+        checked = YES;
+    }
+    else
+    {
+        currentUser = self.searchedUsers[indexPath.row];
+        checked = NO;
+    }
     
-    BOOL checked = [self isUserSelected:currentUser];
+    
+//    BOOL checked = [self isUserSelected:currentUser];
     
     userCell = [tableView dequeueReusableCellWithIdentifier:userCellIdentifier forIndexPath:indexPath];
     
@@ -137,12 +157,16 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 {
     [self.checkedUsers addObject:user];
     
+    [super userSelected];
+    
     [self updateButtonTitle];
 }
 
 - (void)userUncheckedWithUser:(GLPUser *)user
 {
-    [self removeUser:user];
+    NSInteger removedIndex = [super removeUser:user];
+    
+    [self removeCellWithIndex:removedIndex];
     
     [self updateButtonTitle];
 }
@@ -266,6 +290,11 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     [_addSelectedButton setEnabled:NO];
     
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@", FIXED_BUTTON_ONE_USER_TITLE] forState:UIControlStateNormal];
+}
+
+- (void)removeCellWithIndex:(NSInteger)index
+{
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];    
 }
 
 #pragma mark - Navigation

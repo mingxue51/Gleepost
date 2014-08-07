@@ -22,7 +22,6 @@
 @interface GLPSelectUsersViewController ()
 
 
-
 @end
 
 @implementation GLPSelectUsersViewController
@@ -43,6 +42,8 @@
     {
         _alreadyMembers = [[NSArray alloc] init];
     }
+    
+    _selectedUsersVisible = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -95,7 +96,7 @@
     return NO;
 }
 
-- (void)removeUser:(GLPUser *)user
+- (NSInteger)removeUser:(GLPUser *)user
 {
     int removeIndex = 0;
     
@@ -106,11 +107,18 @@
         if(u.remoteKey == user.remoteKey)
         {
             removeIndex = i;
+            
+            DDLogDebug(@"REMOVED: %@", u);
             break;
         }
     }
     
+
     [_checkedUsers removeObjectAtIndex:removeIndex];
+        
+    DDLogDebug(@"FINAL COUNT: %d", _checkedUsers.count);
+    
+    return removeIndex;
 }
 
 
@@ -155,21 +163,49 @@
     return finalUsers;
 }
 
+- (void)userSelected
+{
+    [_glpSearchBar addEmptyText];
+    
+    _selectedUsersVisible = YES;
+    
+    [_searchedUsers removeAllObjects];
+    
+    [_delegate reloadTableView];
+}
+
+- (void)userRemoved
+{
+    
+}
+
 #pragma mark - GLPSearchBarDelegate
 
 - (void)textChanged:(NSString *)searchText
 {
+    
     // remove all data that belongs to previous search
     
     [_searchedUsers removeAllObjects];
     
+    //If searchText is empty then just reload table view.
     if(![searchText isNotBlank])
     {
+        DDLogDebug(@"Selected users should be visible");
+        
+        //All selected users should be visible.
+        _selectedUsersVisible = YES;
+
         [_delegate reloadTableView];
         
         return;
     }
     
+
+    DDLogDebug(@"Selected users should NOT be visible");
+
+    _selectedUsersVisible = NO;
+
     
     [self searchUserWithName:searchText];
 }
