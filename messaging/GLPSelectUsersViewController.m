@@ -22,7 +22,6 @@
 @interface GLPSelectUsersViewController ()
 
 
-
 @end
 
 @implementation GLPSelectUsersViewController
@@ -35,9 +34,7 @@
 }
 
 - (void)initialiseObjects
-{
-    DDLogDebug(@"INITIALISED");
-    
+{    
     _searchedUsers = [[NSMutableArray alloc] init];
     _checkedUsers = [[NSMutableArray alloc] init];
     
@@ -45,6 +42,8 @@
     {
         _alreadyMembers = [[NSArray alloc] init];
     }
+    
+    _selectedUsersVisible = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,8 +71,6 @@
     
     [_glpSearchBar becomeTextFieldFirstResponder];
 
-    
-    DDLogDebug(@"Search bar view: %@ : %@", _searchBarView, _glpSearchBar);
 }
 
 - (void)configureNavigationBar
@@ -97,7 +94,7 @@
     return NO;
 }
 
-- (void)removeUser:(GLPUser *)user
+- (NSInteger)removeUser:(GLPUser *)user
 {
     int removeIndex = 0;
     
@@ -108,19 +105,51 @@
         if(u.remoteKey == user.remoteKey)
         {
             removeIndex = i;
+            
             break;
         }
     }
     
+
     [_checkedUsers removeObjectAtIndex:removeIndex];
+    
+    return removeIndex;
 }
 
-
+//TODO: DEPRECATED.
 - (BOOL)isCurrentUserFoundWithUsers:(NSArray *)users
 {
     NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
     
     return (arrayResult.count == 1) ? YES : NO;
+}
+
+/**
+ Removes the logged in user from the users array if logged in user exist.
+ This method also works when in the users list are more than one user, logged in user included.
+ 
+ @param users the searched users.
+ @return the filtered users.
+ 
+ */
+- (NSArray *)removeCurrentUserIfExistInUsers:(NSArray *)users
+{
+    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey = %d", [SessionManager sharedInstance].user.remoteKey]];
+    
+    if(arrayResult.count == 0)
+    {
+        //User don't exist in the user's list.
+        return users;
+    }
+ 
+    return [self removeCurrentUserFromUsers:users];
+}
+
+- (NSArray *)removeCurrentUserFromUsers:(NSArray *)users
+{
+    NSArray *arrayResult = [users filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey != %d", [SessionManager sharedInstance].user.remoteKey]];
+    
+    return arrayResult;
 }
 
 - (NSArray *)getCheckedUsersRemoteKeys
@@ -157,21 +186,46 @@
     return finalUsers;
 }
 
+- (void)userSelected
+{
+    [_glpSearchBar addEmptyText];
+    
+    _selectedUsersVisible = YES;
+    
+    [_searchedUsers removeAllObjects];
+    
+    [_delegate reloadTableView];
+}
+
 #pragma mark - GLPSearchBarDelegate
 
 - (void)textChanged:(NSString *)searchText
 {
-    // remove all data that belongs to previous search
+    //IMPORTANT: A synchronized block added in order to avoid multible access from different threads
+    //on the same data structure.
     
-    [_searchedUsers removeAllObjects];
+    @synchronized(_searchedUsers)
+    {
+        // remove all data that belongs to previous search
+        
+        [_searchedUsers removeAllObjects];
+    }
     
+
+    
+    //If searchText is empty then just reload table view.
     if(![searchText isNotBlank])
     {
+        //All selected users should be visible.
+        _selectedUsersVisible = YES;
+
         [_delegate reloadTableView];
         
         return;
     }
-    
+
+    _selectedUsersVisible = NO;
+
     
     [self searchUserWithName:searchText];
 }
@@ -197,12 +251,22 @@
             return;
         }
         
-        if([self isCurrentUserFoundWithUsers:users])
+        
+//        if([self isCurrentUserFoundWithUsers:users])
+//        {
+//            return;
+//        }
+        
+        users = [self removeCurrentUserIfExistInUsers:users];
+        
+        users = [self filterUsersWithFoundUsers:users];
+        
+        if(users.count == 0)
         {
             return;
         }
         
-        users = [self filterUsersWithFoundUsers:users];
+        DDLogDebug(@"Users after filtering: %@", users);
         
         DDLogInfo(@"Search users by name count: %lu", (unsigned long)users.count);
         

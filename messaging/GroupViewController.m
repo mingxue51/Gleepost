@@ -377,9 +377,14 @@ const float TOP_OFF_SET = -64.0;
     
     int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
     
+    DDLogWarn(@"GroupViewController : updateRealImage notification: %@ and index: %d", notification, index);
+
+    
 #warning bug here.
     if(currentPost)
     {
+        DDLogWarn(@"Refresh cell with index: %d", index);
+        
         [self refreshCellViewWithIndex:index+1];
     }
 }

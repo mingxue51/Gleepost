@@ -908,15 +908,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     if([_post imagePost] && [self isCurrentPostBelongsToCurrentUser])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Save image", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Save image", @"Report", nil];
     }
     else if([_post imagePost] && ![self isCurrentPostBelongsToCurrentUser])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Save image", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Save image", @"Report", nil];
     }
     else if (![_post imagePost] && [self isCurrentPostBelongsToCurrentUser])
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Report", nil];
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"More" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Report", nil];
     }
     
     [_delegate showViewOptionsWithActionSheer:actionSheet];
@@ -984,6 +988,22 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }];
 }
 
+- (void)reportCurrentPost
+{
+    [[WebClient sharedInstance] reportPostWithRemoteKey:_post.remoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent:@"Thanks for helping us keep Gleepost a fun and safe environment. Our team will review this post ASAP."];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error Sending Report" andContent:@"Something went wrong reporting this post, please try again in a few moments."];
+        }
+        
+    }];
+}
+
 #pragma mark - Action Sheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1014,8 +1034,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     else if ([selectedButtonTitle isEqualToString:@"Report"])
     {
         //Report post.
-        DDLogDebug(@"Report");
-        
+        [self reportCurrentPost];
     }
 }
 

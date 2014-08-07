@@ -22,6 +22,7 @@
 // user
 + (GLPUser *)parseUserFromJson:(NSDictionary *)json;
 + (NSArray *)parseUsersFromJson:(NSArray *)jsonArray;
++ (NSString *)generateServerUserNameTypeWithNameSurname:(NSString *)nameSurname;
 
 // conversations
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;

@@ -12,6 +12,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *userSelectedImageView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *userUnselectedImageView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *userTickImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
@@ -63,14 +65,17 @@
 {
     _selectButton.tag = 1;
     
-    [_userSelectedImageView setHidden:NO];
+//    [_userSelectedImageView setHidden:NO];
     [_userTickImageView setHidden:NO];
+    [_userUnselectedImageView setHidden:YES];
 }
 
 - (void)unselectUser
 {
     _selectButton.tag = 0;
     
+    [_userUnselectedImageView setHidden:NO];
+
     [_userSelectedImageView setHidden:YES];
     [_userTickImageView setHidden:YES];
 }

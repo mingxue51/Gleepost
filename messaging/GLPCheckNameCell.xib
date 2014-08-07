@@ -26,15 +26,15 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user_not_selected.png" translatesAutoresizingMaskIntoConstraints="NO" id="nKS-JI-spt">
-                        <rect key="frame" x="270" y="10" width="30" height="30"/>
+                        <rect key="frame" x="273" y="13" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user_selected.png" translatesAutoresizingMaskIntoConstraints="NO" id="GiL-6Z-RhZ">
-                        <rect key="frame" x="270" y="10" width="30" height="30"/>
+                        <rect key="frame" x="273" y="13" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="user_selected_tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="hBL-Ho-fcR">
-                        <rect key="frame" x="276" y="9" width="25" height="25"/>
+                        <rect key="frame" x="278" y="11" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MoO-z5-nVa">
@@ -56,12 +56,13 @@
                 <outlet property="selectButton" destination="MoO-z5-nVa" id="x3u-8f-VI4"/>
                 <outlet property="userSelectedImageView" destination="GiL-6Z-RhZ" id="1Rt-zg-Rdd"/>
                 <outlet property="userTickImageView" destination="hBL-Ho-fcR" id="8El-51-cCM"/>
+                <outlet property="userUnselectedImageView" destination="nKS-JI-spt" id="35j-S5-BbV"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
         <image name="user_not_selected.png" width="50" height="50"/>
         <image name="user_selected.png" width="50" height="50"/>
-        <image name="user_selected_tick.png" width="38" height="40"/>
+        <image name="user_selected_tick.png" width="64" height="64"/>
     </resources>
 </document>

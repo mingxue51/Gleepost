@@ -106,10 +106,6 @@
     [self configNavigationBar];
     
     [self configureNavigationButton];
-
-
-    
-
     
     //    [self setCustomBackgroundToTableView];
 }
@@ -163,7 +159,7 @@
 
 - (void)configureNavigationButton
 {
-    [self.navigationController.navigationBar setButton:kRight withImage:@"new_group" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
+    [self.navigationController.navigationBar setButton:kRight withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
 }
 
 - (void)configTabbar

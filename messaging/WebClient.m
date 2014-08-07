@@ -571,6 +571,24 @@ static WebClient *instance = nil;
     
 }
 
+- (void)reportPostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:[NSNumber numberWithInteger:postRemoteKey] forKey:@"post"];
+    
+    [self postPath:@"reports" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Post with %ld id reported successfully.", (long)postRemoteKey);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO);
+    }];
+}
+
 #pragma mark - Campus Live
 
 -(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock
@@ -1816,12 +1834,15 @@ static WebClient *instance = nil;
 
 - (void)searchUserByName:(NSString *)name callback:(void (^)(NSArray *users))callback
 {
-    NSString *path = [NSString stringWithFormat:@"search/users/%@", name];
+    NSString *finalNameSurname = [RemoteParser generateServerUserNameTypeWithNameSurname:name];
+    
+    NSString *path = [NSString stringWithFormat:@"search/users/%@", finalNameSurname];
     [self getPath:path parameters:_sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogInfo(@"search: %@", responseObject);
         NSArray *users = [RemoteParser parseUsersFromJson:responseObject];
         callback(users);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         callback(nil);
     }];
 }
