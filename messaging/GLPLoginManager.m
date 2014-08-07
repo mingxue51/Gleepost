@@ -51,23 +51,27 @@
                 return;
             }
             
-            // load contacts
-            [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
-             
-                if(!success) {
-                    callback(NO, errorMessage);
-                    return;
-                }
-                
-                userWithDetials.email = identifier;
-                
-                [self rememberUser:shouldRemember withIdentifier:identifier andPassword:password];
-//                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
-                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+            userWithDetials.email = identifier;
+            
+            [self rememberUser:shouldRemember withIdentifier:identifier andPassword:password];
+            //                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
+            [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate];
+            
+            
+            callback(YES, errorMessage);
 
-                
-                callback(YES, errorMessage);
-            }];
+            
+            // there is no need to load contacts on that version of the app.
+//            [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
+//             
+//                if(!success) {
+//                    callback(NO, errorMessage);
+//                    return;
+//                }
+//                callback(YES, errorMessage);
+//            }];
+            
+
         }];
     }];
 }
@@ -128,16 +132,32 @@
 
 }
 
-+ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts
+//TODO: This method is not used because we don't support contacts in our CORE app.
+//This method is useful though because we can use it later in our SD app.
+//+ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate andContacts:(NSArray *)contacts
+//{
+//    [[DatabaseManager sharedInstance] initDatabase];
+//    
+//    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//        [GLPUserDao save:user inDb:db];
+//        
+//        for(GLPContact *contact in contacts) {
+//            [GLPContactDao save:contact inDb:db];
+//        }
+//    }];
+//    
+//    [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
+//    
+//    [GLPLoginManager performAfterLoginForUser:user];
+//}
+
++ (void)validateLoginForUser:(GLPUser *)user withToken:(NSString *)token expirationDate:(NSDate *)expirationDate
 {
     [[DatabaseManager sharedInstance] initDatabase];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPUserDao save:user inDb:db];
         
-        for(GLPContact *contact in contacts) {
-            [GLPContactDao save:contact inDb:db];
-        }
     }];
     
     [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
@@ -164,7 +184,7 @@
     }];
     
     if(!user) {
-        DDLogError(@"User exists in session with remoteKey %d, but not in the database", userRemoteKey);
+        DDLogError(@"User exists in session with remoteKey %lu, but not in the database", (unsigned long)userRemoteKey);
         return NO;
     }
     
@@ -177,7 +197,7 @@
 
 + (void)performAfterLoginForUser:(GLPUser *)user
 {
-    DDLogInfo(@"Logged in user remote key: %d", user.remoteKey);
+    DDLogInfo(@"Logged in user remote key: %ld", (long)user.remoteKey);
     
     [[GLPNetworkManager sharedInstance] startNetworkOperations];
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
@@ -250,7 +270,7 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
     
     NSDictionary *authParams = @{@"id": [NSNumber numberWithInt:user.remoteKey], @"token": token};
     
-    NSLog(@"GLPLoginManager : user remoteKey: %d", user.remoteKey);
+    NSLog(@"GLPLoginManager : user remoteKey: %ld", (long)user.remoteKey);
     
     
     // fetch additional info
@@ -264,20 +284,27 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
             return;
         }
         
+        
+        userWithDetials.email = userEmail;
+        
+        [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate];
+        
+        callback(YES, @"Success.");
+        
         // load contacts
-        [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
-         
-            if(!success) {
-                callback(NO, @"Failed to load contacts.");
-                return;
-            }
-            
-            userWithDetials.email = userEmail;
-            
-            [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
-            
-            callback(YES, @"Success.");
-        }];
+//        [[WebClient sharedInstance ] getContactsForUser:userWithDetials authParams:authParams callback:^(BOOL success, NSArray *contacts) {
+//         
+//            if(!success) {
+//                callback(NO, @"Failed to load contacts.");
+//                return;
+//            }
+//            
+//            userWithDetials.email = userEmail;
+//            
+//            [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate andContacts:contacts];
+//            
+//            callback(YES, @"Success.");
+//        }];
     }];
 }
 
