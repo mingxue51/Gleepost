@@ -224,8 +224,10 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 
 - (void)startGroupConversation
 {
+    NSMutableArray *checkedUsers = [[NSMutableArray alloc] initWithArray:self.checkedUsers copyItems:YES];
+    
     //Create new conversation with users.
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:self.checkedUsers];
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:checkedUsers];
     
     DDLogInfo(@"Regular conversation with participants, conversation remote key: %d", conversation.remoteKey);
     
@@ -235,9 +237,9 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
         
         //        NSArray *part = [[NSArray alloc] initWithObjects:user, [SessionManager sharedInstance].user, nil];
         
-        [self.checkedUsers addObject:[SessionManager sharedInstance].user];
+        [checkedUsers addObject:[SessionManager sharedInstance].user];
         
-        conversation = [[GLPConversation alloc] initWithParticipants:self.checkedUsers];
+        conversation = [[GLPConversation alloc] initWithParticipants:checkedUsers];
         
     }
     

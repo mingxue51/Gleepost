@@ -46,5 +46,5 @@
 - (NSArray *)getCheckedUsersRemoteKeys;
 - (void)resignFirstResponderOfGlpSearchBar;
 - (void)userSelected;
-- (void)userRemoved;
+
 @end

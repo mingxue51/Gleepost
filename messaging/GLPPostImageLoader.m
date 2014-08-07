@@ -273,8 +273,7 @@ static GLPPostImageLoader *instance = nil;
 
 -(void)notifyCampusWallWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
 {
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey,
-                                                                                                                         @"FinalImage":image}];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUploaded" object:nil userInfo:@{@"RemoteKey":remoteKey, @"FinalImage":image}];
 }
 
 #pragma mark - Client

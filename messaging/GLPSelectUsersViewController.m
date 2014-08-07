@@ -71,8 +71,6 @@
     
     [_glpSearchBar becomeTextFieldFirstResponder];
 
-    
-    DDLogDebug(@"Search bar view: %@ : %@", _searchBarView, _glpSearchBar);
 }
 
 - (void)configureNavigationBar
@@ -108,15 +106,12 @@
         {
             removeIndex = i;
             
-            DDLogDebug(@"REMOVED: %@", u);
             break;
         }
     }
     
 
     [_checkedUsers removeObjectAtIndex:removeIndex];
-        
-    DDLogDebug(@"FINAL COUNT: %d", _checkedUsers.count);
     
     return removeIndex;
 }
@@ -174,11 +169,6 @@
     [_delegate reloadTableView];
 }
 
-- (void)userRemoved
-{
-    
-}
-
 #pragma mark - GLPSearchBarDelegate
 
 - (void)textChanged:(NSString *)searchText
@@ -191,8 +181,6 @@
     //If searchText is empty then just reload table view.
     if(![searchText isNotBlank])
     {
-        DDLogDebug(@"Selected users should be visible");
-        
         //All selected users should be visible.
         _selectedUsersVisible = YES;
 
@@ -200,9 +188,6 @@
         
         return;
     }
-    
-
-    DDLogDebug(@"Selected users should NOT be visible");
 
     _selectedUsersVisible = NO;
 
