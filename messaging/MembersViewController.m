@@ -108,6 +108,14 @@
 
 //    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO andView:self.view];
     
+//    [self.navigationController.navigationBar invisible];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"]
+              forBarPosition:UIBarPositionAny
+                  barMetrics:UIBarMetricsDefault];
+    
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
     

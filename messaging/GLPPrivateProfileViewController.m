@@ -29,6 +29,7 @@
 #import "EmptyMessage.h"
 #import "UINavigationBar+Format.h"
 #import "GLPBadgesViewController.h"
+#import "ImageFormatterHelper.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -157,6 +158,8 @@
 {
     [super viewDidAppear:animated];
     
+    [self setTitle];
+    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -251,6 +254,15 @@
 
 }
 
+- (void)setTitle
+{
+    if(_profileUser)
+    {
+        self.navigationController.navigationBar.topItem.title = [_profileUser.name uppercaseString];
+    }
+    
+}
+
 -(void)setBottomView
 {
     //Clear bottom view.
@@ -301,16 +313,17 @@
     
 
     
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
-    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    
+    //We are not using the default method for formatting the navigation bar because was causing issues
+    //with the navigation to GroupVC.
+    
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-    
 }
 
 -(void)loadUsersInformation

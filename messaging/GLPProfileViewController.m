@@ -205,6 +205,9 @@
 {
     [super viewDidAppear:animated];
     
+    [self setTitle];
+
+    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -331,12 +334,29 @@
     
     //Change the format of the navigation bar.
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+        
+    if(self.navigationController.viewControllers.count == 1)
+    {
+        //Use the default method of formatting only if this VC is the first appeared.
+        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    }
     
+
+
 
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)setTitle
+{
+    //We are not using the default method for formatting the navigation bar because was causing issues
+    //with the navigation to GroupVC.
+    
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
+    
+    self.navigationController.navigationBar.topItem.title = @"MY PROFILE";
 }
 
 
