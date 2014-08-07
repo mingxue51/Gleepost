@@ -2190,7 +2190,7 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)setPreviousNavigationBarName
 {
-    [self.navigationItem setTitle:@"Stanford Wall"];
+    [self.navigationItem setTitle:@"STANFORD WALL"];
 }
 
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle

@@ -105,32 +105,10 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51d-yj-djx">
-                                        <rect key="frame" x="108" y="2" width="102" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="commentPost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="3My-Yi-6ii"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4NH-f3-coD">
-                                        <rect key="frame" x="7" y="2" width="94" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <state key="normal">
-                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="likePost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="Ske-U9-c25"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ws-C9-0Cf">
-                                        <rect key="frame" x="133" y="12" width="19" height="17"/>
+                                        <rect key="frame" x="100" y="3" width="76" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="contentEdgeInsets" minX="28" minY="8" maxX="29" maxY="9"/>
                                         <state key="normal" image="icon_comment.png">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="Comment">
@@ -141,6 +119,14 @@
                                                 </fragment>
                                             </attributedString>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions 19, 17 (w,h)">
+                                                <attributes>
+                                                    <font key="NSFont" size="11" name="LucidaGrande"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="commentPost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="7Tu-aU-RQ5"/>
                                         </connections>
@@ -153,8 +139,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SMo-Nc-dV3">
-                                        <rect key="frame" x="34" y="12" width="16" height="14"/>
+                                        <rect key="frame" x="10" y="5" width="64" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="contentEdgeInsets" minX="24" minY="7" maxX="24" maxY="7"/>
                                         <state key="normal" image="icon_like.png">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="Like">
@@ -167,6 +154,16 @@
                                                 </fragment>
                                             </attributedString>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment>
+                                                <string key="content">Real dimensions 16, 14 (w,h)
+</string>
+                                                <attributes>
+                                                    <font key="NSFont" size="11" name="LucidaGrande"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="likePost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="L7E-EA-bUZ"/>
                                         </connections>
@@ -178,22 +175,21 @@
                                         <color key="textColor" red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4zn-z3-00R">
-                                        <rect key="frame" x="218" y="2" width="82" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="sharePost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="Mch-2M-fDg"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UCr-ze-2T6">
-                                        <rect key="frame" x="243" y="12" width="22" height="16"/>
+                                        <rect key="frame" x="221" y="4" width="66" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" backgroundImage="share.png">
+                                        <inset key="contentEdgeInsets" minX="22" minY="8" maxX="22" maxY="8"/>
+                                        <state key="normal" image="share.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions of button 22x16">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="toolTip"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="sharePost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="M9c-Vm-5jt"/>
                                         </connections>
@@ -226,25 +222,23 @@
                                     <action selector="goingToEvent:" destination="lnW-OL-CTy" eventType="touchUpInside" id="WOz-RC-Bho"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5N-iC-5o5">
-                                <rect key="frame" x="283" y="8" width="7" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5N-iC-5o5">
+                                <rect key="frame" x="256" y="8" width="42" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" backgroundImage="more.png">
+                                <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="10" maxY="0.0"/>
+                                <state key="normal" image="more.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <attributedString key="userComments">
+                                    <fragment content="Real dimensions 7, 27 (w,h)">
+                                        <attributes>
+                                            <font key="NSFont" size="11" name="LucidaGrande"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <connections>
                                     <action selector="moreOptions:" destination="lnW-OL-CTy" eventType="touchUpInside" id="2CE-pH-Ojo"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ilj-WV-nkn">
-                                <rect key="frame" x="234" y="5" width="77" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal">
-                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="moreOptions:" destination="lnW-OL-CTy" eventType="touchUpInside" id="6ZT-Mz-UyP"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o93-uF-j4R">
@@ -271,14 +265,11 @@
                             <outlet property="likeBtn" destination="SMo-Nc-dV3" id="6KB-HP-MQy"/>
                             <outlet property="likesLbl" destination="Guf-kH-3QR" id="Bhh-S9-3P7"/>
                             <outlet property="mainViewHeight" destination="DGF-8Y-R96" id="LTD-fR-Vgz"/>
-                            <outlet property="moreBtn" destination="Ilj-WV-nkn" id="LiX-GG-3DL"/>
                             <outlet property="nameLbl" destination="yxh-pG-jkv" id="GE9-jf-6ZB"/>
                             <outlet property="shareBtn" destination="UCr-ze-2T6" id="LXd-9i-WJI"/>
                             <outlet property="socialView" destination="RLb-ca-bOp" id="KHN-Cs-7D2"/>
                             <outlet property="timePostLbl" destination="fIE-VY-MZi" id="gjv-V0-W5u"/>
                             <outlet property="userImageView" destination="rLa-G4-0ZA" id="xx0-Yg-HfD"/>
-                            <outlet property="wideCommentBtn" destination="51d-yj-djx" id="B6h-QI-s6E"/>
-                            <outlet property="wideShareBtn" destination="4zn-z3-00R" id="51v-oC-aje"/>
                         </connections>
                     </view>
                 </subviews>

@@ -129,27 +129,26 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-gT-Nhx">
-                                        <rect key="frame" x="281" y="11" width="7" height="27"/>
+                                        <rect key="frame" x="256" y="11" width="42" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="7" id="Icv-rk-Lz5"/>
+                                            <constraint firstAttribute="width" constant="42" id="Icv-rk-Lz5"/>
                                             <constraint firstAttribute="height" constant="27" id="S6y-3V-RU7"/>
                                         </constraints>
+                                        <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" image="more.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions 7, 27 (w,h)">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="toolTip"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="N70-Ij-NZ0"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yaz-qM-IJt">
-                                        <rect key="frame" x="227" y="10" width="71" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="lRX-f6-q0O"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -203,75 +202,60 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ze-7F-x8n">
-                                        <rect key="frame" x="34" y="12" width="16" height="14"/>
+                                        <rect key="frame" x="10" y="5" width="64" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="contentEdgeInsets" minX="24" minY="7" maxX="24" maxY="7"/>
                                         <state key="normal" image="icon_like.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions 16, 14 (w,h)">
+                                                <attributes>
+                                                    <font key="NSFont" metaFont="toolTip"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="elv-e9-ses"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4HT-5v-R3a">
-                                        <rect key="frame" x="129" y="10" width="19" height="17"/>
+                                        <rect key="frame" x="100" y="3" width="76" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="contentEdgeInsets" minX="28" minY="8" maxX="29" maxY="9"/>
                                         <state key="normal" image="icon_comment.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions 19, 17 (w,h)">
+                                                <attributes>
+                                                    <font key="NSFont" size="11" name="LucidaGrande"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="W8P-8l-IgX"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NR-Mx-RHV">
-                                        <rect key="frame" x="243" y="9" width="25" height="16"/>
+                                        <rect key="frame" x="222" y="1" width="66" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <inset key="contentEdgeInsets" minX="22" minY="8" maxX="22" maxY="8"/>
                                         <state key="normal" image="share.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <attributedString key="userComments">
+                                            <fragment content="Real dimensions of button 22x16">
+                                                <attributes>
+                                                    <font key="NSFont" size="11" name="LucidaGrande"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
                                         <connections>
                                             <action selector="sharePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="juO-fl-1G0"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OW5-9V-qeb" userLabel="Button back comment">
-                                        <rect key="frame" x="97" y="5" width="99" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="gpX-Pe-q5U"/>
-                                            <constraint firstAttribute="width" constant="99" id="qH7-vH-EUn"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="NiW-c1-RRu"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2b7-62-Ogm" userLabel="Button back share">
-                                        <rect key="frame" x="214" y="6" width="86" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="LX6-YE-rpk"/>
-                                            <constraint firstAttribute="width" constant="86" id="YEK-A0-JzR"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="sharePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="dia-vl-VhP"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTn-eI-Mdl" userLabel="Button back like">
-                                        <rect key="frame" x="0.0" y="5" width="87" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="NrF-AT-t92"/>
-                                            <constraint firstAttribute="width" constant="87" id="haa-YZ-OoA"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="asB-ng-pED"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -310,7 +294,6 @@
                             <outlet property="likeBtn" destination="2ze-7F-x8n" id="Fov-Mc-qzA"/>
                             <outlet property="likesLbl" destination="qK5-yt-6we" id="xmi-N8-4tC"/>
                             <outlet property="mainViewHeight" destination="gMJ-Fr-UtF" id="qb1-ZR-Ynw"/>
-                            <outlet property="moreBtn" destination="yaz-qM-IJt" id="KfZ-RF-xqP"/>
                             <outlet property="nameLbl" destination="ksK-Rs-vLX" id="AdP-Zl-XTT"/>
                             <outlet property="postImageDistanceFromLeftConstrain" destination="gXF-lG-RHd" id="41P-2a-z1W"/>
                             <outlet property="postImageDistanceFromTopConstrain" destination="4kv-0Y-nBe" id="PST-IK-IDU"/>
@@ -320,8 +303,6 @@
                             <outlet property="timePostLbl" destination="GUe-OU-BSE" id="nge-vN-1EC"/>
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>
                             <outlet property="videoView" destination="nvU-aO-Tut" id="tD9-kO-Yid"/>
-                            <outlet property="wideCommentBtn" destination="OW5-9V-qeb" id="TBP-H1-wvC"/>
-                            <outlet property="wideShareBtn" destination="2b7-62-Ogm" id="7wU-yp-hCA"/>
                         </connections>
                     </view>
                 </subviews>
