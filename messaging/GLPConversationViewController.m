@@ -45,6 +45,7 @@
 #import "UINavigationBar+Format.h"
 #import "ShapeFormatterHelper.h"
 #import "UIView+GLPDesign.h"
+#import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
 
 @interface GLPConversationViewController ()
 
@@ -64,6 +65,13 @@
 
 
 @property (assign, nonatomic) BOOL isFirstLoaded;
+
+/** This variable is used to prevent the resizing of the table view and of the text view when user navigates back
+ to the previews VC using the sliding gesture. 
+ Look in method keyboardWillShow: and in method tableViewClicked:.
+ This variable is used with the compination of TAPKeyboardPop library.
+ */
+@property (assign, nonatomic, getter = isCommingFromTableViewClick) BOOL comesFromTableViewClick;
 
 @end
 
@@ -110,7 +118,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     _isFirstLoaded = YES;
 }
 
--(void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
@@ -135,6 +143,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         
     }
     
+    DDLogDebug(@"viewWillAppear");
     
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -172,8 +181,37 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
--(void) viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
+    DDLogDebug(@"viewWillDisappear");
+    
+    
+//    [self.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+//        //Animations
+//        DDLogDebug(@"CONTEXT: %@", context);
+//        
+//    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+//        //Completion Block
+//        DDLogDebug(@"CONTEXT2: %@", context);
+//        
+//        if([context isCancelled])
+//        {
+//            //The transitioning canceled.
+//        }
+//
+//    }];
+    
+    
+//    [self.transitionCoordinator animateAlongsideTransitionInView:self.view
+//                                                       animation:
+//     ^(id<UIViewControllerTransitionCoordinatorContext> context) {
+//         
+//         DDLogDebug(@"Accessory Superview: %@, Accessory view: %@", self.formTextView.inputAccessoryView.superview, self.formTextView.inputAccessoryView);
+//         
+//         CGRectSetX(self.formTextView.inputAccessoryView.superview, self.view.frame.size.width);
+//         
+//     }completion:nil];
+    
     [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -187,9 +225,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [super viewWillDisappear:animated];
 }
 
-
-
-# pragma mark - Configuration
+#pragma mark - Configuration
 
 -(void)initialiseObjects
 {
@@ -232,6 +268,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         [self addCustomBackButton];
     }
     
+    _comesFromTableViewClick = NO;
     
 //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
 //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -322,6 +359,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.formTextView.layer.cornerRadius = 4;
     
     [self.formView setGleepostStyleTopBorder];
+    
+//    self.formTextView.inputAccessoryView  [[UIView alloc] init];
     
 //    [ShapeFormatterHelper setCornerRadiusWithView:self.formTextView.internalTextView andValue:5];
 }
@@ -713,6 +752,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (IBAction)tableViewClicked:(id)sender
 {
+    _comesFromTableViewClick = YES;
+    
     [self hideKeyboardFromTextViewIfNeeded];
 }
 
@@ -747,6 +788,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)keyboardWillShow:(NSNotification *)note{
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
+    
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     
@@ -763,6 +805,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 	CGRect tableViewFrame = self.tableView.frame;
     tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
     
+    DDLogDebug(@"Keyboard will show");
+    
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         self.formView.frame = containerFrame;
         self.tableView.frame = tableViewFrame;
@@ -775,6 +819,16 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 }
 
 - (void)keyboardWillHide:(NSNotification *)note{
+    
+    
+    if(![self isCommingFromTableViewClick])
+    {
+        
+        return;
+    }
+    
+    _comesFromTableViewClick = NO;
+    
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curve.intValue;
@@ -868,6 +922,26 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[GLPLiveConversationsManager sharedInstance] syncConversationPreviousMessages:_conversation];
 }
 
+//- (BOOL)animateAlongsideTransition:(void (^)(id <UIViewControllerTransitionCoordinatorContext>context))animation
+//                        completion:(void (^)(id <UIViewControllerTransitionCoordinatorContext>context))completion
+//{
+//    DDLogDebug(@"animateAlongsideTransition");
+//    
+//    
+//    return YES;
+//}
+//
+//- (BOOL)animateAlongsideTransitionInView:(UIView *)view animation:(void (^)(id<UIViewControllerTransitionCoordinatorContext> context))animation completion:(void (^)(id<UIViewControllerTransitionCoordinatorContext> context))completion
+//{
+//    DDLogDebug(@"animateAlongsideTransitionInView");
+//    
+//    return YES;
+//}
+//
+//- (void)notifyWhenInteractionEndsUsingBlock:(void (^)(id<UIViewControllerTransitionCoordinatorContext> context))handler
+//{
+//    DDLogDebug(@"notifyWhenInteractionEndsUsingBlock");
+//}
 
 # pragma mark - GLPMessageCellDelegate
 

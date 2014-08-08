@@ -12,7 +12,7 @@
 #import "HPGrowingTextView.h"
 #import "GLPMessageCell.h"
 
-@interface GLPConversationViewController : GLPTableViewController <UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate, GLPMessageCellDelegate>
+@interface GLPConversationViewController : GLPTableViewController <UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate, GLPMessageCellDelegate, UIViewControllerTransitionCoordinator>
 
 @property (strong, nonatomic) GLPConversation *conversation;
 

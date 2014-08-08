@@ -190,7 +190,7 @@ static const CGFloat kBottomMargin = 2; //7
 {
     UILabel *label = self.contentView.subviews[1];
 
-    DDLogDebug(@"configureTimeLabel: %@", _message.content);
+//    DDLogDebug(@"configureTimeLabel: %@", _message.content);
     
     if(_message.hasHeader) {
         label.hidden = NO;

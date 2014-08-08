@@ -11,6 +11,7 @@
 #import "WebClient.h"
 #import "GLPFBInvitationsViewController.h"
 #import "GLPPrivateProfileViewController.h"
+#import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
 
 @interface GLPInviteUsersViewController ()
 
