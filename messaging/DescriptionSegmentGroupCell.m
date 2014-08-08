@@ -21,11 +21,13 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelHeight;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelDistanceFromTop;
+
 @end
 
 @implementation DescriptionSegmentGroupCell
 
-const float GROUP_DESCR_VIEW_HEIGHT = 65;
+const float GROUP_DESCR_VIEW_HEIGHT = 70;
 const float DESCR_LBL_WIDTH = 290;
 
 - (void)awakeFromNib
@@ -42,6 +44,11 @@ const float DESCR_LBL_WIDTH = 290;
     [_descriptionLbl setText:group.groupDescription];
     
     [_labelHeight setConstant:[UILabel getContentLabelSizeForContent:group.groupDescription withFont:[UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0] andWidht:DESCR_LBL_WIDTH]];
+        
+    if([group.groupDescription isEqualToString:@""] || !group.groupDescription)
+    {
+        [_labelDistanceFromTop setConstant:-1];
+    }
     
 //    [_descriptionLbl setHeightDependingOnText:group.groupDescription withFont:_font];
     
@@ -100,6 +107,11 @@ const float DESCR_LBL_WIDTH = 290;
 {
     float lblHeight = [UILabel getContentLabelSizeForContent:group.groupDescription withFont:[UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0] andWidht:DESCR_LBL_WIDTH];
     
+    
+    if(lblHeight == 1.0)
+    {
+        return GROUP_DESCR_VIEW_HEIGHT - 10;
+    }
     
     return lblHeight + GROUP_DESCR_VIEW_HEIGHT;
     
