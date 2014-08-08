@@ -36,7 +36,6 @@
 
 @implementation MembersViewController
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,7 +56,6 @@
 
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -65,6 +63,7 @@
     [self configureNavigationBar];
 
 }
+
 #pragma mark - Configuration
 
 -(void)configureTopView
@@ -117,6 +116,8 @@
     self.navigationController.navigationBar.translucent = YES;
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    DDLogDebug(@"MembersViewController : configureNavigationBar");
     
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];

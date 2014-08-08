@@ -75,6 +75,9 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 {
     [super configureNavigationBar];
     
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+
+    
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];

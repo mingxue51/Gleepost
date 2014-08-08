@@ -29,7 +29,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 {
     [super viewDidLoad];
     
-    [self configureNavigationBar];
+//    [self configureNavigationBar];
     
     [self configureTableView];
     
@@ -40,6 +40,14 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [self configureFacebookInvitationButton];
     
     [super setAlreadyMembers:self.alreadyMembers];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self configureNavigationBar];
 }
 
 #pragma mark - Configuration
