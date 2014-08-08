@@ -31,29 +31,37 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24G-kB-Rgz">
-                        <rect key="frame" x="7" y="10" width="14" height="54"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <inset key="imageEdgeInsets" minX="3" minY="0.0" maxX="4" maxY="27"/>
-                        <state key="normal" image="more.png">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="moreOptions:" destination="KFS-Vv-2hc" eventType="touchUpInside" id="RXy-LX-mc2"/>
-                        </connections>
-                    </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f0g-nb-NiI">
                         <rect key="frame" x="135" y="72" width="10" height="10"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.10980392160000001" green="0.81176470590000005" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sk-n1-TqJ">
+                        <rect key="frame" x="3" y="3" width="21" height="41"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <inset key="contentEdgeInsets" minX="7" minY="7" maxX="7" maxY="7"/>
+                        <state key="normal" image="more.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <attributedString key="userComments">
+                            <fragment content="Real dimensions 7, 27 (w,h)">
+                                <attributes>
+                                    <font key="NSFont" size="11" name="LucidaGrande"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                        <connections>
+                            <action selector="moreOptions:" destination="KFS-Vv-2hc" eventType="touchUpInside" id="HZe-ma-PJS"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <size key="customSize" width="120" height="98"/>
             <connections>
-                <outlet property="exitButton" destination="24G-kB-Rgz" id="c3W-ge-HCV"/>
+                <outlet property="exitButton" destination="5sk-n1-TqJ" id="6dH-Uj-0xy"/>
                 <outlet property="groupDescription" destination="IBJ-QM-uBV" id="rth-Wx-Vcq"/>
                 <outlet property="groupImage" destination="O1C-KL-AZF" id="bMV-sa-Ofr"/>
                 <outlet property="groupName" destination="IAl-Cv-zTf" id="l1d-wg-Td4"/>

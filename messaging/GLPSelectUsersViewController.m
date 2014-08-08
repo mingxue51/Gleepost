@@ -50,6 +50,8 @@
 {
     [super viewWillAppear:animated];
     
+    [_glpSearchBar becomeTextFieldFirstResponder];
+
 }
 
 - (void)configureSearchBar
@@ -69,7 +71,7 @@
     
     [_searchBarView addSubview:view];
     
-    [_glpSearchBar becomeTextFieldFirstResponder];
+
 
 }
 

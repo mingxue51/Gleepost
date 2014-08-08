@@ -10,6 +10,7 @@
 #import "WebClientHelper.h"
 #import "WebClient.h"
 #import "GLPFBInvitationsViewController.h"
+#import "GLPPrivateProfileViewController.h"
 
 @interface GLPInviteUsersViewController ()
 
@@ -55,6 +56,9 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
+    
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+
 }
 
 - (void)configureTableView
@@ -144,11 +148,22 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Navigate to user's profile.
+    
+    GLPUser *seletedUser = nil;
+    
+    if([self areSelectedUsersVisible])
+    {
+        seletedUser = self.checkedUsers[indexPath.row];
+    }
+    else
+    {
+        seletedUser = self.searchedUsers[indexPath.row];
+    }
+    
+    [self navigateToUser:seletedUser];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    //Start new conversation or continue if existed.
-    
-    //    [self startNewConversationWithUser:_searchedUsers[indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -295,21 +310,34 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
 #pragma mark - Navigation
+
+- (void)navigateToUser:(GLPUser *)user
+{
+    self.selectedUserRemoteKey = user.remoteKey;
+    
+    [self performSegueWithIdentifier:@"view private profile" sender:self];
+}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"view private profile"])
+    {
+        GLPPrivateProfileViewController *privateUserVC = segue.destinationViewController;
+        
+        privateUserVC.selectedUserId = self.selectedUserRemoteKey;
+    }
+    
 }
-*/
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
 @end

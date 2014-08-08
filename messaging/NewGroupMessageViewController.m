@@ -16,6 +16,7 @@
 #import "GLPLiveConversationsManager.h"
 #import "SessionManager.h"
 #import "NSNotificationCenter+Utils.h"
+#import "GLPPrivateProfileViewController.h"
 
 @interface NewGroupMessageViewController ()
 
@@ -146,6 +147,21 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Navigate to user's profile.
+    
+    GLPUser *seletedUser = nil;
+    
+    if([self areSelectedUsersVisible])
+    {
+        seletedUser = self.checkedUsers[indexPath.row];
+    }
+    else
+    {
+        seletedUser = self.searchedUsers[indexPath.row];
+    }
+    
+    [self navigateToUser:seletedUser];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -304,6 +320,13 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 
 #pragma mark - Navigation
 
+- (void)navigateToUser:(GLPUser *)user
+{
+    self.selectedUserRemoteKey = user.remoteKey;
+    
+    [self performSegueWithIdentifier:@"view private profile" sender:self];
+}
+
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -317,6 +340,13 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
         GLPConversationViewController *vt = segue.destinationViewController;
         vt.conversation = _conversation;
     }
+    else if ([segue.identifier isEqualToString:@"view private profile"])
+    {
+        GLPPrivateProfileViewController *privateUserVC = segue.destinationViewController;
+        
+        privateUserVC.selectedUserId = self.selectedUserRemoteKey;
+    }
+    
 }
 
 @end

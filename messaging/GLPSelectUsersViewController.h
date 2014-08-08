@@ -38,6 +38,8 @@
 
 @property (assign, nonatomic, getter = areSelectedUsersVisible) BOOL selectedUsersVisible;
 
+@property (assign, nonatomic) NSInteger selectedUserRemoteKey;
+
 - (void)initialiseObjects;
 - (void)configureNavigationBar;
 - (BOOL)isUserSelected:(GLPUser *)user;
