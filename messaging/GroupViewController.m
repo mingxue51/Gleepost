@@ -301,6 +301,7 @@ const float TOP_OFF_SET = -64.0;
     
     [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(createNewPost:) andTarget:self];
     
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"settings_btn" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(showSettings:) andTarget:self];
     
     //=======
     //    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
@@ -1365,6 +1366,11 @@ const float TOP_OFF_SET = -64.0;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)showSettings:(id)sender
+{
+    DDLogDebug(@"Show Settings");
 }
 
 

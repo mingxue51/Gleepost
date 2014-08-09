@@ -45,14 +45,11 @@
         
         if(type == kLeft)
         {
-            [fixedSpace setWidth:-4];
-            navController.navigationItem.leftBarButtonItems = @[fixedSpace, barButtonItem];
-            
+            [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:NO];
         }
         else if (type == kRight)
         {
-            [fixedSpace setWidth:-5];
-            navController.navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
+            [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:YES];
         }
     }
 }
@@ -74,6 +71,61 @@
         [fixedSpaceButton setWidth:-5]; //6
 
         navController.navigationItem.rightBarButtonItems = @[fixedSpaceButton, groupButton];
+    }
+}
+
+/**
+ Adds new bar button. If there are other bar buttons into the button items adds it on top of them.
+ 
+ @param barButtonItem the new bar button.
+ 
+ @param navigationItem the navigation item.
+ 
+ @param rightSide if YES then the button is for the right side, if NO is for left side.
+ 
+ */
+- (void)addNewButton:(UIBarButtonItem *)barButtonItem withNavigationItem:(UINavigationItem *)navigationItem inRightSide:(BOOL)rightSide
+{
+    if(rightSide)
+    {
+        NSMutableArray *items = navigationItem.rightBarButtonItems.mutableCopy;
+        
+        if(!items)
+        {
+            UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
+            
+            [fixedSpace setWidth:-5];
+
+            items = @[fixedSpace, barButtonItem].mutableCopy;
+        }
+        else
+        {
+            [items setObject:barButtonItem atIndexedSubscript:2];
+        }
+        
+        navigationItem.rightBarButtonItems = items;
+
+    }
+    else
+    {
+        NSMutableArray *items = navigationItem.leftBarButtonItems.mutableCopy;
+        
+        if(!items)
+        {
+            UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
+
+            [fixedSpace setWidth:-4];
+            
+            items = @[fixedSpace, barButtonItem].mutableCopy;
+
+        }
+        else
+        {
+            [items setObject:barButtonItem atIndexedSubscript:2];
+        }
+        
+        navigationItem.leftBarButtonItems = items;
+
     }
 }
 

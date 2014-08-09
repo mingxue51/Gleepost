@@ -183,35 +183,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    DDLogDebug(@"viewWillDisappear");
-    
-    
-//    [self.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        //Animations
-//        DDLogDebug(@"CONTEXT: %@", context);
-//        
-//    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        //Completion Block
-//        DDLogDebug(@"CONTEXT2: %@", context);
-//        
-//        if([context isCancelled])
-//        {
-//            //The transitioning canceled.
-//        }
-//
-//    }];
-    
-    
-//    [self.transitionCoordinator animateAlongsideTransitionInView:self.view
-//                                                       animation:
-//     ^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//         
-//         DDLogDebug(@"Accessory Superview: %@, Accessory view: %@", self.formTextView.inputAccessoryView.superview, self.formTextView.inputAccessoryView);
-//         
-//         CGRectSetX(self.formTextView.inputAccessoryView.superview, self.view.frame.size.width);
-//         
-//     }completion:nil];
-    
     [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -242,7 +213,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         //Create a button instead of using the default title view for recognising gestures.
         UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [titleLabelBtn setTitle:[_conversation.title uppercaseString] forState:UIControlStateNormal];
-        [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:22.0f]];
+        [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0]];
         titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
         
         //Set colour to the view.
@@ -269,13 +240,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     }
     
     _comesFromTableViewClick = NO;
-    
-//    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//    [self.navigationController.navigationBar setTranslucent:NO];
-    
-//    [AppearanceHelper setNavigationBarFontFor:self];
-//    [AppearanceHelper setNavigationBarColour:self];
     
 }
 
