@@ -43,6 +43,8 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     [self initiliaseObjects];
     
     [self configureTableView];
+    
+    [self addNavigationButtons];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,11 +79,13 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     [super configureNavigationBar];
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
-
-    
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)addNavigationButtons
+{
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
 }
 
 - (void)hideNetworkErrorViewIfNeeded

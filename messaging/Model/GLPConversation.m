@@ -71,8 +71,6 @@
     
 //    _isGroup = _participants.count > 1;
     _isGroup = _participants.count > 1;
-
-    DDLogDebug(@"Participants: %@", _participants);
     
     _title = _isGroup ? [self generateGroupTitle] : [self getUniqueParticipant].name;
     

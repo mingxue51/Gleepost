@@ -68,7 +68,8 @@
     [self configureTabbar];
     
     [self configureGestures];
-
+    
+    [self addNavigationButtons];
 
 }
 
@@ -200,15 +201,18 @@
 
 - (void)configureNavigationBar
 {
-    float buttonsSize = 30.0;
-    
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(viewNewMessageView) andTarget:self];
-    
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)addNavigationButtons
+{
+    float buttonsSize = 30.0;
+
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(viewNewMessageView) andTarget:self];
 }
 
 - (void)showNetworkErrorViewIfNeeded

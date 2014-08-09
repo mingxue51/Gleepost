@@ -48,12 +48,14 @@ const int CORNER_VALUE = 16;
     [self configureView];
     
     [self loadInformation];
+    
+    [self configureNavigationBar];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configureNavigationBar];
 
     
 }

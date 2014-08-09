@@ -126,7 +126,7 @@
     
 //    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 
-//    [self configureNavigationBar];
+    [self addNavigationButtons];
 
     [self configTabbar];
     
@@ -326,7 +326,6 @@
 
 -(void)configureNavigationBar
 {
-    [self addNavigationButtons];
 
     //Change the format of the navigation bar.
     

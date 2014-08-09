@@ -52,7 +52,16 @@
     
     [self loadCategories];
     
+    DDLogDebug(@"viewDidLoad");
+
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     [self initialiseNotifications];
+    DDLogDebug(@"viewDidAppear");
 
 }
 
@@ -311,6 +320,9 @@
     NSNumber *curve = [notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     UIViewAnimationCurve animationCurve = curve.intValue;
     
+    DDLogDebug(@"Keyboardbounds y1: %f", keyboardBounds.origin.y);
+
+    
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
@@ -319,6 +331,9 @@
     containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
     
 	CGRect tableViewFrame = self.tableView.frame;
+    
+    DDLogDebug(@"Keyboardbounds y: %f", keyboardBounds.origin.y);
+    
     tableViewFrame.size.height = keyboardBounds.origin.y - self.tableView.frame.origin.y;
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{

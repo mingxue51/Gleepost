@@ -164,6 +164,8 @@ const float TOP_OFFSET = 280.0f;
     
     [self initialiseObjects];
     
+    [self addNavigationButtons];
+    
     NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
     [t fire];
     
@@ -805,16 +807,11 @@ const float TOP_OFFSET = 280.0f;
     
     //    [AppearanceHelper setWhiteNavigationBarFormat:self.navigationController.navigationBar];
     
-    float buttonsSize = 30.0;
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
 //    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     [self.navigationController.navigationBar setCampusWallFontFormat];
-    
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
-    
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
     
     
     //    [AppearanceHelper setNavigationBarFontFor:self];
@@ -823,6 +820,15 @@ const float TOP_OFFSET = 280.0f;
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
+}
+
+- (void)addNavigationButtons
+{
+    float buttonsSize = 30.0;
+    
+    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
 }
 
 
