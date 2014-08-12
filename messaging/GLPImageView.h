@@ -17,9 +17,10 @@
 
 @interface GLPImageView : UIImageView
 
-@property (assign, nonatomic) UIViewController<GLPImageViewDelegate> *delegate;
+@property (weak, nonatomic) UIViewController<GLPImageViewDelegate> *viewControllerDelegate;
+//@property (weak, nonatomic) UIView<GLPImageViewDelegate> *normalViewDelegate;
 
-- (void)setImageUrl:(NSString *)imageUrl;
+- (void)setImageUrl:(NSString *)imageUrl withPlaceholderImage:(NSString *)imagePath;
 - (void)setGesture:(BOOL)gesture;
 
 @end

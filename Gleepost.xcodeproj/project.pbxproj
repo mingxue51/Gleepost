@@ -207,6 +207,7 @@
 		5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */; };
 		5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */; };
 		5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */; };
+		58451BEC199AC661003B94D2 /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = 58451BEB199AC661003B94D2 /* UIView+Borders.m */; };
 		58459FB519901B2E00E7D3C2 /* FakeNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */; };
 		58459FB919901CF300E7D3C2 /* FakeNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */; };
 		58465DED19584CF60021B0FF /* cancel_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DEC19584CF60021B0FF /* cancel_red.png */; };
@@ -215,7 +216,6 @@
 		58465DF5195857190021B0FF /* UINavigationBar+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 58465DF4195857190021B0FF /* UINavigationBar+Format.m */; };
 		58465DF7195882E30021B0FF /* pen.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DF6195882E30021B0FF /* pen.png */; };
 		58465DF9195882EB0021B0FF /* cards.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DF8195882EB0021B0FF /* cards.png */; };
-		584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906BE17FDA26E0045B65D /* ViewPostTableView.m */; };
 		584906C217FDA57B0045B65D /* PostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C117FDA57B0045B65D /* PostView.m */; };
 		584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C417FDE8710045B65D /* GCPlaceholderTextView.m */; };
 		584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C717FDEE4C0045B65D /* TypeTextView.m */; };
@@ -368,6 +368,7 @@
 		58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2C18CDE70400EB3435 /* group_posts_selected.png */; };
 		58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */; };
 		5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5885A66619190A18009FEAD4 /* EmptyMessage.m */; };
+		58877A60199A070700DAE461 /* UIView+RoudedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */; };
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
 		588A87BC1980CCDE00FC5A53 /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 588CDF6C197618CA00373EE3 /* gleepost.cer */; };
 		588CDF70197623A700373EE3 /* IntroNewGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588CDF6F197623A700373EE3 /* IntroNewGroupViewController.m */; };
@@ -1139,6 +1140,8 @@
 		5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDao.m; sourceTree = "<group>"; };
 		5844293A18BCE1EE00DFEAF4 /* GLPCommentDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentDaoParser.h; sourceTree = "<group>"; };
 		5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDaoParser.m; sourceTree = "<group>"; };
+		58451BEA199AC661003B94D2 /* UIView+Borders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Borders.h"; sourceTree = "<group>"; };
+		58451BEB199AC661003B94D2 /* UIView+Borders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Borders.m"; sourceTree = "<group>"; };
 		58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBarView.xib; sourceTree = "<group>"; };
 		58459FB719901CF300E7D3C2 /* FakeNavigationBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBarView.h; sourceTree = "<group>"; };
 		58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBarView.m; sourceTree = "<group>"; };
@@ -1149,8 +1152,6 @@
 		58465DF4195857190021B0FF /* UINavigationBar+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Format.m"; sourceTree = "<group>"; };
 		58465DF6195882E30021B0FF /* pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pen.png; sourceTree = "<group>"; };
 		58465DF8195882EB0021B0FF /* cards.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cards.png; sourceTree = "<group>"; };
-		584906BD17FDA26E0045B65D /* ViewPostTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPostTableView.h; sourceTree = "<group>"; };
-		584906BE17FDA26E0045B65D /* ViewPostTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPostTableView.m; sourceTree = "<group>"; };
 		584906C017FDA57B0045B65D /* PostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostView.h; sourceTree = "<group>"; };
 		584906C117FDA57B0045B65D /* PostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostView.m; sourceTree = "<group>"; };
 		584906C317FDE8710045B65D /* GCPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCPlaceholderTextView.h; sourceTree = "<group>"; };
@@ -1365,6 +1366,8 @@
 		58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts_background_main_2.png; sourceTree = "<group>"; };
 		5885A66519190A18009FEAD4 /* EmptyMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyMessage.h; sourceTree = "<group>"; };
 		5885A66619190A18009FEAD4 /* EmptyMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyMessage.m; sourceTree = "<group>"; };
+		58877A5E199A070700DAE461 /* UIView+RoudedCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RoudedCorners.h"; sourceTree = "<group>"; };
+		58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RoudedCorners.m"; sourceTree = "<group>"; };
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
 		588CDF6C197618CA00373EE3 /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
 		588CDF6E197623A700373EE3 /* IntroNewGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroNewGroupViewController.h; sourceTree = "<group>"; };
@@ -2449,6 +2452,15 @@
 			name = "Register Images";
 			sourceTree = "<group>";
 		};
+		58451BE9199AC652003B94D2 /* UIView+Borders */ = {
+			isa = PBXGroup;
+			children = (
+				58451BEA199AC661003B94D2 /* UIView+Borders.h */,
+				58451BEB199AC661003B94D2 /* UIView+Borders.m */,
+			);
+			name = "UIView+Borders";
+			sourceTree = "<group>";
+		};
 		58459FB319901B0F00E7D3C2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2487,8 +2499,6 @@
 				58433282180ED55900BD9F74 /* PostTextCellView.xib */,
 				5841315717FEDD8500A3278D /* AddCommentViewController.h */,
 				5841315817FEDD8500A3278D /* AddCommentViewController.m */,
-				584906BD17FDA26E0045B65D /* ViewPostTableView.h */,
-				584906BE17FDA26E0045B65D /* ViewPostTableView.m */,
 				80AB896117C27AF50053E784 /* ViewPostViewController.h */,
 				80AB896217C27AF50053E784 /* ViewPostViewController.m */,
 				584906C017FDA57B0045B65D /* PostView.h */,
@@ -3898,6 +3908,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				58451BE9199AC652003B94D2 /* UIView+Borders */,
 				58774D30196496880034A1C6 /* GLPRefreshControl */,
 				58774D2C196494CD0034A1C6 /* BOZPongRefreshControl */,
 				58CB2725194B872E00864C28 /* SKBounceAnimation */,
@@ -4659,6 +4670,8 @@
 				582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */,
 				586F9C5119882A400093A946 /* UILabel+Dimensions.h */,
 				586F9C5219882A400093A946 /* UILabel+Dimensions.m */,
+				58877A5E199A070700DAE461 /* UIView+RoudedCorners.h */,
+				58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -5506,6 +5519,7 @@
 				584D208E19534AC400E571DF /* GLPSegmentView.m in Sources */,
 				582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */,
 				5823932718CB9A04001BC88C /* MembersViewController.m in Sources */,
+				58451BEC199AC661003B94D2 /* UIView+Borders.m in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
 				80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */,
 				588D858B1959F8FD002F516A /* GLPGroupsViewController.m in Sources */,
@@ -5558,6 +5572,7 @@
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
 				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,
 				58465DF5195857190021B0FF /* UINavigationBar+Format.m in Sources */,
+				58877A60199A070700DAE461 /* UIView+RoudedCorners.m in Sources */,
 				587805AF1920E2CE0002472B /* AVCamRecorder.m in Sources */,
 				585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */,
 				58FD7069189001AA0024E8A1 /* GLPCategoryCell.m in Sources */,
@@ -5588,7 +5603,6 @@
 				5819E66118C7E58E003361B3 /* GLPGroupDao.m in Sources */,
 				802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
-				584906BF17FDA26E0045B65D /* ViewPostTableView.m in Sources */,
 				582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */,
 				589C642A17EC871100F64B30 /* ProfileViewController.m in Sources */,
 				587EA4A417F9C4A0005B3286 /* ContactUserCell.m in Sources */,

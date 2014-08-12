@@ -12,9 +12,7 @@
 #import "MBProgressHUD.h"
 #import "GLPComment.h"
 #import "KeyboardHelper.h"
-#import "CommentCell.h"
 #import "NSString+Utils.h"
-#import "ViewPostTableView.h"
 #import "GLPPrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
@@ -40,16 +38,12 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 
-@property (weak, nonatomic) IBOutlet ViewPostTableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (assign, nonatomic, getter = doesMediaNeedsToReload) BOOL mediaNeedsToReload;
-
-- (IBAction)addCommentButtonClick:(id)sender;
-
-- (IBAction)tableViewClicked:(id)sender;
 
 @end
 
@@ -68,8 +62,6 @@ static BOOL likePushed;
     [self initialiseElements];
     
     [self registerCells];
-
-    [self.tableView initTableView];
     
     [self configureForm];
     
@@ -253,7 +245,7 @@ static BOOL likePushed;
     [self.commentFormView setGleepostStyleTopBorder];
     
     //Set a selector to the send button.
-    [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
@@ -744,12 +736,11 @@ static bool firstTime = YES;
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
         
-        cell.delegate = self;
+        [cell setDelegate:self];
         
-        GLPComment *comment = self.comments[indexPath.row-1];
+        GLPComment *comment = self.comments[indexPath.row - 1];
         
-        [cell setComment:comment];
-        
+        [cell setComment:comment withIndex:indexPath.row - 1 andNumberOfComments:_comments.count];
         
         return cell;
     }
@@ -780,6 +771,8 @@ static bool firstTime = YES;
 //        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
         
         //return 200.0f;
+        
+        DDLogDebug(@"Comment cell height: %f", [CommentCell getCellHeightWithContent:comment.content image:NO]);
         
         return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
@@ -861,6 +854,28 @@ static bool firstTime = YES;
     
     // Pop-up view controller.
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - CommentCellDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
+{
+    NSInteger userRemoteKey = imageView.tag;
+    
+    DDLogDebug(@"User remote key: %ld", (long)userRemoteKey);
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
+    {
+        _selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        _selectedUserId = userRemoteKey;
+        
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
 }
 
 #pragma mark - UIAlertViewDelegate

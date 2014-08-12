@@ -40,12 +40,12 @@
     [self setUserInteractionEnabled:YES];
 }
 
-- (void)setImageUrl:(NSString *)imageUrl
+- (void)setImageUrl:(NSString *)imageUrl withPlaceholderImage:(NSString *)imagePath
 {
     if([imageUrl isEqualToString:@""] || !imageUrl)
     {        
         //Set default image.
-        [self setImage:[UIImage imageNamed:@"default_thumbnail"]];
+        [self setImage:[UIImage imageNamed:imagePath]];
     }
     else
     {
@@ -77,10 +77,23 @@
 
 - (void)imageTouched
 {
-    if([_delegate respondsToSelector:@selector(imageTouchedWithImageView:)])
+    DDLogDebug(@"Delegate 2: %@", _viewControllerDelegate);
+
+    
+    if(_viewControllerDelegate)
     {
-        [_delegate imageTouchedWithImageView:self];
+        if([_viewControllerDelegate respondsToSelector:@selector(imageTouchedWithImageView:)])
+        {
+            [_viewControllerDelegate imageTouchedWithImageView:self];
+        }
     }
+//    else if (_normalViewDelegate)
+//    {
+//        if([_viewDelegate respondsToSelector:@selector(imageTouchedWithImageView:)])
+//        {
+//            [_normalViewDelegate imageTouchedWithImageView:self];
+//        }
+//    }
 }
 
 /*

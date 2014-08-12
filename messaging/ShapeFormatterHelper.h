@@ -22,12 +22,22 @@
 
 +(void)setElement:(UIView *)element withExtraHeight:(float)height;
 
++ (void)setBottomCornerRadius:(UIView *)view withValue:(float)value;
+
 +(void)setTopCornerRadius:(UIView *)view withViewFrame:(CGRect)frame withValue:(int)value;
+
++ (void)removeBottomCornerRadius:(UIView *)view;
 
 +(void)setElement:(UIView *)element withExtraY:(float)y;
 
 +(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour andWidth:(float)width;
 
++ (void)resetAnyFormatOnView:(UIView *)view;
+
 +(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour;
+
++ (void)setBorderToView:(UIView *)view inLine:(UIRectEdge)edge withColour:(UIColor *)colour andWidth:(float)width;
+
++ (void)setBottomExCornerRadius:(UIImageView *)imageView withValue:(float)value;
 
 @end
