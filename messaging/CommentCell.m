@@ -282,7 +282,7 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     //CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
     
     
-    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0];
+    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:14.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     

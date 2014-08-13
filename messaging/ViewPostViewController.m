@@ -211,6 +211,8 @@ static BOOL likePushed;
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTitleCellView" bundle:nil] forCellReuseIdentifier:@"CommentTitleCellView"];
 }
 
 -(void)registerNotifications
@@ -676,7 +678,7 @@ static bool firstTime = YES;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //Add 1 in order to create another cell for post.
-    return self.comments.count+1;
+    return self.comments.count+2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -685,6 +687,7 @@ static bool firstTime = YES;
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
+    static NSString *CellIdentifierTitle = @"CommentTitleCellView";
     
     GLPPostCell *postViewCell;
     
@@ -732,6 +735,12 @@ static bool firstTime = YES;
         return postViewCell;
 
     }
+    else if (indexPath.row == 1)
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
+        
+        return cell;
+    }
     else
     {
         //TODO: Fix cell by removing the dynamic data generation.
@@ -740,9 +749,9 @@ static bool firstTime = YES;
         
         [cell setDelegate:self];
         
-        GLPComment *comment = self.comments[indexPath.row - 1];
+        GLPComment *comment = self.comments[indexPath.row - 2];
         
-        [cell setComment:comment withIndex:indexPath.row - 1 andNumberOfComments:_comments.count];
+        [cell setComment:comment withIndex:indexPath.row - 2 andNumberOfComments:_comments.count];
         
         return cell;
     }
@@ -766,17 +775,7 @@ static bool firstTime = YES;
 {
     //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
     
-    if(indexPath.row>0)
-    {
-        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
-        
-//        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
-        
-        //return 200.0f;
-        
-        return [CommentCell getCellHeightWithContent:comment.content image:NO];
-    }
-    else
+    if(indexPath.row == 0)
     {
         if([self.post imagePost])
         {
@@ -793,6 +792,16 @@ static bool firstTime = YES;
              return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES] + 10.0f;
         }
         //return 200;
+    }
+    else if (indexPath.row == 1)
+    {
+        return 30.0;
+    }
+    else
+    {
+        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-2];
+        
+        return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
     
 }

@@ -208,6 +208,7 @@
 		5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */; };
 		5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */; };
 		58451BEC199AC661003B94D2 /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = 58451BEB199AC661003B94D2 /* UIView+Borders.m */; };
+		58451BF0199AEF58003B94D2 /* CommentTitleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58451BEF199AEF58003B94D2 /* CommentTitleCellView.xib */; };
 		58459FB519901B2E00E7D3C2 /* FakeNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */; };
 		58459FB919901CF300E7D3C2 /* FakeNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */; };
 		58465DED19584CF60021B0FF /* cancel_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 58465DEC19584CF60021B0FF /* cancel_red.png */; };
@@ -1142,6 +1143,7 @@
 		5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDaoParser.m; sourceTree = "<group>"; };
 		58451BEA199AC661003B94D2 /* UIView+Borders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Borders.h"; sourceTree = "<group>"; };
 		58451BEB199AC661003B94D2 /* UIView+Borders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Borders.m"; sourceTree = "<group>"; };
+		58451BEF199AEF58003B94D2 /* CommentTitleCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTitleCellView.xib; sourceTree = "<group>"; };
 		58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBarView.xib; sourceTree = "<group>"; };
 		58459FB719901CF300E7D3C2 /* FakeNavigationBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBarView.h; sourceTree = "<group>"; };
 		58459FB819901CF300E7D3C2 /* FakeNavigationBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBarView.m; sourceTree = "<group>"; };
@@ -2361,7 +2363,6 @@
 		5841315D17FF0B0500A3278D /* Comment Classes */ = {
 			isa = PBXGroup;
 			children = (
-				5893BA021820097C0003589E /* CommentTextCellView.xib */,
 				5841315A17FEE97D00A3278D /* NewCommentView.h */,
 				5841315B17FEE97D00A3278D /* NewCommentView.m */,
 				5841315E17FF0B4900A3278D /* ChatPanelView.h */,
@@ -2459,6 +2460,24 @@
 				58451BEB199AC661003B94D2 /* UIView+Borders.m */,
 			);
 			name = "UIView+Borders";
+			sourceTree = "<group>";
+		};
+		58451BED199AEEC7003B94D2 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				8096E4EA17C2CBFD00C7BF60 /* CommentCell.h */,
+				8096E4EB17C2CBFD00C7BF60 /* CommentCell.m */,
+			);
+			name = Comments;
+			sourceTree = "<group>";
+		};
+		58451BEE199AEF30003B94D2 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				5893BA021820097C0003589E /* CommentTextCellView.xib */,
+				58451BEF199AEF58003B94D2 /* CommentTitleCellView.xib */,
+			);
+			name = Comments;
 			sourceTree = "<group>";
 		};
 		58459FB319901B0F00E7D3C2 /* Helpers */ = {
@@ -4085,14 +4104,13 @@
 		8096E4E917C2CBEF00C7BF60 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				58451BED199AEEC7003B94D2 /* Comments */,
 				58CFC773196312CD00FF1E40 /* Simple name cells */,
 				588D8595195B5595002F516A /* Top view cells */,
 				586581351805F210005814B4 /* MessageTableViewCell.h */,
 				586581361805F210005814B4 /* MessageTableViewCell.m */,
 				589A73AD19363DA900D518DF /* Select Category */,
 				5871E4391926214A009B5A74 /* Post */,
-				8096E4EA17C2CBFD00C7BF60 /* CommentCell.h */,
-				8096E4EB17C2CBFD00C7BF60 /* CommentCell.m */,
 				586458B21808393B00B1B19C /* PostCell.h */,
 				586458B31808393B00B1B19C /* PostCell.m */,
 				805676441805B742006E058E /* MessageCell.h */,
@@ -4486,6 +4504,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				58451BEE199AEF30003B94D2 /* Comments */,
 				58459FB319901B0F00E7D3C2 /* Helpers */,
 				5863179E19872F01006D79E2 /* Images */,
 				58BBACB119787B7000A8A265 /* Collection views cells */,
@@ -5081,6 +5100,7 @@
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
 				582A664A18AC0ABC00006419 /* referesh_campus_live_old.png in Resources */,
+				58451BF0199AEF58003B94D2 /* CommentTitleCellView.xib in Resources */,
 				587248AE18C64C5200B98484 /* group_posts_old.png in Resources */,
 				5866F16218844869007484CF /* cloud2_night.png in Resources */,
 				58289EF718D7522B00228EFF /* post_bottom_bg.png in Resources */,
