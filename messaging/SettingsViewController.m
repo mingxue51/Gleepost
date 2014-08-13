@@ -16,11 +16,10 @@
 #import "SessionManager.h"
 #import "ChangePasswordViewController.h"
 #import "AppearanceHelper.h"
+#import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 
 @interface SettingsViewController () <MFMessageComposeViewControllerDelegate>
-
-@property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 
 @property (weak, nonatomic) IBOutlet UILabel *emailLbl;
 @property (weak, nonatomic) IBOutlet UILabel *nameLbl;
@@ -50,6 +49,8 @@ const int CORNER_VALUE = 16;
     [self loadInformation];
     
     [self configureNavigationBar];
+    
+    [self configureNavigationButton];
 
 }
 
@@ -95,10 +96,22 @@ const int CORNER_VALUE = 16;
 
 -(void)configureNavigationBar
 {
-    
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+  
+//    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
 
+
+//    self.title = @"SETTINGS";
     
+    DDLogDebug(@"Navigation bar: %@", self.navigationController.navigationItem);
+    
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+//    
+//    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView:) andTarget:self];
+    
+  //  [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+   // [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+
 //
 //    
 //    [self.simpleNavigationBar setBackgroundColor:[UIColor clearColor]];
@@ -114,6 +127,13 @@ const int CORNER_VALUE = 16;
 //    [self.navigationController.navigationBar setTranslucent:NO];
 //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor,[UIFont fontWithName:@"HelveticaNeue-Thin" size:20.0f], UITextAttributeFont, nil]];
     
+}
+
+- (void)configureNavigationButton
+{
+//    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissModalView:) andTarget:self];
+    
+//    [self.navigationController.navigationBar setButton:kLeft withImage:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissModalView:) withTarget:self andNavigationItem:_navItem];
 }
 
 -(void)loadInformation

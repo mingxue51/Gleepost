@@ -33,7 +33,7 @@
 #import "GLPInvitationManager.h"
 #import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
-#import "SettingsViewController.h"
+#import "GLPSettingsViewController.h"
 #import "UIImage+StackBlur.h"
 #import "NotificationCell.h"
 #import "GLPApplicationHelper.h"
@@ -559,19 +559,6 @@
 
 -(void)showSettings:(id)sender
 {
-    //TODO: Implement here settings.
-    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//    PopUpNotificationsViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"PopUpNotifications"];
-//    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
-//    vc.delegate = self;
-//    vc.campusWallView = self.fromCampusWall;
-////    [vc setTransitioningDelegate:self.transitionViewNotificationsController];
-//    vc.modalPresentationStyle= UIModalPresentationCurrentContext;
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-    
-    
     
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
 //    SettingsViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
@@ -580,10 +567,10 @@
      Takes screenshot from the current view controller to bring the sense of the transparency after the load
      of the NewPostViewController.
      */
-    UIGraphicsBeginImageContext(self.view.window.bounds.size);
-    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+//    UIGraphicsBeginImageContext(self.view.window.bounds.size);
+//    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
     
     
 //    cvc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
@@ -595,17 +582,12 @@
 //    [self presentViewController:cvc animated:YES completion:nil];
     
     
-    
-    
+    ///GLPSettingsViewController
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    SettingsViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
-    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
-    [navigationController setNavigationBarHidden:YES];
+    GLPSettingsViewController *settingsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSettingsViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
-    
-    
     
 }
 

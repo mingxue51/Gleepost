@@ -272,6 +272,8 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     [self configureLeftBarButton];
     [self configureRightBarButton];
     
+    DDLogDebug(@"Navigation bar2: %@", self.navigationController.navigationBar);
+
     self.navigationController.navigationBar.tag = 2;
     
     [AppearanceHelper setNavigationBarFormatForNewPostViews:self.navigationController.navigationBar];
