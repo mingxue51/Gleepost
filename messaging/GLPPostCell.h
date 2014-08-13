@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, GLPCellType) {
 @protocol GLPPostCellDelegate <NSObject>
 
 @required
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey;
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey;
 
 @end
 

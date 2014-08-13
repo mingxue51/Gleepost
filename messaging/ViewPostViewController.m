@@ -390,25 +390,67 @@ static BOOL likePushed;
 //    return nil;
 //}
 
-#pragma mark GLPPostCellDelegate
+#pragma mark - GLPPostCellDelegate
 
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
-    //Decide where to navigate. Private or open.
-    self.selectedUserId = remoteKey;
     
-    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
-    {
-        self.selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
+    [self navigateToProfileWithRemoteKey:remoteKey];
+//    self.selectedUserId = remoteKey;
+//    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+//    {
+//        self.selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
 }
 
+#pragma mark - GLPImageViewDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
+{
+    NSInteger userRemoteKey = imageView.tag;
+    
+    [self navigateToProfileWithRemoteKey:userRemoteKey];
+    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
+//    {
+//        _selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        _selectedUserId = userRemoteKey;
+//        
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
+}
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    DDLogDebug(@"User remote key from label: %ld", (long)tag);
+    
+    [self navigateToProfileWithRemoteKey:tag];
+    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
+//    {
+//        _selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        _selectedUserId = userRemoteKey;
+//        
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
+}
 
 - (IBAction)addCommentButtonClick:(id)sender
 {
@@ -865,28 +907,6 @@ static bool firstTime = YES;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - CommentCellDelegate
-
-- (void)imageTouchedWithImageView:(UIImageView *)imageView
-{
-    NSInteger userRemoteKey = imageView.tag;
-    
-    DDLogDebug(@"User remote key: %ld", (long)userRemoteKey);
-    
-    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
-    {
-        _selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else
-    {
-        _selectedUserId = userRemoteKey;
-        
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-}
-
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1206,6 +1226,24 @@ static bool firstTime = YES;
 //{
 //    [self.navigationController popViewControllerAnimated:YES];
 //}
+
+#pragma mark - Navigation
+
+- (void)navigateToProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    if([[ContactsManager sharedInstance] userRelationshipWithId:remoteKey] == kCurrentUser)
+    {
+        _selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        _selectedUserId = remoteKey;
+        
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

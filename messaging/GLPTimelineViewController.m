@@ -2361,7 +2361,7 @@ const float TOP_OFFSET = 280.0f;
 
 #pragma mark GLPPostCellDelegate
 
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
     //Decide where to navigate. Private or current profile.
     

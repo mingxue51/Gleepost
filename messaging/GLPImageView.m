@@ -77,8 +77,6 @@
 
 - (void)imageTouched
 {
-    DDLogDebug(@"Delegate 2: %@", _viewControllerDelegate);
-
     
     if(_viewControllerDelegate)
     {

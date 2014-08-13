@@ -14,7 +14,7 @@
 #import "GLPPostCell.h"
 #import "CommentCell.h"
 
-@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate, UIAlertViewDelegate, GLPImageViewDelegate>
+@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate, UIAlertViewDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
 @property (strong, nonatomic) GLPPost *post;
 //TODO: Remove after the integration of image posts.

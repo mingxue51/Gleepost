@@ -51,7 +51,6 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
  @param commentsNumber comments' number is used to make UI decisions.
  
  */
-//-(void)setComment:(GLPComment*)comment withCommentType:(CommentCellType)commentCellType
 
 -(void)setComment:(GLPComment*)comment withIndex:(NSInteger)index andNumberOfComments:(NSInteger)commentsNumber
 {
@@ -76,23 +75,12 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     //Meke the user's image circle.
     [ShapeFormatterHelper setRoundedView:self.userImageView toDiameter:self.userImageView.frame.size.height];
     
-//    if([comment.author.profileImageUrl isEqualToString:@""])
-//    {
-//        //Set user's image.
-//        UIImage *img = [UIImage imageNamed:@"default_user_image"];
-//        self.userImageView.image = img;
-//        self.userImageView.contentMode = UIViewContentModeScaleAspectFit;
-//        [self.userImageView setFrame:CGRectMake(5.0f, 10.0f, 40.0f, 40.0f)];
-//    }
-//    else
-//    {
-//        [self.userImageView setImageWithURL:[NSURL URLWithString:comment.author.profileImageUrl] placeholderImage:[UIImage imageNamed:@"default_user_image"]];
-//        
-//    }
     
     
     //Set user's name.
     [self.userNameLabel setText:comment.author.name];
+    _userNameLabel.tag = comment.author.remoteKey;
+    [_userNameLabel setDelegate:_delegate];
     
     NSDate *currentDate = comment.date;
     
@@ -156,17 +144,6 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     
 //    [self formatBackgroundView];
 
-}
-
--(void)formatCommentElements
-{
-    _userNameLabel.font = [UIFont fontWithName:GLP_TITLE_FONT size:14.0f];
-    
-    _contentLabel.textColor = [UIColor grayColor];
-    _contentLabel.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0f];
-    
-    _postDateLabel.textColor = [UIColor grayColor];
-    _postDateLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
 }
 
 -(void)setCellHeight:(NSString*)content
@@ -282,7 +259,7 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     //CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
     
     
-    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:14.0];
+    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
