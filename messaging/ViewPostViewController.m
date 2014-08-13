@@ -101,9 +101,11 @@ static BOOL likePushed;
     
 
     [self registerNotifications];
-
     
     [self sendStatistics];
+    
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
+
 
    // [self loadComments];
 
@@ -772,8 +774,6 @@ static bool firstTime = YES;
         
         //return 200.0f;
         
-        DDLogDebug(@"Comment cell height: %f", [CommentCell getCellHeightWithContent:comment.content image:NO]);
-        
         return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
     else
@@ -1133,7 +1133,7 @@ static bool firstTime = YES;
     
 //    [self.comments addObject:comment];
     
-    DDLogDebug(@"Local comments: %@ Global comments: %@", comments, self.comments);
+//    DDLogDebug(@"Local comments: %@ Global comments: %@", comments, self.comments);
     
     [self scrollToBottomAndUpdateTableViewWithNewComments:comments.count];
     
@@ -1162,8 +1162,10 @@ static bool firstTime = YES;
 //    }
 //    else
 //    {
-        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+//        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
 //    }
+    
+    [self.tableView reloadData];
     
     [self scrollToTheEndAnimated:YES];
     

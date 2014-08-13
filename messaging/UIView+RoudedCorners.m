@@ -37,9 +37,7 @@
     maskLayer.frame = bounds;
     maskLayer.path = maskPath.CGPath;
     
-    
-    DDLogDebug(@"Bounds in method height: %f, y: %f", bounds.size.height, bounds.origin.y);
-    
+        
     self.layer.mask = maskLayer;
     
     CAShapeLayer *frameLayer = [CAShapeLayer layer];
@@ -53,34 +51,6 @@
 //
 //    [self setNeedsDisplay];
     
-}
-
-- (void)setBorderToViewInLine:(UIRectEdge)edge withColour:(UIColor *)colour andWidth:(float)width
-{
-    
-    // Add a bottomBorder.
-    CALayer *bottomBorder = [CALayer layer];
-    
-    if(edge == UIRectEdgeBottom)
-    {
-        bottomBorder.frame = CGRectMake(0.0f, self.frame.size.height - 1, self.frame.size.width, 1.0f);
-        
-        bottomBorder.backgroundColor = colour.CGColor;
-        
-        [self.layer addSublayer:bottomBorder];
-    }
-    else if (edge == UIRectEdgeRight)
-    {
-        bottomBorder.frame = CGRectMake(self.frame.size.width - 1 , 0.0, 1.0, self.frame.size.height);
-        
-        bottomBorder.backgroundColor = colour.CGColor;
-        
-        [self.layer addSublayer:bottomBorder];
-    }
-    else if (edge == UIRectEdgeLeft)
-    {
-        
-    }
 }
 
 @end

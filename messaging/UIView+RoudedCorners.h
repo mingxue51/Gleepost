@@ -11,6 +11,5 @@
 @interface UIView (RoudedCorners)
 
 - (void)setRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius;
-- (void)setBorderToViewInLine:(UIRectEdge)edge withColour:(UIColor *)colour andWidth:(float)width;
 
 @end

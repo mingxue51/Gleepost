@@ -36,8 +36,4 @@
 
 +(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour;
 
-+ (void)setBorderToView:(UIView *)view inLine:(UIRectEdge)edge withColour:(UIColor *)colour andWidth:(float)width;
-
-+ (void)setBottomExCornerRadius:(UIImageView *)imageView withValue:(float)value;
-
 @end

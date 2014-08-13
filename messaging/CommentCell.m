@@ -55,21 +55,10 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
 
 -(void)setComment:(GLPComment*)comment withIndex:(NSInteger)index andNumberOfComments:(NSInteger)commentsNumber
 {
-
     _commentIndex = index;
     _commentsNumber = commentsNumber;
     
     [self findCommentCellType];
-    
-//    [ShapeFormatterHelper setBorderToView:self.contentView withColour:[UIColor redColor] andWidth:1.0];
-
-    
-//    [ShapeFormatterHelper setBorderToView:_contentLabel withColour:[UIColor purpleColor] andWidth:1.0];
-
-
-    
-//    [self applyBorderToSubViews];
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blackColor] andWidth:1.0];
     
     //Add user's remote key as an image tag.
     self.userImageView.tag = comment.author.remoteKey;
@@ -142,13 +131,11 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     else
     {
         _cellType = kMiddleCommentCell;
-    
     }
 }
 
 - (void)configureCommentCell
 {
-    
     switch (_cellType) {
         case kTopCommentCell:
             [self configureTopCell];
@@ -239,58 +226,33 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
 
 - (void)configureTopCell
 {
-//    DDLogDebug(@"configureTopCell");
-    
-//    [ShapeFormatterHelper setTopCornerRadius:_backgoundImageView withViewFrame:_backgoundImageView.frame withValue:4];
-    
     [_backgoundImageView setRoundedCorners:UIRectCornerTopLeft | UIRectCornerTopRight radius:4.0];
-    
-//    [ShapeFormatterHelper removeBottomCornerRadius:_backgoundImageView];
 }
 
 - (void)configureMiddleCell
 {
-//    DDLogDebug(@"configureMiddleCell");
-
-//    [ShapeFormatterHelper resetAnyFormatOnView:_backgoundImageView];
-//    [ShapeFormatterHelper setBorderToView:_backgoundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0];
-    
-//    [_backgoundImageView setBorderToViewInLine:UIRectEdgeBottom withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0];
-    
-//    if(_commentIndex != _commentsNumber - 2)
-//    {
-        [_backgoundImageView addBottomBorderWithHeight:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
-//    }
-    
+    [_backgoundImageView addBottomBorderWithHeight:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addLeftBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
-    
-    
 }
 
 - (void)configureTopBottomCommentCell
 {
-//    DDLogDebug(@"configureTopBottomCommentCell");
-
-
-    
-    
     [ShapeFormatterHelper setCornerRadiusWithView:_backgoundImageView andValue:4];
+    [ShapeFormatterHelper setBorderToView:_backgoundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0];
 }
 
 - (void)configureBottomCell
 {
-    
-//    DDLogDebug(@"configureBottomCell");
-
-
-    DDLogDebug(@"backgroundImageView height: %f, y: %f", _backgoundImageView.frame.size.height, _backgoundImageView.frame.origin.y);
-    
+    /**
+     We are adding these 2 image views to the view because there was a problem
+     with the 2 sides borders.
+     */
     UIImageView *im = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 0.0, 1.0, 2.0)];
     [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
     
     [self.contentView addSubview:im];
-    
+
     im = [[UIImageView alloc] initWithFrame:CGRectMake(309.0, 0.0, 1.0, 2.0)];
     [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
     
@@ -298,13 +260,7 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     
     [_backgoundImageView setRoundedCorners:UIRectCornerBottomRight | UIRectCornerBottomLeft radius:4.0];
     
-    
-    
     [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
-
-    
-//    [ShapeFormatterHelper setBorderToView:_backgoundImageView withColour:[UIColor blueColor] andWidth:1.0];
-//    [ShapeFormatterHelper removeBottomCornerRadius:_backgoundImageView];
 }
 
 - (void)configureBackgroudViewHeight
@@ -314,15 +270,11 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     [_backgroundViewHeight setConstant:contentLabelHeight + FixedSizeOfTextCell];
     
     CGRectSetH(_backgoundImageView, contentLabelHeight + FixedSizeOfTextCell);
-    
-//    DDLogDebug(@"backgroundViewHeight: %f", _backgroundViewHeight.constant);
 }
 
 - (void)formatBackgroundView
 {
     [ShapeFormatterHelper setBorderToView:_backgoundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
-    
-
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
