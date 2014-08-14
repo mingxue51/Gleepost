@@ -103,14 +103,19 @@
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
+//                    [WebClientHelper showStandardErrorWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
+                    
+                    [self showAlertViewWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
+
                 }
                 
             }];
         }
         else
         {            
-            [WebClientHelper showStandardErrorWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
+//            [WebClientHelper showStandardErrorWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
+            
+            [self showAlertViewWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
         }
     }
     else
@@ -140,17 +145,36 @@
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
+//                    [WebClientHelper showStandardErrorWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
+                    
+                    [self showAlertViewWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
+
                 }
                 
             }];
         }
     }
-    
-
-    
-
 }
+
+#pragma mark - AlertView
+
+- (void)showAlertViewWithTitle:(NSString *)title andContent:(NSString *)content
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:content
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self showKeyboardOnTheFirstTextField];
+}
+
 
 #pragma mark - Keyboard management
 

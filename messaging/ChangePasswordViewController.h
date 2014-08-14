@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChangePasswordViewController : UIViewController
+@interface ChangePasswordViewController : UIViewController<UIAlertViewDelegate>
 
 @property (assign, nonatomic) BOOL isPasswordChange;
 
