@@ -46,7 +46,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="56" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="w27-LX-izE" customClass="CopyLabel">
-                        <rect key="frame" x="20" y="56" width="280" height="19"/>
+                        <rect key="frame" x="20" y="54" width="280" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="280" id="ALn-Bs-TR7"/>
@@ -66,7 +66,7 @@
                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="30Z-0M-DB7" secondAttribute="trailing" constant="30" id="2HV-cT-nLA"/>
-                    <constraint firstItem="w27-LX-izE" firstAttribute="top" secondItem="30Z-0M-DB7" secondAttribute="bottom" constant="8" id="Bob-Nb-fjt"/>
+                    <constraint firstItem="w27-LX-izE" firstAttribute="top" secondItem="30Z-0M-DB7" secondAttribute="bottom" constant="6" id="Bob-Nb-fjt"/>
                     <constraint firstItem="30Z-0M-DB7" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="5" id="EMb-TI-G4h"/>
                     <constraint firstItem="a3r-59-00Z" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="5" id="HJg-yz-f0J"/>
                     <constraint firstItem="Uah-fu-XDX" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" id="HYW-8L-KsP"/>

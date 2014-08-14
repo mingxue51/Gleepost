@@ -96,6 +96,8 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
 //    [self.userImageView addGestureRecognizer:tap];
     
     
+//    [ShapeFormatterHelper setBorderToView:_contentLabel withColour:[UIColor redColor] andWidth:1.0];
+    
 //    [self formatCommentElements];
 }
 
@@ -256,8 +258,6 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
-    //CGSize maximumLabelSize = CGSizeMake(CommentContentLabelMaxWidth, FLT_MAX);
-    
     
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
@@ -265,14 +265,13 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){CommentContentLabelMaxWidth, CGFLOAT_MAX}
-                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               options:(NSStringDrawingUsesLineFragmentOrigin)
                                                context:nil];
+    
     
     CGSize size = rect.size;
     
     return size;
-    
-   // return [content sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Thin" size:12.0] constrainedToSize: maximumLabelSize lineBreakMode: NSLineBreakByWordWrapping];
 
 }
 
