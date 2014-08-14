@@ -490,6 +490,7 @@
 		58A75EBF1921097A0082F316 /* VideoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A75EBE1921097A0082F316 /* VideoProgressView.m */; };
 		58A75FBE19523AC60060060D /* MessengerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A75FBD19523AC60060060D /* MessengerViewController.m */; };
 		58A75FC019523BC80060060D /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58A75FBF19523BC80060060D /* MessageCell.xib */; };
+		58A78ED0199C4DF10038564D /* change_pass_name.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A78ECF199C4DF10038564D /* change_pass_name.png */; };
 		58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A855C01949BA8C0059CF57 /* GLPButton.m */; };
 		58AA61E4192A87100098E4FB /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E3192A87100098E4FB /* add_new_post.png */; };
 		58AA61E6192A87350098E4FB /* show_categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E5192A87350098E4FB /* show_categories.png */; };
@@ -1529,6 +1530,7 @@
 		58A75FBC19523AC60060060D /* MessengerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessengerViewController.h; sourceTree = "<group>"; };
 		58A75FBD19523AC60060060D /* MessengerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessengerViewController.m; sourceTree = "<group>"; };
 		58A75FBF19523BC80060060D /* MessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		58A78ECF199C4DF10038564D /* change_pass_name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = change_pass_name.png; sourceTree = "<group>"; };
 		58A855BF1949BA8C0059CF57 /* GLPButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPButton.h; sourceTree = "<group>"; };
 		58A855C01949BA8C0059CF57 /* GLPButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPButton.m; sourceTree = "<group>"; };
 		58AA61E3192A87100098E4FB /* add_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post.png; sourceTree = "<group>"; };
@@ -2481,6 +2483,7 @@
 		58451BFC199B3CC0003B94D2 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				58A78ECF199C4DF10038564D /* change_pass_name.png */,
 				58451BFF199B3E42003B94D2 /* setting_right_arrow.png */,
 				58451BFD199B3CD1003B94D2 /* logout_button.png */,
 			);
@@ -4863,6 +4866,7 @@
 				58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */,
 				584D208B1953472200E571DF /* GLPSegmentView.xib in Resources */,
 				589EAD2818A43A12005B2F4C /* campus_live_cell_bg_old.png in Resources */,
+				58A78ED0199C4DF10038564D /* change_pass_name.png in Resources */,
 				80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */,
 				58289EFB18D7595000228EFF /* going.png in Resources */,
 				58E3DAC5188405DB00B9B048 /* blimp.png in Resources */,

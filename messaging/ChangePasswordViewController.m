@@ -13,7 +13,6 @@
 
 @interface ChangePasswordViewController ()
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 
 @property (weak, nonatomic) IBOutlet UITextField *oldPassWord;
 
@@ -21,7 +20,9 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *passWord2;
 
-@property (weak, nonatomic) IBOutlet UINavigationItem *item2;
+@property (weak, nonatomic) IBOutlet UIImageView *separatorLastTextField;
+ 
+@property (weak, nonatomic) IBOutlet UIButton *changeButton;
 
 @end
 
@@ -34,12 +35,22 @@
     [super viewDidLoad];
     [self configureNavigationBar];
     [self configureView];
-
+    [self showKeyboardOnTheFirstTextField];
 }
 
 -(void)configureNavigationBar
 {
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+    if(_isPasswordChange)
+    {
+        self.title = @"CHANGE PASSWORD";
+    }
+    else
+    {
+        self.title = @"CHANGE NAME";
+    }
+    
+    
+//    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
 }
 
 -(void)configureView
@@ -48,18 +59,13 @@
     {
         //Remove the first field and change their text placeholders.
         [_passWord2 setHidden:YES];
+        [_separatorLastTextField setHidden:YES];
         [_oldPassWord setPlaceholder:@"New name"];
         [_passWord setPlaceholder:@"New surname"];
         [_oldPassWord setSecureTextEntry:NO];
         [_passWord setSecureTextEntry:NO];
-        
-        [_item2 setTitle:@"CHANGE NAME"];
+        [_changeButton setTitle:@"CHANGE NAME" forState:UIControlStateNormal];
     }
-}
-
-- (IBAction)goBack:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)saveNewPassword:(id)sender
@@ -80,14 +86,20 @@
         
         if([_passWord.text isEqualToString:_passWord2.text])
         {
+            [self hideKeyboard];
+            
+            [WebClientHelper showStandardLoaderWithTitle:@"Changing password..." forView:self.view];
+            
             [[WebClient sharedInstance] changePasswordWithOld:_oldPassWord.text andNew:_passWord.text callbackBlock:^(BOOL success) {
+                
+                [WebClientHelper hideStandardLoaderForView:self.view];
                 
                 if(success)
                 {
                     [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed"];
                     
                     
-                    [self goBack:sender];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
                 else
                 {
@@ -97,7 +109,7 @@
             }];
         }
         else
-        {
+        {            
             [WebClientHelper showStandardErrorWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
         }
     }
@@ -112,14 +124,19 @@
         }
         else
         {
+            [self hideKeyboard];
+            
+            [WebClientHelper showStandardLoaderWithTitle:@"Changing name..." forView:self.view];
+
             [[WebClient sharedInstance] changeNameWithName:_oldPassWord.text andSurname:_passWord.text callbackBlock:^(BOOL success) {
                
+                [WebClientHelper hideStandardLoaderForView:self.view];
                 if(success)
                 {
                     [WebClientHelper showStandardErrorWithTitle:@"Name changed" andContent:[NSString stringWithFormat:@"Your new name is: %@ %@.",_oldPassWord.text, _passWord.text]];
                     
                     
-                    [self goBack:sender];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
                 else
                 {
@@ -133,6 +150,18 @@
 
     
 
+}
+
+#pragma mark - Keyboard management
+
+- (void)hideKeyboard
+{
+    [self.view endEditing:YES];
+}
+
+- (void)showKeyboardOnTheFirstTextField
+{
+    [self.oldPassWord becomeFirstResponder];
 }
 
 #pragma mark - Other methods

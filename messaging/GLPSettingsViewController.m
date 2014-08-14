@@ -13,6 +13,7 @@
 #import "AppearanceHelper.h"
 #import "ShapeFormatterHelper.h"
 #import "GLPLoginManager.h"
+#import "ChangePasswordViewController.h"
 
 typedef NS_ENUM(NSUInteger, SettingsItem) {
     kNameSetting = 0,
@@ -24,6 +25,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *settingsItems;
+@property (assign, nonatomic) BOOL isPassWordChanged;
 
 @end
 
@@ -49,7 +51,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView) andTarget:self];
-    
+        
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
@@ -74,6 +76,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     
     _tableView.tableFooterView = [UIView new];
 }
+
 
 #pragma mark - Table view data source
 
@@ -111,6 +114,8 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self navigateToViewControllerWithIndex:indexPath.row];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -183,15 +188,48 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     return titleViewSection;
 }
 
-/*
+
 #pragma mark - Navigation
+
+- (void)navigateToViewControllerWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            [self navigateToChangeNameView];
+            break;
+            
+        case 1:
+            [self navigateToChangePasswordView];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(void)navigateToChangePasswordView
+{
+    _isPassWordChanged = YES;
+    [self performSegueWithIdentifier:@"pass view" sender:self];
+}
+
+-(void)navigateToChangeNameView
+{
+    _isPassWordChanged = NO;
+    [self performSegueWithIdentifier:@"pass view" sender:self];
+    
+}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"pass view"])
+    {
+        ChangePasswordViewController *change = segue.destinationViewController;
+        
+        change.isPasswordChange = _isPassWordChanged;
+    }
 }
-*/
+
 
 @end
