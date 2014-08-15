@@ -27,35 +27,31 @@
 #import "GroupViewController.h"
 #import "GLPTimelineViewController.h"
 #import "ShapeFormatterHelper.h"
-#import "GLPSelectCategoryViewController.h"
 #import "TDNavigationCategories.h"
 #import "GLPiOS6Helper.h"
 #import "UINavigationBar+Utils.h"
+#import "UINavigationBar+Format.h"
 
-@interface NewPostViewController () <GLPSelectCategoryViewControllerDelegate>
+@interface NewPostViewController ()
 
 
-//IBOutlets.
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
-@property (weak, nonatomic) IBOutlet UILabel *charactersLeftLbl;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionCharactersLeftLbl;
+@property (weak, nonatomic) IBOutlet UILabel *titleCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
-@property (weak, nonatomic) IBOutlet UIView *navigateToCategoriesView;
-//Category buttons.
-@property (weak, nonatomic) IBOutlet UIButton *forSaleCategoryBtn;
-@property (weak, nonatomic) IBOutlet UIButton *newsCategoryBtn;
-@property (weak, nonatomic) IBOutlet UIButton *eventsCategoryBtn;
-@property (weak, nonatomic) IBOutlet UIButton *jobsCategoryBtn;
-@property (weak, nonatomic) IBOutlet UIButton *questionsCategoryBtn;
+
 @property (strong, nonatomic) GLPCategory *eventCategory;
 
-//Navigation bar.
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *postNavBarBtn;
 
+//Top Buttons.
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+@property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
+@property (weak, nonatomic) IBOutlet UIButton *addLocationButton;
+
 @property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) GLPPostUploader *postUploader;
-@property (assign, nonatomic) BOOL hasImage;
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
 @property (strong, nonatomic) NSString *eventTitle;
@@ -65,23 +61,20 @@
 
 
 @property (assign, nonatomic) BOOL inCategorySelection;
-@property (assign, nonatomic) NSInteger remainingNumberOfCharacters;
-//@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (assign, nonatomic) NSInteger descriptionRemainingNoOfCharacters;
+@property (assign, nonatomic) NSInteger titleRemainingNoOfCharacters;
 
-- (IBAction)cancelButtonClick:(id)sender;
-- (IBAction)postButtonClick:(id)sender;
 
 @end
 
 @implementation NewPostViewController
 
-const NSString *CHARACTERS_LEFT = @"Characters Left";
-const NSInteger MAX_NO_OF_CHARACTERS = 70;
-const float LIGHT_BLACK_RGB = 48.0f/255.0f;
+const NSInteger MAX_DESCRIPTION_CHARACTERS = 70;
+const NSInteger MAX_TITLE_CHARACTERS = 30;
+const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 @synthesize delegate;
 @synthesize postUploader=_postUploader;
-@synthesize hasImage=_hasImage;
 
 - (void)backButtonTapped {
     [self.navigationController popToRootViewControllerAnimated:YES];
@@ -108,27 +101,22 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureObjects];
-    
-    [self configureCategoryButtons];
-    
+        
     [self configureNavigationBar];
     
-    [self configureLabel];
+    [self configureLabels];
     
     [self configureViewsPositions];
     
     [self configureViewsGestures];
     
-    [self configureTextView];
-    
-    [self formatNavigationButtons];
+    [self configureTextViews];
     
     [self formatBackgroundViews];
     
     [self formatTextView];
     
-    
-//    [self generateCategoryButtons];
+    [self loadDataIfNeeded];
     
 
 }
@@ -141,7 +129,7 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
     [self formatStatusBar];
     
-    [self.contentTextView becomeFirstResponder];
+    [self.titleTextField becomeFirstResponder];
 
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
@@ -156,7 +144,14 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self.contentTextView resignFirstResponder];
+    if([self.contentTextView isFirstResponder])
+    {
+        [self.contentTextView resignFirstResponder];
+    }
+    else if([self.titleTextField isFirstResponder])
+    {
+        [self.titleTextField resignFirstResponder];
+    }
     
     [super viewWillDisappear:animated];
 }
@@ -203,90 +198,67 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     _transitionViewCategories = [[TDNavigationCategories alloc] init];
     _categories = [NSMutableArray array];
     _postUploader = [[GLPPostUploader alloc] init];
-    _hasImage = NO;
     _eventDateStart = nil;
-    _remainingNumberOfCharacters = MAX_NO_OF_CHARACTERS;
-}
-
--(void)configureCategoryButtons
-{
-    [self formatButton: self.newsCategoryBtn];
-    [self formatButton: self.forSaleCategoryBtn];
-    [self formatButton: self.eventsCategoryBtn];
-    [self formatButton: self.jobsCategoryBtn];
-    [self formatButton: self.questionsCategoryBtn];
-}
-
--(void)formatButton:(UIButton*)btn
-{
-    btn.layer.cornerRadius = 11;
-    btn.layer.borderColor = [AppearanceHelper colourForNotFocusedItems].CGColor;
-    btn.layer.borderWidth = 2.5f;
-    btn.clipsToBounds = YES;
-    [btn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:18.0f]];
-    btn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1, 0);
-
+    _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS;
+    _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS;
 }
 
 -(void)formatTextView
 {
-    _contentTextView.placeholderColor = [UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0];
+//    _contentTextView.placeholderColor = [UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0];
 }
 
--(void)configureTextView
+-(void)configureTextViews
 {
     _contentTextView.delegate = self;
+    
+    [_titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+
+    _titleTextField.delegate = self;
 }
 
 -(void)formatBackgroundViews
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:4];
-    [ShapeFormatterHelper setCornerRadiusWithView:_navigateToCategoriesView andValue:4];
 
     
 //    [ShapeFormatterHelper setBorderToView:_textFieldBackgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];
     
 }
 
+//TODO: Finish that for the other views.
+
 -(void)configureViewsPositions
 {
     if(!IS_IPHONE_5)
     {
         CGRectAddH(_textFieldView, -50.0);
-        CGRectMoveY(_navigateToCategoriesView, -50.0);
-        CGRectMoveY(_charactersLeftLbl, -52.0);
+        CGRectMoveY(_descriptionCharactersLeftLbl, -52.0);
     }
 }
 
 -(void)configureViewsGestures
 {
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToCategories:)];
+  /**  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToCategories:)];
     [tap setNumberOfTapsRequired:1];
-    [_navigateToCategoriesView addGestureRecognizer:tap];
+    [_navigateToCategoriesView addGestureRecognizer:tap];*/
 }
 
 -(void)configureNavigationBar
 {
     [self.navigationController.navigationBar setTranslucent:NO];
     self.title = @"NEW POST";
-    [self configureLeftBarButton];
     [self configureRightBarButton];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    DDLogDebug(@"Navigation bar2: %@", self.navigationController.navigationBar);
-
-    self.navigationController.navigationBar.tag = 2;
-    
-    [AppearanceHelper setNavigationBarFormatForNewPostViews:self.navigationController.navigationBar];
-}
-
--(void)configureLeftBarButton
-{
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(cancelButtonClick:) andTarget:self];
+//    self.navigationController.navigationBar.tag = 2;
+//    
+//    [AppearanceHelper setNavigationBarFormatForNewPostViews:self.navigationController.navigationBar];
 }
 
 -(void)configureRightBarButton
 {
-    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"Post" withButtonSize:CGSizeMake(40, 17) withSelector:@selector(postButtonClick:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
 }
 
 -(void)formatStatusBar
@@ -294,61 +266,31 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
--(void)formatNavigationButtons
+-(void)configureLabels
 {
-    UIFont *font = [UIFont fontWithName:GLP_TITLE_FONT size:18.0f];
-    
-    [self.postNavBarBtn setTitleTextAttributes:@{NSFontAttributeName: font}
-                                        forState:UIControlStateNormal];
+    [_descriptionCharactersLeftLbl setText:[NSString stringWithFormat:@"%ld", (long)MAX_DESCRIPTION_CHARACTERS]];
+    [_descriptionCharactersLeftLbl setHidden:YES];
+    [_titleCharactersLeftLbl setText:[NSString stringWithFormat:@"%ld", (long)MAX_TITLE_CHARACTERS]];
 }
 
--(void)configureLabel
-{
-    [_charactersLeftLbl setText:[NSString stringWithFormat:@"%ld %@", (long)MAX_NO_OF_CHARACTERS, CHARACTERS_LEFT]];
-}
-
-//TODO: Not used. Use this later if there is a need.
-
--(void)generateCategoryButtons
-{
-    NSArray *names = [[CategoryManager instance] categoriesNames];
-    
-    for(NSString *name in names)
-    {
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(79.0f, 229.0f, 10.0f, 30.0f)];
-        
-        btn.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
-        
-        [btn setTitle:name forState:UIControlStateNormal];
-        
-        [btn sizeToFit];
-        
-        [self.view addSubview:btn];
-        break;
-    }
-}
-
--(UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
 
 - (void)hideNetworkErrorViewIfNeeded
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
 }
 
-#pragma mark - Selectors
-
-- (IBAction)cancelButtonClick:(id)sender
+- (void)loadDataIfNeeded
 {
-//    [self.delegate setNavigationBarName];
-//    [self.delegate setButtonsToNavigationBar];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //TODO: Load data from PendingPostManager and add them to the fields.
 }
 
-- (IBAction)postButtonClick:(id)sender
+
+#pragma mark - Selectors
+
+- (void)postButtonClick:(id)sender
 {
+    //TODO:Check if the lenght of the text views is out of bounds.
+    
     if (![NSString isStringEmpty:self.contentTextView.text]) {
 //        [self.delegate setNavigationBarName];
 //        [self.delegate setButtonsToNavigationBar];
@@ -378,162 +320,27 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
         [self dismissViewControllerAnimated:YES completion:^{
-            if(_hasImage)
-            {
+//            if(_hasImage)
+//            {
 //                inPost.tempImage = self.imgToUpload;
                 //inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
 //                [delegate reloadNewImagePostWithPost:inPost];
-            }
-            else
-            {
-                //[delegate reloadNewLocalPosts];
-//                [delegate reloadNewImagePostWithPost:inPost];
-            }
+//            }
+//            else
+//            {
+//                //[delegate reloadNewLocalPosts];
+////                [delegate reloadNewImagePostWithPost:inPost];
+//            }
             
         }];
     }
-}
-
-
-
--(IBAction)selectCategory:(id)sender
-{
-    
-    _inCategorySelection = YES;
-    
-    UIButton *currentButton = (UIButton*)sender;
-    
-    if([[currentButton titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
-    {
-        
-        GLPCategory *chosenCategory = [[CategoryManager instance] categoryWithRemoteKey:currentButton.tag];
-        
-        
-        [self popUpTimeSelectorWithCategory:chosenCategory];
-        
-        [self makeButtonSelected:currentButton];
-
-        
-        [_categories addObject:[[CategoryManager instance] generateEventCategory]];
-        [_categories addObject:chosenCategory];
-
-        
-    }
-    else
-    {        
-        [self enableButtons];
-        
-        [self makeButtonUnselected:currentButton];
-
-        
-        [self deleteCategoryWithRemoteKey:currentButton.tag];
-        
-    }
-}
-
-
--(void)makeButtonUnselected:(UIButton *)btn
-{
-    [btn setTitleColor:[AppearanceHelper colourForNotFocusedItems] forState:UIControlStateNormal];
-    [btn.layer setBorderColor:[AppearanceHelper colourForNotFocusedItems].CGColor];
-}
-
--(void)makeButtonSelected:(UIButton *)btn
-{
-    [btn setTitleColor:[AppearanceHelper defaultGleepostColour] forState:UIControlStateNormal];
-    [btn.layer setBorderColor:[AppearanceHelper defaultGleepostColour].CGColor];
 }
 
 -(void)navigateToCategories:(id)sender
 {
 //    [self performSegueWithIdentifier:@"show categories" sender:self];
     
-    [self navigateToCategoriesViewController];
-}
-
-#pragma mark - PickDateEvent delegate
-
--(void)cancelSelectingDateForEvent
-{
-    //Unselect event category.
-    [self makeButtonUnselected:_eventsCategoryBtn];
-    [self makeButtonUnselected:_forSaleCategoryBtn];
-    [self makeButtonUnselected:_newsCategoryBtn];
-    [self makeButtonUnselected:_jobsCategoryBtn];
-    [self makeButtonUnselected:_questionsCategoryBtn ];
-
-    //Enable all disabled buttons.
-    [self enableButtons];
-    
-    //Remove all objects from selected categories array.
-    [self deleteCategoryWithRemoteKey:0];
-
-}
-
-#pragma mark - GLPSelectCategoryViewControllerDelegate
-
--(void)eventPostReadyWith:(NSString *)eventTitle andEventDate:(NSDate *)eventDate andCategory:(GLPCategory *)category
-{
-    _eventTitle = eventTitle;
-    _eventDateStart = eventDate;
-    [_categories addObject:category];
-}
-
-- (void)doneSelectingDateForEvent:(NSDate *)date andTitle:(NSString *)title
-{
-    _eventDateStart = date;
-    _eventTitle = title;
-    
-    //Disable all the other events buttons.
-    [self disableButtons];
-    
-}
-
--(void)disableButtons
-{
-    if([[self.newsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
-    {
-        [self.newsCategoryBtn setEnabled:NO];
-    }
-    
-    if ([[self.forSaleCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
-    {
-        [self.forSaleCategoryBtn setEnabled:NO];
-    }
-    
-    if ([[self.eventsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
-    {
-        [self.eventsCategoryBtn setEnabled:NO];
-
-    }
-    if ([[self.jobsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
-    {
-        [self.jobsCategoryBtn setEnabled:NO];
-
-    }
-   
-    if ([[self.questionsCategoryBtn titleColorForState:UIControlStateNormal] isEqual:[AppearanceHelper colourForNotFocusedItems]])
-    {
-        [self.questionsCategoryBtn setEnabled:NO];
-
-    }
-
-}
-
--(void)enableButtons
-{
-    [self.newsCategoryBtn setEnabled:YES];
-    [self.forSaleCategoryBtn setEnabled:YES];
-    [self.eventsCategoryBtn setEnabled:YES];
-    [self.jobsCategoryBtn setEnabled:YES];
-    [self.questionsCategoryBtn setEnabled:YES];
-}
-
-
--(void)popUpTimeSelectorWithCategory:(GLPCategory *)category
-{
-    //Pop up the time selector.
-    [self performSegueWithIdentifier:@"pick date" sender:self];
+//    [self navigateToCategoriesViewController];
 }
 
 -(BOOL)isGroupPost
@@ -554,29 +361,28 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     }
 }
 
--(void)deleteCategoryWithRemoteKey:(int)remoteKey
-{
-   
-    [_categories removeAllObjects];
-    
-//    for(GLPCategory *c in _categories)
-//    {
-//        if(c.remoteKey == remoteKey)
-//        {
-//            [_categories removeObject:c];
-//            break;
-//        }
-//    }
-    
-    
-}
-
 
 - (IBAction)addImageOrImage:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Capture Media" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add an image", @"Capture a video", nil];
- 
-    [actionSheet showInView:[self.view window]];
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Capture Media" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add an image", @"Capture a video", nil];
+// 
+//    [actionSheet showInView:[self.view window]];
+    
+    [self.fdTakeController takePhotoOrChooseFromLibrary];
+}
+
+- (IBAction)addVideo:(id)sender
+{
+//    //Remove video preview view if is on the addImageButton.
+//    [self removeVideoPreviewView];
+    
+    //Capture a video.
+    [self performSegueWithIdentifier:@"capture video" sender:self];
+}
+
+- (IBAction)addLocation:(id)sender
+{
+    DDLogDebug(@"Add location");
 }
 
 #pragma mark - FDTakeController delegate
@@ -589,10 +395,9 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     
     [self.addImageButton setImage:photo forState:UIControlStateNormal];
-
-    _hasImage = YES;
     
     self.imgToUpload = photo;
+    
     [_postUploader uploadImageToQueue:self.imgToUpload];
     
     //[_postUploader startUploadingImage:self.imgToUpload];
@@ -602,7 +407,6 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
     if([selectedButtonTitle isEqualToString:@"Add an image"])
@@ -643,12 +447,16 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 -(void)showVideoToButtonWithPath:(NSString *)videoPath
 {
+    //Remove video preview view if is on the addImageButton.
+    [self removeVideoPreviewView];
+    [self resetImageButton];
+    
     _previewVC = [[PBJVideoPlayerController alloc] init];
     _previewVC.delegate = self;
     [_previewVC setPlaybackLoops:YES];
-    _previewVC.view.frame = _addImageButton.bounds;
-    [_addImageButton addSubview:_previewVC.view];
-    
+    _previewVC.view.frame = _addVideoButton.bounds;
+//    [_addImageButton addSubview:_previewVC.view];
+    [_addVideoButton addSubview:_previewVC.view];
     _previewVC.videoPath = videoPath;
     
     [_previewVC playFromBeginning];
@@ -663,6 +471,14 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     }
 }
 
+- (void)resetImageButton
+{
+    
+    
+    [_addImageButton setImage:nil forState:UIControlStateNormal];
+}
+
+
 #pragma mark - PBJVideoPlayerControllerDelegate
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
@@ -673,7 +489,7 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 {
     if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused && !_inCategorySelection)
     {
-        [self addImageOrImage:nil];
+        [self addVideo:nil];
     }
 }
 
@@ -690,44 +506,90 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
 
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
-    [self setNumberOfCharacters:textView.text.length];
+    //TODO: Save text to PendingPostManager.
+    
+    [self setNumberOfCharactersToDescription:textView.text.length];
 }
 
-#pragma makr - Text text view
-
--(void)setNumberOfCharacters:(NSInteger)numberOfChars
+- (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    _remainingNumberOfCharacters = MAX_NO_OF_CHARACTERS - numberOfChars;
+    [_descriptionCharactersLeftLbl setHidden:NO];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [_descriptionCharactersLeftLbl setHidden:YES];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidChange:(UITextField *)textField
+{
+    [self setNumberOfCharactersToTitle:textField.text.length];
+
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [_titleCharactersLeftLbl setHidden:NO];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [_titleCharactersLeftLbl setHidden:YES];
+}
+
+#pragma mark - Text text view
+
+-(void)setNumberOfCharactersToDescription:(NSInteger)numberOfChars
+{
+    _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS - numberOfChars;
     
-    [_charactersLeftLbl setText:[NSString stringWithFormat:@"%d %@", _remainingNumberOfCharacters , CHARACTERS_LEFT]];
+    [_descriptionCharactersLeftLbl setText:[NSString stringWithFormat:@"%d", _descriptionRemainingNoOfCharacters]];
     
-    if(_remainingNumberOfCharacters < 0)
+    if(_descriptionRemainingNoOfCharacters < 0)
     {
-        [_charactersLeftLbl setTextColor:[UIColor redColor]];
+        [_descriptionCharactersLeftLbl setTextColor:[UIColor redColor]];
     }
     else
     {
-        [_charactersLeftLbl setTextColor:[UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0f]];
+        [_descriptionCharactersLeftLbl setTextColor:[UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0f]];
+    }
+}
+
+-(void)setNumberOfCharactersToTitle:(NSInteger)numberOfChars
+{
+    _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS - numberOfChars;
+    
+    [_titleCharactersLeftLbl setText:[NSString stringWithFormat:@"%d", _titleRemainingNoOfCharacters]];
+    
+    if(_titleRemainingNoOfCharacters < 0)
+    {
+        [_titleCharactersLeftLbl setTextColor:[UIColor redColor]];
+    }
+    else
+    {
+        [_titleCharactersLeftLbl setTextColor:[UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0f]];
     }
 }
 
 #pragma mark - VC Navigation
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
-    if([segue.identifier isEqualToString:@"pick date"])
-    {
-        PickDateEventViewController *pickDateViewController = segue.destinationViewController;
-        
-        pickDateViewController.delegate = self;
-    }
-    else if ([segue.identifier isEqualToString:@"show categories"])
-    {
-        
-    }
-
-}
+//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    
+//    if([segue.identifier isEqualToString:@"pick date"])
+//    {
+//        PickDateEventViewController *pickDateViewController = segue.destinationViewController;
+//        
+//        pickDateViewController.delegate = self;
+//    }
+//    else if ([segue.identifier isEqualToString:@"show categories"])
+//    {
+//        
+//    }
+//
+//}
 
 -(void)navigateToVideoController
 {
@@ -739,31 +601,26 @@ const float LIGHT_BLACK_RGB = 48.0f/255.0f;
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
--(void)navigateToCategoriesViewController
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPSelectCategoryViewController *categoriesVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
-    [categoriesVC setDelegate:self];
-    categoriesVC.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-
-    categoriesVC.modalPresentationStyle = UIModalPresentationCustom;
-    
-    
-    if(![GLPiOS6Helper isIOS6])
-    {
-        [categoriesVC setTransitioningDelegate:_transitionViewCategories];
-    }
-    
-
-    [self presentViewController:categoriesVC animated:YES completion:nil];
-    
-    
-    
-    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:videoVC];
-    //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-//    [self.navigationController pushViewController:categoriesVC animated:YES];
-    
-}
+//-(void)navigateToCategoriesViewController
+//{
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    GLPSelectCategoryViewController *categoriesVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
+//    [categoriesVC setDelegate:self];
+//    categoriesVC.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+//
+//    categoriesVC.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    
+//    if(![GLPiOS6Helper isIOS6])
+//    {
+//        [categoriesVC setTransitioningDelegate:_transitionViewCategories];
+//    }
+//    
+//
+//    [self presentViewController:categoriesVC animated:YES completion:nil];
+//    
+//    
+//}
 
 
 

@@ -121,6 +121,8 @@
 
 -(void)setUpPreviewView
 {
+    DDLogDebug(@"PreviewView: %@, Preview VC: %@", _previewView, _previewVC);
+    
     _previewVC = [[PBJVideoPlayerController alloc] init];
     _previewVC.delegate = _videoPreviewView;
     [_previewVC setPlaybackLoops:YES];

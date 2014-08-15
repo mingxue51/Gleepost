@@ -59,6 +59,7 @@
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 #import "UIRefreshControl+CustomLoader.h"
+#import "IntroKindOfNewPostViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -2464,8 +2465,8 @@ const float TOP_OFFSET = 280.0f;
 //        [self presentViewController:vc animated:YES completion:nil];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-        [newPostVC setDelegate:self];
+        IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
+//        [newPostVC setDelegate:self];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
@@ -2489,7 +2490,7 @@ const float TOP_OFFSET = 280.0f;
         
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];
         vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
