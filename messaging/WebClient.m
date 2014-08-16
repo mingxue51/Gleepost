@@ -370,7 +370,12 @@ static WebClient *instance = nil;
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+    
+//    if(post.categories > 0)
+//    {
+        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+//    }
+
     
     DDLogDebug(@"Params: %@, Categories: %@", params, post.categories);
     
@@ -386,6 +391,7 @@ static WebClient *instance = nil;
 //        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
 //        
 //        [params addEntriesFromDictionary:[NSMutablefDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
+        
         
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];

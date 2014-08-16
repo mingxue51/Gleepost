@@ -96,7 +96,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 /**
  Method used for upload regular post.
  */
--(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray*)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title
+-(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title
 {
     //Add the date to a new post.
     GLPPost *post = [[GLPPost alloc] init];

@@ -10,6 +10,7 @@
 #import "PendingPostManager.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
+#import "PendingPostManager.h"
 
 @interface IntroKindOfNewPostViewController ()
 
@@ -22,6 +23,18 @@
     [super viewDidLoad];
     
     [self configureNavigationBar];
+}
+
+//- (void)viewDidDisappear:(BOOL)animated
+//{
+//    [[PendingPostManager sharedInstance] reset];
+//    
+//    [super viewDidDisappear:animated];
+//}
+
+- (void)dealloc
+{    
+    [[PendingPostManager sharedInstance] reset];
 }
 
 - (void)configureNavigationBar
@@ -37,17 +50,39 @@
 
 - (IBAction)selectEvent:(id)sender
 {
+    if([[PendingPostManager sharedInstance] kindOfPost] != kEventPost)
+    {
+        [[PendingPostManager sharedInstance] reset];
+    }
+    
+    
+    [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
+    
     [self performSegueWithIdentifier:@"view event selector" sender:self];
 }
 
 - (IBAction)selectAnnouncement:(id)sender
 {
+    if([[PendingPostManager sharedInstance] kindOfPost] != kAnnouncementPost)
+    {
+        [[PendingPostManager sharedInstance] reset];
+    }
+    
+    [[PendingPostManager sharedInstance] setKindOfPost:kAnnouncementPost];
+    
     [self performSegueWithIdentifier:@"final new post" sender:self];
 
 }
 
 - (IBAction)selectGeneral:(id)sender
 {
+    if([[PendingPostManager sharedInstance] kindOfPost] != kGeneralPost)
+    {
+        [[PendingPostManager sharedInstance] reset];
+    }
+    
+    [[PendingPostManager sharedInstance] setKindOfPost:kGeneralPost];
+    
     [self performSegueWithIdentifier:@"final new post" sender:self];
 }
 

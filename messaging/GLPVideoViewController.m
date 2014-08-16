@@ -54,6 +54,10 @@
 {
     [self removeObservers];
     
+    [[PBJVision sharedInstance] stopPreview];
+    
+    [PBJVision resetInstance];
+    
     [super viewDidDisappear:animated];
 }
 

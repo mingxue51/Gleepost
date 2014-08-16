@@ -31,6 +31,7 @@
 #import "GLPiOS6Helper.h"
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
+#import "PendingPostManager.h"
 
 @interface NewPostViewController ()
 
@@ -41,7 +42,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
 
-@property (strong, nonatomic) GLPCategory *eventCategory;
+/** Should be 2 categories (event and user's selected. */
+//@property (strong, nonatomic) NSArray *eventCategories;
 
 
 //Top Buttons.
@@ -49,12 +51,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *addLocationButton;
 
-@property (strong, nonatomic) NSMutableArray *categories;
+//@property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
-@property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
 @property (strong, nonatomic) TDNavigationCategories *transitionViewCategories;
@@ -121,6 +122,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 }
 
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -129,7 +131,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
     [self formatStatusBar];
     
-    [self.titleTextField becomeFirstResponder];
 
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
@@ -139,6 +140,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self configureContents];
+
     [self hideNetworkErrorViewIfNeeded];
 }
 
@@ -196,11 +200,31 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 -(void)configureObjects
 {
     _transitionViewCategories = [[TDNavigationCategories alloc] init];
-    _categories = [NSMutableArray array];
     _postUploader = [[GLPPostUploader alloc] init];
     _eventDateStart = nil;
     _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS;
     _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS;
+}
+
+/**
+ This method rearrange any content in the view controller
+ depending on what user has selected before in kind of post view.
+ */
+- (void)configureContents
+{
+    
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
+        [_titleTextField setHidden:YES];
+        [_titleCharactersLeftLbl setHidden:YES];
+        [_contentTextView becomeFirstResponder];
+    }
+    else
+    {
+        [self.titleTextField becomeFirstResponder];
+    }
+    
+
 }
 
 -(void)formatTextView
@@ -281,7 +305,20 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)loadDataIfNeeded
 {
-    //TODO: Load data from PendingPostManager and add them to the fields.
+    //Load data from PendingPostManager and add them to the fields.
+    
+    if(![[PendingPostManager sharedInstance] arePendingData])
+    {
+        return;
+    }
+    
+    [_titleTextField setText:[[PendingPostManager sharedInstance] eventTitle]];
+    [_contentTextView setText:[[PendingPostManager sharedInstance] eventDescription]];
+    _eventDateStart = [[PendingPostManager sharedInstance] getDate];
+    
+    
+    DDLogDebug(@"Data loaded: %@", [[PendingPostManager sharedInstance] description]);
+    
 }
 
 
@@ -301,6 +338,10 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
         GLPPost* inPost = nil;
         
+        [[PendingPostManager sharedInstance] readyToSend];
+        NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
+        
+        
         //Check if the post is group post or regular post.
         if([self isGroupPost])
         {
@@ -308,14 +349,16 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             
             DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)_group.remoteKey);
             
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart title:_eventTitle andGroup:_group];
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andGroup:_group];
         }
         else
         {
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:_categories eventTime:_eventDateStart andTitle:_eventTitle];
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart andTitle:self.titleTextField.text];
         }
         
-        [delegate reloadNewImagePostWithPost:inPost];
+//        [delegate reloadNewImagePostWithPost:inPost];
+        
+        [self informTimelineForNewPost:inPost];
 
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -334,6 +377,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             
         }];
     }
+}
+
+- (void)informTimelineForNewPost:(GLPPost *)post
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
 }
 
 -(void)navigateToCategories:(id)sender
@@ -423,8 +471,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         //Capture a video.
         [self performSegueWithIdentifier:@"capture video" sender:self];
     }
-    
-
 }
 
 #pragma mark - Video
@@ -506,7 +552,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
-    //TODO: Save text to PendingPostManager.
+    [[PendingPostManager sharedInstance] setEventDescription:textView.text];
     
     [self setNumberOfCharactersToDescription:textView.text.length];
 }
@@ -525,6 +571,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
+    [[PendingPostManager sharedInstance] setEventTitle:textField.text];
+
     [self setNumberOfCharactersToTitle:textField.text.length];
 
 }

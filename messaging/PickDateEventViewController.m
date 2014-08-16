@@ -8,6 +8,7 @@
 
 #import "PickDateEventViewController.h"
 #import "WebClientHelper.h"
+#import "PendingPostManager.h"
 
 @interface PickDateEventViewController ()
 
@@ -26,6 +27,18 @@
     
     self.title = @"NEW POST";
     
+    [self loadDateIfNeeded];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    DDLogDebug(@"PickDate viewWillDisappear : %@", _datePicker.date);
+    
+    //Save date before desappearing the view.
+    [[PendingPostManager sharedInstance] setDate:_datePicker.date];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,6 +69,20 @@
 //    addOneMonthComponents.month = 1 ;
 //    NSDate* oneMonthFromNowWithoutSeconds = [calendar dateByAddingComponents:addOneMonthComponents toDate:nowWithoutSeconds options:0] ;
 //    picker.maximumDate = oneMonthFromNowWithoutSeconds ;
+}
+
+- (void)loadDateIfNeeded
+{
+    if(![[PendingPostManager sharedInstance] arePendingData])
+    {
+        return;
+    }
+    
+    if([[PendingPostManager sharedInstance] getDate])
+    {
+        [_datePicker setDate:[[PendingPostManager sharedInstance] getDate]];
+    }
+    
 }
 
 
@@ -100,6 +127,8 @@
 
 -(IBAction)continueToTheFinalView:(id)sender
 {
+    [[PendingPostManager sharedInstance] setDate:_datePicker.date];
+
     [self performSegueWithIdentifier:@"final new post" sender:self];
 }
 

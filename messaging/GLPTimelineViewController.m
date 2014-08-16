@@ -136,7 +136,7 @@
 @implementation GLPTimelineViewController
 
 //Constants.
-const float TOP_OFFSET = 280.0f;
+const float TOP_OFFSET = 180.0f;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -309,6 +309,7 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -720,6 +721,9 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToTheNavigationBarFromNotification:) name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+    
 }
 
 - (void)configTableView
@@ -1370,7 +1374,16 @@ const float TOP_OFFSET = 280.0f;
     }
 }
 
--(void)reloadNewImagePostWithPost:(GLPPost*)inPost
+/**
+ Notification method. 
+ This method is called to reload the non-uploaded post in order to be visible
+ to user while uploading.
+ 
+ @param notification contains the post's data.
+ 
+ */
+//-(void)reloadNewImagePostWithPost:(GLPPost*)inPost
+-(void)reloadNewImagePostWithPost:(NSNotification *)notification
 {
     //TODO: REMOVED! IT'S IMPORTANT!
     
@@ -1378,6 +1391,12 @@ const float TOP_OFFSET = 280.0f;
 //        return;
 //    }
     
+    //Get post from notification.
+    NSDictionary *notDictionary = notification.userInfo;
+    
+    GLPPost *inPost = [notDictionary objectForKey:@"new_post"];
+    
+    DDLogDebug(@"IN POST: %@", inPost);
     
     self.isLoading = YES;
     

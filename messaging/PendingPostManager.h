@@ -11,6 +11,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, KindOfPost) {
+    kEventPost,
+    kAnnouncementPost,
+    kGeneralPost
+};
+
 @class GLPCategory;
 
 @interface PendingPostManager : NSObject
@@ -19,5 +25,18 @@
 
 - (void)setCategory:(GLPCategory *)category;
 - (void)setDate:(NSDate *)date;
+- (void)setEventTitle:(NSString *)title;
+- (void)setEventDescription:(NSString *)description;
+- (void)setKindOfPost:(KindOfPost)kindOfPost;
+- (NSString *)eventDescription;
+- (NSString *)eventTitle;
+- (NSDate *)getDate;
+- (NSMutableArray *)categories;
+- (KindOfPost)kindOfPost;
+
+- (BOOL)arePendingData;
+//- (void)setPendingData:(BOOL)pendingData;
+- (void)reset;
+- (void)readyToSend;
 
 @end
