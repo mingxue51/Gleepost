@@ -599,7 +599,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS - numberOfChars;
     
-    [_descriptionCharactersLeftLbl setText:[NSString stringWithFormat:@"%d", _descriptionRemainingNoOfCharacters]];
+    [_descriptionCharactersLeftLbl setText:[NSString stringWithFormat:@"%ld", (long)_descriptionRemainingNoOfCharacters]];
     
     if(_descriptionRemainingNoOfCharacters < 0)
     {
@@ -615,7 +615,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS - numberOfChars;
     
-    [_titleCharactersLeftLbl setText:[NSString stringWithFormat:@"%d", _titleRemainingNoOfCharacters]];
+    [_titleCharactersLeftLbl setText:[NSString stringWithFormat:@"%ld", (long)_titleRemainingNoOfCharacters]];
     
     if(_titleRemainingNoOfCharacters < 0)
     {

@@ -11,6 +11,7 @@
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 #import "PendingPostManager.h"
+#import "AppearanceHelper.h"
 
 @interface IntroKindOfNewPostViewController ()
 
@@ -46,6 +47,9 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismiss) andTarget:self];
+    
+    self.navigationController.navigationBar.tintColor = [AppearanceHelper blueGleepostColour];
+
 }
 
 - (void)configureIsGroupPost
