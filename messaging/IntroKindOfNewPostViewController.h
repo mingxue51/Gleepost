@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class GLPGroup;
+
 @interface IntroKindOfNewPostViewController : UIViewController
+
+@property (assign, nonatomic) BOOL groupPost;
+@property (strong, nonatomic) GLPGroup *group;
 
 @end

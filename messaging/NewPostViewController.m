@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UILabel *titleCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
+@property (weak, nonatomic) IBOutlet UIImageView *separatorLineImageView;
 
 /** Should be 2 categories (event and user's selected. */
 //@property (strong, nonatomic) NSArray *eventCategories;
@@ -70,11 +71,10 @@
 
 @implementation NewPostViewController
 
-const NSInteger MAX_DESCRIPTION_CHARACTERS = 70;
-const NSInteger MAX_TITLE_CHARACTERS = 30;
+const NSInteger MAX_DESCRIPTION_CHARACTERS = 210;
+const NSInteger MAX_TITLE_CHARACTERS = 60;
 const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
-@synthesize delegate;
 @synthesize postUploader=_postUploader;
 
 - (void)backButtonTapped {
@@ -217,14 +217,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         [_titleTextField setHidden:YES];
         [_titleCharactersLeftLbl setHidden:YES];
+        [_separatorLineImageView setHidden:YES];
+        CGRectSetY(_contentTextView, 10);
+        CGRectAddH(_contentTextView, 30);
         [_contentTextView becomeFirstResponder];
     }
     else
     {
         [self.titleTextField becomeFirstResponder];
     }
-    
-
 }
 
 -(void)formatTextView
@@ -328,7 +329,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     //TODO:Check if the lenght of the text views is out of bounds.
     
-    if (![NSString isStringEmpty:self.contentTextView.text]) {
+    if ([self isInformationValidInElements]) {
 //        [self.delegate setNavigationBarName];
 //        [self.delegate setButtonsToNavigationBar];
         
@@ -338,27 +339,32 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
         GLPPost* inPost = nil;
         
+        
         [[PendingPostManager sharedInstance] readyToSend];
         NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
         
         
         //Check if the post is group post or regular post.
-        if([self isGroupPost])
+        if([[PendingPostManager sharedInstance] isGroupPost])
         {
-            NSAssert(_group, @"Group should exist to create a new group post.");
+            GLPGroup *group = [[PendingPostManager sharedInstance] group];
+
+            NSAssert(group, @"Group should exist to create a new group post.");
             
-            DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)_group.remoteKey);
+            DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)group.remoteKey);
             
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andGroup:_group];
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andGroup:group];
         }
         else
         {
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart andTitle:self.titleTextField.text];
         }
         
+        [self informParentVCForNewPost:inPost];
+
+        
 //        [delegate reloadNewImagePostWithPost:inPost];
         
-        [self informTimelineForNewPost:inPost];
 
         //Dismiss view controller and show immediately the post in the Campus Wall.
         
@@ -379,7 +385,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 }
 
-- (void)informTimelineForNewPost:(GLPPost *)post
+- (void)informParentVCForNewPost:(GLPPost *)post
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
 }
@@ -391,23 +397,23 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //    [self navigateToCategoriesViewController];
 }
 
--(BOOL)isGroupPost
-{
-    if([self.delegate isKindOfClass:[GLPTimelineViewController class]])
-    {
-        return NO;
-    }
-    else if ([self.delegate isKindOfClass:[GroupViewController class]])
-    {
-        return YES;
-    }
-    else
-    {
-        DDLogError(@"ERROR: NewPostViewController needs to be called only from GroupViewController or GLPTimelineViewController.");
-        
-        return NO;
-    }
-}
+//-(BOOL)isGroupPost
+//{
+//    if([self.delegate isKindOfClass:[GLPTimelineViewController class]])
+//    {
+//        return NO;
+//    }
+//    else if ([self.delegate isKindOfClass:[GroupViewController class]])
+//    {
+//        return YES;
+//    }
+//    else
+//    {
+//        DDLogError(@"ERROR: NewPostViewController needs to be called only from GroupViewController or GLPTimelineViewController.");
+//        
+//        return NO;
+//    }
+//}
 
 
 - (IBAction)addImageOrImage:(id)sender
@@ -619,6 +625,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         [_titleCharactersLeftLbl setTextColor:[UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0f]];
     }
+}
+
+#pragma mark - Helpers
+
+- (BOOL)isInformationValidInElements
+{
+    return ![NSString isStringEmpty:self.contentTextView.text] && ![NSString isStringEmpty:self.titleTextField.text] && ![self.titleTextField.text exceedsNumberOfCharacters:MAX_TITLE_CHARACTERS] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_DESCRIPTION_CHARACTERS];
 }
 
 #pragma mark - VC Navigation

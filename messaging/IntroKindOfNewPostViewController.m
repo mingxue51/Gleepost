@@ -23,6 +23,8 @@
     [super viewDidLoad];
     
     [self configureNavigationBar];
+    
+    [self configureIsGroupPost];
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -44,6 +46,12 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismiss) andTarget:self];
+}
+
+- (void)configureIsGroupPost
+{
+    [[PendingPostManager sharedInstance] setGroupPost:self.groupPost];
+    [[PendingPostManager sharedInstance] setGroup:self.group];
 }
 
 #pragma mark - Selectors

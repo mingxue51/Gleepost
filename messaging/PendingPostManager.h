@@ -18,11 +18,15 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 };
 
 @class GLPCategory;
+@class GLPGroup;
 
 @interface PendingPostManager : NSObject
 
 + (PendingPostManager *)sharedInstance;
 
+- (BOOL)isGroupPost;
+- (void)setGroupPost:(BOOL)groupPost;
+- (void)setGroup:(GLPGroup *)group;
 - (void)setCategory:(GLPCategory *)category;
 - (void)setDate:(NSDate *)date;
 - (void)setEventTitle:(NSString *)title;
@@ -35,6 +39,7 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 - (KindOfPost)kindOfPost;
 
 - (BOOL)arePendingData;
+- (GLPGroup *)group;
 //- (void)setPendingData:(BOOL)pendingData;
 - (void)reset;
 - (void)readyToSend;

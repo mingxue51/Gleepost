@@ -1396,7 +1396,14 @@ const float TOP_OFFSET = 180.0f;
     
     GLPPost *inPost = [notDictionary objectForKey:@"new_post"];
     
-    DDLogDebug(@"IN POST: %@", inPost);
+    
+    if(inPost.group)
+    {
+        return;
+    }
+    
+    DDLogInfo(@"Reload post in GLPTimelineViewController: %@", inPost);
+
     
     self.isLoading = YES;
     
@@ -2485,7 +2492,7 @@ const float TOP_OFFSET = 180.0f;
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
-//        [newPostVC setDelegate:self];
+        newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
@@ -2701,30 +2708,6 @@ const float TOP_OFFSET = 180.0f;
         
         //self.selectedPost = nil;
         
-    } else if([segue.identifier isEqualToString:@"new post"])
-    {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        //TODO: See how to present from view controller.
-        
-        
-        NewPostViewController *vc = segue.destinationViewController;
-        
-        self.modalPresentationStyle = UIModalPresentationCurrentContext;
-        
-        
-        
-        //        self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        //[self presentViewController:vc animated:NO completion:nil];
-        
-        
-        //UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-        
-        //[self.navigationController presentModalViewController:navController animated:YES];
-        
-        //[self presentViewController:navController animated:YES completion:nil];
-        
-        vc.delegate = self;
     }
     else if([segue.identifier isEqualToString:@"new comment"])
     {

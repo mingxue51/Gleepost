@@ -21,6 +21,8 @@
 @property (strong, nonatomic) NSString *eventDescription;
 @property (assign, nonatomic) KindOfPost kindOfPost;
 @property (assign, nonatomic, getter = arePendingData) BOOL pendingData;
+@property (assign, nonatomic, getter = isGroupPost) BOOL groupPost;
+@property (strong, nonatomic) GLPGroup *group;
 
 @end
 
@@ -52,6 +54,11 @@ static PendingPostManager *instance = nil;
 }
 
 #pragma mark - Modifiers
+
+//- (void)setGroupPost:(BOOL)groupPost
+//{
+//    self.groupPost = groupPost;
+//}
 
 - (void)setDate:(NSDate *)date
 {
@@ -111,39 +118,17 @@ static PendingPostManager *instance = nil;
     
 }
 
+#pragma mark - Accessors
+
+//- (BOOL)isGroupPost
+//{
+//    return [self isGroupPost];
+//}
+
 - (NSDate *)getDate
 {
-    DDLogDebug(@"PENDING DATE: %@", _date);
-    
     return _date;
 }
-
-
-
-//- (NSString *)eventDescription
-//{
-//    
-//}
-//
-//- (NSString *)eventTitle
-//{
-//    
-//}
-//
-//- (NSDate *)date;
-//{
-//    
-//}
-//
-//- (GLPCategory *)category
-//{
-//    
-//}
-//
-//- (KindOfPost)kindOfPost
-//{
-//    
-//}
 
 - (NSString *)description
 {

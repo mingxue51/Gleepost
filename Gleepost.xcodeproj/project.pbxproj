@@ -136,9 +136,7 @@
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
 		582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */; };
 		582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */; };
-		582F7AFE199DB8C500219D4C /* camera_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 582F7AFB199DB8C500219D4C /* camera_top_button.png */; };
 		582F7AFF199DB8C500219D4C /* video_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 582F7AFC199DB8C500219D4C /* video_top_button.png */; };
-		582F7B00199DB8C500219D4C /* location_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 582F7AFD199DB8C500219D4C /* location_top_button.png */; };
 		583157A9199ECA6900351492 /* PBJGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 583157A2199ECA6900351492 /* PBJGLProgram.m */; };
 		583157AA199ECA6900351492 /* PBJMediaWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 583157A4199ECA6900351492 /* PBJMediaWriter.m */; };
 		583157AB199ECA6900351492 /* PBJVision.m in Sources */ = {isa = PBXBuildFile; fileRef = 583157A6199ECA6900351492 /* PBJVision.m */; };
@@ -267,9 +265,6 @@
 		585106DB199D87DA000F06BB /* kind_of_event_speaker.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D2199D87DA000F06BB /* kind_of_event_speaker.png */; };
 		585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D3199D87DA000F06BB /* kind_of_event_sports.png */; };
 		585106DD199D87DA000F06BB /* kind_of_event_theatre.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D4199D87DA000F06BB /* kind_of_event_theatre.png */; };
-		585106DE199D87DA000F06BB /* kind_of_post_announcement.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D5199D87DA000F06BB /* kind_of_post_announcement.png */; };
-		585106DF199D87DA000F06BB /* kind_of_post_event.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D6199D87DA000F06BB /* kind_of_post_event.png */; };
-		585106E0199D87DA000F06BB /* kind_of_post_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D7199D87DA000F06BB /* kind_of_post_general.png */; };
 		585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106E2199D9E64000F06BB /* PendingPostManager.m */; };
 		5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */; };
 		5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */; };
@@ -585,6 +580,11 @@
 		58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */; };
 		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
+		58D7F76519A2A98F00C39A4C /* location_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76419A2A98F00C39A4C /* location_top_button.png */; };
+		58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76619A2A9B500C39A4C /* camera_top_button.png */; };
+		58D7F76B19A2ABB600C39A4C /* kind_of_post_announcement.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76819A2ABB600C39A4C /* kind_of_post_announcement.png */; };
+		58D7F76C19A2ABB600C39A4C /* kind_of_post_event.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76919A2ABB600C39A4C /* kind_of_post_event.png */; };
+		58D7F76D19A2ABB600C39A4C /* kind_of_post_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76A19A2ABB600C39A4C /* kind_of_post_general.png */; };
 		58DAD77C1859FBD20016D838 /* bird-house-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7771859FBD20016D838 /* bird-house-7-old@2x.png */; };
 		58DAD77D1859FBD20016D838 /* id-card-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7781859FBD20016D838 /* id-card-7-old@2x.png */; };
 		58DAD77E1859FBD20016D838 /* man-7-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DAD7791859FBD20016D838 /* man-7-old@2x.png */; };
@@ -1054,9 +1054,7 @@
 		582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GLPDesign.m"; sourceTree = "<group>"; };
 		582E44D7197E1E7F000BE3EC /* GLPServerPathManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPServerPathManager.h; sourceTree = "<group>"; };
 		582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPServerPathManager.m; sourceTree = "<group>"; };
-		582F7AFB199DB8C500219D4C /* camera_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_top_button.png; sourceTree = "<group>"; };
 		582F7AFC199DB8C500219D4C /* video_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_top_button.png; sourceTree = "<group>"; };
-		582F7AFD199DB8C500219D4C /* location_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_top_button.png; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
 		583157A1199ECA6900351492 /* PBJGLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBJGLProgram.h; sourceTree = "<group>"; };
 		583157A2199ECA6900351492 /* PBJGLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBJGLProgram.m; sourceTree = "<group>"; };
@@ -1247,9 +1245,6 @@
 		585106D2199D87DA000F06BB /* kind_of_event_speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_speaker.png; sourceTree = "<group>"; };
 		585106D3199D87DA000F06BB /* kind_of_event_sports.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_sports.png; sourceTree = "<group>"; };
 		585106D4199D87DA000F06BB /* kind_of_event_theatre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_theatre.png; sourceTree = "<group>"; };
-		585106D5199D87DA000F06BB /* kind_of_post_announcement.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_announcement.png; sourceTree = "<group>"; };
-		585106D6199D87DA000F06BB /* kind_of_post_event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_event.png; sourceTree = "<group>"; };
-		585106D7199D87DA000F06BB /* kind_of_post_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_general.png; sourceTree = "<group>"; };
 		585106E1199D9E64000F06BB /* PendingPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingPostManager.h; sourceTree = "<group>"; };
 		585106E2199D9E64000F06BB /* PendingPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingPostManager.m; sourceTree = "<group>"; };
 		5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPiOS6Helper.h; sourceTree = "<group>"; };
@@ -1687,6 +1682,11 @@
 		58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewImage.h; sourceTree = "<group>"; };
 		58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewImage.m; sourceTree = "<group>"; };
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
+		58D7F76419A2A98F00C39A4C /* location_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_top_button.png; sourceTree = "<group>"; };
+		58D7F76619A2A9B500C39A4C /* camera_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_top_button.png; sourceTree = "<group>"; };
+		58D7F76819A2ABB600C39A4C /* kind_of_post_announcement.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_announcement.png; sourceTree = "<group>"; };
+		58D7F76919A2ABB600C39A4C /* kind_of_post_event.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_event.png; sourceTree = "<group>"; };
+		58D7F76A19A2ABB600C39A4C /* kind_of_post_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_general.png; sourceTree = "<group>"; };
 		58DAD7771859FBD20016D838 /* bird-house-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bird-house-7-old@2x.png"; sourceTree = "<group>"; };
 		58DAD7781859FBD20016D838 /* id-card-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card-7-old@2x.png"; sourceTree = "<group>"; };
 		58DAD7791859FBD20016D838 /* man-7-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "man-7-old@2x.png"; sourceTree = "<group>"; };
@@ -3099,9 +3099,9 @@
 		588DE5D218A8FA2A001D344D /* New Post */ = {
 			isa = PBXGroup;
 			children = (
-				582F7AFB199DB8C500219D4C /* camera_top_button.png */,
+				58D7F76619A2A9B500C39A4C /* camera_top_button.png */,
 				582F7AFC199DB8C500219D4C /* video_top_button.png */,
-				582F7AFD199DB8C500219D4C /* location_top_button.png */,
+				58D7F76419A2A98F00C39A4C /* location_top_button.png */,
 				58F0F0C31934F9320032450F /* right_arrow_navigation.png */,
 				58F0F0C11934F91E0032450F /* categories_image.png */,
 				58F0F0BF1934DD780032450F /* textfield_background.png */,
@@ -3113,9 +3113,9 @@
 				585106D2199D87DA000F06BB /* kind_of_event_speaker.png */,
 				585106D3199D87DA000F06BB /* kind_of_event_sports.png */,
 				585106D4199D87DA000F06BB /* kind_of_event_theatre.png */,
-				585106D5199D87DA000F06BB /* kind_of_post_announcement.png */,
-				585106D6199D87DA000F06BB /* kind_of_post_event.png */,
-				585106D7199D87DA000F06BB /* kind_of_post_general.png */,
+				58D7F76819A2ABB600C39A4C /* kind_of_post_announcement.png */,
+				58D7F76919A2ABB600C39A4C /* kind_of_post_event.png */,
+				58D7F76A19A2ABB600C39A4C /* kind_of_post_general.png */,
 			);
 			name = "New Post";
 			sourceTree = "<group>";
@@ -4898,7 +4898,6 @@
 				5861576A193CD47C009BAD33 /* walkthrough_view_1.png in Resources */,
 				802DCE4B18AA883300A23511 /* internal_notification_cell_accept_button.png in Resources */,
 				588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */,
-				585106DF199D87DA000F06BB /* kind_of_post_event.png in Resources */,
 				587433EB18A6951F0000DAA0 /* univers-ce-45-light.ttf in Resources */,
 				585106DD199D87DA000F06BB /* kind_of_event_theatre.png in Resources */,
 				5839CC8B18A5BF0C00FA43A1 /* univers-45-light-bold.ttf in Resources */,
@@ -4960,6 +4959,7 @@
 				5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */,
 				5890D23618482DC300E293DD /* messages@2x.png in Resources */,
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
+				58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */,
 				58AB7C39191CEFC500ADFD83 /* fb_invite.png in Resources */,
 				582A664618AB9BC400006419 /* bar4_selected.png in Resources */,
 				8050249C181932C600F5337F /* conversation_new_notification.png in Resources */,
@@ -5022,7 +5022,6 @@
 				8073346E183B956200C6D74A /* GLPLoadingCell.xib in Resources */,
 				585AE266192B71BB00174CED /* save_recording.png in Resources */,
 				58AB404818AE45D000DEED31 /* all_category_old.png in Resources */,
-				585106E0199D87DA000F06BB /* kind_of_post_general.png in Resources */,
 				80A21D4718AD136200559BF6 /* internal_notification_cell_liked@2x.png in Resources */,
 				5879AC8B19643CEA0053262A /* user_not_selected.png in Resources */,
 				58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */,
@@ -5072,8 +5071,8 @@
 				58DAD77C1859FBD20016D838 /* bird-house-7-old@2x.png in Resources */,
 				58E3DAB71884055E00B9B048 /* pole.png in Resources */,
 				58E3DAC9188405FB00B9B048 /* background_day_old.png in Resources */,
-				582F7B00199DB8C500219D4C /* location_top_button.png in Resources */,
 				58CFC7721963117500FF1E40 /* GLPSimpleNameCell.xib in Resources */,
+				58D7F76519A2A98F00C39A4C /* location_top_button.png in Resources */,
 				5861576B193CD47C009BAD33 /* walkthrough_view_2.png in Resources */,
 				589CE50D18D227910046DAD2 /* the_bar3.png in Resources */,
 				584332A4180F324200BD9F74 /* profilebackground.png in Resources */,
@@ -5103,6 +5102,7 @@
 				580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */,
 				5806C761191BFA5D005C907E /* fb_login.png in Resources */,
 				58F2D3831974FA1E00498E55 /* message_button.png in Resources */,
+				58D7F76C19A2ABB600C39A4C /* kind_of_post_event.png in Resources */,
 				806E3D801832B1960063AACE /* NotificationBackgroundWarning.png in Resources */,
 				5890D23818482DC300E293DD /* profile@2x.png in Resources */,
 				802DCE4918AA880900A23511 /* internal_notification_cell_ignore_button.png in Resources */,
@@ -5115,6 +5115,7 @@
 				8096E4E317C2C88500C7BF60 /* comments.png in Resources */,
 				58902487195D9D6400084E2F /* back_final1@2x.png in Resources */,
 				589EAD1818A41B37005B2F4C /* SignUpFiveView.xib in Resources */,
+				58D7F76D19A2ABB600C39A4C /* kind_of_post_general.png in Resources */,
 				589EAD3018A44736005B2F4C /* login_bg.png in Resources */,
 				58428E4618A2ADA400B82E4B /* SignUpOneView.xib in Resources */,
 				58E3DAB31884053600B9B048 /* blades.png in Resources */,
@@ -5236,10 +5237,8 @@
 				58973516193F7A9C0048BA85 /* fb_login_img_small.png in Resources */,
 				58E18B991945CF3E0029C764 /* fireside.png in Resources */,
 				585AE262192B70A800174CED /* cancel_recording.png in Resources */,
-				582F7AFE199DB8C500219D4C /* camera_top_button.png in Resources */,
 				587CEA64195CA1470043E5E2 /* boring_message2.png in Resources */,
 				58973510193F78BE0048BA85 /* fb_login_bg.png in Resources */,
-				585106DE199D87DA000F06BB /* kind_of_post_announcement.png in Resources */,
 				5890249B195DF02700084E2F /* PrivateProfileTopViewCell.xib in Resources */,
 				80E7478A17CEA2C4001957E5 /* post_comments.json in Resources */,
 				585AE271192BF35600174CED /* message-7@2x.png in Resources */,
@@ -5261,6 +5260,7 @@
 				806E3D761832B1960063AACE /* NotificationBackgroundError.png in Resources */,
 				58973512193F79960048BA85 /* fb_login_img.png in Resources */,
 				58AD86BF1892DFC400016C6D /* add_button_old.png in Resources */,
+				58D7F76B19A2ABB600C39A4C /* kind_of_post_announcement.png in Resources */,
 				58DAD77D1859FBD20016D838 /* id-card-7-old@2x.png in Resources */,
 				58DB02AA18105C86001C021A /* blackholder3.png in Resources */,
 				80C4CABF17CFEAAB00AFA80C /* post_newconversation.json in Resources */,

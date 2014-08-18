@@ -1073,7 +1073,7 @@ static BOOL likePushed;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
         NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
         vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-        vc.delegate = self;
+//        vc.delegate = self;
         [vc setTransitioningDelegate:self.transitionController];
         vc.modalPresentationStyle= UIModalPresentationCustom;
         [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -1189,7 +1189,7 @@ static BOOL likePushed;
         
         //[self presentViewController:navController animated:YES completion:nil];
 
-        vc.delegate = self;
+//        vc.delegate = self;
     }
     else if([segue.identifier isEqualToString:@"new comment"])
     {

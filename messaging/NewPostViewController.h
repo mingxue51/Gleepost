@@ -21,11 +21,6 @@
 
 @interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate, UITextFieldDelegate>
 
-//@property (weak, nonatomic) GLPTimelineViewController *delegate;
-@property (weak, nonatomic) UIViewController <NewPostDelegate> *delegate;
-
-//Used only if the class is call from the groups view controller.
-@property (strong, nonatomic) GLPGroup *group;
 
 -(void)hideKeyboard;
 -(void)showKeyboard;
