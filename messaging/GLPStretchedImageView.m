@@ -93,7 +93,7 @@ const float kStretchedImageHeight = 250;
 
 - (void)setImageUrl:(NSString *)imageUrl
 {
-    [super setImageUrl:imageUrl];
+    [super setImageUrl:imageUrl withPlaceholderImage:@"default_thumbnail"];
     
     if([imageUrl isEmpty] || !imageUrl)
     {

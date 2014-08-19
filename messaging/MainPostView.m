@@ -20,6 +20,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "WebClientHelper.h"
 #import "TopPostView.h"
+#import "AppearanceHelper.h"
 
 @interface MainPostView ()
 
@@ -595,7 +596,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
-    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];
+    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
     
     _contentLbl.attributedText = contentAttributeText;
 }

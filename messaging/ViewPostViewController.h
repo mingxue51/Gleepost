@@ -12,8 +12,9 @@
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 #import "GLPPostCell.h"
+#import "CommentCell.h"
 
-@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate, UIAlertViewDelegate>
+@interface ViewPostViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HPGrowingTextViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate, UIAlertViewDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
 @property (strong, nonatomic) GLPPost *post;
 //TODO: Remove after the integration of image posts.
@@ -28,7 +29,6 @@
 @property (weak, nonatomic) UIViewController <RemovePostCellDelegate> *groupController;
 
 //-(float) calculateCommentSize: (NSString*) content;
--(void)navigateToProfile: (id)sender;
 -(void)viewPostImage:(UIImage*)postImage;
 -(void)reloadImage:(BOOL)loadImage;
 

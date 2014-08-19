@@ -158,7 +158,7 @@ static NSInteger lastTabbarIndex = 0;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    DDLogInfo(@"GLPTabBarController status: %d", isNetwork);
+    DDLogInfo(@"GLPTabBarController network status: %d", isNetwork);
     
     if(isNetwork)
     {

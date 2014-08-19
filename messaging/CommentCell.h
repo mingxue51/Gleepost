@@ -8,20 +8,28 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPComment.h"
-#import "ViewPostViewController.h"
+#import "GLPImageView.h"
+#import "GLPLabel.h"
+
+typedef NS_ENUM(NSUInteger, CommentCellType) {
+    kTopCommentCell,
+    kMiddleCommentCell,
+    kBottomCommentCell,
+    kTopBottomCommentCell
+};
 
 @interface CommentCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *contentLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *userImageView;
-@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (strong, nonatomic) IBOutlet GLPImageView *userImageView;
+@property (strong, nonatomic) IBOutlet GLPLabel *userNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *postDateLabel;
-@property (strong, nonatomic) UIView *socialPanelView;
-@property (strong, nonatomic) UIButton *likeButtonButton;
-@property (readwrite, assign) float height;
-@property (weak, nonatomic) ViewPostViewController *delegate;
+//@property (strong, nonatomic) UIView *socialPanelView;
+//@property (strong, nonatomic) UIButton *likeButtonButton;
+@property (weak, nonatomic) UIViewController<GLPImageViewDelegate, GLPLabelDelegate> *delegate;
 
 + (CGFloat)getCellHeightWithContent:(NSString *)content image:(BOOL)isImage;
 -(void)setCellHeight:(NSString*)content;
--(void)setComment:(GLPComment*)comment;
+-(void)setComment:(GLPComment*)comment withIndex:(NSInteger)index andNumberOfComments:(NSInteger)commentsNumber;
+
 @end

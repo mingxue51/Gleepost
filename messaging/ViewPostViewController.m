@@ -12,9 +12,7 @@
 #import "MBProgressHUD.h"
 #import "GLPComment.h"
 #import "KeyboardHelper.h"
-#import "CommentCell.h"
 #import "NSString+Utils.h"
-#import "ViewPostTableView.h"
 #import "GLPPrivateProfileViewController.h"
 #import "ProfileViewController.h"
 #import "SessionManager.h"
@@ -40,16 +38,12 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (assign, nonatomic) float keyboardAppearanceSpaceY;
 
-@property (weak, nonatomic) IBOutlet ViewPostTableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (assign, nonatomic, getter = doesMediaNeedsToReload) BOOL mediaNeedsToReload;
-
-- (IBAction)addCommentButtonClick:(id)sender;
-
-- (IBAction)tableViewClicked:(id)sender;
 
 @end
 
@@ -68,8 +62,6 @@ static BOOL likePushed;
     [self initialiseElements];
     
     [self registerCells];
-
-    [self.tableView initTableView];
     
     [self configureForm];
     
@@ -109,9 +101,11 @@ static BOOL likePushed;
     
 
     [self registerNotifications];
-
     
     [self sendStatistics];
+    
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
+
 
    // [self loadComments];
 
@@ -217,6 +211,8 @@ static BOOL likePushed;
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTitleCellView" bundle:nil] forCellReuseIdentifier:@"CommentTitleCellView"];
 }
 
 -(void)registerNotifications
@@ -253,7 +249,7 @@ static BOOL likePushed;
     [self.commentFormView setGleepostStyleTopBorder];
     
     //Set a selector to the send button.
-    [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.tableView.typeTextView.postButton addTarget:self action:@selector(addCommentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
@@ -394,25 +390,67 @@ static BOOL likePushed;
 //    return nil;
 //}
 
-#pragma mark GLPPostCellDelegate
+#pragma mark - GLPPostCellDelegate
 
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
-    //Decide where to navigate. Private or open.
-    self.selectedUserId = remoteKey;
     
-    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
-    {
-        self.selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
+    [self navigateToProfileWithRemoteKey:remoteKey];
+//    self.selectedUserId = remoteKey;
+//    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+//    {
+//        self.selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
 }
 
+#pragma mark - GLPImageViewDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
+{
+    NSInteger userRemoteKey = imageView.tag;
+    
+    [self navigateToProfileWithRemoteKey:userRemoteKey];
+    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
+//    {
+//        _selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        _selectedUserId = userRemoteKey;
+//        
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
+}
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    DDLogDebug(@"User remote key from label: %ld", (long)tag);
+    
+    [self navigateToProfileWithRemoteKey:tag];
+    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
+//    {
+//        _selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        _selectedUserId = userRemoteKey;
+//        
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
+}
 
 - (IBAction)addCommentButtonClick:(id)sender
 {
@@ -682,7 +720,7 @@ static bool firstTime = YES;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     //Add 1 in order to create another cell for post.
-    return self.comments.count+1;
+    return self.comments.count+2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -691,6 +729,7 @@ static bool firstTime = YES;
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
+    static NSString *CellIdentifierTitle = @"CommentTitleCellView";
     
     GLPPostCell *postViewCell;
     
@@ -738,18 +777,23 @@ static bool firstTime = YES;
         return postViewCell;
 
     }
+    else if (indexPath.row == 1)
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
+        
+        return cell;
+    }
     else
     {
         //TODO: Fix cell by removing the dynamic data generation.
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
         
-        cell.delegate = self;
+        [cell setDelegate:self];
         
-        GLPComment *comment = self.comments[indexPath.row-1];
+        GLPComment *comment = self.comments[indexPath.row - 2];
         
-        [cell setComment:comment];
-        
+        [cell setComment:comment withIndex:indexPath.row - 2 andNumberOfComments:_comments.count];
         
         return cell;
     }
@@ -773,17 +817,7 @@ static bool firstTime = YES;
 {
     //float height = [[self.commentsHeight objectAtIndex:indexPath.row] floatValue];
     
-    if(indexPath.row>0)
-    {
-        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-1];
-        
-//        NSLog(@"Comment content: %@ with size: %f", comment.content, [CommentCell getCellHeightWithContent:comment.content image:NO]);
-        
-        //return 200.0f;
-        
-        return [CommentCell getCellHeightWithContent:comment.content image:NO];
-    }
-    else
+    if(indexPath.row == 0)
     {
         if([self.post imagePost])
         {
@@ -800,6 +834,16 @@ static bool firstTime = YES;
              return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES] + 10.0f;
         }
         //return 200;
+    }
+    else if (indexPath.row == 1)
+    {
+        return 30.0;
+    }
+    else
+    {
+        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-2];
+        
+        return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
     
 }
@@ -1118,7 +1162,7 @@ static bool firstTime = YES;
     
 //    [self.comments addObject:comment];
     
-    DDLogDebug(@"Local comments: %@ Global comments: %@", comments, self.comments);
+//    DDLogDebug(@"Local comments: %@ Global comments: %@", comments, self.comments);
     
     [self scrollToBottomAndUpdateTableViewWithNewComments:comments.count];
     
@@ -1147,8 +1191,10 @@ static bool firstTime = YES;
 //    }
 //    else
 //    {
-        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+//        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
 //    }
+    
+    [self.tableView reloadData];
     
     [self scrollToTheEndAnimated:YES];
     
@@ -1180,6 +1226,24 @@ static bool firstTime = YES;
 //{
 //    [self.navigationController popViewControllerAnimated:YES];
 //}
+
+#pragma mark - Navigation
+
+- (void)navigateToProfileWithRemoteKey:(NSInteger)remoteKey
+{
+    if([[ContactsManager sharedInstance] userRelationshipWithId:remoteKey] == kCurrentUser)
+    {
+        _selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        _selectedUserId = remoteKey;
+        
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

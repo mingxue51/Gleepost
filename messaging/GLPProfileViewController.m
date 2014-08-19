@@ -1373,7 +1373,7 @@
     [self presentViewController:vc animated:YES completion:nil];
 }
 
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
     DDLogDebug(@"GLPProfileViewController : navigateToUsersProfileWithRemoteKey: %ld", (long)remoteKey);
 }

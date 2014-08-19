@@ -197,7 +197,7 @@ const float ONE_LINE_LIMIT = 18.0;
 
     NSInteger userRemoteKey = incomingImage.view.tag;
     
-    [self.delegate navigateToUsersProfileWithRemoteKey:userRemoteKey];
+    [self.delegate elementTouchedWithRemoteKey:userRemoteKey];
 }
 
 -(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet

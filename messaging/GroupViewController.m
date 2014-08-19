@@ -244,11 +244,11 @@ const float TOP_OFF_SET = -64.0;
     
     _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
 
-    [_strechedImageView setImageUrl:_group.groupImageUrl];
+    [_strechedImageView setImageUrl:_group.groupImageUrl withPlaceholderImage:@"default_thumbnail"];
     
     [_strechedImageView setTextInTitle:_group.name];
     
-    [_strechedImageView setDelegate:self];
+    [_strechedImageView setViewControllerDelegate:self];
     
     [_strechedImageView setGesture:YES];
 }
@@ -1250,7 +1250,7 @@ const float TOP_OFF_SET = -64.0;
 
 #pragma mark - GLPPostCellDelegate
 
--(void)navigateToUsersProfileWithRemoteKey:(NSInteger)remoteKey
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
     //Decide where to navigate. Private or current profile.
     
