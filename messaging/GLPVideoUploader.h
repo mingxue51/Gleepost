@@ -12,7 +12,7 @@
 
 -(void)uploadVideo:(NSString *)videoPath withTimestamp:(NSDate*)timestamp;
 
--(NSString*)urlWithTimestamp:(NSDate*)timestamp;
+-(NSNumber *)videoKeyWithTimestamp:(NSDate*)timestamp;
 
 -(void)removeUrlWithTimestamp:(NSDate*)timestamp;
 

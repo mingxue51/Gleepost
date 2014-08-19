@@ -125,7 +125,7 @@
 
 #pragma mark - Accessors
 
--(NSString*)urlWithTimestamp:(NSDate*)timestamp
+-(NSNumber *)videoKeyWithTimestamp:(NSDate*)timestamp
 {
     return [_uploadedVideosUrls objectForKey:timestamp];
 }
@@ -190,20 +190,19 @@
 
 -(void)uploadVideoWithVideoData:(NSData *)videoData withTimestamp:(NSDate *)timestamp
 {
-    __block BOOL finished = NO;
-    __block NSString *videoUrlSend = nil;
+//    __block BOOL finished = NO;
+//    __block NSString *videoUrlSend = nil;
     
     
     if (videoData)
     {
-        [[WebClient sharedInstance] uploadVideo:videoData callback:^(BOOL success, NSString *videoUrl) {
-            
+        [[WebClient sharedInstance] uploadVideoWithData:videoData callback:^(BOOL success, NSInteger videoId) {
+           
             if (success)
             {
-                finished = success;
-                videoUrlSend = videoUrl;
+//                finished = success;
                 
-                if(finished)
+                if(success)
                 {
                     @synchronized(_pendingVideosPaths)
                     {
@@ -211,9 +210,9 @@
                     }
                     
                     //Add image url
-                    [self updateVideoToDictionary:videoUrl withTimestamp:timestamp];
+                    [self updateVideoToDictionary:[NSNumber numberWithInteger:videoId] withTimestamp:timestamp];
                     
-                    NSLog(@"Image url after notify: %@", videoUrl);
+                    NSLog(@"Video id after uploaded: %ld", (long)videoId);
                 }
                 
             }
@@ -222,16 +221,46 @@
                 NSLog(@"Error occured. Post image cannot be uploaded.");
                 self.networkAvailable = NO;
             }
+            
         }];
+        
+        
+//        [[WebClient sharedInstance] uploadVideo:videoData callback:^(BOOL success, NSString *videoUrl) {
+//            
+//            if (success)
+//            {
+//                finished = success;
+//                videoUrlSend = videoUrl;
+//                
+//                if(finished)
+//                {
+//                    @synchronized(_pendingVideosPaths)
+//                    {
+//                        [_pendingVideosPaths removeObjectForKey:timestamp];
+//                    }
+//                    
+//                    //Add image url
+//                    [self updateVideoToDictionary:videoUrl withTimestamp:timestamp];
+//                    
+//                    NSLog(@"Image url after notify: %@", videoUrl);
+//                }
+//                
+//            }
+//            else
+//            {
+//                NSLog(@"Error occured. Post image cannot be uploaded.");
+//                self.networkAvailable = NO;
+//            }
+//        }];
     }
 }
 
--(void)updateVideoToDictionary:(NSString*)imageUrl withTimestamp:(NSDate*)timestamp
+-(void)updateVideoToDictionary:(NSNumber *)videoId withTimestamp:(NSDate*)timestamp
 {
     //Update dictionary.
     @synchronized(_uploadedVideosUrls)
     {
-        [_uploadedVideosUrls setObject:imageUrl forKey:timestamp];
+        [_uploadedVideosUrls setObject:videoId forKey:timestamp];
     }
 }
 

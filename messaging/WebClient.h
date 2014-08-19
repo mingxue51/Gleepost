@@ -147,6 +147,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 // video
 -(void)uploadVideo:(NSData *)videoData callback:(void (^)(BOOL success, NSString *videoUrl))callback;
+- (void)uploadVideoWithData:(NSData *)videoData callback:(void (^)(BOOL success, NSInteger videoId))callback;
 
 // groups
 

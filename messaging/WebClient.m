@@ -381,9 +381,9 @@ static WebClient *instance = nil;
     
     //TODO: add a new param url rather than call second method after the post request.
     
-    if(post.videosUrls)
+    if(post.pendingVideoKey)
     {
-        [params setObject:post.videosUrls[0] forKey:@"url"];
+        [params setObject:post.pendingVideoKey forKey:@"video"];
     }
     
     if(post.dateEventStarts)
@@ -1692,11 +1692,13 @@ static WebClient *instance = nil;
 
 #pragma mark - Video
 
+//TODO: Deprecated.
+
 -(void)uploadVideo:(NSData *)videoData callback:(void (^)(BOOL success, NSString *videoUrl))callback
 {
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%d_video.mp4", self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
     }];
     
     [request setTimeoutInterval:300];
@@ -1713,6 +1715,35 @@ static WebClient *instance = nil;
         callback(YES, response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
+}
+
+- (void)uploadVideoWithData:(NSData *)videoData callback:(void (^)(BOOL success, NSInteger videoId))callback
+{
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"videos" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+    }];
+    
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSInteger videoKey = [RemoteParser parseVideoResponse:responseObject];
+        
+        callback(YES, videoKey);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callback(NO, -1);
     }];
     
     [self enqueueHTTPRequestOperation:operation];

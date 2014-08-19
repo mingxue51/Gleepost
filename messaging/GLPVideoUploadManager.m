@@ -69,16 +69,18 @@ static GLPVideoUploadManager *instance = nil;
     
     for(NSDate* t in [_postUploader pendingPosts])
     {
-        NSString *url = [_videoUploader urlWithTimestamp:t];
+//        NSString *url = [_videoUploader urlWithTimestamp:t];
+        NSNumber *videoId = [_videoUploader videoKeyWithTimestamp:t];
+
         
-        DDLogInfo(@"Ready video URL: %@",url);
+        DDLogInfo(@"Ready video with id: %@",videoId);
         
-        if(url)
+        if(videoId)
         {
             DDLogInfo(@"Post ready for upload!");
             
             //Post ready for uploading.
-            [_postUploader uploadPostWithTimestamp:t andVideoUrl:url];
+            [_postUploader uploadPostWithTimestamp:t andVideoId:videoId];
             
             //Remove url from the Image Operation.
             [_videoUploader removeUrlWithTimestamp:t];
@@ -93,7 +95,7 @@ static GLPVideoUploadManager *instance = nil;
 
 -(void)uploadVideo:(NSString*)videoPath withTimestamp:(NSDate*)timestamp
 {
-    //Upload image with timestasmp.
+    //Upload video with timestasmp.
     [_videoUploader uploadVideo:videoPath withTimestamp:timestamp];
     [_checkForUploadingTimer fire];
 }

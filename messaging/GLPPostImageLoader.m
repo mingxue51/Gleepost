@@ -8,7 +8,6 @@
 
 #import "GLPPostImageLoader.h"
 #import "NSNotificationCenter+Utils.h"
-#import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 

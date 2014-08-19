@@ -23,6 +23,7 @@
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
 @property (strong, nonatomic) NSArray *videosUrls;
+@property (assign, nonatomic) NSNumber *pendingVideoKey;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;

@@ -989,6 +989,17 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return [json[@"id"] integerValue];
 }
 
+#pragma mark - Videos
+
++ (NSInteger)parseVideoResponse:(NSDictionary *)json
+{
+    NSString *status = json[@"status"];
+    
+    DDLogDebug(@"Status of uploaded video: %@", status);
+    
+    return [json[@"id"] integerValue];
+}
+
 
 #pragma mark - Notifications
 

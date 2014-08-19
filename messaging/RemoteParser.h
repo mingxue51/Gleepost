@@ -73,6 +73,9 @@
 +(NSString*)parseImageUrl:(NSDictionary*)url;
 +(int)parseIdFromJson:(NSDictionary*)json;
 
+// videos
++ (NSInteger)parseVideoResponse:(NSDictionary *)json;
+
 // notifications
 + (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json;
 + (NSArray *)parseNotificationsFromJson:(NSArray *)jsonConversations;
