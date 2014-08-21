@@ -127,6 +127,7 @@
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 for (GLPPost *newPost in newPosts) {
+                    newPost.sendStatus = kSendStatusSent;
                     [GLPPostDao save:newPost inDb:db];
                 }
             }];
@@ -255,12 +256,12 @@
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
                 // clean posts table
-                [GLPPostDao deleteAllInDb:db];
+//                [GLPPostDao deleteAllInDb:db];
                 
                 //Set liked to the database if the user liked from other device (?)
                 for(GLPPost *post in posts)
                 {
-                    
+                    post.sendStatus = kSendStatusSent;
                     [GLPPostDao save:post inDb:db];
                 }
             }];
@@ -351,6 +352,7 @@
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 for(GLPPost *post in posts) {
+                    post.sendStatus = kSendStatusSent;
                     [GLPPostDao save:post inDb:db];
                 }
             }];
@@ -656,7 +658,7 @@
 
 + (void)updateVideoPostBeforeSending:(GLPPost *)videoPost
 {
-    DDLogInfo(@"Update video post after sending: %@", videoPost);
+    DDLogInfo(@"Update video post before sending: %@", videoPost);
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         

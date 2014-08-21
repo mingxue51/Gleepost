@@ -15,9 +15,7 @@
     self = [super init];
     
     if(self)
-    {
-        DDLogDebug(@"INIT pending key: %@", pKey);
-        
+    {        
         self.pendingKey = pKey.copy;
     }
     

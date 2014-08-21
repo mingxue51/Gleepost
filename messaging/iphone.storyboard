@@ -1718,7 +1718,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
 </data>
                                 </timeZone>
                             </datePicker>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When is his event happening?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lH5-Rq-uh0">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When is this event happening?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lH5-Rq-uh0">
                                 <rect key="frame" x="20" y="20" width="280" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
@@ -2429,7 +2429,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="C8128C6F-E727-474B-8AA3-113CB5CF5E04">
+                                                <state key="normal" image="94F6FAD1-D5C2-4B49-9996-9E80C669293C">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -4395,7 +4395,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="C8128C6F-E727-474B-8AA3-113CB5CF5E04" width="30" height="32">
+        <image name="94F6FAD1-D5C2-4B49-9996-9E80C669293C" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -4498,18 +4498,18 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fL3-CC-Jbz"/>
-        <segue reference="Ze9-pm-FNm"/>
-        <segue reference="7l2-k5-pHQ"/>
-        <segue reference="zvV-dv-dTv"/>
-        <segue reference="wR3-TA-URh"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="hfC-fm-BOR"/>
         <segue reference="fah-A8-Ky9"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="zvV-dv-dTv"/>
+        <segue reference="7l2-k5-pHQ"/>
         <segue reference="ZpN-d9-baB"/>
-        <segue reference="YIa-ii-tw7"/>
+        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="FCS-Ek-fLH"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="hfC-fm-BOR"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="fL3-CC-Jbz"/>
         <segue reference="CJG-WM-cQ7"/>
     </inferredMetricsTieBreakers>
 </document>

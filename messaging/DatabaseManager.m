@@ -181,6 +181,7 @@ static DatabaseManager *instance = nil;
             // post videos
             [db executeUpdate:@"create table post_videos ( \
              post_remote_key integer, \
+             post_key integer primary key, \
              video_url text, \
              video_thumbnail_url text, \
              video_temp_key integer);"];

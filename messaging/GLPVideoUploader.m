@@ -234,7 +234,7 @@
                     //Add image url
                     [self updateVideoToDictionary:videoId withTimestamp:timestamp];
                     
-                    NSLog(@"Video id after uploaded: %ld", (long)videoId);
+                    NSLog(@"Video id after uploaded: %@", videoId);
                 }
                 
             }

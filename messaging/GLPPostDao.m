@@ -155,7 +155,7 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"replace into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -168,7 +168,7 @@
                      entity.eventTitle,
                      eventDate];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"replace into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -183,6 +183,7 @@
                      eventDate];
     }
     
+    
     entity.key = [db lastInsertRowId];
     
     
@@ -195,7 +196,7 @@
 
     if([entity isVideoPost])
     {
-        [GLPPostDao insertVideosWithEntity:entity andDb:db];
+        [GLPPostDao saveVideoWithEntity:entity inDb:db];
     }
     
     
@@ -226,15 +227,47 @@
     }
 }
 
-+ (void)insertVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
++ (void)saveVideoWithEntity:(GLPPost *)entity inDb:(FMDatabase *)db
 {
-    BOOL s = [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %@, %@, %d)",
-     entity.remoteKey,
-     entity.video.url,
-     entity.video.thumbnailUrl,
-    [entity.video.pendingKey intValue]];
+    BOOL s = [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
+              entity.remoteKey,
+              entity.key,
+              entity.video.url,
+              entity.video.thumbnailUrl,
+              -1];
     
-    DDLogDebug(@"Video data inserted: %d : %@", s, entity.video);
+    DDLogDebug(@"Video data inserted (status sent): %d : %@", s, entity.video);
+}
+
++ (void)insertVideoWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
+{
+//    if(entity.remoteKey == 0)
+//    {
+        if(!entity.video.pendingKey)
+        {
+            return;
+        }
+    
+    BOOL s = [db executeUpdateWithFormat:@"update post_videos set video_temp_key=%d where post_key=%d",
+              [entity.video.pendingKey intValue],
+              entity.key];
+    
+//        BOOL s = [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
+//                  entity.remoteKey,
+//                  entity.key,
+//                  entity.video.url,
+//                  entity.video.thumbnailUrl,
+//                  [entity.video.pendingKey intValue]];
+    
+        DDLogDebug(@"Video data inserted (status local): %d : %@", s, entity.video);
+//    }
+//    else
+//    {
+
+
+//    }
+    
+
     
 //    for(NSString* videoUrl in entity.videosUrls)
 //    {
@@ -242,6 +275,29 @@
 //         entity.remoteKey,
 //         videoUrl];
 //    }
+}
+
++ (void)updateVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
+{
+    if(!entity.video.url)
+    {
+        return;
+    }
+    
+    BOOL s = [db executeUpdateWithFormat:@"update post_videos set post_remote_key=%d, video_url=%@, video_thumbnail_url=%@ where post_key=%d",
+     entity.remoteKey,
+     entity.video.url,
+     entity.video.thumbnailUrl,
+     entity.key];
+    
+//    BOOL s = [db executeUpdateWithFormat:@"update post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
+//              entity.remoteKey,
+//              entity.key,
+//              entity.video.url,
+//              entity.video.thumbnailUrl,
+//              [entity.video.pendingKey intValue]];
+    
+    DDLogDebug(@"Video data updated (status sent): %d : %@", s, entity.video);
 }
 
 #pragma mark - Update operations
@@ -303,11 +359,16 @@
 {
     [GLPPostDao updatePostSendingData:entity inDb:db];
     
+    DDLogDebug(@"updateVideoPostSendingData post key: %d", entity.key);
+    
     if(entity.remoteKey != 0)
     {
-        [GLPPostDao insertVideosWithEntity:entity andDb:db];
+        [GLPPostDao updateVideosWithEntity:entity andDb:db];
     }
-    
+    else
+    {
+        [GLPPostDao insertVideoWithEntity:entity andDb:db];
+    }
 }
 
 #pragma makr - Delete operations
@@ -320,6 +381,8 @@
 
 + (void)deleteAllInDb:(FMDatabase *)db
 {
+    DDLogInfo(@"Post table deleted.");
+    
     [db executeUpdateWithFormat:@"delete from posts"];
     
     [db executeUpdateWithFormat:@"delete from post_images"];

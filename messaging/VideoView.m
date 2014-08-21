@@ -69,6 +69,9 @@
         
         _post = post;
         
+        [self loadThumbnail];
+
+        
         [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:_post.video.url andPostRemoteKey:_remoteKey];
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
@@ -80,7 +83,6 @@
         previewVC.view.frame = _videoView.bounds;
         [_videoView addSubview:previewVC.view];
         
-        [self loadThumbnail];
         
         [self configurePlaybackElementsWithPreviewVC:previewVC];
     }

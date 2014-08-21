@@ -77,7 +77,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post id: %ld, Date: %@, Group: %@ ", (long)self.remoteKey, self.date, self.group];
+    return [NSString stringWithFormat:@"Post id: %ld, Sending status: %d Date: %@, Group: %@ ", (long)self.remoteKey, self.sendStatus, self.date, self.group];
 }
 
 
