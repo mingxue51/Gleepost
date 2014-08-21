@@ -579,6 +579,7 @@
 		58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */; };
 		58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */; };
 		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
+		58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D4FF3119A53093006E7AC8 /* GLPVideo.m */; };
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
 		58D7F76519A2A98F00C39A4C /* location_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76419A2A98F00C39A4C /* location_top_button.png */; };
 		58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76619A2A9B500C39A4C /* camera_top_button.png */; };
@@ -1681,6 +1682,8 @@
 		58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewImage.m; sourceTree = "<group>"; };
 		58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewImage.h; sourceTree = "<group>"; };
 		58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewImage.m; sourceTree = "<group>"; };
+		58D4FF3019A53093006E7AC8 /* GLPVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideo.h; sourceTree = "<group>"; };
+		58D4FF3119A53093006E7AC8 /* GLPVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideo.m; sourceTree = "<group>"; };
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
 		58D7F76419A2A98F00C39A4C /* location_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_top_button.png; sourceTree = "<group>"; };
 		58D7F76619A2A9B500C39A4C /* camera_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_top_button.png; sourceTree = "<group>"; };
@@ -4178,6 +4181,8 @@
 				581C311C188EFE6800BAA082 /* GLPCategory.m */,
 				58F9C63D18C522CA004A237E /* GLPGroup.h */,
 				58F9C63E18C522CA004A237E /* GLPGroup.m */,
+				58D4FF3019A53093006E7AC8 /* GLPVideo.h */,
+				58D4FF3119A53093006E7AC8 /* GLPVideo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5429,6 +5434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */,
+				58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */,
 				80B2A4251833824F002AB1F0 /* GLPNotificationDao.m in Sources */,
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,

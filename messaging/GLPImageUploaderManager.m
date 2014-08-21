@@ -55,27 +55,29 @@ const NSString *IMAGE_PENDING = @"PENDING";
         
         self.networkAvailable = YES;
         
+        [self configureNetworking];
+        
         //Called when there is change in status.
         
-        [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            
-            BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
-            
-            if(currentStatus)
-            {
-                self.networkAvailable = YES;
-                //[self startConsume];
-                [self cancelOperations];
-
-            }
-            else
-            {
-                self.networkAvailable = NO;
-                //No network.
-                [self cancelOperations];
-            }
-            
-        }];
+//        [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//            
+//            BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
+//            
+//            if(currentStatus)
+//            {
+//                self.networkAvailable = YES;
+//                //[self startConsume];
+//                [self cancelOperations];
+//
+//            }
+//            else
+//            {
+//                self.networkAvailable = NO;
+//                //No network.
+//                [self cancelOperations];
+//            }
+//            
+//        }];
         
                               //NSOrderedSame
     }
@@ -83,6 +85,36 @@ const NSString *IMAGE_PENDING = @"PENDING";
     return self;
 }
 
+#pragma mark - Networking
+
+- (void)configureNetworking
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+}
+
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    
+    DDLogInfo(@"GLPImageUploaderManager : Canceling all operations.");
+
+    if(isNetwork)
+    {
+        self.networkAvailable = YES;
+        [self cancelOperations];
+    }
+    else
+    {
+        self.networkAvailable = NO;
+        //No network.
+        [self cancelOperations];
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+}
 
 #pragma mark - Helpers
 

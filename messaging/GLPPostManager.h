@@ -21,6 +21,8 @@
 +(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback;
 + (void)createLocalPost:(GLPPost*)post;
 + (void)updatePostAfterSending:(GLPPost *)post;
++ (void)updateVideoPostAfterSending:(GLPPost *)videoPost;
++ (void)updateVideoPostBeforeSending:(GLPPost *)videoPost;
 +(void)updatePostWithLiked:(GLPPost*)post;
 +(void)updatePostWithRemoteKey:(int)remoteKey andNumberOfComments:(int)numberOfComments;
 +(void)loadEventsRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback;

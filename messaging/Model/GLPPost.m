@@ -57,7 +57,7 @@
 
 -(BOOL)isVideoPost
 {
-    if(_videosUrls == nil || [_videosUrls count] == 0)
+    if(_video == nil)
     {
         return NO;
     }

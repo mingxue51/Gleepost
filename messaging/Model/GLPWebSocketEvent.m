@@ -26,7 +26,10 @@
         _type = kGLPWebSocketEventTypeChangedConversation;
     } else if([string isEqualToString:@"notification"]) {
         _type = kGLPWebSocketEventTypeNotification;
-    } else {
+    } else if ([string isEqualToString:@"video-ready"]) {
+        _type = kGLPWebSocketEventTypeVideoReady;
+    }
+    else {
         [NSException raise:@"GLPWebSocketEventType unknown" format:@"For string value: %@", string];
     }
 }

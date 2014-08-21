@@ -16,7 +16,7 @@
 #import "GLPNotification.h"
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
-
+#import "GLPVideoUploadManager.h"
 
 @interface GLPMessageProcessor()
 
@@ -103,6 +103,13 @@ static GLPMessageProcessor *instance = nil;
             case kGLPWebSocketEventTypeNotification:{
                 GLPNotification *notification = [RemoteParser parseNotificationFromJson:event.data];
                 [GLPNotificationManager saveNotification:notification];
+                break;
+            }
+                
+            case kGLPWebSocketEventTypeVideoReady:{
+                DDLogInfo(@"Websocket event: Video ready");
+                [[GLPVideoUploadManager sharedInstance] refreshVideoPostInCampusWallWithData:event.data];
+                
                 break;
             }
         }

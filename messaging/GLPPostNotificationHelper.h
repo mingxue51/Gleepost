@@ -45,4 +45,8 @@
 
 +(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey;
 
++ (NSInteger)findPostIndexWithKey:(NSInteger)key inPosts:(NSArray *)posts;
+
++ (NSInteger)findPostIndexWithRemoteKey:(NSInteger)remoteKey inPosts:(NSArray *)posts;
+
 @end

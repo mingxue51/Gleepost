@@ -13,6 +13,7 @@
 #import "GLPCommentDao.h"
 #import "WebClientHelper.h"
 #import "GLPiOS6Helper.h"
+#import "GLPVideo.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -531,7 +532,71 @@
 
 }
 
--(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoUrl:(NSString*)url
+//-(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoUrl:(NSString*)url
+//{
+//    //Post ready to be uploaded.
+//    
+//    void (^_uploadVideoContentBlock)(GLPPost*);
+//    
+//    GLPPost *post = nil;
+//    
+//    @synchronized(_readyPosts)
+//    {
+//        post = [_readyPosts objectForKey:timestamp];
+//        post.videosUrls = [[NSArray alloc] initWithObjects:url, nil];
+//        
+//        _uploadVideoContentBlock = ^(GLPPost* post){
+//            
+//            //Notify GLPTimelineViewController after finish.
+//            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
+//                                                                                                                            @"videoUrl":@"",
+//                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
+//        };
+//    }
+//    
+//    
+//    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, [post.videosUrls objectAtIndex:0]);
+//    
+//    
+//    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
+//    
+//    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
+//        
+//        
+//        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+//        post.remoteKey = success ? remoteKey : 0;
+//        
+//        NSLog(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
+//        
+//        
+//        [GLPPostManager updatePostAfterSending:post];
+//        
+//        //        self.incomingKey = _incomingPost.key;
+//        //        self.incomingRemoteKey = remoteKey;
+//        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
+//        //        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
+//        
+//        //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
+//        
+//        
+//        if(success)
+//        {
+//            _uploadVideoContentBlock(post);
+//            
+//            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+//            
+//            //Add post to uploaded posts.
+//            [_uploadedPosts addObject:post];
+//            
+//            //Remove post from the NSDictionary.
+//            [self removePostWithTimestamp:timestamp];
+//        }
+//        
+//        //        [self cleanUpPost];
+//    }];
+//}
+
+-(void)uploadPostWithTimestamp:(NSDate*)timestamp withVideoData:(NSDictionary *)videoData
 {
     //Post ready to be uploaded.
     
@@ -542,19 +607,28 @@
     @synchronized(_readyPosts)
     {
         post = [_readyPosts objectForKey:timestamp];
-        post.videosUrls = [[NSArray alloc] initWithObjects:url, nil];
         
-        _uploadVideoContentBlock = ^(GLPPost* post){
-            
-            //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-                                                                                                                            @"videoUrl":@"",
-                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
-        };
+        NSAssert(post.video, @"Post video data should not be nil");
+        
+        post.video.url = videoData[@"mp4"];
+        NSArray *thumbnails = videoData[@"thumbnails"];
+        post.video.thumbnailUrl = thumbnails[0];
+        
     }
     
     
-    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, [post.videosUrls objectAtIndex:0]);
+    _uploadVideoContentBlock = ^(GLPPost *post){
+        
+        //Notify GLPTimelineViewController after finish.
+        
+//        NSDictionary *data = @{@"remoteKey": [NSNumber numberWithInteger:post.remoteKey], @"key" : [NSNumber numberWithInteger:post.key]};
+        
+        DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
+    };
+
+    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, post.video.url);
     
     
     //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
@@ -565,10 +639,11 @@
         post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         post.remoteKey = success ? remoteKey : 0;
         
-        NSLog(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
+        DDLogInfo(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
         
         
-        [GLPPostManager updatePostAfterSending:post];
+//        [GLPPostManager updatePostAfterSending:post];
+        [GLPPostManager updateVideoPostAfterSending:post];
         
         //        self.incomingKey = _incomingPost.key;
         //        self.incomingRemoteKey = remoteKey;
@@ -595,69 +670,40 @@
     }];
 }
 
--(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoId:(NSNumber *)videoId
+/**
+ Just adds to the local database the key of the video.
+ 
+ */
+- (void)prepareVideoPostForUploadWithTimestamp:(NSDate *)timestamp andVideoId:(NSNumber *)videoId
 {
-    //Post ready to be uploaded.
-    
-    void (^_uploadVideoContentBlock)(GLPPost*);
-    
     GLPPost *post = nil;
-    
+
     @synchronized(_readyPosts)
     {
         post = [_readyPosts objectForKey:timestamp];
-        post.pendingVideoKey = videoId;
-//        post.videosUrls = [[NSArray alloc] initWithObjects:url, nil];
-        
-        _uploadVideoContentBlock = ^(GLPPost* post){
-            
-            //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-                                                                                                                            @"videoUrl":@"",
-                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
-        };
+        post.video = [[GLPVideo alloc] initWithPendingKey:videoId];
+        post.sendStatus = kSendStatusLocal;
     }
     
+    //Update video to database. (In order to know video id).
+    [GLPPostManager updateVideoPostBeforeSending:post];
+
+}
+
+- (void)uploadPostWithVideoData:(NSDictionary *)videoData
+{
+    NSNumber *videoKey = [NSNumber numberWithInteger:[videoData[@"id"] integerValue]];
     
-    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, [post.videosUrls objectAtIndex:0]);
-    
-    
-    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
-    
-    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
+                          
+    for(NSDate *timestamp in _readyPosts)
+    {
+        GLPPost *p = [_readyPosts objectForKey:timestamp];
         
-        
-        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        post.remoteKey = success ? remoteKey : 0;
-        
-        NSLog(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
-        
-        
-        [GLPPostManager updatePostAfterSending:post];
-        
-        //        self.incomingKey = _incomingPost.key;
-        //        self.incomingRemoteKey = remoteKey;
-        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
-        //        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
-        
-        //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
-        
-        
-        if(success)
+        if([p.video.pendingKey isEqualToNumber:videoKey])
         {
-            _uploadVideoContentBlock(post);
-            
-            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
-            
-            //Add post to uploaded posts.
-            [_uploadedPosts addObject:post];
-            
-            //Remove post from the NSDictionary.
-            [self removePostWithTimestamp:timestamp];
+            [self uploadPostWithTimestamp:timestamp withVideoData:videoData];
         }
-        
-        //        [self cleanUpPost];
-    }];
+    }
 }
 
 

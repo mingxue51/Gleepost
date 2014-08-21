@@ -310,6 +310,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];    
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -397,6 +399,89 @@ const float TOP_OFFSET = 180.0f;
 //    [self.tableView reloadData];
     
 
+}
+
+/**
+ This method should be called when the post is uploaded (GLPPostUploaderManager).
+ 
+ In this case we just refresh the video post to remove the uploading indicator.
+ 
+ @param notification contains videoUrl, thumbnailUrl, key and remoteKey.
+ 
+ */
+- (void)updateVideoPostAfterCreatingThePost:(NSNotification *)notification
+{
+    NSDictionary *data = [notification userInfo];
+    
+    GLPPost *inPost = data[@"final_post"];
+    
+    NSInteger postIndex = -1;
+    
+//    NSInteger remoteKey = [[data objectForKey:@"remoteKey"] integerValue];
+//    NSInteger key = [[data objectForKey:@"key"] integerValue];
+    
+    postIndex = [GLPPostNotificationHelper findPostIndexWithKey:inPost.key inPosts:self.posts];
+    
+    DDLogDebug(@"New video post index: %ld", (long)postIndex);
+    
+    if(postIndex == -1)
+    {
+        return;
+    }
+    
+    GLPPost *pendingVideoPost = [self.posts objectAtIndex:postIndex];
+    
+    pendingVideoPost.remoteKey = inPost.remoteKey;
+    
+    DDLogDebug(@"Update video post: %@", pendingVideoPost.video);
+    
+    
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+}
+
+/**
+ This method should be called from Web Socket via (GLPVideoUploadManager) when the video is proccessed and ready.
+ 
+ The current notification may also be called before the creation of the post. 
+ TODO: In that case the thumbnailUrl and the videoUrl should be saved and once the video is ready,
+ add that data to the post.
+ 
+ TODO: This method is not used for now.
+ 
+ */
+- (void)updateVideoPostWhenVideoIsReady:(NSNotification *)notification
+{
+    NSDictionary *data = [notification userInfo];
+
+    NSInteger remoteKey = [[data objectForKey:@"id"] integerValue];
+    
+    NSArray *thumbnails = [data objectForKey:@"thumbnails"];
+    
+    NSString *thumbnailUrl = [thumbnails objectAtIndex:0];
+    
+    NSString *videoUrl = [data objectForKey:@"mp4"];
+    
+    DDLogDebug(@"Received ready video notification: %@ : %@", videoUrl, thumbnailUrl);
+    
+    NSInteger postIndex = [GLPPostNotificationHelper findPostIndexWithRemoteKey:remoteKey inPosts:self.posts];
+    
+    DDLogDebug(@"Index no: %ld, remote key: %ld", (long)postIndex, (long)remoteKey);
+    
+    if(postIndex == -1)
+    {
+        return;
+    }
+    
+    GLPPost *videoPost = [self.posts objectAtIndex:postIndex];
+    
+//    videoPost.videoThumbnail = thumbnailUrl;
+//    videoPost.videosUrls = [[NSArray alloc] initWithObjects:videoUrl, nil];
+    
+    DDLogDebug(@"Video of video post ready: %@", videoPost);
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 -(void)updateRealImage:(NSNotification*)notification
@@ -723,6 +808,10 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToTheNavigationBarFromNotification:) name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostWhenVideoIsReady:) name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
     
 }
 

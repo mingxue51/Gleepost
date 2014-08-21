@@ -15,13 +15,12 @@
 #import "GLPPost.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
+#import "GLPVideo.h"
 
 @interface VideoView ()
 
 //@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 @property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
-@property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
 @property (weak, nonatomic) IBOutlet UIImageView *loadingImageView;
@@ -32,7 +31,8 @@
 
 @property (strong, nonatomic) GLPPost *post;
 
-@property (strong, nonatomic) NSString *temporaryThumbnailUrl;
+//@property (strong, nonatomic) GLPVideo *videoData;
+
 @end
 
 @implementation VideoView
@@ -55,11 +55,13 @@
 //    _previewVC = [[PBJVideoPlayerController alloc] init];
 //    _previewVC.delegate = self;
     
-    _temporaryThumbnailUrl = @"https://cdn-assets-hall-com.s3.amazonaws.com/production/private/halls/531a19171d16bead700004e8/user_uploaded_files/default_thumbnail.png?AWSAccessKeyId=17VVCSSS3H6YGDY9H3G2&Expires=1403044633&Signature=sZMzPWs503329REQDCEbgKQQmic%3D&response-content-type=image%2Fpng";
+//    _temporaryThumbnailUrl = @"https://cdn-assets-hall-com.s3.amazonaws.com/production/private/halls/531a19171d16bead700004e8/user_uploaded_files/default_thumbnail.png?AWSAccessKeyId=17VVCSSS3H6YGDY9H3G2&Expires=1403044633&Signature=sZMzPWs503329REQDCEbgKQQmic%3D&response-content-type=image%2Fpng";
+    
+    
 }
 
 
--(void)setUpVideoViewWithUrl:(NSString *)url withPost:(GLPPost *)post
+-(void)setUpVideoViewWithPost:(GLPPost *)post
 {
     if(ON_DEVICE)
     {
@@ -67,7 +69,7 @@
         
         _post = post;
         
-        [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:url andPostRemoteKey:_remoteKey];
+        [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:_post.video.url andPostRemoteKey:_remoteKey];
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
@@ -129,9 +131,22 @@
 
 - (void)loadThumbnail
 {
-    //TODO: this is going to be changed when the thumbnail is going to be supported by the sever.
+//    [_thumbnailImageView setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
-    [_thumbnailImageView setImage:[UIImage imageNamed:@"default_thumbnail"]];
+    //TODO: Load image from cache.
+
+    [_thumbnailImageView setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:nil options:SDWebImageRetryFailed
+     
+        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            
+            DDLogDebug(@"Video image loaded");
+            
+//            [self hideLoadingElements];
+            
+            //TODO: Load image from cache like how we are doing that with images.
+
+            
+        }];
 }
 
 #pragma mark - Animation
@@ -200,16 +215,19 @@
 {
     switch (playbackStatus) {
         case PBJVideoPlayerPlaybackStateStopped:
+            DDLogDebug(@"PBJVideoPlayerPlaybackStateStopped");
             [self setHiddenToPlayImage:NO];
             [self setHiddenThumbnail:NO];
             break;
             
         case PBJVideoPlayerPlaybackStatePlaying:
+            DDLogDebug(@"PBJVideoPlayerPlaybackStatePlaying");
             [self setHiddenToPlayImage:YES];
             [self setHiddenThumbnail:YES];
             break;
             
             case PBJVideoPlayerPlaybackStatePaused:
+            DDLogDebug(@"PBJVideoPlayerPlaybackStatePaused");
             [self setHiddenToPlayImage:NO];
             [self setHiddenThumbnail:YES];
             break;

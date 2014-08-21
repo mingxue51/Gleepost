@@ -15,6 +15,7 @@
 #import "GLPQueueManager.h"
 #import "GLPPostOperationManager.h"
 #import "GLPVideoUploadManager.h"
+#import "GLPVideo.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -164,7 +165,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     else if(_videoPath)
     {
         post.date = [NSDate date];
-        post.videosUrls = [[NSArray alloc] initWithObjects:_videoPath, nil];
+        post.video = [[GLPVideo alloc] initWithPath:_videoPath];
         [GLPPostManager createLocalPost:post];
         
         [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];

@@ -14,7 +14,9 @@
 
 -(NSNumber *)videoKeyWithTimestamp:(NSDate*)timestamp;
 
--(void)removeUrlWithTimestamp:(NSDate*)timestamp;
+-(void)removeVideoIdWithTimestamp:(NSDate*)timestamp;
+
+//- (NSDate *)timestampForVideoKey:(NSNumber *)videoKey;
 
 -(void)cancelVideoWithTimestamp:(NSDate *)timestamp;
 

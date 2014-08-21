@@ -12,6 +12,7 @@
 #import "GLPPostUploaderManager.h"
 #import "GLPiOS6Helper.h"
 #import "GLPVideoUploader.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -77,13 +78,18 @@ static GLPVideoUploadManager *instance = nil;
         
         if(videoId)
         {
-            DDLogInfo(@"Post ready for upload!");
+            
+            //If video id received it means that we need to wait until we get web socket
+            //event (so until video is processed).
+            DDLogInfo(@"Video uploaded with key %@, waiting for web socket event", videoId);
+
             
             //Post ready for uploading.
-            [_postUploader uploadPostWithTimestamp:t andVideoId:videoId];
+//            [_postUploader uploadPostWithTimestamp:t andVideoId:videoId];
+            [_postUploader prepareVideoPostForUploadWithTimestamp:t andVideoId:videoId];
             
-            //Remove url from the Image Operation.
-            [_videoUploader removeUrlWithTimestamp:t];
+            //Remove id from the Video Operation.
+            [_videoUploader removeVideoIdWithTimestamp:t];
         }
         else
         {
@@ -130,7 +136,27 @@ static GLPVideoUploadManager *instance = nil;
     [_postUploader addPost:post withTimestamp:timestamp];
 }
 
+#pragma mark - Notification manager
 
 
+/**
+ Sends a notification with video's thumbnail and url.
+ 
+ @param remoteKey post's remote key.
+ @param thumbUrl video's thumbnail.
+ @param videoUrl video's url.
+ 
+ */
+- (void)refreshVideoPostInCampusWallWithData:(NSDictionary *)data
+{
+    DDLogInfo(@"GLPVideoUploadManager : Video processed with data: %@", data);
+    
+//    NSDictionary *data = @{@"remoteKey": [NSNumber numberWithInteger:remoteKey], @"thumbnailUrl" : thumbUrl, @"videoUrl" : videoUrl};
+    
+    [_postUploader uploadPostWithVideoData:data];
+    
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_PROCESSED object:self userInfo:data];
+}
 
 @end

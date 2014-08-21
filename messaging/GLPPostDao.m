@@ -13,6 +13,7 @@
 #import "GLPUserDao.h"
 #import "DatabaseManager.h"
 #import "GLPCategoryDao.h"
+#import "GLPVideo.h"
 
 @implementation GLPPostDao
 
@@ -107,15 +108,26 @@
 {
     for(GLPPost *currentPost in posts)
     {
-        FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select video_url from post_videos where post_remote_key=%d", currentPost.remoteKey];
+        FMResultSet *videoResultSet = [db executeQueryWithFormat:@"select * from post_videos where post_remote_key=%d", currentPost.remoteKey];
         
-        NSMutableArray *videosUrl = [NSMutableArray array];
+//        NSMutableArray *videoData = [NSMutableArray array];
         
-        while ([imagesResultSet next])
+        while ([videoResultSet next])
         {
-            [videosUrl addObject:[imagesResultSet stringForColumn:@"video_url"]];
+//            [videosUrl addObject:[imagesResultSet stringForColumn:@"video_url"]];
             
-            currentPost.videosUrls = [videosUrl mutableCopy];
+            NSString *videoUrl = [videoResultSet stringForColumn:@"video_url"];
+            NSString *thumbnailUrl = [videoResultSet stringForColumn:@"video_thumbnail_url"];
+            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+            [f setNumberStyle:NSNumberFormatterDecimalStyle];
+            NSNumber *tempId = [f numberFromString:[videoResultSet stringForColumn:@"video_temp_key"]];
+            
+            currentPost.video = [[GLPVideo alloc] initWithUrl:videoUrl andThumbnailUrl:thumbnailUrl];
+            
+            if(tempId)
+            {
+                currentPost.video.pendingKey = tempId;
+            }
         }
     }
 }
@@ -176,9 +188,16 @@
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];
     
-    [GLPPostDao insertImagesWithEntity:entity andDb:db];
+    if([entity imagePost])
+    {
+        [GLPPostDao insertImagesWithEntity:entity andDb:db];
+    }
 
-    [GLPPostDao insertVideosWithEntity:entity andDb:db];
+    if([entity isVideoPost])
+    {
+        [GLPPostDao insertVideosWithEntity:entity andDb:db];
+    }
+    
     
     //Save the author.
     [GLPUserDao saveIfNotExist:entity.author db:db];
@@ -207,14 +226,22 @@
     }
 }
 
-+(void)insertVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
++ (void)insertVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
 {
-    for(NSString* videoUrl in entity.videosUrls)
-    {
-        [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url) values(%d, %@)",
-         entity.remoteKey,
-         videoUrl];
-    }
+    BOOL s = [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %@, %@, %d)",
+     entity.remoteKey,
+     entity.video.url,
+     entity.video.thumbnailUrl,
+    [entity.video.pendingKey intValue]];
+    
+    DDLogDebug(@"Video data inserted: %d : %@", s, entity.video);
+    
+//    for(NSString* videoUrl in entity.videosUrls)
+//    {
+//        [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url) values(%d, %@)",
+//         entity.remoteKey,
+//         videoUrl];
+//    }
 }
 
 #pragma mark - Update operations
@@ -247,12 +274,17 @@
 {
     NSAssert(entity.key != 0, @"Update entity without key");
     
-    if(entity.remoteKey != 0) {
+    if(entity.remoteKey != 0)
+    {
+        DDLogDebug(@"updatePostSendingData remote key not zero");
         [db executeUpdateWithFormat:@"update posts set remoteKey=%d, sendStatus=%d where key=%d",
          entity.remoteKey,
          entity.sendStatus,
          entity.key];
-    } else {
+        
+    } else
+    {
+        DDLogDebug(@"updatePostSendingData remote key zero");
         [db executeUpdateWithFormat:@"update posts set sendStatus=%d where key=%d",
          entity.sendStatus,
          entity.key];
@@ -265,6 +297,17 @@
         category.postRemoteKey = entity.remoteKey;        
         [GLPCategoryDao saveCategoryIfNotExist:category db:db];
     }
+}
+
++ (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
+{
+    [GLPPostDao updatePostSendingData:entity inDb:db];
+    
+    if(entity.remoteKey != 0)
+    {
+        [GLPPostDao insertVideosWithEntity:entity andDb:db];
+    }
+    
 }
 
 #pragma makr - Delete operations

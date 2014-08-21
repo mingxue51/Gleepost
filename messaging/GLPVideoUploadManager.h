@@ -17,4 +17,6 @@
 
 -(void)setPost:(GLPPost *)post withTimestamp:(NSDate *)timestamp;
 
+- (void)refreshVideoPostInCampusWallWithData:(NSDictionary *)data;
+
 @end

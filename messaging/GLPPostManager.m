@@ -387,7 +387,7 @@
        
         if(success)
         {
-            DDLogInfo(@"Got post with content: %@ : %@", post.content, post.videosUrls);
+            DDLogInfo(@"Got post with content: %@ : %@", post.content, post.video);
             
             callback(success,post);
         }
@@ -636,10 +636,31 @@
 // update local post to either sent or error
 + (void)updatePostAfterSending:(GLPPost *)post
 {
-    DDLogDebug(@"Update post after sending: %@", post);
+    DDLogInfo(@"Update post after sending: %@", post);
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPPostDao updatePostSendingData:post inDb:db];
+    }];
+}
+
++ (void)updateVideoPostAfterSending:(GLPPost *)videoPost
+{
+    DDLogInfo(@"Update video post after sending: %@", videoPost);
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPPostDao updateVideoPostSendingData:videoPost inDb:db];
+    }];
+
+}
+
++ (void)updateVideoPostBeforeSending:(GLPPost *)videoPost
+{
+    DDLogInfo(@"Update video post after sending: %@", videoPost);
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPPostDao updateVideoPostSendingData:videoPost inDb:db];
     }];
 }
 

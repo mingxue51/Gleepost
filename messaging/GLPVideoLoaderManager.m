@@ -9,7 +9,7 @@
 #import "GLPVideoLoaderManager.h"
 #import "PBJVideoPlayerController.h"
 #import "GLPPost.h"
-
+#import "GLPVideo.h"
 @interface GLPVideoLoaderManager ()
 
 /** Contains post remote key as a key and PBJVideoPlayerController as a value. */
@@ -119,7 +119,8 @@ static GLPVideoLoaderManager *instance = nil;
     
     for(GLPPost *p in videoPosts)
     {
-        [self addVideoWithUrl:p.videosUrls[0] andPostRemoteKey:p.remoteKey];
+//        [self addVideoWithUrl:p.videosUrls[0] andPostRemoteKey:p.remoteKey];
+        [self addVideoWithUrl:p.video.url andPostRemoteKey:p.remoteKey];
     }
 }
 

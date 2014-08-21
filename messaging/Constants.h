@@ -57,6 +57,9 @@
 
 #define GLPNOTIFICATION_RELOAD_DATA_IN_CW               @"GLPReloadDataInCW"
 
+#define GLPNOTIFICATION_VIDEO_PROCESSED                 @"GLPVideoProcessed"
+#define GLPNOTIFICATION_VIDEO_POST_READY                @"GLPVidePostReady"
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 

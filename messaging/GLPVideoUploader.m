@@ -13,7 +13,7 @@
 
 @interface GLPVideoUploader ()
 
-@property (strong, nonatomic) NSMutableDictionary *uploadedVideosUrls;
+@property (strong, nonatomic) NSMutableDictionary *uploadedVideosIds;
 
 @property (strong, nonatomic) NSMutableArray *pendingTimestamps;
 
@@ -46,7 +46,7 @@
 
 -(void)initialiseObjects
 {
-    _uploadedVideosUrls = [[NSMutableDictionary alloc] init];
+    _uploadedVideosIds = [[NSMutableDictionary alloc] init];
     
     _pendingTimestamps = [[NSMutableArray alloc] init];
     _pendingVideosPaths = [[NSMutableDictionary alloc] init];
@@ -65,34 +65,54 @@
 
 -(void)configureNetwork
 {
-    //Called when status has changed.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     
-    [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+
+//    [[WebClient sharedInstance] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//        
+//        BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
+//        
+//        if(currentStatus)
+//        {
+//            self.networkAvailable = YES;
+//            //[self startConsume];
+//            [self cancelOperations];
+//            
+//        }
+//        else
+//        {
+//            self.networkAvailable = NO;
+//            //No network.
+//            [self cancelOperations];
+//        }
+//        
+//    }];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+}
+
+#pragma mark - Network
+
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    
+    if(!isNetwork)
+    {
+        DDLogInfo(@"GLPVideoUploaded : Canceling all operations.");
         
-        BOOL currentStatus = (status == AFNetworkReachabilityStatusNotReachable) ? NO : YES;
-        
-        if(currentStatus)
-        {
-            self.networkAvailable = YES;
-            //[self startConsume];
-            [self cancelOperations];
-            
-        }
-        else
-        {
-            self.networkAvailable = NO;
-            //No network.
-            [self cancelOperations];
-        }
-        
-    }];
+        [self cancelOperations];
+    }
 }
 
 #pragma mark - Managers
 
 /**
  Cancel the execution of the two threads and refill the array with the
- images' remote keys that were not finished.
+ videos' remote keys that were not finished.
  
  */
 -(void)cancelOperations
@@ -127,7 +147,7 @@
 
 -(NSNumber *)videoKeyWithTimestamp:(NSDate*)timestamp
 {
-    return [_uploadedVideosUrls objectForKey:timestamp];
+    return [_uploadedVideosIds objectForKey:timestamp];
 }
 
 #pragma mark - Client
@@ -196,7 +216,7 @@
     
     if (videoData)
     {
-        [[WebClient sharedInstance] uploadVideoWithData:videoData callback:^(BOOL success, NSInteger videoId) {
+        [[WebClient sharedInstance] uploadVideoWithData:videoData callback:^(BOOL success, NSNumber *videoId) {
            
             if (success)
             {
@@ -209,8 +229,10 @@
                         [_pendingVideosPaths removeObjectForKey:timestamp];
                     }
                     
+                    
+                    
                     //Add image url
-                    [self updateVideoToDictionary:[NSNumber numberWithInteger:videoId] withTimestamp:timestamp];
+                    [self updateVideoToDictionary:videoId withTimestamp:timestamp];
                     
                     NSLog(@"Video id after uploaded: %ld", (long)videoId);
                 }
@@ -258,16 +280,36 @@
 -(void)updateVideoToDictionary:(NSNumber *)videoId withTimestamp:(NSDate*)timestamp
 {
     //Update dictionary.
-    @synchronized(_uploadedVideosUrls)
+    @synchronized(_uploadedVideosIds)
     {
-        [_uploadedVideosUrls setObject:videoId forKey:timestamp];
+        [_uploadedVideosIds setObject:videoId forKey:timestamp];
+        
+        DDLogDebug(@"GLPVideoUploader : _uploadedVideosIds: %@", _uploadedVideosIds);
     }
 }
 
--(void)removeUrlWithTimestamp:(NSDate*)timestamp
+//-(void)removeUrlWithTimestamp:(NSDate*)timestamp
+//{
+//    [_uploadedVideosUrls removeObjectForKey:timestamp];
+//}
+
+-(void)removeVideoIdWithTimestamp:(NSDate*)timestamp
 {
-    [_uploadedVideosUrls removeObjectForKey:timestamp];
+    [_uploadedVideosIds removeObjectForKey:timestamp];
 }
+
+//- (NSDate *)timestampForVideoKey:(NSNumber *)videoKey
+//{
+//    for(NSNumber *vKey in _uploadedVideosIds)
+//    {
+//        if([vKey isEqualToNumber:videoKey])
+//        {
+//            return [_uploadedVideosIds objectForKey:vKey];
+//        }
+//    }
+//    
+//    return nil;
+//}
 
 /**
  Removes the video with a particular timestamp from pending and uploaded videos data structures.
@@ -278,7 +320,7 @@
 -(void)cancelVideoWithTimestamp:(NSDate *)timestamp
 {
     [_pendingVideosPaths removeObjectForKey:timestamp];
-    [_uploadedVideosUrls removeObjectForKey:timestamp];
+    [_uploadedVideosIds removeObjectForKey:timestamp];
     [_pendingTimestamps removeObject:timestamp];
 }
 

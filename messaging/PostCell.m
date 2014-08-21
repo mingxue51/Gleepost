@@ -122,7 +122,7 @@ static const float FixedBottomTextViewHeight = 100;
     }
     
     
-    if(postData.videosUrls && postData.videosUrls.count > 0)
+    if([postData isVideoPost])
     {
         [self showVideoView];
         self.imageAvailable = YES;

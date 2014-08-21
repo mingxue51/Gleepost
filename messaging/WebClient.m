@@ -18,6 +18,7 @@
 #import "GLPMessageProcessor.h"
 #import "NSUserDefaults+GLPAdditions.h"
 #import "DateFormatterHelper.h"
+#import "GLPVideo.h"
 
 @interface WebClient()
 
@@ -377,13 +378,13 @@ static WebClient *instance = nil;
 //    }
 
     
-    DDLogDebug(@"Params: %@, Categories: %@", params, post.categories);
+    DDLogDebug(@"Create Post params: %@, Categories: %@", params, post.categories);
     
     //TODO: add a new param url rather than call second method after the post request.
     
-    if(post.pendingVideoKey)
+    if(post.video.pendingKey)
     {
-        [params setObject:post.pendingVideoKey forKey:@"video"];
+        [params setObject:post.video.pendingKey forKey:@"video"];
     }
     
     if(post.dateEventStarts)
@@ -1720,14 +1721,17 @@ static WebClient *instance = nil;
     [self enqueueHTTPRequestOperation:operation];
 }
 
-- (void)uploadVideoWithData:(NSData *)videoData callback:(void (^)(BOOL success, NSInteger videoId))callback
+- (void)uploadVideoWithData:(NSData *)videoData callback:(void (^)(BOOL success, NSNumber *videoId))callback
 {
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"videos" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+//        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+        
+        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"video/mp4"];
     }];
     
     [request setTimeoutInterval:300];
+    
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
@@ -1737,13 +1741,13 @@ static WebClient *instance = nil;
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSInteger videoKey = [RemoteParser parseVideoResponse:responseObject];
+        NSNumber *videoKey = [RemoteParser parseVideoResponse:responseObject];
         
         callback(YES, videoKey);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        callback(NO, -1);
+        callback(NO, nil);
     }];
     
     [self enqueueHTTPRequestOperation:operation];
