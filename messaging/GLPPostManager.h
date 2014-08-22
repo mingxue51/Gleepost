@@ -19,6 +19,7 @@
 + (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray*)notUploadedPosts andCurrentPosts:(NSArray*)posts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 + (void)loadPreviousPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 +(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback;
++ (void)searchForPendingVideoPostCallback:(void (^) (NSArray *videoPosts))callback;
 + (void)createLocalPost:(GLPPost*)post;
 + (void)updatePostAfterSending:(GLPPost *)post;
 + (void)updateVideoPostAfterSending:(GLPPost *)videoPost;

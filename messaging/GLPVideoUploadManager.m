@@ -13,6 +13,9 @@
 #import "GLPiOS6Helper.h"
 #import "GLPVideoUploader.h"
 #import "NSNotificationCenter+Utils.h"
+#import "WebClient.h"
+#import "GLPPostManager.h"
+#import "GLPVideo.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -20,6 +23,8 @@
 @property (strong, nonatomic) GLPPostUploaderManager *postUploader;
 @property (strong, nonatomic) GLPVideoUploader *videoUploader;
 @property (strong, nonatomic) NSTimer *checkForUploadingTimer;
+@property (strong, nonatomic) NSTimer *checkForPendingVideoPostsTimer;
+@property (assign, nonatomic, getter = isCheckingForPendingVideoPosts) BOOL checkingForPendingVideoPosts;
 @property (assign, nonatomic) BOOL isNetworkAvailable;
 @end
 
@@ -56,9 +61,14 @@ static GLPVideoUploadManager *instance = nil;
     _videoUploader = [[GLPVideoUploader alloc] init];
     _checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForPostUpload:) userInfo:nil repeats:YES];
     
+    _checkForPendingVideoPostsTimer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(checkForNonUploadedVideoPosts) userInfo:nil repeats:YES];
+    
+    _checkingForPendingVideoPosts = NO;
+    
     if(![GLPiOS6Helper isIOS6])
     {
         [_checkForUploadingTimer setTolerance:5.0f];
+        [_checkForPendingVideoPostsTimer setTolerance:10.0f];
     }
 }
 
@@ -128,6 +138,57 @@ static GLPVideoUploadManager *instance = nil;
     
     return YES;
 }
+
+/**
+ Starts a timer to check every specific interval of seconds
+ if there is any video post that is not created (not by user but by the app)
+ because the video is still pending.
+ 
+ */
+- (void)startCheckingForNonUploadedVideoPosts
+{
+    [_checkForPendingVideoPostsTimer fire];
+}
+
+- (void)checkForNonUploadedVideoPosts
+{
+    if([self isCheckingForPendingVideoPosts])
+    {
+        return;
+    }
+    
+    _checkingForPendingVideoPosts = YES;
+    
+    //Check if there are pending video posts.
+    [GLPPostManager searchForPendingVideoPostCallback:^(NSArray *videoPosts) {
+       
+        DDLogDebug(@"Video pending posts: %@", videoPosts);
+        
+        if(videoPosts.count > 0)
+        {
+            GLPPost *videoPost = [videoPosts objectAtIndex:0];
+            
+            NSNumber *videoKey = videoPost.video.pendingKey;
+            
+            [[WebClient sharedInstance] checkForReadyVideoWithPendingVideoKey:videoKey callback:^(BOOL success, GLPVideo *result) {
+                
+                _checkingForPendingVideoPosts = NO;
+                if(success)
+                {
+                    DDLogDebug(@"Pending video result: %@", result);
+                    
+                    videoPost.video = result;
+                    
+                    [_postUploader uploadVideoPost:videoPost];
+                }
+                
+            }];
+        }
+    }];
+    
+
+}
+
 
 #pragma mark - Modifiers
 

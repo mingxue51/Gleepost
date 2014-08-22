@@ -87,6 +87,53 @@
     return result;
 }
 
++ (NSArray *)findAllPendingPostsWithVideosInDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = %d", kSendStatusLocal];
+    
+    NSMutableArray *posts = [NSMutableArray array];
+    
+    while ([resultSet next])
+    {
+        [posts addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return [GLPPostDao findValidVideoPosts:posts withDb:db];;
+}
+
++ (NSArray *)findValidVideoPosts:(NSArray *)posts withDb:(FMDatabase *)db
+{
+    NSMutableArray *videoPosts = [[NSMutableArray alloc] init];
+    
+    for(GLPPost *currentPost in posts)
+    {
+        FMResultSet *videoResultSet = [db executeQueryWithFormat:@"select * from post_videos where video_temp_key != -1"];
+        
+        while ([videoResultSet next])
+        {
+            NSString *videoUrl = [videoResultSet stringForColumn:@"video_url"];
+            NSString *thumbnailUrl = [videoResultSet stringForColumn:@"video_thumbnail_url"];
+            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+            [f setNumberStyle:NSNumberFormatterDecimalStyle];
+            NSNumber *tempId = [f numberFromString:[videoResultSet stringForColumn:@"video_temp_key"]];
+            
+            
+            currentPost.video = [[GLPVideo alloc] init];
+            
+            if(!videoUrl && !thumbnailUrl)
+            {
+                currentPost.video.pendingKey = tempId;
+                
+                [videoPosts addObject:currentPost];
+                
+            }
+        }
+    }
+    
+    return videoPosts;
+}
+
+
 +(void)loadImagesWithPosts:(NSMutableArray *)posts withDb:(FMDatabase *)db
 {
     for(GLPPost *currentPost in posts)
@@ -122,7 +169,12 @@
             [f setNumberStyle:NSNumberFormatterDecimalStyle];
             NSNumber *tempId = [f numberFromString:[videoResultSet stringForColumn:@"video_temp_key"]];
             
-            currentPost.video = [[GLPVideo alloc] initWithUrl:videoUrl andThumbnailUrl:thumbnailUrl];
+//            currentPost.video = [[GLPVideo alloc] initWithUrl:videoUrl andThumbnailUrl:thumbnailUrl];
+            
+            currentPost.video = [[GLPVideo alloc] init];
+            
+            currentPost.video.url = videoUrl;
+            currentPost.video.thumbnailUrl = thumbnailUrl;
             
             if(tempId)
             {
@@ -229,7 +281,7 @@
 
 + (void)saveVideoWithEntity:(GLPPost *)entity inDb:(FMDatabase *)db
 {
-    BOOL s = [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
+    BOOL s = [db executeUpdateWithFormat:@"replace into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
               entity.remoteKey,
               entity.key,
               entity.video.url,

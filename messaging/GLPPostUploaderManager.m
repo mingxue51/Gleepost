@@ -671,6 +671,51 @@
 }
 
 /**
+ This method is ONLY used after the app finds that there are pending video posts.
+ 
+ Once the server response the video data this method is called to create the post.
+ 
+ 
+ @param videoPost the post with the video data included.
+ */
+- (void)uploadVideoPost:(GLPPost *)videoPost
+{
+    //Post ready to be uploaded.
+    
+    void (^_uploadVideoContentBlock)(GLPPost*);
+    
+    
+    _uploadVideoContentBlock = ^(GLPPost *post){
+        
+        //TODO: Create the new post to the campus wall dynamically.
+        
+        DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
+        
+//        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
+    };
+    
+    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",videoPost.content, videoPost.video.url);
+    
+    
+    [[WebClient sharedInstance] createPost:videoPost callbackBlock:^(BOOL success, int remoteKey) {
+        
+        
+        videoPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        videoPost.remoteKey = success ? remoteKey : 0;
+        
+        DDLogInfo(@"Video Post uploaded with success: %d and post remoteKey: %d", success, videoPost.remoteKey);
+        
+        [GLPPostManager updateVideoPostAfterSending:videoPost];
+        
+        if(success)
+        {
+            _uploadVideoContentBlock(videoPost);
+        }
+        
+    }];
+}
+
+/**
  Just adds to the local database the key of the video.
  
  */

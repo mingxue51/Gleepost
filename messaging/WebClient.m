@@ -1753,6 +1753,20 @@ static WebClient *instance = nil;
     [self enqueueHTTPRequestOperation:operation];
 }
 
+- (void)checkForReadyVideoWithPendingVideoKey:(NSNumber *)videoKey callback:(void (^) (BOOL success, GLPVideo *result))callback
+{
+    NSString *path = [NSString stringWithFormat:@"videos/%@", videoKey];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPVideo *video = [RemoteParser parseVideoData:responseObject];
+        
+        callback(YES, video);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
 
 #pragma mark - Notifications
 

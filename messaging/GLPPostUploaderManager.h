@@ -23,5 +23,5 @@
 -(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoId:(NSNumber *)videoId;\
 - (void)prepareVideoPostForUploadWithTimestamp:(NSDate *)timestamp andVideoId:(NSNumber *)videoId;
 - (void)uploadPostWithVideoData:(NSDictionary *)videoData;
-
+- (void)uploadVideoPost:(GLPPost *)videoPost;
 @end

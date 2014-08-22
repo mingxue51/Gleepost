@@ -462,7 +462,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
-    post.video = [RemoteParser parseVideoData:json[@"videos"]];
+    post.video = [RemoteParser parseVideosData:json[@"videos"]];
     
     
     //Parse categories.
@@ -512,7 +512,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return post;
 }
 
-+ (GLPVideo *)parseVideoData:(NSArray *)jsonArray
++ (GLPVideo *)parseVideosData:(NSArray *)jsonArray
 {
     if(jsonArray == (id)[NSNull null])
     {
@@ -535,8 +535,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
             NSDictionary *videoData = jsonArray[0];
       
             NSArray *thumbnailArray = videoData[@"thumbnails"];
-            
-            DDLogDebug(@"Thumbnail: %@, Mp4: %@", thumbnailArray[0], videoData[@"mp4"]);
             
             return [[GLPVideo alloc] initWithUrl:videoData[@"mp4"] andThumbnailUrl:thumbnailArray[0]];
         }
@@ -1017,6 +1015,27 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return json[@"id"];
 }
 
++ (GLPVideo *)parseVideoData:(NSDictionary *)videoData
+{
+    GLPVideo *video = [[GLPVideo alloc] init];
+    
+    NSString *status = videoData[@"status"];
+    
+    if([status isEqualToString:@"ready"])
+    {
+        DDLogInfo(@"Pending video with key: %@ ready.", videoData[@"id"]);
+        
+        NSArray *thumbnailArray = videoData[@"thumbnails"];
+        
+        [video setThumbnailUrl:thumbnailArray[0]];
+        [video setUrl:videoData[@"mp4"]];
+        [video setPendingKey:videoData[@"id"]];
+        
+        return video;
+    }
+    
+    return nil;
+}
 
 #pragma mark - Notifications
 

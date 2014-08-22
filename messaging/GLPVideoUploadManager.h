@@ -11,12 +11,14 @@
 
 @interface GLPVideoUploadManager : NSObject
 
-+(GLPVideoUploadManager *)sharedInstance;
++ (GLPVideoUploadManager *)sharedInstance;
 
--(void)uploadVideo:(NSString*)videoPath withTimestamp:(NSDate*)timestamp;
+- (void)uploadVideo:(NSString*)videoPath withTimestamp:(NSDate*)timestamp;
 
--(void)setPost:(GLPPost *)post withTimestamp:(NSDate *)timestamp;
+- (void)setPost:(GLPPost *)post withTimestamp:(NSDate *)timestamp;
 
 - (void)refreshVideoPostInCampusWallWithData:(NSDictionary *)data;
+
+- (void)startCheckingForNonUploadedVideoPosts;
 
 @end

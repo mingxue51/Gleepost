@@ -60,6 +60,8 @@
 #import "UINavigationBar+Utils.h"
 #import "UIRefreshControl+CustomLoader.h"
 #import "IntroKindOfNewPostViewController.h"
+#import "GLPVideoUploadManager.h"
+
 
 @interface GLPTimelineViewController ()
 
@@ -171,6 +173,9 @@ const float TOP_OFFSET = 180.0f;
     [t fire];
     
     [self loadInitialPosts];
+    
+    /** Check if there are pending video posts. */
+    [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
     
     
     //Find the sunset sunrise for preparation of the new chat.

@@ -596,6 +596,23 @@
 //}
 
 
+/**
+ 
+ 
+ */
++ (void)searchForPendingVideoPostCallback:(void (^) (NSArray *videoPosts))callback
+{
+    __block NSArray *incomingPosts;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        incomingPosts = [GLPPostDao findAllPendingPostsWithVideosInDb:db];
+        
+        callback(incomingPosts);
+        
+    }];
+}
+
 +(void)createLocalPost:(GLPPost *)post
 {
     post.sendStatus = kSendStatusLocal;

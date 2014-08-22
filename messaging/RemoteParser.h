@@ -75,6 +75,7 @@
 
 // videos
 + (NSNumber *)parseVideoResponse:(id)responseObject;
++ (GLPVideo *)parseVideoData:(NSDictionary *)videoData;
 
 // notifications
 + (GLPNotification *)parseNotificationFromJson:(NSDictionary *)json;
