@@ -266,6 +266,13 @@
 		585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D3199D87DA000F06BB /* kind_of_event_sports.png */; };
 		585106DD199D87DA000F06BB /* kind_of_event_theatre.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D4199D87DA000F06BB /* kind_of_event_theatre.png */; };
 		585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106E2199D9E64000F06BB /* PendingPostManager.m */; };
+		5851112A19A7E31000488E79 /* GLPProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851112919A7E31000488E79 /* GLPProgressManager.m */; };
+		5851112D19A7EE0600488E79 /* UploadingProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5851112C19A7EE0600488E79 /* UploadingProgressView.xib */; };
+		5851113119A7EF1F00488E79 /* UploadingProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851113019A7EF1F00488E79 /* UploadingProgressView.m */; };
+		5851113719A8206900488E79 /* progress_bar_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113419A8206900488E79 /* progress_bar_border.png */; };
+		5851113819A8206900488E79 /* progress_bar_cloud_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113519A8206900488E79 /* progress_bar_cloud_small.png */; };
+		5851114019A82BB900488E79 /* GLPCustomProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851113F19A82BB900488E79 /* GLPCustomProgressView.m */; };
+		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
 		5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */; };
 		5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */; };
 		5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5DA18258FB800AA9103 /* TransitionDelegate.m */; };
@@ -1248,6 +1255,16 @@
 		585106D4199D87DA000F06BB /* kind_of_event_theatre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_theatre.png; sourceTree = "<group>"; };
 		585106E1199D9E64000F06BB /* PendingPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingPostManager.h; sourceTree = "<group>"; };
 		585106E2199D9E64000F06BB /* PendingPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingPostManager.m; sourceTree = "<group>"; };
+		5851112819A7E31000488E79 /* GLPProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProgressManager.h; sourceTree = "<group>"; };
+		5851112919A7E31000488E79 /* GLPProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProgressManager.m; sourceTree = "<group>"; };
+		5851112C19A7EE0600488E79 /* UploadingProgressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadingProgressView.xib; sourceTree = "<group>"; };
+		5851112F19A7EF1F00488E79 /* UploadingProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadingProgressView.h; sourceTree = "<group>"; };
+		5851113019A7EF1F00488E79 /* UploadingProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadingProgressView.m; sourceTree = "<group>"; };
+		5851113419A8206900488E79 /* progress_bar_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_border.png; sourceTree = "<group>"; };
+		5851113519A8206900488E79 /* progress_bar_cloud_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud_small.png; sourceTree = "<group>"; };
+		5851113E19A82BB900488E79 /* GLPCustomProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCustomProgressView.h; sourceTree = "<group>"; };
+		5851113F19A82BB900488E79 /* GLPCustomProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCustomProgressView.m; sourceTree = "<group>"; };
+		5851114119A83D9900488E79 /* progress_bar_cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud.png; sourceTree = "<group>"; };
 		5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPiOS6Helper.h; sourceTree = "<group>"; };
 		5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOS6Helper.m; sourceTree = "<group>"; };
 		5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
@@ -2631,6 +2648,44 @@
 			name = Notifications;
 			sourceTree = "<group>";
 		};
+		5851112719A7E2FF00488E79 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				5851112819A7E31000488E79 /* GLPProgressManager.h */,
+				5851112919A7E31000488E79 /* GLPProgressManager.m */,
+			);
+			name = Progress;
+			sourceTree = "<group>";
+		};
+		5851112B19A7EDD300488E79 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				5851112C19A7EE0600488E79 /* UploadingProgressView.xib */,
+			);
+			name = Progress;
+			sourceTree = "<group>";
+		};
+		5851112E19A7EF0A00488E79 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				5851112F19A7EF1F00488E79 /* UploadingProgressView.h */,
+				5851113019A7EF1F00488E79 /* UploadingProgressView.m */,
+				5851113E19A82BB900488E79 /* GLPCustomProgressView.h */,
+				5851113F19A82BB900488E79 /* GLPCustomProgressView.m */,
+			);
+			name = Progress;
+			sourceTree = "<group>";
+		};
+		5851113219A8205300488E79 /* Progress View */ = {
+			isa = PBXGroup;
+			children = (
+				5851113419A8206900488E79 /* progress_bar_border.png */,
+				5851113519A8206900488E79 /* progress_bar_cloud_small.png */,
+				5851114119A83D9900488E79 /* progress_bar_cloud.png */,
+			);
+			name = "Progress View";
+			sourceTree = "<group>";
+		};
 		5851B5D618258ECE00AA9103 /* Transition Delegate New Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -3874,6 +3929,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				5851113219A8205300488E79 /* Progress View */,
 				58451BFC199B3CC0003B94D2 /* Settings */,
 				58774D3419649BAC0034A1C6 /* Refresh */,
 				58CFC7611962FC7400FF1E40 /* New message */,
@@ -4404,6 +4460,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				5851112719A7E2FF00488E79 /* Progress */,
 				58AE5FB91923A45400C4D59D /* Video */,
 				58CEA1E518C694E9009FDF2C /* Groups */,
 				584CF66B182289B500EFABB8 /* ContactsManager.h */,
@@ -4474,6 +4531,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5851112E19A7EF0A00488E79 /* Progress */,
 				58459FB619901CD400E7D3C2 /* Helpers */,
 				5863179A19872D70006D79E2 /* Images */,
 				586317961987220A006D79E2 /* Top Views */,
@@ -4609,6 +4667,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				5851112B19A7EDD300488E79 /* Progress */,
 				58451BF4199B2CD2003B94D2 /* Settings */,
 				58459FB319901B0F00E7D3C2 /* Helpers */,
 				5863179E19872F01006D79E2 /* Images */,
@@ -4921,6 +4980,7 @@
 				80AB893D17C268440053E784 /* iphone.storyboard in Resources */,
 				80AB898B17C2AB560053E784 /* hidder.png in Resources */,
 				806E3D831832B1960063AACE /* NotificationBackgroundWarningIcon@2x.png in Resources */,
+				5851112D19A7EE0600488E79 /* UploadingProgressView.xib in Resources */,
 				5823C27B18CA4BBB00288777 /* show_categories_old2.png in Resources */,
 				58D30ADE18F6E4DF00A898EB /* mypost_btn.png in Resources */,
 				5866F16D188452F1007484CF /* hills_night.png in Resources */,
@@ -4966,6 +5026,7 @@
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
 				58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */,
 				58AB7C39191CEFC500ADFD83 /* fb_invite.png in Resources */,
+				5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */,
 				582A664618AB9BC400006419 /* bar4_selected.png in Resources */,
 				8050249C181932C600F5337F /* conversation_new_notification.png in Resources */,
 				585EBB3418E30E7400BDAE81 /* add_members_bg.png in Resources */,
@@ -5122,6 +5183,7 @@
 				589EAD1818A41B37005B2F4C /* SignUpFiveView.xib in Resources */,
 				58D7F76D19A2ABB600C39A4C /* kind_of_post_general.png in Resources */,
 				589EAD3018A44736005B2F4C /* login_bg.png in Resources */,
+				5851113719A8206900488E79 /* progress_bar_border.png in Resources */,
 				58428E4618A2ADA400B82E4B /* SignUpOneView.xib in Resources */,
 				58E3DAB31884053600B9B048 /* blades.png in Resources */,
 				58A67455184FAA6100E3FE45 /* 1386202636_Arrow_Up copy.png in Resources */,
@@ -5320,6 +5382,7 @@
 				58E3DAC3188405CC00B9B048 /* hot_air_balloon.png in Resources */,
 				58AB404918AE45D000DEED31 /* party_category_old.png in Resources */,
 				58DB02A818105C86001C021A /* blackholder1.png in Resources */,
+				5851113819A8206900488E79 /* progress_bar_cloud_small.png in Resources */,
 				588CDF7A19764FB100373EE3 /* right_arrow.png in Resources */,
 				5866F16918844F05007484CF /* blades_night_copy.png in Resources */,
 				589EAD2E18A4472D005B2F4C /* pick_pic_old.png in Resources */,
@@ -5447,6 +5510,7 @@
 				585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */,
 				58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
+				5851112A19A7E31000488E79 /* GLPProgressManager.m in Sources */,
 				58FB7CB11856548A002C6A00 /* ProfileButtonsTableViewCell.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
 				58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */,
@@ -5502,6 +5566,7 @@
 				5819E64E18C79F2C003361B3 /* GroupCell.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
 				585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */,
+				5851114019A82BB900488E79 /* GLPCustomProgressView.m in Sources */,
 				C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
 				5819E65E18C7E3FC003361B3 /* GLPGroupDaoParser.m in Sources */,
@@ -5710,6 +5775,7 @@
 				587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */,
 				585B31A0191C452600B66380 /* BusyFreeSwitch.m in Sources */,
 				581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */,
+				5851113119A7EF1F00488E79 /* UploadingProgressView.m in Sources */,
 				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,

@@ -1737,6 +1737,12 @@ static WebClient *instance = nil;
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        
+        NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
+        
+        //Inform GLPProgressManager.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:@{@"Update" : progressData}];
+        
     }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

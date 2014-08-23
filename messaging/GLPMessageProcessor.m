@@ -107,7 +107,6 @@ static GLPMessageProcessor *instance = nil;
             }
                 
             case kGLPWebSocketEventTypeVideoReady:{
-                DDLogInfo(@"Websocket event: Video ready");
                 [[GLPVideoUploadManager sharedInstance] refreshVideoPostInCampusWallWithData:event.data];
                 
                 break;

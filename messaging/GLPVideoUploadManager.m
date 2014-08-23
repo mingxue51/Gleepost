@@ -76,15 +76,16 @@ static GLPVideoUploadManager *instance = nil;
 
 -(void)checkForPostUpload:(id)sender
 {
-    DDLogDebug(@"checkForPostUpload - Video");
     
     for(NSDate* t in [_postUploader pendingPosts])
     {
+        DDLogInfo(@"Pending posts: %@", [_postUploader pendingPosts]);
+
+        
 //        NSString *url = [_videoUploader urlWithTimestamp:t];
         NSNumber *videoId = [_videoUploader videoKeyWithTimestamp:t];
 
         
-        DDLogInfo(@"Ready video with id: %@",videoId);
         
         if(videoId)
         {

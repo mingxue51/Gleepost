@@ -60,6 +60,9 @@
 #define GLPNOTIFICATION_VIDEO_PROCESSED                 @"GLPVideoProcessed"
 #define GLPNOTIFICATION_VIDEO_POST_READY                @"GLPVidePostReady"
 
+#define GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE           @"GLPVideoProgressUpdated"
+#define GLPNOTIFICATION_PROGRESS_BAR_VISIBILITY         @"GLPProgressBarVisibility"
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 

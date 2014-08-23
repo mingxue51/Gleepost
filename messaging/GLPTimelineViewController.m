@@ -61,7 +61,8 @@
 #import "UIRefreshControl+CustomLoader.h"
 #import "IntroKindOfNewPostViewController.h"
 #import "GLPVideoUploadManager.h"
-
+#import "GLPProgressManager.h"
+#import "UploadingProgressView.h"
 
 @interface GLPTimelineViewController ()
 
@@ -116,6 +117,7 @@
 
 //Header.
 @property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
+@property (strong, nonatomic)  UploadingProgressView *pView;
 //@property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 //Groups.
@@ -177,6 +179,7 @@ const float TOP_OFFSET = 180.0f;
     /** Check if there are pending video posts. */
     [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
     
+    [GLPProgressManager sharedInstance];
     
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
@@ -420,29 +423,28 @@ const float TOP_OFFSET = 180.0f;
     
     GLPPost *inPost = data[@"final_post"];
     
-    NSInteger postIndex = -1;
+//    NSInteger postIndex = -1;
     
-//    NSInteger remoteKey = [[data objectForKey:@"remoteKey"] integerValue];
-//    NSInteger key = [[data objectForKey:@"key"] integerValue];
+    [self reloadNewVideoPost:inPost];
     
-    postIndex = [GLPPostNotificationHelper findPostIndexWithKey:inPost.key inPosts:self.posts];
-    
-    DDLogDebug(@"New video post index: %ld", (long)postIndex);
-    
-    if(postIndex == -1)
-    {
-        return;
-    }
-    
-    GLPPost *pendingVideoPost = [self.posts objectAtIndex:postIndex];
-    
-    pendingVideoPost.remoteKey = inPost.remoteKey;
-    
-    DDLogDebug(@"Update video post: %@", pendingVideoPost.video);
-    
-    
-    
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    postIndex = [GLPPostNotificationHelper findPostIndexWithKey:inPost.key inPosts:self.posts];
+//    
+//    DDLogDebug(@"New video post index: %ld", (long)postIndex);
+//    
+//    if(postIndex == -1)
+//    {
+//        return;
+//    }
+//    
+//    GLPPost *pendingVideoPost = [self.posts objectAtIndex:postIndex];
+//    
+//    pendingVideoPost.remoteKey = inPost.remoteKey;
+//    
+//    DDLogDebug(@"Update video post: %@", pendingVideoPost.video);
+//    
+//    
+//    
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     
 }
 
@@ -873,17 +875,8 @@ const float TOP_OFFSET = 180.0f;
     
     self.tableView.tableHeaderView = self.campusWallHeader;
     
-    //Add fake navigation bar to view.
-    //TODO: Remove the code.
-//    array = [[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBar" owner:self options:nil];
-//    
-//    self.reNavBar = [array objectAtIndex:0];
-//    [self.reNavBar formatElements];
-//    [self.reNavBar setDelegate:self];
-//    [self.tableView addSubview:self.reNavBar];
-//    [self.tableView bringSubviewToFront:self.reNavBar];
-//    
-//    [self.reNavBar setHidden:YES];
+   
+    [self.navigationController.navigationBar addSubview:[[GLPProgressManager sharedInstance] progressView]];
 }
 
 - (void)configNewElementsIndicatorView
@@ -929,6 +922,12 @@ const float TOP_OFFSET = 180.0f;
     
     [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
 }
+
+//- (void)showProgressView
+//{
+//    [_pView resetView];
+//    [_pView setHidden:NO];
+//}
 
 
 /**
@@ -1490,6 +1489,10 @@ const float TOP_OFFSET = 180.0f;
     
     GLPPost *inPost = [notDictionary objectForKey:@"new_post"];
     
+    if(inPost.video != nil)
+    {
+        return;
+    }
     
     if(inPost.group)
     {
@@ -1513,6 +1516,25 @@ const float TOP_OFFSET = 180.0f;
     self.isLoading = NO;
     //Bring the fake navigation bar to from because is hidden by new cell.
 //    [self.tableView bringSubviewToFront:self.reNavBar];
+
+}
+
+- (void)reloadNewVideoPost:(GLPPost *)post
+{
+    DDLogInfo(@"Reload new video post in GLPTimelineViewController: %@", post);
+    
+    self.isLoading = YES;
+    
+    //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
+    
+    [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+    
+    [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+    
+    
+    self.isLoading = NO;
 
 }
 

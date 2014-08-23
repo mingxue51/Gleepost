@@ -14,6 +14,7 @@
 #import "WebClientHelper.h"
 #import "GLPiOS6Helper.h"
 #import "GLPVideo.h"
+#import "GLPProgressManager.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -624,6 +625,9 @@
 //        NSDictionary *data = @{@"remoteKey": [NSNumber numberWithInteger:post.remoteKey], @"key" : [NSNumber numberWithInteger:post.key]};
         
         DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
+        
+        [[GLPProgressManager sharedInstance] progressFinished];
+        
         
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
     };

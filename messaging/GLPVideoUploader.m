@@ -10,6 +10,7 @@
 #import "GLPiOS6Helper.h"
 #import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
+#import "GLPProgressManager.h"
 
 @interface GLPVideoUploader ()
 
@@ -213,6 +214,7 @@
 //    __block BOOL finished = NO;
 //    __block NSString *videoUrlSend = nil;
     
+    [[GLPProgressManager sharedInstance] registerVideoWithTimestamp:timestamp];
     
     if (videoData)
     {
