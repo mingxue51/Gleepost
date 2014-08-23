@@ -89,7 +89,6 @@ static GLPVideoUploadManager *instance = nil;
         
         if(videoId)
         {
-            
             //If video id received it means that we need to wait until we get web socket
             //event (so until video is processed).
             DDLogInfo(@"Video uploaded with key %@, waiting for web socket event", videoId);

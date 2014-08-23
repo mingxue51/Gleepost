@@ -23,6 +23,8 @@
 @property (nonatomic, strong) NSMutableDictionary *pendingComments;
 @property (strong, nonatomic) NSTimer *checkForUploadingCommentTimer;
 @property (assign, nonatomic) BOOL isNetworkAvailable;
+@property (assign, nonatomic, getter = isVideoProcessed) BOOL videoProcessed;
+@property (strong, nonatomic) NSDictionary *tempVideoData;
 @end
 
 @implementation GLPPostUploaderManager
@@ -43,6 +45,9 @@
         
         //Contains all the comments that are ready for uploading,
         _pendingComments = [[NSMutableDictionary alloc] init];
+        
+        //If videoProcessed is YES it means that web socket received with data.
+        _videoProcessed = NO;
         
         
         _checkForUploadingCommentTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForCommentUpload:) userInfo:nil repeats:YES];
@@ -720,7 +725,11 @@
 }
 
 /**
- Just adds to the local database the key of the video.
+ Adds to the local database the key of the video and if the video is already processed
+ it uploads directly the post.
+ 
+ @param timestamp the timestamp of the post.
+ @param videoId the id of the video.
  
  */
 - (void)prepareVideoPostForUploadWithTimestamp:(NSDate *)timestamp andVideoId:(NSNumber *)videoId
@@ -737,13 +746,31 @@
     //Update video to database. (In order to know video id).
     [GLPPostManager updateVideoPostBeforeSending:post];
 
+    if([self isVideoProcessed])
+    {
+        [self uploadPostWithTimestamp:timestamp withVideoData:_tempVideoData];
+        _videoProcessed = NO;
+    }
+    
 }
+/**
+ Uploads the video post if the post exists in the ready posts dictionary.
+
+ If the post exists returns YES to guarrantee that the post sent,
+ otherwise returns NO which means that the user didn't push post yet.
+ 
+ @param videoData processed video data from web socket.
+ 
+ @return YES if the video posted, otherwise NO.
+ 
+ */
 
 - (void)uploadPostWithVideoData:(NSDictionary *)videoData
 {
     NSNumber *videoKey = [NSNumber numberWithInteger:[videoData[@"id"] integerValue]];
+    _videoProcessed = YES;
+    _tempVideoData = videoData;
     
-                          
     for(NSDate *timestamp in _readyPosts)
     {
         GLPPost *p = [_readyPosts objectForKey:timestamp];
@@ -751,8 +778,10 @@
         if([p.video.pendingKey isEqualToNumber:videoKey])
         {
             [self uploadPostWithTimestamp:timestamp withVideoData:videoData];
+            
         }
     }
+    
 }
 
 
