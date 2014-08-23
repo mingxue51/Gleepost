@@ -162,6 +162,26 @@ static GLPVideoLoaderManager *instance = nil;
     return v;
 }
 
+- (void)visiblePosts:(NSArray *)visiblePosts
+{
+    
+//    NSPredicate *applePred = [NSPredicate predicateWithFormat:
+//                              @"p.isVideoPost == TRUEPREDICATE"];
+//    
+//    
+//    NSArray *appleEmployees = [visiblePosts filteredArrayUsingPredicate:applePred];
+//    
+//    DDLogDebug(@"VIDEO POSTS!!! : %@", appleEmployees);
+    
+    
+//    NSMutableArray *videoPosts =
+//    
+//    for(GLPPost *post in visiblePosts)
+//    {
+//        
+//    }
+}
+
 #pragma mark - Helpers
 
 -(NSArray *)videoPostsWithPosts:(NSArray *)posts

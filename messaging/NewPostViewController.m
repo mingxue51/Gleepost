@@ -32,6 +32,7 @@
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
+#import "GLPProgressManager.h"
 
 @interface NewPostViewController ()
 
@@ -359,6 +360,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         {
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart andTitle:self.titleTextField.text];
         }
+        
+        if([inPost isVideoPost])
+        {
+            [[GLPProgressManager sharedInstance] postButtonClicked];
+        }
+        
         
         [self informParentVCForNewPost:inPost];
 

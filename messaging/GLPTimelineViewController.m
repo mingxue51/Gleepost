@@ -1754,7 +1754,6 @@ const float TOP_OFFSET = 180.0f;
     NSArray *visiblePosts = [self snapshotVisibleCells];
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
-    
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate

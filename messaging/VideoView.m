@@ -31,6 +31,8 @@
 
 @property (strong, nonatomic) GLPPost *post;
 
+@property (strong, nonatomic) NSTimer *checkForReadyVideoTimer;
+
 //@property (strong, nonatomic) GLPVideo *videoData;
 
 @end
@@ -45,6 +47,8 @@
     if(self)
     {
         [self initialiseObjects];
+        
+
     }
     
     return self;
@@ -76,6 +80,8 @@
         
         PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
         
+        previewVC.view.tag = _remoteKey;
+        
         NSAssert(previewVC != nil, @"previewVC cannot be nil");
         
         previewVC.delegate = self;
@@ -85,6 +91,36 @@
         
         
         [self configurePlaybackElementsWithPreviewVC:previewVC];
+        
+//        [self checkIfVideoIsReady];
+        
+        if(![previewVC isVideoLoaded])
+        {            
+            
+            if(_checkForReadyVideoTimer == nil)
+            {
+                DDLogDebug(@"Timer started. %ld", (long)_remoteKey);
+
+                _checkForReadyVideoTimer = [NSTimer timerWithTimeInterval:5.0
+                                                                   target:self
+                                                                 selector:@selector(checkIfVideoIsReady:)
+                                                                 userInfo:nil repeats:YES];
+                
+                [[NSRunLoop mainRunLoop] addTimer:_checkForReadyVideoTimer forMode:NSRunLoopCommonModes];
+                
+                [_checkForReadyVideoTimer fire];
+            }
+            
+
+            
+        }
+        
+
+        
+
+        
+//        [self performSelectorInBackground:@selector(checkIfVideoIsReady) withObject:nil];
+        
     }
 
 }
@@ -100,6 +136,27 @@
     {
         [self showLoadingElements];
     }
+}
+
+- (void)checkIfVideoIsReady:(NSTimer *)timer
+{
+    PBJVideoPlayerController *previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
+ 
+//    for(;YES;)
+//    {
+        DDLogDebug(@"checkIfVideoIsReady: %@ : %ld", previewVC, (long)_remoteKey);
+    
+        if([previewVC isVideoLoaded])
+        {
+            DDLogDebug(@"VIDEO IS READY!");
+            [self configurePlaybackElementsWithPreviewVC:previewVC];
+            [timer invalidate];
+        }
+        else
+        {
+            DDLogDebug(@"VIDEO IS NOT READY: %d", previewVC.bufferingState);
+        }
+//    }
 }
 
 #pragma mark - Video operations

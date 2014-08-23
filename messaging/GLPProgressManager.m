@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSDate *currentProcessed;
 @property (strong, nonatomic) UIImage *currentThumbnail;
 @property (strong, nonatomic) UploadingProgressView *progressView;
-
+@property (assign, nonatomic) BOOL postClicked;
 @end
 
 @implementation GLPProgressManager
@@ -60,6 +60,8 @@ static GLPProgressManager *instance = nil;
     
 //    _progressView = [[ProgressView alloc] init];
     [_progressView setHidden:YES];
+    
+    _postClicked = NO;
 
 }
 
@@ -95,6 +97,12 @@ static GLPProgressManager *instance = nil;
     [_progressView setHidden:YES];
     
     [_progressView resetView];
+    
+    _currentThumbnail = nil;
+    
+    _currentProcessed = nil;
+    
+    _postClicked = NO;
 
 }
 
@@ -104,10 +112,10 @@ static GLPProgressManager *instance = nil;
 {
 //    [_videosTimestamps addObject:timestamp];
     
-    if(!_currentProcessed)
-    {
-        _currentProcessed = timestamp;
-    }
+//    if(!_currentProcessed)
+//    {
+//        _currentProcessed = timestamp;
+//    }
 }
 
 - (void)setThumbnailImage:(UIImage *)thumbnail
@@ -121,11 +129,16 @@ static GLPProgressManager *instance = nil;
     [self hideProgressView];
 }
 
+- (void)postButtonClicked
+{
+    _postClicked = YES;
+}
+
 #pragma mark - Notification methods
 
 - (void)videoProgress:(NSNotification *)notification
 {
-    if(_currentProcessed)
+    if(_postClicked)
     {
         [self showProgressView];
     }
