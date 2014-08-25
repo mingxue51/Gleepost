@@ -207,25 +207,25 @@ typedef NS_ENUM(GLint, PBJVisionUniformLocationTypes)
 
 static PBJVision *singleton = nil;
 
-//+ (PBJVision *)sharedInstance
-//{
-//    static dispatch_once_t once = 0;
-//    NSLog(@"PBJVision : sharedInstance");
-//    dispatch_once(&once, ^{
-//        singleton = [[PBJVision alloc] init];
-//    });
-//    return singleton;
-//}
-
 + (PBJVision *)sharedInstance
 {
-    @synchronized(self) {
-        if (singleton == nil) {
-            singleton = [[PBJVision alloc] init];
-        }
-        return singleton;
-    }
+    static dispatch_once_t once = 0;
+    NSLog(@"PBJVision : sharedInstance");
+    dispatch_once(&once, ^{
+        singleton = [[PBJVision alloc] init];
+    });
+    return singleton;
 }
+
+//+ (PBJVision *)sharedInstance
+//{
+//    @synchronized(self) {
+//        if (singleton == nil) {
+//            singleton = [[PBJVision alloc] init];
+//        }
+//        return singleton;
+//    }
+//}
 
 + (PBJVision *)resetInstance {
     singleton = nil;

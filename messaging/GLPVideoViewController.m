@@ -56,7 +56,7 @@
     
     [[PBJVision sharedInstance] stopPreview];
     
-    [PBJVision resetInstance];
+//    [PBJVision resetInstance];
     
     [super viewDidDisappear:animated];
 }
