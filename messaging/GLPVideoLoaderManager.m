@@ -10,10 +10,15 @@
 #import "PBJVideoPlayerController.h"
 #import "GLPPost.h"
 #import "GLPVideo.h"
+#import <AVFoundation/AVAsset.h>
+#import "NSNotificationCenter+Utils.h"
+
 @interface GLPVideoLoaderManager ()
 
 /** Contains post remote key as a key and PBJVideoPlayerController as a value. */
-@property (strong, nonatomic) NSMutableDictionary *videoViews;
+//@property (strong, nonatomic) NSMutableDictionary *videoViews;
+/** Contains post remote key as a key and Asset as a value */
+@property (strong, nonatomic) NSCache *videoCache;
 
 @end
 
@@ -47,21 +52,22 @@ static GLPVideoLoaderManager *instance = nil;
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPlayVideo" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPauseVideo" object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPlayVideo" object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPauseVideo" object:nil];
 }
 
 #pragma mark - Configuration
 
 -(void)initialiseObjects
 {
-    _videoViews = [[NSMutableDictionary alloc] init];
+//    _videoViews = [[NSMutableDictionary alloc] init];
+    _videoCache = [[NSCache alloc] init];
 }
 
 -(void)configureNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideo:) name:@"GLPPlayVideo" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pauseVideo:) name:@"GLPPauseVideo" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideo:) name:@"GLPPlayVideo" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pauseVideo:) name:@"GLPPauseVideo" object:nil];
 
 }
 
@@ -78,40 +84,40 @@ static GLPVideoLoaderManager *instance = nil;
 
 #pragma mark - Notifications
 
--(void)playVideo:(NSNotification *)notification
-{
-    NSDictionary *notificationDict = notification.userInfo;
-    
-    NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
-    
-    [self playVideoWithRemoteKey:remoteKey];
-    
-}
-
--(void)pauseVideo:(NSNotification *)notification
-{
-    DDLogDebug(@"pauseVideo: %@", notification);
-
-    NSDictionary *notificationDict = notification.userInfo;
-    
-    NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
-    
-    [self pauseVideoWithRemoteKey:remoteKey];
-}
+//-(void)playVideo:(NSNotification *)notification
+//{
+//    NSDictionary *notificationDict = notification.userInfo;
+//    
+//    NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
+//    
+//    [self playVideoWithRemoteKey:remoteKey];
+//    
+//}
+//
+//-(void)pauseVideo:(NSNotification *)notification
+//{
+//    DDLogDebug(@"pauseVideo: %@", notification);
+//
+//    NSDictionary *notificationDict = notification.userInfo;
+//    
+//    NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
+//    
+//    [self pauseVideoWithRemoteKey:remoteKey];
+//}
 
 #pragma mark - Video actions
 
--(void)playVideoWithRemoteKey:(NSNumber *)remoteKey
-{
-    PBJVideoPlayerController *video = [_videoViews objectForKey:remoteKey];
-    [video playFromCurrentTime];
-}
-
--(void)pauseVideoWithRemoteKey:(NSNumber *)remoteKey
-{
-    PBJVideoPlayerController *video = [_videoViews objectForKey:remoteKey];
-    [video pause];
-}
+//-(void)playVideoWithRemoteKey:(NSNumber *)remoteKey
+//{
+//    PBJVideoPlayerController *video = [_videoViews objectForKey:remoteKey];
+//    [video playFromCurrentTime];
+//}
+//
+//-(void)pauseVideoWithRemoteKey:(NSNumber *)remoteKey
+//{
+//    PBJVideoPlayerController *video = [_videoViews objectForKey:remoteKey];
+//    [video pause];
+//}
 
 -(void)addVideos:(NSArray *)posts
 {
@@ -120,46 +126,115 @@ static GLPVideoLoaderManager *instance = nil;
     for(GLPPost *p in videoPosts)
     {
 //        [self addVideoWithUrl:p.videosUrls[0] andPostRemoteKey:p.remoteKey];
+        
         [self addVideoWithUrl:p.video.url andPostRemoteKey:p.remoteKey];
+        
     }
 }
 
 - (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
 {
-//    DDLogDebug(@"GLPVideoLoaderManager : In addVideoWithUrl");
     
-    PBJVideoPlayerController *foundVideoViewController = [self videoWithPostRemoteKey:remoteKey];
+    AVURLAsset *asset = [_videoCache objectForKey:@(remoteKey)];
     
-    if(foundVideoViewController)
+    if(!asset)
     {
-        //Already in the list.
-//        DDLogDebug(@"Found video view controller already in list!");
+        asset =  [AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
+        [_videoCache setObject:asset forKey:@(remoteKey)];
         
-//        return foundVideoViewController;
+        DDLogDebug(@"Video url: %@ added.", videoUrl);
+
+    }
+    
+    
+}
+
+//- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
+//{
+////    DDLogDebug(@"GLPVideoLoaderManager : In addVideoWithUrl");
+//    
+//    PBJVideoPlayerController *foundVideoViewController = [self videoWithPostRemoteKey:remoteKey];
+//    
+//    if(foundVideoViewController)
+//    {
+//        //Already in the list.
+////        DDLogDebug(@"Found video view controller already in list!");
+//        
+////        return foundVideoViewController;
+//    }
+//    else
+//    {
+//        PBJVideoPlayerController *videoViewController = [[PBJVideoPlayerController alloc] init];
+//        [videoViewController setPlaybackLoops:NO];
+//        [videoViewController setVideoPath:videoUrl];
+//        [videoViewController.view setBounds:CGRectMake(0, 0, 298, 298)];
+//        
+////        DDLogDebug(@"Video not found but ready: %@", videoUrl);
+//        
+//        [_videoViews setObject:videoViewController forKey:[NSNumber numberWithInteger:remoteKey]];
+//        
+////        return nil;
+//    }
+//
+//}
+
+/**
+ If the asset is not in the NSCache, then return nil in order to not block the UI.
+ At the meantime set timer in the VideoView to check if asset is ready. Once is ready, return the 
+ PBJVideoPlayerController.
+ */
+- (void)videoWithPostRemoteKey:(NSInteger)remoteKey
+{
+//    PBJVideoPlayerController *v =[_videoViews objectForKey:[NSNumber numberWithInteger:remoteKey]];
+    
+//    DDLogDebug(@"Video status: %d", v.playbackState);
+    
+//    PBJVideoPlayerController *videoPlayer = nil;
+//
+//    NSNumber *remoteKeyObject = [NSNumber numberWithInteger:remoteKey];
+//    
+//    AVURLAsset *asset = [_videoCache objectForKey:remoteKeyObject];
+//
+//    if(asset)
+//    {
+//        videoPlayer = [[PBJVideoPlayerController alloc] init];
+//        [videoPlayer setVideoAsset:asset];
+//    }
+//    else
+//    {
+//        [_videoCache setObject:asset forKey:remoteKeyObject];
+//    }
+    
+//    [NSThread detachNewThreadSelector:@selector(configureVideoPlayerControllerAndPostNotificationWithRemoteKey:) toTarget:self withObject:@(remoteKey)];
+
+    
+}
+
+- (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock
+{
+    PBJVideoPlayerController *videoPlayer = nil;
+    
+//    NSNumber *remoteKeyObject = [NSNumber numberWithInteger:remoteKey];
+    
+    AVURLAsset *asset = [_videoCache objectForKey:remoteKey];
+    
+    if(asset)
+    {
+        videoPlayer = [[PBJVideoPlayerController alloc] init];
+        [videoPlayer setVideoAsset:asset];
     }
     else
     {
-        PBJVideoPlayerController *videoViewController = [[PBJVideoPlayerController alloc] init];
-        [videoViewController setPlaybackLoops:NO];
-        [videoViewController setVideoPath:videoUrl];
-        [videoViewController.view setBounds:CGRectMake(0, 0, 298, 298)];
-        
-//        DDLogDebug(@"Video not found but ready: %@", videoUrl);
-        
-        [_videoViews setObject:videoViewController forKey:[NSNumber numberWithInteger:remoteKey]];
-        
-//        return nil;
+//        asset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
+        [_videoCache setObject:asset forKey:remoteKey];
+        DDLogDebug(@"Asset nil");
     }
-
-}
-
--(PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey
-{
-    PBJVideoPlayerController *v =[_videoViews objectForKey:[NSNumber numberWithInteger:remoteKey]];
     
-    DDLogDebug(@"Video status: %d", v.playbackState);
+    DDLogDebug(@"PBJVideoPlayerController generated");
     
-    return v;
+    callbackBlock(remoteKey, videoPlayer);
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_READY object:self userInfo:@{remoteKey: videoPlayer}];
 }
 
 - (void)visiblePosts:(NSArray *)visiblePosts
@@ -181,6 +256,17 @@ static GLPVideoLoaderManager *instance = nil;
 //        
 //    }
 }
+
+//- (void)releaseVideo
+//{
+//    DDLogDebug(@"Number of videos instances: %@", _videoViews);
+//    
+//    for(NSNumber *key in _videoViews)
+//    {
+//        [_videoViews removeObjectForKey:key];
+//        break;
+//    }
+//}
 
 #pragma mark - Helpers
 

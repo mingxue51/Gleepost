@@ -10,6 +10,6 @@
 #import "PBJVision.h"
 #import "PBJVideoPlayerController.h"
 
-@interface GLPVideoViewController : UIViewController<PBJVisionDelegate, UIGestureRecognizerDelegate>
+@interface GLPVideoViewController : UIViewController<PBJVisionDelegate, UIGestureRecognizerDelegate, PBJVideoPlayerControllerDelegate>
 
 @end

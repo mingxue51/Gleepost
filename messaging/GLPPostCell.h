@@ -58,4 +58,6 @@ extern const float TEXT_CELL_HEIGHT;
 
 -(void)setIsViewPost:(BOOL)isViewPost;
 
+- (void)deregisterNotificationsInVideoView;
+
 @end

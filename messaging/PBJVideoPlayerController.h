@@ -25,6 +25,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class AVURLAsset;
+
 typedef NS_ENUM(NSInteger, PBJVideoPlayerPlaybackState) {
     PBJVideoPlayerPlaybackStateStopped = 0,
     PBJVideoPlayerPlaybackStatePlaying,
@@ -58,6 +60,8 @@ typedef NS_ENUM(NSInteger, PBJVideoPlayerBufferingState) {
 - (BOOL)isVideoLoaded;
 - (void)setMute:(BOOL)mute;
 - (void)resetVideo;
+/** New method. */
+- (void)setVideoAsset:(AVURLAsset *)asset;
 
 @end
 

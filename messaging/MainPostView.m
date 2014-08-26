@@ -523,6 +523,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //    [_videoView initialisePreviewWithUrl:self.post.videosUrls[0]];
 }
 
+- (void)deregisterNotificationsForVideoView
+{
+    [_videoView deregisterNotifications];
+}
+
 -(void)hideVideoView
 {
     [_videoView setHidden:YES];

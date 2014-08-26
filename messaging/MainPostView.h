@@ -36,4 +36,6 @@
 
 - (void)setMediaNeedsToReload:(BOOL)imageNeedsToReload;
 
+- (void)deregisterNotificationsForVideoView;
+
 @end

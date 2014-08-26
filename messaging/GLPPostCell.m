@@ -104,6 +104,11 @@ const float ONE_LINE_LIMIT = 18.0;
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];
 }
 
+- (void)deregisterNotificationsInVideoView
+{
+    [_mainView deregisterNotificationsForVideoView];
+}
+
 #pragma mark - Configuration
 
 /**

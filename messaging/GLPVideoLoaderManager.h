@@ -16,8 +16,11 @@
 
 
 -(void)addVideoPosts:(NSArray *)posts;
-- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
--(PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey;
+//- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
+- (void)videoWithPostRemoteKey:(NSInteger)remoteKey;
 - (void)visiblePosts:(NSArray *)visiblePosts;
+//- (void)releaseVideo;
+- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
+- (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock;
 
 @end

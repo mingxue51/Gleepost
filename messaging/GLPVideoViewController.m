@@ -17,6 +17,7 @@
 #import "VideoCaptureView.h"
 #import "VideoPreviewView.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPVideoViewController ()
 
@@ -56,7 +57,7 @@
     
     [[PBJVision sharedInstance] stopPreview];
     
-//    [PBJVision resetInstance];
+    [PBJVision resetInstance];
     
     [super viewDidDisappear:animated];
 }
@@ -128,7 +129,7 @@
     DDLogDebug(@"PreviewView: %@, Preview VC: %@", _previewView, _previewVC);
     
     _previewVC = [[PBJVideoPlayerController alloc] init];
-    _previewVC.delegate = _videoPreviewView;
+    _previewVC.delegate = self;
     [_previewVC setPlaybackLoops:YES];
     _previewVC.view.frame = _previewView.bounds;
     [_previewView addSubview:_previewVC.view];
@@ -140,11 +141,52 @@
 {
     //Example url: http://km.support.apple.com/library/APPLE/APPLECARE_ALLGEOS/HT1211/sample_iTunes.mov
     
-    _previewVC.videoPath = path;
+    for(UIView *v in _previewView.subviews)
+    {
+        DDLogDebug(@"V: %@", v);
+    }
     
-    [_previewVC playFromBeginning];
+    DDLogDebug(@"Path: %@, Preview VC: %@, Preview view: %@", path, _previewVC.view, _previewView);
+    
+    [_previewVC setVideoPath:path];
+    
+    
+//    [_previewVC playFromBeginning];
 }
 
+#pragma mark - PBJVideoPlayerControllerDelegate
+
+- (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
+{
+    DDLogDebug(@"videoPlayerReady : state: %d", videoPlayer.playbackState);
+}
+
+- (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
+{
+    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStateFailed)
+    {
+        DDLogDebug(@"videoPlayerPlaybackStateDidChange Play Again");
+//        [[GLPVideoLoaderManager sharedInstance] releaseVideo];
+        
+        
+        [videoPlayer setVideoPath:_videoPath];
+    }
+    
+    DDLogDebug(@"videoPlayerPlaybackStateDidChange : state: %d", videoPlayer.playbackState);
+
+}
+
+- (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
+{
+    DDLogDebug(@"videoPlayerPlaybackWillStartFromBeginning : state: %d", videoPlayer.playbackState);
+
+}
+
+- (void)videoPlayerPlaybackDidEnd:(PBJVideoPlayerController *)videoPlayer
+{
+    DDLogDebug(@"videoPlayerPlaybackDidEnd : state: %d", videoPlayer.playbackState);
+
+}
 
 #pragma mark - Notifications
 
