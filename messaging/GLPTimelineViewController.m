@@ -124,6 +124,8 @@
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
 @property (assign, nonatomic) BOOL groupsMode;
 
+@property (assign, nonatomic, getter = isTableViewFirstTimeScrolled) BOOL tableViewFirstTimeScrolled;
+
 //Extra view will present to hide the change of background during the viewing of new post.
 //@property (strong, nonatomic) UIImageView *topImageView;
 
@@ -195,6 +197,7 @@ const float TOP_OFFSET = 180.0f;
     [self configNavigationBar];
     
     [self showNetworkErrorViewIfNeeded];
+    
     
 }
 
@@ -304,6 +307,8 @@ const float TOP_OFFSET = 180.0f;
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
     
     _walkthroughFinished = NO;
+    
+    _tableViewFirstTimeScrolled = NO;
 }
 
 
@@ -1010,8 +1015,13 @@ const float TOP_OFFSET = 180.0f;
 
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
+
+            
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            
             [self.tableView reloadData];
+        
+
             
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
@@ -1754,6 +1764,13 @@ const float TOP_OFFSET = 180.0f;
     NSArray *visiblePosts = [self snapshotVisibleCells];
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+    
+    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    
+    
+    _tableViewFirstTimeScrolled = YES;
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -1763,6 +1780,14 @@ const float TOP_OFFSET = 180.0f;
         NSArray *visiblePosts = [self snapshotVisibleCells];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+        
+        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+
+        
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+        
+        _tableViewFirstTimeScrolled = YES;
+
     }
 }
 
@@ -1919,13 +1944,20 @@ const float TOP_OFFSET = 180.0f;
     }
     else if ([post isVideoPost])
     {
+//        [[GLPVideoLoaderManager sharedInstance] setVideoPost:post];
+        
+        if(indexPath.row != 0)
+        {
+            [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+        }
+        
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
 //    else if ([post isVideoPost])
 //    {
 //        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithVideo forIndexPath:indexPath];
 //        postCell.imageAvailable = YES;
-//
+//2
 //    }
     else
     {
@@ -1956,12 +1988,22 @@ const float TOP_OFFSET = 180.0f;
         
     }
     
+    
+//    if(![self isTableViewFirstTimeScrolled])
+//    {
+//        return;
+//    }
+    
     GLPPostCell *postCell = (GLPPostCell *)cell;
     
     if([post isVideoPost])
     {
         [postCell deregisterNotificationsInVideoView];
     }
+    
+    
+//    [[GLPVideoLoaderManager sharedInstance] removeVideoPost:post];
+
 
 }
 

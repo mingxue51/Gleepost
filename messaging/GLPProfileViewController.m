@@ -1251,6 +1251,27 @@
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GLPPost *post = _posts[indexPath.row];
+    
+    if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
+    {
+        DDLogDebug(@"%@ not subclass", [cell class]);
+        
+        return;
+        
+    }
+    
+    GLPPostCell *postCell = (GLPPostCell *)cell;
+    
+    if([post isVideoPost])
+    {
+        [postCell deregisterNotificationsInVideoView];
+    }
+    
+}
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

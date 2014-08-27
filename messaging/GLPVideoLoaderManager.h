@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLPPost;
 @class PBJVideoPlayerController;
 
 @interface GLPVideoLoaderManager : NSObject
@@ -16,11 +17,12 @@
 
 
 -(void)addVideoPosts:(NSArray *)posts;
-//- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
-- (void)videoWithPostRemoteKey:(NSInteger)remoteKey;
+//- (void)videoWithPostRemoteKey:(NSInteger)remoteKey;
 - (void)visiblePosts:(NSArray *)visiblePosts;
-//- (void)releaseVideo;
-- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
-- (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock;
-
+- (void)disableTimelineJustFetched;
+- (PBJVideoPlayerController *)setVideoWithPost:(GLPPost *)post;
+- (PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey;
+//- (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock;
+//- (void)setVideoPost:(GLPPost *)post;
+//- (void)removeVideoPost:(GLPPost *)post;
 @end

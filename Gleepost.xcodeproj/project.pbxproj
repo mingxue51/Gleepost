@@ -500,6 +500,7 @@
 		589EAD3418A449DF005B2F4C /* sign_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD3218A449DF005B2F4C /* sign_up.png */; };
 		589EFD9C182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */; };
 		589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */; };
+		58A4A0DB19AD786900A9F4AA /* GLPVideoCellManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A4A0DA19AD786900A9F4AA /* GLPVideoCellManager.m */; };
 		58A67446184F8ED400E3FE45 /* PopUpNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A67445184F8ED400E3FE45 /* PopUpNotificationsViewController.m */; };
 		58A6744E184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A6744B184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.m */; };
 		58A6744F184F9BB500E3FE45 /* TransitionDelegateViewNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A6744D184F9BB500E3FE45 /* TransitionDelegateViewNotifications.m */; };
@@ -1575,6 +1576,8 @@
 		589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveConversationParticipantsDao.m; sourceTree = "<group>"; };
 		589EFD9D182D38CA00EBEB2E /* GLPLiveUserDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveUserDao.h; sourceTree = "<group>"; };
 		589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveUserDao.m; sourceTree = "<group>"; };
+		58A4A0D919AD786900A9F4AA /* GLPVideoCellManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoCellManager.h; sourceTree = "<group>"; };
+		58A4A0DA19AD786900A9F4AA /* GLPVideoCellManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoCellManager.m; sourceTree = "<group>"; };
 		58A67444184F8ED400E3FE45 /* PopUpNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpNotificationsViewController.h; sourceTree = "<group>"; };
 		58A67445184F8ED400E3FE45 /* PopUpNotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpNotificationsViewController.m; sourceTree = "<group>"; };
 		58A6744A184F9BB500E3FE45 /* AnimatedTransitioningViewNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioningViewNotifications.h; sourceTree = "<group>"; };
@@ -3445,6 +3448,17 @@
 			name = Registration;
 			sourceTree = "<group>";
 		};
+		58A4A0D819AD782700A9F4AA /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				58655D09192F822500266141 /* GLPVideoLoaderManager.h */,
+				58655D0A192F822500266141 /* GLPVideoLoaderManager.m */,
+				58A4A0D919AD786900A9F4AA /* GLPVideoCellManager.h */,
+				58A4A0DA19AD786900A9F4AA /* GLPVideoCellManager.m */,
+			);
+			name = Videos;
+			sourceTree = "<group>";
+		};
 		58A67449184F9B1100E3FE45 /* Transition Delegate View Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -4052,6 +4066,7 @@
 		8057E33A1834C1040089F4D9 /* Processors */ = {
 			isa = PBXGroup;
 			children = (
+				58A4A0D819AD782700A9F4AA /* Videos */,
 				C02120411850AA1200831872 /* GLPPostUploader.h */,
 				C02120421850AA1200831872 /* GLPPostUploader.m */,
 				808F6B63187D92DB0062FE39 /* GLPMessageProcessor.h */,
@@ -4066,8 +4081,6 @@
 				5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */,
 				58BF03E718F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.h */,
 				58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */,
-				58655D09192F822500266141 /* GLPVideoLoaderManager.h */,
-				58655D0A192F822500266141 /* GLPVideoLoaderManager.m */,
 				58BBACB819788D9C00A8A265 /* GLPImageSelectorLoader.h */,
 				58BBACB919788D9C00A8A265 /* GLPImageSelectorLoader.m */,
 			);
@@ -5838,6 +5851,7 @@
 				80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */,
 				58F9EC6719377E1000714432 /* PendingPost.m in Sources */,
 				5890D214184763E700E293DD /* GLPThemeManager.m in Sources */,
+				58A4A0DB19AD786900A9F4AA /* GLPVideoCellManager.m in Sources */,
 				58119CC61947992700C2687B /* UIView+viewController.m in Sources */,
 				58774D331964972F0034A1C6 /* GLPRefreshControl.m in Sources */,
 				80C8BA72181048E9004F70DB /* GLPMessageDaoParser.m in Sources */,

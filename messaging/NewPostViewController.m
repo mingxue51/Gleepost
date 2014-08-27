@@ -119,8 +119,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self formatTextView];
     
     [self loadDataIfNeeded];
-    
-
 }
 
 
@@ -355,6 +353,10 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)group.remoteKey);
             
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andGroup:group];
+        }
+        else if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+        {
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil andTitle:nil];
         }
         else
         {
@@ -638,7 +640,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (BOOL)isInformationValidInElements
 {
-    return ![NSString isStringEmpty:self.contentTextView.text] && ![NSString isStringEmpty:self.titleTextField.text] && ![self.titleTextField.text exceedsNumberOfCharacters:MAX_TITLE_CHARACTERS] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_DESCRIPTION_CHARACTERS];
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
+        return ![NSString isStringEmpty:self.contentTextView.text] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_DESCRIPTION_CHARACTERS];
+    }
+    else
+    {
+        return ![NSString isStringEmpty:self.contentTextView.text] && ![NSString isStringEmpty:self.titleTextField.text] && ![self.titleTextField.text exceedsNumberOfCharacters:MAX_TITLE_CHARACTERS] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_DESCRIPTION_CHARACTERS];
+    }
+
 }
 
 #pragma mark - VC Navigation

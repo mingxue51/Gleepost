@@ -126,6 +126,11 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     [self _setAsset:asset];
 }
 
+- (void)setVideoPlayerItem:(AVPlayerItem *)playerItem
+{
+    [self _setPlayerItem:playerItem];
+}
+
 - (BOOL)playbackLoops
 {
     return _flags.playbackLoops;
@@ -197,7 +202,6 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
 
             // setup player
             AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:_asset];
-            DDLogDebug(@"Player Item Asset: %@", _asset);
             [self _setPlayerItem:playerItem];
             
         }];
@@ -231,6 +235,9 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
         // notifications
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_playerItem];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:_playerItem];
+        
+        DDLogDebug(@"Observers added to item: %@", playerItem);
+
     }
     
     if (!_flags.playbackLoops) {
@@ -238,8 +245,6 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     } else {
         _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     }
-
-    DDLogDebug(@"Ready to play!");
     
     [_player replaceCurrentItemWithPlayerItem:_playerItem];
     
