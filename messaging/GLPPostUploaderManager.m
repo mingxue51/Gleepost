@@ -700,7 +700,7 @@
         
         DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
         
-//        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
     };
     
     DDLogInfo(@"Post uploading task started with post content: %@ and video url: %@.",videoPost.content, videoPost.video.url);

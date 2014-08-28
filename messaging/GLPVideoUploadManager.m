@@ -16,6 +16,7 @@
 #import "WebClient.h"
 #import "GLPPostManager.h"
 #import "GLPVideo.h"
+#import "GLPProgressManager.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -154,6 +155,15 @@ static GLPVideoUploadManager *instance = nil;
 {
     if([self isCheckingForPendingVideoPosts])
     {
+        DDLogInfo(@"Can't check for non uploaded video posts, is already checking.");
+
+        return;
+    }
+    
+    if([[GLPProgressManager sharedInstance] isProgressViewVisible])
+    {
+        DDLogInfo(@"Can't check for non uploaded video posts, progress view visible");
+        
         return;
     }
     

@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSDate *currentProcessed;
 @property (strong, nonatomic) UploadingProgressView *progressView;
 @property (assign, nonatomic) BOOL postClicked;
+@property (assign, nonatomic, getter = isProgressViewVisible) BOOL progressViewVisible;
 @end
 
 @implementation GLPProgressManager
@@ -62,6 +63,7 @@ static GLPProgressManager *instance = nil;
     
     _postClicked = NO;
 
+    _progressViewVisible = NO;
 }
 
 - (void)configureProgressView
@@ -91,6 +93,8 @@ static GLPProgressManager *instance = nil;
     DDLogDebug(@"GLPProgressManager : showProgressView");
     
     [_progressView setHidden:NO];
+    
+    _progressViewVisible = YES;
 }
 
 - (void)hideProgressView
@@ -104,6 +108,8 @@ static GLPProgressManager *instance = nil;
     _currentProcessed = nil;
     
     _postClicked = NO;
+    
+    _progressViewVisible = NO;
 
 }
 

@@ -19,5 +19,6 @@
 - (void)setThumbnailImage:(UIImage *)thumbnail;
 - (void)progressFinished;
 - (void)postButtonClicked;
+- (BOOL)isProgressViewVisible;
 
 @end
