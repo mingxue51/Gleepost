@@ -23,13 +23,18 @@
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db
 {
     // order by date, and if date is similar, second ordering by remoteKey
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
+ 
+    
+//    FMResultSet *resultSet2 = [db executeQueryWithFormat:@"select * from posts order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
+    
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
     
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
         [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
     }
+    
     
     [GLPPostDao loadImagesWithPosts:result withDb:db];
     
@@ -237,6 +242,8 @@
     
     
     entity.key = [db lastInsertRowId];
+    
+    DDLogDebug(@"Post saved with status: %d and content: %@", entity.sendStatus, entity.content);
     
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];

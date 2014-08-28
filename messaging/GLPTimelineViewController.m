@@ -63,6 +63,7 @@
 #import "GLPVideoUploadManager.h"
 #import "GLPProgressManager.h"
 #import "UploadingProgressView.h"
+#import "NewPostViewController.h"
 
 @interface GLPTimelineViewController ()
 

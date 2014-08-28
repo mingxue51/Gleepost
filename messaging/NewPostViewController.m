@@ -371,9 +371,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         
         [self informParentVCForNewPost:inPost];
 
-        
-//        [delegate reloadNewImagePostWithPost:inPost];
-        
 
         //Dismiss view controller and show immediately the post in the Campus Wall.
         

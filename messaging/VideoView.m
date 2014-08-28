@@ -477,7 +477,7 @@
 
 - (void)readyToPlay:(BOOL)ready withPlayerController:(PBJVideoPlayerController *)videoPlayer
 {
-    DDLogDebug(@"Play status: %d, Play tag: %d, Self play tag: %d : %@", _previewVC.playbackState, videoPlayer.view.tag, _previewVC.view.tag, _post.content);
+//    DDLogDebug(@"Play status: %d, Play tag: %d, Self play tag: %d : %@", _previewVC.playbackState, videoPlayer.view.tag, _previewVC.view.tag, _post.content);
     
     DDLogDebug(@"ImageView Thumbnail status: %@", _thumbnailImageView.image);
     

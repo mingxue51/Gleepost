@@ -164,6 +164,8 @@ static GLPVideoUploadManager *instance = nil;
        
         DDLogDebug(@"Video pending posts: %@", videoPosts);
         
+        _checkingForPendingVideoPosts = NO;
+
         if(videoPosts.count > 0)
         {
             GLPPost *videoPost = [videoPosts objectAtIndex:0];
@@ -172,7 +174,6 @@ static GLPVideoUploadManager *instance = nil;
             
             [[WebClient sharedInstance] checkForReadyVideoWithPendingVideoKey:videoKey callback:^(BOOL success, GLPVideo *result) {
                 
-                _checkingForPendingVideoPosts = NO;
                 if(success)
                 {
                     DDLogDebug(@"Pending video result: %@", result);
