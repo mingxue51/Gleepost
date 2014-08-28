@@ -146,7 +146,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return [self uploadPostWithPost:post];
 }
 
--(GLPPost *)uploadPostWithPost:(GLPPost *)post
+- (GLPPost *)uploadPostWithPost:(GLPPost *)post
 {
     //Create a new operation.
     if(_postImage)
@@ -175,6 +175,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 //        [self createLocalAndUploadPost:post];
         [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
     }
+    
+    DDLogDebug(@"VIDEO PATH FOR POST %@: %@", post, _videoPath);
     
     return post;
 }

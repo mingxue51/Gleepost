@@ -354,8 +354,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andGroup:group];
         }
+#warning implement the general post from groups.
+        
         else if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
         {
+            DDLogDebug(@"GENERAL POST IS GOING TO BE CREATED");
+            
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil andTitle:nil];
         }
         else
@@ -501,6 +505,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self showVideoToButtonWithPath:videoPath];
     
     [_postUploader uploadVideoInPath:videoPath];
+    
+    DDLogDebug(@"videoReadyForUpload : video path: %@", videoPath);
 }
 
 -(void)showVideoToButtonWithPath:(NSString *)videoPath
