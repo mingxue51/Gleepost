@@ -319,7 +319,7 @@
 //                  entity.video.thumbnailUrl,
 //                  [entity.video.pendingKey intValue]];
     
-        DDLogDebug(@"Video data inserted (status local): %d : %@", s, entity.video);
+        DDLogDebug(@"Video data inserted (status local): %d : %@, POST: %@", s, entity.video, entity);
 //    }
 //    else
 //    {
@@ -419,7 +419,7 @@
 {
     [GLPPostDao updatePostSendingData:entity inDb:db];
     
-    DDLogDebug(@"updateVideoPostSendingData post key: %d", entity.key);
+    DDLogDebug(@"updateVideoPostSendingData post key: %d :%@", entity.key, entity.content);
     
     if(entity.remoteKey != 0)
     {

@@ -698,7 +698,7 @@
         
         //TODO: Create the new post to the campus wall dynamically.
         
-        DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
+        DDLogDebug(@"Pending Post video data before notify Campus Wall: %@", post.video);
         
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
     };
@@ -712,7 +712,7 @@
         videoPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         videoPost.remoteKey = success ? remoteKey : 0;
         
-        DDLogInfo(@"Video Post uploaded with success: %d and post remoteKey: %d", success, videoPost.remoteKey);
+        DDLogInfo(@"Pending Video Post uploaded with success: %d and post remoteKey: %d", success, videoPost.remoteKey);
         
         [GLPPostManager updateVideoPostAfterSending:videoPost];
         
@@ -748,16 +748,15 @@
 
     if([self isVideoProcessed])
     {
+        DDLogDebug(@"Video processed ready: %@", _tempVideoData);
+        
         [self uploadPostWithTimestamp:timestamp withVideoData:_tempVideoData];
-        _videoProcessed = NO;
+        [self videoPostReadyToUpload];
     }
     
 }
 /**
  Uploads the video post if the post exists in the ready posts dictionary.
-
- If the post exists returns YES to guarrantee that the post sent,
- otherwise returns NO which means that the user didn't push post yet.
  
  @param videoData processed video data from web socket.
  
@@ -768,8 +767,9 @@
 - (void)uploadPostWithVideoData:(NSDictionary *)videoData
 {
     NSNumber *videoKey = [NSNumber numberWithInteger:[videoData[@"id"] integerValue]];
-    _videoProcessed = YES;
-    _tempVideoData = videoData;
+    [self videoPostAlreadyProcessedWithVideoData:videoData];
+    
+    DDLogDebug(@"uploadPostWithVideoData: %@, Key: %@", videoData, videoKey);
     
     for(NSDate *timestamp in _readyPosts)
     {
@@ -778,10 +778,23 @@
         if([p.video.pendingKey isEqualToNumber:videoKey])
         {
             [self uploadPostWithTimestamp:timestamp withVideoData:videoData];
+            [self videoPostReadyToUpload];
             
         }
     }
     
+}
+
+- (void)videoPostAlreadyProcessedWithVideoData:(NSDictionary *)videoData
+{
+    _videoProcessed = YES;
+    _tempVideoData = videoData;
+}
+
+- (void)videoPostReadyToUpload
+{
+    _videoProcessed = NO;
+    _tempVideoData = nil;
 }
 
 
