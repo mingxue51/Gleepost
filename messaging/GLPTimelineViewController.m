@@ -238,6 +238,9 @@ const float TOP_OFFSET = 180.0f;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
+    
+    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    
     //Show navigation bar.
 //    [self contract];
 

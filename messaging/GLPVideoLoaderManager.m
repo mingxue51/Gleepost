@@ -27,11 +27,13 @@
 //@property (strong, nonatomic) NSCache *videoCellCache;
 //@property (strong, nonatomic) NSMutableDictionary *videoCellDictionary;
 
-@property (strong, nonatomic) NSMutableDictionary *alreadyVisiblePosts;
+//@property (strong, nonatomic) NSMutableDictionary *alreadyVisiblePosts;
 
 @property (assign, nonatomic) BOOL insertedPostVideoWithNilAsset;
 
 @property (assign, nonatomic) BOOL timelineJustFetched;
+
+@property (assign, nonatomic) GLPVideoLoaderActive active;
 
 @end
 
@@ -63,6 +65,11 @@ static GLPVideoLoaderManager *instance = nil;
     return self;
 }
 
+- (void)setVideoLoaderActive:(GLPVideoLoaderActive)active
+{
+    _active = active;
+}
+
 -(void)dealloc
 {
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPlayVideo" object:nil];
@@ -79,7 +86,6 @@ static GLPVideoLoaderManager *instance = nil;
 //    _videoCellCache = [[NSCache alloc] init];
 //    _videoCellDictionary = [[NSMutableDictionary alloc] init];
     
-    _alreadyVisiblePosts = [[NSMutableDictionary alloc] init];
     _insertedPostVideoWithNilAsset = NO;
     
     _timelineJustFetched = YES;
@@ -160,8 +166,20 @@ static GLPVideoLoaderManager *instance = nil;
     
     if(!asset)
     {
-        asset =  [AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
-        [_videoAssetsCache setObject:asset forKey:@(remoteKey)];
+        @try {
+            
+            asset =  [AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
+            [_videoAssetsCache setObject:asset forKey:@(remoteKey)];
+        }
+        @catch (NSException *exception || NSInvalidArgumentException *invalidArgument) {
+            
+            DDLogDebug(@"Exception 173: %@", exception);
+            
+        }
+        @finally {
+            
+        }
+
         
         
         //Create the player item.
@@ -200,8 +218,23 @@ static GLPVideoLoaderManager *instance = nil;
         asset =  [AVURLAsset URLAssetWithURL:[NSURL URLWithString:post.video.url] options:nil];
         
         DDLogDebug(@"Asset: %@, URL: %@", asset, post.video.url);
+        
+        
+        @try {
+            
+            [_videoAssetsCache setObject:asset forKey:@(post.remoteKey)];
 
-        [_videoAssetsCache setObject:asset forKey:@(post.remoteKey)];
+        }
+        @catch (NSException *exception || NSInvalidArgumentException *invalidArgument) {
+            
+            DDLogDebug(@"Exception 224: %@", exception);
+            
+        }
+        @finally {
+            
+        }
+        
+
         
         DDLogDebug(@"Asset nil from Video View");
 
@@ -231,6 +264,11 @@ static GLPVideoLoaderManager *instance = nil;
 - (void)disableTimelineJustFetched
 {
     _timelineJustFetched = NO;
+}
+
+- (void)enableTimelineJustFetched
+{
+    _timelineJustFetched = YES;
 }
 
 //- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
@@ -342,16 +380,13 @@ static GLPVideoLoaderManager *instance = nil;
         }
     }
     
-    DDLogDebug(@"Already visible posts: %@", _alreadyVisiblePosts);
-
-    
-    [_alreadyVisiblePosts removeAllObjects];
-    
-    
-    for(GLPPost *p in videoVisiblePosts)
-    {
-        [_alreadyVisiblePosts setObject:p forKey:@(p.remoteKey)];
-    }
+//    [_alreadyVisiblePosts removeAllObjects];
+//    
+//    
+//    for(GLPPost *p in videoVisiblePosts)
+//    {
+//        [_alreadyVisiblePosts setObject:p forKey:@(p.remoteKey)];
+//    }
     
 //    [self setOnlyVisibleVideoPostsToCache:visiblePosts];
 }
@@ -424,6 +459,7 @@ static GLPVideoLoaderManager *instance = nil;
     else
     {
         //        asset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
+        
         [_videoAssetsCache setObject:asset forKey:remoteKey];
         DDLogDebug(@"Asset nil");
     }

@@ -47,6 +47,7 @@
 #import "UINavigationBar+Format.h"
 #import "GLPBadgesViewController.h"
 #import "UIRefreshControl+CustomLoader.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -142,6 +143,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self configureNavigationBar];
     
     [self hideNetworkErrorViewIfNeeded];
@@ -425,7 +427,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileTopViewCell"];
 
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
     //Register posts.
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
@@ -434,7 +436,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
 }
@@ -740,6 +742,8 @@
         
         if(success)
         {
+            DDLogDebug(@"Posts from server: %@", posts);
+            
             self.posts = [posts mutableCopy];
             
             [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
@@ -1082,6 +1086,8 @@
             [_emptyMyPostsMessage hideEmptyMessageView];
         }
         
+        DDLogDebug(@"Number of rows: %d, Number of posts: %ld", _numberOfRows, (unsigned long)_posts.count);
+        
         return self.numberOfRows + self.posts.count;
     }
     else
@@ -1214,6 +1220,8 @@
         {
             if(self.posts.count != 0)
             {
+                DDLogDebug(@"Show posts tab");
+                
                 GLPPost *post = self.posts[indexPath.row-1];
                 
                 if([post imagePost])
@@ -1222,6 +1230,11 @@
                 }
                 else if ([post isVideoPost])
                 {
+                    if(indexPath.row != 0)
+                    {
+                        [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+                    }
+                    
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
                 }
                 else
@@ -1253,7 +1266,6 @@
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GLPPost *post = _posts[indexPath.row];
     
     if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
     {
@@ -1262,6 +1274,9 @@
         return;
         
     }
+    
+    GLPPost *post = _posts[indexPath.row];
+
     
     GLPPostCell *postCell = (GLPPostCell *)cell;
     
@@ -1461,6 +1476,65 @@
     [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+1 inSection:0]];
     
     [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+}
+
+#pragma mark - Scroll view
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+        
+        
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+        }
+        
+    }
+    
+    return visiblePosts;
 }
 
 

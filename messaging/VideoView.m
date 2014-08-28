@@ -20,7 +20,7 @@
 @interface VideoView ()
 
 //@property (strong, nonatomic) PBJVideoPlayerController *previewVC;
-@property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
+//@property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
 @property (weak, nonatomic) IBOutlet UIImageView *loadingImageView;
@@ -242,6 +242,8 @@
     if(_videoView.tag == 2)
         return;
     
+    [_videoView setHidden:NO];
+    
     DDLogDebug(@"Set subview for post: %@", _post.content);
     
     [_videoView addSubview:_previewVC.view];
@@ -402,6 +404,8 @@
     [_loadingImageView setHidden:NO];
     [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self setHiddenToPlayImage:YES];
+    [_videoView setHidden:YES];
+
 //    [_playButton setEnabled:NO];
 }
 
@@ -465,12 +469,14 @@
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
-    [_videoView setHidden:NO];
+//    [_videoView setHidden:NO];
 }
 
 - (void)readyToPlay:(BOOL)ready withPlayerController:(PBJVideoPlayerController *)videoPlayer
 {
     DDLogDebug(@"Play status: %d, Play tag: %d, Self play tag: %d : %@", _previewVC.playbackState, videoPlayer.view.tag, _previewVC.view.tag, _post.content);
+    
+    DDLogDebug(@"ImageView Thumbnail status: %@", _thumbnailImageView.image);
     
     if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
     {
