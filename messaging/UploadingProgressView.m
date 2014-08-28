@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPCustomProgressView.h"
 #import "AppearanceHelper.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface UploadingProgressView ()
 
@@ -33,15 +34,32 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
     if(self)
     {
         [self resetView];
-        [self configureViews];
     }
     
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self configureViews];
+
+}
+
 - (void)configureViews
 {
-    [ShapeFormatterHelper setBorderToView:_thumbnailImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0];
+//    [ShapeFormatterHelper setBorderToView:_thumbnailImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:2.0];
+    
+    _thumbnailImageView.layer.borderWidth = 1.0;
+    _thumbnailImageView.layer.cornerRadius = 2.0;
+    _thumbnailImageView.layer.borderColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    _thumbnailImageView.layer.masksToBounds = YES;
+    
+//    [ShapeFormatterHelper setCornerRadiusWithView:_thumbnailImageView andValue:5.0];
+
+//    [ShapeFormatterHelper setCornerRadiusWithView:_thumbnailImageView andValue:2.0];
+
 }
 
 #pragma mark - Modifiers
@@ -61,6 +79,7 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
 - (void)setThumbnailImage:(UIImage *)thumbnailImage
 {
     [_thumbnailImageView setImage:thumbnailImage];
+    DDLogDebug(@"progress bar : Thumbnail image view: %@", _thumbnailImageView.image);
 }
 
 - (void)startProcessing

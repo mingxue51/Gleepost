@@ -15,7 +15,6 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
-#import "ShapeFormatterHelper.h"
 
 @interface GLPPostCell ()
 

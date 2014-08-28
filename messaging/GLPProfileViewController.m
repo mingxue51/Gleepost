@@ -738,6 +738,9 @@
 
 - (void)loadPosts
 {
+    
+#warning here we take only the new posts!!!!
+    
     [GLPPostManager loadRemotePostsForUserRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *posts) {
         
         if(success)
@@ -753,6 +756,7 @@
             [self.tableView reloadData];
             
             _postUploaded = NO;
+        
         }
         else
         {
@@ -1323,6 +1327,8 @@
             
             
             self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+
+            
             self.selectedPost.content = @"Loading...";
             self.isPostFromNotifications = YES;
             

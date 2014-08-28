@@ -7,6 +7,7 @@
 //
 
 #import "GLPPost.h"
+#import "GLPVideo.h"
 
 @implementation GLPPost
 

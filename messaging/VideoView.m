@@ -183,11 +183,13 @@
         
 //        _previewVC = videoPlayer;
         
+        _previewVC.view.frame = _videoView.bounds;
+
+        
         _previewVC.view.tag = _remoteKey;
         
         _previewVC.delegate = self;
         
-        _previewVC.view.frame = _videoView.bounds;
         
 //        [_videoView addSubview:_previewVC.view];
         [_videoView setTag:1];
@@ -222,11 +224,12 @@
             DDLogDebug(@"VIDEO LOADED!!!");
         }
         
+        _previewVC.view.frame = _videoView.bounds;
+
         _previewVC.view.tag = _remoteKey;
         
         _previewVC.delegate = self;
         
-        _previewVC.view.frame = _videoView.bounds;
         
         [_videoView setTag:1];
         

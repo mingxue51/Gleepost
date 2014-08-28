@@ -1790,9 +1790,13 @@ typedef void (^PBJVisionBlock)();
                     [videoDict setObject:path forKey:PBJVisionVideoPathKey];
                     
                     if (_flags.thumbnailEnabled) {
+                        
                         [self captureVideoThumbnailAtTime:capturedDuration];
                         
                         [self generateThumbnailsForVideoWithURL:_mediaWriter.outputURL inDictionary:videoDict];
+                        
+                        DDLogDebug(@"Take thumbnail: %f, video dict: %@", capturedDuration, videoDict);
+
                     }
                 }
 

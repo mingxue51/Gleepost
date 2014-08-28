@@ -716,7 +716,7 @@
     }
 }
 
-+(void)setFakeKeyToPost:(GLPPost *)post
++ (GLPPost *)setFakeKeyToPost:(GLPPost *)post
 {
     __block int lastPostIndex = 0;
     
@@ -733,6 +733,8 @@
     }];
     
     post.key = lastPostIndex+1;
+    
+    return post;
 }
 
 @end

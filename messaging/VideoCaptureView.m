@@ -37,6 +37,7 @@
     if(self)
     {
         [self configureNofications];
+        [[PBJVision sharedInstance] setThumbnailEnabled:YES];
     }
     
     return self;
@@ -124,9 +125,9 @@
     
 //    [self stopVideo];
     
-    NSArray *thumbnails = videoDict[PBJVisionVideoThumbnailArrayKey];
+//    NSArray *thumbnails = videoDict[PBJVisionVideoThumbnailArrayKey];
     
-    UIImage *thumbnail = thumbnails[0];
+    UIImage *thumbnail = videoDict[PBJVisionVideoThumbnailKey];
     
     //Add thumbnail to GLPProgressManager.
     [[GLPProgressManager sharedInstance] setThumbnailImage: thumbnail];

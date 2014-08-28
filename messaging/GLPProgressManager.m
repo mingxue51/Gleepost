@@ -17,7 +17,6 @@
 
 //@property (strong, nonatomic) NSMutableArray *videosTimestamps;
 @property (strong, nonatomic) NSDate *currentProcessed;
-@property (strong, nonatomic) UIImage *currentThumbnail;
 @property (strong, nonatomic) UploadingProgressView *progressView;
 @property (assign, nonatomic) BOOL postClicked;
 @end
@@ -89,16 +88,18 @@ static GLPProgressManager *instance = nil;
 
 - (void)showProgressView
 {
+    DDLogDebug(@"GLPProgressManager : showProgressView");
+    
     [_progressView setHidden:NO];
 }
 
 - (void)hideProgressView
 {
+    DDLogDebug(@"GLPProgressManager : hideProgressView");
+
     [_progressView setHidden:YES];
     
     [_progressView resetView];
-    
-    _currentThumbnail = nil;
     
     _currentProcessed = nil;
     
@@ -120,17 +121,24 @@ static GLPProgressManager *instance = nil;
 
 - (void)setThumbnailImage:(UIImage *)thumbnail
 {
-    _currentThumbnail = thumbnail;
-    [_progressView setThumbnailImage:thumbnail];
+
+    [_progressView setThumbnailImage:[UIImage imageWithCGImage:thumbnail.CGImage]];
+    
+    DDLogDebug(@"GLPProgressManager : setThumbnailImage");
+
 }
 
 - (void)progressFinished
 {
+    DDLogDebug(@"GLPProgressManager : progressFinished");
+
     [self hideProgressView];
 }
 
 - (void)postButtonClicked
 {
+    DDLogDebug(@"GLPProgressManager : postButtonClicked");
+
     _postClicked = YES;
 }
 
