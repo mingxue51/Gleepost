@@ -66,6 +66,8 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
 
 - (void)resetView
 {
+    DDLogDebug(@"UploadingProgressView Reset view.");
+    
     [_uploadingLabel setText:UPLOADING_TEXT.copy];
     [_thumbnailImageView setImage:nil];
     [_progressView setProgress:0.0];
@@ -78,6 +80,8 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
 
 - (void)setThumbnailImage:(UIImage *)thumbnailImage
 {
+    DDLogDebug(@"Thumbnail image view reference: %@", _thumbnailImageView);
+    
     [_thumbnailImageView setImage:thumbnailImage];
     DDLogDebug(@"progress bar : Thumbnail image view: %@", _thumbnailImageView.image);
 }

@@ -64,6 +64,9 @@ static GLPProgressManager *instance = nil;
     _postClicked = NO;
 
     _progressViewVisible = NO;
+    
+    [_progressView resetView];
+
 }
 
 - (void)configureProgressView
@@ -103,8 +106,6 @@ static GLPProgressManager *instance = nil;
 
     [_progressView setHidden:YES];
     
-    [_progressView resetView];
-    
     _currentProcessed = nil;
     
     _postClicked = NO;
@@ -123,6 +124,8 @@ static GLPProgressManager *instance = nil;
 //    {
 //        _currentProcessed = timestamp;
 //    }
+
+//    _progressViewVisible = YES;
 }
 
 - (void)setThumbnailImage:(UIImage *)thumbnail
@@ -139,6 +142,9 @@ static GLPProgressManager *instance = nil;
     DDLogDebug(@"GLPProgressManager : progressFinished");
 
     [self hideProgressView];
+    
+    [_progressView resetView];
+
 }
 
 - (void)postButtonClicked
@@ -156,10 +162,10 @@ static GLPProgressManager *instance = nil;
     {
         [self showProgressView];
     }
-    else
-    {
-        [self hideProgressView];
-    }
+//    else
+//    {
+//        [self hideProgressView];
+//    }
     
     NSDictionary *videoData = notification.userInfo;
     
