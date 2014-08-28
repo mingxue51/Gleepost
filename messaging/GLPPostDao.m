@@ -207,6 +207,7 @@
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     int date = [entity.date timeIntervalSince1970];
+    
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
     BOOL postSaved;

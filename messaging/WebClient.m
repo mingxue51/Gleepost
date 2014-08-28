@@ -387,7 +387,7 @@ static WebClient *instance = nil;
         [params setObject:post.video.pendingKey forKey:@"video"];
     }
     
-    if(post.dateEventStarts)
+    if(post.eventTitle)
     {
 //        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
 //        

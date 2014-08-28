@@ -356,6 +356,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         }
         else if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
         {
+            DDLogDebug(@"GENERAL POST");
+            
             inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil andTitle:nil];
         }
         else

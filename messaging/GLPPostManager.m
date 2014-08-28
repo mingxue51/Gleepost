@@ -607,7 +607,7 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         incomingPosts = [GLPPostDao findAllPendingPostsWithVideosInDb:db];
-        
+                
         callback(incomingPosts);
         
     }];
