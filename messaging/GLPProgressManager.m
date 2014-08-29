@@ -16,7 +16,7 @@
 @interface GLPProgressManager ()
 
 //@property (strong, nonatomic) NSMutableArray *videosTimestamps;
-@property (strong, nonatomic) NSDate *currentProcessed;
+@property (strong, nonatomic) NSDate *currentProcessedTimestamp;
 @property (strong, nonatomic) UploadingProgressView *progressView;
 @property (assign, nonatomic) BOOL postClicked;
 @property (assign, nonatomic, getter = isProgressViewVisible) BOOL progressViewVisible;
@@ -56,7 +56,7 @@ static GLPProgressManager *instance = nil;
 - (void)configureObjects
 {
 //    _videosTimestamps = [[NSMutableArray alloc] init];
-    _currentProcessed = nil;
+    _currentProcessedTimestamp = nil;
     
 //    _progressView = [[ProgressView alloc] init];
     [_progressView setHidden:YES];
@@ -106,7 +106,6 @@ static GLPProgressManager *instance = nil;
 
     [_progressView setHidden:YES];
     
-    _currentProcessed = nil;
     
     _postClicked = NO;
     
@@ -118,6 +117,8 @@ static GLPProgressManager *instance = nil;
 
 - (void)registerVideoWithTimestamp:(NSDate *)timestamp
 {
+    _currentProcessedTimestamp = timestamp;
+    
 //    [_videosTimestamps addObject:timestamp];
     
 //    if(!_currentProcessed)
@@ -144,6 +145,9 @@ static GLPProgressManager *instance = nil;
     [self hideProgressView];
     
     [_progressView resetView];
+    
+    _currentProcessedTimestamp = nil;
+
 
 }
 
@@ -158,6 +162,26 @@ static GLPProgressManager *instance = nil;
 
 - (void)videoProgress:(NSNotification *)notification
 {
+    NSDictionary *videoData = notification.userInfo;
+    
+    NSDictionary *progress = videoData[@"update"];
+    
+    NSDate *timestamp = videoData[@"timestamp"];
+    
+    DDLogDebug(@"Timestamp: %@, Updates: %@, %@", timestamp, progress[DATA_WRITTEN], progress[DATA_EXPECTED]);
+    
+    if(![timestamp isEqualToDate:_currentProcessedTimestamp])
+    {
+        DDLogDebug(@"Timestamp not equal abort viewing.");
+        
+        return;
+    }
+    else
+    {
+        DDLogDebug(@"Timestamp equal show viewing.");
+
+    }
+    
     if(_postClicked)
     {
         [self showProgressView];
@@ -167,9 +191,7 @@ static GLPProgressManager *instance = nil;
 //        [self hideProgressView];
 //    }
     
-    NSDictionary *videoData = notification.userInfo;
-    
-    NSDictionary *progress = videoData[@"Update"];
+
     
     NSNumber *dataWritten = progress[DATA_WRITTEN];
     

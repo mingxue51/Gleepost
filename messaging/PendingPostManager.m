@@ -102,17 +102,17 @@ static PendingPostManager *instance = nil;
 
 - (void)readyToSend
 {
-    if(_categories.count == 1)
-    {
-        //It means that general post selected.
-        [_categories removeAllObjects];
-    }
-    else if(_categories.count == 2)
+
+    if(_categories.count == 2)
     {
         //An event post selected.
         [_categories addObject:[[CategoryManager instance] generateEventCategory]];
     }
-    
+    else
+    {
+        //It means that general post selected.
+        [_categories removeAllObjects];
+    }
     //TODO: When is supported by api we should include announcements.
     //      Maybe is a good idea to create a new category as such.
     

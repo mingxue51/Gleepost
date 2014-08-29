@@ -21,4 +21,6 @@
 
 - (void)startCheckingForNonUploadedVideoPosts;
 
+- (void)cancelVideoWithTimestamp:(NSDate *)timestamp;
+
 @end

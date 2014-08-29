@@ -24,7 +24,7 @@
 @property (strong, nonatomic) NSTimer *checkForUploadingCommentTimer;
 @property (assign, nonatomic) BOOL isNetworkAvailable;
 @property (assign, nonatomic, getter = isVideoProcessed) BOOL videoProcessed;
-@property (strong, nonatomic) NSDictionary *tempVideoData;
+@property (strong, nonatomic) NSMutableDictionary *tempVideoData;
 @end
 
 @implementation GLPPostUploaderManager
@@ -64,6 +64,8 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:@"GLPNetworkStatusUpdate" object:nil];
 
+        _tempVideoData = [[NSMutableDictionary alloc] init];
+        
     }
     
     return self;
@@ -635,6 +637,9 @@
         
         
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
+        
+        [self videoPostReadyToUpload];
+
     };
 
     NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, post.video.url);
@@ -750,8 +755,15 @@
     {
         DDLogDebug(@"Video processed ready: %@", _tempVideoData);
         
-        [self uploadPostWithTimestamp:timestamp withVideoData:_tempVideoData];
-        [self videoPostReadyToUpload];
+        NSDictionary *actualVideoData = _tempVideoData[videoId];
+        
+        if(!actualVideoData)
+        {
+            return;
+        }
+        
+        [self uploadPostWithTimestamp:timestamp withVideoData:actualVideoData];
+//        [self videoPostReadyToUpload];
     }
     
 }
@@ -767,7 +779,7 @@
 - (void)uploadPostWithVideoData:(NSDictionary *)videoData
 {
     NSNumber *videoKey = [NSNumber numberWithInteger:[videoData[@"id"] integerValue]];
-    [self videoPostAlreadyProcessedWithVideoData:videoData];
+    [self videoPostWithId:videoKey alreadyProcessedWithVideoData:videoData];
     
     DDLogDebug(@"uploadPostWithVideoData: %@, Key: %@", videoData, videoKey);
     
@@ -777,24 +789,29 @@
         
         if([p.video.pendingKey isEqualToNumber:videoKey])
         {
+            DDLogDebug(@"FOUND post with timestamp: %@ and video key: %@", timestamp, videoKey);
+            
             [self uploadPostWithTimestamp:timestamp withVideoData:videoData];
-            [self videoPostReadyToUpload];
+//            [self videoPostReadyToUpload];
             
         }
     }
     
 }
 
-- (void)videoPostAlreadyProcessedWithVideoData:(NSDictionary *)videoData
+- (void)videoPostWithId:(NSNumber *)videoId alreadyProcessedWithVideoData:(NSDictionary *)videoData
 {
     _videoProcessed = YES;
-    _tempVideoData = videoData;
+    
+    [_tempVideoData setObject:videoData forKey:videoId];
+    
+//    _tempVideoData = videoData;
 }
 
 - (void)videoPostReadyToUpload
 {
     _videoProcessed = NO;
-    _tempVideoData = nil;
+    [_tempVideoData removeAllObjects];
 }
 
 

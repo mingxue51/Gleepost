@@ -356,8 +356,6 @@ static GLPVideoLoaderManager *instance = nil;
 {
     NSArray *videoVisiblePosts = [self videoPostsWithPosts:visiblePosts];
     
-
-    
     DDLogDebug(@"Visible video posts: %@", videoVisiblePosts);
     
     //Call videoWithRemoteKey and post notification to cell.

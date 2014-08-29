@@ -155,7 +155,7 @@
 
 -(void)uploadVideo:(NSString *)videoPath withTimestamp:(NSDate*)timestamp
 {
-    //Add image and timestamp to the pending NSDictionary.
+    //Add vido path and timestamp to the pending NSDictionary.
     [_pendingVideosPaths setObject:videoPath forKey:timestamp];
     
     //Add timestamp to NSArray.
@@ -189,6 +189,13 @@
     
     NSString *videoPath = [_pendingVideosPaths objectForKey:timestamp];
     
+    if(!videoPath)
+    {
+        DDLogError(@"Video path doesn't exist abort video uploading.");
+        return;
+    }
+    
+    
     __block NSData *videoData;
     
     
@@ -211,38 +218,38 @@
 
 -(void)uploadVideoWithVideoData:(NSData *)videoData withTimestamp:(NSDate *)timestamp
 {
-//    __block BOOL finished = NO;
-//    __block NSString *videoUrlSend = nil;
     
-    [[GLPProgressManager sharedInstance] registerVideoWithTimestamp:timestamp];
+//    [[GLPProgressManager sharedInstance] registerVideoWithTimestamp:timestamp];
     
     if (videoData)
     {
-        [[WebClient sharedInstance] uploadVideoWithData:videoData callback:^(BOOL success, NSNumber *videoId) {
+        [[WebClient sharedInstance] uploadVideoWithData:videoData withTimestamp:timestamp callback:^(BOOL success, NSNumber *videoId) {
            
-            if (success)
+            if(success)
             {
-//                finished = success;
-                
-                if(success)
+                @synchronized(_pendingVideosPaths)
                 {
-                    @synchronized(_pendingVideosPaths)
+                    NSString *path = [_pendingVideosPaths objectForKey:timestamp];
+                    
+                    if(!path)
                     {
-                        [_pendingVideosPaths removeObjectForKey:timestamp];
+                        DDLogError(@"Video dismissed by the user with timestamp: %@ video id: %@", timestamp, videoId);
+                        
+                        return;
                     }
                     
-                    
-                    
-                    //Add image url
-                    [self updateVideoToDictionary:videoId withTimestamp:timestamp];
-                    
-                    NSLog(@"Video id after uploaded: %@", videoId);
+                    [_pendingVideosPaths removeObjectForKey:timestamp];
                 }
                 
+                
+                //Add video id.
+                [self updateVideoToDictionary:videoId withTimestamp:timestamp];
+                
+                DDLogInfo(@"Video id after uploaded: %@", videoId);
             }
             else
             {
-                NSLog(@"Error occured. Post image cannot be uploaded.");
+                DDLogError(@"Error occured. Video cannot be uploaded.");
                 self.networkAvailable = NO;
             }
             
@@ -321,9 +328,16 @@
  */
 -(void)cancelVideoWithTimestamp:(NSDate *)timestamp
 {
+    DDLogInfo(@"Cancel video with timestamp: %@", timestamp);
+    
     [_pendingVideosPaths removeObjectForKey:timestamp];
     [_uploadedVideosIds removeObjectForKey:timestamp];
     [_pendingTimestamps removeObject:timestamp];
+}
+
+- (void)printVideoUploadedIds
+{
+    DDLogDebug(@"printVideoUploadedIds: %@", _uploadedVideosIds);
 }
 
 @end

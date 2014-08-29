@@ -80,7 +80,7 @@ static GLPVideoUploadManager *instance = nil;
     
     for(NSDate* t in [_postUploader pendingPosts])
     {
-        DDLogInfo(@"Pending posts: %@", [_postUploader pendingPosts]);
+        DDLogInfo(@"Pending posts in checkForPostUpload: %@", [_postUploader pendingPosts]);
 
         
 //        NSString *url = [_videoUploader urlWithTimestamp:t];
@@ -140,6 +140,12 @@ static GLPVideoUploadManager *instance = nil;
     return YES;
 }
 
+- (void)cancelVideoWithTimestamp:(NSDate *)timestamp
+{
+    //Remove image from progress of uploading.
+    [_videoUploader cancelVideoWithTimestamp:timestamp];
+}
+
 /**
  Starts a timer to check every specific interval of seconds
  if there is any video post that is not created (not by user but by the app)
@@ -167,6 +173,8 @@ static GLPVideoUploadManager *instance = nil;
         return;
     }
     
+    //TODO: Duplications fixed. But we need tests.
+    
     _checkingForPendingVideoPosts = YES;
     
     //Check if there are pending video posts.
@@ -175,6 +183,14 @@ static GLPVideoUploadManager *instance = nil;
         DDLogDebug(@"Video pending posts: %@", videoPosts);
         
         _checkingForPendingVideoPosts = NO;
+        
+        if([_postUploader isVideoProcessed])
+        {
+            DDLogInfo(@"Check for non uploaded video posts abord. A video already processed.");
+            
+            return;
+        }
+        
 
         if(videoPosts.count > 0)
         {
@@ -225,7 +241,11 @@ static GLPVideoUploadManager *instance = nil;
     
 //    NSDictionary *data = @{@"remoteKey": [NSNumber numberWithInteger:remoteKey], @"thumbnailUrl" : thumbUrl, @"videoUrl" : videoUrl};
     
+    [_videoUploader printVideoUploadedIds];
+    
     [_postUploader uploadPostWithVideoData:data];
+    
+    
     
     
 //    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_PROCESSED object:self userInfo:data];

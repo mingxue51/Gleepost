@@ -1721,7 +1721,7 @@ static WebClient *instance = nil;
     [self enqueueHTTPRequestOperation:operation];
 }
 
-- (void)uploadVideoWithData:(NSData *)videoData callback:(void (^)(BOOL success, NSNumber *videoId))callback
+- (void)uploadVideoWithData:(NSData *)videoData withTimestamp:(NSDate *)timestamp callback:(void (^)(BOOL success, NSNumber *videoId))callback
 {
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"videos" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
@@ -1736,12 +1736,18 @@ static WebClient *instance = nil;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+//        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        
+        NSMutableDictionary *finalDictNotifiation = [[NSMutableDictionary alloc] init];
         
         NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
         
+        [finalDictNotifiation setObject:progressData forKey:@"update"];
+        
+        [finalDictNotifiation setObject:timestamp forKey:@"timestamp"];
+        
         //Inform GLPProgressManager.
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:@{@"Update" : progressData}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotifiation];
         
     }];
     

@@ -20,4 +20,7 @@
 
 -(void)cancelVideoWithTimestamp:(NSDate *)timestamp;
 
+
+- (void)printVideoUploadedIds;
+
 @end

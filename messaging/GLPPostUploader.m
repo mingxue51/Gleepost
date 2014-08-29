@@ -16,6 +16,7 @@
 #import "GLPPostOperationManager.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPVideo.h"
+#import "GLPProgressManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -87,7 +88,15 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 
 -(void)uploadVideoInPath:(NSString *)path
 {
+    if(timestamp)
+    {
+        [[GLPVideoUploadManager sharedInstance] cancelVideoWithTimestamp:timestamp];
+    }
+    
     timestamp = [NSDate date];
+    
+    DDLogDebug(@"LAST TIMESTAMP: %@", timestamp);
+    
     _videoPath = path;
     
     [[GLPVideoUploadManager sharedInstance] uploadVideo:path withTimestamp:timestamp];
@@ -99,6 +108,11 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
  */
 -(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title
 {
+    //Register the timestamp in order to avoid problems when a video selected and then unselected.
+    [[GLPProgressManager sharedInstance] registerVideoWithTimestamp:timestamp];
+
+    DDLogDebug(@"REGISTERED TIMESTAMP: %@", timestamp);
+
     //Add the date to a new post.
     GLPPost *post = [[GLPPost alloc] init];
     post.content = content;

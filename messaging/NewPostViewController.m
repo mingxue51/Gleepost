@@ -326,18 +326,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)postButtonClick:(id)sender
 {
-    //TODO:Check if the lenght of the text views is out of bounds.
-    
     if ([self isInformationValidInElements]) {
-//        [self.delegate setNavigationBarName];
-//        [self.delegate setButtonsToNavigationBar];
         
         [self.contentTextView resignFirstResponder];
         
         
-//        GLPPost* inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:[[NSArray alloc] initWithObjects:_chosenCategory, nil]];
         GLPPost* inPost = nil;
-        
         
         [[PendingPostManager sharedInstance] readyToSend];
         NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
