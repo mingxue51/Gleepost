@@ -220,7 +220,7 @@ const float TOP_OFFSET = 180.0f;
         
     }
     
-    [self reloadVisibleCells];
+//    [self reloadVisibleCells];
 
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -1149,9 +1149,10 @@ const float TOP_OFFSET = 180.0f;
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
-        
+
         if(!success) {
 //            [self showLoadingError:@"Failed to load new posts"];
+            
             return;
         }
         
@@ -1188,6 +1189,8 @@ const float TOP_OFFSET = 180.0f;
             
             [self addFooterIfNeeded];
         }
+        
+
     }];
 }
 
@@ -1215,6 +1218,7 @@ const float TOP_OFFSET = 180.0f;
         if(!success) {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self reloadLoadingCell];
+
             return;
         }
         
@@ -1241,6 +1245,7 @@ const float TOP_OFFSET = 180.0f;
         } else {
             [self reloadLoadingCell];
         }
+        
     }];
 }
 
@@ -1758,8 +1763,18 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    
+    DDLogDebug(@"scrollViewDidEndDecelerating1 did scroll: %f", scrollView.contentOffset.y);
+    
     if(self.posts.count == 0)
     {
+        return;
+    }
+    //|| scrollView.contentOffset.y < 0
+    if(self.isLoading )
+    {
+        DDLogDebug(@"scrollViewDidEndDecelerating1 is loading abort.");
+        
         return;
     }
     
@@ -1779,8 +1794,18 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
+
     if(decelerate == 0)
     {
+        //|| scrollView.contentOffset.y < 0
+        if(self.isLoading )
+        {
+            DDLogDebug(@"scrollViewDidEndDragging2 is loading abort.");
+            
+            return;
+        }
+        
         NSArray *visiblePosts = [self snapshotVisibleCells];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
@@ -1955,6 +1980,8 @@ const float TOP_OFFSET = 180.0f;
             [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
         }
         
+        DDLogDebug(@"Dequeue cell");
+        
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
 //    else if ([post isVideoPost])
@@ -1982,6 +2009,23 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    if(self.isLoading)
+//    {
+//        DDLogDebug(@"didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+//
+//        return;
+//    }
+    
+    if(indexPath.row >= _posts.count)
+    {
+        //TODO: If this contition is YES then the app is going to crash.
+        //That's why we have a temporary return.
+        
+        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+
+        return;
+    }
+    
     GLPPost *post = _posts[indexPath.row];
     
     if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
@@ -2036,8 +2080,6 @@ const float TOP_OFFSET = 180.0f;
         
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
-
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

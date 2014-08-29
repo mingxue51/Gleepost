@@ -29,6 +29,8 @@
 @property (assign, nonatomic) NSInteger remoteKey;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
+@property (assign, nonatomic) BOOL registeredNotifications;
+
 //@property (assign, nonatomic, getter = hasVideoStarted) BOOL videoStarted;
 
 @property (strong, nonatomic) GLPPost *post;
@@ -73,6 +75,8 @@
         _post = post;
         
         [self loadThumbnail];
+        
+//        [self deregisterNotifications];
         
         [self registerNotifications];
         
@@ -161,6 +165,13 @@
         
     }
 
+}
+
+- (void)dealloc
+{
+    DDLogDebug(@"DEALLOC: %@", _post.content);
+    
+    [self deregisterNotifications];
 }
 
 
@@ -257,20 +268,32 @@
 
 - (void)registerNotifications
 {
-    DDLogDebug(@"Register notifications for post: %@", _post.content);
-//
+    if(_previewVC)
+    {
+        DDLogDebug(@"Abort registering notifications for post: %@", _post.content);
+        
+        return;
+    }
+    
+    DDLogDebug(@"Register notifications for post: %@ RegNotVar: %d", _post.content, _registeredNotifications);
+    
+    _registeredNotifications = YES;
+
+
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_READY, (long)_post.remoteKey];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadedFromNotification:) name:notificationName object:nil];
     
-    //
+    
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoaded) name:GLPNOTIFICATION_VIDEO_LOADED object:nil];
 }
 
 - (void)deregisterNotifications
 {
+    DDLogDebug(@"Deregister Notifications: %@ RegNotVar: %d", _post.content, _registeredNotifications);
     
-    DDLogDebug(@"Deregister Notifications: %@", _post.content);
+    _registeredNotifications = NO;
+
     
     _previewVC = nil;
 //    DDLogDebug(@"Deregister notifications for post: %@", _post.content);

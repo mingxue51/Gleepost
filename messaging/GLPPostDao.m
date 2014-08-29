@@ -449,23 +449,19 @@
     
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
-    BOOL postUdpated;
-    
-        postUdpated = [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d where remoteKey=%d",
-                     entity.content,
-                     date,
-                     entity.likes,
-                     entity.dislikes,
-                     entity.commentsCount,
-                     entity.sendStatus,
-                     entity.author.remoteKey,
-                     entity.liked,
-                     entity.attended,
-                     entity.eventTitle,
-                     eventDate,
-                     entity.remoteKey];
-    
-    DDLogDebug(@"Post updated with success %d, %@", postUdpated, entity.content);
+    [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d where remoteKey=%d",
+     entity.content,
+     date,
+     entity.likes,
+     entity.dislikes,
+     entity.commentsCount,
+     entity.sendStatus,
+     entity.author.remoteKey,
+     entity.liked,
+     entity.attended,
+     entity.eventTitle,
+     eventDate,
+     entity.remoteKey];
 }
 
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
