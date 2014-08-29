@@ -96,6 +96,8 @@
 
 @property (assign, nonatomic) BOOL isPostFromNotifications;
 
+@property (assign, nonatomic) NSInteger currentNumberOfPN;
+
 @end
 
 
@@ -195,6 +197,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
     
+    
+
 //    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
 //    {
 //        [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -220,6 +224,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPNCount" object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -258,6 +265,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePushNotification:) name:@"GLPPNCount" object:nil];
 }
 
 //-(void)setUpNoMoreMessage
@@ -278,6 +287,15 @@
 //    
 //    
 //    [self removeTableViewPostWithIndex:index];
+}
+
+- (void)updatePushNotification:(NSNotification *)notification
+{
+    NSDictionary *d = notification.userInfo;
+    
+    _currentNumberOfPN =  [d[@"pnCount"] integerValue];
+    
+    [self refreshCellViewWithIndex:0];
 }
 
 #pragma mark - Configuration
@@ -410,6 +428,8 @@
     _emptyNotificationsMessage = [[EmptyMessage alloc] initWithText:@"You have no notifications" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
     _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    
+    _currentNumberOfPN = 0;
     
 }
 
@@ -1143,6 +1163,8 @@
         
         [profileView setDelegate:self];
         [profileView comesFromPushNotification:_fromPushNotification];
+        /** Set for test purposes */
+        [profileView setNumberOfRsvps:_currentNumberOfPN];
         
         if(_fromPushNotification)
         {

@@ -92,6 +92,21 @@
     return result;
 }
 
++ (NSInteger)findPostKeyByRemoteKey:(NSInteger)remoteKey inDB:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where remoteKey=%d limit 1", remoteKey];
+    
+    NSInteger postKey = -1;
+    
+    if([resultSet next]) {
+        GLPPost *p = [GLPPostDaoParser createFromResultSet:resultSet inDb:db];
+        postKey = p.key;
+    }
+    
+    return postKey;
+    
+}
+
 + (NSArray *)findAllPendingPostsWithVideosInDb:(FMDatabase *)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = %d", kSendStatusLocal];
@@ -206,6 +221,17 @@
 
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
+    NSInteger postKey = [GLPPostDao findPostKeyByRemoteKey:entity.remoteKey inDB:db];
+    
+    if(postKey != -1)
+    {
+        entity.key = postKey;
+        //Update post.
+        [GLPPostDao updatePost:entity inDb:db];
+        
+        return;
+    }
+    
     int date = [entity.date timeIntervalSince1970];
     
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
@@ -213,7 +239,7 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"replace into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -226,7 +252,7 @@
                      entity.eventTitle,
                      eventDate];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"replace into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -244,7 +270,7 @@
     
     entity.key = [db lastInsertRowId];
     
-    DDLogDebug(@"Post saved with status: %d and content: %@", entity.sendStatus, entity.content);
+//    DDLogDebug(@"Post saved with status: %d and content: %@ and key: %ld", entity.sendStatus, entity.content, (long)entity.key);
     
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];
@@ -296,7 +322,7 @@
               entity.video.thumbnailUrl,
               -1];
     
-    DDLogDebug(@"Video data inserted (status sent): %d : %@", s, entity.video);
+    DDLogDebug(@"Video data replaced (status %d): %d : %@ : post key: %ld", entity.sendStatus, s, entity.video, (long)entity.key);
 }
 
 + (void)insertVideoWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
@@ -319,7 +345,7 @@
 //                  entity.video.thumbnailUrl,
 //                  [entity.video.pendingKey intValue]];
     
-        DDLogDebug(@"Video data inserted (status local): %d : %@, POST: %@", s, entity.video, entity);
+        DDLogDebug(@"Video data inserted (status local): %d : %@, post key: %ld", s, entity.video, (long)entity.key);
 //    }
 //    else
 //    {
@@ -413,6 +439,33 @@
         category.postRemoteKey = entity.remoteKey;        
         [GLPCategoryDao saveCategoryIfNotExist:category db:db];
     }
+}
+
++ (void)updatePost:(GLPPost *)entity inDb:(FMDatabase *)db
+{
+    NSAssert(entity.remoteKey != 0, @"Update entity without remote key");
+
+    int date = [entity.date timeIntervalSince1970];
+    
+    int eventDate = [entity.dateEventStarts timeIntervalSince1970];
+    
+    BOOL postUdpated;
+    
+        postUdpated = [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d where remoteKey=%d",
+                     entity.content,
+                     date,
+                     entity.likes,
+                     entity.dislikes,
+                     entity.commentsCount,
+                     entity.sendStatus,
+                     entity.author.remoteKey,
+                     entity.liked,
+                     entity.attended,
+                     entity.eventTitle,
+                     eventDate,
+                     entity.remoteKey];
+    
+    DDLogDebug(@"Post updated with success %d, %@", postUdpated, entity.content);
 }
 
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db

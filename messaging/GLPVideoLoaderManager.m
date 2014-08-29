@@ -397,7 +397,14 @@ static GLPVideoLoaderManager *instance = nil;
 
 //    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:notificationName object:self userInfo:@{@(remoteKey): videoVC}];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:@{@(remoteKey): videoVC}];
+    if(!videoVC)
+    {
+        return;
+    }
+    
+    NSDictionary *videoViewData = [[NSDictionary alloc] initWithObjectsAndKeys:videoVC, @(remoteKey), nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:videoViewData];
 }
 
 /**
