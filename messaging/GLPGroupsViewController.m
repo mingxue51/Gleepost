@@ -18,6 +18,7 @@
 #import "UIViewController+GAI.h"
 #import "ImageFormatterHelper.h"
 #import "IntroNewGroupViewController.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GLPGroupsViewController ()
 
@@ -412,6 +413,10 @@
 
 #pragma mark - Client methods
 
+//TODO: This method should be changed. We shoud unified the loading
+//by introducing new approach of managing pending group etc.
+//See more: https://www.pivotaltracker.com/story/show/77912494
+
 -(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
 {
     if(createdGroup)
@@ -422,39 +427,55 @@
         
         [_groups addObject:createdGroup];
         [_filteredGroups addObject:createdGroup];
+        
+        DDLogInfo(@"Load groups with pending group: %@", createdGroup);
+        
+        
+        [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
+            
+            _groups = groups.mutableCopy;
+            _filteredGroups = groups.mutableCopy;
+            
+            [_collectionView reloadData];
+            
+            
+            
+        } remoteCallback:^(BOOL success, NSArray *groups) {
+            
+            if(!success)
+            {
+                return;
+            }
+            
+            _groups = groups.mutableCopy;
+            _filteredGroups = groups.mutableCopy;
+            
+            [_collectionView reloadData];
+            
+        }];
+    }
+    else
+    {
+        [[GLPLiveGroupManager sharedInstance] loadGroupsWithLiveCallback:^(NSArray *groups) {
+            _groups = groups.mutableCopy;
+            _filteredGroups = groups.mutableCopy;
+            
+            [_collectionView reloadData];
+            
+        } remoteCallback:^(BOOL success, NSArray *remoteGroups) {
+           
+            if(success)
+            {
+                _groups = remoteGroups.mutableCopy;
+                _filteredGroups = remoteGroups.mutableCopy;
+                
+                [_collectionView reloadData];
+            }
+            
+        }];
     }
     
-    DDLogDebug(@"Load groups with group: %@", createdGroup);
-    
-    
-    [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
-        
-        _groups = groups.mutableCopy;
-        _filteredGroups = groups.mutableCopy;
-        
-//        [self showGroups];
 
-        
-        [_collectionView reloadData];
-        
-
-        
-    } remoteCallback:^(BOOL success, NSArray *groups) {
-        
-        if(!success)
-        {
-            return;
-        }
-        
-        _groups = groups.mutableCopy;
-        _filteredGroups = groups.mutableCopy;
-
-//        [self showGroups];
-        
-        
-        [_collectionView reloadData];
-        
-    }];
 }
 
 #pragma mark - UI loaders

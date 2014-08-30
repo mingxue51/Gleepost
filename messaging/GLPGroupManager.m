@@ -16,7 +16,6 @@
 
 @implementation GLPGroupManager
 
-
 #pragma mark - Groups methods
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback
@@ -38,7 +37,7 @@
     
     [localEntities addObjectsFromArray:pendingGroups];
     
-    localEntities = [GLPGroupManager orderMembersByNameWithMembers:localEntities].mutableCopy;
+//    localEntities = [GLPGroupManager orderMembersByNameWithMembers:localEntities].mutableCopy;
     
     
     
@@ -70,7 +69,7 @@
         
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
         
-        finalRemoteGroups = [GLPGroupManager orderMembersByNameWithMembers:finalRemoteGroups].mutableCopy;
+//        finalRemoteGroups = [GLPGroupManager orderMembersByNameWithMembers:finalRemoteGroups].mutableCopy;
 
         
         remoteCallback(YES, finalRemoteGroups);

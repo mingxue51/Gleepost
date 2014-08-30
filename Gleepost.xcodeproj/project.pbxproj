@@ -341,6 +341,7 @@
 		5866F16B1884529A007484CF /* hills.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16A1884529A007484CF /* hills.png */; };
 		5866F16D188452F1007484CF /* hills_night.png in Resources */ = {isa = PBXBuildFile; fileRef = 5866F16C188452F1007484CF /* hills_night.png */; };
 		5867FF5918B64D320080AD9D /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5867FF5818B64D320080AD9D /* CopyLabel.m */; };
+		586A6F9B19B1485500664017 /* GLPLiveGroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */; };
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
@@ -1363,6 +1364,8 @@
 		5866F16C188452F1007484CF /* hills_night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hills_night.png; sourceTree = "<group>"; };
 		5867FF5718B64D320080AD9D /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
 		5867FF5818B64D320080AD9D /* CopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyLabel.m; sourceTree = "<group>"; };
+		586A6F9919B1485500664017 /* GLPLiveGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveGroupManager.h; sourceTree = "<group>"; };
+		586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveGroupManager.m; sourceTree = "<group>"; };
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
@@ -3654,6 +3657,8 @@
 				58B90F1818C81B9300FA0955 /* GroupOperationManager.m */,
 				58B90F1D18C8216200FA0955 /* GroupUploaderManager.h */,
 				58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */,
+				586A6F9919B1485500664017 /* GLPLiveGroupManager.h */,
+				586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */,
 			);
 			name = Groups;
 			sourceTree = "<group>";
@@ -5576,6 +5581,7 @@
 				58F2950819355A2F00A638BA /* TDNavigationCategories.m in Sources */,
 				58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */,
 				58CB2728194B892800864C28 /* SKBounceAnimation.m in Sources */,
+				586A6F9B19B1485500664017 /* GLPLiveGroupManager.m in Sources */,
 				5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */,
 				58E1E5F11926285E007ACB4F /* MainPostView.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
