@@ -73,6 +73,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     
     [_groupDescription setText:_groupData.groupDescription];
     
+    
     if(groupData.finalImage)
     {
         [_groupImage setImage:groupData.finalImage];

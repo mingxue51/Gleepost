@@ -251,6 +251,8 @@ const float TOP_OFFSET = 180.0f;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self stopReloadingCron];
+    
+    [super viewDidDisappear:animated];
 }
 
 //- (BOOL)prefersStatusBarHidden
@@ -883,6 +885,8 @@ const float TOP_OFFSET = 180.0f;
     [self.campusWallHeader setDelegate:self];
     
     self.tableView.tableHeaderView = self.campusWallHeader;
+    
+    [self.campusWallHeader reloadData];
     
    
     [self.navigationController.navigationBar addSubview:[[GLPProgressManager sharedInstance] progressView]];
