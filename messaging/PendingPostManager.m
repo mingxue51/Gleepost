@@ -48,6 +48,8 @@ static PendingPostManager *instance = nil;
     {
         _categories = [[NSMutableArray alloc] init];
         _pendingData = NO;
+        _eventDescription = @"";
+        _eventTitle = @"";
     }
     
     return self;
@@ -70,6 +72,8 @@ static PendingPostManager *instance = nil;
 - (void)setCategory:(GLPCategory *)category
 {
     _pendingData = YES;
+    
+    DDLogDebug(@"Category added: %@", category.name);
 
     _categories = [[NSMutableArray alloc] initWithObjects:category, nil];
 }
@@ -98,6 +102,9 @@ static PendingPostManager *instance = nil;
 - (void)reset
 {
     instance = [[PendingPostManager alloc] init];
+    
+    DDLogDebug(@"PendingPostManager reseted: %@", [self description]);
+
 }
 
 - (void)readyToSend

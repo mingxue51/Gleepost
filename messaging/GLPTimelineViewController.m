@@ -329,8 +329,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -435,6 +435,8 @@ const float TOP_OFFSET = 180.0f;
     GLPPost *inPost = data[@"final_post"];
     
 //    NSInteger postIndex = -1;
+    
+    DDLogDebug(@"New video post received in campus wall: %@", inPost);
     
     [self reloadNewVideoPost:inPost];
     
@@ -595,10 +597,10 @@ const float TOP_OFFSET = 180.0f;
     [[GLPProfileLoader sharedInstance] loadUserData];
     
     //TODO: Remove this later.
-    [[ContactsManager sharedInstance] refreshContacts];
+//    [[ContactsManager sharedInstance] refreshContacts];
     
     //Load groups' posts.
-    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
+//    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
 
 }
 
@@ -829,7 +831,7 @@ const float TOP_OFFSET = 180.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostWhenVideoIsReady:) name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostWhenVideoIsReady:) name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
     
 }
 

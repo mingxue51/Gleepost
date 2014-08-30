@@ -57,7 +57,7 @@
 
 #define GLPNOTIFICATION_RELOAD_DATA_IN_CW               @"GLPReloadDataInCW"
 
-#define GLPNOTIFICATION_VIDEO_PROCESSED                 @"GLPVideoProcessed"
+//#define GLPNOTIFICATION_VIDEO_PROCESSED                 @"GLPVideoProcessed"
 #define GLPNOTIFICATION_VIDEO_POST_READY                @"GLPVidePostReady"
 
 #define GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE           @"GLPVideoProgressUpdated"

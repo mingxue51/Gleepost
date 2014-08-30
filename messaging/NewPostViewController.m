@@ -328,14 +328,16 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     if ([self isInformationValidInElements]) {
         
-        [self.contentTextView resignFirstResponder];
         
+        [self.contentTextView resignFirstResponder];
         
         GLPPost* inPost = nil;
         
         [[PendingPostManager sharedInstance] readyToSend];
         NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
         
+        DDLogDebug(@"Post button clicked with event categories %@.", eventCategories);
+
         
         //Check if the post is group post or regular post.
         if([[PendingPostManager sharedInstance] isGroupPost])

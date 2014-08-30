@@ -179,8 +179,6 @@ static GLPVideoUploadManager *instance = nil;
     
     //Check if there are pending video posts.
     [GLPPostManager searchForPendingVideoPostCallback:^(NSArray *videoPosts) {
-       
-        DDLogDebug(@"Video pending posts: %@", videoPosts);
         
         _checkingForPendingVideoPosts = NO;
         
@@ -194,6 +192,8 @@ static GLPVideoUploadManager *instance = nil;
 
         if(videoPosts.count > 0)
         {
+            DDLogDebug(@"Video pending posts: %@", videoPosts);
+
             GLPPost *videoPost = [videoPosts objectAtIndex:0];
             
             NSNumber *videoKey = videoPost.video.pendingKey;

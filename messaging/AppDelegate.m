@@ -636,6 +636,14 @@ static int pnTestVariable = 0;
     [DDLog addLogger:ttyLogger];
 }
 
+- (void)redirectConsoleLogToDocumentFolder
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"console.log"];
+    freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+}
+
 
 + (UIBarButtonItem *)customBackButtonWithTarget:(id)target {
     UIButton *backButton =  [UIButton buttonWithType:UIButtonTypeCustom];
