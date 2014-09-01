@@ -45,4 +45,9 @@
     return range.location != NSNotFound;
 }
 
+- (BOOL)exceedsNumberOfCharacters:(NSInteger)noOfCharacters
+{
+    return self.length > noOfCharacters;
+}
+
 @end

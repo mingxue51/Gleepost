@@ -15,7 +15,8 @@ typedef enum
     kGLPMusic = 9,
     kGLPTheater = 10,
     kGLPSports = 11,
-    kGLPParties = 12
+    kGLPParties = 12,
+    kGLPOther = 13
     
 }GLPCategories;
 
@@ -27,7 +28,7 @@ typedef enum
 +(CategoryManager*)instance;
 
 -(GLPCategory*)categoryWithTag:(NSString*)tag;
--(GLPCategory*)categoryWithRemoteKey:(int)remoteKey;
+-(GLPCategory*)categoryWithOrderKey:(int)remoteKey;
 -(NSArray*)categoriesNames;
 -(NSArray*)categoriesTags;
 -(NSArray*)getCategories;

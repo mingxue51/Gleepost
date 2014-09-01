@@ -35,6 +35,7 @@
 #import "ContactsManager.h"
 #import "GLPProfileViewController.h"
 #import "FakeNavigationBarView.h"
+#import "IntroKindOfNewPostViewController.h"
 
 @interface GroupViewController ()
 
@@ -356,12 +357,15 @@ const float TOP_OFF_SET = -64.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:@"GLPPostImageUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1053,22 +1057,31 @@ const float TOP_OFF_SET = -64.0;
 
 #pragma mark - New Post Delegate
 
--(void)reloadNewImagePostWithPost:(GLPPost *)post
+-(void)reloadNewImagePostWithPost:(NSNotification *)notification
 {
-
-//    DDLogDebug(@"Is loading: %d", self.isLoading);
-    
     //TODO: REMOVED! IT'S IMPORTANT!
     
     //    if(self.isLoading) {
     //        return;
     //    }
     
-//    self.isLoading = YES;
+    //Get post from notification.
+    NSDictionary *notDictionary = notification.userInfo;
+    
+    GLPPost *inPost = [notDictionary objectForKey:@"new_post"];
+    
+    if(!inPost.group)
+    {
+        return;
+    }
+    
+    DDLogInfo(@"Reload post in GroupViewController: %@", inPost);
+    
+    self.isLoading = YES;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
         
-    NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
+    NSArray *posts = [[NSArray alloc] initWithObjects:inPost, nil];
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
     
@@ -1350,7 +1363,7 @@ const float TOP_OFF_SET = -64.0;
 }
 
 
-- (IBAction)createNewPost:(id)sender
+- (void)createNewPost:(id)sender
 {
     if(_group.remoteKey == 0)
     {
@@ -1359,10 +1372,19 @@ const float TOP_OFF_SET = -64.0;
         return;
     }
 
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+//    newPostVC.group = _group;
+//    [newPostVC setDelegate:self];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self presentViewController:navigationController animated:YES completion:nil];
+    
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+    IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
+    newPostVC.groupPost = YES;
     newPostVC.group = _group;
-    [newPostVC setDelegate:self];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];

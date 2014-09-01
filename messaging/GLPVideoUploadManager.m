@@ -12,6 +12,11 @@
 #import "GLPPostUploaderManager.h"
 #import "GLPiOS6Helper.h"
 #import "GLPVideoUploader.h"
+#import "NSNotificationCenter+Utils.h"
+#import "WebClient.h"
+#import "GLPPostManager.h"
+#import "GLPVideo.h"
+#import "GLPProgressManager.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -19,6 +24,8 @@
 @property (strong, nonatomic) GLPPostUploaderManager *postUploader;
 @property (strong, nonatomic) GLPVideoUploader *videoUploader;
 @property (strong, nonatomic) NSTimer *checkForUploadingTimer;
+@property (strong, nonatomic) NSTimer *checkForPendingVideoPostsTimer;
+@property (assign, nonatomic, getter = isCheckingForPendingVideoPosts) BOOL checkingForPendingVideoPosts;
 @property (assign, nonatomic) BOOL isNetworkAvailable;
 @end
 
@@ -55,9 +62,14 @@ static GLPVideoUploadManager *instance = nil;
     _videoUploader = [[GLPVideoUploader alloc] init];
     _checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForPostUpload:) userInfo:nil repeats:YES];
     
+    _checkForPendingVideoPostsTimer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(checkForNonUploadedVideoPosts) userInfo:nil repeats:YES];
+    
+    _checkingForPendingVideoPosts = NO;
+    
     if(![GLPiOS6Helper isIOS6])
     {
         [_checkForUploadingTimer setTolerance:5.0f];
+        [_checkForPendingVideoPostsTimer setTolerance:10.0f];
     }
 }
 
@@ -65,23 +77,30 @@ static GLPVideoUploadManager *instance = nil;
 
 -(void)checkForPostUpload:(id)sender
 {
-    DDLogDebug(@"checkForPostUpload - Video");
     
     for(NSDate* t in [_postUploader pendingPosts])
     {
-        NSString *url = [_videoUploader urlWithTimestamp:t];
+        DDLogInfo(@"Pending posts in checkForPostUpload: %@", [_postUploader pendingPosts]);
+
         
-        DDLogInfo(@"Ready video URL: %@",url);
+//        NSString *url = [_videoUploader urlWithTimestamp:t];
+        NSNumber *videoId = [_videoUploader videoKeyWithTimestamp:t];
+
         
-        if(url)
+        
+        if(videoId)
         {
-            DDLogInfo(@"Post ready for upload!");
+            //If video id received it means that we need to wait until we get web socket
+            //event (so until video is processed).
+            DDLogInfo(@"Video uploaded with key %@, waiting for web socket event", videoId);
+
             
             //Post ready for uploading.
-            [_postUploader uploadPostWithTimestamp:t andVideoUrl:url];
+//            [_postUploader uploadPostWithTimestamp:t andVideoId:videoId];
+            [_postUploader prepareVideoPostForUploadWithTimestamp:t andVideoId:videoId];
             
-            //Remove url from the Image Operation.
-            [_videoUploader removeUrlWithTimestamp:t];
+            //Remove id from the Video Operation.
+            [_videoUploader removeVideoIdWithTimestamp:t];
         }
         else
         {
@@ -93,7 +112,7 @@ static GLPVideoUploadManager *instance = nil;
 
 -(void)uploadVideo:(NSString*)videoPath withTimestamp:(NSDate*)timestamp
 {
-    //Upload image with timestasmp.
+    //Upload video with timestasmp.
     [_videoUploader uploadVideo:videoPath withTimestamp:timestamp];
     [_checkForUploadingTimer fire];
 }
@@ -121,6 +140,83 @@ static GLPVideoUploadManager *instance = nil;
     return YES;
 }
 
+- (void)cancelVideoWithTimestamp:(NSDate *)timestamp
+{
+    //Remove image from progress of uploading.
+    [_videoUploader cancelVideoWithTimestamp:timestamp];
+}
+
+/**
+ Starts a timer to check every specific interval of seconds
+ if there is any video post that is not created (not by user but by the app)
+ because the video is still pending.
+ 
+ */
+- (void)startCheckingForNonUploadedVideoPosts
+{
+    [_checkForPendingVideoPostsTimer fire];
+}
+
+- (void)checkForNonUploadedVideoPosts
+{
+    if([self isCheckingForPendingVideoPosts])
+    {
+        DDLogInfo(@"Can't check for non uploaded video posts, is already checking.");
+
+        return;
+    }
+    
+    if([[GLPProgressManager sharedInstance] isProgressViewVisible])
+    {
+        DDLogInfo(@"Can't check for non uploaded video posts, progress view visible");
+        
+        return;
+    }
+    
+    //TODO: Duplications fixed. But we need tests.
+    
+    _checkingForPendingVideoPosts = YES;
+    
+    //Check if there are pending video posts.
+    [GLPPostManager searchForPendingVideoPostCallback:^(NSArray *videoPosts) {
+        
+        _checkingForPendingVideoPosts = NO;
+        
+        if([_postUploader isVideoProcessed])
+        {
+            DDLogInfo(@"Check for non uploaded video posts abord. A video already processed.");
+            
+            return;
+        }
+        
+
+        if(videoPosts.count > 0)
+        {
+            DDLogDebug(@"Video pending posts: %@", videoPosts);
+
+            GLPPost *videoPost = [videoPosts objectAtIndex:0];
+            
+            NSNumber *videoKey = videoPost.video.pendingKey;
+            
+            [[WebClient sharedInstance] checkForReadyVideoWithPendingVideoKey:videoKey callback:^(BOOL success, GLPVideo *result) {
+                
+                if(success)
+                {
+                    DDLogDebug(@"Pending video result: %@", result);
+                    
+                    videoPost.video = result;
+                    
+                    [_postUploader uploadVideoPost:videoPost];
+                }
+                
+            }];
+        }
+    }];
+    
+
+}
+
+
 #pragma mark - Modifiers
 
 -(void)setPost:(GLPPost *)post withTimestamp:(NSDate *)timestamp
@@ -128,7 +224,31 @@ static GLPVideoUploadManager *instance = nil;
     [_postUploader addPost:post withTimestamp:timestamp];
 }
 
+#pragma mark - Notification manager
 
 
+/**
+ Sends a notification with video's thumbnail and url.
+ 
+ @param remoteKey post's remote key.
+ @param thumbUrl video's thumbnail.
+ @param videoUrl video's url.
+ 
+ */
+- (void)refreshVideoPostInCampusWallWithData:(NSDictionary *)data
+{
+    DDLogInfo(@"GLPVideoUploadManager : Video processed with data: %@", data);
+    
+//    NSDictionary *data = @{@"remoteKey": [NSNumber numberWithInteger:remoteKey], @"thumbnailUrl" : thumbUrl, @"videoUrl" : videoUrl};
+    
+    [_videoUploader printVideoUploadedIds];
+    
+    [_postUploader uploadPostWithVideoData:data];
+    
+    
+    
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_PROCESSED object:self userInfo:data];
+}
 
 @end

@@ -16,6 +16,8 @@
  
  This class is used by SetEventInformationCell and GLPSelectCategoryViewController classes.
  
+ This class is not used anymore.
+ 
  */
 
 typedef NS_ENUM(NSInteger, GLPPendingPostReady) {

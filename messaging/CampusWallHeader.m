@@ -65,7 +65,7 @@ NSString *BORING_IMAGE;
         [self initialiseObjects];
         
         
-        [self loadEvents];
+//        [self loadEvents];
         
         
         

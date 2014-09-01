@@ -59,6 +59,11 @@
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 #import "UIRefreshControl+CustomLoader.h"
+#import "IntroKindOfNewPostViewController.h"
+#import "GLPVideoUploadManager.h"
+#import "GLPProgressManager.h"
+#import "UploadingProgressView.h"
+#import "NewPostViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -113,11 +118,14 @@
 
 //Header.
 @property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
+@property (strong, nonatomic)  UploadingProgressView *pView;
 //@property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 //Groups.
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
 @property (assign, nonatomic) BOOL groupsMode;
+
+@property (assign, nonatomic, getter = isTableViewFirstTimeScrolled) BOOL tableViewFirstTimeScrolled;
 
 //Extra view will present to hide the change of background during the viewing of new post.
 //@property (strong, nonatomic) UIImageView *topImageView;
@@ -135,7 +143,7 @@
 @implementation GLPTimelineViewController
 
 //Constants.
-const float TOP_OFFSET = 280.0f;
+const float TOP_OFFSET = 180.0f;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -171,6 +179,10 @@ const float TOP_OFFSET = 280.0f;
     
     [self loadInitialPosts];
     
+    /** Check if there are pending video posts. */
+    [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
+    
+    [GLPProgressManager sharedInstance];
     
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
@@ -186,6 +198,7 @@ const float TOP_OFFSET = 280.0f;
     [self configNavigationBar];
     
     [self showNetworkErrorViewIfNeeded];
+    
     
 }
 
@@ -207,7 +220,7 @@ const float TOP_OFFSET = 280.0f;
         
     }
     
-    [self reloadVisibleCells];
+//    [self reloadVisibleCells];
 
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -226,6 +239,9 @@ const float TOP_OFFSET = 280.0f;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
+    
+    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    
     //Show navigation bar.
 //    [self contract];
 
@@ -235,6 +251,8 @@ const float TOP_OFFSET = 280.0f;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self stopReloadingCron];
+    
+    [super viewDidDisappear:animated];
 }
 
 //- (BOOL)prefersStatusBarHidden
@@ -295,6 +313,8 @@ const float TOP_OFFSET = 280.0f;
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
     
     _walkthroughFinished = NO;
+    
+    _tableViewFirstTimeScrolled = NO;
 }
 
 
@@ -308,6 +328,9 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPProfileImageChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -397,6 +420,90 @@ const float TOP_OFFSET = 280.0f;
 
 }
 
+/**
+ This method should be called when the post is uploaded (GLPPostUploaderManager).
+ 
+ In this case we just refresh the video post to remove the uploading indicator.
+ 
+ @param notification contains videoUrl, thumbnailUrl, key and remoteKey.
+ 
+ */
+- (void)updateVideoPostAfterCreatingThePost:(NSNotification *)notification
+{
+    NSDictionary *data = [notification userInfo];
+    
+    GLPPost *inPost = data[@"final_post"];
+    
+//    NSInteger postIndex = -1;
+    
+    DDLogDebug(@"New video post received in campus wall: %@", inPost);
+    
+    [self reloadNewVideoPost:inPost];
+    
+//    postIndex = [GLPPostNotificationHelper findPostIndexWithKey:inPost.key inPosts:self.posts];
+//    
+//    DDLogDebug(@"New video post index: %ld", (long)postIndex);
+//    
+//    if(postIndex == -1)
+//    {
+//        return;
+//    }
+//    
+//    GLPPost *pendingVideoPost = [self.posts objectAtIndex:postIndex];
+//    
+//    pendingVideoPost.remoteKey = inPost.remoteKey;
+//    
+//    DDLogDebug(@"Update video post: %@", pendingVideoPost.video);
+//    
+//    
+//    
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+}
+
+/**
+ This method should be called from Web Socket via (GLPVideoUploadManager) when the video is proccessed and ready.
+ 
+ The current notification may also be called before the creation of the post. 
+ TODO: In that case the thumbnailUrl and the videoUrl should be saved and once the video is ready,
+ add that data to the post.
+ 
+ TODO: This method is not used for now.
+ 
+ */
+- (void)updateVideoPostWhenVideoIsReady:(NSNotification *)notification
+{
+    NSDictionary *data = [notification userInfo];
+
+    NSInteger remoteKey = [[data objectForKey:@"id"] integerValue];
+    
+    NSArray *thumbnails = [data objectForKey:@"thumbnails"];
+    
+    NSString *thumbnailUrl = [thumbnails objectAtIndex:0];
+    
+    NSString *videoUrl = [data objectForKey:@"mp4"];
+    
+    DDLogDebug(@"Received ready video notification: %@ : %@", videoUrl, thumbnailUrl);
+    
+    NSInteger postIndex = [GLPPostNotificationHelper findPostIndexWithRemoteKey:remoteKey inPosts:self.posts];
+    
+    DDLogDebug(@"Index no: %ld, remote key: %ld", (long)postIndex, (long)remoteKey);
+    
+    if(postIndex == -1)
+    {
+        return;
+    }
+    
+    GLPPost *videoPost = [self.posts objectAtIndex:postIndex];
+    
+//    videoPost.videoThumbnail = thumbnailUrl;
+//    videoPost.videosUrls = [[NSArray alloc] initWithObjects:videoUrl, nil];
+    
+    DDLogDebug(@"Video of video post ready: %@", videoPost);
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 -(void)updateRealImage:(NSNotification*)notification
 {
     GLPPost *currentPost = nil;
@@ -480,6 +587,8 @@ const float TOP_OFFSET = 280.0f;
 
 /**
  Starts loading in the background some basic contents of the app like messages, profiles etc.
+ 
+ //Moved to GLPNetworkManager.
  */
 
 -(void)startLoadingContents:(id)sender
@@ -487,13 +596,15 @@ const float TOP_OFFSET = 280.0f;
     
     //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
     //[[GLPMessagesLoader sharedInstance] loadConversations];
-    [[GLPProfileLoader sharedInstance] loadUserData];
+//    [[GLPProfileLoader sharedInstance] loadUserData];
     
     //TODO: Remove this later.
-    [[ContactsManager sharedInstance] refreshContacts];
+//    [[ContactsManager sharedInstance] refreshContacts];
+    
+    
     
     //Load groups' posts.
-    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
+//    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
 
 }
 
@@ -719,6 +830,13 @@ const float TOP_OFFSET = 280.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollToTheNavigationBarFromNotification:) name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostWhenVideoIsReady:) name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
+    
 }
 
 - (void)configTableView
@@ -774,17 +892,10 @@ const float TOP_OFFSET = 280.0f;
     
     self.tableView.tableHeaderView = self.campusWallHeader;
     
-    //Add fake navigation bar to view.
-    //TODO: Remove the code.
-//    array = [[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBar" owner:self options:nil];
-//    
-//    self.reNavBar = [array objectAtIndex:0];
-//    [self.reNavBar formatElements];
-//    [self.reNavBar setDelegate:self];
-//    [self.tableView addSubview:self.reNavBar];
-//    [self.tableView bringSubviewToFront:self.reNavBar];
-//    
-//    [self.reNavBar setHidden:YES];
+    [self.campusWallHeader reloadData];
+    
+   
+    [self.navigationController.navigationBar addSubview:[[GLPProgressManager sharedInstance] progressView]];
 }
 
 - (void)configNewElementsIndicatorView
@@ -830,6 +941,12 @@ const float TOP_OFFSET = 280.0f;
     
     [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
 }
+
+//- (void)showProgressView
+//{
+//    [_pView resetView];
+//    [_pView setHidden:NO];
+//}
 
 
 /**
@@ -912,8 +1029,13 @@ const float TOP_OFFSET = 280.0f;
 
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
+
+            
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            
             [self.tableView reloadData];
+        
+
             
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
@@ -1037,9 +1159,10 @@ const float TOP_OFFSET = 280.0f;
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
-        
+
         if(!success) {
 //            [self showLoadingError:@"Failed to load new posts"];
+            
             return;
         }
         
@@ -1076,6 +1199,8 @@ const float TOP_OFFSET = 280.0f;
             
             [self addFooterIfNeeded];
         }
+        
+
     }];
 }
 
@@ -1103,6 +1228,7 @@ const float TOP_OFFSET = 280.0f;
         if(!success) {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
             [self reloadLoadingCell];
+
             return;
         }
         
@@ -1129,6 +1255,7 @@ const float TOP_OFFSET = 280.0f;
         } else {
             [self reloadLoadingCell];
         }
+        
     }];
 }
 
@@ -1369,7 +1496,16 @@ const float TOP_OFFSET = 280.0f;
     }
 }
 
--(void)reloadNewImagePostWithPost:(GLPPost*)inPost
+/**
+ Notification method. 
+ This method is called to reload the non-uploaded post in order to be visible
+ to user while uploading.
+ 
+ @param notification contains the post's data.
+ 
+ */
+//-(void)reloadNewImagePostWithPost:(GLPPost*)inPost
+-(void)reloadNewImagePostWithPost:(NSNotification *)notification
 {
     //TODO: REMOVED! IT'S IMPORTANT!
     
@@ -1377,6 +1513,23 @@ const float TOP_OFFSET = 280.0f;
 //        return;
 //    }
     
+    //Get post from notification.
+    NSDictionary *notDictionary = notification.userInfo;
+    
+    GLPPost *inPost = [notDictionary objectForKey:@"new_post"];
+    
+    if(inPost.video != nil)
+    {
+        return;
+    }
+    
+    if(inPost.group)
+    {
+        return;
+    }
+    
+    DDLogInfo(@"Reload post in GLPTimelineViewController: %@", inPost);
+
     
     self.isLoading = YES;
     
@@ -1392,6 +1545,25 @@ const float TOP_OFFSET = 280.0f;
     self.isLoading = NO;
     //Bring the fake navigation bar to from because is hidden by new cell.
 //    [self.tableView bringSubviewToFront:self.reNavBar];
+
+}
+
+- (void)reloadNewVideoPost:(GLPPost *)post
+{
+    DDLogInfo(@"Reload new video post in GLPTimelineViewController: %@", post);
+    
+    self.isLoading = YES;
+    
+    //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
+    
+    [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+    
+    [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+    
+    
+    self.isLoading = NO;
 
 }
 
@@ -1601,8 +1773,18 @@ const float TOP_OFFSET = 280.0f;
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    
+    DDLogDebug(@"scrollViewDidEndDecelerating1 did scroll: %f", scrollView.contentOffset.y);
+    
     if(self.posts.count == 0)
     {
+        return;
+    }
+    //|| scrollView.contentOffset.y < 0
+    if(self.isLoading )
+    {
+        DDLogDebug(@"scrollViewDidEndDecelerating1 is loading abort.");
+        
         return;
     }
     
@@ -1612,15 +1794,39 @@ const float TOP_OFFSET = 280.0f;
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     
+    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    
+    
+    _tableViewFirstTimeScrolled = YES;
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
+
     if(decelerate == 0)
     {
+        //|| scrollView.contentOffset.y < 0
+        if(self.isLoading )
+        {
+            DDLogDebug(@"scrollViewDidEndDragging2 is loading abort.");
+            
+            return;
+        }
+        
         NSArray *visiblePosts = [self snapshotVisibleCells];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+        
+        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+
+        
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+        
+        _tableViewFirstTimeScrolled = YES;
+
     }
 }
 
@@ -1777,13 +1983,22 @@ const float TOP_OFFSET = 280.0f;
     }
     else if ([post isVideoPost])
     {
+//        [[GLPVideoLoaderManager sharedInstance] setVideoPost:post];
+        
+        if(indexPath.row != 0)
+        {
+            [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+        }
+        
+        DDLogDebug(@"Dequeue cell");
+        
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
 //    else if ([post isVideoPost])
 //    {
 //        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithVideo forIndexPath:indexPath];
 //        postCell.imageAvailable = YES;
-//
+//2
 //    }
     else
     {
@@ -1800,6 +2015,54 @@ const float TOP_OFFSET = 280.0f;
 //    [self.tableView bringSubviewToFront:self.reNavBar];
     
     return postCell;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    if(self.isLoading)
+//    {
+//        DDLogDebug(@"didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+//
+//        return;
+//    }
+    
+    if(indexPath.row >= _posts.count)
+    {
+        //TODO: If this contition is YES then the app is going to crash.
+        //That's why we have a temporary return.
+        
+        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+
+        return;
+    }
+    
+    GLPPost *post = _posts[indexPath.row];
+    
+    if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
+    {
+        DDLogDebug(@"%@ not subclass", [cell class]);
+        
+        return;
+        
+    }
+    
+    
+//    if(![self isTableViewFirstTimeScrolled])
+//    {
+//        return;
+//    }
+    
+    GLPPostCell *postCell = (GLPPostCell *)cell;
+    
+    if([post isVideoPost])
+    {
+        [postCell deregisterNotificationsInVideoView];
+    }
+    
+    
+//    [[GLPVideoLoaderManager sharedInstance] removeVideoPost:post];
+
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1827,8 +2090,6 @@ const float TOP_OFFSET = 280.0f;
         
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
-
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -2464,8 +2725,8 @@ const float TOP_OFFSET = 280.0f;
 //        [self presentViewController:vc animated:YES completion:nil];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-        [newPostVC setDelegate:self];
+        IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
+        newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
@@ -2489,7 +2750,7 @@ const float TOP_OFFSET = 280.0f;
         
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];
         vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
@@ -2681,30 +2942,6 @@ const float TOP_OFFSET = 280.0f;
         
         //self.selectedPost = nil;
         
-    } else if([segue.identifier isEqualToString:@"new post"])
-    {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        //TODO: See how to present from view controller.
-        
-        
-        NewPostViewController *vc = segue.destinationViewController;
-        
-        self.modalPresentationStyle = UIModalPresentationCurrentContext;
-        
-        
-        
-        //        self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        //[self presentViewController:vc animated:NO completion:nil];
-        
-        
-        //UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-        
-        //[self.navigationController presentModalViewController:navController animated:YES];
-        
-        //[self presentViewController:navController animated:YES completion:nil];
-        
-        vc.delegate = self;
     }
     else if([segue.identifier isEqualToString:@"new comment"])
     {

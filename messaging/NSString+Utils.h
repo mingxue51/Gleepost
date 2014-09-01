@@ -16,4 +16,6 @@
 - (BOOL)isNotEmpty;
 - (BOOL)isNotBlank;
 
+- (BOOL)exceedsNumberOfCharacters:(NSInteger)noOfCharacters;
+
 @end

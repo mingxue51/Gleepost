@@ -12,9 +12,9 @@
 #import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 #import "GLPPostCell.h"
-#import "NewPostViewController.h"
+//TODO: Change that to IntroKindOfNewPostViewController
 
-@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, NewPostDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
+@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
 
 @property BOOL readyToReloadPosts;
 

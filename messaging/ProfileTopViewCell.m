@@ -62,7 +62,7 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
     
     [super setNumberOfMemberships:4];
     
-    [super setNumberOfRsvps:50];
+//    [super setNumberOfRsvps:50];
 }
 
 - (void)awakeFromNib

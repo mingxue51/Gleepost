@@ -87,25 +87,30 @@ static GLPProfileLoader *instance = nil;
 
 -(void)loadUserData
 {
-    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-        
-        if(success)
-        {
-            _userDetails = user;
-            
-            [NSThread detachNewThreadSelector:@selector(loadImageForUser:) toTarget:self withObject:user.profileImageUrl];
-        }
-        else
-        {
-        }
-    }];
+    _userDetails = [SessionManager sharedInstance].user;
+    
+    [NSThread detachNewThreadSelector:@selector(loadImageForUser:) toTarget:self withObject:_userDetails.profileImageUrl];
+    
+//    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+//        
+//        if(success)
+//        {
+//            DDLogDebug(@"REAL USER INFO: %@", user);
+//            
+//            _userDetails = user;
+//            
+//            [NSThread detachNewThreadSelector:@selector(loadImageForUser:) toTarget:self withObject:user.profileImageUrl];
+//        }
+//        else
+//        {
+//        }
+//    }];
 }
 
--(void)loadImageForUser:(id)sender
+-(void)loadImageForUser:(NSString *)profileImageUrl
 {
     //Load user's image.
-    _userImage = [self loadImageWithUrl:(NSString*)sender];
-    
+    _userImage = [self loadImageWithUrl:profileImageUrl];
 }
 
 -(void)loadContactsImages:(NSArray*)contacts

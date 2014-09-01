@@ -9,6 +9,7 @@
 #import "VideoCaptureView.h"
 #import "VideoProgressView.h"
 #import "AppearanceHelper.h"
+#import "GLPProgressManager.h"
 #import <AssetsLibrary/ALAsset.h>
 
 @interface VideoCaptureView ()
@@ -36,6 +37,7 @@
     if(self)
     {
         [self configureNofications];
+        [[PBJVision sharedInstance] setThumbnailEnabled:YES];
     }
     
     return self;
@@ -122,6 +124,13 @@
     DDLogDebug(@"Error: %@, Video Dict: %@", error, videoDict);
     
 //    [self stopVideo];
+    
+//    NSArray *thumbnails = videoDict[PBJVisionVideoThumbnailArrayKey];
+    
+    UIImage *thumbnail = videoDict[PBJVisionVideoThumbnailKey];
+    
+    //Add thumbnail to GLPProgressManager.
+    [[GLPProgressManager sharedInstance] setThumbnailImage: thumbnail];
     
     
     NSString *videoPath = [videoDict objectForKey:PBJVisionVideoPathKey];

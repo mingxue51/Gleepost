@@ -13,6 +13,7 @@
 @interface GLPGroupManager : NSObject
 
 + (NSDictionary *)processGroups:(NSArray *)groups;
+
 + (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback;
 
 + (void)loadGroups:(NSArray *)groups withLocalCallback:(void (^)(NSArray *groups))localCallback remoteCallback:(void (^)(BOOL success, NSArray *groups))remoteCallback;

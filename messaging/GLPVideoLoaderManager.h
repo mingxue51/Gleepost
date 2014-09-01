@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, GLPVideoLoaderActive) {
+    kTimelineActive,
+    kProfileActive,
+    kPrivateProfileActive
+};
+
+@class GLPPost;
 @class PBJVideoPlayerController;
 
 @interface GLPVideoLoaderManager : NSObject
@@ -16,8 +23,14 @@
 
 
 -(void)addVideoPosts:(NSArray *)posts;
-- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey;
--(PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey;
-
-
+//- (void)videoWithPostRemoteKey:(NSInteger)remoteKey;
+- (void)visiblePosts:(NSArray *)visiblePosts;
+- (void)disableTimelineJustFetched;
+- (void)enableTimelineJustFetched;
+- (PBJVideoPlayerController *)setVideoWithPost:(GLPPost *)post;
+- (PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey;
+- (void)setVideoLoaderActive:(GLPVideoLoaderActive)active;
+//- (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock;
+//- (void)setVideoPost:(GLPPost *)post;
+//- (void)removeVideoPost:(GLPPost *)post;
 @end

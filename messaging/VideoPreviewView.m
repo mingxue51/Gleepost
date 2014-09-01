@@ -23,6 +23,7 @@
 
 - (void)videoPlayerReady:(PBJVideoPlayerController *)videoPlayer
 {
+    
 }
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer

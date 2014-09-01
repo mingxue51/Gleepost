@@ -30,7 +30,6 @@
         [self setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
                            forBarPosition:UIBarPositionAny
                                barMetrics:UIBarMetricsDefault];
-        
     }
     
     [self setTranslucent:NO];

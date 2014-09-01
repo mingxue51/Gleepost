@@ -17,7 +17,7 @@
 #import "GLPStretchedImageView.h"
 
 
-@interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, NewPostDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate>
+@interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
 @property (assign, nonatomic) BOOL fromPushNotification;

@@ -15,7 +15,6 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
-#import "ShapeFormatterHelper.h"
 
 @interface GLPPostCell ()
 
@@ -102,6 +101,11 @@ const float ONE_LINE_LIMIT = 18.0;
 
 //    [ShapeFormatterHelper setBorderToView:_mainView withColour:[UIColor redColor]];
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];
+}
+
+- (void)deregisterNotificationsInVideoView
+{
+    [_mainView deregisterNotificationsForVideoView];
 }
 
 #pragma mark - Configuration

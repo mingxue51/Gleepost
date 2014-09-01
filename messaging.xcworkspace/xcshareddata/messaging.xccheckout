@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DC40C8E1-832F-43E0-B9F4-1C6AB59901D4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>messaging</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0B51ECCF-77A0-4FF6-8E47-AB31CC2E3E70</key>
+		<string>ssh://github.com/draaglom/GleepostIOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>messaging.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0B51ECCF-77A0-4FF6-8E47-AB31CC2E3E70</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/draaglom/GleepostIOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>0B51ECCF-77A0-4FF6-8E47-AB31CC2E3E70</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0B51ECCF-77A0-4FF6-8E47-AB31CC2E3E70</string>
+			<key>IDESourceControlWCCName</key>
+			<string>GleepostIOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>

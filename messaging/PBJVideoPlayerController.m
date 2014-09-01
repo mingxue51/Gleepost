@@ -28,7 +28,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#define LOG_PLAYER 1
+#define LOG_PLAYER 0
 #if !defined(NDEBUG) && LOG_PLAYER
 #   define DLog(fmt, ...) NSLog((@"player: " fmt), ##__VA_ARGS__);
 #else
@@ -119,6 +119,16 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
 
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
     [self _setAsset:asset];
+}
+
+- (void)setVideoAsset:(AVURLAsset *)asset
+{
+    [self _setAsset:asset];
+}
+
+- (void)setVideoPlayerItem:(AVPlayerItem *)playerItem
+{
+    [self _setPlayerItem:playerItem];
 }
 
 - (BOOL)playbackLoops
@@ -232,8 +242,6 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
     } else {
         _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     }
-
-    DDLogDebug(@"Ready to play!");
     
     [_player replaceCurrentItemWithPlayerItem:_playerItem];
     
@@ -478,14 +486,14 @@ typedef void (^PBJVideoPlayerBlock)();
         
         if([_playerItem isPlaybackLikelyToKeepUp])
         {
-            if([self respondsToSelector:@selector(readyToPlay:withPlayerController:)])
+            if([_delegate respondsToSelector:@selector(readyToPlay:withPlayerController:)])
             {
                 [_delegate readyToPlay:YES withPlayerController:self];
             }
         }
         else
         {
-            if([self respondsToSelector:@selector(readyToPlay:withPlayerController:)])
+            if([_delegate respondsToSelector:@selector(readyToPlay:withPlayerController:)])
             {
                 [_delegate readyToPlay:NO withPlayerController:self];
             }
@@ -506,6 +514,8 @@ typedef void (^PBJVideoPlayerBlock)();
             }
             case AVPlayerStatusFailed:
             {
+                DDLogDebug(@"ERROR PLAYER: %@, %@, %@", _player.error, _playerItem.error, _playerItem.errorLog);
+                
                 _playbackState = PBJVideoPlayerPlaybackStateFailed;
                 [_delegate videoPlayerPlaybackStateDidChange:self];
                 break;

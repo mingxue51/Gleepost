@@ -171,6 +171,43 @@
     }
 }
 
++ (NSInteger)findPostIndexWithKey:(NSInteger)key inPosts:(NSArray *)posts
+{
+    NSInteger index = 0;
+    
+    for(GLPPost *p in posts)
+    {
+        if(p.key == key)
+        {
+            return index;
+        }
+        
+        ++index;
+    }
+    
+    return -1;
+}
+
++ (NSInteger)findPostIndexWithRemoteKey:(NSInteger)remoteKey inPosts:(NSArray *)posts
+{
+    NSInteger index = 0;
+    
+    for(GLPPost *p in posts)
+    {
+        
+        DDLogDebug(@"Post rKey: %ld", (long)p.remoteKey);
+        
+        if(p.remoteKey == remoteKey)
+        {
+            return index;
+        }
+        
+        ++index;
+    }
+    
+    return -1;
+}
+
 +(int)findPost:(GLPPost **)post with:(int)remoteKey fromPosts:(NSArray*)posts
 {
     int i = 0;

@@ -19,6 +19,7 @@
 #import "ImageFormatterHelper.h"
 #import "ReflectedImageView.h"
 #import "UIImage+Alpha.h"
+#import "GLPVideo.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -157,9 +158,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 - (void)loadThumbnail
 {
-    //TODO: this is going to be changed when the thumbnail is going to be supported by the sever.
-    
-    [_eventImage setImage:[UIImage imageNamed:@"default_thumbnail"]];
+    [_eventImage setImageWithURL:[NSURL URLWithString: _postData.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed];
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

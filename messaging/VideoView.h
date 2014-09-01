@@ -14,6 +14,8 @@
 
 //-(void)setUpPreviewWithUrl:(NSString *)url withRemoteKey:(NSInteger)remoteKey;
 //-(void)initialisePreviewWithUrl:(NSString *)url;
--(void)setUpVideoViewWithUrl:(NSString *)url withPost:(GLPPost *)post;
+- (void)setUpVideoViewWithPost:(GLPPost *)post;
+- (void)registerNotifications;
+- (void)deregisterNotifications;
 
 @end

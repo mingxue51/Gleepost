@@ -94,16 +94,16 @@
     
     NSArray *catTemp = [[CategoryManager instance] getCategories];
     
+    
     for(GLPCategory *category in catTemp)
     {
-        //TODO: Remove condition when final categories decided.
-        
-//        if([category.tag isEqualToString:@"event"] || [category.tag isEqualToString:@"for-sale"] || [category.tag isEqualToString:@"news"] || [category.tag isEqualToString:@"sports"] || [category.tag isEqualToString:@"jobs"] || [category.tag isEqualToString:@"question"])
-//        {
-        
-        DDLogDebug(@"Category: %@", category);
+        //TODO: For now remove the Other category.
+        if(![category.name isEqualToString:@"Other"])
+        {
+            DDLogDebug(@"Category: %@", category);
             [_categories addObject:category];
-//        }
+        }
+    
     }
     
     [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"All" andPostRemoteKey:0]];

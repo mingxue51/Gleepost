@@ -8,11 +8,11 @@
 
 #import "PickDateEventViewController.h"
 #import "WebClientHelper.h"
+#import "PendingPostManager.h"
 
 @interface PickDateEventViewController ()
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 
 @end
 
@@ -25,7 +25,20 @@
     
     [self setUpDatePicker];
     
-	[_titleTextField becomeFirstResponder];
+    self.title = @"NEW POST";
+    
+    [self loadDateIfNeeded];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    DDLogDebug(@"PickDate viewWillDisappear : %@", _datePicker.date);
+    
+    //Save date before desappearing the view.
+    [[PendingPostManager sharedInstance] setDate:_datePicker.date];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,52 +71,65 @@
 //    picker.maximumDate = oneMonthFromNowWithoutSeconds ;
 }
 
-
-#pragma mark - UITextFieldDelegate
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)loadDateIfNeeded
 {
-    [textField resignFirstResponder];
-    return YES;
+    if(![[PendingPostManager sharedInstance] arePendingData])
+    {
+        return;
+    }
+    
+    if([[PendingPostManager sharedInstance] getDate])
+    {
+        [_datePicker setDate:[[PendingPostManager sharedInstance] getDate]];
+    }
+    
 }
+
 
 #pragma mark - Actions
 
 -(IBAction)dismissViewController:(id)sender
 {
-    UIBarButtonItem *button = (UIBarButtonItem *)sender;
+//    UIBarButtonItem *button = (UIBarButtonItem *)sender;
     
     
-    if(button.tag == 1)
-    {
-        if([_titleTextField.text isEqualToString:@""])
-        {
-            [WebClientHelper showStandardErrorWithTitle:@"Cannot continue" andContent:@"Please enter a title to continue"];
-            
-            return;
-        }
-        else if(_titleTextField.text.length > 50)
-        {
-            //Check for 50 characters.
-
-            [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 37 characters long"];
-            
-            return;
-        }
-        
-        //Send the date to the parent view.
-        [_delegate doneSelectingDateForEvent:_datePicker.date andTitle:_titleTextField.text];
-    }
-    else
-    {
-        [_delegate cancelSelectingDateForEvent];
-    }
+//    if(button.tag == 1)
+//    {
+//        if([_titleTextField.text isEqualToString:@""])
+//        {
+//            [WebClientHelper showStandardErrorWithTitle:@"Cannot continue" andContent:@"Please enter a title to continue"];
+//            
+//            return;
+//        }
+//        else if(_titleTextField.text.length > 50)
+//        {
+//            //Check for 50 characters.
+//
+//            [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 37 characters long"];
+//            
+//            return;
+//        }
+//        
+//        //Send the date to the parent view.
+//        [_delegate doneSelectingDateForEvent:_datePicker.date andTitle:_titleTextField.text];
+//    }
+//    else
+//    {
+//        [_delegate cancelSelectingDateForEvent];
+//    }
     
     [self dismissViewControllerAnimated:YES completion:^{
         
 
         
     }];
+}
+
+-(IBAction)continueToTheFinalView:(id)sender
+{
+    [[PendingPostManager sharedInstance] setDate:_datePicker.date];
+
+    [self performSegueWithIdentifier:@"final new post" sender:self];
 }
 
 @end

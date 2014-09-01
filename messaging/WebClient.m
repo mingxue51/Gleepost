@@ -18,6 +18,7 @@
 #import "GLPMessageProcessor.h"
 #import "NSUserDefaults+GLPAdditions.h"
 #import "DateFormatterHelper.h"
+#import "GLPVideo.h"
 
 @interface WebClient()
 
@@ -370,22 +371,28 @@ static WebClient *instance = nil;
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:post.content, @"text", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
     
-    DDLogDebug(@"Params: %@, Categories: %@", params, post.categories);
+//    if(post.categories > 0)
+//    {
+        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:post.categories], @"tags", nil]];
+//    }
+
+    
+    DDLogDebug(@"Create Post params: %@, Categories: %@", params, post.categories);
     
     //TODO: add a new param url rather than call second method after the post request.
     
-    if(post.videosUrls)
+    if(post.video.pendingKey)
     {
-        [params setObject:post.videosUrls[0] forKey:@"url"];
+        [params setObject:post.video.pendingKey forKey:@"video"];
     }
     
-    if(post.dateEventStarts)
+    if(post.eventTitle)
     {
 //        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
 //        
 //        [params addEntriesFromDictionary:[NSMutablefDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
+        
         
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];
@@ -1686,11 +1693,13 @@ static WebClient *instance = nil;
 
 #pragma mark - Video
 
+//TODO: Deprecated.
+
 -(void)uploadVideo:(NSData *)videoData callback:(void (^)(BOOL success, NSString *videoUrl))callback
 {
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%d_video.mp4", self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
     }];
     
     [request setTimeoutInterval:300];
@@ -1712,6 +1721,64 @@ static WebClient *instance = nil;
     [self enqueueHTTPRequestOperation:operation];
 }
 
+- (void)uploadVideoWithData:(NSData *)videoData withTimestamp:(NSDate *)timestamp callback:(void (^)(BOOL success, NSNumber *videoId))callback
+{
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"videos" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+//        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
+        
+        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"video/mp4"];
+    }];
+    
+    [request setTimeoutInterval:300];
+    
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+//        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        
+        NSMutableDictionary *finalDictNotifiation = [[NSMutableDictionary alloc] init];
+        
+        NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
+        
+        [finalDictNotifiation setObject:progressData forKey:@"update"];
+        
+        [finalDictNotifiation setObject:timestamp forKey:@"timestamp"];
+        
+        //Inform GLPProgressManager.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotifiation];
+        
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSNumber *videoKey = [RemoteParser parseVideoResponse:responseObject];
+        
+        callback(YES, videoKey);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
+}
+
+- (void)checkForReadyVideoWithPendingVideoKey:(NSNumber *)videoKey callback:(void (^) (BOOL success, GLPVideo *result))callback
+{
+    NSString *path = [NSString stringWithFormat:@"videos/%@", videoKey];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPVideo *video = [RemoteParser parseVideoData:responseObject];
+        
+        callback(YES, video);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+}
 
 #pragma mark - Notifications
 

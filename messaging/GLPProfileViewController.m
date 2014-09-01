@@ -47,6 +47,7 @@
 #import "UINavigationBar+Format.h"
 #import "GLPBadgesViewController.h"
 #import "UIRefreshControl+CustomLoader.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -95,6 +96,8 @@
 
 @property (assign, nonatomic) BOOL isPostFromNotifications;
 
+@property (assign, nonatomic) NSInteger currentNumberOfPN;
+
 @end
 
 
@@ -142,6 +145,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self configureNavigationBar];
     
     [self hideNetworkErrorViewIfNeeded];
@@ -160,8 +164,6 @@
     if(_fromPushNotification)
     {
         _selectedTab = kButtonRight;
-        
-//        [self.tableView reloadData];
     }
 
     
@@ -183,6 +185,9 @@
     }
     
     [AppearanceHelper makeBackDefaultButton];
+    
+    //Load user's details from server.
+    [self fetchUserData];
 
 //    [self.tableView reloadData];
 }
@@ -193,6 +198,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     
     
+    
+
 //    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
 //    {
 //        [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -218,6 +225,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPNCount" object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -256,6 +266,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePushNotification:) name:@"GLPPNCount" object:nil];
 }
 
 //-(void)setUpNoMoreMessage
@@ -276,6 +288,15 @@
 //    
 //    
 //    [self removeTableViewPostWithIndex:index];
+}
+
+- (void)updatePushNotification:(NSNotification *)notification
+{
+    NSDictionary *d = notification.userInfo;
+    
+    _currentNumberOfPN =  [d[@"pnCount"] integerValue];
+    
+    [self refreshCellViewWithIndex:0];
 }
 
 #pragma mark - Configuration
@@ -374,10 +395,6 @@
     }
     
     self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
-
-    
-    //Load user's details from server.
-    [self setUserDetails];
     
     
     
@@ -401,13 +418,13 @@
     _notifications = [NSMutableArray array];
     _unreadNotificationsCount = 0;
     
-    [self.tableView reloadData];
-    
     _postUploaded = NO;
 
     _emptyNotificationsMessage = [[EmptyMessage alloc] initWithText:@"You have no notifications" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
     _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    
+    _currentNumberOfPN = 0;
     
 }
 
@@ -425,7 +442,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileTopViewCell"];
 
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
     //Register posts.
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
@@ -434,7 +451,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
 }
@@ -442,15 +459,6 @@
 - (void)hideNetworkErrorViewIfNeeded
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
-}
-
--(void)setUserDetails
-{
-//    self.user = [[SessionManager sharedInstance]user];
-    
-    [self fetchUserData];
-    
-    //[self loadUserData];
 }
 
 
@@ -736,10 +744,15 @@
 
 - (void)loadPosts
 {
+    
+#warning here we take only the new posts!!!!
+    
     [GLPPostManager loadRemotePostsForUserRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *posts) {
         
         if(success)
         {
+            DDLogDebug(@"Posts from server: %@", posts);
+            
             self.posts = [posts mutableCopy];
             
             [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
@@ -749,6 +762,7 @@
             [self.tableView reloadData];
             
             _postUploaded = NO;
+        
         }
         else
         {
@@ -1043,19 +1057,22 @@
 {
     NSArray *usersData = [[GLPProfileLoader sharedInstance] userData];
     
-    if(!usersData)
+    DDLogDebug(@"User's data: %@", usersData);
+    
+    if(usersData)
     {
-        [self loadUserData];
+        self.user = [usersData objectAtIndex:0];
+        self.userImage = [usersData objectAtIndex:1];
+        [self refreshFirstCell];
+        [self loadPosts];
+        
+        DDLogDebug(@"User's data loaded.");
     }
     else
     {
-        self.user = [usersData objectAtIndex:0];
+        [self loadUserData];
         
-        self.userImage = [usersData objectAtIndex:1];
-//        [self.tableView reloadData];
-        [self refreshFirstCell];
-        
-        [self loadPosts];
+        DDLogDebug(@"User's data not loaded.");
     }
     
 }
@@ -1081,6 +1098,8 @@
         {
             [_emptyMyPostsMessage hideEmptyMessageView];
         }
+        
+        DDLogDebug(@"Number of rows: %d, Number of posts: %ld", _numberOfRows, (unsigned long)_posts.count);
         
         return self.numberOfRows + self.posts.count;
     }
@@ -1133,6 +1152,8 @@
         
         [profileView setDelegate:self];
         [profileView comesFromPushNotification:_fromPushNotification];
+        /** Set for test purposes */
+        [profileView setNumberOfRsvps:_currentNumberOfPN];
         
         if(_fromPushNotification)
         {
@@ -1214,6 +1235,8 @@
         {
             if(self.posts.count != 0)
             {
+                DDLogDebug(@"Show posts tab");
+                
                 GLPPost *post = self.posts[indexPath.row-1];
                 
                 if([post imagePost])
@@ -1222,6 +1245,11 @@
                 }
                 else if ([post isVideoPost])
                 {
+                    if(indexPath.row != 0)
+                    {
+                        [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+                    }
+                    
                     postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
                 }
                 else
@@ -1249,6 +1277,31 @@
     //TODO: See this again.
     // => yep
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
+    {
+        DDLogDebug(@"%@ not subclass", [cell class]);
+        
+        return;
+        
+    }
+    
+    DDLogDebug(@"ROW: %d", indexPath.row);
+    
+    GLPPost *post = _posts[indexPath.row - 1];
+
+    
+    GLPPostCell *postCell = (GLPPostCell *)cell;
+    
+    if([post isVideoPost])
+    {
+        [postCell deregisterNotificationsInVideoView];
+    }
+    
 }
 
 
@@ -1287,6 +1340,8 @@
             
             
             self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+
+            
             self.selectedPost.content = @"Loading...";
             self.isPostFromNotifications = YES;
             
@@ -1426,11 +1481,11 @@
 
 -(void)refreshFirstCell
 {
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
-//    [self.tableView beginUpdates];
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-//    [self.tableView endUpdates];
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 -(void)removeTableViewPostWithIndex:(int)index
@@ -1440,6 +1495,65 @@
     [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index+1 inSection:0]];
     
     [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+}
+
+#pragma mark - Scroll view
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+        
+        
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+        }
+        
+    }
+    
+    return visiblePosts;
 }
 
 

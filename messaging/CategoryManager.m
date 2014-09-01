@@ -10,11 +10,12 @@
 
 typedef NS_ENUM(NSInteger, CategoryOrder) {
     
-    kSpeakersOrder = 0,
-    kTheaterOrder = 1,
-    kSportsOrder = 2,
-    kPartiesOrder = 3,
-    kMusicOrder = 4
+    kPartiesOrder = 1,
+    kMusicOrder = 2,
+    kSportsOrder = 3,
+    kTheaterOrder = 4,
+    kSpeakersOrder = 5,
+    kOtherOrder = 6
 };
 
 @interface CategoryManager ()
@@ -58,6 +59,8 @@ static CategoryManager *instance = nil;
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports] forKey:[NSNumber numberWithInt:kSportsOrder]];
         
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties] forKey:[NSNumber numberWithInt:kPartiesOrder]];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"other" name:@"Other" postRemoteKey:0 andRemoteKey:kGLPOther] forKey:[NSNumber numberWithInt:kOtherOrder]];
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
         
@@ -111,7 +114,7 @@ static CategoryManager *instance = nil;
     return nil;
 }
 
--(GLPCategory*)categoryWithRemoteKey:(int)remoteKey
+-(GLPCategory*)categoryWithOrderKey:(int)remoteKey
 {
     return [_categories objectForKey:[NSNumber numberWithInt:remoteKey]];
 }

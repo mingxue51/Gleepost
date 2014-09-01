@@ -11,6 +11,8 @@
 #import "SendStatus.h"
 #import "GLPGroup.h"
 
+@class GLPVideo;
+
 @interface GLPPost : GLPEntity
 
 @property (assign, nonatomic) NSInteger likes;
@@ -22,7 +24,11 @@
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
-@property (strong, nonatomic) NSArray *videosUrls;
+//@property (strong, nonatomic) NSArray *videosUrls;
+//@property (strong, nonatomic) NSString *videoThumbnail;
+//@property (assign, nonatomic) NSNumber *pendingVideoKey;
+/** If we are going to support multible videos change that to an array. */
+@property (strong, nonatomic) GLPVideo *video;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;

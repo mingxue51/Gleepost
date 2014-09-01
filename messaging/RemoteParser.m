@@ -12,6 +12,7 @@
 #import "GLPLike.h"
 #import "SessionManager.h"
 #import "GLPCategory.h"
+#import "GLPVideo.h"
 
 @interface RemoteParser()
 
@@ -461,7 +462,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
-    post.videosUrls = [RemoteParser parseVideos:json[@"videos"]];
+    post.video = [RemoteParser parseVideosData:json[@"videos"]];
     
     
     //Parse categories.
@@ -511,7 +512,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return post;
 }
 
-+(NSArray *)parseVideos:(NSArray *)jsonArray
++ (GLPVideo *)parseVideosData:(NSArray *)jsonArray
 {
     if(jsonArray == (id)[NSNull null])
     {
@@ -521,17 +522,25 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         if(jsonArray.count > 0)
         {
-            NSMutableArray *videosUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
+            //TODO: After the creation of an array of videos in GLPPost model
+            //      re-implement that.
             
-            for(NSString *url in jsonArray)
-            {
-                [videosUrls addObject:url];
-            }
-            return videosUrls;
+//            NSMutableArray *videosData = [NSMutableArray arrayWithCapacity:jsonArray.count];
+            
+//            for(NSString *url in jsonArray)
+//            {
+//                [videosUrls addObject:url];
+//            }
+
+            NSDictionary *videoData = jsonArray[0];
+      
+            NSArray *thumbnailArray = videoData[@"thumbnails"];
+            
+            return [[GLPVideo alloc] initWithUrl:videoData[@"mp4"] andThumbnailUrl:thumbnailArray[0]];
         }
         else
         {
-            return [NSArray array];
+            return nil;
         }
     }
 }
@@ -989,6 +998,44 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return [json[@"id"] integerValue];
 }
 
+#pragma mark - Videos
+
+/**
+ @param json response object. For some reason library is not returning a dictionary json object.
+ For that reason we are decoding the response object manually.
+ */
++ (NSNumber *)parseVideoResponse:(id)responseObject
+{
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseObject
+                                                      options:0
+                                                        error:nil];
+        
+    DDLogDebug(@"Status of uploaded video: %@", json[@"status"]);
+    
+    return json[@"id"];
+}
+
++ (GLPVideo *)parseVideoData:(NSDictionary *)videoData
+{
+    GLPVideo *video = [[GLPVideo alloc] init];
+    
+    NSString *status = videoData[@"status"];
+    
+    if([status isEqualToString:@"ready"])
+    {
+        DDLogInfo(@"Pending video with key: %@ ready.", videoData[@"id"]);
+        
+        NSArray *thumbnailArray = videoData[@"thumbnails"];
+        
+        [video setThumbnailUrl:thumbnailArray[0]];
+        [video setUrl:videoData[@"mp4"]];
+        [video setPendingKey:videoData[@"id"]];
+        
+        return video;
+    }
+    
+    return nil;
+}
 
 #pragma mark - Notifications
 

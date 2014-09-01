@@ -315,6 +315,10 @@ static BOOL likePushed;
             {
                 _post = post;
                 
+                _post = [GLPPostManager setFakeKeyToPost:_post];
+                
+                DDLogDebug(@"SELECTED POST: %ld", (long)_post.key);
+                
                 [self loadComments];
                 
                 [self.tableView reloadData];

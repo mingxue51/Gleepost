@@ -85,8 +85,6 @@
 
 @property (strong, nonatomic) GLPPost *post;
 
-@property (assign, nonatomic) BOOL mediaAvailable;
-
 @property (assign, nonatomic, getter = doesMediaNeedLoadAgain) BOOL mediaNeedsToReload;
 
 @property (assign, nonatomic, getter = isViewPost) BOOL viewPost;
@@ -117,19 +115,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)initialiseObjects
 {
-    _mediaAvailable = NO;
+//    _mediaAvailable = NO;
 }
 
 -(void)configureMediaAvailable
 {
-    if((_post.imagesUrls && _post.imagesUrls.count > 0) || (_post.videosUrls && _post.videosUrls.count > 0))
-    {
-        _mediaAvailable = YES;
-    }
-    else
-    {
-        _mediaAvailable = NO;
-    }
+//    if((_post.imagesUrls && _post.imagesUrls.count > 0) || (_post.videosUrls && _post.videosUrls.count > 0))
+//    {
+//        _mediaAvailable = YES;
+//    }
+//    else
+//    {
+//        _mediaAvailable = NO;
+//    }
 }
 
 #pragma mark - Modifiers
@@ -510,7 +508,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)setVideo
 {
-    if(_post.videosUrls && _post.videosUrls.count > 0)
+    if([_post isVideoPost])
     {
         [self showVideoView];
     }
@@ -521,9 +519,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
-    [_videoView setUpVideoViewWithUrl:self.post.videosUrls[0] withPost:_post];
+    [_videoView setUpVideoViewWithPost:_post];
 //    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
 //    [_videoView initialisePreviewWithUrl:self.post.videosUrls[0]];
+}
+
+- (void)deregisterNotificationsForVideoView
+{
+    [_videoView deregisterNotifications];
 }
 
 -(void)hideVideoView

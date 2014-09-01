@@ -127,6 +127,7 @@
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 for (GLPPost *newPost in newPosts) {
+                    newPost.sendStatus = kSendStatusSent;
                     [GLPPostDao save:newPost inDb:db];
                 }
             }];
@@ -255,12 +256,12 @@
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 
                 // clean posts table
-                [GLPPostDao deleteAllInDb:db];
+//                [GLPPostDao deleteAllInDb:db];
                 
                 //Set liked to the database if the user liked from other device (?)
                 for(GLPPost *post in posts)
                 {
-                    
+                    post.sendStatus = kSendStatusSent;
                     [GLPPostDao save:post inDb:db];
                 }
             }];
@@ -351,6 +352,7 @@
             
             [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
                 for(GLPPost *post in posts) {
+                    post.sendStatus = kSendStatusSent;
                     [GLPPostDao save:post inDb:db];
                 }
             }];
@@ -387,7 +389,7 @@
        
         if(success)
         {
-            DDLogInfo(@"Got post with content: %@ : %@", post.content, post.videosUrls);
+            DDLogInfo(@"Got post with content: %@ : %@", post.content, post.video);
             
             callback(success,post);
         }
@@ -594,6 +596,23 @@
 //}
 
 
+/**
+ 
+ 
+ */
++ (void)searchForPendingVideoPostCallback:(void (^) (NSArray *videoPosts))callback
+{
+    __block NSArray *incomingPosts;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        incomingPosts = [GLPPostDao findAllPendingPostsWithVideosInDb:db];
+                
+        callback(incomingPosts);
+        
+    }];
+}
+
 +(void)createLocalPost:(GLPPost *)post
 {
     post.sendStatus = kSendStatusLocal;
@@ -636,10 +655,31 @@
 // update local post to either sent or error
 + (void)updatePostAfterSending:(GLPPost *)post
 {
-    DDLogDebug(@"Update post after sending: %@", post);
+    DDLogInfo(@"Update post after sending: %@", post);
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPPostDao updatePostSendingData:post inDb:db];
+    }];
+}
+
++ (void)updateVideoPostAfterSending:(GLPPost *)videoPost
+{
+    DDLogInfo(@"Update video post after sending: %@", videoPost);
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPPostDao updateVideoPostSendingData:videoPost inDb:db];
+    }];
+
+}
+
++ (void)updateVideoPostBeforeSending:(GLPPost *)videoPost
+{
+    DDLogInfo(@"Update video post before sending: %@", videoPost);
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPPostDao updateVideoPostSendingData:videoPost inDb:db];
     }];
 }
 
@@ -676,7 +716,7 @@
     }
 }
 
-+(void)setFakeKeyToPost:(GLPPost *)post
++ (GLPPost *)setFakeKeyToPost:(GLPPost *)post
 {
     __block int lastPostIndex = 0;
     
@@ -693,6 +733,8 @@
     }];
     
     post.key = lastPostIndex+1;
+    
+    return post;
 }
 
 @end
