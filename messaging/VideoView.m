@@ -221,6 +221,8 @@
     
     if(_previewVC)
     {
+        DDLogDebug(@"Video view contains previewVC: %@ : %@", _previewVC, _post.content);
+        
         return;
     }
     

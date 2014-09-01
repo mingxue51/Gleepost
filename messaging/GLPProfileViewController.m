@@ -164,8 +164,6 @@
     if(_fromPushNotification)
     {
         _selectedTab = kButtonRight;
-        
-//        [self.tableView reloadData];
     }
 
     
@@ -419,8 +417,6 @@
     // internal notifications
     _notifications = [NSMutableArray array];
     _unreadNotificationsCount = 0;
-    
-    [self.tableView reloadData];
     
     _postUploaded = NO;
 
@@ -1294,6 +1290,8 @@
         
     }
     
+    DDLogDebug(@"ROW: %d", indexPath.row);
+    
     GLPPost *post = _posts[indexPath.row - 1];
 
     
@@ -1483,11 +1481,11 @@
 
 -(void)refreshFirstCell
 {
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
-//    [self.tableView beginUpdates];
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-//    [self.tableView endUpdates];
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 -(void)removeTableViewPostWithIndex:(int)index
