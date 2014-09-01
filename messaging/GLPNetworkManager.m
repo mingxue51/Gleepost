@@ -14,6 +14,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPProfileLoader.h"
 
 @interface GLPNetworkManager()
 
@@ -120,6 +121,10 @@ static GLPNetworkManager *instance = nil;
     
     // init the groups list.
     [[GLPLiveGroupManager sharedInstance] loadGroups];
+    
+    // load user's data.
+    [[GLPProfileLoader sharedInstance] loadUserData];
+
     
     // get notifications
     __block BOOL requestsSuccess = YES;

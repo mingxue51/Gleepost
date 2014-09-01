@@ -587,6 +587,8 @@ const float TOP_OFFSET = 180.0f;
 
 /**
  Starts loading in the background some basic contents of the app like messages, profiles etc.
+ 
+ //Moved to GLPNetworkManager.
  */
 
 -(void)startLoadingContents:(id)sender
@@ -594,10 +596,12 @@ const float TOP_OFFSET = 180.0f;
     
     //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
     //[[GLPMessagesLoader sharedInstance] loadConversations];
-    [[GLPProfileLoader sharedInstance] loadUserData];
+//    [[GLPProfileLoader sharedInstance] loadUserData];
     
     //TODO: Remove this later.
 //    [[ContactsManager sharedInstance] refreshContacts];
+    
+    
     
     //Load groups' posts.
 //    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];

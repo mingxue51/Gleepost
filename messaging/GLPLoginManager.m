@@ -44,18 +44,18 @@
         
         // fetch additional info
         // user details
-        [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
+        [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetails) {
             
             if(!success) {
                 callback(NO, errorMessage);
                 return;
             }
             
-            userWithDetials.email = identifier;
+            userWithDetails.email = identifier;
             
             [self rememberUser:shouldRemember withIdentifier:identifier andPassword:password];
             //                [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate contacts:contacts];
-            [self validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate];
+            [self validateLoginForUser:userWithDetails withToken:token expirationDate:expirationDate];
             
             
             callback(YES, errorMessage);

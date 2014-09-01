@@ -187,6 +187,9 @@
     }
     
     [AppearanceHelper makeBackDefaultButton];
+    
+    //Load user's details from server.
+    [self fetchUserData];
 
 //    [self.tableView reloadData];
 }
@@ -394,10 +397,6 @@
     }
     
     self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
-
-    
-    //Load user's details from server.
-    [self setUserDetails];
     
     
     
@@ -464,15 +463,6 @@
 - (void)hideNetworkErrorViewIfNeeded
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
-}
-
--(void)setUserDetails
-{
-//    self.user = [[SessionManager sharedInstance]user];
-    
-    [self fetchUserData];
-    
-    //[self loadUserData];
 }
 
 
@@ -1071,19 +1061,22 @@
 {
     NSArray *usersData = [[GLPProfileLoader sharedInstance] userData];
     
-    if(!usersData)
+    DDLogDebug(@"User's data: %@", usersData);
+    
+    if(usersData)
     {
-        [self loadUserData];
+        self.user = [usersData objectAtIndex:0];
+        self.userImage = [usersData objectAtIndex:1];
+        [self refreshFirstCell];
+        [self loadPosts];
+        
+        DDLogDebug(@"User's data loaded.");
     }
     else
     {
-        self.user = [usersData objectAtIndex:0];
+        [self loadUserData];
         
-        self.userImage = [usersData objectAtIndex:1];
-//        [self.tableView reloadData];
-        [self refreshFirstCell];
-        
-        [self loadPosts];
+        DDLogDebug(@"User's data not loaded.");
     }
     
 }
@@ -1301,7 +1294,7 @@
         
     }
     
-    GLPPost *post = _posts[indexPath.row];
+    GLPPost *post = _posts[indexPath.row - 1];
 
     
     GLPPostCell *postCell = (GLPPostCell *)cell;
