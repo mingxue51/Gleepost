@@ -16,7 +16,7 @@
 
 @implementation AddressCell
 
-const float ADDRESS_CELL_HEIGHT = 40;
+const float ADDRESS_CELL_HEIGHT = 50;
 
 - (void)setVenueName:(NSString *)name
 {

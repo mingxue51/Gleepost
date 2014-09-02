@@ -106,7 +106,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 /**
  Method used for upload regular post.
  */
--(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title
+-(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andLocation:(GLPLocation *)location
 {
     //Register the timestamp in order to avoid problems when a video selected and then unselected.
     [[GLPProgressManager sharedInstance] registerVideoWithTimestamp:timestamp];
@@ -120,7 +120,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.categories = categories;
     post.dateEventStarts = eventDate;
     post.eventTitle = title;
-    
+    post.location = location;
     //Create a new operation.
     
     post = [self uploadPostWithPost:post];
@@ -145,7 +145,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return post;
 }
 
--(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andGroup:(GLPGroup *)group
+-(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title group:(GLPGroup *)group andLocation:(GLPLocation *)location
 {
     //Add information to a new post.
     
@@ -156,6 +156,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.dateEventStarts = eventDate;
     post.eventTitle = title;
     post.group = group;
+    post.location = location;
     
     return [self uploadPostWithPost:post];
 }

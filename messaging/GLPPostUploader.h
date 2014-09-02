@@ -10,13 +10,14 @@
 @class GLPPost;
 @class GLPGroup;
 @class GLPCategory;
+@class GLPLocation;
 
 @interface GLPPostUploader : NSObject
 - (void)startUploadingImage:(UIImage *)image;
 - (GLPPost *)uploadPostWithContent:(NSString *)content;
 -(void)uploadImageToQueue:(UIImage*)image;
--(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate andTitle:(NSString *)title;
--(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andGroup:(GLPGroup *)group;
+-(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andLocation:(GLPLocation *)location;
+-(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title group:(GLPGroup *)group andLocation:(GLPLocation *)location;
 -(void)uploadVideoInPath:(NSString *)path;
 
 @end

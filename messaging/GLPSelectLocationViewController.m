@@ -33,8 +33,9 @@
 
 @property (strong, nonatomic) NSArray *nearbyLocations;
 
-
 @property (assign, nonatomic, getter = didSelectFromNearbyLocations) BOOL selectFromNearbyLocations;
+
+@property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @end
 
@@ -57,9 +58,6 @@
     [self configureTableView];
     
     [self loadNearbyPlaces];
-    
-    
-    
     
 //    [self loadCurrentLocation];
 }
@@ -210,7 +208,9 @@
     [self locateMapToLocation:location];
     
     //Change the name of the selected address field.
-    [_locationLabel setText:location.name];
+//    [_locationLabel setText:location.name];
+    
+    [self setDataForTheAddressFieldWithLocation:location];
 
     _selectFromNearbyLocations = YES;
     
@@ -241,6 +241,27 @@
 - (void)donePickingLocation:(id)sender
 {
     DDLogDebug(@"Done picking location");
+    
+    [self snapShotMapAndReturnDataToPreviousVC];
+    
+
+}
+
+- (void)snapShotMapAndReturnDataToPreviousVC
+{
+    MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
+    options.region = self.mapView.region;
+    options.scale = [UIScreen mainScreen].scale;
+    options.size = self.mapView.frame.size;
+    
+    MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+    [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
+        UIImage *image = snapshot.image;
+
+        [_delegate locationSelected:_selectedLocation withMapImage:image];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 - (IBAction)goToUsersLocation:(id)sender
@@ -258,12 +279,14 @@
 - (void)zoomAndLocateToUsersLocation
 {
     MKCoordinateRegion region;
-    region.center = _mapView.userLocation.coordinate;
+    _coordinates = region.center = _mapView.userLocation.coordinate;
     
     MKCoordinateSpan span;
     span.latitudeDelta  = 0.005; // Change these values to change the zoom
     span.longitudeDelta = 0.005;
     region.span = span;
+    
+    [self loadNearbyPlaces];
     
     [self.mapView setRegion:region animated:YES];
 }
@@ -313,6 +336,8 @@
     if(location.distance < 30)
     {
         [_locationLabel setText:location.name];
+        
+        _selectedLocation = location;
     }
     else
     {
@@ -321,6 +346,30 @@
         [self findAddressAndSetItToField];
     }
     
+}
+
+#pragma mark - GLPSelectAddressViewControllerDelegate
+
+- (void)locationSelected:(GLPLocation *)location
+{
+    DDLogDebug(@"locationSelected: %@", location);
+    
+    _coordinates = [self convertToCoordinates:location];
+    
+    DDLogDebug(@"Coordinates: %f : %f", _coordinates.latitude, _coordinates.longitude);
+
+    
+    //Move the map to specific coordinates.
+    [self locateMapToLocation:location];
+    
+    //Change the name of the selected address field.
+//    [_locationLabel setText:location.name];
+    
+    [self setDataForTheAddressFieldWithLocation:location];
+    
+    _selectFromNearbyLocations = YES;
+    
+    [self loadNearbyPlaces];
 }
 
 #pragma mark - Client
@@ -372,8 +421,10 @@
         
         CLPlacemark *placemark = placemarks[0];
         
+        _selectedLocation = [self convertPlacemarkToLocation:placemark];
         
-        [_locationLabel setText:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare]];
+//        [_locationLabel setText: _selectedLocation.address];
+        [self setDataForTheAddressFieldWithLocation:_selectedLocation];
         
     }];
 }
@@ -395,7 +446,7 @@
         
         DDLogDebug(@"Apple results: %@ %@ %@ %@ %@", placemark.subThoroughfare, placemark.thoroughfare, placemark.locality, placemark.subLocality, placemark.areasOfInterest);
         
-        [_locationLabel setText:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare]];
+//        [_locationLabel setText:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare]];
         
     }];
 }
@@ -408,10 +459,21 @@
         {
             GLPLocation *location = locations[0];
             
-            [_locationLabel setText:location.name];
+//            [_locationLabel setText:location.name];
+            
+            [self setDataForTheAddressFieldWithLocation:location];
         }
         
     }];
+}
+
+#pragma mark - Helpers
+
+- (GLPLocation *)convertPlacemarkToLocation:(CLPlacemark *)placemark
+{
+    GLPLocation *location = [[GLPLocation alloc] initWithName:placemark.name address:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare ? placemark.subThoroughfare : @"", placemark.thoroughfare ? placemark.thoroughfare : @""] latitude:placemark.location.coordinate.latitude longitude:placemark.location.coordinate.longitude andDistance:0];
+    
+    return location;
 }
 
 - (CLLocationCoordinate2D)convertToCoordinates:(GLPLocation *)location
@@ -436,7 +498,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -444,7 +506,14 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if([segue.identifier isEqualToString:@"search address"])
+    {
+        GLPSelectAddressViewController *selectAddressVC = segue.destinationViewController;
+        
+        [selectAddressVC setDelegate:self];
+    }
 }
-*/
+
 
 @end

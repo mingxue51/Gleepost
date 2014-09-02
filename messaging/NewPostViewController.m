@@ -33,7 +33,6 @@
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
 #import "GLPProgressManager.h"
-#import "GLPSelectLocationViewController.h"
 
 @interface NewPostViewController ()
 
@@ -59,6 +58,7 @@
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
+@property (strong, nonatomic) GLPLocation *selectedLocation;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
 @property (strong, nonatomic) TDNavigationCategories *transitionViewCategories;
@@ -204,6 +204,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _eventDateStart = nil;
     _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS;
     _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS;
+    _selectedLocation = nil;
 }
 
 /**
@@ -350,7 +351,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             
             DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)group.remoteKey);
             
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andGroup:group];
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
         }
 #warning implement the general post from groups.
         
@@ -358,11 +359,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         {
             DDLogDebug(@"GENERAL POST IS GOING TO BE CREATED");
             
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil andTitle:nil];
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
         }
         else
         {
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart andTitle:self.titleTextField.text];
+            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
         }
         
         if([inPost isVideoPost])
@@ -444,8 +445,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (IBAction)addLocation:(id)sender
 {
-    DDLogDebug(@"Add location");
-    
     [self performSegueWithIdentifier:@"pick location" sender:self];
 }
 
@@ -639,6 +638,37 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 }
 
+#pragma mark - GLPSelectSelectLocationViewControllerDelegate
+
+- (void)locationSelected:(GLPLocation *)location withMapImage:(UIImage *)mapImage
+{
+    
+    if(mapImage)
+    {
+        UIImageView *v = [[UIImageView alloc] initWithImage:mapImage];
+        
+        [v setFrame:_addLocationButton.bounds];
+        
+        CGRectSetX(v, 0.0);
+        CGRectSetY(v, 0.0);
+        
+        [v setContentMode:UIViewContentModeScaleAspectFill];
+//        [[_addLocationButton imageView] setContentMode: UIViewContentModeScaleToFill];
+        
+//        [_addLocationButton.imageView setImage:v.image];
+//        
+//       [_addLocationButton setImage:v.image forState:UIControlStateNormal];
+//
+        
+        [_addLocationButton addSubview:v];
+        
+    }
+    
+    DDLogInfo(@"Location selected in NewPostViewController: %@", location);
+    _selectedLocation = location;
+    
+}
+
 #pragma mark - Helpers
 
 - (BOOL)isInformationValidInElements
@@ -656,21 +686,21 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 #pragma mark - VC Navigation
 
-//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    
-//    if([segue.identifier isEqualToString:@"pick location"])
-//    {
-////        GLPSelectLocationViewController *selectLocation = segue.destinationViewController;
-//        
-////        pickDateViewController.delegate = self;
-//    }
-//    else if ([segue.identifier isEqualToString:@"show categories"])
-//    {
-//        
-//    }
-//
-//}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    
+    if([segue.identifier isEqualToString:@"pick location"])
+    {
+        GLPSelectLocationViewController *selectLocation = segue.destinationViewController;
+        
+        selectLocation.delegate = self;
+    }
+    else if ([segue.identifier isEqualToString:@"show categories"])
+    {
+        
+    }
+
+}
 
 -(void)navigateToVideoController
 {

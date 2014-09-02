@@ -555,7 +555,7 @@
                                     <action selector="addVideo:" destination="Pdc-xo-P59" eventType="touchUpInside" id="782-4Q-cdv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xIR-eL-C7F">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xIR-eL-C7F">
                                 <rect key="frame" x="214" y="38" width="97" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="location_top_button.png">
@@ -2572,7 +2572,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="5FD7B055-EFB9-4E5E-9199-26BA60D8EB0C">
+                                                <state key="normal" image="12DEA8E2-0E6E-4E3B-B3B4-A9E8A8D44349">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -4537,8 +4537,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </scene>
     </scenes>
     <resources>
-        <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="5FD7B055-EFB9-4E5E-9199-26BA60D8EB0C" width="30" height="32">
+        <image name="12DEA8E2-0E6E-4E3B-B3B4-A9E8A8D44349" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -4555,6 +4554,7 @@ uAC6ALwAwwDLANcA2QDbAN0BtwG8AccB0AHWAdkB3wHoAe0B9QH4Af8CBwIUAhkCGwIdAiICKgItAjIC
 OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
 </mutableData>
         </image>
+        <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>

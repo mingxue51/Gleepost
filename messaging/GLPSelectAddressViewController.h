@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class GLPLocation;
+
+@protocol GLPSelectAddressViewControllerDelegate <NSObject>
+
+@required
+- (void)locationSelected:(GLPLocation *)location;
+
+@end
+
 @interface GLPSelectAddressViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) UIViewController<GLPSelectAddressViewControllerDelegate> *delegate;
 
 @end

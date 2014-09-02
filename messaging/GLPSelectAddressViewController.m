@@ -9,6 +9,7 @@
 #import "GLPSelectAddressViewController.h"
 #import "GLPLocation.h"
 #import "AddressCell.h"
+#import "WebClient.h"
 #import <MapKit/MapKit.h>
 
 @interface GLPSelectAddressViewController ()
@@ -18,8 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *results;
-
-@property (strong, nonatomic) NSMutableArray *mapItemsResults;
 
 @end
 
@@ -41,7 +40,6 @@
 - (void)initialiseObjects
 {
     _results = [[NSMutableArray alloc] init];
-    _mapItemsResults = [[NSMutableArray alloc] init];
 }
 
 - (void)configureTextField
@@ -67,7 +65,16 @@
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
-    [self searchAddressWithString:textField.text];
+    if([textField.text length] && isnumber([textField.text characterAtIndex:0]))
+    {
+        [self searchAddressWithString:textField.text];
+    }
+    else
+    {
+        [self searchLocationWithString:textField.text];
+    }
+
+    
 }
 
 
@@ -91,8 +98,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AddressCell *cell = [_tableView dequeueReusableCellWithIdentifier:@"AddressCell" forIndexPath:indexPath];
-    
-    [cell setVenueName:_results[indexPath.row]];
+
+    [cell setVenueName:((GLPLocation *)_results[indexPath.row]).name];
     
     return cell;
 }
@@ -101,6 +108,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [_delegate locationSelected:_results[indexPath.row]];
+    
+    //Pop up to the previous navigation controller.
+    [self.navigationController popViewControllerAnimated:YES];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -134,7 +146,7 @@
         [_results removeAllObjects];
         
         
-        [_mapItemsResults removeAllObjects];
+//        [_mapItemsResults removeAllObjects];
         
         [response.mapItems enumerateObjectsUsingBlock:^(MKMapItem *item, NSUInteger idx, BOOL *stop) {
 //            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPlacemark:item.placemark];
@@ -161,9 +173,11 @@
             
             if(![showString isEqualToString:@""])
             {
-                [_results addObject:[NSString stringWithFormat:@"%@ %@", item.placemark.subThoroughfare, item.placemark.thoroughfare]];
+//                [_results addObject:[NSString stringWithFormat:@"%@ %@", item.placemark.subThoroughfare, item.placemark.thoroughfare]];
                 
-                [_mapItemsResults addObject:item];
+                [_results addObject:[self convertMapItemToLocation:item]];
+                
+//                [_mapItemsResults addObject:item];
             }
             
         }];
@@ -172,6 +186,40 @@
         
 //        [self.mapView addAnnotations:annotations];
     }];
+}
+
+- (void)searchLocationWithString:(NSString *)location
+{
+    [[WebClient sharedInstance] findCurrentLocationWithName:location withCallbackBlock:^(BOOL success, NSArray *locations) {
+        
+        if(success)
+        {
+            if(locations.count != 0)
+            {
+                [_results removeAllObjects];
+//                [_mapItemsResults removeAllObjects];
+                
+                _results = locations.mutableCopy;
+                [_tableView reloadData];
+            }
+
+
+        }
+        
+    }];
+}
+
+#pragma mark - Helpers
+
+- (GLPLocation *)convertMapItemToLocation:(MKMapItem *)mapItem
+{
+    MKPlacemark *placemark = mapItem.placemark;
+    
+    GLPLocation *location = [[GLPLocation alloc] initWithName:mapItem.name address:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare ? placemark.subThoroughfare : @"", placemark.thoroughfare ? placemark.thoroughfare : @""] latitude:placemark.location.coordinate.latitude longitude:placemark.location.coordinate.longitude andDistance:0];
+    
+    DDLogDebug(@"Current location: %@", location);
+    
+    return location;
 }
 
 - (void)didReceiveMemoryWarning

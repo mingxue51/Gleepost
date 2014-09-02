@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "FDTakeController.h"
 #import "GLPVideoViewController.h"
+#import "GLPSelectLocationViewController.h"
 
-@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate, UITextFieldDelegate>
-
+@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate, UITextFieldDelegate, GLPSelectLocationViewControllerDelegate>
 
 -(void)hideKeyboard;
 -(void)showKeyboard;

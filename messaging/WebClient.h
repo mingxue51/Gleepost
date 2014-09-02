@@ -51,6 +51,8 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)findNearbyLocationsWithLatitude:(double)lat andLongitude:(double)lon withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock;
 
+- (void)findCurrentLocationWithName:(NSString *)name withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock;
+
 - (void)findCurrentLocationWithLatitude:(double)lat andLongitude:(double)lon withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock;
 
 - (void)getUserWithKey:(NSInteger)key authParams:(NSDictionary *)authParams callbackBlock:(void (^)(BOOL success, GLPUser *user))callbackBlock;

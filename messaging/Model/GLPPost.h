@@ -12,6 +12,7 @@
 #import "GLPGroup.h"
 
 @class GLPVideo;
+@class GLPLocation;
 
 @interface GLPPost : GLPEntity
 
@@ -29,6 +30,7 @@
 //@property (assign, nonatomic) NSNumber *pendingVideoKey;
 /** If we are going to support multible videos change that to an array. */
 @property (strong, nonatomic) GLPVideo *video;
+@property (strong, nonatomic) GLPLocation *location;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;

@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "GLPSelectAddressViewController.h"
 
-@interface GLPSelectLocationViewController : UIViewController <MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@protocol GLPSelectLocationViewControllerDelegate <NSObject>
+
+@required
+- (void)locationSelected:(GLPLocation *)location withMapImage:(UIImage *)mapImage;
+
+@end
+
+@interface GLPSelectLocationViewController : UIViewController <MKMapViewDelegate, UITableViewDataSource, UITableViewDelegate, GLPSelectAddressViewControllerDelegate>
+
+@property (weak, nonatomic) UIViewController<GLPSelectLocationViewControllerDelegate> *delegate;
 
 @end

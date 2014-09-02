@@ -19,6 +19,7 @@
 #import "NSUserDefaults+GLPAdditions.h"
 #import "DateFormatterHelper.h"
 #import "GLPVideo.h"
+#import "GLPLocation.h"
 
 @interface WebClient()
 
@@ -299,7 +300,7 @@ static WebClient *instance = nil;
     }];
 }
 
-#pragma mark - Fourthsquare API
+#pragma mark - Foursquare API
 
 /**
  Find the nearby possible locations.
@@ -323,6 +324,36 @@ static WebClient *instance = nil;
     [fsClient getPath:@"venues/search" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
     
         NSArray *results = [RemoteParser parseNearbyVenuesWithResponseObject:responseObject];
+        
+        callbackBlock(YES, results);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
+    }];
+}
+
+- (void)findCurrentLocationWithName:(NSString *)name withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    [params setObject:@"DTWBJ2KCWORXLDX34VW0V5KQRCIMS5UYLOBY1FPOF0CSZFCJ" forKey:@"client_id"];
+    [params setObject:@"QAMSRDCTMHLXH0BRLNSY4KBZFU02CHX3Y2RCOG13FEOYQMUH" forKey:@"client_secret"];
+    
+    [params setObject:name forKey:@"near"];
+    
+    [params setObject:[DateFormatterHelper generateStringDateForFSFormat] forKey:@"v"];
+    
+    [params setObject:@(50) forKey:@"limit"];
+    
+//    [params setObject:@"students" forKey:@"query"];
+    
+    AFHTTPClient *fsClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
+    
+    [fsClient getPath:@"venues/search" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *results = [RemoteParser parseNearbyVenuesWithResponseLocationsObject:responseObject];
         
         callbackBlock(YES, results);
         
@@ -458,12 +489,23 @@ static WebClient *instance = nil;
     if(post.eventTitle)
     {
 //        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
-//        
+//
 //        [params addEntriesFromDictionary:[NSMutablefDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
         
         
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];
+    }
+    
+    if(post.location)
+    {
+        [params setObject:[NSString stringWithFormat:@"%lf,%lf", post.location.latitude, post.location.longitude] forKey:@"location-gps"];
+        
+        [params setObject:post.location.name forKey:@"location-name"];
+        [params setObject:post.location.address forKey:@"location-desc"];
+        
+        DDLogDebug(@"LOCATION SENT: %@", post.location);
+        
     }
     
     [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {

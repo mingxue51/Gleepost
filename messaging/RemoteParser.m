@@ -426,9 +426,25 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.dislikes = [json[@"hates"] integerValue];
     
+    
     if(json[@"attribs"])
     {
         NSDictionary *attributes = json[@"attribs"];
+        
+        if([attributes objectForKey:@"location-gps"])
+        {
+            NSArray *latLon = [RemoteParser parseLatitudeLongitudeWithGpsLocation: [attributes objectForKey:@"location-gps"]];
+            
+            double lat = [((NSNumber *)latLon[0]) doubleValue];
+            
+            double lon = [((NSNumber *)latLon[1]) doubleValue];
+            
+            
+            post.location = [[GLPLocation alloc] initWithName:[attributes objectForKey:@"location-name"] address:[attributes objectForKey:@"location-desc"] latitude:lat longitude:lon andDistance:0];
+            
+            DDLogDebug(@"Post content: %@ : Location: %@", post.content, post.location);
+
+        }
         
         if([attributes objectForKey:@"event-time"])
         {
@@ -918,7 +934,18 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return date;
 }
 
++ (NSArray *)parseLatitudeLongitudeWithGpsLocation:(NSString *)gpsLocation
+{
+    NSArray *coordinates = [gpsLocation componentsSeparatedByString:@","];
+    
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    [f setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSNumber *latitude = [f numberFromString:((NSString *)coordinates[0])];
+    NSNumber *longitude = [f numberFromString:((NSString *)coordinates[1])];
 
+    
+    return @[latitude, longitude];
+}
 
 #pragma mark - Error messages
 
@@ -1102,6 +1129,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 #pragma mark - Busy status
+
 +(BOOL)parseBusyStatus:(NSDictionary*)json
 {
     return [json[@"busy"] boolValue];
@@ -1128,14 +1156,44 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     for(NSDictionary *d in venues)
     {
+        NSDictionary *loc = d[@"location"];
+
 //        DDLogDebug(@"Name: %@", d[@"name"]);
-        
+//        
 //        DDLogDebug(@"Address: %@, Lat: %@, Lgn: %@",loc[@"address"], loc[@"lat"], loc[@"lng"]);
         
-        NSDictionary *loc = d[@"location"];
         
         [locations addObject:[[GLPLocation alloc] initWithName:d[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]]];
 
+    }
+    
+    return locations;
+}
+
++ (NSArray *)parseNearbyVenuesWithResponseLocationsObject:(id)responseObject
+{
+    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseObject
+                                                         options:0
+                                                           error:nil];
+    
+    NSDictionary *response = json[@"response"];
+    
+    NSArray *venues = response[@"venues"];
+    
+    
+    for(NSDictionary *d in venues)
+    {
+        NSDictionary *loc = d[@"location"];
+        
+//        DDLogDebug(@"Name: %@", d[@"name"]);
+//        
+//        DDLogDebug(@"Address: %@, Lat: %@, Lgn: %@",loc[@"address"], loc[@"lat"], loc[@"lng"]);
+        
+        
+        [locations addObject:[[GLPLocation alloc] initWithName:d[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]]];
+        
     }
     
     return locations;
