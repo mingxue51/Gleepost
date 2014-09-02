@@ -29,9 +29,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
+@property (weak, nonatomic) IBOutlet UIView *searchUserView;
+
 @property (strong, nonatomic) NSArray *nearbyLocations;
 
-@property (assign, nonatomic) void (^locationDataCompletionHandler)(NSArray *placemarks, NSError *error);
 
 @property (assign, nonatomic, getter = didSelectFromNearbyLocations) BOOL selectFromNearbyLocations;
 
@@ -49,6 +50,8 @@
     
     [self configureViews];
     
+    [self configureGestures];
+    
     [self initialiseObjects];
     
     [self configureTableView];
@@ -56,7 +59,7 @@
     [self loadNearbyPlaces];
     
     
-
+    
     
 //    [self loadCurrentLocation];
 }
@@ -87,6 +90,13 @@
     [ShapeFormatterHelper setBorderToView:_backImageView withColour:[AppearanceHelper lightGrayGleepostColour] andWidth:1.0];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backImageView andValue:2];
+}
+
+- (void)configureGestures
+{
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToSelectManuallyAddressView)];
+    
+    [_searchUserView addGestureRecognizer:gesture];
 }
 
 - (void)configureTableView
@@ -134,6 +144,8 @@
     _coordinates = tapPoint;
     
     [self loadNearbyPlaces];
+    
+    [self findAddressTestMethod];
     
 //    [self loadCurrentLocation];
 }
@@ -234,6 +246,11 @@
 - (IBAction)goToUsersLocation:(id)sender
 {
     [self zoomAndLocateToUsersLocation];
+}
+
+- (void)goToSelectManuallyAddressView
+{
+    [self performSegueWithIdentifier:@"search address" sender:self];
 }
 
 #pragma mark - UI methods
@@ -355,6 +372,28 @@
         
         CLPlacemark *placemark = placemarks[0];
         
+        
+        [_locationLabel setText:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare]];
+        
+    }];
+}
+
+- (void)findAddressTestMethod
+{
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:_coordinates.latitude longitude:_coordinates.longitude];
+    
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        
+        if(placemarks.count < 1)
+        {
+            return;
+        }
+        
+        CLPlacemark *placemark = placemarks[0];
+        
+        DDLogDebug(@"Apple results: %@ %@ %@ %@ %@", placemark.subThoroughfare, placemark.thoroughfare, placemark.locality, placemark.subLocality, placemark.areasOfInterest);
         
         [_locationLabel setText:[NSString stringWithFormat:@"%@ %@", placemark.subThoroughfare, placemark.thoroughfare]];
         

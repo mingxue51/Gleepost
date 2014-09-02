@@ -144,6 +144,7 @@
 		583192FC19B584E4000E86D7 /* GLPLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 583192FB19B584E4000E86D7 /* GLPLocation.m */; };
 		5831930019B59258000E86D7 /* AddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583192FF19B59258000E86D7 /* AddressCell.m */; };
 		5831930319B592EB000E86D7 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5831930219B592EB000E86D7 /* AddressCell.xib */; };
+		5831930619B5BB97000E86D7 /* GLPSelectAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831930519B5BB97000E86D7 /* GLPSelectAddressViewController.m */; };
 		5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831B41018DB28BB00574A53 /* UIImage+Alpha.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */; };
@@ -1087,6 +1088,8 @@
 		583192FE19B59258000E86D7 /* AddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCell.h; sourceTree = "<group>"; };
 		583192FF19B59258000E86D7 /* AddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCell.m; sourceTree = "<group>"; };
 		5831930219B592EB000E86D7 /* AddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
+		5831930419B5BB97000E86D7 /* GLPSelectAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectAddressViewController.h; sourceTree = "<group>"; };
+		5831930519B5BB97000E86D7 /* GLPSelectAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectAddressViewController.m; sourceTree = "<group>"; };
 		5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		5831B41018DB28BB00574A53 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		5832C4B018992049004FC4F6 /* KhmerUIb.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = KhmerUIb.TTF; sourceTree = "<group>"; };
@@ -3279,6 +3282,8 @@
 				585106E2199D9E64000F06BB /* PendingPostManager.m */,
 				584FA60619B5225100FBA61F /* GLPSelectLocationViewController.h */,
 				584FA60719B5225100FBA61F /* GLPSelectLocationViewController.m */,
+				5831930419B5BB97000E86D7 /* GLPSelectAddressViewController.h */,
+				5831930519B5BB97000E86D7 /* GLPSelectAddressViewController.m */,
 			);
 			name = "New post Classes";
 			sourceTree = "<group>";
@@ -5707,6 +5712,7 @@
 				80AB894D17C26ECA0053E784 /* SessionManager.m in Sources */,
 				80E93FB618C8D4A3008769CB /* GLPSearchUserCell.m in Sources */,
 				588D85901959FEA8002F516A /* GroupCollectionViewCell.m in Sources */,
+				5831930619B5BB97000E86D7 /* GLPSelectAddressViewController.m in Sources */,
 				585C9EFD1925460800382FFB /* GLPPostCell.m in Sources */,
 				58428E3A18A2867000B82E4B /* RegisterView.m in Sources */,
 				58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */,
