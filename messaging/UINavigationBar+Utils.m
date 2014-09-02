@@ -8,37 +8,19 @@
 
 #import "UINavigationBar+Utils.h"
 #import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @implementation UINavigationBar (Utils)
 
 
 #pragma mark - Default Navigation bar
 
-- (void)setButton:(GLPButtonType)type withImageOrTitle:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
+- (void)setButton:(GLPButtonType)type withImageName:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
 {
-    
-    UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
-    
     UIButton *btn= [self generateButtonWithSize:size withSelector:selector andViewController:navController];
     
     UIBarButtonItem *barButtonItem = nil;
 
-    
-    if(type == kText)
-    {
-        [btn setTitle:imageOrTitle forState:UIControlStateNormal];
-        
-        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
-        [fixedSpace setWidth:-7];
-        
-        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        
-        navController.navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
-        
-    }
-    else
-    {
         [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
 
         barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
@@ -51,7 +33,27 @@
         {
             [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:YES];
         }
-    }
+}
+
+- (void)setTextButton:(GLPButtonType)type withTitle:(NSString *)title withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
+{
+    UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
+    
+    UIButton *btn= [self generateButtonWithSize:size withSelector:selector andViewController:navController];
+    
+    UIBarButtonItem *barButtonItem = nil;
+    
+    [btn setTitle:title forState:UIControlStateNormal];
+    
+    [btn setTitleColor:[AppearanceHelper greenGleepostColour] forState:UIControlStateNormal];
+    
+    [btn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:18.0]];
+    
+    [fixedSpace setWidth:-7];
+    
+    barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    
+    navController.navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
 }
 
 - (void)setSystemButton:(GLPButtonType)type withBarButtonSystemItem:(UIBarButtonSystemItem)systemItem withSelector:(SEL)selector andTarget:(UIViewController *)navController

@@ -80,9 +80,11 @@
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"x_red" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissViewController) andTarget:self];
     
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"group_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(navigateToGroupMessageController) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"x_red" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissViewController) andTarget:self];
+    
+    
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"group_button" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(navigateToGroupMessageController) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

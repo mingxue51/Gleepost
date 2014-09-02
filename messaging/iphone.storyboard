@@ -575,7 +575,9 @@
                         </subviews>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bWh-Ox-H7H"/>
+                    <navigationItem key="navigationItem" id="bWh-Ox-H7H">
+                        <barButtonItem key="backBarButtonItem" title=" " id="30H-gS-tb5"/>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
@@ -590,6 +592,7 @@
                         <outlet property="titleTextField" destination="Buy-Sh-mvj" id="8oE-Pb-nGU"/>
                         <segue destination="Pxp-nL-r26" kind="modal" identifier="capture video" id="1TU-9z-lbJ"/>
                         <segue destination="EY1-Je-RIf" kind="push" identifier="show categories" id="jTK-dl-EbC"/>
+                        <segue destination="II5-g9-LV9" kind="push" identifier="pick location" id="LkS-TV-Vqz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3e3-Ln-DsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1646,7 +1649,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vBe-VX-oaK">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vBe-VX-oaK" id="Hze-rW-T5v">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1885,7 +1888,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PJw-YM-kT7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3400" y="-2532"/>
+            <point key="canvasLocation" x="3756" y="-2546"/>
         </scene>
         <!--Video View Controller-->
         <scene sceneID="5gh-tY-0rJ">
@@ -2055,7 +2058,95 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2992" y="-1995"/>
+            <point key="canvasLocation" x="3177" y="-1995"/>
+        </scene>
+        <!--Select Location View Controller-->
+        <scene sceneID="OPc-Sm-XnV">
+            <objects>
+                <viewController id="II5-g9-LV9" customClass="GLPSelectLocationViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="24B-RR-p0F">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="sF6-1G-9nG">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="OCL-m2-6vS">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" id="Lj8-xU-bJ4">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="II5-g9-LV9" id="yd1-ck-dZY"/>
+                                            </connections>
+                                        </mapView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_pin_big.png" id="qSC-X7-vf2">
+                                            <rect key="frame" x="149" y="110" width="22" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nJA-dz-e7Z">
+                                            <rect key="frame" x="260" y="193" width="55" height="57"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="my_location.png">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="goToUsersLocation:" destination="II5-g9-LV9" eventType="touchUpInside" id="0g2-nr-YP0"/>
+                                            </connections>
+                                        </button>
+                                        <view contentMode="scaleToFill" id="p5z-zB-fCQ">
+                                            <rect key="frame" x="0.0" y="249" width="320" height="65"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="rNp-Ot-cEp">
+                                                    <rect key="frame" x="10" y="10" width="300" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="242 New Street" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2Zd-OK-ep5">
+                                                    <rect key="frame" x="48" y="22" width="214" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                                    <color key="textColor" red="0.27450980392156865" green="0.27450980392156865" blue="0.27450980392156865" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_glass.png" id="Oan-JW-gOl">
+                                                    <rect key="frame" x="277" y="22" width="25" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_pin.png" id="QLp-0Y-q38">
+                                                    <rect key="frame" x="20" y="23" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="dataSource" destination="II5-g9-LV9" id="6xl-VG-ww9"/>
+                                    <outlet property="delegate" destination="II5-g9-LV9" id="FSw-HT-IfD"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Zbm-7e-z30"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="backImageView" destination="rNp-Ot-cEp" id="y1w-Jv-yAT"/>
+                        <outlet property="locationLabel" destination="2Zd-OK-ep5" id="gS9-JO-KaJ"/>
+                        <outlet property="mapView" destination="Lj8-xU-bJ4" id="4dh-dP-eQb"/>
+                        <outlet property="tableView" destination="sF6-1G-9nG" id="epB-Y8-EuO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E0g-XQ-In8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3322" y="-2657"/>
         </scene>
         <!--Navigation Controller - Messenger-->
         <scene sceneID="4na-1o-QCI">
@@ -2419,7 +2510,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="A101DD87-CF31-43D6-AAAC-269AB517FA6A">
+                                                <state key="normal" image="7C94B541-ED23-47A6-B29D-CC6EC26B8F58">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -4385,7 +4476,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="A101DD87-CF31-43D6-AAAC-269AB517FA6A" width="30" height="32">
+        <image name="7C94B541-ED23-47A6-B29D-CC6EC26B8F58" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -4441,6 +4532,9 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <image name="kind_of_post_announcement.png" width="600" height="220"/>
         <image name="kind_of_post_event.png" width="600" height="220"/>
         <image name="kind_of_post_general.png" width="600" height="220"/>
+        <image name="location_glass.png" width="45" height="45"/>
+        <image name="location_pin.png" width="22" height="35"/>
+        <image name="location_pin_big.png" width="44" height="70"/>
         <image name="location_top_button.png" width="190" height="95"/>
         <image name="login-button.png" width="442" height="98"/>
         <image name="login_bg.png" width="640" height="1136"/>
@@ -4454,6 +4548,7 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <image name="message-7.png" width="22" height="21"/>
         <image name="message-user.png" width="254" height="185"/>
         <image name="message_cell_error.png" width="13" height="17"/>
+        <image name="my_location.png" width="105" height="109"/>
         <image name="next_button_bg.png" width="588" height="136"/>
         <image name="notificationicon.png" width="70" height="70"/>
         <image name="pick_pic.png" width="81" height="65"/>
@@ -4492,7 +4587,7 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="C4C-f3-cdX"/>
         <segue reference="WK7-hw-eyD"/>
-        <segue reference="wR3-TA-URh"/>
+        <segue reference="PMB-JP-q3M"/>
         <segue reference="7l2-k5-pHQ"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>

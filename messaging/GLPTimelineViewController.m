@@ -936,10 +936,14 @@ const float TOP_OFFSET = 180.0f;
 - (void)addNavigationButtons
 {
     float buttonsSize = 30.0;
+
     
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
+
     
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
+
 }
 
 //- (void)showProgressView

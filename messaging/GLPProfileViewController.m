@@ -341,8 +341,9 @@
 }
 
 -(void)addNavigationButtons
-{
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"settings_btn" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(showSettings:) andTarget:self];
+{    
+    
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
 }
 
 -(void)configureNavigationBar

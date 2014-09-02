@@ -13,6 +13,7 @@
 #import "SessionManager.h"
 #import "GLPCategory.h"
 #import "GLPVideo.h"
+#import "GLPLocation.h"
 
 @interface RemoteParser()
 
@@ -1108,6 +1109,36 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSString *)parseMessageFromJson:(NSDictionary *)json {
     return json[@"message"];
+}
+
+#pragma mark - Fourthsquare
+
++ (NSArray *)parseNearbyVenuesWithResponseObject:(id)responseObject
+{
+    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseObject
+                                                         options:0
+                                                           error:nil];
+    
+    NSDictionary *response = json[@"response"];
+    
+    NSArray *venues = response[@"venues"];
+    
+    
+    for(NSDictionary *d in venues)
+    {
+//        DDLogDebug(@"Name: %@", d[@"name"]);
+        
+//        DDLogDebug(@"Address: %@, Lat: %@, Lgn: %@",loc[@"address"], loc[@"lat"], loc[@"lng"]);
+        
+        NSDictionary *loc = d[@"location"];
+        
+        [locations addObject:[[GLPLocation alloc] initWithName:d[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]]];
+
+    }
+    
+    return locations;
 }
 
 #pragma mark - Facebook

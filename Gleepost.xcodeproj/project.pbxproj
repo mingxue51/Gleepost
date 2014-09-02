@@ -141,6 +141,9 @@
 		582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */; };
 		582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */; };
 		582F7AFF199DB8C500219D4C /* video_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 582F7AFC199DB8C500219D4C /* video_top_button.png */; };
+		583192FC19B584E4000E86D7 /* GLPLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 583192FB19B584E4000E86D7 /* GLPLocation.m */; };
+		5831930019B59258000E86D7 /* AddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 583192FF19B59258000E86D7 /* AddressCell.m */; };
+		5831930319B592EB000E86D7 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5831930219B592EB000E86D7 /* AddressCell.xib */; };
 		5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831B41018DB28BB00574A53 /* UIImage+Alpha.m */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */; };
@@ -264,6 +267,12 @@
 		584FA60119B51AE700FBA61F /* PBJVideoPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AE5FB41923821E00C4D59D /* PBJVideoPlayerController.m */; };
 		584FA60419B51B2B00FBA61F /* GLPVideoLoaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584FA60219B51B2B00FBA61F /* GLPVideoLoaderManager.m */; };
 		584FA60519B51C4D00FBA61F /* PBJVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AE5FB61923821E00C4D59D /* PBJVideoView.m */; };
+		584FA60819B5225100FBA61F /* GLPSelectLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 584FA60719B5225100FBA61F /* GLPSelectLocationViewController.m */; };
+		584FA60E19B5268C00FBA61F /* location_glass.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60A19B5268C00FBA61F /* location_glass.png */; };
+		584FA60F19B5268C00FBA61F /* location_pin_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60B19B5268C00FBA61F /* location_pin_big.png */; };
+		584FA61019B5268C00FBA61F /* location_pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60C19B5268C00FBA61F /* location_pin.png */; };
+		584FA61119B5268C00FBA61F /* my_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60D19B5268C00FBA61F /* my_location.png */; };
+		584FA61319B531F300FBA61F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 584FA61219B531F300FBA61F /* MapKit.framework */; };
 		585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */; };
 		585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CA199D85FC000F06BB /* IntroKindOfEventViewController.m */; };
 		585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CD199D8635000F06BB /* FinalNewPostViewController.m */; };
@@ -1073,6 +1082,11 @@
 		582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPServerPathManager.m; sourceTree = "<group>"; };
 		582F7AFC199DB8C500219D4C /* video_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_top_button.png; sourceTree = "<group>"; };
 		583076F6183A75580044A4FE /* NewCommentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewCommentDelegate.h; sourceTree = "<group>"; };
+		583192FA19B584E4000E86D7 /* GLPLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLocation.h; sourceTree = "<group>"; };
+		583192FB19B584E4000E86D7 /* GLPLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLocation.m; sourceTree = "<group>"; };
+		583192FE19B59258000E86D7 /* AddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCell.h; sourceTree = "<group>"; };
+		583192FF19B59258000E86D7 /* AddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCell.m; sourceTree = "<group>"; };
+		5831930219B592EB000E86D7 /* AddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
 		5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		5831B41018DB28BB00574A53 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		5832C4B018992049004FC4F6 /* KhmerUIb.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = KhmerUIb.TTF; sourceTree = "<group>"; };
@@ -1254,6 +1268,13 @@
 		584FA5FF19B51A4C00FBA61F /* UploadingProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadingProgressView.h; sourceTree = "<group>"; };
 		584FA60219B51B2B00FBA61F /* GLPVideoLoaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoLoaderManager.m; sourceTree = "<group>"; };
 		584FA60319B51B2B00FBA61F /* GLPVideoLoaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoLoaderManager.h; sourceTree = "<group>"; };
+		584FA60619B5225100FBA61F /* GLPSelectLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectLocationViewController.h; sourceTree = "<group>"; };
+		584FA60719B5225100FBA61F /* GLPSelectLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectLocationViewController.m; sourceTree = "<group>"; };
+		584FA60A19B5268C00FBA61F /* location_glass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_glass.png; sourceTree = "<group>"; };
+		584FA60B19B5268C00FBA61F /* location_pin_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_pin_big.png; sourceTree = "<group>"; };
+		584FA60C19B5268C00FBA61F /* location_pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_pin.png; sourceTree = "<group>"; };
+		584FA60D19B5268C00FBA61F /* my_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = my_location.png; sourceTree = "<group>"; };
+		584FA61219B531F300FBA61F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		585106C6199D85DB000F06BB /* IntroKindOfNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfNewPostViewController.h; sourceTree = "<group>"; };
 		585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroKindOfNewPostViewController.m; sourceTree = "<group>"; };
 		585106C9199D85FC000F06BB /* IntroKindOfEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfEventViewController.h; sourceTree = "<group>"; };
@@ -2163,6 +2184,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				584FA61319B531F300FBA61F /* MapKit.framework in Frameworks */,
 				58A75EB81920E7780082F316 /* MobileCoreServices.framework in Frameworks */,
 				58A75EB61920E7620082F316 /* MediaPlayer.framework in Frameworks */,
 				58A75EB41920E7510082F316 /* CoreMedia.framework in Frameworks */,
@@ -2372,6 +2394,23 @@
 				582B405118AD6FAD00BC4285 /* mario.mp3 */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		583192FD19B59183000E86D7 /* Address cell */ = {
+			isa = PBXGroup;
+			children = (
+				583192FE19B59258000E86D7 /* AddressCell.h */,
+				583192FF19B59258000E86D7 /* AddressCell.m */,
+			);
+			name = "Address cell";
+			sourceTree = "<group>";
+		};
+		5831930119B592B9000E86D7 /* Address cell */ = {
+			isa = PBXGroup;
+			children = (
+				5831930219B592EB000E86D7 /* AddressCell.xib */,
+			);
+			name = "Address cell";
 			sourceTree = "<group>";
 		};
 		5832C4C618998554004FC4F6 /* Blur */ = {
@@ -2697,6 +2736,17 @@
 				584FA5FC19B51A3900FBA61F /* UploadingProgressView.xib */,
 			);
 			name = Progress;
+			sourceTree = "<group>";
+		};
+		584FA60919B5262500FBA61F /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				584FA60A19B5268C00FBA61F /* location_glass.png */,
+				584FA60B19B5268C00FBA61F /* location_pin_big.png */,
+				584FA60C19B5268C00FBA61F /* location_pin.png */,
+				584FA60D19B5268C00FBA61F /* my_location.png */,
+			);
+			name = Location;
 			sourceTree = "<group>";
 		};
 		5851112719A7E2FF00488E79 /* Progress */ = {
@@ -3227,6 +3277,8 @@
 				585106CD199D8635000F06BB /* FinalNewPostViewController.m */,
 				585106E1199D9E64000F06BB /* PendingPostManager.h */,
 				585106E2199D9E64000F06BB /* PendingPostManager.m */,
+				584FA60619B5225100FBA61F /* GLPSelectLocationViewController.h */,
+				584FA60719B5225100FBA61F /* GLPSelectLocationViewController.m */,
 			);
 			name = "New post Classes";
 			sourceTree = "<group>";
@@ -3974,6 +4026,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				584FA60919B5262500FBA61F /* Location */,
 				5851113219A8205300488E79 /* Progress View */,
 				58451BFC199B3CC0003B94D2 /* Settings */,
 				58774D3419649BAC0034A1C6 /* Refresh */,
@@ -4283,6 +4336,8 @@
 				58F9C63E18C522CA004A237E /* GLPGroup.m */,
 				58D4FF3019A53093006E7AC8 /* GLPVideo.h */,
 				58D4FF3119A53093006E7AC8 /* GLPVideo.m */,
+				583192FA19B584E4000E86D7 /* GLPLocation.h */,
+				583192FB19B584E4000E86D7 /* GLPLocation.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4307,6 +4362,7 @@
 		8096E4E917C2CBEF00C7BF60 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				583192FD19B59183000E86D7 /* Address cell */,
 				5821CFA219A2DD3C00274FE4 /* Comments */,
 				58451BF8199B2DA8003B94D2 /* Settings cell */,
 				58CFC773196312CD00FF1E40 /* Simple name cells */,
@@ -4365,6 +4421,7 @@
 		80AB891917C267F50053E784 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				584FA61219B531F300FBA61F /* MapKit.framework */,
 				58A75EB71920E7780082F316 /* MobileCoreServices.framework */,
 				58A75EB51920E7620082F316 /* MediaPlayer.framework */,
 				58A75EB31920E7510082F316 /* CoreMedia.framework */,
@@ -4711,6 +4768,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				5831930119B592B9000E86D7 /* Address cell */,
 				584FA5FB19B51A2F00FBA61F /* Progress */,
 				5821CF9D19A2DD0100274FE4 /* Comments */,
 				58451BF4199B2CD2003B94D2 /* Settings */,
@@ -5035,6 +5093,7 @@
 				58D0E2651850BD7B005879F4 /* ignore_notification_button.png in Resources */,
 				587CEA58195C44750043E5E2 /* settings_btn.png in Resources */,
 				806E3D771832B1960063AACE /* NotificationBackgroundError@2x.png in Resources */,
+				584FA60E19B5268C00FBA61F /* location_glass.png in Resources */,
 				58E18B951945CF3E0029C764 /* camping.png in Resources */,
 				5832C4BF189936E9004FC4F6 /* user_image_bg.png in Resources */,
 				806E3D781832B1960063AACE /* NotificationBackgroundErrorIcon.png in Resources */,
@@ -5057,6 +5116,7 @@
 				588CDF7719762A2A00373EE3 /* private_group.png in Resources */,
 				586F9C4D198818E30093A946 /* DescriptionSegmentGroupCell.xib in Resources */,
 				58FB7C96185614C5002C6A00 /* MutualProfileTabView.xib in Resources */,
+				5831930319B592EB000E86D7 /* AddressCell.xib in Resources */,
 				584332A6180F324200BD9F74 /* unlock_the_profile.png in Resources */,
 				582A664118AB9BC400006419 /* bar3.png in Resources */,
 				8096E4D317C2BA3000C7BF60 /* clock_old.png in Resources */,
@@ -5069,6 +5129,7 @@
 				585106D9199D87DA000F06BB /* kind_of_event_other.png in Resources */,
 				58E3DAC5188405DB00B9B048 /* blimp.png in Resources */,
 				5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */,
+				584FA61119B5268C00FBA61F /* my_location.png in Resources */,
 				5890D23618482DC300E293DD /* messages@2x.png in Resources */,
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
 				58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */,
@@ -5335,6 +5396,7 @@
 				589024A0195DF1ED00084E2F /* message_button_old.png in Resources */,
 				58F6CF2518CE6F8100ABE244 /* group_posts.png in Resources */,
 				806E3D7E1832B1960063AACE /* NotificationBackgroundSuccessIcon.png in Resources */,
+				584FA60F19B5268C00FBA61F /* location_pin_big.png in Resources */,
 				584E8E2D18A2EB3D005AEF91 /* message-7_old2@2x.png in Resources */,
 				5897350E193F775E0048BA85 /* sign_in_up.png in Resources */,
 				584E1B0019932EF800FD55AD /* user_selected_tick.png in Resources */,
@@ -5412,6 +5474,7 @@
 				58E18B9A1945CF3E0029C764 /* golf.png in Resources */,
 				5821CFA019A2DD2900274FE4 /* CommentTextCellView.xib in Resources */,
 				5890248D195DC78F00084E2F /* back_final@2x.png in Resources */,
+				584FA61019B5268C00FBA61F /* location_pin.png in Resources */,
 				580FF14F18AA58DE0026B65B /* add_button.png in Resources */,
 				585AE26C192BF1FD00174CED /* bird-house-7@2x.png in Resources */,
 				58350A6B198AF733000BB1CA /* GLPNetworkErrorView.xib in Resources */,
@@ -5548,6 +5611,7 @@
 				80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */,
 				58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */,
 				80B2A4251833824F002AB1F0 /* GLPNotificationDao.m in Sources */,
+				584FA60819B5225100FBA61F /* GLPSelectLocationViewController.m in Sources */,
 				80AB892917C267F50053E784 /* main.m in Sources */,
 				80AB892D17C267F50053E784 /* AppDelegate.m in Sources */,
 				589A73BC1936527000D518DF /* SetEventInformationCell.m in Sources */,
@@ -5680,6 +5744,7 @@
 				581BD8651913D57A006F8BCD /* LevelView.m in Sources */,
 				582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */,
 				58FB7CBE18565AAA002C6A00 /* ProfileMutualTableViewCell.m in Sources */,
+				5831930019B59258000E86D7 /* AddressCell.m in Sources */,
 				80666C401806D45700E4E515 /* ConversationManager.m in Sources */,
 				589EAD2B18A445A7005B2F4C /* GLPLoginSignUpViewController.m in Sources */,
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
@@ -5897,6 +5962,7 @@
 				58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
+				583192FC19B584E4000E86D7 /* GLPLocation.m in Sources */,
 				585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */,
 				584FA60019B51A4C00FBA61F /* UploadingProgressView.m in Sources */,
 				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,

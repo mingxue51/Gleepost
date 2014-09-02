@@ -33,6 +33,7 @@
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
 #import "GLPProgressManager.h"
+#import "GLPSelectLocationViewController.h"
 
 @interface NewPostViewController ()
 
@@ -281,8 +282,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 }
 
 -(void)configureRightBarButton
-{
-    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
+{    
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
+
 }
 
 -(void)formatStatusBar
@@ -443,6 +445,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (IBAction)addLocation:(id)sender
 {
     DDLogDebug(@"Add location");
+    
+    [self performSegueWithIdentifier:@"pick location" sender:self];
 }
 
 #pragma mark - FDTakeController delegate
@@ -655,11 +659,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 //{
 //    
-//    if([segue.identifier isEqualToString:@"pick date"])
+//    if([segue.identifier isEqualToString:@"pick location"])
 //    {
-//        PickDateEventViewController *pickDateViewController = segue.destinationViewController;
+////        GLPSelectLocationViewController *selectLocation = segue.destinationViewController;
 //        
-//        pickDateViewController.delegate = self;
+////        pickDateViewController.delegate = self;
 //    }
 //    else if ([segue.identifier isEqualToString:@"show categories"])
 //    {

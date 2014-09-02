@@ -169,8 +169,8 @@
 
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    
-    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
+        
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

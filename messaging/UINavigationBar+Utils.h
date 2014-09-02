@@ -10,8 +10,7 @@
 
 typedef NS_ENUM(NSInteger, GLPButtonType) {
     kRight,
-    kLeft,
-    kText
+    kLeft
 };
 
 @interface UINavigationBar (Utils)
@@ -24,7 +23,9 @@ typedef NS_ENUM(NSInteger, GLPButtonType) {
 
 - (void)setSystemButton:(GLPButtonType)type withBarButtonSystemItem:(UIBarButtonSystemItem)systemItem withSelector:(SEL)selector andTarget:(UIViewController *)navController;
 
-- (void)setButton:(GLPButtonType)type withImageOrTitle:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
+- (void)setButton:(GLPButtonType)type withImageName:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
+
+- (void)setTextButton:(GLPButtonType)type withTitle:(NSString *)title withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
 
 - (void)setButton:(GLPButtonType)type withImage:(NSString *)image withButtonSize:(CGSize)size withSelector:(SEL)selector withTarget:(UIViewController *)viewController andNavigationItem:(UINavigationItem *)navigationItem;
 

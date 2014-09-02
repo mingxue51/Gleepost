@@ -83,6 +83,7 @@
 #define GLP_TITLE_FONT                              @"HelveticaNeue"
 #define GLP_MESSAGE_FONT                            @"HelveticaNeue"
 #define GLP_HELV_NEUE_LIGHT                         @"HelveticaNeue-Light"
+//#define GLP_HELV_NEUE_BOLD                          @"HelveticaNeue-Bold"
 
 #define kGLPNumberOfPosts                           20
 

@@ -300,9 +300,9 @@ const float TOP_OFF_SET = -64.0;
         buttonX = 0;
     }
     
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"new_post_groups" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(createNewPost:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"new_post_groups" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(createNewPost:) andTarget:self];
     
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"settings_btn" withButtonSize:CGSizeMake(30, 30) withSelector:@selector(showSettings:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
     
     //=======
     //    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];

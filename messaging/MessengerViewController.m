@@ -211,8 +211,9 @@
 - (void)addNavigationButtons
 {
     float buttonsSize = 30.0;
+    
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(viewNewMessageView) andTarget:self];
 
-    [self.navigationController.navigationBar setButton:kRight withImageOrTitle:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(viewNewMessageView) andTarget:self];
 }
 
 - (void)showNetworkErrorViewIfNeeded

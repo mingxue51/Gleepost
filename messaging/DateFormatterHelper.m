@@ -55,6 +55,18 @@
 
 }
 
++ (NSString *)generateStringDateForFSFormat
+{
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyyMMdd"];
+    
+    NSDate *cDate = [NSDate date];
+    
+    NSString *currentDateStr = [dateFormat stringFromDate:cDate];
+    
+    return currentDateStr;
+}
+
 +(NSString *)dateUnixFormat:(NSDate *)date
 {
     return [NSString stringWithFormat:@"%.0f", [date timeIntervalSince1970]];

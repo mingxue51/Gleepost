@@ -46,7 +46,8 @@
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    [self.navigationController.navigationBar setButton:kLeft withImageOrTitle:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismiss) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss) andTarget:self];
     
     self.navigationController.navigationBar.tintColor = [AppearanceHelper blueGleepostColour];
 

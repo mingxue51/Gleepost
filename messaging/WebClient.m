@@ -299,6 +299,74 @@ static WebClient *instance = nil;
     }];
 }
 
+#pragma mark - Fourthsquare API
+
+/**
+ Find the nearby possible locations.
+ */
+
+- (void)findNearbyLocationsWithLatitude:(double)lat andLongitude:(double)lon withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+
+    [params setObject:@"DTWBJ2KCWORXLDX34VW0V5KQRCIMS5UYLOBY1FPOF0CSZFCJ" forKey:@"client_id"];
+    [params setObject:@"QAMSRDCTMHLXH0BRLNSY4KBZFU02CHX3Y2RCOG13FEOYQMUH" forKey:@"client_secret"];
+
+    [params setObject:[NSString stringWithFormat:@"%f,%f", lat, lon] forKey:@"ll"];
+    
+    [params setObject:[DateFormatterHelper generateStringDateForFSFormat] forKey:@"v"];
+    
+    [params setObject:@(10) forKey:@"limit"];
+    
+    AFHTTPClient *fsClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
+    
+    [fsClient getPath:@"venues/search" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+        NSArray *results = [RemoteParser parseNearbyVenuesWithResponseObject:responseObject];
+        
+        callbackBlock(YES, results);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
+    }];
+}
+
+/**
+ Find location more accurate.
+ */
+
+- (void)findCurrentLocationWithLatitude:(double)lat andLongitude:(double)lon withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock
+{
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    
+    [params setObject:@"DTWBJ2KCWORXLDX34VW0V5KQRCIMS5UYLOBY1FPOF0CSZFCJ" forKey:@"client_id"];
+    [params setObject:@"QAMSRDCTMHLXH0BRLNSY4KBZFU02CHX3Y2RCOG13FEOYQMUH" forKey:@"client_secret"];
+    
+    [params setObject:[NSString stringWithFormat:@"%f,%f", lat, lon] forKey:@"ll"];
+    
+    [params setObject:[DateFormatterHelper generateStringDateForFSFormat] forKey:@"v"];
+    
+    [params setObject:@(1) forKey:@"limit"];
+    
+//    [params setObject:@"match" forKey:@"intent"];
+    
+    AFHTTPClient *fsClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
+    
+    [fsClient getPath:@"venues/search" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *results = [RemoteParser parseNearbyVenuesWithResponseObject:responseObject];
+        
+        callbackBlock(YES, results);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
+    }];
+}
+
 #pragma mark - Push notifications
 
 - (void)registerPushToken:(NSString *)pushToken authParams:(NSDictionary *)authParams callback:(void (^)(BOOL success))callback

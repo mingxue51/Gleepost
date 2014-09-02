@@ -89,6 +89,9 @@
 // invite message
 + (NSString *)parseMessageFromJson:(NSDictionary *)json;
 
+// fourthsquare
++ (NSArray *)parseNearbyVenuesWithResponseObject:(id)responseObject;
+
 // facebook
 +(BOOL)isAccountVerified:(NSDictionary *)json;
 +(BOOL)isAccountRegistered:(NSDictionary *)json;
