@@ -107,6 +107,12 @@
 
 }
 
+- (void)setTitleToBar:(NSString *)title
+{
+    _title = title;
+    [self configureView];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

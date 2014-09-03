@@ -104,16 +104,22 @@ const float TOP_OFF_SET = -64.0;
     
     [self initialiseObjects];
     
-    [self configureTopImageView];
-
-    [self configureTableView];
-    
-    [self loadPosts];
-    
-    if(_fromPushNotification)
+    if(!_fromPushNotification)
     {
-        [self loadGroupData];
+        [self configureTopImageView];
+        [self configureTableView];
+        [self loadPosts];
+
+
     }
+    
+
+    
+    
+//    if(_fromPushNotification)
+//    {
+//        [self loadGroupData];
+//    }
     
 //    [self loadMembers];
     
@@ -250,7 +256,7 @@ const float TOP_OFF_SET = -64.0;
 //    CGRectSetY(_strechedImageView, -64.0);
     
     _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
-
+    
     [_strechedImageView setImageUrl:_group.groupImageUrl withPlaceholderImage:@"default_thumbnail"];
     
     [_strechedImageView setTextInTitle:_group.name];
@@ -873,12 +879,31 @@ const float TOP_OFF_SET = -64.0;
         
         if(success)
         {
+            DDLogDebug(@"Group comes from PN");
             _group = group;
             self.title = @"";
             
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                // do work here
+//
+//            });
+            
+            [self configureTopImageView];
+            
+            [self configureTableView];
+
+            [self loadPosts];
+            
+            _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
+            
+            [self.view addSubview:_fakeNavigationBar];
+            
+            [_fakeNavigationBar setHidden:YES];
+
+            
             //TODO: That should refresh the first cell plus the strecthed image view.
             
-//            [self refreshCellViewWithIndex:0];
+            [self refreshCellViewWithIndex:0];
         }
         else
         {
@@ -886,6 +911,8 @@ const float TOP_OFF_SET = -64.0;
         }
         
     }];
+    
+
 }
 
 #pragma mark - Previous posts

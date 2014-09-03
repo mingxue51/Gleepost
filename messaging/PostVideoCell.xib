@@ -213,11 +213,11 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-kn-mHb">
-                                        <rect key="frame" x="208" y="3" width="70" height="32"/>
+                                        <rect key="frame" x="215" y="4" width="75" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="70" id="NUk-X5-tFx"/>
-                                            <constraint firstAttribute="height" constant="32" id="hUX-66-txY"/>
+                                            <constraint firstAttribute="width" constant="75" id="NUk-X5-tFx"/>
+                                            <constraint firstAttribute="height" constant="38" id="hUX-66-txY"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                         <state key="normal" title="I'M GOING" backgroundImage="going_pushed_back_btn.png">

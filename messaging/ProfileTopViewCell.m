@@ -8,6 +8,7 @@
 
 #import "ProfileTopViewCell.h"
 #import "GLPUser.h"
+#import "ShapeFormatterHelper.h"
 
 @interface ProfileTopViewCell ()
 
@@ -73,6 +74,8 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
     
     [self configureSegmentView];
     
+    [self configureBadge];
+    
     [_notificationLabel setHidden:YES];
     [_notificationImageView setHidden:YES];
 }
@@ -82,6 +85,11 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
 - (void)configureSegmentView
 {
     [self loadSegmentView];
+}
+
+- (void)configureBadge
+{
+    [ShapeFormatterHelper setRoundedView:_notificationImageView toDiameter:_notificationImageView.frame.size.height];
 }
 
 - (void)loadSegmentView

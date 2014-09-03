@@ -683,7 +683,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if([self.post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
     {
 //        [_goingBtn setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
-        [_goingBtn setEnabled:NO];
+//        [_goingBtn setEnabled:NO];
+        [_goingBtn setHidden:YES];
+
     }
     else if(self.post.attended)
     {
@@ -800,7 +802,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 -(void)makeButtonSelected
 {
 //    [_goingBtn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
-    [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
+    [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
 
     _goingBtn.tag = 1;
 }
@@ -808,7 +810,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 -(void)makeButtonUnselected
 {
 //    [_goingBtn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
-    [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
+    [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
     
     _goingBtn.tag = 2;
 }

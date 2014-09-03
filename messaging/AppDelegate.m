@@ -43,6 +43,8 @@
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
 #import "AppearanceHelper.h"
+#import "GLPGroupsViewController.h"
+#import "GroupViewController.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -210,7 +212,7 @@ static int pnTestVariable = 0;
     
     DDLogInfo(@"Receive push notification: %@", json);
     
-    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"] && !json[@"liker-id"] && !json[@"commenter-id"]) {
+    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"] && !json[@"liker-id"] && !json[@"commenter-id"] && !json[@"group_post"]) {
         
         DDLogError(@"Converstion id or group id or added user or accepted user does not exist, abort");
         return;
@@ -222,7 +224,9 @@ static int pnTestVariable = 0;
     }
     else if(json[@"group-id"])
     {
-        [self navigateToGroupWithJson:json];
+//        [self navigateToGroupWithJson:json];
+        [self navigateToGroupPostWithJson:json];
+
     }
     else if(json[@"adder-id"])
     {
@@ -252,10 +256,59 @@ static int pnTestVariable = 0;
     {
         [self navigateToPostWithJson:json];
     }
+    else if(json[@"group_post"])
+    {
+//        [self navigateToGroupPostWithJson:json];
+    }
 }
 
 # pragma mark - Navigation from push notifications
 
+
+- (void)navigateToGroupPostWithJson:(NSDictionary *)json
+{
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 2) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:2];
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[2];
+    
+    DDLogInfo(@"Goups VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPGroupsViewController *groupsVC = navVC.viewControllers[0];
+    
+    GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+    groupVC.fromPushNotification = NO;
+    
+    [self loadAndNavigateToGroupWithGroupsVC:groupsVC groupVC:groupVC withBaseVC:navVC withGroupRemoteKey:[json[@"group-id"] integerValue]];
+//    groupVC.group = [[GLPGroup alloc] initFromPushNotificationWithRemoteKey:[json[@"group-id"] integerValue]];
+//    
+//    [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
+}
+
+- (void)loadAndNavigateToGroupWithGroupsVC:(GLPGroupsViewController *)groupsVC groupVC:(GroupViewController *)groupVC withBaseVC:(UINavigationController *)base withGroupRemoteKey:(NSInteger)remoteKey
+{
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:groupsVC.view];
+
+    [[WebClient sharedInstance] getGroupDescriptionWithId:remoteKey withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errormMessage){
+        
+        [WebClientHelper hideStandardLoaderForView:groupsVC.view];
+        
+        if(success)
+        {
+            groupVC.group = group;
+            
+            [base setViewControllers:@[groupsVC, groupVC] animated:NO];
+        }
+    }];
+}
 
 -(void)navigateToPostWithJson:(NSDictionary *)json
 {
@@ -266,11 +319,11 @@ static int pnTestVariable = 0;
         return;
     }
     
-    if(_tabBarController.selectedIndex != 4) {
+    if(_tabBarController.selectedIndex != 3) {
         UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
         [currentNavigationVC popToRootViewControllerAnimated:NO];
 
-        [_tabBarController setSelectedIndex:4];
+        [_tabBarController setSelectedIndex:3];
     }
     
     
@@ -280,7 +333,6 @@ static int pnTestVariable = 0;
     DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPProfileViewController *profileVC = navVC.viewControllers[0];
     
-    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:profileVC.view];
 
     
     //Navigate to notifications.
@@ -299,7 +351,8 @@ static int pnTestVariable = 0;
 
 -(void)navigateToPostWithPostRemoteKey:(NSInteger)remoteKey withProfileVC:(GLPProfileViewController *)profileVC withViewPostVC:(ViewPostViewController *)viewPostVC andBasicVC:(UINavigationController *)basicVC
 {
-    
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:profileVC.view];
+
     //Load post.
     
     [GLPPostManager loadPostWithRemoteKey:remoteKey callback:^(BOOL success, GLPPost *post) {
