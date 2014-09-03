@@ -213,7 +213,7 @@ const float TOP_OFFSET = 180.0f;
         [self startReloadingCronImmediately:YES];
     }
     
-    [self showWalkthroughIfNeeded];
+//    [self showWalkthroughIfNeeded];
 
     //TODO: Delete that.
     if(self.postIndexToReload!=-1)
