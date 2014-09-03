@@ -88,6 +88,8 @@ const float ONE_LINE_LIMIT = 18.0;
     //Set elements to top view.
     [_topView setElementsWithPost:_post];
     
+    [_topView setMainPostView:_mainView];
+    
     [_topView setDelegate:self];
 
     [_mainView setDelegate:self];

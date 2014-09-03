@@ -38,4 +38,6 @@
 
 - (void)deregisterNotificationsForVideoView;
 
+-(IBAction)moreOptions:(id)sender;
+
 @end

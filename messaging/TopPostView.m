@@ -127,9 +127,15 @@ const float ONE_LINE_HEIGHT = 20;
 
 - (IBAction)moreOptions:(id)sender
 {
-    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];
+    //TODO: For now call the same method from a MainPostView instance.
+    //Check if that is ok in terms of the efficiency of the table view.
+    
+    [_mainPostView moreOptions:sender];
+    
+    
+//    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+//
+//    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];
 }
 
 -(BOOL)isCurrentPostBelongsToCurrentUser

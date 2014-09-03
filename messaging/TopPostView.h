@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
+#import "MainPostView.h"
 
 @protocol TopPostViewDelegate <NSObject>
 
@@ -19,6 +20,9 @@
 @interface TopPostView : UIView
 
 @property (weak, nonatomic) UITableViewCell <TopPostViewDelegate> *delegate;
+
+//TODO: Check that if limits the performance of table view.
+@property (strong, nonatomic) MainPostView *mainPostView;
 
 -(void)setElementsWithPost:(GLPPost *)post;
 + (float)getContentLabelSizeForContent:(NSString *)content;

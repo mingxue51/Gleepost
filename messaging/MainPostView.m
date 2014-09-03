@@ -181,8 +181,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self addGesturesToElements];
     
-    [self configureNotifications];
-
     
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
@@ -201,19 +199,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 - (void)configureNotifications
 {
-    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreOptions:) name:notificationName object:nil];
+//    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+//
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreOptions:) name:notificationName object:nil];
 }
 
 - (void)dealloc
 {
-    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+//    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 }
 
 
