@@ -9,7 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
 
+@protocol TopPostViewDelegate <NSObject>
+
+@required
+- (void)locationPushed;
+
+@end
+
 @interface TopPostView : UIView
+
+@property (weak, nonatomic) UITableViewCell <TopPostViewDelegate> *delegate;
 
 -(void)setElementsWithPost:(GLPPost *)post;
 + (float)getContentLabelSizeForContent:(NSString *)content;

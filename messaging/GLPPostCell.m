@@ -8,7 +8,6 @@
 
 #import "GLPPostCell.h"
 #import "VideoView.h"
-#import "TopPostView.h"
 #import "SessionManager.h"
 #import "GLPPostOperationManager.h"
 #import "WebClient.h"
@@ -88,6 +87,8 @@ const float ONE_LINE_LIMIT = 18.0;
 
     //Set elements to top view.
     [_topView setElementsWithPost:_post];
+    
+    [_topView setDelegate:self];
 
     [_mainView setDelegate:self];
     
@@ -182,6 +183,13 @@ const float ONE_LINE_LIMIT = 18.0;
     {
         return kTextCell;
     }
+}
+
+#pragma mark - TopPostViewDelegate
+
+- (void)locationPushed
+{
+    [_delegate showLocationWithLocation:_post.location];
 }
 
 #pragma mark - MainPostViewDelegate

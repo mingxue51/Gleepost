@@ -10,6 +10,8 @@
 #import "NSDate+TimeAgo.h"
 #import "NSDate+HumanizedTime.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPLocation.h"
+#import "SessionManager.h"
 
 @interface TopPostView ()
 
@@ -17,13 +19,21 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTimeLbl;
 
+@property (weak, nonatomic) IBOutlet UIButton *moreOptionsBtn;
+
+@property (weak, nonatomic) IBOutlet UIButton *locationBtn;
+
+@property (weak, nonatomic) IBOutlet UIImageView *locationImageView;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *eventTitleLblHeight;
+
+@property (strong, nonatomic) GLPPost *post;
 
 @end
 
 @implementation TopPostView
 
-const float TITLE_MAX_WIDTH = 280.0;
+const float TITLE_MAX_WIDTH = 260.0;
 const float TITLE_MAX_HEIGHT = 50.0;
 const float TWO_LINES_HEIGHT = 40.0;
 const float ONE_LINE_HEIGHT = 20;
@@ -43,6 +53,8 @@ const float ONE_LINE_HEIGHT = 20;
 {
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0f];
     
+    _post = post;
+    
     float height = [TopPostView getContentLabelSizeForContent:post.eventTitle];
     
     [_eventTitleLblHeight setConstant:height];
@@ -50,6 +62,24 @@ const float ONE_LINE_HEIGHT = 20;
     [_eventTitleLbl setText:post.eventTitle];
     
     [self setEventTimeWithTime:post.dateEventStarts];
+    
+    [self configureLocationElementsWithPost:post];
+}
+
+- (void)configureLocationElementsWithPost:(GLPPost *)post
+{
+    if(post.location)
+    {
+        [_locationImageView setHidden:NO];
+        [_locationBtn setHidden:NO];
+        
+        [_locationBtn setTitle:post.location.name forState:UIControlStateNormal];
+    }
+    else
+    {
+        [_locationImageView setHidden:YES];
+        [_locationBtn setHidden:YES];
+    }
 }
 
 -(void)setEventTimeWithTime:(NSDate *)date
@@ -82,6 +112,30 @@ const float ONE_LINE_HEIGHT = 20;
     [_eventTitleLbl setText:eventTitle];
 }
 
+
+#pragma mark - Selectors
+
+- (IBAction)showLocation:(id)sender
+{
+    if(![_delegate respondsToSelector:@selector(locationPushed)])
+    {
+        return;
+    }
+    
+    [_delegate locationPushed];
+}
+
+- (IBAction)moreOptions:(id)sender
+{
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];
+}
+
+-(BOOL)isCurrentPostBelongsToCurrentUser
+{
+    return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
+}
 
 #pragma mark - Label size
 

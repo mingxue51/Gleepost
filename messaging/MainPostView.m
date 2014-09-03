@@ -180,6 +180,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self configureShareButton];
     
     [self addGesturesToElements];
+    
+    [self configureNotifications];
 
     
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
@@ -195,6 +197,23 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //    [ShapeFormatterHelper setBorderToView:_shareBtn withColour:[UIColor greenColor]];
     
     
+}
+
+- (void)configureNotifications
+{
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreOptions:) name:notificationName object:nil];
+}
+
+- (void)dealloc
+{
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 }
 
 
@@ -665,18 +684,22 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     if([self.post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
     {
-        [_goingBtn setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
+//        [_goingBtn setImage:[UIImage imageNamed:@"going_expired"] forState:UIControlStateNormal];
         [_goingBtn setEnabled:NO];
     }
     else if(self.post.attended)
     {
-        [_goingBtn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
+        //[_goingBtn setImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
+        [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
+        _goingBtn.tintColor = [UIColor whiteColor];
         [_goingBtn setEnabled:YES];
         _goingBtn.tag = 1;
     }
     else
     {
-        [_goingBtn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
+//        [_goingBtn setImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
+        [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
+        _goingBtn.tintColor = [AppearanceHelper grayGleepostColour];
         [_goingBtn setEnabled:YES];
         _goingBtn.tag = 2;
     }
@@ -684,14 +707,25 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)configureMoreButton
 {
-    if([self isCurrentPostBelongsToCurrentUser])
+    if([self isCurrentPostEvent])
     {
-        [_moreBtn setHidden:NO];
+        [_moreBtn setHidden:YES];
+        
+        return;
     }
     else
     {
-        [_moreBtn setHidden:YES];
+        [_moreBtn setHidden:NO];
     }
+    
+//    if([self isCurrentPostBelongsToCurrentUser])
+//    {
+//        [_moreBtn setHidden:NO];
+//    }
+//    else
+//    {
+//        [_moreBtn setHidden:YES];
+//    }
 }
 
 -(void)configureShareButton

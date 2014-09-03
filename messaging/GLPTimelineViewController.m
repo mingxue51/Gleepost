@@ -64,6 +64,7 @@
 #import "GLPProgressManager.h"
 #import "UploadingProgressView.h"
 #import "NewPostViewController.h"
+#import "GLPShowLocationViewController.h"
 
 @interface GLPTimelineViewController ()
 
@@ -136,6 +137,8 @@
 @property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
 
 @property (assign, nonatomic, getter = isWalkthroughFinished) BOOL walkthroughFinished;
+
+@property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @end
 
@@ -2646,6 +2649,13 @@ const float TOP_OFFSET = 180.0f;
     }
 }
 
+- (void)showLocationWithLocation:(GLPLocation *)location
+{
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
+}
+
 /**
  If YES navigate to real profile, if no to private profile.
  */
@@ -2998,7 +3008,14 @@ const float TOP_OFFSET = 180.0f;
 //        
 //        profileViewController.incomingUser = incomingUser;
     }
-    
+    else if([segue.identifier isEqualToString:@"show location"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
+    }
 }
 
 @end

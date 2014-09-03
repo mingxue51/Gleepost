@@ -65,6 +65,7 @@
 
 
 @property (assign, nonatomic) BOOL inCategorySelection;
+@property (assign, nonatomic) BOOL inSelectLocation;
 @property (assign, nonatomic) NSInteger descriptionRemainingNoOfCharacters;
 @property (assign, nonatomic) NSInteger titleRemainingNoOfCharacters;
 
@@ -205,6 +206,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS;
     _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS;
     _selectedLocation = nil;
+    _inSelectLocation = NO;
 }
 
 /**
@@ -445,6 +447,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (IBAction)addLocation:(id)sender
 {
+    _inSelectLocation = YES;
+    
     [self performSegueWithIdentifier:@"pick location" sender:self];
 }
 
@@ -550,10 +554,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
 {
-    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused && !_inCategorySelection)
+    if(videoPlayer.playbackState == PBJVideoPlayerPlaybackStatePaused && !_inCategorySelection && !_inSelectLocation)
     {
         [self addVideo:nil];
     }
+    
+    _inSelectLocation = NO;
+
 }
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer

@@ -10,6 +10,7 @@
 #import "GLPPost.h"
 #import "ViewImageDelegate.h"
 #import "MainPostView.h"
+#import "TopPostView.h"
 
 typedef NS_ENUM(NSInteger, GLPCellType) {
     kTextCell,
@@ -37,10 +38,11 @@ typedef NS_ENUM(NSInteger, GLPCellType) {
 
 @required
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey;
+- (void)showLocationWithLocation:(GLPLocation *)location;
 
 @end
 
-@interface GLPPostCell : UITableViewCell <MainPostViewDelegate>
+@interface GLPPostCell : UITableViewCell <MainPostViewDelegate, TopPostViewDelegate>
 
 
 
