@@ -43,7 +43,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2Pe-7I-8ri">
                                             <rect key="frame" x="20" y="126" width="49" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Like" image="fb_login_img_sm.png">
+                                            <state key="normal" title="Like" image="sign_in_b">
                                                 <color key="titleColor" red="0.54376594389999999" green="0.54376594389999999" blue="0.54376594389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </state>
@@ -2599,7 +2599,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="A797D1F5-1E0C-437F-B5D7-FB01EE3D5E61">
+                                                <state key="normal" image="8F001700-5126-4E7E-81A3-14B940C09969">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -2963,28 +2963,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gleepost_logo_registration.png" id="5kk-tC-GA6">
-                                <rect key="frame" x="40" y="50" width="240" height="65"/>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nerdnation_tree.png" id="5kk-tC-GA6">
+                                <rect key="frame" x="20" y="13" width="280" height="123"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </imageView>
-                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" id="jlu-Dt-Juj">
-                                <rect key="frame" x="0.0" y="161" width="320" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="anh-kj-9mz">
-                                        <rect key="frame" x="122" y="0.0" width="75" height="75"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hjV-gI-asn">
-                                        <rect key="frame" x="15" y="0.0" width="75" height="75"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                    </imageView>
-                                </subviews>
-                            </scrollView>
-                            <view contentMode="scaleToFill" id="jhq-nW-Iw7" customClass="RegisterAnimationsView">
-                                <rect key="frame" x="0.0" y="239" width="320" height="75"/>
+                            <view hidden="YES" contentMode="scaleToFill" id="jhq-nW-Iw7" customClass="RegisterAnimationsView">
+                                <rect key="frame" x="0.0" y="1000" width="320" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="uhf-go-SJI" customClass="GBInfiniteScrollView">
@@ -2993,16 +2977,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     </scrollView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="img" destination="anh-kj-9mz" id="zEZ-1r-GCI"/>
-                                    <outlet property="img2" destination="hjV-gI-asn" id="3M9-To-w5e"/>
-                                </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="caF-ir-mSy">
-                                <rect key="frame" x="166" y="449" width="144" height="45"/>
+                                <rect key="frame" x="30" y="266" width="260" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Sign up" backgroundImage="sign_in_up.png">
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                                <state key="normal" title="SIGN UP" backgroundImage="sign_up_bg.png">
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -3010,38 +2990,33 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eSt-Qw-qpa">
-                                <rect key="frame" x="10" y="449" width="144" height="45"/>
+                                <rect key="frame" x="30" y="386" width="260" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Sign in" backgroundImage="sign_in_up.png">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                                <state key="normal" title="LOGIN WITH EMAIL" backgroundImage="sing_in_bg.png">
+                                    <color key="titleColor" red="0.47450980392156861" green="0.47450980392156861" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="signIn:" destination="VkE-JQ-Qjz" eventType="touchUpInside" id="9lQ-FV-gF3"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="glp-quote.png" id="cgc-Nf-YAj">
-                                <rect key="frame" x="40" y="139" width="240" height="40"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nerdnation_text.png" id="cgc-Nf-YAj">
+                                <rect key="frame" x="91" y="139" width="139" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mhq-RG-gMe">
-                                <rect key="frame" x="10" y="393" width="300" height="45"/>
+                                <rect key="frame" x="30" y="326" width="260" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                <inset key="titleEdgeInsets" minX="35" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="14" maxY="0.0"/>
-                                <state key="normal" title="Login with facebook" backgroundImage="fb_login_bg.png">
+                                <state key="normal" title="LOGIN WITH FACEBOOK" backgroundImage="fb_login_bg.png">
                                     <color key="titleShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="facebookLogin:" destination="VkE-JQ-Qjz" eventType="touchUpInside" id="3g9-Dt-SgO"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fb_login_img.png" id="RS6-Df-P6o">
-                                <rect key="frame" x="29" y="403" width="32" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -4567,7 +4542,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="A797D1F5-1E0C-437F-B5D7-FB01EE3D5E61" width="30" height="32">
+        <image name="8F001700-5126-4E7E-81A3-14B940C09969" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -4606,11 +4581,7 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <image name="default_user_image2.png" width="1000" height="1000"/>
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="down_arrow.png" width="23" height="14"/>
-        <image name="fb_login_bg.png" width="600" height="90"/>
-        <image name="fb_login_img.png" width="23" height="47"/>
-        <image name="fb_login_img_sm.png" width="31" height="31"/>
-        <image name="gleepost_logo_registration.png" width="393" height="130"/>
-        <image name="glp-quote.png" width="505" height="82"/>
+        <image name="fb_login_bg.png" width="520" height="100"/>
         <image name="go_to_preview.png" width="100" height="111"/>
         <image name="hoovertall.png" width="388" height="1137"/>
         <image name="id-card-7.png" width="15" height="21"/>
@@ -4640,6 +4611,8 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <image name="message-user.png" width="254" height="185"/>
         <image name="message_cell_error.png" width="13" height="17"/>
         <image name="my_location.png" width="105" height="109"/>
+        <image name="nerdnation_text.png" width="266" height="43"/>
+        <image name="nerdnation_tree.png" width="205" height="251"/>
         <image name="next_button_bg.png" width="588" height="136"/>
         <image name="notificationicon.png" width="70" height="70"/>
         <image name="pick_pic.png" width="81" height="65"/>
@@ -4659,8 +4632,10 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="39" height="31"/>
         <image name="share_image.png" width="20" height="17"/>
-        <image name="sign_in_up.png" width="290" height="90"/>
+        <image name="sign_in_b" width="31" height="31"/>
+        <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
+        <image name="sing_in_bg.png" width="520" height="100"/>
         <image name="skip_button.png" width="440" height="108"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
         <image name="user_image_bg.png" width="74" height="74"/>
@@ -4674,19 +4649,19 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fah-A8-Ky9"/>
-        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="JXK-Z8-Y8u"/>
+        <segue reference="fL3-CC-Jbz"/>
+        <segue reference="aP2-oN-YHg"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="wR3-TA-URh"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="C4C-f3-cdX"/>
         <segue reference="WK7-hw-eyD"/>
-        <segue reference="e8B-qp-59Q"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="wR3-TA-URh"/>
+        <segue reference="e8B-qp-59Q"/>
         <segue reference="7l2-k5-pHQ"/>
         <segue reference="hfC-fm-BOR"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

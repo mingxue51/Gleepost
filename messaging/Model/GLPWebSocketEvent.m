@@ -29,6 +29,9 @@
     } else if ([string isEqualToString:@"video-ready"]) {
         _type = kGLPWebSocketEventTypeVideoReady;
     }
+    else if ([string isEqualToString:@"read"]){
+        _type = kGLPWebSocketEventTypeRead;
+    }
     else {
         [NSException raise:@"GLPWebSocketEventType unknown" format:@"For string value: %@", string];
     }
