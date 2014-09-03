@@ -48,6 +48,7 @@
 #import "GLPBadgesViewController.h"
 #import "UIRefreshControl+CustomLoader.h"
 #import "GLPVideoLoaderManager.h"
+#import "GLPShowLocationViewController.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
@@ -98,6 +99,8 @@
 
 @property (assign, nonatomic) NSInteger currentNumberOfPN;
 
+@property (strong, nonatomic) GLPLocation *selectedLocation;
+
 @end
 
 
@@ -134,6 +137,8 @@
     [self configTabbar];
     
     [self formatTableView];
+    
+    [self loadPosts];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -183,6 +188,7 @@
     {
         [self loadPosts];
     }
+    
     
     [AppearanceHelper makeBackDefaultButton];
     
@@ -426,6 +432,8 @@
     _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
     _currentNumberOfPN = 0;
+    
+    _selectedLocation = nil;
     
 }
 
@@ -831,7 +839,7 @@
             
             [self refreshFirstCell];
             
-            [self loadPosts];
+//            [self loadPosts];
             
             //[self.tableView reloadData];
         }
@@ -1291,6 +1299,14 @@
         
     }
     
+    if(_posts.count == 0)
+    {
+        
+        DDLogError(@"Abord ending display with cell.");
+        
+        return;
+    }
+    
     DDLogDebug(@"ROW: %d", indexPath.row);
     
     GLPPost *post = _posts[indexPath.row - 1];
@@ -1429,9 +1445,18 @@
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+#pragma mark - GLPPostCellDelegate
+
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
     DDLogDebug(@"GLPProfileViewController : navigateToUsersProfileWithRemoteKey: %ld", (long)remoteKey);
+}
+
+- (void)showLocationWithLocation:(GLPLocation *)location
+{
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
 #pragma mark - New comment delegate
@@ -1660,6 +1685,12 @@
         GLPBadgesViewController *bVC = segue.destinationViewController;
         bVC.customTitle = @"My";
     }
+    else if ([segue.identifier isEqualToString:@"show location"])
+    {
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
+    }
 }
 
 #pragma mark - Selectors
@@ -1756,16 +1787,7 @@
 }
 */
 
-/*
-#pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
 
- */
 
 @end

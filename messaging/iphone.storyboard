@@ -279,6 +279,7 @@
                         <outlet property="tableView" destination="vla-0s-5vy" id="dfe-f8-4DG"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="WK7-hw-eyD"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="J6b-Ty-4qO"/>
+                        <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="Ji2-Jv-WyQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8kw-OV-FmS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1670,6 +1671,7 @@
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="lQn-ic-ohV"/>
                         <segue destination="p7E-nR-kMk" kind="push" identifier="view topic" id="Nh6-Tl-qmR"/>
                         <segue destination="4OP-r4-FjX" kind="push" identifier="view badges" id="PMB-JP-q3M"/>
+                        <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="e8B-qp-59Q"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lhy-3j-G5f" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2597,7 +2599,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="16" y="12" width="19" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <state key="normal" image="80A26FAD-7B3A-4DC1-A9A9-969B9EF6557F">
+                                                <state key="normal" image="7F8E859A-2D4D-4243-8794-DFB2340729ED">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -3483,6 +3485,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <segue destination="4OP-r4-FjX" kind="push" identifier="view badges" id="wR3-TA-URh"/>
                         <segue destination="K1l-cB-NEz" kind="push" identifier="view group" id="7l2-k5-pHQ"/>
                         <segue destination="u82-wb-WwJ" kind="push" id="4pS-yP-bHR"/>
+                        <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="aph-g3-dhm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJo-nJ-HgL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3557,7 +3560,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -3941,6 +3944,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="ZpN-d9-baB"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="zvV-dv-dTv"/>
                         <segue destination="Fyw-Rk-v9s" kind="push" identifier="new post" id="XA6-SN-ZTj"/>
+                        <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="voh-a1-0cl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IfX-ku-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4563,7 +4567,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </scenes>
     <resources>
         <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
-        <image name="80A26FAD-7B3A-4DC1-A9A9-969B9EF6557F" width="30" height="32">
+        <image name="7F8E859A-2D4D-4243-8794-DFB2340729ED" width="30" height="32">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPD1YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBMU
 GR4fJSYtMDY5VSRudWxs1QkKCwwNDg8QERJWTlNTaXplViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBz
@@ -4671,17 +4675,18 @@ OgI9Ak8CUgJXAAAAAAAAAgEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAlk
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="fah-A8-Ky9"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="uet-Cl-mZq"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="C4C-f3-cdX"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="e8B-qp-59Q"/>
+        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="wR3-TA-URh"/>
         <segue reference="7l2-k5-pHQ"/>
         <segue reference="hfC-fm-BOR"/>
-        <segue reference="HwX-gN-njw"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="rCT-Ex-vO8"/>
+        <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="CJG-WM-cQ7"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

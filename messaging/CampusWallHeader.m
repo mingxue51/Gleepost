@@ -112,7 +112,7 @@ NSString *BORING_IMAGE;
     
     _posts = nil;
     
-    [self reloadData];
+//    [self reloadData];
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
         
@@ -207,7 +207,7 @@ NSString *BORING_IMAGE;
                 
                 if(self.posts.count > 1)
                 {
-                    [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
+//                    [self scrollToPosition:[[CampusLiveManager sharedInstance] findMostCloseToNowLivePostWithPosts:self.posts]];
                 }
                 
             }];

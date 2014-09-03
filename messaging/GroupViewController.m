@@ -36,6 +36,7 @@
 #import "GLPProfileViewController.h"
 #import "FakeNavigationBarView.h"
 #import "IntroKindOfNewPostViewController.h"
+#import "GLPShowLocationViewController.h"
 
 @interface GroupViewController ()
 
@@ -76,6 +77,9 @@
 //@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (strong, nonatomic) GLPLocation *selectedLocation;
+
 
 @end
 
@@ -284,6 +288,8 @@ const float TOP_OFF_SET = -64.0;
     [_fakeNavigationBar setHidden:YES];
     
     _fakeNavigationBarVisible = NO;
+    
+    _selectedLocation = nil;
 
     
 //    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -1282,6 +1288,13 @@ const float TOP_OFF_SET = -64.0;
     }
 }
 
+- (void)showLocationWithLocation:(GLPLocation *)location
+{
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
+}
+
 #pragma  mark - Helpers
 
 /**
@@ -1429,6 +1442,12 @@ const float TOP_OFF_SET = -64.0;
         MembersViewController *mvc = segue.destinationViewController;
         
         mvc.group = _group;
+    }
+    else if ([segue.identifier isEqualToString:@"show location"])
+    {
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
     }
 }
 

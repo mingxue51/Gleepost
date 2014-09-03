@@ -31,6 +31,7 @@
 #import "UIView+GLPDesign.h"
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "GLPShowLocationViewController.h"
 
 @interface ViewPostViewController ()
 
@@ -44,6 +45,8 @@
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (assign, nonatomic, getter = doesMediaNeedsToReload) BOOL mediaNeedsToReload;
+
+@property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @end
 
@@ -196,6 +199,8 @@ static BOOL likePushed;
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     self.comments = [[NSMutableArray alloc] init];
+    
+    _selectedLocation = nil;
 
 }
 
@@ -413,6 +418,14 @@ static BOOL likePushed;
 //        [self performSegueWithIdentifier:@"view private profile" sender:self];
 //    }
 }
+
+- (void)showLocationWithLocation:(GLPLocation *)location
+{
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
+}
+
 
 #pragma mark - GLPImageViewDelegate
 
@@ -1275,6 +1288,12 @@ static bool firstTime = YES;
 //        }
 //        
 //        profileViewController.incomingUser = incomingUser;
+    }
+    else if ([segue.identifier isEqualToString:@"show location"])
+    {
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
     }
 }
 

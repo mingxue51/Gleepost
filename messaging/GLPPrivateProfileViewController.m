@@ -30,6 +30,7 @@
 #import "UINavigationBar+Format.h"
 #import "GLPBadgesViewController.h"
 #import "ImageFormatterHelper.h"
+#import "GLPShowLocationViewController.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -60,6 +61,8 @@
 @property (strong, nonatomic) GLPUser *emptyConversationUser;
 
 @property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
+
+@property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @end
 
@@ -201,6 +204,8 @@
     self.posts = [[NSArray alloc] init];
 
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    
+    _selectedLocation = nil;
 
 }
 
@@ -886,6 +891,34 @@
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
+#pragma mark - GLPPostCellDelegate
+
+-(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
+{
+    //Decide where to navigate. Private or current profile.
+    
+    
+//    if([[ContactsManager sharedInstance] userRelationshipWithId:remoteKey] == kCurrentUser)
+//    {
+//        self.selectedUserId = -1;
+//        
+//        [self performSegueWithIdentifier:@"view profile" sender:self];
+//    }
+//    else
+//    {
+//        self.selectedUserId = remoteKey;
+//        
+//        [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    }
+}
+
+- (void)showLocationWithLocation:(GLPLocation *)location
+{
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
+}
+
 #pragma mark - Navigation methods
 
 -(void)viewConversation:(GLPConversation*)conversation
@@ -926,6 +959,12 @@
     {
         GLPBadgesViewController *bVC = segue.destinationViewController;
         bVC.customTitle = [NSString stringWithFormat:@"%@'s", _profileUser.name];
+    }
+    else if ([segue.identifier isEqualToString:@"show location"])
+    {
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
     }
 }
 
