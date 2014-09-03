@@ -13,3 +13,4 @@
 "NEW_CONV" = "You've been paired into a radom chat with %@.";
 "liked" = "%@ liked your post.";
 "commented" = "%@ commented on your post.";
+"group_post" = "%@ created a post in %@.";

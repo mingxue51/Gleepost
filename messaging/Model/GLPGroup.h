@@ -19,6 +19,7 @@
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL isFromPushNotification;
+@property (assign, nonatomic) NSInteger unreadNewPosts;
 
 //Not create in local database
 @property (strong, nonatomic) GLPUser *author;

@@ -1088,6 +1088,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     else if([notificationsType isEqualToString:@"added_group"]) {
         type = kGLPNotificationTypeAddedGroup;
     }
+    else if([notificationsType isEqualToString:@"group_post"])
+    {
+        type = kGLPNotificationTypeCreatedPostGroup;
+    }
     
     notification.notificationType = type;
     notification.seen = [json[@"seen"] boolValue];

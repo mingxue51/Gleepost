@@ -224,7 +224,7 @@
         [GLPNotificationDao save:notification inDb:db];
     }];
     
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:self userInfo:@{@"new_notification": notification}];
 }
 
 

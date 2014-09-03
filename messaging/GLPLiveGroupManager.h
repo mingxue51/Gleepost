@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLPGroup;
+
 @interface GLPLiveGroupManager : NSObject
 
 + (GLPLiveGroupManager *)sharedInstance;
@@ -15,6 +17,12 @@
 - (void)loadGroups;
 
 - (void)loadGroupsWithLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote;
+
+- (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey;
+
+- (void)postGroupReadWithRemoteKey:(NSInteger)groupKey;
+
+- (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group;
 
 - (NSArray *)liveGroups;
 

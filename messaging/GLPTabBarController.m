@@ -15,11 +15,13 @@
 #import "UIColor+GLPAdditions.h"
 #import "GLPNetworkManager.h"
 #import "GLPNetworkErrorView.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GLPTabBarController ()
 
 @property (assign, nonatomic) NSInteger messagesCount;
 @property (assign, nonatomic) NSInteger profileNotificationsCount;
+@property (assign, nonatomic) NSInteger groupPostsNotificationsCount;
 @property (strong, nonatomic) GLPNetworkErrorView *networkErrorView;
 
 /** This variable prevents the error view to be shown when user presses
@@ -48,6 +50,7 @@ static NSInteger lastTabbarIndex = 0;
     
     _messagesCount = 0;
     _profileNotificationsCount = 0;
+    _groupPostsNotificationsCount = 0;
     
     _showGroupBadge = NO;
     
@@ -77,6 +80,8 @@ static NSInteger lastTabbarIndex = 0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatBadge:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProfileBadge:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
+        
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupCountBadge:) name:GLPNOTIFICATION_GROUP_POST_COUNT object:nil];
         
         //Added new notification center. This is temporary called just from AppDelegate.
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateChatCountBadge:) name:GLPNOTIFICATION_CONVERSATION_COUNT object:nil];
@@ -155,6 +160,11 @@ static NSInteger lastTabbarIndex = 0;
 
 #pragma mark - Notifications
 
+//- (void)updateGroupCountBadge:(NSNotification *)notification
+//{
+//    DDLogDebug(@"updateGroupCountBadge with notification: %@", notification);
+//}
+
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
@@ -212,8 +222,27 @@ static NSInteger lastTabbarIndex = 0;
         return;
     }
     
-    _profileNotificationsCount++;
-    [self updateBadgeForIndex:3 count:_profileNotificationsCount];
+    NSDictionary *d = notification.userInfo;
+    
+    GLPNotification *internalNotification = d[@"new_notification"];
+    
+    DDLogDebug(@"NOTIFICATION FROM INTERNAL: %@", internalNotification.customParams);
+    
+    if(internalNotification.notificationType == kGLPNotificationTypeCreatedPostGroup)
+    {
+        _groupPostsNotificationsCount++;
+        [self updateBadgeForIndex:2 count:_groupPostsNotificationsCount];
+        
+        NSInteger groupRemoteKey = [internalNotification.customParams[@"network"] integerValue];
+        
+        //Inform GroupLiveManager for notification.
+        [[GLPLiveGroupManager sharedInstance] addUnreadPostWithGroupRemoteKey: groupRemoteKey];
+    }
+    else
+    {
+        _profileNotificationsCount++;
+        [self updateBadgeForIndex:3 count:_profileNotificationsCount];
+    }
 }
 
 - (void)updateChatBadge:(NSNotification *)notification
@@ -280,6 +309,8 @@ static NSInteger lastTabbarIndex = 0;
             _messagesCount = 0;
             break;
         case 2:
+            _groupPostsNotificationsCount = 0;
+            break;
         case 3:
             [self removeErrorViewFromViewIfNeeded];
             _profileNotificationsCount = 0;

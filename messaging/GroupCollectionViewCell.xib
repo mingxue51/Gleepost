@@ -55,6 +55,20 @@
                             <action selector="moreOptions:" destination="KFS-Vv-2hc" eventType="touchUpInside" id="HZe-ma-PJS"/>
                         </connections>
                     </button>
+                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nvK-Ak-0dF">
+                        <rect key="frame" x="85" y="20" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwq-xq-050">
+                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -65,6 +79,8 @@
                 <outlet property="groupDescription" destination="IBJ-QM-uBV" id="rth-Wx-Vcq"/>
                 <outlet property="groupImage" destination="O1C-KL-AZF" id="bMV-sa-Ofr"/>
                 <outlet property="groupName" destination="IAl-Cv-zTf" id="l1d-wg-Td4"/>
+                <outlet property="notificationView" destination="nvK-Ak-0dF" id="cEG-OG-sqd"/>
+                <outlet property="unseenPostLbl" destination="bwq-xq-050" id="A9L-os-wVu"/>
                 <outlet property="uploadedIndicator" destination="f0g-nb-NiI" id="QbL-BD-dwT"/>
             </connections>
         </collectionViewCell>

@@ -13,6 +13,7 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "AppearanceHelper.h"
 #import "UIView+GLPDesign.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -29,6 +30,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *exitButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *uploadedIndicator;
+
+@property (weak, nonatomic) IBOutlet UIView *notificationView;
+
+@property (weak, nonatomic) IBOutlet UILabel *unseenPostLbl;
 
 @end
 
@@ -55,6 +60,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
 - (void)formatElements
 {
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
+    
+    [ShapeFormatterHelper setRoundedView:_notificationView toDiameter:_notificationView.frame.size.height];
     
     [self setGleepostStyleBorder];
 }
@@ -110,6 +117,25 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
 
         [_exitButton setHidden:NO];
     }
+    
+    [self configureUnreadPostsBadge];
+}
+
+- (void)configureUnreadPostsBadge
+{
+    NSInteger count = [[GLPLiveGroupManager sharedInstance] numberOfUnseenPostsWithGroup:_groupData];
+    
+    if(count != 0)
+    {
+        [_notificationView setHidden:NO];
+        [_unseenPostLbl setText:[NSString stringWithFormat:@"%@", @(count)]];
+    }
+    else
+    {
+        [_notificationView setHidden:YES];
+    }
+    
+    DDLogDebug(@"COUNT: %@ with group: %@", @(count), _groupData);
 }
 
 #pragma mark - Online indicator

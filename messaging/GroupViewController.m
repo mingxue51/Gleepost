@@ -37,6 +37,7 @@
 #import "FakeNavigationBarView.h"
 #import "IntroKindOfNewPostViewController.h"
 #import "GLPShowLocationViewController.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GroupViewController ()
 
@@ -118,7 +119,8 @@ const float TOP_OFF_SET = -64.0;
     
     [self configureNotifications];
     
-
+    
+    [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
 }
 
 //- (void)viewDidLayoutSubviews

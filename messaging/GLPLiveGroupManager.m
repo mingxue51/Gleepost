@@ -21,6 +21,8 @@
 
 @property (strong, nonatomic) NSMutableArray *groups;
 
+@property (strong, nonatomic) NSMutableDictionary *unreadPostGroups;
+
 @end
 
 static GLPLiveGroupManager *instance = nil;
@@ -48,6 +50,7 @@ static GLPLiveGroupManager *instance = nil;
     {
         _groups = [[NSMutableArray alloc] init];
         _queue = dispatch_queue_create("com.gleepost.queue.livegroups", DISPATCH_QUEUE_SERIAL);
+        _unreadPostGroups = [[NSMutableDictionary alloc] init];
 
     }
     
@@ -93,6 +96,69 @@ static GLPLiveGroupManager *instance = nil;
         remote(YES, _groups);
     }];
 }
+
+#pragma mark - Updates
+
+- (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey
+{
+    GLPGroup *g = nil;
+    
+    g = [_unreadPostGroups objectForKey:@(groupKey)];
+    
+    if(!g)
+    {
+        g =  [self findGroupWithRemoteKey:groupKey];
+    }
+    
+    if (!g)
+    {
+        DDLogError(@"Group not found, abort.");
+        
+        return;
+    }
+    
+    ++g.unreadNewPosts;
+    
+    [_unreadPostGroups setObject:g forKey:@(groupKey)];
+    
+    DDLogDebug(@"GROUP ADDED: %@", _unreadPostGroups);
+
+}
+
+- (void)postGroupReadWithRemoteKey:(NSInteger)groupKey
+{
+    [_unreadPostGroups removeObjectForKey:@(groupKey)];
+    
+    DDLogDebug(@"GROUP REMOVED: %@", _unreadPostGroups);
+}
+
+- (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group
+{
+    GLPGroup *g = [_unreadPostGroups objectForKey:@(group.remoteKey)];
+    
+    if(g)
+    {
+        return g.unreadNewPosts;
+    }
+    
+    return 0;
+}
+
+- (GLPGroup *)findGroupWithRemoteKey:(NSInteger)remoteKey
+{
+    for(GLPGroup *g in _groups)
+    {
+        if(remoteKey == g.remoteKey)
+        {
+            return g;
+        }
+    }
+    
+    return nil;
+        
+}
+
+
 
 - (NSArray *)liveGroups
 {

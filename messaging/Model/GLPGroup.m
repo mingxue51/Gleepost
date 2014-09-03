@@ -22,6 +22,7 @@
     {
         _name = name;
         _remoteKey = remoteKey;
+        _unreadNewPosts = 0;
     }
     
     return self;
@@ -36,6 +37,7 @@
     
     self.remoteKey = remoteKey;
     _isFromPushNotification = YES;
+    _unreadNewPosts = 0;
 //    _title = @"Loading conversation";
     
     return self;

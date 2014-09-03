@@ -41,6 +41,8 @@
             return [NSString stringWithFormat:@"Contact invite from %@",self.user.name];
         case kGLPNotificationTypeAddedGroup:
             return [NSString stringWithFormat:@"%@ added you to a group", self.user.name];
+        case kGLPNotificationTypeCreatedPostGroup:
+            return [NSString stringWithFormat:@"%@ created new post in group.", self.user.name];
         default:
             return @"Something happened";
     }
