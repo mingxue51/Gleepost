@@ -14,6 +14,7 @@
 #import "DatabaseManager.h"
 #import "GLPCategoryDao.h"
 #import "GLPVideo.h"
+#import "GLPLocation.h"
 
 @implementation GLPPostDao
 
@@ -239,7 +240,7 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@)",
                      entity.content,
                      date,
                      entity.likes,
@@ -250,9 +251,13 @@
                      entity.liked,
                      entity.attended,
                      entity.eventTitle,
-                     eventDate];
+                     eventDate,
+                     entity.location.latitude,
+                     entity.location.longitude,
+                     entity.location.name,
+                     entity.location.address];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -264,13 +269,17 @@
                      entity.liked,
                      entity.attended,
                      entity.eventTitle,
-                     eventDate];
+                     eventDate,
+                     entity.location.latitude,
+                     entity.location.longitude,
+                     entity.location.name,
+                     entity.location.address];
     }
     
     
     entity.key = [db lastInsertRowId];
     
-//    DDLogDebug(@"Post saved with status: %d and content: %@ and key: %ld", entity.sendStatus, entity.content, (long)entity.key);
+    DDLogDebug(@"Post saved with status: %d and content: %@ location: %@", entity.sendStatus, entity.content, entity.location);
     
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];

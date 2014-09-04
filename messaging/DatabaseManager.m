@@ -171,7 +171,11 @@ static DatabaseManager *instance = nil;
              liked integer, \
              event_title text, \
              event_date integer, \
-             attending integer);"];
+             attending integer, \
+             location_lat real, \
+             location_lon real, \
+             location_name text, \
+             location_address text);"];
             
             // post images
             [db executeUpdate:@"create table post_images ( \

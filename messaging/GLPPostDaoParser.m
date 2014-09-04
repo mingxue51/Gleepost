@@ -11,6 +11,7 @@
 #import "FMResultSet.h"
 #import "GLPUserDao.h"
 #import "GLPCategoryDao.h"
+#import "GLPLocation.h"
 
 @implementation GLPPostDaoParser
 
@@ -30,6 +31,25 @@
     entity.sendStatus = [resultSet intForColumn:@"sendStatus"];
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
     entity.categories = [GLPCategoryDao findByPostRemoteKey:entity.remoteKey db:db];
+    
+    //Parse location.
+    entity.location = [GLPPostDaoParser parseLocationWithResultSet:resultSet];
+    DDLogDebug(@"LOCATION PARSED: %@", entity.location);
+}
+
++ (GLPLocation *)parseLocationWithResultSet:(FMResultSet *)resultSet
+{
+    NSString *name = [resultSet stringForColumn:@"location_name"];
+    NSString *address = [resultSet stringForColumn:@"location_address"];
+    double latitude = [resultSet doubleForColumn:@"location_lat"];
+    double longitude = [resultSet doubleForColumn:@"location_lon"];
+    
+    if(!name)
+    {
+        return nil;
+    }
+    
+    return [[GLPLocation alloc] initWithName:name address:address latitude:latitude longitude:longitude];
 }
 
 + (GLPPost *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db
