@@ -34,7 +34,6 @@
     
     //Parse location.
     entity.location = [GLPPostDaoParser parseLocationWithResultSet:resultSet];
-    DDLogDebug(@"LOCATION PARSED: %@", entity.location);
 }
 
 + (GLPLocation *)parseLocationWithResultSet:(FMResultSet *)resultSet

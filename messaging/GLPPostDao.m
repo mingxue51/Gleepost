@@ -279,7 +279,7 @@
     
     entity.key = [db lastInsertRowId];
     
-    DDLogDebug(@"Post saved with status: %d and content: %@ location: %@", entity.sendStatus, entity.content, entity.location);
+//    DDLogDebug(@"Post saved with status: %d and content: %@ location: %@", entity.sendStatus, entity.content, entity.location);
     
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];
