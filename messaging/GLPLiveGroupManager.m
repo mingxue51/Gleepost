@@ -76,8 +76,19 @@ static GLPLiveGroupManager *instance = nil;
     }];
 }
 
-- (void)loadGroupsWithLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote
+- (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote
 {
+    
+    //Find all the groups that contain real images and save them.
+    NSMutableArray *pendingGroups = [[GLPGroupManager findGroupsWithRealImagesWithGroups:pending] mutableCopy];
+    
+    DDLogDebug(@"Pending groups: %@", pendingGroups);
+    
+    
+    
+    //Add any new images that are uploading in GroupOperationManager.
+    _groups = [GLPGroupManager addPendingImagesIfExistWithGroups:_groups.mutableCopy].mutableCopy;
+    
     local(_groups);
     
     [[WebClient sharedInstance ] getGroupswithCallbackBlock:^(BOOL success, NSArray *serverGroups) {
@@ -93,6 +104,9 @@ static GLPLiveGroupManager *instance = nil;
         
         _groups = [serverGroups mutableCopy];
         
+        [_groups addObjectsFromArray:pendingGroups];
+
+        
         remote(YES, _groups);
     }];
 }
@@ -104,7 +118,7 @@ static GLPLiveGroupManager *instance = nil;
     GLPGroup *g = nil;
     
     g = [_unreadPostGroups objectForKey:@(groupKey)];
-    
+      
     if(!g)
     {
         g =  [self findGroupWithRemoteKey:groupKey];

@@ -31,7 +31,7 @@
 
     
     //Add any new images that are uploading in GroupOperationManager.
-//    localEntities = [self addPendingImagesIfExistWithGroups:localEntities].mutableCopy;
+    localEntities = [self addPendingImagesIfExistWithGroups:localEntities].mutableCopy;
     
 //    localEntities = [self overwriteGroups:localEntities withImagesGroups:localGroupsWithImages];
     
@@ -64,10 +64,12 @@
 //        [GLPGroupManager removePendingGroupsIfExist:pendingGroups withRemoteGroups:finalRemoteGroups];
         
         //Add any new images that are uploading in GroupOperationManager.
-//        finalRemoteGroups = [self addPendingImagesIfExistWithGroups:finalRemoteGroups].mutableCopy;
+        //finalRemoteGroups = [self addPendingImagesIfExistWithGroups:finalRemoteGroups].mutableCopy;
         
         
         [finalRemoteGroups addObjectsFromArray:pendingGroups];
+        
+        DDLogDebug(@"Pending groups remote: %@", pendingGroups);
         
 //        finalRemoteGroups = [GLPGroupManager orderMembersByNameWithMembers:finalRemoteGroups].mutableCopy;
 

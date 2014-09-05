@@ -424,57 +424,66 @@
         //Add the new group in order to preserve it as is.
         //We are doing that because the new group has a real image
         //in order to create better user experience for the user.
-        
+    
         [_groups addObject:createdGroup];
         [_filteredGroups addObject:createdGroup];
         
         DDLogInfo(@"Load groups with pending group: %@", createdGroup);
-        
-        
-        [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
-            
-            _groups = groups.mutableCopy;
-            _filteredGroups = groups.mutableCopy;
-            
-            [_collectionView reloadData];
-            
-            
-            
-        } remoteCallback:^(BOOL success, NSArray *groups) {
-            
-            if(!success)
-            {
-                return;
-            }
-            
-            _groups = groups.mutableCopy;
-            _filteredGroups = groups.mutableCopy;
-            
-            [_collectionView reloadData];
-            
-        }];
-    }
-    else
-    {
-        [[GLPLiveGroupManager sharedInstance] loadGroupsWithLiveCallback:^(NSArray *groups) {
-            _groups = groups.mutableCopy;
-            _filteredGroups = groups.mutableCopy;
-            
-            [_collectionView reloadData];
-            
-        } remoteCallback:^(BOOL success, NSArray *remoteGroups) {
-           
-            if(success)
-            {
-                _groups = remoteGroups.mutableCopy;
-                _filteredGroups = remoteGroups.mutableCopy;
-                
-                [_collectionView reloadData];
-            }
-            
-        }];
     }
     
+
+    [[GLPLiveGroupManager sharedInstance] loadGroupsWithPendingGroups:_groups  withLiveCallback:^(NSArray *groups) {
+        _groups = groups.mutableCopy;
+        _filteredGroups = groups.mutableCopy;
+        
+        [_collectionView reloadData];
+        
+    } remoteCallback:^(BOOL success, NSArray *remoteGroups) {
+        
+        if(success)
+        {
+            _groups = remoteGroups.mutableCopy;
+            _filteredGroups = remoteGroups.mutableCopy;
+            
+            [_collectionView reloadData];
+        }
+        
+    }];
+    
+    
+    
+    
+    
+    
+    
+//        [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
+//            
+//            _groups = groups.mutableCopy;
+//            _filteredGroups = groups.mutableCopy;
+//            
+//            [_collectionView reloadData];
+//            
+//            
+//            
+//        } remoteCallback:^(BOOL success, NSArray *groups) {
+//            
+//            if(!success)
+//            {
+//                return;
+//            }
+//            
+//            _groups = groups.mutableCopy;
+//            _filteredGroups = groups.mutableCopy;
+//            
+//            [_collectionView reloadData];
+//            
+//        }];
+//    }
+//    else
+//    {
+
+//    }
+
 
 }
 

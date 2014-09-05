@@ -34,5 +34,9 @@
 
 +(void)loadGroupsFeedWithCallback:(void (^) (BOOL success, NSArray *posts))callback;
 
++(NSArray *)findGroupsWithRealImagesWithGroups:(NSArray *)groups;
+
++(NSArray *)addPendingImagesIfExistWithGroups:(NSArray *)groups;
+
 
 @end
