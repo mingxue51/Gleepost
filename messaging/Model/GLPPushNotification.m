@@ -28,6 +28,7 @@
 {
     
     switch (_kindOfPN) {
+            
         case kPNKindSendYouMessage:
             _conversationId = json[@"conv"];
             break;
