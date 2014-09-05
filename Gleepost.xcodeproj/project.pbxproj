@@ -309,6 +309,7 @@
 		585C784E193DF3B2007E699B /* WTSecondScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C784D193DF3B2007E699B /* WTSecondScreenView.m */; };
 		585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C7CD8181688CD00173C38 /* LiveChatsView.m */; };
 		585C9EFD1925460800382FFB /* GLPPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C9EFC1925460800382FFB /* GLPPostCell.m */; };
+		585CCD2819B91F06004009D7 /* GLPPushNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 585CCD2719B91F06004009D7 /* GLPPushNotification.m */; };
 		585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */; };
 		585EBB3418E30E7400BDAE81 /* add_members_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 585EBB3318E30E7400BDAE81 /* add_members_bg.png */; };
 		585EBB3618E317B200BDAE81 /* add_members_bg_press_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 585EBB3518E317B200BDAE81 /* add_members_bg_press_down.png */; };
@@ -1339,6 +1340,8 @@
 		585C7CDA181695AD00173C38 /* timebar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timebar2.png; path = "../../Gleepost Data/NewChating/timebar2.png"; sourceTree = "<group>"; };
 		585C9EFB1925460800382FFB /* GLPPostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostCell.h; sourceTree = "<group>"; };
 		585C9EFC1925460800382FFB /* GLPPostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostCell.m; sourceTree = "<group>"; };
+		585CCD2619B91F06004009D7 /* GLPPushNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPushNotification.h; sourceTree = "<group>"; };
+		585CCD2719B91F06004009D7 /* GLPPushNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPushNotification.m; sourceTree = "<group>"; };
 		585DF77517ECAC1400FBFC35 /* ChatMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageTableViewCell.h; sourceTree = "<group>"; };
 		585DF77617ECAC1400FBFC35 /* ChatMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageTableViewCell.m; sourceTree = "<group>"; };
 		585EBB3318E30E7400BDAE81 /* add_members_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_members_bg.png; sourceTree = "<group>"; };
@@ -4377,6 +4380,8 @@
 				58D4FF3119A53093006E7AC8 /* GLPVideo.m */,
 				583192FA19B584E4000E86D7 /* GLPLocation.h */,
 				583192FB19B584E4000E86D7 /* GLPLocation.m */,
+				585CCD2619B91F06004009D7 /* GLPPushNotification.h */,
+				585CCD2719B91F06004009D7 /* GLPPushNotification.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5840,6 +5845,7 @@
 				58ACD1D118F599E200BD576B /* DCFrameView.m in Sources */,
 				58A6744F184F9BB500E3FE45 /* TransitionDelegateViewNotifications.m in Sources */,
 				805676461805B742006E058E /* MessageCell.m in Sources */,
+				585CCD2819B91F06004009D7 /* GLPPushNotification.m in Sources */,
 				8087E433180ED6F700938264 /* _GLPMessage.m in Sources */,
 				8056764318059DC4006E058E /* LongPollOperation.m in Sources */,
 				5890249E195DF05C00084E2F /* PrivateProfileTopViewCell.m in Sources */,

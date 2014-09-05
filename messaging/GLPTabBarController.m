@@ -65,6 +65,7 @@ static NSInteger lastTabbarIndex = 0;
     _shouldHideErrorView = NO;
     _networkErrorView.tag = 100;
     
+    
 //    self.tabBar.layer.borderWidth = 1.0;
 //    self.tabBar.layer.borderColor = [UIColor redColor].CGColor;
     

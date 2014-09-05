@@ -45,6 +45,7 @@
 #import "AppearanceHelper.h"
 #import "GLPGroupsViewController.h"
 #import "GroupViewController.h"
+#import "GLPPushNotification.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -59,6 +60,8 @@ static int pnTestVariable = 0;
 // hello, boy
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    DDLogInfo(@"didFinishLaunchingWithOptions");
+    
     [self setupLogging];
     [self setupGoogleAnalytics];
     [self setupFlurryAnalytics];
@@ -75,15 +78,24 @@ static int pnTestVariable = 0;
     if(loggedIn) {
         
 //        // check for push
-//        if (launchOptions != nil) {
-//            NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-//            if (dictionary != nil) {
-//                DDLogInfo(@"Application started from push notification");
-//                [self receivePushNotification:dictionary];
-//            }
-//        }
-        
-        initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+        if (launchOptions != nil)
+        {
+            initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+
+            NSDictionary *dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+            if (dictionary != nil)
+            {
+                DDLogInfo(@"Application started from push notification");                
+                _tabBarController = (GLPTabBarController *)initVC;
+
+                [self receivePushNotification:dictionary];
+            }
+            
+        }
+        else
+        {
+            initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
+        }
     } else {
         initVC = [storyboard instantiateInitialViewController];
     }
@@ -151,6 +163,14 @@ static int pnTestVariable = 0;
     
     [[GLPFacebookConnect sharedConnection] handleDidBecomeActive];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+//    if(_pns)
+//    {
+//        [self application:application didReceiveRemoteNotification:_pns];
+//
+//    }
+    
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -184,88 +204,61 @@ static int pnTestVariable = 0;
     
     pnTestVariable++;
     
+
+    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPNCount" object:self userInfo:@{@"pnCount": @(pnTestVariable)}];
     
+    
     if(application.applicationState == UIApplicationStateInactive) {
+        
+
         [self receivePushNotification:userInfo];
     }
 }
 
 - (void)receivePushNotification:(NSDictionary *)json
 {
-    //    GLPTabBarController *tabVC = nil;
-    //
-    //    DDLogInfo(@"Root VC: %@", NSStringFromClass([self.window.rootViewController class]));
-    //    if([self.window.rootViewController isKindOfClass:[GLPTabBarController class]]) {
-    //        tabVC = (GLPTabBarController *)self.window.rootViewController;
-    //    } else {
-    //        UINavigationController *rootNavVC = (UINavigationController *)self.window.rootViewController;
-    //        for(UIViewController *vc in rootNavVC.viewControllers) {
-    //            DDLogInfo(@"Child VC: %@", NSStringFromClass([vc class]));
-    //            if([vc isKindOfClass:[GLPTabBarController class]]) {
-    //                tabVC = (GLPTabBarController *) vc;
-    //            }
-    //        }
-    //    }
-    
-    
-    
     DDLogInfo(@"Receive push notification: %@", json);
     
-    if(!json[@"conv"] && !json[@"group-id"] && !json[@"adder-id"] && !json[@"accepter-id"] && !json[@"version"] && !json[@"liker-id"] && !json[@"commenter-id"] && !json[@"group_post"]) {
-        
-        DDLogError(@"Converstion id or group id or added user or accepted user does not exist, abort");
-        return;
-    }
-    
-    if(json[@"conv"])
-    {
-        [self navigateToConversationWithJson:json];
-    }
-    else if(json[@"group-id"])
-    {
-//        [self navigateToGroupWithJson:json];
-        [self navigateToGroupPostWithJson:json];
+    GLPPushNotification *pushNotification = [[GLPPushNotification alloc] initWithJson:json];
 
-    }
-    else if(json[@"adder-id"])
-    {
-        [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"adder-id"] integerValue]];
-    }
-    else if (json[@"accepter-id"])
-    {
-        [self navigateToUsersProfileWithJson:json withRemoteKey:[json[@"accepter-id"] integerValue]];
-    }
-    else if (json[@"version"])
-    {
-        NSString *jsonVersion = json[@"version"];
-        
-        NSString *actualVersion = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
-        
-        if(![jsonVersion isEqualToString:actualVersion])
+
+    switch (pushNotification.kindOfPN) {
+        case kPNKindSendYouMessage:
+            [self navigateToConversationWithPNNotification:pushNotification];
+            break;
+            
+        case kPNKindNewGroupPost:
+        case kPNKindAddedYouToGroup:
+            [self navigateToGroupPostWithPNNotification:pushNotification];
+            break;
+            
+        case kPNKindLikedYourPost:
+        case kPNKindCommentedYourPost:
+            [self navigateToPostWithPNNotification:pushNotification];
+            break;
+            
+        case kPNKindNewAppVersion:
         {
-            [self navigateToGleepostApp];
-
+            NSString *actualVersion = [NSString stringWithFormat:@"%@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+            
+            if(![pushNotification.version isEqualToString:actualVersion])
+            {
+                [self navigateToGleepostApp];
+                
+            }
         }
-    }
-    else if (json[@"liker-id"])
-    {
-        [self navigateToPostWithJson:json];
-    }
-    else if (json[@"commenter-id"])
-    {
-        [self navigateToPostWithJson:json];
-    }
-    else if(json[@"group_post"])
-    {
-//        [self navigateToGroupPostWithJson:json];
+            break;
+            
+        default:
+            break;
     }
 }
 
 # pragma mark - Navigation from push notifications
 
 
-- (void)navigateToGroupPostWithJson:(NSDictionary *)json
+- (void)navigateToGroupPostWithPNNotification:(GLPPushNotification *)pushNotification
 {
     if(!_tabBarController) {
         DDLogError(@"Cannot find tab bar VC, abort");
@@ -287,7 +280,7 @@ static int pnTestVariable = 0;
     GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
     groupVC.fromPushNotification = NO;
     
-    [self loadAndNavigateToGroupWithGroupsVC:groupsVC groupVC:groupVC withBaseVC:navVC withGroupRemoteKey:[json[@"group-id"] integerValue]];
+    [self loadAndNavigateToGroupWithGroupsVC:groupsVC groupVC:groupVC withBaseVC:navVC withGroupRemoteKey:[pushNotification.groupId integerValue]];
 //    groupVC.group = [[GLPGroup alloc] initFromPushNotificationWithRemoteKey:[json[@"group-id"] integerValue]];
 //    
 //    [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
@@ -310,9 +303,9 @@ static int pnTestVariable = 0;
     }];
 }
 
--(void)navigateToPostWithJson:(NSDictionary *)json
+-(void)navigateToPostWithPNNotification:(GLPPushNotification *)pushNotification
 {
-    NSInteger postRemoteKey = [json[@"post-id"] integerValue];
+    NSInteger postRemoteKey = [pushNotification.postId integerValue];
     
     if(!_tabBarController) {
         DDLogError(@"Cannot find tab bar VC, abort");
@@ -474,9 +467,9 @@ static int pnTestVariable = 0;
 //    [navVC setViewControllers:@[contactsVC, groupVC] animated:NO];
 }
 
--(void)navigateToConversationWithJson:(NSDictionary *)json
+-(void)navigateToConversationWithPNNotification:(GLPPushNotification *)pushNotification
 {
-    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[json[@"conv"] integerValue]];
+    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[pushNotification.conversationId integerValue]];
     
     if(!_tabBarController) {
         DDLogError(@"Cannot find tab bar VC, abort");
