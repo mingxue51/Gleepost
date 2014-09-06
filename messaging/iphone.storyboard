@@ -1917,9 +1917,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="knz-r0-31T">
-                                                <rect key="frame" x="10" y="10" width="23" height="23"/>
+                                                <rect key="frame" x="5" y="0.0" width="50" height="43"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Back" backgroundImage="cancel_recording.png">
+                                                <state key="normal" backgroundImage="cancel_recording.png">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -1927,25 +1927,30 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <action selector="goBack:" destination="xR2-qF-eYq" eventType="touchUpInside" id="ZH0-Zx-sbp"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qwi-tv-hjV">
+                                                <rect key="frame" x="248" y="7" width="65" height="29"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
+                                                <state key="normal" image="video_done.png">
+                                                    <color key="titleColor" red="0.99215686270000003" green="0.89411764709999997" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="saveVideo:" destination="Pxp-nL-r26" eventType="touchUpInside" id="xqa-H0-HHi"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yMn-Ug-lPK">
+                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yMn-Ug-lPK">
                                         <rect key="frame" x="0.0" y="389" width="320" height="160"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.066666666669999999" green="0.066666666669999999" blue="0.066666666669999999" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="InZ-gf-57h">
-                                        <rect key="frame" x="118" y="425" width="90" height="90"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                        <state key="normal" backgroundImage="save_recording.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="saveVideo:" destination="Pxp-nL-r26" eventType="touchUpInside" id="sgf-Od-0n0"/>
-                                        </connections>
-                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="touch_to_pause.png" id="M6Y-OD-Vfs">
+                                        <rect key="frame" x="45" y="453" width="230" height="38"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
                                     <view contentMode="scaleAspectFill" id="LAU-8z-BQ1">
                                         <rect key="frame" x="0.0" y="43" width="320" height="354"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1970,13 +1975,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <rect key="frame" x="0.0" y="397" width="320" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="touch to record!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aza-vt-TTy">
-                                                <rect key="frame" x="159" y="41" width="141" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="touch_to_record.png" id="Il8-RL-usU">
+                                                <rect key="frame" x="45" y="58" width="230" height="38"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
@@ -1984,7 +1986,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="063-vE-n9E">
-                                        <rect key="frame" x="20" y="400" width="40" height="40"/>
+                                        <rect key="frame" x="260" y="400" width="46" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="camera_front_back.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -2004,27 +2006,28 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <color key="trackTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             </progressView>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GkK-SD-heB">
-                                                <rect key="frame" x="280" y="10" width="23" height="23"/>
+                                                <rect key="frame" x="248" y="7" width="65" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <state key="normal" backgroundImage="go_to_preview.png">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
+                                                <state key="normal" image="go_to_preview.png">
+                                                    <color key="titleColor" red="0.99215686274509807" green="0.89411764705882346" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="videoIsReady:" destination="YOS-6w-EWq" eventType="touchUpInside" id="YZi-JL-ZT8"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEW VIDEO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cfN-VF-GIo">
-                                                <rect key="frame" x="106" y="11" width="109" height="21"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECORD A VIDEO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cfN-VF-GIo">
+                                                <rect key="frame" x="86" y="11" width="149" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="v46-lx-eDL">
-                                                <rect key="frame" x="10" y="10" width="23" height="23"/>
+                                                <rect key="frame" x="10" y="9" width="23" height="26"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" backgroundImage="cancel_recording.png">
+                                                <state key="normal" backgroundImage="cancel.png">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -2048,8 +2051,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="backImageView" destination="yMn-Ug-lPK" id="Aac-GE-qtE"/>
                         <outlet property="cameraView" destination="mBY-O7-yOs" id="XVF-5Z-2A1"/>
                         <outlet property="previewView" destination="LAU-8z-BQ1" id="Yea-cz-guc"/>
+                        <outlet property="touchToPauseImageView" destination="M6Y-OD-Vfs" id="srj-Ja-KYh"/>
                         <outlet property="videoPreviewView" destination="xR2-qF-eYq" id="JuD-vR-DPA"/>
                         <outlet property="videoView" destination="YOS-6w-EWq" id="YXp-75-yT3"/>
                     </connections>
@@ -4549,11 +4554,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="add_members_bg.png" width="516" height="112"/>
         <image name="back.png" width="23" height="37"/>
         <image name="back_black.png" width="23" height="37"/>
-        <image name="bird-house-7.png" width="20" height="20"/>
-        <image name="camera_front_back.png" width="100" height="111"/>
+        <image name="bird-house-7.png" width="25" height="23"/>
+        <image name="camera_front_back.png" width="74" height="58"/>
         <image name="camera_top_button.png" width="190" height="95"/>
         <image name="cancel.png" width="100" height="111"/>
-        <image name="cancel_recording.png" width="100" height="111"/>
+        <image name="cancel_recording.png" width="74" height="64"/>
         <image name="categories_image.png" width="44" height="39"/>
         <image name="change_pass_name.png" width="600" height="100"/>
         <image name="chat_background_default.png" width="640" height="1136"/>
@@ -4565,9 +4570,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="down_arrow.png" width="23" height="14"/>
         <image name="fb_login_bg.png" width="520" height="100"/>
-        <image name="go_to_preview.png" width="100" height="111"/>
+        <image name="go_to_preview.png" width="121" height="54"/>
         <image name="hoovertall.png" width="388" height="1137"/>
-        <image name="id-card-7.png" width="15" height="21"/>
+        <image name="id-card-7.png" width="17" height="21"/>
         <image name="kind_of_event_music.png" width="600" height="110"/>
         <image name="kind_of_event_other.png" width="600" height="110"/>
         <image name="kind_of_event_party.png" width="600" height="110"/>
@@ -4589,8 +4594,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="login_separator_line.png" width="570" height="3"/>
         <image name="loginwithfacebook.png" width="422" height="80"/>
         <image name="logout_button.png" width="600" height="100"/>
-        <image name="man-7.png" width="21" height="20"/>
-        <image name="message-7.png" width="22" height="21"/>
+        <image name="man-7.png" width="25" height="20"/>
+        <image name="message-7.png" width="25" height="23"/>
         <image name="message-user.png" width="254" height="185"/>
         <image name="message_cell_error.png" width="13" height="17"/>
         <image name="my_location.png" width="105" height="109"/>
@@ -4606,7 +4611,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="public_group.png" width="200" height="125"/>
         <image name="right_arrow.png" width="14" height="23"/>
         <image name="right_arrow_navigation.png" width="25" height="43"/>
-        <image name="save_recording.png" width="247" height="237"/>
         <image name="search_users_checkbox_unselected" width="27" height="27"/>
         <image name="search_users_disabled_save_button" width="301" height="51"/>
         <image name="search_users_textfield_background" width="301" height="44"/>
@@ -4621,8 +4625,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="sing_in_bg.png" width="520" height="100"/>
         <image name="skip_button.png" width="440" height="108"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
+        <image name="touch_to_pause.png" width="414" height="47"/>
+        <image name="touch_to_record.png" width="442" height="47"/>
         <image name="user_image_bg.png" width="74" height="74"/>
         <image name="verification_rocket.png" width="185" height="149"/>
+        <image name="video_done.png" width="130" height="55"/>
         <image name="video_top_button.png" width="190" height="95"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>

@@ -15,6 +15,7 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
+        
     }
     return self;
 }
@@ -28,7 +29,7 @@
 
 - (void)videoPlayerPlaybackStateDidChange:(PBJVideoPlayerController *)videoPlayer
 {
-    
+    DDLogDebug(@"videoPlayerPlaybackStateDidChange: %d", videoPlayer.playbackState);
 }
 
 - (void)videoPlayerPlaybackWillStartFromBeginning:(PBJVideoPlayerController *)videoPlayer
@@ -42,14 +43,14 @@
 
 #pragma mark - Selectors
 
--(IBAction)done:(id)sender
-{
-    
-}
-
 -(IBAction)goBack:(id)sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
+}
+
+- (void)playPausePlayback:(id)sender
+{
+    
 }
 
 /*

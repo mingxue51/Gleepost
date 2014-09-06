@@ -31,6 +31,10 @@
 
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
+@property (weak, nonatomic) IBOutlet UIImageView *touchToPauseImageView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *backImageView;
+
 @property (strong, nonatomic) NSString *videoPath;
 
 @end
@@ -48,6 +52,8 @@
     [self setUpPreviewView];
     
     [self configureNavigationBar];
+    
+    [self configureGestures];
     
 }
 
@@ -93,6 +99,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONTINUE_TO_PREVIEW object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
 
+}
+
+- (void)configureGestures
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playPausePlayback:)];
+    
+    [_backImageView addGestureRecognizer:tapGesture];
 }
 
 -(void)configureNavigationBar
@@ -151,7 +164,7 @@
     [_previewVC setVideoPath:path];
     
     
-//    [_previewVC playFromBeginning];
+    [_previewVC playFromBeginning];
 }
 
 #pragma mark - PBJVideoPlayerControllerDelegate
@@ -172,6 +185,16 @@
         [videoPlayer setVideoPath:_videoPath];
     }
     
+    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+    {
+        [self playVideo];
+    }
+    else if (_previewVC.playbackState == PBJVideoPlayerPlaybackStatePaused || _previewVC.playbackState == PBJVideoPlayerPlaybackStateStopped)
+    {
+        [self pauseVideo];
+    }
+    
+    
     DDLogDebug(@"videoPlayerPlaybackStateDidChange : state: %d", videoPlayer.playbackState);
 
 }
@@ -186,6 +209,16 @@
 {
     DDLogDebug(@"videoPlayerPlaybackDidEnd : state: %d", videoPlayer.playbackState);
 
+}
+
+- (void)playVideo
+{
+    [_touchToPauseImageView setHidden:NO];
+}
+
+- (void)pauseVideo
+{
+    [_touchToPauseImageView setHidden:YES];
 }
 
 #pragma mark - Notifications
@@ -223,7 +256,25 @@
         DDLogDebug(@"Capture session not active.");
     }
     
+    [_previewVC stop];
+    
     [self showCaptureView];
+}
+
+#pragma mark - Selectors
+
+- (void)playPausePlayback:(id)sender
+{
+    if(_previewVC.playbackState == PBJVideoPlayerPlaybackStatePlaying)
+    {
+        [_previewVC pause];
+//        [self pauseVideo];
+    }
+    else if (_previewVC.playbackState == PBJVideoPlayerPlaybackStatePaused || _previewVC.playbackState == PBJVideoPlayerPlaybackStateStopped)
+    {
+        [_previewVC playFromCurrentTime];
+//        [self playVideo];
+    }
 }
 
 - (void)dismissModalView:(id)sender
