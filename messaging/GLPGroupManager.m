@@ -50,9 +50,7 @@
             remoteCallback(NO, nil);
             return;
         }
-        
-        DDLogDebug(@"Remote groups: %@", serverGroups);
-        
+                
         //Store only groups that are not exist into the database.
 
         [GLPGroupDao saveGroups:serverGroups];

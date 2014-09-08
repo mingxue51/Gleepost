@@ -27,7 +27,7 @@
 
 @class AVURLAsset;
 @class AVPlayerItem;
-
+@class AVAsset;
 typedef NS_ENUM(NSInteger, PBJVideoPlayerPlaybackState) {
     PBJVideoPlayerPlaybackStateStopped = 0,
     PBJVideoPlayerPlaybackStatePlaying,
@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, PBJVideoPlayerBufferingState) {
 @property (nonatomic, weak) id<PBJVideoPlayerControllerDelegate> delegate;
 
 @property (nonatomic) NSString *videoPath;
+@property (nonatomic) AVAsset *asset;
 @property (nonatomic) BOOL playbackLoops;
 @property (nonatomic, readonly) NSTimeInterval maxDuration;
 

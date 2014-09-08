@@ -136,6 +136,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
+    
+    [self becomeFirstResponderForTextField];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -223,6 +225,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         [_separatorLineImageView setHidden:YES];
         CGRectSetY(_contentTextView, 10);
         CGRectAddH(_contentTextView, 30);
+    }
+}
+
+- (void)becomeFirstResponderForTextField
+{
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
         [_contentTextView becomeFirstResponder];
     }
     else

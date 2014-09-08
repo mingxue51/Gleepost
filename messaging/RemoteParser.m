@@ -441,9 +441,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
             
             
             post.location = [[GLPLocation alloc] initWithName:[attributes objectForKey:@"location-name"] address:[attributes objectForKey:@"location-desc"] latitude:lat longitude:lon andDistance:0];
-            
-            DDLogDebug(@"Post content: %@ : Location: %@", post.content, post.location);
-
         }
         
         if([attributes objectForKey:@"event-time"])

@@ -78,6 +78,7 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
 @synthesize videoPath = _videoPath;
 @synthesize playbackState = _playbackState;
 @synthesize bufferingState = _bufferingState;
+@synthesize asset = _asset;
 
 #pragma mark - getters/setters
 
@@ -203,6 +204,8 @@ static NSString * const PBJVideoPlayerControllerPlayerKeepUpKey = @"playbackLike
             // setup player
             AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:_asset];
             [self _setPlayerItem:playerItem];
+            
+            DDLogDebug(@"Asset setup: %@ : %@", playerItem, asset);
             
         }];
     }];
@@ -530,6 +533,11 @@ typedef void (^PBJVideoPlayerBlock)();
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	
     }
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ : %@ : %@ : %@ : %@", _asset, _player, _playerItem, _videoPath, _videoPath];
 }
 
 @end

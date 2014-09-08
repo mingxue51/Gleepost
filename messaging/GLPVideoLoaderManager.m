@@ -13,21 +13,18 @@
 #import <AVFoundation/AVAsset.h>
 #import <AVFoundation/AVPlayerItem.h>
 #import "NSNotificationCenter+Utils.h"
+#import "NSMutableArray+QueueAdditions.h"
 //#import "GLPVideoCellManager.h"
 
 @interface GLPVideoLoaderManager ()
 
-/** Contains post remote key as a key and PBJVideoPlayerController as a value. */
-//@property (strong, nonatomic) NSMutableDictionary *videoViews;
 /** Contains post remote key as a key and Asset as a value */
 @property (strong, nonatomic) NSCache *videoAssetsCache;
 
-//@property (strong, nonatomic) NSMutableDictionary *videoPlayerItems;
-
-//@property (strong, nonatomic) NSCache *videoCellCache;
-//@property (strong, nonatomic) NSMutableDictionary *videoCellDictionary;
-
-//@property (strong, nonatomic) NSMutableDictionary *alreadyVisiblePosts;
+/** Array saved the last 3 video view controllers. Each place is an NSDictionary
+ containing <post_key, videoVC>
+ */
+//@property (strong, nonatomic) NSMutableArray *savedVideosVC;
 
 @property (assign, nonatomic) BOOL insertedPostVideoWithNilAsset;
 
@@ -59,7 +56,6 @@ static GLPVideoLoaderManager *instance = nil;
     if(self)
     {
         [self initialiseObjects];
-        [self configureNotifications];
     }
     
     return self;
@@ -72,31 +68,26 @@ static GLPVideoLoaderManager *instance = nil;
 
 -(void)dealloc
 {
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPlayVideo" object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPauseVideo" object:nil];
+
 }
 
 #pragma mark - Configuration
 
 -(void)initialiseObjects
 {
-//    _videoViews = [[NSMutableDictionary alloc] init];
     _videoAssetsCache = [[NSCache alloc] init];
-//    _videoPlayerItems = [[NSMutableDictionary alloc] init];
-//    _videoCellCache = [[NSCache alloc] init];
-//    _videoCellDictionary = [[NSMutableDictionary alloc] init];
+    
+//    _savedVideosVC = [[NSMutableArray alloc] init];
+    
+//    _videoVC1 = [[PBJVideoPlayerController alloc] init];
+//    
+//    _videoVC2 = [[PBJVideoPlayerController alloc] init];
     
     _insertedPostVideoWithNilAsset = NO;
     
     _timelineJustFetched = YES;
 }
 
--(void)configureNotifications
-{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playVideo:) name:@"GLPPlayVideo" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pauseVideo:) name:@"GLPPauseVideo" object:nil];
-
-}
 
 /**
  This video is used from GLPTimelineViewController in order to prefetch videos.
@@ -109,46 +100,12 @@ static GLPVideoLoaderManager *instance = nil;
     }
 }
 
-#pragma mark - Notifications
-
-//-(void)playVideo:(NSNotification *)notification
-//{
-//    NSDictionary *notificationDict = notification.userInfo;
-//    
-//    NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
-//    
-//    [self playVideoWithRemoteKey:remoteKey];
-//    
-//}
-//
-//-(void)pauseVideo:(NSNotification *)notification
-//{
-//    DDLogDebug(@"pauseVideo: %@", notification);
-//
-//    NSDictionary *notificationDict = notification.userInfo;
-//    
-//    NSNumber *remoteKey = [notificationDict objectForKey:@"RemoteKey"];
-//    
-//    [self pauseVideoWithRemoteKey:remoteKey];
-//}
-
-#pragma mark - Video actions
-
-//-(void)playVideoWithRemoteKey:(NSNumber *)remoteKey
-//{
-//    PBJVideoPlayerController *video = [_videoViews objectForKey:remoteKey];
-//    [video playFromCurrentTime];
-//}
-//
-//-(void)pauseVideoWithRemoteKey:(NSNumber *)remoteKey
-//{
-//    PBJVideoPlayerController *video = [_videoViews objectForKey:remoteKey];
-//    [video pause];
-//}
 
 -(void)addVideos:(NSArray *)posts
 {
     NSArray *videoPosts = [self videoPostsWithPosts:posts];
+    
+//    int i = 0;
     
     for(GLPPost *p in videoPosts)
     {
@@ -156,10 +113,16 @@ static GLPVideoLoaderManager *instance = nil;
         
         [self addVideoWithUrl:p.video.url andPostRemoteKey:p.remoteKey];
         
+//        if(i < 3)
+//        {
+//            [self createVideoVCAndAddItToMemoryWithPost:p andAsset:asset];
+//        }
+//        
+//        ++i;
     }
 }
 
-- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
+- (AVURLAsset *)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
 {
     
     AVURLAsset *asset = [_videoAssetsCache objectForKey:@(remoteKey)];
@@ -179,25 +142,34 @@ static GLPVideoLoaderManager *instance = nil;
         @finally {
             
         }
-
-        
-        
-        //Create the player item.
-//        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-//        [_videoPlayerItems setObject:playerItem forKey:@(remoteKey)];
-        
-
-//        GLPVideoCellManager *videoLoaderCell = [_videoCellDictionary objectForKey:@(remoteKey)];
-//        
-//        if(![videoLoaderCell containsAsset] && videoLoaderCell)
-//        {
-//            DDLogDebug(@"Not contained asset Video url: %@ added. %@", videoUrl, videoLoaderCell);
-//
-//            [videoLoaderCell setAsset:asset];
-//        }
     }
     
+    return asset;
+    
 }
+
+/**
+ Creates a new instance of PBJVideoPlayerViewController and enqueues it
+ to savedVideoVC
+ 
+ */
+//- (void)createVideoVCAndAddItToMemoryWithPost:(GLPPost *)videoPost andAsset:(AVURLAsset *)asset
+//{
+//    if(_savedVideosVC.count == 3)
+//    {
+//        DDLogInfo(@"Saved video VC is already contains 3 objects. Abord.");
+//        
+//        return;
+//    }
+//        
+//    PBJVideoPlayerController *videoPlayer = [[PBJVideoPlayerController alloc] init];
+//    [videoPlayer setVideoAsset:asset];
+//    
+//    [_savedVideosVC enqueue:@{@(videoPost.remoteKey) : videoPlayer}];
+//    
+//    DDLogDebug(@"Saved videos VCs: %@", _savedVideosVC);
+//}
+
 
 - (PBJVideoPlayerController *)setVideoWithPost:(GLPPost *)post
 {
@@ -271,34 +243,6 @@ static GLPVideoLoaderManager *instance = nil;
     _timelineJustFetched = YES;
 }
 
-//- (void)addVideoWithUrl:(NSString *)videoUrl andPostRemoteKey:(NSInteger)remoteKey
-//{
-////    DDLogDebug(@"GLPVideoLoaderManager : In addVideoWithUrl");
-//    
-//    PBJVideoPlayerController *foundVideoViewController = [self videoWithPostRemoteKey:remoteKey];
-//    
-//    if(foundVideoViewController)
-//    {
-//        //Already in the list.
-////        DDLogDebug(@"Found video view controller already in list!");
-//        
-////        return foundVideoViewController;
-//    }
-//    else
-//    {
-//        PBJVideoPlayerController *videoViewController = [[PBJVideoPlayerController alloc] init];
-//        [videoViewController setPlaybackLoops:NO];
-//        [videoViewController setVideoPath:videoUrl];
-//        [videoViewController.view setBounds:CGRectMake(0, 0, 298, 298)];
-//        
-////        DDLogDebug(@"Video not found but ready: %@", videoUrl);
-//        
-//        [_videoViews setObject:videoViewController forKey:[NSNumber numberWithInteger:remoteKey]];
-//        
-////        return nil;
-//    }
-//
-//}
 
 /**
  If the asset is not in the NSCache, then return nil in order to not block the UI.
@@ -321,9 +265,8 @@ static GLPVideoLoaderManager *instance = nil;
 
     if(asset)
     {
+        
         //If cell is visible return the controller.
-        
-        
         
         videoPlayer = [[PBJVideoPlayerController alloc] init];
         [videoPlayer setVideoAsset:asset];
@@ -331,26 +274,39 @@ static GLPVideoLoaderManager *instance = nil;
     else
     {
         
-//        asset =  [AVURLAsset URLAssetWithURL:[NSURL URLWithString:videoUrl] options:nil];
-//        [_videoCache setObject:asset forKey:@(remoteKey)];
-        
-//        [_videoCache setObject:asset forKey:remoteKeyObject];
-//        
-//        videoPlayer = [[PBJVideoPlayerController alloc] init];
-//        [videoPlayer setVideoAsset:asset];
-        
-//        NSAssert(videoPlayer, @"Video player should not be nil");
-        
         DDLogDebug(@"Video player should not be nil");
     }
     
     return videoPlayer;
     
-//    [NSThread detachNewThreadSelector:@selector(configureVideoPlayerControllerAndPostNotificationWithRemoteKey:) toTarget:self withObject:@(remoteKey)];
-
-    
 }
 
+
+//- (PBJVideoPlayerController *)runningVideoWithPostRemoteKey:(NSInteger)remoteKey
+//{
+//    for(NSDictionary *keyVideoVC in _savedVideosVC)
+//    {
+//        PBJVideoPlayerController *videoVC = [keyVideoVC objectForKey:@(remoteKey)];
+//        
+//        if(videoVC)
+//        {
+//            return videoVC;
+//        }
+//    }
+//    
+//    DDLogDebug(@"Contents of saved videos VC: %@", _savedVideosVC);
+//
+//    
+//    return nil;
+//}
+
+//- (void)replaceOldVideoVCWithNew:(PBJVideoPlayerController *)newVideoVC withPostRemoteKey:(NSInteger)remoteKey
+//{
+//    [_savedVideosVC dequeue];
+//    
+//    [_savedVideosVC enqueue:@{@(remoteKey): newVideoVC}];
+//    
+//}
 
 - (void)visiblePosts:(NSArray *)visiblePosts
 {
@@ -364,36 +320,38 @@ static GLPVideoLoaderManager *instance = nil;
     {
         if([p isVideoPost])
         {
-//            NSNumber *remoteKey = [_alreadyVisiblePosts objectForKey:@(p.remoteKey)];
-            
-//            if(remoteKey)
+//            PBJVideoPlayerController *videoVC = [self runningVideoWithPostRemoteKey:p.remoteKey];
+//
+//            DDLogDebug(@"Video vc loaded: %@ : %ld", videoVC.videoPath, videoVC.bufferingState);
+//            
+//            if(videoVC)
 //            {
-//                DDLogDebug(@"Post %@ already viewed.", p.content);
+//                DDLogDebug(@"visiblePosts Video VC found: %@", videoVC);
 //                
-//                continue;
+//                [self postNotificationWithVideoVC:videoVC andRemoteKey:p.remoteKey];
+//            }
+//            else
+//            {
+//                videoVC = [self videoWithPostRemoteKey:p.remoteKey];
+//                
+//                [self replaceOldVideoVCWithNew:videoVC withPostRemoteKey:p.remoteKey];
+            
+            
+            PBJVideoPlayerController *videoVC = [self videoWithPostRemoteKey:p.remoteKey];
+
+                [self postNotificationWithVideoVC:videoVC andRemoteKey:p.remoteKey];
+                
+//                DDLogDebug(@"visiblePosts Video VC not found: %@", videoVC);
+
 //            }
             
-            
-            [self postNotificationWithVideoVC:[self videoWithPostRemoteKey:p.remoteKey] andRemoteKey:p.remoteKey];
         }
     }
-    
-//    [_alreadyVisiblePosts removeAllObjects];
-//    
-//    
-//    for(GLPPost *p in videoVisiblePosts)
-//    {
-//        [_alreadyVisiblePosts setObject:p forKey:@(p.remoteKey)];
-//    }
-    
-//    [self setOnlyVisibleVideoPostsToCache:visiblePosts];
 }
 
 - (void)postNotificationWithVideoVC:(PBJVideoPlayerController *)videoVC andRemoteKey:(NSInteger)remoteKey
 {
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_READY, (long)remoteKey];
-
-//    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:notificationName object:self userInfo:@{@(remoteKey): videoVC}];
     
     if(!videoVC)
     {
@@ -404,49 +362,6 @@ static GLPVideoLoaderManager *instance = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:videoViewData];
 }
-
-/**
- Sets the new visible posts (if there are) and removes the invisible ones.
- */
-//- (void)setOnlyVisibleVideoPostsToCache:(NSArray *)visiblePosts
-//{
-////    NSCache *newPosts = [[NSCache alloc] init];
-//    NSMutableDictionary *currentPosts = [[NSMutableDictionary alloc] init];
-//    
-//    for(GLPPost *p in visiblePosts)
-//    {
-//        if([p isVideoPost])
-//        {
-//            AVURLAsset *asset = [_videoCache objectForKey:@(p.remoteKey)];
-//
-//            if(!asset)
-//            {
-//                DDLogDebug(@"ASSET nil abord");
-//            }
-//            
-//            
-//            
-////            GLPVideoCellManager *videoCell = [_videoCellCache objectForKey:@(p.remoteKey)];
-//            
-//            GLPVideoCellManager *videoCell = [_videoCellDictionary objectForKey:@(p.remoteKey)];
-//
-//            
-//            if(videoCell)
-//            {
-//                continue;
-//            }
-//            
-//            videoCell = [[GLPVideoCellManager alloc] initWithAsset:asset andRemoteKey:p.remoteKey];
-//            
-////            [newPosts setObject:videoCell forKey:@(p.remoteKey)];
-//            [currentPosts setObject:videoCell forKey:@(p.remoteKey)];
-//            
-//            DDLogDebug(@"Video Cell: %@", videoCell);
-//        }
-//    }
-//    
-//}
-
 
 - (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock
 {
@@ -472,72 +387,16 @@ static GLPVideoLoaderManager *instance = nil;
     DDLogDebug(@"PBJVideoPlayerController generated");
     
     callbackBlock(remoteKey, videoPlayer);
-    
-    //    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_READY object:self userInfo:@{remoteKey: videoPlayer}];
 }
 
 #pragma mark - Set video posts
 
 - (void)setVideoPost:(GLPPost *)post
 {
-//     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-//
-//    dispatch_async(queue, ^{
-//        
-//
-//        
-//        
-//    });
     [NSThread detachNewThreadSelector:@selector(setVideoFromThread:) toTarget:self withObject:post];
-
     
 }
 
-//- (void)setVideoFromThread:(GLPPost *)post
-//{
-//    AVURLAsset *asset = [_videoCache objectForKey:@(post.remoteKey)];
-//    
-//    GLPVideoCellManager *videoCell = [_videoCellDictionary objectForKey:@(post.remoteKey)];
-//    
-//    DDLogDebug(@"Video cell setVideoPost: %@", videoCell);
-//    
-//    if(videoCell)
-//    {
-//        return;
-//    }
-//    
-//    DDLogDebug(@"ASSET before adding: %@", asset);
-//    
-//    if(asset)
-//    {
-//        videoCell = [[GLPVideoCellManager alloc] initWithAsset:asset andRemoteKey:post.remoteKey];
-//    }
-//    else
-//    {
-//        videoCell = [[GLPVideoCellManager alloc] initWithRemoteKey:post.remoteKey];
-//    }
-//    
-//    
-//    [_videoCellDictionary setObject:videoCell forKey:@(post.remoteKey)];
-//    
-//    DDLogDebug(@"Current videos in the queue: %@", _videoCellDictionary);
-//}
-//
-//- (void)removeVideoPost:(GLPPost *)post
-//{
-//    [_videoCellDictionary removeObjectForKey:@(post.remoteKey)];
-//}
-
-//- (void)releaseVideo
-//{
-//    DDLogDebug(@"Number of videos instances: %@", _videoViews);
-//    
-//    for(NSNumber *key in _videoViews)
-//    {
-//        [_videoViews removeObjectForKey:key];
-//        break;
-//    }
-//}
 
 #pragma mark - Helpers
 

@@ -183,7 +183,7 @@
 //    PBJVideoPlayerController *videoPlayer =  d[@(_remoteKey)];
     
     
-    DDLogDebug(@"Set up video controller: %@ : %@", _previewVC, _post.content);
+    DDLogDebug(@"Set up video controller: %@ : %d : %@", _previewVC, _previewVC.bufferingState, _post.content);
     
     if(_previewVC)
     {
@@ -221,7 +221,7 @@
     
     if(_previewVC)
     {
-        DDLogDebug(@"Video view contains previewVC: %@ : %@", _previewVC, _post.content);
+        DDLogDebug(@"Video view contains previewVC: %@ : %d : %@", _previewVC, _previewVC.bufferingState, _post.content);
         
         return;
     }
