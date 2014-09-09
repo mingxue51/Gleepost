@@ -200,25 +200,27 @@ static GLPProfileLoader *instance = nil;
 
 - (void)loadUsersDataWithLocalCallback:(void (^) (GLPUser *user))localCallback andRemoteCallback:(void (^) (BOOL success, BOOL updatedData, GLPUser *user))remoteCallback
 {
-    __block GLPUser *userData;
+    __block GLPUser *databaseUser;
     __block BOOL updatedData = NO;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        userData = [GLPUserDao findByRemoteKey:_userDetails.remoteKey db:db];
+        databaseUser = [GLPUserDao findByRemoteKey:_userDetails.remoteKey db:db];
+        
+        DDLogDebug(@"User data from database: %@", databaseUser);
         
         if(_userImage)
         {
-            userData.profileImage = _userImage;
+            databaseUser.profileImage = _userImage;
         }
         
-        _userDetails = userData;
+        _userDetails = databaseUser;
         
-        localCallback(userData);
+        localCallback(databaseUser);
 
     }];
     
-    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *remoteUser) {
         
         if(!success)
         {
@@ -227,13 +229,16 @@ static GLPProfileLoader *instance = nil;
             return;
         }
         
-        DDLogDebug(@"GLPProfileLoader : user data from server %@", user);
         
-        updatedData = [_userDetails isUpdatedUserData:userData];
+        updatedData = [_userDetails isUpdatedUserData:remoteUser];
+        
+        DDLogDebug(@"GLPProfileLoader : user data from server %@.\n Current data: %@", remoteUser, _userDetails);
+
         
         if(updatedData)
         {
-            _userDetails = user;
+            [GLPUserDao update:remoteUser];
+            _userDetails = remoteUser;
             _userDetails.profileImage = _userImage;
         }
         

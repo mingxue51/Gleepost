@@ -112,8 +112,9 @@
 
 +(void)update:(GLPUser*)entity
 {
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        [db executeUpdateWithFormat:@"update users set name=%@, full_name=%@, image_url=%@, course=%@, network_id=%d, network_name=%@, tagline=%@, rsvp_count, group_count, post_count where remoteKey=%d",
+        BOOL updated = [db executeUpdateWithFormat:@"update users set name=%@, full_name=%@, image_url=%@, course=%@, network_id=%d, network_name=%@, tagline=%@, rsvp_count=%d, group_count=%d, post_count=%d where remoteKey=%d",
          entity.name,
          entity.fullName,
          entity.profileImageUrl,
@@ -121,10 +122,14 @@
          entity.networkId,
          entity.networkName,
          entity.personalMessage,
-         entity.remoteKey,
          [entity.rsvpCount intValue],
          [entity.groupCount intValue],
-         [entity.postsCount intValue]];
+         [entity.postsCount intValue],
+                        entity.remoteKey];
+        
+        
+        DDLogDebug(@"Update user: %@ : %d", entity, updated);
+
     }];
     
 }

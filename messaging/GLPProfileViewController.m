@@ -139,9 +139,7 @@
     
     [self hideNetworkErrorViewIfNeeded];
 
-
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    
     
     if(![GLPiOS6Helper isIOS6])
     {
@@ -653,8 +651,6 @@
         
         if(success)
         {
-            DDLogDebug(@"Posts from server: %@", posts);
-            
             self.posts = [posts mutableCopy];
             
             [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
@@ -951,6 +947,7 @@
        
         if(success && updatedData)
         {
+            DDLogDebug(@"Data needs to be updated: %@", user);
             _user = user;
             [self refreshCellViewWithIndex:0];
             [self fetchUsersPostsIfNeeded];

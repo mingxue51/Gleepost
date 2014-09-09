@@ -64,24 +64,48 @@
 
 - (BOOL)isUpdatedUserData:(GLPUser *)userData
 {
-    if(![userData.name isEqualToString:userData.name])
+    if(![_name isEqualToString:userData.name])
     {
         return YES;
     }
     
-    if(![userData.profileImageUrl isEqualToString:userData.profileImageUrl])
+    if(![_profileImageUrl isEqualToString:userData.profileImageUrl])
     {
         return YES;
     }
     
-    if(![userData.course isEqualToString:userData.course])
+    if(![_course isEqualToString:userData.course])
     {
         return YES;
     }
     
-    if(![userData.personalMessage isEqualToString:userData.personalMessage])
+    if(![_personalMessage isEqualToString:userData.personalMessage])
     {
         return YES;
+    }
+    
+    if(_rsvpCount && userData.rsvpCount)
+    {
+        if(![_rsvpCount isEqualToNumber:userData.rsvpCount])
+        {
+            return YES;
+        }
+    }
+    
+    if(_postsCount && userData.postsCount)
+    {
+        if(![_postsCount isEqualToNumber:userData.postsCount])
+        {
+            return YES;
+        }
+    }
+    
+    if(_groupCount && userData.groupCount)
+    {
+        if(![_groupCount isEqualToNumber:userData.groupCount])
+        {
+            return YES;
+        }
     }
     
     return NO;
@@ -89,7 +113,7 @@
 
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"Remote Key: %d, Username: %@, Course: %@, Network: %@ - %d, Image: %@, Message: %@",self.remoteKey, self.name, self.course, self.networkName, self.networkId, self.profileImageUrl, self.personalMessage];
+    return [NSString stringWithFormat:@"Remote Key: %d, Username: %@, Image: %@, Message: %@, Rsvps: %@, Groups: %@, Posts: %@",self.remoteKey, self.name, self.profileImageUrl, self.personalMessage, _rsvpCount, _groupCount, _postsCount];
 }
 
 @end
