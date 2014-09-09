@@ -15,6 +15,9 @@
 
 @optional
 - (void)badgeTouched;
+- (void)numberOfPostTouched;
+- (void)numberOfGroupsTouched;
+- (void)numberOfRsvpsTouched;
 
 @end
 

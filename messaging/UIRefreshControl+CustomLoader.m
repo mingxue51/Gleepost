@@ -59,7 +59,7 @@
 {
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
-    CGRectSetX(indicator, 145.0);
+    CGRectSetX(indicator, 150.0);
     CGRectSetY(indicator, 15.0);
     
     [indicator startAnimating];

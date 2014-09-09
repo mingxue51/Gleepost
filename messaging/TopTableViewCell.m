@@ -7,7 +7,7 @@
 //
 //  TopTableViewCell is a super-class of all the top view cells in the app.
 //  The subclasses are listed below:
-//  ProfileTopViewCell
+//  ProfileTopViewCell, PrivateProfileTopViewCell
 //
 
 #import "TopTableViewCell.h"
@@ -42,22 +42,12 @@
 @synthesize subtitleLbl = _subtitleLbl;
 @synthesize smallSubtitleLbl = _smallSubtitleLbl;
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-    }
-    
-    return self;
-}
-
 - (void)awakeFromNib
 {
     // Initialization code
     [self configureMainImageView];
-
+    
+    [self configureGesturesForViews];
 }
 
 #pragma mark - Accessors
@@ -137,7 +127,23 @@
 //    }
     
     
+}
+
+- (void)configureGesturesForViews
+{
     [self addGestureToMainImageView];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(postsLabelTouched:)];
+
+    [_postsLbl addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(membershipsLabelTouched:)];
+    
+    [_membershipsLbl addGestureRecognizer:tap];
+    
+    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rsvpsLabelTouched:)];
+    
+    [_rsvpsLbl addGestureRecognizer:tap];
 }
 
 
@@ -153,6 +159,21 @@
 - (void)mainImageViewTouched:(id)sender
 {
     [_subClassdelegate mainImageViewTouched];
+}
+
+- (void)postsLabelTouched:(id)sender
+{
+    [_subClassdelegate numberOfPostTouched];
+}
+
+- (void)membershipsLabelTouched:(id)sender
+{
+    [_subClassdelegate numberOfGroupsTouched];
+}
+
+- (void)rsvpsLabelTouched:(id)sender
+{
+    [_subClassdelegate numberOfRsvpsTouched];
 }
 
 - (IBAction)bagdeButtonTouched:(id)sender

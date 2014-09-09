@@ -18,6 +18,9 @@
 - (void)changeProfileImage:(id)sender;
 - (void)segmentSwitchedWithButtonType:(ButtonType)buttonType;
 - (void)badgeTouched;
+- (void)numberOfPostTouched;
+- (void)numberOfGroupsTouched;
+- (void)numberOfRsvpsTouched;
 
 @end
 

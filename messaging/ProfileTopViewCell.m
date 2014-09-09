@@ -134,6 +134,21 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
     [_delegate badgeTouched];
 }
 
+- (void)numberOfPostTouched
+{
+    [_delegate numberOfPostTouched];
+}
+
+- (void)numberOfGroupsTouched
+{
+    [_delegate numberOfGroupsTouched];
+}
+
+- (void)numberOfRsvpsTouched
+{
+    [_delegate numberOfRsvpsTouched];
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

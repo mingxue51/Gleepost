@@ -298,8 +298,6 @@
     self.navigationController.navigationBar.topItem.title = @"MY PROFILE";
 }
 
-
-
 -(void)initialiseObjects
 {
     
@@ -360,7 +358,6 @@
 -(void)registerTableViewCells
 {
     //Register nib files in table view.
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileTopViewCell"];
     
     //Register posts.
@@ -1418,7 +1415,6 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - Selectors
 
 - (void)changeProfileImage:(id)sender
 {
@@ -1438,6 +1434,30 @@
     [actionSheet showInView:[self.view window]];
 }
 
+- (void)badgeTouched
+{
+    [self performSegueWithIdentifier:@"view badges" sender:self];
+}
+
+- (void)numberOfPostTouched
+{
+    DDLogDebug(@"numberOfPostTouched");
+}
+
+- (void)numberOfGroupsTouched
+{
+    DDLogDebug(@"numberOfGroupsTouched");
+
+}
+
+- (void)numberOfRsvpsTouched
+{
+    DDLogDebug(@"numberOfRsvpsTouched");
+
+}
+
+#pragma mark - Selectors
+
 - (void)snapOrPickAnImageFromGallery
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Snap or Pick an image" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Snap image", @"Pick an image", nil];
@@ -1447,11 +1467,6 @@
     actionSheet.tag = 2;
     
     [actionSheet showInView:[self.view window]];
-}
-
-- (void)badgeTouched
-{
-    [self performSegueWithIdentifier:@"view badges" sender:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
