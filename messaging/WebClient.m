@@ -1538,8 +1538,6 @@ static WebClient *instance = nil;
     
     [self postPath:@"profile/name" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        DDLogDebug(@"RESPONSE: %@", responseObject);
-        
         callbackBlock(YES);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

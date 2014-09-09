@@ -10,6 +10,7 @@
 #import "DatabaseManager.h"
 #import "GLPUserDaoParser.h"
 #import "FMResultSet.h"
+#import "SessionManager.h"
 
 @implementation GLPUserDao
 
@@ -107,6 +108,18 @@
          remoteKey];
         
         NSLog(@"User's image saved with status: %d", b);
+    }];
+}
+
++ (void)updateLoggedInUsersName:(NSString *)name andSurname:(NSString *)surname
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+       
+        [db executeUpdateWithFormat:@"update users set name=%@, full_name=%@ where remoteKey=%d",
+         name,
+         [NSString stringWithFormat:@"%@ %@", name, surname],
+         [SessionManager sharedInstance].user.remoteKey];
+
     }];
 }
 

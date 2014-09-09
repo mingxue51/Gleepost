@@ -10,6 +10,7 @@
 #import "AppearanceHelper.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
+#import "GLPUserDao.h"
 
 @interface ChangePasswordViewController ()
 
@@ -71,88 +72,96 @@
 - (IBAction)saveNewPassword:(id)sender
 {
 
-    
     if(_isPasswordChange)
     {
-
-        if(![self areDetailsValid])
-        {
-            [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fields are completed."];
-            
-            return;
-        }
-        
-        //Check if the two new passwords are equal.
-        
-        if([_passWord.text isEqualToString:_passWord2.text])
-        {
-            [self hideKeyboard];
-            
-            [WebClientHelper showStandardLoaderWithTitle:@"Changing password..." forView:self.view];
-            
-            [[WebClient sharedInstance] changePasswordWithOld:_oldPassWord.text andNew:_passWord.text callbackBlock:^(BOOL success) {
-                
-                [WebClientHelper hideStandardLoaderForView:self.view];
-                
-                if(success)
-                {
-                    [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed"];
-                    
-                    
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                else
-                {
-//                    [WebClientHelper showStandardErrorWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
-                    
-                    [self showAlertViewWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
-
-                }
-                
-            }];
-        }
-        else
-        {            
-//            [WebClientHelper showStandardErrorWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
-            
-            [self showAlertViewWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
-        }
+        [self changePassword];
     }
     else
     {
-        //Change name.
-        if(![self areNameDetailsValid])
-        {
-            [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fieds are not empty."];
-            
-            return;
-        }
-        else
-        {
-            [self hideKeyboard];
-            
-            [WebClientHelper showStandardLoaderWithTitle:@"Changing name..." forView:self.view];
+        [self changeName];
+    }
+}
 
-            [[WebClient sharedInstance] changeNameWithName:_oldPassWord.text andSurname:_passWord.text callbackBlock:^(BOOL success) {
-               
-                [WebClientHelper hideStandardLoaderForView:self.view];
-                if(success)
-                {
-                    [WebClientHelper showStandardErrorWithTitle:@"Name changed" andContent:[NSString stringWithFormat:@"Your new name is: %@ %@.",_oldPassWord.text, _passWord.text]];
-                    
-                    
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                else
-                {
-//                    [WebClientHelper showStandardErrorWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
-                    
-                    [self showAlertViewWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
-
-                }
+- (void)changePassword
+{
+    if(![self areDetailsValid])
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fields are completed."];
+        
+        return;
+    }
+    
+    //Check if the two new passwords are equal.
+    
+    if([_passWord.text isEqualToString:_passWord2.text])
+    {
+        [self hideKeyboard];
+        
+        [WebClientHelper showStandardLoaderWithTitle:@"Changing password..." forView:self.view];
+        
+        [[WebClient sharedInstance] changePasswordWithOld:_oldPassWord.text andNew:_passWord.text callbackBlock:^(BOOL success) {
+            
+            [WebClientHelper hideStandardLoaderForView:self.view];
+            
+            if(success)
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed"];
                 
-            }];
-        }
+                
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                [self showAlertViewWithTitle:@"Password incorrect" andContent:@"Please ensure that your password is right and try again"];
+                
+            }
+            
+        }];
+    }
+    else
+    {
+        [self showAlertViewWithTitle:@"New password wrong" andContent:@"Please ensure that both new password fields contain the same password."];
+    }
+}
+
+- (void)changeName
+{
+    //Change name.
+    if(![self areNameDetailsValid])
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fieds are not empty."];
+        
+        return;
+    }
+    else
+    {
+        [self hideKeyboard];
+        
+        [WebClientHelper showStandardLoaderWithTitle:@"Changing name..." forView:self.view];
+        
+        [[WebClient sharedInstance] changeNameWithName:_oldPassWord.text andSurname:_passWord.text callbackBlock:^(BOOL success) {
+            
+            [WebClientHelper hideStandardLoaderForView:self.view];
+            
+            if(success)
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Name changed" andContent:[NSString stringWithFormat:@"Your new name is: %@ %@.",_oldPassWord.text, _passWord.text]];
+                
+                //Update database with the new name.
+                [GLPUserDao updateLoggedInUsersName:_oldPassWord.text andSurname:_passWord.text];
+                
+                
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                //                    [WebClientHelper showStandardErrorWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
+                
+                [self showAlertViewWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
+                
+            }
+            
+        }];
     }
 }
 

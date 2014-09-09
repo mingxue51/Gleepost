@@ -13,6 +13,8 @@
 #import "GLPUserDao.h"
 #import "DatabaseManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "ImageFormatterHelper.h"
+#import "WebClientHelper.h"
 
 /**
  Inner class. Check if this methodology is the most appropriate.
@@ -196,7 +198,7 @@ static GLPProfileLoader *instance = nil;
     return img;
 }
 
-#pragma mark - Accessors
+#pragma mark - Operations
 
 - (void)loadUsersDataWithLocalCallback:(void (^) (GLPUser *user))localCallback andRemoteCallback:(void (^) (BOOL success, BOOL updatedData, GLPUser *user))remoteCallback
 {
@@ -229,8 +231,9 @@ static GLPProfileLoader *instance = nil;
             return;
         }
         
+        updatedData = [self dataNeedsUpdateWithCurrentUserData:_userDetails andRemoteUserData:remoteUser];
         
-        updatedData = [_userDetails isUpdatedUserData:remoteUser];
+        
         
         DDLogDebug(@"GLPProfileLoader : user data from server %@.\n Current data: %@", remoteUser, _userDetails);
 
@@ -247,6 +250,74 @@ static GLPProfileLoader *instance = nil;
     }];
 }
 
+/**
+ Uploads and sets the new user's profile image.
+ 
+ @param user's new image.
+ 
+ */
+
+- (void)uploadAndSetNewUsersImage:(UIImage *)image withCallbackBlock:(void (^) (BOOL success, NSString *url))callback
+{
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:image scaledToHeight:320];
+    
+    _userImage = imageToUpload;
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    
+    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
+    
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+        
+        //[WebClientHelper hideStandardLoaderForView:self.view];
+        
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+
+            //Set image to user's profile.
+            [self setNewImage:imageToUpload withUrl:response withCallBack:callback];
+            
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+            
+        }
+    }];
+}
+
+/**
+ Communicates with the server, change the image, replace the new user's image with the old one
+ in cache and the url in database.
+ 
+ @param image the new user's image.
+ @param url the new user's image url.
+ 
+ */
+- (void)setNewImage:(UIImage*)image withUrl:(NSString *)url withCallBack:(void (^) (BOOL success, NSString *url))callback
+{
+    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            
+            //Update the local database with the new url.
+            [GLPUserDao updateUserWithRemotKey:_userDetails.remoteKey andProfileImage:url];
+            
+            //Update the cache with the new image. Ideally remove the old image.
+            [self replaceImageUrl:_userDetails.profileImageUrl WithImage:image];
+            
+            DDLogDebug(@"Image added to user");
+            
+            callback(success, url);
+        }
+    }];
+}
+
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey
 {
     UrlImage *currentUrlImage = [_contactsImages objectForKey:[NSNumber numberWithInt:remoteKey]];
@@ -254,6 +325,70 @@ static GLPProfileLoader *instance = nil;
     UIImage *currentImage = currentUrlImage.img;
     
     return currentImage;
+}
+
+#pragma mark - Modifiers
+
+- (void)replaceImageUrl:(NSString *)url WithImage:(UIImage *)image
+{
+    [[SDImageCache sharedImageCache] removeImageForKey:_userDetails.profileImageUrl];
+
+    [[SDImageCache sharedImageCache] storeImage:image forKey:url];
+    
+}
+
+- (BOOL)dataNeedsUpdateWithCurrentUserData:(GLPUser *)currentData andRemoteUserData:(GLPUser *)remoteData
+{
+    if(!currentData)
+    {
+        return YES;
+    }
+    
+    if(![currentData.name isEqualToString:remoteData.name])
+    {
+        return YES;
+    }
+    
+    if(![currentData.profileImageUrl isEqualToString:remoteData.profileImageUrl])
+    {
+        return YES;
+    }
+    
+    if(![currentData.course isEqualToString:remoteData.course])
+    {
+        return YES;
+    }
+    
+    if(![currentData.personalMessage isEqualToString:remoteData.personalMessage])
+    {
+        return YES;
+    }
+    
+    if(currentData.rsvpCount && remoteData.rsvpCount)
+    {
+        if(![currentData.rsvpCount isEqualToNumber:remoteData.rsvpCount])
+        {
+            return YES;
+        }
+    }
+    
+    if(currentData.postsCount && remoteData.postsCount)
+    {
+        if(![currentData.postsCount isEqualToNumber:remoteData.postsCount])
+        {
+            return YES;
+        }
+    }
+    
+    if(currentData.groupCount && remoteData.groupCount)
+    {
+        if(![currentData.groupCount isEqualToNumber:remoteData.groupCount])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 -(void)initialiseLoader

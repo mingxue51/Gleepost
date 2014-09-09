@@ -50,7 +50,7 @@
 #import "GLPShowLocationViewController.h"
 #import "ViewPostImageViewController.h"
 
-@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
+@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -64,9 +64,7 @@
 
 @property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
-@property (strong, nonatomic) FDTakeController *fdTakeController;
-
-@property (strong, nonatomic) UIImage *uploadedImage;
+@property (strong, nonatomic) UIImage *selectedImageToBeChanged;
 
 @property (assign, nonatomic) NSInteger unreadNotificationsCount;
 
@@ -318,10 +316,6 @@
     
     self.numberOfRows = 1;
     
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
-    
     //Used for viewing post image.
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
 
@@ -393,12 +387,6 @@
     
 }
 
--(void)updateViewWithNewImage:(NSString*)imageUrl
-{
-#warning we should call to reload user's data.
-//    [self loadUserDataFromServer];
-}
-
 -(void)notifyAppWithNewImage:(NSString *)imageUrl
 {
     NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:imageUrl , @"profile_image_url", nil];
@@ -453,16 +441,6 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-#pragma mark - ProfileSettingsTableViewCellDelegate
-
--(void)logout:(id)sender
-{
-    //Pop up a bottom menu.
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
-    
-    [actionSheet showInView:[self.view window]];
-    
-}
 
 -(void)showSettings:(id)sender
 {
@@ -515,61 +493,83 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0)
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if(actionSheet.tag == 1)
     {
-        [GLPLoginManager logout];
-        [self.navigationController popViewControllerAnimated:YES];
-        [self performSegueWithIdentifier:@"start" sender:self];
+        [self clickedButtonToFirstActionSheetWithTitle:selectedButtonTitle];
+    }
+    else if (actionSheet.tag == 2)
+    {
+        [self clickedButtonToSecondActionSheetWithTitle:selectedButtonTitle];
+    }
+    
+}
+
+- (void)clickedButtonToFirstActionSheetWithTitle:(NSString *)buttonTitle
+{
+    if([buttonTitle isEqualToString:@"View image"])
+    {
+        //Show image.
+        //[self showImage];
+    }
+    else if([buttonTitle isEqualToString:@"Change image"] || [buttonTitle isEqualToString:@"Add image"])
+    {
+        //Change image.
+        [self snapOrPickAnImageFromGallery];
     }
 }
 
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+- (void)clickedButtonToSecondActionSheetWithTitle:(NSString *)buttonTitle
 {
-    for (UIView *subview in actionSheet.subviews)
+    if([buttonTitle isEqualToString:@"Pick an image"])
     {
-        if ([subview isKindOfClass:[UIButton class]])
-        {
-            UIButton *btn = (UIButton*)subview;
-            
-            if([btn.titleLabel.text isEqualToString:@"Cancel"])
-            {
-                //btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
-                btn.titleLabel.textColor = [[GLPThemeManager sharedInstance]colorForTabBar];
-            }
-            else
-            {
-                btn.titleLabel.textColor = [UIColor lightGrayColor];
-            }
-        }
+        [self performSegueWithIdentifier:@"show image selector" sender:self];
     }
 }
 
-#pragma mark - FDTakeController delegate
+//- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+//{
+//    for (UIView *subview in actionSheet.subviews)
+//    {
+//        if ([subview isKindOfClass:[UIButton class]])
+//        {
+//            UIButton *btn = (UIButton*)subview;
+//            
+//            if([btn.titleLabel.text isEqualToString:@"Cancel"])
+//            {
+//                //btn.titleLabel.textColor = [UIColor colorWithRed:75.0/255.0 green:204.0/255.0 blue:210.0/255.0 alpha:0.8];
+//                btn.titleLabel.textColor = [[GLPThemeManager sharedInstance]colorForTabBar];
+//            }
+//            else
+//            {
+//                btn.titleLabel.textColor = [UIColor lightGrayColor];
+//            }
+//        }
+//    }
+//}
 
--(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
-{
-}
 
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
 {
-    self.uploadedImage = photo;
+    self.selectedImageToBeChanged = image;
     
     //Set directly the new user's profile image.
-    _user.profileImage = photo;
+    _user.profileImage = image;
     
     [self refreshFirstCell];
     
     
-//    [self.profileView.profileImage setImage:photo];
-//    [self.profileView updateImage:photo];
+    //    [self.profileView.profileImage setImage:photo];
+    //    [self.profileView updateImage:photo];
     
     //Communicate with server to change the image.
-    [self uploadImageAndSetUserImageWithUserRemoteKey];
+    [self uploadAndSetUsersImage];
     
     [self loadPosts];
-    
 }
-
 
 #pragma mark - RemovePostCellDelegate
 
@@ -598,46 +598,21 @@
 
 #pragma mark - Client
 
--(void)uploadImageAndSetUserImageWithUserRemoteKey
+-(void)uploadAndSetUsersImage
 {
-    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:self.uploadedImage scaledToHeight:320];
+    _user.profileImage = self.selectedImageToBeChanged;
     
-    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    [self refreshFirstCell];
     
-    
-    //[WebClientHelper showStandardLoaderWithTitle:@"Uploading image" forView:self.view];
-    
-    
-    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
-        
-        //[WebClientHelper hideStandardLoaderForView:self.view];
-        
-        
+    [[GLPProfileLoader sharedInstance] uploadAndSetNewUsersImage:self.selectedImageToBeChanged withCallbackBlock:^(BOOL success, NSString *url) {
+       
         if(success)
         {
-            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            [self notifyAppWithNewImage:url];
             
-            
-            //Change profile image in Session Manager.
-            //TODO: REFACTOR / FACTORIZE THIS
-            GLPUser *user = [SessionManager sharedInstance].user;
-            user.profileImageUrl = response;
-            [GLPUserDao updateUserWithRemotKey:user.remoteKey andProfileImage:response];
-            
-            //Set image to user's profile.
-            [self setImageToUserProfile:response];
-            
-            //            [[SessionManager sharedInstance]user].profileImageUrl = response;
-            
-            //TODO: This is wrong
-            //[[SessionManager sharedInstance] updateUserWithUrl:response];
-            
+            [self fetchUserData];
         }
-        else
-        {
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
-            
-        }
+        
     }];
 }
 
@@ -698,25 +673,25 @@
     }];
 }
 
--(void)setImageToUserProfile:(NSString*)url
-{
-    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            NSLog(@"NEW PROFILE IMAGE UPLOADED");
-            
-            [self updateViewWithNewImage:url];
-            
-            [self notifyAppWithNewImage:url];
-
-        }
-        else
-        {
-            NSLog(@"ERROR: Not able to register image for profile.");
-        }
-    }];
-}
+//-(void)setImageToUserProfile:(NSString*)url
+//{
+//    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
+//        
+//        if(success)
+//        {
+//            NSLog(@"NEW PROFILE IMAGE UPLOADED");
+//            
+//            [self updateViewWithNewImage:url];
+//            
+//            [self notifyAppWithNewImage:url];
+//
+//        }
+//        else
+//        {
+//            NSLog(@"ERROR: Not able to register image for profile.");
+//        }
+//    }];
+//}
 
 #pragma mark - Internal notifications
 
@@ -931,13 +906,15 @@
 /**
  Load user's details from server or from profile loader.
  */
--(void)fetchUserData
+- (void)fetchUserData
 {
     [[GLPProfileLoader sharedInstance] loadUsersDataWithLocalCallback:^(GLPUser *user) {
         
         if(user)
         {
             _user = user;
+            
+            DDLogDebug(@"Data needs to be updated locally: %@", user);
             [self refreshCellViewWithIndex:0];
             [self fetchUsersPostsIfNeeded];
         }
@@ -947,7 +924,7 @@
        
         if(success && updatedData)
         {
-            DDLogDebug(@"Data needs to be updated: %@", user);
+            DDLogDebug(@"Data needs to be updated remotely: %@", user);
             _user = user;
             [self refreshCellViewWithIndex:0];
             [self fetchUsersPostsIfNeeded];
@@ -1427,9 +1404,35 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Selectors
+
 - (void)changeProfileImage:(id)sender
 {
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    UIActionSheet *actionSheet = nil;
+
+    if(_user.profileImage)
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Image Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Image Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Add image", nil];
+    }
+    
+    actionSheet.tag = 1;
+
+    [actionSheet showInView:[self.view window]];
+}
+
+- (void)snapOrPickAnImageFromGallery
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Snap or Pick an image" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Snap image", @"Pick an image", nil];
+    
+    //We are adding tag here in order to distinquish the two different action sheets
+    //on the same view (in the delegate methods).
+    actionSheet.tag = 2;
+    
+    [actionSheet showInView:[self.view window]];
 }
 
 - (void)badgeTouched
@@ -1486,6 +1489,12 @@
         GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
         
         showLocationVC.location = _selectedLocation;
+    }
+    else if([segue.identifier isEqualToString:@"show image selector"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        
+        [imgSelectorVC setDelegate:self];
     }
 }
 

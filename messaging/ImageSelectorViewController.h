@@ -11,6 +11,7 @@
 
 @protocol ImageSelectorViewControllerDelegate <NSObject>
 
+@required
 - (void)takeImage:(UIImage *)image;
 
 @end

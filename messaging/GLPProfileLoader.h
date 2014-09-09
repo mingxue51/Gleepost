@@ -16,6 +16,7 @@
 
 -(void)loadUserData;
 - (void)loadUsersDataWithLocalCallback:(void (^) (GLPUser *user))localCallback andRemoteCallback:(void (^) (BOOL success, BOOL updatedData, GLPUser *user))remoteCallback;
+- (void)uploadAndSetNewUsersImage:(UIImage *)image withCallbackBlock:(void (^) (BOOL success, NSString *url))callback;
 -(void)loadContactsImages:(NSArray*)contacts;
 -(void)refreshContactsImages:(NSArray*)contacts;
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey;

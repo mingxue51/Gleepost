@@ -16,6 +16,7 @@
 + (GLPUser *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db;
 + (void)save:(GLPUser *)entity inDb:(FMDatabase *)db;
 + (int)saveIfNotExist:(GLPUser*)entity db:(FMDatabase *)db;
++ (void)updateLoggedInUsersName:(NSString *)name andSurname:(NSString *)surname;
 +(void)update:(GLPUser*)entity;
 +(void)updateUserWithRemotKey:(int)remoteKey andProfileImage:(NSString*)imageUrl;
 @end

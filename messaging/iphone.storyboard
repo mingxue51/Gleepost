@@ -226,11 +226,11 @@
             <objects>
                 <viewController storyboardIdentifier="ViewPostViewController" id="Wkk-th-enz" customClass="ViewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j8K-jL-ODz">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="49" sectionHeaderHeight="22" sectionFooterHeight="22" id="vla-0s-5vy" customClass="ViewPostTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="462"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="413"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="separatorColor" red="0.0" green="0.77772241710000001" blue="0.1647396246" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -241,7 +241,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" id="tQq-qG-efF">
-                                <rect key="frame" x="0.0" y="454" width="320" height="50"/>
+                                <rect key="frame" x="0.0" y="405" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="bCz-dv-lej">
@@ -723,11 +723,11 @@
             <objects>
                 <viewController storyboardIdentifier="GLPSettingsViewController" id="u82-wb-WwJ" customClass="GLPSettingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cyT-hu-XyE">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lS2-0g-N7V">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="487"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="438"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
@@ -738,7 +738,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CbF-XM-MAH">
-                                <rect key="frame" x="10" y="502" width="300" height="50"/>
+                                <rect key="frame" x="10" y="455" width="300" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="LOGOUT" backgroundImage="logout_button.png">
@@ -1028,7 +1028,7 @@
             <objects>
                 <viewController id="ehh-13-xca" customClass="ChangePasswordViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2UA-ko-R9F">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Existing password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="V4I-Og-G0a">
@@ -1065,7 +1065,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QOM-R0-AGN">
-                                <rect key="frame" x="10" y="274" width="300" height="50"/>
+                                <rect key="frame" x="10" y="225" width="300" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="19"/>
                                 <state key="normal" title="CHANGE PASSWORD" backgroundImage="change_pass_name.png">
@@ -1099,7 +1099,7 @@
             <objects>
                 <viewController id="gs3-dw-jL3" customClass="GLPInviteUsersViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Tuz-Fp-a5O">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Acd-B5-Lcp">
@@ -1108,7 +1108,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="rD7-CC-WkH">
-                                <rect key="frame" x="0.0" y="158" width="320" height="175"/>
+                                <rect key="frame" x="0.0" y="45" width="320" height="175"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1128,12 +1128,12 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" id="MB8-dq-BRc">
-                                <rect key="frame" x="0.0" y="113" width="320" height="45"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XgD-hF-gt9">
-                                <rect key="frame" x="20" y="343" width="280" height="49"/>
+                                <rect key="frame" x="20" y="230" width="280" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" title="Add selected" backgroundImage="add_button_background.png">
@@ -1311,11 +1311,11 @@
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="SoY-OL-TmF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
@@ -1646,12 +1646,12 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vBe-VX-oaK">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vBe-VX-oaK" id="Hze-rW-T5v">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2165,11 +2165,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="gby-Gq-HqZ" customClass="GLPShowLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -3436,7 +3436,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -3466,6 +3466,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <segue destination="K1l-cB-NEz" kind="push" identifier="view group" id="7l2-k5-pHQ"/>
                         <segue destination="u82-wb-WwJ" kind="push" id="4pS-yP-bHR"/>
                         <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="aph-g3-dhm"/>
+                        <segue destination="YKI-NX-LaO" kind="push" identifier="show image selector" id="bc7-so-Tnw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJo-nJ-HgL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3540,7 +3541,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -3883,11 +3884,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController storyboardIdentifier="GroupViewController" id="K1l-cB-NEz" customClass="GroupViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3on-nV-tB3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LQa-oG-F1O">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -3972,11 +3973,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="9bg-aO-bMl" customClass="MembersViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4wS-ou-SXr">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="twu-HW-Ewl">
-                                <rect key="frame" x="0.0" y="70" width="320" height="434"/>
+                                <rect key="frame" x="0.0" y="70" width="320" height="385"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
@@ -3986,7 +3987,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" id="LXp-mL-ttm">
-                                <rect key="frame" x="0.0" y="49" width="320" height="70"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_members_bg.png" id="Nae-II-HgE">
@@ -4619,7 +4620,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="39" height="31"/>
         <image name="share_image.png" width="20" height="17"/>
-        <image name="sign_in_b" width="31" height="31"/>
+        <image name="sign_in_b" width="400" height="56"/>
         <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="sing_in_bg.png" width="520" height="100"/>
@@ -4639,19 +4640,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="YIa-ii-tw7"/>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="7l2-k5-pHQ"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="woK-8Q-gjw"/>
-        <segue reference="wR3-TA-URh"/>
-        <segue reference="hfC-fm-BOR"/>
-        <segue reference="voh-a1-0cl"/>
-        <segue reference="Ze9-pm-FNm"/>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="JXK-Z8-Y8u"/>
         <segue reference="fL3-CC-Jbz"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="UCY-3t-8FQ"/>
+        <segue reference="GTC-XV-iI1"/>
+        <segue reference="2ju-Ui-QdM"/>
         <segue reference="XMX-SH-Gag"/>
+        <segue reference="7l2-k5-pHQ"/>
+        <segue reference="aph-g3-dhm"/>
+        <segue reference="C4C-f3-cdX"/>
+        <segue reference="bc7-so-Tnw"/>
+        <segue reference="Txr-8X-v5l"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="YIa-ii-tw7"/>
+        <segue reference="hfC-fm-BOR"/>
+        <segue reference="Nh6-Tl-qmR"/>
     </inferredMetricsTieBreakers>
 </document>

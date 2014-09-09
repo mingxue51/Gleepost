@@ -62,55 +62,6 @@
     return copy;
 }
 
-- (BOOL)isUpdatedUserData:(GLPUser *)userData
-{
-    if(![_name isEqualToString:userData.name])
-    {
-        return YES;
-    }
-    
-    if(![_profileImageUrl isEqualToString:userData.profileImageUrl])
-    {
-        return YES;
-    }
-    
-    if(![_course isEqualToString:userData.course])
-    {
-        return YES;
-    }
-    
-    if(![_personalMessage isEqualToString:userData.personalMessage])
-    {
-        return YES;
-    }
-    
-    if(_rsvpCount && userData.rsvpCount)
-    {
-        if(![_rsvpCount isEqualToNumber:userData.rsvpCount])
-        {
-            return YES;
-        }
-    }
-    
-    if(_postsCount && userData.postsCount)
-    {
-        if(![_postsCount isEqualToNumber:userData.postsCount])
-        {
-            return YES;
-        }
-    }
-    
-    if(_groupCount && userData.groupCount)
-    {
-        if(![_groupCount isEqualToNumber:userData.groupCount])
-        {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-
 -(NSString*)description
 {
     return [NSString stringWithFormat:@"Remote Key: %d, Username: %@, Image: %@, Message: %@, Rsvps: %@, Groups: %@, Posts: %@",self.remoteKey, self.name, self.profileImageUrl, self.personalMessage, _rsvpCount, _groupCount, _postsCount];
