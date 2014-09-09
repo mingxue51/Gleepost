@@ -276,7 +276,7 @@ static GLPProfileLoader *instance = nil;
         
         if(success)
         {
-            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            DDLogInfo(@"Image uploaded with response: %@",response);
 
             //Set image to user's profile.
             [self setNewImage:imageToUpload withUrl:response withCallBack:callback];
@@ -312,8 +312,6 @@ static GLPProfileLoader *instance = nil;
             
             //Update the cache with the new image. Ideally remove the old image.
             [self replaceImageUrl:_userDetails.profileImageUrl WithImage:image];
-            
-            DDLogDebug(@"Image added to user");
             
             callback(success, url);
         }

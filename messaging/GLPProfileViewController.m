@@ -580,7 +580,6 @@
     //Communicate with server to change the image.
     [self uploadAndSetUsersImage];
     
-    [self loadPosts];
 }
 
 #pragma mark - RemovePostCellDelegate
@@ -623,6 +622,9 @@
             [self notifyAppWithNewImage:url];
             
             [self fetchUserData];
+            
+            [self loadPosts];
+
         }
         
     }];

@@ -86,7 +86,12 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_delegate takeImage:[_imageLoader realImageAtIndex:indexPath.row]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [_delegate takeImage:[_imageLoader realImageAtIndex:indexPath.row]];
+        
+    });
+    
     
     [self.navigationController popViewControllerAnimated:YES];
 }
