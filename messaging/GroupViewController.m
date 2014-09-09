@@ -14,7 +14,6 @@
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
 #import "ViewPostViewController.h"
-#import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactUserCell.h"
 #import "GLPPrivateProfileViewController.h"
@@ -1462,9 +1461,9 @@ const float TOP_OFF_SET = -64.0;
     }
     else if ([segue.identifier isEqualToString:@"view profile"])
     {
-        GLPProfileViewController *profileViewController = segue.destinationViewController;
+//        GLPProfileViewController *profileViewController = segue.destinationViewController;
         
-        profileViewController.selectedUserId = self.selectedUserId;
+//        profileViewController.selectedUserId = self.selectedUserId;
     }
     else if ([segue.identifier isEqualToString:@"view members"])
     {

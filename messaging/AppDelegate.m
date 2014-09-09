@@ -51,8 +51,6 @@ static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
 static NSString * const kCustomURLViewPost  = @"viewpost";
 
-static int pnTestVariable = 0;
-
 @implementation AppDelegate
 
 @synthesize tabBarController=_tabBarController;
@@ -202,11 +200,11 @@ static int pnTestVariable = 0;
 {
     DDLogInfo(@"Receive remote notification, current app state: %@", [GLPApplicationHelper applicationStateToString:application.applicationState]);
     
-    pnTestVariable++;
-    
-
-    
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPNCount" object:self userInfo:@{@"pnCount": @(pnTestVariable)}];
+//    pnTestVariable++;
+//    
+//
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPNCount" object:self userInfo:@{@"pnCount": @(pnTestVariable)}];
     
     
     if(application.applicationState == UIApplicationStateInactive) {

@@ -31,7 +31,6 @@
 #import "GLPProfileLoader.h"
 #import "GLPUserDao.h"
 #import "GLPInvitationManager.h"
-#import "ViewPostImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "GLPSettingsViewController.h"
 #import "UIImage+StackBlur.h"
@@ -49,12 +48,11 @@
 #import "UIRefreshControl+CustomLoader.h"
 #import "GLPVideoLoaderManager.h"
 #import "GLPShowLocationViewController.h"
+#import "ViewPostImageViewController.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
-
-@property (strong, nonatomic) UIImage *userImage;
 
 @property (assign, nonatomic) int numberOfRows;
 
@@ -86,8 +84,8 @@
 
 @property (assign, nonatomic) BOOL postUploaded;
 
-// new
 @property (strong, nonatomic) NSMutableArray *notifications;
+
 @property (assign, nonatomic) BOOL tabButtonEnabled;
 
 @property (strong, nonatomic) GLPGroup *groupToNavigate;
@@ -101,28 +99,18 @@
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
+@property (strong, nonatomic) GLPPost *selectedPost;
+
+@property (assign, nonatomic) NSInteger selectedUserId;
+
 @end
 
 
 @implementation GLPProfileViewController
 
-@synthesize notifications=_notifications;
-@synthesize tabButtonEnabled=_tabButtonEnabled;
-@synthesize unreadNotificationsCount=_unreadNotificationsCount;
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    if (self.navigationController.viewControllers.count > 1) {
-//        self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-    }
-
-//    [self setBottomView];
-
-    _tabButtonEnabled = YES;
-    _isPostFromNotifications = NO;
     
     [self configureTableView];
     
@@ -130,16 +118,12 @@
     
     [self initialiseObjects];
     
-//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
-
     [self addNavigationButtons];
 
     [self configTabbar];
     
     [self formatTableView];
-    
-    [self loadPosts];
-    
+        
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -171,45 +155,22 @@
         _selectedTab = kButtonRight;
     }
 
-    
     [self setUpNotifications];
     
-//    [self setCustomBackgroundToTableView];
-    
     [self loadInternalNotifications];
-    
     
     if(_selectedTab == kButtonRight)
     {
         [self notificationsTabClick];
     }
     
-    if(self.posts.count == 0 || _postUploaded)
-    {
-        [self loadPosts];
-    }
-    
-    
-    [AppearanceHelper makeBackDefaultButton];
-    
-    //Load user's details from server.
     [self fetchUserData];
-
-//    [self.tableView reloadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
-    
-    
-    
-
-//    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
-//    {
-//        [self.navigationController setNavigationBarHidden:YES animated:YES];
-//    }
     
     [super viewWillDisappear:animated];
 }
@@ -231,9 +192,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPNCount" object:nil];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -272,15 +230,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikedPost:) name:@"GLPLikedPostUdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postByUserInCampusWall:) name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deletePost:) name:GLPNOTIFICATION_POST_DELETED object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePushNotification:) name:@"GLPPNCount" object:nil];
 }
-
-//-(void)setUpNoMoreMessage
-//{
-//    _nomatchesView = [TableViewHelper generateNoMoreLabelWithText:@"No more notifications" withFrame:CGRectMake(0.0f, 320.0f, 320.0f, 50.0f) andTableView:self.tableView];
-//    [self.tableView insertSubview:_nomatchesView belowSubview:self.tableView];
-//}
 
 #pragma mark - Notifications
 
@@ -296,41 +246,7 @@
 //    [self removeTableViewPostWithIndex:index];
 }
 
-- (void)updatePushNotification:(NSNotification *)notification
-{
-    NSDictionary *d = notification.userInfo;
-    
-    _currentNumberOfPN =  [d[@"pnCount"] integerValue];
-    
-    [self refreshCellViewWithIndex:0];
-}
-
 #pragma mark - Configuration
-
-
-//-(void)setBottomView
-//{
-//    CGRect frame = self.tableView.bounds;
-//    frame.origin.y = frame.size.height;
-//    
-//    CGRect viewFrame = self.view.bounds;
-//    viewFrame.origin.y = viewFrame.size.height;
-//    
-//    UIImageView* grayView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 300.f, 320.0f, 250.0f)];
-//    grayView.tag = 100;
-//    grayView.backgroundColor = [UIColor whiteColor];
-//    //    [self.tableView addSubview:grayView];
-//    //    [grayView sendSubviewToBack:self.tableView];
-//    
-//    self.tableView.tableFooterView = grayView;
-//    //    [self.view addSubview:grayView];
-//}
-//
-//-(void)clearBottomView
-//{
-//    
-//    self.tableView.tableFooterView = nil;
-//}
 
 - (void)configureTableView
 {
@@ -347,8 +263,7 @@
 }
 
 -(void)addNavigationButtons
-{    
-    
+{
     [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
 }
 
@@ -368,10 +283,6 @@
         //Use the default method of formatting only if this VC is the first appeared.
         [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     }
-    
-
-
-
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -403,10 +314,6 @@
     
     self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
     
-    
-    
-    //self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
     _selectedTab = kButtonLeft;
     
     self.posts = [[NSMutableArray alloc] init];
@@ -433,6 +340,10 @@
     
     _currentNumberOfPN = 0;
     
+    _tabButtonEnabled = YES;
+    
+    _isPostFromNotifications = NO;
+    
     _selectedLocation = nil;
     
 }
@@ -446,12 +357,7 @@
 {
     //Register nib files in table view.
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"ProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileTopViewCell"];
-
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
     
     //Register posts.
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
@@ -459,8 +365,6 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewSettingsTableViewCell" bundle:nil] forCellReuseIdentifier:@"SettingsCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
 }
@@ -472,19 +376,6 @@
 
 
 #pragma mark - UI methods
-
-//-(void)updateNotificationsBubble
-//{
-//    if(self.unreadNotificationsCount > 0)
-//    {
-//        [self.notificationView updateNotificationsWithNumber:self.unreadNotificationsCount];
-//    }
-//    else
-//    {
-//        [self.notificationView hideNotifications];
-//    }
-//}
-//
 
 -(void)updateRealImage:(NSNotification*)notification
 {
@@ -506,7 +397,8 @@
 
 -(void)updateViewWithNewImage:(NSString*)imageUrl
 {
-    [self loadUserData];
+#warning we should call to reload user's data.
+//    [self loadUserDataFromServer];
 }
 
 -(void)notifyAppWithNewImage:(NSString *)imageUrl
@@ -665,7 +557,7 @@
     self.uploadedImage = photo;
     
     //Set directly the new user's profile image.
-    self.userImage = photo;
+    _user.profileImage = photo;
     
     [self refreshFirstCell];
     
@@ -753,10 +645,11 @@
 
 - (void)loadPosts
 {
-    
-#warning here we take only the new posts!!!!
+    [self startLoading];
     
     [GLPPostManager loadRemotePostsForUserRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *posts) {
+        
+        [self stopLoading];
         
         if(success)
         {
@@ -829,28 +722,6 @@
     }];
 }
 
--(void)loadUserData
-{
-    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-        
-        if(success)
-        {
-            self.user = user;
-            
-            [self refreshFirstCell];
-            
-//            [self loadPosts];
-            
-            //[self.tableView reloadData];
-        }
-        else
-        {
-//            [WebClientHelper showStandardError];
-        }
-    }];
-}
-
-
 #pragma mark - Internal notifications
 
 - (void)loadInternalNotifications
@@ -904,9 +775,11 @@
 
 - (void)refreshNotifications
 {
+    [self startLoading];
     
     [GLPNotificationManager loadNotificationsWithLocalCallback:^(BOOL success, NSArray *notifications) {
         
+        [self stopLoading];
 //        _notifications = notifications.mutableCopy;
         
 
@@ -1060,30 +933,37 @@
 
 
 /**
- Fetch user data from loader.
+ Load user's details from server or from profile loader.
  */
 -(void)fetchUserData
 {
-    NSArray *usersData = [[GLPProfileLoader sharedInstance] userData];
-    
-    DDLogDebug(@"User's data: %@", usersData);
-    
-    if(usersData)
+    [[GLPProfileLoader sharedInstance] loadUsersDataWithLocalCallback:^(GLPUser *user) {
+        
+        if(user)
+        {
+            _user = user;
+            [self refreshCellViewWithIndex:0];
+            [self fetchUsersPostsIfNeeded];
+        }
+        
+        
+    } andRemoteCallback:^(BOOL success, BOOL updatedData, GLPUser *user) {
+       
+        if(success && updatedData)
+        {
+            _user = user;
+            [self refreshCellViewWithIndex:0];
+            [self fetchUsersPostsIfNeeded];
+        }
+    }];
+}
+
+- (void)fetchUsersPostsIfNeeded
+{
+    if(_posts.count == 0 || _postUploaded)
     {
-        self.user = [usersData objectAtIndex:0];
-        self.userImage = [usersData objectAtIndex:1];
-        [self refreshFirstCell];
         [self loadPosts];
-        
-        DDLogDebug(@"User's data loaded.");
     }
-    else
-    {
-        [self loadUserData];
-        
-        DDLogDebug(@"User's data not loaded.");
-    }
-    
 }
 
 #pragma mark - Table view data source
@@ -1107,8 +987,6 @@
         {
             [_emptyMyPostsMessage hideEmptyMessageView];
         }
-        
-        DDLogDebug(@"Number of rows: %d, Number of posts: %ld", _numberOfRows, (unsigned long)_posts.count);
         
         return self.numberOfRows + self.posts.count;
     }
@@ -1139,20 +1017,15 @@
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
-//    static NSString *CellIdentifierProfile = @"ProfileCell";
     static NSString *CellIdentifierProfile = @"ProfileTopViewCell";
     
-//    static NSString *CellIdentifierTwoButtons = @"TwoButtonsCell";
     static NSString *CellIdentifierNotification = @"GLPNotCell";
     
     
     GLPPostCell *postViewCell;
-    
-//    ProfileTwoButtonsTableViewCell *buttonsView;
-//    ProfileTableViewCell *profileView;
+
     ProfileTopViewCell *profileView;
     
-//    ProfileSettingsTableViewCell *profileSettingsView;
     NotificationCell *notificationCell;
     
     if(indexPath.row == 0)
@@ -1168,18 +1041,6 @@
         {
             _fromPushNotification = NO;
         }
-
-//        [profileView updateImageWithUrl:self.profileImageUrl];
-//        if(_userImage)
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.user withImage:self.userImage];
-//        }
-//        else
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.user];
-//        }
-        
-        
         
         [profileView setUserData:self.user];
         
@@ -1199,27 +1060,6 @@
         return profileView;
         
     }
-//    else if (indexPath.row == 1)
-//    {
-//        buttonsView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTwoButtons forIndexPath:indexPath];
-//        buttonsView.selectionStyle = UITableViewCellSelectionStyleNone;
-//        
-//        
-//        if(_unreadNotificationsCount > 0) {
-//            [buttonsView showNotificationBubbleWithNotificationCount:_unreadNotificationsCount];
-//        } else {
-//            [buttonsView hideNotificationBubble];
-//        }
-//        
-//        [buttonsView setDelegate:self fromPushNotification:_fromPushNotification];
-//        
-//        if(_fromPushNotification)
-//        {
-//            _fromPushNotification = NO;
-//        }
-//
-//        return buttonsView;
-//    }
     else if (indexPath.row >= 1)
     {
         if(_selectedTab == kButtonRight)
@@ -1307,10 +1147,9 @@
         return;
     }
     
-    DDLogDebug(@"ROW: %d", indexPath.row);
+    DDLogDebug(@"didEndDisplayingCell row: %d", indexPath.row);
     
     GLPPost *post = _posts[indexPath.row - 1];
-
     
     GLPPostCell *postCell = (GLPPostCell *)cell;
     
@@ -1320,7 +1159,6 @@
     }
     
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1390,10 +1228,6 @@
     {
         return PROFILE_TOP_VIEW_HEIGHT;
     }
-//    else if(indexPath.row == 1)
-//    {
-//        return TWO_BUTTONS_CELL_HEIGHT;
-//    }
     else if(indexPath.row >= 1)
     {
         if(_selectedTab == kButtonRight)
@@ -1429,7 +1263,6 @@
 }
 
 #pragma mark - View image delegate
-
 
 -(void)viewPostImage:(UIImage*)postImage
 {
@@ -1507,8 +1340,6 @@
 
 -(void)refreshFirstCell
 {
-//    [self.tableView reloadData];
-    
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
@@ -1582,25 +1413,6 @@
     return visiblePosts;
 }
 
-
-#pragma  mark - Button Navigation Delegate
-
-//-(void)viewSectionWithId:(GLPSelectedTab) selectedTab
-//{
-//    
-//    if(!_tabButtonEnabled) {
-//        return;
-//    }
-//    
-//    self.selectedTabStatus = selectedTab;
-//    
-//    if(selectedTab == kGLPNotifications) {
-//        [self notificationsTabClick];
-//    }
-//    
-//    [self.tableView reloadData];
-//}
-
 #pragma mark - ProfileTopViewCellDelegate
 
 - (void)segmentSwitchedWithButtonType:(ButtonType)buttonType
@@ -1628,7 +1440,6 @@
     [self performSegueWithIdentifier:@"view badges" sender:self];
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {    
     
@@ -1652,19 +1463,7 @@
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
-        //        NotificationsViewController *nv = segue.destinationViewController;
-        //ProfileViewController *profileViewController = segue.destinationViewController;
-        
         GLPPrivateProfileViewController *profileViewController = segue.destinationViewController;
-        
-//        GLPUser *incomingUser = [[GLPUser alloc] init];
-//        
-//        incomingUser.remoteKey = self.selectedUserId;
-//        
-//        if(self.selectedUserId == -1)
-//        {
-//            incomingUser = nil;
-//        }
         
         profileViewController.selectedUserId = self.selectedUserId;
     }
@@ -1697,8 +1496,6 @@
 
 - (void)reloadContent
 {
-    [self startLoading];
-    
     if(_selectedTab == kButtonLeft)
     {
         DDLogDebug(@"Reload posts");
@@ -1709,8 +1506,6 @@
         DDLogDebug(@"Reload notifications");
         [self refreshNotifications];
     }
-    
-    [self stopLoading];
 }
 
 #pragma mark - Actions

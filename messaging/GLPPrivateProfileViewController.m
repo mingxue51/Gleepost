@@ -463,7 +463,7 @@
 //        
 //    }];
     
-    [[WebClient sharedInstance] userPostsWithRemoteKey:self.profileUser.remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
+    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
         
         if(success)
         {

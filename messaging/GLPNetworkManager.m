@@ -54,6 +54,7 @@ static GLPNetworkManager *instance = nil;
     //That it seems that is not working anymore.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     
+    [self loadAppsData];
     
     return self;
 }
@@ -123,7 +124,7 @@ static GLPNetworkManager *instance = nil;
     [[GLPLiveGroupManager sharedInstance] loadGroups];
     
     // load user's data.
-    [[GLPProfileLoader sharedInstance] loadUserData];
+ //   [[GLPProfileLoader sharedInstance] loadUserData];
 
     
     // get notifications
@@ -166,6 +167,17 @@ static GLPNetworkManager *instance = nil;
 - (void)webSocketDidFailOrClose
 {
     [self stopNetworkOperations];
+}
+
+
+/**
+ This method should be called even the app don't know if there is network
+ or not. So it's called anyway.
+ */
+- (void)loadAppsData
+{
+    // load user's data even if there is no network.
+    [[GLPProfileLoader sharedInstance] loadUserData];
 }
 
 

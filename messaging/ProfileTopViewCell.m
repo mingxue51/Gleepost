@@ -24,46 +24,31 @@
 
 const float PROFILE_TOP_VIEW_HEIGHT = 238;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        
-    }
-    
-    return self;
-}
 
 - (void)setUserData:(GLPUser *)userData
 {
     _userData = userData;
     
-    [super setImageWithUrl:userData.profileImageUrl];
+    if(_userData.profileImage)
+    {
+        [super setDownloadedImage:_userData.profileImage];
+    }
+    else
+    {
+        [super setImageWithUrl:userData.profileImageUrl];
+    }
     
     [super setTitleWithString:userData.name];
     
-    [super setSubtitleWithString:userData.networkName];
+    [super setSubtitleWithString:userData.fullName];
     
     [super setSmallSubtitleWithString:userData.personalMessage];
     
-    //TODO: Complete the following with real data.
+    [super setNumberOfPosts:[userData.postsCount integerValue]];
     
-    [super setNumberOfPosts:20];
+    [super setNumberOfMemberships:[userData.groupCount integerValue]];
     
-    [super setNumberOfMemberships:4];
-    
-//    [super setNumberOfRsvps:50];
+    [super setNumberOfRsvps:[userData.rsvpCount integerValue]];
 }
 
 - (void)awakeFromNib

@@ -8,8 +8,11 @@
 - (id)init
 {
     self = [super init];
-    if(!self) {
-        return nil;
+    if(self)
+    {
+        _rsvpCount = [[NSNumber alloc] init];
+        _groupCount = [[NSNumber alloc] init];
+        _postsCount = [[NSNumber alloc] init];
     }
     
     return self;
@@ -57,6 +60,31 @@
     }
     
     return copy;
+}
+
+- (BOOL)isUpdatedUserData:(GLPUser *)userData
+{
+    if(![userData.name isEqualToString:userData.name])
+    {
+        return YES;
+    }
+    
+    if(![userData.profileImageUrl isEqualToString:userData.profileImageUrl])
+    {
+        return YES;
+    }
+    
+    if(![userData.course isEqualToString:userData.course])
+    {
+        return YES;
+    }
+    
+    if(![userData.personalMessage isEqualToString:userData.personalMessage])
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 -(NSString*)description

@@ -71,27 +71,13 @@
     {
         //User doesn't exist, add user.
         
-        [db executeUpdateWithFormat:@"insert into users(remoteKey, name, image_url, course, network_id, network_name, tagline) values(%d, %@, %@, %@, %d, %@, %@)", entity.remoteKey, entity.name, entity.profileImageUrl, entity.course, entity.networkId, entity.networkName, entity.personalMessage];
+        [db executeUpdateWithFormat:@"insert into users(remoteKey, name, full_name, image_url, course, network_id, network_name, tagline, rsvp_count, group_count, post_count) values(%d, %@, %@, %@, %@, %d, %@, %@, %d, %d, %d)", entity.remoteKey, entity.name, entity.fullName, entity.profileImageUrl, entity.course, entity.networkId, entity.networkName, entity.personalMessage, [entity.rsvpCount intValue], [entity.groupCount intValue], [entity.postsCount intValue]];
 
         entity.key = [db lastInsertRowId];
         
         return entity.key;
 
     }
-    else
-    {
-
-    }
-    
-    //FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from users where key=%d limit 1", entity.key];
-
-    
-    //GLPUser * usr = [GLPUserDao findByRemoteKey:entity.remoteKey];
-//    if([resultSet next])
-//    {
-//        NSLog(@"Result set: %@",resultSet);
-//    }
-    
     
     return usr.key;
 }
@@ -100,7 +86,7 @@
 
 + (void)save:(GLPUser *)entity inDb:(FMDatabase *)db
 {
-    [db executeUpdateWithFormat:@"insert into users(remoteKey, name, image_url, course, network_id, network_name, tagline, email) values(%d, %@, %@, %@, %d, %@, %@, %@)", entity.remoteKey, entity.name, entity.profileImageUrl, entity.course, entity.networkId, entity.networkName, entity.personalMessage, entity.email];
+    [db executeUpdateWithFormat:@"insert into users(remoteKey, name, full_name, image_url, course, network_id, network_name, tagline, email, rsvp_count, group_count, post_count) values(%d, %@, %@, %@, %@, %d, %@, %@, %@, %d, %d, %d)", entity.remoteKey, entity.name, entity.fullName, entity.profileImageUrl, entity.course, entity.networkId, entity.networkName, entity.personalMessage, entity.email, [entity.rsvpCount intValue], [entity.groupCount intValue], [entity.postsCount intValue]];
     
     entity.key = [db lastInsertRowId];
 }
@@ -127,15 +113,20 @@
 +(void)update:(GLPUser*)entity
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        [db executeUpdateWithFormat:@"update users set name=%@, image_url=%@, course=%@, network_id=%d, network_name=%@, tagline=%@ where remoteKey=%d",
+        [db executeUpdateWithFormat:@"update users set name=%@, full_name=%@, image_url=%@, course=%@, network_id=%d, network_name=%@, tagline=%@, rsvp_count, group_count, post_count where remoteKey=%d",
          entity.name,
+         entity.fullName,
          entity.profileImageUrl,
          entity.course,
          entity.networkId,
          entity.networkName,
          entity.personalMessage,
-         entity.remoteKey];
+         entity.remoteKey,
+         [entity.rsvpCount intValue],
+         [entity.groupCount intValue],
+         [entity.postsCount intValue]];
     }];
+    
 }
 
 @end

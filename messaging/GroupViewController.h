@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "GLPGroup.h"
 #import "NewCommentDelegate.h"
-#import "ViewImageDelegate.h"
 #import "FDTakeController.h"
 #import "GLPPostCell.h"
 #import "NewPostViewController.h"
 #import "DescriptionSegmentGroupCell.h"
 #import "GLPStretchedImageView.h"
-
+#import "ViewPostImageViewController.h"
 
 @interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate>
 

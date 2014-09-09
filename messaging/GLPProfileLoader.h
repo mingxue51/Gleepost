@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLPUser;
 
 @interface GLPProfileLoader : NSObject
 
 + (GLPProfileLoader *)sharedInstance;
 
 -(void)loadUserData;
--(NSArray*)userData;
+- (void)loadUsersDataWithLocalCallback:(void (^) (GLPUser *user))localCallback andRemoteCallback:(void (^) (BOOL success, BOOL updatedData, GLPUser *user))remoteCallback;
 -(void)loadContactsImages:(NSArray*)contacts;
 -(void)refreshContactsImages:(NSArray*)contacts;
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey;

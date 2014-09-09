@@ -10,6 +10,9 @@
 #import "GLPContact.h"
 #import "WebClient.h"
 #import "SessionManager.h"
+#import "GLPUserDao.h"
+#import "DatabaseManager.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 /**
  Inner class. Check if this methodology is the most appropriate.
@@ -91,26 +94,28 @@ static GLPProfileLoader *instance = nil;
     
     [NSThread detachNewThreadSelector:@selector(loadImageForUser:) toTarget:self withObject:_userDetails.profileImageUrl];
     
-//    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
-//        
-//        if(success)
-//        {
-//            DDLogDebug(@"REAL USER INFO: %@", user);
-//            
-//            _userDetails = user;
-//            
-//            [NSThread detachNewThreadSelector:@selector(loadImageForUser:) toTarget:self withObject:user.profileImageUrl];
-//        }
-//        else
-//        {
-//        }
-//    }];
 }
 
 -(void)loadImageForUser:(NSString *)profileImageUrl
 {
-    //Load user's image.
-    _userImage = [self loadImageWithUrl:profileImageUrl];
+    [[SDImageCache sharedImageCache] queryDiskCacheForKey:profileImageUrl done:^(UIImage *image, SDImageCacheType cacheType) {
+
+        if(image)
+        {
+            DDLogDebug(@"Image loaded from cache.");
+            
+            _userImage = image;
+        }
+        else
+        {
+            DDLogDebug(@"Image not loaded from cache.");
+
+            //Load user's image remotely.
+            _userImage = [self loadImageWithUrl:profileImageUrl];
+            
+            [[SDImageCache sharedImageCache] storeImage:_userImage forKey:profileImageUrl];
+        }
+    }];
 }
 
 -(void)loadContactsImages:(NSArray*)contacts
@@ -179,7 +184,7 @@ static GLPProfileLoader *instance = nil;
     }
 }
 
--(UIImage*)loadImageWithUrl:(NSString*)url
+- (UIImage*)loadImageWithUrl:(NSString*)url
 {
     
     NSURL *imageUrl = [NSURL URLWithString:url];
@@ -193,20 +198,49 @@ static GLPProfileLoader *instance = nil;
 
 #pragma mark - Accessors
 
--(NSArray*)userData
+- (void)loadUsersDataWithLocalCallback:(void (^) (GLPUser *user))localCallback andRemoteCallback:(void (^) (BOOL success, BOOL updatedData, GLPUser *user))remoteCallback
 {
-    if(!_userDetails || !_userImage)
-    {
-        return nil;
-    }
-    else
-    {
-        NSArray *userDataArray = [[NSArray alloc] initWithObjects:_userDetails, _userImage, nil];
+    __block GLPUser *userData;
+    __block BOOL updatedData = NO;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        return userDataArray;
-    }
-}
+        userData = [GLPUserDao findByRemoteKey:_userDetails.remoteKey db:db];
+        
+        if(_userImage)
+        {
+            userData.profileImage = _userImage;
+        }
+        
+        _userDetails = userData;
+        
+        localCallback(userData);
 
+    }];
+    
+    [[WebClient sharedInstance] getUserWithKey:[SessionManager sharedInstance].user.remoteKey callbackBlock:^(BOOL success, GLPUser *user) {
+        
+        if(!success)
+        {
+            remoteCallback(NO, NO, nil);
+            
+            return;
+        }
+        
+        DDLogDebug(@"GLPProfileLoader : user data from server %@", user);
+        
+        updatedData = [_userDetails isUpdatedUserData:userData];
+        
+        if(updatedData)
+        {
+            _userDetails = user;
+            _userDetails.profileImage = _userImage;
+        }
+        
+        remoteCallback(YES, updatedData, _userDetails);
+
+    }];
+}
 
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey
 {

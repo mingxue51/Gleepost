@@ -33,7 +33,8 @@
 
 +(void)loadRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback
 {
-    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:nil callback:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] userPostsWithRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
+        
         if(!success) {
             callback(NO, nil);
             return;

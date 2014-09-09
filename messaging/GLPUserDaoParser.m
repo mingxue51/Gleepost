@@ -17,12 +17,16 @@
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
     entity.name = [resultSet stringForColumn:@"name"];
+    entity.fullName = [resultSet stringForColumn:@"full_name"];
     entity.profileImageUrl = [resultSet stringForColumn:@"image_url"];
     entity.course = [resultSet stringForColumn:@"course"];
     entity.networkId = [resultSet intForColumn:@"network_id"];
     entity.networkName = [resultSet stringForColumn:@"network_name"];
     entity.personalMessage = [resultSet stringForColumn:@"tagline"];
     entity.email = [resultSet stringForColumn:@"email"];
+    entity.rsvpCount = [NSNumber numberWithInt:[resultSet intForColumn:@"rsvp_count"]];
+    entity.groupCount = [NSNumber numberWithInt:[resultSet intForColumn:@"group_count"]];
+    entity.postsCount  = [NSNumber numberWithInt:[resultSet intForColumn:@"post_count"]];
 }
 
 + (GLPUser *)createUserFromResultSet:(FMResultSet *)resultSet

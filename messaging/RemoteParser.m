@@ -33,10 +33,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     GLPUser *user = [[GLPUser alloc] init];
     user.remoteKey = [json[@"id"] integerValue];
     user.name = json[@"name"];
+    user.fullName = json[@"full_name"];
     user.course = json[@"course"];
     user.personalMessage = json[@"tagline"];
     user.profileImageUrl = json[@"profile_image"];
-
+    user.rsvpCount = json[@"rsvp_count"];
+    user.groupCount = json[@"group_count"];
+    user.postsCount = json[@"post_count"];
     
     if(json[@"network"] != nil)
     {

@@ -1391,6 +1391,7 @@
 		586866F219B72E8D00803512 /* sing_in_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sing_in_bg.png; sourceTree = "<group>"; };
 		586A6F9919B1485500664017 /* GLPLiveGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveGroupManager.h; sourceTree = "<group>"; };
 		586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveGroupManager.m; sourceTree = "<group>"; };
+		586C7E3919BE5342002E0329 /* ViewImageDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewImageDelegate.h; sourceTree = "<group>"; };
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
@@ -1711,7 +1712,6 @@
 		58D0E2611850BB80005879F4 /* GLPNotCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPNotCell.xib; sourceTree = "<group>"; };
 		58D0E2631850BD7B005879F4 /* ignore_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ignore_notification_button.png; sourceTree = "<group>"; };
 		58D0E2641850BD7B005879F4 /* accept_notification_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept_notification_button.png; sourceTree = "<group>"; };
-		58D0E26B1850FC24005879F4 /* ViewImageDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewImageDelegate.h; sourceTree = "<group>"; };
 		58D0E51818D092C1004DF10D /* add_member_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_member_icon.png; sourceTree = "<group>"; };
 		58D0E51C18D10CE9004DF10D /* GLPMemberDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMemberDaoParser.h; sourceTree = "<group>"; };
 		58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMemberDaoParser.m; sourceTree = "<group>"; };
@@ -2684,7 +2684,6 @@
 				58403531182FF5FB00499488 /* GLPTimelineViewController.m */,
 				58299EA6184636160045427E /* GLPPostNotificationHelper.h */,
 				58299EA7184636160045427E /* GLPPostNotificationHelper.m */,
-				58D0E26B1850FC24005879F4 /* ViewImageDelegate.h */,
 			);
 			name = "Post Classes";
 			sourceTree = "<group>";
@@ -3395,6 +3394,7 @@
 				580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */,
 				580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */,
 				580B8D3818579C2700A84E0E /* NSObject_ProfileEnums.h */,
+				586C7E3919BE5342002E0329 /* ViewImageDelegate.h */,
 			);
 			name = "Profile Classes";
 			sourceTree = "<group>";

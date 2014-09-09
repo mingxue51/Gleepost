@@ -83,12 +83,16 @@ static DatabaseManager *instance = nil;
              key integer primary key autoincrement, \
              remoteKey integer unique not null, \
              name text, \
+             full_name text, \
              image_url text, \
              course text, \
              network_id integer, \
              network_name text, \
              tagline text, \
-             email text);"]; //e-mail is used for now just for the logged in user.
+             email text, \
+             rsvp_count integer, \
+             group_count integer, \
+             post_count integer);"]; //e-mail is used for now just for the logged in user.
             
             // contacts
             [db executeUpdate:@"create table contacts ( \
