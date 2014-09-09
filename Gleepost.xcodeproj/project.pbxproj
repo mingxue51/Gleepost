@@ -24,6 +24,7 @@
 		11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 11707585186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m */; };
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
+		58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8519BF985A00892B6B /* ChangeImageProgressView.m */; };
 		5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75A191BF603005C907E /* mypost_btn_selected.png */; };
 		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
@@ -907,6 +908,8 @@
 		1172680D1888068E008F5391 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
+		58065F8419BF985A00892B6B /* ChangeImageProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeImageProgressView.h; sourceTree = "<group>"; };
+		58065F8519BF985A00892B6B /* ChangeImageProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeImageProgressView.m; sourceTree = "<group>"; };
 		5806C75A191BF603005C907E /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		5806C75B191BF603005C907E /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
 		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
@@ -2217,6 +2220,15 @@
 			path = messaging;
 			sourceTree = "<group>";
 		};
+		58065F8319BF97E500892B6B /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				58065F8419BF985A00892B6B /* ChangeImageProgressView.h */,
+				58065F8519BF985A00892B6B /* ChangeImageProgressView.m */,
+			);
+			name = Progress;
+			sourceTree = "<group>";
+		};
 		580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -3372,6 +3384,7 @@
 		5898328B17F8A22D008CB807 /* Profile Classes */ = {
 			isa = PBXGroup;
 			children = (
+				58065F8319BF97E500892B6B /* Progress */,
 				580B8D2D18577E0200A84E0E /* ProfileView Settings */,
 				580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */,
 				58FB7CB6185655BB002C6A00 /* ProfileView Mutual */,
@@ -5727,6 +5740,7 @@
 				80AB895D17C277D40053E784 /* NewPostViewController.m in Sources */,
 				58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */,
 				582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */,
+				58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */,
 				586317A3198746D7006D79E2 /* GLPImageView.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,

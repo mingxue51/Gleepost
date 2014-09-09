@@ -49,6 +49,7 @@
 #import "GLPVideoLoaderManager.h"
 #import "GLPShowLocationViewController.h"
 #import "ViewPostImageViewController.h"
+#import "ChangeImageProgressView.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, UIActionSheetDelegate>
 
@@ -101,6 +102,8 @@
 
 @property (assign, nonatomic) NSInteger selectedUserId;
 
+@property (strong, nonatomic) ChangeImageProgressView *progressView;
+
 @end
 
 
@@ -121,6 +124,8 @@
     [self configTabbar];
     
     [self formatTableView];
+    
+    [self configureProgressView];
         
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -338,6 +343,13 @@
     
     _selectedLocation = nil;
     
+}
+
+- (void)configureProgressView
+{
+    _progressView = [[ChangeImageProgressView alloc] init];
+
+    [self.navigationController.view addSubview:_progressView];
 }
 
 - (void)formatTableView

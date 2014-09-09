@@ -68,6 +68,10 @@
 
 #define GLPNOTIFICATION_SHOW_MORE_OPTIONS               @"GLPShowMoreOptions"
 
+#define GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS           @"GLPChangeImageProgress"
+
+
+
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])
 

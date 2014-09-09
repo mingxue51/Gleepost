@@ -1757,6 +1757,13 @@ static WebClient *instance = nil;
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
          NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        
+        NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
+        
+        //Inform GLPProgressManager.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS object:self userInfo:progressData];
+        
+        
      }];
     
     

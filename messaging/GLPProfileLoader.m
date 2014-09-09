@@ -304,6 +304,8 @@ static GLPProfileLoader *instance = nil;
         
         if(success)
         {
+            //Inform ChangeImageProgressBar that the image is ready.
+            [self postReadyNotificationToProgressBar];
             
             //Update the local database with the new url.
             [GLPUserDao updateUserWithRemotKey:_userDetails.remoteKey andProfileImage:url];
@@ -316,6 +318,11 @@ static GLPProfileLoader *instance = nil;
             callback(success, url);
         }
     }];
+}
+
+- (void)postReadyNotificationToProgressBar
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
 }
 
 -(UIImage*)contactImageWithRemoteKey:(int)remoteKey
