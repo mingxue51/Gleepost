@@ -1,0 +1,79 @@
+//
+//  GLPViewImageViewController.m
+//  Gleepost
+//
+//  Created by Σιλουανός on 9/9/14.
+//  Copyright (c) 2014 Gleepost. All rights reserved.
+//
+
+#import "GLPViewImageViewController.h"
+#import "GLPViewImageScrollView.h"
+
+@interface GLPViewImageViewController ()
+
+//@property (weak, nonatomic) IBOutlet GLPViewImageScrollView *scrollView;
+
+@end
+
+@implementation GLPViewImageViewController
+
+- (void)loadView
+{
+    // replace our view property with our custom image scroll view
+    GLPViewImageScrollView *scrollView = [[GLPViewImageScrollView alloc] init];
+//    scrollView.index = _pageIndex;
+    
+    //TODO: Add the image passed from the parent view.
+    
+    [scrollView setImage:_image];
+    
+    self.view = scrollView;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // set the navigation bar's title to indicate which photo index we are viewing,
+    // note that our parent is MyPageViewController
+    //
+//    self.parentViewController.navigationItem.title =
+//    [NSString stringWithFormat:@"%@ of %@", [@(self.pageIndex+1) stringValue], [@([[PageViewControllerData sharedInstance] photoCount]) stringValue]];
+    
+//    [_scrollView setImage:_image];
+
+}
+
+- (IBAction)dismissViewController:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

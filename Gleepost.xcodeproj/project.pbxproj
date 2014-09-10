@@ -25,6 +25,8 @@
 		1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 117268091887F68C008F5391 /* GLPInvitationManager.m */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8519BF985A00892B6B /* ChangeImageProgressView.m */; };
+		58065F8C19BFE4BC00892B6B /* GLPViewImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8B19BFE4BC00892B6B /* GLPViewImageScrollView.m */; };
+		58065F8F19BFE55500892B6B /* GLPViewImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8E19BFE55500892B6B /* GLPViewImageViewController.m */; };
 		5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75A191BF603005C907E /* mypost_btn_selected.png */; };
 		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
@@ -910,6 +912,10 @@
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
 		58065F8419BF985A00892B6B /* ChangeImageProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeImageProgressView.h; sourceTree = "<group>"; };
 		58065F8519BF985A00892B6B /* ChangeImageProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeImageProgressView.m; sourceTree = "<group>"; };
+		58065F8A19BFE4BC00892B6B /* GLPViewImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewImageScrollView.h; sourceTree = "<group>"; };
+		58065F8B19BFE4BC00892B6B /* GLPViewImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewImageScrollView.m; sourceTree = "<group>"; };
+		58065F8D19BFE55500892B6B /* GLPViewImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewImageViewController.h; sourceTree = "<group>"; };
+		58065F8E19BFE55500892B6B /* GLPViewImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewImageViewController.m; sourceTree = "<group>"; };
 		5806C75A191BF603005C907E /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		5806C75B191BF603005C907E /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
 		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
@@ -2690,8 +2696,6 @@
 				584906C717FDEE4C0045B65D /* TypeTextView.m */,
 				58406AFC1823FCBE0032353E /* NewPostView.h */,
 				58406AFD1823FCBE0032353E /* NewPostView.m */,
-				58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */,
-				58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */,
 				58403530182FF5FB00499488 /* GLPTimelineViewController.h */,
 				58403531182FF5FB00499488 /* GLPTimelineViewController.m */,
 				58299EA6184636160045427E /* GLPPostNotificationHelper.h */,
@@ -3667,6 +3671,12 @@
 			children = (
 				58BBACAE1978796D00A8A265 /* ImageSelectorViewController.h */,
 				58BBACAF1978796D00A8A265 /* ImageSelectorViewController.m */,
+				58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */,
+				58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */,
+				58065F8A19BFE4BC00892B6B /* GLPViewImageScrollView.h */,
+				58065F8B19BFE4BC00892B6B /* GLPViewImageScrollView.m */,
+				58065F8D19BFE55500892B6B /* GLPViewImageViewController.h */,
+				58065F8E19BFE55500892B6B /* GLPViewImageViewController.m */,
 			);
 			name = "Custom media";
 			sourceTree = "<group>";
@@ -5621,6 +5631,7 @@
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
 				5832C4C918998563004FC4F6 /* UIImage+StackBlur.m in Sources */,
+				58065F8C19BFE4BC00892B6B /* GLPViewImageScrollView.m in Sources */,
 				585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */,
 				58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
@@ -5670,6 +5681,7 @@
 				58FB7C8A18560B6B002C6A00 /* AboutProfileView.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
 				58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */,
+				58065F8F19BFE55500892B6B /* GLPViewImageViewController.m in Sources */,
 				5827B8901945C85F00DFC76E /* GBInfiniteScrollView.m in Sources */,
 				58428E3318A27E0F00B82E4B /* LoginView.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,

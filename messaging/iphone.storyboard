@@ -4172,6 +4172,32 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-188" y="-190"/>
         </scene>
+        <!--View Image View Controller-->
+        <scene sceneID="sNL-LS-RfL">
+            <objects>
+                <viewController storyboardIdentifier="GLPViewImageViewController" id="W6N-4D-41b" customClass="GLPViewImageViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="blh-vW-h8a">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="J1p-L5-DZj">
+                                <rect key="frame" x="22" y="10" width="42" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="BACK">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismissViewController:" destination="W6N-4D-41b" eventType="touchUpInside" id="0Yp-5C-tbv"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M50-Wl-H8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="496" y="-3997"/>
+        </scene>
         <!--Invitations View Controller-->
         <scene sceneID="p9q-C9-Csf">
             <objects>

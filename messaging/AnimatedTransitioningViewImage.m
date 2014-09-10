@@ -8,7 +8,8 @@
 
 #import "AnimatedTransitioningViewImage.h"
 #import "GLPTimelineViewController.h"
-#import "ViewPostImageViewController.h"
+//#import "ViewPostImageViewController.h"
+#import "GLPViewImageViewController.h"
 
 @implementation AnimatedTransitioningViewImage
 
@@ -28,8 +29,13 @@
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
     
     UIView *inView = [transitionContext containerView];
-    ViewPostImageViewController *toVC = (ViewPostImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-//    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+//    ViewPostImageViewController *toVC = (ViewPostImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    
+    GLPViewImageViewController *toVC = (GLPViewImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
+    
+    //    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     
     toVC.view.alpha = 0.0;
