@@ -5,6 +5,7 @@
 //  Created by Σιλουανός on 15/10/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+//  Old notification cell implementation.
 
 #import "NotificationCell.h"
 #import "NSDate+TimeAgo.h"

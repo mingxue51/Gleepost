@@ -17,7 +17,8 @@ typedef enum {
     kGLPNotificationTypeCommented,
     kGLPNotificationTypeLiked,
     kGLPNotificationTypeAddedGroup,
-    kGLPNotificationTypeCreatedPostGroup
+    kGLPNotificationTypeCreatedPostGroup,
+    kGLPNotificationTypeInvitedYouToGroup
 } GLPNotificationType;
 
 @property (assign, nonatomic) NSInteger postRemoteKey;

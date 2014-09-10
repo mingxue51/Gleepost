@@ -5,6 +5,7 @@
 //  Created by Σιλουανός on 6/11/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+//  This class should not be used. Instead use GLPViewImageViewController.
 
 #import "ViewPostImageViewController.h"
 #import "GLPiOS6Helper.h"

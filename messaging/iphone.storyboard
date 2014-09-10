@@ -3435,18 +3435,21 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <scene sceneID="pBQ-dT-hso">
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OWB-ux-04T">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="YKT-UL-nou">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YKT-UL-nou" id="I25-ir-dx2">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -4181,10 +4184,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Maw-1D-9pB">
-                                <rect key="frame" x="0.0" y="2" width="65" height="38"/>
+                                <rect key="frame" x="15" y="25" width="19" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
-                                <state key="normal" title="Back">
+                                <state key="normal" backgroundImage="cancel_white.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -4193,10 +4196,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" id="RVC-2D-fnj">
-                                <rect key="frame" x="0.0" y="48" width="320" height="471"/>
+                                <rect key="frame" x="0.0" y="81" width="320" height="406"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8lD-WU-C03">
+                                <rect key="frame" x="0.0" y="0.0" width="102" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismissViewController:" destination="W6N-4D-41b" eventType="touchUpInside" id="fpG-BK-Wdt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -4206,7 +4219,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M50-Wl-H8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="496" y="-3997"/>
+            <point key="canvasLocation" x="335" y="-4011"/>
         </scene>
         <!--Invitations View Controller-->
         <scene sceneID="p9q-C9-Csf">
@@ -4596,6 +4609,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="camera_top_button.png" width="190" height="95"/>
         <image name="cancel.png" width="100" height="111"/>
         <image name="cancel_recording.png" width="74" height="64"/>
+        <image name="cancel_white.png" width="100" height="111"/>
         <image name="categories_image.png" width="44" height="39"/>
         <image name="change_pass_name.png" width="600" height="100"/>
         <image name="chat_background_default.png" width="640" height="1136"/>
@@ -4656,7 +4670,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="39" height="31"/>
         <image name="share_image.png" width="20" height="17"/>
-        <image name="sign_in_b" width="400" height="56"/>
+        <image name="sign_in_b" width="15" height="27"/>
         <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="sing_in_bg.png" width="520" height="100"/>
@@ -4676,20 +4690,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fL3-CC-Jbz"/>
-        <segue reference="wR3-TA-URh"/>
+        <segue reference="YIa-ii-tw7"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="7l2-k5-pHQ"/>
         <segue reference="UCY-3t-8FQ"/>
-        <segue reference="GTC-XV-iI1"/>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="7l2-k5-pHQ"/>
-        <segue reference="aph-g3-dhm"/>
         <segue reference="C4C-f3-cdX"/>
         <segue reference="bc7-so-Tnw"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="aph-g3-dhm"/>
         <segue reference="Txr-8X-v5l"/>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="YIa-ii-tw7"/>
-        <segue reference="hfC-fm-BOR"/>
         <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="hfC-fm-BOR"/>
+        <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

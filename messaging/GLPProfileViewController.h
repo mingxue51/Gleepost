@@ -10,14 +10,14 @@
 #import "GLPPost.h"
 #import "NSObject_ProfileEnums.h"
 #import "NewCommentDelegate.h"
-#import "NotificationCell.h"
+#import "GLPNotificationCell.h"
 #import "ButtonNavigationDelegate.h"
 #import "ProfileTableViewCell.h"
 #import "GLPPostCell.h"
 #import "ProfileTopViewCell.h"
 #import "ImageSelectorViewController.h"
 
-@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, NewCommentDelegate, ViewImageDelegate, GLPNotificationCellDelegate, RemovePostCellDelegate, GLPPostCellDelegate, ProfileTopViewCellDelegate, ImageSelectorViewControllerDelegate>
+@interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, NewCommentDelegate, ViewImageDelegate, GLPImageViewDelegate, RemovePostCellDelegate, GLPPostCellDelegate, ProfileTopViewCellDelegate, ImageSelectorViewControllerDelegate>
 
 @property (assign, nonatomic) BOOL fromPushNotification;
 

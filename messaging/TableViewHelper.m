@@ -8,6 +8,7 @@
 
 #import "TableViewHelper.h"
 #import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @implementation TableViewHelper
 
@@ -28,6 +29,33 @@
     CGRectAddH(cell, height);
     cell.userInteractionEnabled = NO;
     return cell;
+}
+
+/**
+ Default Gleepost header.
+ 
+ @param title the title of the header.
+ 
+ @return the header view.
+ 
+ */
++ (UIView *)generateHeaderViewWithTitle:(NSString *)title
+{
+    UIView *titleViewSection = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 30.0)];
+    
+    [titleViewSection setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 30.0)];
+    
+    [titleLabel setText:title];
+    
+    [titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:12.0]];
+    
+    [titleLabel setTextColor:[AppearanceHelper blueGleepostColour]];
+    
+    [titleViewSection addSubview:titleLabel];
+    
+    return titleViewSection;
 }
 
 @end

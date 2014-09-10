@@ -59,27 +59,8 @@
     {
         //The transition is done in the view controller.
         
-        
-//        [UIView animateWithDuration:0.25 animations:^{
-//            
-//            inView.alpha = 0;
-//            
-//        } completion:^(BOOL b){
-        
             [transitionContext completeTransition:YES];
-
-//        }];
     }
-    
-    
-//    [UIView animateWithDuration:0.25f
-//                     animations:^{
-//                         
-//                         [toVC.view setFrame:CGRectMake(0, 0, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
-//                     }
-//                     completion:^(BOOL finished) {
-//                         [transitionContext completeTransition:YES];
-//                     }];
 }
 
 

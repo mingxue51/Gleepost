@@ -1,0 +1,170 @@
+//
+//  NotificationsOrganiserHelper.m
+//  Gleepost
+//
+//  Created by Σιλουανός on 10/9/14.
+//  Copyright (c) 2014 Gleepost. All rights reserved.
+//
+//  This class helps the GLPProfileViewController to organise the notifications
+//  into sections and headers to view appropriately in table view.
+
+#import "NotificationsOrganiserHelper.h"
+#import "GLPNotification.h"
+#import "DateFormatterHelper.h"
+
+@interface NotificationsOrganiserHelper ()
+
+@property (strong, nonatomic) NSString *todayHeader;
+@property (strong, nonatomic) NSString *yesterdayHeader;
+@property (strong, nonatomic) NSString *olderHeader;
+@property (strong, nonatomic) NSMutableArray *sections;
+
+@end
+
+@implementation NotificationsOrganiserHelper
+
+
+- (id)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _todayHeader = @"TODAY";
+        _yesterdayHeader = @"YESTERDAY";
+        _olderHeader = @"OLDER";
+        _sections = [[NSMutableArray alloc] init];
+    }
+    
+    return self;
+}
+
+#pragma mark - Modifiers
+
+/**
+ This method organise notifications in the following stucture:
+ 
+ NSArray {NSDictionary (Header, NSArray<Notification>), ...}
+ 
+ @param notifications an array of notifications.
+ 
+ @returns the organised array.
+ 
+ */
+- (void)organiseNotifications:(NSArray *)notifications
+{
+//    NSMutableArray *sections = [[NSMutableArray alloc] init];
+    
+    [_sections removeAllObjects];
+    
+    NSDate *today = [NSDate date];
+    
+    NSDate *yesterday = [DateFormatterHelper generateDateBeforeDays:1];
+    
+    NSDate *twoDaysAgo = [DateFormatterHelper generateDateBeforeDays:2];
+    
+    DDLogDebug(@"Today: %@, Yesterday: %@, One week ago: %@", today, yesterday, twoDaysAgo);
+    
+    for(GLPNotification *notification in notifications)
+    {
+        if ([DateFormatterHelper date:notification.date isBetweenDate:yesterday andDate:today])
+        {
+            DDLogDebug(@"Today notification: %@", notification.notificationTypeDescription);
+
+            [self addNotification:notification withHeader:_todayHeader];
+            
+        }
+        else if ([DateFormatterHelper date:notification.date isBetweenDate:twoDaysAgo andDate:yesterday])
+        {
+            DDLogDebug(@"Yesterday notification: %@", notification.notificationTypeDescription);
+            
+            [self addNotification:notification withHeader:_yesterdayHeader];
+        }
+        else
+        {
+            DDLogDebug(@"Older notification: %@", notification.notificationTypeDescription);
+            
+            [self addNotification:notification withHeader:_olderHeader];
+        }
+        
+        DDLogDebug(@"Notification: %@ : %@", notification.notificationTypeDescription, notification.date);
+        
+    }
+    
+    DDLogDebug(@"Final array: %@", _sections);
+}
+
+#pragma mark - Accessors
+
+- (NSInteger)numberOfSections
+{
+    return _sections.count;
+}
+
+- (NSString *)headerInSection:(NSInteger)sectionIndex
+{
+    return [_sections objectAtIndex:sectionIndex];
+}
+
+- (NSArray *)notificationsAtSectionIndex:(NSInteger)sectionIndex
+{
+    NSDictionary *headerNotifications = [_sections objectAtIndex:sectionIndex];
+
+    for(NSString *key in headerNotifications)
+    {
+        NSArray *notifications = [headerNotifications objectForKey:key];
+        
+        return notifications;
+    }
+    
+    return nil;
+}
+
+- (GLPNotification *)notificationWithIndex:(NSInteger)notificationIndex andSectionIndex:(NSInteger)sectionIndex
+{
+    NSDictionary *headerNotifications = [_sections objectAtIndex:sectionIndex];
+    
+    for(NSString *key in headerNotifications)
+    {
+        NSArray *notifications = [headerNotifications objectForKey:key];
+        
+        return [notifications objectAtIndex:notificationIndex];
+    }
+    
+    return nil;
+}
+
+
+- (void)addNotification:(GLPNotification *)notification withHeader:(NSString *)header
+{
+    NSDictionary *todaysDictionary = [self containsDictionaryWithHeader:header];
+    
+    if(todaysDictionary)
+    {
+        NSMutableArray *array = [todaysDictionary objectForKey:header];
+        
+        [array addObject:notification];
+    }
+    else
+    {
+        NSMutableArray *currentNotifications = @[notification].mutableCopy;
+        todaysDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:currentNotifications, header, nil];
+        [_sections addObject:todaysDictionary];
+    }
+    
+}
+
+- (NSDictionary *)containsDictionaryWithHeader:(NSString *)header
+{
+    for(NSDictionary *dictonary in _sections)
+    {
+        if([dictonary objectForKey:header])
+        {
+            return dictonary;
+        }
+    }
+    
+    return nil;
+}
+
+@end

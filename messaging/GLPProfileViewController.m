@@ -34,7 +34,6 @@
 #import "TransitionDelegateViewImage.h"
 #import "GLPSettingsViewController.h"
 #import "UIImage+StackBlur.h"
-#import "NotificationCell.h"
 #import "GLPApplicationHelper.h"
 #import "GLPiOS6Helper.h"
 #import "GroupViewController.h"
@@ -50,6 +49,9 @@
 #import "GLPShowLocationViewController.h"
 #import "ViewPostImageViewController.h"
 #import "ChangeImageProgressView.h"
+#import "GLPViewImageViewController.h"
+#import "TableViewHelper.h"
+#import "NotificationsOrganiserHelper.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, UIActionSheetDelegate>
 
@@ -126,7 +128,8 @@
     [self formatTableView];
     
     [self configureProgressView];
-        
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -182,7 +185,6 @@
     
     [self setTitle];
 
-    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -367,7 +369,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotCell" bundle:nil] forCellReuseIdentifier:@"GLPNotCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPNotificationCell" bundle:nil] forCellReuseIdentifier:@"GLPNotificationCell"];
 }
 
 - (void)hideNetworkErrorViewIfNeeded
@@ -520,7 +522,7 @@
     if([buttonTitle isEqualToString:@"View image"])
     {
         //Show image.
-        //[self showImage];
+        [self showImage];
     }
     else if([buttonTitle isEqualToString:@"Change image"] || [buttonTitle isEqualToString:@"Add image"])
     {
@@ -535,6 +537,25 @@
     {
         [self performSegueWithIdentifier:@"show image selector" sender:self];
     }
+}
+
+
+-(void)showImage
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+    viewImage.image = _user.profileImage;
+    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+    
+    
+    if(![GLPiOS6Helper isIOS6])
+    {
+        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+    }
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 //- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
@@ -569,10 +590,6 @@
     _user.profileImage = image;
     
     [self refreshFirstCell];
-    
-    
-    //    [self.profileView.profileImage setImage:photo];
-    //    [self.profileView updateImage:photo];
     
     //Communicate with server to change the image.
     [self uploadAndSetUsersImage];
@@ -684,26 +701,6 @@
     }];
 }
 
-//-(void)setImageToUserProfile:(NSString*)url
-//{
-//    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
-//        
-//        if(success)
-//        {
-//            NSLog(@"NEW PROFILE IMAGE UPLOADED");
-//            
-//            [self updateViewWithNewImage:url];
-//            
-//            [self notifyAppWithNewImage:url];
-//
-//        }
-//        else
-//        {
-//            NSLog(@"ERROR: Not able to register image for profile.");
-//        }
-//    }];
-//}
-
 #pragma mark - Internal notifications
 
 - (void)loadInternalNotifications
@@ -749,6 +746,10 @@
                 [self.tableView reloadData];
             }
         }
+        
+        NotificationsOrganiserHelper *n = [[NotificationsOrganiserHelper alloc] init];
+        [n organiseNotifications:_notifications];
+
         
     }];
     
@@ -837,61 +838,66 @@
 
 # pragma mark - GLPNotificationCellDelegate
 
-- (void)notificationCell:(NotificationCell *)cell acceptButtonClickForNotification:(GLPNotification *)notification
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
 {
-    
-    GLPContact *contact = [[GLPContact alloc] initWithUserName:notification.user.name profileImage:notification.user.profileImageUrl youConfirmed:YES andTheyConfirmed:YES];
-    contact.remoteKey = notification.user.remoteKey;
-    
-    //Accept contact in the local database and in server.
-    [[ContactsManager sharedInstance] acceptContact:contact.remoteKey callbackBlock:^(BOOL success) {
-        
-        if(!success)
-        {
-            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to accept contact"];
-            
-            return;
-        }
-        
-        
-        [GLPNotificationManager acceptNotification:notification];
-        [cell updateWithNotification:notification];
-        
-        NSUInteger index = [_notifications indexOfObject:notification];
-        if(index == NSNotFound) {
-            DDLogError(@"Cannot find notification to remove in array");
-            return;
-        }
-                
-        //Save contact to database.
-//        [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
-        
-        
-        [self.tableView beginUpdates];
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
-        
-        
-    }];
-    
-
+    DDLogDebug(@"Image notification touched: %@", imageView);
 }
 
-- (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification
-{
-    [GLPNotificationManager ignoreNotification:notification];
-    
-    NSUInteger index = [_notifications indexOfObject:notification];
-    if(index == NSNotFound) {
-        DDLogError(@"Cannot find notification to remove in array");
-        return;
-    }
-    
-    [self.tableView beginUpdates];
-    [_notifications removeObjectAtIndex:index];
-    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
-}
+//- (void)notificationCell:(NotificationCell *)cell acceptButtonClickForNotification:(GLPNotification *)notification
+//{
+//    
+//    GLPContact *contact = [[GLPContact alloc] initWithUserName:notification.user.name profileImage:notification.user.profileImageUrl youConfirmed:YES andTheyConfirmed:YES];
+//    contact.remoteKey = notification.user.remoteKey;
+//    
+//    //Accept contact in the local database and in server.
+//    [[ContactsManager sharedInstance] acceptContact:contact.remoteKey callbackBlock:^(BOOL success) {
+//        
+//        if(!success)
+//        {
+//            [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to accept contact"];
+//            
+//            return;
+//        }
+//        
+//        
+//        [GLPNotificationManager acceptNotification:notification];
+//        [cell updateWithNotification:notification];
+//        
+//        NSUInteger index = [_notifications indexOfObject:notification];
+//        if(index == NSNotFound) {
+//            DDLogError(@"Cannot find notification to remove in array");
+//            return;
+//        }
+//                
+//        //Save contact to database.
+////        [[ContactsManager sharedInstance] saveNewContact:contact db:nil];
+//        
+//        
+//        [self.tableView beginUpdates];
+//        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        [self.tableView endUpdates];
+//        
+//        
+//    }];
+//    
+//
+//}
+//
+//- (void)notificationCell:(NotificationCell *)cell ignoreButtonClickForNotification:(GLPNotification *)notification
+//{
+//    [GLPNotificationManager ignoreNotification:notification];
+//    
+//    NSUInteger index = [_notifications indexOfObject:notification];
+//    if(index == NSNotFound) {
+//        DDLogError(@"Cannot find notification to remove in array");
+//        return;
+//    }
+//    
+//    [self.tableView beginUpdates];
+//    [_notifications removeObjectAtIndex:index];
+//    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index+2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.tableView endUpdates];
+//}
 
 
 # pragma mark - Notifications
@@ -953,8 +959,19 @@
 
 #pragma mark - Table view data source
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"MY ACCOUNT";
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if(_selectedTab == kButtonRight)
+    {
+        //Notifications are selected.
+        
+    }
+    
     return 1;
 }
 
@@ -1004,14 +1021,14 @@
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierProfile = @"ProfileTopViewCell";
     
-    static NSString *CellIdentifierNotification = @"GLPNotCell";
+    static NSString *CellIdentifierNotification = @"GLPNotificationCell";
     
     
     GLPPostCell *postViewCell;
 
     ProfileTopViewCell *profileView;
     
-    NotificationCell *notificationCell;
+    GLPNotificationCell *notificationCell;
     
     if(indexPath.row == 0)
     {
@@ -1057,10 +1074,13 @@
             }
             
             notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
-            notificationCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            notificationCell.selectionStyle = UITableViewCellSelectionStyleGray;
             
             GLPNotification *notification = _notifications[indexPath.row - 1];
-            [notificationCell updateWithNotification:notification];
+//            [notificationCell updateWithNotification:notification];
+            
+            [notificationCell setNotification:notification];
+            
             notificationCell.delegate = self;
             
             return notificationCell;
@@ -1095,12 +1115,6 @@
                 postViewCell.delegate = self;
                 
                 [postViewCell setPost:post withPostIndex:indexPath.row];
-                
-                //Add separator line to posts' cells.
-//                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, postViewCell.frame.size.height-0.5f, 320, 0.5)];
-//                line.backgroundColor = [UIColor colorWithRed:217.0f/255.0f green:228.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-//                [postViewCell addSubview:line];
-                
             }
             
             return postViewCell;
@@ -1223,7 +1237,7 @@
             }
             
             GLPNotification *notification = _notifications[indexPath.row - 1];
-            return [NotificationCell getCellHeightForNotification:notification];
+            return [GLPNotificationCell getCellHeightForNotification:notification];
         }
         else if (_selectedTab == kButtonLeft)
         {
@@ -1245,6 +1259,11 @@
     }
     
     return 70.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [TableViewHelper generateHeaderViewWithTitle:@"MY ACCOUNT"];
 }
 
 #pragma mark - View image delegate
@@ -1281,7 +1300,6 @@
 
 -(void)setPreviousViewToNavigationBar
 {
-   // [self.notificationView setHidden:NO];
 }
 
 -(void)setPreviousNavigationBarName
@@ -1292,7 +1310,6 @@
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
 {
     [self.navigationItem setTitle:newTitle];
-    //[self.notificationView setHidden:YES];
 }
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
