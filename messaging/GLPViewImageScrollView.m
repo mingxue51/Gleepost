@@ -103,7 +103,7 @@
 
 - (void)setImage:(UIImage *)image
 {
-    UIImage *finalImage = [UIImage imageNamed:@"walkthrough_gleepost_logο"];
+    UIImage *finalImage = [UIImage imageWithCGImage:image.CGImage];
     
     [self displayImage:finalImage];
 
@@ -174,10 +174,8 @@
     // make a new UIImageView for the new image
     _zoomView = [[UIImageView alloc] initWithImage:image];
     [self addSubview:_zoomView];
-    
-    DDLogDebug(@"Image size: %f : %f", image.size.width, image.size.height);
-    
-    [self configureForImageSize:CGSizeMake(960.0, 960.0)];
+        
+    [self configureForImageSize:image.size];
 }
 
 - (void)configureForImageSize:(CGSize)imageSize {

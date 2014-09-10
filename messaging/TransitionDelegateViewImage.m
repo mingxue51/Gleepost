@@ -28,9 +28,15 @@
 //    controller.isPresenting = NO;
 //    return controller;
     
+    //Here retrieve the very first view controller by just creating a new class to create the animation.
     
     
-    return nil;
+    DDLogDebug(@"Dismiss animation");
+    AnimatedTransitioningViewImage *controller = [[AnimatedTransitioningViewImage alloc] init];
+    controller.isPresenting = NO;
+    
+    return controller;
+    
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {

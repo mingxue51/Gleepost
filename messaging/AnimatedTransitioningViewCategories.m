@@ -75,6 +75,9 @@ const float CATEGORIES_ANIMATION_TIME = 0.8;
         [transitionContext completeTransition:YES];
 
         
+        
+
+        
 //        [UIView animateWithDuration:2.0f animations:^{
 //        
 //            inView.alpha = 0.0;

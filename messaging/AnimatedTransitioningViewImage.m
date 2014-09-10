@@ -32,34 +32,44 @@
 //    ViewPostImageViewController *toVC = (ViewPostImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
     
-    GLPViewImageViewController *toVC = (GLPViewImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+//    GLPViewImageViewController *toVC = (GLPViewImageViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    UIViewController *toVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
     
     //    GLPTimelineViewController *fromVC = (GLPTimelineViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    
-    
-    toVC.view.alpha = 0.0;
-    
-    [inView addSubview:toVC.view];
-    
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    //[toVC.view setFrame:CGRectMake(0, screenRect.size.height, fromVC.view.frame.size.width, fromVC.view.frame.size.height)];
-    
-    
-    //UIViewAnimationOptionTransitionCrossDissolve
-//    toVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    
-    [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    if(_isPresenting)
+    {
+        toVC.view.alpha = 0.0;
         
-        toVC.view.alpha = 1.0;
+        [inView addSubview:toVC.view];
+        
+        [UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            
+            toVC.view.alpha = 1.0;
+            
+            
+        } completion:^(BOOL finished) {
+            
+            [transitionContext completeTransition:YES];
+            
+        }];
+    }
+    else
+    {
+        //The transition is done in the view controller.
         
         
-    } completion:^(BOOL finished) {
+//        [UIView animateWithDuration:0.25 animations:^{
+//            
+//            inView.alpha = 0;
+//            
+//        } completion:^(BOOL b){
         
-        [transitionContext completeTransition:YES];
-        
-    }];
+            [transitionContext completeTransition:YES];
+
+//        }];
+    }
     
     
 //    [UIView animateWithDuration:0.25f

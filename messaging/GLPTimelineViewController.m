@@ -2453,12 +2453,10 @@ const float TOP_OFFSET = 180.0f;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     viewImage.modalPresentationStyle = UIModalPresentationCustom;
 
-
-    
     
     if(![GLPiOS6Helper isIOS6])
     {
-//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+        [viewImage setTransitioningDelegate:self.transitionViewImageController];
     }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];

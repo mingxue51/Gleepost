@@ -8,27 +8,32 @@
 
 #import "GLPViewImageViewController.h"
 #import "GLPViewImageScrollView.h"
+#import "GLPiOS6Helper.h"
 
 @interface GLPViewImageViewController ()
 
 //@property (weak, nonatomic) IBOutlet GLPViewImageScrollView *scrollView;
 
+@property (weak, nonatomic) IBOutlet UIView *mainView;
+
 @end
 
 @implementation GLPViewImageViewController
 
-- (void)loadView
-{
-    // replace our view property with our custom image scroll view
-    GLPViewImageScrollView *scrollView = [[GLPViewImageScrollView alloc] init];
-//    scrollView.index = _pageIndex;
-    
-    //TODO: Add the image passed from the parent view.
-    
-    [scrollView setImage:_image];
-    
-    self.view = scrollView;
-}
+//- (void)loadView
+//{
+//    // replace our view property with our custom image scroll view
+//    GLPViewImageScrollView *scrollView = [[GLPViewImageScrollView alloc] init];
+////    scrollView.index = _pageIndex;
+//    
+//    //TODO: Add the image passed from the parent view.
+//    
+//    [scrollView setImage:_image];
+//    
+////    self.view = scrollView;
+//    
+//    [_scView addSubview:scrollView];
+//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -46,9 +51,27 @@
 
 - (IBAction)dismissViewController:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    
+    if([GLPiOS6Helper isIOS6])
+    {
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.25 animations:^{
+            
+            self.view.alpha = 0;
+            
+        } completion:^(BOOL b){
+            
+            [self dismissViewControllerAnimated:NO completion:^{
+                
+            }];
+        }];
+    }
+    
 }
 
 - (void)viewDidLoad
@@ -56,6 +79,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    GLPViewImageScrollView *scrollView = [[GLPViewImageScrollView alloc] initWithFrame:self.mainView.bounds];
+    
+    [scrollView setImage:_image];
+    
+    [self.mainView addSubview:scrollView];
 
 }
 
