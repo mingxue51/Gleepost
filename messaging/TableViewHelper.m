@@ -58,4 +58,13 @@
     return titleViewSection;
 }
 
++ (UIView *)generateEmptyHeader
+{
+    UIView *view = [[UIView alloc] init];
+    
+    [view setBackgroundColor:[UIColor clearColor]];
+    
+    return view;
+}
+
 @end

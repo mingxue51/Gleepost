@@ -106,6 +106,8 @@
 
 @property (strong, nonatomic) ChangeImageProgressView *progressView;
 
+@property (strong, nonatomic) NotificationsOrganiserHelper *notificationsOrganiser;
+
 @end
 
 
@@ -342,6 +344,8 @@
     _isPostFromNotifications = NO;
     
     _selectedLocation = nil;
+    
+    _notificationsOrganiser = [[NotificationsOrganiserHelper alloc] init];
     
 }
 
@@ -716,6 +720,8 @@
         
         _notifications = notifications.mutableCopy;
         
+        [_notificationsOrganiser resetData];
+        [_notificationsOrganiser organiseNotifications:_notifications];
         
         if(_selectedTab == kButtonRight) {
             [self notificationsTabClick];
@@ -734,6 +740,8 @@
         
         _notifications = remoteNotifications.mutableCopy;
         
+        [_notificationsOrganiser resetData];
+        [_notificationsOrganiser organiseNotifications:_notifications];
         
         if(_selectedTab == kButtonRight) {
             //[self notificationsTabClick];
@@ -746,9 +754,6 @@
                 [self.tableView reloadData];
             }
         }
-        
-        NotificationsOrganiserHelper *n = [[NotificationsOrganiserHelper alloc] init];
-        [n organiseNotifications:_notifications];
 
         
     }];
@@ -770,6 +775,9 @@
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         
         _notifications = remoteNotifications.mutableCopy;
+        
+        [_notificationsOrganiser resetData];
+        [_notificationsOrganiser organiseNotifications:_notifications];
         
         [self.tableView reloadData];
         
@@ -961,7 +969,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"MY ACCOUNT";
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -969,7 +977,9 @@
     if(_selectedTab == kButtonRight)
     {
         //Notifications are selected.
+        DDLogDebug(@"numberOfSectionsInTableView: %d", [_notificationsOrganiser numberOfSections]);
         
+        return [_notificationsOrganiser numberOfSections] + 1;
     }
     
     return 1;
@@ -1008,7 +1018,30 @@
             extraRow = 1;
         }
         
-        return self.numberOfRows + _notifications.count + extraRow;
+        DDLogDebug(@"Number of sections: %d, Current section: %d", [_notificationsOrganiser numberOfSections], section);
+
+        
+        if(section == 0)
+        {
+            return self.numberOfRows;
+        }
+        
+        DDLogDebug(@"numberOfRowsInSection: %d", [_notificationsOrganiser notificationsAtSectionIndex:section - 1].count);
+        
+        
+//        if([_notificationsOrganiser numberOfSections] == section)
+//        {
+//            
+//            return self.numberOfRows + [_notificationsOrganiser notificationsAtSectionIndex:section - 1].count + extraRow;
+//
+//        }
+//        else
+//        {
+            return [_notificationsOrganiser notificationsAtSectionIndex:section - 1].count;
+//        }
+        
+        
+//        return self.numberOfRows + _notifications.count + extraRow;
     }
 }
 
@@ -1030,7 +1063,9 @@
     
     GLPNotificationCell *notificationCell;
     
-    if(indexPath.row == 0)
+    DDLogDebug(@"Row: %d, Section: %d", indexPath.row, indexPath.section);
+    
+    if(indexPath.row == 0 && indexPath.section == 0)
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
         
@@ -1062,22 +1097,33 @@
         return profileView;
         
     }
-    else if (indexPath.row >= 1)
+    else if (indexPath.section > 0)
     {
         if(_selectedTab == kButtonRight)
         {
-            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
-            {
-                DDLogDebug(@"Notifications count: %lu : %ld", (unsigned long)_notifications.count, (long)indexPath.row);
-                
-                return [TableViewHelper generateCellWithMessage:@"You have no more notifications"];
-            }
+//            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
+//            {
+//                DDLogDebug(@"Notifications count: %lu : %ld", (unsigned long)_notifications.count, (long)indexPath.row);
+//                
+//                return [TableViewHelper generateCellWithMessage:@"You have no more notifications"];
+//            }
+            
+//            if([_notificationsOrganiser numberOfSections] == indexPath.section)
+//            {
+//                if([_notificationsOrganiser notificationsAtSectionIndex:indexPath.section - 1].count == indexPath.row)
+//                {
+//                    return [TableViewHelper generateCellWithMessage:@"You have no more notifications"];
+//                }
+//            }
+            
             
             notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
             notificationCell.selectionStyle = UITableViewCellSelectionStyleGray;
             
-            GLPNotification *notification = _notifications[indexPath.row - 1];
-//            [notificationCell updateWithNotification:notification];
+//            GLPNotification *notification = _notifications[indexPath.row - 1];
+            GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
+//            DDLogDebug(@"cellForRowAtIndexPath: %@", [_notificationsOrganiser notificationWithIndex:indexPath.row - 1 andSectionIndex:indexPath.section - 1]);
+            //            [notificationCell updateWithNotification:notification];
             
             [notificationCell setNotification:notification];
             
@@ -1085,8 +1131,34 @@
             
             return notificationCell;
         }
-        else if(_selectedTab == kButtonLeft)
-        {
+    }
+    else if (indexPath.row >= 1 && indexPath.section == 0)
+    {
+//        if(_selectedTab == kButtonRight)
+//        {
+//            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
+//            {
+//                DDLogDebug(@"Notifications count: %lu : %ld", (unsigned long)_notifications.count, (long)indexPath.row);
+//                
+//                return [TableViewHelper generateCellWithMessage:@"You have no more notifications"];
+//            }
+//            
+//            notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
+//            notificationCell.selectionStyle = UITableViewCellSelectionStyleGray;
+//            
+//            GLPNotification *notification = _notifications[indexPath.row - 1];
+//            
+//            DDLogDebug(@"cellForRowAtIndexPath: %@", [_notificationsOrganiser notificationWithIndex:indexPath.row - 1 andSectionIndex:indexPath.section - 1]);
+////            [notificationCell updateWithNotification:notification];
+//            
+//            [notificationCell setNotification:notification];
+//            
+//            notificationCell.delegate = self;
+//            
+//            return notificationCell;
+//        }
+//        else if(_selectedTab == kButtonLeft)
+//       {
             if(self.posts.count != 0)
             {
                 DDLogDebug(@"Show posts tab");
@@ -1115,7 +1187,7 @@
                 postViewCell.delegate = self;
                 
                 [postViewCell setPost:post withPostIndex:indexPath.row];
-            }
+//            }
             
             return postViewCell;
         }
@@ -1161,7 +1233,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row < 1) {
+    if(indexPath.row == 0 && indexPath.section == 0)
+    {
         return;
     }
     
@@ -1173,88 +1246,177 @@
         self.commentCreated = NO;
         [self performSegueWithIdentifier:@"view post" sender:self];
         
+        return;
+        
+    }
+    
+    if (indexPath.section > 0)
+    {
+        if(_selectedTab == kButtonRight)
+        {
+//            GLPNotification *notification = _notifications[indexPath.row - 1];
+            
+            GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
+            
+            
+            // go to the contact detail ?
+            if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
+               notification.notificationType == kGLPNotificationTypeAddedYou) {
+                
+                self.selectedUserId = notification.user.remoteKey;
+                //Refresh contacts' data.
+                [[ContactsManager sharedInstance] refreshContacts];
+                
+                [self performSegueWithIdentifier:@"view private profile" sender:self];
+                
+            }
+            // navigate to post.
+            else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
+                
+                
+                self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+                
+                
+                self.selectedPost.content = @"Loading...";
+                self.isPostFromNotifications = YES;
+                
+                if(notification.notificationType == kGLPNotificationTypeCommented)
+                {
+                    //Add the date of the notification to the view post view controller.
+                    self.commentNotificationDate = notification.date;
+                }
+                else
+                {
+                    self.commentNotificationDate = nil;
+                }
+                
+                [self performSegueWithIdentifier:@"view post" sender:self];
+            }
+            //Navigate to group.
+            else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
+            {
+                [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
+            }
+        }
     }
     // click on internal notification cell
-    else {
-        GLPNotification *notification = _notifications[indexPath.row - 1];
-        
-        // go to the contact detail ?
-        if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
-           notification.notificationType == kGLPNotificationTypeAddedYou) {
-            
-            self.selectedUserId = notification.user.remoteKey;
-            //Refresh contacts' data.
-            [[ContactsManager sharedInstance] refreshContacts];
-            
-            [self performSegueWithIdentifier:@"view private profile" sender:self];
+//    else {
+//        GLPNotification *notification = _notifications[indexPath.row - 1];
+//        
+//        
+//        
+//        // go to the contact detail ?
+//        if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
+//           notification.notificationType == kGLPNotificationTypeAddedYou) {
+//            
+//            self.selectedUserId = notification.user.remoteKey;
+//            //Refresh contacts' data.
+//            [[ContactsManager sharedInstance] refreshContacts];
+//            
+//            [self performSegueWithIdentifier:@"view private profile" sender:self];
+//
+//        }
+//        // navigate to post.
+//        else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
+//            
+//            
+//            self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+//
+//            
+//            self.selectedPost.content = @"Loading...";
+//            self.isPostFromNotifications = YES;
+//            
+//            if(notification.notificationType == kGLPNotificationTypeCommented)
+//            {
+//                //Add the date of the notification to the view post view controller.
+//                self.commentNotificationDate = notification.date;
+//            }
+//            else
+//            {
+//                self.commentNotificationDate = nil;
+//            }
+//            
+//            [self performSegueWithIdentifier:@"view post" sender:self];
+//        }
+//        //Navigate to group.
+//        else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
+//        {
+//            [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
+//        }
 
-        }
-        // navigate to post.
-        else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
-            
-            
-            self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
-
-            
-            self.selectedPost.content = @"Loading...";
-            self.isPostFromNotifications = YES;
-            
-            if(notification.notificationType == kGLPNotificationTypeCommented)
-            {
-                //Add the date of the notification to the view post view controller.
-                self.commentNotificationDate = notification.date;
-            }
-            else
-            {
-                self.commentNotificationDate = nil;
-            }
-            
-            [self performSegueWithIdentifier:@"view post" sender:self];
-        }
-        //Navigate to group.
-        else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
-        {
-            [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
-        }
-
-    }
+//    }
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0)
+    if(indexPath.row == 0 && indexPath.section == 0)
     {
         return PROFILE_TOP_VIEW_HEIGHT;
     }
-    else if(indexPath.row >= 1)
+    else if (indexPath.section > 0)
     {
         if(_selectedTab == kButtonRight)
         {
-            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
-            {
-                return 50.0f;
-            }
+//            if(_notifications.count != 0 && (indexPath.row - 1) == _notifications.count)
+//            {
+//                return 50.0f;
+//            }
             
-            GLPNotification *notification = _notifications[indexPath.row - 1];
+            DDLogDebug(@"Compare 1: %d : %d", [_notificationsOrganiser numberOfSections] - 1, indexPath.section);
+            
+//            if([_notificationsOrganiser numberOfSections] == indexPath.section)
+//            {
+//                DDLogDebug(@"Compare: %d : %d", [_notificationsOrganiser notificationsAtSectionIndex:indexPath.section - 1].count - 1, indexPath.row);
+//                
+//                if([_notificationsOrganiser notificationsAtSectionIndex:indexPath.section - 1].count == indexPath.row)
+//                {
+//                    DDLogDebug(@"Compare3");
+//                    return 50.0f;
+//                }
+//            }
+            
+            
+
+            
+//            GLPNotification *notification = _notifications[indexPath.row - 1];
+            
+            GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
             return [GLPNotificationCell getCellHeightForNotification:notification];
         }
         else if (_selectedTab == kButtonLeft)
         {
-            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
-            
-            if([currentPost imagePost])
-            {
-                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
-            }
-            else if ([currentPost isVideoPost])
-            {
-                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
-            }
-            else
-            {
-                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
-            }
+//            GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
+//            
+//            if([currentPost imagePost])
+//            {
+//                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+//            }
+//            else if ([currentPost isVideoPost])
+//            {
+//                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+//            }
+//            else
+//            {
+//                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
+//            }
+        }
+    }
+    else if (indexPath.row >= 1 && indexPath.section == 0)
+    {
+        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
+        
+        if([currentPost imagePost])
+        {
+            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
+        }
+        else if ([currentPost isVideoPost])
+        {
+            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+        }
+        else
+        {
+            return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
         }
     }
     
@@ -1263,7 +1425,24 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [TableViewHelper generateHeaderViewWithTitle:@"MY ACCOUNT"];
+    if(section == 0)
+    {
+        return nil;
+    }
+    
+    DDLogDebug(@"viewForHeaderInSection: %@", [_notificationsOrganiser headerInSection:section - 1]);
+    
+    return [TableViewHelper generateHeaderViewWithTitle:[_notificationsOrganiser headerInSection:section - 1]];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section == 0)
+    {
+        return 0.0;
+    }
+    
+    return 30.0;
 }
 
 #pragma mark - View image delegate

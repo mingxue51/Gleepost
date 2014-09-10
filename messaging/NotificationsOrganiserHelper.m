@@ -55,7 +55,6 @@
 {
 //    NSMutableArray *sections = [[NSMutableArray alloc] init];
     
-    [_sections removeAllObjects];
     
     NSDate *today = [NSDate date];
     
@@ -94,46 +93,7 @@
     DDLogDebug(@"Final array: %@", _sections);
 }
 
-#pragma mark - Accessors
-
-- (NSInteger)numberOfSections
-{
-    return _sections.count;
-}
-
-- (NSString *)headerInSection:(NSInteger)sectionIndex
-{
-    return [_sections objectAtIndex:sectionIndex];
-}
-
-- (NSArray *)notificationsAtSectionIndex:(NSInteger)sectionIndex
-{
-    NSDictionary *headerNotifications = [_sections objectAtIndex:sectionIndex];
-
-    for(NSString *key in headerNotifications)
-    {
-        NSArray *notifications = [headerNotifications objectForKey:key];
-        
-        return notifications;
-    }
-    
-    return nil;
-}
-
-- (GLPNotification *)notificationWithIndex:(NSInteger)notificationIndex andSectionIndex:(NSInteger)sectionIndex
-{
-    NSDictionary *headerNotifications = [_sections objectAtIndex:sectionIndex];
-    
-    for(NSString *key in headerNotifications)
-    {
-        NSArray *notifications = [headerNotifications objectForKey:key];
-        
-        return [notifications objectAtIndex:notificationIndex];
-    }
-    
-    return nil;
-}
-
+#pragma mark - Operations
 
 - (void)addNotification:(GLPNotification *)notification withHeader:(NSString *)header
 {
@@ -162,6 +122,63 @@
         {
             return dictonary;
         }
+    }
+    
+    return nil;
+}
+
+#pragma mark - Accessors
+
+- (void)resetData
+{
+    [_sections removeAllObjects];
+}
+
+- (NSInteger)numberOfSections
+{
+    return _sections.count;
+}
+
+- (NSString *)headerInSection:(NSInteger)sectionIndex
+{
+    NSDictionary *header = [_sections objectAtIndex:sectionIndex];
+    
+    for(NSString *key in header)
+    {
+        return key;
+    }
+    
+    return nil;
+}
+
+- (NSArray *)notificationsAtSectionIndex:(NSInteger)sectionIndex
+{
+    NSDictionary *headerNotifications = [_sections objectAtIndex:sectionIndex];
+
+    for(NSString *key in headerNotifications)
+    {
+        NSArray *notifications = [headerNotifications objectForKey:key];
+        
+        return notifications;
+    }
+    
+    return nil;
+}
+
+- (NSInteger)lastSection
+{
+    return _sections.count;
+}
+
+- (GLPNotification *)notificationWithIndex:(NSInteger)notificationIndex andSectionIndex:(NSInteger)sectionIndex
+{
+    NSDictionary *headerNotifications = [_sections objectAtIndex:sectionIndex];
+    
+    for(NSString *key in headerNotifications)
+    {
+        NSArray *notifications = [headerNotifications objectForKey:key];
+        
+        return [notifications objectAtIndex:notificationIndex];
     }
     
     return nil;

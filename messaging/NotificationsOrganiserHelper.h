@@ -8,8 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLPNotification;
+
 @interface NotificationsOrganiserHelper : NSObject
 
 - (void)organiseNotifications:(NSArray *)notifications;
+- (NSInteger)numberOfSections;
+- (NSString *)headerInSection:(NSInteger)sectionIndex;
+- (NSArray *)notificationsAtSectionIndex:(NSInteger)sectionIndex;
+- (GLPNotification *)notificationWithIndex:(NSInteger)notificationIndex andSectionIndex:(NSInteger)sectionIndex;
+- (void)resetData;
+- (NSInteger)lastSection;
 
 @end
