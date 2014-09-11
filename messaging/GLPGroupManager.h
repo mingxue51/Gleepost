@@ -38,5 +38,7 @@
 
 +(NSArray *)addPendingImagesIfExistWithGroups:(NSArray *)groups;
 
++ (NSArray *)addOrReplacePendingGroupWithImagesIfNeededInGroups:(NSArray *)groups inPendingGroups:(NSArray *)pending;
+
 
 @end

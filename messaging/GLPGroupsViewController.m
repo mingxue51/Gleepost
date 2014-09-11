@@ -374,12 +374,12 @@
 
 //TODO: Make those methods more efficient.
 
--(void)groupCreatedWithData:(GLPGroup *)group
-{
-    [self reloadNewGroupWithGroup:group];
-    
-    //    [self createNewGroupWithGroup:group];
-}
+//-(void)groupCreatedWithData:(GLPGroup *)group
+//{
+//    [self reloadNewGroupWithGroup:group];
+//    
+//    //    [self createNewGroupWithGroup:group];
+//}
 
 -(void)groupCreatedWithNotification:(NSNotification *)notification
 {

@@ -28,8 +28,6 @@
     
     DDLogDebug(@"Pending groups: %@", pendingGroups);
     
-
-    
     //Add any new images that are uploading in GroupOperationManager.
     localEntities = [self addPendingImagesIfExistWithGroups:localEntities].mutableCopy;
     
@@ -614,6 +612,36 @@
     }
     
     return groups;
+}
+
++ (NSArray *)addOrReplacePendingGroupWithImagesIfNeededInGroups:(NSArray *)groups inPendingGroups:(NSArray *)pending
+{
+    NSMutableArray *finalGroups = groups.mutableCopy;
+  
+    int index = 0;
+    
+    for(GLPGroup *g in groups)
+    {
+        for(GLPGroup *gPending in pending)
+        {
+            if(gPending.key == g.key)
+            {
+                if (g.finalImage == nil) {
+                    
+                    [finalGroups removeObjectAtIndex:index];
+                    
+                    [finalGroups insertObject:gPending atIndex:index];
+                }
+            }
+        }
+        
+        ++index;
+    }
+    
+
+    return finalGroups;
+    
+
 }
 
 #pragma mark - Group members methods

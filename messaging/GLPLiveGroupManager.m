@@ -82,12 +82,9 @@ static GLPLiveGroupManager *instance = nil;
     //Find all the groups that contain real images and save them.
     NSMutableArray *pendingGroups = [[GLPGroupManager findGroupsWithRealImagesWithGroups:pending] mutableCopy];
     
-    DDLogDebug(@"Pending groups: %@", pendingGroups);
+    _groups = [GLPGroupManager addOrReplacePendingGroupWithImagesIfNeededInGroups:_groups inPendingGroups:pendingGroups].mutableCopy;
     
-    
-    
-    //Add any new images that are uploading in GroupOperationManager.
-    _groups = [GLPGroupManager addPendingImagesIfExistWithGroups:_groups.mutableCopy].mutableCopy;
+    [_groups addObjectsFromArray:pendingGroups];
     
     local(_groups);
     
