@@ -10,6 +10,8 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPNotification.h"
 #import "NSDate+TimeAgo.h"
+#import "AppearanceHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPNotificationCell ()
 
@@ -62,6 +64,17 @@ const float NOTIFICATION_CELL_HEIGHT = 60.0;
     
     [self configureTime];
     
+    [self configureCustomSeparatorLine];
+    
+}
+
+- (void)configureCustomSeparatorLine
+{
+    UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(60.0, [GLPNotificationCell getCellHeightForNotification:_notification] - 1, 260.0, 1.0)];
+    
+    [v setBackgroundColor:[UIColor colorWithR:237.0 withG:237.0 andB:237.0]];
+    
+    [self addSubview:v];
 }
 
 - (void)configureTime

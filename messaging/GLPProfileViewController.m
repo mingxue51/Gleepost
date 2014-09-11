@@ -119,8 +119,6 @@
 {
     [super viewDidLoad];
     
-    [self configureTableView];
-    
     [self registerTableViewCells];
     
     [self initialiseObjects];
@@ -144,6 +142,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self configureTableView];
     
     [self configureNavigationBar];
     
@@ -595,7 +595,7 @@
     //Set directly the new user's profile image.
     _user.profileImage = image;
     
-    [self refreshFirstCell];
+//    [self refreshFirstCell];
     
     //Communicate with server to change the image.
     [self uploadAndSetUsersImage];
@@ -795,9 +795,6 @@
     DDLogInfo(@"Load new internal notifications");
 //    _unreadNotificationsCount = [GLPNotificationManager unreadNotificationsCount];
     
-    //Check if is the first notification that arrives.
-    BOOL isNotification = (_notifications.count != 0);
-    
     NSArray *notifications = [GLPNotificationManager unreadNotifications];
     _unreadNotificationsCount = notifications.count;
     if(notifications.count == 0 || _selectedTab != kButtonRight) {
@@ -817,14 +814,10 @@
         
     }
     
-    if(isNotification)
-    {
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
-    }
-    else
-    {
-        [self.tableView reloadData];
-    }
+    [_notificationsOrganiser resetData];
+    [_notificationsOrganiser organiseNotifications:_notifications];
+    
+    [self.tableView reloadData];
     
     
 
@@ -969,11 +962,6 @@
 
 #pragma mark - Table view data source
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(_selectedTab == kButtonRight)
@@ -1065,8 +1053,6 @@
     
     GLPNotificationCell *notificationCell;
     
-    DDLogDebug(@"Row: %d, Section: %d", indexPath.row, indexPath.section);
-    
     if(indexPath.row == 0 && indexPath.section == 0)
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
@@ -1122,14 +1108,14 @@
             notificationCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierNotification forIndexPath:indexPath];
             notificationCell.selectionStyle = UITableViewCellSelectionStyleGray;
             
-//            GLPNotification *notification = _notifications[indexPath.row - 1];
             GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
-//            DDLogDebug(@"cellForRowAtIndexPath: %@", [_notificationsOrganiser notificationWithIndex:indexPath.row - 1 andSectionIndex:indexPath.section - 1]);
-            //            [notificationCell updateWithNotification:notification];
+
             
             [notificationCell setNotification:notification];
             
             notificationCell.delegate = self;
+            
+            
             
             return notificationCell;
         }
@@ -1163,8 +1149,6 @@
 //       {
             if(self.posts.count != 0)
             {
-                DDLogDebug(@"Show posts tab");
-                
                 GLPPost *post = self.posts[indexPath.row-1];
                 
                 if([post imagePost])
@@ -1206,8 +1190,6 @@
     
     if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
     {
-        DDLogDebug(@"%@ not subclass", [cell class]);
-        
         return;
         
     }
@@ -1360,7 +1342,6 @@
 //                return 50.0f;
 //            }
             
-            DDLogDebug(@"Compare 1: %d : %d", [_notificationsOrganiser numberOfSections] - 1, indexPath.section);
             
 //            if([_notificationsOrganiser numberOfSections] == indexPath.section)
 //            {
@@ -1426,8 +1407,6 @@
     {
         return nil;
     }
-    
-    DDLogDebug(@"viewForHeaderInSection: %@", [_notificationsOrganiser headerInSection:section - 1]);
     
     return [TableViewHelper generateHeaderViewWithTitle:[_notificationsOrganiser headerInSection:section - 1]];
 }
@@ -1545,7 +1524,7 @@
     
     NSArray *visiblePosts = [self snapshotVisibleCells];
     
-    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+//    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
@@ -1558,7 +1537,7 @@
     {
         NSArray *visiblePosts = [self snapshotVisibleCells];
         
-        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+//        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
         
         
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
@@ -1634,7 +1613,16 @@
 
 - (void)numberOfPostTouched
 {
-    DDLogDebug(@"numberOfPostTouched");
+    if(_posts.count == 0)
+    {
+        return;
+    }
+    
+    if(_selectedTab == kButtonLeft)
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    
 }
 
 - (void)numberOfGroupsTouched

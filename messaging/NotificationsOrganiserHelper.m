@@ -66,21 +66,12 @@
             [self addNotification:notification withHeader:_recentHeader];
             
         }
-//        else if ([DateFormatterHelper date:notification.date isBetweenDate:twoDaysAgo andDate:yesterday])
-//        {
-//            DDLogDebug(@"Yesterday notification: %@", notification.notificationTypeDescription);
-//            
-//            [self addNotification:notification withHeader:_yesterdayHeader];
-//        }
         else
         {
             DDLogDebug(@"Older notification: %@", notification.notificationTypeDescription);
             
             [self addNotification:notification withHeader:_oldHeader];
         }
-        
-        DDLogDebug(@"Notification: %@ : %@", notification.notificationTypeDescription, notification.date);
-        
     }
     
     DDLogDebug(@"Final array: %@", _sections);
@@ -97,6 +88,7 @@
         NSMutableArray *array = [todaysDictionary objectForKey:header];
         
         [array addObject:notification];
+        
     }
     else
     {
@@ -105,6 +97,24 @@
         [_sections addObject:todaysDictionary];
     }
     
+}
+
+- (void)setNotification:(GLPNotification *)notification withHeader:(NSString *)header
+{
+    NSDictionary *todaysDictionary = [self containsDictionaryWithHeader:header];
+    
+    if(todaysDictionary)
+    {
+        NSMutableArray *array = [todaysDictionary objectForKey:header];
+        
+        [array insertObject:notification atIndex:0];
+    }
+    else
+    {
+        NSMutableArray *currentNotifications = @[notification].mutableCopy;
+        todaysDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:currentNotifications, header, nil];
+        [_sections addObject:todaysDictionary];
+    }
 }
 
 - (NSDictionary *)containsDictionaryWithHeader:(NSString *)header

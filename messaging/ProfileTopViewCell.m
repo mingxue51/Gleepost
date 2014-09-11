@@ -63,6 +63,9 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
     
     [_notificationLabel setHidden:YES];
     [_notificationImageView setHidden:YES];
+    
+
+    
 }
 
 #pragma mark - Configuration

@@ -55,6 +55,22 @@
     
     [titleViewSection addSubview:titleLabel];
     
+    //Create the lines below and above the view.
+    
+    UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
+    
+    [lineImageView setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+    
+//    [titleViewSection addSubview:lineImageView];
+    
+    lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 29.0, 320.0, 1.0)];
+    
+    [lineImageView setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+        
+    [titleViewSection addSubview:lineImageView];
+    
+    
+    
     return titleViewSection;
 }
 

@@ -14,6 +14,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPLoginManager.h"
 #import "ChangePasswordViewController.h"
+#import "TableViewHelper.h"
 
 typedef NS_ENUM(NSUInteger, SettingsItem) {
     kNameSetting = 0,
@@ -127,7 +128,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [self generateHeaderViewWithTitle:@"MY ACCOUNT"];
+    return [TableViewHelper generateHeaderViewWithTitle:@"MY ACCOUNT"];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -167,28 +168,6 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-#pragma mark - UI methods
-
-- (UIView *)generateHeaderViewWithTitle:(NSString *)title
-{
-    UIView *titleViewSection = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 30.0)];
-    
-    [titleViewSection setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 30.0)];
-    
-    [titleLabel setText:title];
-    
-    [titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:12.0]];
-    
-    [titleLabel setTextColor:[AppearanceHelper blueGleepostColour]];
-    
-    [titleViewSection addSubview:titleLabel];
-    
-    return titleViewSection;
-}
-
 
 #pragma mark - Navigation
 

@@ -54,7 +54,6 @@ static GLPNetworkManager *instance = nil;
     //That it seems that is not working anymore.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     
-    [self loadAppsData];
     
     return self;
 }
@@ -86,6 +85,9 @@ static GLPNetworkManager *instance = nil;
     
     // start web socket, then wait for its connection before starting next requests
     [[GLPWebSocketClient sharedInstance] startWebSocket];
+    
+    [self loadAppsData];
+
 }
 
 - (void)restartNetworkOperations
