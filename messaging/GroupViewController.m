@@ -108,8 +108,6 @@ const float TOP_OFF_SET = -64.0;
         [self configureTopImageView];
         [self configureTableView];
         [self loadPosts];
-
-
     }
     
 
@@ -863,6 +861,10 @@ const float TOP_OFF_SET = -64.0;
             [self.tableView reloadData];
             
             self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            
+            //If the view comes from notifications, focus on the user's latest post.
+            [self focusOnTheLatestUsersPostIfNeeded];
+               
         }
         else
         {
@@ -870,6 +872,40 @@ const float TOP_OFF_SET = -64.0;
         }
         
     }];
+}
+
+- (void)focusOnTheLatestUsersPostIfNeeded
+{
+    if(_userCreatedPost)
+    {
+        GLPPost *usersPost = nil;
+        int index = 0;
+        
+        for(GLPPost *p in _posts)
+        {
+            if(p.author.remoteKey == _userCreatedPost.remoteKey)
+            {
+                usersPost = p;
+                break;
+            }
+            ++index;
+        }
+        
+        if(usersPost)
+        {
+            
+            if(index == _posts.count)
+            {
+                DDLogError(@"Index to scroll should be less than the number of posts. Abort scrolling");
+                
+                return;
+            }
+            
+            DDLogDebug(@"Post index: %d", index);
+            //Scroll to index.
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+    }
 }
 
 -(void)loadGroupData

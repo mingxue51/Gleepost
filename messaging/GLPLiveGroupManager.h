@@ -18,6 +18,8 @@
 
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote;
 
+- (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey;
+
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey;
 
 - (void)postGroupReadWithRemoteKey:(NSInteger)groupKey;

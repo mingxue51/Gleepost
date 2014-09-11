@@ -14,9 +14,8 @@
 
 @interface NotificationsOrganiserHelper ()
 
-@property (strong, nonatomic) NSString *todayHeader;
-@property (strong, nonatomic) NSString *yesterdayHeader;
-@property (strong, nonatomic) NSString *olderHeader;
+@property (strong, nonatomic) NSString *recentHeader;
+@property (strong, nonatomic) NSString *oldHeader;
 @property (strong, nonatomic) NSMutableArray *sections;
 
 @end
@@ -30,9 +29,8 @@
     
     if(self)
     {
-        _todayHeader = @"TODAY";
-        _yesterdayHeader = @"YESTERDAY";
-        _olderHeader = @"OLDER";
+        _recentHeader = @"RECENT";
+        _oldHeader = @"OLD";
         _sections = [[NSMutableArray alloc] init];
     }
     
@@ -55,35 +53,30 @@
 {
 //    NSMutableArray *sections = [[NSMutableArray alloc] init];
     
-    
     NSDate *today = [NSDate date];
     
-    NSDate *yesterday = [DateFormatterHelper generateDateBeforeDays:1];
-    
-    NSDate *twoDaysAgo = [DateFormatterHelper generateDateBeforeDays:2];
-    
-    DDLogDebug(@"Today: %@, Yesterday: %@, One week ago: %@", today, yesterday, twoDaysAgo);
+    NSDate *weekAgo = [DateFormatterHelper generateDateBeforeDays:7];
     
     for(GLPNotification *notification in notifications)
     {
-        if ([DateFormatterHelper date:notification.date isBetweenDate:yesterday andDate:today])
+        if ([DateFormatterHelper date:notification.date isBetweenDate:weekAgo andDate:today])
         {
-            DDLogDebug(@"Today notification: %@", notification.notificationTypeDescription);
+            DDLogDebug(@"Recent notification: %@", notification.notificationTypeDescription);
 
-            [self addNotification:notification withHeader:_todayHeader];
+            [self addNotification:notification withHeader:_recentHeader];
             
         }
-        else if ([DateFormatterHelper date:notification.date isBetweenDate:twoDaysAgo andDate:yesterday])
-        {
-            DDLogDebug(@"Yesterday notification: %@", notification.notificationTypeDescription);
-            
-            [self addNotification:notification withHeader:_yesterdayHeader];
-        }
+//        else if ([DateFormatterHelper date:notification.date isBetweenDate:twoDaysAgo andDate:yesterday])
+//        {
+//            DDLogDebug(@"Yesterday notification: %@", notification.notificationTypeDescription);
+//            
+//            [self addNotification:notification withHeader:_yesterdayHeader];
+//        }
         else
         {
             DDLogDebug(@"Older notification: %@", notification.notificationTypeDescription);
             
-            [self addNotification:notification withHeader:_olderHeader];
+            [self addNotification:notification withHeader:_oldHeader];
         }
         
         DDLogDebug(@"Notification: %@ : %@", notification.notificationTypeDescription, notification.date);

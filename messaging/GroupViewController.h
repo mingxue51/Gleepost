@@ -19,5 +19,9 @@
 @interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
+
+/** This is used only when the group is navigated from notifications
+ in order to focus on the latest user's post.*/
+@property (strong, nonatomic) GLPUser *userCreatedPost;
 @property (assign, nonatomic) BOOL fromPushNotification;
 @end

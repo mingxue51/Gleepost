@@ -52,6 +52,7 @@
 #import "GLPViewImageViewController.h"
 #import "TableViewHelper.h"
 #import "NotificationsOrganiserHelper.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, UIActionSheetDelegate>
 
@@ -90,6 +91,7 @@
 @property (assign, nonatomic) BOOL tabButtonEnabled;
 
 @property (strong, nonatomic) GLPGroup *groupToNavigate;
+@property (strong, nonatomic) GLPUser *userCreatedTheGroupPost;
 
 @property (strong, nonatomic) EmptyMessage *emptyNotificationsMessage;
 @property (strong, nonatomic) EmptyMessage *emptyMyPostsMessage;
@@ -1258,22 +1260,9 @@
             
             GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
             
-            
-            // go to the contact detail ?
-            if(notification.notificationType == kGLPNotificationTypeAcceptedYou ||
-               notification.notificationType == kGLPNotificationTypeAddedYou) {
-                
-                self.selectedUserId = notification.user.remoteKey;
-                //Refresh contacts' data.
-                [[ContactsManager sharedInstance] refreshContacts];
-                
-                [self performSegueWithIdentifier:@"view private profile" sender:self];
-                
-            }
             // navigate to post.
-            else if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented) {
-                
-                
+            if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented)
+            {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
                 
                 
@@ -1296,6 +1285,14 @@
             else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
             {
                 [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
+            }
+            else if (notification.notificationType == kGLPNotificationTypeCreatedPostGroup)
+            {
+                NSInteger groupRemoteKey = ((NSNumber *)[notification.customParams objectForKey:@"network"]).integerValue;
+                
+                _groupToNavigate = [[GLPLiveGroupManager sharedInstance] groupWithRemoteKey:groupRemoteKey];
+                _userCreatedTheGroupPost = notification.user;
+                [self performSegueWithIdentifier:@"view group" sender:self];
             }
         }
     }
@@ -1703,6 +1700,7 @@
         GroupViewController *groupVC = segue.destinationViewController;
         
         groupVC.group = _groupToNavigate;
+        groupVC.userCreatedPost = _userCreatedTheGroupPost;
     }
     else if ([segue.identifier isEqualToString:@"view badges"])
     {

@@ -111,6 +111,14 @@ static GLPLiveGroupManager *instance = nil;
     }];
 }
 
+- (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey
+{
+    DDLogDebug(@"GROUPS!!! : %@", _groups);
+    
+    return [self findGroupWithRemoteKey:groupRemoteKey];
+    
+}
+
 #pragma mark - Updates
 
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey
