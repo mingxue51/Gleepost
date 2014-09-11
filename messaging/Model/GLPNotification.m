@@ -36,7 +36,7 @@
         case kGLPNotificationTypeCommented:
             return [NSString stringWithFormat:@"%@ commented on your post", self.user.name];
         case kGLPNotificationTypeLiked:
-            return [NSString stringWithFormat:@"%@ liked your post", self.user.name];
+            return [NSString stringWithFormat:@"%@ likes your post", self.user.name];
         case kGLPNotificationTypeAddedYou:
             return [NSString stringWithFormat:@"Contact invite from %@",self.user.name];
         case kGLPNotificationTypeAddedGroup:
