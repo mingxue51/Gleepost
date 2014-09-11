@@ -147,6 +147,7 @@
 		5831930319B592EB000E86D7 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5831930219B592EB000E86D7 /* AddressCell.xib */; };
 		5831930619B5BB97000E86D7 /* GLPSelectAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831930519B5BB97000E86D7 /* GLPSelectAddressViewController.m */; };
 		5831B41118DB28BB00574A53 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5831B41018DB28BB00574A53 /* UIImage+Alpha.m */; };
+		58323C9419C17F3000B330F9 /* touch_to_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 58323C9319C17F3000B330F9 /* touch_to_play.png */; };
 		5832C4B1189920E2004FC4F6 /* KhmerUIb.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4B018992049004FC4F6 /* KhmerUIb.TTF */; };
 		5832C4BD1899357B004FC4F6 /* Khmer-Sangam-MN.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */; };
 		5832C4BF189936E9004FC4F6 /* user_image_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5832C4BE189936E9004FC4F6 /* user_image_bg.png */; };
@@ -573,7 +574,6 @@
 		58BEABA219BA83D600A4F3F7 /* camera_front_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 58BEABA119BA83D600A4F3F7 /* camera_front_back.png */; };
 		58BEABA419BA88AD00A4F3F7 /* video_done.png in Resources */ = {isa = PBXBuildFile; fileRef = 58BEABA319BA88AD00A4F3F7 /* video_done.png */; };
 		58BEABA619BA890900A4F3F7 /* go_to_preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 58BEABA519BA890900A4F3F7 /* go_to_preview.png */; };
-		58BEABA819BA89AF00A4F3F7 /* cancel_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 58BEABA719BA89AF00A4F3F7 /* cancel_recording.png */; };
 		58BEABAA19BAB92D00A4F3F7 /* touch_to_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 58BEABA919BAB92D00A4F3F7 /* touch_to_pause.png */; };
 		58BF03E918F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */; };
 		58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */; };
@@ -1089,6 +1089,7 @@
 		5831930519B5BB97000E86D7 /* GLPSelectAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectAddressViewController.m; sourceTree = "<group>"; };
 		5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		5831B41018DB28BB00574A53 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		58323C9319C17F3000B330F9 /* touch_to_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = touch_to_play.png; sourceTree = "<group>"; };
 		5832C4B018992049004FC4F6 /* KhmerUIb.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = KhmerUIb.TTF; sourceTree = "<group>"; };
 		5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Khmer-Sangam-MN.TTF"; sourceTree = "<group>"; };
 		5832C4BE189936E9004FC4F6 /* user_image_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_image_bg.png; sourceTree = "<group>"; };
@@ -1694,7 +1695,6 @@
 		58BEABA119BA83D600A4F3F7 /* camera_front_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_front_back.png; sourceTree = "<group>"; };
 		58BEABA319BA88AD00A4F3F7 /* video_done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_done.png; sourceTree = "<group>"; };
 		58BEABA519BA890900A4F3F7 /* go_to_preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go_to_preview.png; sourceTree = "<group>"; };
-		58BEABA719BA89AF00A4F3F7 /* cancel_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_recording.png; sourceTree = "<group>"; };
 		58BEABA919BAB92D00A4F3F7 /* touch_to_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = touch_to_pause.png; sourceTree = "<group>"; };
 		58BF03E718F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFlurryVisibleCellProcessor.h; sourceTree = "<group>"; };
 		58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFlurryVisibleCellProcessor.m; sourceTree = "<group>"; };
@@ -3538,8 +3538,8 @@
 		58A75EC019211D7B0082F316 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				58323C9319C17F3000B330F9 /* touch_to_play.png */,
 				58BEABA919BAB92D00A4F3F7 /* touch_to_pause.png */,
-				58BEABA719BA89AF00A4F3F7 /* cancel_recording.png */,
 				58BEABA519BA890900A4F3F7 /* go_to_preview.png */,
 				58BEABA319BA88AD00A4F3F7 /* video_done.png */,
 				58BEABA119BA83D600A4F3F7 /* camera_front_back.png */,
@@ -5220,7 +5220,6 @@
 				581B534719766D2900BAFAE7 /* splash.png in Resources */,
 				58AD86C11892DFD100016C6D /* profile_botton.png in Resources */,
 				58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */,
-				58BEABA819BA89AF00A4F3F7 /* cancel_recording.png in Resources */,
 				5890D225184790BA00E293DD /* chat_background_default.png in Resources */,
 				58289EF118D7511B00228EFF /* icon_comment.png in Resources */,
 				5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */,
@@ -5328,6 +5327,7 @@
 				58F0F0C21934F91E0032450F /* categories_image.png in Resources */,
 				5866F16018844869007484CF /* blimp_night.png in Resources */,
 				8096E4E717C2CA6800C7BF60 /* pic.png in Resources */,
+				58323C9419C17F3000B330F9 /* touch_to_play.png in Resources */,
 				582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */,
 				582F7AFF199DB8C500219D4C /* video_top_button.png in Resources */,
 				58711A6B18C6586D00798F13 /* ContactCell.xib in Resources */,

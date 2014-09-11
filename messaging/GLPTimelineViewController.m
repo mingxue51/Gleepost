@@ -620,7 +620,7 @@ const float TOP_OFFSET = 180.0f;
     
     
 //    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-    UIColor *tabColour = [UIColor colorWithRed:221.0f/255.0f green:71.0f/255.0f blue:84.0f/255.0f alpha:1.0f];
+    UIColor *tabColour = [AppearanceHelper redGleepostColour];
 
     
     //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];

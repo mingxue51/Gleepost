@@ -1909,7 +1909,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preview" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yRd-UL-GyR">
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PREVIEW" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yRd-UL-GyR">
                                                 <rect key="frame" x="106" y="11" width="109" height="21"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1917,9 +1917,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="knz-r0-31T">
-                                                <rect key="frame" x="5" y="0.0" width="50" height="43"/>
+                                                <rect key="frame" x="10" y="9" width="26" height="26"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" backgroundImage="cancel_recording.png">
+                                                <state key="normal" backgroundImage="back_final.png">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -1940,31 +1940,35 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="yMn-Ug-lPK">
                                         <rect key="frame" x="0.0" y="389" width="320" height="160"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.066666666669999999" green="0.066666666669999999" blue="0.066666666669999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="touch_to_pause.png" id="M6Y-OD-Vfs">
                                         <rect key="frame" x="45" y="453" width="230" height="38"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="touch_to_play.png" id="gMR-aR-vnz">
+                                        <rect key="frame" x="45" y="453" width="230" height="38"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
                                     <view contentMode="scaleAspectFill" id="LAU-8z-BQ1">
-                                        <rect key="frame" x="0.0" y="43" width="320" height="354"/>
+                                        <rect key="frame" x="0.0" y="60" width="320" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="YOS-6w-EWq" customClass="VideoCaptureView">
                                 <rect key="frame" x="0.0" y="21" width="320" height="547"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="mBY-O7-yOs">
-                                        <rect key="frame" x="0.0" y="38" width="320" height="354"/>
+                                        <rect key="frame" x="0.0" y="60" width="320" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
@@ -1980,7 +1984,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="awn-1C-IJD" appends="YES" id="g2D-nt-ksn"/>
                                         </connections>
@@ -1995,16 +1999,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <action selector="changeCamera:" destination="YOS-6w-EWq" eventType="touchUpInside" id="lT5-wW-72f"/>
                                         </connections>
                                     </button>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="wcF-ok-CIu" customClass="VideoProgressView">
+                                        <rect key="frame" x="0.0" y="53" width="320" height="2"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="progressTintColor" red="0.24705882352941178" green="0.85882352941176465" blue="0.82352941176470584" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="trackTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </progressView>
                                     <view contentMode="scaleToFill" id="ABR-3S-wAa">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="wcF-ok-CIu" customClass="VideoProgressView">
-                                                <rect key="frame" x="-1" y="21" width="320" height="2"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="progressTintColor" red="0.29411764709999999" green="0.81568627449999997" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="trackTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            </progressView>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GkK-SD-heB">
                                                 <rect key="frame" x="248" y="7" width="65" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -2039,7 +2043,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="continueBarButton" destination="GkK-SD-heB" id="7Ge-7e-OB8"/>
                                     <outlet property="longPressGestureRecognizer" destination="awn-1C-IJD" id="twn-jV-gSz"/>
@@ -2055,6 +2059,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="cameraView" destination="mBY-O7-yOs" id="XVF-5Z-2A1"/>
                         <outlet property="previewView" destination="LAU-8z-BQ1" id="Yea-cz-guc"/>
                         <outlet property="touchToPauseImageView" destination="M6Y-OD-Vfs" id="srj-Ja-KYh"/>
+                        <outlet property="touchToPlayImageView" destination="gMR-aR-vnz" id="gRU-4c-X83"/>
                         <outlet property="videoPreviewView" destination="xR2-qF-eYq" id="JuD-vR-DPA"/>
                         <outlet property="videoView" destination="YOS-6w-EWq" id="YXp-75-yT3"/>
                     </connections>
@@ -4604,11 +4609,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="add_members_bg.png" width="516" height="112"/>
         <image name="back.png" width="23" height="37"/>
         <image name="back_black.png" width="23" height="37"/>
+        <image name="back_final.png" width="25" height="25"/>
         <image name="bird-house-7.png" width="25" height="23"/>
         <image name="camera_front_back.png" width="74" height="58"/>
         <image name="camera_top_button.png" width="190" height="95"/>
         <image name="cancel.png" width="100" height="111"/>
-        <image name="cancel_recording.png" width="74" height="64"/>
         <image name="cancel_white.png" width="100" height="111"/>
         <image name="categories_image.png" width="44" height="39"/>
         <image name="change_pass_name.png" width="600" height="100"/>
@@ -4670,13 +4675,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="39" height="31"/>
         <image name="share_image.png" width="20" height="17"/>
-        <image name="sign_in_b" width="400" height="56"/>
+        <image name="sign_in_b" width="150" height="60"/>
         <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="sing_in_bg.png" width="520" height="100"/>
         <image name="skip_button.png" width="440" height="108"/>
         <image name="thumbs-up_image.png" width="15" height="15"/>
         <image name="touch_to_pause.png" width="414" height="47"/>
+        <image name="touch_to_play.png" width="395" height="47"/>
         <image name="touch_to_record.png" width="442" height="47"/>
         <image name="user_image_bg.png" width="74" height="74"/>
         <image name="verification_rocket.png" width="185" height="149"/>

@@ -33,6 +33,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *touchToPauseImageView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *touchToPlayImageView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *backImageView;
 
 @property (strong, nonatomic) NSString *videoPath;
@@ -214,11 +216,13 @@
 - (void)playVideo
 {
     [_touchToPauseImageView setHidden:NO];
+    [_touchToPlayImageView setHidden:YES];
 }
 
 - (void)pauseVideo
 {
     [_touchToPauseImageView setHidden:YES];
+    [_touchToPlayImageView setHidden:NO];
 }
 
 #pragma mark - Notifications

@@ -196,7 +196,7 @@
 -(void)showPreviewNavigationBar
 {
     [_continueBarButton setHidden:YES];
-    [_titleLable setText:@"New Video"];
+    [_titleLable setText:@"RECORD A VIDEO"];
 }
 
 -(void)showCurrentSecondToTitleText:(NSNotification *)sender

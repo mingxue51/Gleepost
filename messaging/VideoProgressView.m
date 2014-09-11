@@ -43,7 +43,7 @@ const float MIN_SECONDS = 5.0f;
 
 -(void)formatProgressView
 {
-    [self setTransform:CGAffineTransformMakeScale(1.0, 22.0)];
+    [self setTransform:CGAffineTransformMakeScale(1.0, 7.0)];
 }
 
 /**

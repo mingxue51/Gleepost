@@ -819,11 +819,6 @@
     
     [self.tableView reloadData];
     
-    
-
-    
-//    [self.tableView reloadData];
-    
     _tabButtonEnabled = YES;
     
     //ADDED.
