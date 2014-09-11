@@ -134,8 +134,6 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     {
         [_notificationView setHidden:YES];
     }
-    
-    DDLogDebug(@"COUNT: %@ with group: %@", @(count), _groupData);
 }
 
 #pragma mark - Online indicator

@@ -92,10 +92,6 @@ static GLPLiveGroupManager *instance = nil;
         _groups = localEntities;
     }
     
-//    _groups = [GLPGroupManager addOrReplacePendingGroupWithImagesIfNeededInGroups:_groups inPendingGroups:pendingGroups].mutableCopy;
-//    
-//    [_groups addObjectsFromArray:pendingGroups];
-    
     local(_groups);
     
     [[WebClient sharedInstance ] getGroupswithCallbackBlock:^(BOOL success, NSArray *serverGroups) {
