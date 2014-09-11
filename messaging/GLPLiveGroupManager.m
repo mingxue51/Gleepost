@@ -82,9 +82,19 @@ static GLPLiveGroupManager *instance = nil;
     //Find all the groups that contain real images and save them.
     NSMutableArray *pendingGroups = [[GLPGroupManager findGroupsWithRealImagesWithGroups:pending] mutableCopy];
     
-    _groups = [GLPGroupManager addOrReplacePendingGroupWithImagesIfNeededInGroups:_groups inPendingGroups:pendingGroups].mutableCopy;
+
+    if(pendingGroups)
+    {
+        NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
+        
+        [localEntities addObjectsFromArray:pendingGroups];
+        
+        _groups = localEntities;
+    }
     
-    [_groups addObjectsFromArray:pendingGroups];
+//    _groups = [GLPGroupManager addOrReplacePendingGroupWithImagesIfNeededInGroups:_groups inPendingGroups:pendingGroups].mutableCopy;
+//    
+//    [_groups addObjectsFromArray:pendingGroups];
     
     local(_groups);
     
