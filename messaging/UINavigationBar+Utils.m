@@ -96,7 +96,7 @@
         {
             UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
             
-            [fixedSpace setWidth:-5];
+            [fixedSpace setWidth:0];
 
             items = @[fixedSpace, barButtonItem].mutableCopy;
         }
@@ -116,7 +116,7 @@
         {
             UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
 
-            [fixedSpace setWidth:-4];
+            [fixedSpace setWidth:-2.6];
             
             items = @[fixedSpace, barButtonItem].mutableCopy;
 

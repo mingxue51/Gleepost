@@ -942,11 +942,11 @@ const float TOP_OFFSET = 180.0f;
     float buttonsSize = 30.0;
 
     
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(showCategories:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategories:) andTarget:self];
 
     
     
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(buttonsSize, buttonsSize) withSelector:@selector(newPostButtonClick) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
 
 }
 

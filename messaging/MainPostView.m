@@ -21,6 +21,7 @@
 #import "WebClientHelper.h"
 #import "TopPostView.h"
 #import "AppearanceHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface MainPostView ()
 
@@ -690,18 +691,23 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     else if(self.post.attended)
     {
         //[_goingBtn setImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
-        [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
-        _goingBtn.tintColor = [UIColor whiteColor];
-        [_goingBtn setEnabled:YES];
-        _goingBtn.tag = 1;
+//        [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
+//        _goingBtn.tintColor = [UIColor whiteColor];
+//        [_goingBtn setEnabled:YES];
+//        _goingBtn.tag = 1;
+        
+        [self makeButtonSelected];
     }
     else
     {
 //        [_goingBtn setImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
-        [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
-        _goingBtn.tintColor = [AppearanceHelper grayGleepostColour];
-        [_goingBtn setEnabled:YES];
-        _goingBtn.tag = 2;
+//        [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
+//        _goingBtn.tintColor = [AppearanceHelper grayGleepostColour];
+//        [_goingBtn setEnabled:YES];
+//        _goingBtn.tag = 2;
+        
+        [self makeButtonUnselected];
+        
     }
 }
 
@@ -803,6 +809,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
 //    [_goingBtn setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
     [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_pushed_back_btn"] forState:UIControlStateNormal];
+    [_goingBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
     _goingBtn.tag = 1;
 }
@@ -811,7 +818,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
 //    [_goingBtn setImage:[UIImage imageNamed:@"going"] forState:UIControlStateNormal];
     [_goingBtn setBackgroundImage:[UIImage imageNamed:@"going_unpushed_back_btn"] forState:UIControlStateNormal];
-    
+    [_goingBtn setTitleColor:[UIColor colorWithR:70.0 withG:70.0 andB:70.0] forState:UIControlStateNormal];
+
     _goingBtn.tag = 2;
 }
 
