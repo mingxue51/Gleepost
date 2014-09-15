@@ -141,6 +141,9 @@
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
+/** Used when user press the comment button on view from campus wall. */
+@property (assign, nonatomic) BOOL showComment;
+
 @end
 
 
@@ -319,6 +322,8 @@ const float TOP_OFFSET = 180.0f;
     _walkthroughFinished = NO;
     
     _tableViewFirstTimeScrolled = NO;
+    
+    _showComment = NO;
 }
 
 
@@ -939,15 +944,9 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)addNavigationButtons
 {
-    float buttonsSize = 30.0;
-
-    
     [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategories:) andTarget:self];
-
-    
     
     [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
-
 }
 
 //- (void)showProgressView
@@ -2658,6 +2657,17 @@ const float TOP_OFFSET = 180.0f;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    _showComment = YES;
+    self.selectedPost = [self currentPostWithIndexPath:[NSIndexPath indexPathForRow:postIndex inSection:0]];
+    
+    self.selectedIndex = postIndex;
+    self.postIndexToReload = postIndex;
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
 /**
  If YES navigate to real profile, if no to private profile.
  */
@@ -2953,6 +2963,8 @@ const float TOP_OFFSET = 180.0f;
         vc.commentJustCreated = self.commentCreated;
         vc.isFromCampusLive = NO;
         vc.post = self.selectedPost;
+        vc.showComment = _showComment;
+        _showComment = NO;
 //        vc.selectedIndex = self.selectedIndex;
         
         

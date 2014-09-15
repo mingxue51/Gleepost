@@ -110,6 +110,7 @@
 
 @property (strong, nonatomic) NotificationsOrganiserHelper *notificationsOrganiser;
 
+
 @end
 
 
@@ -1446,6 +1447,15 @@
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    _showComment = YES;
+    self.selectedPost = _posts[postIndex];
+    
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
 #pragma mark - New comment delegate
 
 -(void)setPreviousViewToNavigationBar
@@ -1660,10 +1670,12 @@
         [vc reloadImage:([self.selectedPost imagePost] || [self.selectedPost isVideoPost]) ? YES : NO];
         
         vc.post = self.selectedPost;
+        vc.showComment = _showComment;
         vc.isFromCampusLive = NO;
         vc.isViewPostNotifications = YES;
         vc.isViewPostFromNotifications = self.isPostFromNotifications;
         self.selectedPost = nil;
+        _showComment = NO;
         
     }
     else if([segue.identifier isEqualToString:@"view private profile"])

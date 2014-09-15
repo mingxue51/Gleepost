@@ -18,7 +18,7 @@
 
 
 @property (assign, nonatomic) int selectedUserId;
-
+@property (assign, nonatomic) BOOL showComment;
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)showFullProfileImage:(id)sender;

@@ -20,6 +20,7 @@
 @interface GLPProfileViewController : UITableViewController <UIActionSheetDelegate, NewCommentDelegate, ViewImageDelegate, GLPImageViewDelegate, RemovePostCellDelegate, GLPPostCellDelegate, ProfileTopViewCellDelegate, ImageSelectorViewControllerDelegate>
 
 @property (assign, nonatomic) BOOL fromPushNotification;
+@property (assign, nonatomic) BOOL showComment;
 
 -(void)changeProfileImage:(id)sender;
 

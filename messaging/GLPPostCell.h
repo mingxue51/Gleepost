@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, GLPCellType) {
 @optional
 -(void)setPreviousViewToNavigationBar;
 -(void)setPreviousNavigationBarName;
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex;
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
 

@@ -249,13 +249,15 @@ const float ONE_LINE_LIMIT = 18.0;
 -(void)commentButtonSelected
 {
     //Hide navigation bar.
-    [self.delegate hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
+//    [self.delegate hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
+//    
+//    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.delegate.view.window.subviews objectAtIndex:0]];
+//    
+//    loadingView.post = self.post;
+//    loadingView.postIndex = self.postIndex;
+//    loadingView.profileDelegate = self.delegate;
     
-    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.delegate.view.window.subviews objectAtIndex:0]];
-    
-    loadingView.post = self.post;
-    loadingView.postIndex = self.postIndex;
-    loadingView.profileDelegate = self.delegate;
+    [_delegate navigateToPostForCommentWithIndex:self.postIndex];
 }
 
 #pragma mark - Static methods

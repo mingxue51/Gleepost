@@ -25,6 +25,7 @@
 
 @property (assign, nonatomic) BOOL isFromCampusLive;
 @property (strong, nonatomic) NSDate *commentNotificationDate;
+@property (assign, nonatomic) BOOL showComment;
 
 @property (weak, nonatomic) UIViewController <RemovePostCellDelegate> *groupController;
 

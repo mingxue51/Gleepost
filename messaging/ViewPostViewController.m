@@ -101,9 +101,10 @@ static BOOL likePushed;
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:commentIndex inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 
+    [self showCommentIfNeeded];
     
 
-    [self registerNotifications];
+//    [self registerNotifications];
     
     [self sendStatistics];
     
@@ -119,6 +120,9 @@ static BOOL likePushed;
 {
     [super viewWillAppear:animated];
     [self configureNavigationBar];
+    
+    [self registerNotifications];
+
     
     [self hideNetworkErrorViewIfNeeded];
     
@@ -156,7 +160,15 @@ static BOOL likePushed;
     [self sendViewToFlurry:NSStringFromClass([self class])];
     
     [self sendView:NSStringFromClass([self class]) withId:self.post.remoteKey];
+}
 
+- (void)showCommentIfNeeded
+{
+    if(_showComment)
+    {
+        [self scrollToTheEndAnimated:YES];
+        [_commentGrowingTextView becomeFirstResponder];
+    }
 }
 
 
@@ -934,6 +946,9 @@ static bool firstTime = YES;
 #pragma mark - Form management
 
 - (void)keyboardWillShow:(NSNotification *)note{
+    
+    DDLogDebug(@"keyboardWillShow: %@", note);
+    
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
@@ -1004,6 +1019,8 @@ static bool firstTime = YES;
     tableViewFrame.size.height += diff;
     self.tableView.frame = tableViewFrame;
 
+    DDLogDebug(@"growingTextView: %f", height);
+    
     
     [self scrollToTheEndAnimated:NO];
 }
@@ -1020,6 +1037,9 @@ static bool firstTime = YES;
         CGPoint offset = self.tableView.contentOffset;
         // Adjust the below value as you need
         offset.y += (point.y - navBarHeight);
+        
+        DDLogDebug(@"growingTextViewDidBeginEditing: %@", growingTextView);
+        
         [self.tableView setContentOffset:offset animated:NO];
     }
 }
@@ -1238,11 +1258,6 @@ static bool firstTime = YES;
 {
     _mediaNeedsToReload = loadImage;
 }
-
-//- (void)backButtonClick
-//{
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
 
 #pragma mark - Navigation
 

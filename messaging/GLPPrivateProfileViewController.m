@@ -919,6 +919,15 @@
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    _showComment = YES;
+    self.selectedPost = _posts[postIndex];
+    
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
 #pragma mark - Navigation methods
 
 -(void)viewConversation:(GLPConversation*)conversation
@@ -943,9 +952,13 @@
         
         vc.commentJustCreated = self.commentCreated;
         
+        vc.showComment = _showComment;
+        
         vc.isFromCampusLive = NO;
         
         vc.post = self.selectedPost;
+        
+        _showComment = NO;
         
     }
     else if ([segue.identifier isEqualToString:@"view topic"])
