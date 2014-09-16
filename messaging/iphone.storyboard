@@ -406,7 +406,7 @@
                                 <rect key="frame" x="10" y="250" width="300" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                <state key="normal" title="Theater" backgroundImage="kind_of_event_theatre.png">
+                                <state key="normal" title="Theater" backgroundImage="kind_of_event_theater.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
@@ -653,16 +653,16 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="VJg-9l-69Q">
-                                <rect key="frame" x="0.0" y="48" width="320" height="312"/>
+                                <rect key="frame" x="0.0" y="48" width="320" height="375"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" alpha="0.49999999999999961" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="DhH-lh-3JV">
-                                <rect key="frame" x="0.0" y="48" width="320" height="312"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="DhH-lh-3JV">
+                                <rect key="frame" x="0.0" y="48" width="320" height="375"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="MGx-Bk-zFC">
-                                <rect key="frame" x="0.0" y="58" width="320" height="302"/>
+                                <rect key="frame" x="0.0" y="58" width="320" height="365"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -693,7 +693,7 @@
                                 </connections>
                             </imageView>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="7Us-7b-XyJ">
-                                <rect key="frame" x="0.0" y="373" width="320" height="145"/>
+                                <rect key="frame" x="0.0" y="424" width="320" height="144"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -4634,7 +4634,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="kind_of_event_party.png" width="600" height="110"/>
         <image name="kind_of_event_speaker.png" width="600" height="110"/>
         <image name="kind_of_event_sports.png" width="600" height="110"/>
-        <image name="kind_of_event_theatre.png" width="600" height="110"/>
+        <image name="kind_of_event_theater.png" width="600" height="110"/>
         <image name="kind_of_post_announcement.png" width="600" height="220"/>
         <image name="kind_of_post_event.png" width="600" height="220"/>
         <image name="kind_of_post_general.png" width="600" height="220"/>
@@ -4673,7 +4673,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="search_users_textfield_icon" width="52" height="52"/>
         <image name="secret_group.png" width="200" height="111"/>
         <image name="send_button_background.png" width="130" height="74"/>
-        <image name="share.png" width="39" height="31"/>
+        <image name="share.png" width="40" height="36"/>
         <image name="share_image.png" width="20" height="17"/>
         <image name="sign_in_b" width="150" height="60"/>
         <image name="sign_up_bg.png" width="520" height="100"/>

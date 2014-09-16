@@ -275,7 +275,7 @@
 		585106DA199D87DA000F06BB /* kind_of_event_party.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D1199D87DA000F06BB /* kind_of_event_party.png */; };
 		585106DB199D87DA000F06BB /* kind_of_event_speaker.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D2199D87DA000F06BB /* kind_of_event_speaker.png */; };
 		585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D3199D87DA000F06BB /* kind_of_event_sports.png */; };
-		585106DD199D87DA000F06BB /* kind_of_event_theatre.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D4199D87DA000F06BB /* kind_of_event_theatre.png */; };
+		585106DD199D87DA000F06BB /* kind_of_event_theater.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D4199D87DA000F06BB /* kind_of_event_theater.png */; };
 		585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106E2199D9E64000F06BB /* PendingPostManager.m */; };
 		5851112A19A7E31000488E79 /* GLPProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851112919A7E31000488E79 /* GLPProgressManager.m */; };
 		5851113719A8206900488E79 /* progress_bar_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113419A8206900488E79 /* progress_bar_border.png */; };
@@ -1279,7 +1279,7 @@
 		585106D1199D87DA000F06BB /* kind_of_event_party.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_party.png; sourceTree = "<group>"; };
 		585106D2199D87DA000F06BB /* kind_of_event_speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_speaker.png; sourceTree = "<group>"; };
 		585106D3199D87DA000F06BB /* kind_of_event_sports.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_sports.png; sourceTree = "<group>"; };
-		585106D4199D87DA000F06BB /* kind_of_event_theatre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_theatre.png; sourceTree = "<group>"; };
+		585106D4199D87DA000F06BB /* kind_of_event_theater.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_theater.png; sourceTree = "<group>"; };
 		585106E1199D9E64000F06BB /* PendingPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingPostManager.h; sourceTree = "<group>"; };
 		585106E2199D9E64000F06BB /* PendingPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingPostManager.m; sourceTree = "<group>"; };
 		5851112819A7E31000488E79 /* GLPProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProgressManager.h; sourceTree = "<group>"; };
@@ -3261,7 +3261,7 @@
 				585106D1199D87DA000F06BB /* kind_of_event_party.png */,
 				585106D2199D87DA000F06BB /* kind_of_event_speaker.png */,
 				585106D3199D87DA000F06BB /* kind_of_event_sports.png */,
-				585106D4199D87DA000F06BB /* kind_of_event_theatre.png */,
+				585106D4199D87DA000F06BB /* kind_of_event_theater.png */,
 				58D7F76819A2ABB600C39A4C /* kind_of_post_announcement.png */,
 				58D7F76919A2ABB600C39A4C /* kind_of_post_event.png */,
 				58D7F76A19A2ABB600C39A4C /* kind_of_post_general.png */,
@@ -5088,7 +5088,7 @@
 				802DCE4B18AA883300A23511 /* internal_notification_cell_accept_button.png in Resources */,
 				588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */,
 				587433EB18A6951F0000DAA0 /* univers-ce-45-light.ttf in Resources */,
-				585106DD199D87DA000F06BB /* kind_of_event_theatre.png in Resources */,
+				585106DD199D87DA000F06BB /* kind_of_event_theater.png in Resources */,
 				5839CC8B18A5BF0C00FA43A1 /* univers-45-light-bold.ttf in Resources */,
 				58465DEF19584D0E0021B0FF /* cancel_black.png in Resources */,
 				58D19D9418C7668000CB13CC /* CreateGroupCell.xib in Resources */,

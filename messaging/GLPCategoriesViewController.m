@@ -106,7 +106,7 @@
     
     }
     
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"All" andPostRemoteKey:0]];
+    [_categories addObject:[[GLPCategory alloc] initWithTag:@"other" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -207,7 +207,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0f;
+    return 60.0f;
 }
 
 
@@ -224,7 +224,7 @@
 {
     for(GLPCategory *category in _categories)
     {
-        NSString *str = [NSString stringWithFormat:@"%@_category.png",category.tag];
+        NSString *str = [NSString stringWithFormat:@"kind_of_event_%@.png",category.tag];
         
         UIImage *img = [UIImage imageNamed:str];
         
