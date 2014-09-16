@@ -488,11 +488,6 @@ static WebClient *instance = nil;
     
     if(post.eventTitle)
     {
-//        NSString *attribs = [NSString stringWithFormat:@"event-time,%@,title,%@",[DateFormatterHelper dateUnixFormat:post.dateEventStarts], post.eventTitle];
-//
-//        [params addEntriesFromDictionary:[NSMutablefDictionary dictionaryWithObjectsAndKeys:attribs, @"attribs", nil]];
-        
-        
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];
     }
@@ -503,9 +498,6 @@ static WebClient *instance = nil;
         
         [params setObject:post.location.name forKey:@"location-name"];
         [params setObject:post.location.address forKey:@"location-desc"];
-        
-        DDLogDebug(@"LOCATION SENT: %@", post.location);
-        
     }
     
     [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -546,6 +538,7 @@ static WebClient *instance = nil;
 {
     if(post.group)
     {
+        
         return [NSString stringWithFormat:@"networks/%d/posts", post.group.remoteKey];
     }
     else

@@ -369,14 +369,14 @@ const float TOP_OFF_SET = -64.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1127,7 +1127,7 @@ const float TOP_OFF_SET = -64.0;
 
 #pragma mark - New Post Delegate
 
--(void)reloadNewImagePostWithPost:(NSNotification *)notification
+-(void)reloadNewMediaPostWithPost:(NSNotification *)notification
 {
     //TODO: REMOVED! IT'S IMPORTANT!
     

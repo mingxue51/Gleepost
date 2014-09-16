@@ -68,6 +68,10 @@
         [[PendingPostManager sharedInstance] reset];
     }
     
+    [[PendingPostManager sharedInstance] setGroup:_group];
+    
+    [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
+    
     
     [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
     
@@ -81,6 +85,10 @@
         [[PendingPostManager sharedInstance] reset];
     }
     
+    [[PendingPostManager sharedInstance] setGroup:_group];
+    
+    [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
+    
     [[PendingPostManager sharedInstance] setKindOfPost:kAnnouncementPost];
     
     [self performSegueWithIdentifier:@"final new post" sender:self];
@@ -89,10 +97,16 @@
 
 - (IBAction)selectGeneral:(id)sender
 {
+    DDLogDebug(@"Parent view contoller: %@ : %d", _group, _groupPost);
+    
     if([[PendingPostManager sharedInstance] kindOfPost] != kGeneralPost)
     {
         [[PendingPostManager sharedInstance] reset];
     }
+    
+    [[PendingPostManager sharedInstance] setGroup:_group];
+    
+    [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
     
     [[PendingPostManager sharedInstance] setKindOfPost:kGeneralPost];
     

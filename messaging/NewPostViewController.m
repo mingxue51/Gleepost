@@ -360,21 +360,34 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
             NSAssert(group, @"Group should exist to create a new group post.");
             
-            DDLogDebug(@"GROUP REMOTE KEY: %ld", (long)group.remoteKey);
             
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
-        }
-#warning implement the general post from groups.
-        
-        else if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
-        {
-            DDLogDebug(@"GENERAL POST IS GOING TO BE CREATED");
-            
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
+            if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+            {
+                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil group:group andLocation:nil];
+                
+                DDLogDebug(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+
+            }
+            else
+            {
+                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
+                
+                DDLogDebug(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+            }
         }
         else
         {
-            inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
+            if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+            {
+                DDLogDebug(@"GENERAL POST IS GOING TO BE CREATED");
+                
+                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
+            }
+            else
+            {
+                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
+
+            }
         }
         
         if([inPost isVideoPost])
@@ -407,7 +420,17 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)informParentVCForNewPost:(GLPPost *)post
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
+    
+    if([[PendingPostManager sharedInstance] isGroupPost])
+    {
+        //Notify the group view controller.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil userInfo:@{@"new_post": post}];
+    }
+    else
+    {
+        //Notify campus wall.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
+    }
 }
 
 -(void)navigateToCategories:(id)sender

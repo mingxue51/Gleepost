@@ -1511,7 +1511,6 @@ const float TOP_OFFSET = 180.0f;
  @param notification contains the post's data.
  
  */
-//-(void)reloadNewImagePostWithPost:(GLPPost*)inPost
 -(void)reloadNewImagePostWithPost:(NSNotification *)notification
 {
     //TODO: REMOVED! IT'S IMPORTANT!
