@@ -8,7 +8,7 @@
 
 #import "GLPTabBarController.h"
 #import "ChatViewAnimationController.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "SessionManager.h"
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"

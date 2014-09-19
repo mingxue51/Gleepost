@@ -8,7 +8,7 @@
 
 #import "AppearanceHelper.h"
 #import <QuartzCore/QuartzCore.h>
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "UIColor+GLPAdditions.h"
 
 @implementation AppearanceHelper
@@ -36,7 +36,7 @@
     
     UINavigationBar *navigationBar = controller.navigationController.navigationBar;
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
 //        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"] forBarMetrics:UIBarMetricsDefault];
         
@@ -62,7 +62,7 @@
 
 + (void)setWhiteNavigationBarFormat:(UINavigationBar *)navigationBar
 {    
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         //        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"] forBarMetrics:UIBarMetricsDefault];
         
@@ -89,7 +89,7 @@
 {
 //    [controller.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_APP_FONT size:20.0f], UITextAttributeFont, [UIColor whiteColor], UITextAttributeTextColor, nil]];
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
        return;
     }
@@ -106,7 +106,7 @@
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar
 {
 
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         [navigationBar setTintColor:[AppearanceHelper defaultGleepostColour]];
         CGRectSetH(navigationBar, 60.0f);

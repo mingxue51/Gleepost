@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Timeline View Controller - STANFORD WALL-->
+        <!--STANFORD WALL-->
         <scene sceneID="lmt-qG-jWu">
             <objects>
                 <tableViewController id="dVx-sR-2uM" customClass="GLPTimelineViewController" sceneMemberID="viewController">
@@ -208,7 +208,7 @@
                     <connections>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="C5K-bl-yN1"/>
                         <segue destination="qhx-Fz-PME" kind="modal" identifier="new comment" modalTransitionStyle="coverVertical" id="g6d-Or-dA0"/>
-                        <segue destination="pZK-Ya-BDg" kind="modal" identifier="show image" customClass="FadeInCustomSegue" modalTransitionStyle="crossDissolve" id="6Mq-lQ-Lwk"/>
+                        <segue destination="pZK-Ya-BDg" kind="modal" identifier="show image" modalTransitionStyle="crossDissolve" id="6Mq-lQ-Lwk"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view new private profile" id="rCT-Ex-vO8"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="uet-Cl-mZq"/>
                         <segue destination="S6q-z9-JBG" kind="modal" identifier="view categories" id="d8p-5F-aRo"/>
@@ -221,7 +221,7 @@
             </objects>
             <point key="canvasLocation" x="830" y="-1697"/>
         </scene>
-        <!--View Post View Controller - VIEW POST-->
+        <!--VIEW POST-->
         <scene sceneID="pNu-aO-Cie">
             <objects>
                 <viewController storyboardIdentifier="ViewPostViewController" id="Wkk-th-enz" customClass="ViewPostViewController" sceneMemberID="viewController">
@@ -296,7 +296,7 @@
             <objects>
                 <viewController storyboardIdentifier="IntroKindOfNewPostViewController" id="Fyw-Rk-v9s" customClass="IntroKindOfNewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pea-Lo-4mo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of post is this?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qx7-12-4te">
@@ -363,7 +363,7 @@
             <objects>
                 <viewController storyboardIdentifier="IntorKinfOfEventViewController" id="I2V-r4-Ixi" customClass="IntroKindOfEventViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ssv-q2-2WD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vol-nY-9AS">
@@ -592,7 +592,7 @@
                         <outlet property="textFieldView" destination="Vrl-Br-ib2" id="Al0-gF-eOh"/>
                         <outlet property="titleCharactersLeftLbl" destination="p74-3F-Xrj" id="wC7-Bx-sWl"/>
                         <outlet property="titleTextField" destination="Buy-Sh-mvj" id="8oE-Pb-nGU"/>
-                        <segue destination="Pxp-nL-r26" kind="modal" identifier="capture video" id="1TU-9z-lbJ"/>
+                        <segue destination="Pxp-nL-r26" kind="modal" identifier="capture video" modalPresentationStyle="currentContext" id="1TU-9z-lbJ"/>
                         <segue destination="EY1-Je-RIf" kind="push" identifier="show categories" id="jTK-dl-EbC"/>
                         <segue destination="II5-g9-LV9" kind="push" identifier="pick location" id="LkS-TV-Vqz"/>
                     </connections>
@@ -764,7 +764,7 @@
             </objects>
             <point key="canvasLocation" x="1982" y="-3459"/>
         </scene>
-        <!--Settings View Controller - SETTINGS-->
+        <!--SETTINGS-->
         <scene sceneID="4cd-DW-4RH">
             <objects>
                 <viewController storyboardIdentifier="SettingsViewController" id="ee1-Pd-EsI" customClass="SettingsViewController" sceneMemberID="viewController">
@@ -1013,7 +1013,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="0gl-db-iX0"/>
                     <nil key="simulatedTopBarMetrics"/>
-                    <size key="freeformSize" width="320" height="200"/>
                     <connections>
                         <outlet property="navigationBar" destination="Rep-P0-mhb" id="dYa-0j-rJW"/>
                         <outlet property="tableView" destination="WRa-MS-3RT" id="2hb-fB-Y0k"/>
@@ -1094,7 +1093,7 @@
             </objects>
             <point key="canvasLocation" x="2373" y="-4111"/>
         </scene>
-        <!--Invite Users View Controller - ADD GROUP MEMBERS-->
+        <!--ADD GROUP MEMBERS-->
         <scene sceneID="46S-Nf-JqI">
             <objects>
                 <viewController id="gs3-dw-jL3" customClass="GLPInviteUsersViewController" sceneMemberID="viewController">
@@ -1306,7 +1305,7 @@
             </objects>
             <point key="canvasLocation" x="3243" y="-4111"/>
         </scene>
-        <!--Image Selector View Controller - PICK AN IMAGE-->
+        <!--PICK AN IMAGE-->
         <scene sceneID="v3e-He-fEv">
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
@@ -1356,7 +1355,7 @@
             </objects>
             <point key="canvasLocation" x="1409" y="-2768"/>
         </scene>
-        <!--Messages View Controller - Messenger-->
+        <!--Messenger-->
         <scene sceneID="jiV-g0-n2q">
             <objects>
                 <tableViewController id="YmE-8s-Xvy" customClass="MessagesViewController" sceneMemberID="viewController">
@@ -1424,7 +1423,7 @@
             </objects>
             <point key="canvasLocation" x="1368" y="388"/>
         </scene>
-        <!--Conversation View Controller - ViewTopicViewController-->
+        <!--ViewTopicViewController-->
         <scene sceneID="etG-PG-ZFM">
             <objects>
                 <viewController storyboardIdentifier="ViewTopicViewController" title="ViewTopicViewController" id="p7E-nR-kMk" customClass="GLPConversationViewController" sceneMemberID="viewController">
@@ -1646,7 +1645,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1683,7 +1682,7 @@
             <objects>
                 <viewController id="kg4-Pr-bdC" customClass="PickDateEventViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qag-Ya-uD7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" id="c3Y-EN-qPQ">
@@ -1692,27 +1691,6 @@
                                 <date key="date" timeIntervalSinceReferenceDate="413755238.19605201">
                                     <!--2014-02-10 20:00:38 +0000-->
                                 </date>
-                                <timeZone key="timeZone" name="America/Los_Angeles">
-                                    <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                </timeZone>
                             </datePicker>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When is this event happening?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lH5-Rq-uh0">
                                 <rect key="frame" x="20" y="20" width="280" height="22"/>
@@ -1722,7 +1700,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="khp-62-GyN">
-                                <rect key="frame" x="10" y="423" width="300" height="50"/>
+                                <rect key="frame" x="10" y="359" width="300" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="19"/>
                                 <state key="normal" title="NEXT" backgroundImage="change_pass_name.png">
@@ -2170,11 +2148,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="gby-Gq-HqZ" customClass="GLPShowLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -2247,7 +2225,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3707" y="-2654"/>
         </scene>
-        <!--Navigation Controller - Messenger-->
+        <!--Messenger-->
         <scene sceneID="4na-1o-QCI">
             <objects>
                 <navigationController definesPresentationContext="YES" id="cfX-Wb-77k" sceneMemberID="viewController">
@@ -2256,7 +2234,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="DQu-6o-oiM">
-                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -2267,7 +2244,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="444" y="-145"/>
         </scene>
-        <!--Messenger View Controller - MESSENGER-->
+        <!--MESSENGER-->
         <scene sceneID="Uco-yr-g2s">
             <objects>
                 <viewController id="1Zx-2q-fHs" customClass="MessengerViewController" sceneMemberID="viewController">
@@ -2318,7 +2295,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="370" y="546"/>
         </scene>
-        <!--New Message View Controller - NEW MESSAGE-->
+        <!--NEW MESSAGE-->
         <scene sceneID="XDu-h2-d0s">
             <objects>
                 <viewController storyboardIdentifier="NewMessageViewController" id="5cj-SJ-Z4h" customClass="NewMessageViewController" sceneMemberID="viewController">
@@ -2379,7 +2356,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <tabBarItem key="tabBarItem" tag="2" title="" image="proximity-7.png" id="u1A-Qv-3bB"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="jKh-Xr-Cjo">
-                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -2390,7 +2366,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-404" y="-2593"/>
         </scene>
-        <!--Chat View Animation Controller - Item-->
+        <!--Item-->
         <scene sceneID="SAR-s3-LNO">
             <objects>
                 <viewController storyboardIdentifier="ChatViewAnimation" id="fUi-78-b72" customClass="ChatViewAnimationController" sceneMemberID="viewController">
@@ -2416,7 +2392,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="496" y="-3321"/>
         </scene>
-        <!--Chat View Controller - Chat-->
+        <!--Chat-->
         <scene sceneID="3ge-kZ-632">
             <objects>
                 <viewController id="PLg-Hd-LQL" customClass="ChatViewController" sceneMemberID="viewController">
@@ -2436,7 +2412,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="32" y="-2593"/>
         </scene>
-        <!--Navigation Controller - Campus-->
+        <!--Campus-->
         <scene sceneID="qnx-IM-TRR">
             <objects>
                 <navigationController definesPresentationContext="YES" id="492-SX-bb8" sceneMemberID="viewController">
@@ -2445,7 +2421,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="PfA-EO-8dG">
-                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Hpu-Qk-X2Y">
@@ -2859,7 +2834,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-481" y="1987"/>
         </scene>
-        <!--Login View Controller - Log in-->
+        <!--Log in-->
         <scene sceneID="4Bh-9w-Pl4">
             <objects>
                 <viewController storyboardIdentifier="LoginViewController" id="53d-3j-LO2" customClass="LoginViewController" sceneMemberID="viewController">
@@ -2946,7 +2921,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="uv7-Vl-uz3">
-                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="cWe-mB-uVg">
@@ -3045,7 +3019,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1760" y="1987"/>
         </scene>
-        <!--Sign Up With Name View Controller - Sign Up-->
+        <!--Sign Up-->
         <scene sceneID="VZp-dh-qQm">
             <objects>
                 <viewController id="SiV-NP-Y6Q" customClass="SignUpWithNameViewController" sceneMemberID="viewController">
@@ -3100,7 +3074,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-915" y="2631"/>
         </scene>
-        <!--Final Register View Controller - Sign Up-->
+        <!--Sign Up-->
         <scene sceneID="KKU-3W-QZb">
             <objects>
                 <viewController id="TX8-te-XhU" customClass="FinalRegisterViewController" sceneMemberID="viewController">
@@ -3226,7 +3200,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-525" y="2631"/>
         </scene>
-        <!--Verification View Controller - Almost Done!-->
+        <!--Almost Done!-->
         <scene sceneID="wH9-i8-9j6">
             <objects>
                 <viewController id="G4B-EZ-DTs" customClass="VerificationViewController" sceneMemberID="viewController">
@@ -3289,7 +3263,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-54" y="2631"/>
         </scene>
-        <!--Facebook Login View Controller - Sign Up-->
+        <!--Sign Up-->
         <scene sceneID="f5A-CY-yOi">
             <objects>
                 <viewController id="dUc-gB-nu9" customClass="FacebookLoginViewController" sceneMemberID="viewController">
@@ -3342,7 +3316,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1279" y="2631"/>
         </scene>
-        <!--Register View Controller - Sign Up-->
+        <!--Sign Up-->
         <scene sceneID="FQO-4I-NI7">
             <objects>
                 <viewController id="KFZ-j2-Eyw" customClass="RegisterViewController" sceneMemberID="viewController">
@@ -3436,7 +3410,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1665" y="2631"/>
         </scene>
-        <!--Profile View Controller - MY PROFILE-->
+        <!--MY PROFILE-->
         <scene sceneID="pBQ-dT-hso">
             <objects>
                 <tableViewController id="ta0-Mt-RBj" customClass="GLPProfileViewController" sceneMemberID="viewController">
@@ -3481,7 +3455,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="370" y="1391"/>
         </scene>
-        <!--New Group Message View Controller - NEW MESSAGE-->
+        <!--NEW MESSAGE-->
         <scene sceneID="STh-nh-eIM">
             <objects>
                 <viewController storyboardIdentifier="NewGroupMessageViewController" id="V9c-as-rrO" customClass="NewGroupMessageViewController" sceneMemberID="viewController">
@@ -3544,7 +3518,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="803" y="1228"/>
         </scene>
-        <!--Badges View Controller - BADGES-->
+        <!--BADGES-->
         <scene sceneID="APA-6u-FId">
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
@@ -3559,7 +3533,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1321" y="1223"/>
         </scene>
-        <!--Navigation Controller - My Profile-->
+        <!--My Profile-->
         <scene sceneID="Zeb-oB-v8D">
             <objects>
                 <navigationController definesPresentationContext="YES" id="6si-v1-awl" sceneMemberID="viewController">
@@ -3568,7 +3542,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="LgP-AE-5yh">
-                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -3579,7 +3552,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="569" y="2025"/>
         </scene>
-        <!--Profile View Controller - Profile-->
+        <!--Profile-->
         <scene sceneID="p8c-ZD-Rwi">
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="HaH-y9-QMH" customClass="ProfileViewController" sceneMemberID="viewController">
@@ -3689,7 +3662,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="profileView" destination="k7n-3h-Z7L" id="GJ5-rI-dfT"/>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="htZ-EL-79i"/>
                         <segue destination="K5s-yF-8db" kind="push" identifier="view notifications" id="84B-81-Mjf"/>
-                        <segue destination="oTu-PD-f01" kind="modal" identifier="start" customClass="FadeInCustomSegue" modalTransitionStyle="flipHorizontal" id="JXK-Z8-Y8u"/>
+                        <segue destination="oTu-PD-f01" kind="modal" identifier="start" modalTransitionStyle="flipHorizontal" id="JXK-Z8-Y8u"/>
                         <segue destination="bSM-Oa-OIz" kind="modal" identifier="PopUpNotifications" id="6ac-rd-Vl9"/>
                     </connections>
                 </viewController>
@@ -3697,7 +3670,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1068" y="2025"/>
         </scene>
-        <!--Groups View Controller - My Groups-->
+        <!--My Groups-->
         <scene sceneID="ozd-vh-bGg">
             <objects>
                 <tableViewController id="29g-P3-71n" customClass="GroupsViewController" sceneMemberID="viewController">
@@ -3751,7 +3724,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1132" y="2671"/>
         </scene>
-        <!--Groups View Controller - MY GROUPS-->
+        <!--MY GROUPS-->
         <scene sceneID="naL-Wm-fpq">
             <objects>
                 <viewController id="HQj-fU-IFb" customClass="GLPGroupsViewController" sceneMemberID="viewController">
@@ -3976,7 +3949,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2062" y="3539"/>
         </scene>
-        <!--Members View Controller - MEMBERS-->
+        <!--MEMBERS-->
         <scene sceneID="CCf-Pg-1xa">
             <objects>
                 <viewController id="9bg-aO-bMl" customClass="MembersViewController" sceneMemberID="viewController">
@@ -4090,7 +4063,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2046" y="2194"/>
         </scene>
-        <!--Navigation Controller - Groups-->
+        <!--Groups-->
         <scene sceneID="SEo-vv-EHO">
             <objects>
                 <navigationController definesPresentationContext="YES" id="nPe-gR-zdL" sceneMemberID="viewController">
@@ -4099,7 +4072,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </tabBarItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="JFZ-5E-qD0">
-                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -4349,7 +4321,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1132" y="-4111"/>
         </scene>
-        <!--Intro New Group View Controller - NEW GROUP-->
+        <!--NEW GROUP-->
         <scene sceneID="jgU-Om-tWV">
             <objects>
                 <viewController storyboardIdentifier="IntroNewGroupViewController" id="AQy-Vp-E9s" customClass="IntroNewGroupViewController" sceneMemberID="viewController">
@@ -4436,7 +4408,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1543" y="-4111"/>
         </scene>
-        <!--New Group View Controller - NEW GROUP-->
+        <!--NEW GROUP-->
         <scene sceneID="4Uz-HE-arm">
             <objects>
                 <viewController storyboardIdentifier="NewGroupViewController" id="nmZ-ll-QtB" customClass="NewGroupViewController" sceneMemberID="viewController">
@@ -4697,18 +4669,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="7l2-k5-pHQ"/>
-        <segue reference="UCY-3t-8FQ"/>
+        <segue reference="HwX-gN-njw"/>
         <segue reference="fah-A8-Ky9"/>
-        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="Ptj-MX-g8C"/>
+        <segue reference="rCT-Ex-vO8"/>
+        <segue reference="2GR-ci-jSQ"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="C4C-f3-cdX"/>
-        <segue reference="bc7-so-Tnw"/>
-        <segue reference="wR3-TA-URh"/>
-        <segue reference="aph-g3-dhm"/>
-        <segue reference="Txr-8X-v5l"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="uet-Cl-mZq"/>
         <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="7l2-k5-pHQ"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="bc7-so-Tnw"/>
         <segue reference="hfC-fm-BOR"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>

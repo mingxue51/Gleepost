@@ -17,7 +17,7 @@
 #import "GLPThemeManager.h"
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "ShapeFormatterHelper.h"
 
 @implementation NewCommentView
@@ -47,7 +47,7 @@
         //[self showKeyboardEffect];
         //[self hideKeyboardEffect];
         
-        if(![GLPiOS6Helper isIOS6])
+        if(![GLPiOSSupportHelper isIOS6])
         {
             [self showKeyboardEffectFirst];
             [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(showKeyboardEffect:) userInfo:nil repeats:YES];

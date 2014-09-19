@@ -25,7 +25,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPConversationViewController.h"
 #import "GLPApplicationHelper.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "EmptyMessage.h"
 #import "UINavigationBar+Format.h"
 #import "GLPBadgesViewController.h"
@@ -234,9 +234,9 @@
 -(void)configureView
 {
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
-        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
         
         return;
     }
@@ -526,7 +526,7 @@
     ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
     vc.image = image;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         [vc setTransitioningDelegate:self.transitionViewImageController];
     }

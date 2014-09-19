@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GLPiOS6Helper : NSObject
+@interface GLPiOSSupportHelper : NSObject
 
 +(void)configureTabbarController:(UITabBarController *)tabbar;
 +(void)setBackgroundImageToTableView:(UITableView *)tableView;
 +(BOOL)isIOS6;
++ (BOOL)isIOS7;
 
 @end

@@ -10,7 +10,7 @@
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
 #import "NSMutableArray+QueueAdditions.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPImageUploaderManager ()
 
@@ -45,7 +45,7 @@ const NSString *IMAGE_PENDING = @"PENDING";
         _pendingImages = [[NSMutableDictionary alloc] init];
         _checker = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(startUploadImage:) userInfo:nil repeats:YES];
         
-        if(![GLPiOS6Helper isIOS6])
+        if(![GLPiOSSupportHelper isIOS6])
         {
             [_checker setTolerance:5.0f];
         }

@@ -10,7 +10,7 @@
 
 #import "GLPVideoUploadManager.h"
 #import "GLPPostUploaderManager.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "GLPVideoUploader.h"
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
@@ -66,7 +66,7 @@ static GLPVideoUploadManager *instance = nil;
     
     _checkingForPendingVideoPosts = NO;
     
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         [_checkForUploadingTimer setTolerance:5.0f];
         [_checkForPendingVideoPostsTimer setTolerance:10.0f];

@@ -46,6 +46,7 @@
 #import "GLPGroupsViewController.h"
 #import "GroupViewController.h"
 #import "GLPPushNotification.h"
+#import "GLPiOSSupportHelper.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -181,8 +182,21 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 
 - (void)setupPush
 {
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    if([GLPiOSSupportHelper isIOS7] || [GLPiOSSupportHelper isIOS6])
+    {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+        DDLogDebug(@"ios7 register notifications");
+
+    }
+    else
+    {
+        DDLogDebug(@"ios8 register notifications");
+        
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    
+
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken

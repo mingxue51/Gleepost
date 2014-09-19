@@ -12,7 +12,7 @@
 #import "SessionManager.h"
 #import "CategoryManager.h"
 #import "UIImage+StackBlur.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "SKBounceAnimation.h"
 
 @interface GLPCategoriesViewController ()
@@ -66,7 +66,7 @@
 
 -(void)configAppearance
 {
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         [_topImageView setBackgroundColor:[UIColor clearColor]];
     }

@@ -8,7 +8,7 @@
 //  This class should not be used. Instead use GLPViewImageViewController.
 
 #import "ViewPostImageViewController.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 
 #define SWIPE_UP_THRESHOLD 20.0f
 #define SWIPE_DOWN_THRESHOLD 650.0f
@@ -158,7 +158,7 @@
 
 - (IBAction)goBack:(id)sender
 {
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         [self dismissViewControllerAnimated:YES completion:^{
             

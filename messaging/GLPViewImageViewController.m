@@ -8,7 +8,7 @@
 
 #import "GLPViewImageViewController.h"
 #import "GLPViewImageScrollView.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPViewImageViewController ()
 
@@ -52,7 +52,7 @@
 - (IBAction)dismissViewController:(id)sender
 {
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         [self dismissViewControllerAnimated:YES completion:^{
             

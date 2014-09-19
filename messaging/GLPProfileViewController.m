@@ -35,7 +35,7 @@
 #import "GLPSettingsViewController.h"
 #import "UIImage+StackBlur.h"
 #import "GLPApplicationHelper.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "GroupViewController.h"
 #import "ContactsManager.h"
 #import "EmptyMessage.h"
@@ -152,7 +152,7 @@
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         //Change the colour of the tab bar.
         self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
@@ -215,9 +215,9 @@
 -(void)setCustomBackgroundToTableView
 {
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
-        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
         
         return;
     }
@@ -556,7 +556,7 @@
     viewImage.modalPresentationStyle = UIModalPresentationCustom;
     
     
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         [viewImage setTransitioningDelegate:self.transitionViewImageController];
     }

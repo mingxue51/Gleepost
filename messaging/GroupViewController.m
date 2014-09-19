@@ -24,7 +24,7 @@
 #import "MembersViewController.h"
 #import "GroupOperationManager.h"
 #import "SessionManager.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "EmptyMessage.h"
 #import "ShapeFormatterHelper.h"
 #import "UINavigationBar+Utils.h"
@@ -224,9 +224,9 @@ const float TOP_OFF_SET = -64.0;
     
 
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
-        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
     }
     else
     {
@@ -306,7 +306,7 @@ const float TOP_OFF_SET = -64.0;
 {
     int buttonX = 10;
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         buttonX = 0;
     }
@@ -793,6 +793,8 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)makeVisibleOrInvisibleActivityIndicatorWithOffset:(float)offset
 {
+    DDLogDebug(@"Activity indicator: %f", offset);
+    
     if(offset < (-OFFSET_START_ANIMATING))
     {
         [_activityIndicator setHidden:NO];
@@ -805,6 +807,8 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)makeVisibleOrInvisibleNavigationBarWithOffset:(float)offset
 {
+    DDLogDebug(@"Offset: %f, top off set: %f", offset, TOP_OFF_SET);
+    
     if(offset >= TOP_OFF_SET)
     {
         if([self isFakeNavigationBarVisible])
@@ -1060,6 +1064,8 @@ const float TOP_OFF_SET = -64.0;
     
     [GLPGroupManager loadRemotePostsBefore:remotePost withGroupRemoteKey:_group.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
+        DDLogDebug(@"Stop loading activity indicator");
+        
 //        [_pongRefreshControl finishedLoading];
 
 
@@ -1430,7 +1436,7 @@ const float TOP_OFF_SET = -64.0;
     vc.image = _groupImage;
     vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
     
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         [vc setTransitioningDelegate:self.transitionViewImageController];
     }

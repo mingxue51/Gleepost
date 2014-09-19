@@ -28,6 +28,7 @@
 #import "PBJVisionUtilities.h"
 #import "PBJMediaWriter.h"
 #import "PBJGLProgram.h"
+#import "GLPiOSSupportHelper.h"
 
 #import <ImageIO/ImageIO.h>
 #import <OpenGLES/EAGL.h>
@@ -727,6 +728,8 @@ static PBJVision *singleton = nil;
 
 - (void)dealloc
 {
+    //TODO: Remove the observers manually.
+    
     NSLog(@"PBJVision : dealloc");
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -882,6 +885,8 @@ typedef void (^PBJVisionBlock)();
     [self removeObserver:self forKeyPath:@"currentDevice.torchMode"];
     [self removeObserver:self forKeyPath:@"currentDevice.flashAvailable"];
     [self removeObserver:self forKeyPath:@"currentDevice.torchAvailable"];
+    
+    [_captureOutputPhoto removeObserver:self forKeyPath:@"capturingStillImage"];
 
     // remove notification observers (we don't want to just 'remove all' because we're also observing background notifications
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -899,6 +904,7 @@ typedef void (^PBJVisionBlock)();
     // capture device notifications
     [notificationCenter removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:nil];
 
+    
     _captureOutputPhoto = nil;
     _captureOutputAudio = nil;
     _captureOutputVideo = nil;
@@ -1069,9 +1075,18 @@ typedef void (^PBJVisionBlock)();
         // setup video orientation
         [self _setOrientationForConnection:videoConnection];
         
-        // setup video stabilization, if available
-        if ([videoConnection isVideoStabilizationSupported])
-            [videoConnection setEnablesVideoStabilizationWhenAvailable:YES];
+        if([GLPiOSSupportHelper isIOS7] || [GLPiOSSupportHelper isIOS6])
+        {
+            // setup video stabilization, if available
+            if ([videoConnection isVideoStabilizationSupported])
+                [videoConnection setEnablesVideoStabilizationWhenAvailable:YES];
+        }
+        else
+        {
+            if ([videoConnection isVideoStabilizationSupported])
+                [videoConnection setPreferredVideoStabilizationMode:AVCaptureVideoStabilizationModeStandard];
+        }
+
 
         // discard late frames
         [_captureOutputVideo setAlwaysDiscardsLateVideoFrames:NO];

@@ -211,7 +211,8 @@
     id<FBOpenGraphAction> action = [self generateShareActionWithPost:post];
     
     // Check if the Facebook app is installed and we can present the share dialog
-    FBOpenGraphActionShareDialogParams *params = [self generateParametersWithAction:action];
+//    FBOpenGraphActionShareDialogParams *params = [self generateParametersWithAction:action];
+    FBOpenGraphActionParams *params = [self generateParametersWithAction:action];
 
     
     // If the Facebook app is installed and we can present the share dialog
@@ -266,9 +267,11 @@
     return action;
 }
 
--(FBOpenGraphActionShareDialogParams *)generateParametersWithAction:(id<FBOpenGraphAction>)action
+-(FBOpenGraphActionParams *)generateParametersWithAction:(id<FBOpenGraphAction>)action
 {
-    FBOpenGraphActionShareDialogParams *params = [[FBOpenGraphActionShareDialogParams alloc] init];
+//    FBOpenGraphActionShareDialogParams *params = [[FBOpenGraphActionShareDialogParams alloc] init];
+    FBOpenGraphActionParams *params = [[FBOpenGraphActionParams alloc] init];
+
     params.action = action;
     params.actionType = @"gleepost:share";
     

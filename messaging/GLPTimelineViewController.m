@@ -50,7 +50,7 @@
 #import "AnimationDayController.h"
 #import "GLPGroupManager.h"
 #import "CampusWallGroupsPostsManager.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "TableViewHelper.h"
 #import "GLPFlurryVisibleCellProcessor.h"
 #import "EmptyMessage.h"
@@ -667,9 +667,9 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)setCustomBackgroundToTableView
 {
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
-        [GLPiOS6Helper setBackgroundImageToTableView:self.tableView];
+        [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
         
         return;
     }
@@ -685,7 +685,7 @@ const float TOP_OFFSET = 180.0f;
 -(void)configTabbarFormat
 {
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         
         return;
@@ -2445,7 +2445,7 @@ const float TOP_OFFSET = 180.0f;
     viewImage.modalPresentationStyle = UIModalPresentationCustom;
 
     
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         [viewImage setTransitioningDelegate:self.transitionViewImageController];
     }
@@ -2891,7 +2891,7 @@ const float TOP_OFFSET = 180.0f;
     cvc.delegate = self;
     //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         //Crop image to add it at the top image view.

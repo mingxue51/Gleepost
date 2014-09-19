@@ -9,7 +9,7 @@
 #import "GLPPostOperationManager.h"
 #import "GLPImageUploaderManager.h"
 #import "GLPPostUploaderManager.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPPostOperationManager ()
 
@@ -55,7 +55,7 @@ static GLPPostOperationManager *instance = nil;
         _postUploader = [[GLPPostUploaderManager alloc] init];
         _checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForPostUpload:) userInfo:nil repeats:YES];
         
-        if(![GLPiOS6Helper isIOS6])
+        if(![GLPiOSSupportHelper isIOS6])
         {
             [_checkForUploadingTimer setTolerance:5.0f];
         }

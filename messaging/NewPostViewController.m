@@ -28,7 +28,7 @@
 #import "GLPTimelineViewController.h"
 #import "ShapeFormatterHelper.h"
 #import "TDNavigationCategories.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
@@ -343,7 +343,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     if ([self isInformationValidInElements]) {
         
         
-        [self.contentTextView resignFirstResponder];
+        [self.view endEditing:YES];
         
         GLPPost* inPost = nil;
         
@@ -399,22 +399,19 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         [self informParentVCForNewPost:inPost];
 
 
-        //Dismiss view controller and show immediately the post in the Campus Wall.
         
-        [self dismissViewControllerAnimated:YES completion:^{
-//            if(_hasImage)
-//            {
-//                inPost.tempImage = self.imgToUpload;
-                //inPost.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
-//                [delegate reloadNewImagePostWithPost:inPost];
-//            }
-//            else
-//            {
-//                //[delegate reloadNewLocalPosts];
-////                [delegate reloadNewImagePostWithPost:inPost];
-//            }
+        //We are doing that because in iOS 8 there is a weird issue with keyboard.
+        double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             
-        }];
+            //Dismiss view controller and show immediately the post in the Campus Wall.
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+        });
+        
+
     }
 }
 
@@ -472,9 +469,18 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
 //    //Remove video preview view if is on the addImageButton.
 //    [self removeVideoPreviewView];
+
+    [self.view endEditing:YES];
     
-    //Capture a video.
-    [self performSegueWithIdentifier:@"capture video" sender:self];
+    //We are doing that because in iOS 8 there is a weird issue with keyboard.
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        [self performSegueWithIdentifier:@"capture video" sender:self];
+        
+    });
 }
 
 - (IBAction)addLocation:(id)sender

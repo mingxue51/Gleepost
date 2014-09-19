@@ -7,7 +7,7 @@
 //
 
 #import "UINavigationBar+Format.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "AppearanceHelper.h"
 #import "ImageFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
@@ -16,7 +16,7 @@
 
 - (void)whiteBackgroundFormatWithShadow:(BOOL)shadow
 {
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         //        [navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_stanford_final"] forBarMetrics:UIBarMetricsDefault];
         
@@ -76,7 +76,7 @@
 - (void)setFontFormatWithColour:(GLPColour)colour
 {
     
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         return;
     }
@@ -92,7 +92,7 @@
 
 - (void)setCampusWallFontFormat
 {
-    if([GLPiOS6Helper isIOS6])
+    if([GLPiOSSupportHelper isIOS6])
     {
         return;
     }

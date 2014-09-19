@@ -23,9 +23,9 @@
 //@property (strong, nonatomic) MPMoviePlayerController *moviewPlayer;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIView *videoView;
-@property (weak, nonatomic) IBOutlet UIImageView *loadingImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *playImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingIndicatorView;
 @property (assign, nonatomic) NSInteger remoteKey;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
@@ -375,24 +375,13 @@
 
     DDLogDebug(@"Thumbnail view hidden: %d, Post content: %@, Url: %@", [_thumbnailImageView isHidden], _post.content, _post.video.thumbnailUrl);
     
-//    [_thumbnailImageView setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed];
-
     
-    [_thumbnailImageView setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed
-     
-        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            
-            
-            
-            
-            DDLogDebug(@"Video image loaded with post %@ : %@ Cache type: %d", _post.content, image, cacheType);
-            
-//            [self hideLoadingElements];
-            
-            //TODO: Load image from cache like how we are doing that with images.
+    [_thumbnailImageView sd_setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        DDLogDebug(@"Video image loaded with post %@ : %@ Cache type: %d", _post.content, image, cacheType);
 
-            
-        }];
+        
+    }];
 }
 
 #pragma mark - Animation
@@ -415,22 +404,23 @@
 {
     if(hidden)
     {
-        [_loadingImageView setHidden:YES];
+        [_loadingIndicatorView stopAnimating];
+
         [self setHiddenToPlayImage:NO];
     }
     else
     {
-        [_loadingImageView setHidden:NO];
-        [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        
+        [_loadingIndicatorView setHidden:NO];
+        [_loadingIndicatorView startAnimating];
+
         [self setHiddenToPlayImage:YES];
     }
 }
 
 - (void)showLoadingElements
 {
-    [_loadingImageView setHidden:NO];
-    [_loadingImageView setImageWithURL:nil placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [_loadingIndicatorView setHidden:NO];
+    [_loadingIndicatorView startAnimating];
     [self setHiddenToPlayImage:YES];
     [_videoView setHidden:YES];
 
@@ -439,7 +429,8 @@
 
 - (void)hideLoadingElements
 {
-    [_loadingImageView setHidden:YES];
+    [_loadingIndicatorView stopAnimating];
+
 //    [_playButton setEnabled:YES];
 }
 

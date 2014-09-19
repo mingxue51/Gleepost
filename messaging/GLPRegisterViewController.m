@@ -18,7 +18,7 @@
 #import "GLPTemporaryUserInformationManager.h"
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
-#import "IntroSegue.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPRegisterViewController ()
 
@@ -32,7 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     [_emailTextField becomeFirstResponder];
     
     [self formatTextFields];
@@ -92,9 +92,8 @@
                 [self uploadImageAndSetUserImage:[[GLPTemporaryUserInformationManager sharedInstance] image]];
             }
 
-            [self.view endEditing:YES];
-            
             [self performSegueWithIdentifier:@"start" sender:self];
+//            [self navigateToMainView];
 
             
         } else {
@@ -289,6 +288,7 @@
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
+
 
 // Prepare for the segue going forward
 //- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

@@ -9,7 +9,7 @@
 #import "GroupOperationManager.h"
 #import "GroupUploaderManager.h"
 #import "GLPGroupDao.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GroupOperationManager ()
 
@@ -50,7 +50,7 @@ static GroupOperationManager *instance = nil;
         
         super.checkForUploadingTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(checkForGroupUpload:) userInfo:nil repeats:YES];
         
-        if(![GLPiOS6Helper isIOS6])
+        if(![GLPiOSSupportHelper isIOS6])
         {
             [super.checkForUploadingTimer setTolerance:5.0f];
 

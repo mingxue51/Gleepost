@@ -7,7 +7,7 @@
 //
 
 #import "GLPVideoUploader.h"
-#import "GLPiOS6Helper.h"
+#import "GLPiOSSupportHelper.h"
 #import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import "GLPProgressManager.h"
@@ -53,7 +53,7 @@
     _pendingVideosPaths = [[NSMutableDictionary alloc] init];
     _checker = [NSTimer scheduledTimerWithTimeInterval:5.0f target:self selector:@selector(startUploadVideo:) userInfo:nil repeats:YES];
     
-    if(![GLPiOS6Helper isIOS6])
+    if(![GLPiOSSupportHelper isIOS6])
     {
         [_checker setTolerance:5.0f];
     }

@@ -281,7 +281,7 @@
 		5851113719A8206900488E79 /* progress_bar_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113419A8206900488E79 /* progress_bar_border.png */; };
 		5851113819A8206900488E79 /* progress_bar_cloud_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113519A8206900488E79 /* progress_bar_cloud_small.png */; };
 		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
-		5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */; };
+		5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */; };
 		5851B5DB18258FB800AA9103 /* AnimatedTransitioning.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */; };
 		5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851B5DA18258FB800AA9103 /* TransitionDelegate.m */; };
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
@@ -1287,8 +1287,8 @@
 		5851113419A8206900488E79 /* progress_bar_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_border.png; sourceTree = "<group>"; };
 		5851113519A8206900488E79 /* progress_bar_cloud_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud_small.png; sourceTree = "<group>"; };
 		5851114119A83D9900488E79 /* progress_bar_cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud.png; sourceTree = "<group>"; };
-		5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPiOS6Helper.h; sourceTree = "<group>"; };
-		5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOS6Helper.m; sourceTree = "<group>"; };
+		5851957B18CFA26E00F8CE46 /* GLPiOSSupportHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPiOSSupportHelper.h; sourceTree = "<group>"; };
+		5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOSSupportHelper.m; sourceTree = "<group>"; };
 		5851B5D718258FB800AA9103 /* AnimatedTransitioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioning.h; sourceTree = "<group>"; };
 		5851B5D818258FB800AA9103 /* AnimatedTransitioning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioning.m; sourceTree = "<group>"; };
 		5851B5D918258FB800AA9103 /* TransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegate.h; sourceTree = "<group>"; };
@@ -2579,8 +2579,6 @@
 				58433286180F032C00BD9F74 /* LoginRegisterViewController.m */,
 				80AB894017C26E610053E784 /* LoginViewController.h */,
 				80AB894117C26E610053E784 /* LoginViewController.m */,
-				80C4CAB617CFE24700AFA80C /* RegisterViewController.h */,
-				80C4CAB717CFE24700AFA80C /* RegisterViewController.m */,
 				58433292180F178C00BD9F74 /* FinalRegisterViewController.h */,
 				58433293180F178C00BD9F74 /* FinalRegisterViewController.m */,
 				58143D751821762600B76E5D /* ValidFields.h */,
@@ -2989,6 +2987,17 @@
 				586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */,
 			);
 			name = Facebook;
+			sourceTree = "<group>";
+		};
+		58714DE019CC48BA00767487 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				58F2950319355A1600A638BA /* ATNavigationCategories.h */,
+				58F2950419355A1600A638BA /* ATNavigationCategories.m */,
+				58F2950619355A2F00A638BA /* TDNavigationCategories.h */,
+				58F2950719355A2F00A638BA /* TDNavigationCategories.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		5871E4391926214A009B5A74 /* Post */ = {
@@ -3957,10 +3966,7 @@
 		58F2950219354A4400A638BA /* Animated Transitioning */ = {
 			isa = PBXGroup;
 			children = (
-				58F2950319355A1600A638BA /* ATNavigationCategories.h */,
-				58F2950419355A1600A638BA /* ATNavigationCategories.m */,
-				58F2950619355A2F00A638BA /* TDNavigationCategories.h */,
-				58F2950719355A2F00A638BA /* TDNavigationCategories.m */,
+				58714DE019CC48BA00767487 /* Categories */,
 			);
 			name = "Animated Transitioning";
 			sourceTree = "<group>";
@@ -4585,12 +4591,6 @@
 				80666C3D1806D43200E4E515 /* Database */,
 				C014D08518433C950001B76E /* GLPFacebookConnect.h */,
 				C014D08618433C960001B76E /* GLPFacebookConnect.m */,
-				80AB894B17C26ECA0053E784 /* SessionManager.h */,
-				80AB894C17C26ECA0053E784 /* SessionManager.m */,
-				80CE307B17CE5092003007D0 /* DateFormatterManager.h */,
-				80CE307C17CE5092003007D0 /* DateFormatterManager.m */,
-				80666C7D1806FF4900E4E515 /* MessagesSendingProcessor.h */,
-				80666C7E1806FF4900E4E515 /* MessagesSendingProcessor.m */,
 				80DDDF31180FD159009E17BD /* DatabaseManager.h */,
 				80DDDF32180FD159009E17BD /* DatabaseManager.m */,
 				80CE307B17CE5092003007D0 /* DateFormatterManager.h */,
@@ -4718,8 +4718,8 @@
 				582B404A18AD6C4A00BC4285 /* SoundHelper.m */,
 				80C92AA718C0CC6F001CB621 /* GLPDateFormatterHelper.h */,
 				80C92AA818C0CC6F001CB621 /* GLPDateFormatterHelper.m */,
-				5851957B18CFA26E00F8CE46 /* GLPiOS6Helper.h */,
-				5851957C18CFA26E00F8CE46 /* GLPiOS6Helper.m */,
+				5851957B18CFA26E00F8CE46 /* GLPiOSSupportHelper.h */,
+				5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */,
 				5831B40F18DB28BB00574A53 /* UIImage+Alpha.h */,
 				5831B41018DB28BB00574A53 /* UIImage+Alpha.m */,
 				5824C42B18E5B4D8006D4484 /* TableViewHelper.h */,
@@ -5681,7 +5681,7 @@
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */,
 				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
-				5851957D18CFA26E00F8CE46 /* GLPiOS6Helper.m in Sources */,
+				5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */,
 				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
 				58774D41196568350034A1C6 /* GLPSearchBar.m in Sources */,
