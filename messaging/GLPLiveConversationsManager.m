@@ -701,6 +701,27 @@ static GLPLiveConversationsManager *instance = nil;
     return nil;
 }
 
+- (void)deleteConversation:(GLPConversation *)conversation withCallbackBlock:(void (^) (BOOL success))callback
+{
+    [[WebClient sharedInstance] deleteConversationWithRemoteKey:conversation.remoteKey callbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+           dispatch_async(_queue, ^{
+               
+               [self internalRemoveConversation:conversation];
+               
+               callback(YES);
+           });
+        }
+        else
+        {
+            callback(NO);
+        }
+        
+    }];
+}
+
 //- (BOOL)isConversationSync:(GLPConversation *)conversation
 //{
 //    __block BOOL result;

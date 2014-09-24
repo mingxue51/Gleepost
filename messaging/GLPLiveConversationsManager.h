@@ -34,6 +34,7 @@
 - (GLPConversation *)findRegularByParticipant:(GLPUser *)participant;
 - (GLPConversation *)findOneToOneConversationWithParticipant:(GLPUser *)participant;
 - (GLPConversation *)findGroupConversationWithParticipants:(NSArray *)users;
+- (void)deleteConversation:(GLPConversation *)conversation withCallbackBlock:(void (^) (BOOL success))callback;
 - (BOOL)conversationCanHavePreviousMessages:(GLPConversation *)conversation;
 - (GLPConversation *)oldestLiveConversation;
 - (NSInteger)conversationsCount;

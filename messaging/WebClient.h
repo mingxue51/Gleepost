@@ -100,6 +100,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)getLastMessagesForConversation:(GLPConversation *)conversation withLastMessage:(GLPMessage *)lastMessage callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
 - (void)getPreviousMessagesBefore:(GLPMessage *)message callbackBlock:(void (^)(BOOL success, NSArray *messages))callbackBlock;
+- (void)deleteConversationWithRemoteKey:(NSInteger)remoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 
 - (void)synchronousLongPollWithCallback:(void (^)(BOOL success, GLPMessage *message))callback;
 

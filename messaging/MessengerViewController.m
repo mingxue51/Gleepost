@@ -137,6 +137,8 @@
 
 - (void)registerTableViewCells
 {
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"MessageCell" bundle:nil] forCellReuseIdentifier:@"MessageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
@@ -257,6 +259,27 @@
 //    }
     
     return _filteredConversations.count;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        DDLogDebug(@"Delete conversation with index path: %d", indexPath.row);
+        
+        GLPConversation *conversationToBeDeleted = _conversations[indexPath.row];
+        
+        [[GLPLiveConversationsManager sharedInstance] deleteConversation:conversationToBeDeleted withCallbackBlock:^(BOOL success) {
+            
+            if(success)
+            {
+                //Remove conversation from table view.
+                [self removeCellWithIndexPath:indexPath];
+            }
+            
+        }];
+    }
 }
 
 
@@ -496,6 +519,11 @@
 {
     //[_refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)removeCellWithIndexPath:(NSIndexPath *)indexPathRow
+{
+    [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark - Segue

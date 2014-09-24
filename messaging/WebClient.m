@@ -1148,6 +1148,27 @@ static WebClient *instance = nil;
     
 }
 
+- (void)deleteConversationWithRemoteKey:(NSInteger)remoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    NSString *path = [NSString stringWithFormat:@"conversations/%ld",(long)remoteKey];
+    
+    [self deletePath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Conversation with remote key deleted: %ld", (long)remoteKey);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        DDLogError(@"Conversation could not be deleted: %@", error.description);
+        
+        callbackBlock(NO);
+
+    }];
+}
+
 #pragma mark - Live conversations
 
 - (void)getConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callbackBlock
