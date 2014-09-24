@@ -14,7 +14,7 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self setTransform:CGAffineTransformMakeScale(1.0, 3.0)];
+        [self setTransform:CGAffineTransformMakeScale(1.0, 3.2)];
 
     }
     return self;

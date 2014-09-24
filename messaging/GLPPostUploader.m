@@ -174,7 +174,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
         
-        
+        DDLogDebug(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+
         //        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
     }
     else if(_videoPath)
@@ -184,9 +185,14 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         [GLPPostManager createLocalPost:post];
         
         [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
+        
+        DDLogDebug(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+
     }
     else
     {
+        DDLogDebug(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+        
 //        [self createLocalAndUploadPost:post];
         [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
     }
