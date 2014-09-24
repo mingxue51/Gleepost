@@ -20,6 +20,7 @@
     entity.groupDescription = [resultSet stringForColumn:@"description"];
     entity.sendStatus = [resultSet intForColumn:@"send_status"];
     entity.author.remoteKey = [resultSet intForColumn:@"user_remote_key"];
+    entity.privacy = [resultSet intForColumn:@"privacy"];
     
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     

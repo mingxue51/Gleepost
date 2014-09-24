@@ -797,9 +797,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     group.author = [RemoteParser parseUserFromJson:json[@"creator"]];
     
-    
+    [group setPrivacyWithString:json[@"privacy"]];
+        
     return group;
-    
 }
 
 + (GLPPost *)parsePostGroupFromJson:(NSDictionary *)json

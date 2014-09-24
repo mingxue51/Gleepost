@@ -116,12 +116,12 @@ const float PROFILE_CELL_HEIGHT = 220.0f;
     else if(group.groupImageUrl)
     {
         
-        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-            
-            [_profileBackImage setHidden:NO];
-            
-        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
+//        [self.profileImage setImageWithURL:[NSURL URLWithString:group.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+//            
+//            [_profileBackImage setHidden:NO];
+//            
+//        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        
         
 
 

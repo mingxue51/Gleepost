@@ -876,6 +876,10 @@ static WebClient *instance = nil;
     }
     
     
+    
+    [params setObject:[group privacyToString] forKey:@"privacy"];
+    
+    
     DDLogDebug(@"Group to be created: %@", group);
     
     [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {

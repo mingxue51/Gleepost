@@ -43,9 +43,46 @@
     return self;
 }
 
+- (NSString *)privacyToString
+{
+    switch (_privacy) {
+        case kSecretGroup:
+            return @"secret";
+            break;
+            
+        case kPrivateGroup:
+            return @"private";
+            break;
+            
+        case kPublicGroup:
+            return @"public";
+            break;
+
+        default:
+            return nil;
+            break;
+    }
+}
+
+- (void)setPrivacyWithString:(NSString *)privacy
+{
+    if([privacy isEqualToString:@"secret"])
+    {
+        _privacy = kSecretGroup;
+    }
+    else if ([privacy isEqualToString:@"private"])
+    {
+        _privacy = kPrivateGroup;
+    }
+    else
+    {
+        _privacy = kPublicGroup;
+    }
+}
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d, Url: %@, Description: %@", _name, _key, _remoteKey, _groupImageUrl, _groupDescription];
+    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d, Url: %@, Description: %@, Privacy: %@", _name, _key, _remoteKey, _groupImageUrl, _groupDescription, [self privacyToString]];
 }
 
 @end

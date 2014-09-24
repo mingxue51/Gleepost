@@ -256,6 +256,10 @@
             group.groupDescription = _groupDescriptionTextView.text;
         }
         
+        DDLogDebug(@"FINAL Group type: %d", _groupType);
+        
+        group.privacy = _groupType;
+        
         [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
         
         group.finalImage = _groupImage;
@@ -300,6 +304,8 @@
     NSString *selectedBtnTitle = [_groupTypes objectForKey:selectedBtnNumber];
     
     _selectedGroupType = [[NSDictionary alloc] initWithObjectsAndKeys:selectedBtnTitle, selectedBtnNumber, nil];
+    
+    _groupType = btn.tag;
     
     [self setDataToGroupViews];
     

@@ -2093,6 +2093,7 @@ const float TOP_OFFSET = 180.0f;
     self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row;
     self.commentCreated = NO;
+    _showComment = NO;
         
     [self performSegueWithIdentifier:@"view post" sender:self];
 }

@@ -11,6 +11,12 @@
 #import "SendStatus.h"
 #import "GLPUser.h"
 
+typedef NS_ENUM(NSUInteger, GroupPrivacy) {
+    kPublicGroup = 0,
+    kPrivateGroup = 1,
+    kSecretGroup = 2
+};
+
 @interface GLPGroup : GLPEntity
 
 @property (strong, nonatomic) NSString *name;
@@ -20,11 +26,14 @@
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL isFromPushNotification;
 @property (assign, nonatomic) NSInteger unreadNewPosts;
+@property (assign, nonatomic) GroupPrivacy privacy;
 
 //Not create in local database
 @property (strong, nonatomic) GLPUser *author;
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
+- (NSString *)privacyToString;
+- (void)setPrivacyWithString:(NSString *)privacy;
 
 @end

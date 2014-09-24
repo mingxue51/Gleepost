@@ -233,7 +233,8 @@ static DatabaseManager *instance = nil;
              image_url text, \
              send_status integer, \
              date integer, \
-             user_remote_key integer);"];
+             user_remote_key integer, \
+             privacy integer);"];
             
             // group members
             [db executeUpdate:@"create table members ( \

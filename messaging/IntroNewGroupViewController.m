@@ -18,6 +18,8 @@
 @property IBOutlet UIView *privateGroupView;
 @property IBOutlet UIView *secretGroupView;
 
+@property (assign, nonatomic) GroupPrivacy currentGroupPrivacy;
+
 @end
 
 @implementation IntroNewGroupViewController
@@ -78,11 +80,18 @@
 - (void)selectPublicGroup
 {
     DDLogDebug(@"Select public group.");
+    _currentGroupPrivacy = kPublicGroup;
+    [self performSegueWithIdentifier:@"new group" sender:self];
+
 }
 
 - (void)selectPrivateGroup
 {
     DDLogDebug(@"Select private group.");
+    _currentGroupPrivacy = kPrivateGroup;
+    [self performSegueWithIdentifier:@"new group" sender:self];
+
+
 }
 
 - (void)selectSecretGroup
@@ -103,6 +112,10 @@
 //    
 //    [self presentViewController:categoriesVC animated:YES completion:nil];
     
+//    [[PendingGroupManager sharedInstance] setPrivacy:kSecret];
+    
+    _currentGroupPrivacy = kSecretGroup;
+
     [self performSegueWithIdentifier:@"new group" sender:self];
 }
 
@@ -138,8 +151,7 @@
         
         [newGroupViewController setDelegate:self];
         
-        //TODO: Change that dynamically.
-        newGroupViewController.groupType = kSecretGroup;
+        newGroupViewController.groupType = _currentGroupPrivacy;
     }
     
     

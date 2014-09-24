@@ -35,6 +35,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *unseenPostLbl;
 
+@property (weak, nonatomic) IBOutlet UIImageView *groupTypeImageView;
+
 @end
 
 const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
@@ -119,6 +121,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     }
     
     [self configureUnreadPostsBadge];
+    
+    [self configureGroupType];
 }
 
 - (void)configureUnreadPostsBadge
@@ -134,6 +138,27 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     {
         [_notificationView setHidden:YES];
     }
+}
+
+- (void)configureGroupType
+{
+    UIImage *privacyImage = nil;
+    
+    switch (_groupData.privacy)
+    {
+        case kPrivateGroup:
+            privacyImage = [UIImage imageNamed:@"test_private"];
+            break;
+            
+        case kSecretGroup:
+            privacyImage = [UIImage imageNamed:@"test_secret"];
+            break;
+ 
+        default:
+            break;
+    }
+    
+    [_groupTypeImageView setImage:privacyImage];
 }
 
 #pragma mark - Online indicator
