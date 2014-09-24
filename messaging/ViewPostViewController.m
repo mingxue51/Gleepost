@@ -167,8 +167,6 @@ static BOOL likePushed;
     if(_showComment)
     {
 //        [self scrollToTheEndAnimated:YES];
-        [self scrollToTheBottomEnd];
-//        [self.tableView setContentOffset:CGPointMake(0.0, 300.0)];
         [_commentGrowingTextView becomeFirstResponder];
     }
 }
@@ -949,8 +947,6 @@ static bool firstTime = YES;
 
 - (void)keyboardWillShow:(NSNotification *)note{
     
-    DDLogDebug(@"keyboardWillShow: %@", note);
-    
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
@@ -1248,24 +1244,11 @@ static bool firstTime = YES;
     if(self.comments.count > 0)
     {
     
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
     else
     {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
-    }
-}
-
-- (void)scrollToTheBottomEnd
-{
-    if(self.comments.count > 0)
-    {
-        
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-    else
-    {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
 }
 

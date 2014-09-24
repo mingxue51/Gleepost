@@ -922,7 +922,7 @@
 - (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
 {
     _showComment = YES;
-    self.selectedPost = _posts[postIndex];
+    self.selectedPost = _posts[postIndex - 1];
     
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];

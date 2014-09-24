@@ -80,6 +80,7 @@
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
+@property (assign, nonatomic) BOOL showComment;
 
 @end
 
@@ -296,6 +297,7 @@ const float TOP_OFF_SET = -64.0;
     
     _selectedLocation = nil;
 
+    _showComment = NO;
     
 //    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
@@ -1365,6 +1367,15 @@ const float TOP_OFF_SET = -64.0;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    _showComment = YES;
+    self.selectedPost = _posts[postIndex - 1];
+    
+    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
 #pragma  mark - Helpers
 
 /**
@@ -1494,6 +1505,10 @@ const float TOP_OFF_SET = -64.0;
         vpvc.groupController = self;
         
         vpvc.commentJustCreated = self.commentCreated;
+        
+        vpvc.showComment = _showComment;
+        
+        _showComment = NO;
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
