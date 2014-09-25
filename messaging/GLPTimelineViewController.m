@@ -213,6 +213,8 @@ const float TOP_OFFSET = 180.0f;
 {
     [super viewDidAppear:animated];
 
+    [self configureRefreshControl];
+    
     if(self.firstLoadSuccessful) {
         [self startReloadingCronImmediately:YES];
     }
@@ -788,6 +790,13 @@ const float TOP_OFFSET = 180.0f;
     
 }
 
+- (void)configureRefreshControl
+{
+    // refresh control
+    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
+    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+}
+
 - (void)configTableView
 {
     //Register nib files in table view.
@@ -800,10 +809,6 @@ const float TOP_OFFSET = 180.0f;
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
-    // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
-    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
-    
     
  /**   UIImageView* animatedImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     animatedImageView.animationImages = [NSArray arrayWithObjects:

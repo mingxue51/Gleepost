@@ -144,8 +144,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self configureTableView];
-    
     [self configureNavigationBar];
     
     [self hideNetworkErrorViewIfNeeded];
@@ -189,6 +187,8 @@
     [super viewDidAppear:animated];
     
     [self setTitle];
+    
+    [self configureRefreshControl];
 
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -256,10 +256,11 @@
 
 #pragma mark - Configuration
 
-- (void)configureTableView
+- (void)configureRefreshControl
 {
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] initWithCustomActivityIndicator];
+    
     [self.refreshControl addTarget:self action:@selector(reloadContent) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -455,7 +456,16 @@
 
 - (void)stopLoading
 {
-    [self.refreshControl endRefreshing];
+    //Adding delay into the end refreshing helps the UI to acts smoothly.
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self.refreshControl endRefreshing];
+        
+    });
+//    [self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 

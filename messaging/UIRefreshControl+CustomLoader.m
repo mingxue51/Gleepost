@@ -64,7 +64,9 @@
     
     [indicator startAnimating];
     
-    [self insertSubview:indicator atIndex:1];
+//    [self insertSubview:indicator atIndex:1];
+    
+    [self addSubview:indicator];
     
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor whiteColor]];
