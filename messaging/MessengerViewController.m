@@ -280,13 +280,8 @@
                 
                 //Remove conversation from table view.
                 [self removeCellWithIndexPath:indexPath];
-                
             }
-            
         }];
-        
-
-
     }
 }
 

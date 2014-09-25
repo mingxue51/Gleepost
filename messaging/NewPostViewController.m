@@ -417,7 +417,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)informParentVCForNewPost:(GLPPost *)post
 {
-    
     if([[PendingPostManager sharedInstance] isGroupPost])
     {
         //Notify the group view controller.

@@ -446,12 +446,19 @@ const float TOP_OFFSET = 180.0f;
     
     DDLogDebug(@"New video post received in campus wall: %@", inPost);
     
+    
+    
     //Check if the video post is already in the campus wall.
     
     if([self isPostVisible:inPost])
     {
+        //Release isLoading variable.
+        self.isLoading = NO;
+        DDLogDebug(@"Is loading NO");
+
         return;
     }
+
     
     [self reloadNewVideoPost:inPost];
 }
@@ -1471,6 +1478,13 @@ const float TOP_OFFSET = 180.0f;
     
     if(inPost.video != nil)
     {
+        //Set isLoading variable YES in order to prevent duplicated video posts (from cron).
+        //The variable is setting as NO after the updateVideoPostAfterCreatingThePost is called
+        //from NSNotification. (that means the video post is uploaded)
+        self.isLoading = YES;
+        
+        DDLogDebug(@"Is loading YES");
+        
         return;
     }
     
@@ -1515,6 +1529,8 @@ const float TOP_OFFSET = 180.0f;
     
     
     self.isLoading = NO;
+    DDLogDebug(@"Is loading NO");
+
 
 }
 
