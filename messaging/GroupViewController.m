@@ -37,6 +37,7 @@
 #import "IntroKindOfNewPostViewController.h"
 #import "GLPShowLocationViewController.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPLiveGroupPostManager.h"
 
 @interface GroupViewController ()
 
@@ -395,6 +396,7 @@ const float TOP_OFF_SET = -64.0;
     
     int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
     
+    
     DDLogWarn(@"GroupViewController : updateRealImage notification: %@ and index: %d", notification, index);
 
     
@@ -437,6 +439,9 @@ const float TOP_OFF_SET = -64.0;
         }
         ++index;
     }
+    
+    [[GLPLiveGroupPostManager sharedInstance] removePost:uploadedPost fromGroupWithRemoteKey:_group.remoteKey];
+
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     
@@ -809,7 +814,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)makeVisibleOrInvisibleNavigationBarWithOffset:(float)offset
 {
-    DDLogDebug(@"Offset: %f, top off set: %f", offset, TOP_OFF_SET);
+//    DDLogDebug(@"Offset: %f, top off set: %f", offset, TOP_OFF_SET);
     
     if(offset >= TOP_OFF_SET)
     {
@@ -870,6 +875,10 @@ const float TOP_OFF_SET = -64.0;
             
             //If the view comes from notifications, focus on the user's latest post.
             [self focusOnTheLatestUsersPostIfNeeded];
+            
+            [self removeAnyAlreadyUploadedImagePosts];
+            
+            [self insertPendingImagePostsIfNeeded];
                
         }
         else
@@ -912,6 +921,28 @@ const float TOP_OFF_SET = -64.0;
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
     }
+}
+
+/**
+ This method removes any pending post in GLPLiveGroupPostManager in case
+ that posts is already uploaded.
+ */
+- (void)removeAnyAlreadyUploadedImagePosts
+{
+    [[GLPLiveGroupPostManager sharedInstance] removeAnyUploadedImagePostWithPosts:_posts inGroupRemoteKey:_group.remoteKey];
+}
+
+/**
+ Inserts any pending image post exist to the table view.
+ */
+- (void)insertPendingImagePostsIfNeeded
+{
+    NSArray *pendingImagePosts = [[GLPLiveGroupPostManager sharedInstance] pendingImagePostsWithGroupRemoteKey:_group.remoteKey];
+    
+    [self.posts insertObjects:pendingImagePosts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, pendingImagePosts.count)]];
+
+    [self.tableView reloadData];
+    
 }
 
 -(void)loadGroupData
@@ -1166,6 +1197,9 @@ const float TOP_OFF_SET = -64.0;
     [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
     
     
+    //Add the pending new image post to the GLPLiveGroupPostManager.
+    [[GLPLiveGroupPostManager sharedInstance] addImagePost:inPost withGroupRemoteKey:_group.remoteKey];
+    
 //    self.isLoading = NO;
     
     //Bring the fake navigation bar to from because is hidden by new cell.
@@ -1374,6 +1408,11 @@ const float TOP_OFF_SET = -64.0;
     
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
+-(void)viewPostImage:(UIImage*)postImage
+{
+#warning implementation pending.
 }
 
 #pragma  mark - Helpers

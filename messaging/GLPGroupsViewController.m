@@ -30,8 +30,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *searchBarView;
 
-@property (weak, nonatomic) IBOutlet UIButton *rightNavigationButton;
-
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
 
 //@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -268,6 +266,13 @@
     }
     
     self.selectedGroup = [_filteredGroups objectAtIndex:indexPath.row];
+    
+    //If the group is pending (is not already uploaded) then don't do anything.
+
+    if(_selectedGroup.sendStatus == kSendStatusLocal)
+    {
+        return;
+    }
     
     [self performSegueWithIdentifier:@"view group" sender:self];
 }

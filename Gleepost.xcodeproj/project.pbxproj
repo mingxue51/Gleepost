@@ -287,6 +287,7 @@
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
 		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
+		585909A819D42E40006ACC64 /* GLPLiveGroupPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585909A719D42E40006ACC64 /* GLPLiveGroupPostManager.m */; };
 		585AE266192B71BB00174CED /* save_recording.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE265192B71BB00174CED /* save_recording.png */; };
 		585AE268192B841900174CED /* PostVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 585AE267192B841900174CED /* PostVideoCell.xib */; };
 		585AE26A192BC0BB00174CED /* gleepost_play_button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE269192BC0BB00174CED /* gleepost_play_button_red.png */; };
@@ -1299,6 +1300,8 @@
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
 		58536EDB18BE84210036FD00 /* gleepost-dev.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
 		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
+		585909A619D42E40006ACC64 /* GLPLiveGroupPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveGroupPostManager.h; sourceTree = "<group>"; };
+		585909A719D42E40006ACC64 /* GLPLiveGroupPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveGroupPostManager.m; sourceTree = "<group>"; };
 		585AE265192B71BB00174CED /* save_recording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save_recording.png; sourceTree = "<group>"; };
 		585AE267192B841900174CED /* PostVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostVideoCell.xib; sourceTree = "<group>"; };
 		585AE269192BC0BB00174CED /* gleepost_play_button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_play_button_red.png; sourceTree = "<group>"; };
@@ -3743,6 +3746,8 @@
 				58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */,
 				586A6F9919B1485500664017 /* GLPLiveGroupManager.h */,
 				586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */,
+				585909A619D42E40006ACC64 /* GLPLiveGroupPostManager.h */,
+				585909A719D42E40006ACC64 /* GLPLiveGroupPostManager.m */,
 			);
 			name = Groups;
 			sourceTree = "<group>";
@@ -5816,6 +5821,7 @@
 				5890249E195DF05C00084E2F /* PrivateProfileTopViewCell.m in Sources */,
 				581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */,
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				585909A819D42E40006ACC64 /* GLPLiveGroupPostManager.m in Sources */,
 				5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
