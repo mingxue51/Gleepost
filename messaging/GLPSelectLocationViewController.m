@@ -257,7 +257,12 @@
     MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
     [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
         UIImage *image = snapshot.image;
-
+        
+        //Check if the location data is valid if not then add empty strings
+        //in fields that are nil.
+        
+        [self formatLocationDataIfNeeded];
+        
         [_delegate locationSelected:_selectedLocation withMapImage:image];
         
         [self.navigationController popViewControllerAnimated:YES];
@@ -484,6 +489,17 @@
     coordinates.longitude = location.longitude;
     
     return coordinates;
+}
+
+/**
+ If address is not exist then add empty string to address.
+ */
+- (void)formatLocationDataIfNeeded
+{
+    if(!_selectedLocation.address)
+    {
+        _selectedLocation.address = @"";
+    }
 }
 
 - (void)dealloc

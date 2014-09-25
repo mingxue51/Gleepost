@@ -166,9 +166,9 @@ static GLPVideoUploadManager *instance = nil;
         return;
     }
     
-    if([[GLPProgressManager sharedInstance] isProgressViewVisible])
+    if(![[GLPProgressManager sharedInstance] isProgressFinished])
     {
-        DDLogInfo(@"Can't check for non uploaded video posts, progress view visible");
+        DDLogInfo(@"Can't check for non uploaded video posts, video is in progress.");
         
         return;
     }
@@ -203,6 +203,11 @@ static GLPVideoUploadManager *instance = nil;
                 if(success)
                 {
                     DDLogDebug(@"Pending video result: %@", result);
+                    
+                    if(!result)
+                    {
+                        return;
+                    }
                     
                     videoPost.video = result;
                     

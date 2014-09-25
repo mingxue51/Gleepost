@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSDate *currentProcessedTimestamp;
 @property (strong, nonatomic) UploadingProgressView *progressView;
 @property (assign, nonatomic) BOOL postClicked;
-@property (assign, nonatomic, getter = isProgressViewVisible) BOOL progressViewVisible;
+@property (assign, nonatomic, getter = isProgressFinished) BOOL progressFinished;
 @end
 
 @implementation GLPProgressManager
@@ -63,7 +63,7 @@ static GLPProgressManager *instance = nil;
     
     _postClicked = NO;
 
-    _progressViewVisible = NO;
+    _progressFinished = YES;
     
     [_progressView resetView];
 
@@ -97,7 +97,7 @@ static GLPProgressManager *instance = nil;
     
     [_progressView setHidden:NO];
     
-    _progressViewVisible = YES;
+//    _progressViewVisible = YES;
 }
 
 - (void)hideProgressView
@@ -109,7 +109,7 @@ static GLPProgressManager *instance = nil;
     
     _postClicked = NO;
     
-    _progressViewVisible = NO;
+//    _progressViewVisible = NO;
 
 }
 
@@ -147,6 +147,8 @@ static GLPProgressManager *instance = nil;
     [_progressView resetView];
     
     _currentProcessedTimestamp = nil;
+    
+    _progressFinished = YES;
 
 
 }
@@ -156,6 +158,8 @@ static GLPProgressManager *instance = nil;
     DDLogDebug(@"GLPProgressManager : postButtonClicked");
 
     _postClicked = YES;
+    
+    _progressFinished = NO;
 }
 
 #pragma mark - Notification methods
