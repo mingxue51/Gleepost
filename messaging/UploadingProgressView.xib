@@ -44,6 +44,7 @@
                 <outlet property="thumbnailImageView" destination="uj6-Cl-19q" id="WbC-kw-7QE"/>
                 <outlet property="uploadingLabel" destination="J5Z-Yu-DDs" id="HPc-yK-4mr"/>
             </connections>
+            <point key="canvasLocation" x="-9" y="-17"/>
         </view>
     </objects>
     <resources>

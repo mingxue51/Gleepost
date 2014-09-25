@@ -274,11 +274,19 @@
             
             if(success)
             {
+                [_conversations removeObjectAtIndex:indexPath.row];
+                
+                [_filteredConversations removeObjectAtIndex:indexPath.row];
+                
                 //Remove conversation from table view.
                 [self removeCellWithIndexPath:indexPath];
+                
             }
             
         }];
+        
+
+
     }
 }
 
@@ -523,7 +531,11 @@
 
 - (void)removeCellWithIndexPath:(NSIndexPath *)indexPathRow
 {
-    [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
+
+    });
 }
 
 #pragma mark - Segue
