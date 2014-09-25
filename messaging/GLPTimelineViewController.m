@@ -338,7 +338,6 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
 }
 
@@ -443,75 +442,18 @@ const float TOP_OFFSET = 180.0f;
     
     GLPPost *inPost = data[@"final_post"];
     
-//    NSInteger postIndex = -1;
-    
     DDLogDebug(@"New video post received in campus wall: %@", inPost);
     
-    [self reloadNewVideoPost:inPost];
+    //Check if the video post is already in the campus wall.
     
-//    postIndex = [GLPPostNotificationHelper findPostIndexWithKey:inPost.key inPosts:self.posts];
-//    
-//    DDLogDebug(@"New video post index: %ld", (long)postIndex);
-//    
-//    if(postIndex == -1)
-//    {
-//        return;
-//    }
-//    
-//    GLPPost *pendingVideoPost = [self.posts objectAtIndex:postIndex];
-//    
-//    pendingVideoPost.remoteKey = inPost.remoteKey;
-//    
-//    DDLogDebug(@"Update video post: %@", pendingVideoPost.video);
-//    
-//    
-//    
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    
-}
-
-/**
- This method should be called from Web Socket via (GLPVideoUploadManager) when the video is proccessed and ready.
- 
- The current notification may also be called before the creation of the post. 
- TODO: In that case the thumbnailUrl and the videoUrl should be saved and once the video is ready,
- add that data to the post.
- 
- TODO: This method is not used for now.
- 
- */
-- (void)updateVideoPostWhenVideoIsReady:(NSNotification *)notification
-{
-    NSDictionary *data = [notification userInfo];
-
-    NSInteger remoteKey = [[data objectForKey:@"id"] integerValue];
-    
-    NSArray *thumbnails = [data objectForKey:@"thumbnails"];
-    
-    NSString *thumbnailUrl = [thumbnails objectAtIndex:0];
-    
-    NSString *videoUrl = [data objectForKey:@"mp4"];
-    
-    DDLogDebug(@"Received ready video notification: %@ : %@", videoUrl, thumbnailUrl);
-    
-    NSInteger postIndex = [GLPPostNotificationHelper findPostIndexWithRemoteKey:remoteKey inPosts:self.posts];
-    
-    DDLogDebug(@"Index no: %ld, remote key: %ld", (long)postIndex, (long)remoteKey);
-    
-    if(postIndex == -1)
+    if([self isPostVisible:inPost])
     {
         return;
     }
     
-    GLPPost *videoPost = [self.posts objectAtIndex:postIndex];
-    
-//    videoPost.videoThumbnail = thumbnailUrl;
-//    videoPost.videosUrls = [[NSArray alloc] initWithObjects:videoUrl, nil];
-    
-    DDLogDebug(@"Video of video post ready: %@", videoPost);
-    
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:postIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [self reloadNewVideoPost:inPost];
 }
+
 
 -(void)updateRealImage:(NSNotification*)notification
 {
@@ -843,8 +785,6 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostWhenVideoIsReady:) name:GLPNOTIFICATION_VIDEO_PROCESSED object:nil];
     
 }
 
@@ -2940,6 +2880,27 @@ const float TOP_OFFSET = 180.0f;
         [self.campusWallHeader groupFeedDisabled];
 
     }
+}
+
+#pragma mark - Helpers
+
+- (BOOL)isPostVisible:(GLPPost *)post
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteKey == %d", post.remoteKey];
+    
+    NSArray *filteredArray = [_posts filteredArrayUsingPredicate:predicate];
+    
+    if(filteredArray.count > 0)
+    {
+        DDLogDebug(@"Post visible after reloading: %@", filteredArray);
+        
+        return YES;
+    }
+    
+    DDLogDebug(@"Post not visible after reloading: %@", filteredArray);
+    
+    
+    return NO;
 }
 
 
