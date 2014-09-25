@@ -849,7 +849,9 @@ static WebClient *instance = nil;
 
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+//        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
+        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject withGroupRemoteKey:groupId];
+
         callbackBlock(YES, posts);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

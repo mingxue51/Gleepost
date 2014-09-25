@@ -13,6 +13,7 @@
 #import "SessionManager.h"
 #import "GLPMemberDao.h"
 #import "GroupOperationManager.h"
+#import "GLPPostDao.h"
 
 @implementation GLPGroupManager
 
@@ -174,20 +175,20 @@
 
 #pragma mark - Posts methods
 
-+ (void)loadInitialPostsWithGroupId:(int)groupId remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
++ (void)loadInitialPostsWithGroupId:(int)groupId localCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
 {
-    NSLog(@"load initial group posts with id: %d", groupId);
+    DDLogInfo(@"load initial group posts with id: %d", groupId);
     
-//    __block NSArray *localEntities = nil;
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        localEntities = [GLPPostDao findLastPostsInDb:db];
-//    }];
-//    
-//    NSLog(@"local posts %d", localEntities.count);
-//    
-//    if(localEntities.count > 0) {
-//        localCallback(localEntities);
-//    }
+    __block NSArray *localEntities = nil;
+    [DatabaseManager run:^(FMDatabase *db) {
+        localEntities = [GLPPostDao findPostsInGroupWithRemoteKey:groupId inDb:db];
+    }];
+    
+    DDLogInfo(@"local group posts %d", localEntities.count);
+    
+    if(localEntities.count > 0) {
+        localCallback(localEntities);
+    }
     
     [[WebClient sharedInstance] getPostsAfter:nil withGroupId:groupId callback:^(BOOL success, NSArray *posts) {
        
@@ -195,13 +196,13 @@
         {
             BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
 
+            [GLPPostDao saveGroupPosts:posts];
             
             remoteCallback(YES, remains, posts);
         }
         else
         {
             remoteCallback(NO, NO, nil);
-            return;
         }
         
     }];

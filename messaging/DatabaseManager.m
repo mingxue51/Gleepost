@@ -179,7 +179,8 @@ static DatabaseManager *instance = nil;
              location_lat real, \
              location_lon real, \
              location_name text, \
-             location_address text);"];
+             location_address text, \
+             group_remote_key integer);"];
             
             // post images
             [db executeUpdate:@"create table post_images ( \

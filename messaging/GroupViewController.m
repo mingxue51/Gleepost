@@ -800,8 +800,6 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)makeVisibleOrInvisibleActivityIndicatorWithOffset:(float)offset
 {
-    DDLogDebug(@"Activity indicator: %f", offset);
-    
     if(offset < (-OFFSET_START_ANIMATING))
     {
         [_activityIndicator setHidden:NO];
@@ -857,36 +855,87 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)loadPosts
 {
-    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
-       
-        if(success)
-        {
-//            DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
-            
-            _posts = remotePosts.mutableCopy;
-            
-            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
-            
-            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-            
-            [self.tableView reloadData];
-            
-            self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-            
-            //If the view comes from notifications, focus on the user's latest post.
-            [self focusOnTheLatestUsersPostIfNeeded];
-            
-            [self removeAnyAlreadyUploadedImagePosts];
-            
-            [self insertPendingImagePostsIfNeeded];
-               
-        }
-        else
-        {
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-        }
+    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey localCallback:^(NSArray *localPosts) {
+        
+        DDLogDebug(@"Local group posts: %@", localPosts);
+        
+        [self setNewLocalPosts:localPosts];
+        
+    } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
+        
+        [self setNewRemotePosts:remotePosts withRemain:remain];
         
     }];
+    
+//    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
+//       
+//        if(success)
+//        {
+////            DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
+//            
+//            _posts = remotePosts.mutableCopy;
+//            
+//            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+//            
+//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+//            
+//            [self.tableView reloadData];
+//            
+//            self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+//            
+//            //If the view comes from notifications, focus on the user's latest post.
+//            [self focusOnTheLatestUsersPostIfNeeded];
+//            
+//            [self removeAnyAlreadyUploadedImagePosts];
+//            
+//            [self insertPendingImagePostsIfNeeded];
+//               
+//        }
+//        else
+//        {
+//            self.loadingCellStatus = kGLPLoadingCellStatusError;
+//        }
+//        
+//    }];
+}
+
+- (void)setNewRemotePosts:(NSArray *)remotePosts withRemain:(BOOL)remain
+{
+    _posts = remotePosts.mutableCopy;
+    
+    [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+    
+    [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+    
+    [self.tableView reloadData];
+    
+    self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+    
+    //If the view comes from notifications, focus on the user's latest post.
+    [self focusOnTheLatestUsersPostIfNeeded];
+    
+    [self removeAnyAlreadyUploadedImagePosts];
+    
+    [self insertPendingImagePostsIfNeeded];
+}
+
+
+- (void)setNewLocalPosts:(NSArray *)posts
+{
+    _posts = posts.mutableCopy;
+    
+    [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+    
+    [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+    
+    [self.tableView reloadData];
+    
+    //If the view comes from notifications, focus on the user's latest post.
+    [self focusOnTheLatestUsersPostIfNeeded];
+    
+    [self removeAnyAlreadyUploadedImagePosts];
+    
+    [self insertPendingImagePostsIfNeeded];
 }
 
 - (void)focusOnTheLatestUsersPostIfNeeded

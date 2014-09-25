@@ -98,8 +98,6 @@ static GLPLiveGroupPostManager *instance = nil;
     
     if(postFound)
     {
-        DDLogDebug(@"Post %@ removed. New group array: %@", post, pendingImagePostsArray);
-        
         [pendingImagePostsArray removeObjectAtIndex:index];
     }
     
@@ -116,8 +114,6 @@ static GLPLiveGroupPostManager *instance = nil;
             if(pendingPost.remoteKey == livePost.remoteKey)
             {
                 [self removePost:pendingPost fromGroupWithRemoteKey:groupRemoteKey];
-                
-                DDLogDebug(@"Post exist %@ removed!", pendingPost);
             }
         }
     }

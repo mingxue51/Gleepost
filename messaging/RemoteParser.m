@@ -637,6 +637,22 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     NSMutableArray *posts = [NSMutableArray array];
     for(id postJson in jsonPosts) {
         GLPPost *post = [RemoteParser parsePostFromJson:postJson];
+        
+        [posts addObject:post];
+    }
+    
+    return posts;
+}
+
++ (NSArray *)parsePostsFromJson:(NSArray *)jsonPosts withGroupRemoteKey:(NSInteger)groupRemoteKey
+{
+    NSMutableArray *posts = [NSMutableArray array];
+    
+    for(id postJson in jsonPosts)
+    {
+        GLPPost *post = [RemoteParser parsePostFromJson:postJson];
+        post.group = [[GLPGroup alloc] init];
+        post.group.remoteKey = groupRemoteKey;
         [posts addObject:post];
     }
     

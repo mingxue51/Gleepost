@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "GLPGroup.h"
 
+@class FMDatabase;
+
 @interface GLPGroupDao : NSObject
 
 
@@ -17,6 +19,7 @@
 +(void)remove:(GLPGroup *)group;
 +(NSArray *)findGroups;
 +(NSArray *)findRemoteGroups;
++ (GLPGroup *)findByRemoteKey:(int)remoteKey db:(FMDatabase *)db;
 +(void)updateGroupSendingData:(GLPGroup *)entity;
 +(void)updateGroup:(GLPGroup *)entity;
 
