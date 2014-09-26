@@ -48,15 +48,27 @@
     
     [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
     
-    [self insertSubview:subView atIndex:0];
+    [self addSubview:subView];
     
-    [self insertSubview:subView atIndex:1];
+    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(132, 57, 56, 100)];
     
-    [self insertSubview:subView atIndex:2];
+    [margingImage setBackgroundColor:[UIColor whiteColor]];
+    
+    [self addSubview:margingImage];
+    
+//    [self insertSubview:subView atIndex:0];
+//    
+//    [self insertSubview:subView atIndex:1];
+//    
+//    [self insertSubview:subView atIndex:2];
 }
 
 - (void)configureActivityInidicator
 {
+    
+    [self setBackgroundColor:[UIColor whiteColor]];
+    [self setTintColor:[UIColor whiteColor]];
+    
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     CGRectSetX(indicator, 150.0);
@@ -66,10 +78,16 @@
     
 //    [self insertSubview:indicator atIndex:1];
     
-    [self addSubview:indicator];
     
-    [self setBackgroundColor:[UIColor whiteColor]];
-    [self setTintColor:[UIColor whiteColor]];
+    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(132, 0, 56, 100)];
+    
+    [margingImage setBackgroundColor:[UIColor whiteColor]];
+    
+    [self addSubview:margingImage];
+    
+    [self addSubview:indicator];
+
+
 }
 
 
