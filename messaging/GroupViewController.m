@@ -113,6 +113,9 @@ const float TOP_OFF_SET = -64.0;
     }
     
 
+    //Get the progress view and add it as subview.
+    [self getProgressViewAndAddIt];
+    
     
     
 //    if(_fromPushNotification)
@@ -162,6 +165,11 @@ const float TOP_OFF_SET = -64.0;
 {
     [self removeNotifications];
     [_tableView removeFromSuperview];
+}
+
+- (void)getProgressViewAndAddIt
+{
+    [self.tableView addSubview:(UIView *)[[GLPLiveGroupPostManager sharedInstance] progressView]];
 }
 
 
@@ -373,6 +381,12 @@ const float TOP_OFF_SET = -64.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+    
+    //Create a custom notification name in order to prevent issues with other group view controllers.
+    
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:notificationName object:nil];
 }
 
 -(void)removeNotifications
@@ -380,6 +394,11 @@ const float TOP_OFF_SET = -64.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostImageUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+    
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -389,6 +408,39 @@ const float TOP_OFF_SET = -64.0;
 }
 
 #pragma mark - Notifications methods
+
+
+/**
+ This method should be called when the post is uploaded (GLPPostUploaderManager).
+ 
+ In this case we just refresh the video post to remove the uploading indicator.
+ 
+ @param notification contains final_post.
+ 
+ */
+- (void)updateVideoPostAfterCreatingThePost:(NSNotification *)notification
+{
+    NSDictionary *data = [notification userInfo];
+    
+    GLPPost *inPost = data[@"final_post"];
+    
+    DDLogDebug(@"New video post received in group view: %@", inPost);
+    
+    
+    //Check if the video post is already in the campus wall.
+    
+    if([self isPostVisible:inPost])
+    {
+        //Release isLoading variable.
+//        self.isLoading = NO;
+//        DDLogDebug(@"Is loading NO");
+        
+        return;
+    }
+    
+    
+    [self reloadNewVideoPost:inPost];
+}
 
 -(void)updateRealImage:(NSNotification *)notification
 {
@@ -755,6 +807,37 @@ const float TOP_OFF_SET = -64.0;
     if(indexPath.row - 1 == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
         DDLogInfo(@"Load previous posts cell activated");
         [self loadPreviousPosts];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row >= _posts.count)
+    {
+        //TODO: If this contition is YES then the app is going to crash.
+        //That's why we have a temporary return.
+        
+        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+        
+        return;
+    }
+    
+    GLPPost *post = _posts[indexPath.row];
+    
+    if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
+    {
+        DDLogDebug(@"%@ not subclass", [cell class]);
+        
+        return;
+        
+    }
+    
+    
+    GLPPostCell *postCell = (GLPPostCell *)cell;
+    
+    if([post isVideoPost])
+    {
+        [postCell deregisterNotificationsInVideoView];
     }
 }
 
@@ -1213,7 +1296,7 @@ const float TOP_OFF_SET = -64.0;
 }
 
 
-#pragma mark - New Post Delegate
+#pragma mark - Reload posts
 
 -(void)reloadNewMediaPostWithPost:(NSNotification *)notification
 {
@@ -1230,6 +1313,16 @@ const float TOP_OFF_SET = -64.0;
     
     if(!inPost.group)
     {
+        return;
+    }
+    
+    if(inPost.video != nil)
+    {
+        //Set isLoading variable YES in order to prevent duplicated video posts (from cron).
+        //The variable is setting as NO after the updateVideoPostAfterCreatingThePost is called
+        //from NSNotification. (that means the video post is uploaded)
+//        self.isLoading = YES;
+        
         return;
     }
     
@@ -1254,6 +1347,24 @@ const float TOP_OFF_SET = -64.0;
     //Bring the fake navigation bar to from because is hidden by new cell.
     //    [self.tableView bringSubviewToFront:self.reNavBar];
     
+}
+
+- (void)reloadNewVideoPost:(GLPPost *)post
+{
+    DDLogInfo(@"Reload new video post in GroupViewController: %@", post);
+    
+    self.isLoading = YES;
+    
+    //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
+    
+    [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
+    
+    [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
+    
+    
+    self.isLoading = NO;
 }
 
 #pragma mark - RemovePostCellDelegate
@@ -1485,6 +1596,24 @@ const float TOP_OFF_SET = -64.0;
     return (_groupImage) ? YES : NO;
 }
 
+- (BOOL)isPostVisible:(GLPPost *)post
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteKey == %d", post.remoteKey];
+    
+    NSArray *filteredArray = [_posts filteredArrayUsingPredicate:predicate];
+    
+    if(filteredArray.count > 0)
+    {
+        DDLogDebug(@"Post visible after reloading: %@", filteredArray);
+        
+        return YES;
+    }
+    
+    DDLogDebug(@"Post not visible after reloading: %@", filteredArray);
+    
+    
+    return NO;
+}
 
 /*
 // Override to support conditional editing of the table view.

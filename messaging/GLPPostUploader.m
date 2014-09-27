@@ -16,7 +16,8 @@
 #import "GLPPostOperationManager.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPVideo.h"
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
+#import "GLPLiveGroupPostManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -108,9 +109,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
  */
 -(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andLocation:(GLPLocation *)location
 {
-    //Register the timestamp in order to avoid problems when a video selected and then unselected.
-    [[GLPProgressManager sharedInstance] registerVideoWithTimestamp:timestamp];
-
+//    //Register the timestamp in order to avoid problems when a video selected and then unselected.
+//    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:<#(GLPPost *)#>];
     DDLogDebug(@"REGISTERED TIMESTAMP: %@", timestamp);
 
     //Add the date to a new post.
@@ -121,6 +121,14 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.dateEventStarts = eventDate;
     post.eventTitle = title;
     post.location = location;
+    
+
+    //Register the timestamp in order to avoid problems when a video selected and then unselected.
+    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+    
+    
+
+
     //Create a new operation.
     
     post = [self uploadPostWithPost:post];
@@ -157,6 +165,9 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.eventTitle = title;
     post.group = group;
     post.location = location;
+    
+    [[GLPLiveGroupPostManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+
     
     return [self uploadPostWithPost:post];
 }

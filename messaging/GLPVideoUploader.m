@@ -10,7 +10,7 @@
 #import "GLPiOSSupportHelper.h"
 #import "WebClient.h"
 #import "NSMutableArray+QueueAdditions.h"
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
 
 @interface GLPVideoUploader ()
 

@@ -14,7 +14,8 @@
 #import "WebClientHelper.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPVideo.h"
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
+#import "GLPLiveGroupPostManager.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -633,10 +634,11 @@
         
         DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
         
-        [[GLPProgressManager sharedInstance] progressFinished];
+//        [[GLPCampusWallProgressManager sharedInstance] progressFinished];
         
+        [self notifyTheRightViewControllerWithPost:post];
         
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
+//        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
         
         [self videoPostReadyToUpload];
 
@@ -702,6 +704,7 @@
     _uploadVideoContentBlock = ^(GLPPost *post){
         
         //TODO: Create the new post to the campus wall dynamically.
+        //TODO: Make that to work for group video posts too.
         
         DDLogDebug(@"Pending Post video data before notify Campus Wall: %@", post.video);
         
@@ -806,6 +809,26 @@
     [_tempVideoData setObject:videoData forKey:videoId];
     
 //    _tempVideoData = videoData;
+}
+
+- (void)notifyTheRightViewControllerWithPost:(GLPPost *)post
+{
+    DDLogDebug(@"Group post? %@", post.group);
+    
+    if(post.group)
+    {
+        [[GLPLiveGroupPostManager sharedInstance] progressFinished];
+        
+        NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)post.group.remoteKey];
+
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:notificationName object:self userInfo:@{@"final_post": post}];
+    }
+    else
+    {
+        [[GLPCampusWallProgressManager sharedInstance] progressFinished];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
+    }
+
 }
 
 - (void)videoPostReadyToUpload

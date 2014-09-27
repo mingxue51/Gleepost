@@ -65,7 +65,6 @@
 
 - (void)configureActivityInidicator
 {
-    
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor whiteColor]];
     
@@ -86,8 +85,6 @@
     [self addSubview:margingImage];
     
     [self addSubview:indicator];
-
-
 }
 
 

@@ -20,6 +20,8 @@
 #import "DateFormatterHelper.h"
 #import "GLPVideo.h"
 #import "GLPLocation.h"
+#import "GLPCampusWallProgressManager.h"
+#import "GLPLiveGroupPostManager.h"
 
 @interface WebClient()
 
@@ -1881,8 +1883,26 @@ static WebClient *instance = nil;
         
         [finalDictNotifiation setObject:timestamp forKey:@"timestamp"];
         
-        //Inform GLPProgressManager.
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotifiation];
+
+        
+        if([[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+        {
+            DDLogDebug(@"CampusWall progress manager timstamp %@ and current one %@",[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp], timestamp);
+
+            //Inform GLPCampusWallProgressManager.
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotifiation];
+        }
+        else if ([[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+        {
+
+            NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationNameForPendingGroupPost];
+            
+            
+            DDLogDebug(@"Group progress manager timstamp %@ and current one %@. Notification name: %@",[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp], timestamp, notificationName);
+
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:finalDictNotifiation];
+        }
         
     }];
     

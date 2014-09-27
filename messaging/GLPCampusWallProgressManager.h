@@ -9,17 +9,20 @@
 #import <Foundation/Foundation.h>
 
 @class UploadingProgressView;
+@class GLPPost;
 
-@interface GLPProgressManager : NSObject
+@interface GLPCampusWallProgressManager : NSObject
 
-+ (GLPProgressManager *)sharedInstance;
++ (GLPCampusWallProgressManager *)sharedInstance;
 
-- (void)registerVideoWithTimestamp:(NSDate *)timestamp;
+- (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post;
+- (NSDate *)registeredTimestamp;
 - (UploadingProgressView *)progressView;
 - (void)setThumbnailImage:(UIImage *)thumbnail;
 - (void)progressFinished;
 - (void)postButtonClicked;
 //- (BOOL)isProgressViewVisible;
 - (BOOL)isProgressFinished;
+//- (void)setPendingPost:(GLPPost *)post;
 
 @end

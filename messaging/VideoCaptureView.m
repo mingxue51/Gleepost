@@ -9,8 +9,10 @@
 #import "VideoCaptureView.h"
 #import "VideoProgressView.h"
 #import "AppearanceHelper.h"
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
 #import <AssetsLibrary/ALAsset.h>
+#import "PendingPostManager.h"
+#import "GLPLiveGroupPostManager.h"
 
 @interface VideoCaptureView ()
 
@@ -129,8 +131,15 @@
     
     UIImage *thumbnail = videoDict[PBJVisionVideoThumbnailKey];
     
-    //Add thumbnail to GLPProgressManager.
-    [[GLPProgressManager sharedInstance] setThumbnailImage: thumbnail];
+    if([[PendingPostManager sharedInstance] isGroupPost])
+    {
+        [[GLPLiveGroupPostManager sharedInstance] setThumbnailImage:thumbnail];
+    }
+    else
+    {
+        //Add thumbnail to GLPProgressManager.
+        [[GLPCampusWallProgressManager sharedInstance] setThumbnailImage: thumbnail];
+    }
     
     
     NSString *videoPath = [videoDict objectForKey:PBJVisionVideoPathKey];

@@ -10,30 +10,33 @@
 //
 //
 
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
 #import "UploadingProgressView.h"
+#import "GLPPost.h"
 
-@interface GLPProgressManager ()
+@interface GLPCampusWallProgressManager ()
 
 //@property (strong, nonatomic) NSMutableArray *videosTimestamps;
 @property (strong, nonatomic) NSDate *currentProcessedTimestamp;
 @property (strong, nonatomic) UploadingProgressView *progressView;
-@property (assign, nonatomic) BOOL postClicked;
+@property (assign, nonatomic, getter=isPostButtonClicked) BOOL postClicked;
 @property (assign, nonatomic, getter = isProgressFinished) BOOL progressFinished;
+@property (strong, nonatomic) GLPPost *pendingPost;
+
 @end
 
-@implementation GLPProgressManager
+@implementation GLPCampusWallProgressManager
 
 const NSString *DATA_WRITTEN = @"data_written";
 const NSString *DATA_EXPECTED = @"data_expected";
 
-static GLPProgressManager *instance = nil;
+static GLPCampusWallProgressManager *instance = nil;
 
-+ (GLPProgressManager *)sharedInstance
++ (GLPCampusWallProgressManager *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[GLPProgressManager alloc] init];
+        instance = [[GLPCampusWallProgressManager alloc] init];
     });
     
     return instance;
@@ -115,9 +118,19 @@ static GLPProgressManager *instance = nil;
 
 #pragma mark - Accessors
 
-- (void)registerVideoWithTimestamp:(NSDate *)timestamp
+- (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post
 {
     _currentProcessedTimestamp = timestamp;
+    _pendingPost = post;
+    
+    if(_pendingPost.group)
+    {
+        [_progressView setTransparencyToView:YES];
+    }
+    else
+    {
+        [_progressView setTransparencyToView:NO];
+    }
     
 //    [_videosTimestamps addObject:timestamp];
     
@@ -127,6 +140,11 @@ static GLPProgressManager *instance = nil;
 //    }
 
 //    _progressViewVisible = YES;
+}
+
+- (NSDate *)registeredTimestamp
+{
+    return _currentProcessedTimestamp;
 }
 
 - (void)setThumbnailImage:(UIImage *)thumbnail

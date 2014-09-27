@@ -10,10 +10,18 @@
 
 #import "GLPLiveGroupPostManager.h"
 #import "GLPPost.h"
+#import "GLPGroupProgressManager.h"
 
 @interface GLPLiveGroupPostManager ()
 
 @property (strong, nonatomic) NSMutableDictionary *pendingImagePosts;
+
+/** This class is a singleton but we are creating a new instance  ont this manager too. */
+//@property (strong, nonatomic) GLPCampusWallProgressManager *groupProgressManager;
+
+@property (strong, nonatomic) GLPGroupProgressManager *progressManager;
+
+
 
 @end
 
@@ -42,10 +50,57 @@ static GLPLiveGroupPostManager *instance = nil;
     if(self)
     {
         _pendingImagePosts = [[NSMutableDictionary alloc] init];
+//        _groupProgressManager = [[GLPCampusWallProgressManager alloc] init];
+        _progressManager = [[GLPGroupProgressManager alloc] init];
     }
     
     return self;
 }
+
+
+#pragma mark - Progress Manager
+
+- (UploadingProgressView *)progressView
+{
+    return [_progressManager progressView];
+}
+
+- (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post
+{
+    [_progressManager registerVideoWithTimestamp:timestamp withPost:post];
+}
+
+- (void)setThumbnailImage:(UIImage *)thumbnail
+{
+    [_progressManager setThumbnailImage:thumbnail];
+}
+
+- (void)progressFinished
+{
+    [_progressManager progressFinished];
+}
+
+- (void)postButtonClicked
+{
+    [_progressManager postButtonClicked];
+}
+
+- (BOOL)isProgressFinished
+{
+    return [_progressManager isProgressFinished];
+}
+
+- (NSDate *)registeredTimestamp
+{
+    return [_progressManager registeredTimestamp];
+}
+
+- (NSString *)generateNSNotificationNameForPendingGroupPost
+{
+    return [_progressManager generateNSNotificationNameForPendingGroupPost];
+}
+
+#pragma mark - Image posts
 
 - (void)addImagePost:(GLPPost *)post withGroupRemoteKey:(NSInteger)groupRemoteKey
 {
@@ -126,9 +181,6 @@ static GLPLiveGroupPostManager *instance = nil;
 
     return [_pendingImagePosts objectForKey:@(groupRemoteKey)];
 }
-
-#pragma mark - Helpers
-
 
 
 @end

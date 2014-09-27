@@ -246,6 +246,7 @@
 		584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584DC5001922475A00CEE096 /* VideoCaptureView.m */; };
 		584E1AFE19932B8900FD55AD /* new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E1AFD19932B8900FD55AD /* new_group.png */; };
 		584E1B0019932EF800FD55AD /* user_selected_tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 584E1AFF19932EF800FD55AD /* user_selected_tick.png */; };
+		584EE2D019D5A1590049D7B2 /* GLPGroupProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584EE2CF19D5A1590049D7B2 /* GLPGroupProgressManager.m */; };
 		584F1BF118DA3C2C00F43ABF /* nav_bar_title_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F1BF018DA3C2C00F43ABF /* nav_bar_title_button_old.png */; };
 		584F385A1817F4E500A1B742 /* multipleusersicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F38591817F4E500A1B742 /* multipleusersicon.png */; };
 		584F385C1817F50B00A1B742 /* default_group_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 584F385B1817F50B00A1B742 /* default_group_image.png */; };
@@ -277,7 +278,7 @@
 		585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D3199D87DA000F06BB /* kind_of_event_sports.png */; };
 		585106DD199D87DA000F06BB /* kind_of_event_theater.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D4199D87DA000F06BB /* kind_of_event_theater.png */; };
 		585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106E2199D9E64000F06BB /* PendingPostManager.m */; };
-		5851112A19A7E31000488E79 /* GLPProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851112919A7E31000488E79 /* GLPProgressManager.m */; };
+		5851112A19A7E31000488E79 /* GLPCampusWallProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851112919A7E31000488E79 /* GLPCampusWallProgressManager.m */; };
 		5851113719A8206900488E79 /* progress_bar_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113419A8206900488E79 /* progress_bar_border.png */; };
 		5851113819A8206900488E79 /* progress_bar_cloud_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113519A8206900488E79 /* progress_bar_cloud_small.png */; };
 		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
@@ -1243,6 +1244,8 @@
 		584DC5001922475A00CEE096 /* VideoCaptureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCaptureView.m; sourceTree = "<group>"; };
 		584E1AFD19932B8900FD55AD /* new_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new_group.png; sourceTree = "<group>"; };
 		584E1AFF19932EF800FD55AD /* user_selected_tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_selected_tick.png; sourceTree = "<group>"; };
+		584EE2CE19D5A1590049D7B2 /* GLPGroupProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupProgressManager.h; sourceTree = "<group>"; };
+		584EE2CF19D5A1590049D7B2 /* GLPGroupProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupProgressManager.m; sourceTree = "<group>"; };
 		584F1BF018DA3C2C00F43ABF /* nav_bar_title_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button_old.png; sourceTree = "<group>"; };
 		584F38511817DE8900A1B742 /* message_box_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = message_box_1.png; path = "../../Gleepost Data/NewChating/message_box_1.png"; sourceTree = "<group>"; };
 		584F38591817F4E500A1B742 /* multipleusersicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multipleusersicon.png; sourceTree = "<group>"; };
@@ -1285,8 +1288,8 @@
 		585106D4199D87DA000F06BB /* kind_of_event_theater.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_theater.png; sourceTree = "<group>"; };
 		585106E1199D9E64000F06BB /* PendingPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingPostManager.h; sourceTree = "<group>"; };
 		585106E2199D9E64000F06BB /* PendingPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingPostManager.m; sourceTree = "<group>"; };
-		5851112819A7E31000488E79 /* GLPProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProgressManager.h; sourceTree = "<group>"; };
-		5851112919A7E31000488E79 /* GLPProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProgressManager.m; sourceTree = "<group>"; };
+		5851112819A7E31000488E79 /* GLPCampusWallProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCampusWallProgressManager.h; sourceTree = "<group>"; };
+		5851112919A7E31000488E79 /* GLPCampusWallProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusWallProgressManager.m; sourceTree = "<group>"; };
 		5851113419A8206900488E79 /* progress_bar_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_border.png; sourceTree = "<group>"; };
 		5851113519A8206900488E79 /* progress_bar_cloud_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud_small.png; sourceTree = "<group>"; };
 		5851114119A83D9900488E79 /* progress_bar_cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud.png; sourceTree = "<group>"; };
@@ -2766,8 +2769,10 @@
 		5851112719A7E2FF00488E79 /* Progress */ = {
 			isa = PBXGroup;
 			children = (
-				5851112819A7E31000488E79 /* GLPProgressManager.h */,
-				5851112919A7E31000488E79 /* GLPProgressManager.m */,
+				5851112819A7E31000488E79 /* GLPCampusWallProgressManager.h */,
+				5851112919A7E31000488E79 /* GLPCampusWallProgressManager.m */,
+				584EE2CE19D5A1590049D7B2 /* GLPGroupProgressManager.h */,
+				584EE2CF19D5A1590049D7B2 /* GLPGroupProgressManager.m */,
 			);
 			name = Progress;
 			sourceTree = "<group>";
@@ -5642,7 +5647,7 @@
 				585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */,
 				58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
-				5851112A19A7E31000488E79 /* GLPProgressManager.m in Sources */,
+				5851112A19A7E31000488E79 /* GLPCampusWallProgressManager.m in Sources */,
 				58FB7CB11856548A002C6A00 /* ProfileButtonsTableViewCell.m in Sources */,
 				584FA5FA19B519FD00FBA61F /* GLPCustomProgressView.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
@@ -5995,6 +6000,7 @@
 				584FA60019B51A4C00FBA61F /* UploadingProgressView.m in Sources */,
 				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,
 				58451BFB199B2DCF003B94D2 /* SettingCell.m in Sources */,
+				584EE2D019D5A1590049D7B2 /* GLPGroupProgressManager.m in Sources */,
 				58ACD1D318F599E200BD576B /* DCStatusBarOverlay.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
 				5861575B193CAB7B009BAD33 /* GLPWalkthroughModelController.m in Sources */,

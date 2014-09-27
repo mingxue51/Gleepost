@@ -14,5 +14,6 @@
 - (void)updateProgressWithValue:(float)progress;
 - (void)setThumbnailImage:(UIImage *)thumbnailImage;
 - (void)startProcessing;
+- (void)setTransparencyToView:(BOOL)transparency;
 
 @end

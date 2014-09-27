@@ -16,7 +16,7 @@
 #import "WebClient.h"
 #import "GLPPostManager.h"
 #import "GLPVideo.h"
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -166,7 +166,7 @@ static GLPVideoUploadManager *instance = nil;
         return;
     }
     
-    if(![[GLPProgressManager sharedInstance] isProgressFinished])
+    if(![[GLPCampusWallProgressManager sharedInstance] isProgressFinished])
     {
         DDLogInfo(@"Can't check for non uploaded video posts, video is in progress.");
         

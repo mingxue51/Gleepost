@@ -32,7 +32,8 @@
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
-#import "GLPProgressManager.h"
+#import "GLPCampusWallProgressManager.h"
+#import "GLPLiveGroupPostManager.h"
 
 @interface NewPostViewController ()
 
@@ -374,6 +375,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
                 
                 DDLogDebug(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
             }
+            
+            if([inPost isVideoPost])
+            {
+                [[GLPLiveGroupPostManager sharedInstance] postButtonClicked];
+            }
         }
         else
         {
@@ -388,12 +394,17 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
                 inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
 
             }
+            
+            if([inPost isVideoPost])
+            {
+                [[GLPCampusWallProgressManager sharedInstance] postButtonClicked];
+            }
         }
         
-        if([inPost isVideoPost])
-        {
-            [[GLPProgressManager sharedInstance] postButtonClicked];
-        }
+//        if([inPost isVideoPost])
+//        {
+//            [[GLPCampusWallProgressManager sharedInstance] postButtonClicked];
+//        }
         
         
         [self informParentVCForNewPost:inPost];
