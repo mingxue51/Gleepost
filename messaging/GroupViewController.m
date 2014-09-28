@@ -169,7 +169,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)getProgressViewAndAddIt
 {
-    [self.tableView addSubview:(UIView *)[[GLPLiveGroupPostManager sharedInstance] progressView]];
+    [self.tableView addSubview:(UIView *)[[GLPLiveGroupPostManager sharedInstance] progressViewWithGroupRemoteKey:_group.remoteKey]];
 }
 
 
@@ -1322,6 +1322,8 @@ const float TOP_OFF_SET = -64.0;
         //The variable is setting as NO after the updateVideoPostAfterCreatingThePost is called
         //from NSNotification. (that means the video post is uploaded)
 //        self.isLoading = YES;
+        
+        [self getProgressViewAndAddIt];
         
         return;
     }

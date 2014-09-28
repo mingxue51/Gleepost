@@ -168,6 +168,8 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 
 - (void)postButtonClicked
 {
+//    [self showProgressView];
+    
     DDLogDebug(@"GLPGroupProgressManager : postButtonClicked");
     
     _postClicked = YES;
@@ -218,6 +220,11 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     {
         [_progressView updateProgressWithValue:(dataWritten.floatValue/dataExpected.floatValue)];
     }
+}
+
+- (NSInteger)postRemoteKey
+{
+    return _groupPost.group.remoteKey;
 }
 
 - (NSString *)generateNSNotificationNameForPendingGroupPost

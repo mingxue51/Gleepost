@@ -96,9 +96,7 @@ static GLPPostImageLoader *instance = nil;
     for(int i = 0; i<posts.count; ++i)
     {
         GLPPost *p = [posts objectAtIndex:i];
-        
-        DDLogDebug(@"Image post: %@", p);
-        
+                
         //If image exist in cache fetch it and send it to campus wall.
         
         [[SDImageCache sharedImageCache] queryDiskCacheForKey:p.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {

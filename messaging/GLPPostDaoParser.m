@@ -35,9 +35,7 @@
     
     //Parse group remote key if exists. If group remote key is 0 then the post is a campus wall post.
     entity.group = [GLPGroupDao findByRemoteKey:[resultSet intForColumn:@"group_remote_key"] db:db];
-    
-    DDLogDebug(@"Group loaded from local database: %@", entity.group);
-    
+        
     //Parse location.
     entity.location = [GLPPostDaoParser parseLocationWithResultSet:resultSet];
 }

@@ -36,6 +36,12 @@
         [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
     }
     
+    DDLogDebug(@"findLastPostsInDb");
+    
+    for(GLPPost *p in result)
+    {
+        DDLogDebug(@"-> %@", p.content);
+    }
     
     [GLPPostDao loadImagesWithPosts:result withDb:db];
     

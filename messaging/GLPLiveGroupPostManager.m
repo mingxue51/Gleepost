@@ -60,8 +60,13 @@ static GLPLiveGroupPostManager *instance = nil;
 
 #pragma mark - Progress Manager
 
-- (UploadingProgressView *)progressView
+- (UploadingProgressView *)progressViewWithGroupRemoteKey:(NSInteger)groupRemoteKey
 {
+    if(groupRemoteKey != [_progressManager postRemoteKey])
+    {
+        return nil;
+    }
+    
     return [_progressManager progressView];
 }
 

@@ -18,7 +18,7 @@
 //Progress view methods
 
 - (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post;
-- (UploadingProgressView *)progressView;
+- (UploadingProgressView *)progressViewWithGroupRemoteKey:(NSInteger)groupRemoteKey;
 - (void)setThumbnailImage:(UIImage *)thumbnail;
 - (void)progressFinished;
 - (void)postButtonClicked;
