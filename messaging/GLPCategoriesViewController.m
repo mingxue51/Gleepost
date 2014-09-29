@@ -252,7 +252,7 @@
     {
         if(!_selectedCategory)
         {
-            if([cat.tag isEqualToString:@"no"])
+            if([cat.tag isEqualToString:@"all"])
             {
                 cat.uiSelected = YES;
             }

@@ -145,6 +145,8 @@
 /** Used when user press the comment button on view from campus wall. */
 @property (assign, nonatomic) BOOL showComment;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 
@@ -631,6 +633,8 @@ const float TOP_OFFSET = 180.0f;
 //    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
     
     [self.tableView setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
+    
+    [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
 //    [self.tableView setBackgroundView:backImgView];
 }
 
@@ -974,16 +978,27 @@ const float TOP_OFFSET = 180.0f;
     
 //    [self startLoading];
     [self showLoadingIndicator];
+    [self clearTableViewAndShowLoader];
     
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
         self.posts = [localPosts mutableCopy];
 
+        
         [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
-        [self.tableView reloadData];
+        [self clearTableViewAndShowLoader];
+
+        if(self.posts.count != 0)
+        {
+            [self hideLoader];
+            [self.tableView reloadData];
+        }
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
+        
+        [self hideLoader];
+
         if(success) {
             self.posts = [remotePosts mutableCopy];
 
@@ -1022,6 +1037,45 @@ const float TOP_OFFSET = 180.0f;
 //        [self stopLoading];
         [self hideLoadingIndicator];
     }];
+}
+
+- (void)clearTableViewAndShowLoader
+{
+    DDLogDebug(@"Show loader");
+    
+    _posts = [[NSMutableArray alloc] init];
+    
+    [self.tableView reloadData];
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+//    [activityIndicator setFrame:CGRectMake(250.0, 500.0, 100.0, 100.0)];
+    
+    CGRectSetX(activityIndicator, 141.0);
+    CGRectSetY(activityIndicator, 300.0);
+    
+    activityIndicator.tag = 231;
+    [activityIndicator setHidden:NO];
+
+    [activityIndicator startAnimating];
+    
+    [self.tableView addSubview:activityIndicator];
+    
+    
+}
+
+- (void)hideLoader
+{
+    DDLogDebug(@"Hide loader");
+    
+    for(UIView *v in self.tableView.subviews)
+    {
+        if(v.tag == 231)
+        {
+            [(UIActivityIndicatorView *)v stopAnimating];
+            [v setHidden:YES];
+        }
+    }
 }
 
 -(void)setBottomView
@@ -1891,6 +1945,7 @@ const float TOP_OFFSET = 180.0f;
     {
         if(indexPath.row == self.posts.count) {
             GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
+            [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
             [loadingCell updateWithStatus:self.loadingCellStatus];
             return loadingCell;
         }
