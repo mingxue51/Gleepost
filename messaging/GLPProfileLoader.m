@@ -111,11 +111,19 @@ static GLPProfileLoader *instance = nil;
         else
         {
             DDLogDebug(@"Image not loaded from cache.");
-
-            //Load user's image remotely.
-            _userImage = [self loadImageWithUrl:profileImageUrl];
             
-            [[SDImageCache sharedImageCache] storeImage:_userImage forKey:profileImageUrl];
+            NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+                
+                //Load user's image remotely.
+                _userImage = [self loadImageWithUrl:profileImageUrl];
+                
+                [[SDImageCache sharedImageCache] storeImage:_userImage forKey:profileImageUrl];
+                
+            }];
+            
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            
+            [queue addOperation:blockOperation];
         }
     }];
 }

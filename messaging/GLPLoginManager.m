@@ -219,6 +219,10 @@
     [GLPLoginManager disableAutoLogin];
     
     [[GLPProfileLoader sharedInstance] initialiseLoader];
+
+    [[SDImageCache sharedImageCache] clearMemory];
+    [[SDImageCache sharedImageCache] clearDisk];
+
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
 }
