@@ -9,19 +9,23 @@
 #import "CategoryManager.h"
 
 typedef NS_ENUM(NSInteger, CategoryOrder) {
-    
+
     kPartiesOrder = 1,
     kMusicOrder = 2,
     kSportsOrder = 3,
     kTheaterOrder = 4,
     kSpeakersOrder = 5,
-    kOtherOrder = 6
+    kOtherOrder = 6,
+    kAllOrder = 7
 };
 
 @interface CategoryManager ()
 
 @property (strong, nonatomic) NSDictionary *categories;
 @property (strong, nonatomic) NSArray *categoriesInOrder;
+
+/** Represents the selected category appearing in campus wall. */
+@property (strong, nonatomic) GLPCategory *selectedCategory;
 
 @end
 
@@ -30,7 +34,7 @@ typedef NS_ENUM(NSInteger, CategoryOrder) {
 
 static CategoryManager *instance = nil;
 
-+ (CategoryManager *)instance
++ (CategoryManager *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -61,10 +65,14 @@ static CategoryManager *instance = nil;
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties] forKey:[NSNumber numberWithInt:kPartiesOrder]];
         
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"other" name:@"Other" postRemoteKey:0 andRemoteKey:kGLPOther] forKey:[NSNumber numberWithInt:kOtherOrder]];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" postRemoteKey:0 andRemoteKey:kGLPAll] forKey:[NSNumber numberWithInt:kAllOrder]];
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
         
         [self setCategoriesInOrder];
+        
+        _selectedCategory = nil;
     }
     
     return self;
@@ -73,17 +81,6 @@ static CategoryManager *instance = nil;
 - (void)setCategoriesInOrder
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
-//    
-//    [array addObject:[[GLPCategory alloc] initWithTag:@"speaker" name:@"Speakers" postRemoteKey:0 andRemoteKey:kGLPSpeakers]];
-//    
-//    [array addObject:[[GLPCategory alloc] initWithTag:@"theater" name:@"Theater" postRemoteKey:0 andRemoteKey:kGLPTheater]];
-//    
-//    [array addObject:[[GLPCategory alloc] initWithTag:@"sports" name:@"Sports" postRemoteKey:0 andRemoteKey:kGLPSports]];
-//    
-//    [array addObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties]];
-//    
-//    [array addObject:[[GLPCategory alloc] initWithTag:@"music" name:@"Music" postRemoteKey:0 andRemoteKey:kGLPMusic]];
-    
     
     // get all keys into array
     NSArray * categoriesKey = [_categories allKeys];
@@ -146,20 +143,36 @@ static CategoryManager *instance = nil;
 
 -(NSArray*)getCategories
 {
-//    NSMutableArray *categories = [NSMutableArray array];
-//    
-//    for(NSNumber *remoteKey in _categories)
-//    {
-//        [categories addObject: [_categories objectForKey:remoteKey]];
-//    }
-    
     return _categoriesInOrder;
+}
+
+- (NSMutableArray *)getCategoriesForFilteringView
+{
+    NSMutableArray *finalCategories = [[NSMutableArray alloc] init];
+    
+    for (GLPCategory *category in _categoriesInOrder)
+    {
+        if(![category.name isEqualToString:@"Other"])
+        {
+            [finalCategories addObject:category];
+        }
+    }
+    
+    return finalCategories;
 }
 
 -(GLPCategory *)generateEventCategory
 {
     return [[GLPCategory alloc] initWithTag:@"event" name:@"Event" postRemoteKey:0 andRemoteKey:5];
 }
+
+#pragma mark - Accesssors
+
+- (NSString *)selectedCategoryName
+{
+    return [_selectedCategory tag];
+}
+
 
 
 

@@ -272,7 +272,7 @@
 		585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CA199D85FC000F06BB /* IntroKindOfEventViewController.m */; };
 		585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CD199D8635000F06BB /* FinalNewPostViewController.m */; };
 		585106D8199D87DA000F06BB /* kind_of_event_music.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106CF199D87DA000F06BB /* kind_of_event_music.png */; };
-		585106D9199D87DA000F06BB /* kind_of_event_other.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D0199D87DA000F06BB /* kind_of_event_other.png */; };
+		585106D9199D87DA000F06BB /* kind_of_event_all.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D0199D87DA000F06BB /* kind_of_event_all.png */; };
 		585106DA199D87DA000F06BB /* kind_of_event_party.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D1199D87DA000F06BB /* kind_of_event_party.png */; };
 		585106DB199D87DA000F06BB /* kind_of_event_speaker.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D2199D87DA000F06BB /* kind_of_event_speaker.png */; };
 		585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D3199D87DA000F06BB /* kind_of_event_sports.png */; };
@@ -582,6 +582,7 @@
 		58C1699119C2781200F4C203 /* going_unpushed_back_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C1699019C2781200F4C203 /* going_unpushed_back_btn.png */; };
 		58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */; };
 		58CB2728194B892800864C28 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CB2726194B892800864C28 /* SKBounceAnimation.m */; };
+		58CE8EA019D9B8010028DEB7 /* kind_of_event_no.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CE8E9F19D9B8010028DEB7 /* kind_of_event_no.png */; };
 		58CEA1E818C69560009FDF2C /* CampusWallGroupsPostsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */; };
 		58CF2BD918EA130800EB786E /* campus_wall_background_main_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF2BD818EA130800EB786E /* campus_wall_background_main_old.png */; };
 		58CFC767196300AF00FF1E40 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CFC766196300AF00FF1E40 /* NewMessageViewController.m */; };
@@ -1281,7 +1282,7 @@
 		585106CC199D8635000F06BB /* FinalNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinalNewPostViewController.h; sourceTree = "<group>"; };
 		585106CD199D8635000F06BB /* FinalNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinalNewPostViewController.m; sourceTree = "<group>"; };
 		585106CF199D87DA000F06BB /* kind_of_event_music.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_music.png; sourceTree = "<group>"; };
-		585106D0199D87DA000F06BB /* kind_of_event_other.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_other.png; sourceTree = "<group>"; };
+		585106D0199D87DA000F06BB /* kind_of_event_all.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_all.png; sourceTree = "<group>"; };
 		585106D1199D87DA000F06BB /* kind_of_event_party.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_party.png; sourceTree = "<group>"; };
 		585106D2199D87DA000F06BB /* kind_of_event_speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_speaker.png; sourceTree = "<group>"; };
 		585106D3199D87DA000F06BB /* kind_of_event_sports.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_sports.png; sourceTree = "<group>"; };
@@ -1712,6 +1713,7 @@
 		58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_new_post.png; sourceTree = "<group>"; };
 		58CB2726194B892800864C28 /* SKBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBounceAnimation.m; sourceTree = "<group>"; };
 		58CB2727194B892800864C28 /* SKBounceAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBounceAnimation.h; sourceTree = "<group>"; };
+		58CE8E9F19D9B8010028DEB7 /* kind_of_event_no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_no.png; sourceTree = "<group>"; };
 		58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallGroupsPostsManager.h; sourceTree = "<group>"; };
 		58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallGroupsPostsManager.m; sourceTree = "<group>"; };
 		58CF2BD818EA130800EB786E /* campus_wall_background_main_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = campus_wall_background_main_old.png; sourceTree = "<group>"; };
@@ -3280,7 +3282,8 @@
 				58F0F0BD1934D6DF0032450F /* cancel_new_post.png */,
 				588DE5D318A8FA40001D344D /* add_photo_btn.png */,
 				585106CF199D87DA000F06BB /* kind_of_event_music.png */,
-				585106D0199D87DA000F06BB /* kind_of_event_other.png */,
+				58CE8E9F19D9B8010028DEB7 /* kind_of_event_no.png */,
+				585106D0199D87DA000F06BB /* kind_of_event_all.png */,
 				585106D1199D87DA000F06BB /* kind_of_event_party.png */,
 				585106D2199D87DA000F06BB /* kind_of_event_speaker.png */,
 				585106D3199D87DA000F06BB /* kind_of_event_sports.png */,
@@ -5163,7 +5166,7 @@
 				586866EE19B72AAF00803512 /* nerdnation_text.png in Resources */,
 				80B2A42D1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib in Resources */,
 				58289EFB18D7595000228EFF /* going.png in Resources */,
-				585106D9199D87DA000F06BB /* kind_of_event_other.png in Resources */,
+				585106D9199D87DA000F06BB /* kind_of_event_all.png in Resources */,
 				58E3DAC5188405DB00B9B048 /* blimp.png in Resources */,
 				5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */,
 				584FA61119B5268C00FBA61F /* my_location.png in Resources */,
@@ -5246,6 +5249,7 @@
 				5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */,
 				5823932318CB6719001BC88C /* members.png in Resources */,
 				5879AC8C19643CEA0053262A /* user_selected.png in Resources */,
+				58CE8EA019D9B8010028DEB7 /* kind_of_event_no.png in Resources */,
 				585EBB3618E317B200BDAE81 /* add_members_bg_press_down.png in Resources */,
 				589CE50E18D227910046DAD2 /* the_bar4.png in Resources */,
 				5840286118D2607800753A5F /* add_new_post_old.png in Resources */,

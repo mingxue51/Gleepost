@@ -66,6 +66,7 @@
 #import "NewPostViewController.h"
 #import "GLPShowLocationViewController.h"
 #import "GLPViewImageViewController.h"
+#import "CategoryManager.h"
 
 @interface GLPTimelineViewController ()
 
@@ -2766,7 +2767,8 @@ const float TOP_OFFSET = 180.0f;
 -(void)loadGroupsFeed
 {
     //Initialise categories to all.
-    [[SessionManager sharedInstance] setCurrentCategory:nil];
+//    [[SessionManager sharedInstance] setCurrentCategory:nil];
+    
 
     _groupsMode = YES;
     [self.tableView reloadData];
@@ -2777,14 +2779,12 @@ const float TOP_OFFSET = 180.0f;
 -(void)loadRegularPosts
 {
     //Initialise categories to all.
-    [[SessionManager sharedInstance] setCurrentCategory:nil];
-
+    [[CategoryManager sharedInstance] setSelectedCategory:nil];
     
     _groupsMode = NO;
     
     [self updateTitleView];
 
-    
     [self loadInitialPosts];
 }
 

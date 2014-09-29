@@ -42,7 +42,6 @@
 @synthesize token = _token;
 @synthesize user = _user;
 @synthesize authParameters = _authParameters;
-@synthesize currentCategory = _currentCategory;
 
 NSString * const GLPSessionFileName = @"GLPSession.plist";
 
@@ -83,10 +82,7 @@ static SessionManager *instance = nil;
     
     _currentUserFirstTime = NO;
     _authParameters = [NSDictionary dictionary];
-    
-    //Set default category.
-    _currentCategory = nil;
-    
+        
     _serverManager = [[GLPServerPathManager alloc] init];
     
     

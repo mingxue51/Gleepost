@@ -429,7 +429,7 @@
                                 <rect key="frame" x="10" y="370" width="300" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                <state key="normal" title="Other" backgroundImage="kind_of_event_other.png">
+                                <state key="normal" title="Other" backgroundImage="kind_of_event_no.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
@@ -4601,7 +4601,7 @@
         <image name="hoovertall.png" width="388" height="1137"/>
         <image name="id-card-7.png" width="17" height="21"/>
         <image name="kind_of_event_music.png" width="600" height="110"/>
-        <image name="kind_of_event_other.png" width="600" height="110"/>
+        <image name="kind_of_event_no.png" width="600" height="110"/>
         <image name="kind_of_event_party.png" width="600" height="110"/>
         <image name="kind_of_event_speaker.png" width="600" height="110"/>
         <image name="kind_of_event_sports.png" width="600" height="110"/>

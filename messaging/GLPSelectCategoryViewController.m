@@ -90,11 +90,14 @@
 
 -(void)loadCategories
 {
-    NSArray *catTemp = [[CategoryManager instance] getCategories];
+    NSArray *catTemp = [[CategoryManager sharedInstance] getCategories];
     
     for(GLPCategory *category in catTemp)
     {
-        [_categories addObject:category];
+        if(![category.name isEqualToString:@"All"])
+        {
+            [_categories addObject:category];
+        }
     }
     
     [_categories addObject:[[GLPCategory alloc] initWithTag:@"no" name:@"No Category" andPostRemoteKey:0]];

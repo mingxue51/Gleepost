@@ -14,6 +14,7 @@
 #import "GLPMemberDao.h"
 #import "GroupOperationManager.h"
 #import "GLPPostDao.h"
+#import "CategoryManager.h"
 
 @implementation GLPGroupManager
 
@@ -355,7 +356,7 @@
 +(void)loadGroupsFeedWithCallback:(void (^) (BOOL success, NSArray *posts))callback
 {
     
-    NSString *tag = [SessionManager sharedInstance].currentCategory.tag;
+    NSString *tag = [[CategoryManager sharedInstance] selectedCategoryName];
     
     [[WebClient sharedInstance] getPostsGroupsFeedWithTag:tag callback:^(BOOL success, NSArray *posts) {
        

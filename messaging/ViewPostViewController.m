@@ -34,6 +34,7 @@
 #import "GLPShowLocationViewController.h"
 #import "GLPViewImageViewController.h"
 #import "GLPiOSSupportHelper.h"
+#import "GLPCategory.h"
 
 @interface ViewPostViewController ()
 

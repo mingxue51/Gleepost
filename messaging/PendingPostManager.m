@@ -109,11 +109,10 @@ static PendingPostManager *instance = nil;
 
 - (void)readyToSend
 {
-
-    if(_categories.count == 2)
+    if(_categories.count == 1)
     {
         //An event post selected.
-        [_categories addObject:[[CategoryManager instance] generateEventCategory]];
+        [_categories addObject:[[CategoryManager sharedInstance] generateEventCategory]];
     }
     else
     {

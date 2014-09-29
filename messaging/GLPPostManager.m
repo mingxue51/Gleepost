@@ -11,7 +11,7 @@
 #import "WebClient.h"
 #import "GLPPost.h"
 #import "GLPPostDao.h"
-#import "SessionManager.h"
+#import "CategoryManager.h"
 
 @implementation GLPPostManager
 
@@ -72,12 +72,13 @@
 {
     NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
     
-    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
+    NSString *categoryName = [[CategoryManager sharedInstance] selectedCategoryName];
+    
+    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:categoryName callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, NO, nil);
             return;
         }
-        
         
         //Find all the event posts that the user attends.
         [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
@@ -226,7 +227,9 @@
         localCallback(localEntities);
     }
     
-    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
+    NSString *categoryName = [[CategoryManager sharedInstance] selectedCategoryName];
+    
+    [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:categoryName callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             remoteCallback(NO, NO, nil);
             return;
@@ -329,7 +332,9 @@
         return;
     }
     
-    [[WebClient sharedInstance] getPostsAfter:post withCategoryTag:[SessionManager sharedInstance].currentCategory.tag callback:^(BOOL success, NSArray *posts) {
+    NSString *categoryName = [[CategoryManager sharedInstance] selectedCategoryName];
+    
+    [[WebClient sharedInstance] getPostsAfter:post withCategoryTag:categoryName callback:^(BOOL success, NSArray *posts) {
         if(!success) {
             callback(NO, NO, nil);
             return;

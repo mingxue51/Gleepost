@@ -9,7 +9,6 @@
 #import "GLPCategoriesViewController.h"
 #import "GLPCategoryCell.h"
 #import "GLPCategory.h"
-#import "SessionManager.h"
 #import "CategoryManager.h"
 #import "UIImage+StackBlur.h"
 #import "GLPiOSSupportHelper.h"
@@ -92,21 +91,20 @@
 //    [_categoriesImages setObject:[UIImage imageNamed:@"events_category"] forKey:@"test"];
 //    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
-    NSArray *catTemp = [[CategoryManager instance] getCategories];
+    _categories = [[CategoryManager sharedInstance] getCategoriesForFilteringView];
     
+//    for(GLPCategory *category in catTemp)
+//    {
+//        //Remove the Other category.
+//        if(![category.name isEqualToString:@"Other"])
+//        {
+//            DDLogDebug(@"Category: %@", category);
+//            [_categories addObject:category];
+//        }
+//    
+//    }
     
-    for(GLPCategory *category in catTemp)
-    {
-        //TODO: For now remove the Other category.
-        if(![category.name isEqualToString:@"Other"])
-        {
-            DDLogDebug(@"Category: %@", category);
-            [_categories addObject:category];
-        }
-    
-    }
-    
-    [_categories addObject:[[GLPCategory alloc] initWithTag:@"other" name:@"All" andPostRemoteKey:0]];
+//    [_categories addObject:[[GLPCategory alloc] initWithTag:@"other" name:@"All" andPostRemoteKey:0]];
     
     [self setDefaultImages];
 
@@ -153,13 +151,13 @@
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
     
-    if([selectedCategory.tag isEqualToString:@"no"])
+    if([selectedCategory.tag isEqualToString:@"all"])
     {
-        [[SessionManager sharedInstance] setCurrentCategory:nil];
+        [[CategoryManager sharedInstance] setSelectedCategory:nil];
     }
     else
     {
-        [[SessionManager sharedInstance] setCurrentCategory:[_categories objectAtIndex:indexPath.row]];
+        [[CategoryManager sharedInstance] setSelectedCategory:[_categories objectAtIndex:indexPath.row]];
     }
     
     [self informCampusLiveWithCategory:selectedCategory];
@@ -234,7 +232,7 @@
 //    [_categoriesImages setObject:[UIImage imageNamed:@"all_category"] forKey:@"All"];
     
     
-    GLPCategory *current = [SessionManager sharedInstance].currentCategory;
+    GLPCategory *current = [[CategoryManager sharedInstance] selectedCategory];
     
     //Set selected category image.
     if(current == nil)

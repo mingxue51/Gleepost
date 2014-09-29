@@ -66,9 +66,9 @@
 //            break;
 //    }
     
-    DDLogInfo(@"Category selected: %@", [[CategoryManager instance] categoryWithOrderKey:senderButton.tag]);
+    DDLogInfo(@"Category selected: %@", [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]);
     
-    [[PendingPostManager sharedInstance] setCategory: [[CategoryManager instance] categoryWithOrderKey:senderButton.tag]];
+    [[PendingPostManager sharedInstance] setCategory: [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]];
     
     [self performSegueWithIdentifier:@"pick date" sender:self];
 

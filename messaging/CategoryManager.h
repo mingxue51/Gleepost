@@ -16,7 +16,8 @@ typedef enum
     kGLPTheater = 10,
     kGLPSports = 11,
     kGLPParties = 12,
-    kGLPOther = 13
+    kGLPOther = 13,
+    kGLPAll = 14
     
 }GLPCategories;
 
@@ -25,14 +26,18 @@ typedef enum
 @interface CategoryManager : NSObject
 
 
-+(CategoryManager*)instance;
++(CategoryManager*)sharedInstance;
 
 -(GLPCategory*)categoryWithTag:(NSString*)tag;
 -(GLPCategory*)categoryWithOrderKey:(int)remoteKey;
 -(NSArray*)categoriesNames;
 -(NSArray*)categoriesTags;
 -(NSArray*)getCategories;
+- (NSMutableArray *)getCategoriesForFilteringView;
 -(GLPCategory *)generateEventCategory;
+- (void)setSelectedCategory:(GLPCategory *)selectedCategory;
+- (NSString *)selectedCategoryName;
+- (GLPCategory *)selectedCategory;
 
 
 @end

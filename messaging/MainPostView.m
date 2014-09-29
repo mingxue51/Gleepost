@@ -529,9 +529,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if([self doesMediaNeedLoadAgain])
     {
         [_activityIndicator stopAnimating];
-        
-        DDLogDebug(@"doesMediaNeedLoadAgain with url: %@", imageUrl);
-
         [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
