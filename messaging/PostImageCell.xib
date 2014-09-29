@@ -111,29 +111,6 @@
                                     <constraint firstAttribute="width" constant="298" id="SCj-qf-WEQ"/>
                                 </constraints>
                             </imageView>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-aO-Tut" customClass="VideoView">
-                                <rect key="frame" x="1" y="7" width="298" height="298"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqf-M4-iJT">
-                                        <rect key="frame" x="0.0" y="0.0" width="298" height="298"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="COJ-OX-BYg">
-                                        <rect key="frame" x="0.0" y="0.0" width="298" height="298"/>
-                                        <state key="normal" image="gleepost_play_button.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="video:" destination="nvU-aO-Tut" eventType="touchUpInside" id="wAH-27-aun"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="playButton" destination="COJ-OX-BYg" id="eWq-1S-vZK"/>
-                                    <outlet property="videoView" destination="Hqf-M4-iJT" id="R8t-5C-49K"/>
-                                </connections>
-                            </view>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p9l-bX-fhh" userLabel="User View">
                                 <rect key="frame" x="0.0" y="200" width="298" height="41"/>
                                 <subviews>
@@ -306,24 +283,27 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aWH-Xg-WwD">
-                                <rect key="frame" x="280" y="248" width="10" height="10"/>
+                                <rect key="frame" x="280" y="247" width="10" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="JJM-7j-1HH"/>
                                     <constraint firstAttribute="width" constant="10" id="gqA-Ly-oWb"/>
                                 </constraints>
                             </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="AjV-Bo-EsP">
+                                <rect key="frame" x="140" y="92" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="i0H-Wa-ioj" firstAttribute="top" secondItem="jCQ-SX-55v" secondAttribute="top" constant="7" id="4kv-0Y-nBe"/>
                             <constraint firstItem="ASk-mZ-O68" firstAttribute="top" secondItem="aX2-C1-hEz" secondAttribute="bottom" constant="10" id="8ul-Ts-58M"/>
-                            <constraint firstItem="aWH-Xg-WwD" firstAttribute="top" secondItem="p9l-bX-fhh" secondAttribute="bottom" id="Dl4-jl-S9j"/>
                             <constraint firstItem="p9l-bX-fhh" firstAttribute="top" secondItem="i0H-Wa-ioj" secondAttribute="bottom" constant="3" id="W8j-JO-JMz"/>
                             <constraint firstAttribute="width" constant="300" id="arU-sf-g4b"/>
                             <constraint firstAttribute="height" constant="316" id="gMJ-Fr-UtF"/>
                             <constraint firstItem="i0H-Wa-ioj" firstAttribute="leading" secondItem="jCQ-SX-55v" secondAttribute="leading" constant="1" id="gXF-lG-RHd"/>
                         </constraints>
                         <connections>
+                            <outlet property="activityIndicator" destination="AjV-Bo-EsP" id="QnI-rm-iIw"/>
                             <outlet property="backgroundImageHeight" destination="EZw-eh-zsu" id="1cr-cb-rux"/>
                             <outlet property="backgroundImageView" destination="3nq-qG-n6x" id="gQO-6m-i2n"/>
                             <outlet property="commentBtn" destination="4HT-5v-R3a" id="S97-4r-iLB"/>
@@ -346,7 +326,6 @@
                             <outlet property="socialView" destination="ASk-mZ-O68" id="UW7-Fd-LSY"/>
                             <outlet property="timePostLbl" destination="GUe-OU-BSE" id="nge-vN-1EC"/>
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>
-                            <outlet property="videoView" destination="nvU-aO-Tut" id="tD9-kO-Yid"/>
                         </connections>
                     </view>
                 </subviews>
@@ -365,7 +344,6 @@
     </objects>
     <resources>
         <image name="clock.png" width="31" height="31"/>
-        <image name="gleepost_play_button.png" width="133" height="160"/>
         <image name="going_pushed_back_btn.png" width="145" height="73"/>
         <image name="icon_comment.png" width="40" height="37"/>
         <image name="icon_like.png" width="40" height="33"/>

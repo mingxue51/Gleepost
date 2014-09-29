@@ -31,6 +31,5 @@
 
 //-(float) calculateCommentSize: (NSString*) content;
 -(void)viewPostImage:(UIImage*)postImage;
--(void)reloadImage:(BOOL)loadImage;
 
 @end

@@ -61,20 +61,14 @@
     {
         if ([DateFormatterHelper date:notification.date isBetweenDate:weekAgo andDate:today])
         {
-            DDLogDebug(@"Recent notification: %@", notification.notificationTypeDescription);
-
             [self addNotification:notification withHeader:_recentHeader];
             
         }
         else
         {
-            DDLogDebug(@"Older notification: %@", notification.notificationTypeDescription);
-            
             [self addNotification:notification withHeader:_oldHeader];
         }
     }
-    
-    DDLogDebug(@"Final array: %@", _sections);
 }
 
 #pragma mark - Operations

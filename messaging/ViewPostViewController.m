@@ -44,7 +44,6 @@
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-@property (assign, nonatomic, getter = doesMediaNeedsToReload) BOOL mediaNeedsToReload;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
@@ -282,7 +281,6 @@ static BOOL likePushed;
     if(self.isFromCampusLive)
     {
         [self addCustomBackButton];
-        self.mediaNeedsToReload = YES;
     }
     
     
@@ -771,7 +769,7 @@ static bool firstTime = YES;
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
 //            [postViewCell postFromNotifications:_isViewPostNotifications];
-            [postViewCell reloadMedia:self.mediaNeedsToReload];
+            [postViewCell reloadMedia:[self comesFromNotifications] || [self isFromCampusLive]];
         }
         else if ([_post isVideoPost])
         {
@@ -1250,11 +1248,6 @@ static bool firstTime = YES;
     {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
-}
-
--(void)reloadImage:(BOOL)loadImage
-{
-    _mediaNeedsToReload = loadImage;
 }
 
 #pragma mark - Navigation

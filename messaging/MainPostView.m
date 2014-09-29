@@ -90,6 +90,8 @@
 
 @property (assign, nonatomic, getter = isViewPost) BOOL viewPost;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation MainPostView
@@ -504,7 +506,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         //New approach.
         [_postImageView setImage:_post.finalImage];
-        
+        [_activityIndicator stopAnimating];
+
         
         //[self setPostOnline:YES];
     }
@@ -512,14 +515,23 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     {
         //Set live image.
         [_postImageView setImage:_post.tempImage];
+        [_activityIndicator stopAnimating];
+
     }
     else if(_post.finalImage==nil && !self.mediaNeedsToReload)
     {
-        [_postImageView setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_postImageView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil]];
+        
+        [_activityIndicator startAnimating];
+
     }
     
     if([self doesMediaNeedLoadAgain])
     {
+        [_activityIndicator stopAnimating];
+        
+        DDLogDebug(@"doesMediaNeedLoadAgain with url: %@", imageUrl);
+
         [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
@@ -535,6 +547,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)showVideoView
 {
+    [_activityIndicator stopAnimating];
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
     [_videoView setUpVideoViewWithPost:_post];
@@ -549,6 +562,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)hideVideoView
 {
+    [_activityIndicator startAnimating];
+    
     [_videoView setHidden:YES];
     [_postImageView setHidden:NO];
 }

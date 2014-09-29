@@ -425,6 +425,7 @@
 
 -(void)updatePost:(NSNotification*)notification
 {
+    DDLogDebug(@"Update post: %@", notification.userInfo);
 
     [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
     
@@ -1676,8 +1677,6 @@
         ViewPostViewController *vc = segue.destinationViewController;
         vc.commentJustCreated = self.commentCreated;
         vc.commentNotificationDate = self.commentNotificationDate;
-        
-        [vc reloadImage:([self.selectedPost imagePost] || [self.selectedPost isVideoPost]) ? YES : NO];
         
         vc.post = self.selectedPost;
         vc.showComment = _showComment;
