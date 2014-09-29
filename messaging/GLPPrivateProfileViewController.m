@@ -17,7 +17,6 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
-#import "ViewPostImageViewController.h"
 #import "AppearanceHelper.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPPostImageLoader.h"
@@ -31,6 +30,7 @@
 #import "GLPBadgesViewController.h"
 #import "ImageFormatterHelper.h"
 #import "GLPShowLocationViewController.h"
+#import "GLPViewImageViewController.h"
 
 @interface GLPPrivateProfileViewController ()
 
@@ -518,21 +518,19 @@
 
 - (void)viewProfileImage:(UIImage *)image
 {
-//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-//    
-//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = image;
-    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+    viewImage.image = image;
+    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+    
     if(![GLPiOSSupportHelper isIOS6])
     {
-        [vc setTransitioningDelegate:self.transitionViewImageController];
+        [viewImage setTransitioningDelegate:self.transitionViewImageController];
     }
-    vc.modalPresentationStyle= UIModalPresentationCustom;
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 - (void)badgeTouched
@@ -843,15 +841,20 @@
 -(void)viewPostImage:(UIImage*)postImage
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = postImage;
-    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-    vc.modalPresentationStyle = UIModalPresentationCustom;
+    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+    viewImage.image = postImage;
+    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+    viewImage.modalPresentationStyle = UIModalPresentationCustom;
     
-    [vc setTransitioningDelegate:self.transitionViewImageController];
+    if(![GLPiOSSupportHelper isIOS6])
+    {
+        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+    }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:viewImage animated:YES completion:nil];
+    
+    
 }
 
 #pragma mark - New comment delegate

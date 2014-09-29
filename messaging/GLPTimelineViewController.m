@@ -391,8 +391,8 @@ const float TOP_OFFSET = 180.0f;
     
     NSDictionary *dict = [notification userInfo];
     
-    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString *urlImage = [dict objectForKey:@"imageUrl"];
     
     int index = 0;
@@ -2405,7 +2405,6 @@ const float TOP_OFFSET = 180.0f;
     viewImage.image = postImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
     viewImage.modalPresentationStyle = UIModalPresentationCustom;
-
     
     if(![GLPiOSSupportHelper isIOS6])
     {

@@ -20,10 +20,6 @@
 
 
 -(void)reloadNewLocalPosts;
--(void)likeButtonPushed:(id)sender;
--(void)commentButtonPushed:(id)sender;
--(void)shareButtonPushed:(id)sender;
--(void)setNavigationBarName;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost;
 -(void)refreshPostsWithNewCategory;

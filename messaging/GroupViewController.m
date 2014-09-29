@@ -38,6 +38,7 @@
 #import "GLPShowLocationViewController.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "GLPViewImageViewController.h"
 
 @interface GroupViewController ()
 
@@ -1574,7 +1575,19 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-#warning implementation pending.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+    viewImage.image = postImage;
+    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+    
+    if(![GLPiOSSupportHelper isIOS6])
+    {
+        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+    }
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 #pragma  mark - Helpers
@@ -1662,17 +1675,18 @@ const float TOP_OFF_SET = -64.0;
 -(void)showImage
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-    vc.image = _groupImage;
-    vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
+    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+    viewImage.image = _groupImage;
+    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+    viewImage.modalPresentationStyle = UIModalPresentationCustom;
     
     if(![GLPiOSSupportHelper isIOS6])
     {
-        [vc setTransitioningDelegate:self.transitionViewImageController];
+        [viewImage setTransitioningDelegate:self.transitionViewImageController];
     }
-    vc.modalPresentationStyle= UIModalPresentationCustom;
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:vc animated:YES completion:nil];
+    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 
