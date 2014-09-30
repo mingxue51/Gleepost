@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
@@ -11,22 +10,42 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uj6-Cl-19q">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uj6-Cl-19q">
                     <rect key="frame" x="10" y="10" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="45" id="mYm-FX-7n3"/>
+                        <constraint firstAttribute="height" constant="45" id="qPL-jn-dkG"/>
+                    </constraints>
                 </imageView>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lwH-CR-0HQ" customClass="GLPCustomProgressView">
-                    <rect key="frame" x="65" y="41" width="245" height="2"/>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lwH-CR-0HQ" customClass="GLPCustomProgressView">
+                    <rect key="frame" x="65" y="39" width="245" height="2"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="245" id="7Db-1p-QNs"/>
+                        <constraint firstAttribute="height" constant="2" id="dzX-Ss-dji"/>
+                    </constraints>
                     <color key="progressTintColor" red="0.24705882352941178" green="0.85882352941176465" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </progressView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="progress_bar_border.png" translatesAutoresizingMaskIntoConstraints="NO" id="v2B-MO-JNd">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_bar_border.png" translatesAutoresizingMaskIntoConstraints="NO" id="v2B-MO-JNd">
                     <rect key="frame" x="65" y="38" width="245" height="8"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="8" id="XAM-Ll-iGA"/>
+                        <constraint firstAttribute="width" constant="245" id="yoT-B2-7dM"/>
+                    </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="progress_bar_cloud.png" translatesAutoresizingMaskIntoConstraints="NO" id="c4R-SR-8hj">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_bar_cloud.png" translatesAutoresizingMaskIntoConstraints="NO" id="c4R-SR-8hj">
                     <rect key="frame" x="65" y="12" width="27" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="6P4-fb-TIc"/>
+                        <constraint firstAttribute="width" constant="27" id="N9t-Wu-8wp"/>
+                    </constraints>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="UPLOADING..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5Z-Yu-DDs">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UPLOADING..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5Z-Yu-DDs">
                     <rect key="frame" x="97" y="19" width="103" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="103" id="P5v-8K-dg0"/>
+                        <constraint firstAttribute="height" constant="14" id="ww2-bv-aRo"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                     <color key="textColor" red="0.20392156862745098" green="0.59607843137254901" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -37,11 +56,24 @@
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="c4R-SR-8hj" firstAttribute="leading" secondItem="uj6-Cl-19q" secondAttribute="trailing" constant="10" id="1yB-yJ-lnY"/>
+                <constraint firstItem="v2B-MO-JNd" firstAttribute="top" secondItem="c4R-SR-8hj" secondAttribute="bottom" constant="3" id="1yJ-TI-mJg"/>
+                <constraint firstItem="c4R-SR-8hj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="6Er-Lw-7X5"/>
+                <constraint firstItem="v2B-MO-JNd" firstAttribute="leading" secondItem="uj6-Cl-19q" secondAttribute="trailing" constant="10" id="Jhb-oV-jTO"/>
+                <constraint firstItem="uj6-Cl-19q" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="Qe5-3m-4ob"/>
+                <constraint firstItem="J5Z-Yu-DDs" firstAttribute="leading" secondItem="c4R-SR-8hj" secondAttribute="trailing" constant="5" id="U9Z-RZ-3bz"/>
+                <constraint firstItem="J5Z-Yu-DDs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="19" id="WHf-kP-frm"/>
+                <constraint firstItem="uj6-Cl-19q" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Zpp-pW-rAG"/>
+                <constraint firstItem="lwH-CR-0HQ" firstAttribute="top" secondItem="c4R-SR-8hj" secondAttribute="bottom" constant="4" id="hFe-3O-csf"/>
+                <constraint firstItem="lwH-CR-0HQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="65" id="hNF-BO-okE"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="backProgressImageView" destination="v2B-MO-JNd" id="mXb-Sr-Kdy"/>
                 <outlet property="progressView" destination="lwH-CR-0HQ" id="1bk-29-L7O"/>
+                <outlet property="progressViewDistanceFromTop" destination="hFe-3O-csf" id="GP6-4x-TcD"/>
                 <outlet property="thumbnailImageView" destination="uj6-Cl-19q" id="WbC-kw-7QE"/>
                 <outlet property="uploadingLabel" destination="J5Z-Yu-DDs" id="HPc-yK-4mr"/>
             </connections>

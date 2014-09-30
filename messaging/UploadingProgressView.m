@@ -11,6 +11,7 @@
 #import "GLPCustomProgressView.h"
 #import "AppearanceHelper.h"
 #import <QuartzCore/QuartzCore.h>
+#import "GLPiOSSupportHelper.h"
 
 @interface UploadingProgressView ()
 
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backProgressImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (weak, nonatomic) IBOutlet UILabel *uploadingLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *progressViewDistanceFromTop;
 
 @end
 
@@ -72,6 +74,11 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
     [_thumbnailImageView setImage:nil];
     [_progressView setProgress:0.0];
     
+    //Fixing an issue caused between iOS7 and iOS8 with positioning with progress view. (don't know why)
+    if(![GLPiOSSupportHelper isIOS7] && ![GLPiOSSupportHelper isIOS6])
+    {
+        [_progressViewDistanceFromTop setConstant:6.0];
+    }
 //    [_progressView setBackgroundColor:[UIColor clearColor]];
 }
 
