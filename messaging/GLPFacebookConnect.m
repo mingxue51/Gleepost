@@ -67,7 +67,10 @@
     
     DDLogDebug(@"Email before connect: %@", email);
     
-    NSArray *permissions = @[@"basic_info"];
+//    NSArray *permissions = @[@"basic_info"];
+    
+    NSArray *permissions = @[@"public_profile", @"user_friends"];
+    
     [FBSession openActiveSessionWithReadPermissions:permissions allowLoginUI:YES
                                   completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
         
