@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
@@ -63,8 +64,8 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aO3-XX-V0V">
-                                <rect key="frame" x="256" y="0.0" width="42" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aO3-XX-V0V">
+                                <rect key="frame" x="256" y="10" width="42" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="0uI-6v-bfc"/>
                                     <constraint firstAttribute="height" constant="27" id="yjZ-WZ-DTZ"/>
@@ -88,7 +89,9 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="aO3-XX-V0V" firstAttribute="top" secondItem="bFK-HE-Q7n" secondAttribute="top" constant="10" id="5Qj-zY-DcD"/>
                             <constraint firstItem="zAa-LC-NlI" firstAttribute="top" secondItem="bFK-HE-Q7n" secondAttribute="top" id="64m-HX-3hz"/>
+                            <constraint firstItem="aO3-XX-V0V" firstAttribute="leading" secondItem="bFK-HE-Q7n" secondAttribute="leading" constant="256" id="ly5-ol-len"/>
                             <constraint firstItem="hSV-DD-afS" firstAttribute="top" secondItem="zAa-LC-NlI" secondAttribute="bottom" constant="7" id="z7F-Xz-c7k"/>
                         </constraints>
                         <connections>

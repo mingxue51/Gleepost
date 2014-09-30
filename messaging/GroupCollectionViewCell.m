@@ -146,12 +146,8 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     
     switch (_groupData.privacy)
     {
-        case kPrivateGroup:
-            privacyImage = [UIImage imageNamed:@"test_private"];
-            break;
-            
         case kSecretGroup:
-            privacyImage = [UIImage imageNamed:@"test_secret"];
+            privacyImage = [UIImage imageNamed:@"secret_group_locker"];
             break;
  
         default:
