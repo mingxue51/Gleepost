@@ -1560,8 +1560,6 @@ const float TOP_OFFSET = 180.0f;
         //from NSNotification. (that means the video post is uploaded)
         self.isLoading = YES;
         
-        DDLogDebug(@"Is loading YES");
-        
         return;
     }
     

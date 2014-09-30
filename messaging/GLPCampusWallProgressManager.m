@@ -174,6 +174,7 @@ static GLPCampusWallProgressManager *instance = nil;
 - (void)postButtonClicked
 {
     DDLogDebug(@"GLPProgressManager : postButtonClicked");
+    [self showProgressView];
 
     _postClicked = YES;
     

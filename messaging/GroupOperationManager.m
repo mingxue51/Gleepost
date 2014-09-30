@@ -73,7 +73,7 @@ static GroupOperationManager *instance = nil;
         
         if(url)
         {
-            DDLogCInfo(@"Post ready for upload!");
+            DDLogInfo(@"Post ready for upload!");
             
             //Group ready for uploading.
             [_groupUploader uploadGroupWithTimestamp:t andImageUrl:url];

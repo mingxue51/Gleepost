@@ -2116,7 +2116,7 @@ static WebClient *instance = nil;
 - (void)getInviteMessageWithCallback:(void (^)(BOOL success, NSString *inviteMessage))callback {
     
     [self getPath:@"invite_message" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogCInfo(@"RESPONSE OBJECT: %@",responseObject);
+        DDLogInfo(@"RESPONSE OBJECT: %@",responseObject);
         
         NSString *message = [RemoteParser parseMessageFromJson:responseObject];
         callback(YES, message);

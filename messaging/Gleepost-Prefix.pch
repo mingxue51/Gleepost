@@ -13,7 +13,8 @@
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
     #import <SystemConfiguration/SystemConfiguration.h>
-    #import "DDLog.h"
+    //#import "DDLog.h"
+    #import <CocoaLumberjack/CocoaLumberjack.h>
     #import "MKNetworkKit.h"
     #import "AppDelegate.h" 
     #import "Constants.h"

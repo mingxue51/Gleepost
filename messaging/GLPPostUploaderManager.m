@@ -78,7 +78,7 @@
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    DDLogCInfo(@"Background requests manager network status update POST UPLOADER: %d", isNetwork);
+    DDLogInfo(@"Background requests manager network status update POST UPLOADER: %d", isNetwork);
     
     self.isNetworkAvailable = isNetwork;
     

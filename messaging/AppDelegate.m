@@ -18,7 +18,8 @@
 #import "GAITracker.h"
 #import "GAIDictionaryBuilder.h"
 #import "Flurry.h"
-#import "DDLog.h"
+//#import "DDLog.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 #import "GLPNetworkManager.h"
