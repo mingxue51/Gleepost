@@ -9,6 +9,7 @@
 #import "GLPCategoryDao.h"
 #import "GLPCategoryDaoParser.h"
 #import "DatabaseManager.h"
+#import "CategoryManager.h"
 
 @implementation GLPCategoryDao
 
@@ -21,6 +22,29 @@
     }];
     
     return category;
+}
+
+/**
+ This method finds all the posts with the global selected category
+ is selected by the user.
+ 
+ @return all the posts remote keys assigned with the selected category.
+ //Not used for now.
+ */
++ (NSArray *)findPostsWithSelectedCategoryWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from categories where tag=%@", [[CategoryManager sharedInstance] selectedCategory].tag];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next])
+    {
+        GLPCategory *c = [GLPCategoryDaoParser createFromResultSet:resultSet inDb:db];
+        DDLogDebug(@"Post from categories: %d", c.postRemoteKey);
+        [result addObject:@(c.postRemoteKey)];
+    }
+    
+    return result;
 }
 
 + (GLPCategory *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db

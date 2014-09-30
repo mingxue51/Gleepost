@@ -16,5 +16,4 @@
 +(NSArray*)findByPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db;
 +(void)saveCategoryIfNotExist:(GLPCategory*)category db:(FMDatabase *)db;
 
-
 @end

@@ -15,6 +15,7 @@
 #import "GLPCategoryDao.h"
 #import "GLPVideo.h"
 #import "GLPLocation.h"
+#import "CategoryManager.h"
 
 @implementation GLPPostDao
 
@@ -28,19 +29,18 @@
     
 //    FMResultSet *resultSet2 = [db executeQueryWithFormat:@"select * from posts order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
+    FMResultSet *resultSet = [self lastPostsFromSelectedCategoryWithDb:db];
+    
     
     NSMutableArray *result = [NSMutableArray array];
     
     while ([resultSet next]) {
-        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
-    }
-    
-    DDLogDebug(@"findLastPostsInDb");
-    
-    for(GLPPost *p in result)
-    {
-        DDLogDebug(@"-> %@", p.content);
+        
+        GLPPost *post = [GLPPostDaoParser createFromResultSet:resultSet inDb:db];
+        
+
+        [result addObject:post];
+
     }
     
     [GLPPostDao loadImagesWithPosts:result withDb:db];
@@ -56,9 +56,13 @@
         return [GLPPostDao findLastPostsInDb:db];
     }
     
+    DDLogDebug(@"Find last posts after: %@", post);
+    
     // get posts where date < post submit date if post is local
     // otherwise get where remoteKey < post key
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+//    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+    
+    FMResultSet *resultSet = [self lastPostsAfterPost:post fromSelectedCategoryWithDb:db];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -79,6 +83,8 @@
     if(!post) {
         return [GLPPostDao findLastPostsInDb:db];
     }
+    
+    DDLogDebug(@"Find all posts before: %@", post);
     
     // get posts where date < post submit date if post is local
     // otherwise get where remoteKey < post key
@@ -528,7 +534,7 @@
     }
 }
 
-#pragma makr - Delete operations
+#pragma mark - Delete operations
 
 +(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db
 {
@@ -545,6 +551,46 @@
     [db executeUpdateWithFormat:@"delete from post_images"];
     
     [db executeUpdateWithFormat:@"delete from post_videos"];
+}
+
+#pragma mark - Helpers
+
++ (FMResultSet *)lastPostsFromSelectedCategoryWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = nil;
+    
+    NSString *tag = [[CategoryManager sharedInstance] selectedCategory].tag;
+    
+    if([[CategoryManager sharedInstance] selectedCategory] == nil)
+    {
+        resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
+    }
+    else
+    {
+        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
+    }
+    
+    return resultSet;
+}
+
++ (FMResultSet *)lastPostsAfterPost:(GLPPost *)post fromSelectedCategoryWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = nil;
+    
+    NSString *tag = [[CategoryManager sharedInstance] selectedCategory].tag;
+    
+    if([[CategoryManager sharedInstance] selectedCategory] == nil)
+    {
+        resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+    }
+    else
+    {
+//        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
+        
+        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where (p.date < %d AND p.remoteKey is null) OR (p.remoteKey is not null AND p.remoteKey < %d) AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by p.date desc, p.remoteKey desc limit %d", post.date, post.remoteKey, tag, kGLPNumberOfPosts];
+    }
+    
+    return resultSet;
 }
 
 @end

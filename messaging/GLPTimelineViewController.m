@@ -138,6 +138,8 @@
 
 @property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
 
+@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
+
 @property (assign, nonatomic, getter = isWalkthroughFinished) BOOL walkthroughFinished;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
@@ -323,6 +325,10 @@ const float TOP_OFFSET = 180.0f;
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
+    
+    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+    
+    [_emptyCategoryPostsMessage hideEmptyMessageView];
     
     _walkthroughFinished = NO;
     
@@ -987,12 +993,16 @@ const float TOP_OFFSET = 180.0f;
         
         [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
         
-        [self clearTableViewAndShowLoader];
 
         if(self.posts.count != 0)
         {
             [self hideLoader];
             [self.tableView reloadData];
+            DDLogDebug(@"Data reloaded for local posts.");
+        }
+        else
+        {
+            [self clearTableViewAndShowLoader];
         }
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
@@ -1015,18 +1025,9 @@ const float TOP_OFFSET = 180.0f;
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
             
+            [self showEmptyViewIfNeeded];
             
-            //If there are less than 5 posts then add the white footer.
-//            if(remotePosts.count < 5)
-//            {
-//                [self setBottomView];
-//            }
-//            else
-//            {
-//                [self clearBottomView];
-//            }
             
-            [self addFooterIfNeeded];
             
         } else {
             self.loadingCellStatus = kGLPLoadingCellStatusError;
@@ -1478,6 +1479,24 @@ const float TOP_OFFSET = 180.0f;
 //    }];
 }
 
+- (void)showEmptyViewIfNeeded
+{
+    if(_posts.count == 0)
+    {
+        NSString *noPostYetMessage = [NSString stringWithFormat:@"No post yet for %@ category", [[CategoryManager sharedInstance] selectedCategory].name];
+        
+        [_emptyCategoryPostsMessage setTitle: noPostYetMessage];
+        [_emptyCategoryPostsMessage showEmptyMessageView];
+    }
+    else
+    {
+        [_emptyCategoryPostsMessage hideEmptyMessageView];
+    }
+    
+
+}
+
+/** NOT USED. */
 -(void)addFooterIfNeeded
 {
     int numberOfPosts = 0;
@@ -2402,7 +2421,7 @@ const float TOP_OFFSET = 180.0f;
 {
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 240*sizeFactor)];
     
-    [imgView setBackgroundColor:[UIColor whiteColor]];
+    [imgView setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
     
     self.tableView.tableFooterView = imgView;
 }

@@ -12,6 +12,12 @@
 
 #import "EmptyMessage.h"
 
+@interface EmptyMessage ()
+
+@property (strong, nonatomic) UILabel *titleLabel;
+
+@end
+
 @implementation EmptyMessage
 
 -(id)initWithText:(NSString *)text withPosition:(EmptyMessagePosition)position andTableView:(UITableView *)tableView
@@ -26,6 +32,11 @@
     }
     
     return self;
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [_titleLabel setText:title];
 }
 
 -(void)initialiseViewWithPosition:(EmptyMessagePosition)position
@@ -75,21 +86,21 @@
 {
     _emptyMessageView.backgroundColor = [UIColor clearColor];
     
-    UILabel *matchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
-    matchesLabel.font = [UIFont boldSystemFontOfSize:18];
-    matchesLabel.numberOfLines = 1;
-    matchesLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    matchesLabel.shadowColor = [UIColor lightTextColor];
-    matchesLabel.textColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
-    matchesLabel.shadowOffset = CGSizeMake(0, 1);
-    matchesLabel.backgroundColor = [UIColor clearColor];
-    matchesLabel.textAlignment =  NSTextAlignmentCenter;
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    _titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    _titleLabel.numberOfLines = 1;
+    _titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    _titleLabel.shadowColor = [UIColor lightTextColor];
+    _titleLabel.textColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
+    _titleLabel.shadowOffset = CGSizeMake(0, 1);
+    _titleLabel.backgroundColor = [UIColor clearColor];
+    _titleLabel.textAlignment =  NSTextAlignmentCenter;
     
     //Here is the text for when there are no results
-    matchesLabel.text = text;
+    _titleLabel.text = text;
     
     _emptyMessageView.hidden = YES;
-    [_emptyMessageView addSubview:matchesLabel];
+    [_emptyMessageView addSubview:_titleLabel];
     
 }
 

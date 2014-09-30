@@ -22,6 +22,7 @@ typedef enum {
 @property (strong, nonatomic) UIView *emptyMessageView;
 
 -(id)initWithText:(NSString *)text withPosition:(EmptyMessagePosition)position andTableView:(UITableView *)tableView;
+- (void)setTitle:(NSString *)title;
 -(void)hideEmptyMessageView;
 -(void)showEmptyMessageView;
 
