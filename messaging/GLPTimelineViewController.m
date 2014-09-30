@@ -1050,6 +1050,9 @@ const float TOP_OFFSET = 180.0f;
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
+    CGAffineTransform transform = CGAffineTransformMakeScale(1.5f, 1.5f);
+    activityIndicator.transform = transform;
+    
 //    [activityIndicator setFrame:CGRectMake(250.0, 500.0, 100.0, 100.0)];
     
     CGRectSetX(activityIndicator, 141.0);
