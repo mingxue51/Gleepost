@@ -61,9 +61,6 @@
 - (void)openSessionWithEmailOrNil:(NSString *)email completionHandler:(void (^)(BOOL success, NSString *name, NSString *response))completionHandler {
     _openCompletionHandler = completionHandler;
     _universityEmail = email;
-    //TODO: Remove that after testing.
-//    _universityEmail = @"admin@gleepost.com";
-
     
     DDLogDebug(@"Email before connect: %@", email);
     
