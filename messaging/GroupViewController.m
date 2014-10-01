@@ -39,6 +39,7 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPLiveGroupPostManager.h"
 #import "GLPViewImageViewController.h"
+#import "GLPGroupSettingsViewController.h"
 
 @interface GroupViewController ()
 
@@ -1719,7 +1720,12 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)showSettings:(id)sender
 {
-    DDLogDebug(@"Show Settings");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPGroupSettingsViewController *groupSettingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSettingsViewController"];
+ 
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupSettingsViewController];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 

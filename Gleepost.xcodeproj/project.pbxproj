@@ -32,10 +32,8 @@
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
 		580A639018184CAB00AC8009 /* default_user_image3.png in Resources */ = {isa = PBXBuildFile; fileRef = 580A638F18184CAB00AC8009 /* default_user_image3.png */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
-		580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */; };
 		580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */; };
 		580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */; };
-		580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */; };
 		580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3A1857A52E00A84E0E /* NotificationsView.m */; };
 		580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */; };
 		580C7AAD1897F030007495EE /* CategoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 580C7AAC1897F030007495EE /* CategoryManager.m */; };
@@ -663,6 +661,8 @@
 		58E3DAC7188405E600B9B048 /* sun.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAC6188405E600B9B048 /* sun.png */; };
 		58E3DAC9188405FB00B9B048 /* background_day_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E3DAC8188405FB00B9B048 /* background_day_old.png */; };
 		58E4555C1840091B001A5D80 /* GLPLike.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E4555B1840091B001A5D80 /* GLPLike.m */; };
+		58E8949E19DB2FBD005C1490 /* GLPGroupSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E8949D19DB2FBD005C1490 /* GLPGroupSettingsViewController.m */; };
+		58E894A119DB3148005C1490 /* use_gleepost_as_this_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E894A019DB3148005C1490 /* use_gleepost_as_this_group.png */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
 		58F0F0BE1934D6DF0032450F /* cancel_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BD1934D6DF0032450F /* cancel_new_post.png */; };
 		58F0F0C01934DD780032450F /* textfield_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BF1934DD780032450F /* textfield_background.png */; };
@@ -922,12 +922,9 @@
 		580A638F18184CAB00AC8009 /* default_user_image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_user_image3.png; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
-		580B8D2E18577E3900A84E0E /* ProfileSettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileSettingsTableViewCell.h; sourceTree = "<group>"; };
-		580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileSettingsTableViewCell.m; sourceTree = "<group>"; };
 		580B8D3118577E5500A84E0E /* ProfileTwoButtonsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTwoButtonsTableViewCell.h; sourceTree = "<group>"; };
 		580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTwoButtonsTableViewCell.m; sourceTree = "<group>"; };
 		580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewTwoButtonsTableViewCell.xib; sourceTree = "<group>"; };
-		580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewSettingsTableViewCell.xib; sourceTree = "<group>"; };
 		580B8D3818579C2700A84E0E /* NSObject_ProfileEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSObject_ProfileEnums.h; sourceTree = "<group>"; };
 		580B8D391857A52E00A84E0E /* NotificationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsView.h; sourceTree = "<group>"; };
 		580B8D3A1857A52E00A84E0E /* NotificationsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsView.m; sourceTree = "<group>"; };
@@ -1814,6 +1811,9 @@
 		58E3DAC8188405FB00B9B048 /* background_day_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_day_old.png; sourceTree = "<group>"; };
 		58E4555A1840091B001A5D80 /* GLPLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLike.h; sourceTree = "<group>"; };
 		58E4555B1840091B001A5D80 /* GLPLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLike.m; sourceTree = "<group>"; };
+		58E8949C19DB2FBD005C1490 /* GLPGroupSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupSettingsViewController.h; sourceTree = "<group>"; };
+		58E8949D19DB2FBD005C1490 /* GLPGroupSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupSettingsViewController.m; sourceTree = "<group>"; };
+		58E894A019DB3148005C1490 /* use_gleepost_as_this_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = use_gleepost_as_this_group.png; sourceTree = "<group>"; };
 		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
 		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
 		58F0F0BD1934D6DF0032450F /* cancel_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_new_post.png; sourceTree = "<group>"; };
@@ -2247,16 +2247,6 @@
 				580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */,
 			);
 			name = "ProfileView Two Buttons";
-			sourceTree = "<group>";
-		};
-		580B8D2D18577E0200A84E0E /* ProfileView Settings */ = {
-			isa = PBXGroup;
-			children = (
-				580B8D2E18577E3900A84E0E /* ProfileSettingsTableViewCell.h */,
-				580B8D2F18577E3900A84E0E /* ProfileSettingsTableViewCell.m */,
-				580B8D3618577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib */,
-			);
-			name = "ProfileView Settings";
 			sourceTree = "<group>";
 		};
 		580FF15018AA6D810026B65B /* Time formatter */ = {
@@ -3042,6 +3032,8 @@
 				5823932618CB9A04001BC88C /* MembersViewController.m */,
 				588CDF6E197623A700373EE3 /* IntroNewGroupViewController.h */,
 				588CDF6F197623A700373EE3 /* IntroNewGroupViewController.m */,
+				58E8949C19DB2FBD005C1490 /* GLPGroupSettingsViewController.h */,
+				58E8949D19DB2FBD005C1490 /* GLPGroupSettingsViewController.m */,
 			);
 			name = "Group Classes";
 			sourceTree = "<group>";
@@ -3049,6 +3041,7 @@
 		587248A818C64BFB00B98484 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				58E8949F19DB3101005C1490 /* Group Settings */,
 				5810D17419DB2BBE00D0599C /* secret_group_locker.png */,
 				581B53421976618900BAFAE7 /* down_arrow.png */,
 				588CDF7919764FB100373EE3 /* right_arrow.png */,
@@ -3407,7 +3400,6 @@
 			isa = PBXGroup;
 			children = (
 				58065F8319BF97E500892B6B /* Progress */,
-				580B8D2D18577E0200A84E0E /* ProfileView Settings */,
 				580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */,
 				58FB7CB6185655BB002C6A00 /* ProfileView Mutual */,
 				58FB7CB5185655AD002C6A00 /* ProfileView About */,
@@ -3960,6 +3952,14 @@
 				5866F16C188452F1007484CF /* hills_night.png */,
 			);
 			name = Night;
+			sourceTree = "<group>";
+		};
+		58E8949F19DB3101005C1490 /* Group Settings */ = {
+			isa = PBXGroup;
+			children = (
+				58E894A019DB3148005C1490 /* use_gleepost_as_this_group.png */,
+			);
+			name = "Group Settings";
 			sourceTree = "<group>";
 		};
 		58F294FB19353C0700A638BA /* New post */ = {
@@ -5297,6 +5297,7 @@
 				805E155A180EF3E700705B1C /* share_image@2x.png in Resources */,
 				586317A019872F11006D79E2 /* GLPStretchedImageView.xib in Resources */,
 				80B120D118B0740B006C1E30 /* message_cell_error@2x.png in Resources */,
+				58E894A119DB3148005C1490 /* use_gleepost_as_this_group.png in Resources */,
 				584CF662182274EE00EFABB8 /* send.png in Resources */,
 				584FA5FD19B51A3900FBA61F /* UploadingProgressView.xib in Resources */,
 				589EAD0E18A403F8005B2F4C /* SignUpThreeView.xib in Resources */,
@@ -5513,7 +5514,6 @@
 				802DCE4018AA32C200A23511 /* notification1.json in Resources */,
 				58E18B971945CF3E0029C764 /* drink.png in Resources */,
 				5819E65418C7AE14003361B3 /* selected_segment.png in Resources */,
-				580B8D3718577EB200A84E0E /* ProfileViewSettingsTableViewCell.xib in Resources */,
 				58E3DAC3188405CC00B9B048 /* hot_air_balloon.png in Resources */,
 				58AB404918AE45D000DEED31 /* party_category_old.png in Resources */,
 				58DB02A818105C86001C021A /* blackholder1.png in Resources */,
@@ -5861,7 +5861,6 @@
 				58F9C63F18C522CA004A237E /* GLPGroup.m in Sources */,
 				583491F71933FFE900E44B4A /* GLPWalkthroughViewController.m in Sources */,
 				583B567B194A40B900CC5D37 /* UINavigationBar+Utils.m in Sources */,
-				580B8D3018577E3900A84E0E /* ProfileSettingsTableViewCell.m in Sources */,
 				583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */,
 				58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
@@ -5943,6 +5942,7 @@
 				5867FF5918B64D320080AD9D /* CopyLabel.m in Sources */,
 				58BBACB719787BF400A8A265 /* ImageCollectionViewCell.m in Sources */,
 				80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */,
+				58E8949E19DB2FBD005C1490 /* GLPGroupSettingsViewController.m in Sources */,
 				808F6B65187D92DB0062FE39 /* GLPMessageProcessor.m in Sources */,
 				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,

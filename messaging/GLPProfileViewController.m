@@ -14,7 +14,6 @@
 #import "SessionManager.h"
 #import "GLPPostManager.h"
 #import "WebClientHelper.h"
-#import "ProfileSettingsTableViewCell.h"
 #import "AppearanceHelper.h"
 #import "PopUpNotificationsViewController.h"
 #import "TransitionDelegateViewNotifications.h"
@@ -55,7 +54,7 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPViewImageViewController.h"
 
-@interface GLPProfileViewController () <ProfileSettingsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, UIActionSheetDelegate>
+@interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 

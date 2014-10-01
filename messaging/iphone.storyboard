@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -295,7 +296,7 @@
             <objects>
                 <viewController storyboardIdentifier="IntroKindOfNewPostViewController" id="Fyw-Rk-v9s" customClass="IntroKindOfNewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pea-Lo-4mo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of post is this?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qx7-12-4te">
@@ -362,7 +363,7 @@
             <objects>
                 <viewController storyboardIdentifier="IntorKinfOfEventViewController" id="I2V-r4-Ixi" customClass="IntroKindOfEventViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ssv-q2-2WD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vol-nY-9AS">
@@ -761,7 +762,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vjG-cc-E0g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1982" y="-3459"/>
+            <point key="canvasLocation" x="1978" y="-3420"/>
         </scene>
         <!--SETTINGS-->
         <scene sceneID="4cd-DW-4RH">
@@ -936,7 +937,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FHK-O6-SxB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2373" y="-3444"/>
+            <point key="canvasLocation" x="2680" y="-3420"/>
         </scene>
         <!--Select Category View Controller-->
         <scene sceneID="zGK-w2-wbI">
@@ -1304,6 +1305,46 @@
             </objects>
             <point key="canvasLocation" x="3243" y="-4111"/>
         </scene>
+        <!--Group Settings View Controller-->
+        <scene sceneID="Jnt-yC-0tp">
+            <objects>
+                <viewController storyboardIdentifier="GLPGroupSettingsViewController" id="ahs-0Y-w7m" customClass="GLPGroupSettingsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fFv-3g-AOM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="JJx-iN-wxD">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="433"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="ahs-0Y-w7m" id="PIO-zl-n29"/>
+                                    <outlet property="delegate" destination="ahs-0Y-w7m" id="EsR-UM-pVy"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="g2e-Vg-4d4">
+                                <rect key="frame" x="10" y="448" width="300" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                <inset key="titleEdgeInsets" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="CREATE POST AS THIS GROUP" backgroundImage="use_gleepost_as_this_group.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="9AY-jI-Fco"/>
+                    <connections>
+                        <outlet property="tableView" destination="JJx-iN-wxD" id="CmO-65-FS9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6ha-t1-hC9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2343" y="-3420"/>
+        </scene>
         <!--PICK AN IMAGE-->
         <scene sceneID="v3e-He-fEv">
             <objects>
@@ -1644,7 +1685,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1681,7 +1722,7 @@
             <objects>
                 <viewController id="kg4-Pr-bdC" customClass="PickDateEventViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qag-Ya-uD7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" id="c3Y-EN-qPQ">
@@ -1699,7 +1740,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="khp-62-GyN">
-                                <rect key="frame" x="10" y="359" width="300" height="50"/>
+                                <rect key="frame" x="10" y="423" width="300" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="19"/>
                                 <state key="normal" title="NEXT" backgroundImage="change_pass_name.png">
@@ -2147,11 +2188,11 @@
             <objects>
                 <viewController id="gby-Gq-HqZ" customClass="GLPShowLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -2164,7 +2205,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KSP-Qi-oYN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3704" y="-3318"/>
+            <point key="canvasLocation" x="3580" y="-3298"/>
         </scene>
         <!--Select Address View Controller-->
         <scene sceneID="c9B-v7-wwj">
@@ -3906,6 +3947,7 @@
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="zvV-dv-dTv"/>
                         <segue destination="Fyw-Rk-v9s" kind="push" identifier="new post" id="XA6-SN-ZTj"/>
                         <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="voh-a1-0cl"/>
+                        <segue destination="ahs-0Y-w7m" kind="push" id="DWS-m7-7eD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IfX-ku-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4655,6 +4697,7 @@
         <image name="touch_to_pause.png" width="414" height="47"/>
         <image name="touch_to_play.png" width="395" height="47"/>
         <image name="touch_to_record.png" width="442" height="47"/>
+        <image name="use_gleepost_as_this_group.png" width="600" height="120"/>
         <image name="user_image_bg.png" width="74" height="74"/>
         <image name="verification_rocket.png" width="185" height="149"/>
         <image name="video_done.png" width="130" height="55"/>
@@ -4667,20 +4710,20 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="YIa-ii-tw7"/>
-        <segue reference="HwX-gN-njw"/>
         <segue reference="fah-A8-Ky9"/>
-        <segue reference="Ptj-MX-g8C"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="zvV-dv-dTv"/>
         <segue reference="pjB-B1-HWm"/>
-        <segue reference="rCT-Ex-vO8"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="uet-Cl-mZq"/>
-        <segue reference="2GR-ci-jSQ"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="ZpN-d9-baB"/>
+        <segue reference="voh-a1-0cl"/>
+        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="YIa-ii-tw7"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="wR3-TA-URh"/>
         <segue reference="bc7-so-Tnw"/>
+        <segue reference="wR3-TA-URh"/>
         <segue reference="hfC-fm-BOR"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>
