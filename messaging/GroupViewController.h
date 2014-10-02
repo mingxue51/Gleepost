@@ -14,8 +14,9 @@
 #import "NewPostViewController.h"
 #import "DescriptionSegmentGroupCell.h"
 #import "GLPStretchedImageView.h"
+#import "ImageSelectorViewController.h"
 
-@interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate>
+@interface GroupViewController : UIViewController<NewCommentDelegate, ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate, ImageSelectorViewControllerDelegate>
 
 @property (strong, nonatomic) GLPGroup *group;
 

@@ -55,7 +55,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *addLocationButton;
 
 //@property (strong, nonatomic) NSMutableArray *categories;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) GLPPostUploader *postUploader;
 @property (weak, nonatomic) UIImage *imgToUpload;
 @property (strong, nonatomic) NSDate *eventDateStart;
@@ -134,9 +133,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self formatStatusBar];
     
 
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
+//    self.fdTakeController = [[FDTakeController alloc] init];
+//    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
+//    self.fdTakeController.delegate = self;
     
     [self becomeFirstResponderForTextField];
 }
@@ -468,11 +467,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (IBAction)addImageOrImage:(id)sender
 {
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Capture Media" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add an image", @"Capture a video", nil];
-// 
-//    [actionSheet showInView:[self.view window]];
-    
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
+    [self performSegueWithIdentifier:@"show image selector" sender:self];
 }
 
 - (IBAction)addVideo:(id)sender
@@ -500,45 +495,44 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self performSegueWithIdentifier:@"pick location" sender:self];
 }
 
-#pragma mark - FDTakeController delegate
+#pragma mark - ImageSelectorViewControllerDelegate
 
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
+- (void)takeImage:(UIImage *)image
 {
     //Remove video preview view if is on the addImageButton.
     [self removeVideoPreviewView];
     
     [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     
-    [self.addImageButton setImage:photo forState:UIControlStateNormal];
+    [self.addImageButton setImage:image forState:UIControlStateNormal];
     
-    self.imgToUpload = photo;
+    self.imgToUpload = image;
     
     [_postUploader uploadImageToQueue:self.imgToUpload];
     
-    //[_postUploader startUploadingImage:self.imgToUpload];
 }
-
-#pragma mark - Action Sheet delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    
-    if([selectedButtonTitle isEqualToString:@"Add an image"])
-    {
-        //Add image.
-        [self.fdTakeController takePhotoOrChooseFromLibrary];
-
-    }
-    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
-    {
-        //Remove video preview view if is on the addImageButton.
-        [self removeVideoPreviewView];
-        
-        //Capture a video.
-        [self performSegueWithIdentifier:@"capture video" sender:self];
-    }
-}
+//
+//#pragma mark - Action Sheet delegate
+//
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+//    
+//    if([selectedButtonTitle isEqualToString:@"Add an image"])
+//    {
+//        //Add image.
+////        [self.fdTakeController takePhotoOrChooseFromLibrary];
+//
+//    }
+//    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
+//    {
+//        //Remove video preview view if is on the addImageButton.
+//        [self removeVideoPreviewView];
+//        
+//        //Capture a video.
+//        [self performSegueWithIdentifier:@"capture video" sender:self];
+//    }
+//}
 
 #pragma mark - Video
 
@@ -588,8 +582,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)resetImageButton
 {
-    
-    
     [_addImageButton setImage:nil forState:UIControlStateNormal];
 }
 
@@ -743,18 +735,18 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
     if([segue.identifier isEqualToString:@"pick location"])
     {
         GLPSelectLocationViewController *selectLocation = segue.destinationViewController;
         
         selectLocation.delegate = self;
     }
-    else if ([segue.identifier isEqualToString:@"show categories"])
+    else if([segue.identifier isEqualToString:@"show image selector"])
     {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
         
+        [imgSelectorVC setDelegate:self];
     }
-
 }
 
 -(void)navigateToVideoController
@@ -766,31 +758,5 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
 }
-
-//-(void)navigateToCategoriesViewController
-//{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//    GLPSelectCategoryViewController *categoriesVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
-//    [categoriesVC setDelegate:self];
-//    categoriesVC.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//
-//    categoriesVC.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    
-//    if(![GLPiOS6Helper isIOS6])
-//    {
-//        [categoriesVC setTransitioningDelegate:_transitionViewCategories];
-//    }
-//    
-//
-//    [self presentViewController:categoriesVC animated:YES completion:nil];
-//    
-//    
-//}
-
-
-
-
-
 
 @end

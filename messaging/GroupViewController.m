@@ -327,15 +327,6 @@ const float TOP_OFF_SET = -64.0;
     [self.navigationController.navigationBar setButton:kRight withImageName:@"new_post_groups" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(createNewPost:) andTarget:self];
     
     [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
-    
-    //=======
-    //    [btnBack setFrame:CGRectMake(buttonX, 0, 35, 35)];
-    //
-    //    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, btnBack.frame.size.width, btnBack.frame.size.height)];
-    //
-    //
-    //>>>>>>> ios6-support
-    
 }
 
 -(void)configureNavigationBar
@@ -1418,6 +1409,20 @@ const float TOP_OFF_SET = -64.0;
     
 }
 
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    _groupImage = image;
+    
+    //Set directly the new user's profile image.
+    [self refreshCellViewWithIndex:0];
+    
+    
+    //Communicate with server to change the image.
+    [[GroupOperationManager sharedInstance] changeGroupImageWithImage:_groupImage withGroup:_group];
+}
+
 #pragma mark - Action Sheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1433,8 +1438,9 @@ const float TOP_OFF_SET = -64.0;
     else if([selectedButtonTitle isEqualToString:@"Change image"] || [selectedButtonTitle isEqualToString:@"Add image"])
     {
         //Change image.
+        [self performSegueWithIdentifier:@"show image selector" sender:self];
         
-        [self.fdTakeController takePhotoOrChooseFromLibrary];
+//        [self.fdTakeController takePhotoOrChooseFromLibrary];
     }
 }
 
@@ -1458,7 +1464,6 @@ const float TOP_OFF_SET = -64.0;
 -(void)setPreviousViewToNavigationBar
 {
     self.navigationItem.hidesBackButton = NO;
-    
 }
 
 -(void)setPreviousNavigationBarName
@@ -1772,6 +1777,12 @@ const float TOP_OFF_SET = -64.0;
         GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
         
         showLocationVC.location = _selectedLocation;
+    }
+    else if([segue.identifier isEqualToString:@"show image selector"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        
+        [imgSelectorVC setDelegate:self];
     }
 }
 

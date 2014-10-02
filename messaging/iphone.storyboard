@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -594,6 +595,7 @@
                         <segue destination="Pxp-nL-r26" kind="modal" identifier="capture video" modalPresentationStyle="currentContext" id="1TU-9z-lbJ"/>
                         <segue destination="EY1-Je-RIf" kind="push" identifier="show categories" id="jTK-dl-EbC"/>
                         <segue destination="II5-g9-LV9" kind="push" identifier="pick location" id="LkS-TV-Vqz"/>
+                        <segue destination="YKI-NX-LaO" kind="push" identifier="show image selector" id="Af2-b2-Cbn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3e3-Ln-DsH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1349,11 +1351,11 @@
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="SoY-OL-TmF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
@@ -3947,6 +3949,7 @@
                         <segue destination="Fyw-Rk-v9s" kind="push" identifier="new post" id="XA6-SN-ZTj"/>
                         <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="voh-a1-0cl"/>
                         <segue destination="ahs-0Y-w7m" kind="push" id="DWS-m7-7eD"/>
+                        <segue destination="YKI-NX-LaO" kind="push" identifier="show image selector" id="cxq-Lw-xeo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IfX-ku-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4687,7 +4690,7 @@
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="40" height="36"/>
         <image name="share_image.png" width="20" height="17"/>
-        <image name="sign_in_b" width="31" height="31"/>
+        <image name="sign_in_b" width="15" height="27"/>
         <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="sing_in_bg.png" width="520" height="100"/>
@@ -4713,9 +4716,9 @@
         <segue reference="sMz-ia-ebt"/>
         <segue reference="zvV-dv-dTv"/>
         <segue reference="pjB-B1-HWm"/>
-        <segue reference="T60-Ed-mfH"/>
         <segue reference="ZpN-d9-baB"/>
         <segue reference="Ze9-pm-FNm"/>
+        <segue reference="cxq-Lw-xeo"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="voh-a1-0cl"/>
         <segue reference="Nh6-Tl-qmR"/>

@@ -524,14 +524,7 @@
 {
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     
-    if(actionSheet.tag == 1)
-    {
-        [self clickedButtonToFirstActionSheetWithTitle:selectedButtonTitle];
-    }
-    else if (actionSheet.tag == 2)
-    {
-        [self clickedButtonToSecondActionSheetWithTitle:selectedButtonTitle];
-    }
+    [self clickedButtonToFirstActionSheetWithTitle:selectedButtonTitle];
     
 }
 
@@ -545,18 +538,9 @@
     else if([buttonTitle isEqualToString:@"Change image"] || [buttonTitle isEqualToString:@"Add image"])
     {
         //Change image.
-        [self snapOrPickAnImageFromGallery];
-    }
-}
-
-- (void)clickedButtonToSecondActionSheetWithTitle:(NSString *)buttonTitle
-{
-    if([buttonTitle isEqualToString:@"Pick an image"])
-    {
         [self performSegueWithIdentifier:@"show image selector" sender:self];
     }
 }
-
 
 -(void)showImage
 {
@@ -1647,17 +1631,6 @@
 }
 
 #pragma mark - Selectors
-
-- (void)snapOrPickAnImageFromGallery
-{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Snap or Pick an image" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Snap image", @"Pick an image", nil];
-    
-    //We are adding tag here in order to distinquish the two different action sheets
-    //on the same view (in the delegate methods).
-    actionSheet.tag = 2;
-    
-    [actionSheet showInView:[self.view window]];
-}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {    

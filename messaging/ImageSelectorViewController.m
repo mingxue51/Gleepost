@@ -19,7 +19,6 @@
 @property (strong, nonatomic) UIImage *snapPhotoImage;
 @property (strong, nonatomic) UIImagePickerController *cameraUI;
 
-
 @end
 
 @implementation ImageSelectorViewController
@@ -160,7 +159,7 @@
     
     // Hides the controls for moving & scaling pictures, or for
     // trimming movies. To instead show the controls, use YES.
-    _cameraUI.allowsEditing = NO;
+    _cameraUI.allowsEditing = YES;
     
     _cameraUI.delegate = self;
     

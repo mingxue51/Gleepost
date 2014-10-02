@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FDTakeController.h"
+//#import "FDTakeController.h"
 #import "GLPVideoViewController.h"
 #import "GLPSelectLocationViewController.h"
+#import "ImageSelectorViewController.h"
 
-@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, FDTakeDelegate, UIActionSheetDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate, UITextFieldDelegate, GLPSelectLocationViewControllerDelegate>
+@interface NewPostViewController : UIViewController <UINavigationControllerDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate, UITextFieldDelegate, GLPSelectLocationViewControllerDelegate, ImageSelectorViewControllerDelegate>
 
 -(void)hideKeyboard;
 -(void)showKeyboard;
