@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -1350,11 +1349,11 @@
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="SoY-OL-TmF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
@@ -4714,13 +4713,13 @@
         <segue reference="sMz-ia-ebt"/>
         <segue reference="zvV-dv-dTv"/>
         <segue reference="pjB-B1-HWm"/>
-        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="T60-Ed-mfH"/>
         <segue reference="ZpN-d9-baB"/>
-        <segue reference="voh-a1-0cl"/>
         <segue reference="Ze9-pm-FNm"/>
-        <segue reference="YIa-ii-tw7"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="voh-a1-0cl"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="bc7-so-Tnw"/>
+        <segue reference="YIa-ii-tw7"/>
         <segue reference="wR3-TA-URh"/>
         <segue reference="hfC-fm-BOR"/>
         <segue reference="XMX-SH-Gag"/>

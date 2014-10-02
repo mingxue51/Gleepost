@@ -166,6 +166,7 @@
 		58361C36184CBF6700FEFC49 /* profiletext_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C35184CBF6700FEFC49 /* profiletext_background.png */; };
 		58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */; };
 		5837FD9218E1C54100776D0F /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 5837FD9118E1C54100776D0F /* pin.png */; };
+		583809F119DD9BF500275B4D /* snap_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 583809F019DD9BF500275B4D /* snap_photo.png */; };
 		5839261C18A020E800439398 /* skip_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261B18A020E800439398 /* skip_button.png */; };
 		5839261E18A020F600439398 /* connect_fb_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261D18A020F600439398 /* connect_fb_button.png */; };
 		5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5839262018A0256A00439398 /* SignUpWithNameViewController.m */; };
@@ -1127,6 +1128,7 @@
 		58361C35184CBF6700FEFC49 /* profiletext_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profiletext_background.png; sourceTree = "<group>"; };
 		58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_background.png; sourceTree = "<group>"; };
 		5837FD9118E1C54100776D0F /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
+		583809F019DD9BF500275B4D /* snap_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snap_photo.png; sourceTree = "<group>"; };
 		5839261B18A020E800439398 /* skip_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skip_button.png; sourceTree = "<group>"; };
 		5839261D18A020F600439398 /* connect_fb_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect_fb_button.png; sourceTree = "<group>"; };
 		5839261F18A0256A00439398 /* SignUpWithNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpWithNameViewController.h; sourceTree = "<group>"; };
@@ -2482,6 +2484,14 @@
 				58361C35184CBF6700FEFC49 /* profiletext_background.png */,
 			);
 			name = "Profile v2";
+			sourceTree = "<group>";
+		};
+		583809EF19DD9BEA00275B4D /* Image selector */ = {
+			isa = PBXGroup;
+			children = (
+				583809F019DD9BF500275B4D /* snap_photo.png */,
+			);
+			name = "Image selector";
 			sourceTree = "<group>";
 		};
 		583CE324189FFFB100E78C08 /* Login */ = {
@@ -4061,6 +4071,7 @@
 		58FD707B18905B440024E8A1 /* Design v1 */ = {
 			isa = PBXGroup;
 			children = (
+				583809EF19DD9BEA00275B4D /* Image selector */,
 				584FA60919B5262500FBA61F /* Location */,
 				5851113219A8205300488E79 /* Progress View */,
 				58451BFC199B3CC0003B94D2 /* Settings */,
@@ -5304,6 +5315,7 @@
 				58E18B941945CF3E0029C764 /* calendar.png in Resources */,
 				C02DB4DD18AE56CA0077FDEB /* message.png in Resources */,
 				58902496195DCA0A00084E2F /* party_category.png in Resources */,
+				583809F119DD9BF500275B4D /* snap_photo.png in Resources */,
 				5843328F180F09C900BD9F74 /* Gleepost2.png in Resources */,
 				580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */,
 				5806C761191BFA5D005C907E /* fb_login.png in Resources */,
