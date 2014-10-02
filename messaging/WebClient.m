@@ -2036,6 +2036,30 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)markConversationWithRemoteKeyAsRead:(NSInteger)convRemoteKey upToMessageWithRemoteKey:(NSInteger)msgRemoteKey callback:(void (^)(BOOL success))callback
+{
+    NSString *path = [NSString stringWithFormat:@"conversations/%ld/messages", (long)convRemoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:@(msgRemoteKey) forKey:@"seen"];
+    
+    [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Conversation %ld up to message %ld marked as read.", (long)convRemoteKey, (long)msgRemoteKey);
+        
+        DDLogDebug(@"RESPONSE FROM SERVER: %@", responseObject);
+        
+        callback(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        DDLogInfo(@"Conversation %ld up to message %ld not marked as read.", (long)convRemoteKey, (long)msgRemoteKey);
+
+        
+    }];
+}
+
 
 
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback

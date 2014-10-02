@@ -146,6 +146,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 - (void)markNotificationsRead:(void (^)(BOOL success))callback;
 - (void)markConversationsRead:(void (^)(BOOL success))callback;
+- (void)markConversationWithRemoteKeyAsRead:(NSInteger)convRemoteKey upToMessageWithRemoteKey:(NSInteger)msgRemoteKey callback:(void (^)(BOOL success))callback;
 
 - (void)markNotificationRead:(GLPNotification *)notification callback:(void (^)(BOOL success, NSArray *notifications))callback;
 

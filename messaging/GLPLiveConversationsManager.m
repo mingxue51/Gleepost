@@ -1270,6 +1270,18 @@ static GLPLiveConversationsManager *instance = nil;
     });
 }
 
+- (void)markConversation:(GLPConversation *)conversation upToTheLastMessageAsRead:(GLPMessage *)lastMessage
+{
+    [[WebClient sharedInstance] markConversationWithRemoteKeyAsRead:conversation.remoteKey upToMessageWithRemoteKey:lastMessage.remoteKey callback:^(BOOL success) {
+        
+        if(success)
+        {
+            DDLogDebug(@"Up to message %@ read.", lastMessage);
+        }
+        
+    }];
+}
+
 
 # pragma mark - Internal
 

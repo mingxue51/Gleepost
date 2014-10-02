@@ -203,7 +203,8 @@
     [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
     
     [[WebClient sharedInstance] markNotificationsRead:nil];
-    [[WebClient sharedInstance] markConversationsRead:nil];
+    //That is removed because we are doing that by each message in conversation.
+//    [[WebClient sharedInstance] markConversationsRead:nil];
 }
 
 + (void)logout

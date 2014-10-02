@@ -378,6 +378,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [_messages addObjectsFromArray:newMessages];
     [self showLoadedMessages];
+    
+    //Mark the messages up to the last one as read.
+    [self markMessagesAsReadUpToTheLastSeen];
 }
 
 - (void)loadPreviousMessages
@@ -398,6 +401,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     [self configureDisplayForMessages:_messages];
     [self reloadWithItems:_messages];
+    
+    DDLogDebug(@"MESSAGES: %@", _messages);
 }
 
 - (void)configureDisplayForMessages:(NSArray *)messages
@@ -463,6 +468,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [self configureNewConversation:conversation];
     [self loadInitialMessages];
+}
+
+- (void)markMessagesAsReadUpToTheLastSeen
+{
+    [[GLPLiveConversationsManager sharedInstance] markConversation:_conversation upToTheLastMessageAsRead:[_messages lastObject]];
 }
 
 

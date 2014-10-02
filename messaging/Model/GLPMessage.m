@@ -62,4 +62,9 @@
     return message;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"Message key %ld, Content %@, Seen %d", (long)self.remoteKey, _content, _seen];
+}
+
 @end

@@ -156,9 +156,11 @@ static GLPNetworkManager *instance = nil;
         }];
     }
     
-    [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
-        requestsSuccess = success;
-    }];
+    //That is removed because we are doing that by each message in conversation.
+    
+//    [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
+//        requestsSuccess = success;
+//    }];
     
     if(requestsSuccess) {
         application.applicationIconBadgeNumber = 0;
