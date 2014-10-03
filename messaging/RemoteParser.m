@@ -1179,22 +1179,52 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     for(NSDictionary *d in venues)
     {
-        NSDictionary *loc = d[@"location"];
-
 //        DDLogDebug(@"Name: %@", d[@"name"]);
 //        
 //        DDLogDebug(@"Address: %@, Lat: %@, Lgn: %@",loc[@"address"], loc[@"lat"], loc[@"lng"]);
         
-        
-        [locations addObject:[[GLPLocation alloc] initWithName:d[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]]];
-
+        [RemoteParser insertAndSortVenueByDistanceWithJson:d andCurrentArray:locations];
     }
     
     return locations;
 }
 
++ (void)insertAndSortVenueByDistanceWithJson:(NSDictionary *)d andCurrentArray:(NSMutableArray *)locations
+{
+    NSDictionary *loc = d[@"location"];
+    
+    GLPLocation *inLocation = [[GLPLocation alloc] initWithName:d[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]];
+    
+    int index = 0;
+    
+    if(locations.count == 0)
+    {
+        [locations addObject:inLocation];
+        
+        return;
+    }
+    
+    
+    for (GLPLocation *location in locations) {
+        
+        if(inLocation.distance > location.distance)
+        {
+            ++index;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    [locations insertObject:inLocation atIndex:index];
+}
+
 + (NSArray *)parseNearbyVenuesWithResponseLocationsObject:(id)responseObject
 {
+    
+    //Parse the responce of explore response.
+    
     NSMutableArray *locations = [[NSMutableArray alloc] init];
     
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseObject
@@ -1203,20 +1233,22 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     NSDictionary *response = json[@"response"];
     
-    NSArray *venues = response[@"venues"];
+    NSArray *groups = response[@"groups"];
     
+    NSDictionary *group = groups[0];
     
-    for(NSDictionary *d in venues)
+    NSArray *items = group[@"items"];
+    
+    for(NSDictionary *d in items)
     {
-        NSDictionary *loc = d[@"location"];
-        
-//        DDLogDebug(@"Name: %@", d[@"name"]);
-//        
-//        DDLogDebug(@"Address: %@, Lat: %@, Lgn: %@",loc[@"address"], loc[@"lat"], loc[@"lng"]);
+        NSDictionary *venue = d[@"venue"];
         
         
-        [locations addObject:[[GLPLocation alloc] initWithName:d[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]]];
+        NSDictionary *loc = venue[@"location"];
+
+        [locations addObject:[[GLPLocation alloc] initWithName:venue[@"name"] address:loc[@"address"] latitude:[loc[@"lat"] doubleValue] longitude:[loc[@"lng"] doubleValue] andDistance:[loc[@"distance"] integerValue]]];
         
+
     }
     
     return locations;

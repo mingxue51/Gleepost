@@ -363,7 +363,7 @@
  */
 - (void)setDataForTheAddressFieldWithLocation:(GLPLocation *)location
 {
-    if(location.distance < 30)
+    if(location.distance < 50)
     {
         [_locationLabel setText:location.name];
         
@@ -371,7 +371,7 @@
     }
     else
     {
-        DDLogDebug(@"Distance exceeded");
+        DDLogInfo(@"Distance exceeded, search address from apple's api.");
         
         [self findAddressAndSetItToField];
     }
@@ -553,6 +553,7 @@
         GLPSelectAddressViewController *selectAddressVC = segue.destinationViewController;
         
         [selectAddressVC setDelegate:self];
+        [selectAddressVC setUsersLocation:_coordinates];
     }
 }
 

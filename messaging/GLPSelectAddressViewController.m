@@ -73,8 +73,6 @@
     {
         [self searchLocationWithString:textField.text];
     }
-
-    
 }
 
 
@@ -136,19 +134,23 @@
 
 - (void)searchAddressWithString:(NSString *)address
 {
+    NSMutableArray *lastResults = _results.copy;
+    
     MKLocalSearchRequest *searchRequest = [[MKLocalSearchRequest alloc] init];
     
     searchRequest.naturalLanguageQuery = address;
-//    searchRequest.region = MKCoordinateRegionMake(<#CLLocationCoordinate2D centerCoordinate#>, <#MKCoordinateSpan span#>)
+    searchRequest.region = MKCoordinateRegionMakeWithDistance(_usersLocation, 2000, 2000);
     
     MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:searchRequest];
     [localSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
         
-        [_results removeAllObjects];
-        DDLogDebug(@"Removed all location objects");
+        @synchronized(_results)
+        {
+            _results = [[NSMutableArray alloc] init];
+        }
         
+        DDLogDebug(@"Removed all location objects: %ld", (unsigned long)response.mapItems.count);
         
-//        [_mapItemsResults removeAllObjects];
         
         [response.mapItems enumerateObjectsUsingBlock:^(MKMapItem *item, NSUInteger idx, BOOL *stop) {
 //            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithPlacemark:item.placemark];
@@ -175,11 +177,22 @@
             
             if(![showString isEqualToString:@""])
             {
-//                [_results addObject:[NSString stringWithFormat:@"%@ %@", item.placemark.subThoroughfare, item.placemark.thoroughfare]];
+                @synchronized(_results)
+                {
+                    [_results addObject:[self convertMapItemToLocation:item]];
+
+                }
                 
-                [_results addObject:[self convertMapItemToLocation:item]];
                 
 //                [_mapItemsResults addObject:item];
+            }
+            
+            if(response.mapItems.count - 1 ==  idx && _results.count == 0)
+            {
+                @synchronized(_results)
+                {
+                    _results = lastResults.copy;
+                }
             }
             
             DDLogDebug(@"Last location results: %@", _results);

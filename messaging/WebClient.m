@@ -343,7 +343,14 @@ static WebClient *instance = nil;
     [params setObject:@"DTWBJ2KCWORXLDX34VW0V5KQRCIMS5UYLOBY1FPOF0CSZFCJ" forKey:@"client_id"];
     [params setObject:@"QAMSRDCTMHLXH0BRLNSY4KBZFU02CHX3Y2RCOG13FEOYQMUH" forKey:@"client_secret"];
     
-    [params setObject:name forKey:@"near"];
+    [params setObject:@"Stanford, CA, United States" forKey:@"near"];
+    
+//    [params setObject:@"global" forKey:@"intent"];
+
+    
+    [params setObject:name forKey:@"query"];
+    
+//    [params setObject:@"4d4b7105d754a06372d81259" forKey:@"categoryId"];
     
     [params setObject:[DateFormatterHelper generateStringDateForFSFormat] forKey:@"v"];
     
@@ -353,9 +360,11 @@ static WebClient *instance = nil;
     
     AFHTTPClient *fsClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.foursquare.com/v2/"]];
     
-    [fsClient getPath:@"venues/search" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [fsClient getPath:@"venues/explore" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *results = [RemoteParser parseNearbyVenuesWithResponseLocationsObject:responseObject];
+        
+        DDLogDebug(@"Exlpore results found by name: %@", results);
         
         callbackBlock(YES, results);
         

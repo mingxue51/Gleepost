@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 @class GLPLocation;
 
@@ -20,5 +21,6 @@
 @interface GLPSelectAddressViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) UIViewController<GLPSelectAddressViewControllerDelegate> *delegate;
+@property (assign, nonatomic) CLLocationCoordinate2D usersLocation;
 
 @end
