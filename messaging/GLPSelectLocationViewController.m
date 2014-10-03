@@ -14,10 +14,14 @@
 #import "WebClient.h"
 #import "AddressCell.h"
 #import "GLPLocation.h"
+#import <CoreLocation/CoreLocation.h>
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPSelectLocationViewController ()
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -45,6 +49,8 @@
 {
     [super viewDidLoad];
     
+    [self configureLocationPermissions];
+    
     [self configureNavigationBar];
     
     [self configureMapView];
@@ -58,6 +64,8 @@
     [self configureTableView];
     
     [self loadNearbyPlaces];
+    
+    
     
 //    [self loadCurrentLocation];
 }
@@ -102,6 +110,21 @@
     [_tableView registerNib:[UINib nibWithNibName:@"AddressCell" bundle:nil] forCellReuseIdentifier:@"AddressCell"];
 
     _tableView.tableFooterView = [UIView new];
+}
+
+/**
+ This method is madantory for iOS 8 due to the new API that Apple introduced.
+ */
+- (void)configureLocationPermissions
+{
+    if([GLPiOSSupportHelper isIOS7] || [GLPiOSSupportHelper isIOS6])
+    {
+        return;
+    }
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    
+    [_locationManager requestWhenInUseAuthorization];
 }
 
 #pragma mark - MKMapViewDelegate
@@ -285,6 +308,8 @@
 {
     MKCoordinateRegion region;
     _coordinates = region.center = _mapView.userLocation.coordinate;
+    
+    DDLogDebug(@"User location coordinates: %f : %f", _mapView.userLocation.coordinate.latitude, _mapView.userLocation.coordinate.longitude);
     
     MKCoordinateSpan span;
     span.latitudeDelta  = 0.005; // Change these values to change the zoom

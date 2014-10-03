@@ -139,11 +139,13 @@
     MKLocalSearchRequest *searchRequest = [[MKLocalSearchRequest alloc] init];
     
     searchRequest.naturalLanguageQuery = address;
+//    searchRequest.region = MKCoordinateRegionMake(<#CLLocationCoordinate2D centerCoordinate#>, <#MKCoordinateSpan span#>)
     
     MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:searchRequest];
     [localSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
         
         [_results removeAllObjects];
+        DDLogDebug(@"Removed all location objects");
         
         
 //        [_mapItemsResults removeAllObjects];
@@ -179,6 +181,8 @@
                 
 //                [_mapItemsResults addObject:item];
             }
+            
+            DDLogDebug(@"Last location results: %@", _results);
             
         }];
         
