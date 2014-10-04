@@ -167,6 +167,7 @@
 		58361C3F184CF7FC00FEFC49 /* profile_picture_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */; };
 		5837FD9218E1C54100776D0F /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 5837FD9118E1C54100776D0F /* pin.png */; };
 		583809F119DD9BF500275B4D /* snap_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 583809F019DD9BF500275B4D /* snap_photo.png */; };
+		583809F519DF0A3400275B4D /* ChangeGroupImageProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583809F419DF0A3400275B4D /* ChangeGroupImageProgressView.m */; };
 		5839261C18A020E800439398 /* skip_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261B18A020E800439398 /* skip_button.png */; };
 		5839261E18A020F600439398 /* connect_fb_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5839261D18A020F600439398 /* connect_fb_button.png */; };
 		5839262118A0256A00439398 /* SignUpWithNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5839262018A0256A00439398 /* SignUpWithNameViewController.m */; };
@@ -1129,6 +1130,8 @@
 		58361C3E184CF7FC00FEFC49 /* profile_picture_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_picture_background.png; sourceTree = "<group>"; };
 		5837FD9118E1C54100776D0F /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		583809F019DD9BF500275B4D /* snap_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snap_photo.png; sourceTree = "<group>"; };
+		583809F319DF0A3400275B4D /* ChangeGroupImageProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeGroupImageProgressView.h; sourceTree = "<group>"; };
+		583809F419DF0A3400275B4D /* ChangeGroupImageProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeGroupImageProgressView.m; sourceTree = "<group>"; };
 		5839261B18A020E800439398 /* skip_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skip_button.png; sourceTree = "<group>"; };
 		5839261D18A020F600439398 /* connect_fb_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect_fb_button.png; sourceTree = "<group>"; };
 		5839261F18A0256A00439398 /* SignUpWithNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpWithNameViewController.h; sourceTree = "<group>"; };
@@ -2494,6 +2497,15 @@
 			name = "Image selector";
 			sourceTree = "<group>";
 		};
+		583809F219DF0A1600275B4D /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				583809F319DF0A3400275B4D /* ChangeGroupImageProgressView.h */,
+				583809F419DF0A3400275B4D /* ChangeGroupImageProgressView.m */,
+			);
+			name = Groups;
+			sourceTree = "<group>";
+		};
 		583CE324189FFFB100E78C08 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -2739,6 +2751,7 @@
 		584FA5F719B519EE00FBA61F /* Progress */ = {
 			isa = PBXGroup;
 			children = (
+				583809F219DF0A1600275B4D /* Groups */,
 				584FA5FE19B51A4C00FBA61F /* UploadingProgressView.m */,
 				584FA5FF19B51A4C00FBA61F /* UploadingProgressView.h */,
 				584FA5F819B519FD00FBA61F /* GLPCustomProgressView.m */,
@@ -5840,6 +5853,7 @@
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				585909A819D42E40006ACC64 /* GLPLiveGroupPostManager.m in Sources */,
 				5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */,
+				583809F519DF0A3400275B4D /* ChangeGroupImageProgressView.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
 				580FF15318AA6DAD0026B65B /* NSDate+HumanizedTime.m in Sources */,

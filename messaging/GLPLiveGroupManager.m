@@ -14,6 +14,7 @@
 #import "GLPGroupManager.h"
 #import "WebClient.h"
 #import "GLPGroupDao.h"
+#import "ChangeGroupImageProgressView.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -22,6 +23,8 @@
 @property (strong, nonatomic) NSMutableArray *groups;
 
 @property (strong, nonatomic) NSMutableDictionary *unreadPostGroups;
+
+@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
 @end
 
@@ -51,6 +54,7 @@ static GLPLiveGroupManager *instance = nil;
         _groups = [[NSMutableArray alloc] init];
         _queue = dispatch_queue_create("com.gleepost.queue.livegroups", DISPATCH_QUEUE_SERIAL);
         _unreadPostGroups = [[NSMutableDictionary alloc] init];
+        _changeImageProgressView = [[ChangeGroupImageProgressView alloc] init];
 
     }
     
@@ -120,6 +124,23 @@ static GLPLiveGroupManager *instance = nil;
     
     return [self findGroupWithRemoteKey:groupRemoteKey];
     
+}
+
+#pragma mark - Image uploading progress
+
+- (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group
+{
+    if(_changeImageProgressView.group.remoteKey != group.remoteKey)
+    {
+        return nil;
+    }
+    
+    return _changeImageProgressView;
+}
+
+- (void)startChangeImageProgressingWithGroup:(GLPGroup *)group
+{
+    [_changeImageProgressView setGroup:group];
 }
 
 #pragma mark - Updates

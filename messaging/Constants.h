@@ -72,6 +72,7 @@
 #define GLPNOTIFICATION_SHOW_MORE_OPTIONS               @"GLPShowMoreOptions"
 
 #define GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS           @"GLPChangeImageProgress"
+#define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS     @"GLPChangeGroupImageProgress"
 
 
 

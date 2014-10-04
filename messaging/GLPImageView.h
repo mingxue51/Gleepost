@@ -21,6 +21,7 @@
 //@property (weak, nonatomic) UIView<GLPImageViewDelegate> *normalViewDelegate;
 
 - (void)setImageUrl:(NSString *)imageUrl withPlaceholderImage:(NSString *)imagePath;
+- (void)setActualImage:(UIImage *)image;
 - (void)setGesture:(BOOL)gesture;
 
 @end

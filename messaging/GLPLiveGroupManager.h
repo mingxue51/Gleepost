@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLPGroup;
+@class ChangeGroupImageProgressView;
 
 @interface GLPLiveGroupManager : NSObject
 
@@ -27,5 +28,9 @@
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group;
 
 - (NSArray *)liveGroups;
+
+- (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group;
+
+- (void)startChangeImageProgressingWithGroup:(GLPGroup *)group;
 
 @end

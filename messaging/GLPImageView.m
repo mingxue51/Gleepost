@@ -49,12 +49,17 @@
     }
     else
     {
-        
-        
         //Fetch the image from the server and add it to the image view.
         [self setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
-    
+}
+
+/**
+ This method should be called only when the image is already fetched.
+ */
+- (void)setActualImage:(UIImage *)image
+{
+    [self setImage:image];
 }
 
 - (void)setGesture:(BOOL)gesture

@@ -1791,10 +1791,17 @@ static WebClient *instance = nil;
         
         NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
         
-        //Inform GLPProgressManager.
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS object:self userInfo:progressData];
-        
-        
+        //That means that the user tries to change his/her image.
+        if(userRemoteKey == [SessionManager sharedInstance].user.remoteKey)
+        {
+            //Inform GLPProgressManager.
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS object:self userInfo:progressData];
+        }
+        else
+        {
+            //This should be executed when the user tries to change group image.
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:progressData];
+        }
      }];
     
     
@@ -1817,7 +1824,11 @@ static WebClient *instance = nil;
     
     
     [httpClient enqueueHTTPRequestOperation:operation];
-    
+}
+
+- (void)uploadImage:(NSData *)imageData forGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^)(BOOL, NSString *))callback
+{
+    [self uploadImage:imageData ForUserRemoteKey:groupRemoteKey callbackBlock:callback];
 }
 
 
@@ -1831,9 +1842,11 @@ static WebClient *instance = nil;
     
     [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
+        callbackBlock(YES);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
+        callbackBlock(NO);
     }];
 }
 

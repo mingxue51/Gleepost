@@ -112,11 +112,15 @@ const float TOP_OFF_SET = -64.0;
         [self configureTopImageView];
         [self configureTableView];
         [self loadPosts];
+        [self loadPendingImageIfExistAndSetIt];
     }
     
 
-    //Get the progress view and add it as subview.
+    //Get the video progress view and add it as subview.
     [self getProgressViewAndAddIt];
+    
+    //Get the change image progress view and add it as subview.
+    [self getImageProgressViewAndAddIt];
     
     
     
@@ -174,6 +178,10 @@ const float TOP_OFF_SET = -64.0;
     [self.tableView addSubview:(UIView *)[[GLPLiveGroupPostManager sharedInstance] progressViewWithGroupRemoteKey:_group.remoteKey]];
 }
 
+- (void)getImageProgressViewAndAddIt
+{
+    [self.tableView addSubview:(UIView *)[[GLPLiveGroupManager sharedInstance] progressViewWithGroup:_group]];
+}
 
 #pragma mark - Configuration methods
 
@@ -266,13 +274,27 @@ const float TOP_OFF_SET = -64.0;
     
     _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
     
-    [_strechedImageView setImageUrl:_group.groupImageUrl withPlaceholderImage:@"default_thumbnail"];
+    [self refreshTopImageView];
     
     [_strechedImageView setTextInTitle:_group.name];
     
     [_strechedImageView setViewControllerDelegate:self];
     
     [_strechedImageView setGesture:YES];
+}
+
+- (void)refreshTopImageView
+{
+    if(_groupImage)
+    {
+        DDLogDebug(@"Real image is going to attached.");
+        
+        [_strechedImageView setImage:_groupImage];
+    }
+    else
+    {
+        [_strechedImageView setImageUrl:_group.groupImageUrl withPlaceholderImage:@"default_thumbnail"];
+    }
 }
 
 -(void)initialiseObjects
@@ -677,7 +699,6 @@ const float TOP_OFF_SET = -64.0;
         
         [groupDescrViewCell setDelegate:self];
 
-        [self loadPendingImageIfExist];
         
         groupDescrViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -915,16 +936,22 @@ const float TOP_OFF_SET = -64.0;
     }
 }
 
--(void)loadPendingImageIfExist
+-(void)loadPendingImageIfExistAndSetIt
 {
     UIImage *img = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:_group.remoteKey];
     
+    DDLogDebug(@"Load pending image if exist.");
+    
     if(!img)
     {
+        DDLogDebug(@"Pending image doesn't exist.");
+
         return;
     }
     
     _groupImage = img;
+    
+    [self refreshTopImageView];
 }
 
 #pragma mark - Client
@@ -1416,8 +1443,13 @@ const float TOP_OFF_SET = -64.0;
     _groupImage = image;
     
     //Set directly the new user's profile image.
-    [self refreshCellViewWithIndex:0];
+//    [self refreshCellViewWithIndex:0];
     
+    [self refreshTopImageView];
+    
+    [[GLPLiveGroupManager sharedInstance] startChangeImageProgressingWithGroup:_group];
+    
+    [self getImageProgressViewAndAddIt];
     
     //Communicate with server to change the image.
     [[GroupOperationManager sharedInstance] changeGroupImageWithImage:_groupImage withGroup:_group];

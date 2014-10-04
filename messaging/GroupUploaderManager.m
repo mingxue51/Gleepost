@@ -168,7 +168,7 @@
 
 -(void)uploadImageWithData:(NSData *)imageData andGroup:(GLPGroup *)group
 {
-    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:[[SessionManager sharedInstance]user].remoteKey callbackBlock:^(BOOL success, NSString* response) {
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:group.remoteKey callbackBlock:^(BOOL success, NSString* response) {
         
         if(success)
         {
@@ -189,9 +189,15 @@
 {
     [[WebClient sharedInstance] uploadImageUrl:url withGroupRemoteKey:group.remoteKey callbackBlock:^(BOOL success) {
        
-        if(!success)
+        if(success)
         {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
             
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
+        }
+        else
+        {
+            //TODO: Post notification an error and dismiss the progress bar.
         }
         
     }];

@@ -1170,7 +1170,6 @@
         return;
     }
     
-    DDLogDebug(@"didEndDisplayingCell row: %d", indexPath.row);
     
     GLPPost *post = _posts[indexPath.row - 1];
     
