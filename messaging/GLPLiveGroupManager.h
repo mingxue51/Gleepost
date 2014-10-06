@@ -33,4 +33,8 @@
 
 - (void)startChangeImageProgressingWithGroup:(GLPGroup *)group;
 
+- (void)finishUploadingNewImageToGroup:(GLPGroup *)group;
+
+- (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey;
+
 @end

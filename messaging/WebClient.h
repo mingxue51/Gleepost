@@ -132,7 +132,7 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock;
 -(void)uploadImage:(NSData *)imageData callback:(void (^)(BOOL success, NSString *imageUrl))callback;
 
-- (void)uploadImage:(NSData *)imageData forGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^)(BOOL, NSString *))callback;
+- (void)uploadImage:(NSData *)imageData forGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^)(BOOL success, NSString *imageUrl))callback;
 
 -(void)uploadImageToProfileUser:(NSString *)url callbackBlock:(void (^)(BOOL))callbackBlock;
 

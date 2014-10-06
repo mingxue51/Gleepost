@@ -7,7 +7,7 @@
 //
 //  This manager is a singleton and it works (in co-operation with GLPGroupManager) once the app launced.
 //  The aim of this manager is to pre-fetch all the groups before viewing the groups' tab
-//  and in genera to handle all the group operations.
+//  and in general to handle all the group operations such changing image progress bar.
 //
 
 #import "GLPLiveGroupManager.h"
@@ -24,7 +24,11 @@
 
 @property (strong, nonatomic) NSMutableDictionary *unreadPostGroups;
 
-@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
+@property (strong, nonatomic) NSMutableDictionary *pendingGroupImagesProgressViews;
+
+@property (strong, nonatomic) NSMutableDictionary *pendingGroupTimestamps;
+
+//@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
 @end
 
@@ -54,7 +58,9 @@ static GLPLiveGroupManager *instance = nil;
         _groups = [[NSMutableArray alloc] init];
         _queue = dispatch_queue_create("com.gleepost.queue.livegroups", DISPATCH_QUEUE_SERIAL);
         _unreadPostGroups = [[NSMutableDictionary alloc] init];
-        _changeImageProgressView = [[ChangeGroupImageProgressView alloc] init];
+        _pendingGroupImagesProgressViews = [[NSMutableDictionary alloc] init];
+        _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
+//        _changeImageProgressView = [[ChangeGroupImageProgressView alloc] init];
 
     }
     
@@ -130,17 +136,49 @@ static GLPLiveGroupManager *instance = nil;
 
 - (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group
 {
-    if(_changeImageProgressView.group.remoteKey != group.remoteKey)
-    {
-        return nil;
-    }
+    DDLogDebug(@"Pending group images get progress: %@", _pendingGroupImagesProgressViews);
+
     
-    return _changeImageProgressView;
+    ChangeGroupImageProgressView *groupImageProgressView = [_pendingGroupImagesProgressViews objectForKey:@(group.remoteKey)];
+    
+    return groupImageProgressView;
+    
+    
+//    if(_changeImageProgressView.group.remoteKey != group.remoteKey)
+//    {
+//        return nil;
+//    }
+    
+//    return _changeImageProgressView;
 }
 
 - (void)startChangeImageProgressingWithGroup:(GLPGroup *)group
 {
-    [_changeImageProgressView setGroup:group];
+    ChangeGroupImageProgressView *groupImageProgressView = [[ChangeGroupImageProgressView alloc] init];
+    
+    [groupImageProgressView setGroup:group];
+    
+    [_pendingGroupImagesProgressViews setObject:groupImageProgressView forKey:@(group.remoteKey)];
+    
+    [_pendingGroupTimestamps setObject:[NSDate date] forKey:@(group.remoteKey)];
+    
+//    [_changeImageProgressView setGroup:group];
+}
+
+- (void)finishUploadingNewImageToGroup:(GLPGroup *)group
+{
+    DDLogDebug(@"Pending group images before finishing: %@", _pendingGroupImagesProgressViews);
+    
+    [_pendingGroupImagesProgressViews removeObjectForKey:@(group.remoteKey)];
+    
+    [_pendingGroupTimestamps removeObjectForKey:@(group.remoteKey)];
+    
+    DDLogDebug(@"Pending group images: %@", _pendingGroupImagesProgressViews);
+}
+
+- (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey
+{
+    return [_pendingGroupTimestamps objectForKey:@(groupRemoteKey)];
 }
 
 #pragma mark - Updates

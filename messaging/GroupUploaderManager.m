@@ -12,7 +12,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "ImageFormatterHelper.h"
 #import "SessionManager.h"
-
+#import "GLPLiveGroupManager.h"
 
 @interface GroupUploaderManager ()
 
@@ -151,6 +151,9 @@
 
 -(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group
 {
+    //Remove if pending image exist.
+    [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
+    
 //    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(test:) userInfo:nil repeats:YES];
     [_pendingGroupImages setObject:image forKey:[NSNumber numberWithInt:group.remoteKey]];
 
@@ -162,24 +165,35 @@
 
 -(void)removeEntryFromPendingGroupImagesWithRemoteKey:(int)remoteKey
 {
+    DDLogDebug(@"Pending group images before: %@", _pendingGroupImages);
+
     [_pendingGroupImages removeObjectForKey:[NSNumber numberWithInt:remoteKey]];
+    
+    DDLogDebug(@"Pending group images: %@", _pendingGroupImages);
 }
 
 
 -(void)uploadImageWithData:(NSData *)imageData andGroup:(GLPGroup *)group
 {
-    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:group.remoteKey callbackBlock:^(BOOL success, NSString* response) {
-        
+    [[WebClient sharedInstance] uploadImage:imageData forGroupWithRemoteKey:group.remoteKey callback:^(BOOL success, NSString *imageUrl) {
+       
         if(success)
         {
-            [self updateDatabaseWithGroup:group andUrl:response];
+            DDLogDebug(@"Image url: %@", imageUrl);
             
             [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
-            
-            //Send notification to contacts view controller.
-            [self notifyControllerWithGroup:group];
-            
-            [self setNewUrlToGroup:group withUrl:response];
+
+            //If imageUrl is empty it means that the image canceled.
+            if(![imageUrl isEqualToString:@""])
+            {
+                [self updateDatabaseWithGroup:group andUrl:imageUrl];
+                
+                //Send notification to contacts view controller.
+                [self notifyControllerWithGroup:group];
+                
+                [self setNewUrlToGroup:group withUrl:imageUrl];
+            }
+
         }
         
     }];
@@ -194,6 +208,9 @@
 //            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
             
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
+            
+            //Tell to GLPLiveGroupManager that the new image is uploaded and attached to group.
+            [[GLPLiveGroupManager sharedInstance] finishUploadingNewImageToGroup:group];
         }
         else
         {

@@ -40,6 +40,8 @@
 #import "GLPLiveGroupPostManager.h"
 #import "GLPViewImageViewController.h"
 #import "GLPGroupSettingsViewController.h"
+#import "ChangeGroupImageProgressView.h"
+
 
 @interface GroupViewController ()
 
@@ -180,7 +182,26 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)getImageProgressViewAndAddIt
 {
-    [self.tableView addSubview:(UIView *)[[GLPLiveGroupManager sharedInstance] progressViewWithGroup:_group]];
+    ChangeGroupImageProgressView *progressView =[[GLPLiveGroupManager sharedInstance] progressViewWithGroup:_group];
+    
+    progressView.tag = _group.remoteKey;
+    
+//    DDLogDebug(@"getImageProgressViewAndAddIt: %d : %@", _group.remoteKey, progressView);
+    
+    [self.tableView addSubview:progressView];
+}
+
+- (void)removeCurrentImageProgressView
+{
+    for(UIView *v in self.tableView.subviews)
+    {
+        if(v.tag == _group.remoteKey)
+        {
+            
+            DDLogDebug(@"Remove view: %@", v);
+            [v removeFromSuperview];
+        }
+    }
 }
 
 #pragma mark - Configuration methods
@@ -1440,6 +1461,12 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)takeImage:(UIImage *)image
 {
+    
+    //If there is already an image uploading then remove it and continue with the rest of procedure.
+    [[GLPLiveGroupManager sharedInstance] finishUploadingNewImageToGroup:_group];
+    
+    [self removeCurrentImageProgressView];
+    
     _groupImage = image;
     
     //Set directly the new user's profile image.
@@ -1469,6 +1496,7 @@ const float TOP_OFF_SET = -64.0;
     }
     else if([selectedButtonTitle isEqualToString:@"Change image"] || [selectedButtonTitle isEqualToString:@"Add image"])
     {
+        
         //Change image.
         [self performSegueWithIdentifier:@"show image selector" sender:self];
         

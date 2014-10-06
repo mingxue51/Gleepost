@@ -138,7 +138,7 @@
 
 @property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
 
-@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
+//@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
 
 @property (assign, nonatomic, getter = isWalkthroughFinished) BOOL walkthroughFinished;
 
@@ -326,9 +326,9 @@ const float TOP_OFFSET = 180.0f;
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
     
-    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
-    
-    [_emptyCategoryPostsMessage hideEmptyMessageView];
+//    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
+//    
+//    [_emptyCategoryPostsMessage hideEmptyMessageView];
     
     _walkthroughFinished = NO;
     
@@ -1025,7 +1025,7 @@ const float TOP_OFFSET = 180.0f;
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
             
-            [self showEmptyViewIfNeeded];
+//            [self showEmptyViewIfNeeded];
             
             
             
@@ -1482,22 +1482,22 @@ const float TOP_OFFSET = 180.0f;
 //    }];
 }
 
-- (void)showEmptyViewIfNeeded
-{
-    if(_posts.count == 0)
-    {
-        NSString *noPostYetMessage = [NSString stringWithFormat:@"No post yet for %@ category", [[CategoryManager sharedInstance] selectedCategory].name];
-        
-        [_emptyCategoryPostsMessage setTitle: noPostYetMessage];
-        [_emptyCategoryPostsMessage showEmptyMessageView];
-    }
-    else
-    {
-        [_emptyCategoryPostsMessage hideEmptyMessageView];
-    }
-    
-
-}
+//- (void)showEmptyViewIfNeeded
+//{
+//    if(_posts.count == 0)
+//    {
+//        NSString *noPostYetMessage = [NSString stringWithFormat:@"No post yet for %@ category", [[CategoryManager sharedInstance] selectedCategory].name];
+//        
+//        [_emptyCategoryPostsMessage setTitle: noPostYetMessage];
+//        [_emptyCategoryPostsMessage showEmptyMessageView];
+//    }
+//    else
+//    {
+//        [_emptyCategoryPostsMessage hideEmptyMessageView];
+//    }
+//    
+//
+//}
 
 /** NOT USED. */
 -(void)addFooterIfNeeded

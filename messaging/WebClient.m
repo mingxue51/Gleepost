@@ -22,6 +22,7 @@
 #import "GLPLocation.h"
 #import "GLPCampusWallProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "GLPLiveGroupManager.h"
 
 @interface WebClient()
 
@@ -1767,6 +1768,7 @@ static WebClient *instance = nil;
 
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
 {
+ 
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:image, @"image", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -1826,10 +1828,65 @@ static WebClient *instance = nil;
     [httpClient enqueueHTTPRequestOperation:operation];
 }
 
-- (void)uploadImage:(NSData *)imageData forGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^)(BOOL, NSString *))callback
+- (void)uploadImage:(NSData *)imageData forGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^)(BOOL success, NSString *imageUrl))callback
 {
-    [self uploadImage:imageData ForUserRemoteKey:groupRemoteKey callbackBlock:callback];
-}
+    NSDate *timestamp = [[GLPLiveGroupManager sharedInstance] timestampWithGroupRemoteKey:groupRemoteKey];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:imageData, @"image", nil];
+    [params addEntriesFromDictionary:self.sessionManager.authParameters];
+    
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[[SessionManager sharedInstance] serverPath]]];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        
+        [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"group_id%d_image.png",groupRemoteKey] mimeType:@"image/png"];
+    }];
+    
+    
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    // if you want progress updates as it's uploading, uncomment the following:
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        
+        NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
+        
+   
+        NSDate *nowTimestamp = [[GLPLiveGroupManager sharedInstance] timestampWithGroupRemoteKey:groupRemoteKey];
+        
+        if([timestamp isEqualToDate:nowTimestamp])
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:progressData];
+        }
+    }];
+    
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+        
+        NSDate *nowTimestamp = [[GLPLiveGroupManager sharedInstance] timestampWithGroupRemoteKey:groupRemoteKey];
+        
+        if([timestamp isEqualToDate:nowTimestamp])
+        {
+            callback(YES, response);
+        }
+        else
+        {
+            callback(YES, @"");
+        }
+    
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"RESPONSE ERROR: %@", error.description);
+        callback(NO, nil);
+        
+    }];
+    
+    
+    [httpClient enqueueHTTPRequestOperation:operation];}
 
 
 -(void)uploadImageUrl:(NSString *)imageUrl withGroupRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
