@@ -1964,14 +1964,23 @@ static WebClient *instance = nil;
         
 
         
+        
         if([[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
         {
-            DDLogDebug(@"CampusWall progress manager timstamp %@ and current one %@",[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp], timestamp);
+            DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp], timestamp);
 
             //Inform GLPCampusWallProgressManager.
             [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotifiation];
         }
-        else if ([[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+        else if(totalBytesExpectedToWrite == totalBytesWritten)
+        {
+            //Inform GLPCampusWallProgressManager that the video is uploaded and now is started processed.
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED object:self userInfo:@{@"timestamp": timestamp}];
+        }
+        
+        
+        if ([[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
         {
 
             NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationNameForPendingGroupPost];

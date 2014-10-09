@@ -8,7 +8,6 @@
 //  This manager is responsible for receiving the progress of the uploading element
 //  (Video or Image), calculate the percentage and send it to GLPTimelineViewController.
 //
-//
 
 #import "GLPCampusWallProgressManager.h"
 #import "UploadingProgressView.h"
@@ -22,6 +21,11 @@
 @property (assign, nonatomic, getter=isPostButtonClicked) BOOL postClicked;
 @property (assign, nonatomic, getter = isProgressFinished) BOOL progressFinished;
 @property (strong, nonatomic) GLPPost *pendingPost;
+
+/** This object is used only when the video is uploaded and don't viewed to user.*/
+@property (strong, nonatomic) NSDate *uploadedVideoTimestamp;
+//This variable is YES only if the uploading view is appeared to the user.
+@property (assign, nonatomic, getter=isProgressUploadingStarted) BOOL progressUploadingStarted;
 
 @end
 
@@ -60,6 +64,7 @@ static GLPCampusWallProgressManager *instance = nil;
 {
 //    _videosTimestamps = [[NSMutableArray alloc] init];
     _currentProcessedTimestamp = nil;
+    _uploadedVideoTimestamp = nil;
     
 //    _progressView = [[ProgressView alloc] init];
     [_progressView setHidden:YES];
@@ -67,6 +72,8 @@ static GLPCampusWallProgressManager *instance = nil;
     _postClicked = NO;
 
     _progressFinished = YES;
+    
+    _progressUploadingStarted = NO;
     
     [_progressView resetView];
 
@@ -87,11 +94,14 @@ static GLPCampusWallProgressManager *instance = nil;
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoProgress:) name:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadCompleted:) name:GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED object:nil];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED object:nil];
 }
 
 - (void)showProgressView
@@ -167,6 +177,8 @@ static GLPCampusWallProgressManager *instance = nil;
     _currentProcessedTimestamp = nil;
     
     _progressFinished = YES;
+    
+    _progressUploadingStarted = NO;
 
 
 }
@@ -179,6 +191,13 @@ static GLPCampusWallProgressManager *instance = nil;
     _postClicked = YES;
     
     _progressFinished = NO;
+    
+    DDLogDebug(@"Current processed timestamp %@, uploaded video timestamp %@", _currentProcessedTimestamp, _uploadedVideoTimestamp);
+    
+    if([_currentProcessedTimestamp isEqualToDate:_uploadedVideoTimestamp])
+    {
+        [_progressView startProcessing];
+    }
 }
 
 #pragma mark - Notification methods
@@ -209,12 +228,6 @@ static GLPCampusWallProgressManager *instance = nil;
     {
         [self showProgressView];
     }
-//    else
-//    {
-//        [self hideProgressView];
-//    }
-    
-
     
     NSNumber *dataWritten = progress[DATA_WRITTEN];
     
@@ -230,5 +243,17 @@ static GLPCampusWallProgressManager *instance = nil;
     }
 }
 
+/**
+ This method should be called only when the video is finished uploading and the progress bar is NOT already shown.
+ 
+ @param notification the notification should contain the timestamp in order to avoid issues.
+ 
+ */
+- (void)videoUploadCompleted:(NSNotification *)notification
+{
+    NSDictionary *timestampData = notification.userInfo;
+    
+    _uploadedVideoTimestamp = timestampData[@"timestamp"];
+}
 
 @end

@@ -98,6 +98,8 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
 - (void)startProcessing
 {
     [_uploadingLabel setText:PROCESSING_TEXT.copy];
+    [_progressView setProgress:1.0f];
+
 }
 
 - (void)setTransparencyToView:(BOOL)transparency
