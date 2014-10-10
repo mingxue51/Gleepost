@@ -7,7 +7,7 @@
 //
 
 #import "GroupsViewController.h"
-#import "ContactUserCell.h"
+#import "MemberCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WebClient.h"
@@ -754,7 +754,7 @@
     
     if(_isContactsView)
     {
-        ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        MemberCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
         
         NSArray *currentUsers = [self.categorisedUsers objectForKey:[NSNumber numberWithInt: indexPath.section]];

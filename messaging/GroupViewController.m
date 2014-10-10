@@ -15,7 +15,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "ViewPostViewController.h"
 #import "TransitionDelegateViewImage.h"
-#import "ContactUserCell.h"
+#import "MemberCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"

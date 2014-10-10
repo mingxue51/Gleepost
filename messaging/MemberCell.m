@@ -6,29 +6,29 @@
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
-#import "ContactUserCell.h"
+#import "MemberCell.h"
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
+@interface MemberCell()
 
-@implementation ContactUserCell
+/** User's profile image. */
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageUser;
+
+/** User's name. */
+@property (weak, nonatomic) IBOutlet UILabel *nameUser;
+
+@property (weak, nonatomic) IBOutlet UILabel *creatorLbl;
+
+@property (strong, nonatomic) GLPUser *member;
+
+@end
+
+
+@implementation MemberCell
 
 const float CONTACT_CELL_HEIGHT = 48;
-
-
--(id) initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        //[self createElements];
-    }
-    
-    return self;
-}
-
 
 -(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl
 {    
@@ -50,12 +50,22 @@ const float CONTACT_CELL_HEIGHT = 48;
 
 -(void)setMember:(GLPUser *)member withGroup:(GLPGroup *)group
 {
+    _member = member;
+    
     [self setName:member.name withImageUrl:member.profileImageUrl];
     
     if(group.author.remoteKey == member.remoteKey)
     {
         [_creatorLbl setHidden:NO];
     }
+}
+
+#pragma mark - Selectors
+
+- (IBAction)showOptions:(id)sender
+{
+    [_delegate moreOptionsSelectedForMember:_member];
+    
 }
 
 

@@ -31,6 +31,25 @@
     return self;
 }
 
+- (id)initWithUser:(GLPUser *)user
+{
+    self = [super init];
+    
+    if(self)
+    {
+        self.name = user.name;
+        self.profileImageUrl = user.profileImageUrl;
+        self.course = user.course;
+        self.networkName = user.networkName;
+        self.personalMessage = user.personalMessage;
+        self.email = user.email;
+        self.remoteKey = user.remoteKey;
+        self.key = user.key;
+        self.networkId = user.networkId;
+    }
+    return self;
+}
+
 - (BOOL)hasProfilePicture
 {
     return _profileImageUrl && ![_profileImageUrl isEqualToString:@""];

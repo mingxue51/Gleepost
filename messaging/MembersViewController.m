@@ -7,7 +7,7 @@
 //
 
 #import "MembersViewController.h"
-#import "ContactUserCell.h"
+#import "MemberCell.h"
 #import "GLPUser.h"
 #import "WebClient.h"
 #import "GLPPrivateProfileViewController.h"
@@ -92,7 +92,7 @@
 
 -(void)configurateTableView
 {
-    [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"MemberCell" bundle:nil] forCellReuseIdentifier:@"MemberCell"];
     
     //Remove empty cells.
     [self.tableView setTableFooterView:[[UIView alloc] init]];
@@ -138,9 +138,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifierContact = @"ContactCell";
+    static NSString *CellIdentifierContact = @"MemberCell";
 
-    ContactUserCell *contactCell;
+    MemberCell *contactCell;
 
     contactCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierContact forIndexPath:indexPath];
     
@@ -171,6 +171,26 @@
         
         [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
+}
+
+#pragma mark - MemberCellDelegate
+
+- (void)moreOptionsSelectedForMember:(GLPUser *)member
+{
+//    UIActionSheet *actionSheet = nil;
+//    
+//    if(_user.profileImage)
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Image Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
+//    }
+//    else
+//    {
+//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Image Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Add image", nil];
+//    }
+//    
+//    actionSheet.tag = 1;
+//    
+//    [actionSheet showInView:[self.view window]];
 }
 
 #pragma mark - Client

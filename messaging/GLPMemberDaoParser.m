@@ -8,25 +8,27 @@
 
 #import "GLPMemberDaoParser.h"
 #import "GLPEntityDaoParser.h"
+#import "GLPMember.h"
 
 @implementation GLPMemberDaoParser
 
-+ (GLPUser *)parseResultSet:(FMResultSet *)resultSet into:(GLPUser *)entity inDb:(FMDatabase *)db
++ (GLPMember *)parseResultSet:(FMResultSet *)resultSet into:(GLPMember *)entity inDb:(FMDatabase *)db
 {
-    entity = [[GLPUser alloc] init];
+    entity = [[GLPMember alloc] initWithName:[resultSet stringForColumn:@"name"] withGroupRemoteKey:[resultSet intForColumn:@"group_remote_key"] imageUrl:[resultSet stringForColumn:@"image_url"] andRoleLevelNumber:[resultSet intForColumn:@"roleKey"]];
     
-    entity.name = [resultSet stringForColumn:@"name"];
-    entity.profileImageUrl = [resultSet stringForColumn:@"image_url"];
-    entity.networkId = [resultSet intForColumn:@"group_remote_key"];
+//    entity.name = [resultSet stringForColumn:@"name"];
+//    entity.profileImageUrl = [resultSet stringForColumn:@"image_url"];
+//    entity.networkId = [resultSet intForColumn:@"group_remote_key"];
+    
     
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
     return entity;
 }
 
-+ (GLPUser *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db
++ (GLPMember *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db
 {
-    GLPUser *member = nil;
+    GLPMember *member = nil;
     
     return [self parseResultSet:resultSet into:member inDb:db];
 }

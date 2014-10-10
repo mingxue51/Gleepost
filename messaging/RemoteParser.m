@@ -14,6 +14,7 @@
 #import "GLPCategory.h"
 #import "GLPVideo.h"
 #import "GLPLocation.h"
+#import "GLPMember.h"
 
 @interface RemoteParser()
 
@@ -68,17 +69,30 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (NSArray *)parseMembersFromJson:(NSArray *)jsonArray withGroupRemoteKey:(int)groupRemoteKey
 {
-    NSMutableArray *objects = [NSMutableArray array];
-    
+    NSMutableArray *members = [NSMutableArray array];
+        
     for(id json in jsonArray) {
-        GLPUser *object = [RemoteParser parseUserFromJson:json];
-        object.networkId = groupRemoteKey;
-        [objects addObject:object];
+//        GLPUser *object = [RemoteParser parseUserFromJson:json];
+//        object.networkId = groupRemoteKey;
+        GLPMember *member = [RemoteParser parseMemberFromJson:json withGroupRemoteKey:groupRemoteKey];
+        [members addObject:member];
     }
     
-    return objects;
+    return members;
 }
 
++ (GLPMember *)parseMemberFromJson:(NSDictionary *)json withGroupRemoteKey:(NSInteger)groupRemoteKey
+{
+    GLPUser *user = [RemoteParser parseUserFromJson:json];
+    
+    NSDictionary *role = json[@"role"];
+    
+    GLPMember *member = [[GLPMember alloc] initWithUser:user andRoleNumber:[role[@"level"] integerValue]];
+    
+    member.groupRemoteKey = groupRemoteKey;
+    
+    return member;
+}
 
 
 +(NSArray*)parseNetworkUser:(NSDictionary *)json

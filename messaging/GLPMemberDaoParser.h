@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GLPUser.h"
 #import "FMResultSet.h"
+
+@class GLPMember;
 
 @interface GLPMemberDaoParser : NSObject
 
-+ (GLPUser *)parseResultSet:(FMResultSet *)resultSet into:(GLPUser *)entity inDb:(FMDatabase *)db;
-+ (GLPUser *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db;
++ (GLPMember *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db;
 
 @end

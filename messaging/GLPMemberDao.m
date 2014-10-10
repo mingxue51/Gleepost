@@ -8,15 +8,16 @@
 
 #import "GLPMemberDao.h"
 #import "GLPMemberDaoParser.h"
+#import "GLPMember.h"
 
 @implementation GLPMemberDao
 
 
-+ (GLPUser *)findMember:(GLPUser *)entity db:(FMDatabase *)db
++ (GLPMember *)findMember:(GLPMember *)entity db:(FMDatabase *)db
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from members where group_remote_key=%d AND remoteKey=%d", entity.networkId, entity.remoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from members where group_remote_key=%d AND remoteKey=%d", entity.groupRemoteKey, entity.remoteKey];
     
-    GLPUser *member = nil;
+    GLPMember *member = nil;
     
     if([resultSet next]) {
         
@@ -34,7 +35,7 @@
     
     while ([resultSet next])
     {
-        GLPUser *currentMember = [GLPMemberDaoParser createFromResultSet:resultSet inDb:db];
+        GLPMember *currentMember = [GLPMemberDaoParser createFromResultSet:resultSet inDb:db];
         
         [members addObject: currentMember];
         
@@ -64,9 +65,11 @@
  
  */
 
-+(int)saveMemberIfNotExist:(GLPUser *)entity db:(FMDatabase *)db
++(int)saveMemberIfNotExist:(GLPMember *)entity db:(FMDatabase *)db
 {
-    GLPUser *member = [GLPMemberDao findMember:entity db:db];
+    GLPMember *member = [GLPMemberDao findMember:entity db:db];
+    
+    DDLogDebug(@"Member found: %@", member);
     
     if(member == nil)
     {
@@ -79,13 +82,14 @@
     return member.key;
 }
 
-+(void)save:(GLPUser *)entity inDb:(FMDatabase *)db
++(void)save:(GLPMember *)entity inDb:(FMDatabase *)db
 {
-    [db executeUpdateWithFormat:@"insert into members (remoteKey, name, image_url, group_remote_key) values(%d, %@, %@, %d)",
+    [db executeUpdateWithFormat:@"insert into members (remoteKey, name, image_url, group_remote_key, roleKey) values(%d, %@, %@, %d, %d)",
      entity.remoteKey,
      entity.name,
      entity.profileImageUrl,
-     entity.networkId];
+     entity.groupRemoteKey,
+     entity.roleLevel];
 
 
     entity.key = [db lastInsertRowId];
@@ -96,9 +100,9 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         //Remove all elements from database.
-        [self removeAllTheEntriesInDb:db];
+//        [self removeAllTheEntriesInDb:db];
         
-        for(GLPUser *member in members)
+        for(GLPMember *member in members)
         {
             member.key = [GLPMemberDao saveMemberIfNotExist:member db:db];
         }

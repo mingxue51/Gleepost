@@ -20,6 +20,7 @@
 
 
 -(id)initWithName:(NSString *)name withId:(NSInteger)key andImageUrl:(NSString *)imgUrl;
+- (id)initWithUser:(GLPUser *)user;
 - (BOOL)hasProfilePicture;
 - (BOOL)isUpdatedUserData:(GLPUser *)userData;
 

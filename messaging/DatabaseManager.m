@@ -243,6 +243,7 @@ static DatabaseManager *instance = nil;
              remoteKey integer, \
              name text, \
              image_url text, \
+             roleKey integer, \
              group_remote_key integer);"];
             
             self.exists = YES;

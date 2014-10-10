@@ -1685,7 +1685,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -3721,7 +3721,7 @@
                         <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactCell" rowHeight="48" id="HF9-lB-hPp" customClass="ContactUserCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactCell" rowHeight="48" id="HF9-lB-hPp" customClass="MemberCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="48"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HF9-lB-hPp" id="6sj-U2-8zU">
@@ -4689,7 +4689,7 @@
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="40" height="36"/>
         <image name="share_image.png" width="20" height="17"/>
-        <image name="sign_in_b" width="15" height="27"/>
+        <image name="sign_in_b" width="46" height="11"/>
         <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
         <image name="sing_in_bg.png" width="520" height="100"/>
@@ -4711,20 +4711,20 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Vyz-Un-MGO"/>
+        <segue reference="pjB-B1-HWm"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="sMz-ia-ebt"/>
-        <segue reference="zvV-dv-dTv"/>
-        <segue reference="pjB-B1-HWm"/>
-        <segue reference="ZpN-d9-baB"/>
-        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="cxq-Lw-xeo"/>
+        <segue reference="Ze9-pm-FNm"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="voh-a1-0cl"/>
-        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="YIa-ii-tw7"/>
+        <segue reference="0xq-5H-6eX"/>
+        <segue reference="Nh6-Tl-qmR"/>
         <segue reference="wR3-TA-URh"/>
         <segue reference="hfC-fm-BOR"/>
-        <segue reference="XMX-SH-Gag"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>
