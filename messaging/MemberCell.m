@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "GLPMember.h"
 
 @interface MemberCell()
 
@@ -19,9 +20,11 @@
 /** User's name. */
 @property (weak, nonatomic) IBOutlet UILabel *nameUser;
 
-@property (weak, nonatomic) IBOutlet UILabel *creatorLbl;
+@property (weak, nonatomic) IBOutlet UILabel *roleLbl;
 
-@property (strong, nonatomic) GLPUser *member;
+@property (strong, nonatomic) GLPMember *member;
+
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
 @end
 
@@ -48,15 +51,60 @@ const float CONTACT_CELL_HEIGHT = 48;
     }
 }
 
--(void)setMember:(GLPUser *)member withGroup:(GLPGroup *)group
+-(void)setMember:(GLPMember *)member withGroup:(GLPGroup *)group loggedInMemberRole:(GLPMember *)loggedInMember
 {
     _member = member;
     
     [self setName:member.name withImageUrl:member.profileImageUrl];
-    
-    if(group.author.remoteKey == member.remoteKey)
+
+    if(member.roleLevel == kMember)
     {
-        [_creatorLbl setHidden:NO];
+        [_roleLbl setHidden:YES];
+    }
+    else
+    {
+        [_roleLbl setHidden:NO];
+
+        [_roleLbl setText: [NSString stringWithFormat:@"(%@)", member.roleName]];
+    }
+    
+    
+    [self configureMoreButtonWithLoggedInMember:loggedInMember];
+}
+
+/**
+ Decides if should show the more button for the member.
+ 
+ */
+- (void)configureMoreButtonWithLoggedInMember:(GLPMember *)loggedInMember
+{
+    DDLogDebug(@"Logged in member %d current member %d", loggedInMember.roleLevel, _member.roleLevel);
+    
+    if(loggedInMember.roleLevel == kMember)
+    {
+        [_moreButton setHidden:YES];
+        
+        return;
+    }
+    
+    //Hide more button when logged in user is creator for its cell view.
+    if(loggedInMember.roleLevel == kCreator)
+    {
+        if(loggedInMember.remoteKey == _member.remoteKey)
+        {
+            [_moreButton setHidden:YES];
+            
+            return;
+        }
+    }
+    
+    if(loggedInMember.roleLevel >= _member.roleLevel)
+    {
+        [_moreButton setHidden:NO];
+    }
+    else
+    {
+        [_moreButton setHidden:YES];
     }
 }
 

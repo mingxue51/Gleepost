@@ -103,6 +103,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
         
     }
     
+    
     if(groupData.sendStatus == kSendStatusLocal)
     {
         //Hide exit and show blink indicator.

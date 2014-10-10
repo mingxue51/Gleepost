@@ -20,6 +20,10 @@
 
 + (void)loadMembersWithGroupRemoteKey:(int)groupRemoteKey withLocalCallback:(void (^)(NSArray *members))localCallback remoteCallback:(void (^)(BOOL success, NSArray *members))remoteCallback;
 
++ (void)addMemberAsAdministrator:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;
+
++ (void)removeMemberFromAdministrator:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;
+
 + (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 
 + (void)loadPreviousPostsAfter:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;

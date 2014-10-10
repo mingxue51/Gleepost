@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "GLPGroup.h"
 
-@class GLPUser;
+@class GLPMember;
 
 @protocol MemberCellDelegate <NSObject>
 
-- (void)moreOptionsSelectedForMember:(GLPUser *)member;
+- (void)moreOptionsSelectedForMember:(GLPMember *)member;
 
 @end
 
@@ -26,6 +26,6 @@ extern const float CONTACT_CELL_HEIGHT;
 /** Creates the elements of the cell. */
 -(void)setName:(NSString *)name withImageUrl:(NSString *)imageUrl;
 
--(void)setMember:(GLPUser *)member withGroup:(GLPGroup *)group;
+-(void)setMember:(GLPMember *)member withGroup:(GLPGroup *)group loggedInMemberRole:(GLPMember *)loggedInMember;
 
 @end

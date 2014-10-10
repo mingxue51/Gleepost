@@ -44,6 +44,25 @@
     return members;
 }
 
++ (GLPMember *)findMemberWithRemoteKey:(NSInteger)memberRemoteKey withGroupRemoteKey:(NSInteger)groupRemoteKey andDb:(FMDatabase *)db
+{
+    GLPMember *member = nil;
+    
+    GLPMember *searchedMember = [[GLPMember alloc] init];
+    
+    searchedMember.groupRemoteKey = groupRemoteKey;
+    searchedMember.remoteKey = memberRemoteKey;
+    
+    member = [GLPMemberDao findMember:searchedMember db:db];
+    
+    if(!member)
+    {
+        member = searchedMember;
+    }
+    
+    return member;
+}
+
 +(NSArray *)findMembersWithGroupRemoteKey:(int)groupRemoteKey
 {
     __block NSArray *members = [[NSMutableArray alloc] init];
@@ -55,6 +74,38 @@
     }];
     
     return members;
+}
+
++ (void)addMemberAsAdministrator:(GLPMember *)member
+{
+    __block BOOL success = NO;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+     
+        success = [db executeUpdateWithFormat:@"update members set roleKey=%d where remoteKey=%d",
+                   kAdministrator,
+                   member.remoteKey];
+        
+        
+        DDLogInfo(@"Member %@ : %@ updated successfully %d", member.name, member.roleName, success);
+        
+    }];
+}
+
++ (void)removeMemberFromAdministrator:(GLPMember *)member
+{
+    __block BOOL success = NO;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        success = [db executeUpdateWithFormat:@"update members set roleKey=%d where remoteKey=%d",
+                   kMember,
+                   member.remoteKey];
+        
+        
+        DDLogInfo(@"Member %@ : %@ updated successfully %d", member.name, member.roleName, success);
+        
+    }];
 }
 
 /**
@@ -97,6 +148,8 @@
 
 +(void)saveMembers:(NSArray *)members
 {
+    DDLogDebug(@"Save members in DB: %@", members);
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         //Remove all elements from database.

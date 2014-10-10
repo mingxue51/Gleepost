@@ -89,6 +89,8 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 -(void)getGroupswithCallbackBlock:(void (^) (BOOL success, NSArray *groups))callbackBlock;
 -(void)getMembersWithGroupRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, NSArray *members))callbackBlock;
+- (void)makeMemberAsAdmin:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;
+- (void)removeMemberFromAdmin:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;
 -(void)createGroupWithGroup:(GLPGroup *)group callback:(void (^) (BOOL success, GLPGroup *group))callbackBlock;
 -(void)quitFromAGroupWithRemoteKey:(int)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock;
 -(void)getPostsGroupsFeedWithTag:(NSString *)tag callback:(void (^) (BOOL success, NSArray *posts))callbackBlock;

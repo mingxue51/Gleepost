@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "GLPEntity.h"
 #import "SendStatus.h"
-#import "GLPUser.h"
+#import "GLPMember.h"
 
 typedef NS_ENUM(NSUInteger, GroupPrivacy) {
     kPublicGroup = 0,
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @property (assign, nonatomic) GroupPrivacy privacy;
 
 //Not create in local database
-@property (strong, nonatomic) GLPUser *author;
+@property (strong, nonatomic) GLPMember *author;
 
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;

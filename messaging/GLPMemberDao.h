@@ -9,9 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "DatabaseManager.h"
 
+@class GLPMember;
+
 @interface GLPMemberDao : NSObject
 
 +(NSArray *)findMembersWithGroupRemoteKey:(int)groupRemoteKey;
++ (GLPMember *)findMemberWithRemoteKey:(NSInteger)memberRemoteKey withGroupRemoteKey:(NSInteger)groupRemoteKey andDb:(FMDatabase *)db;
++ (void)addMemberAsAdministrator:(GLPMember *)member;
++ (void)removeMemberFromAdministrator:(GLPMember *)member;
 +(void)saveMembers:(NSArray *)members;
 
 @end

@@ -848,6 +848,43 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)makeMemberAsAdmin:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"networks/%d/admins", member.groupRemoteKey];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:[[SessionManager sharedInstance] authParameters]];
+    
+    [params setObject:@(member.remoteKey) forKey:@"users"];
+
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Member %@ become an administrator %@.", member, responseObject);
+                
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        callbackBlock(NO);
+    }];
+}
+
+- (void)removeMemberFromAdmin:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"networks/%d/admins/%d", member.groupRemoteKey, member.remoteKey];
+    
+    [self deletePath:path parameters:[[SessionManager sharedInstance] authParameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogInfo(@"Member %@ removed from being an administrator.", member);
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO);
+
+    }];
+}
+
 -(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];

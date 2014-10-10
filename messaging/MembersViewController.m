@@ -8,7 +8,7 @@
 
 #import "MembersViewController.h"
 #import "MemberCell.h"
-#import "GLPUser.h"
+#import "GLPMember.h"
 #import "WebClient.h"
 #import "GLPPrivateProfileViewController.h"
 #import "ContactsManager.h"
@@ -18,19 +18,26 @@
 #import "GLPGroupManager.h"
 #import "AppearanceHelper.h"
 #import "UINavigationBar+Format.h"
+#import "SessionManager.h"
 
-@interface MembersViewController ()
+@interface MembersViewController () <UIActionSheetDelegate, MemberCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *addNewMembersView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *groupImageView;
 
-@property (strong, nonatomic) NSArray *members;
+@property (strong, nonatomic) NSMutableArray *members;
 
 @property (assign, nonatomic) int selectedUserId;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *addNewMembersBg;
+
+@property (strong, nonatomic) GLPMember *loggedInUserMember;
+
+/** This object is used when for adding or removing member as admin. */
+@property (strong, nonatomic) GLPMember *selectedMember;
 
 @end
 
@@ -46,6 +53,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self configureObjects];
     
     [self configureTopView];
     
@@ -70,7 +79,7 @@
 {
     if(_group.groupImageUrl)
     {
-        [_groupImageView setImageWithURL:[NSURL URLWithString:_group.groupImageUrl]];
+        [_groupImageView sd_setImageWithURL:[NSURL URLWithString:_group.groupImageUrl]];
     }
     
     [_addNewMembersBg setImage:[UIImage imageNamed:@"add_members_bg"]];
@@ -123,6 +132,13 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
+- (void)configureObjects
+{
+    _loggedInUserMember = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user];
+    
+    _selectedMember = nil;
+}
+
 
 #pragma mark - Table view data source
 
@@ -144,9 +160,11 @@
 
     contactCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierContact forIndexPath:indexPath];
     
-    GLPUser *currentMember = self.members[indexPath.row];
+    GLPMember *currentMember = self.members[indexPath.row];
     
-    [contactCell setMember:currentMember withGroup:_group];
+    [contactCell setMember:currentMember withGroup:_group loggedInMemberRole:_loggedInUserMember];
+    
+    [contactCell setDelegate:self];
     
     return contactCell;
 }
@@ -158,16 +176,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GLPUser *member = self.members[indexPath.row];
+    GLPMember *member = self.members[indexPath.row];
 
+    GLPUser *userMember = [member getUser];
     
-    if([[ContactsManager sharedInstance] isLoggedInUser:member])
+    if([[ContactsManager sharedInstance] isLoggedInUser:userMember])
     {
         [self performSegueWithIdentifier:@"view profile" sender:self];
     }
     else
     {
-        self.selectedUserId = member.remoteKey;
+        self.selectedUserId = userMember.remoteKey;
         
         [self performSegueWithIdentifier:@"view private profile" sender:self];
     }
@@ -175,22 +194,41 @@
 
 #pragma mark - MemberCellDelegate
 
-- (void)moreOptionsSelectedForMember:(GLPUser *)member
+- (void)moreOptionsSelectedForMember:(GLPMember *)member
 {
-//    UIActionSheet *actionSheet = nil;
-//    
-//    if(_user.profileImage)
-//    {
-//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Image Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Change image", nil];
-//    }
-//    else
-//    {
-//        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Image Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View image", @"Add image", nil];
-//    }
-//    
-//    actionSheet.tag = 1;
-//    
-//    [actionSheet showInView:[self.view window]];
+    UIActionSheet *actionSheet = nil;
+    
+    if(member.roleLevel == kAdministrator)
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove user from being administrator", nil];
+    }
+    else
+    {
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add user as administrator", nil];
+    }
+    
+    _selectedMember = member;
+    
+
+    [actionSheet showInView:[self.view window]];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+
+    if([selectedButtonTitle isEqualToString:@"Add user as administrator"])
+    {
+        //Add user as administrator.
+        [self setMemberAsAdministrator:_selectedMember];
+    }
+    else if([selectedButtonTitle isEqualToString:@"Remove user from being administrator"])
+    {
+        //Remove user from being administrator.
+        [self removeMemberFromAdministrator:_selectedMember];
+    }
 }
 
 #pragma mark - Client
@@ -200,7 +238,9 @@
     
     [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
         
-        self.members = members;
+        self.members = members.mutableCopy;
+        
+        [self findRoleOfLoggedInUser];
         
         [self.tableView reloadData];
         
@@ -208,8 +248,10 @@
         
         if(success)
         {
-            self.members = members;
+            self.members = members.mutableCopy;
             
+            [self findRoleOfLoggedInUser];
+
             [self.tableView reloadData];
             
         }
@@ -225,6 +267,73 @@
 //        }
 //        
 //    }];
+}
+
+- (void)setMemberAsAdministrator:(GLPMember *)member
+{
+    [GLPGroupManager addMemberAsAdministrator:member withCallbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            
+            DDLogDebug(@"Member just become admin %@", member.roleName);
+            [self updateMemberWithMember:member];
+            
+            [self.tableView reloadData];
+
+        }
+    }];
+}
+
+- (void)removeMemberFromAdministrator:(GLPMember *)member
+{
+    [GLPGroupManager removeMemberFromAdministrator:member withCallbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            DDLogDebug(@"Member just removed from admin %@", member.roleName);
+            
+            [self updateMemberWithMember:member];
+            
+            [self.tableView reloadData];
+        }
+        
+    }];
+}
+
+- (void)findRoleOfLoggedInUser
+{
+    for(GLPMember *member in _members)
+    {
+        if([[ContactsManager sharedInstance] isLoggedInUser:[member getUser]])
+        {
+            [_loggedInUserMember setRoleKey: member.roleLevel];
+            [_loggedInUserMember setGroupRemoteKey:_group.remoteKey];
+            
+            break;
+        }
+    }
+}
+
+#pragma mark - Helpers
+
+- (void)updateMemberWithMember:(GLPMember *)member
+{
+    int index = 0;
+    
+    for(int i = 0; i < _members.count; ++i)
+    {
+        GLPMember *currentMember = [_members objectAtIndex:i];
+        
+        if(currentMember.remoteKey == member.remoteKey)
+        {
+            index = i;
+            
+            break;
+        }
+    }
+    
+    [_members setObject:member atIndexedSubscript:index];
 }
 
 #pragma mark - Selectors

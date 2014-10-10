@@ -673,6 +673,52 @@
     }];
 }
 
++ (void)addMemberAsAdministrator:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    [[WebClient sharedInstance] makeMemberAsAdmin:member withCallbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            [GLPMemberDao addMemberAsAdministrator:member];
+            
+            [member setRoleKey:kAdministrator];
+            
+            callbackBlock(YES);
+        }
+        else
+        {
+            //TODO: Pop up a message.
+            DDLogDebug(@"ERROR: Failed to become a member");
+            
+            callbackBlock(NO);
+        }
+        
+        
+    }];
+}
+
++ (void)removeMemberFromAdministrator:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    [[WebClient sharedInstance] removeMemberFromAdmin:member withCallbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            [GLPMemberDao removeMemberFromAdministrator:member];
+            
+            [member setRoleKey:kMember];
+
+            callbackBlock(YES);
+        }
+        else
+        {
+            //TODO: Pop up a message.
+            DDLogDebug(@"ERROR: Failed to remove from member");
+            callbackBlock(NO);
+        }
+        
+    }];
+}
+
 +(NSArray *)orderMembersByNameWithMembers:(NSArray *)members
 {
     NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];

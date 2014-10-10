@@ -825,8 +825,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     group.groupDescription = json[@"description"];
     group.groupImageUrl = json[@"image"];
     
-    group.author = [RemoteParser parseUserFromJson:json[@"creator"]];
-    
+    group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
+        
     [group setPrivacyWithString:json[@"privacy"]];
         
     return group;

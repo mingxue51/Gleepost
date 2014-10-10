@@ -75,6 +75,19 @@
     }
 }
 
+/**
+ Casts the GLPMember to GLPUser data type and returns it.
+ 
+ @return user
+ 
+ */
+- (GLPUser *)getUser
+{
+    DDLogDebug(@"User from member: %@", (GLPUser *)self);
+    
+    return (GLPUser *)self;
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"Name %@, Group remote key %ld", self.name, (long)_groupRemoteKey];

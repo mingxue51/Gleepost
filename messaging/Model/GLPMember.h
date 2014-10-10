@@ -25,5 +25,6 @@ typedef NS_ENUM(NSUInteger, MemberRole) {
 - (id)initWithUser:(GLPUser *)user andRoleNumber:(NSInteger)roleNumber;
 
 - (void)setRoleKey:(NSInteger)roleLevel;
+- (GLPUser *)getUser;
 
 @end

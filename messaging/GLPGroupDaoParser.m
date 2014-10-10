@@ -8,6 +8,7 @@
 
 #import "GLPGroupDaoParser.h"
 #import "GLPEntityDaoParser.h"
+#import "GLPMemberDao.h"
 
 @implementation GLPGroupDaoParser
 
@@ -15,14 +16,17 @@
 {
     entity = [[GLPGroup alloc] init];
     
+    [GLPEntityDaoParser parseResultSet:resultSet into:entity];
+    
     entity.name = [resultSet stringForColumn:@"title"];
     entity.groupImageUrl = [resultSet stringForColumn:@"image_url"];
     entity.groupDescription = [resultSet stringForColumn:@"description"];
     entity.sendStatus = [resultSet intForColumn:@"send_status"];
-    entity.author.remoteKey = [resultSet intForColumn:@"user_remote_key"];
+    
+    entity.author = [GLPMemberDao findMemberWithRemoteKey:[resultSet intForColumn:@"user_remote_key"] withGroupRemoteKey:entity.remoteKey andDb:db];
+    
     entity.privacy = [resultSet intForColumn:@"privacy"];
     
-    [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
     return entity;
 }
