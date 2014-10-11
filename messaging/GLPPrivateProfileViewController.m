@@ -321,7 +321,7 @@
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     //We are not using the default method for formatting the navigation bar because was causing issues
     //with the navigation to GroupVC.

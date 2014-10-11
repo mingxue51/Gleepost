@@ -27,7 +27,7 @@
                         <color key="textColor" red="0.20392156862745098" green="0.59607843137254901" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Y3-o0l">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Y3-o0l">
                         <rect key="frame" x="266" y="6" width="54" height="36"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="36" id="Tv3-fa-tBZ"/>
@@ -53,10 +53,10 @@
                     <constraint firstItem="Ie1-F9-apT" firstAttribute="leading" secondItem="4ao-zr-VKK" secondAttribute="trailing" constant="10" id="Cg2-Ea-Esr"/>
                     <constraint firstAttribute="trailing" secondItem="AjL-Y3-o0l" secondAttribute="trailing" id="DQj-kW-Utj"/>
                     <constraint firstItem="Vvy-rW-3jE" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="top" constant="17" id="PtS-9P-i3R"/>
+                    <constraint firstItem="AjL-Y3-o0l" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="top" constant="6" id="RZg-0I-5Ww"/>
                     <constraint firstItem="Vvy-rW-3jE" firstAttribute="leading" secondItem="Ie1-F9-apT" secondAttribute="trailing" constant="8" id="aJH-Ax-Hue"/>
                     <constraint firstItem="4ao-zr-VKK" firstAttribute="leading" secondItem="k94-h0-MCV" secondAttribute="leading" constant="10" id="feA-JY-CAM"/>
                     <constraint firstItem="Ie1-F9-apT" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="topMargin" constant="5" id="iEI-hW-78z"/>
-                    <constraint firstItem="AjL-Y3-o0l" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="topMargin" constant="2" id="vdz-Fd-FcO"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

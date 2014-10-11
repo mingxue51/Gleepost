@@ -18,6 +18,8 @@
 
 @interface ImageSelectorViewController : UIViewController <GLPImageSelectorLoaderDelegate>
 
+@property (assign, nonatomic, getter=comesFromGroupViewController) BOOL fromGroupViewController;
+
 @property (weak, nonatomic) UIViewController <ImageSelectorViewControllerDelegate> *delegate;
 
 @end

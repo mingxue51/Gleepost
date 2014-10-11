@@ -11,6 +11,8 @@
 #import "ImageCollectionViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "ImageFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @interface ImageSelectorViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -30,6 +32,16 @@
     [self registerCollectionViewCells];
     
     [self initialiseObjects];
+    
+
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    self.navigationController.navigationBar.topItem.title = @"PICK AN IMAGE";
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -37,11 +49,21 @@
     [super viewWillAppear:animated];
     
     [self configureNavigationBar];
+
 }
 
 - (void)configureNavigationBar
 {
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    
+    if(![self comesFromGroupViewController])
+    {
+        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    }
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
+
+
+    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kRed];
 }

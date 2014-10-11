@@ -126,9 +126,6 @@
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    DDLogDebug(@"MembersViewController : configureNavigationBar");
-    
-    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 

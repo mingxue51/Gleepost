@@ -1842,6 +1842,7 @@ const float TOP_OFF_SET = -64.0;
     {
         ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
         
+        imgSelectorVC.fromGroupViewController = YES;
         [imgSelectorVC setDelegate:self];
     }
 }

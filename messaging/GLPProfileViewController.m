@@ -287,11 +287,11 @@
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
         
-    if(self.navigationController.viewControllers.count == 1)
-    {
+//    if(self.navigationController.viewControllers.count == 1)
+//    {
         //Use the default method of formatting only if this VC is the first appeared.
         [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    }
+//    }
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

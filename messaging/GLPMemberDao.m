@@ -120,8 +120,6 @@
 {
     GLPMember *member = [GLPMemberDao findMember:entity db:db];
     
-    DDLogDebug(@"Member found: %@", member);
-    
     if(member == nil)
     {
         [GLPMemberDao save:entity inDb:db];
@@ -148,8 +146,6 @@
 
 +(void)saveMembers:(NSArray *)members
 {
-    DDLogDebug(@"Save members in DB: %@", members);
-    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         //Remove all elements from database.
