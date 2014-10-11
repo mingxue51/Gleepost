@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,17 +14,25 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ao-zr-VKK">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4ao-zr-VKK">
                         <rect key="frame" x="10" y="4" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="da6-pH-wZW"/>
+                            <constraint firstAttribute="width" constant="40" id="gTQ-Vt-FRN"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ie1-F9-apT">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ie1-F9-apT">
                         <rect key="frame" x="60" y="13" width="140" height="21"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                         <color key="textColor" red="0.20392156862745098" green="0.59607843137254901" blue="0.85490196078431369" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Y3-o0l">
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Y3-o0l">
                         <rect key="frame" x="266" y="6" width="54" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="36" id="Tv3-fa-tBZ"/>
+                            <constraint firstAttribute="width" constant="54" id="pSV-uM-tcd"/>
+                        </constraints>
                         <inset key="imageEdgeInsets" minX="15" minY="15" maxX="15" maxY="15"/>
                         <state key="normal" image="more_member.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -32,13 +41,23 @@
                             <action selector="showOptions:" destination="hiw-On-752" eventType="touchUpInside" id="5Pc-rx-HIR"/>
                         </connections>
                     </button>
-                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="(Admin)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vvy-rW-3jE">
-                        <rect key="frame" x="208" y="15" width="54" height="17"/>
+                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="(Admin)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vvy-rW-3jE">
+                        <rect key="frame" x="208" y="17" width="54" height="17"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="4ao-zr-VKK" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="top" constant="4" id="Apb-Mz-xCO"/>
+                    <constraint firstItem="Ie1-F9-apT" firstAttribute="leading" secondItem="4ao-zr-VKK" secondAttribute="trailing" constant="10" id="Cg2-Ea-Esr"/>
+                    <constraint firstAttribute="trailing" secondItem="AjL-Y3-o0l" secondAttribute="trailing" id="DQj-kW-Utj"/>
+                    <constraint firstItem="Vvy-rW-3jE" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="top" constant="17" id="PtS-9P-i3R"/>
+                    <constraint firstItem="Vvy-rW-3jE" firstAttribute="leading" secondItem="Ie1-F9-apT" secondAttribute="trailing" constant="8" id="aJH-Ax-Hue"/>
+                    <constraint firstItem="4ao-zr-VKK" firstAttribute="leading" secondItem="k94-h0-MCV" secondAttribute="leading" constant="10" id="feA-JY-CAM"/>
+                    <constraint firstItem="Ie1-F9-apT" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="topMargin" constant="5" id="iEI-hW-78z"/>
+                    <constraint firstItem="AjL-Y3-o0l" firstAttribute="top" secondItem="k94-h0-MCV" secondAttribute="topMargin" constant="2" id="vdz-Fd-FcO"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="moreButton" destination="AjL-Y3-o0l" id="xIO-gi-ASr"/>

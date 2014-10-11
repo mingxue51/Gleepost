@@ -38,6 +38,8 @@ const float CONTACT_CELL_HEIGHT = 48;
     //Add user's profile image.
     [_nameUser setText:name];
     
+    [_nameUser sizeToFit];
+    
     //Add user's name.
     [ShapeFormatterHelper setRoundedView:_profileImageUser toDiameter:_profileImageUser.frame.size.height];
     
@@ -113,7 +115,6 @@ const float CONTACT_CELL_HEIGHT = 48;
 - (IBAction)showOptions:(id)sender
 {
     [_delegate moreOptionsSelectedForMember:_member];
-    
 }
 
 

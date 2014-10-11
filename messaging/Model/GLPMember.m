@@ -62,12 +62,12 @@
             break;
             
         case 8:
-            _roleName = @"Administrator";
+            _roleName = @"Admin";
             _roleLevel = kAdministrator;
             break;
             
         case 9:
-            _roleName = @"Creator";
+            _roleName = @"Owner";
             _roleLevel = kCreator;
             break;
         default:
