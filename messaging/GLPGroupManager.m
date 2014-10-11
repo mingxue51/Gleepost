@@ -107,7 +107,7 @@
     
     for(GLPGroup *group in groups)
     {
-        if(group.finalImage)
+        if(group.pendingImage)
         {
             [finalGroups addObject:group];
         }
@@ -585,6 +585,43 @@
     return nil;
 }
 
++ (NSIndexPath *)parseGroup:(GLPGroup **)group imageNotification:(NSNotification *)notification withGroupsArray:(NSArray *)groups
+{
+    NSDictionary *dict = [notification userInfo];
+    NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
+    UIImage *finalImage = [dict objectForKey:@"FinalImage"];
+    
+    GLPGroup *currentGroup = nil;
+    
+    NSIndexPath *groupIndexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:[remoteKey intValue] inGroups:groups];
+    
+    if(!groupIndexPath)
+    {
+        *group = nil;
+        return nil;
+    }
+    else
+    {
+        currentGroup = [groups objectAtIndex:groupIndexPath.row];
+        currentGroup.loadedImage = finalImage;
+        
+        *group = currentGroup;
+    }
+    
+//    if(!currentPost)
+//    {
+//        post = nil;
+//        return postIndex;
+//    }
+//    else
+//    {
+//        currentPost.finalImage = finalImage;
+//        *post = currentPost;
+//    }
+    
+    return groupIndexPath;
+}
+
 + (NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey inGroups:(NSArray *)groups
 {
     for(int i = 0; i < groups.count; ++i)
@@ -600,6 +637,7 @@
     return nil;
 }
 
+
 +(NSArray *)addPendingImagesIfExistWithGroups:(NSArray *)groups
 {
     for(GLPGroup *g in groups)
@@ -608,7 +646,7 @@
         
         if(pendingImg)
         {
-            g.finalImage = pendingImg;
+            g.pendingImage = pendingImg;
         }
         
     }
@@ -628,7 +666,7 @@
         {
             if(gPending.key == g.key)
             {
-                if (g.finalImage == nil) {
+                if (g.pendingImage == nil) {
                     
                     [finalGroups removeObjectAtIndex:index];
                     
@@ -748,7 +786,7 @@
         if([key intValue] == g.key)
         {
             currentGroup = g;
-            currentGroup.finalImage = nil;
+            currentGroup.pendingImage = nil;
             
             break;
         }

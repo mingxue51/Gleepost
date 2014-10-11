@@ -72,9 +72,9 @@
     
     [ShapeFormatterHelper setRoundedView:_uploadedIndicator toDiameter:_uploadedIndicator.frame.size.height];
 
-    if(groupData.finalImage)
+    if(groupData.pendingImage)
     {
-        [_groupImage setImage:groupData.finalImage];
+        [_groupImage setImage:groupData.pendingImage];
     }
     else if([groupData.groupImageUrl isEqualToString:@""] || !groupData.groupImageUrl)
     {

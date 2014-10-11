@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPPost.h"
+#import "GLPImageLoader.h"
 
-@interface GLPPostImageLoader : NSObject
+@interface GLPPostImageLoader : GLPImageLoader
 
 + (GLPPostImageLoader *)sharedInstance;
 

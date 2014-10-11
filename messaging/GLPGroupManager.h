@@ -32,6 +32,8 @@
 
 +(int)parseNotification:(NSNotification*)notification withGroupsArray:(NSArray*)groups;
 
++ (NSIndexPath *)parseGroup:(GLPGroup **)group imageNotification:(NSNotification *)notification withGroupsArray:(NSArray *)groups;
+
 +(NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey withCategorisedGroups:(NSMutableDictionary *)dictionary;
 
 + (NSIndexPath *)findIndexPathForGroupRemoteKey:(int)remoteKey inGroups:(NSArray *)groups;

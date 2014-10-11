@@ -262,7 +262,7 @@
         
         [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
         
-        group.finalImage = _groupImage;
+        group.pendingImage = _groupImage;
         
         [_delegate groupCreatedWithData:group];
 

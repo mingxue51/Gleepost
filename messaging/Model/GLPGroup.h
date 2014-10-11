@@ -23,7 +23,8 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @property (strong, nonatomic) NSString *groupDescription;
 @property (strong, nonatomic) NSString *groupImageUrl;
 @property (assign, nonatomic) SendStatus sendStatus;
-@property (strong, nonatomic) UIImage *finalImage;
+@property (strong, nonatomic) UIImage *pendingImage;
+@property (strong, nonatomic) UIImage *loadedImage;
 @property (assign, nonatomic) BOOL isFromPushNotification;
 @property (assign, nonatomic) NSInteger unreadNewPosts;
 @property (assign, nonatomic) GroupPrivacy privacy;

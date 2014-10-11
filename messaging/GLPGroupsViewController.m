@@ -126,6 +126,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
+
 }
 
 #pragma mark - Configuration
@@ -173,6 +175,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupRemoteKeyAndImage:) name:@"GLPGroupUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupCreatedWithNotification:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
 }
 
 - (void)registerViews
@@ -230,6 +234,24 @@
     
     [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
 }
+
+- (void)groupImageLoaded:(NSNotification *)notification
+{
+    GLPGroup *group = nil;
+    
+    NSIndexPath *indexPath = [GLPGroupManager parseGroup:&group imageNotification:notification withGroupsArray:_groups];
+    
+    DDLogDebug(@"groupImageLoaded %@", notification);
+    
+    if(!indexPath)
+    {
+        return;
+    }
+    
+    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
+}
+
+
 
 #pragma mark - UICollectionViewDataSource
 
@@ -449,7 +471,7 @@
         {
             _groups = remoteGroups.mutableCopy;
             _filteredGroups = remoteGroups.mutableCopy;
-            
+                        
             [_collectionView reloadData];
         }
         

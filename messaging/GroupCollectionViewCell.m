@@ -82,27 +82,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     
     [_groupDescription setText:_groupData.groupDescription];
     
-    
-    if(groupData.finalImage)
-    {
-        [_groupImage setImage:groupData.finalImage];
-    }
-    else if([groupData.groupImageUrl isEqualToString:@""] || !groupData.groupImageUrl)
-    {
-        [_groupImage setImage:[UIImage imageNamed:@"default_thumbnail"]];
-    }
-    //    else if (groupData.finalImage && groupData.groupImageUrl)
-    //    {
-    //        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:groupData.finalImage];
-    //        groupData.finalImage = nil;
-    //    }
-    else
-    {
-        
-        [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
-    }
-    
+    [self configureImage];
     
     if(groupData.sendStatus == kSendStatusLocal)
     {
@@ -124,6 +104,22 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     [self configureUnreadPostsBadge];
     
     [self configureGroupType];
+}
+
+- (void)configureImage
+{
+    if(_groupData.pendingImage)
+    {
+        [_groupImage setImage:_groupData.pendingImage];
+    }
+    else if([_groupData.groupImageUrl isEqualToString:@""] || !_groupData.groupImageUrl)
+    {
+        [_groupImage setImage:[UIImage imageNamed:@"default_thumbnail"]];
+    }
+    else
+    {
+        [_groupImage setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
 }
 
 - (void)configureUnreadPostsBadge

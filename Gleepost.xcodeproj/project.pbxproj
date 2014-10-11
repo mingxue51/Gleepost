@@ -360,6 +360,8 @@
 		586866F319B72E8D00803512 /* sign_up_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866F119B72E8D00803512 /* sign_up_bg.png */; };
 		586866F419B72E8D00803512 /* sing_in_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866F219B72E8D00803512 /* sing_in_bg.png */; };
 		586A6F9B19B1485500664017 /* GLPLiveGroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */; };
+		586B1D2419E8D94400E35A43 /* GLPGroupImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 586B1D2319E8D94400E35A43 /* GLPGroupImageLoader.m */; };
+		586B1D2719E8D9D200E35A43 /* GLPImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 586B1D2619E8D9D200E35A43 /* GLPImageLoader.m */; };
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
@@ -1406,6 +1408,10 @@
 		586866F219B72E8D00803512 /* sing_in_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sing_in_bg.png; sourceTree = "<group>"; };
 		586A6F9919B1485500664017 /* GLPLiveGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveGroupManager.h; sourceTree = "<group>"; };
 		586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveGroupManager.m; sourceTree = "<group>"; };
+		586B1D2219E8D94400E35A43 /* GLPGroupImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupImageLoader.h; sourceTree = "<group>"; };
+		586B1D2319E8D94400E35A43 /* GLPGroupImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupImageLoader.m; sourceTree = "<group>"; };
+		586B1D2519E8D9D200E35A43 /* GLPImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageLoader.h; sourceTree = "<group>"; };
+		586B1D2619E8D9D200E35A43 /* GLPImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageLoader.m; sourceTree = "<group>"; };
 		586C7E3919BE5342002E0329 /* ViewImageDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewImageDelegate.h; sourceTree = "<group>"; };
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
@@ -4209,6 +4215,10 @@
 				808F6B64187D92DB0062FE39 /* GLPMessageProcessor.m */,
 				58D113D418857D3A00C6B953 /* GLPPostImageLoader.h */,
 				58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */,
+				586B1D2219E8D94400E35A43 /* GLPGroupImageLoader.h */,
+				586B1D2319E8D94400E35A43 /* GLPGroupImageLoader.m */,
+				586B1D2519E8D9D200E35A43 /* GLPImageLoader.h */,
+				586B1D2619E8D9D200E35A43 /* GLPImageLoader.m */,
 				5810F0B71886F73B0066D4CE /* GLPMessagesLoader.h */,
 				5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */,
 				5810F0BA18870C740066D4CE /* GLPProfileLoader.h */,
@@ -5703,6 +5713,7 @@
 				584CF66D182289B500EFABB8 /* ContactsManager.m in Sources */,
 				80B2A42818338613002AB1F0 /* GLPGetNotificationsOperation.m in Sources */,
 				583E6D5B18A10E8C001076CC /* VerificationViewController.m in Sources */,
+				586B1D2719E8D9D200E35A43 /* GLPImageLoader.m in Sources */,
 				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
 				58D301DA1989C10E003EC08B /* GLPInviteUsersViewController.m in Sources */,
@@ -5891,6 +5902,7 @@
 				584CF66A18227E3200EFABB8 /* GLPContactDao.m in Sources */,
 				5879AC90196442100053262A /* NewGroupMessageViewController.m in Sources */,
 				58E4555C1840091B001A5D80 /* GLPLike.m in Sources */,
+				586B1D2419E8D94400E35A43 /* GLPGroupImageLoader.m in Sources */,
 				58433294180F178C00BD9F74 /* FinalRegisterViewController.m in Sources */,
 				5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */,
 				80B01E6C18428BAF00A1BA5F /* NSNotificationCenter+Utils.m in Sources */,

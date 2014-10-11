@@ -1,35 +1,28 @@
 //
-//  GLPPostImageLoader.m
+//  GLPGroupImageLoader.m
 //  Gleepost
 //
-//  Created by Silouanos on 14/01/2014.
+//  Created by Silouanos on 10/10/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "GLPPostImageLoader.h"
+#import "GLPGroupImageLoader.h"
+#import "GLPGroup.h"
 #import "NSNotificationCenter+Utils.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface GLPPostImageLoader ()
+@implementation GLPGroupImageLoader
 
-//@property (strong, nonatomic) NSMutableDictionary *loadingImages;
-//@property (strong, nonatomic) NSMutableArray *imagesNotStarted;
-//@property (assign, nonatomic) BOOL networkAvailable;
+static GLPGroupImageLoader *instance = nil;
 
-@end
-
-@implementation GLPPostImageLoader
-
-static GLPPostImageLoader *instance = nil;
-
-+ (GLPPostImageLoader *)sharedInstance
++ (GLPGroupImageLoader *)sharedInstance
 {
     static dispatch_once_t onceToken;
     //    once_token = &onceToken;
     
     dispatch_once(&onceToken, ^{
-        instance = [[GLPPostImageLoader alloc] init];
+        instance = [[GLPGroupImageLoader alloc] init];
     });
     
     return instance;
@@ -41,11 +34,6 @@ static GLPPostImageLoader *instance = nil;
     
     if(self)
     {
-//        _loadingImages = [[NSMutableDictionary alloc] init];
-//        _imagesNotStarted = [[NSMutableArray alloc] init];
-//        
-//        self.networkAvailable = YES;
-
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     }
     
@@ -63,7 +51,7 @@ static GLPPostImageLoader *instance = nil;
         DDLogInfo(@"Continue all operations of loading images.");
         
         [super startConsume];
-
+        
     } else
     {
         DDLogDebug(@"Cancel all operations of loading images.");
@@ -71,46 +59,45 @@ static GLPPostImageLoader *instance = nil;
         self.networkAvailable = NO;
         //No network.
         [self cancelOperations];
-
+        
     }
 }
 
-
 #pragma mark - Modifiers
 
--(void)addPostsImages:(NSArray *)posts
+-(void)addGroupsImages:(NSArray *)groups
 {
     
-    posts = [self findImagePosts:posts];
+    groups = [self findImageGroups:groups];
     
-    __block BOOL newPost = NO;
- 
+    __block BOOL newGroup = NO;
+    
     __block BOOL readyToConsume = NO;
     
-    for(int i = 0; i<posts.count; ++i)
+    for(int i = 0; i<groups.count; ++i)
     {
-        GLPPost *p = [posts objectAtIndex:i];
+        GLPGroup *group = [groups objectAtIndex:i];
         
         //If image exist in cache fetch it and send it to campus wall.
         
-        [[SDImageCache sharedImageCache] queryDiskCacheForKey:p.imagesUrls[0] done:^(UIImage *image, SDImageCacheType cacheType) {
-           
+        [[SDImageCache sharedImageCache] queryDiskCacheForKey:group.groupImageUrl done:^(UIImage *image, SDImageCacheType cacheType) {
+            
             if(image)
             {
                 //Inform Campus Wall.
-                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInt:p.remoteKey] andImage:image];
+//                [self notifyGroupsViewControllerWithRemoteKey:[NSNumber numberWithInt:group.remoteKey] andImage:image];
             }
             else
-            {                
+            {
                 //Check if some posts are already in.
                 
-                newPost = [self addPostImageInQueueWithPost:p];
+                newGroup = [self addGroupImageInQueueWithGroup:group];
                 
-                if(newPost)
+                if(newGroup)
                 {
                     readyToConsume = YES;
                 }
-
+                
             }
             
             if(readyToConsume /* && posts.count - 1 == i */)
@@ -162,23 +149,23 @@ static GLPPostImageLoader *instance = nil;
 }
 
 /**
- Add post image url and post remote key to the queue.
+ Add group image url and group remote key to the queue.
  imagesNotStarted array is used to track all the images are not loaded yet.
  loadingImages dictionary stored all the urls that are ready to downloaded.
  
  @param currentRemoteKey post's remote key.
- @param
+ @return YES if the image is not loaded yet otherwise NO.
  */
 
--(BOOL)addPostImageInQueueWithPost:(GLPPost *)p
+-(BOOL)addGroupImageInQueueWithGroup:(GLPGroup *)group
 {
-    NSNumber *currentRemoteKey = [NSNumber numberWithInt:p.remoteKey];
+    NSNumber *currentRemoteKey = [NSNumber numberWithInt:group.remoteKey];
     
     if(![self.loadingImages objectForKey:currentRemoteKey])
     {
         [self.imagesNotStarted enqueue:currentRemoteKey];
         
-        [self.loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
+        [self.loadingImages setObject:group.groupImageUrl forKey:[NSNumber numberWithInt:group.remoteKey]];
         
         return YES;
     }
@@ -186,19 +173,19 @@ static GLPPostImageLoader *instance = nil;
     return NO;
 }
 
--(NSArray *)findImagePosts:(NSArray *)posts
+-(NSArray *)findImageGroups:(NSArray *)groups
 {
-    NSMutableArray *imagePosts = [[NSMutableArray alloc] init];
+    NSMutableArray *imageGroups = [[NSMutableArray alloc] init];
     
-    for(GLPPost *p in posts)
+    for(GLPGroup *group in groups)
     {
-        if([p imagePost] && !p.finalImage)
+        if(group.groupImageUrl)
         {
-            [imagePosts addObject:p];
+            [imageGroups addObject:group];
         }
     }
     
-    return imagePosts;
+    return imageGroups;
 }
 
 #pragma mark - Selectors
@@ -222,14 +209,14 @@ static GLPPostImageLoader *instance = nil;
             //remoteKey = (NSNumber*)[[_loadingImages allKeys] objectAtIndex:0]; // Assumes 'message' is not empty
             urlStr = (NSString*)[self.loadingImages objectForKey:remoteKey];
             
-//            [_loadingImages removeObjectForKey:remoteKey];
+            //            [_loadingImages removeObjectForKey:remoteKey];
             
-//            mach_port_t machTID = pthread_mach_thread_np(pthread_self());
+            //            mach_port_t machTID = pthread_mach_thread_np(pthread_self());
             
-//            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
+            //            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
-
-       
+        
+        
         NSURL *imageUrl = [NSURL URLWithString:urlStr];
         
         
@@ -237,7 +224,7 @@ static GLPPostImageLoader *instance = nil;
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
-//        DDLogDebug(@"Image ready: %@", img);
+        //        DDLogDebug(@"Image ready: %@", img);
         
         
         
@@ -245,11 +232,11 @@ static GLPPostImageLoader *instance = nil;
         {
             //Save image with image url.
             [[SDImageCache sharedImageCache] storeImage:img forKey:urlStr];
-
+            
             
             //Notify GLPTimelineViewController after finish.
-            [self notifyCampusWallWithRemoteKey:remoteKey andImage:img];
-                        
+//            [self notifyGroupsViewControllerWithRemoteKey:remoteKey andImage:img];
+            
             //Delete the entry from the queue.
             [self.loadingImages removeObjectForKey:remoteKey];
         }
@@ -266,65 +253,9 @@ static GLPPostImageLoader *instance = nil;
 
 #pragma mark - Notifications
 
--(void)notifyCampusWallWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
+-(void)notifyGroupsViewControllerWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
 {
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey, @"FinalImage":image}];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey, @"FinalImage":image}];
 }
-
-#pragma mark - Client
-
-//-(void)startConsume
-//{
-//    if(self.networkAvailable)
-//    {
-//        
-//        //If there is network then start threads.
-//        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
-//        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
-//    }
-//}
-
-
-
-//-(void)startLoadingImages
-//{
-//    for(NSNumber *remoteKey in _loadingImages)
-//    {
-//        NSURL *imageUrl = [NSURL URLWithString:[_loadingImages objectForKey:remoteKey]];
-//        
-//        //Load the image.
-//        NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-//            
-//            
-//            NSData *data = [NSData dataWithContentsOfURL:imageUrl];
-//            UIImage *img = [[UIImage alloc] initWithData:data];
-//            
-//            
-//            NSLog(@"Image is ready for post:%d Image: %@ at %@",[remoteKey integerValue], img, [NSDate date]);
-//
-//            
-//            if(img)
-//            {
-//                //Notify GLPTimelineViewController after finish.
-//                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostImageUpladed" object:nil userInfo:@{@"RemoteKey":remoteKey,
-//                                                                                                                                    @"FinalImage":img}];
-//                
-//                //Delete the entry from the queue.
-//                [_loadingImages removeObjectForKey:remoteKey];
-//            }
-//            else
-//            {
-//                //TODO: No internet connection. Retry later.
-//            }
-//            
-//
-//            
-//        }];
-//        
-//        [[[NSOperationQueue alloc] init] addOperation:operation];
-//
-//    }
-//}
-
 
 @end
