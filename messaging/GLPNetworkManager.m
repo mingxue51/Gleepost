@@ -170,6 +170,9 @@ static GLPNetworkManager *instance = nil;
 
 - (void)webSocketDidFailOrClose
 {
+    //Load local conversations.
+    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
+    
     [self stopNetworkOperations];
 }
 

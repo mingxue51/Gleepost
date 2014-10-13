@@ -13,6 +13,7 @@
 #import "GLPUserDao.h"
 #import "SessionManager.h"
 #import "FMDatabaseAdditions.h"
+#import "GLPConversationRead.h"
 
 @implementation GLPConversationDao
 
@@ -27,7 +28,7 @@
     return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
 }
 
-+(GLPConversation *)findByParticipantKey:(int)key db:(FMDatabase *)db
++ (GLPConversation *)findByParticipantKey:(int)key db:(FMDatabase *)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where participants_keys=%d limit 1", key];
     
@@ -47,6 +48,27 @@
     while ([resultSet next]) {
         [result addObject:[GLPConversationDaoParser createFromResultSet:resultSet inDb:db]];
     }
+    
+    return result;
+}
+
++ (NSArray *)findReadsWithConversation:(GLPConversation *)entity andDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations_reads where conversation_remote_key=%d", entity.remoteKey];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        
+        NSInteger participantRemoteKey = [resultSet intForColumn:@"participant_remote_key"];
+        NSInteger messageRemoteKey = [resultSet intForColumn:@"message_read_remote_key"];
+        
+        GLPUser *participant = [GLPUserDao findByRemoteKey:participantRemoteKey db:db];
+        
+        [result addObject:[[GLPConversationRead alloc] initWithParticipant:participant andMessageRemoteKey:messageRemoteKey]];
+    }
+    
+    DDLogDebug(@"Reads from database %@", result);
     
     return result;
 }
@@ -90,6 +112,14 @@
      entity.isLive];
     
     entity.key = [db lastInsertRowId];
+    
+    for(GLPConversationRead *conversationRead in entity.reads)
+    {
+        [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
+         entity.remoteKey,
+         conversationRead.participant.remoteKey,
+         conversationRead.messageRemoteKey];
+    }
 }
 
 
@@ -145,6 +175,18 @@
         
         entity.key = [db lastInsertRowId];
         
+        for(GLPConversationRead *conversationRead in entity.reads)
+        {
+            [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
+             entity.remoteKey,
+             conversationRead.participant.remoteKey,
+             conversationRead.messageRemoteKey];
+        }
+    }
+    else
+    {
+        //Update conversation.
+        [GLPConversationDao update:entity db:db];
     }
 }
 
@@ -155,13 +197,15 @@
     
     int date = [entity.lastUpdate timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"update conversations set remoteKey=%d, lastMessage=%@, lastUpdate=%d, title=%@, unread=%d where key=%d",
+    [db executeUpdateWithFormat:@"update conversations set remoteKey=%d, lastMessage=%@, lastUpdate=%d, title=%@, unread=%d where remoteKey=%d",
      entity.remoteKey,
      entity.lastMessage,
      date,
      entity.title,
      entity.hasUnreadMessages,
-     entity.key];
+     entity.remoteKey];
+    
+    [GLPConversationDao updateReads:entity db:db];
 }
 
 + (void)updateConversationLastUpdateAndLastMessage:(GLPConversation *)entity db:(FMDatabase *)db
@@ -184,12 +228,22 @@
 }
 
 
++ (void)updateReads:(GLPConversation *)entity db:(FMDatabase *)db
+{
+    NSAssert(entity.key != 0, @"Cannot update entity without key");
+    
+    for(GLPConversationRead *read in entity.reads)
+    {
+        [db executeUpdateWithFormat:@"update conversations_reads set message_read_remote_key=%d where conversation_remote_key=%d AND participant_remote_key=%d", read.messageRemoteKey, entity.remoteKey, read.participant.remoteKey];
+    }
 
+}
 
 
 + (void)deleteAllNormalConversationsInDb:(FMDatabase *)db
 {
     [db executeUpdate:@"delete from conversations where isLive=0"];
+    [db executeUpdate:@"delete from conversations_reads"];
 }
 
 

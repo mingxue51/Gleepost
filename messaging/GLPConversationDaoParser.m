@@ -7,6 +7,7 @@
 //
 
 #import "GLPConversationDaoParser.h"
+#import "GLPConversationDao.h"
 #import "GLPEntityDaoParser.h"
 #import "GLPUserDao.h"
 
@@ -33,6 +34,12 @@
     }
 
     entity.participants = participants;
+    
+//    entity setReads:
+    
+    // parse reads.
+    [entity setReads:[GLPConversationDao findReadsWithConversation:entity andDb:db]];
+    
 }
 
 + (GLPConversation *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db

@@ -145,7 +145,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Remote Key: %ld, Message: %@, Participants: %@", (long)self.remoteKey, _lastMessage, self.participants];
+    return [NSString stringWithFormat:@"Remote Key: %ld, Message: %@, Participants: %@, Reads %@", (long)self.remoteKey, _lastMessage, self.participants, self.reads];
 }
 
 - (NSString *)generateGroupTitle

@@ -15,6 +15,8 @@
 #import "GLPVideo.h"
 #import "GLPLocation.h"
 #import "GLPMember.h"
+#import "GLPConversationRead.h"
+
 
 @interface RemoteParser()
 
@@ -174,7 +176,34 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
     
+    //Parse last read for participants.
+    [conversation setReads: [RemoteParser parseLastRead:json[@"read"] withParticipants:participants]];
+    
     return conversation;
+}
+
++ (NSArray *)parseLastRead:(NSArray *)jsonArray withParticipants:(NSArray *)participants
+{
+    NSMutableArray *readParticipants = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *entry in jsonArray)
+    {
+        NSInteger lastParticipantRemoteKey = [entry[@"user"] integerValue];
+        NSInteger lastMessageReadRemoteKey = [entry[@"last_read"] integerValue];
+        
+        for(GLPUser *user in participants)
+        {
+            if(user.remoteKey == lastParticipantRemoteKey)
+            {
+                [readParticipants addObject:[[GLPConversationRead alloc] initWithParticipant:user andMessageRemoteKey:lastMessageReadRemoteKey]];
+                
+                break;
+            }
+        }
+        
+    }
+    
+    return readParticipants;
 }
 
 +(NSMutableArray*)parseNormalConversations:(NSArray*)allConversations

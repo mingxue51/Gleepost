@@ -28,19 +28,44 @@
 
 int const NumberMaxOfMessagesLoaded = 20;
 
-+ (NSArray *)loadLocalRegularConversation
++ (NSArray *)loadLocalRegularConversations
 {
     __block NSArray *conversations = nil;
     [DatabaseManager run:^(FMDatabase *db) {
         conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
     }];
     
+    DDLogDebug(@"Conversations from local %@", conversations);
+
     return conversations;
+}
+
++ (void)saveOrUpdateConversation:(GLPConversation *)conversation
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPConversationDao saveIfNotExist:conversation db:db];
+
+    }];
+}
+
++ (void)initialSaveConversationsToDatabase:(NSArray *)conversations
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPConversationDao deleteAllNormalConversationsInDb:db];
+
+        for(GLPConversation *conversation in conversations)
+        {
+            [GLPConversationDao saveIfNotExist:conversation db:db];
+        }
+        
+    }];
 }
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
-    NSArray *localEntities = [ConversationManager loadLocalRegularConversation];
+    NSArray *localEntities = [ConversationManager loadLocalRegularConversations];
     localCallback(localEntities);
     NSLog(@"Load local conversations %d", localEntities.count);
     

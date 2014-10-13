@@ -21,5 +21,6 @@
 + (void)deleteAllNormalConversationsInDb:(FMDatabase *)db;
 + (void)saveIfNotExist:(GLPConversation *)entity db:(FMDatabase *)db;
 +(GLPConversation *)findByParticipantKey:(int)key db:(FMDatabase *)db;
++ (NSArray *)findReadsWithConversation:(GLPConversation *)entity andDb:(FMDatabase *)db;
 
 @end

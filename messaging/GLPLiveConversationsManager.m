@@ -84,6 +84,9 @@ static GLPLiveConversationsManager *instance = nil;
 {
     DDLogInfo(@"Load conversations");
     
+    //Fetch from local database.
+    [self loadConversationsFromDatabase];
+    
     [self showLoadingIndicator];
     
     [[WebClient sharedInstance] getConversationsWithCallback:^(BOOL success, NSArray *conversations) {
@@ -96,6 +99,9 @@ static GLPLiveConversationsManager *instance = nil;
             }
             
             [self hideLoadingIndicator];
+            
+            //Save in local database.
+            [ConversationManager initialSaveConversationsToDatabase:conversations];
             
             DDLogInfo(@"Load conversations sucess, loaded conversations: %d", conversations.count);
             
@@ -848,6 +854,27 @@ static GLPLiveConversationsManager *instance = nil;
     return res;
 }
 
+# pragma mark - Conversations database
+
+- (void)loadConversationsFromDatabase
+{
+    DDLogInfo(@"Load local conversations");
+    
+    dispatch_async(_queue, ^{
+        
+        NSArray *localConversations = [ConversationManager loadLocalRegularConversations];
+        
+        for(GLPConversation *conversation in localConversations)
+        {
+            [self internalAddConversation:conversation isEmpty:NO];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    });
+
+
+}
+
 
 # pragma mark - Messages
 
@@ -1105,6 +1132,7 @@ static GLPLiveConversationsManager *instance = nil;
     dispatch_async(_queue, ^{
         NSNumber *index = [NSNumber numberWithInteger:remoteKey];
         GLPConversation *conversation = _conversations[index];
+        DDLogDebug(@"Conversation last message %@", conversation.lastMessage);
         if(!conversation) {
             DDLogError(@"Cannot add remote message to non existent conversation");
             return;
@@ -1272,6 +1300,8 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)markConversation:(GLPConversation *)conversation upToTheLastMessageAsRead:(GLPMessage *)lastMessage
 {
+    DDLogInfo(@"Mark message %@ as read.", lastMessage.content);
+    
     [[WebClient sharedInstance] markConversationWithRemoteKeyAsRead:conversation.remoteKey upToMessageWithRemoteKey:lastMessage.remoteKey callback:^(BOOL success) {
         
         if(success)
@@ -1398,6 +1428,9 @@ static GLPLiveConversationsManager *instance = nil;
     GLPMessage *synchMessage = [message copy];
     synchMessage.key = key;
     [conversation updateWithNewMessage:message];
+    
+    //Update conversation in local database.
+    [ConversationManager saveOrUpdateConversation:conversation];
     
     [_conversationsMessages[index] addObject:synchMessage];
     

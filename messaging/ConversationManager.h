@@ -16,7 +16,12 @@
 
 extern int const NumberMaxOfMessagesLoaded;
 
-+ (NSArray *)loadLocalRegularConversation;
+// new methods
++ (NSArray *)loadLocalRegularConversations;
++ (void)saveOrUpdateConversation:(GLPConversation *)conversation;
++ (void)initialSaveConversationsToDatabase:(NSArray *)conversations;
+
+// old methods
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
 + (void)loadLiveConversationsWithCallback:(void (^)(BOOL success, NSArray *conversations))callback;
 + (void)markConversationRead:(GLPConversation *)conversation;

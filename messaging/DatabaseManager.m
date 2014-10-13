@@ -113,6 +113,14 @@ static DatabaseManager *instance = nil;
              isGroup integer, \
              isLive integer);"];
             
+            // conversation reads
+            // In that table we store who participants read up to which message.
+            [db executeUpdate:@"create table conversations_reads ( \
+             key integer primary key autoincrement, \
+             conversation_remote_key integer, \
+             participant_remote_key integer, \
+             message_read_remote_key integer);"];
+            
             
             // live conversations
             [db executeUpdate:@"create table live_conversations ( \

@@ -31,10 +31,13 @@
 @property (assign, nonatomic) BOOL isEnded;
 @property (strong, nonatomic) NSDate *expiryDate;
 
+@property (strong, nonatomic) NSArray *reads;
+
 
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
 - (id)initWithParticipants:(NSArray *)participants;
 - (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended;
+- (void)setReads:(NSArray *)reads;
 - (GLPUser *)getUniqueParticipant;
 - (NSString *)getLastMessageOrDefault;
 - (NSString *)getLastUpdateOrDefault;

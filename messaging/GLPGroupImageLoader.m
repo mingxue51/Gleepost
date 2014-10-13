@@ -48,13 +48,13 @@ static GLPGroupImageLoader *instance = nil;
     {
         self.networkAvailable = YES;
         
-        DDLogInfo(@"Continue all operations of loading images.");
+        DDLogInfo(@"Continue all operations of loading group images.");
         
         [super startConsume];
         
     } else
     {
-        DDLogDebug(@"Cancel all operations of loading images.");
+        DDLogInfo(@"Cancel all operations of loading group images.");
         
         self.networkAvailable = NO;
         //No network.
@@ -102,7 +102,7 @@ static GLPGroupImageLoader *instance = nil;
             
             if(readyToConsume /* && posts.count - 1 == i */)
             {
-                DDLogInfo(@"Image loader starts consuming");
+                DDLogInfo(@"Group image loader starts consuming");
                 
                 [super startConsume];
                 
@@ -243,7 +243,7 @@ static GLPGroupImageLoader *instance = nil;
         else
         {
             //TODO: No internet connection. Retry later.
-            DDLogInfo(@"GLPPostImageLoader : No network!");
+            DDLogInfo(@"GLPGroupImageLoader : No network!");
             
             break;
         }
