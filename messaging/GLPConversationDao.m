@@ -67,9 +67,7 @@
         
         [result addObject:[[GLPConversationRead alloc] initWithParticipant:participant andMessageRemoteKey:messageRemoteKey]];
     }
-    
-    DDLogDebug(@"Reads from database %@", result);
-    
+        
     return result;
 }
 
@@ -186,7 +184,7 @@
     else
     {
         //Update conversation.
-        [GLPConversationDao update:entity db:db];
+        [GLPConversationDao updateConversationLastUpdateAndLastMessage:entity db:db];
     }
 }
 
@@ -197,13 +195,13 @@
     
     int date = [entity.lastUpdate timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"update conversations set remoteKey=%d, lastMessage=%@, lastUpdate=%d, title=%@, unread=%d where remoteKey=%d",
+    [db executeUpdateWithFormat:@"update conversations set remoteKey=%d, lastMessage=%@, lastUpdate=%d, title=%@, unread=%d where key=%d",
      entity.remoteKey,
      entity.lastMessage,
      date,
      entity.title,
      entity.hasUnreadMessages,
-     entity.remoteKey];
+     entity.key];
     
     [GLPConversationDao updateReads:entity db:db];
 }
@@ -236,14 +234,24 @@
     {
         [db executeUpdateWithFormat:@"update conversations_reads set message_read_remote_key=%d where conversation_remote_key=%d AND participant_remote_key=%d", read.messageRemoteKey, entity.remoteKey, read.participant.remoteKey];
     }
+}
 
++ (void)deleteConversationWithRemoteKey:(NSInteger)conversationRemoteKey db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"delete from conversations_reads where conversation_remote_key=%d", conversationRemoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from conversations where remoteKey=%d", conversationRemoteKey];
+    
 }
 
 
 + (void)deleteAllNormalConversationsInDb:(FMDatabase *)db
 {
-    [db executeUpdate:@"delete from conversations where isLive=0"];
     [db executeUpdate:@"delete from conversations_reads"];
+    [db executeUpdate:@"delete from conversations where isLive=0"];
+    
+    //Delete the conversations' entry from sequence table in order to reset the autoincrement attribute.
+    [db executeUpdateWithFormat:@"delete from sqlite_sequence where name=%@", @"conversations"];
 }
 
 

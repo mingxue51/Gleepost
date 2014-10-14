@@ -23,7 +23,7 @@
 + (void)save:(GLPMessage *)entity db:(FMDatabase *)db;
 + (void)updateAfterSending:(GLPMessage *)entity db:(FMDatabase *)db;
 
-
++ (void)deleteMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db;
 // todo: remove
 +(GLPUser *)findUserByMessageKey:(NSInteger)messageKey db:(FMDatabase *)db;
 

@@ -109,6 +109,8 @@
     
     [db executeUpdate:sql withParameterDictionary:params];
     entity.key = [db lastInsertRowId];
+    
+    DDLogDebug(@"Message saved %@ %d", entity, entity.conversation.remoteKey);
 }
 
 + (void)updateAfterSending:(GLPMessage *)entity db:(FMDatabase *)db
@@ -127,4 +129,11 @@
     
     [db executeUpdate:sql withParameterDictionary:params];
 }
+
++ (void)deleteMessagesForConversation:(GLPConversation *)conversation db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"delete from messages where conversation_key=%d", conversation.remoteKey];
+    
+}
+
 @end

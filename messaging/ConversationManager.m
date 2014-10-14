@@ -28,6 +28,8 @@
 
 int const NumberMaxOfMessagesLoaded = 20;
 
+#pragma mark - New methods
+
 + (NSArray *)loadLocalRegularConversations
 {
     __block NSArray *conversations = nil;
@@ -35,7 +37,7 @@ int const NumberMaxOfMessagesLoaded = 20;
         conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
     }];
     
-    DDLogDebug(@"Conversations from local %@", conversations);
+//    DDLogDebug(@"Conversations from local %@", conversations);
 
     return conversations;
 }
@@ -62,6 +64,66 @@ int const NumberMaxOfMessagesLoaded = 20;
         
     }];
 }
+
++ (void)deleteConversation:(GLPConversation *)conversation
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPConversationDao deleteConversationWithRemoteKey:conversation.remoteKey db:db];
+        [GLPMessageDao deleteMessagesForConversation:conversation db:db];
+    }];
+}
+
++ (void)initialSaveMessagesToDatabase:(NSArray *)messages
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        for(GLPMessage *message in messages)
+        {
+            GLPMessage *m = [GLPMessageDao findByRemoteKey:message.remoteKey db:db];
+            
+            if(m)
+            {
+                continue;
+            }
+            
+            [GLPMessageDao save:message db:db];
+        }
+    }];
+}
+
++ (NSArray *)loadLatestMessagesForConversation:(GLPConversation *)conversation
+{
+    __block NSArray *messages = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        messages = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
+    }];
+    
+    return messages;
+}
+
++ (NSArray *)loadPreviousMessagesBefore:(GLPMessage *)message forConversation:(GLPConversation *)conversation
+{
+    __block NSArray *previousMessages = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        previousMessages = [GLPMessageDao findPreviousMessagesBefore:message db:db];
+    }];
+    
+    return previousMessages;
+}
+
++ (void)saveNewMessage:(GLPMessage *)message withConversation:(GLPConversation *)conversation
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        message.conversation = conversation;
+        [GLPMessageDao save:message db:db];
+    }];
+}
+
+#pragma mark - Old methods
 
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback
 {
@@ -638,15 +700,6 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
     
 }
-
-//+(void)deleteConversationIfExist:(GLPConversation *)conversation
-//{
-//    DDLogInfo(@"Delete conversation if exist with remote key %d", conversation.remoteKey);
-//    
-//    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//        [GLPConversationDao deleteConversationIfExist:conversation db:db];
-//    }];
-//}
 
 // Send message
 // Executed in background, from GLPNewMessageProcessorOperation

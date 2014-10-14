@@ -19,6 +19,7 @@
 + (void)updateConversationLastUpdateAndLastMessage:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)updateConversationUnreadStatus:(GLPConversation *)entity db:(FMDatabase *)db;
 + (void)deleteAllNormalConversationsInDb:(FMDatabase *)db;
++ (void)deleteConversationWithRemoteKey:(NSInteger)conversationRemoteKey db:(FMDatabase *)db;
 + (void)saveIfNotExist:(GLPConversation *)entity db:(FMDatabase *)db;
 +(GLPConversation *)findByParticipantKey:(int)key db:(FMDatabase *)db;
 + (NSArray *)findReadsWithConversation:(GLPConversation *)entity andDb:(FMDatabase *)db;

@@ -20,6 +20,10 @@ extern int const NumberMaxOfMessagesLoaded;
 + (NSArray *)loadLocalRegularConversations;
 + (void)saveOrUpdateConversation:(GLPConversation *)conversation;
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations;
++ (void)deleteConversation:(GLPConversation *)conversation;
++ (void)initialSaveMessagesToDatabase:(NSArray *)messages;
++ (NSArray *)loadLatestMessagesForConversation:(GLPConversation *)conversation;;
++ (void)saveNewMessage:(GLPMessage *)message withConversation:(GLPConversation *)conversation;
 
 // old methods
 + (void)loadConversationsWithLocalCallback:(void (^)(NSArray *conversations))localCallback remoteCallback:(void (^)(BOOL success, NSArray *conversations))remoteCallback;
@@ -28,7 +32,7 @@ extern int const NumberMaxOfMessagesLoaded;
 +(void)loadConversationWithParticipant:(int)remoteKey withCallback:(void (^) (BOOL sucess, GLPConversation* conversation))callback;
 
 // messages
-+ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation;
+//+ (NSArray *)loadMessagesForConversation:(GLPConversation *)conversation;
 + (void)loadPreviousMessagesForConversation:(GLPConversation *)conversation localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
 + (void)loadPreviousMessagesForConversation:(GLPConversation *)conversation before:(GLPMessage *)message localCallback:(void (^)(NSArray *messages))localCallback remoteCallback:(void (^)(BOOL success, NSArray *messages))remoteCallback;
 
@@ -45,8 +49,6 @@ extern int const NumberMaxOfMessagesLoaded;
 
 + (void)saveConversation:(GLPConversation *)conversation;
 +(void)saveConversationIfNotExist:(GLPConversation *)conversation;
-
-+(void)deleteConversationIfExist:(GLPConversation *)conversation;
 
 +(GLPConversation*)createFakeConversationWithParticipants:(NSArray*)participants;
 

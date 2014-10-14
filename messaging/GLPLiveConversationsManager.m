@@ -328,6 +328,9 @@ static GLPLiveConversationsManager *instance = nil;
         // reverse order
         messages = [[messages reverseObjectEnumerator] allObjects];
         
+        //Save messages to initial messages to local database.
+        [ConversationManager initialSaveMessagesToDatabase:messages];
+        
         dispatch_async(_queue, ^{
             NSNumber *index = [detachedConversation remoteKeyNumber];
             GLPConversation *attachedConversation = [self internalAttachedConversation:detachedConversation];
@@ -717,6 +720,8 @@ static GLPLiveConversationsManager *instance = nil;
                
                [self internalRemoveConversation:conversation];
                
+               [ConversationManager deleteConversation:conversation];
+               
                callback(YES);
            });
         }
@@ -871,8 +876,12 @@ static GLPLiveConversationsManager *instance = nil;
         
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
     });
+}
 
 
+- (NSArray *)loadLatestMessagesForConversation:(GLPConversation *)conversation
+{    
+    return [ConversationManager loadLatestMessagesForConversation:conversation];
 }
 
 
@@ -955,6 +964,8 @@ static GLPLiveConversationsManager *instance = nil;
         synchConversation.hasUnreadMessages = NO;
         
         array = [[NSArray alloc] initWithArray:syncMessages copyItems:YES];
+        
+//        DDLogDebug(@"Final Messages %@", array);
     });
     
     if(!array) {
@@ -1137,6 +1148,8 @@ static GLPLiveConversationsManager *instance = nil;
             DDLogError(@"Cannot add remote message to non existent conversation");
             return;
         }
+        
+        [ConversationManager saveNewMessage:message withConversation:conversation];
         
         BOOL newMessagesFromSync = NO;
         

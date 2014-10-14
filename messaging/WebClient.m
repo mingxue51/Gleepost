@@ -2173,7 +2173,7 @@ static WebClient *instance = nil;
         
         DDLogInfo(@"Conversation %ld up to message %ld marked as read.", (long)convRemoteKey, (long)msgRemoteKey);
         
-        DDLogDebug(@"RESPONSE FROM SERVER: %@", responseObject);
+//        DDLogDebug(@"RESPONSE FROM SERVER: %@", responseObject);
         
         callback(YES);
         

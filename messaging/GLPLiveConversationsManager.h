@@ -41,6 +41,7 @@
 - (NSInteger)liveConversationsCount;
 - (NSInteger)regularConversationsCount;
 - (void)loadConversationsFromDatabase;
+- (NSArray *)loadLatestMessagesForConversation:(GLPConversation *)conversation;
 
 // messages
 - (NSArray *)lastestMessagesForConversation:(GLPConversation *)conversation;

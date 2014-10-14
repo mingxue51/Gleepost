@@ -73,6 +73,8 @@
  */
 @property (assign, nonatomic, getter = isCommingFromTableViewClick) BOOL comesFromTableViewClick;
 
+@property (assign, nonatomic, getter=isOffline) BOOL offline;
+
 @end
 
 @implementation GLPConversationViewController
@@ -201,6 +203,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 -(void)initialiseObjects
 {
     self.introduced = nil;
+    _offline = NO;
 }
 
 - (void)configureTitleNavigationBar
@@ -376,6 +379,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     NSArray *newMessages = [[GLPLiveConversationsManager sharedInstance] lastestMessagesForConversation:_conversation];
     
+    //Maybe bad practise of code.
+    //If the variable is offline and the new messages count is not zero then clear the messages
+    //because it means that already has messages from local database.
+    if([self isOffline] && newMessages.count > 0)
+    {
+        [_messages removeAllObjects];
+        _offline = NO;
+    }
+    
     [_messages addObjectsFromArray:newMessages];
     [self showLoadedMessages];
     
@@ -475,6 +487,23 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[GLPLiveConversationsManager sharedInstance] markConversation:_conversation upToTheLastMessageAsRead:[_messages lastObject]];
 }
 
+/**
+ This method fetch from database the conversation's messages if the parameter messages array
+ is empty. If the messages array is empty it might means two things:
+ 1) The conversation doesn't contains any messages yet. (This possibility should NOT appear!).
+ 2) The phone is disconnected from the network.
+
+ */
+- (void)loadInitialMessagesFromDatabase
+{
+
+    NSArray *messages = [[GLPLiveConversationsManager sharedInstance] loadLatestMessagesForConversation:_conversation];
+    
+    _messages = messages.mutableCopy;
+    [self showLoadedMessages];
+    [self scrollToTheEndAnimated:NO];
+
+}
 
 # pragma mark - Notifications (keyboard ones in form management mark)
 
@@ -516,6 +545,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         if(_messages.count == 0) {
             // hide bottom loader without animation if there are some messages to show
             [self hideBottomLoader:!hasNewMessages];
+            
+            [self loadInitialMessagesFromDatabase];
+            
+            _offline = YES;
         }
         
         if(canHavePreviousMessages) {
