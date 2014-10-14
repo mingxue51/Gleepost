@@ -1240,6 +1240,13 @@
                 NSInteger groupRemoteKey = ((NSNumber *)[notification.customParams objectForKey:@"network"]).integerValue;
                 
                 _groupToNavigate = [[GLPLiveGroupManager sharedInstance] groupWithRemoteKey:groupRemoteKey];
+                if(!_groupToNavigate)
+                {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+                    return;
+                }
+                
                 _userCreatedTheGroupPost = notification.user;
                 [self performSegueWithIdentifier:@"view group" sender:self];
             }
