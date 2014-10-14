@@ -15,6 +15,8 @@
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db;
 + (NSArray *)findLastPostsAfter:(GLPPost *)post inDb:(FMDatabase *)db;
 + (NSArray *)findAllPostsBefore:(GLPPost *)post inDb:(FMDatabase *)db;
++ (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey;
++ (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey inDb:(FMDatabase *)db;
 + (NSArray *)findPostsInGroupWithRemoteKey:(NSInteger)groupRemoteKey inDb:(FMDatabase *)db;
 + (NSArray *)findAllPendingPostsWithVideosInDb:(FMDatabase *)db;
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db;

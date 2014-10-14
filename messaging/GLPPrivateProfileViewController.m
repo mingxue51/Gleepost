@@ -463,8 +463,12 @@
 //        
 //    }];
     
-    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
+    [GLPPostManager loadPostsWithRemoteKey:self.profileUser.remoteKey localCallback:^(NSArray *posts) {
         
+        
+        
+    } remoteCallback:^(BOOL success, NSArray *posts) {
+       
         if(success)
         {
             self.posts = [posts mutableCopy];
@@ -480,9 +484,15 @@
         {
             [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
         }
-
         
     }];
+    
+//    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
+//        
+//
+//
+//        
+//    }];
 }
 
 #pragma mark - UI methods

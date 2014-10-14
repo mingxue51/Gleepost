@@ -12,6 +12,7 @@
 #import "GLPPost.h"
 #import "GLPPostDao.h"
 #import "CategoryManager.h"
+#import "GLPUserDao.h"
 
 @implementation GLPPostManager
 
@@ -31,38 +32,44 @@
     callback(localEntities);
 }
 
-+(void)loadRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback
++ (void)loadPostsWithRemoteKey:(NSInteger)remoteKey localCallback:(void (^) (NSArray *posts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *posts))remoteCallback
 {
+    NSArray *localPosts = [GLPPostDao findPostsWithUsersRemoteKey:remoteKey];
+    
+    localCallback(localPosts);
+
     [[WebClient sharedInstance] userPostsWithRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
         
         if(!success) {
-            callback(NO, nil);
+            remoteCallback(NO, nil);
             return;
         }
-        
         
         //Find all the event posts that the user attends.
         [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
             
             if(!success) {
-                callback(NO, nil);
+                remoteCallback(NO, nil);
                 return;
             }
             
             
             // take only new posts
-            NSMutableArray *userPosts = [NSMutableArray array];
+            __block NSMutableArray *userPosts = [NSMutableArray array];
             
-            for (GLPPost *newPost in posts)
-            {
-                if(newPost.author.remoteKey == remoteKey)
-                {
-                    [userPosts addObject:newPost];
-                }
+            [DatabaseManager run:^(FMDatabase *db) {
                 
-            }
+                for (GLPPost *newPost in posts)
+                {
+                    newPost.sendStatus = kSendStatusSent;
+                    
+                    [userPosts addObject:newPost];
+                    
+                    [GLPPostDao save:newPost inDb:db];
+                }
+            }];
             
-            callback(YES, userPosts);
+            remoteCallback(YES, userPosts);
         }];
 
     }];

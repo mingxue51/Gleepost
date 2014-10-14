@@ -403,21 +403,21 @@ static BOOL likePushed;
         userRemoteKey = self.incomingUser.remoteKey;
     }
     
-    [GLPPostManager loadRemotePostsForUserRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
-        
-        if(success)
-        {
-            self.posts = [posts mutableCopy];
-
-            [self.postsTableView reloadData];
-        }
-        else
-        {
-            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
-        }
-        
-        
-    }];
+//    [GLPPostManager loadRemotePostsForUserRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
+//        
+//        if(success)
+//        {
+//            self.posts = [posts mutableCopy];
+//
+//            [self.postsTableView reloadData];
+//        }
+//        else
+//        {
+//            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
+//        }
+//        
+//        
+//    }];
     
 //    [GLPPostManager loadLocalPostsBefore:nil callback:^(NSArray *posts) {
 //       

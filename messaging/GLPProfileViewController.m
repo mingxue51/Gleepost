@@ -172,6 +172,7 @@
     }
     
     [self fetchUserData];
+    [self fetchUsersPostsIfNeeded];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -627,30 +628,62 @@
 {
     [self startLoading];
     
-    [GLPPostManager loadRemotePostsForUserRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *posts) {
+    DDLogDebug(@"Load posts.");
+    
+    [GLPPostManager loadPostsWithRemoteKey:_user.remoteKey localCallback:^(NSArray *posts) {
+        
+        DDLogDebug(@"Database");
+        
+        [self refreshNewPosts:posts];
+        
+    } remoteCallback:^(BOOL success, NSArray *posts) {
         
         [self stopLoading];
         
         if(success)
         {
-            self.posts = [posts mutableCopy];
-            
-            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
 
-            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+            DDLogDebug(@"Remote");
+            [self refreshNewPosts:posts];
             
-            [self.tableView reloadData];
-            
-            _postUploaded = NO;
-        
         }
-        else
-        {
-//            [WebClientHelper showStandardError];
-        }
-        
         
     }];
+    
+//    [GLPPostManager loadRemotePostsForUserRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *posts) {
+//        
+//
+//        
+//        
+//    }];
+}
+
+- (void)refreshNewPosts:(NSArray *)posts
+{
+//    DDLogDebug(@"Current posts %@ incoming posts %@", self.posts, posts);
+    
+    if(posts.count > 0 && self.posts.count > 0)
+    {
+        if(((GLPPost *)[posts objectAtIndex:0]).remoteKey == ((GLPPost *)[self.posts objectAtIndex:0]).remoteKey)
+        {
+            return;
+        }
+    }
+    
+    if(posts.count == 0)
+    {
+        return;
+    }
+    
+    self.posts = [posts mutableCopy];
+    
+    [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+    
+    [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+    
+    [self.tableView reloadData];
+    
+    _postUploaded = NO;
 }
 
 -(void)loadGroupAndNavigateWithRemoteKey:(NSString *)remoteKey
@@ -904,7 +937,7 @@
             
             DDLogDebug(@"Data needs to be updated locally: %@", user);
             [self refreshCellViewWithIndex:0];
-            [self fetchUsersPostsIfNeeded];
+//            [self fetchUsersPostsIfNeeded];
         }
         
         
@@ -915,7 +948,7 @@
             DDLogDebug(@"Data needs to be updated remotely: %@", user);
             _user = user;
             [self refreshCellViewWithIndex:0];
-            [self fetchUsersPostsIfNeeded];
+//            [self fetchUsersPostsIfNeeded];
         }
     }];
 }

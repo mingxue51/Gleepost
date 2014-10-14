@@ -105,6 +105,38 @@
     return result;
 }
 
++ (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey
+{
+    __block NSArray *localPosts = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        localPosts = [GLPPostDao findPostsWithUsersRemoteKey:usersRemoteKey inDb:db];
+    }];
+    
+    return localPosts;
+}
+
++ (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey inDb:(FMDatabase *)db
+{
+    
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND author_key = %d order by date desc, remoteKey desc limit %d", usersRemoteKey, kGLPNumberOfPosts];
+
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    return result;
+}
+
 + (NSInteger)findPostKeyByRemoteKey:(NSInteger)remoteKey inDB:(FMDatabase *)db
 {
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where remoteKey=%d limit 1", remoteKey];
