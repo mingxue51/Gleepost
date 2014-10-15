@@ -10,10 +10,15 @@
 
 @class GLPPost;
 
+typedef NS_ENUM(NSUInteger, CalendarEventStatus) {
+    kPermissionsError,
+    kOtherError,
+    kSuccess,
+};
+
 @interface GLPCalendarManager : NSObject
 
 + (GLPCalendarManager *)sharedInstance;
 
-- (void)addEventPostToCalendar:(GLPPost *)eventPost;
-
+- (void)addEventPostToCalendar:(GLPPost *)eventPost withCallback:(void (^) (CalendarEventStatus resultStatus))callback;
 @end

@@ -47,5 +47,7 @@
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (NSDate *)generateDateEventEnds;
+- (NSString *)locationDescription;
 
 @end

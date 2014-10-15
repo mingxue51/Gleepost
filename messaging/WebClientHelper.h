@@ -45,4 +45,8 @@
 
 + (void)showChangedModeServerMessageWithServerMode:(NSString *)mode;
 
++ (void)showErrorSavingEventToCalendar;
++ (void)showEventSuccessfullyAddedToCalendar;
++ (void)showErrorPermissionsToCalendar;
+
 @end

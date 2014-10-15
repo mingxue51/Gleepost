@@ -37,6 +37,7 @@
 #import "GLPCategory.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPPopUpDialogViewController.h"
+#import "GLPCalendarManager.h"
 
 @interface ViewPostViewController () <GLPPopUpDialogViewControllerDelegate>
 
@@ -471,12 +472,41 @@ static BOOL likePushed;
 
 - (void)showAttendees
 {
-    DDLogDebug(@"Show attendees");
+    
 }
 
 - (void)addEventToCalendar
 {
-    DDLogDebug(@"Add event to calendar");
+    [[GLPCalendarManager sharedInstance] addEventPostToCalendar:_post withCallback:^(CalendarEventStatus resultStatus) {
+        
+        switch (resultStatus) {
+            case kSuccess:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showEventSuccessfullyAddedToCalendar];
+                });
+                
+                break;
+                
+            case kPermissionsError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorPermissionsToCalendar];
+                });
+                break;
+                
+            case kOtherError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorSavingEventToCalendar];
+                });
+                break;
+                
+            default:
+                break;
+        }
+        
+    }];
     
 }
 

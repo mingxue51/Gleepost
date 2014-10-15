@@ -8,6 +8,8 @@
 
 #import "GLPPost.h"
 #import "GLPVideo.h"
+#import "DateFormatterHelper.h"
+#import "GLPLocation.h"
 
 @implementation GLPPost
 
@@ -76,6 +78,21 @@
     }
     
     return NO;
+}
+
+- (NSDate *)generateDateEventEnds
+{
+    return [DateFormatterHelper addHours:2 toDate:_dateEventStarts];
+}
+
+- (NSString *)locationDescription
+{
+    if(!_location.name)
+    {
+        return _location.address;
+    }
+    
+    return _location.name;
 }
 
 -(NSString *)description

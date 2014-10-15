@@ -87,11 +87,13 @@
 - (IBAction)navigateToAttendeesList:(id)sender
 {
     [_delegate showAttendees];
+    [self dismissView:nil];
 }
 
 - (IBAction)addEventToCalendar:(id)sender
 {
     [_delegate addEventToCalendar];
+    [self dismissView:nil];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -194,6 +194,8 @@
     return date;
 }
 
+#pragma mark - Date as param
+
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
 {
     if ([date compare:beginDate] == NSOrderedAscending)
@@ -203,6 +205,16 @@
     	return NO;
     
     return YES;
+}
+
++ (NSDate *)addHours:(NSUInteger)hours toDate:(NSDate *)date
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:date];
+    
+    [comp setDay:comp.day];
+    [comp setHour:comp.hour+hours];
+    [comp setMinute:comp.minute];
+    return [[NSCalendar currentCalendar] dateFromComponents:comp];
 }
 
 @end

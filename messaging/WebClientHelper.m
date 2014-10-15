@@ -239,4 +239,21 @@
     [WebClientHelper showAlertWithTitle:@"Success!" andMessage:[NSString stringWithFormat:@"The server mode has been changed to %@. If you come from sign out progress please kill the app and launch again to let this change to be applied.", mode]];
 }
 
+#pragma mark - Calendar
+
++ (void)showErrorSavingEventToCalendar
+{
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"There was a problem saving the event to your calendar."];
+}
+
++ (void)showEventSuccessfullyAddedToCalendar
+{
+    [WebClientHelper showAlertWithTitle:@"Success!" andMessage:@"The event has successfully added to your default calendar"];
+}
+
++ (void)showErrorPermissionsToCalendar
+{
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"NerdNation needs permissions to save that event to your Calendar. Please check your settings and try again."];
+}
+
 @end

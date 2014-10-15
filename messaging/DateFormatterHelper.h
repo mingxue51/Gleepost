@@ -25,5 +25,6 @@
 +(NSArray *)generateTheNextDayStartAndEnd;
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 + (NSDate *)generateDateBeforeDays:(NSInteger)days;
++ (NSDate *)addHours:(NSUInteger)hours toDate:(NSDate *)date;
 
 @end
