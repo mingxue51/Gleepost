@@ -200,7 +200,7 @@ const int CORNER_VALUE = 16;
     {
         ChangePasswordViewController *change = segue.destinationViewController;
         
-        change.isPasswordChange = _isPassWordChanged;
+//        change.isPasswordChange = _isPassWordChanged;
     }
 }
 

@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, SettingsItem) {
+    kNameSetting = 0,
+    kPasswordSetting,
+    kTaglineSetting,
+    kInviteFriendsSetting,
+};
+
 @interface GLPSettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
 @end

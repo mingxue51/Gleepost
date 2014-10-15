@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPSettingsViewController.h"
 
 @interface ChangePasswordViewController : UIViewController<UIAlertViewDelegate>
 
-@property (assign, nonatomic) BOOL isPasswordChange;
+//@property (assign, nonatomic) BOOL isPasswordChange;
+@property (assign, nonatomic) SettingsItem selectedSettingsItem;
 
 @end

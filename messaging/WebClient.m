@@ -1634,7 +1634,24 @@ static WebClient *instance = nil;
         
         callbackBlock(NO);
     }];
+}
+
+- (void)changeTagLine:(NSString *)tagline callback:(void (^) (BOOL success))callback
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     
+    [params setObject:tagline forKey:@"tagline"];
+    
+    [self postPath:@"profile/tagline" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callback(YES);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        callback(NO);
+        
+    }];
 }
 
 -(void)resetPasswordWithEmail:(NSString *)email callbackBlock:(void (^) (BOOL success))callbackBlock

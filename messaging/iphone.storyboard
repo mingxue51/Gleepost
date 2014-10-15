@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -1170,6 +1171,7 @@
                         <outlet property="passWord" destination="kjs-BB-Rj4" id="cgV-09-ooE"/>
                         <outlet property="passWord2" destination="TdX-2b-vxG" id="Q2g-Xd-avH"/>
                         <outlet property="separatorLastTextField" destination="Ani-Do-zXS" id="PVY-fq-2wh"/>
+                        <outlet property="separatorSecondTextField" destination="RfE-ol-Alv" id="sGn-Bp-7T0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y4g-4y-npH" userLabel="First Responder" sceneMemberID="firstResponder"/>

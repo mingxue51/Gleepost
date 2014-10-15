@@ -16,17 +16,12 @@
 #import "ChangePasswordViewController.h"
 #import "TableViewHelper.h"
 
-typedef NS_ENUM(NSUInteger, SettingsItem) {
-    kNameSetting = 0,
-    kPasswordSetting,
-    kInviteFriendsSetting
-};
-
 @interface GLPSettingsViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *settingsItems;
-@property (assign, nonatomic) BOOL isPassWordChanged;
+//@property (assign, nonatomic) BOOL isPassWordChanged;
+@property (assign, nonatomic) SettingsItem changeSettingItem;
 
 @end
 
@@ -64,6 +59,8 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Name", [NSNumber numberWithInteger:kNameSetting], nil]];
     
     [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Password", [NSNumber numberWithInteger:kPasswordSetting], nil]];
+    
+    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Tagline", [NSNumber numberWithInteger:kTaglineSetting], nil]];
     
 //    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithInteger:kInviteFriendsSetting], @"Name", nil]];
     
@@ -182,6 +179,9 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
             [self navigateToChangePasswordView];
             break;
             
+            case 2:
+            [self navigateToChangeTaglineView];
+            
         default:
             break;
     }
@@ -189,15 +189,22 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 
 -(void)navigateToChangePasswordView
 {
-    _isPassWordChanged = YES;
+//    _isPassWordChanged = YES;
+    _changeSettingItem = kPasswordSetting;
     [self performSegueWithIdentifier:@"pass view" sender:self];
 }
 
 -(void)navigateToChangeNameView
 {
-    _isPassWordChanged = NO;
+//    _isPassWordChanged = NO;
+    _changeSettingItem = kNameSetting;
     [self performSegueWithIdentifier:@"pass view" sender:self];
-    
+}
+
+- (void)navigateToChangeTaglineView
+{
+    _changeSettingItem = kTaglineSetting;
+    [self performSegueWithIdentifier:@"pass view" sender:self];
 }
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -207,7 +214,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     {
         ChangePasswordViewController *change = segue.destinationViewController;
         
-        change.isPasswordChange = _isPassWordChanged;
+        change.selectedSettingsItem = _changeSettingItem;
     }
 }
 

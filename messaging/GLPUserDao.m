@@ -123,6 +123,17 @@
     }];
 }
 
++ (void)updateLoggedInUsersTagline:(NSString *)tagline
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [db executeUpdateWithFormat:@"update users set tagline=%@ where remoteKey=%d",
+         tagline,
+         [SessionManager sharedInstance].user.remoteKey];
+        
+    }];
+}
+
 +(void)update:(GLPUser*)entity
 {
     

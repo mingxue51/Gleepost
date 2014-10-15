@@ -14,7 +14,6 @@
 
 @interface ChangePasswordViewController ()
 
-
 @property (weak, nonatomic) IBOutlet UITextField *oldPassWord;
 
 @property (weak, nonatomic) IBOutlet UITextField *passWord;
@@ -22,14 +21,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *passWord2;
 
 @property (weak, nonatomic) IBOutlet UIImageView *separatorLastTextField;
+
+@property (weak, nonatomic) IBOutlet UIImageView *separatorSecondTextField;
  
 @property (weak, nonatomic) IBOutlet UIButton *changeButton;
 
 @end
 
 @implementation ChangePasswordViewController
-
-@synthesize isPasswordChange = _isPasswordChange;
 
 - (void)viewDidLoad
 {
@@ -41,22 +40,32 @@
 
 -(void)configureNavigationBar
 {
-    if(_isPasswordChange)
-    {
-        self.title = @"CHANGE PASSWORD";
+    switch (self.selectedSettingsItem) {
+        case kNameSetting:
+            
+            self.title = @"CHANGE NAME";
+
+            break;
+            
+        case kPasswordSetting:
+            self.title = @"CHANGE PASSWORD";
+
+            break;
+            
+        case kTaglineSetting:
+            self.title = @"CHANGE TAGLINE";
+            break;
+            
+        default:
+            break;
     }
-    else
-    {
-        self.title = @"CHANGE NAME";
-    }
-    
     
 //    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
 }
 
 -(void)configureView
 {
-    if(!_isPasswordChange)
+    if(self.selectedSettingsItem == kNameSetting)
     {
         //Remove the first field and change their text placeholders.
         [_passWord2 setHidden:YES];
@@ -67,19 +76,48 @@
         [_passWord setSecureTextEntry:NO];
         [_changeButton setTitle:@"CHANGE NAME" forState:UIControlStateNormal];
     }
+    else if (self.selectedSettingsItem == kTaglineSetting)
+    {
+        [_passWord setHidden:YES];
+        [_passWord2 setHidden:YES];
+        [_separatorLastTextField setHidden:YES];
+        [_separatorSecondTextField setHidden:YES];
+        [_oldPassWord setPlaceholder:@"New tagline"];
+        [_passWord setHidden:YES];
+        [_oldPassWord setSecureTextEntry:NO];
+        [_changeButton setTitle:@"CHANGE TAGLINE" forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)saveNewPassword:(id)sender
 {
 
-    if(_isPasswordChange)
-    {
-        [self changePassword];
+    switch (self.selectedSettingsItem) {
+        case kNameSetting:
+            [self changeName];
+            break;
+            
+        case kPasswordSetting:
+            [self changePassword];
+            break;
+         
+        case kTaglineSetting:
+            [self changeTagline];
+            break;
+        
+            
+        default:
+            break;
     }
-    else
-    {
-        [self changeName];
-    }
+    
+//    if(_isPasswordChange)
+//    {
+//        [self changePassword];
+//    }
+//    else
+//    {
+//        [self changeName];
+//    }
 }
 
 - (void)changePassword
@@ -163,6 +201,47 @@
             
         }];
     }
+}
+
+- (void)changeTagline
+{
+    if([_oldPassWord.text isEqualToString:@""])
+    {
+        [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fieds are not empty."];
+        
+        return;
+    }
+    else
+    {
+        [self hideKeyboard];
+        
+        [WebClientHelper showStandardLoaderWithTitle:@"Changing tagline..." forView:self.view];
+        
+        [[WebClient sharedInstance] changeTagLine:_oldPassWord.text callback:^(BOOL success) {
+           
+            [WebClientHelper hideStandardLoaderForView:self.view];
+            
+            if(success)
+            {
+                [WebClientHelper showStandardErrorWithTitle:@"Tagline changed" andContent:[NSString stringWithFormat:@"Your new tagline is: %@.",_oldPassWord.text]];
+                
+                //Update database with the new name.
+                [GLPUserDao updateLoggedInUsersTagline:_oldPassWord.text];
+                
+                
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                //                    [WebClientHelper showStandardErrorWithTitle:@"Failed to change name" andContent:@"Please make sure that you are connected with internet and try again."];
+                
+                [self showAlertViewWithTitle:@"Failed to change tagline" andContent:@"Please make sure that you are connected with internet and try again."];
+                
+            }
+            
+        }];
+    }
+    
 }
 
 #pragma mark - AlertView
