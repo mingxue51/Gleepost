@@ -92,6 +92,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [_tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     GLPUser *selectedUser = _users[indexPath.row];
     
     if([[ContactsManager sharedInstance] isLoggedInUser:selectedUser])

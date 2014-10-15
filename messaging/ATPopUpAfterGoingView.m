@@ -9,6 +9,7 @@
 #import "ATPopUpAfterGoingView.h"
 #import "ViewPostViewController.h"
 #import "GLPPopUpDialogViewController.h"
+#import "UIColor+GLPAdditions.h"
 
 @implementation ATPopUpAfterGoingView
 
@@ -32,6 +33,8 @@ const float ANIMATION_TIME_POP_UP = 0.2;
     UIView *inView = [transitionContext containerView];
     
     GLPPopUpDialogViewController *toVC = (GLPPopUpDialogViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    [toVC.view setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]];
     
 //    ViewPostViewController *fromVC = (ViewPostViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
