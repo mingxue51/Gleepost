@@ -35,8 +35,10 @@
 #import "GLPViewImageViewController.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPCategory.h"
+#import "TDPopUpAfterGoingView.h"
+#import "GLPPopUpDialogViewController.h"
 
-@interface ViewPostViewController ()
+@interface ViewPostViewController () <GLPPopUpDialogViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *comments;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -50,11 +52,11 @@
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
+@property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
+
 @end
 
-
 static BOOL likePushed;
-
 
 @implementation ViewPostViewController
 
@@ -139,6 +141,7 @@ static BOOL likePushed;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self  name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
     
     self.commentJustCreated = NO;
     
@@ -204,6 +207,8 @@ static BOOL likePushed;
 -(void)initialiseElements
 {
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+    self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
+    
     self.keyboardAppearanceSpaceY = 0;
     
     //To hide empty cells
@@ -239,6 +244,7 @@ static BOOL likePushed;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonTouchedWithNotification:) name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
 }
 
 - (void)configureForm
@@ -439,6 +445,40 @@ static BOOL likePushed;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
+- (void)goingButtonTouchedWithNotification:(NSNotification *)notification
+{
+    DDLogDebug(@"goingButtonTouchedWithNotification");
+    
+    
+    UIImage *postImage = notification.userInfo[@"image"];
+    
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    
+    [cvc setDelegate:self];
+    [cvc setTopImage:postImage];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.transitionViewPopUpAttend];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+  
+}
+
+#pragma mark - GLPPopUpDialogViewControllerDelegate
+
+- (void)showAttendees
+{
+    DDLogDebug(@"Show attendees");
+}
+
+- (void)addEventToCalendar
+{
+    DDLogDebug(@"Add event to calendar");
+    
+}
 
 #pragma mark - GLPImageViewDelegate
 
@@ -499,8 +539,6 @@ static BOOL likePushed;
     
     
     [self hideKeyboardFromTextViewIfNeeded];
-    
-    
 }
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="oTu-PD-f01">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -356,6 +357,88 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UZN-gV-ViJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1827" y="-1938"/>
+        </scene>
+        <!--Pop Up Dialog View Controller-->
+        <scene sceneID="OXA-hH-pqZ">
+            <objects>
+                <viewController storyboardIdentifier="GLPPopUpDialogViewController" id="CHT-od-7XB" customClass="GLPPopUpDialogViewController" sceneMemberID="viewController">
+                    <view key="view" alpha="0.29999999999999966" contentMode="scaleToFill" id="GxS-f0-bsi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="7gL-LT-tzC">
+                                <rect key="frame" x="16" y="97" width="288" height="374"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pop_up_background.png" id="Udu-eB-2Q0">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="374"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="OmF-ns-hjt">
+                                        <rect key="frame" x="3" y="3" width="282" height="188"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="05m-bT-q7T">
+                                        <rect key="frame" x="14" y="313" width="261" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="DISMISS" backgroundImage="dismiss_button_background.png">
+                                            <color key="titleColor" red="0.74901960784313726" green="0.74901960784313726" blue="0.74901960784313726" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissView:" destination="CHT-od-7XB" eventType="touchUpInside" id="feT-9e-2pe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XtS-FU-4py">
+                                        <rect key="frame" x="14" y="198" width="261" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="ADD EVENT TO MY CALENDAR" backgroundImage="add_to_calendar_button_background.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addEventToCalendar:" destination="CHT-od-7XB" eventType="touchUpInside" id="IVo-Bn-DWE"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pad_icon.png" id="Dem-84-wgc">
+                                        <rect key="frame" x="98" y="99" width="87" height="83"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="you_are_on_g-list.png" id="T3b-hE-jmu">
+                                        <rect key="frame" x="23" y="8" width="243" height="83"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WWn-eN-M4N">
+                                        <rect key="frame" x="14" y="253" width="261" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="SEE WHO ELSE IS GOING" backgroundImage="show_glist_button_background.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="navigateToAttendeesList:" destination="CHT-od-7XB" eventType="touchUpInside" id="lRj-VR-OCw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="centralView" destination="7gL-LT-tzC" id="V74-k9-7TE"/>
+                        <outlet property="topImageView" destination="OmF-ns-hjt" id="TvG-ez-NEj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0AX-K4-4Sw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1827" y="-1308"/>
         </scene>
         <!--Intro Kind Of Event View Controller-->
         <scene sceneID="fXf-Ae-brl">
@@ -2188,11 +2271,11 @@
             <objects>
                 <viewController id="gby-Gq-HqZ" customClass="GLPShowLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="64" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -4622,6 +4705,7 @@
         <image name="add-user.png" width="254" height="185"/>
         <image name="add_button_background.png" width="570" height="100"/>
         <image name="add_members_bg.png" width="516" height="112"/>
+        <image name="add_to_calendar_button_background.png" width="520" height="100"/>
         <image name="back.png" width="23" height="37"/>
         <image name="back_black.png" width="23" height="37"/>
         <image name="back_final.png" width="25" height="25"/>
@@ -4639,6 +4723,7 @@
         <image name="conversation_new_notification.png" width="45" height="26"/>
         <image name="default_user_image2.png" width="1000" height="1000"/>
         <image name="default_user_image3.png" width="300" height="300"/>
+        <image name="dismiss_button_background.png" width="520" height="100"/>
         <image name="down_arrow.png" width="23" height="14"/>
         <image name="fb_login_bg.png" width="520" height="100"/>
         <image name="go_to_preview.png" width="121" height="54"/>
@@ -4674,7 +4759,9 @@
         <image name="nerdnation_tree.png" width="205" height="251"/>
         <image name="next_button_bg.png" width="588" height="136"/>
         <image name="notificationicon.png" width="70" height="70"/>
+        <image name="pad_icon.png" width="136" height="178"/>
         <image name="pick_pic.png" width="81" height="65"/>
+        <image name="pop_up_background.png" width="572" height="772"/>
         <image name="private_group.png" width="200" height="117"/>
         <image name="private_profile_background.png" width="640" height="724"/>
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
@@ -4690,6 +4777,7 @@
         <image name="send_button_background.png" width="130" height="74"/>
         <image name="share.png" width="40" height="36"/>
         <image name="share_image.png" width="20" height="17"/>
+        <image name="show_glist_button_background.png" width="520" height="100"/>
         <image name="sign_in_b" width="46" height="11"/>
         <image name="sign_up_bg.png" width="520" height="100"/>
         <image name="signin-button.png" width="442" height="98"/>
@@ -4704,6 +4792,7 @@
         <image name="verification_rocket.png" width="185" height="149"/>
         <image name="video_done.png" width="130" height="55"/>
         <image name="video_top_button.png" width="190" height="95"/>
+        <image name="you_are_on_g-list.png" width="418" height="122"/>
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -4712,20 +4801,20 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Vyz-Un-MGO"/>
         <segue reference="pjB-B1-HWm"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="sMz-ia-ebt"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="J6b-Ty-4qO"/>
         <segue reference="Ze9-pm-FNm"/>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="voh-a1-0cl"/>
-        <segue reference="YIa-ii-tw7"/>
-        <segue reference="0xq-5H-6eX"/>
+        <segue reference="Ji2-Jv-WyQ"/>
+        <segue reference="WK7-hw-eyD"/>
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="wR3-TA-URh"/>
         <segue reference="hfC-fm-BOR"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="YIa-ii-tw7"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

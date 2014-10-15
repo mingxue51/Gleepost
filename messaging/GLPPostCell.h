@@ -38,8 +38,9 @@ typedef NS_ENUM(NSInteger, GLPCellType) {
 @protocol GLPPostCellDelegate <NSObject>
 
 @required
--(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey;
+- (void)elementTouchedWithRemoteKey:(NSInteger)remoteKey;
 - (void)showLocationWithLocation:(GLPLocation *)location;
+//- (void)goingButtonTouched;
 
 @end
 

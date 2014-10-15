@@ -949,16 +949,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         //Not attend.
         [self notAttendingToEvent];
         [self makeButtonUnselected];
-        
     }
     else if(_goingBtn.tag == 2)
     {
         //Attend.
         [self attendingToEvent];
         [self makeButtonSelected];
-        //        [_goingButton setImage:[UIImage imageNamed:@"going_pressed"] forState:UIControlStateNormal];
-        //        _goingButton.tag = 1;
-        
+        [self notifyViewPostAfterGoingPressed];
     }
 }
 
@@ -986,6 +983,20 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     
     [_delegate showViewOptionsWithActionSheer:actionSheet];
+}
+
+#pragma mark - Notifications
+
+- (void)notifyViewPostAfterGoingPressed
+{
+    if(_postImageView.image)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"image": _postImageView.image}];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self];
+    }
 }
 
 #pragma mark - Client
