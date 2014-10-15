@@ -536,6 +536,7 @@
 		58A75FC019523BC80060060D /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58A75FBF19523BC80060060D /* MessageCell.xib */; };
 		58A78ED0199C4DF10038564D /* change_pass_name.png in Resources */ = {isa = PBXBuildFile; fileRef = 58A78ECF199C4DF10038564D /* change_pass_name.png */; };
 		58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A855C01949BA8C0059CF57 /* GLPButton.m */; };
+		58A9D94819EE4DA40067AB7D /* GLPShowUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A9D94719EE4DA40067AB7D /* GLPShowUsersViewController.m */; };
 		58AA61E4192A87100098E4FB /* add_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E3192A87100098E4FB /* add_new_post.png */; };
 		58AA61E6192A87350098E4FB /* show_categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E5192A87350098E4FB /* show_categories.png */; };
 		58AA61E8192A87540098E4FB /* nav_bar_title_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AA61E7192A87540098E4FB /* nav_bar_title_button.png */; };
@@ -1667,6 +1668,8 @@
 		58A78ECF199C4DF10038564D /* change_pass_name.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = change_pass_name.png; sourceTree = "<group>"; };
 		58A855BF1949BA8C0059CF57 /* GLPButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPButton.h; sourceTree = "<group>"; };
 		58A855C01949BA8C0059CF57 /* GLPButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPButton.m; sourceTree = "<group>"; };
+		58A9D94619EE4DA40067AB7D /* GLPShowUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPShowUsersViewController.h; sourceTree = "<group>"; };
+		58A9D94719EE4DA40067AB7D /* GLPShowUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPShowUsersViewController.m; sourceTree = "<group>"; };
 		58AA61E3192A87100098E4FB /* add_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new_post.png; sourceTree = "<group>"; };
 		58AA61E5192A87350098E4FB /* show_categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_categories.png; sourceTree = "<group>"; };
 		58AA61E7192A87540098E4FB /* nav_bar_title_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button.png; sourceTree = "<group>"; };
@@ -3890,6 +3893,8 @@
 				58D301D91989C10E003EC08B /* GLPInviteUsersViewController.m */,
 				58D301DB1989C570003EC08B /* GLPSelectUsersViewController.h */,
 				58D301DC1989C570003EC08B /* GLPSelectUsersViewController.m */,
+				58A9D94619EE4DA40067AB7D /* GLPShowUsersViewController.h */,
+				58A9D94719EE4DA40067AB7D /* GLPShowUsersViewController.m */,
 			);
 			name = Users;
 			sourceTree = "<group>";
@@ -6046,6 +6051,7 @@
 				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
+				58A9D94819EE4DA40067AB7D /* GLPShowUsersViewController.m in Sources */,
 				58774D44196574260034A1C6 /* UIRefreshControl+CustomLoader.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
 				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,

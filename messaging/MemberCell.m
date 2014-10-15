@@ -51,6 +51,9 @@ const float CONTACT_CELL_HEIGHT = 48;
     {
         [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl]  placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
+    
+    [_roleLbl setHidden:YES];
+    [_moreButton setHidden:YES];
 }
 
 -(void)setMember:(GLPMember *)member withGroup:(GLPGroup *)group loggedInMemberRole:(GLPMember *)loggedInMember

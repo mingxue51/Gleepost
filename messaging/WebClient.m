@@ -711,6 +711,25 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)loadAttendeesWithPostRemoteKey:(NSInteger)postRemoteKey callback:(void (^)(NSArray *users, BOOL success))callback
+{
+    NSDictionary *params = [[NSDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+
+    NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+        NSArray *users = [RemoteParser parseAttendeesFromJson:responseObject];
+        
+        callback(users, YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callback(nil, NO);
+
+    }];
+}
+
 #pragma mark - Campus Live
 
 -(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock

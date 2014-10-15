@@ -38,6 +38,7 @@
 #import "TDPopUpAfterGoingView.h"
 #import "GLPPopUpDialogViewController.h"
 #import "GLPCalendarManager.h"
+#import "GLPShowUsersViewController.h"
 
 @interface ViewPostViewController () <GLPPopUpDialogViewControllerDelegate>
 
@@ -472,7 +473,7 @@ static BOOL likePushed;
 
 - (void)showAttendees
 {
-    
+    [self performSegueWithIdentifier:@"show attendees" sender:self];
 }
 
 - (void)addEventToCalendar
@@ -1374,6 +1375,14 @@ static bool firstTime = YES;
         GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
         
         showLocationVC.location = _selectedLocation;
+    }
+    else if ([segue.identifier isEqualToString:@"show attendees"])
+    {
+        GLPShowUsersViewController *showUsersVC = segue.destinationViewController;
+        
+        showUsersVC.postRemoteKey = _post.remoteKey;
+        
+        showUsersVC.selectedTitle = @"GUEST LIST";
     }
 }
 

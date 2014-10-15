@@ -280,6 +280,7 @@
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="WK7-hw-eyD"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="J6b-Ty-4qO"/>
                         <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="Ji2-Jv-WyQ"/>
+                        <segue destination="chq-8F-SBT" kind="push" identifier="show attendees" id="NkQ-j5-6rL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8kw-OV-FmS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1428,6 +1429,41 @@
             </objects>
             <point key="canvasLocation" x="2343" y="-3420"/>
         </scene>
+        <!--Show Users View Controller-->
+        <scene sceneID="fQz-7x-jdP">
+            <objects>
+                <viewController id="chq-8F-SBT" customClass="GLPShowUsersViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zSp-u0-oa6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="YEs-ju-Eh1">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" red="0.92941176469999998" green="0.92941176469999998" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="separatorInset" minX="60" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="chq-8F-SBT" id="wdL-VM-RlS"/>
+                                    <outlet property="delegate" destination="chq-8F-SBT" id="bfd-85-Ss3"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="m1i-1l-rRM">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Gmk-xm-0cI"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="YEs-ju-Eh1" id="CQd-2D-uQf"/>
+                        <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="KpL-5K-Dn2"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="Hvj-hh-KhY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8wQ-Sq-uop" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2343" y="-4783"/>
+        </scene>
         <!--PICK AN IMAGE-->
         <scene sceneID="v3e-He-fEv">
             <objects>
@@ -1768,7 +1804,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -2271,11 +2307,11 @@
             <objects>
                 <viewController id="gby-Gq-HqZ" customClass="GLPShowLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -4801,20 +4837,20 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="pjB-B1-HWm"/>
-        <segue reference="fah-A8-Ky9"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="Ze9-pm-FNm"/>
-        <segue reference="Ji2-Jv-WyQ"/>
-        <segue reference="WK7-hw-eyD"/>
+        <segue reference="KpL-5K-Dn2"/>
+        <segue reference="lQn-ic-ohV"/>
+        <segue reference="Hvj-hh-KhY"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="wR3-TA-URh"/>
-        <segue reference="hfC-fm-BOR"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="e8B-qp-59Q"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="7l2-k5-pHQ"/>
+        <segue reference="bc7-so-Tnw"/>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="XA6-SN-ZTj"/>
-        <segue reference="cxq-Lw-xeo"/>
         <segue reference="YIa-ii-tw7"/>
+        <segue reference="hfC-fm-BOR"/>
         <segue reference="fL3-CC-Jbz"/>
     </inferredMetricsTieBreakers>
 </document>

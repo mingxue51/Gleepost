@@ -65,6 +65,7 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL sucess, NSArray *posts))callbackBlock;
 -(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)reportPostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
+- (void)loadAttendeesWithPostRemoteKey:(NSInteger)postRemoteKey callback:(void (^)(NSArray *users, BOOL success))callback;
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock;
 - (void)createComment:(GLPComment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock;

@@ -69,6 +69,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return objects;
 }
 
++ (NSArray *)parseAttendeesFromJson:(NSDictionary *)jsonDictionary
+{
+    return [RemoteParser parseUsersFromJson:jsonDictionary[@"attendees"]];
+}
+
 + (NSArray *)parseMembersFromJson:(NSArray *)jsonArray withGroupRemoteKey:(int)groupRemoteKey
 {
     NSMutableArray *members = [NSMutableArray array];
