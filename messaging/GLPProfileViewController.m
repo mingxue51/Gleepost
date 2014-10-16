@@ -632,8 +632,6 @@
     
     [GLPPostManager loadPostsWithRemoteKey:_user.remoteKey localCallback:^(NSArray *posts) {
         
-        DDLogDebug(@"Database");
-        
         [self refreshNewPosts:posts];
         
     } remoteCallback:^(BOOL success, NSArray *posts) {

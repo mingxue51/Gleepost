@@ -54,9 +54,7 @@
     {
         return NO;
     }
-    
-    DDLogDebug(@"");
-    
+        
     return YES;
 }
 

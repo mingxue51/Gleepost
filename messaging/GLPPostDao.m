@@ -217,21 +217,32 @@
 }
 
 
-+(void)loadImagesWithPosts:(NSMutableArray *)posts withDb:(FMDatabase *)db
++ (void)loadImagesWithPosts:(NSMutableArray *)posts withDb:(FMDatabase *)db
 {
     for(GLPPost *currentPost in posts)
     {
-        FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select image_url from post_images where post_remote_key=%d", currentPost.remoteKey];
-        
-        NSMutableArray *imagesUrl = [NSMutableArray array];
-        
-        while ([imagesResultSet next])
-        {
-            [imagesUrl addObject:[imagesResultSet stringForColumn:@"image_url"]];
-            
-            currentPost.imagesUrls = [imagesUrl mutableCopy];
-        }
+        [GLPPostDao loadImagesWithPost:currentPost db:db];
     }
+}
+
++ (BOOL)loadImagesWithPost:(GLPPost *)post db:(FMDatabase *)db
+{
+    BOOL foundImages = NO;
+    
+    FMResultSet *imagesResultSet = [db executeQueryWithFormat:@"select image_url from post_images where post_remote_key=%d", post.remoteKey];
+    
+    NSMutableArray *imagesUrl = [NSMutableArray array];
+    
+    while ([imagesResultSet next])
+    {
+        [imagesUrl addObject:[imagesResultSet stringForColumn:@"image_url"]];
+        
+        post.imagesUrls = [imagesUrl mutableCopy];
+        
+        foundImages = YES;
+    }
+    
+    return foundImages;
 }
 
 +(void)loadVideosWithPosts:(NSMutableArray *)posts withDb:(FMDatabase *)db
@@ -548,6 +559,11 @@
      entity.eventTitle,
      eventDate,
      entity.remoteKey];
+    
+    if([entity imagePost])
+    {
+        [GLPPostDao updateImagesWithEntity:entity db:db];
+    }
 }
 
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
@@ -563,6 +579,15 @@
     else
     {
         [GLPPostDao insertVideoWithEntity:entity andDb:db];
+    }
+}
+
++ (void)updateImagesWithEntity:(GLPPost *)entity db:(FMDatabase *)db
+{
+    if(![GLPPostDao loadImagesWithPost:entity db:db])
+    {
+        //If there are not images of this post in database then insert them.
+        [GLPPostDao insertImagesWithEntity:entity andDb:db];
     }
 }
 
