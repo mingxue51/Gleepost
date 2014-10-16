@@ -156,6 +156,7 @@
     [[DatabaseManager sharedInstance] initDatabase];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        DDLogDebug(@"DB error : validateLoginForUser");
         [GLPUserDao save:user inDb:db];
         
     }];
@@ -180,6 +181,7 @@
     
     __block GLPUser *user;
     [DatabaseManager run:^(FMDatabase *db) {
+        DDLogDebug(@"DB error : findByRemoteKey");
         user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
     }];
     

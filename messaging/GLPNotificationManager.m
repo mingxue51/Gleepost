@@ -237,6 +237,8 @@
 //            [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
 //        }
         
+        DDLogDebug(@"DB error : saveNotifications");
+        
         for(GLPNotification *notification in notifications)
         {
             [GLPNotificationDao save:notification inDb:db];

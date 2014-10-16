@@ -81,6 +81,8 @@
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
+        DDLogDebug(@"DB error : findRemoteGroups");
+        
         groups = [GLPGroupDao findRemoteGroupsdb:db];
         
     }];
@@ -232,6 +234,8 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 
+        DDLogDebug(@"DB error : saveGroups");
+        
         [self cleanTable:db];
         
         for(GLPGroup *group in groups)

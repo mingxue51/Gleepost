@@ -24,6 +24,8 @@
         member = [GLPMemberDaoParser createFromResultSet:resultSet inDb:db];
     }
     
+    DDLogDebug(@"Find member %d", [db hasOpenResultSets]);
+    
     return member;
 }
 
@@ -40,6 +42,9 @@
         [members addObject: currentMember];
         
     }
+    
+    DDLogDebug(@"findMembersWithGroupRemoteKey %d", [db hasOpenResultSets]);
+
     
     return members;
 }

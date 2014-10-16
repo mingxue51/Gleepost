@@ -110,7 +110,7 @@
     __block NSArray *localPosts = nil;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
+        DDLogDebug(@"DB error : findPostsWithUsersRemoteKey");
         localPosts = [GLPPostDao findPostsWithUsersRemoteKey:usersRemoteKey inDb:db];
     }];
     
