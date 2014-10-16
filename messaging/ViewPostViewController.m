@@ -694,8 +694,6 @@ static bool firstTime = YES;
 
 -(void)loadComments
 {
-    DDLogDebug(@"Post remote key: %d", self.post.remoteKey);
-    
     if(self.post.remoteKey == 0)
     {
         //Load comments from operation manager.
@@ -1009,12 +1007,24 @@ static bool firstTime = YES;
     }
     else
     {
-        [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+        [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     }
     
-    
-    // Pop-up view controller.
-    [self.navigationController popViewControllerAnimated:YES];
+    if(self.isFromCampusLive)
+    {
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+            //Inform Campus Wall that the campus live status changed.
+            //i.e. refresh campus live.
+            [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:YES];
+            
+        }];
+    }
+    else
+    {
+        // Pop-up view controller.
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - UIAlertViewDelegate

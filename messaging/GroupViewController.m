@@ -1414,7 +1414,7 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
     int index;
     

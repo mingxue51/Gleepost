@@ -531,6 +531,17 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)deletePost:(NSNotification *)notification
 {
+    NSDictionary *notificationDic = notification.userInfo;
+    
+    BOOL postFromCampusLive = [notificationDic[@"ComesFromCampusLive"] boolValue];
+    
+    if(postFromCampusLive)
+    {
+        //Refresh campus live.
+        [_campusWallHeader reloadData];
+        return;
+    }
+    
     int index = -1;
     
     if(_groupsMode)
@@ -2372,11 +2383,9 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-//    int index;
-    
     self.isLoading = YES;
     
-    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey];
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
     self.isLoading = NO;
 
@@ -2946,6 +2955,11 @@ const float TOP_OFFSET = 180.0f;
     [self presentViewController:cvc animated:YES completion:nil];
 }
 
+/**
+ This method is called by the notification that is called by campus live cell.
+ 
+ @param notification
+ */
 -(void)showEventPost:(NSNotification*)notification
 {
     NSDictionary *dict = [notification userInfo];

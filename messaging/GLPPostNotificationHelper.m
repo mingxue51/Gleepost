@@ -241,9 +241,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
 }
 
-+(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey
++(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey inCampusLive:(BOOL)postInCampusLive
 {
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", nil];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithBool:postInCampusLive] , @"ComesFromCampusLive",nil];
     
     //TODO: See if the self object is good to set as a parameter.
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POST_DELETED object:self userInfo:dataDict];

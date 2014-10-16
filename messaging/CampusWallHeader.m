@@ -356,19 +356,14 @@ NSString *BORING_IMAGE;
 
 -(void)didSelectCell:(id)sender
 {
-   
     UIGestureRecognizer *g = (UIGestureRecognizer *)sender;
-    
-    
     
     CampusWallHeaderCell *headerCell = (CampusWallHeaderCell *)g.view;
     
     NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys: headerCell.postData, @"Post"
                               , nil];
     
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPShowEvent" object:self userInfo:dataDict];
-
 }
 
 

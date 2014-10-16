@@ -90,6 +90,13 @@ static GLPLiveConversationsManager *instance = nil;
     [self showLoadingIndicator];
     
     [[WebClient sharedInstance] getConversationsWithCallback:^(BOOL success, NSArray *conversations) {
+        
+        if(success)
+        {
+            //Save in local database.
+            [ConversationManager initialSaveConversationsToDatabase:conversations];
+        }
+        
         dispatch_async(_queue, ^{
             if(!success) {
                 DDLogError(@"Cannot load conversations");
@@ -99,9 +106,6 @@ static GLPLiveConversationsManager *instance = nil;
             }
             
             [self hideLoadingIndicator];
-            
-            //Save in local database.
-            [ConversationManager initialSaveConversationsToDatabase:conversations];
             
             DDLogInfo(@"Load conversations sucess, loaded conversations: %d", conversations.count);
             
