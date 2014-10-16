@@ -310,6 +310,8 @@
 		585EBB3618E317B200BDAE81 /* add_members_bg_press_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 585EBB3518E317B200BDAE81 /* add_members_bg_press_down.png */; };
 		585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */; };
 		585FF58D18AFAF07009462AD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 585FF58C18AFAF07009462AD /* CoreLocation.framework */; };
+		5861130F19EF0541008220DC /* pad_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5861130D19EF0541008220DC /* pad_icon.png */; };
+		5861131019EF0541008220DC /* pad_icon_pop_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 5861130E19EF0541008220DC /* pad_icon_pop_up.png */; };
 		586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */ = {isa = PBXBuildFile; fileRef = 586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */; };
 		58615758193CAB13009BAD33 /* GLPWalkthoughDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58615757193CAB13009BAD33 /* GLPWalkthoughDataViewController.m */; };
 		5861575B193CAB7B009BAD33 /* GLPWalkthroughModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5861575A193CAB7B009BAD33 /* GLPWalkthroughModelController.m */; };
@@ -444,7 +446,6 @@
 		588F1DC719EDD21C00DB6D23 /* dismiss_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 588F1DC119EDD21C00DB6D23 /* dismiss_button_background.png */; };
 		588F1DC819EDD21C00DB6D23 /* show_glist_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 588F1DC219EDD21C00DB6D23 /* show_glist_button_background.png */; };
 		588F1DC919EDD21C00DB6D23 /* add_to_calendar_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 588F1DC319EDD21C00DB6D23 /* add_to_calendar_button_background.png */; };
-		588F1DCA19EDD21C00DB6D23 /* pad_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 588F1DC419EDD21C00DB6D23 /* pad_icon.png */; };
 		588F1DCB19EDD21C00DB6D23 /* you_are_on_g-list.png in Resources */ = {isa = PBXBuildFile; fileRef = 588F1DC519EDD21C00DB6D23 /* you_are_on_g-list.png */; };
 		588F1DCE19EDF32E00DB6D23 /* GLPCalendarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 588F1DCD19EDF32E00DB6D23 /* GLPCalendarManager.m */; };
 		588F1DD019EDF49900DB6D23 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 588F1DCF19EDF49900DB6D23 /* EventKit.framework */; };
@@ -1355,6 +1356,8 @@
 		585EDAE9183106DC008D29F6 /* ImageFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFormatterHelper.h; sourceTree = "<group>"; };
 		585EDAEA183106DC008D29F6 /* ImageFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageFormatterHelper.m; sourceTree = "<group>"; };
 		585FF58C18AFAF07009462AD /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		5861130D19EF0541008220DC /* pad_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pad_icon.png; sourceTree = "<group>"; };
+		5861130E19EF0541008220DC /* pad_icon_pop_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pad_icon_pop_up.png; sourceTree = "<group>"; };
 		586135B1187C0722008F0EAE /* ChatViewAnimationsStanford.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationsStanford.h; sourceTree = "<group>"; };
 		586135B2187C0722008F0EAE /* ChatViewAnimationsStanford.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationsStanford.m; sourceTree = "<group>"; };
 		58615756193CAB13009BAD33 /* GLPWalkthoughDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWalkthoughDataViewController.h; sourceTree = "<group>"; };
@@ -1544,7 +1547,6 @@
 		588F1DC119EDD21C00DB6D23 /* dismiss_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dismiss_button_background.png; sourceTree = "<group>"; };
 		588F1DC219EDD21C00DB6D23 /* show_glist_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = show_glist_button_background.png; sourceTree = "<group>"; };
 		588F1DC319EDD21C00DB6D23 /* add_to_calendar_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_to_calendar_button_background.png; sourceTree = "<group>"; };
-		588F1DC419EDD21C00DB6D23 /* pad_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pad_icon.png; sourceTree = "<group>"; };
 		588F1DC519EDD21C00DB6D23 /* you_are_on_g-list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "you_are_on_g-list.png"; sourceTree = "<group>"; };
 		588F1DCC19EDF32E00DB6D23 /* GLPCalendarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCalendarManager.h; sourceTree = "<group>"; };
 		588F1DCD19EDF32E00DB6D23 /* GLPCalendarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCalendarManager.m; sourceTree = "<group>"; };
@@ -3392,11 +3394,12 @@
 		588F1DBF19EDD19C00DB6D23 /* Attend */ = {
 			isa = PBXGroup;
 			children = (
+				5861130D19EF0541008220DC /* pad_icon.png */,
+				5861130E19EF0541008220DC /* pad_icon_pop_up.png */,
 				588F1DC019EDD21C00DB6D23 /* pop_up_background.png */,
 				588F1DC119EDD21C00DB6D23 /* dismiss_button_background.png */,
 				588F1DC219EDD21C00DB6D23 /* show_glist_button_background.png */,
 				588F1DC319EDD21C00DB6D23 /* add_to_calendar_button_background.png */,
-				588F1DC419EDD21C00DB6D23 /* pad_icon.png */,
 				588F1DC519EDD21C00DB6D23 /* you_are_on_g-list.png */,
 			);
 			name = Attend;
@@ -5297,7 +5300,6 @@
 				58CFC76F19630CF800FF1E40 /* group_button.png in Resources */,
 				586866F319B72E8D00803512 /* sign_up_bg.png in Resources */,
 				583CE32F18A0061100E78C08 /* login-button.png in Resources */,
-				588F1DCA19EDD21C00DB6D23 /* pad_icon.png in Resources */,
 				583CE33C18A019AC00E78C08 /* background_login_pages.png in Resources */,
 				586866DE19B695E600803512 /* going_pushed_back_btn.png in Resources */,
 				805E91DB189B103B00ECD40F /* PostImageCellView.xib in Resources */,
@@ -5379,6 +5381,7 @@
 				58143D7018212AE900B76E5D /* +_old.png in Resources */,
 				805E155D180EF3E700705B1C /* time_label.png in Resources */,
 				58289EF218D7511B00228EFF /* icon_like_pushed_old.png in Resources */,
+				5861131019EF0541008220DC /* pad_icon_pop_up.png in Resources */,
 				58F8C33518A549E7005EC7ED /* email_field.png in Resources */,
 				806E3D7D1832B1960063AACE /* NotificationBackgroundSuccess@2x.png in Resources */,
 				806E3D7F1832B1960063AACE /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
@@ -5646,6 +5649,7 @@
 				58F2D37F1974B98C00498E55 /* campus_wall_background_main.png in Resources */,
 				58902494195DCA0A00084E2F /* music_category.png in Resources */,
 				5829F48E18B1546300A7B871 /* in_contacts.png in Resources */,
+				5861130F19EF0541008220DC /* pad_icon.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
 				58F9EC641937580900714432 /* back_black.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,

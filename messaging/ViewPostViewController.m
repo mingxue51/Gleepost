@@ -28,6 +28,7 @@
 #import "GLPPostManager.h"
 #import "GLPApplicationHelper.h"
 #import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
 #import "UIView+GLPDesign.h"
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
@@ -69,6 +70,8 @@ static BOOL likePushed;
     [super viewDidLoad];
     
     [self initialiseElements];
+    
+    [self configureNavigationBar];
     
     [self registerCells];
     
@@ -125,7 +128,6 @@ static BOOL likePushed;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configureNavigationBar];
     
     [self registerNotifications];
 
@@ -287,7 +289,13 @@ static BOOL likePushed;
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
 
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-        
+    
+    if(_post.eventTitle)
+    {
+        [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
+    }
+    
+    
 
     if(self.isFromCampusLive)
     {

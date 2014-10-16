@@ -8,11 +8,13 @@
 
 #import "GLPPopUpDialogViewController.h"
 #import "UIImage+StackBlur.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPPopUpDialogViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *centralView;
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *overlayTopImageView;
 
 @property (strong, nonatomic) UIImage *postImage;
 
@@ -26,8 +28,9 @@
     
     [self configureElements];
     
-    
     [self configureGestures];
+    
+    [self formatView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -52,6 +55,15 @@
     _centralView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
     
     [_topImageView setImage:_postImage];
+}
+
+- (void)formatView
+{
+    [ShapeFormatterHelper setCornerRadiusWithView:_centralView andValue:4];
+    
+    [ShapeFormatterHelper setTopCornerRadius:_topImageView withViewFrame:_topImageView.frame withValue:4];
+    
+    [ShapeFormatterHelper setTopCornerRadius:_overlayTopImageView withViewFrame:_overlayTopImageView.frame withValue:4];
 }
 
 - (void)animateCentralView

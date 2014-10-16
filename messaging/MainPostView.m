@@ -991,12 +991,17 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     if(_postImageView.image)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"image": _postImageView.image}];
+        dispatch_async(dispatch_get_main_queue(), ^{
+           
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"image": _postImageView.image}];
+        });
     }
     else
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self];
     }
+    
+    DDLogDebug(@"notify method called.");
 }
 
 #pragma mark - Client
