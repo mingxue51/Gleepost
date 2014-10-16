@@ -271,7 +271,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     if(conversation.isLive) {
         localEntities = [[GLPLiveConversationsManager sharedInstance] messagesForConversation:conversation];
     } else {
-        [DatabaseManager run:^(FMDatabase *db) {
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             localEntities = [GLPMessageDao findLastMessagesForConversation:conversation db:db];
         }];
     }
@@ -417,7 +417,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     NSLog(@"load previous messages before %d - %@", message.key, message.content);
     
     __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = [GLPMessageDao findPreviousMessagesBefore:message db:db];
     }];
     
@@ -572,7 +572,10 @@ int const NumberMaxOfMessagesLoaded = 20;
     }
     
     // conversation exists in regular conversation
-    [DatabaseManager run:^(FMDatabase *db) {
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
+//    }];
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         conversation = [GLPConversationDao findByRemoteKey:remoteKey db:db];
     }];
     DDLogInfo(@"Conversation is normal: %d", conversation != nil);

@@ -17,7 +17,11 @@
 {
     __block GLPUser *user = nil;
     
-    [DatabaseManager run:^(FMDatabase *db) {
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        user = [GLPLiveUserDao findByRemoteKey:remoteKey db:db];
+//    }];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         user = [GLPLiveUserDao findByRemoteKey:remoteKey db:db];
     }];
     

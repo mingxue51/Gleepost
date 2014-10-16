@@ -179,8 +179,15 @@
     
     [[DatabaseManager sharedInstance] initDatabase];
     
+//    __block GLPUser *user;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        DDLogDebug(@"DB error : findByRemoteKey");
+//        user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
+//    }];
+    
     __block GLPUser *user;
-    [DatabaseManager run:^(FMDatabase *db) {
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         DDLogDebug(@"DB error : findByRemoteKey");
         user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
     }];

@@ -78,7 +78,7 @@
 
 + (void)saveNotifications:(NSArray *)notifications
 {
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         [GLPNotificationDao deleteAll:db];
         

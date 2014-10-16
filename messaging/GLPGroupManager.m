@@ -180,8 +180,14 @@
 {
     DDLogInfo(@"load initial group posts with id: %d", groupId);
     
+//    __block NSArray *localEntities = nil;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = [GLPPostDao findPostsInGroupWithRemoteKey:groupId inDb:db];
+//    }];
+    
+    
     __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = [GLPPostDao findPostsInGroupWithRemoteKey:groupId inDb:db];
     }];
     

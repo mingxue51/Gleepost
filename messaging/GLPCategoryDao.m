@@ -17,9 +17,14 @@
 {
     __block GLPCategory *category = nil;
     
-    [DatabaseManager run:^(FMDatabase *db) {
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        category = [GLPCategoryDao findByRemoteKey:remoteKey db:db];
+//    }];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         category = [GLPCategoryDao findByRemoteKey:remoteKey db:db];
     }];
+
     
     return category;
 }

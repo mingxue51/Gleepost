@@ -23,8 +23,13 @@
 {
     NSLog(@"load local posts before %d - %@", post.remoteKey, post.content);
     
+//    __block NSArray *localEntities = nil;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = [GLPPostDao findAllPostsBefore:post inDb:db];
+//    }];
+    
     __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = [GLPPostDao findAllPostsBefore:post inDb:db];
     }];
     
@@ -78,8 +83,10 @@
             // take only new posts
             __block NSMutableArray *userPosts = [NSMutableArray array];
             
-            [DatabaseManager run:^(FMDatabase *db) {
-                
+//            [DatabaseManager run:^(FMDatabase *db) {
+            
+            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            
                 for (GLPPost *newPost in posts)
                 {
                     newPost.sendStatus = kSendStatusSent;
@@ -343,9 +350,12 @@
     NSLog(@"load posts after %d - %@", post.remoteKey, post.content);
     
     __block NSArray *localEntities = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = post ? [GLPPostDao findLastPostsAfter:post inDb:db] : [GLPPostDao findLastPostsInDb:db];
     }];
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = post ? [GLPPostDao findLastPostsAfter:post inDb:db] : [GLPPostDao findLastPostsInDb:db];
+//    }];
     
     NSLog(@"local posts %d", localEntities.count);
     

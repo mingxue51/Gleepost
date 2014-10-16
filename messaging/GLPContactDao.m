@@ -15,9 +15,15 @@
 
 + (GLPContact *)findByRemoteKey:(NSInteger)remoteKey
 {
+//    __block GLPContact *contact = nil;
+//    
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        contact = [GLPContactDao findByRemoteKey:remoteKey db:db];
+//    }];
+    
     __block GLPContact *contact = nil;
     
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         contact = [GLPContactDao findByRemoteKey:remoteKey db:db];
     }];
     
@@ -61,9 +67,15 @@
 
 +(NSArray*)loadContacts
 {
+//    __block NSArray *contacts = nil;
+//    
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        contacts = [GLPContactDao loadContactsFromDb:db];
+//    }];
+    
     __block NSArray *contacts = nil;
     
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         contacts = [GLPContactDao loadContactsFromDb:db];
     }];
     

@@ -17,8 +17,12 @@
 
 + (void)loadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
+//    __block NSArray *localEntities;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = [GLPNotificationDao findNotificationsForUser:[SessionManager sharedInstance].user inDb:db];
+//    }];
     __block NSArray *localEntities;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = [GLPNotificationDao findNotificationsForUser:[SessionManager sharedInstance].user inDb:db];
     }];
     
@@ -27,9 +31,15 @@
 
 +(void)loadUnreadnotificationsWithCallback:(void (^) (BOOL success, NSArray *unreadNotifications))callback
 {
+//    __block NSArray *localEntities;
+//    
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        localEntities = [GLPNotificationDao findUnreadNotificationsInDb:db];
+//    }];
+    
     __block NSArray *localEntities;
     
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = [GLPNotificationDao findUnreadNotificationsInDb:db];
     }];
     
@@ -139,8 +149,13 @@
 
 + (NSMutableArray *)notifications
 {
+//    __block NSMutableArray *notifications;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        notifications = [GLPNotificationDao findNotifications:db];
+//    }];
+    
     __block NSMutableArray *notifications;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         notifications = [GLPNotificationDao findNotifications:db];
     }];
     
@@ -149,8 +164,13 @@
 
 + (NSMutableArray *)unreadNotifications
 {
+//    __block NSMutableArray *notifications;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        notifications = [GLPNotificationDao findUnreadNotifications:db];
+//    }];
+    
     __block NSMutableArray *notifications;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         notifications = [GLPNotificationDao findUnreadNotifications:db];
     }];
     
@@ -160,10 +180,16 @@
 
 + (NSInteger)unreadNotificationsCount
 {
+//    __block int count = 0;
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        count = [GLPNotificationDao unreadNotificationsCount:db];
+//    }];
+    
     __block int count = 0;
-    [DatabaseManager run:^(FMDatabase *db) {
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         count = [GLPNotificationDao unreadNotificationsCount:db];
     }];
+
     
     return count;
 }
