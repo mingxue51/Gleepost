@@ -37,44 +37,26 @@ const float ANIMATION_TIME_POP_UP = 0.1;
     
     [toVC.view setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.75]];
     
-//    ViewPostViewController *fromVC = (ViewPostViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *fromVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     if([self isPresenting])
     {
-//        [toVC.view setAlpha:0.0];
         [toVC.view setAlpha:1.0];
         [inView addSubview:toVC.view];
         [transitionContext completeTransition:YES];
-
-        
-//        [UIView animateWithDuration:ANIMATION_TIME_POP_UP animations:^{
-//            
-//            [toVC.view setAlpha:1.0];
-//            
-//        } completion:^(BOOL finished) {
-//            [transitionContext completeTransition:YES];
-//
-//        }];
     }
     else
-    {
-        if([GLPiOSSupportHelper isIOS7])
-        {
+    {   
+        [UIView animateWithDuration:0.5f animations:^{
+            
+            [fromVC.view setAlpha:0.0];
+        
+        } completion:^(BOOL finished) {
+            
             [transitionContext completeTransition:YES];
-        }
-        else
-        {
-            [UIView animateWithDuration:0.6f animations:^{
-                
-                [inView setAlpha:0.0];
-                
-            } completion:^(BOOL finished) {
-                [transitionContext completeTransition:YES];
-                
-            }];
-        }
+        
+        }];
     }
-    
 }
 
 @end

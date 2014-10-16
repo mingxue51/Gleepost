@@ -248,7 +248,7 @@
 
 + (void)showEventSuccessfullyAddedToCalendar
 {
-    [WebClientHelper showAlertWithTitle:@"Success!" andMessage:@"The event has successfully added to your default calendar"];
+    [WebClientHelper showAlertWithTitle:@"Success!" andMessage:@"This event has been added to your calendar"];
 }
 
 + (void)showErrorPermissionsToCalendar
