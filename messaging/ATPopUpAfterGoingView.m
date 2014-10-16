@@ -10,7 +10,6 @@
 #import "ViewPostViewController.h"
 #import "GLPPopUpDialogViewController.h"
 #import "UIColor+GLPAdditions.h"
-#import "GLPiOSSupportHelper.h"
 
 @implementation ATPopUpAfterGoingView
 
@@ -46,7 +45,7 @@ const float ANIMATION_TIME_POP_UP = 0.1;
         [transitionContext completeTransition:YES];
     }
     else
-    {   
+    {
         [UIView animateWithDuration:0.5f animations:^{
             
             [fromVC.view setAlpha:0.0];

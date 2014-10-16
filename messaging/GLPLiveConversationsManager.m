@@ -869,9 +869,9 @@ static GLPLiveConversationsManager *instance = nil;
 {
     DDLogInfo(@"Load local conversations");
     
+    NSArray *localConversations = [ConversationManager loadLocalRegularConversations];
+    
     dispatch_async(_queue, ^{
-        
-        NSArray *localConversations = [ConversationManager loadLocalRegularConversations];
         
         for(GLPConversation *conversation in localConversations)
         {

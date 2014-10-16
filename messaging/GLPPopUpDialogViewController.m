@@ -9,7 +9,6 @@
 #import "GLPPopUpDialogViewController.h"
 #import "UIImage+StackBlur.h"
 #import "ShapeFormatterHelper.h"
-#import "GLPiOSSupportHelper.h"
 
 @interface GLPPopUpDialogViewController ()
 
@@ -94,11 +93,6 @@
 
 - (IBAction)dismissView:(id)sender
 {
-    if([GLPiOSSupportHelper isIOS7])
-    {
-        
-    }
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

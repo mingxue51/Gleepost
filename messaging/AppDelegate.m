@@ -161,7 +161,12 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     // activate or reactivate web client
     //[[WebClient sharedInstance] activate];
     
+    DDLogDebug(@"Before facebook handleDidBecomeActive");
+    
     [[GLPFacebookConnect sharedConnection] handleDidBecomeActive];
+    
+    DDLogDebug(@"After facebook handleDidBecomeActive");
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
 //    if(_pns)

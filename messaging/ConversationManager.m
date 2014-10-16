@@ -33,11 +33,14 @@ int const NumberMaxOfMessagesLoaded = 20;
 + (NSArray *)loadLocalRegularConversations
 {
     __block NSArray *conversations = nil;
-    [DatabaseManager run:^(FMDatabase *db) {
+//    [DatabaseManager run:^(FMDatabase *db) {
+//        conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
+//    }];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
     }];
     
-//    DDLogDebug(@"Conversations from local %@", conversations);
 
     return conversations;
 }
