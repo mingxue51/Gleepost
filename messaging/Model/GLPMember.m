@@ -75,6 +75,16 @@
     }
 }
 
+- (BOOL)isAuthenticatedForChanges
+{
+    if(_roleLevel == kMember)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
 /**
  Casts the GLPMember to GLPUser data type and returns it.
  

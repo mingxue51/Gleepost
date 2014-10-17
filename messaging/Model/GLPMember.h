@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, MemberRole) {
 - (id)initWithName:(NSString *)name withGroupRemoteKey:(NSInteger)groupRemoteKey imageUrl:(NSString *)imgUrl andRoleLevelNumber:(NSInteger)roleNumber;
 - (id)initWithUser:(GLPUser *)user andRoleNumber:(NSInteger)roleNumber;
 
+- (BOOL)isAuthenticatedForChanges;
 - (void)setRoleKey:(NSInteger)roleLevel;
 - (GLPUser *)getUser;
 

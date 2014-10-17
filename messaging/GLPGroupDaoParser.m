@@ -9,6 +9,7 @@
 #import "GLPGroupDaoParser.h"
 #import "GLPEntityDaoParser.h"
 #import "GLPMemberDao.h"
+#import "SessionManager.h"
 
 @implementation GLPGroupDaoParser
 
@@ -25,6 +26,8 @@
     
     entity.author = [GLPMemberDao findMemberWithRemoteKey:[resultSet intForColumn:@"user_remote_key"] withGroupRemoteKey:entity.remoteKey andDb:db];
     
+    entity.loggedInUser = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user andRoleNumber:[resultSet intForColumn:@"loggedin_user_role_key"]];
+        
     entity.privacy = [resultSet intForColumn:@"privacy"];
     
     

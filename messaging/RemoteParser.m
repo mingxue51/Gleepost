@@ -860,10 +860,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     group.groupImageUrl = json[@"image"];
     
     group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
-        
+    group.loggedInUser = [RemoteParser parseLoggedInUserRoleWithJson:json[@"role"]];
+    
+//    group.loggedInUser = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
+    
     [group setPrivacyWithString:json[@"privacy"]];
         
     return group;
+}
+
++ (GLPMember *)parseLoggedInUserRoleWithJson:(NSDictionary *)json
+{
+    GLPMember *loggedInUser = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user andRoleNumber:[json[@"level"] integerValue]];
+        
+    return loggedInUser;
 }
 
 + (GLPPost *)parsePostGroupFromJson:(NSDictionary *)json

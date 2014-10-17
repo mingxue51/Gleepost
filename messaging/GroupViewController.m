@@ -124,6 +124,9 @@ const float TOP_OFF_SET = -64.0;
     //Get the change image progress view and add it as subview.
     [self getImageProgressViewAndAddIt];
     
+    [self configureNavigationItems];
+
+    
     
     
 //    if(_fromPushNotification)
@@ -150,7 +153,7 @@ const float TOP_OFF_SET = -64.0;
 {
     [super viewWillAppear:animated];
     
-    [self configureNavigationItems];
+//    [self configureNavigationItems];
     
     [self configureNavigationBar];
     
@@ -369,7 +372,11 @@ const float TOP_OFF_SET = -64.0;
     
     [self.navigationController.navigationBar setButton:kRight withImageName:@"new_post_groups" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(createNewPost:) andTarget:self];
     
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+    if([_group.loggedInUser isAuthenticatedForChanges])
+    {
+        [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+    }
+    
 }
 
 -(void)configureNavigationBar
@@ -1583,7 +1590,7 @@ const float TOP_OFF_SET = -64.0;
     
     BOOL hasImage = [self addGroupImage:imageView.image];
     
-    if(_group.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
+    if([_group.loggedInUser isAuthenticatedForChanges])
     {
         if(hasImage)
         {
