@@ -1,4 +1,4 @@
-//
+
 //  GLPFacebookConnect.m
 //  Gleepost
 //
@@ -208,12 +208,27 @@
 
 -(void)sharePostWithPost:(GLPPost *)post
 {
-    id<FBOpenGraphAction> action = [self generateShareActionWithPost:post];
+    if(post.eventTitle)
+    {
+        [self shareEventWithPost:post];
+    }
+    else
+    {
+        [self shareRegularPostWithPost:post];
+    }
+    
+}
+
+- (void)shareEventWithPost:(GLPPost *)eventPost
+{
+    DDLogInfo(@"Share event post to facebook %@", eventPost);
+    
+    id<FBOpenGraphAction> action = [self generateShareActionWithEventPost:eventPost];
     
     // Check if the Facebook app is installed and we can present the share dialog
-//    FBOpenGraphActionShareDialogParams *params = [self generateParametersWithAction:action];
+    //    FBOpenGraphActionShareDialogParams *params = [self generateParametersWithAction:action];
     FBOpenGraphActionParams *params = [self generateParametersWithAction:action];
-
+    
     
     // If the Facebook app is installed and we can present the share dialog
     if([FBDialogs canPresentShareDialogWithOpenGraphActionParams:params])
@@ -227,7 +242,31 @@
         // FALLBACK GOES HERE
         [WebClientHelper showNeedsFacebookAppError];
     }
+}
+
+- (void)shareRegularPostWithPost:(GLPPost *)regularPost
+{
+    DDLogInfo(@"Share regular post to facebook %@", regularPost);
     
+    id<FBOpenGraphAction> action = [self generateShareActionWithRegularPost:regularPost];
+    
+    // Check if the Facebook app is installed and we can present the share dialog
+    //    FBOpenGraphActionShareDialogParams *params = [self generateParametersWithAction:action];
+    FBOpenGraphActionParams *params = [self generateParametersWithAction:action];
+    
+    
+    // If the Facebook app is installed and we can present the share dialog
+    if([FBDialogs canPresentShareDialogWithOpenGraphActionParams:params])
+    {
+        // Show the share dialog
+        [self presentDialogWithOpenGraphAction:action withActionType:@"gleepost:share" andObjectName:@"post"];
+        
+        // If the Facebook app is NOT installed and we can't present the share dialog
+    } else
+    {
+        // FALLBACK GOES HERE
+        [WebClientHelper showNeedsFacebookAppError];
+    }
 }
 
 -(void)presentDialogWithOpenGraphAction:(id<FBOpenGraphAction>)action withActionType:(NSString *)actionType andObjectName:(NSString *)objectName
@@ -248,7 +287,7 @@
                                              }];
 }
 
--(id<FBOpenGraphAction>)generateShareActionWithPost:(GLPPost *)post
+-(id<FBOpenGraphAction>)generateShareActionWithEventPost:(GLPPost *)post
 {
     NSMutableDictionary<FBGraphObject> *object =
     (NSMutableDictionary<FBGraphObject> *)[FBGraphObject openGraphObjectForPostWithType:@"gleepost:event"
@@ -263,6 +302,25 @@
     
     // Link the object to the action
     [action setObject:object forKey:@"event"];
+    
+    return action;
+}
+
+- (id<FBOpenGraphAction>)generateShareActionWithRegularPost:(GLPPost *)post
+{
+    NSMutableDictionary<FBGraphObject> *object =
+    (NSMutableDictionary<FBGraphObject> *)[FBGraphObject openGraphObjectForPostWithType:@"gleepost:post"
+                                                                                  title:post.content
+                                                                                  image:post.imagesUrls[0]
+                                                                                    url:[NSString stringWithFormat:@"%@posts/%ld", @"https://m.facebook.com/apps/gleepost/", (long)post.remoteKey]
+                                                                            description:nil];
+    
+    
+    // Create an action
+    id<FBOpenGraphAction> action = (id<FBOpenGraphAction>)[FBGraphObject graphObject];
+    
+    // Link the object to the action
+    [action setObject:object forKey:@"post"];
     
     return action;
 }
@@ -589,7 +647,7 @@
         
         for (NSDictionary<FBGraphUser>* friend in friends)
         {
-            GLPUser *user = [[GLPUser alloc] initWithName:friend.name withId:[friend.id integerValue] andImageUrl:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal", friend.id]];
+            GLPUser *user = [[GLPUser alloc] initWithName:friend.name withId:[friend.objectID integerValue] andImageUrl:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=normal", friend.objectID]];
             
             [fbFriends addObject:user];
         }

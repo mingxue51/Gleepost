@@ -221,13 +221,13 @@ static SessionManager *instance = nil;
         //Load from plist file and add to the usersData.
         _usersData = [NSMutableDictionary dictionaryWithContentsOfFile:self.dataPlistLoggedInPath];
         
-        DDLogError(@"Users DATA: %@", _usersData);
+        DDLogInfo(@"Users saved data from plist file (already logged in) %@", _usersData);
         
         for(NSString *remoteKey in _usersData)
         {
             if([remoteKey isEqualToString:[NSString stringWithFormat:@"%ld", (long) _user.remoteKey]])
             {
-                DDLogDebug(@"USER EXIST!");
+                DDLogInfo(@"User with remote key %@ already logged in before.", remoteKey);
                 _currentUserFirstTime = NO;
                 return;
             }

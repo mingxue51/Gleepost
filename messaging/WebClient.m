@@ -189,6 +189,12 @@ static WebClient *instance = nil;
 - (void)registerViaFacebookToken:(NSString *)token
                   withEmailOrNil:(NSString *)email
                 andCallbackBlock:(void (^)(BOOL success, NSString* responseObject))callbackBlock {
+    
+    if(!token)
+    {
+        callbackBlock(NO, @"There was a problem during facebook login. (token issue)");
+    }
+    
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     parameters[@"token"] = token;
     if (email) parameters[@"email"] = email;

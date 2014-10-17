@@ -23,9 +23,7 @@
         
         member = [GLPMemberDaoParser createFromResultSet:resultSet inDb:db];
     }
-    
-    DDLogDebug(@"Find member %d", [db hasOpenResultSets]);
-    
+        
     return member;
 }
 

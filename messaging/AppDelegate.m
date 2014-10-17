@@ -155,6 +155,8 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     
     if([[SessionManager sharedInstance] isLogged]) {
         [[GLPNetworkManager sharedInstance] restartNetworkOperations];
+        
+        DDLogDebug(@"Logged in user did become active %@", [SessionManager sharedInstance].user);
     }
 
     

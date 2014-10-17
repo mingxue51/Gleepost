@@ -289,7 +289,7 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
     
     // fetch additional info
     // user details
-    [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetials) {
+    [[WebClient sharedInstance] getUserWithKey:user.remoteKey authParams:authParams callbackBlock:^(BOOL success, GLPUser *userWithDetails) {
         
         if(!success) {
             
@@ -299,9 +299,9 @@ void loadData(GLPUser *user, NSString *token, NSDate *expirationDate, void (^cal
         }
         
         
-        userWithDetials.email = userEmail;
+        userWithDetails.email = userEmail;
         
-        [GLPLoginManager validateLoginForUser:userWithDetials withToken:token expirationDate:expirationDate];
+        [GLPLoginManager validateLoginForUser:userWithDetails withToken:token expirationDate:expirationDate];
         
         callback(YES, @"Success.");
         
