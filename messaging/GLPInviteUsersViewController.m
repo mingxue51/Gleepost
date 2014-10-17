@@ -294,7 +294,9 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPFBInvitationsViewController *fbVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPFBInvitationsViewController"];
     fbVC.group = self.group;
-    [self presentViewController:fbVC animated:YES completion:nil];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:fbVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Helpers

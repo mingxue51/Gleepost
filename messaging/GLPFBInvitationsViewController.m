@@ -11,10 +11,10 @@
 #import "GLPFacebookConnect.h"
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
+#import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
 
 @interface GLPFBInvitationsViewController ()
-
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -35,7 +35,7 @@
 
 @implementation GLPFBInvitationsViewController
 
-static NSString * const kCellIdentifier = @"CellIdentifier";
+static NSString * const kCellIdentifier = @"GLPCheckNameCell";
 
 
 - (void)viewDidLoad
@@ -47,6 +47,8 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     [self configureNavigationBar];
     
     [self fetchFacebookFriends];
+    
+    [self registerTableViewCell];
 }
 
 -(void)initialiseObjects
@@ -60,11 +62,17 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
 
 -(void)configureNavigationBar
 {
-    CGRectSetY(_navigationBar, 0.0f);
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    CGRectAddH(_navigationBar, 21.0f);
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView:) andTarget:self];
     
-    [AppearanceHelper setNavigationBarFontForNavigationBar:_navigationBar];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Invite" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(inviteFriends:) andTarget:self];
+
+}
+
+- (void)registerTableViewCell
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPCheckNameCell" bundle:nil] forCellReuseIdentifier:@"GLPCheckNameCell"];
 }
 
 -(void)fetchFacebookFriends
@@ -106,9 +114,8 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
 
 - (IBAction)inviteFriends:(id)sender
 {
-    DDLogDebug(@"Invited users: %@", _checkedFriends);
+    DDLogInfo(@"Invited users: %@", _checkedFriends);
     
-
     
     [[GLPFacebookConnect sharedConnection] sendRequestToFriendWithFriendsIds:[self facebookFriendsKeys] withCompletionCallback:^(NSString *status) {
         
@@ -168,15 +175,24 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
     GLPUser *user = _facebookFriends[indexPath.row];
 //    BOOL check = [_checkedUsers[[user remoteKeyNumber]] boolValue];
     
-    GLPSearchUserCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
+//    GLPSearchUserCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
+    
+    GLPCheckNameCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
     
     BOOL checked = [self isFriendChecked:user];
 
-    [cell configureWithUser:user checked:checked];
-
-    cell.delegate = self;
+    [cell setUserData:user withCheckedStatus:checked];
+    
+    [cell setDelegate:self];
     
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NAME_CELL_HEIGHT;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -216,12 +232,22 @@ static NSString * const kCellIdentifier = @"CellIdentifier";
 
 #pragma mark - GLPSearchUserCellDelegate
 
-- (void)checkButtonClickForUser:(GLPUser *)user
+//- (void)checkButtonClickForUser:(GLPUser *)user
+//{
+//    [self checkOrUncheckUser:user];
+//}
+//
+//- (void)overlayViewClickForUser:(GLPUser *)user
+//{
+//    [self checkOrUncheckUser:user];
+//}
+
+- (void)userCheckedWithUser:(GLPUser *)user
 {
     [self checkOrUncheckUser:user];
 }
 
-- (void)overlayViewClickForUser:(GLPUser *)user
+- (void)userUncheckedWithUser:(GLPUser *)user
 {
     [self checkOrUncheckUser:user];
 }
