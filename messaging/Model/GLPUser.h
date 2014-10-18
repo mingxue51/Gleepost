@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSNumber *rsvpCount;
 @property (strong, nonatomic) NSNumber *groupCount;
 @property (strong, nonatomic) NSNumber *postsCount;
+@property (strong, nonatomic) NSString *facebookTemporaryToken;
 
 
 -(id)initWithName:(NSString *)name withId:(NSInteger)key andImageUrl:(NSString *)imgUrl;

@@ -123,8 +123,11 @@
             {
                 //[self inviteFriends];
                 
-                //[self fetchFriends];
-                [self getFriends];
+
+                
+                
+//                [self getFriends];
+                [self getFriendsWithSession:session];
                 [self associateCurrentAccountWithFacebook];
             }
             else
@@ -344,7 +347,10 @@
     _group = group;
     _inviteFriendsCompletionHandler = completionHandler;
     
-    NSArray *permissions = @[@"read_friendlists"];
+//    NSArray *permissions = @[@"read_friendlists"];
+    //user_friends
+    NSArray *permissions = @[@"user_friends"];
+
     
     [FBSession openActiveSessionWithReadPermissions:permissions allowLoginUI:YES
                                   completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
@@ -480,6 +486,18 @@
     
     return usersIds;
 }
+
+- (NSString *)parseUsersImageWithFriendPictureObject:(NSDictionary *)pictureObject
+{
+    NSDictionary *pictureDictionary =  pictureObject[@"data"];
+    
+    return pictureDictionary[@"url"];
+}
+
+//- (GLPUser *)parseFacebookFriendWithObject:(NSDictionary *)facebookObject
+//{
+//    
+//}
 
 #pragma mark - Client
 
@@ -627,6 +645,80 @@
      }];
 }
 
+- (void)getFriendsWithSession:(FBSession *)session
+{
+    FBAccessTokenData *accessTok = session.accessTokenData;
+    
+    DDLogInfo(@"Access token facebook  %@", accessTok.accessToken);
+    
+    NSDictionary *params = @{ @"fields": @"id,name,first_name,last_name,picture" };
+    
+    __block NSInteger usersFacebookID = -1;
+    
+    [[WebClient sharedInstance] requestUsersFacebookIDWithToken:accessTok.accessToken withCallback:^(BOOL success, NSInteger usersID) {
+       
+        if(success)
+        {
+            usersFacebookID = usersID;
+            
+            DDLogDebug(@"Users ID %ld", (long)usersFacebookID);
+            
+            NSMutableArray *fbFriends = [[NSMutableArray alloc] init];
+            
+            NSString *path = [NSString stringWithFormat:@"/%ld/taggable_friends", (long)usersFacebookID];
+            
+            //@"/726435481/taggable_friends"
+            
+            //[self fetchFriends];
+            [FBRequestConnection startWithGraphPath:path
+                                         parameters:params
+                                         HTTPMethod:@"GET"
+                                  completionHandler:^(
+                                                      FBRequestConnection *connection,
+                                                      id result,
+                                                      NSError *error
+                                                      ) {
+                                      
+                                      if(error)
+                                      {
+                                          _inviteFriendsCompletionHandler(NO, nil);
+                                          return;
+                                      }
+                                      
+                                      
+                                      
+                                      NSArray* friends = [result objectForKey:@"data"];
+                                      
+                                      
+                                      for (NSDictionary<FBGraphUser>* friend in friends)
+                                      {
+                                          
+                                          NSString *friendID = friend[@"id"];
+                                          
+                                          DDLogDebug(@"Friend key %@", friendID);
+                                          
+                                          
+                                          GLPUser *user = [[GLPUser alloc] initWithName:friend.name withId:[friend.objectID integerValue] andImageUrl:[self parseUsersImageWithFriendPictureObject:friend[@"picture"]]];
+                                          
+                                          user.facebookTemporaryToken = friendID;
+                                          
+                                          [fbFriends addObject:user];
+                                      }
+                                      
+                                      _inviteFriendsCompletionHandler(YES, fbFriends);
+                                  }];
+        }
+        else
+        {
+            
+        }
+        
+        
+    }];
+    
+
+}
+
 -(void)getFriends
 {
     NSMutableArray *fbFriends = [[NSMutableArray alloc] init];
@@ -669,6 +761,23 @@
     
     NSString *challengeStr = @"Invitation test.";
 
+    DDLogDebug(@"Friends ids %@", friendIDs);
+    
+//    friendIDs = [[NSArray alloc] initWithObjects:@"726435481", nil];
+    
+    for(NSString *userToken in friendIDs)
+    {
+        [[WebClient sharedInstance] requestUsersFacebookIDWithToken:userToken withCallback:^(BOOL success, NSInteger usersID) {
+           
+            if(success)
+            {
+                DDLogDebug(@"-> %ld", (long)usersID);
+            }
+            
+        }];
+    }
+    
+    
     
     
     // Create a dictionary of key/value pairs which are the parameters of the dialog
@@ -690,9 +799,13 @@
     
     [_friendCache prefetchAndCacheForSession:nil];
     
-    [FBWebDialogs presentRequestsDialogModallyWithSession:nil
-                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on Gleepost.", _group.name]
-                                                    title:@"Group invitation at gleepost."
+    FBSession *session =  FBSession.activeSession;
+    
+    DDLogDebug(@"Session %@", session);
+    
+    [FBWebDialogs presentRequestsDialogModallyWithSession:session
+                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on NerdNation.", _group.name]
+                                                    title:@"Group invitation at NerdNation."
                                                parameters:params
                                                   handler:^(FBWebDialogResult result,
                                                             NSURL *resultURL,

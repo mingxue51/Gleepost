@@ -258,6 +258,24 @@ static WebClient *instance = nil;
     
 }
 
+- (void)requestUsersFacebookIDWithToken:(NSString *)usersToken withCallback:(void (^) (BOOL success, NSInteger usersID))callback
+{
+    NSString *path = [NSString stringWithFormat:@"https://graph.facebook.com/me?fields=id&access_token=%@", usersToken];
+    
+    [self getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+        NSInteger facebookID = [responseObject[@"id"] integerValue];
+        
+        callback(YES, facebookID);
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callback(NO, -1);
+        
+    }];
+}
+
 - (void)registerWithName:(NSString *)name surname:(NSString*)surname email:(NSString *)email password:(NSString *)password andCallbackBlock:(void (^)(BOOL success, NSString* responseObject, int userRemoteKey))callbackBlock
 {
     __weak NSString *weakEmail = email;

@@ -47,6 +47,8 @@ extern NSString * const kWebserviceBaseUrl;
                                 andCallbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)associateWithFacebookAccountUsingFBToken:(NSString *)fbToken withCallbackBlock:(void (^) (BOOL success))callbackBlock;
 
+- (void)requestUsersFacebookIDWithToken:(NSString *)usersToken withCallback:(void (^) (BOOL success, NSInteger usersID))callback;
+
 // fourthsquare api
 
 - (void)findNearbyLocationsWithLatitude:(double)lat andLongitude:(double)lon withCallbackBlock:(void (^) (BOOL success, NSArray *locations))callbackBlock;

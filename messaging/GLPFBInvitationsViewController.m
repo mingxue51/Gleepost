@@ -301,7 +301,9 @@ static NSString * const kCellIdentifier = @"GLPCheckNameCell";
     
     for(GLPUser *friend in _checkedFriends)
     {
-        [fbFriendsKeys addObject:[NSNumber numberWithInteger:friend.key]];
+        DDLogDebug(@"Key %ld", (long)friend.key);
+        
+        [fbFriendsKeys addObject:friend.facebookTemporaryToken];
     }
     
     return fbFriendsKeys;
