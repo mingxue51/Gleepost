@@ -466,6 +466,21 @@
     return params;
 }
 
+- (NSArray *)parseInvitedUsersFacebookKeysFromURLResult:(NSDictionary *)urlResult
+{
+    NSMutableArray *invitedUserKeys = [[NSMutableArray alloc] init];
+    
+    for(NSString *key in urlResult)
+    {
+        if(![key isEqualToString:@"request"])
+        {
+            [invitedUserKeys addObject:urlResult[key]];
+        }
+    }
+    
+    return invitedUserKeys;
+}
+
 -(void)showKeyboardToThePreviousView
 {
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"SHOW_KEYBOARD" object:nil userInfo:nil];
@@ -765,17 +780,19 @@
     
 //    friendIDs = [[NSArray alloc] initWithObjects:@"726435481", nil];
     
-    for(NSString *userToken in friendIDs)
-    {
-        [[WebClient sharedInstance] requestUsersFacebookIDWithToken:userToken withCallback:^(BOOL success, NSInteger usersID) {
-           
-            if(success)
-            {
-                DDLogDebug(@"-> %ld", (long)usersID);
-            }
-            
-        }];
-    }
+    
+    //Facebook doen't let us to do that.
+//    for(NSString *userToken in friendIDs)
+//    {
+//        [[WebClient sharedInstance] requestUsersFacebookIDWithToken:userToken withCallback:^(BOOL success, NSInteger usersID) {
+//           
+//            if(success)
+//            {
+//                DDLogDebug(@"-> %ld", (long)usersID);
+//            }
+//            
+//        }];
+//    }
     
     
     
@@ -834,6 +851,79 @@
                                                               {
                                                                   DDLogInfo(@"Request Sent.");
                                                                   [self informAPIAboutInvitationWithFBIds:friendIDs];
+                                                                  completionCallback(@"sent");
+                                                              }
+                                                          }
+                                                      }
+                                                  }
+                                              friendCache:_friendCache];
+}
+
+- (void)showDefaultFacebookInvitationScreenWithCompletionCallback:(void (^) (NSString *status))completionCallback
+{
+    NSString *challengeStr = @"Invitation test.";
+    
+    
+    // Create a dictionary of key/value pairs which are the parameters of the dialog
+    
+    // 1. No additional parameters provided - enables generic Multi-friend selector
+    NSMutableDictionary* params =   [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                     // 2. Optionally provide a 'to' param to direct the request at a specific user
+                                     // Ali
+                                     // 3. Suggest friends the user may want to request, could be game context specific?
+                                     //[suggestedFriends componentsJoinedByString:@","], @"suggestions",
+                                     challengeStr, @"data",
+                                     nil];
+    
+    
+    
+    if (_friendCache == NULL) {
+        _friendCache = [[FBFrictionlessRecipientCache alloc] init];
+    }
+    
+    [_friendCache prefetchAndCacheForSession:nil];
+    
+    FBSession *session =  FBSession.activeSession;
+    
+    DDLogDebug(@"Session %@", session);
+    
+    [FBWebDialogs presentRequestsDialogModallyWithSession:session
+                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on NerdNation.", _group.name]
+                                                    title:@"Group invitation at NerdNation."
+                                               parameters:params
+                                                  handler:^(FBWebDialogResult result,
+                                                            NSURL *resultURL,
+                                                            NSError *error) {
+                                                      
+                                                      if (error) {
+                                                          // Case A: Error launching the dialog or sending request.
+                                                          DDLogInfo(@"Error sending request.");
+                                                          completionCallback(@"error");
+                                                      } else {
+                                                          if (result == FBWebDialogResultDialogNotCompleted) {
+                                                              // Case B: User clicked the "x" icon
+                                                              DDLogInfo(@"User canceled request.");
+                                                              completionCallback(@"canceled");
+                                                          } else {
+                                                              
+                                                              
+                                                              
+                                                              NSDictionary *finalResult = [self parseURLParams:[resultURL query]];
+                                                              
+                                                              DDLogDebug(@"Result URL %@", finalResult);
+
+                                                              
+                                                              if([finalResult objectForKey:@"error_code"])
+                                                              {
+                                                                  DDLogInfo(@"User canceled request.");
+                                                                  completionCallback(@"canceled");
+                                                              }
+                                                              else
+                                                              {
+                                                                  NSArray *invitedUsersKeys = [self parseInvitedUsersFacebookKeysFromURLResult:finalResult];
+                                                                  
+                                                                  DDLogInfo(@"Request Sent %@", invitedUsersKeys);
+                                                                  [self informAPIAboutInvitationWithFBIds:invitedUsersKeys];
                                                                   completionCallback(@"sent");
                                                               }
                                                           }

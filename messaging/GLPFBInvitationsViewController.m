@@ -115,7 +115,7 @@ static NSString * const kCellIdentifier = @"GLPCheckNameCell";
 - (IBAction)inviteFriends:(id)sender
 {
     DDLogInfo(@"Invited users: %@", _checkedFriends);
-    
+
     
     [[GLPFacebookConnect sharedConnection] sendRequestToFriendWithFriendsIds:[self facebookFriendsKeys] withCompletionCallback:^(NSString *status) {
         
@@ -134,9 +134,6 @@ static NSString * const kCellIdentifier = @"GLPCheckNameCell";
         }
         
         [self dismissViewControllerAnimated:YES completion:nil];
-
-        
-        
     }];
 }
 

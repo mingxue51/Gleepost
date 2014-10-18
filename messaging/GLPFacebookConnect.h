@@ -23,5 +23,6 @@
 -(void)inviteFriendsViaFBToGroupWithRemoteKey:(GLPGroup* )group completionHandler:(void (^)(BOOL success, NSArray *fbFriends))completionHandler;
 -(void)fetchFriends;
 -(void)sendRequestToFriendWithFriendsIds:(NSArray *)friendIDs withCompletionCallback:(void (^) (NSString *status))completionCallback;
+- (void)showDefaultFacebookInvitationScreenWithCompletionCallback:(void (^) (NSString *status))completionCallback;
 
 @end

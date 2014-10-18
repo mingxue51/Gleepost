@@ -12,6 +12,7 @@
 #import "GLPFBInvitationsViewController.h"
 #import "GLPPrivateProfileViewController.h"
 #import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
+#import "GLPFacebookConnect.h"
 
 @interface GLPInviteUsersViewController ()
 
@@ -291,12 +292,33 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 -(void)showInvitationsViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPFBInvitationsViewController *fbVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPFBInvitationsViewController"];
-    fbVC.group = self.group;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:fbVC];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:YES completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    GLPFBInvitationsViewController *fbVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPFBInvitationsViewController"];
+//    fbVC.group = self.group;
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:fbVC];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self presentViewController:navigationController animated:YES completion:nil];
+    
+    [[GLPFacebookConnect sharedConnection] showDefaultFacebookInvitationScreenWithCompletionCallback:^(NSString *status) {
+        
+        if([status isEqualToString:@"error"])
+        {
+            [WebClientHelper showProblemLoadingFBFriends];
+        }
+        else if ([status isEqualToString:@"sent"])
+        {
+            //Show the name of users invited.
+            [WebClientHelper showSuccessfullyInvitedFriends:@""];
+        }
+        else
+        {
+            //User canceled the view.
+        }
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        
+    }];
 }
 
 #pragma mark - Helpers
