@@ -19,6 +19,7 @@
 #import "ImageFormatterHelper.h"
 #import "IntroNewGroupViewController.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPGroupSearchViewController.h"
 
 @interface GLPGroupsViewController ()
 
@@ -161,6 +162,8 @@
 - (void)configureNavigationButton
 {
     [self.navigationController.navigationBar setButton:kRight withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
+    
+    [self.navigationController.navigationBar setButton:kRight withImage:@"temp_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:_navItem];
 }
 
 - (void)configTabbar
@@ -582,6 +585,16 @@
     IntroNewGroupViewController *introNewGroupVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroNewGroupViewController"];
 //    [newPostVC setDelegate:self];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:introNewGroupVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)popUpSearchGroupsView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPGroupSearchViewController *searchGroupsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSearchViewController"];
+    //    [newPostVC setDelegate:self];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchGroupsVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
 }

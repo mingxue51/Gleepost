@@ -158,16 +158,25 @@
     
     barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     
+//    if(type == kLeft)
+//    {
+//        [fixedSpace setWidth:-4];
+//        navigationItem.leftBarButtonItems = @[fixedSpace, barButtonItem];
+//        
+//    }
+//    else if (type == kRight)
+//    {
+//        [fixedSpace setWidth:-5];
+//        navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
+//    }
+    
     if(type == kLeft)
     {
-        [fixedSpace setWidth:-4];
-        navigationItem.leftBarButtonItems = @[fixedSpace, barButtonItem];
-        
+        [self addNewButton:barButtonItem withNavigationItem:navigationItem inRightSide:NO];
     }
     else if (type == kRight)
     {
-        [fixedSpace setWidth:-5];
-        navigationItem.rightBarButtonItems = @[fixedSpace, barButtonItem];
+        [self addNewButton:barButtonItem withNavigationItem:navigationItem inRightSide:YES];
     }
 }
 
