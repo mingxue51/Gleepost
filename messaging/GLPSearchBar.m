@@ -52,13 +52,21 @@
     [_textField setPlaceholder:text];
 }
 
-
-
 #pragma mark - Accessors
 
 - (BOOL)isTextFieldFirstResponder
 {
     return [_textField isFirstResponder];
+}
+
+- (BOOL)isTextFieldEmpty
+{
+    return (_textField.text.length == 0);
+}
+
+- (NSString *)currentText
+{
+    return _textField.text;
 }
 
 #pragma mark - Modifiers

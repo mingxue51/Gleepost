@@ -23,7 +23,7 @@
 #import "GLPGroup.h"
 #import "GLPGroupManager.h"
 #import "GroupViewController.h"
-#import "GroupCell.h"
+#import "SearchGroupCell.h"
 #import "NewGroupViewController.h"
 #import "GLPSearchUsersViewController.h"
 #import "EmptyMessage.h"
@@ -780,12 +780,12 @@
 //        else
 //        {
         
-            GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellIdentifier forIndexPath:indexPath];
+            SearchGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:GroupCellIdentifier forIndexPath:indexPath];
             
 //            ContactUserCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-            [cell setDelegate:self];
-            
+//            [cell setDelegate:self];
+        
             NSArray *currentGroups = [self.categorisedGroups objectForKey:[NSNumber numberWithInt: indexPath.section]];
             
             GLPGroup *currentGroup = [currentGroups objectAtIndex:indexPath.row];
@@ -806,7 +806,7 @@
     return nil;
 }
 
--(void)addSeparatorLineToCell:(GroupCell *)cell
+-(void)addSeparatorLineToCell:(SearchGroupCell *)cell
 {
     UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 47.0f, 320, 1)];
     line.backgroundColor = [AppearanceHelper lightGrayGleepostColour];

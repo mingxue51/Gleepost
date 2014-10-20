@@ -70,9 +70,6 @@
     _glpSearchBar = view;
     
     [_searchBarView addSubview:view];
-    
-
-
 }
 
 - (void)configureNavigationBar

@@ -171,5 +171,6 @@ extern NSString * const kWebserviceBaseUrl;
 // groups
 
 - (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback;
+- (void)searchGroupsWithName:(NSString *)groupName callback:(void (^) (BOOL success, NSArray *groups))callback;
 
 @end

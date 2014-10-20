@@ -25,6 +25,8 @@
 @property (weak, nonatomic) UIViewController <GLPSearchBarDelegate> *delegate;
 
 - (BOOL)isTextFieldFirstResponder;
+- (BOOL)isTextFieldEmpty;
+- (NSString *)currentText;
 - (void)becomeTextFieldFirstResponder;
 - (void)resignTextFieldFirstResponder;
 - (void)setPlaceholderWithText:(NSString *)text;

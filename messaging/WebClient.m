@@ -1046,6 +1046,28 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)searchGroupsWithName:(NSString *)groupName callback:(void (^) (BOOL success, NSArray *groups))callback
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+
+    [params setObject:groupName forKey:@"name"];
+    
+    NSString *path = [NSString stringWithFormat:@"search/groups/%@", groupName];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *groups = [RemoteParser parseGroupsFromJson:responseObject];
+        
+        callback(YES, groups);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callback(NO, nil);
+        
+    }];
+    
+}
+
 //TODO: Redundant code with add users and add users to group. (total 3 methods)
 
 -(void)inviteUsersViaFacebookWithGroupRemoteKey:(int)groupRemoteKey andUsersFacebookIds:(NSArray *)fbIds withCallbackBlock:(void (^) (BOOL success))callback
