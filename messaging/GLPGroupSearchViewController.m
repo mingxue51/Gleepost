@@ -42,6 +42,7 @@
     
     [self configureSearchBar];
 
+    [self configureNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -50,10 +51,7 @@
     
     [super viewDidAppear:animated];
     
-    [self configureNotifications];
-    
     [_glpSearchBar becomeTextFieldFirstResponder];
-
     
 }
 

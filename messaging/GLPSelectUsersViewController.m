@@ -74,7 +74,7 @@
 
 - (void)configureNavigationBar
 {
-//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
 }
 

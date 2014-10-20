@@ -60,8 +60,9 @@
     
     [self loadMembers];
     
-    
     [AppearanceHelper makeBackDefaultButton];
+    
+    [self configureNavigationBar];
 
 }
 
@@ -69,8 +70,8 @@
 {
     [super viewDidAppear:animated];
     
-    [self configureNavigationBar];
-
+    [self configureTitleNavigationBar];
+    
 }
 
 #pragma mark - Configuration
@@ -108,25 +109,29 @@
 
 }
 
-- (void)configureNavigationBar
+- (void)configureTitleNavigationBar
 {
-//    self.title = @"MEMBERS";
-    
     self.navigationController.navigationBar.topItem.title = @"MEMBERS";
 
-//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO andView:self.view];
-    
-//    [self.navigationController.navigationBar invisible];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"]
-              forBarPosition:UIBarPositionAny
-                  barMetrics:UIBarMetricsDefault];
-    
     self.navigationController.navigationBar.shadowImage = [UIImage new];
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.translucent = NO;
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)configureNavigationBar
+{
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO andView:self.view];
+    
+    
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"]
+//                                                 forBarPosition:UIBarPositionAny
+//                                                     barMetrics:UIBarMetricsDefault];
+    
+
 }
 
 - (void)configureObjects

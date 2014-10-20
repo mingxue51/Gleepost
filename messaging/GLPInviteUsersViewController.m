@@ -43,6 +43,8 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [self configureFacebookInvitationButton];
     
     [super setAlreadyMembers:self.alreadyMembers];
+    
+    [self configureNotifications];
 }
 
 
@@ -53,6 +55,11 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [self configureNavigationBar];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self removeNotifications];
+}
+
 #pragma mark - Configuration
 
 - (void)configureNavigationBar
@@ -60,7 +67,20 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [super configureNavigationBar];
     
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+}
 
+- (void)configureNotifications
+{
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)configureTableView
@@ -333,6 +353,47 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    //Change the position of the button depending on the size of the keyboard.
+    float buttonYValue = [self findNewPositionOfTheButton:_addSelectedButton.frame withKeboardFrame:keyboardBounds];
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = buttonYValue - tableViewFrame.origin.y;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        
+        self.tableView.frame = tableViewFrame;
+        
+        CGRectSetY(_addSelectedButton, buttonYValue);
+        
+    } completion:^(BOOL finished) {
+        
+        [self.tableView setNeedsLayout];
+        
+    }];
+}
+
+- (float)findNewPositionOfTheButton:(CGRect)buttonFrame withKeboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+    
+    return keyboardY - buttonFrame.size.height - 5 - 125;
 }
 
 #pragma mark - Navigation
