@@ -44,20 +44,13 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     
     [super setAlreadyMembers:self.alreadyMembers];
     
-    [self configureNotifications];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     [self configureNavigationBar];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [self removeNotifications];
 }
 
 #pragma mark - Configuration
@@ -67,20 +60,6 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [super configureNavigationBar];
     
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-}
-
-- (void)configureNotifications
-{
-    // keyboard management
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-}
-
-- (void)removeNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)configureTableView
@@ -392,6 +371,9 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 - (float)findNewPositionOfTheButton:(CGRect)buttonFrame withKeboardFrame:(CGRect)keyboardFrame
 {
     float keyboardY = keyboardFrame.origin.y;
+    
+    //We are substracting with 125 because without it the position is wrong.
+    //So if we don't substract with that number the position of the button will be wrong.
     
     return keyboardY - buttonFrame.size.height - 5 - 125;
 }

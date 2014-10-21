@@ -324,6 +324,50 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];    
 }
 
+#pragma mark - Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    //Change the position of the button depending on the size of the keyboard.
+    float buttonYValue = [self findNewPositionOfTheButton:_addSelectedButton.frame withKeboardFrame:keyboardBounds];
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height = buttonYValue - tableViewFrame.origin.y;
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        
+        self.tableView.frame = tableViewFrame;
+        
+        CGRectSetY(_addSelectedButton, buttonYValue);
+        
+    } completion:^(BOOL finished) {
+        
+        [self.tableView setNeedsLayout];
+        
+    }];
+}
+
+- (float)findNewPositionOfTheButton:(CGRect)buttonFrame withKeboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+    
+    //We are substracting with 125 because without it the position is wrong.
+    //So if we don't substract with that number the position of the button will be wrong.
+    
+    return keyboardY - buttonFrame.size.height - 5 - 125;
+}
+
 #pragma mark - Navigation
 
 - (void)navigateToUser:(GLPUser *)user

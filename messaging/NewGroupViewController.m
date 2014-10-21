@@ -54,7 +54,6 @@
 
 @property (strong, nonatomic) NSDictionary *selectedGroupType;
 
-//@property (strong, nonatomic) NSKeyValueChange
 
 @end
 
@@ -79,20 +78,22 @@
     
     [self setDataToGroupViews];
 
+    
+
     if(!IS_IPHONE_5) {
         CGFloat offset = -25;
 //        CGRectMoveY(_groupDescriptionTextView, offset);
         CGRectAddH(_groupDescriptionTextView, offset);
 
     }
-//    [self configureProgressBar];
-    
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self configureNotifications];
     
     [_groupNameTextField becomeFirstResponder];
 }
@@ -102,6 +103,13 @@
     [super viewWillAppear:animated];
     
     [self configureNavigationBar];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self removeNotifications];
+    
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Configuration
@@ -136,6 +144,20 @@
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
+}
+
+- (void)configureNotifications
+{
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 //-(void)configureProgressBar
@@ -417,6 +439,56 @@
 -(void)setDelegate:(UIViewController<GroupCreatedDelegate> *)delegate
 {
     _delegate = delegate;
+}
+
+#pragma mark - Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    float newHeightOfMainView = [self findNewHeightForTheCentralViewWithKeboardFrame:keyboardBounds];
+    
+    DDLogDebug(@"Keyboard will show new %f, old %f", newHeightOfMainView, _mainView.frame.size.height);
+    
+    float newYSelectImageView = [self findNewYOfSelectImageViewWithKeyboardFrame:keyboardBounds];
+    
+    DDLogDebug(@"Y select image view old %f, new %f", _selectImageView.frame.origin.y, newYSelectImageView);
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        
+        CGRectSetH(_mainView, newHeightOfMainView);
+        CGRectSetY(_selectImageView, newYSelectImageView);
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (float)findNewHeightForTheCentralViewWithKeboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+    
+    //We are substracting with 125 because without it the position is wrong.
+    //So if we don't substract with that number the position of the button will be wrong.
+    
+    return keyboardY - _mainView.frame.origin.y - 5 - 125;
+}
+
+- (float)findNewYOfSelectImageViewWithKeyboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+
+    return keyboardY - _selectImageView.frame.size.height - 5 - 189;
 }
 
 - (void)didReceiveMemoryWarning

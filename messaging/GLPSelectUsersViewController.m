@@ -15,7 +15,7 @@
 #import "GLPSelectUsersViewController.h"
 #import "UINavigationBar+Format.h"
 #import "GLPUser.h"
-#import "SessionManager.h"
+#import "SessionManager.h" 
 #import "NSString+Utils.h"
 #import "WebClient.h"
 
@@ -31,10 +31,31 @@
     [super viewDidLoad];
     
     [self configureSearchBar];
+    
+    [self configureNotifications];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [_glpSearchBar becomeTextFieldFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self removeNotifications];
+    
+    [super viewWillDisappear:animated];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)initialiseObjects
-{    
+{
     _searchedUsers = [[NSMutableArray alloc] init];
     _checkedUsers = [[NSMutableArray alloc] init];
     
@@ -46,12 +67,13 @@
     _selectedUsersVisible = YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)configureNotifications
 {
-    [super viewWillAppear:animated];
-    
-    [_glpSearchBar becomeTextFieldFirstResponder];
-
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
 }
 
 - (void)configureSearchBar

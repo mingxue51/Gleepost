@@ -100,7 +100,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         [self.view addSubview:imageViewBlack];
         [self.view sendSubviewToBack:imageViewBlack];
     }
-
     
     self.tabBarController.tabBar.hidden = NO;
 
@@ -193,11 +192,19 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 -(void)setUpNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoReadyForUpload:) name:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil];
+    
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
 }
 
 -(void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RECEIVE_VIDEO_PATH object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+
 }
 
 -(void)configureObjects
@@ -730,6 +737,72 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 
 }
+
+#pragma mark - Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    float newHeightOfContentTextView = [self findNewHeightForTheContentTextViewWithKeboardFrame:keyboardBounds];
+    
+    float newYDescriptionLbl = [self findNewYForDescriptionCharactersLeftWithKeboardFrame:keyboardBounds];
+    
+    float newHeightOfTextFieldView = [self findNewHeightForTextFieldViewWithKeyboardFrame:keyboardBounds];
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        
+        CGRectSetH(_textFieldView, newHeightOfTextFieldView);
+        CGRectSetH(_contentTextView, newHeightOfContentTextView);
+        CGRectSetY(_descriptionCharactersLeftLbl, newYDescriptionLbl);
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (float)findNewHeightForTheContentTextViewWithKeboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+    
+    //We are substracting with 250 because without it the position is wrong.
+    //So if we don't substract with that number the position of the button will be wrong.
+    
+    return keyboardY - _contentTextView.frame.origin.y - 5 - 250;
+}
+
+- (float)findNewYForDescriptionCharactersLeftWithKeboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+    
+    return keyboardY - _descriptionCharactersLeftLbl.frame.size.height - 5 - 230;
+}
+
+- (float)findNewHeightForTextFieldViewWithKeyboardFrame:(CGRect)keyboardFrame
+{
+    float keyboardY = keyboardFrame.origin.y;
+    
+    //We are substracting with 135 because without it the position is wrong.
+    //So if we don't substract with that number the position of the button will be wrong.
+    
+    return keyboardY - _textFieldView.frame.origin.y - 135;
+}
+
+//- (float)findNewYOfSelectImageViewWithKeyboardFrame:(CGRect)keyboardFrame
+//{
+//    float keyboardY = keyboardFrame.origin.y;
+//    
+//    return keyboardY - _selectImageView.frame.size.height - 5 - 189;
+//}
 
 #pragma mark - VC Navigation
 
