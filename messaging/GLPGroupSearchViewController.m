@@ -70,9 +70,6 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)dealloc
-{
-}
 
 - (void)registerTableViewCells
 {
@@ -269,7 +266,7 @@
     CGRect tableViewFrame = self.tableView.frame;
     tableViewFrame.size.height -= keyboardBounds.size.height;
     
-    DDLogDebug(@"Keyboard will show");
+    DDLogDebug(@"Keyboard will show table view new height %f, keboard height %f", tableViewFrame.size.height, keyboardBounds.size.height);
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         

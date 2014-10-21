@@ -1049,8 +1049,6 @@ static WebClient *instance = nil;
 - (void)searchGroupsWithName:(NSString *)groupName callback:(void (^) (BOOL success, NSArray *groups))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
-
-    [params setObject:groupName forKey:@"name"];
     
     NSString *path = [NSString stringWithFormat:@"search/groups/%@", groupName];
     

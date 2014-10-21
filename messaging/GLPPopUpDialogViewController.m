@@ -105,6 +105,7 @@
 - (IBAction)addEventToCalendar:(id)sender
 {
     [_delegate addEventToCalendar];
+    
     [self dismissView:nil];
 }
 

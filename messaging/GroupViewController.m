@@ -41,9 +41,12 @@
 #import "GLPViewImageViewController.h"
 #import "GLPGroupSettingsViewController.h"
 #import "ChangeGroupImageProgressView.h"
+#import "GLPCalendarManager.h"
+#import "GLPPopUpDialogViewController.h"
+#import "TDPopUpAfterGoingView.h"
+#import "GLPShowUsersViewController.h"
 
-
-@interface GroupViewController ()
+@interface GroupViewController () <GLPPopUpDialogViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSArray *members;
@@ -51,6 +54,7 @@
 @property (strong, nonatomic) GLPPost *selectedPost;
 @property (assign, nonatomic) int currentNumberOfRows;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+@property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (assign, nonatomic) int selectedUserId;
 //@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
 
@@ -149,6 +153,15 @@ const float TOP_OFF_SET = -64.0;
 //                                                      andRefreshAction:@selector(loadEarlierPostsFromPullToRefresh)];
 //}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    
+    [self setUpGoingButtonNotification];
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -166,6 +179,9 @@ const float TOP_OFF_SET = -64.0;
 //    {
 //        [_fakeNavigationBar showNavigationBar];
 //    }
+    
+    [self removeGoingButtonNotification];
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
     
@@ -338,6 +354,8 @@ const float TOP_OFF_SET = -64.0;
     
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
+    self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
+    
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
@@ -442,6 +460,16 @@ const float TOP_OFF_SET = -64.0;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 
+}
+
+- (void)setUpGoingButtonNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonTouchedWithNotification:) name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
+}
+
+- (void)removeGoingButtonNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1663,6 +1691,67 @@ const float TOP_OFF_SET = -64.0;
     [self presentViewController:viewImage animated:YES completion:nil];
 }
 
+- (void)goingButtonTouchedWithNotification:(NSNotification *)notification
+{
+    UIImage *postImage = notification.userInfo[@"image"];
+    
+    _selectedPost = notification.userInfo[@"post"];
+    
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    
+    [cvc setDelegate:self];
+    [cvc setTopImage:postImage];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.transitionViewPopUpAttend];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+#pragma mark - GLPPopUpDialogViewControllerDelegate
+
+- (void)showAttendees
+{
+    [self performSegueWithIdentifier:@"show attendees" sender:self];
+}
+
+- (void)addEventToCalendar
+{
+    [[GLPCalendarManager sharedInstance] addEventPostToCalendar:_selectedPost withCallback:^(CalendarEventStatus resultStatus) {
+        
+        switch (resultStatus) {
+            case kSuccess:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showEventSuccessfullyAddedToCalendar];
+                });
+                
+                break;
+                
+            case kPermissionsError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorPermissionsToCalendar];
+                });
+                break;
+                
+            case kOtherError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorSavingEventToCalendar];
+                });
+                break;
+                
+            default:
+                break;
+        }
+        
+    }];
+}
+
 #pragma  mark - Helpers
 
 /**
@@ -1851,6 +1940,14 @@ const float TOP_OFF_SET = -64.0;
         
         imgSelectorVC.fromGroupViewController = YES;
         [imgSelectorVC setDelegate:self];
+    }
+    else if ([segue.identifier isEqualToString:@"show attendees"])
+    {
+        GLPShowUsersViewController *showUsersVC = segue.destinationViewController;
+        
+        showUsersVC.postRemoteKey = _selectedPost.remoteKey;
+        
+        showUsersVC.selectedTitle = @"GUEST LIST";
     }
 }
 

@@ -457,9 +457,6 @@ static BOOL likePushed;
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
-    DDLogDebug(@"goingButtonTouchedWithNotification");
-    
-    
     UIImage *postImage = notification.userInfo[@"image"];
     
     //Show the pop up view.
@@ -474,7 +471,6 @@ static BOOL likePushed;
     [cvc setTransitioningDelegate:self.transitionViewPopUpAttend];
     
     [self presentViewController:cvc animated:YES completion:nil];
-  
 }
 
 #pragma mark - GLPPopUpDialogViewControllerDelegate

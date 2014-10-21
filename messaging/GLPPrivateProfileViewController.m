@@ -31,8 +31,12 @@
 #import "ImageFormatterHelper.h"
 #import "GLPShowLocationViewController.h"
 #import "GLPViewImageViewController.h"
+#import "GLPCalendarManager.h"
+#import "GLPPopUpDialogViewController.h"
+#import "TDPopUpAfterGoingView.h"
+#import "GLPShowUsersViewController.h"
 
-@interface GLPPrivateProfileViewController ()
+@interface GLPPrivateProfileViewController () <GLPPopUpDialogViewControllerDelegate>
 
 
 @property (strong, nonatomic) GLPUser *profileUser;
@@ -64,20 +68,11 @@
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
+@property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
+
 @end
 
 @implementation GLPPrivateProfileViewController
-
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-    }
-    
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -153,7 +148,8 @@
 //                                             animated:YES];
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    
+    [self configureNotifications];
 
 }
 
@@ -169,7 +165,8 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    
+    [self removeNotifications];
     
 //    if([GLPApplicationHelper isTheNextViewCampusWall:self.navigationController.viewControllers])
 //    {
@@ -206,7 +203,22 @@
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
     _selectedLocation = nil;
+    
+    _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
 
+}
+
+- (void)configureNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonTouchedWithNotification:) name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
 }
 
 
@@ -215,20 +227,13 @@
     //Register nib files in table view.
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PrivateProfileTopViewCell" bundle:nil] forCellReuseIdentifier:@"PrivateProfileTopViewCell"];
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"ButtonsCell"];
-    
+
     //Register posts.
     [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
-    
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewAboutTableViewCell" bundle:nil] forCellReuseIdentifier:@"AboutCell"];
-//    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewMutualTableViewCell" bundle:nil] forCellReuseIdentifier:@"MutualCell"];
 }
 
 -(void)configureView
@@ -244,18 +249,6 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
-
-    
-    //Add new colour in the bottom of the table view.
-//    UIImageView *bottomImageView = [[UIImageView alloc] init];
-//    bottomImageView.backgroundColor = [UIColor whiteColor];
-    
-//    [bottomImageView setFrame:CGRectMake(0.0f, 400.0f, 320.0f, 300.0f)];
-//    [self.tableView addSubview:bottomImageView];
-//    [bottomImageView sendSubviewToBack:self.tableView];
-    
-    
-//    [self setBottomView];
 
 }
 
@@ -941,6 +934,67 @@
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
+- (void)goingButtonTouchedWithNotification:(NSNotification *)notification
+{
+    UIImage *postImage = notification.userInfo[@"image"];
+    
+    _selectedPost = notification.userInfo[@"post"];
+    
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    
+    [cvc setDelegate:self];
+    [cvc setTopImage:postImage];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.transitionViewPopUpAttend];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+#pragma mark - GLPPopUpDialogViewControllerDelegate
+
+- (void)showAttendees
+{
+    [self performSegueWithIdentifier:@"show attendees" sender:self];
+}
+
+- (void)addEventToCalendar
+{
+    [[GLPCalendarManager sharedInstance] addEventPostToCalendar:_selectedPost withCallback:^(CalendarEventStatus resultStatus) {
+        
+        switch (resultStatus) {
+            case kSuccess:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showEventSuccessfullyAddedToCalendar];
+                });
+                
+                break;
+                
+            case kPermissionsError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorPermissionsToCalendar];
+                });
+                break;
+                
+            case kOtherError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorSavingEventToCalendar];
+                });
+                break;
+                
+            default:
+                break;
+        }
+        
+    }];
+}
+
 #pragma mark - Navigation methods
 
 -(void)viewConversation:(GLPConversation*)conversation
@@ -991,6 +1045,14 @@
         GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
         
         showLocationVC.location = _selectedLocation;
+    }
+    else if ([segue.identifier isEqualToString:@"show attendees"])
+    {
+        GLPShowUsersViewController *showUsersVC = segue.destinationViewController;
+        
+        showUsersVC.postRemoteKey = _selectedPost.remoteKey;
+        
+        showUsersVC.selectedTitle = @"GUEST LIST";
     }
 }
 
