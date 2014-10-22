@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -91,7 +91,7 @@
                         <constraints>
                             <constraint firstItem="nqe-5G-JTa" firstAttribute="top" secondItem="gZY-ao-KSb" secondAttribute="top" id="U1y-2C-qfu"/>
                             <constraint firstItem="EJA-Rf-TPo" firstAttribute="top" secondItem="gZY-ao-KSb" secondAttribute="top" constant="2" id="efZ-bg-ThU"/>
-                            <constraint firstItem="TIn-bn-41b" firstAttribute="top" secondItem="nqe-5G-JTa" secondAttribute="bottom" constant="8" id="sdh-qH-p0A" userLabel="Vertical Space - (7) - View - Label - Labelasd ads asd as dsa das dsa das das dasd adas"/>
+                            <constraint firstItem="TIn-bn-41b" firstAttribute="top" secondItem="nqe-5G-JTa" secondAttribute="bottom" constant="9" id="sdh-qH-p0A" userLabel="Vertical Space - (7) - View - Label - Labelasd ads asd as dsa das dsa das das dasd adas"/>
                         </constraints>
                         <connections>
                             <outlet property="eventTimeLbl" destination="xhg-cc-Ny7" id="hod-hq-WYo"/>
@@ -157,7 +157,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
-                                        <rect key="frame" x="215" y="5" width="75" height="38"/>
+                                        <rect key="frame" x="215" y="5" width="75.5" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="38" id="aZu-KK-Pkv"/>
                                             <constraint firstAttribute="width" constant="75" id="bo0-WT-71b"/>
@@ -311,6 +311,7 @@
                             <outlet property="commentsLbl" destination="Wp0-MB-hxp" id="seR-0L-Shv"/>
                             <outlet property="contentLabelHeightConstrain" destination="yjS-9B-ZHv" id="CiW-qj-Yix"/>
                             <outlet property="contentLbl" destination="aX2-C1-hEz" id="4pl-Rv-IzQ"/>
+                            <outlet property="distanceBetweenTitleAndClockView" destination="sdh-qH-p0A" id="WKb-h2-KEz"/>
                             <outlet property="distanceFromTop" destination="SCs-Pl-H83" id="yqi-HW-HaB"/>
                             <outlet property="distanceUserViewFromThePostImageConstrain" destination="W8j-JO-JMz" id="Wpu-Tp-umC"/>
                             <outlet property="goingBtn" destination="NqB-Nx-PIG" id="1af-sM-777"/>

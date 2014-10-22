@@ -71,6 +71,9 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
 
+//This variable is temporary.
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenTitleAndClockView;
+
 /** Image constrains. */
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *postImageWidthConstrain;
 
@@ -359,6 +362,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     backgroundImageViewHeight = 371.0f + height;    //378.0f
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
 
+    float constantBetweenClockViewAndTitle = 8;
+    
     
     if([self isCurrentPostEvent])
     {
@@ -373,6 +378,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         if([TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle])
         {
             backgroundImageViewHeight -= 15.0f;
+            _distanceBetweenTitleAndClockView.constant = 10;
+        }
+        else
+        {
+            DDLogDebug(@"Distance between title and clock view %f", _distanceBetweenTitleAndClockView.constant);
+            _distanceBetweenTitleAndClockView.constant = 3;
         }
         
     }
