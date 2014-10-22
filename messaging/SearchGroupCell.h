@@ -15,5 +15,6 @@
 extern const float SEARCH_GROUP_CELL_HEIGHT;
 
 -(void)setGroupData:(GLPGroup *)groupData;
++ (float)getCellHeightWithGroup:(GLPGroup *)group;
 
 @end

@@ -12,6 +12,7 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "WebClient.h"
 #import "GLPImageView.h"
+#import "UILabel+Dimensions.h"
 
 @interface SearchGroupCell ()
 
@@ -22,12 +23,15 @@
 
 @property (strong, nonatomic) GLPGroup *groupData;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelHeight;
+
 @end
 
 
 @implementation SearchGroupCell
 
-const float SEARCH_GROUP_CELL_HEIGHT = 70;
+const float SEARCH_GROUP_CELL_HEIGHT = 40;
+const float TITLE_WIDTH = 237;
 
 -(void)awakeFromNib
 {
@@ -48,9 +52,29 @@ const float SEARCH_GROUP_CELL_HEIGHT = 70;
     
     [_groupDescription setText: groupData.groupDescription];
     
+    [_titleLabelHeight setConstant: [UILabel getContentLabelSizeForContent:_groupData.name withFont:[UIFont fontWithName:GLP_HELV_NEUE_MEDIUM size:17.0] andWidht:TITLE_WIDTH]];
+    
 
     //TODO: Set placeholder image.
     [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+}
+
+#pragma mark - Static
+
++ (float)getCellHeightWithGroup:(GLPGroup *)group
+{
+    float lblHeight = [UILabel getContentLabelSizeForContent:group.name withFont:[UIFont fontWithName:GLP_HELV_NEUE_MEDIUM size:17.0] andWidht:TITLE_WIDTH];
+    
+    
+    if(lblHeight == 1.0)
+    {
+        return SEARCH_GROUP_CELL_HEIGHT - 10;
+    }
+    
+    DDLogDebug(@"%f", lblHeight + SEARCH_GROUP_CELL_HEIGHT);
+    
+    return lblHeight + SEARCH_GROUP_CELL_HEIGHT;
+    
 }
 
 @end

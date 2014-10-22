@@ -180,7 +180,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return SEARCH_GROUP_CELL_HEIGHT;
+//    return SEARCH_GROUP_CELL_HEIGHT;
+    
+    GLPGroup *group = _searchedGroups[indexPath.row];
+    
+    return [SearchGroupCell getCellHeightWithGroup:group];
 }
 
 #pragma mark - Client
