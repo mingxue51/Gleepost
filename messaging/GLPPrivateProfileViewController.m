@@ -35,6 +35,7 @@
 #import "GLPPopUpDialogViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
+#import "GLPShowUsersGroupsViewController.h"
 
 @interface GLPPrivateProfileViewController () <GLPPopUpDialogViewControllerDelegate>
 
@@ -517,7 +518,7 @@
     
 }
 
-#pragma mark - PrivateProfileTableViewCellDelegate
+#pragma mark - PrivateProfileTopViewCellDelegate
 
 - (void)viewProfileImage:(UIImage *)image
 {
@@ -539,6 +540,16 @@
 - (void)badgeTouched
 {
     [self performSegueWithIdentifier:@"view badges" sender:self];
+}
+
+- (void)numberOfGroupsTouched
+{
+    [self performSegueWithIdentifier:@"show users groups" sender:self];
+}
+
+- (void)numberOfRsvpsTouched
+{
+    
 }
 
 -(void)unlockProfile
@@ -840,7 +851,6 @@
 
 #pragma mark - View image delegate
 
-
 -(void)viewPostImage:(UIImage*)postImage
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
@@ -856,8 +866,6 @@
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self presentViewController:viewImage animated:YES completion:nil];
-    
-    
 }
 
 #pragma mark - New comment delegate
@@ -865,7 +873,6 @@
 -(void)setPreviousViewToNavigationBar
 {
     self.navigationItem.hidesBackButton = NO;
-
 }
 
 -(void)setPreviousNavigationBarName
@@ -896,6 +903,7 @@
     
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
+
 
 #pragma mark - GLPPostCellDelegate
 
@@ -1053,6 +1061,12 @@
         showUsersVC.postRemoteKey = _selectedPost.remoteKey;
         
         showUsersVC.selectedTitle = @"GUEST LIST";
+    }
+    else if ([segue.identifier isEqualToString:@"show users groups"])
+    {
+        GLPShowUsersGroupsViewController *showUsersGroups = segue.destinationViewController;
+        
+        showUsersGroups.user = _profileUser;
     }
 }
 

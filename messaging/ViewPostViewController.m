@@ -339,8 +339,6 @@ static BOOL likePushed;
         
         self.title = @"Loading...";
         
-        DDLogDebug(@"Post remote key: %ld", (unsigned long)_post.remoteKey);
-        
         [GLPPostManager loadPostWithRemoteKey:_post.remoteKey callback:^(BOOL success, GLPPost *post) {
             
             self.title = @"VIEW POST";
@@ -350,8 +348,6 @@ static BOOL likePushed;
                 _post = post;
                 
                 _post = [GLPPostManager setFakeKeyToPost:_post];
-                
-                DDLogDebug(@"SELECTED POST: %ld", (long)_post.key);
                 
                 [self loadComments];
                 

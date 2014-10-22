@@ -21,27 +21,6 @@
 
 const float PRIVATE_PROFILE_TOP_VIEW_HEIGHT = 245;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        
-    }
-    
-    return self;
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -64,11 +43,11 @@ const float PRIVATE_PROFILE_TOP_VIEW_HEIGHT = 245;
     
     //TODO: Complete the following with real data.
     
-    [super setNumberOfPosts:20];
+    [super setNumberOfPosts:[_currentUser.postsCount integerValue]];
     
-    [super setNumberOfMemberships:4];
+    [super setNumberOfMemberships:[_currentUser.groupCount integerValue]];
     
-    [super setNumberOfRsvps:50];
+    [super setNumberOfRsvps: [_currentUser.rsvpCount integerValue]];
 }
 
 #pragma mark - Selectors
@@ -98,6 +77,16 @@ const float PRIVATE_PROFILE_TOP_VIEW_HEIGHT = 245;
 - (void)badgeTouched
 {
     [_delegate badgeTouched];
+}
+
+- (void)numberOfGroupsTouched
+{
+    [_delegate numberOfGroupsTouched];
+}
+
+- (void)numberOfRsvpsTouched
+{
+    [_delegate numberOfRsvpsTouched];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

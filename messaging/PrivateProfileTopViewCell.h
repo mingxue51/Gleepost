@@ -18,6 +18,8 @@
 - (void)viewConversation:(GLPConversation *)conversation;
 - (void)viewProfileImage:(UIImage *)image;
 - (void)badgeTouched;
+- (void)numberOfGroupsTouched;
+- (void)numberOfRsvpsTouched;
 
 
 @end
