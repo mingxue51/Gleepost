@@ -22,6 +22,7 @@
 #import "TopPostView.h"
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface MainPostView ()
 
@@ -1000,19 +1001,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 - (void)notifyViewPostAfterGoingPressed
 {
-    if(_postImageView.image)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-           
-            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"image": _postImageView.image, @"post":_post}];
-        });
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post":_post}];
-    }
-    
-    DDLogDebug(@"notify method called.");
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post":_post}];
 }
 
 #pragma mark - Client

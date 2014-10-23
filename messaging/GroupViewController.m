@@ -129,8 +129,6 @@ const float TOP_OFF_SET = -64.0;
     [self getImageProgressViewAndAddIt];
     
     [self configureNavigationItems];
-
-    
     
     
 //    if(_fromPushNotification)
@@ -140,7 +138,6 @@ const float TOP_OFF_SET = -64.0;
     
 //    [self loadMembers];
     
-    [self configureNotifications];
     
     
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
@@ -153,20 +150,15 @@ const float TOP_OFF_SET = -64.0;
 //                                                      andRefreshAction:@selector(loadEarlierPostsFromPullToRefresh)];
 //}
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    
-    [self setUpGoingButtonNotification];
-    
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
 //    [self configureNavigationItems];
+    
+    [self configureNotifications];
+
+    [self setUpGoingButtonNotification];
     
     [self configureNavigationBar];
     
@@ -179,6 +171,7 @@ const float TOP_OFF_SET = -64.0;
 //    {
 //        [_fakeNavigationBar showNavigationBar];
 //    }
+    [self removeNotifications];
     
     [self removeGoingButtonNotification];
 
@@ -188,9 +181,8 @@ const float TOP_OFF_SET = -64.0;
     [super viewWillDisappear:animated];
 }
 
--(void)dealloc
+- (void)dealloc
 {
-    [self removeNotifications];
     [_tableView removeFromSuperview];
 }
 
@@ -452,6 +444,8 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)removeNotifications
 {
+    DDLogDebug(@"removeNotifications group name %@", _group.name);
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
@@ -459,7 +453,6 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-
 }
 
 - (void)setUpGoingButtonNotification
@@ -524,9 +517,9 @@ const float TOP_OFF_SET = -64.0;
 
     
 #warning bug here.
-    if(currentPost)
+    if(currentPost /**&& !_enterDealloc*/)
     {
-        FLog(@"Refresh cell with index: %d", index);
+        FLog(@"Refresh cell with index: %d Group name %@", index, self.group.name);
         
         [self refreshCellViewWithIndex:index+1];
     }
@@ -604,7 +597,7 @@ const float TOP_OFF_SET = -64.0;
 
 #pragma mark - Table view refresh methods
 
--(void)refreshCellViewWithIndex:(const NSUInteger)index
+-(void)refreshCellViewWithIndex:(NSInteger)index
 {
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -1693,8 +1686,6 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
-    UIImage *postImage = notification.userInfo[@"image"];
-    
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
@@ -1702,7 +1693,7 @@ const float TOP_OFF_SET = -64.0;
     GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
     
     [cvc setDelegate:self];
-    [cvc setTopImage:postImage];
+    [cvc setTopImage:(_selectedPost.finalImage) ? _selectedPost.finalImage : _selectedPost.tempImage];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

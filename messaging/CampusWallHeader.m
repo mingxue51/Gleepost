@@ -304,6 +304,8 @@ NSString *BORING_IMAGE;
     
     _lastPosition = position;
     
+    FLog(@"CampusWallHeader : current posts %@, position %d", _posts, position);
+    
     GLPPost *post = [_posts objectAtIndex:position];
     
     [myView setData: post];

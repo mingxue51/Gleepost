@@ -2736,8 +2736,6 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
-    UIImage *postImage = notification.userInfo[@"image"];
-    
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
@@ -2745,7 +2743,7 @@ const float TOP_OFFSET = 180.0f;
     GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
     
     [cvc setDelegate:self];
-    [cvc setTopImage:postImage];
+    [cvc setTopImage:(_selectedPost.finalImage) ? _selectedPost.finalImage : _selectedPost.tempImage];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

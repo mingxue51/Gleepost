@@ -9,6 +9,8 @@
 #import "GLPPopUpDialogViewController.h"
 #import "UIImage+StackBlur.h"
 #import "ShapeFormatterHelper.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "GPUImage.h"
 
 @interface GLPPopUpDialogViewController ()
 
@@ -85,8 +87,11 @@
 
 - (void)setTopImage:(UIImage *)topImage
 {
-    UIImage *image = topImage;
-    _postImage = [image stackBlur:10.0f];
+    //Detach the a thread if the delay is not satisfiable.
+    
+    _postImage = [self blurImage:topImage];
+    
+//    [NSThread detachNewThreadSelector:@selector(blurImage:) toTarget:self withObject:topImage];
 }
 
 #pragma mark - Selectors
@@ -107,6 +112,32 @@
     [_delegate addEventToCalendar];
     
     [self dismissView:nil];
+}
+
+#pragma mark - Editors
+
+- (UIImage *)blurImage:(UIImage *)image
+{
+    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:image];
+    
+    GPUImageGaussianSelectiveBlurFilter *stillImageFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
+    
+    [stillImageSource addTarget:stillImageFilter];
+    stillImageFilter.excludeBlurSize = 0.0;
+    stillImageFilter.excludeCircleRadius = 0.0;
+    stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
+    [stillImageFilter useNextFrameForImageCapture];
+    [stillImageSource processImage];
+
+    
+    UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
+    
+    _postImage = currentFilteredVideoFrame;
+    
+    [_topImageView setImage:_postImage];
+
+    
+    return currentFilteredVideoFrame;
 }
 
 - (void)didReceiveMemoryWarning {
