@@ -29,5 +29,6 @@
 +(void)updatePostAttending:(GLPPost*)entity db:(FMDatabase *)db;
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db;
 +(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db;
++ (void)updateImagesWithEntity:(GLPPost *)entity db:(FMDatabase *)db;
 
 @end

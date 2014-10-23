@@ -706,6 +706,17 @@
     }];
 }
 
++ (void)updateImagePostAfterSending:(GLPPost *)post
+{
+    DDLogInfo(@"Update image post after sending: %@", post);
+
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao updatePostSendingData:post inDb:db];
+        [GLPPostDao updateImagesWithEntity:post db:db];
+    }];
+}
+
 + (void)updateVideoPostAfterSending:(GLPPost *)videoPost
 {
     DDLogInfo(@"Update video post after sending: %@", videoPost);

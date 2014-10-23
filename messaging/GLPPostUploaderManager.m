@@ -512,8 +512,17 @@
         
         NSLog(@"!!Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
 
+        if([post imagePost])
+        {
+            [GLPPostManager updateImagePostAfterSending:post];
+        }
+        else
+        {
+            [GLPPostManager updatePostAfterSending:post];
+        }
         
-        [GLPPostManager updatePostAfterSending:post];
+        
+        
         
 //        self.incomingKey = _incomingPost.key;
 //        self.incomingRemoteKey = remoteKey;

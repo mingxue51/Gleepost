@@ -89,6 +89,11 @@
 {
     //Detach the a thread if the delay is not satisfiable.
     
+    if(!topImage)
+    {
+        return;
+    }
+    
     _postImage = [self blurImage:topImage];
     
 //    [NSThread detachNewThreadSelector:@selector(blurImage:) toTarget:self withObject:topImage];

@@ -158,6 +158,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         [self.titleTextField resignFirstResponder];
     }
+    [self removeNotifications];
+
     
     [super viewWillDisappear:animated];
 }
@@ -168,7 +170,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //    [self.contentTextView resignFirstResponder];
     
     
-    [self removeNotifications];
     
     [super viewDidDisappear:animated];
 

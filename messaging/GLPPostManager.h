@@ -23,6 +23,7 @@
 + (void)searchForPendingVideoPostCallback:(void (^) (NSArray *videoPosts))callback;
 + (void)createLocalPost:(GLPPost*)post;
 + (void)updatePostAfterSending:(GLPPost *)post;
++ (void)updateImagePostAfterSending:(GLPPost *)post;
 + (void)updateVideoPostAfterSending:(GLPPost *)videoPost;
 + (void)updateVideoPostBeforeSending:(GLPPost *)videoPost;
 +(void)updatePostWithLiked:(GLPPost*)post;

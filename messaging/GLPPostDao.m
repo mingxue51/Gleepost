@@ -392,9 +392,11 @@
 {
     for(NSString* imageUrl in entity.imagesUrls)
     {
-        [db executeUpdateWithFormat:@"insert into post_images (post_remote_key, image_url) values(%d, %@)",
+        BOOL b = [db executeUpdateWithFormat:@"insert into post_images (post_remote_key, image_url) values(%d, %@)",
          entity.remoteKey,
          imageUrl];
+        
+        DDLogDebug(@"Image url updated %d.", b);
     }
 }
 
