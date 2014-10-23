@@ -45,6 +45,7 @@
 //    [self.navigationController.navigationBar.topItem setTitle:_selectedTitle];
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
 }
 
 - (void)configureTableView
