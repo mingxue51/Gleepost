@@ -495,7 +495,7 @@ const float TOP_OFF_SET = -64.0;
     
     GLPPost *inPost = data[@"final_post"];
     
-    DDLogDebug(@"New video post received in group view: %@", inPost);
+    FLog(@"New video post received in group view: %@", inPost);
     
     
     //Check if the video post is already in the campus wall.
@@ -520,13 +520,13 @@ const float TOP_OFF_SET = -64.0;
     int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
     
     
-    DDLogWarn(@"GroupViewController : updateRealImage notification: %@ and index: %d", notification, index);
+    FLog(@"GroupViewController : updateRealImage notification: %@ and index: %d", notification, index);
 
     
 #warning bug here.
     if(currentPost)
     {
-        DDLogWarn(@"Refresh cell with index: %d", index);
+        FLog(@"Refresh cell with index: %d", index);
         
         [self refreshCellViewWithIndex:index+1];
     }
@@ -1016,7 +1016,7 @@ const float TOP_OFF_SET = -64.0;
 {
     [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey localCallback:^(NSArray *localPosts) {
         
-        DDLogDebug(@"Local group posts: %@", localPosts);
+        FLog(@"Local group posts: %@", localPosts);
         
         [self setNewLocalPosts:localPosts];
         

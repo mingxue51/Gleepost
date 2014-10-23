@@ -23,5 +23,6 @@
 - (BOOL)isProgressFinished;
 - (NSInteger)postRemoteKey;
 - (NSString *)generateNSNotificationNameForPendingGroupPost;
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost;
 
 @end

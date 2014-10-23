@@ -2091,23 +2091,26 @@ static WebClient *instance = nil;
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
 //        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
         
-        NSMutableDictionary *finalDictNotifiation = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *finalDictNotification = [[NSMutableDictionary alloc] init];
         
         NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
         
-        [finalDictNotifiation setObject:progressData forKey:@"update"];
+        [finalDictNotification setObject:progressData forKey:@"update"];
         
-        [finalDictNotifiation setObject:timestamp forKey:@"timestamp"];
-        
+        [finalDictNotification setObject:timestamp forKey:@"timestamp"];
 
         
         
         if([[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
         {
+            
             DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp], timestamp);
-
+            
             //Inform GLPCampusWallProgressManager.
-            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotifiation];
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotification];
+            
+           
+            
         }
         else if(totalBytesExpectedToWrite == totalBytesWritten)
         {
@@ -2115,18 +2118,24 @@ static WebClient *instance = nil;
             
             [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED object:self userInfo:@{@"timestamp": timestamp}];
         }
-        
+
         
         if ([[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
         {
-
+            
             NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationNameForPendingGroupPost];
             
             
             DDLogDebug(@"Group progress manager timstamp %@ and current one %@. Notification name: %@",[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp], timestamp, notificationName);
-
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:finalDictNotifiation];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:finalDictNotification];
+        }
+        else if(totalBytesExpectedToWrite == totalBytesWritten)
+        {
+            NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationUploadFinshedNameForPendingGroupPost];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:finalDictNotification];
         }
         
     }];

@@ -105,6 +105,11 @@ static GLPLiveGroupPostManager *instance = nil;
     return [_progressManager generateNSNotificationNameForPendingGroupPost];
 }
 
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost
+{
+    return [_progressManager generateNSNotificationUploadFinshedNameForPendingGroupPost];
+}
+
 #pragma mark - Image posts
 
 - (void)addImagePost:(GLPPost *)post withGroupRemoteKey:(NSInteger)groupRemoteKey

@@ -17,6 +17,10 @@
 @property (strong, nonatomic) UploadingProgressView *progressView;
 @property (assign, nonatomic) BOOL postClicked;
 @property (assign, nonatomic, getter = isProgressFinished) BOOL progressFinished;
+
+/** This object is used only when the video is uploaded and don't viewed to user.*/
+@property (strong, nonatomic) NSDate *uploadedVideoTimestamp;
+
 @property (strong, nonatomic) GLPPost *groupPost;
 
 @end
@@ -44,6 +48,8 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 {
     //    _videosTimestamps = [[NSMutableArray alloc] init];
     _currentProcessedTimestamp = nil;
+    
+    _uploadedVideoTimestamp = nil;
     
     //    _progressView = [[ProgressView alloc] init];
     [_progressView setHidden:YES];
@@ -75,6 +81,12 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoProgress:) name:notificationName object:nil];
     
+    notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED, (long)_groupPost.group.remoteKey];
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadCompleted:) name:notificationName object:nil];
+
+    
     DDLogDebug(@"Configure notifications: %@", notificationName);
 }
 
@@ -83,6 +95,11 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE, (long)_groupPost.group.remoteKey];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+    
+    notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED, (long)_groupPost.group.remoteKey];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+
 }
 
 - (void)showProgressView
@@ -111,7 +128,7 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 
 - (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post
 {
-    DDLogDebug(@"Group PM: Registered timestamp: %@", timestamp);
+    FLog(@"Group PM: Registered timestamp: %@", timestamp);
     
     _currentProcessedTimestamp = timestamp;
     _groupPost = post;
@@ -153,7 +170,7 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 
 - (void)progressFinished
 {
-    DDLogDebug(@"GLPGroupProgressManager : progressFinished");
+    FLog(@"GLPGroupProgressManager : progressFinished");
     
     [self hideProgressView];
     
@@ -168,13 +185,22 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 
 - (void)postButtonClicked
 {
-//    [self showProgressView];
+    [self showProgressView];
     
-    DDLogDebug(@"GLPGroupProgressManager : postButtonClicked");
+    FLog(@"GLPGroupProgressManager : postButtonClicked");
+
     
     _postClicked = YES;
     
     _progressFinished = NO;
+    
+    
+    FLog(@"Current processed timestamp %@, uploaded video timestamp %@", _currentProcessedTimestamp, _uploadedVideoTimestamp);
+    
+    if([_currentProcessedTimestamp isEqualToDate:_uploadedVideoTimestamp])
+    {
+        [_progressView startProcessing];
+    }
 }
 
 #pragma mark - Notification methods
@@ -187,17 +213,17 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     
     NSDate *timestamp = videoData[@"timestamp"];
     
-    DDLogDebug(@"Timestamp: %@, Updates: %@, %@", timestamp, progress[GROUP_DATA_WRITTEN], progress[GROUP_DATA_EXPECTED]);
+    FLog(@"Timestamp: %@, Updates: %@, %@", timestamp, progress[GROUP_DATA_WRITTEN], progress[GROUP_DATA_EXPECTED]);
     
     if(![timestamp isEqualToDate:_currentProcessedTimestamp])
     {
-        DDLogDebug(@"Timestamp not equal abort viewing.");
+        FLog(@"Timestamp not equal abort viewing.");
         
         return;
     }
     else
     {
-        DDLogDebug(@"Timestamp equal show viewing.");
+        FLog(@"Timestamp equal show viewing.");
         
     }
     
@@ -222,6 +248,21 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     }
 }
 
+/**
+ This method should be called only when the video is finished uploading and the progress bar is NOT already shown.
+ 
+ @param notification the notification should contain the timestamp in order to avoid issues.
+ 
+ */
+- (void)videoUploadCompleted:(NSNotification *)notification
+{
+    NSDictionary *timestampData = notification.userInfo;
+    
+    _uploadedVideoTimestamp = timestampData[@"timestamp"];
+    
+    FLog(@"Video upload completed : GLPGroupProgressManager");
+}
+
 - (NSInteger)postRemoteKey
 {
     return _groupPost.group.remoteKey;
@@ -230,6 +271,13 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 - (NSString *)generateNSNotificationNameForPendingGroupPost
 {
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE, (long)_groupPost.group.remoteKey];
+    
+    return notificationName;
+}
+
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost
+{
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED, (long)_groupPost.group.remoteKey];
     
     return notificationName;
 }

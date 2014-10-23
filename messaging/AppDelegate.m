@@ -48,6 +48,7 @@
 #import "GroupViewController.h"
 #import "GLPPushNotification.h"
 #import "GLPiOSSupportHelper.h"
+#import "FileLogger.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -60,7 +61,6 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 // hello, boy
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DDLogInfo(@"didFinishLaunchingWithOptions");
     
     [self setupLogging];
     [self setupGoogleAnalytics];
@@ -99,6 +99,9 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     } else {
         initVC = [storyboard instantiateInitialViewController];
     }
+
+    DDLogInfo(@"didFinishLaunchingWithOptions");
+
 
 
     self.window.rootViewController = initVC;

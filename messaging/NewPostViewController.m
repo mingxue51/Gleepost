@@ -372,14 +372,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             {
                 inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil group:group andLocation:nil];
                 
-                DDLogDebug(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+                FLog(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
 
             }
             else
             {
                 inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
                 
-                DDLogDebug(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+                FLog(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
             }
             
             if([inPost isVideoPost])
@@ -391,7 +391,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         {
             if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
             {
-                DDLogDebug(@"GENERAL POST IS GOING TO BE CREATED");
+                FLog(@"GENERAL POST IS GOING TO BE CREATED");
                 
                 inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
             }

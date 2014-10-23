@@ -25,6 +25,7 @@
 - (BOOL)isProgressFinished;
 - (NSDate *)registeredTimestamp;
 - (NSString *)generateNSNotificationNameForPendingGroupPost;
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost;
 
 - (void)addImagePost:(GLPPost *)post withGroupRemoteKey:(NSInteger)groupRemoteKey;
 - (NSArray *)pendingImagePostsWithGroupRemoteKey:(NSInteger)groupRemoteKey;

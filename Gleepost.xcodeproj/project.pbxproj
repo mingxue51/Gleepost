@@ -569,6 +569,7 @@
 		58AD86BF1892DFC400016C6D /* add_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86BE1892DFC400016C6D /* add_button_old.png */; };
 		58AD86C11892DFD100016C6D /* profile_botton.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AD86C01892DFD100016C6D /* profile_botton.png */; };
 		58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AD86C31892E0F200016C6D /* GLPIntroducedProfile.m */; };
+		58AEF7EF19F887D500DDAE88 /* FileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AEF7EE19F887D500DDAE88 /* FileLogger.m */; };
 		58B1161D180D8491000E9555 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B1161C180D8491000E9555 /* ProfileView.m */; };
 		58B1BC9818EB13E9000ECB6C /* more_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1BC9718EB13E9000ECB6C /* more_old.png */; };
 		58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8619C01541007E3416 /* GLPNotificationCell.m */; };
@@ -1718,6 +1719,8 @@
 		58AE5FB41923821E00C4D59D /* PBJVideoPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBJVideoPlayerController.m; sourceTree = "<group>"; };
 		58AE5FB51923821E00C4D59D /* PBJVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBJVideoView.h; sourceTree = "<group>"; };
 		58AE5FB61923821E00C4D59D /* PBJVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBJVideoView.m; sourceTree = "<group>"; };
+		58AEF7ED19F887D500DDAE88 /* FileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLogger.h; sourceTree = "<group>"; };
+		58AEF7EE19F887D500DDAE88 /* FileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLogger.m; sourceTree = "<group>"; };
 		58B1161B180D8491000E9555 /* ProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
 		58B1161C180D8491000E9555 /* ProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		58B1BC9718EB13E9000ECB6C /* more_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more_old.png; sourceTree = "<group>"; };
@@ -3749,6 +3752,15 @@
 			name = Video;
 			sourceTree = "<group>";
 		};
+		58AEF7EC19F887BD00DDAE88 /* FLog */ = {
+			isa = PBXGroup;
+			children = (
+				58AEF7ED19F887D500DDAE88 /* FileLogger.h */,
+				58AEF7EE19F887D500DDAE88 /* FileLogger.m */,
+			);
+			name = FLog;
+			sourceTree = "<group>";
+		};
 		58B74A8419C014EE007E3416 /* Notification Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -4337,6 +4349,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				58AEF7EC19F887BD00DDAE88 /* FLog */,
 				584FA5EA19B5199C00FBA61F /* PBJVision */,
 				5821CFAB19A2DDBF00274FE4 /* ViewBorders */,
 				58774D30196496880034A1C6 /* GLPRefreshControl */,
@@ -5836,6 +5849,7 @@
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58433287180F032C00BD9F74 /* LoginRegisterViewController.m in Sources */,
 				5851B5DC18258FB800AA9103 /* TransitionDelegate.m in Sources */,
+				58AEF7EF19F887D500DDAE88 /* FileLogger.m in Sources */,
 				5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */,
 				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				80AB894517C26E7E0053E784 /* TimelineViewController.m in Sources */,
@@ -6284,7 +6298,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = NerdNation;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "823e1739-ce04-42d0-a723-8c08df6e41a2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "55ac2271-6236-4771-a4ad-a1838f5ae593";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

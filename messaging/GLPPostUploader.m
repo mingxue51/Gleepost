@@ -111,7 +111,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
 {
 //    //Register the timestamp in order to avoid problems when a video selected and then unselected.
 //    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:<#(GLPPost *)#>];
-    DDLogDebug(@"REGISTERED TIMESTAMP: %@", timestamp);
+    FLog(@"REGISTERED TIMESTAMP: %@", timestamp);
 
     //Add the date to a new post.
     GLPPost *post = [[GLPPost alloc] init];
@@ -185,7 +185,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
         
-        DDLogDebug(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+        FLog(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
 
         //        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
     }
@@ -197,18 +197,18 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         
         [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
         
-        DDLogDebug(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+        FLog(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
 
     }
     else
     {
-        DDLogDebug(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+        FLog(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
         
 //        [self createLocalAndUploadPost:post];
         [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
     }
     
-    DDLogDebug(@"VIDEO PATH FOR POST %@: %@", post, _videoPath);
+    FLog(@"VIDEO PATH FOR POST %@: %@", post, _videoPath);
     
     return post;
 }
