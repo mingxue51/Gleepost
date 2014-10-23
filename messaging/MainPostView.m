@@ -1001,6 +1001,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 - (void)notifyViewPostAfterGoingPressed
 {
+    if(!_post.finalImage && !_post.tempImage)
+    {
+        _post.finalImage = _postImageView.image;
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post":_post}];
 }
 

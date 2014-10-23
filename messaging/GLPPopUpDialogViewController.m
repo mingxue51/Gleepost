@@ -11,6 +11,7 @@
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GPUImage.h"
+#import "GLPPost.h"
 
 @interface GLPPopUpDialogViewController ()
 
@@ -85,8 +86,10 @@
 
 #pragma mark - Modifiers
 
-- (void)setTopImage:(UIImage *)topImage
+- (void)setEventPost:(GLPPost *)eventPost
 {
+    UIImage *topImage = eventPost.finalImage ? eventPost.finalImage : eventPost.tempImage;
+    
     //Detach the a thread if the delay is not satisfiable.
     
     if(!topImage)

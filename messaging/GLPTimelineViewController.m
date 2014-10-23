@@ -2743,7 +2743,7 @@ const float TOP_OFFSET = 180.0f;
     GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
     
     [cvc setDelegate:self];
-    [cvc setTopImage:(_selectedPost.finalImage) ? _selectedPost.finalImage : _selectedPost.tempImage];
+    [cvc setEventPost:_selectedPost];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

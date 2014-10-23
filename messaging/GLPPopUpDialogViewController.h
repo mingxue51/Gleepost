@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class GLPPost;
+
 @protocol GLPPopUpDialogViewControllerDelegate <NSObject>
 
 @required
@@ -21,6 +23,6 @@
 
 @property (weak, nonatomic) UIViewController<GLPPopUpDialogViewControllerDelegate> *delegate;
 
-- (void)setTopImage:(UIImage *)topImage;
+- (void)setEventPost:(GLPPost *)eventPost;
 
 @end

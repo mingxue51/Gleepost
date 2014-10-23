@@ -460,7 +460,7 @@ static BOOL likePushed;
     GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
     
     [cvc setDelegate:self];
-    [cvc setTopImage:(incomingPost.finalImage) ? incomingPost.finalImage : incomingPost.tempImage];
+    [cvc setEventPost:incomingPost];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     
