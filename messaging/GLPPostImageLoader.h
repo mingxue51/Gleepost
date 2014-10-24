@@ -14,8 +14,7 @@
 
 + (GLPPostImageLoader *)sharedInstance;
 
--(void)addPostsImages:(NSArray*)posts;
-
+- (void)addPostsImages:(NSArray *)posts /*fromCampusLive:(BOOL)fromCampusLive*/;
 
 
 @end

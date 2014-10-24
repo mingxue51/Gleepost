@@ -515,8 +515,6 @@ const float TOP_OFF_SET = -64.0;
     
     FLog(@"GroupViewController : updateRealImage notification: %@ and index: %d", notification, index);
 
-    
-#warning bug here.
     if(currentPost /**&& !_enterDealloc*/)
     {
         FLog(@"Refresh cell with index: %d Group name %@", index, self.group.name);

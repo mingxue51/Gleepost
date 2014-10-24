@@ -68,9 +68,34 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+}
+
+#pragma mark - Configuration
+
+- (void)configureNotification
+{
+}
+
+- (void)removeNotification
+{
+}
+
+- (void)dealloc
+{
+    [self removeNotification];
+}
+
 -(void)setData:(GLPPost*)post
 {
+
     self.postData = post;
+    
+    [self configureNotification];
+
     
     [self setDataInElements:post];
     
@@ -92,8 +117,24 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     {
        imgUrl = [NSURL URLWithString:postData.imagesUrls[0]];
         
+        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:(SDWebImageRetryFailed | SDWebImageHighPriority) progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+            FLog(@"Post title %@ in CL image %ld out of %ld", postData.eventTitle, receivedSize, expectedSize);
+
+            
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+            if(error)
+            {
+                FLog(@"ERROR: Post with title %@ -> %@", postData.eventTitle, error);
+            }
+        
+        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
         //Set post's image.
-        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        
     }
     else if([postData isVideoPost])
     {
@@ -103,29 +144,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     {
         [_eventImage setImage:nil];
     }
-
-    
-//    [_eventImage setImageWithURL:imgUrl placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-//        
-//        //Create the reflection effect.
-//        //TODO: Fix that, only add image when the image is loaded.
-////        [_reflectedEventImage reflectionImageWithImage:_eventImage.image];
-//        
-//        UIImage *croppedImg = image;
-//        
-//        croppedImg = [ImageFormatterHelper cropImage:croppedImg withRect:CGRectMake(0, 0, croppedImg.size.width, croppedImg.size.height-300)];
-//        
-//        [croppedImg setAlpha:0.5];
-////        
-////        UIImage *finalImg = [ImageFormatterHelper addImageToImage:image withImage2:croppedImg withImageView:_eventImage andRect:CGRectMake(0, 0, croppedImg.size.width, croppedImg.size.height-300)];
-//        
-//        UIImage *finalImg = [ImageFormatterHelper maskImage:image withMask:image];
-//        
-//        
-//        [_eventImage setImage:finalImg];
-//        
-//    }];
-    
     
     
     CGSize labelSize = [CampusWallHeaderCell getContentLabelSizeForContent:postData.eventTitle];
@@ -197,13 +215,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     
     [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
     
-    
-
-    
     [self configureGoingButton];
-    
- 
-//    [_eventTitleLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:24]];
 }
 
 - (void)formatElements
@@ -258,8 +270,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(void)setTimeWithTime:(NSDate *)date
 {
-    
-    
     if ([[NSDate date] compare:date] == NSOrderedDescending) {
         [_timeLbl setText:[date timeAgo]];
         

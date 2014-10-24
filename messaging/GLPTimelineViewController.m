@@ -72,6 +72,8 @@
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
 
+#import "GLPTableActivityIndicator.h"
+
 @interface GLPTimelineViewController () <GLPPopUpDialogViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
@@ -153,6 +155,8 @@
 @property (assign, nonatomic) BOOL showComment;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -346,6 +350,10 @@ const float TOP_OFFSET = 180.0f;
     _tableViewFirstTimeScrolled = NO;
     
     _showComment = NO;
+    
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
+    
+    
 }
 
 
@@ -1014,9 +1022,11 @@ const float TOP_OFFSET = 180.0f;
         return;
     }
     
-//    [self startLoading];
+    [self startLoading];
     [self showLoadingIndicator];
-    [self clearTableViewAndShowLoader];
+//    [self clearTableViewAndShowLoader];
+    [self clearTableView];
+    [_tableActivityIndicator startActivityIndicator];
     
     [GLPPostManager loadInitialPostsWithLocalCallback:^(NSArray *localPosts) {
         // show temp local results
@@ -1028,18 +1038,22 @@ const float TOP_OFFSET = 180.0f;
 
         if(self.posts.count != 0)
         {
-            [self hideLoader];
+//            [self hideLoader];
+            [_tableActivityIndicator stopActivityIndicator];
             [self.tableView reloadData];
             DDLogDebug(@"Data reloaded for local posts.");
         }
         else
         {
-            [self clearTableViewAndShowLoader];
+//            [self clearTableViewAndShowLoader];
+            [self clearTableView];
+            [_tableActivityIndicator startActivityIndicator];
         }
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         
-        [self hideLoader];
+//        [self hideLoader];
+        [_tableActivityIndicator stopActivityIndicator];
 
         if(success) {
             self.posts = [remotePosts mutableCopy];
@@ -1067,51 +1081,17 @@ const float TOP_OFFSET = 180.0f;
         }
         
         
-//        [self stopLoading];
-        [self hideLoadingIndicator];
+        [self stopLoading];
+//        [self hideLoadingIndicator];
+        [_tableActivityIndicator stopActivityIndicator];
     }];
 }
 
-- (void)clearTableViewAndShowLoader
+- (void)clearTableView
 {
-    DDLogDebug(@"Show loader");
-    
     _posts = [[NSMutableArray alloc] init];
     
     [self.tableView reloadData];
-    
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    CGAffineTransform transform = CGAffineTransformMakeScale(1.5f, 1.5f);
-    activityIndicator.transform = transform;
-    
-//    [activityIndicator setFrame:CGRectMake(250.0, 500.0, 100.0, 100.0)];
-    
-    CGRectSetX(activityIndicator, 141.0);
-    CGRectSetY(activityIndicator, 300.0);
-    
-    activityIndicator.tag = 231;
-    [activityIndicator setHidden:NO];
-
-    [activityIndicator startAnimating];
-    
-    [self.tableView addSubview:activityIndicator];
-    
-    
-}
-
-- (void)hideLoader
-{
-    DDLogDebug(@"Hide loader");
-    
-    for(UIView *v in self.tableView.subviews)
-    {
-        if(v.tag == 231)
-        {
-            [(UIActivityIndicatorView *)v stopAnimating];
-            [v setHidden:YES];
-        }
-    }
 }
 
 -(void)setBottomView

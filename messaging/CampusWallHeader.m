@@ -14,6 +14,7 @@
 #import "WebClient.h"
 #import "DateFormatterHelper.h"
 #import "CampusLiveManager.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface CampusWallHeader ()
 
@@ -27,6 +28,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *happeningLbl;
 @property (weak, nonatomic) IBOutlet UIView *boringView;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 //@property (assign, nonatomic) BOOL readyToAutomaticallyScroll;
 //@property (strong, nonatomic) NSTimer *checkLatestEvent;
 //@property (strong, nonatomic) NSTimer *runAutomaticScroll;
@@ -89,6 +92,8 @@ NSString *BORING_IMAGE;
     HAPPENED_TODAY = @"Happened Earlier";
     NOTHING_HAPPENING = @"Nothing happening on campus!";
     BORING_IMAGE = @"calendar_boring";
+    
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self];
 }
 
 //-(void)initialiseObjects
@@ -113,17 +118,18 @@ NSString *BORING_IMAGE;
     _posts = nil;
     
 //    [self reloadData];
+    
+    [_tableActivityIndicator startActivityIndicator];
 
     [[CampusLiveManager sharedInstance] loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
         
+        [_tableActivityIndicator stopActivityIndicator];
         
         if(success)
         {
 
             _posts = posts;
             
-//            [self hideLoadingLabel];
-
             [self clearAndLoad];
             
             if(_posts.count == 0)
@@ -164,7 +170,7 @@ NSString *BORING_IMAGE;
     [self addSubview:loadingLabel];
 }
 
--(void )hideLoadingLabel
+-(void)hideLoadingLabel
 {
     for(UIView *v in [self subviews])
     {
@@ -252,9 +258,7 @@ NSString *BORING_IMAGE;
 
 -(CGFloat)vsscrollView:(VSScrollView *)scrollView heightForViewAtPosition:(int)position
 {
-    
     return CELL_HEIGHT;
-    
 }
 
 -(CGFloat)cellSpacingAfterCellAtPosition:(int)position
@@ -277,8 +281,6 @@ NSString *BORING_IMAGE;
 {
     return [_posts count];
 }
-
-
 
 -(VSScrollViewCell *)vsscrollView:(VSScrollView *)scrollView viewAtPosition:(int)position
 {
@@ -304,7 +306,7 @@ NSString *BORING_IMAGE;
     
     _lastPosition = position;
     
-    FLog(@"CampusWallHeader : current posts %@, position %d", _posts, position);
+//    FLog(@"CampusWallHeader : current posts %@, position %d", _posts, position);
     
     GLPPost *post = [_posts objectAtIndex:position];
     

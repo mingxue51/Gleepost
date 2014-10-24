@@ -60,13 +60,13 @@ static GLPPostImageLoader *instance = nil;
     {
         self.networkAvailable = YES;
         
-        DDLogInfo(@"Continue all operations of loading images.");
+        FLog(@"GLPPostImageLoader : Continue all operations of loading images.");
         
         [super startConsume];
 
     } else
     {
-        DDLogDebug(@"Cancel all operations of loading images.");
+        FLog(@"GLPPostImageLoader : Cancel all operations of loading images.");
         
         self.networkAvailable = NO;
         //No network.
@@ -78,7 +78,7 @@ static GLPPostImageLoader *instance = nil;
 
 #pragma mark - Modifiers
 
--(void)addPostsImages:(NSArray *)posts
+-(void)addPostsImages:(NSArray *)posts /*fromCampusLive:(BOOL)fromCampusLive*/
 {
     
     posts = [self findImagePosts:posts];
@@ -98,7 +98,7 @@ static GLPPostImageLoader *instance = nil;
             if(image)
             {
                 //Inform Campus Wall.
-                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInt:p.remoteKey] andImage:image];
+                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInteger:p.remoteKey] andImage:image];
             }
             else
             {                
@@ -172,13 +172,13 @@ static GLPPostImageLoader *instance = nil;
 
 -(BOOL)addPostImageInQueueWithPost:(GLPPost *)p
 {
-    NSNumber *currentRemoteKey = [NSNumber numberWithInt:p.remoteKey];
+    NSNumber *currentRemoteKey = [NSNumber numberWithInteger:p.remoteKey];
     
     if(![self.loadingImages objectForKey:currentRemoteKey])
     {
         [self.imagesNotStarted enqueue:currentRemoteKey];
         
-        [self.loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInt:p.remoteKey]];
+        [self.loadingImages setObject:[p.imagesUrls objectAtIndex:0]  forKey:[NSNumber numberWithInteger:p.remoteKey]];
         
         return YES;
     }
@@ -255,8 +255,8 @@ static GLPPostImageLoader *instance = nil;
         }
         else
         {
-            //TODO: No internet connection. Retry later.
-            DDLogInfo(@"GLPPostImageLoader : No network!");
+            //TODO: No internet connection or the request timed out. Retry later.
+            FLog(@"GLPPostImageLoader : No network or the request timed out.");
             
             break;
         }
@@ -269,6 +269,12 @@ static GLPPostImageLoader *instance = nil;
 -(void)notifyCampusWallWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
 {
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey, @"FinalImage":image}];
+}
+
+- (void)notifyCampusLiveWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey, @"FinalImage":image}];
+
 }
 
 #pragma mark - Client

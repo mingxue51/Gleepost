@@ -574,6 +574,7 @@
 		58B1BC9818EB13E9000ECB6C /* more_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1BC9718EB13E9000ECB6C /* more_old.png */; };
 		58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8619C01541007E3416 /* GLPNotificationCell.m */; };
 		58B74A8A19C037DA007E3416 /* NotificationsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */; };
+		58B7815D19F9CB7C003E0F9A /* GLPTableActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B7815C19F9CB7C003E0F9A /* GLPTableActivityIndicator.m */; };
 		58B865DF180D9F4800BB18AF /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865DE180D9F4800BB18AF /* NotificationsViewController.m */; };
 		58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865E1180DA2B100BB18AF /* NotificationCell.m */; };
 		58B90F1918C81B9300FA0955 /* GroupOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1818C81B9300FA0955 /* GroupOperationManager.m */; };
@@ -1728,6 +1729,8 @@
 		58B74A8619C01541007E3416 /* GLPNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNotificationCell.m; sourceTree = "<group>"; };
 		58B74A8819C037DA007E3416 /* NotificationsOrganiserHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsOrganiserHelper.h; sourceTree = "<group>"; };
 		58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsOrganiserHelper.m; sourceTree = "<group>"; };
+		58B7815B19F9CB7C003E0F9A /* GLPTableActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTableActivityIndicator.h; sourceTree = "<group>"; };
+		58B7815C19F9CB7C003E0F9A /* GLPTableActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTableActivityIndicator.m; sourceTree = "<group>"; };
 		58B865DD180D9F4800BB18AF /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
 		58B865DE180D9F4800BB18AF /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		58B865E0180DA2B100BB18AF /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
@@ -3772,6 +3775,15 @@
 			name = "Notification Cells";
 			sourceTree = "<group>";
 		};
+		58B7815A19F9CB4F003E0F9A /* Activity Indicator */ = {
+			isa = PBXGroup;
+			children = (
+				58B7815B19F9CB7C003E0F9A /* GLPTableActivityIndicator.h */,
+				58B7815C19F9CB7C003E0F9A /* GLPTableActivityIndicator.m */,
+			);
+			name = "Activity Indicator";
+			sourceTree = "<group>";
+		};
 		58B865CF180D9DD200BB18AF /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -4529,6 +4541,7 @@
 		8096E4E817C2CBEA00C7BF60 /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				58B7815A19F9CB4F003E0F9A /* Activity Indicator */,
 				5885A664191909B9009FEAD4 /* Message */,
 				8096E4E917C2CBEF00C7BF60 /* Cell */,
 			);
@@ -5828,6 +5841,7 @@
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
 				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
+				58B7815D19F9CB7C003E0F9A /* GLPTableActivityIndicator.m in Sources */,
 				58428E2D18A26DF300B82E4B /* RegisterPositionHelper.m in Sources */,
 				585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */,
 				58D301DD1989C570003EC08B /* GLPSelectUsersViewController.m in Sources */,
