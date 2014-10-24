@@ -18,7 +18,7 @@
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 #import "NewGroupMessageViewController.h"
-
+#import "GLPEmptyViewManager.h"
 
 @interface MessengerViewController ()
 
@@ -59,7 +59,7 @@
 
     [self initialiseObjects];
     
-    [self registerTableViewCells];
+    [self configureTableView];
     
     [self registerViews];
     
@@ -143,6 +143,14 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:kGLPLoadingCellNibName bundle:nil] forCellReuseIdentifier:kGLPLoadingCellIdentifier];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone; // start with no separator for loading cell
+}
+
+- (void)configureTableView
+{
+    [self registerTableViewCells];
+
+    //Remove empty cells.
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
 }
 
 - (void)registerViews
@@ -244,19 +252,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    switch (_conversationType)
-//    {
-//        case kButtonLeft:
-//            return _privateConversations.count;
-//            break;
-//            
-//        case kButtonRight:
-//            return _groupConversations.count;
-//            break;
-//            
-//        default:
-//            break;
-//    }
+    if(_filteredConversations.count == 0)
+    {
+        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kMessengerEmptyView withView:self.tableView];
+    }
+    else
+    {
+        DDLogDebug(@"MessengerViewController : Table view subviews");
+        
+        for(UIView *v in self.tableView.subviews)
+        {
+            DDLogDebug(@"Subview %@", [v class]);
+        }
+        
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kMessengerEmptyView];
+    }
     
     return _filteredConversations.count;
 }
@@ -266,7 +276,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        DDLogDebug(@"Delete conversation with index path: %d", indexPath.row);
+        FLog(@"Delete conversation with index path: %d", indexPath.row);
         
         GLPConversation *conversationToBeDeleted = _conversations[indexPath.row];
         
@@ -274,17 +284,11 @@
             
             if(success)
             {
-                [_conversations removeObjectAtIndex:indexPath.row];
-                
-                [_filteredConversations removeObjectAtIndex:indexPath.row];
-                
-                //Remove conversation from table view.
-                [self removeCellWithIndexPath:indexPath];
+                [self deleteConversationFromTableViewWithIndexPath:indexPath];
             }
         }];
     }
 }
-
 
 #pragma mark - Table view delegate
 
@@ -526,10 +530,21 @@
 
 - (void)removeCellWithIndexPath:(NSIndexPath *)indexPathRow
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
         [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
 
+}
+
+- (void)deleteConversationFromTableViewWithIndexPath:(NSIndexPath *)indexPath
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [_conversations removeObjectAtIndex:indexPath.row];
+        
+        [_filteredConversations removeObjectAtIndex:indexPath.row];
+        
+        //Remove conversation from table view.
+        [self removeCellWithIndexPath:indexPath];
+        
     });
 }
 

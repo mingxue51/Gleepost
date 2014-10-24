@@ -45,6 +45,7 @@
 #import "GLPPopUpDialogViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
+#import "GLPImageHelper.h"
 
 @interface GroupViewController () <GLPPopUpDialogViewControllerDelegate>
 
@@ -325,7 +326,7 @@ const float TOP_OFF_SET = -64.0;
     }
     else
     {
-        [_strechedImageView setImageUrl:_group.groupImageUrl withPlaceholderImage:@"default_thumbnail"];
+        [_strechedImageView setImageUrl:_group.groupImageUrl withPlaceholderImage:[GLPImageHelper placeholderGroupImagePath]];
     }
 }
 

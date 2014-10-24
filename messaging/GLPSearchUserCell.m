@@ -12,6 +12,7 @@
 #import "SDWebImageManager.h"
 #import "UIImage+Masking.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPImageHelper.h"
 
 @interface GLPSearchUserCell()
 
@@ -102,7 +103,7 @@
     
     [ShapeFormatterHelper setRoundedView:_profileImageView toDiameter:_profileImageView.frame.size.height];
     
-    [_profileImageView setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_profileImageView sd_setImageWithURL:[NSURL URLWithString:_user.profileImageUrl] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
 }
 
 

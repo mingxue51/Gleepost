@@ -23,6 +23,7 @@
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "NSNotificationCenter+Utils.h"
+#import "GLPImageHelper.h"
 
 @interface MainPostView ()
 
@@ -656,7 +657,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     NSURL *userImageUrl = [NSURL URLWithString:_post.author.profileImageUrl];
     
-    [_userImageView setImageWithURL:userImageUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_userImageView sd_setImageWithURL:userImageUrl placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
     
     //Add to the user's tag's image view the user id.
     _userImageView.tag = _post.author.remoteKey;

@@ -14,6 +14,7 @@
 #import "AppearanceHelper.h"
 #import "UIView+GLPDesign.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPImageHelper.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -114,11 +115,11 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     }
     else if([_groupData.groupImageUrl isEqualToString:@""] || !_groupData.groupImageUrl)
     {
-        [_groupImage setImage:[UIImage imageNamed:@"default_thumbnail"]];
+        [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
     }
     else
     {
-        [_groupImage setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_groupImage sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageRetryFailed];
     }
 }
 

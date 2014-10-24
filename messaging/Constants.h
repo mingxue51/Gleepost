@@ -80,6 +80,8 @@
 
 #define GLPNOTIFICATION_GOING_BUTTON_TOUCHED            @"GLPGoingButtonTouched"
 
+#define GLPNOTIFICATION_SEARCH_FOR_GROUPS               @"GLPSearchForGroups"
+
 
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

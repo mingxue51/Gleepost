@@ -57,6 +57,7 @@
 #import "GLPPopUpDialogViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
+#import "GLPEmptyViewManager.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPPopUpDialogViewControllerDelegate>
 
@@ -98,7 +99,6 @@
 @property (strong, nonatomic) GLPUser *userCreatedTheGroupPost;
 
 @property (strong, nonatomic) EmptyMessage *emptyNotificationsMessage;
-@property (strong, nonatomic) EmptyMessage *emptyMyPostsMessage;
 
 @property (assign, nonatomic) BOOL isPostFromNotifications;
 
@@ -360,9 +360,7 @@
     _postUploaded = NO;
 
     _emptyNotificationsMessage = [[EmptyMessage alloc] initWithText:@"You have no notifications" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
-    
-    _emptyMyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
-    
+        
     _currentNumberOfPN = 0;
     
     _tabButtonEnabled = YES;
@@ -1001,14 +999,7 @@
     {
         [_emptyNotificationsMessage hideEmptyMessageView];
         
-        if(self.posts.count == 0)
-        {
-            [_emptyMyPostsMessage showEmptyMessageView];
-        }
-        else
-        {
-            [_emptyMyPostsMessage hideEmptyMessageView];
-        }
+        [self hideOrShowPostsEmptyView];
         
         return self.numberOfRows + self.posts.count;
     }
@@ -1016,7 +1007,7 @@
     {
         NSInteger extraRow = 0;
         
-        [_emptyMyPostsMessage hideEmptyMessageView];
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
         
         if(_notifications.count == 0)
         {
@@ -1134,8 +1125,6 @@
             [notificationCell setNotification:notification];
             
             notificationCell.delegate = self;
-            
-            
             
             return notificationCell;
         }
@@ -1816,8 +1805,6 @@
     }
 }
 
-#pragma mark - Selectors
-
 - (void)reloadContent
 {
     if(_selectedTab == kButtonLeft)
@@ -1829,6 +1816,20 @@
     {
         DDLogDebug(@"Reload notifications");
         [self refreshNotifications];
+    }
+}
+
+#pragma mark - UI
+
+- (void)hideOrShowPostsEmptyView
+{
+    if(_posts.count == 0)
+    {
+        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
+    }
+    else
+    {
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
     }
 }
 

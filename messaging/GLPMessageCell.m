@@ -13,6 +13,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPDateFormatterHelper.h"
 #import "AppearanceHelper.h"
+#import "GLPImageHelper.h"
 
 @interface GLPMessageCell()
 
@@ -169,11 +170,11 @@ static const CGFloat kBottomMargin = 2; //7
         
         CGRectSetXY(imageView, [self xForCurrentSide:kProfileImageViewSideMargin w:kProfileImageViewSize], kTopMargin + kProfileImageViewTopMargin);
         
-        UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image3.png"];
+        UIImage *defaultProfilePicture = [GLPImageHelper placeholderUserImage];
         
         if([_message.author hasProfilePicture])
         {
-            [imageView setImageWithURL:[NSURL URLWithString:_message.author.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:_message.author.profileImageUrl] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
         } else
         {
             imageView.image = defaultProfilePicture;

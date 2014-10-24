@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "UIImageView+AFNetworking.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "GLPImageHelper.h"
 
 @implementation GLPConversationPictureImageView
 
@@ -28,21 +29,20 @@
     _conversationRemoteKey = conversation.remoteKey;
     
     if(conversation.isGroup) {
-        self.image = [UIImage imageNamed:@"default_group_image"];
+        self.image = [GLPImageHelper placeholderGroupImage];
     } else {
         GLPUser *user = [conversation getUniqueParticipant];
-        UIImage *defaultProfilePicture = [UIImage imageNamed:@"default_user_image2"];
+        UIImage *defaultProfilePicture = [GLPImageHelper placeholderUserImage];
         
         if([user hasProfilePicture]) {
-//            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [self setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [self sd_setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
 
         } else {
             self.image = defaultProfilePicture;
         }
         
-        [ShapeFormatterHelper setRoundedView:self toDiameter:self.frame.size.height];
     }
+    [ShapeFormatterHelper setRoundedView:self toDiameter:self.frame.size.height];
 
 }
 

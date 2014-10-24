@@ -50,7 +50,7 @@
     else
     {
         //Fetch the image from the server and add it to the image view.
-        [self setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:imagePath] options:SDWebImageRetryFailed];
     }
 }
 

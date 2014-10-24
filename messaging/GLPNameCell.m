@@ -11,6 +11,7 @@
 #import "ShapeFormatterHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "GLPImageHelper.h"
 
 @interface GLPNameCell ()
 
@@ -41,7 +42,6 @@ const float NAME_CELL_HEIGHT = 50;
     [super awakeFromNib];
     
     [self configureMainImageView];
-    
 }
 
 #pragma mark - Modifiers
@@ -60,13 +60,12 @@ const float NAME_CELL_HEIGHT = 50;
     if([url isEqualToString:@""])
     {
         //Set default image.
-        [_mainImageView setImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_mainImageView setImage:[GLPImageHelper placeholderUserImage]];
     }
     else
     {
-        
         //Fetch the image from the server and add it to the image view.
-        [_mainImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_mainImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
     }
 }
 
@@ -83,8 +82,6 @@ const float NAME_CELL_HEIGHT = 50;
 {
     [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageView.frame.size.height];
 }
-
-
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

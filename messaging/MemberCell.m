@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "GLPMember.h"
+#import "GLPImageHelper.h"
 
 @interface MemberCell()
 
@@ -45,11 +46,11 @@ const float CONTACT_CELL_HEIGHT = 48;
     
     if([imageUrl isEqualToString:@""])
     {
-        [_profileImageUser setImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_profileImageUser setImage:[GLPImageHelper placeholderUserImage]];
     }
     else
     {
-        [_profileImageUser setImageWithURL:[NSURL URLWithString:imageUrl]  placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_profileImageUser sd_setImageWithURL:[NSURL URLWithString:imageUrl]  placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
     }
     
     [_roleLbl setHidden:YES];

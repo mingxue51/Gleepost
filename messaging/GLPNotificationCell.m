@@ -12,6 +12,7 @@
 #import "NSDate+TimeAgo.h"
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "GLPImageHelper.h"
 
 @interface GLPNotificationCell ()
 
@@ -89,7 +90,7 @@ const float NOTIFICATION_CELL_HEIGHT = 60.0;
     
     _notificationImageView.viewControllerDelegate = _delegate;
     
-    [_notificationImageView setImageUrl:user.profileImageUrl withPlaceholderImage:nil];
+    [_notificationImageView setImageUrl:user.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     
     [_notificationImageView setGesture:YES];
     

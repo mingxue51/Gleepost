@@ -12,7 +12,6 @@
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
 #import "GLPGroupManager.h"
-#import "EmptyMessage.h"
 #import "GroupViewController.h"
 #import "UIViewController+Flurry.h"
 #import "UIViewController+GAI.h"
@@ -20,6 +19,7 @@
 #import "IntroNewGroupViewController.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPGroupSearchViewController.h"
+#import "GLPEmptyViewManager.h"
 
 @interface GLPGroupsViewController ()
 
@@ -40,8 +40,6 @@
 @property (strong, nonatomic) NSArray *groupSections;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
 
-@property (strong, nonatomic) EmptyMessage *emptyGroupsMessage;
-
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 
 @end
@@ -61,6 +59,9 @@
     [self registerViews];
     
     [self configNotifications];
+    
+    [self configureNavigationButton];
+
     
     //Change the colour of the tab bar.
     self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
@@ -104,30 +105,14 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [self configNavigationBar];
-    
-    [self configureNavigationButton];
-    
-    //    [self setCustomBackgroundToTableView];
 }
-
-
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    //Make the navigation bar invisible before going to the view group VC
-//    //in order to avoid problems with navigation bar during transition.
-//    
-////    [self.navigationController.navigationBar invisible];
-//    
-//
-//    
-//    [super viewWillDisappear:animated];
-//}
 
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPGroupUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SEARCH_FOR_GROUPS object:nil];
 
 }
 
@@ -143,9 +128,6 @@
     
     _groups = [[NSMutableArray alloc] init];
     _filteredGroups = [[NSMutableArray alloc] init];
-
-//    _emptyGroupsMessage = [[EmptyMessage alloc] initWithText:@"You have no groups" withPosition:EmptyMessagePositionCenter andTableView:self.tableView];
-    
 }
 
 - (void)configNavigationBar
@@ -163,7 +145,7 @@
 {
     [self.navigationController.navigationBar setButton:kRight withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
     
-    [self.navigationController.navigationBar setButton:kRight withImage:@"temp_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:_navItem];
+    [self.navigationController.navigationBar setButton:kLeft withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:_navItem];
 }
 
 - (void)configTabbar
@@ -180,6 +162,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupCreatedWithNotification:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUpSearchGroupsView) name:GLPNOTIFICATION_SEARCH_FOR_GROUPS object:nil];
 }
 
 - (void)registerViews
@@ -260,6 +244,8 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    [self showOrHideEmptyView];
+    
     return _filteredGroups.count;
 }
 
@@ -551,8 +537,7 @@
         }
         
     }
-    
-    
+
     [_collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
 }
 
@@ -560,6 +545,18 @@
 -(void)reloadNewGroupWithGroup:(GLPGroup *)group
 {
     [self loadGroupsWithGroup:group];
+}
+
+- (void)showOrHideEmptyView
+{
+    if(_filteredGroups.count == 0)
+    {
+        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupsEmptyView withView:self.collectionView];
+    }
+    else
+    {
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupsEmptyView];
+    }
 }
 
 
