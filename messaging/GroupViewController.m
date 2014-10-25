@@ -46,6 +46,7 @@
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPImageHelper.h"
+#import "GLPEmptyViewManager.h"
 
 @interface GroupViewController () <GLPPopUpDialogViewControllerDelegate>
 
@@ -74,7 +75,6 @@
 
 @property (strong, nonatomic) UIImage *groupImage;
 @property (strong, nonatomic) FDTakeController *fdTakeController;
-@property (strong, nonatomic) EmptyMessage *emptyPostsMessage;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -177,13 +177,14 @@ const float TOP_OFF_SET = -64.0;
     [self removeGoingButtonNotification];
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
     
     [super viewWillDisappear:animated];
 }
 
 - (void)dealloc
 {
+    [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupPostsEmptyView];
+    
     [_tableView removeFromSuperview];
 }
 
@@ -349,8 +350,6 @@ const float TOP_OFF_SET = -64.0;
     self.fdTakeController = [[FDTakeController alloc] init];
     self.fdTakeController.viewControllerForPresentingImagePickerController = self;
     self.fdTakeController.delegate = self;
-    
-    _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     
     _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
     
@@ -684,14 +683,8 @@ const float TOP_OFF_SET = -64.0;
 //    {
 //        int i = (self.posts.count == 0) ? 0 : 1;
     
-    if(self.posts.count == 0)
-    {
-        [_emptyPostsMessage showEmptyMessageView];
-    }
-    else
-    {
-        [_emptyPostsMessage hideEmptyMessageView];
-    }
+    [self showOrHidePostsEmptyView];
+    
     
     self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + 1 /*+ i*/;
 //    }
@@ -1801,6 +1794,18 @@ const float TOP_OFF_SET = -64.0;
     
     
     return NO;
+}
+
+- (void)showOrHidePostsEmptyView
+{
+    if(self.posts.count == 0)
+    {
+        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupPostsEmptyView withView:self.tableView];
+    }
+    else
+    {
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupPostsEmptyView];
+    }
 }
 
 /*

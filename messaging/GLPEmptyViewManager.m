@@ -13,12 +13,14 @@
 #import "GLPMessengerEmptyView.h"
 #import "GLPGroupsEmptyView.h"
 #import "GLPProfilePostsEmptyView.h"
+#import "GLPGroupPostsEmptyView.h"
 
 @interface GLPEmptyViewManager ()
 
 @property (strong, nonatomic) GLPMessengerEmptyView *messengerEmptyView;
 @property (strong, nonatomic) GLPGroupsEmptyView *groupsEmptyView;
 @property (strong, nonatomic) GLPProfilePostsEmptyView *profilePostsEmptyView;
+@property (strong, nonatomic) GLPGroupPostsEmptyView *groupPostsEmptyView;
 
 @end
 
@@ -53,7 +55,10 @@ static GLPEmptyViewManager *instance = nil;
             
         case kProfilePostsEmptyView:
             return [self generatePostsEmptyViewWithView:view];
-            return nil;
+            break;
+            
+        case kGroupPostsEmptyView:
+            return [self generateGroupPostsEmptyView:view];
             break;
             
         default:
@@ -93,6 +98,15 @@ static GLPEmptyViewManager *instance = nil;
             {
                 [_profilePostsEmptyView hideView];
                 _profilePostsEmptyView = nil;
+            }
+            break;
+            
+        case kGroupPostsEmptyView:
+            
+            if(_groupPostsEmptyView)
+            {
+                [_groupPostsEmptyView hideView];
+                _groupPostsEmptyView = nil;
             }
             break;
             
@@ -142,6 +156,21 @@ static GLPEmptyViewManager *instance = nil;
     [view addSubview:_profilePostsEmptyView];
     
     return _profilePostsEmptyView;
+}
+
+- (UIView *)generateGroupPostsEmptyView:(UIView *)view
+{
+    if(_groupPostsEmptyView)
+    {
+        [view addSubview:_groupPostsEmptyView];
+        return _groupPostsEmptyView;
+    }
+    
+    _groupPostsEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPGroupPostsEmptyView" owner:view options:nil] objectAtIndex:0];
+    
+    [view addSubview:_groupPostsEmptyView];
+    
+    return _groupPostsEmptyView;
 }
 
 @end

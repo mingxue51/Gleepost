@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSUInteger, EmptyViewKind) {
     kMessengerEmptyView,
     kProfilePostsEmptyView,
+    kGroupPostsEmptyView,
     kGroupsEmptyView
 };
 

@@ -25,7 +25,7 @@
     switch (viewPosition)
     {
         case kViewPositionTop:
-            yPosition = 50.0f;
+            yPosition = 88.0;
             break;
             
         case kViewPositionCenter:
