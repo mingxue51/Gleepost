@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GLPpost.h"
 #import "GLPNewElementsIndicatorView.h"
-#import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 #import "GLPPostCell.h"
 //TODO: Change that to IntroKindOfNewPostViewController

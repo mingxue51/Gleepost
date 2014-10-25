@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPTimelineViewController.h"
-#import "ProfileViewController.h"
 #import "GLPPost.h"
-#import "NewCommentDelegate.h"
 
 @interface NewCommentView : UIView <UITextViewDelegate>
 {

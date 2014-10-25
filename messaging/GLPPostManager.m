@@ -42,15 +42,7 @@
     NSArray *localPosts = [GLPPostDao findPostsWithUsersRemoteKey:remoteKey];
     
     DDLogDebug(@"Logged in user's local image posts");
-    
-    for(GLPPost *p in localPosts)
-    {
-        if(p.imagesUrls)
-        {
-            DDLogDebug(@"%@", p);
-        }
-    }
-    
+
     localCallback(localPosts);
 
     [[WebClient sharedInstance] userPostsWithRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
@@ -61,16 +53,8 @@
         }
         
         DDLogDebug(@"Logged in user's remote image posts");
-        
-        for(GLPPost *p in posts)
-        {
-            if(p.imagesUrls)
-            {
-                DDLogDebug(@"%@", p);
-            }
-        }
-        
-        
+
+    
         //Find all the event posts that the user attends.
         [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
             

@@ -258,13 +258,6 @@
     }
     else
     {
-        DDLogDebug(@"MessengerViewController : Table view subviews");
-        
-        for(UIView *v in self.tableView.subviews)
-        {
-            DDLogDebug(@"Subview %@", [v class]);
-        }
-        
         [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kMessengerEmptyView];
     }
     

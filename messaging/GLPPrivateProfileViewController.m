@@ -36,6 +36,7 @@
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPShowUsersGroupsViewController.h"
+#import "GLPAttendingPostsViewController.h"
 
 @interface GLPPrivateProfileViewController () <GLPPopUpDialogViewControllerDelegate>
 
@@ -549,7 +550,7 @@
 
 - (void)numberOfRsvpsTouched
 {
-    
+    [self performSegueWithIdentifier:@"show attending events" sender:self];
 }
 
 -(void)unlockProfile
@@ -599,10 +600,12 @@
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
-//    static NSString *CellIdentifierProfile = @"ProfileCell";
-//    static NSString *CellIdentifierButtons = @"ButtonsCell";
+
     
     static NSString *CellIdentifierProfile = @"PrivateProfileTopViewCell";
+    
+//    static NSString *CellIdentifierProfile = @"ProfileCell";
+//    static NSString *CellIdentifierButtons = @"ButtonsCell";
     
 //    static NSString *CellIdentifierAbout = @"AboutCell";
 //    static NSString *CellIdentifierMutual = @"MutualCell";
@@ -1065,6 +1068,12 @@
         GLPShowUsersGroupsViewController *showUsersGroups = segue.destinationViewController;
         
         showUsersGroups.user = _profileUser;
+    }
+    else if([segue.identifier isEqualToString:@"show attending events"])
+    {
+        GLPAttendingPostsViewController *attendingPostsViewController = segue.destinationViewController;
+        
+        attendingPostsViewController.selectedUser = _profileUser;
     }
 }
 

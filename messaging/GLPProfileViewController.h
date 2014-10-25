@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
 #import "NSObject_ProfileEnums.h"
-#import "NewCommentDelegate.h"
 #import "GLPNotificationCell.h"
 #import "ButtonNavigationDelegate.h"
 #import "ProfileTableViewCell.h"

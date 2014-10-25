@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TimelineViewController.h"
 #import "FDTakeController.h"
 
 @interface NewPostView : UIView <UITextViewDelegate, FDTakeDelegate>
 
-@property (strong, nonatomic) TimelineViewController* delegate;
 @property (strong, nonatomic) UITextView *commentTextView;
 @property (strong, nonatomic) UIButton *imageHolderButton;
 @property (strong, nonatomic) UIImageView *keyboardBackground;

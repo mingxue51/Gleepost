@@ -144,9 +144,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         }
         
     }
-    
-    DDLogDebug(@"viewWillAppear");
-    
+        
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -413,8 +411,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     [self configureDisplayForMessages:_messages];
     [self reloadWithItems:_messages];
-    
-    DDLogDebug(@"MESSAGES: %@", _messages);
 }
 
 - (void)configureDisplayForMessages:(NSArray *)messages

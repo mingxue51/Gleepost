@@ -229,6 +229,7 @@ static GLPPostImageLoader *instance = nil;
 //            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
 
+        DDLogDebug(@"Url string %@", urlStr);
        
         NSURL *imageUrl = [NSURL URLWithString:urlStr];
         

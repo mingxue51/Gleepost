@@ -14,7 +14,6 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "GLPPrivateProfileViewController.h"
-#import "ProfileViewController.h"
 #import "SessionManager.h"
 #import "UIViewController+GAI.h"
 #import "ContactsManager.h"

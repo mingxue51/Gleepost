@@ -465,21 +465,6 @@ static WebClient *instance = nil;
 
 #pragma mark - Posts
 
-//- (void)getPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
-//{
-//    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
-//    if(post) {
-//        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
-//    }
-//    
-//    [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
-//        callbackBlock(YES, posts);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        callbackBlock(NO, nil);
-//    }];
-//}
-
 - (void)getPostsAfter:(GLPPost *)post withCategoryTag:(NSString*)tag callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
@@ -499,7 +484,6 @@ static WebClient *instance = nil;
         callbackBlock(NO, nil);
     }];
 }
-
 
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
 {
@@ -583,19 +567,6 @@ static WebClient *instance = nil;
     }
 }
 
-
-///**
-// Call this mehtod when you need to create a new post that is event.
-// 
-// @param post
-// @param date
-// 
-// */
-//-(void)createPost:(GLPPost *)post withDate:(NSDate *)date callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
-//{
-//    
-//}
-
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/", (int)remoteKey];
@@ -631,6 +602,23 @@ static WebClient *instance = nil;
 
     }];
     
+}
+
+- (void)getAttendingEventsForUserWithRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback
+{
+    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    
+    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *attendingPosts = [RemoteParser parsePostsFromJson:responseObject];
+                
+        callback(YES, attendingPosts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+       
+        callback(NO, nil);
+        
+    }];
 }
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock

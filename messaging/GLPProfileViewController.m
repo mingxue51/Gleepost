@@ -15,8 +15,6 @@
 #import "GLPPostManager.h"
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
-#import "PopUpNotificationsViewController.h"
-#import "TransitionDelegateViewNotifications.h"
 #import "GLPPrivateProfileViewController.h"
 #import "LoginRegisterViewController.h"
 #import "ViewPostViewController.h"
@@ -58,6 +56,7 @@
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPEmptyViewManager.h"
+#import "GLPAttendingPostsViewController.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPPopUpDialogViewControllerDelegate>
 
@@ -70,8 +69,6 @@
 @property (assign, nonatomic) ButtonType selectedTab;
 
 @property (assign, nonatomic) BOOL fromCampusWall;
-
-@property (strong, nonatomic) TransitionDelegateViewNotifications *transitionViewNotificationsController;
 
 @property (strong, nonatomic) UIImage *selectedImageToBeChanged;
 
@@ -338,8 +335,6 @@
     {
         self.fromCampusWall = YES;
     }
-    
-    self.transitionViewNotificationsController = [[TransitionDelegateViewNotifications alloc] init];
     
     _selectedTab = kButtonLeft;
     
@@ -1732,7 +1727,7 @@
 
 - (void)numberOfRsvpsTouched
 {
-    DDLogDebug(@"numberOfRsvpsTouched");
+    [self performSegueWithIdentifier:@"show attending events" sender:self];
 
 }
 
@@ -1802,6 +1797,12 @@
         showUsersVC.postRemoteKey = _selectedPost.remoteKey;
         
         showUsersVC.selectedTitle = @"GUEST LIST";
+    }
+    else if([segue.identifier isEqualToString:@"show attending events"])
+    {
+        GLPAttendingPostsViewController *attendingPostsViewController = segue.destinationViewController;
+        
+        attendingPostsViewController.selectedUser = _user;
     }
 }
 

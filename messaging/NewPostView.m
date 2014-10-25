@@ -95,7 +95,6 @@ static BOOL visibility = NO;
         
         
         self.fdTakeController = [[FDTakeController alloc] init];
-        self.fdTakeController.viewControllerForPresentingImagePickerController = self.delegate;
         self.fdTakeController.delegate = self;
         
         
@@ -252,7 +251,6 @@ static BOOL visibility = NO;
 -(void) cancelPushed: (id)sender
 {
     NSLog(@"Cancel Pushed");
-    [self.delegate setPlusButtonToNavigationBar];
     
     UIView *superView = [self superview];
 	[super removeFromSuperview];
@@ -313,7 +311,6 @@ static BOOL visibility = NO;
 	[[aSuperview layer] addAnimation:animation forKey:@"layerAnimation"];
     visibility = NO;
     
-    [self.delegate loadPosts];
 
 }
 

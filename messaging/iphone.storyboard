@@ -1839,6 +1839,7 @@
                         <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="e8B-qp-59Q"/>
                         <segue destination="chq-8F-SBT" kind="push" identifier="show attendees" id="i2x-at-SJt"/>
                         <segue destination="7qg-1v-Vzm" kind="push" identifier="show users groups" id="6Xq-IJ-Kht"/>
+                        <segue destination="NhH-l9-be2" kind="push" identifier="show attending events" id="NSy-Xb-H1O"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lhy-3j-G5f" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2369,6 +2370,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t29-oq-jgA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3963" y="-3298"/>
+        </scene>
+        <!--ATTENDING EVENTS-->
+        <scene sceneID="eZJ-vI-qdx">
+            <objects>
+                <viewController id="NhH-l9-be2" customClass="GLPAttendingPostsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hlm-Jw-igx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6wh-mR-4y8">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="NhH-l9-be2" id="b0O-1i-qbw"/>
+                                    <outlet property="delegate" destination="NhH-l9-be2" id="2Ec-nH-DKu"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="ATTENDING EVENTS" id="dY8-0E-1y2">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Ewt-4O-SLx"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="tableView" destination="6wh-mR-4y8" id="jZh-Ng-PLG"/>
+                        <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="FTW-m4-VDE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UlA-Sy-yML" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4364" y="-3298"/>
         </scene>
         <!--Select Address View Controller-->
         <scene sceneID="c9B-v7-wwj">
@@ -3653,6 +3687,7 @@
                         <segue destination="gby-Gq-HqZ" kind="push" identifier="show location" id="aph-g3-dhm"/>
                         <segue destination="YKI-NX-LaO" kind="push" identifier="show image selector" id="bc7-so-Tnw"/>
                         <segue destination="chq-8F-SBT" kind="push" identifier="show attendees" id="guC-Nf-HGz"/>
+                        <segue destination="NhH-l9-be2" kind="push" identifier="show attending events" id="EAz-MH-b19"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJo-nJ-HgL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3867,7 +3902,6 @@
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="htZ-EL-79i"/>
                         <segue destination="K5s-yF-8db" kind="push" identifier="view notifications" id="84B-81-Mjf"/>
                         <segue destination="oTu-PD-f01" kind="modal" identifier="start" modalTransitionStyle="flipHorizontal" id="JXK-Z8-Y8u"/>
-                        <segue destination="bSM-Oa-OIz" kind="modal" identifier="PopUpNotifications" id="6ac-rd-Vl9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZLw-uF-be1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4044,82 +4078,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q0v-3g-67n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1521" y="3728"/>
-        </scene>
-        <!--Pop Up Notifications View Controller-->
-        <scene sceneID="9wZ-7Q-6fX">
-            <objects>
-                <viewController storyboardIdentifier="PopUpNotifications" id="bSM-Oa-OIz" customClass="PopUpNotificationsViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="mLj-7L-G33">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="8PF-cg-WYc">
-                                <rect key="frame" x="-2" y="-3" width="325" height="485"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="DcG-Th-AXw" appends="YES" id="box-rc-MJg"/>
-                                </connections>
-                            </imageView>
-                            <tableView clipsSubviews="YES" alpha="0.90000000000000002" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VDd-nk-pTw">
-                                <rect key="frame" x="0.0" y="77" width="320" height="441"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <imageView key="tableFooterView" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="vKs-c6-I18">
-                                    <rect key="frame" x="0.0" y="66" width="320" height="286"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <connections>
-                                        <outletCollection property="gestureRecognizers" destination="DcG-Th-AXw" appends="YES" id="3Na-dh-pUP"/>
-                                    </connections>
-                                </imageView>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="fj2-YK-ZhH" customClass="NotificationCell">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fj2-YK-ZhH" id="mDc-Jf-WVW">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="bSM-Oa-OIz" id="15H-EX-qtS"/>
-                                    <outlet property="delegate" destination="bSM-Oa-OIz" id="psN-K2-5jR"/>
-                                </connections>
-                            </tableView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1386202636_Arrow_Up copy.png" id="OyD-db-wbV">
-                                <rect key="frame" x="-66" y="57" width="195" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1386202636_Arrow_Up copy.png" id="w0J-GF-PX2">
-                                <rect key="frame" x="190" y="57" width="195" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="leftArrow" destination="OyD-db-wbV" id="Gi7-tn-RpU"/>
-                        <outlet property="rightArrow" destination="w0J-GF-PX2" id="Hz6-bp-4vN"/>
-                        <outlet property="tableView" destination="VDd-nk-pTw" id="ISi-Uh-e0K"/>
-                        <segue destination="HaH-y9-QMH" kind="push" identifier="view profile" id="n2N-Iw-72J"/>
-                        <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="a4L-JY-TPZ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X0J-RX-RKz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="DcG-Th-AXw">
-                    <connections>
-                        <action selector="hideViewController:" destination="bSM-Oa-OIz" id="WmP-cM-lmM"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="1580" y="2671"/>
         </scene>
         <!--Group View Controller-->
         <scene sceneID="HYY-KB-ozc">
@@ -4815,7 +4773,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1386202636_Arrow_Up copy.png" width="127" height="68"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
@@ -4917,20 +4874,20 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="zvV-dv-dTv"/>
-        <segue reference="Q9z-xI-t0V"/>
-        <segue reference="ZpN-d9-baB"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="FTW-m4-VDE"/>
+        <segue reference="EAz-MH-b19"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="NkQ-j5-6rL"/>
+        <segue reference="Ji2-Jv-WyQ"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="Ze9-pm-FNm"/>
-        <segue reference="cxq-Lw-xeo"/>
-        <segue reference="y0w-oH-XXi"/>
-        <segue reference="voh-a1-0cl"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="bc7-so-Tnw"/>
+        <segue reference="7l2-k5-pHQ"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="fL3-CC-Jbz"/>
         <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

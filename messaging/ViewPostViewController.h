@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GLPPostCell.h"
 #import "HPGrowingTextView.h"
-#import "NewCommentDelegate.h"
 #import "ViewImageDelegate.h"
 #import "GLPPostCell.h"
 #import "CommentCell.h"

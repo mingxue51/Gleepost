@@ -15,11 +15,8 @@
 #import "Social/Social.h"
 #import <Twitter/Twitter.h>
 #import "PopUpMessage.h"
-#import "PostWithImageCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "PrivateProfileViewController.h"
 #import "NewPostView.h"
-#import "TransitionDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppearanceHelper.h"
 #import "ViewPostImageViewController.h"
@@ -86,7 +83,6 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
 @property (strong, nonatomic) NewPostView *postView;
-@property (strong, nonatomic) TransitionDelegate *transitionController;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
@@ -304,7 +300,6 @@ const float TOP_OFFSET = 180.0f;
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
     
-    self.transitionController = [[TransitionDelegate alloc] init];
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     self.transitionCategoriesViewController = [[TransitionDelegateViewCategories alloc] init];
@@ -2841,20 +2836,6 @@ const float TOP_OFFSET = 180.0f;
     
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
-        //If iOS7
-        
-        //Hide navigation items and add NewPostViewController's items.
-//        [self hideNavigationBarAndButtonWithNewTitle:@"New Post"];
-        
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//        NewPostViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-//        vc.view.backgroundColor =  self.view.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-//        vc.delegate = self;
-//        [vc setTransitioningDelegate:self.transitionController];
-//        vc.modalPresentationStyle= UIModalPresentationCustom;
-//        [self.view setBackgroundColor:[UIColor whiteColor]];
-//        [self presentViewController:vc animated:YES completion:nil];
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
@@ -3108,14 +3089,6 @@ const float TOP_OFFSET = 180.0f;
         
         addComment.delegate = self;
         
-    }
-    else if([segue.identifier isEqualToString:@"view private profile"])
-    {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        PrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
-        
-        privateProfileViewController.selectedUserId = self.selectedUserId;
     }
     else if([segue.identifier isEqualToString:@"view new private profile"])
     {

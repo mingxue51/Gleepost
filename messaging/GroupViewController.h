@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPGroup.h"
-#import "NewCommentDelegate.h"
 #import "FDTakeController.h"
 #import "GLPPostCell.h"
 #import "NewPostViewController.h"
