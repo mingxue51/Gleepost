@@ -384,10 +384,12 @@ const float TOP_OFF_SET = -64.0;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
     }
-    else if (![_group.loggedInUser isMemberOfGroup])
+    else if (![_group.loggedInUser isMemberOfGroup] && _group.privacy == kPublicGroup)
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"join_group" withButtonSize:CGSizeMake(37.0, 30.0) withSelector:@selector(joinGroupTouched) andTarget:self];
     }
+    
+    DDLogDebug(@"Group type %d", _group.privacy);
 }
 
 -(void)configureNavigationBar
