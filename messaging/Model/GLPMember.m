@@ -77,12 +77,22 @@
 
 - (BOOL)isAuthenticatedForChanges
 {
-    if(_roleLevel == kMember)
+    if (_roleLevel == kAdministrator || _roleLevel == kCreator)
     {
-        return NO;
+        return YES;
     }
     
-    return YES;
+    return NO;
+}
+
+- (BOOL)isMemberOfGroup
+{
+    if(_roleName)
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 /**

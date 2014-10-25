@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UILabel *title;
 @property (strong, nonatomic) UIFont *font;
 @property (strong, nonatomic) UIImageView *transImageView;
+//@property (strong, nonatomic) UIButton *joinButton;
 @end
 
 @implementation GLPStretchedImageView
@@ -31,6 +32,8 @@ const float kStretchedImageHeight = 250;
 
         [self configureLabel];
         
+//        [self configureJoinButton];
+        
         [self configureTransparentImageView];
     }
     
@@ -38,7 +41,17 @@ const float kStretchedImageHeight = 250;
 }
 
 #pragma mark - Configuration
-
+//
+//- (void)configureJoinButton
+//{
+//    _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0f, self.frame.size.height - 45, 40.0f, 40.0f)];
+//    
+//    [_joinButton setBackgroundImage:[UIImage imageNamed:@"temp_request_to_join"] forState:UIControlStateNormal];
+//    
+//    [_joinButton addTarget:self action:@selector(joinOrRequestToJoin) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    [self addSubview:_joinButton];
+//}
 
 - (void)configureLabel
 {

@@ -300,10 +300,7 @@ const float TOP_OFF_SET = -64.0;
 {
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPStretchedImageView" owner:self options:nil];
     
-    //Set delegate.
     _strechedImageView = [array objectAtIndex:0];
-    
-//    CGRectSetY(_strechedImageView, -64.0);
     
     _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
     
@@ -372,7 +369,7 @@ const float TOP_OFF_SET = -64.0;
 //    _strechedImageView = [[GLPStretchedImageView alloc] init];
 }
 
--(void)configureNavigationItems
+- (void)configureNavigationItems
 {
     int buttonX = 10;
     
@@ -387,7 +384,10 @@ const float TOP_OFF_SET = -64.0;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
     }
-    
+    else if (![_group.loggedInUser isMemberOfGroup])
+    {
+        [self.navigationController.navigationBar setButton:kRight withImageName:@"join_group" withButtonSize:CGSizeMake(37.0, 30.0) withSelector:@selector(joinGroupTouched) andTarget:self];
+    }
 }
 
 -(void)configureNavigationBar
@@ -441,6 +441,7 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:notificationName object:nil];
+
 }
 
 -(void)removeNotifications
@@ -454,6 +455,7 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+    
 }
 
 - (void)setUpGoingButtonNotification
@@ -473,7 +475,6 @@ const float TOP_OFF_SET = -64.0;
 }
 
 #pragma mark - Notifications methods
-
 
 /**
  This method should be called when the post is uploaded (GLPPostUploaderManager).
@@ -1003,6 +1004,24 @@ const float TOP_OFF_SET = -64.0;
 }
 
 #pragma mark - Client
+
+- (void)joinGroupTouched
+{
+    [[WebClient sharedInstance] joinPublicGroup:_group callback:^(BOOL success) {
+        
+        if(success)
+        {
+            //TODO: Show the pop up message.
+        }
+        else
+        {
+            //Show error.
+            [WebClientHelper showFailedToJoinGroupWithName:_group.name];
+            
+        }
+        
+    }];
+}
 
 -(void)loadPosts
 {

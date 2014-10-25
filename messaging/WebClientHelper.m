@@ -223,6 +223,13 @@
     [self showAlertWithTitle:@"Friends invited to group!" andMessage:[NSString stringWithFormat:@"You have invited %ld facebook friends to this group", (long)numberOfFriends]];
 }
 
+#pragma mark - Groups
+
++ (void)showFailedToJoinGroupWithName:(NSString *)groupName
+{
+    [self showAlertWithTitle:@"Oops!" andMessage:[NSString stringWithFormat:@"There was a problem joining %@. Please check your connection and try again", groupName]];
+}
+
 + (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title

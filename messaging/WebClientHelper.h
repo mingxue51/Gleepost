@@ -39,6 +39,7 @@
 + (void)showProblemLoadingFBFriends;
 + (void)showProblemInvitingFBFriends;
 + (void)showSuccessfullyInvitedFriends:(NSString *)friends;
++ (void)showFailedToJoinGroupWithName:(NSString *)groupName;
 
 + (void)showSaveImageMessage;
 + (void)showErrorSavingImageWithMessage:(NSString *)errorMessage;

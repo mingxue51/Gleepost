@@ -1046,6 +1046,16 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success))callback
+{
+//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+
+    NSArray *user = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"%d", [SessionManager sharedInstance].user.remoteKey], nil];
+    
+    [self addUsers:user toGroup:group callback:callback];
+    
+}
+
 - (void)searchGroupsWithName:(NSString *)groupName callback:(void (^) (BOOL success, NSArray *groups))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
