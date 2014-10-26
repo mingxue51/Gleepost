@@ -411,6 +411,27 @@
     }];
 }
 
++ (void)getAttendingEventsWithUsersRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback
+{
+    [[WebClient sharedInstance] getAttendingEventsForUserWithRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
+       
+        if(success)
+        {
+            for(GLPPost *p in posts)
+            {
+                p.attended = YES;
+            }
+            
+            callback(success, posts);
+        }
+        else
+        {
+            callback(success, nil);
+        }
+        
+    }];
+}
+
 +(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
 {
     [[WebClient sharedInstance] getPostWithRemoteKey:remoteKey withCallbackBlock:^(BOOL success, GLPPost *post) {

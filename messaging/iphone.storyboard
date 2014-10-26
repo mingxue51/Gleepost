@@ -2398,6 +2398,7 @@
                     <connections>
                         <outlet property="tableView" destination="6wh-mR-4y8" id="jZh-Ng-PLG"/>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="FTW-m4-VDE"/>
+                        <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="83m-vO-5OC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UlA-Sy-yML" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4873,20 +4874,20 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="FTW-m4-VDE"/>
-        <segue reference="EAz-MH-b19"/>
-        <segue reference="WK7-hw-eyD"/>
-        <segue reference="NkQ-j5-6rL"/>
-        <segue reference="Ji2-Jv-WyQ"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="83m-vO-5OC"/>
+        <segue reference="i2x-at-SJt"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="wR3-TA-URh"/>
-        <segue reference="bc7-so-Tnw"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="e8B-qp-59Q"/>
         <segue reference="7l2-k5-pHQ"/>
+        <segue reference="bc7-so-Tnw"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="fah-A8-Ky9"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>

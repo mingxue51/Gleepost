@@ -406,7 +406,6 @@ const float ONE_LINE_LIMIT = 18.0;
         
         [_delegate removePostWithPost:_post];
         
-        
         //Delete post from database.
         [GLPPostManager deletePostWithPost:self.post];
         

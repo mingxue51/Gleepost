@@ -1106,7 +1106,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self sharePostToSocialMedia];
     }
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
-    {
+    {        
         //Delete post.
         [_delegate deleteCurrentPost];
     }

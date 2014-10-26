@@ -14,14 +14,27 @@
 #import "AppearanceHelper.h"
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
+#import "GLPPostManager.h"
+#import "GLPViewImageViewController.h"
+#import "TransitionDelegateViewImage.h"
+#import "TableViewHelper.h"
+#import "AttendingPostsOrganiserHelper.h"
+#import "SessionManager.h"
+#import "GLPPrivateProfileViewController.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) NSArray *events;
+@property (strong, nonatomic) NSMutableArray *events;
 
 @property (strong, nonatomic) GLPPost *selectedPost;
+
+@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+
+@property (strong, nonatomic) AttendingPostsOrganiserHelper *attendingPostsOrganiserHelper;
+
+@property (assign, nonatomic) NSInteger selectedUserId;
 
 @end
 
@@ -32,7 +45,12 @@
     [super viewDidLoad];
     
     [self configureTableView];
+    
+    [self initialiseObjects];
 
+    [self configureNotifications];
+
+    [self loadUsersEvents];
     
 }
 
@@ -41,8 +59,6 @@
     [super viewDidAppear:animated];
     
     [self configureNotifications];
-    
-    [self loadUsersEvents];
 
 }
 
@@ -75,6 +91,13 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 }
 
+- (void)initialiseObjects
+{
+    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
+    
+    _attendingPostsOrganiserHelper = [[AttendingPostsOrganiserHelper alloc] init];
+}
+
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
@@ -89,12 +112,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [_attendingPostsOrganiserHelper numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _events.count;
+    return [_attendingPostsOrganiserHelper postsAtSectionIndex:section].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -106,7 +129,7 @@
     GLPPostCell *postViewCell;
 
     
-    GLPPost *post = _events[indexPath.row];
+    GLPPost *post = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
     
     if([post imagePost])
     {
@@ -133,7 +156,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedPost = _events[indexPath.row];
+    self.selectedPost = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
+
 //    self.postIndexToReload = indexPath.row-1;
 //    self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
@@ -143,7 +167,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    GLPPost *currentPost = [_events objectAtIndex:indexPath.row];
+    GLPPost *currentPost = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
     
     if([currentPost imagePost])
     {
@@ -159,6 +183,16 @@
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [TableViewHelper generateHeaderViewWithTitle:[_attendingPostsOrganiserHelper headerInSection:section]];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 30.0;
+}
+
 
 #pragma mark - Client
 
@@ -166,17 +200,19 @@
 {
     DDLogDebug(@"Selected user remote key %ld", (long)_selectedUser.remoteKey);
     
-    [[WebClient sharedInstance] getAttendingEventsForUserWithRemoteKey:_selectedUser.remoteKey callback:^(BOOL success, NSArray *posts) {
+    [GLPPostManager getAttendingEventsWithUsersRemoteKey:_selectedUser.remoteKey callback:^(BOOL success, NSArray *posts) {
        
         if(success)
         {
-            _events = posts;
+//            [_attendingPostsOrganiserHelper resetData];
+            [_attendingPostsOrganiserHelper organisePosts:posts];
+            
+            _events = posts.mutableCopy;
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:_events];
-
+            
             [_tableView reloadData];
         }
-        
     }];
 }
 
@@ -184,26 +220,57 @@
 
 -(void)removePostWithPost:(GLPPost *)post
 {
+    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
+    for(int index = 0; index < _events.count; ++index)
+    {
+        GLPPost *p = [_events objectAtIndex:index];
+        
+        if(p.remoteKey == post.remoteKey)
+        {
+            [_events removeObject:p];
+            
+            [self removeTableViewPostWithIndex:index];
+            
+            return;
+        }
+    }
 }
 
 #pragma mark - GLPPostCellDelegate
 
 - (void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
+    if(remoteKey == [SessionManager sharedInstance].user.remoteKey)
+    {
+        return;
+    }
     
+    self.selectedUserId = remoteKey;
+    
+    [self performSegueWithIdentifier:@"view private profile" sender:self];
 }
 
 - (void)showLocationWithLocation:(GLPLocation *)location
 {
-    
+    DDLogDebug(@"showLocationWithLocation");
 }
 
 #pragma mark - ViewImageDelegate
 
 -(void)viewPostImage:(UIImage*)postImage
 {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+    viewImage.image = postImage;
+    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+    viewImage.modalPresentationStyle = UIModalPresentationCustom;
     
+    [viewImage setTransitioningDelegate:self.transitionViewImageController];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self presentViewController:viewImage animated:YES completion:nil];
+
 }
 
 #pragma mark - Notifications
@@ -229,6 +296,15 @@
     [self.tableView endUpdates];
 }
 
+-(void)removeTableViewPostWithIndex:(int)index
+{
+    NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
+    
+    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+    
+    [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -240,28 +316,38 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
-    ViewPostViewController *vc = segue.destinationViewController;
-    /**
-     Forward data of the post the to the view. Or in future just forward the post id
-     in order to fetch it from the server.
-     */
-    
-//    vc.commentJustCreated = self.commentCreated;
-//    
-//    vc.showComment = _showComment;
-    
-//    _showComment = NO;
-
-    
-    vc.isFromCampusLive = NO;
-    
-    vc.post = self.selectedPost;
-    
+    if([segue.identifier isEqualToString:@"view post"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+        
+        ViewPostViewController *vc = segue.destinationViewController;
+        /**
+         Forward data of the post the to the view. Or in future just forward the post id
+         in order to fetch it from the server.
+         */
+        
+        //    vc.commentJustCreated = self.commentCreated;
+        //
+        //    vc.showComment = _showComment;
+        
+        //    _showComment = NO;
+        
+        
+        vc.isFromCampusLive = NO;
+        
+        vc.post = self.selectedPost;
+    }
+    else if ([segue.identifier isEqualToString:@"view private profile"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
+        
+        privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
 }
 
 
