@@ -154,6 +154,8 @@
 
 + (NSArray *)findPostsInGroupWithRemoteKey:(NSInteger)groupRemoteKey inDb:(FMDatabase *)db
 {
+    DDLogDebug(@"GLPPostDao findPostsInGroupWithRemoteKey : %d", groupRemoteKey);
+    
     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = %d order by date desc, remoteKey desc limit %d", groupRemoteKey, kGLPNumberOfPosts];
     
     NSMutableArray *result = [NSMutableArray array];
@@ -450,12 +452,29 @@
 //    }
 }
 
-+ (void)saveGroupPosts:(NSArray *)groupPosts
+//TODO: Delete the second attribute and put NSSAssert in the implementation.
++ (void)saveGroupPosts:(NSArray *)groupPosts withGroupRemoteKey:(NSInteger)groupRemoteKey
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
+        DDLogDebug(@"Save group posts in database");
+        
         for(GLPPost *post in groupPosts)
         {
+            if(post.group == nil)
+            {
+                FLog(@"Post should have a group before save to local database %@", post.group);
+                post.group = [[GLPGroup alloc] init];
+                post.group.remoteKey = groupRemoteKey;
+            }
+            
+            if(post.group.remoteKey == 0)
+            {
+                FLog(@"Group post group attribute should not be 0");
+                post.group.remoteKey = groupRemoteKey;
+
+            }
+
             post.sendStatus = kSendStatusSent;
             [GLPPostDao save:post inDb:db];
         }

@@ -559,6 +559,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
+    post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    
 
 //    
 //    NSArray *jsonArray = json[@"images"];

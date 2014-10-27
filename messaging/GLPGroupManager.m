@@ -203,7 +203,7 @@
         {
             BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
 
-            [GLPPostDao saveGroupPosts:posts];
+            [GLPPostDao saveGroupPosts:posts withGroupRemoteKey:groupId];
             
             remoteCallback(YES, remains, posts);
         }

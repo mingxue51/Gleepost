@@ -119,8 +119,6 @@ static NSInteger lastTabbarIndex = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HIDE_ERROR_VIEW object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
-
-
 }
 
 
