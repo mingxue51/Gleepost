@@ -21,6 +21,7 @@
 #import "AttendingPostsOrganiserHelper.h"
 #import "SessionManager.h"
 #import "GLPPrivateProfileViewController.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
@@ -35,6 +36,10 @@
 @property (strong, nonatomic) AttendingPostsOrganiserHelper *attendingPostsOrganiserHelper;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
+
+@property (assign, nonatomic) BOOL showComment;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -96,6 +101,11 @@
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     _attendingPostsOrganiserHelper = [[AttendingPostsOrganiserHelper alloc] init];
+    
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
+    
+    _showComment = NO;
+
 }
 
 - (void)configureNotifications
@@ -185,7 +195,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [TableViewHelper generateHeaderViewWithTitle:[_attendingPostsOrganiserHelper headerInSection:section]];
+    return [TableViewHelper generateHeaderViewWithTitle:[_attendingPostsOrganiserHelper headerInSection:section] andBottomLine:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -200,8 +210,12 @@
 {
     DDLogDebug(@"Selected user remote key %ld", (long)_selectedUser.remoteKey);
     
+    [_tableActivityIndicator startActivityIndicator];
+    
     [GLPPostManager getAttendingEventsWithUsersRemoteKey:_selectedUser.remoteKey callback:^(BOOL success, NSArray *posts) {
        
+        [_tableActivityIndicator stopActivityIndicator];
+        
         if(success)
         {
 //            [_attendingPostsOrganiserHelper resetData];
@@ -222,6 +236,12 @@
 {
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
+    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:post];
+    
+    [_attendingPostsOrganiserHelper removePost:post];
+
+    [self removeTableViewPostWithIndexPath:postIndexPath];
+
     for(int index = 0; index < _events.count; ++index)
     {
         GLPPost *p = [_events objectAtIndex:index];
@@ -229,8 +249,6 @@
         if(p.remoteKey == post.remoteKey)
         {
             [_events removeObject:p];
-            
-            [self removeTableViewPostWithIndex:index];
             
             return;
         }
@@ -254,6 +272,17 @@
 - (void)showLocationWithLocation:(GLPLocation *)location
 {
     DDLogDebug(@"showLocationWithLocation");
+}
+
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    _showComment = YES;
+    self.selectedPost = [_events objectAtIndex:postIndex];
+    
+//    self.selectedIndex = postIndex;
+//    self.postIndexToReload = postIndex;
+//    self.commentCreated = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 #pragma mark - ViewImageDelegate
@@ -281,26 +310,28 @@
     
     int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:_events];
     
+    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:currentPost];
+        
     if(currentPost)
     {
-        [self refreshCellViewWithIndex:index];
+        [self refreshCellViewWithIndexPath:postIndexPath];
     }
 }
 
 #pragma mark - Table view refresh methods
 
--(void)refreshCellViewWithIndex:(const NSUInteger)index
+-(void)refreshCellViewWithIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
 }
 
--(void)removeTableViewPostWithIndex:(int)index
+-(void)removeTableViewPostWithIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
-    [rowsDeleteIndexPath addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+    [rowsDeleteIndexPath addObject:indexPath];
     
     [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
 }
@@ -331,9 +362,9 @@
         
         //    vc.commentJustCreated = self.commentCreated;
         //
-        //    vc.showComment = _showComment;
+        vc.showComment = _showComment;
         
-        //    _showComment = NO;
+        _showComment = NO;
         
         
         vc.isFromCampusLive = NO;

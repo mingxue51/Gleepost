@@ -125,7 +125,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [TableViewHelper generateHeaderViewWithTitle:@"MY ACCOUNT"];
+    return [TableViewHelper generateHeaderViewWithTitle:@"MY ACCOUNT" andBottomLine:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

@@ -1418,7 +1418,7 @@
         return nil;
     }
     
-    return [TableViewHelper generateHeaderViewWithTitle:[_notificationsOrganiser headerInSection:section - 1]];
+    return [TableViewHelper generateHeaderViewWithTitle:[_notificationsOrganiser headerInSection:section - 1] andBottomLine:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

@@ -39,7 +39,7 @@
  @return the header view.
  
  */
-+ (UIView *)generateHeaderViewWithTitle:(NSString *)title
++ (UIView *)generateHeaderViewWithTitle:(NSString *)title andBottomLine:(BOOL)bottomLine
 {
     UIView *titleViewSection = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 30.0)];
     
@@ -55,21 +55,21 @@
     
     [titleViewSection addSubview:titleLabel];
     
-    //Create the lines below and above the view.
+    //Create the lines below.
     
-    UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
-    
-    [lineImageView setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
-    
-//    [titleViewSection addSubview:lineImageView];
-    
-    lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 29.0, 320.0, 1.0)];
-    
-    [lineImageView setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+    if(bottomLine)
+    {
+        UIImageView *lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
         
-    [titleViewSection addSubview:lineImageView];
-    
-    
+        [lineImageView setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+        
+        lineImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 29.0, 320.0, 1.0)];
+        
+        [lineImageView setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+        
+        [titleViewSection addSubview:lineImageView];
+    }
+
     
     return titleViewSection;
 }

@@ -145,7 +145,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [TableViewHelper generateHeaderViewWithTitle:@"GROUP DETAILS"];
+    return [TableViewHelper generateHeaderViewWithTitle:@"GROUP DETAILS" andBottomLine:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

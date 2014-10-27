@@ -46,8 +46,13 @@
     
     switch (position)
     {
-        case kActivityIndicatorCenter:
+        case kActivityIndicatorTop:
             yPosition = (_view.frame.size.height + _activityIndicator.frame.size.height) / 2;
+            break;
+            
+            case kActivityIndicatorCenter:
+            yPosition = ([[UIScreen mainScreen] bounds].size.height/2 - _activityIndicator.frame.size.height * 2);
+            DDLogDebug(@"");
             break;
             
         case kActivityIndicatorBottom:
@@ -66,11 +71,13 @@
 
 - (void)stopActivityIndicator
 {
+    [_activityIndicator setHidden:YES];
     [_activityIndicator stopAnimating];
 }
 
 - (void)startActivityIndicator
 {
+    [_activityIndicator setHidden:NO];
     [_activityIndicator startAnimating];
 }
 

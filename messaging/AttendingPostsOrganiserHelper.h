@@ -18,5 +18,7 @@
 - (NSArray *)postsAtSectionIndex:(NSInteger)sectionIndex;
 - (GLPPost *)postWithIndex:(NSInteger)postIndex andSectionIndex:(NSInteger)sectionIndex;
 - (void)resetData;
+- (NSIndexPath *)indexPathWithPost:(GLPPost *)post;
+- (NSIndexPath *)removePost:(GLPPost *)post;
 
 @end

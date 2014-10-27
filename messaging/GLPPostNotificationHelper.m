@@ -9,6 +9,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "SessionManager.h"
 #import "CampusWallGroupsPostsManager.h"
+#import "AttendingPostsOrganiserHelper.h"
 
 @implementation GLPPostNotificationHelper
 
@@ -138,6 +139,10 @@
     return postIndex;
 }
 
+//+ (NSIndexPath *)parsePost:(GLPPost **)post imageNotification:(NSNotification *)notification withEventPostsArray:(NSArray *)posts
+//{
+//}
+
 +(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts
 {
     NSDictionary *dict = [notification userInfo];
@@ -154,6 +159,8 @@
         return index;
     }
     
+    DDLogDebug(@"Post Index %d", index);
+    
     [self deletePostWithPost:post posts:posts andIndex:index];
     
     return index;
@@ -161,14 +168,14 @@
 
 +(void)deletePostWithPost:(GLPPost *)post posts:(NSMutableArray *)posts andIndex:(int)index
 {
-    if(post.group)
-    {
-        [[CampusWallGroupsPostsManager sharedInstance] removePostAtIndex:index];
-    }
-    else
-    {
+//    if(post.group)
+//    {
+//        [[CampusWallGroupsPostsManager sharedInstance] removePostAtIndex:index];
+//    }
+//    else
+//    {
         [posts removeObjectAtIndex:index];
-    }
+//    }
 }
 
 + (NSInteger)findPostIndexWithKey:(NSInteger)key inPosts:(NSArray *)posts

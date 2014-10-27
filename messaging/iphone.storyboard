@@ -2375,7 +2375,7 @@
             </objects>
             <point key="canvasLocation" x="3963" y="-3298"/>
         </scene>
-        <!--ATTENDING EVENTS-->
+        <!--RSVPS-->
         <scene sceneID="eZJ-vI-qdx">
             <objects>
                 <viewController id="NhH-l9-be2" customClass="GLPAttendingPostsViewController" sceneMemberID="viewController">
@@ -2395,7 +2395,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ATTENDING EVENTS" id="dY8-0E-1y2">
+                    <navigationItem key="navigationItem" title="RSVPS" id="dY8-0E-1y2">
                         <barButtonItem key="backBarButtonItem" title=" " id="Ewt-4O-SLx"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -4886,14 +4886,14 @@
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
         <segue reference="TeO-Fd-Ort"/>
-        <segue reference="0xq-5H-6eX"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="Bj7-0B-AKW"/>
+        <segue reference="83m-vO-5OC"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="FTW-m4-VDE"/>
         <segue reference="i2x-at-SJt"/>
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="PMB-JP-q3M"/>
-        <segue reference="NSy-Xb-H1O"/>
         <segue reference="e8B-qp-59Q"/>
-        <segue reference="FTW-m4-VDE"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -52,20 +52,24 @@
 {
     for(GLPPost *post in posts)
     {
-        if ([post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
+        DDLogDebug(@"Post event starts %@, current date %@", post.dateEventStarts, [NSDate date]);
+        
+        if ([post.dateEventStarts compare:[NSDate date]] == NSOrderedDescending)
         {
-            [self addNotification:post withHeader:_recentHeader];
+            [self addPost:post withHeader:_recentHeader];
         }
         else
         {
-            [self addNotification:post withHeader:_oldHeader];
+            [self addPost:post withHeader:_oldHeader];
         }
     }
+    
+    DDLogDebug(@"Final event posts %@", _sections);
 }
 
 #pragma mark - Operations
 
-- (void)addNotification:(GLPPost *)post withHeader:(NSString *)header
+- (void)addPost:(GLPPost *)post withHeader:(NSString *)header
 {
     NSDictionary *todaysDictionary = [self containsDictionaryWithHeader:header];
     
@@ -155,6 +159,49 @@
     }
     
     return nil;
+}
+
+- (NSIndexPath *)indexPathWithPost:(GLPPost *)post
+{
+    NSInteger row = 0;
+    NSInteger section = 0;
+    
+    for(NSDictionary *sectionDict in _sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        for(GLPPost *p in postsSection)
+        {
+            if(p.remoteKey == post.remoteKey)
+            {
+                return [NSIndexPath indexPathForItem:row inSection:section];
+            }
+            ++row;
+        }
+        row = 0;
+        
+        ++section;
+    }
+    
+    return nil;
+}
+
+- (NSIndexPath *)removePost:(GLPPost *)post
+{
+    NSIndexPath *indexPath = [self indexPathWithPost:post];
+    
+    NSMutableDictionary *section = [NSMutableDictionary dictionaryWithDictionary:[_sections objectAtIndex:indexPath.section]];
+    
+    NSMutableArray *postsSection = [section objectForKey:[[section allKeys] objectAtIndex:0]];
+    
+    [postsSection removeObjectAtIndex:indexPath.row];
+        
+    [_sections setObject:section atIndexedSubscript:indexPath.section];
+    
+    DDLogDebug(@"Post removed. New sections %@", _sections);
+    
+    
+    return indexPath;
 }
 
 

@@ -68,7 +68,6 @@
 #import "TDPopUpAfterGoingView.h"
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
-
 #import "GLPTableActivityIndicator.h"
 
 @interface GLPTimelineViewController () <GLPPopUpDialogViewControllerDelegate>
@@ -1060,8 +1059,6 @@ const float TOP_OFFSET = 180.0f;
             self.loadingCellStatus = (remain) ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
             
             [self.tableView reloadData];
-        
-
             
             self.firstLoadSuccessful = YES;
             [self startReloadingCronImmediately:NO];
