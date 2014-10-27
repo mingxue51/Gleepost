@@ -13,6 +13,7 @@
 #import "WebClient.h"
 #import "GLPImageView.h"
 #import "UILabel+Dimensions.h"
+#import "GLPImageHelper.h"
 
 @interface SearchGroupCell ()
 
@@ -38,7 +39,6 @@ const float TITLE_WIDTH = 237;
     [super awakeFromNib];
     
     [ShapeFormatterHelper setRoundedView:_groupImage toDiameter:_groupImage.frame.size.height];
-
 }
 
 -(void)setGroupData:(GLPGroup *)groupData
@@ -53,10 +53,8 @@ const float TITLE_WIDTH = 237;
     [_groupDescription setText: groupData.groupDescription];
     
     [_titleLabelHeight setConstant: [UILabel getContentLabelSizeForContent:_groupData.name withFont:[UIFont fontWithName:GLP_HELV_NEUE_MEDIUM size:17.0] andWidht:TITLE_WIDTH]];
-    
 
-    //TODO: Set placeholder image.
-    [_groupImage setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [_groupImage sd_setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageRetryFailed];
 }
 
 #pragma mark - Static

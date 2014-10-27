@@ -11,11 +11,14 @@
 #import "UILabel+Dimensions.h"
 #import "ShapeFormatterHelper.h"
 
+
 @interface DescriptionSegmentGroupCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLbl;
 
-@property (weak, nonatomic) IBOutlet GLPThreeSegmentView *segmentView;
+//@property (weak, nonatomic) IBOutlet GLPThreeSegmentView *segmentView;
+@property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
+
 
 @property (strong, nonatomic) UIFont *font;
 
@@ -67,15 +70,24 @@ const float DESCR_LBL_WIDTH = 290;
 
 - (void)configureSegmentView
 {
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPGroupSegmentView" owner:self options:nil];
+//    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPGroupSegmentView" owner:self options:nil];
+//    
+//    GLPThreeSegmentView *view = [array lastObject];
+//    view.tag = 100;
+//    [view setDelegate:self];
+//    [view setRightButtonTitle:@"Members" andLeftButtonTitle:@"Posts"];
+//    [view setSlideAnimationEnabled:NO];
+//
+//    [_segmentView addSubview:view];
     
-    GLPThreeSegmentView *view = [array lastObject];
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPProfileSegmentView" owner:self options:nil];
+    
+    GLPSegmentView *view = [array lastObject];
     view.tag = 100;
     [view setDelegate:self];
     [view setRightButtonTitle:@"Members" andLeftButtonTitle:@"Posts"];
     [view setSlideAnimationEnabled:NO];
-    //    _segmentViewReference = view;
-    
+
     [_segmentView addSubview:view];
 }
 
@@ -86,19 +98,13 @@ const float DESCR_LBL_WIDTH = 290;
 
 - (void)layoutSubviews
 {
-    //    [super layoutSubviews];
-    
-    
-    //    [_segmentViewReference selectLeftButton];
-    
     for(UIView *v in _segmentView.subviews)
     {
         if(v.tag == 100)
         {
-            [(GLPThreeSegmentView *)v selectLeftButton];
+            [(GLPSegmentView *)v selectLeftButton];
         }
     }
-    
 }
 
 #pragma mark - Static

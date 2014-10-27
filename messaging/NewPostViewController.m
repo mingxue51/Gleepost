@@ -7,7 +7,6 @@
 //
 
 #import "NewPostViewController.h"
-#import "TimelineViewController.h"
 #import "SessionManager.h"
 #import "MBProgressHUD.h"
 #import "WebClient.h"

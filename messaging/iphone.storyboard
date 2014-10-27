@@ -1413,7 +1413,7 @@
                                     <outlet property="delegate" destination="ahs-0Y-w7m" id="EsR-UM-pVy"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="g2e-Vg-4d4">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="g2e-Vg-4d4">
                                 <rect key="frame" x="10" y="494" width="300" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
@@ -1426,9 +1426,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="9AY-jI-Fco"/>
+                    <navigationItem key="navigationItem" id="9AY-jI-Fco">
+                        <barButtonItem key="backBarButtonItem" title=" " id="H8H-WS-Oap"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="JJx-iN-wxD" id="CmO-65-FS9"/>
+                        <segue destination="9bg-aO-bMl" kind="push" identifier="view members" id="Wgm-iJ-ADQ"/>
+                        <segue destination="YKI-NX-LaO" kind="push" identifier="pick image" id="TeO-Fd-Ort"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ha-t1-hC9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4876,18 +4880,19 @@
     <inferredMetricsTieBreakers>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="FTW-m4-VDE"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="83m-vO-5OC"/>
+        <segue reference="Vyz-Un-MGO"/>
+        <segue reference="Wgm-iJ-ADQ"/>
+        <segue reference="7l2-k5-pHQ"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="YIa-ii-tw7"/>
+        <segue reference="TeO-Fd-Ort"/>
+        <segue reference="0xq-5H-6eX"/>
         <segue reference="i2x-at-SJt"/>
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
         <segue reference="e8B-qp-59Q"/>
-        <segue reference="7l2-k5-pHQ"/>
-        <segue reference="bc7-so-Tnw"/>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="YIa-ii-tw7"/>
+        <segue reference="FTW-m4-VDE"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>

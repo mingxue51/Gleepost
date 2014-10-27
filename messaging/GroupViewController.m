@@ -48,7 +48,7 @@
 #import "GLPImageHelper.h"
 #import "GLPEmptyViewManager.h"
 
-@interface GroupViewController () <GLPPopUpDialogViewControllerDelegate>
+@interface GroupViewController () <GLPPopUpDialogViewControllerDelegate, GLPGroupSettingsViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSArray *members;
@@ -139,7 +139,8 @@ const float TOP_OFF_SET = -64.0;
     
 //    [self loadMembers];
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+
     
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
 }
@@ -181,8 +182,11 @@ const float TOP_OFF_SET = -64.0;
     [super viewWillDisappear:animated];
 }
 
+
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+
     [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupPostsEmptyView];
     
     [_tableView removeFromSuperview];
@@ -435,7 +439,7 @@ const float TOP_OFF_SET = -64.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
     
     //Create a custom notification name in order to prevent issues with other group view controllers.
     
@@ -451,7 +455,7 @@ const float TOP_OFF_SET = -64.0;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
     
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
 
@@ -1498,8 +1502,11 @@ const float TOP_OFF_SET = -64.0;
     
 }
 
-#pragma mark - ImageSelectorViewControllerDelegate
+#pragma mark - ImageSelectorViewControllerDelegate & GLPGroupSettingsViewControllerDelegate
 
+/**
+ This method is called fomr GLPGroupSettingsViewController as well.
+ */
 - (void)takeImage:(UIImage *)image
 {
     
@@ -1899,7 +1906,9 @@ const float TOP_OFF_SET = -64.0;
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
     GLPGroupSettingsViewController *groupSettingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSettingsViewController"];
- 
+    groupSettingsViewController.group = _group;
+    groupSettingsViewController.delegate = self;
+    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupSettingsViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];

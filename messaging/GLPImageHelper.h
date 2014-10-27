@@ -14,5 +14,6 @@
 + (NSString *)placeholderUserImagePath;
 + (UIImage *)placeholderGroupImage;
 + (NSString *)placeholderGroupImagePath;
++ (UIImage *)placeholderLiveEventImage;
 
 @end

@@ -20,6 +20,7 @@
 #import "ReflectedImageView.h"
 #import "UIImage+Alpha.h"
 #import "GLPVideo.h"
+#import "GLPImageHelper.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -142,7 +143,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     }
     else
     {
-        [_eventImage setImage:nil];
+        [_eventImage setImage:[GLPImageHelper placeholderLiveEventImage]];
     }
     
     

@@ -424,6 +424,7 @@
 		58877A60199A070700DAE461 /* UIView+RoudedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */; };
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
 		5887C7E119FDA52A004441B9 /* AttendingPostsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5887C7E019FDA52A004441B9 /* AttendingPostsOrganiserHelper.m */; };
+		5887C7E319FDB391004441B9 /* campus_live_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 5887C7E219FDB391004441B9 /* campus_live_placeholder.png */; };
 		588A87BC1980CCDE00FC5A53 /* gleepost.cer in Resources */ = {isa = PBXBuildFile; fileRef = 588CDF6C197618CA00373EE3 /* gleepost.cer */; };
 		588CDF70197623A700373EE3 /* IntroNewGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588CDF6F197623A700373EE3 /* IntroNewGroupViewController.m */; };
 		588CDF7619762A2A00373EE3 /* secret_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 588CDF7319762A2A00373EE3 /* secret_group.png */; };
@@ -1533,6 +1534,7 @@
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
 		5887C7DF19FDA52A004441B9 /* AttendingPostsOrganiserHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendingPostsOrganiserHelper.h; sourceTree = "<group>"; };
 		5887C7E019FDA52A004441B9 /* AttendingPostsOrganiserHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendingPostsOrganiserHelper.m; sourceTree = "<group>"; };
+		5887C7E219FDB391004441B9 /* campus_live_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = campus_live_placeholder.png; sourceTree = "<group>"; };
 		588CDF6C197618CA00373EE3 /* gleepost.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = gleepost.cer; sourceTree = "<group>"; };
 		588CDF6E197623A700373EE3 /* IntroNewGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroNewGroupViewController.h; sourceTree = "<group>"; };
 		588CDF6F197623A700373EE3 /* IntroNewGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroNewGroupViewController.m; sourceTree = "<group>"; };
@@ -3813,6 +3815,7 @@
 		58B7816119F9E704003E0F9A /* Placeholders */ = {
 			isa = PBXGroup;
 			children = (
+				5887C7E219FDB391004441B9 /* campus_live_placeholder.png */,
 				58B7816219F9E719003E0F9A /* group_placeholder.png */,
 				58B7816319F9E719003E0F9A /* profile_placeholder.png */,
 			);
@@ -5734,6 +5737,7 @@
 				58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */,
 				588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */,
 				587248AF18C64C5200B98484 /* members_selected_old.png in Resources */,
+				5887C7E319FDB391004441B9 /* campus_live_placeholder.png in Resources */,
 				58299B8019FA170000702381 /* empty_messenger_message.png in Resources */,
 				58AD86A718929F2200016C6D /* idle_tab.png in Resources */,
 				585106DA199D87DA000F06BB /* kind_of_event_party.png in Resources */,

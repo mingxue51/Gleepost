@@ -80,18 +80,21 @@
 
 - (IBAction)selectAnnouncement:(id)sender
 {
-    if([[PendingPostManager sharedInstance] kindOfPost] != kAnnouncementPost)
-    {
-        [[PendingPostManager sharedInstance] reset];
-    }
+    //TODO: Change that when announcements are ready to be implemented.
+    [self selectGeneral:sender];
     
-    [[PendingPostManager sharedInstance] setGroup:_group];
-    
-    [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
-    
-    [[PendingPostManager sharedInstance] setKindOfPost:kAnnouncementPost];
-    
-    [self performSegueWithIdentifier:@"final new post" sender:self];
+//    if([[PendingPostManager sharedInstance] kindOfPost] != kAnnouncementPost)
+//    {
+//        [[PendingPostManager sharedInstance] reset];
+//    }
+//    
+//    [[PendingPostManager sharedInstance] setGroup:_group];
+//    
+//    [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
+//    
+//    [[PendingPostManager sharedInstance] setKindOfPost:kAnnouncementPost];
+//    
+//    [self performSegueWithIdentifier:@"final new post" sender:self];
 
 }
 

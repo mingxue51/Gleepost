@@ -42,7 +42,7 @@
                             <action selector="sendMessage:" destination="Htv-pr-QUw" eventType="touchUpInside" id="A4c-E0-ZVI"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ab-UA-09t">
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ab-UA-09t">
                         <rect key="frame" x="103" y="63" width="201" height="27"/>
                         <state key="normal" backgroundImage="badges_button.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

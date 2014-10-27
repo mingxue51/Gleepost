@@ -38,6 +38,8 @@
     
     [self configureNavigationBar];
     
+    [self configureTableView];
+    
     [self registerTableViewCells];
     
     [self configureSearchBar];
@@ -47,12 +49,9 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    DDLogDebug(@"Table view height %f", _glpSearchBar.frame.origin.x);
-    
     [super viewDidAppear:animated];
     
     [_glpSearchBar becomeTextFieldFirstResponder];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -70,6 +69,12 @@
     [super viewWillDisappear:animated];
 }
 
+- (void)configureTableView
+{
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
+    
+    [self registerTableViewCells];
+}
 
 - (void)registerTableViewCells
 {
@@ -85,10 +90,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
     [self.navigationController.navigationBar setButton:kLeft withImage:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView) withTarget:self andNavigationItem:_navItem];
-
 }
-
-
 
 - (void)configureSearchBar
 {
@@ -100,8 +102,6 @@
     [view setPlaceholderWithText:@"Search Campus Directory"];
     
     view.tag = 101;
-    
-    //    CGRectSetX(view, 10);
     
     _glpSearchBar = view;
     
@@ -180,8 +180,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return SEARCH_GROUP_CELL_HEIGHT;
-    
     GLPGroup *group = _searchedGroups[indexPath.row];
     
     return [SearchGroupCell getCellHeightWithGroup:group];
@@ -203,7 +201,6 @@
             return;
         }
 
-        
         if([self cleanTableViewIfNeeded])
         {
             return;
@@ -215,7 +212,6 @@
            
            [self.tableView reloadData];
        }
-        
     }];
 }
 
@@ -240,6 +236,18 @@
     return NO;
 }
 
+/**
+ Checks if the text the web client just searched is the same in search bar.
+ There are some situations where the text is not requested any more from user,
+ and the method in the WebClient still executing. With this method we avoid
+ such problems.
+ 
+ @param searchedText
+ 
+ @param returns NO is the search bar is not equal with the text in search bar,
+        otherwise returns YES.
+ 
+ */
 - (BOOL)isSearchedTextSameAsSearchBar:(NSString *)searchedText
 {
     if([searchedText isEqualToString:[_glpSearchBar currentText]])

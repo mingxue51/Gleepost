@@ -26,6 +26,16 @@
     return [UIImage imageNamed:[GLPImageHelper placeholderGroupImagePath]];
 }
 
++ (UIImage *)placeholderLiveEventImage
+{
+    return [UIImage imageNamed:[GLPImageHelper placeholderLiveEventImagePath]];
+}
+
++ (NSString *)placeholderLiveEventImagePath
+{
+    return @"campus_live_placeholder";
+}
+
 + (NSString *)placeholderGroupImagePath
 {
     return @"group_placeholder";

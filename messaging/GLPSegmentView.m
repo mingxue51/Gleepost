@@ -120,8 +120,6 @@ const float ANIMATION_DURATION = 0.1;
     //Make sure that the slider is on the right side.
     
     [self refreshSlider];
-    
-    
 }
 
 #pragma mark - Actions

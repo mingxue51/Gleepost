@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GLPThreeSegmentView.h"
+//#import "GLPThreeSegmentView.h"
+#import "GLPSegmentView.h"
 
 @class GLPGroup;
 

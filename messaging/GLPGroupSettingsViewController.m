@@ -11,17 +11,19 @@
 #import "UINavigationBar+Format.h"
 #import "SettingCell.h"
 #import "TableViewHelper.h"
+#import "MembersViewController.h"
+#import "ImageSelectorViewController.h"
 
 typedef NS_ENUM(NSUInteger, SettingsItem) {
     kImageSetting = 0,
     kDescriptionSetting,
     kRequestToVerifiedSetting,
-    kGroupMembersSetting,
+    kGroupMembersSetting = 1,
     kChangeGroupPrivacySetting
 };
 
 
-@interface GLPGroupSettingsViewController ()
+@interface GLPGroupSettingsViewController () <ImageSelectorViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *settingsItems;
@@ -34,7 +36,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 {
     [super viewDidLoad];
     
-    [self configureNavigationBar];
+    [self configureNavigationItems];
     
     [self configureTableView];
     
@@ -42,12 +44,22 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     
 }
 
-- (void)configureNavigationBar
+- (void)viewWillAppear:(BOOL)animated
 {
-    self.title = @"GROUP SETTINGS";
+    [super viewWillAppear:animated];
     
+    [self configureNavigationBarAppearance];
+}
+
+- (void)configureNavigationBarAppearance
+{
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+}
+
+- (void)configureNavigationItems
+{
+    self.title = @"GROUP SETTINGS";
     
     
     [self.navigationController.navigationBar setButton:kLeft withImageName:@"verification_minimize" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissModalView) andTarget:self];
@@ -61,13 +73,13 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     
     [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group image", [NSNumber numberWithInteger:kImageSetting], nil]];
     
-    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group description", [NSNumber numberWithInteger:kDescriptionSetting], nil]];
+//    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group description", [NSNumber numberWithInteger:kDescriptionSetting], nil]];
     
-    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Request to be verified", [NSNumber numberWithInteger:kRequestToVerifiedSetting], nil]];
+//    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Request to be verified", [NSNumber numberWithInteger:kRequestToVerifiedSetting], nil]];
 
     [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group members", [NSNumber numberWithInteger:kGroupMembersSetting], nil]];
 
-    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Change group privacy", [NSNumber numberWithInteger:kChangeGroupPrivacySetting], nil]];
+//    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Change group privacy", [NSNumber numberWithInteger:kChangeGroupPrivacySetting], nil]];
 
     
     //    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithInteger:kInviteFriendsSetting], @"Name", nil]];
@@ -141,6 +153,13 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     return 30.0;
 }
 
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    [_delegate takeImage:image];
+}
+
 #pragma mark - Selectors
 
 - (void)dismissModalView
@@ -154,11 +173,11 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 {
     switch (index) {
         case 0:
-//            [self navigateToChangeNameView];
+            [self performSegueWithIdentifier:@"pick image" sender:self];
             break;
             
         case 1:
-//            [self navigateToChangePasswordView];
+            [self performSegueWithIdentifier:@"view members" sender:self];
             break;
             
         default:
@@ -166,19 +185,35 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     }
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if([segue.identifier isEqualToString:@"pick image"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        
+        imgSelectorVC.fromGroupViewController = NO;
+        [imgSelectorVC setDelegate:self];
+    }
+    else if ([segue.identifier isEqualToString:@"view members"])
+    {
+        MembersViewController *mvc = segue.destinationViewController;
+        
+        mvc.group = _group;
+    }
 }
-*/
+
 
 @end
