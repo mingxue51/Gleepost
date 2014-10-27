@@ -70,7 +70,6 @@
     [self configureGestures];
     
     [self addNavigationButtons];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated

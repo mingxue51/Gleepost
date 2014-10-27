@@ -1191,8 +1191,19 @@ static GLPLiveConversationsManager *instance = nil;
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             DDLogInfo(@"Synced complete");
         }
+        //TODO: COMMENTED OUT that because sometimes the internalInsertMessages was called before showing the latest message to conversation. I don't now if that's good but we will see.
+//        GLPMessage *existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
         
-        GLPMessage *existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
+        GLPMessage *existingMessage = nil;
+        
+        //If message is saved (so internalInsertMessages called) then avoid to add it twice by looking if the
+        //message is already there.
+        if(!newMessagesFromSync)
+        {
+            existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
+        }
+        
+        DDLogDebug(@"Existing message with remote key %ld new message for synch %d", (long)existingMessage.remoteKey, newMessagesFromSync);
         
         if(!existingMessage) {
             NSInteger key = [self internalAddMessage:message toConversation:conversation];

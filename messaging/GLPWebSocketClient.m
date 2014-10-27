@@ -88,7 +88,7 @@ static GLPWebSocketClient *instance = nil;
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
 {
-//    DDLogInfo(@"Web socket received response: %@", response);
+    DDLogInfo(@"Web socket received response: %@", response);
     [[GLPMessageProcessor sharedInstance] processWebSocketMessage:response];
 }
 
