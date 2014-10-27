@@ -346,8 +346,6 @@ const float TOP_OFFSET = 180.0f;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
-    
-    
 }
 
 
@@ -501,7 +499,6 @@ const float TOP_OFFSET = 180.0f;
         index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
     }
     
-    
     if(_groupsMode && [currentPost isGroupPost])
     {
         if(currentPost)
@@ -516,12 +513,6 @@ const float TOP_OFFSET = 180.0f;
             [self refreshCellViewWithIndex:index];
         }
     }
-    
-//    if([GLPPostNotificationHelper parsePostImageNotification:notification withPostsArray:self.posts])
-//    {
-//        [self.tableView reloadData];
-//    }
-
 }
 
 -(void)updateLikedPost:(NSNotification*)notification
@@ -1042,6 +1033,7 @@ const float TOP_OFFSET = 180.0f;
 //            [self clearTableViewAndShowLoader];
             [self clearTableView];
             [_tableActivityIndicator startActivityIndicator];
+            
         }
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
@@ -1050,7 +1042,10 @@ const float TOP_OFFSET = 180.0f;
         [_tableActivityIndicator stopActivityIndicator];
 
         if(success) {
-            self.posts = [remotePosts mutableCopy];
+            
+            self.posts = [self preserveRealImagesWithPosts:self.posts];
+            
+//            self.posts = [remotePosts mutableCopy];
 
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
@@ -1077,6 +1072,30 @@ const float TOP_OFFSET = 180.0f;
 //        [self hideLoadingIndicator];
         [_tableActivityIndicator stopActivityIndicator];
     }];
+}
+
+/**
+ Helps to preserve the actual images have been saved before to the post data structure.
+ 
+ @param posts the new posts.
+ 
+ @return the updated new posts with images.
+ 
+ */
+- (NSMutableArray *)preserveRealImagesWithPosts:(NSMutableArray *)posts
+{
+    for(GLPPost *post in self.posts)
+    {
+        for(GLPPost *newPost in posts)
+        {
+            if(post.remoteKey == newPost.remoteKey)
+            {
+                newPost.finalImage = post.finalImage;
+            }
+        }
+    }
+    
+    return posts;
 }
 
 - (void)clearTableView

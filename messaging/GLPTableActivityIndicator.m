@@ -38,6 +38,7 @@
     CGAffineTransform transform = CGAffineTransformMakeScale(1.5f, 1.5f);
     _activityIndicator.transform = transform;
     [_activityIndicator setHidesWhenStopped:YES];
+    [_activityIndicator stopAnimating];
 }
 
 -(void)initialiseViewWithPosition:(TableActivityIndicatorPosition)position
@@ -71,13 +72,11 @@
 
 - (void)stopActivityIndicator
 {
-    [_activityIndicator setHidden:YES];
     [_activityIndicator stopAnimating];
 }
 
 - (void)startActivityIndicator
 {
-    [_activityIndicator setHidden:NO];
     [_activityIndicator startAnimating];
 }
 

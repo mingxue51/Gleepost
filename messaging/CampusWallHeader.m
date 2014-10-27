@@ -93,7 +93,7 @@ NSString *BORING_IMAGE;
     NOTHING_HAPPENING = @"Nothing happening on campus!";
     BORING_IMAGE = @"calendar_boring";
     
-    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self];
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorTop withView:self];
 }
 
 //-(void)initialiseObjects

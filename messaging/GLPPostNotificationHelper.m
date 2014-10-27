@@ -115,6 +115,18 @@
     return index;
 }
 
+/**
+ Parse the image notification (that has been sent from GLPPostImageLoader), and returns (by reference) the updated post
+ (with image) and YES (variable by reference as well) if the post already has image.
+ 
+ @param post.
+ @param notification and instance of an NSNotification class.
+ @param containsImage.
+ @param posts campus wall posts.
+ 
+ @return the index of the post.
+ 
+ */
 +(int)parsePost:(GLPPost **)post imageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts
 {
     NSDictionary *dict = [notification userInfo];
@@ -124,6 +136,7 @@
     GLPPost *currentPost = nil;
     
     int postIndex = [GLPPostNotificationHelper findPost:&currentPost with:[remoteKey intValue] fromPosts:posts];
+
     
     if(!currentPost)
     {
@@ -138,10 +151,6 @@
     
     return postIndex;
 }
-
-//+ (NSIndexPath *)parsePost:(GLPPost **)post imageNotification:(NSNotification *)notification withEventPostsArray:(NSArray *)posts
-//{
-//}
 
 +(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts
 {
