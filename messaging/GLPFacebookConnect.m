@@ -821,8 +821,8 @@
     DDLogDebug(@"Session %@", session);
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:session
-                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on NerdNation.", _group.name]
-                                                    title:@"Group invitation at NerdNation."
+                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on Gleepost.", _group.name]
+                                                    title:@"Group invitation at Gleepost."
                                                parameters:params
                                                   handler:^(FBWebDialogResult result,
                                                             NSURL *resultURL,
@@ -888,8 +888,8 @@
     DDLogDebug(@"Session %@", session);
     
     [FBWebDialogs presentRequestsDialogModallyWithSession:session
-                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on NerdNation.", _group.name]
-                                                    title:@"Group invitation at NerdNation."
+                                                  message:[NSString stringWithFormat:@"You're invited to join %@ on Gleepost.", _group.name]
+                                                    title:@"Group invitation at Gleepost."
                                                parameters:params
                                                   handler:^(FBWebDialogResult result,
                                                             NSURL *resultURL,

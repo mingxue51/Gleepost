@@ -33,11 +33,11 @@
 	
     [super setDefaultTextToEmailAndPassFields];
     
-    if(!IS_IPHONE_5) {
-        CGFloat offset = -88;
-        CGRectMoveY(_submitButton, offset);
-        CGRectMoveY(_forgotPasswordButton, offset);
-    }
+//    if(!IS_IPHONE_5) {
+//        CGFloat offset = -88;
+//        CGRectMoveY(_submitButton, offset);
+//        CGRectMoveY(_forgotPasswordButton, offset);
+//    }
     
     [self configureRememberMe];
 }

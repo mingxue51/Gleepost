@@ -330,11 +330,15 @@ static SessionManager *instance = nil;
 
 - (NSString *)serverPath
 {
+    DDLogDebug(@"SessionManager : serverPath %@", [_serverManager serverPath]);
+    
     return [_serverManager serverPath];
 }
 
 - (NSString *)serverMode
 {
+    DDLogDebug(@"SessionManager : serverMode %@", [_serverManager serverMode]);
+
     return [_serverManager serverMode];
 }
 

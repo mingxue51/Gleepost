@@ -70,6 +70,11 @@
 
 - (NSString *)serverPath
 {
+    if(!DEV)
+    {
+        return GLP_BASE_SERVER_URL;
+    }
+    
     return _serverPath;
 }
 

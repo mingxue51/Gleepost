@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.3</string>
+	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3FB</string>
+	<string>41E</string>
 	<key>FacebookAppID</key>
 	<string>230797090361137</string>
 	<key>FacebookDisplayName</key>
@@ -44,7 +44,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>NerdNation would like to use your location.</string>
+	<string>Gleepost would like to use your location.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>KhmerUIb.TTF</string>

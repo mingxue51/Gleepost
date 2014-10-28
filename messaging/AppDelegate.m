@@ -514,6 +514,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
     conversationVC.conversation = conversation;
     [conversationVC setHidesBottomBarWhenPushed:YES];
+    conversationVC.comesFromPN = YES;
     
     
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:NO];

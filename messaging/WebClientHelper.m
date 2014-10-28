@@ -260,7 +260,7 @@
 
 + (void)showErrorPermissionsToCalendar
 {
-    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"NerdNation needs permissions to save that event to your Calendar. Please check your settings and try again."];
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"Gleepost needs permissions to save that event to your Calendar. Please check your settings and try again."];
 }
 
 @end

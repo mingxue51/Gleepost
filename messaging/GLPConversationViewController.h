@@ -15,6 +15,7 @@
 @interface GLPConversationViewController : GLPTableViewController <UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate, GLPMessageCellDelegate, UIViewControllerTransitionCoordinator>
 
 @property (strong, nonatomic) GLPConversation *conversation;
+@property (assign, nonatomic) BOOL comesFromPN;
 
 -(void)navigateToProfile:(id)sender;
 -(void)disableAddUserButton;

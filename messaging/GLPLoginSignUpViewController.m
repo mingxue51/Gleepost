@@ -96,10 +96,13 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)configureGestures
 {
-    UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(changeServerMode:)];
-    [tap setMinimumPressDuration:3];
-    [tap setNumberOfTapsRequired:0];
-    [_gleepostLogoImageView addGestureRecognizer:tap];
+    if(DEV)
+    {
+        UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(changeServerMode:)];
+        [tap setMinimumPressDuration:3];
+        [tap setNumberOfTapsRequired:0];
+        [_gleepostLogoImageView addGestureRecognizer:tap];
+    }
 }
 
 - (void)changeServerMode:(UILongPressGestureRecognizer *)gesture
