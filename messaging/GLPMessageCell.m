@@ -93,6 +93,7 @@ static const CGFloat kBottomMargin = 2; //7
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor lightGrayColor];
         label.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
+        label.userInteractionEnabled = NO;
         [self.contentView addSubview:label];
     }
 
@@ -115,6 +116,8 @@ static const CGFloat kBottomMargin = 2; //7
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
+        view.userInteractionEnabled = NO;
+        
         [view addSubview:imageView];
         [view addSubview:label];
         [self.contentView addSubview:view];
@@ -130,8 +133,9 @@ static const CGFloat kBottomMargin = 2; //7
         
         [self.contentView addSubview:button];
     }
-    
     self.selectedBackgroundView = [UIView new];
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)configureWithMessage:(GLPMessage *)message
