@@ -108,6 +108,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         [self loadInitialMessages];
     }
     
+    [self.tabBarController.tabBar setHidden:YES];
+    
     
     //This is not needed because we have not contacts on this version.
     

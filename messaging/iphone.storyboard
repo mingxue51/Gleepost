@@ -1977,7 +1977,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="GLPPrivateProfileViewController" id="ZBE-A4-gdJ" customClass="GLPPrivateProfileViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ypU-vp-cPa">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -2508,11 +2508,11 @@
             <objects>
                 <viewController id="7qg-1v-Vzm" customClass="GLPShowUsersGroupsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="t8w-u3-PHC">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="AoM-a1-FMD">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.92941176469999998" green="0.92941176469999998" blue="0.92941176469999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -2543,11 +2543,11 @@
             <objects>
                 <viewController id="NhH-l9-be2" customClass="GLPAttendingPostsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hlm-Jw-igx">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6wh-mR-4y8">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -3930,7 +3930,7 @@
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -5053,7 +5053,11 @@
         <segue reference="pjB-B1-HWm"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="TV3-yd-KJQ"/>
+        <segue reference="icH-IF-qcr"/>
+        <segue reference="ZVe-rT-wgG"/>
+        <segue reference="woK-8Q-gjw"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="c6M-82-Pnp"/>
         <segue reference="XA6-SN-ZTj"/>
@@ -5061,10 +5065,6 @@
         <segue reference="y0w-oH-XXi"/>
         <segue reference="bx4-ky-xRT"/>
         <segue reference="cxq-Lw-xeo"/>
-        <segue reference="Gwl-Cd-vyB"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="NSy-Xb-H1O"/>
         <segue reference="YIa-ii-tw7"/>
         <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>

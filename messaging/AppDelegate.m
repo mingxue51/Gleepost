@@ -29,7 +29,7 @@
 #import "GLPApplicationHelper.h"
 #import "UIApplication+SimulatorRemoteNotifications.h"
 #import "GLPTabBarController.h"
-#import "MessagesViewController.h"
+#import "MessengerViewController.h"
 #import "GLPConversationViewController.h"
 #import "GLPNotificationManager.h"
 #import "NSNotificationCenter+Utils.h"
@@ -509,11 +509,12 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     UINavigationController *navVC = _tabBarController.viewControllers[1];
     
     DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
-    MessagesViewController *messagesVC = navVC.viewControllers[0];
+    MessengerViewController *messagesVC = navVC.viewControllers[0];
     
     GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
     conversationVC.conversation = conversation;
-    conversationVC.hidesBottomBarWhenPushed = YES;
+    [conversationVC setHidesBottomBarWhenPushed:YES];
+    
     
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:NO];
 }
