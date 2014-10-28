@@ -57,6 +57,11 @@ const float TITLE_WIDTH = 237;
     [_groupImage sd_setImageWithURL:[NSURL URLWithString:groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageRetryFailed];
 }
 
+- (UIImage *)groupImage
+{
+    return _groupImage.image;
+}
+
 #pragma mark - Static
 
 + (float)getCellHeightWithGroup:(GLPGroup *)group

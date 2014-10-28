@@ -13,6 +13,8 @@
 #import "GLPSearchBar.h"
 #import "WebClient.h"
 #import "GroupViewController.h"
+#import "GLPPrivateGroupPopUpViewController.h"
+#import "TDPopUpAfterGoingView.h"
 
 @interface GLPGroupSearchViewController () <GLPSearchBarDelegate>
 
@@ -28,6 +30,10 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
 
+@property (strong, nonatomic) TDPopUpAfterGoingView *privateGroupPopUp;
+
+@property (assign, nonatomic) BOOL keyboardShouldShow;
+
 @end
 
 @implementation GLPGroupSearchViewController
@@ -35,6 +41,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self initialiseObjects];
     
     [self configureNavigationBar];
     
@@ -59,7 +67,6 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -79,6 +86,12 @@
 - (void)registerTableViewCells
 {
     [_tableView registerNib:[UINib nibWithNibName:@"SearchGroupCell" bundle:nil] forCellReuseIdentifier:@"SearchGroupCell"];
+}
+
+- (void)initialiseObjects
+{
+    _privateGroupPopUp = [[TDPopUpAfterGoingView alloc] init];
+    _keyboardShouldShow = YES;
 }
 
 - (void)configureNavigationBar
@@ -173,6 +186,15 @@
 {
     self.selectedGroup = _searchedGroups[indexPath.row];
     
+    if(_selectedGroup.privacy == kPrivateGroup)
+    {
+        SearchGroupCell *cell = (SearchGroupCell *)[tableView cellForRowAtIndexPath:indexPath];
+
+        [self showPrivatePopUpViewWithGroupImage:[cell groupImage]];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
+    
     [self performSegueWithIdentifier:@"view group" sender:self];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -263,6 +285,13 @@
 #pragma mark - form management
 
 - (void)keyboardWillShow:(NSNotification *)note{
+    
+    if(!_keyboardShouldShow)
+    {
+        return;
+    }
+    
+    _keyboardShouldShow = NO;
     // get keyboard size and loctaion
     CGRect keyboardBounds;
     
@@ -298,6 +327,21 @@
 
 
 #pragma mark - Navigation
+
+- (void)showPrivatePopUpViewWithGroupImage:(UIImage *)image
+{
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPrivateGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPrivateGroupPopUpViewController"];
+    
+    [cvc setGroupImage:image];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.privateGroupPopUp];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

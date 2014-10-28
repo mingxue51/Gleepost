@@ -2,24 +2,18 @@
 //  GLPPopUpDialogViewController.m
 //  Gleepost
 //
-//  Created by Silouanos on 14/10/14.
+//  Created by Silouanos on 27/10/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
 #import "GLPPopUpDialogViewController.h"
-#import "UIImage+StackBlur.h"
-#import "ShapeFormatterHelper.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "GPUImage.h"
-#import "GLPPost.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPPopUpDialogViewController ()
 
-@property (weak, nonatomic) IBOutlet UIView *centralView;
-@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *overlayTopImageView;
-
-@property (strong, nonatomic) UIImage *postImage;
+@property (strong, nonatomic) UIImage *topImage;
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 
 @end
 
@@ -41,10 +35,7 @@
     [super viewDidAppear:animated];
     
     [self animateCentralView];
-
 }
-
-#pragma mark - Configurations
 
 - (void)configureGestures
 {
@@ -57,7 +48,7 @@
 {
     _centralView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
     
-    [_topImageView setImage:_postImage];
+    [_topImageView setImage:_topImage];
 }
 
 - (void)formatView
@@ -86,20 +77,14 @@
 
 #pragma mark - Modifiers
 
-- (void)setEventPost:(GLPPost *)eventPost
+- (void)setTopImage:(UIImage *)image
 {
-    UIImage *topImage = eventPost.finalImage ? eventPost.finalImage : eventPost.tempImage;
-    
-    //Detach the a thread if the delay is not satisfiable.
-    
-    if(!topImage)
-    {
-        return;
-    }
-    
-    _postImage = [self blurImage:topImage];
-    
-//    [NSThread detachNewThreadSelector:@selector(blurImage:) toTarget:self withObject:topImage];
+    _topImage = [self blurImage:image];
+}
+
+- (void)setTitleWithText:(NSString *)title
+{
+    [_messageLabel setText:title];
 }
 
 #pragma mark - Selectors
@@ -107,19 +92,6 @@
 - (IBAction)dismissView:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)navigateToAttendeesList:(id)sender
-{
-    [_delegate showAttendees];
-    [self dismissView:nil];
-}
-
-- (IBAction)addEventToCalendar:(id)sender
-{
-    [_delegate addEventToCalendar];
-    
-    [self dismissView:nil];
 }
 
 #pragma mark - Editors
@@ -136,14 +108,14 @@
     stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
     [stillImageFilter useNextFrameForImageCapture];
     [stillImageSource processImage];
-
+    
     
     UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
     
-    _postImage = currentFilteredVideoFrame;
+    _topImage = currentFilteredVideoFrame;
     
-    [_topImageView setImage:_postImage];
-
+    [_topImageView setImage:_topImage];
+    
     
     return currentFilteredVideoFrame;
 }

@@ -42,13 +42,15 @@
 #import "GLPGroupSettingsViewController.h"
 #import "ChangeGroupImageProgressView.h"
 #import "GLPCalendarManager.h"
-#import "GLPPopUpDialogViewController.h"
+#import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPImageHelper.h"
 #import "GLPEmptyViewManager.h"
+#import "GLPPublicGroupPopUpViewController.h"
+#import "GLPSearchUsersViewController.h"
 
-@interface GroupViewController () <GLPPopUpDialogViewControllerDelegate, GLPGroupSettingsViewControllerDelegate>
+@interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSArray *members;
@@ -1011,11 +1013,14 @@ const float TOP_OFF_SET = -64.0;
         if(success)
         {
             //TODO: Show the pop up message.
+            [self showAfterJoiningPopUpView];
         }
         else
         {
             //Show error.
-            [WebClientHelper showFailedToJoinGroupWithName:_group.name];
+//            [WebClientHelper showFailedToJoinGroupWithName:_group.name];
+            [self showAfterJoiningPopUpView];
+
             
         }
         
@@ -1623,6 +1628,18 @@ const float TOP_OFF_SET = -64.0;
     }
 }
 
+#pragma mark - GLPPublicGroupPopUpViewControllerDelegate
+
+- (void)showMembers
+{
+    [self performSegueWithIdentifier:@"view members" sender:self];
+}
+
+- (void)invitePeople;
+{
+    [self performSegueWithIdentifier:@"invite users" sender:self];
+}
+
 #pragma  mark - GLPImageViewDelegate
 
 - (void)imageTouchedWithImageView:(UIImageView *)imageView
@@ -1710,10 +1727,26 @@ const float TOP_OFF_SET = -64.0;
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
     [cvc setEventPost:_selectedPost];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.transitionViewPopUpAttend];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+- (void)showAfterJoiningPopUpView
+{
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPublicGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPublicGroupPopUpViewController"];
+    
+    [cvc setDelegate:self];
+    [cvc setGroupImage:_strechedImageView.image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -1973,6 +2006,12 @@ const float TOP_OFF_SET = -64.0;
         showUsersVC.postRemoteKey = _selectedPost.remoteKey;
         
         showUsersVC.selectedTitle = @"GUEST LIST";
+    }
+    else if ([segue.identifier isEqualToString:@"invite users"])
+    {
+        GLPSearchUsersViewController *suvc = segue.destinationViewController;
+        suvc.group = _group;
+        suvc.alreadyMembers = _members;
     }
 }
 

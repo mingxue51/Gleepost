@@ -36,11 +36,11 @@
 #import "GLPiOSSupportHelper.h"
 #import "GLPCategory.h"
 #import "TDPopUpAfterGoingView.h"
-#import "GLPPopUpDialogViewController.h"
+#import "GLPAttendingPopUpViewController.h"
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
 
-@interface ViewPostViewController () <GLPPopUpDialogViewControllerDelegate>
+@interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *comments;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -456,7 +456,7 @@ static BOOL likePushed;
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
     
     [cvc setDelegate:self];
     [cvc setEventPost:incomingPost];

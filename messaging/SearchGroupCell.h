@@ -13,6 +13,7 @@
 @interface SearchGroupCell : UITableViewCell
 
 - (void)setGroupData:(GLPGroup *)groupData;
+- (UIImage *)groupImage;
 + (float)getCellHeightWithGroup:(GLPGroup *)group;
 
 @end

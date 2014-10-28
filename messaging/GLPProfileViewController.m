@@ -52,13 +52,13 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPViewImageViewController.h"
 #import "GLPCalendarManager.h"
-#import "GLPPopUpDialogViewController.h"
+#import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPAttendingPostsViewController.h"
 
-@interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPPopUpDialogViewControllerDelegate>
+@interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) GLPUser *user;
 
@@ -1492,7 +1492,7 @@
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
     [cvc setEventPost:_selectedPost];

@@ -360,10 +360,10 @@
             </objects>
             <point key="canvasLocation" x="1827" y="-1938"/>
         </scene>
-        <!--Pop Up Dialog View Controller-->
+        <!--Attending Pop Up View Controller-->
         <scene sceneID="OXA-hH-pqZ">
             <objects>
-                <viewController storyboardIdentifier="GLPPopUpDialogViewController" id="CHT-od-7XB" customClass="GLPPopUpDialogViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPAttendingPopUpViewController" id="CHT-od-7XB" customClass="GLPAttendingPopUpViewController" sceneMemberID="viewController">
                     <view key="view" alpha="0.74999999999999978" contentMode="scaleToFill" id="GxS-f0-bsi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -411,7 +411,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="you_are_on_g-list.png" id="T3b-hE-jmu">
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="you_are_on_g-list.png" id="T3b-hE-jmu">
                                         <rect key="frame" x="23" y="8" width="243" height="83"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -428,6 +428,13 @@
                                             <action selector="navigateToAttendeesList:" destination="CHT-od-7XB" eventType="touchUpInside" id="lRj-VR-OCw"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Va-ag-Roq">
+                                        <rect key="frame" x="10" y="28" width="268" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -437,6 +444,7 @@
                     <navigationItem key="navigationItem" id="klh-yr-oXg"/>
                     <connections>
                         <outlet property="centralView" destination="7gL-LT-tzC" id="V74-k9-7TE"/>
+                        <outlet property="messageLabel" destination="9Va-ag-Roq" id="zIM-uo-JCx"/>
                         <outlet property="overlayTopImageView" destination="lvH-mw-Lzy" id="McO-hF-j6s"/>
                         <outlet property="topImageView" destination="OmF-ns-hjt" id="TvG-ez-NEj"/>
                     </connections>
@@ -444,6 +452,161 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0AX-K4-4Sw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1827" y="-1308"/>
+        </scene>
+        <!--Private Group Pop Up View Controller-->
+        <scene sceneID="iZD-pX-D9O">
+            <objects>
+                <viewController storyboardIdentifier="GLPPrivateGroupPopUpViewController" id="Kue-xa-GM5" customClass="GLPPrivateGroupPopUpViewController" sceneMemberID="viewController">
+                    <view key="view" alpha="0.74999999999999978" contentMode="scaleToFill" id="P5y-sj-6yt">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="pXm-pn-lqc">
+                                <rect key="frame" x="16" y="92" width="288" height="333"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="5S4-yi-TTp">
+                                        <rect key="frame" x="0.0" y="-1" width="288" height="191"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZYH-CT-I1X">
+                                        <rect key="frame" x="10" y="261" width="268" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="OK, COOL" backgroundImage="dismiss_button_background.png">
+                                            <color key="titleColor" red="0.74901960779999999" green="0.74901960779999999" blue="0.74901960779999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissView:" destination="Kue-xa-GM5" eventType="touchUpInside" id="kgy-zI-rfD"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="atb-Ok-Uj1">
+                                        <rect key="frame" x="0.0" y="-1" width="288" height="191"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This group is private!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BVf-pD-Dud">
+                                        <rect key="frame" x="10" y="28" width="268" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU MUST BE INVITED BY A MEMBER TO JOIN." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pV8-JA-vpD">
+                                        <rect key="frame" x="10" y="198" width="270" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <color key="textColor" red="0.74901960784313726" green="0.74901960784313726" blue="0.74901960784313726" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="locker_private_group.png" id="IiF-hg-yh1">
+                                        <rect key="frame" x="89" y="87" width="111" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="centralView" destination="pXm-pn-lqc" id="d7j-nJ-YwE"/>
+                        <outlet property="overlayTopImageView" destination="atb-Ok-Uj1" id="wy8-xn-m9N"/>
+                        <outlet property="topImageView" destination="5S4-yi-TTp" id="MP0-MY-wcS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="90t-8a-bvk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2194" y="-1308"/>
+        </scene>
+        <!--Public Group Pop Up View Controller-->
+        <scene sceneID="j51-Ye-TC6">
+            <objects>
+                <viewController storyboardIdentifier="GLPPublicGroupPopUpViewController" id="pP7-G5-Yac" customClass="GLPPublicGroupPopUpViewController" sceneMemberID="viewController">
+                    <view key="view" alpha="0.74999999999999978" contentMode="scaleToFill" id="y1N-V3-CIx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="xM7-CQ-Sc7">
+                                <rect key="frame" x="16" y="92" width="288" height="384"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PBX-Eo-jeb">
+                                        <rect key="frame" x="0.0" y="-1" width="288" height="191"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wjg-OH-6NP">
+                                        <rect key="frame" x="10" y="323" width="268" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="OK, COOL" backgroundImage="dismiss_button_background.png">
+                                            <color key="titleColor" red="0.74901960779999999" green="0.74901960779999999" blue="0.74901960779999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissView:" destination="pP7-G5-Yac" eventType="touchUpInside" id="Oxv-tQ-wyc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="GdO-pK-Jpy">
+                                        <rect key="frame" x="10" y="199" width="268" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="SEE WHO ELSE IS A MEMBER" backgroundImage="add_to_calendar_button_background.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showMembers:" destination="pP7-G5-Yac" eventType="touchUpInside" id="qaO-6y-ikQ"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="t2D-zs-c91">
+                                        <rect key="frame" x="0.0" y="-1" width="288" height="191"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Z9N-XF-Yzd">
+                                        <rect key="frame" x="10" y="261" width="268" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="INVITE SOMEONE ELSE TO JOIN" backgroundImage="show_glist_button_background.png">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="invitePeople:" destination="pP7-G5-Yac" eventType="touchUpInside" id="fH7-Si-3Fy"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to the group!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xus-TN-My8">
+                                        <rect key="frame" x="10" y="28" width="268" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="public_group_pop_up.png" id="R8Y-px-x9k">
+                                        <rect key="frame" x="100" y="90" width="89" height="82"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="centralView" destination="xM7-CQ-Sc7" id="nPL-TA-UI5"/>
+                        <outlet property="overlayTopImageView" destination="t2D-zs-c91" id="rAe-C8-xw5"/>
+                        <outlet property="topImageView" destination="PBX-Eo-jeb" id="P1Z-8R-fcc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pke-Fa-DwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2555" y="-1307"/>
         </scene>
         <!--Intro Kind Of Event View Controller-->
         <scene sceneID="fXf-Ae-brl">
@@ -4134,6 +4297,7 @@
                         <segue destination="ahs-0Y-w7m" kind="push" id="DWS-m7-7eD"/>
                         <segue destination="YKI-NX-LaO" kind="push" identifier="show image selector" id="cxq-Lw-xeo"/>
                         <segue destination="chq-8F-SBT" kind="push" identifier="show attendees" id="y0w-oH-XXi"/>
+                        <segue destination="gs3-dw-jL3" kind="push" identifier="invite users" id="c6M-82-Pnp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IfX-ku-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4820,6 +4984,7 @@
         <image name="location_pin.png" width="22" height="35"/>
         <image name="location_pin_big.png" width="44" height="70"/>
         <image name="location_top_button.png" width="190" height="95"/>
+        <image name="locker_private_group.png" width="211" height="242"/>
         <image name="login-button.png" width="442" height="98"/>
         <image name="login_bg.png" width="640" height="1136"/>
         <image name="login_button.png" width="570" height="100"/>
@@ -4844,6 +5009,7 @@
         <image name="profile_notifications_icon_new_bubble.png" width="30" height="30"/>
         <image name="proximity-7.png" width="25" height="24"/>
         <image name="public_group.png" width="200" height="125"/>
+        <image name="public_group_pop_up.png" width="180" height="148"/>
         <image name="right_arrow.png" width="14" height="23"/>
         <image name="right_arrow_navigation.png" width="25" height="43"/>
         <image name="search_users_checkbox_unselected" width="27" height="27"/>
@@ -4878,22 +5044,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fah-A8-Ky9"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="Vyz-Un-MGO"/>
-        <segue reference="Wgm-iJ-ADQ"/>
-        <segue reference="7l2-k5-pHQ"/>
-        <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="TeO-Fd-Ort"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="7l2-k5-pHQ"/>
+        <segue reference="zvV-dv-dTv"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="Bj7-0B-AKW"/>
-        <segue reference="83m-vO-5OC"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="FTW-m4-VDE"/>
-        <segue reference="i2x-at-SJt"/>
-        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="bx4-ky-xRT"/>
+        <segue reference="voh-a1-0cl"/>
+        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="y0w-oH-XXi"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="ZpN-d9-baB"/>
         <segue reference="PMB-JP-q3M"/>
-        <segue reference="e8B-qp-59Q"/>
+        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

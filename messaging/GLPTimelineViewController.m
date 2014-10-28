@@ -64,13 +64,13 @@
 #import "GLPShowLocationViewController.h"
 #import "GLPViewImageViewController.h"
 #import "CategoryManager.h"
-#import "GLPPopUpDialogViewController.h"
+#import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
 
-@interface GLPTimelineViewController () <GLPPopUpDialogViewControllerDelegate>
+@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) NSMutableArray *usersImages;
@@ -1042,8 +1042,8 @@ const float TOP_OFFSET = 180.0f;
         [_tableActivityIndicator stopActivityIndicator];
 
         if(success) {
-            
-            self.posts = [self preserveRealImagesWithPosts:self.posts];
+                    
+            self.posts = [self preserveRealImagesWithPosts:remotePosts.mutableCopy];
             
 //            self.posts = [remotePosts mutableCopy];
 
@@ -1084,6 +1084,7 @@ const float TOP_OFFSET = 180.0f;
  */
 - (NSMutableArray *)preserveRealImagesWithPosts:(NSMutableArray *)posts
 {
+    
     for(GLPPost *post in self.posts)
     {
         for(GLPPost *newPost in posts)
@@ -2731,7 +2732,7 @@ const float TOP_OFFSET = 180.0f;
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPPopUpDialogViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPopUpDialogViewController"];
+    GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
     [cvc setEventPost:_selectedPost];
