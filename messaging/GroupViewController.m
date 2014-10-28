@@ -399,10 +399,6 @@ const float TOP_OFF_SET = -64.0;
         [self.navigationController.navigationBar setButton:kRight withImageName:@"join_group" withButtonSize:CGSizeMake(37.0, 30.0) withSelector:@selector(joinGroupTouched) andTarget:self];
     }
     
-
-    
-
-    
     DDLogDebug(@"Group type %d", _group.privacy);
 }
 
@@ -483,6 +479,13 @@ const float TOP_OFF_SET = -64.0;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
 }
+
+- (void)switchUserAsMemberOfGroup
+{
+    [_group.loggedInUser setRoleKey:1];
+    [self.navigationController.navigationBar clearNavigationItemsWithNavigationController:self];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -1023,6 +1026,8 @@ const float TOP_OFF_SET = -64.0;
         {
             //TODO: Show the pop up message.
             [self showAfterJoiningPopUpView];
+            [self switchUserAsMemberOfGroup];
+            [self configureNavigationItems];
         }
         else
         {

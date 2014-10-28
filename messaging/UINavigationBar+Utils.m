@@ -131,6 +131,12 @@
     }
 }
 
+- (void)clearNavigationItemsWithNavigationController:(UIViewController *)navigationController
+{
+    navigationController.navigationItem.rightBarButtonItems = nil;
+
+}
+
 #pragma mark - Storyboard Navigation bar
 
 
