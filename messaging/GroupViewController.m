@@ -1024,10 +1024,9 @@ const float TOP_OFF_SET = -64.0;
         
         if(success)
         {
-            //TODO: Show the pop up message.
             [self showAfterJoiningPopUpView];
-            [self switchUserAsMemberOfGroup];
-            [self configureNavigationItems];
+//            [self switchUserAsMemberOfGroup];
+//            [self configureNavigationItems];
         }
         else
         {
@@ -1650,6 +1649,20 @@ const float TOP_OFF_SET = -64.0;
 - (void)invitePeople;
 {
     [self performSegueWithIdentifier:@"invite users" sender:self];
+}
+
+- (void)dismissNavController
+{
+    [_delegate dismissTheWholeViewController];
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        //Dismiss view controller and show immediately the post in the Campus Wall.
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    });
 }
 
 #pragma  mark - GLPImageViewDelegate

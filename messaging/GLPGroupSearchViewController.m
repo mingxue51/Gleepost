@@ -16,7 +16,7 @@
 #import "GLPPrivateGroupPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
 
-@interface GLPGroupSearchViewController () <GLPSearchBarDelegate>
+@interface GLPGroupSearchViewController () <GLPSearchBarDelegate, GroupViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -33,6 +33,8 @@
 @property (strong, nonatomic) TDPopUpAfterGoingView *privateGroupPopUp;
 
 @property (assign, nonatomic) BOOL keyboardShouldShow;
+
+@property (assign, nonatomic) BOOL readyToDismissViewController;
 
 @end
 
@@ -60,6 +62,11 @@
     [super viewDidAppear:animated];
     
     [_glpSearchBar becomeTextFieldFirstResponder];
+    
+    if(_readyToDismissViewController)
+    {
+        [self dismissModalView];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -156,6 +163,14 @@
     [self searchForGroupWithName:text];
 }
 
+#pragma mark - GroupViewControllerDelegate
+
+- (void)dismissTheWholeViewController
+{
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    _readyToDismissViewController = YES;
+}
 
 #pragma mark - Table view data source
 
@@ -351,6 +366,7 @@
         GroupViewController *gvc = segue.destinationViewController;
         
         gvc.group = self.selectedGroup;
+        gvc.delegate = self;
     }
 
 }

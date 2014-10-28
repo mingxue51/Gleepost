@@ -43,6 +43,8 @@
     }
     
     _serverPath = path;
+    
+    DDLogDebug(@"Server path loaded %@", _serverPath);
 }
 
 - (void)saveServerPathData

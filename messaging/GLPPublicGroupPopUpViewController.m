@@ -50,6 +50,12 @@
     [super dismissView:nil];
 }
 
+- (IBAction)dismissView:(id)sender
+{
+    [super dismissView:sender];
+    [_delegate dismissNavController];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

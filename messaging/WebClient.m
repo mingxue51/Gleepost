@@ -44,6 +44,7 @@ static WebClient *instance = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        DDLogDebug(@"WebClient init %@", [[SessionManager sharedInstance] serverPath]);
         instance = [[WebClient alloc] initWithBaseURL:[NSURL URLWithString:[[SessionManager sharedInstance] serverPath]]];
         instance.defaultSSLPinningMode = AFSSLPinningModeCertificate;
     });

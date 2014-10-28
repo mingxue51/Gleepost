@@ -15,7 +15,15 @@
 #import "GLPStretchedImageView.h"
 #import "ImageSelectorViewController.h"
 
+@protocol GroupViewControllerDelegate <NSObject>
+
+- (void)dismissTheWholeViewController;
+
+@end
+
 @interface GroupViewController : UIViewController<ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate, ImageSelectorViewControllerDelegate>
+
+@property (weak, nonatomic) UIViewController<GroupViewControllerDelegate> *delegate;
 
 @property (strong, nonatomic) GLPGroup *group;
 

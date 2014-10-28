@@ -12,6 +12,7 @@
 
 - (void)showMembers;
 - (void)invitePeople;
+- (void)dismissNavController;
 
 @end
 

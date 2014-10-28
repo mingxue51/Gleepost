@@ -82,7 +82,9 @@ static SessionManager *instance = nil;
     
     _currentUserFirstTime = NO;
     _authParameters = [NSDictionary dictionary];
-        
+    
+    DDLogDebug(@"Init server manager.");
+    
     _serverManager = [[GLPServerPathManager alloc] init];
     
     
