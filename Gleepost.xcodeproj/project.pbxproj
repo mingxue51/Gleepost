@@ -1298,7 +1298,6 @@
 		584EE2CE19D5A1590049D7B2 /* GLPGroupProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupProgressManager.h; sourceTree = "<group>"; };
 		584EE2CF19D5A1590049D7B2 /* GLPGroupProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupProgressManager.m; sourceTree = "<group>"; };
 		584F1BF018DA3C2C00F43ABF /* nav_bar_title_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_title_button_old.png; sourceTree = "<group>"; };
-		584F38511817DE8900A1B742 /* message_box_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = message_box_1.png; path = "../../Gleepost Data/NewChating/message_box_1.png"; sourceTree = "<group>"; };
 		584F38591817F4E500A1B742 /* multipleusersicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = multipleusersicon.png; sourceTree = "<group>"; };
 		584F385B1817F50B00A1B742 /* default_group_image_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_group_image_old.png; sourceTree = "<group>"; };
 		584F38611818094A00A1B742 /* mychatbubble4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mychatbubble4.png; sourceTree = "<group>"; };
@@ -2952,7 +2951,6 @@
 				584F38611818094A00A1B742 /* mychatbubble4.png */,
 				584F385B1817F50B00A1B742 /* default_group_image_old.png */,
 				584F38591817F4E500A1B742 /* multipleusersicon.png */,
-				584F38511817DE8900A1B742 /* message_box_1.png */,
 				582840FC180DC0EA000F3CF7 /* multiplechatimg.png */,
 				586659BF17F1B35F00A0354E /* camera_icon.png */,
 				586659BD17F1B17E00A0354E /* camera_icon@2x.png */,

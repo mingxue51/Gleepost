@@ -28,5 +28,6 @@ typedef NS_ENUM(NSUInteger, MemberRole) {
 - (void)setRoleKey:(NSInteger)roleLevel;
 - (GLPUser *)getUser;
 - (BOOL)isMemberOfGroup;
+- (BOOL)doesBelongToGroup;
 
 @end

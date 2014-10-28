@@ -227,12 +227,13 @@ static const CGFloat kBottomMargin = 2; //7
     view.frame = CGRectMake(x, _height, w, h);
 
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
+    
 
     imageView.frame = CGRectMake(0, 0, w, h);
 
     label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2, labelSize.width, labelSize.height);
     label.text = _message.content;
-    
+        
     if(_isOnLeftSide) {
 //        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
         view.backgroundColor = [AppearanceHelper lightGrayGleepostColour];

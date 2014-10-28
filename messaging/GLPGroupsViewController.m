@@ -134,7 +134,7 @@
 {
     //Change the format of the navigation bar.
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     
@@ -175,7 +175,7 @@
     GLPSearchBar *view = [array lastObject];
     [view setDelegate:self];
     
-    [view setPlaceholderWithText:@"Search for groups on campus"];
+    [view setPlaceholderWithText:@"Search your groups"];
     
     view.tag = 101;
     

@@ -383,7 +383,12 @@ const float TOP_OFF_SET = -64.0;
         buttonX = 0;
     }
     
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"new_post_groups" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(createNewPost:) andTarget:self];
+    DDLogDebug(@"Logged in user %@", _group.loggedInUser.roleName);
+    
+    if([_group.loggedInUser doesBelongToGroup])
+    {
+        [self.navigationController.navigationBar setButton:kRight withImageName:@"new_post_groups" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(createNewPost:) andTarget:self];
+    }
     
     if([_group.loggedInUser isAuthenticatedForChanges])
     {
@@ -393,6 +398,10 @@ const float TOP_OFF_SET = -64.0;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"join_group" withButtonSize:CGSizeMake(37.0, 30.0) withSelector:@selector(joinGroupTouched) andTarget:self];
     }
+    
+
+    
+
     
     DDLogDebug(@"Group type %d", _group.privacy);
 }

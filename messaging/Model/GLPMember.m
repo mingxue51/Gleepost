@@ -85,6 +85,16 @@
     return NO;
 }
 
+- (BOOL)doesBelongToGroup
+{
+    if(_roleLevel == kAdministrator || _roleLevel == kCreator || _roleLevel == kMember)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (BOOL)isMemberOfGroup
 {
     if(_roleName)
