@@ -48,7 +48,7 @@
 #import "GLPImageHelper.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPPublicGroupPopUpViewController.h"
-#import "GLPSearchUsersViewController.h"
+#import "GLPInviteUsersViewController.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -1018,9 +1018,7 @@ const float TOP_OFF_SET = -64.0;
         else
         {
             //Show error.
-//            [WebClientHelper showFailedToJoinGroupWithName:_group.name];
-            [self showAfterJoiningPopUpView];
-
+            [WebClientHelper showFailedToJoinGroupWithName:_group.name];
             
         }
         
@@ -2009,9 +2007,9 @@ const float TOP_OFF_SET = -64.0;
     }
     else if ([segue.identifier isEqualToString:@"invite users"])
     {
-        GLPSearchUsersViewController *suvc = segue.destinationViewController;
+        GLPInviteUsersViewController *suvc = segue.destinationViewController;
         suvc.group = _group;
-        suvc.alreadyMembers = _members;
+        suvc.needToReloadExistingMembers = YES;
     }
 }
 

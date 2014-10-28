@@ -1411,7 +1411,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vZa-YM-7uX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2759" y="-4111"/>
+            <point key="canvasLocation" x="2812" y="-4111"/>
         </scene>
         <!--Search Users View Controller-->
         <scene sceneID="Gqn-cG-hYi">
@@ -3930,7 +3930,7 @@
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -5047,7 +5047,7 @@
         <segue reference="YIa-ii-tw7"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="7l2-k5-pHQ"/>
-        <segue reference="zvV-dv-dTv"/>
+        <segue reference="TV3-yd-KJQ"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="XMX-SH-Gag"/>
@@ -5057,7 +5057,7 @@
         <segue reference="y0w-oH-XXi"/>
         <segue reference="c6M-82-Pnp"/>
         <segue reference="Ze9-pm-FNm"/>
-        <segue reference="ZpN-d9-baB"/>
+        <segue reference="Gwl-Cd-vyB"/>
         <segue reference="PMB-JP-q3M"/>
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="NSy-Xb-H1O"/>

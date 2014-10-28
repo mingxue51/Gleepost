@@ -14,7 +14,7 @@
 #import "ContactsManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ShapeFormatterHelper.h"
-#import "GLPSearchUsersViewController.h"
+#import "GLPInviteUsersViewController.h"
 #import "GLPGroupManager.h"
 #import "AppearanceHelper.h"
 #import "UINavigationBar+Format.h"
@@ -357,10 +357,10 @@
     }
     else if ([segue.identifier isEqualToString:@"add members"])
     {
-        GLPSearchUsersViewController *suvc = segue.destinationViewController;
-//        suvc.searchForMembers = YES;
-        suvc.group = _group;
+        GLPInviteUsersViewController *suvc = segue.destinationViewController;
         suvc.alreadyMembers = _members;
+        suvc.group = _group;
+        suvc.needToReloadExistingMembers = NO;
     }
 }
 

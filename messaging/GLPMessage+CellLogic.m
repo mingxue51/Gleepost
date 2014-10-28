@@ -68,17 +68,30 @@ NSString * const kMessageRightCell = @"RightCell";
 - (void)configureAsFirstMessage
 {
     self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
-//    self.hasHeader = YES;
+    self.hasHeader = YES;
     self.needsProfileImage = YES;
     //TODO: if a message doesn't has previous message should have header. (is the first message).
-    self.hasHeader = [self followsPreviousMessage:self] ? NO : YES;
+//    self.hasHeader = [self followsPreviousMessage:self] ? NO : YES;
+    
+    DDLogDebug(@"configureAsFirstMessage %@", self.content);
+}
+
+- (void)configureAsOtherUsersFollowingMessage:(GLPMessage *)message
+{
+    self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
+    self.needsProfileImage = YES;
+    self.hasHeader = [self followsPreviousMessage:message] ? NO : YES;
 }
 
 - (void)configureAsFollowingMessage:(GLPMessage *)message
 {
+    
     self.cellIdentifier = [GLPMessage getCellIdentifierForMessage:self];
     self.hasHeader = [self followsPreviousMessage:message] ? NO : YES;
     self.needsProfileImage = NO;
+    
+    DDLogDebug(@"configureAsFollowingMessage following %@, current %@", message.content, self.content);
+
 }
 
 + (NSString *)getCellIdentifierForMessage:(GLPMessage *)message

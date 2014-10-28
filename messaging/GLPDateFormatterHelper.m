@@ -7,6 +7,7 @@
 //
 
 #import "GLPDateFormatterHelper.h"
+#import "DateFormatterHelper.h"
 
 @implementation GLPDateFormatterHelper
 
@@ -19,6 +20,43 @@
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
         dateFormatter.dateFormat = @"EEEE hh:mm a";
+        
+        [threadDictionary setObject: dateFormatter forKey: @"DDMyDateFormatter"] ;
+    }
+    
+    return dateFormatter;
+}
+
++ (NSDateFormatter *)messageDateFormatterWithDate:(NSDate *)messageDate
+{
+    NSDate *now = [NSDate date];
+    NSDate *yesterday = [DateFormatterHelper generateDateBeforeDays:1];
+    NSDate *weekAgo = [DateFormatterHelper generateDateBeforeDays:7];
+    NSDate *yearAgo = [DateFormatterHelper generateDateBeforeDays:365];
+    
+    NSMutableDictionary *threadDictionary = [[NSThread currentThread] threadDictionary] ;
+    NSDateFormatter *dateFormatter = [threadDictionary objectForKey: @"GLPMessageDateFormatter"] ;
+    
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        
+        if([DateFormatterHelper date:messageDate isBetweenDate:yesterday andDate:now])
+        {
+            dateFormatter.dateFormat = @"hh:mm a";
+        }
+        else if([DateFormatterHelper date:messageDate isBetweenDate:weekAgo andDate:yesterday])
+        {
+            dateFormatter.dateFormat = @"EEEE hh:mm a";
+        }
+        else if ([DateFormatterHelper date:messageDate isBetweenDate:yearAgo andDate:weekAgo])
+        {
+            dateFormatter.dateFormat = @"MMMM dd hh:mm a";
+        }
+        else
+        {
+            dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm a";
+        }
         
         [threadDictionary setObject: dateFormatter forKey: @"DDMyDateFormatter"] ;
     }

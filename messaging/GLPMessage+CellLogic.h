@@ -18,6 +18,7 @@ extern NSString * const kMessageLeftCell;
 extern NSString * const kMessageRightCell;
 
 - (void)configureAsFirstMessage;
+- (void)configureAsOtherUsersFollowingMessage:(GLPMessage *)message;
 - (void)configureAsFollowingMessage:(GLPMessage *)message;
 
 @end

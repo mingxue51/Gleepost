@@ -196,7 +196,8 @@ static const CGFloat kBottomMargin = 2; //7
     if(_message.hasHeader) {
         label.hidden = NO;
         
-        label.text = [[[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date] uppercaseString];
+//        label.text = [[[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date] uppercaseString];
+        label.text = [[[GLPDateFormatterHelper messageDateFormatterWithDate:_message.date] stringFromDate:_message.date] uppercaseString];
         
         _height += label.frame.size.height + kTimeLabelBottomMargin;
         

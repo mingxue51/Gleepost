@@ -429,7 +429,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
             previous = current;
         }
         else {
-            [current configureAsFirstMessage];
+//            [current configureAsFirstMessage];
+            [current configureAsOtherUsersFollowingMessage:previous];
             previous = current;
         }
     }

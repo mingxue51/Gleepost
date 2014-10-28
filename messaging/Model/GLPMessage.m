@@ -34,7 +34,7 @@
 {    
     NSTimeInterval interval = [_date timeIntervalSinceDate:message.date];
     
-    //If the inrerval is more than seven minutes the return YES, otherwise NO.
+    //If the interval is more than seven minutes then return YES, otherwise NO.
     if(interval > 420)
     {
         return NO;

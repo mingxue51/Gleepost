@@ -17,4 +17,7 @@
 @property (strong, nonatomic) GLPGroup *group;
 @property (strong, nonatomic) NSArray *alreadyMembers;
 
+/** This variable should be YES only when this VC is called other than MembersVC, view controller. */
+@property (assign, nonatomic, getter=doesNeedToReloadExistingMembers) BOOL needToReloadExistingMembers;
+
 @end

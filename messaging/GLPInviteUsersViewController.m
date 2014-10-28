@@ -13,6 +13,7 @@
 #import "GLPPrivateProfileViewController.h"
 #import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
 #import "GLPFacebookConnect.h"
+#import "GLPGroupManager.h"
 
 @interface GLPInviteUsersViewController ()
 
@@ -42,7 +43,8 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     
     [self configureFacebookInvitationButton];
     
-    [super setAlreadyMembers:self.alreadyMembers];
+    [self loadExistingMembers];
+    
     
 }
 
@@ -88,6 +90,30 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.tableView insertSubview:_facebookButton aboveSubview:self.tableView];
+}
+
+- (void)loadExistingMembers
+{
+    if([self doesNeedToReloadExistingMembers])
+    {
+        //Load existing members.
+        [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
+            
+
+            [super setAlreadyMembers:self.alreadyMembers];
+            
+            
+        } remoteCallback:^(BOOL success, NSArray *members) {
+            
+            [super setAlreadyMembers:self.alreadyMembers];
+        }];
+
+    }
+    else
+    {
+        [super setAlreadyMembers:self.alreadyMembers];
+    }
+    
 }
 
 #pragma mark - Table view data source

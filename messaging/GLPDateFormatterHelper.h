@@ -11,5 +11,6 @@
 @interface GLPDateFormatterHelper : NSObject
 
 + (NSDateFormatter *)messageDateFormatter;
++ (NSDateFormatter *)messageDateFormatterWithDate:(NSDate *)messageDate;
 
 @end
