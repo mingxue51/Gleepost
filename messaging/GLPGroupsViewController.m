@@ -252,8 +252,6 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    [self showOrHideEmptyView];
-    
     return _filteredGroups.count;
 }
 
@@ -266,6 +264,9 @@
     [cell setDelegate:self];
     
     [cell setGroupData:[_filteredGroups objectAtIndex:indexPath.row]];
+    
+    [self showOrHideEmptyView];
+
     
     return cell;
 }
