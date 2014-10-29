@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBarView;
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 //@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
@@ -61,6 +62,9 @@
     [self configNotifications];
     
     [self configureNavigationButton];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+
 
     
     //Change the colour of the tab bar.
@@ -91,6 +95,7 @@
 {
     [super viewDidAppear:animated];
     
+    
     [self loadGroupsWithGroup:nil];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
@@ -101,9 +106,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
+        
     [self configNavigationBar];
 }
 
@@ -134,9 +137,16 @@
 {
     //Change the format of the navigation bar.
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    [self.navigationController.navigationBar setTranslucent:NO];
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+//    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    //    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], UITextAttributeFont, [self colourWithGLPColour:colour], UITextAttributeTextColor, nil]];
+    
+    _navigationBar.topItem.title = @"MY GROUPS";
+    
+    
+//    [_navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], NSFontAttributeName, [AppearanceHelper blackGleepostColour], NSForegroundColorAttributeName, nil]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

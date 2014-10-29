@@ -4131,7 +4131,7 @@
             </objects>
             <point key="canvasLocation" x="1132" y="2671"/>
         </scene>
-        <!--MY GROUPS-->
+        <!--Groups View Controller-->
         <scene sceneID="naL-Wm-fpq">
             <objects>
                 <viewController id="HQj-fU-IFb" customClass="GLPGroupsViewController" sceneMemberID="viewController">
@@ -4145,10 +4145,11 @@
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <textAttributes key="titleTextAttributes">
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
-                                    <color key="textColor" red="0.21176470588235294" green="0.18431372549019609" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="MY GROUPS" id="kSH-Hk-5OL"/>
+                                    <navigationItem id="kSH-Hk-5OL"/>
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" id="dm8-0J-zI6">
@@ -4180,13 +4181,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="MY GROUPS" id="FhU-Sp-fnH">
+                    <navigationItem key="navigationItem" id="FhU-Sp-fnH">
                         <barButtonItem key="backBarButtonItem" title=" " id="gKR-f8-e8z"/>
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="U5V-DP-w0R" id="Gxe-Qz-6Fs"/>
                         <outlet property="navItem" destination="kSH-Hk-5OL" id="2mb-9X-Aag"/>
+                        <outlet property="navigationBar" destination="MRY-AJ-N4C" id="C8E-ax-OW1"/>
                         <outlet property="searchBarView" destination="dm8-0J-zI6" id="tQ4-S5-9zL"/>
                         <segue destination="AQy-Vp-E9s" kind="push" identifier="new group" id="seO-C6-kwi"/>
                         <segue destination="K1l-cB-NEz" kind="push" identifier="view group" id="pjB-B1-HWm"/>
