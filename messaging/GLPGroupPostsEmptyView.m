@@ -17,6 +17,11 @@
     CGRectSetY(self, [super yPosition:kViewPositionTop]);
 }
 
+- (void)setYPosition:(float)yPosition
+{
+    CGRectSetY(self, yPosition);
+}
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

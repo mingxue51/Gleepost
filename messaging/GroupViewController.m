@@ -1865,7 +1865,11 @@ const float TOP_OFF_SET = -64.0;
 {
     if(self.posts.count == 0)
     {
-        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupPostsEmptyView withView:self.tableView];
+        float yPosition = [DescriptionSegmentGroupCell getCellHeightWithGroup:_group] ;
+        
+        DDLogDebug(@"yPostion group empty view %f", yPosition);
+
+        [[GLPEmptyViewManager sharedInstance] addEmptyGroupPostViewWithView:self.tableView andStartingPosition:yPosition];
     }
     else
     {

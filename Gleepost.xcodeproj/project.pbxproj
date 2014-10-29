@@ -5270,9 +5270,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		80AB891617C267F50053E784 /* NerdNation */ = {
+		80AB891617C267F50053E784 /* Gleepost */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "NerdNation" */;
+			buildConfigurationList = 80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "Gleepost" */;
 			buildPhases = (
 				6A619F537015493686B56C15 /* Check Pods Manifest.lock */,
 				80AB891317C267F50053E784 /* Sources */,
@@ -5284,7 +5284,7 @@
 			);
 			dependencies = (
 			);
-			name = NerdNation;
+			name = Gleepost;
 			productName = messaging;
 			productReference = 80AB891717C267F50053E784 /* Gleepost.app */;
 			productType = "com.apple.product-type.application";
@@ -5325,7 +5325,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80AB891617C267F50053E784 /* NerdNation */,
+				80AB891617C267F50053E784 /* Gleepost */,
 				807C4CD9180ADBA1003D67E6 /* Mogenerator */,
 			);
 		};
@@ -6469,7 +6469,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "NerdNation" */ = {
+		80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "Gleepost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80AB893A17C267F50053E784 /* Debug */,

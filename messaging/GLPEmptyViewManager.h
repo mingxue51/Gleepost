@@ -20,5 +20,6 @@ typedef NS_ENUM(NSUInteger, EmptyViewKind) {
 + (GLPEmptyViewManager *)sharedInstance;
 - (UIView *)addEmptyViewWithKindOfView:(EmptyViewKind)emptyViewKind withView:(UIView *)view;
 - (void)hideViewWithKind:(EmptyViewKind)viewKind;
+- (UIView *)addEmptyGroupPostViewWithView:(UIView *)view andStartingPosition:(float)position;
 
 @end

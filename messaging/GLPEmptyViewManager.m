@@ -58,13 +58,18 @@ static GLPEmptyViewManager *instance = nil;
             break;
             
         case kGroupPostsEmptyView:
-            return [self generateGroupPostsEmptyView:view];
-            break;
+//            return [self generateGroupPostsEmptyView:view];
+//            break;
             
         default:
             return nil;
             break;
     }
+}
+
+- (UIView *)addEmptyGroupPostViewWithView:(UIView *)view andStartingPosition:(float)position
+{
+    return [self generateGroupPostsEmptyView:view andYPosition:position];
 }
 
 /**
@@ -158,7 +163,7 @@ static GLPEmptyViewManager *instance = nil;
     return _profilePostsEmptyView;
 }
 
-- (UIView *)generateGroupPostsEmptyView:(UIView *)view
+- (UIView *)generateGroupPostsEmptyView:(UIView *)view andYPosition:(float)yPosition
 {
     if(_groupPostsEmptyView)
     {
@@ -167,6 +172,8 @@ static GLPEmptyViewManager *instance = nil;
     }
     
     _groupPostsEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPGroupPostsEmptyView" owner:view options:nil] objectAtIndex:0];
+    [_groupPostsEmptyView setYPosition:yPosition];
+    
     
     [view addSubview:_groupPostsEmptyView];
     

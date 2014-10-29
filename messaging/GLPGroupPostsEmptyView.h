@@ -10,4 +10,6 @@
 
 @interface GLPGroupPostsEmptyView : GLPEmptyView
 
+- (void)setYPosition:(float)yPosition;
+
 @end
