@@ -622,7 +622,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     else
     {
         [[[UIAlertView alloc] initWithTitle:@"Failed to load post from facebook"
-                                    message:@"You need to be logged in, to see gleepost post"
+                                    message:@"You need to be logged in, to see NerdNation post"
                                    delegate:self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];

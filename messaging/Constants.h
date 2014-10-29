@@ -14,7 +14,7 @@
 #endif
 
 #define ENV_FAKE_API                    NO
-#define DEV                             NO
+#define DEV                             YES
 #define ENV_DEBUG                       NO
 #define ENV_FAKE_LIVE_CONVERSATIONS     NO
 

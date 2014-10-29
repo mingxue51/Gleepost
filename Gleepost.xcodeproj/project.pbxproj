@@ -2135,7 +2135,7 @@
 		80A21D4218AD136200559BF6 /* internal_notification_cell_liked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = internal_notification_cell_liked.png; sourceTree = "<group>"; };
 		80A21D4318AD136200559BF6 /* internal_notification_cell_liked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internal_notification_cell_liked@2x.png"; sourceTree = "<group>"; };
 		80A5C48E18C9D3D4000F8E39 /* notification5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notification5.json; sourceTree = "<group>"; };
-		80AB891717C267F50053E784 /* Gleepost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gleepost.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		80AB891717C267F50053E784 /* NerdNation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NerdNation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80AB891A17C267F50053E784 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		80AB891C17C267F50053E784 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		80AB891E17C267F50053E784 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -4687,7 +4687,7 @@
 		80AB891817C267F50053E784 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				80AB891717C267F50053E784 /* Gleepost.app */,
+				80AB891717C267F50053E784 /* NerdNation.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5270,9 +5270,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		80AB891617C267F50053E784 /* Gleepost */ = {
+		80AB891617C267F50053E784 /* NerdNation */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "Gleepost" */;
+			buildConfigurationList = 80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "NerdNation" */;
 			buildPhases = (
 				6A619F537015493686B56C15 /* Check Pods Manifest.lock */,
 				80AB891317C267F50053E784 /* Sources */,
@@ -5284,9 +5284,9 @@
 			);
 			dependencies = (
 			);
-			name = Gleepost;
+			name = NerdNation;
 			productName = messaging;
-			productReference = 80AB891717C267F50053E784 /* Gleepost.app */;
+			productReference = 80AB891717C267F50053E784 /* NerdNation.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -5325,7 +5325,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				80AB891617C267F50053E784 /* Gleepost */,
+				80AB891617C267F50053E784 /* NerdNation */,
 				807C4CD9180ADBA1003D67E6 /* Mogenerator */,
 			);
 		};
@@ -6420,7 +6420,7 @@
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = Gleepost;
+				PRODUCT_NAME = NerdNation;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "55ac2271-6236-4771-a4ad-a1838f5ae593";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -6440,7 +6440,7 @@
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = Gleepost;
+				PRODUCT_NAME = NerdNation;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ab8072bc-45a3-4c5e-9f03-f49286f5a2ca";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -6469,7 +6469,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "Gleepost" */ = {
+		80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "NerdNation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				80AB893A17C267F50053E784 /* Debug */,
