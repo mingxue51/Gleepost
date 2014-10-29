@@ -183,6 +183,8 @@
     }
     else
     {
+        entity.key = conv.key;
+
         //Update conversation.
         [GLPConversationDao updateConversationLastUpdateAndLastMessage:entity db:db];
     }

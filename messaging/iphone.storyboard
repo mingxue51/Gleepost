@@ -4182,7 +4182,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="FhU-Sp-fnH">
-                        <barButtonItem key="backBarButtonItem" title=" " id="gKR-f8-e8z"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="t0T-fF-lQb">
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
