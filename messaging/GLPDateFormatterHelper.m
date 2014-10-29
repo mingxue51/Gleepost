@@ -51,11 +51,11 @@
         }
         else if ([DateFormatterHelper date:messageDate isBetweenDate:yearAgo andDate:weekAgo])
         {
-            dateFormatter.dateFormat = @"MMMM dd hh:mm a";
+            dateFormatter.dateFormat = @"MMMM d hh:mm a";
         }
         else
         {
-            dateFormatter.dateFormat = @"MM/dd/yyyy hh:mm a";
+            dateFormatter.dateFormat = @"MM/d/yyyy hh:mm a";
         }
         
         [threadDictionary setObject: dateFormatter forKey: @"DDMyDateFormatter"] ;
