@@ -49,4 +49,6 @@
 
 + (NSInteger)findPostIndexWithRemoteKey:(NSInteger)remoteKey inPosts:(NSArray *)posts;
 
++ (NSInteger)parseRefreshCellNotification:(NSNotification *)notification withPostsArray:(NSArray *)posts;
+
 @end

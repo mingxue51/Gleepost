@@ -128,7 +128,6 @@
 
 //Groups.
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
-@property (assign, nonatomic) BOOL groupsMode;
 
 @property (assign, nonatomic, getter = isTableViewFirstTimeScrolled) BOOL tableViewFirstTimeScrolled;
 
@@ -324,8 +323,6 @@ const float TOP_OFFSET = 180.0f;
     
     self.postIndexToReload = -1;
     
-    self.groupsMode = NO;
-    
     //Initialize temporary top image view.
 //    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
 //    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
@@ -404,10 +401,6 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
 {
-    if(_groupsMode)
-    {
-        return;
-    }
     
     NSDictionary *dict = [notification userInfo];
     
@@ -486,32 +479,17 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    GLPPost *currentPost = nil;
-    int index = -1;
-    if(_groupsMode)
-    {
-        NSArray *posts = [[CampusWallGroupsPostsManager sharedInstance] allPosts];
+    NSInteger index = -1;
 
-        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:posts];
-    }
-    else
-    {
-        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    }
+    //        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
+    index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
     
-    if(_groupsMode && [currentPost isGroupPost])
+    
+    if(index != -1)
     {
-        if(currentPost)
-        {
-            [self refreshCellViewWithIndex:index];
-        }
-    }
-    else if(!_groupsMode && ![currentPost isGroupPost])
-    {
-        if(currentPost)
-        {
-            [self refreshCellViewWithIndex:index];
-        }
+        DDLogDebug(@"Index to be refreshed %d", index);
+
+        [self refreshCellViewWithIndex:index];
     }
 }
 
@@ -548,16 +526,9 @@ const float TOP_OFFSET = 180.0f;
     
     int index = -1;
     
-    if(_groupsMode)
-    {
-        
-        index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:[[CampusWallGroupsPostsManager sharedInstance] allPosts].mutableCopy];
-        
-    }
-    else
-    {
-        index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
-    }
+
+    index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    
     
     
     if(index != -1)
@@ -1135,18 +1106,9 @@ const float TOP_OFFSET = 180.0f;
 - (void)loadEarlierPostsFromPullToRefresh
 {
     
-    //Added to support groups' feed.
     
-    if(_groupsMode)
-    {
-//        [self loadEarlierGroupsPostsAndSaveScrollingState:NO];
-        
-        [self loadEarlierGroupsPostsAndSaveScrollingState:NO];
-    }
-    else
-    {
-        [self loadEarlierPostsAndSaveScrollingState:NO];
-    }
+    [self loadEarlierPostsAndSaveScrollingState:NO];
+    
     
     //Load campus live events posts.
     [_campusWallHeader reloadData];
@@ -1154,19 +1116,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)loadEarlierPostsFromCron
 {
-    //Added to support groups' feed.
-    
-    if(_groupsMode)
-    {
-//        [self loadEarlierGroupsPostsAndSaveScrollingState:YES];
-        [self loadInitialGroupsPosts];
-
-    }
-    else
-    {
-        [self loadEarlierPostsAndSaveScrollingState:YES];
-    }
-    
+    [self loadEarlierPostsAndSaveScrollingState:YES];
 }
 
 - (void)loadEarlierPostsAndSaveScrollingState:(BOOL)saveScrollingState
@@ -1528,14 +1478,9 @@ const float TOP_OFFSET = 180.0f;
 {
     int numberOfPosts = 0;
     
-    if(_groupsMode)
-    {
-        numberOfPosts = [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
-    }
-    else
-    {
-        numberOfPosts = self.posts.count;
-    }
+
+     numberOfPosts = self.posts.count;
+    
     
     
     if(numberOfPosts == 0 || (numberOfPosts == 1 && [[CampusWallGroupsPostsManager sharedInstance] isTextPostExist]))
@@ -1959,86 +1904,33 @@ const float TOP_OFFSET = 180.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(_groupsMode)
-    {
-        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
-        {
-            [_emptyGroupPostsMessage showEmptyMessageView];
-            
-            return 1;
-        }
-        else
-        {
-            [_emptyGroupPostsMessage hideEmptyMessageView];
-            
-            return [[CampusWallGroupsPostsManager sharedInstance] numberOfPosts];
-        }
-    }
-    else
-    {
-        [_emptyGroupPostsMessage hideEmptyMessageView];
-        return self.posts.count + 1;
-    }
-
+    [_emptyGroupPostsMessage hideEmptyMessageView];
+    return self.posts.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //For group posts we want to disable the loading previous posts.
-    if(!_groupsMode)
-    {
-        if(indexPath.row == self.posts.count) {
-            GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
-            [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-            [loadingCell updateWithStatus:self.loadingCellStatus];
-            return loadingCell;
-        }
+ 
+
+    if(indexPath.row == self.posts.count) {
+        GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
+        [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
+        [loadingCell updateWithStatus:self.loadingCellStatus];
+        return loadingCell;
     }
     
-    if(_groupsMode)
-    {
-        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
-        {
-            return [TableViewHelper generateCellWithMessage:@""];
-        }
-    }
-
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
 
-//    static NSString *CellIdentifierHeader = @"CampusWallHeader";
-    
-    //Header cell.
-//    CampusWallHeader *campusWallHeader;
-    
+   
     GLPPostCell *postCell;
-
-//    if(indexPath.row == 0)
-//    {
-//        campusWallHeader = [tableView dequeueReusableCellWithIdentifier:CellIdentifierHeader forIndexPath:indexPath];
-//        
-//        return campusWallHeader;
-//    }
-//    else
-//    {
-
-//    }
-    
-    //    GLPUser *user = self.users[indexPath.row];
 
     
     GLPPost *post = [self currentPostWithIndexPath:indexPath];
     
-//    if(_groupsMode)
-//    {
-//        post = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
-//    }
-//    else
-//    {
-//        post = self.posts[indexPath.row];
-//    }
+
     
     
     if([post imagePost])
@@ -2167,15 +2059,6 @@ const float TOP_OFFSET = 180.0f;
     }
     
     
-    if(_groupsMode)
-    {
-        if([[CampusWallGroupsPostsManager sharedInstance] arePostsEmpty])
-        {
-            return 100.0f;
-        }
-    }
-    
-    
     //float height = [[self.postsHeight objectAtIndex:indexPath.row] floatValue];
     
     //static float imageSize = 300;
@@ -2224,15 +2107,10 @@ const float TOP_OFFSET = 180.0f;
         [self hideNewElementsIndicatorView];
     }
     
-    if(!_groupsMode)
-    {
-        if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
-            NSLog(@"Load previous posts cell activated");
-            [self loadPreviousPosts];
-        }
+    if(indexPath.row == self.posts.count && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
+        NSLog(@"Load previous posts cell activated");
+        [self loadPreviousPosts];
     }
-    
-
 }
 
 
@@ -2250,15 +2128,7 @@ const float TOP_OFFSET = 180.0f;
  */
 -(GLPPost *)currentPostWithIndexPath:(NSIndexPath *)indexPath
 {
-    if(_groupsMode)
-    {
-        return [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
-    }
-    else
-    {
-        return [self.posts objectAtIndex:indexPath.row];
-    }
-    
+    return [self.posts objectAtIndex:indexPath.row];
 }
 
 -(void) updateTableWithNewRowCount:(int)rowCount
@@ -2426,15 +2296,7 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)refreshPostsWithNewCategory
 {
-    if(_groupsMode)
-    {
-//        [self loadGroupsFeed];
-        [self loadInitialGroupsPosts];
-    }
-    else
-    {
-        [self loadInitialPosts];
-    }
+     [self loadInitialPosts];
 }
 
 
@@ -2534,17 +2396,9 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
-    if(_groupsMode)
-    {
-        self.selectedPost = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:postIndex];
-    }
-    else
-    {
-        self.selectedPost = self.posts[postIndex];
-        self.postIndexToReload = postIndex;
-    }
-    
 
+    self.selectedPost = self.posts[postIndex];
+    self.postIndexToReload = postIndex;
    
     ++self.selectedPost.commentsCount;
 
@@ -2911,8 +2765,6 @@ const float TOP_OFFSET = 180.0f;
     //Initialise categories to all.
 //    [[SessionManager sharedInstance] setCurrentCategory:nil];
     
-
-    _groupsMode = YES;
     [self.tableView reloadData];
     [self updateTitleView];
     [self loadInitialGroupsPosts];
@@ -2922,8 +2774,6 @@ const float TOP_OFFSET = 180.0f;
 {
     //Initialise categories to all.
     [[CategoryManager sharedInstance] setSelectedCategory:nil];
-    
-    _groupsMode = NO;
     
     [self updateTitleView];
 
@@ -3034,19 +2884,7 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)updateTitleView
 {
-    //TODO: Remove unnecessary code.
-    
-    if(_groupsMode)
-    {
-//        [self.reNavBar groupFeedEnabled];
-        [self.campusWallHeader groupFeedEnabled];
-    }
-    else
-    {
-//        [self.reNavBar groupFeedDisabled];
-        [self.campusWallHeader groupFeedDisabled];
-
-    }
+    [self.campusWallHeader groupFeedDisabled];
 }
 
 #pragma mark - Helpers
@@ -3131,22 +2969,10 @@ const float TOP_OFFSET = 180.0f;
         
         viewPostImageViewController.image = self.imageToBeView;
         
-        
     }
     else if([segue.identifier isEqualToString:@"view profile"])
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-//        GLPUser *incomingUser = [[GLPUser alloc] init];
-//        
-//        incomingUser.remoteKey = self.selectedUserId;
-//        
-//        if(self.selectedUserId == -1)
-//        {
-//            incomingUser = nil;
-//        }
-//        
-//        profileViewController.incomingUser = incomingUser;
     }
     else if([segue.identifier isEqualToString:@"show location"])
     {

@@ -152,6 +152,14 @@
     return postIndex;
 }
 
++ (NSInteger)parseRefreshCellNotification:(NSNotification *)notification withPostsArray:(NSArray *)posts
+{
+    NSDictionary *dict = [notification userInfo];
+    NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
+    
+    return [GLPPostNotificationHelper findPostIndexWithRemoteKey:remoteKey.integerValue inPosts:posts];
+}
+
 +(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts
 {
     NSDictionary *dict = [notification userInfo];

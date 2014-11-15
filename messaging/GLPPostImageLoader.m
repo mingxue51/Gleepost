@@ -98,7 +98,7 @@ static GLPPostImageLoader *instance = nil;
             if(image)
             {
                 //Inform Campus Wall.
-                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInteger:p.remoteKey] andImage:image];
+//                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInteger:p.remoteKey] andImage:image];
             }
             else
             {                
@@ -124,6 +124,24 @@ static GLPPostImageLoader *instance = nil;
             
         }];
     }
+}
+
+#pragma mark - Accessors
+
+- (void)findImageWithUrl:(NSURL *)url callback:(void (^) (UIImage* image, BOOL found))callback
+{
+    [[SDImageCache sharedImageCache] queryDiskCacheForKey:[url absoluteString] done:^(UIImage *image, SDImageCacheType cacheType) {
+        
+        if(image)
+        {
+            callback(image, YES);
+        }
+        else
+        {
+            callback(nil, NO);
+        }
+        
+    }];
 }
 
 #pragma mark - Helpers methods
@@ -266,6 +284,11 @@ static GLPPostImageLoader *instance = nil;
 }
 
 #pragma mark - Notifications
+
+- (void)notifyViewControllerToRefreshCellWithRemoteKey:(NSNumber *)remoteKey
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey}];
+}
 
 -(void)notifyCampusWallWithRemoteKey:(NSNumber *)remoteKey andImage:(UIImage *)image
 {

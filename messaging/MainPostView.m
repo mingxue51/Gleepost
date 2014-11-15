@@ -24,6 +24,7 @@
 #import "UIColor+GLPAdditions.h"
 #import "NSNotificationCenter+Utils.h"
 #import "GLPImageHelper.h"
+#import "GLPPostImageLoader.h"
 
 @interface MainPostView ()
 
@@ -511,19 +512,31 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self hideVideoView];
     }
     
-    if(imageUrl!=nil && _post.tempImage==nil /**added**/ && _post.finalImage!=nil)
+    //This happens only when the image is not fetched or is save in cache.
+    if(imageUrl!=nil && _post.tempImage==nil)
     {
-        // Here we use the new provided setImageWithURL: method to load the web image
-        //TODO: Removed for now.
-        //[self.postImage setImageWithURL:url placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
-        //New approach.
-        [_postImageView setImage:_post.finalImage];
-        [_activityIndicator stopAnimating];
-
-        
-        //[self setPostOnline:YES];
+        // Look in database and request for the image.
+        DDLogDebug(@"Hey I am in stop");
+        [[GLPPostImageLoader sharedInstance] findImageWithUrl:imageUrl callback:^(UIImage *image, BOOL found) {
+            
+            if (found)
+            {
+                DDLogDebug(@"Image found YES");
+                [_postImageView setImage:image];
+                [_activityIndicator stopAnimating];
+            }
+            
+        }];
     }
+    //This now is used ONLY when the image is fetched for the first time.
+//    else if(imageUrl!=nil && _post.tempImage==nil && _post.finalImage!=nil)
+//    {
+//        DDLogDebug(@"THIS SHOULD NOT BE USED ANYMORE");
+//        
+//        [_postImageView setImage:_post.finalImage];
+//        
+//        [_activityIndicator stopAnimating];
+//    }
     else if(_post.tempImage != nil)
     {
         //Set live image.

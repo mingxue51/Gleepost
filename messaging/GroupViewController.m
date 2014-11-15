@@ -527,19 +527,15 @@ const float TOP_OFF_SET = -64.0;
     [self reloadNewVideoPost:inPost];
 }
 
+
 -(void)updateRealImage:(NSNotification *)notification
 {
-    GLPPost *currentPost = nil;
+    NSInteger index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
     
-    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    
-    
-    FLog(@"GroupViewController : updateRealImage notification: %@ and index: %d", notification, index);
-
-    if(currentPost /**&& !_enterDealloc*/)
+    if(index != -1)
     {
         FLog(@"Refresh cell with index: %d Group name %@", index, self.group.name);
-        
+
         [self refreshCellViewWithIndex:index+1];
     }
 }

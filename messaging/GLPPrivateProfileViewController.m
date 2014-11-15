@@ -494,25 +494,10 @@
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-//    GLPPost *currentPost = nil;
-//    
-//    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-//    
-//    if(currentPost)
-//    {
-//        //TODO: Removed.
-////        [self.tableView reloadData];
-//        
-//        DDLogDebug(@"Updated post index: %d", index);
-//    }
     
+    NSInteger index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
     
-    GLPPost *currentPost = nil;
-    
-    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    
-    
-    if(currentPost)
+    if(index != -1)
     {
         [self refreshCellViewWithIndex:index+1];
     }

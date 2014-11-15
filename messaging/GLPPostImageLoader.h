@@ -16,5 +16,6 @@
 
 - (void)addPostsImages:(NSArray *)posts /*fromCampusLive:(BOOL)fromCampusLive*/;
 
+- (void)findImageWithUrl:(NSURL *)url callback:(void (^) (UIImage* image, BOOL found))callback;
 
 @end

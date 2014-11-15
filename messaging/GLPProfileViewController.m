@@ -405,12 +405,12 @@
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    GLPPost *currentPost = nil;
     
-    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    
-    
-    if(currentPost)
+//    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
+    NSInteger index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
+
+
+    if(index != -1)
     {
         //Find in which index the post exist and refresh it.
         if(_selectedTab == kButtonLeft)
