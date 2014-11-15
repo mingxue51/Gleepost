@@ -2879,7 +2879,7 @@
                                         <rect key="frame" x="9" y="230" width="280" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
-                                        <state key="normal" title="I'm verified, let me in!" backgroundImage="login_button.png">
+                                        <state key="normal" title="I'm verified, let me in!" backgroundImage="login_button_blue.png">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </state>
@@ -4952,7 +4952,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Gleepost_mai" width="600" height="80"/>
+        <image name="Gleepost_mai" width="640" height="1135"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
@@ -4998,7 +4998,6 @@
         <image name="locker_private_group.png" width="211" height="242"/>
         <image name="login-button.png" width="442" height="98"/>
         <image name="login_bg.png" width="640" height="1136"/>
-        <image name="login_button.png" width="570" height="100"/>
         <image name="login_button_blue.png" width="570" height="100"/>
         <image name="login_checkbox_unchecked" width="24" height="24"/>
         <image name="login_separator_line.png" width="570" height="3"/>
@@ -5054,23 +5053,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="woK-8Q-gjw"/>
-        <segue reference="ZVe-rT-wgG"/>
-        <segue reference="aP2-oN-YHg"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="pjB-B1-HWm"/>
+        <segue reference="GTC-XV-iI1"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="icH-IF-qcr"/>
+        <segue reference="ZVe-rT-wgG"/>
+        <segue reference="woK-8Q-gjw"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="pjB-B1-HWm"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="bx4-ky-xRT"/>
+        <segue reference="Ze9-pm-FNm"/>
         <segue reference="voh-a1-0cl"/>
         <segue reference="y0w-oH-XXi"/>
-        <segue reference="bx4-ky-xRT"/>
-        <segue reference="cxq-Lw-xeo"/>
-        <segue reference="Ze9-pm-FNm"/>
-        <segue reference="c6M-82-Pnp"/>
-        <segue reference="XA6-SN-ZTj"/>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="PMB-JP-q3M"/>
         <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

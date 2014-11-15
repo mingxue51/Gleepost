@@ -3070,6 +3070,13 @@ const float TOP_OFFSET = 180.0f;
     return NO;
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    
+    DDLogError(@"GLPTimelineViewController : didReceiveMemoryWarning");
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     
