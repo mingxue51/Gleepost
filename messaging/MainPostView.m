@@ -25,6 +25,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPImageHelper.h"
 #import "GLPPostImageLoader.h"
+#import "GLPImageHelper.h"
 
 @interface MainPostView ()
 
@@ -513,7 +514,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     
     
-    [_postImageView setImage:nil];
+    [_postImageView setImage:[GLPImageHelper placeholderLiveEventImage]];
+    
+    
 
     //This happens only when the image is not fetched or is save in cache.
     if(imageUrl!=nil && _post.tempImage==nil)
@@ -527,12 +530,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
                 DDLogDebug(@"Image found YES current image url %@ real url %@", imageUrl, _post.imagesUrls[0]);
                 
                 if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
-                {
+                {                    
                     [_postImageView setImage:image];
                     [_activityIndicator stopAnimating];
                 }
                 else
                 {
+                    DDLogDebug(@"Image not the same, abord");
                     [_postImageView setImage:nil];
                 }
                 
