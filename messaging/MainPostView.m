@@ -512,6 +512,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self hideVideoView];
     }
     
+    
+    [_postImageView setImage:nil];
+
     //This happens only when the image is not fetched or is save in cache.
     if(imageUrl!=nil && _post.tempImage==nil)
     {
@@ -521,9 +524,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
             
             if (found)
             {
-                DDLogDebug(@"Image found YES");
-                [_postImageView setImage:image];
-                [_activityIndicator stopAnimating];
+                DDLogDebug(@"Image found YES current image url %@ real url %@", imageUrl, _post.imagesUrls[0]);
+                
+                if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
+                {
+                    [_postImageView setImage:image];
+                    [_activityIndicator stopAnimating];
+                }
+                else
+                {
+                    [_postImageView setImage:nil];
+                }
+                
+
             }
             
         }];
@@ -546,7 +559,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else if(_post.finalImage==nil && !self.mediaNeedsToReload)
     {
-        [_postImageView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil]];
+        DDLogDebug(@"Image view should be nil");
+        
+//        [_postImageView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil]];
+        
+        [_postImageView setImage:nil];
         
         [_activityIndicator startAnimating];
 
