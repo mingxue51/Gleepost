@@ -15,6 +15,7 @@
 #import "GroupOperationManager.h"
 #import "GLPPostDao.h"
 #import "CategoryManager.h"
+#import "GLPPostManager.h"
 
 @implementation GLPGroupManager
 
@@ -201,11 +202,15 @@
        
         if(success)
         {
-            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
-
-            [GLPPostDao saveGroupPosts:posts withGroupRemoteKey:groupId];
-            
-            remoteCallback(YES, remains, posts);
+            [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
+               
+                BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+                
+                [GLPPostDao saveGroupPosts:posts withGroupRemoteKey:groupId];
+                
+                remoteCallback(YES, remains, posts);
+                
+            }];
         }
         else
         {

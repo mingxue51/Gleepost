@@ -35,7 +35,7 @@
 
 - (void)configureDataInElements
 {
-    [super setTitleWithText:@"Creat!\nYou're now on the g-list!"];
+    [super setTitleWithText:@"Great!\nYou're now on the g-list!"];
 }
 
 //- (void)configureGestures
