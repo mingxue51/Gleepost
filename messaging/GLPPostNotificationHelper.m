@@ -214,7 +214,33 @@
 
 + (NSInteger)findPostIndexWithRemoteKey:(NSInteger)remoteKey inPosts:(NSArray *)posts
 {
-    NSInteger index = 0;
+    NSInteger index = -1;
+    
+//    [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//       
+//        GLPPost *currentPost = (GLPPost *)obj;
+//        
+//        if(currentPost.remoteKey == remoteKey)
+//        {
+//            index = idx;
+//            *stop = YES;
+//        }
+//
+//    }];
+    
+//    [posts enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//       
+//        GLPPost *currentPost = (GLPPost *)obj;
+//        
+//        if(currentPost.remoteKey == remoteKey)
+//        {
+//            index = idx;
+//            *stop = YES;
+//        }
+//
+//    }];
+//    
+//    return index;
     
     for(GLPPost *p in posts)
     {

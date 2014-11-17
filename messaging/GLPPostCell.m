@@ -85,19 +85,25 @@ const float ONE_LINE_LIMIT = 18.0;
     
     [self configureTopView];
 
-    //Set elements to top view.
-    [_topView setElementsWithPost:_post];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
     
-    [_topView setMainPostView:_mainView];
+            //Set elements to top view.
+            [_topView setElementsWithPost:_post];
     
-    [_topView setDelegate:self];
+            [_topView setMainPostView:_mainView];
+    
+            [_topView setDelegate:self];
+    
+            [_mainView setDelegate:self];
+            
+            [_mainView setMediaNeedsToReload:_mediaNeedsToReload];
+            
+            //Set elements to main view.
+            [_mainView setElementsWithPost:post withViewPost:_isViewPost];
+    
 
-    [_mainView setDelegate:self];
-    
-    [_mainView setMediaNeedsToReload:_mediaNeedsToReload];
-    
-    //Set elements to main view.
-    [_mainView setElementsWithPost:post withViewPost:_isViewPost];
     
 
     //[ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0f];
@@ -120,10 +126,21 @@ const float ONE_LINE_LIMIT = 18.0;
  */
 -(void)setNewPositions
 {
-    CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost cellType:[self findCellType]];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost cellType:[self findCellType]];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
+
+        });
+        
+        
+    });
     
 //    [_mainView setNewHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
-    [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
 
 }
 

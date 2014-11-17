@@ -479,18 +479,24 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    NSInteger index = -1;
-
-    //        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
     
-    
-    if(index != -1)
-    {
-        DDLogDebug(@"Index to be refreshed %d", index);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-        [self refreshCellViewWithIndex:index];
-    }
+        NSInteger index = -1;
+        
+        //        index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
+        index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
+        
+        
+        if(index != -1)
+        {
+            DDLogDebug(@"Index to be refreshed %ld", (long)index);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshCellViewWithIndex:index];
+            });
+        }
+        
+    });
 }
 
 -(void)updateLikedPost:(NSNotification*)notification
@@ -1815,7 +1821,7 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
+//    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
 
     if(decelerate == 0)
     {
@@ -1831,7 +1837,7 @@ const float TOP_OFFSET = 180.0f;
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
-        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+//        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
 
         
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];

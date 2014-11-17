@@ -386,7 +386,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         }
         else
         {
-            DDLogDebug(@"Distance between title and clock view %f", _distanceBetweenTitleAndClockView.constant);
             _distanceBetweenTitleAndClockView.constant = 3;
         }
         
@@ -528,22 +527,24 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
             {
                 DDLogDebug(@"Image found YES current image url %@ title %@", imageUrl, _post.eventTitle);
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
 
                     if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
                     {
-                        [_postImageView setImage:image];
-                        [_activityIndicator stopAnimating];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+
+                            [_postImageView setImage:image];
+                            [_activityIndicator stopAnimating];
+                            
+                        });
                     }
                     else
                     {
-                        DDLogDebug(@"Image not the same, abord");
-                        [_postImageView setImage:nil];
-                    }
-                    
-                });
-                
+                        dispatch_async(dispatch_get_main_queue(), ^{
 
+                            DDLogDebug(@"Image not the same, abord");
+                            [_postImageView setImage:nil];
+                        });
+                    }
             }
             
         }];

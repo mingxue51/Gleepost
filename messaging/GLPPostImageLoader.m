@@ -252,7 +252,15 @@ static GLPPostImageLoader *instance = nil;
         NSURL *imageUrl = [NSURL URLWithString:urlStr];
         
         
-        NSData *data = [NSData dataWithContentsOfURL:imageUrl];
+//        NSData *data = [NSData dataWithContentsOfURL:imageUrl];
+        NSURLRequest *request = [NSURLRequest requestWithURL:imageUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:600.0];
+        
+        NSURLResponse *response = [NSURLResponse new];
+        NSError *error = [NSError new];
+        
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
@@ -276,7 +284,7 @@ static GLPPostImageLoader *instance = nil;
         else
         {
             //TODO: No internet connection or the request timed out. Retry later.
-            FLog(@"GLPPostImageLoader : No network or the request timed out.");
+            FLog(@"GLPPostImageLoader : No network or the request timed out for image url %@ error %@.", imageUrl, error.debugDescription);
             
             break;
         }

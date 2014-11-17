@@ -27,8 +27,6 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *eventTitleLblHeight;
 
-@property (strong, nonatomic) GLPPost *post;
-
 @end
 
 @implementation TopPostView
@@ -53,17 +51,25 @@ const float ONE_LINE_HEIGHT = 20;
 {
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0f];
     
-    _post = post;
-    
-    float height = [TopPostView getContentLabelSizeForContent:post.eventTitle];
-    
-    [_eventTitleLblHeight setConstant:height];
-    
-    [_eventTitleLbl setText:post.eventTitle];
-    
-    [self setEventTimeWithTime:post.dateEventStarts];
-    
-    [self configureLocationElementsWithPost:post];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        float height = [TopPostView getContentLabelSizeForContent:post.eventTitle];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            
+            [_eventTitleLblHeight setConstant:height];
+            
+            [_eventTitleLbl setText:post.eventTitle];
+            
+            [self setEventTimeWithTime:post.dateEventStarts];
+            
+            [self configureLocationElementsWithPost:post];
+        });
+        
+        
+    });
+
 }
 
 - (void)configureLocationElementsWithPost:(GLPPost *)post
@@ -138,10 +144,10 @@ const float ONE_LINE_HEIGHT = 20;
 //    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self];
 }
 
--(BOOL)isCurrentPostBelongsToCurrentUser
-{
-    return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
-}
+//-(BOOL)isCurrentPostBelongsToCurrentUser
+//{
+//    return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
+//}
 
 #pragma mark - Label size
 
