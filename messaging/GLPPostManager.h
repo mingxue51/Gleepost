@@ -34,5 +34,6 @@
 + (GLPPost *)setFakeKeyToPost:(GLPPost *)post;
 + (void)updatePostAttending:(GLPPost*)post;
 +(void)deletePostWithPost:(GLPPost *)post;
++(void)addAttendingToEventPosts:(NSArray *)posts callback:(void (^) (BOOL success, NSArray* posts))callback;
 
 @end
