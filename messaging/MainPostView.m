@@ -472,10 +472,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         return (basicValue - factor);
     }
 
-    
     return basicValue;
-    
-    
 }
 
 - (void)setMediaNeedsToReload:(BOOL)imageNeedsToReload
@@ -512,9 +509,22 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self hideVideoView];
     }
     
+    if(self.isViewPost && _postImageView.image != nil)
+    {
+        [_activityIndicator stopAnimating];
+        return;
+    }
     
-    [_postImageView setImage:[GLPImageHelper placeholderLiveEventImage]];
+    if(_postImageView.image != nil && self.post.remoteKey == _postImageView.tag)
+        
+    {
+        [_activityIndicator stopAnimating];
+        return;
+    }
     
+    _postImageView.tag = self.post.remoteKey;
+    
+    [_postImageView setImage:nil];
     
 
     //This happens only when the image is not fetched or is save in cache.
@@ -1014,6 +1024,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self makeButtonSelected];
         [self notifyViewPostAfterGoingPressed];
     }
+    
+    if(self.viewPost)
+    {
+        [self notifyToRefreshThePostInCampusWall];
+    }
 }
 
 -(IBAction)moreOptions:(id)sender
@@ -1052,6 +1067,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post":_post}];
+}
+
+- (void)notifyToRefreshThePostInCampusWall
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPPostUpdated" object:self userInfo:@{@"RemoteKey":@(_post.remoteKey)}];
+
 }
 
 #pragma mark - Client

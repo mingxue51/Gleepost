@@ -214,7 +214,7 @@
 
 + (NSInteger)findPostIndexWithRemoteKey:(NSInteger)remoteKey inPosts:(NSArray *)posts
 {
-    NSInteger index = -1;
+    NSInteger index = 0;
     
 //    [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 //       

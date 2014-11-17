@@ -144,11 +144,21 @@
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LLM-rG-GAs" customClass="VideoView">
                                 <rect key="frame" x="1" y="5" width="298" height="305"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jd2-ka-kpE">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jd2-ka-kpE">
+                                        <rect key="frame" x="0.0" y="0.0" width="298" height="305"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="305" id="7z6-iQ-Fm9"/>
+                                            <constraint firstAttribute="width" constant="298" id="EHM-cQ-fCD"/>
+                                        </constraints>
                                     </view>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TuI-Ve-7dk" userLabel="Thumpnail Image View">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TuI-Ve-7dk" userLabel="Thumpnail Image View">
+                                        <rect key="frame" x="0.0" y="0.0" width="298" height="305"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="298" id="yvx-lm-L8F"/>
+                                            <constraint firstAttribute="height" constant="305" id="zky-fM-K4f"/>
+                                        </constraints>
                                     </imageView>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PWB-ss-HrT">
                                         <rect key="frame" x="131" y="143" width="37" height="37"/>
@@ -168,6 +178,10 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="305" id="MnM-bY-p2g"/>
+                                    <constraint firstAttribute="width" constant="298" id="q3Z-2K-0XO"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="loadingIndicatorView" destination="PWB-ss-HrT" id="zf2-sn-Qz1"/>
                                     <outlet property="playButton" destination="rb0-M2-uUE" id="zEN-jj-4tX"/>
@@ -342,9 +356,6 @@
                                     <constraint firstItem="V0l-lX-nm9" firstAttribute="top" secondItem="dhI-EZ-yh1" secondAttribute="top" id="vXB-PP-0lE"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T7Q-9J-oka">
-                                <rect key="frame" x="58" y="47" width="22" height="45"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -362,7 +373,6 @@
                             <outlet property="contentLbl" destination="Rvv-XG-fjZ" id="TxQ-VK-gUP"/>
                             <outlet property="distanceFromTop" destination="B5y-Ak-BzZ" id="ELf-C6-Bp4"/>
                             <outlet property="goingBtn" destination="EeF-kn-mHb" id="sog-8m-ncC"/>
-                            <outlet property="indicatorImageView" destination="T7Q-9J-oka" id="Imd-QC-TJo"/>
                             <outlet property="likeBtn" destination="gBB-WE-Jqk" id="d5Y-jn-8FS"/>
                             <outlet property="likesLbl" destination="I2a-Lq-hHs" id="W9y-eo-vdg"/>
                             <outlet property="mainViewHeight" destination="1vf-rj-c0O" id="hug-q8-1gF"/>

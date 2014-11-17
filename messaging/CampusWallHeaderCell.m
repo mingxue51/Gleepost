@@ -21,6 +21,7 @@
 #import "UIImage+Alpha.h"
 #import "GLPVideo.h"
 #import "GLPImageHelper.h"
+#import "GLPPostImageLoader.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -37,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet EventBarView *eventBarView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelWidth;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *imageActivityIndicatior;
 
 @end
 
@@ -111,26 +113,30 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 -(void)setDataInElements:(GLPPost *)postData
 {
+    [_eventImage setImage:nil];
+    [_imageActivityIndicatior setHidden:NO];
+    [_imageActivityIndicatior startAnimating];
     
-    NSURL *imgUrl = nil;
-    
-    if(postData.imagesUrls)
+    if(postData.imagesUrls && postData.imagesUrls.count > 0)
     {
-       imgUrl = [NSURL URLWithString:postData.imagesUrls[0]];
         
-        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:(SDWebImageRetryFailed | SDWebImageHighPriority) progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        [self setImageWithUrl:postData.imagesUrls];
         
-            FLog(@"Post title %@ in CL image %ld out of %ld", postData.eventTitle, receivedSize, expectedSize);
-
-            
-        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
-            if(error)
-            {
-                FLog(@"ERROR: Post with title %@ -> %@", postData.eventTitle, error);
-            }
         
-        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:(SDWebImageRetryFailed | SDWebImageHighPriority) progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//        
+//            FLog(@"Post title %@ in CL image %ld out of %ld", postData.eventTitle, receivedSize, expectedSize);
+//
+//            
+//        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//        
+//            if(error)
+//            {
+//                FLog(@"ERROR: Post with title %@ -> %@", postData.eventTitle, error);
+//            }
+//        
+//        } usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
         //Set post's image.
 //        [_eventImage setImageWithURL:imgUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -140,10 +146,12 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     else if([postData isVideoPost])
     {
         [self loadThumbnail];
+        [_imageActivityIndicatior stopAnimating];
     }
     else
     {
         [_eventImage setImage:[GLPImageHelper placeholderLiveEventImage]];
+        [_imageActivityIndicatior stopAnimating];
     }
     
     
@@ -175,9 +183,74 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
     }
 }
 
+- (void)setImageWithUrl:(NSArray *)images
+{
+    NSURL *imgUrl = nil;
+
+    imgUrl = [NSURL URLWithString:images[0]];
+    
+    // Look in cache and request for the image.
+    [[GLPPostImageLoader sharedInstance] findImageWithUrl:imgUrl callback:^(UIImage *image, BOOL found) {
+        
+        if(found)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [_eventImage setImage:image];
+                [_imageActivityIndicatior stopAnimating];
+                
+                DDLogDebug(@"Image loaded from cache %@", imgUrl);
+                
+            });
+        }
+        else
+        {
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+                //Load image.
+                
+                NSURLRequest *request = [NSURLRequest requestWithURL:imgUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:600.0];
+                
+                NSURLResponse *response = [NSURLResponse new];
+                NSError *error = [NSError new];
+                
+                NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+                
+                
+                UIImage *img = [[UIImage alloc] initWithData:data];
+                
+                
+                DDLogDebug(@"Image loaded from server %@ Image %@", imgUrl, img);
+
+                
+
+                
+                if(img)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [_eventImage setImage:img];
+                        [_imageActivityIndicatior stopAnimating];
+                        
+                    });
+                    
+                    //Save image with image url.
+                    [[SDImageCache sharedImageCache] storeImage:img forKey:imgUrl.absoluteString];
+                }
+                
+
+                
+            });
+        }
+        
+    }];
+
+}
+
 - (void)loadThumbnail
 {
-    [_eventImage setImageWithURL:[NSURL URLWithString: _postData.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed];
+    [_eventImage sd_setImageWithURL:[NSURL URLWithString: _postData.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed];
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

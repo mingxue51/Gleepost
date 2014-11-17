@@ -210,18 +210,17 @@ const float TOP_OFFSET = 180.0f;
     
     [self configAppearance];
     
+    [self configureRefreshControl];
+    
     [self configNavigationBar];
     
     [self showNetworkErrorViewIfNeeded];
-    
     
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [self configureRefreshControl];
     
     [self configureGoingButtonNotification];
     
@@ -1111,13 +1110,12 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)loadEarlierPostsFromPullToRefresh
 {
-    
-    
     [self loadEarlierPostsAndSaveScrollingState:NO];
     
     
-    //Load campus live events posts.
-    [_campusWallHeader reloadData];
+//    //Load campus live events posts.
+//    [_campusWallHeader reloadData];
+
 }
 
 - (void)loadEarlierPostsFromCron
@@ -1157,7 +1155,14 @@ const float TOP_OFFSET = 180.0f;
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
-
+        
+        if(!saveScrollingState)
+        {
+            //Load campus live events posts.
+            [_campusWallHeader reloadData];
+        }
+        
+        
         if(!success) {
 //            [self showLoadingError:@"Failed to load new posts"];
             

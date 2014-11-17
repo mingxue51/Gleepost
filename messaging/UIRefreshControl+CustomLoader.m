@@ -50,17 +50,23 @@
     
     [self addSubview:subView];
     
-    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(132, 56, 56, 100)];
+//    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(132, 56, 56, 100)];
+    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1000)];
+
     
     [margingImage setBackgroundColor:[UIColor whiteColor]];
     
     [self addSubview:margingImage];
     
-//    [self insertSubview:subView atIndex:0];
-//    
-//    [self insertSubview:subView atIndex:1];
-//    
-//    [self insertSubview:subView atIndex:2];
+    [self sendSubviewToBack:margingImage];
+    
+    [self insertSubview:margingImage atIndex:0];
+    
+    [self insertSubview:margingImage atIndex:1];
+    
+    [self insertSubview:margingImage atIndex:2];
+    
+    [self bringSubviewToFront:subView];
 }
 
 - (void)configureActivityInidicator

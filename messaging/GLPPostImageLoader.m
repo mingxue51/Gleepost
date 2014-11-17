@@ -264,8 +264,6 @@ static GLPPostImageLoader *instance = nil;
         UIImage *img = [[UIImage alloc] initWithData:data];
         
         
-//        DDLogDebug(@"Image ready: %@", img);
-        
         
         
         if(img)
@@ -276,6 +274,7 @@ static GLPPostImageLoader *instance = nil;
             
             //Notify GLPTimelineViewController after finish.
 //            [self notifyCampusWallWithRemoteKey:remoteKey andImage:img];
+            
             [self notifyViewControllerToRefreshCellWithRemoteKey:remoteKey];
             
             //Delete the entry from the queue.
@@ -296,6 +295,9 @@ static GLPPostImageLoader *instance = nil;
 
 - (void)notifyViewControllerToRefreshCellWithRemoteKey:(NSNumber *)remoteKey
 {
+    DDLogDebug(@"notifyViewControllerToRefreshCellWithRemoteKeyRemote key image: %@", remoteKey);
+
+    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey}];
 }
 

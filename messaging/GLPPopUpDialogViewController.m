@@ -12,7 +12,7 @@
 
 @interface GLPPopUpDialogViewController ()
 
-@property (strong, nonatomic) UIImage *topImage;
+//@property (strong, nonatomic) UIImage *topImage;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 
 @end
@@ -48,7 +48,7 @@
 {
     _centralView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
     
-    [_topImageView setImage:_topImage];
+//    [_topImageView setImage:_topImage];
 }
 
 - (void)formatView
@@ -79,7 +79,9 @@
 
 - (void)setTopImage:(UIImage *)image
 {
-    _topImage = [self blurImage:image];
+    DDLogDebug(@"setTopImage %@", image);
+    
+    [self blurImage:image];
 }
 
 - (void)setTitleWithText:(NSString *)title
@@ -96,28 +98,32 @@
 
 #pragma mark - Editors
 
-- (UIImage *)blurImage:(UIImage *)image
+- (void)blurImage:(UIImage *)image
 {
-    GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:image];
-    
-    GPUImageGaussianSelectiveBlurFilter *stillImageFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
-    
-    [stillImageSource addTarget:stillImageFilter];
-    stillImageFilter.excludeBlurSize = 0.0;
-    stillImageFilter.excludeCircleRadius = 0.0;
-    stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
-    [stillImageFilter useNextFrameForImageCapture];
-    [stillImageSource processImage];
-    
-    
-    UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
-    
-    _topImage = currentFilteredVideoFrame;
-    
-    [_topImageView setImage:_topImage];
-    
-    
-    return currentFilteredVideoFrame;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:image];
+        
+        GPUImageGaussianSelectiveBlurFilter *stillImageFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
+        
+        [stillImageSource addTarget:stillImageFilter];
+        stillImageFilter.excludeBlurSize = 0.0;
+        stillImageFilter.excludeCircleRadius = 0.0;
+        stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
+        [stillImageFilter useNextFrameForImageCapture];
+        [stillImageSource processImage];
+        
+        
+        UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+        
+            [_topImageView setImage:currentFilteredVideoFrame];
+
+       });
+        
+    });
 }
 
 - (void)didReceiveMemoryWarning {
