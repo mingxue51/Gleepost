@@ -3386,6 +3386,10 @@
                                     <action selector="signIn:" destination="VkE-JQ-Qjz" eventType="touchUpInside" id="9lQ-FV-gF3"/>
                                 </connections>
                             </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nerdnation_text.png" id="cgc-Nf-YAj">
+                                <rect key="frame" x="91" y="139" width="139" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mhq-RG-gMe">
                                 <rect key="frame" x="30" y="326" width="260" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -3398,14 +3402,10 @@
                                     <action selector="facebookLogin:" destination="VkE-JQ-Qjz" eventType="touchUpInside" id="3g9-Dt-SgO"/>
                                 </connections>
                             </button>
-                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nerdnation_tree.png" id="5kk-tC-GA6">
-                                <rect key="frame" x="32" y="31" width="257" height="144"/>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gleepost_login_logo.png" id="5kk-tC-GA6">
+                                <rect key="frame" x="49" y="100" width="222" height="69"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nerdnation_text.png" id="cgc-Nf-YAj">
-                                <rect key="frame" x="91" y="183" width="139" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -4979,6 +4979,7 @@
         <image name="dismiss_button_background.png" width="520" height="100"/>
         <image name="down_arrow.png" width="23" height="14"/>
         <image name="fb_login_bg.png" width="520" height="100"/>
+        <image name="gleepost_login_logo.png" width="862" height="292"/>
         <image name="go_to_preview.png" width="121" height="54"/>
         <image name="hoovertall.png" width="388" height="1137"/>
         <image name="id-card-7.png" width="17" height="21"/>
@@ -5009,7 +5010,6 @@
         <image name="message_cell_error.png" width="13" height="17"/>
         <image name="my_location.png" width="105" height="109"/>
         <image name="nerdnation_text.png" width="266" height="43"/>
-        <image name="nerdnation_tree.png" width="205" height="251"/>
         <image name="next_button_bg.png" width="588" height="136"/>
         <image name="notificationicon.png" width="70" height="70"/>
         <image name="pad_icon_pop_up.png" width="128" height="128"/>
@@ -5053,9 +5053,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="pjB-B1-HWm"/>
-        <segue reference="GTC-XV-iI1"/>
+        <segue reference="Bj7-0B-AKW"/>
+        <segue reference="aP2-oN-YHg"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="icH-IF-qcr"/>
         <segue reference="ZVe-rT-wgG"/>
@@ -5063,13 +5062,14 @@
         <segue reference="PMB-JP-q3M"/>
         <segue reference="NSy-Xb-H1O"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="c6M-82-Pnp"/>
+        <segue reference="pjB-B1-HWm"/>
+        <segue reference="y0w-oH-XXi"/>
         <segue reference="cxq-Lw-xeo"/>
         <segue reference="bx4-ky-xRT"/>
         <segue reference="Ze9-pm-FNm"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="XA6-SN-ZTj"/>
         <segue reference="voh-a1-0cl"/>
-        <segue reference="y0w-oH-XXi"/>
         <segue reference="YIa-ii-tw7"/>
-        <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

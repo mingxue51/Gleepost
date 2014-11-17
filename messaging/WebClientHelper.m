@@ -1,9 +1,9 @@
 //
 //  WebClientHelper.m
-//  NerdNation
+//  Gleepost
 //
 //  Created by Lukas on 10/9/13.
-//  Copyright (c) 2013 NerdNation. All rights reserved.
+//  Copyright (c) 2013 Gleepost. All rights reserved.
 //
 
 #import "WebClientHelper.h"
@@ -260,7 +260,7 @@
 
 + (void)showErrorPermissionsToCalendar
 {
-    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"NerdNation needs permissions to save that event to your Calendar. Please check your settings and try again."];
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"Gleepost needs permissions to save that event to your Calendar. Please check your settings and try again."];
 }
 
 @end
