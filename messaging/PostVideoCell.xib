@@ -36,27 +36,27 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SF9-UJ-Z4l">
-                                        <rect key="frame" x="29" y="0.0" width="111" height="22"/>
+                                        <rect key="frame" x="29" y="0.0" width="122" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="c3C-gV-t62"/>
-                                            <constraint firstAttribute="width" constant="111" id="jb4-Hi-lyD"/>
+                                            <constraint firstAttribute="width" constant="122" id="jb4-Hi-lyD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.70588235290000001" green="0.70588235290000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="location_blue_pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="DEZ-Bq-ZJs">
-                                        <rect key="frame" x="160" y="4" width="18" height="15"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="location_blue_pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="DEZ-Bq-ZJs">
+                                        <rect key="frame" x="155" y="4" width="18" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="IgA-vE-brV"/>
                                             <constraint firstAttribute="width" constant="18" id="KMF-PU-kPi"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UxB-TG-utQ">
-                                        <rect key="frame" x="180" y="3" width="110" height="18"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UxB-TG-utQ">
+                                        <rect key="frame" x="175" y="3" width="115" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Y2g-4s-N7R"/>
-                                            <constraint firstAttribute="width" constant="110" id="e17-7e-6ez"/>
+                                            <constraint firstAttribute="width" constant="115" id="e17-7e-6ez"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="Button">
@@ -145,11 +145,9 @@
                                 <rect key="frame" x="1" y="5" width="298" height="305"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jd2-ka-kpE">
-                                        <rect key="frame" x="0.0" y="0.0" width="298" height="305"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TuI-Ve-7dk" userLabel="Thumpnail Image View">
-                                        <rect key="frame" x="0.0" y="0.0" width="298" height="305"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </imageView>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="PWB-ss-HrT">
@@ -345,7 +343,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T7Q-9J-oka">
-                                <rect key="frame" x="280" y="350" width="10" height="10"/>
+                                <rect key="frame" x="58" y="47" width="22" height="45"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

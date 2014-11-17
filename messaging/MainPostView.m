@@ -382,7 +382,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         if([TopPostView isTitleTextOneLineOfCodeWithContent:_post.eventTitle])
         {
             backgroundImageViewHeight -= 15.0f;
-            _distanceBetweenTitleAndClockView.constant = 10;
+            _distanceBetweenTitleAndClockView.constant = 5;
         }
         else
         {
@@ -521,24 +521,27 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     //This happens only when the image is not fetched or is save in cache.
     if(imageUrl!=nil && _post.tempImage==nil)
     {
-        // Look in database and request for the image.
-        DDLogDebug(@"Hey I am in stop");
+        // Look in cache and request for the image.
         [[GLPPostImageLoader sharedInstance] findImageWithUrl:imageUrl callback:^(UIImage *image, BOOL found) {
             
             if (found)
             {
-                DDLogDebug(@"Image found YES current image url %@ real url %@", imageUrl, _post.imagesUrls[0]);
+                DDLogDebug(@"Image found YES current image url %@ title %@", imageUrl, _post.eventTitle);
                 
-                if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
-                {                    
-                    [_postImageView setImage:image];
-                    [_activityIndicator stopAnimating];
-                }
-                else
-                {
-                    DDLogDebug(@"Image not the same, abord");
-                    [_postImageView setImage:nil];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+
+                    if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
+                    {
+                        [_postImageView setImage:image];
+                        [_activityIndicator stopAnimating];
+                    }
+                    else
+                    {
+                        DDLogDebug(@"Image not the same, abord");
+                        [_postImageView setImage:nil];
+                    }
+                    
+                });
                 
 
             }

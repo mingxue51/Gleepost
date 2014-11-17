@@ -29,7 +29,7 @@
                                 <rect key="frame" x="0.0" y="28" width="298" height="33"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sn3-A6-KTz">
-                                        <rect key="frame" x="180" y="3" width="110" height="18"/>
+                                        <rect key="frame" x="175" y="3" width="115" height="18"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="Button">
                                             <color key="titleColor" red="0.28235294117647058" green="0.64313725490196072" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
@@ -39,8 +39,8 @@
                                             <action selector="showLocation:" destination="eJM-2L-W3q" eventType="touchUpInside" id="Ol6-Ss-Omo"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GLOBAL g" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCr-X2-nFh">
-                                        <rect key="frame" x="29" y="2" width="111" height="18"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tomorrow @ 10pm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qCr-X2-nFh">
+                                        <rect key="frame" x="29" y="2" width="122" height="18"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.70588235290000001" green="0.70588235290000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -52,7 +52,7 @@
                                         <rect key="frame" x="30" y="32" width="240" height="1"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="location_blue_pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="Mb0-aG-CnH">
-                                        <rect key="frame" x="160" y="4" width="18" height="15"/>
+                                        <rect key="frame" x="155" y="4" width="18" height="15"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

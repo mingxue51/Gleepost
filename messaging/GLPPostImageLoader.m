@@ -267,8 +267,9 @@ static GLPPostImageLoader *instance = nil;
 
             
             //Notify GLPTimelineViewController after finish.
-            [self notifyCampusWallWithRemoteKey:remoteKey andImage:img];
-                        
+//            [self notifyCampusWallWithRemoteKey:remoteKey andImage:img];
+            [self notifyViewControllerToRefreshCellWithRemoteKey:remoteKey];
+            
             //Delete the entry from the queue.
             [self.loadingImages removeObjectForKey:remoteKey];
         }
