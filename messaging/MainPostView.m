@@ -520,6 +520,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     //This happens only when the image is not fetched or is save in cache.
     if(imageUrl!=nil && _post.tempImage==nil)
     {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+        
+        
         // Look in cache and request for the image.
         [[GLPPostImageLoader sharedInstance] findImageWithUrl:imageUrl callback:^(UIImage *image, BOOL found) {
             
@@ -548,6 +552,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
             }
             
         }];
+            
+            });
     }
     //This now is used ONLY when the image is fetched for the first time.
 //    else if(imageUrl!=nil && _post.tempImage==nil && _post.finalImage!=nil)
