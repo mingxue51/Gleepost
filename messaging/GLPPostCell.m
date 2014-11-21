@@ -127,16 +127,16 @@ const float ONE_LINE_LIMIT = 18.0;
 -(void)setNewPositions
 {
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    
         CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost cellType:[self findCellType]];
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+    
             [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
 
         });
-        
+    
         
     });
     

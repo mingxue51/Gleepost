@@ -358,7 +358,7 @@
     
     entity.key = [db lastInsertRowId];
     
-//   DDLogDebug(@"Post saved with status: %d and content: %@ location: %@ group: %@", entity.sendStatus, entity.content, entity.location, entity.group);
+   DDLogInfo(@"Post saved with status: %d and content: %@ location: %@ group: %@", entity.sendStatus, entity.content, entity.location, entity.group);
     
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];
@@ -411,7 +411,7 @@
               entity.video.thumbnailUrl,
               -1];
     
-    DDLogDebug(@"Video data replaced (status %d): %d : %@ : post key: %ld", entity.sendStatus, s, entity.video, (long)entity.key);
+//    DDLogDebug(@"Video data replaced (status %d): %d : %@ : post key: %ld", entity.sendStatus, s, entity.video, (long)entity.key);
 }
 
 + (void)insertVideoWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db

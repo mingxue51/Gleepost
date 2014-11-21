@@ -516,7 +516,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     
     if(_postImageView.image != nil && self.post.remoteKey == _postImageView.tag)
-        
     {
         [_activityIndicator stopAnimating];
         return;
@@ -530,7 +529,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     //This happens only when the image is not fetched or is save in cache.
     if(imageUrl!=nil && _post.tempImage==nil)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 
         
         

@@ -133,7 +133,7 @@
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
 
-@property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
+@property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
 
 //@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
 
