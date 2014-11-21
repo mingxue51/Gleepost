@@ -11,7 +11,6 @@
 #import "GLPNewElementsIndicatorView.h"
 #import "ViewImageDelegate.h"
 #import "GLPPostCell.h"
-//TODO: Change that to IntroKindOfNewPostViewController
 
 @interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
 

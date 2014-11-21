@@ -73,12 +73,8 @@
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
-@property (strong, nonatomic) NSMutableArray *usersImages;
-@property (strong, nonatomic) NSMutableArray *postsImages;
-@property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) GLPUser *selectedUser;
-@property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
 @property (strong, nonatomic) NewPostView *postView;
@@ -282,17 +278,9 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)initialiseObjects
 {
-    self.postsHeight = [[NSMutableArray alloc] init];
-    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
-    
-    self.users = [[NSMutableArray alloc] init];
-    
-    
-    self.usersImages = [[NSMutableArray alloc] init];
-    self.postsImages = [[NSMutableArray alloc] init];
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
@@ -531,16 +519,12 @@ const float TOP_OFFSET = 180.0f;
     
     int index = -1;
     
-
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
-    
-    
     
     if(index != -1)
     {
         [self removeTableViewPostWithIndex:index];
     }
-    
 }
 
 #pragma mark - Init config
@@ -577,12 +561,6 @@ const float TOP_OFFSET = 180.0f;
     
 //    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
     UIColor *tabColour = [AppearanceHelper redGleepostColour];
-
-    
-    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
-
-    
-//    self.tabBarController.tabBar.hidden = NO;
     [AppearanceHelper showTabBar:self];
     
     //[[CustomTabBarButtonManager sharedInstance] showItemHidden];
@@ -598,22 +576,9 @@ const float TOP_OFFSET = 180.0f;
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
-
-//    NSArray *items = self.tabBarController.tabBar.items;
-//    UITabBarItem *i = [items objectAtIndex:0];
-//    
-//    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
-    
     [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
     
-    
-//    [self configTabbarFormat];
-
-    
     [self setCustomBackgroundToTableView];
-    
-    //Show temporary top image view.
-//    [_topImageView setHidden:NO];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -625,14 +590,9 @@ const float TOP_OFFSET = 180.0f;
         return;
     }
     
-//    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
-//    
-//    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
-    
     [self.tableView setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
     
     [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-//    [self.tableView setBackgroundView:backImgView];
 }
 
 -(void)configTabbarFormat
@@ -640,74 +600,7 @@ const float TOP_OFFSET = 180.0f;
     
     if([GLPiOSSupportHelper isIOS6])
     {
-        
         return;
-        
-//        [GLPiOS6Helper configureTabbarController:self.tabBarController];
-//        
-//        NSArray *items = self.tabBarController.tabBar.items;
-//        
-//        
-//        UITabBarItem *item = [items objectAtIndex:0];
-//                
-////        item.image = [UIImage imageNamed:@"bird-house-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        self.homeTabbarItem = item;
-//        
-//        
-//        
-//        item = [items objectAtIndex:1];
-//        
-////        item.image = [UIImage imageNamed:@"message-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"message-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-//        
-//        
-//        item = [items objectAtIndex:2];
-//        
-////        item.image = [UIImage imageNamed:@"proximity-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-//        
-//        
-//        item = [items objectAtIndex:3];
-//        
-////        item.image = [UIImage imageNamed:@"man-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"man-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-//        
-//        
-//        item = [items objectAtIndex:4];
-//        
-////        item.image = [UIImage imageNamed:@"id-card-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
     }
     
     // set selected and unselected icons
@@ -836,20 +729,6 @@ const float TOP_OFFSET = 180.0f;
     animatedImageView.animationRepeatCount = 10;
     [animatedImageView startAnimating];
     */
-    
-//    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(130, -2, 56, 56)];
-//    
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
-//    
-//    NSData *gifData = [NSData dataWithContentsOfFile: filePath];
-//    
-//    [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
-//    
-//    [self.refreshControl insertSubview:subView atIndex:1];
-//
-//    
-//    [self.refreshControl setBackgroundColor:[UIColor whiteColor]];
-//    [self.refreshControl setTintColor:[UIColor whiteColor]];
 }
 
 -(void)configHeader
@@ -866,8 +745,6 @@ const float TOP_OFFSET = 180.0f;
     self.tableView.tableHeaderView = self.campusWallHeader;
     
     [self.campusWallHeader reloadData];
-    
-   
     [self.navigationController.navigationBar addSubview:[[GLPCampusWallProgressManager sharedInstance] progressView]];
 }
 
@@ -877,7 +754,6 @@ const float TOP_OFFSET = 180.0f;
     self.elementsIndicatorView.hidden = YES;
     self.elementsIndicatorView.center = self.navigationController.view.center;
     CGRectSetY(self.elementsIndicatorView, 80); //TODO: something better than arbitrary value
-    
     [self.navigationController.view addSubview:self.elementsIndicatorView];
 }
 
@@ -886,24 +762,10 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)configNavigationBar
 {
-    
-    //    [AppearanceHelper setNavigationBarColour:self];
-    
-    //    [AppearanceHelper setWhiteNavigationBarFormat:self.navigationController.navigationBar];
-    
-    
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    
-//    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     [self.navigationController.navigationBar setCampusWallFontFormat];
-    
-    
-    //    [AppearanceHelper setNavigationBarFontFor:self];
-    
-    
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    
 }
 
 - (void)addNavigationButtons
@@ -918,29 +780,6 @@ const float TOP_OFFSET = 180.0f;
 //    [_pView resetView];
 //    [_pView setHidden:NO];
 //}
-
-
-/**
- Not used.
- */
--(void) setBackgroundToNavigationBar
-{
-    UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
-    
-    
-    [bar setBackgroundColor:[UIColor clearColor]];
-    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
-    [bar setTranslucent:YES];
-    
-    
-    //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-    
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-    
-    [self.navigationController.navigationBar insertSubview:bar atIndex:0];
-    
-}
 
 /*
  
@@ -1589,24 +1428,6 @@ const float TOP_OFFSET = 180.0f;
 
 }
 
--(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
-{
-    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            NSLog(@"Timeline Like for post %d succeed.",postRemoteKey);
-        }
-        else
-        {
-            NSLog(@"Timeline for post %d not succeed.",postRemoteKey);
-        }
-        
-        
-    }];
-}
-
-
 #pragma mark - Request management
 
 - (void)startReloadingCronImmediately:(BOOL)immediately
@@ -1767,10 +1588,6 @@ const float TOP_OFFSET = 180.0f;
         {
 //            DDLogDebug(@"up");
         }
-        
-    }
-    else
-    {
     }
     
     if((differenceFromStart) < 0)
@@ -1789,13 +1606,10 @@ const float TOP_OFFSET = 180.0f;
         }
             //[self contract];
     }
-    
 }
-
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    
     DDLogDebug(@"scrollViewDidEndDecelerating1 did scroll: %f", scrollView.contentOffset.y);
     
     if(self.posts.count == 0)
@@ -1819,7 +1633,6 @@ const float TOP_OFFSET = 180.0f;
     DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
-    
     
     _tableViewFirstTimeScrolled = YES;
 }
@@ -1851,8 +1664,6 @@ const float TOP_OFFSET = 180.0f;
 
     }
 }
-
-
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
@@ -1907,7 +1718,6 @@ const float TOP_OFFSET = 180.0f;
 
 #pragma mark - Table view
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -1921,8 +1731,6 @@ const float TOP_OFFSET = 180.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
- 
-
     if(indexPath.row == self.posts.count) {
         GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
         [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
@@ -1930,19 +1738,13 @@ const float TOP_OFFSET = 180.0f;
         return loadingCell;
     }
     
-    
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
-
    
     GLPPostCell *postCell;
-
     
     GLPPost *post = [self currentPostWithIndexPath:indexPath];
-    
-
-    
     
     if([post imagePost])
     {
@@ -2013,7 +1815,6 @@ const float TOP_OFFSET = 180.0f;
         DDLogDebug(@"%@ not subclass", [cell class]);
         
         return;
-        
     }
     
     
@@ -2042,17 +1843,7 @@ const float TOP_OFFSET = 180.0f;
         return;
     }
     
-    
     self.selectedPost = [self currentPostWithIndexPath:indexPath];
-    
-//    if(_groupsMode)
-//    {
-//        self.selectedPost = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
-//    }
-//    else
-//    {
-//        self.selectedPost = self.posts[indexPath.row];
-//    }
     
     self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row;
@@ -2064,32 +1855,14 @@ const float TOP_OFFSET = 180.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if(indexPath.row == self.posts.count) {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
-    
-    
-    //float height = [[self.postsHeight objectAtIndex:indexPath.row] floatValue];
-    
-    //static float imageSize = 300;
-    //static float lowerPostLimit = 115;
-    //static float fixedLimitHeight = 70;
-    
-    
-//    if(indexPath.row == 0)
-//    {
-//        return 200;
-//    }
-//    else
-//    {
-//        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
+
     GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
     
     if([currentPost imagePost])
     {
-        //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
-
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
     }
     else if ([currentPost isVideoPost])
@@ -2098,14 +1871,8 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
-        
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
     }
-    
-
-//    }
-
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2123,7 +1890,6 @@ const float TOP_OFFSET = 180.0f;
         [self loadPreviousPosts];
     }
 }
-
 
 
 #pragma mark - Table view manager methods
@@ -2182,17 +1948,13 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollToTheNavigationBar
 {
-    
     [UIView animateWithDuration:0.5f animations:^{
         
         [self.tableView setContentOffset:CGPointMake(0, TOP_OFFSET)];
         
-        
     } completion:^(BOOL finished) {
         
-        
     }];
-    
 }
 
 /**
@@ -2225,8 +1987,6 @@ const float TOP_OFFSET = 180.0f;
     {
         [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     }
-    
-    
     
     //    [self scrollToTheTop];
     [self scrollToTheNavigationBar];
@@ -2485,72 +2245,6 @@ const float TOP_OFFSET = 180.0f;
     [self scrollToTheTop];
 }
 
-
-
-#pragma mark - Other stuff
-
-//-(void)showFullPostImage:(id)sender
-//{
-//    
-//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-//    
-//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-//    
-//    
-//    self.imageToBeView = clickedImageView.image;
-//    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-//    vc.image = clickedImageView.image;
-//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    vc.modalPresentationStyle= UIModalPresentationCustom;
-//
-//    [vc setTransitioningDelegate:self.transitionViewImageController];
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-//    
-//}
-
-
-
-/*
- When like button is pushed turn it to our application's custom colour.
- */
--(void)likeButtonPushed: (id) sender
-{
-    UIButton *btn = (UIButton*) sender;
-    
-    //If like button is pushed then set the pushed variable to NO and change the
-    //colour of the image.
-    if([[self.posts objectAtIndex:btn.tag] liked])
-    {
-        [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
-        
-        [[self.posts objectAtIndex:btn.tag] setLiked:NO];
-        
-        //Change the like status and send to server the change.
-        [self postLike:NO withPostRemoteKey:[[self.posts objectAtIndex:btn.tag] remoteKey]];
-    }
-    else
-    {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
-        
-        
-        [[self.posts objectAtIndex:btn.tag] setLiked:YES];
-        
-        //Change the like status and send to server the change.
-        [self postLike:YES withPostRemoteKey:[[self.posts objectAtIndex:btn.tag] remoteKey]];
-        
-    }
-    
-}
-
 #pragma mark GLPPostCellDelegate
 
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
@@ -2650,72 +2344,8 @@ const float TOP_OFFSET = 180.0f;
     }];
 }
 
-/**
- If YES navigate to real profile, if no to private profile.
- */
-//-(BOOL)navigateToUnlockedProfile
-//{
-//    //Check if the user is already in contacts.
-//    //If yes show the regular profie view (unlocked).
-//    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
-//    {
-//        NSLog(@"PrivateProfileViewController : Unlock Profile.");
-//        
-//        return YES;
-//    }
-//    else
-//    {
-//        //If no, check in database if the user is already requested.
-//        
-//        //If yes change the button of add user to user already requested.
-//        
-//        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
-//        {
-//            NSLog(@"PrivateProfileViewController : User already requested by you.");
-//            //            UIImage *img = [UIImage imageNamed:@"invitesent"];
-//            //            [self.addUserButton setImage:img forState:UIControlStateNormal];
-//            //            [self.addUserButton setEnabled:NO];
-//            //
-//            //For now just navigate to the unlocked profile.
-//            
-//            return YES;
-//            
-//        }
-//        else
-//        {
-//            //If not show the private profile view as is.
-//            NSLog(@"PrivateProfileViewController : Private profile as is.");
-//            
-//            return NO;
-//        }
-//    }
-//}
-
-
-//-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
-//{
-//    self.selectedPost = self.posts[postIndex];
-//    [self performSegueWithIdentifier:@"view post" sender:self];
-//}
-
-
 - (void)newPostButtonClick
 {
-    
-    //    if(![NewPostView visible])
-    //    {
-    //        self.postView = [NewPostView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
-    //        self.postView.delegate = self;
-    //    }
-    //    else
-    //    {
-    //        [self.postView cancelPushed:nil];
-    //    }
-    
-    
-    
-    
-    
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
@@ -2730,8 +2360,6 @@ const float TOP_OFFSET = 180.0f;
     {
         
         //If iOS6
-        
-        NSLog(@"Modal View iOS 6");
         
         /**
          Takes screenshot from the current view controller to bring the sense of the transparency after the load
@@ -2750,24 +2378,6 @@ const float TOP_OFFSET = 180.0f;
         vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
         self.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:vc animated:YES completion:nil];
-        
-        /**
-         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"SecondViewController"];
-         vc.view.backgroundColor = [UIColor clearColor];
-         self.modalPresentationStyle = UIModalPresentationCurrentContext;
-         [self presentViewController:vc animated:NO completion:nil];
-         
-         */
-        
-        //        self.modalPresentationStyle = UIModalPresentationFullScreen;
-        //
-        
-        //        presenterViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        //        [presenterViewController presentViewController:loginViewController animated:YES completion:NULL];
-        
-        //[self performSegueWithIdentifier:@"new post" sender:self];
-        
     }
 }
 
@@ -2828,11 +2438,6 @@ const float TOP_OFFSET = 180.0f;
 //    vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
 //    self.modalPresentationStyle = UIModalPresentationCurrentContext;
 //    [self presentViewController:vc animated:YES completion:nil];
-    
-    
-    
-
-    
 }
 
 - (void)showCategoriesViewController
@@ -2933,25 +2538,18 @@ const float TOP_OFFSET = 180.0f;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
 
-        
-        
         ViewPostViewController *vc = segue.destinationViewController;
         /**
          Forward data of the post the to the view. Or in future just forward the post id
          in order to fetch it from the server.
          */
         
-//        self.postIndexToReload = 
         
         vc.commentJustCreated = self.commentCreated;
         vc.isFromCampusLive = NO;
         vc.post = self.selectedPost;
         vc.showComment = _showComment;
         _showComment = NO;
-//        vc.selectedIndex = self.selectedIndex;
-        
-        
-        //self.selectedPost = nil;
         
     }
     else if([segue.identifier isEqualToString:@"new comment"])
