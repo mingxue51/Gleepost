@@ -1152,19 +1152,10 @@
 		5832C4CB1899B8E7004FC4F6 /* ChatViewAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationController.h; sourceTree = "<group>"; };
 		5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationController.m; sourceTree = "<group>"; };
 		5834382118E643B900DDAFB3 /* going_pressed_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_pressed_new.png; sourceTree = "<group>"; };
-		5834902818BF80670087CC3A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834902918BF80670087CC3A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/FDTake.strings; sourceTree = "<group>"; };
 		5834902A18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FDTake.strings; sourceTree = "<group>"; };
 		5834902C18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5834903118BF80670087CC3A /* FDTakeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDTakeController.h; sourceTree = "<group>"; };
 		5834903218BF80670087CC3A /* FDTakeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTakeController.m; sourceTree = "<group>"; };
-		5834903318BF80670087CC3A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834903418BF80670087CC3A /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834903518BF80670087CC3A /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834903618BF80670087CC3A /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834903718BF80670087CC3A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834903818BF80670087CC3A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/FDTake.strings"; sourceTree = "<group>"; };
-		5834903918BF80670087CC3A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/FDTake.strings"; sourceTree = "<group>"; };
 		583491F51933FFE900E44B4A /* GLPWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWalkthroughViewController.h; sourceTree = "<group>"; };
 		583491F61933FFE900E44B4A /* GLPWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPWalkthroughViewController.m; sourceTree = "<group>"; };
 		5834FF4318B502D20092C52D /* profile_background_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_background_main.png; sourceTree = "<group>"; };
@@ -5310,15 +5301,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				ar,
-				de,
-				fr,
-				nb,
-				nl,
-				ru,
-				tr,
-				"zh-Hans",
-				"zh-Hant",
 			);
 			mainGroup = 80AB890E17C267F50053E784;
 			productRefGroup = 80AB891817C267F50053E784 /* Products */;
@@ -6299,16 +6281,7 @@
 		5834902718BF80670087CC3A /* FDTake.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5834902818BF80670087CC3A /* ar */,
-				5834902918BF80670087CC3A /* de */,
 				5834902A18BF80670087CC3A /* en */,
-				5834903318BF80670087CC3A /* fr */,
-				5834903418BF80670087CC3A /* nb */,
-				5834903518BF80670087CC3A /* nl */,
-				5834903618BF80670087CC3A /* ru */,
-				5834903718BF80670087CC3A /* tr */,
-				5834903818BF80670087CC3A /* zh-Hans */,
-				5834903918BF80670087CC3A /* zh-Hant */,
 			);
 			name = FDTake.strings;
 			sourceTree = "<group>";
