@@ -11,9 +11,9 @@
 @class UploadingProgressView;
 @class GLPPost;
 
-@interface GLPCampusWallProgressManager : NSObject
+@interface GLPVideoPostCWProgressManager : NSObject
 
-+ (GLPCampusWallProgressManager *)sharedInstance;
++ (GLPVideoPostCWProgressManager *)sharedInstance;
 
 - (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post;
 - (NSDate *)registeredTimestamp;

@@ -66,6 +66,7 @@
 #define GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED  @"GLPVideoProgressUploadingCompleted"
 #define GLPNOTIFICATION_GROUP_VIDEO_PROGRESS_UPDATE     @"GLPGroupVideoProgressUpdated"
 #define GLPNOTIFICATION_PROGRESS_BAR_VISIBILITY         @"GLPProgressBarVisibility"
+#define GLPNOTIFICATION_IMAGE_PROGRESS_UPDATE           @"GLPImageProgressUpdate"
 
 #define GLPNOTIFICATION_VIDEO_READY                     @"GLPVideoReady"
 #define GLPNOTIFICATION_VIDEO_LOADED                    @"GLPVideoLoaded"

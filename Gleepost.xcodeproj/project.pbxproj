@@ -141,6 +141,9 @@
 		582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404C18AD6DF300BC4285 /* AudioToolbox.framework */; };
 		582B404F18AD6EE300BC4285 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404E18AD6EE300BC4285 /* AVFoundation.framework */; };
 		582B405218AD6FAD00BC4285 /* mario.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 582B405118AD6FAD00BC4285 /* mario.mp3 */; };
+		582BB3841A20145800497457 /* GLPApproveLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BB3831A20145800497457 /* GLPApproveLevel.m */; };
+		582BB3871A201E2400497457 /* GLPImagePostCWProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BB3861A201E2400497457 /* GLPImagePostCWProgressManager.m */; };
+		582BB38A1A202E3800497457 /* GLPCWProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 582BB3891A202E3800497457 /* GLPCWProgressManager.m */; };
 		582CE05B18565D820024D065 /* GLPPrivateProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */; };
 		582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D5197DB22B000BE3EC /* UIView+GLPDesign.m */; };
 		582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */; };
@@ -281,7 +284,7 @@
 		585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D3199D87DA000F06BB /* kind_of_event_sports.png */; };
 		585106DD199D87DA000F06BB /* kind_of_event_theater.png in Resources */ = {isa = PBXBuildFile; fileRef = 585106D4199D87DA000F06BB /* kind_of_event_theater.png */; };
 		585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106E2199D9E64000F06BB /* PendingPostManager.m */; };
-		5851112A19A7E31000488E79 /* GLPCampusWallProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851112919A7E31000488E79 /* GLPCampusWallProgressManager.m */; };
+		5851112A19A7E31000488E79 /* GLPVideoPostCWProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851112919A7E31000488E79 /* GLPVideoPostCWProgressManager.m */; };
 		5851113719A8206900488E79 /* progress_bar_border.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113419A8206900488E79 /* progress_bar_border.png */; };
 		5851113819A8206900488E79 /* progress_bar_cloud_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851113519A8206900488E79 /* progress_bar_cloud_small.png */; };
 		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
@@ -1098,6 +1101,12 @@
 		582B404C18AD6DF300BC4285 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		582B404E18AD6EE300BC4285 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		582B405118AD6FAD00BC4285 /* mario.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mario.mp3; sourceTree = "<group>"; };
+		582BB3821A20145800497457 /* GLPApproveLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPApproveLevel.h; sourceTree = "<group>"; };
+		582BB3831A20145800497457 /* GLPApproveLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPApproveLevel.m; sourceTree = "<group>"; };
+		582BB3851A201E2400497457 /* GLPImagePostCWProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImagePostCWProgressManager.h; sourceTree = "<group>"; };
+		582BB3861A201E2400497457 /* GLPImagePostCWProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImagePostCWProgressManager.m; sourceTree = "<group>"; };
+		582BB3881A202E3800497457 /* GLPCWProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCWProgressManager.h; sourceTree = "<group>"; };
+		582BB3891A202E3800497457 /* GLPCWProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCWProgressManager.m; sourceTree = "<group>"; };
 		582CE05918565D820024D065 /* GLPPrivateProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPrivateProfileViewController.h; sourceTree = "<group>"; };
 		582CE05A18565D820024D065 /* GLPPrivateProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPrivateProfileViewController.m; sourceTree = "<group>"; };
 		582E44D4197DB22B000BE3EC /* UIView+GLPDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GLPDesign.h"; sourceTree = "<group>"; };
@@ -1299,8 +1308,8 @@
 		585106D4199D87DA000F06BB /* kind_of_event_theater.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_theater.png; sourceTree = "<group>"; };
 		585106E1199D9E64000F06BB /* PendingPostManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingPostManager.h; sourceTree = "<group>"; };
 		585106E2199D9E64000F06BB /* PendingPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingPostManager.m; sourceTree = "<group>"; };
-		5851112819A7E31000488E79 /* GLPCampusWallProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCampusWallProgressManager.h; sourceTree = "<group>"; };
-		5851112919A7E31000488E79 /* GLPCampusWallProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusWallProgressManager.m; sourceTree = "<group>"; };
+		5851112819A7E31000488E79 /* GLPVideoPostCWProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoPostCWProgressManager.h; sourceTree = "<group>"; };
+		5851112919A7E31000488E79 /* GLPVideoPostCWProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoPostCWProgressManager.m; sourceTree = "<group>"; };
 		5851113419A8206900488E79 /* progress_bar_border.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_border.png; sourceTree = "<group>"; };
 		5851113519A8206900488E79 /* progress_bar_cloud_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud_small.png; sourceTree = "<group>"; };
 		5851114119A83D9900488E79 /* progress_bar_cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_bar_cloud.png; sourceTree = "<group>"; };
@@ -2822,10 +2831,14 @@
 		5851112719A7E2FF00488E79 /* Progress */ = {
 			isa = PBXGroup;
 			children = (
-				5851112819A7E31000488E79 /* GLPCampusWallProgressManager.h */,
-				5851112919A7E31000488E79 /* GLPCampusWallProgressManager.m */,
+				5851112819A7E31000488E79 /* GLPVideoPostCWProgressManager.h */,
+				5851112919A7E31000488E79 /* GLPVideoPostCWProgressManager.m */,
 				584EE2CE19D5A1590049D7B2 /* GLPGroupProgressManager.h */,
 				584EE2CF19D5A1590049D7B2 /* GLPGroupProgressManager.m */,
+				582BB3851A201E2400497457 /* GLPImagePostCWProgressManager.h */,
+				582BB3861A201E2400497457 /* GLPImagePostCWProgressManager.m */,
+				582BB3881A202E3800497457 /* GLPCWProgressManager.h */,
+				582BB3891A202E3800497457 /* GLPCWProgressManager.m */,
 			);
 			name = Progress;
 			sourceTree = "<group>";
@@ -4530,6 +4543,8 @@
 				585CCD2719B91F06004009D7 /* GLPPushNotification.m */,
 				5879234E19E7926E007F3C20 /* GLPMember.h */,
 				5879234F19E7926E007F3C20 /* GLPMember.m */,
+				582BB3821A20145800497457 /* GLPApproveLevel.h */,
+				582BB3831A20145800497457 /* GLPApproveLevel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5773,7 +5788,7 @@
 				58EA127019FA1079003D264E /* GLPEmptyViewManager.m in Sources */,
 				58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
-				5851112A19A7E31000488E79 /* GLPCampusWallProgressManager.m in Sources */,
+				5851112A19A7E31000488E79 /* GLPVideoPostCWProgressManager.m in Sources */,
 				58FB7CB11856548A002C6A00 /* ProfileButtonsTableViewCell.m in Sources */,
 				584FA5FA19B519FD00FBA61F /* GLPCustomProgressView.m in Sources */,
 				58299B7919FA166A00702381 /* GLPMessengerEmptyView.m in Sources */,
@@ -5966,6 +5981,7 @@
 				583809F519DF0A3400275B4D /* ChangeGroupImageProgressView.m in Sources */,
 				80AB898117C295550053E784 /* TITokenField.m in Sources */,
 				80DC9AF5184633FE00A8E48B /* GLPLiveConversationsManager.m in Sources */,
+				582BB3871A201E2400497457 /* GLPImagePostCWProgressManager.m in Sources */,
 				580FF15318AA6DAD0026B65B /* NSDate+HumanizedTime.m in Sources */,
 				58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */,
 				80AB898517C2A0660053E784 /* KeyboardHelper.m in Sources */,
@@ -6066,6 +6082,7 @@
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
 				5892F11A19FB4FAE00B6778F /* GLPAttendingPostsViewController.m in Sources */,
+				582BB3841A20145800497457 /* GLPApproveLevel.m in Sources */,
 				58A9D94819EE4DA40067AB7D /* GLPShowUsersViewController.m in Sources */,
 				58774D44196574260034A1C6 /* UIRefreshControl+CustomLoader.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
@@ -6085,6 +6102,7 @@
 				58BBACB719787BF400A8A265 /* ImageCollectionViewCell.m in Sources */,
 				80C8BA6F18104447004F70DB /* GLPCommonsDaoParser.m in Sources */,
 				58E8949E19DB2FBD005C1490 /* GLPGroupSettingsViewController.m in Sources */,
+				582BB38A1A202E3800497457 /* GLPCWProgressManager.m in Sources */,
 				808F6B65187D92DB0062FE39 /* GLPMessageProcessor.m in Sources */,
 				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,
 				58FB7CAE18565089002C6A00 /* ProfileTableViewCell.m in Sources */,

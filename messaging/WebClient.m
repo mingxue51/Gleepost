@@ -20,7 +20,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPVideo.h"
 #import "GLPLocation.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 #import "GLPLiveGroupManager.h"
 
@@ -2100,10 +2100,10 @@ static WebClient *instance = nil;
 
         
         
-        if([[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+        if([[[GLPVideoPostCWProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
         {
             
-            DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPCampusWallProgressManager sharedInstance] registeredTimestamp], timestamp);
+            DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPVideoPostCWProgressManager sharedInstance] registeredTimestamp], timestamp);
             
             //Inform GLPCampusWallProgressManager.
             [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotification];

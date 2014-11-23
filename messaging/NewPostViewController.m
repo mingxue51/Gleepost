@@ -31,7 +31,7 @@
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 
 @interface NewPostViewController ()
@@ -403,7 +403,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             
             if([inPost isVideoPost])
             {
-                [[GLPCampusWallProgressManager sharedInstance] postButtonClicked];
+                [[GLPVideoPostCWProgressManager sharedInstance] postButtonClicked];
             }
         }
         

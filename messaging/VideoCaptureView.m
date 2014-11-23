@@ -9,7 +9,7 @@
 #import "VideoCaptureView.h"
 #import "VideoProgressView.h"
 #import "AppearanceHelper.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import <AssetsLibrary/ALAsset.h>
 #import "PendingPostManager.h"
 #import "GLPLiveGroupPostManager.h"
@@ -138,7 +138,7 @@
     else
     {
         //Add thumbnail to GLPProgressManager.
-        [[GLPCampusWallProgressManager sharedInstance] setThumbnailImage: thumbnail];
+        [[GLPVideoPostCWProgressManager sharedInstance] setThumbnailImage: thumbnail];
     }
     
     

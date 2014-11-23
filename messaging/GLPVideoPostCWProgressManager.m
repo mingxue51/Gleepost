@@ -9,11 +9,11 @@
 //  (Video or Image), calculate the percentage and send it to GLPTimelineViewController.
 //
 
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "UploadingProgressView.h"
 #import "GLPPost.h"
 
-@interface GLPCampusWallProgressManager ()
+@interface GLPVideoPostCWProgressManager ()
 
 //@property (strong, nonatomic) NSMutableArray *videosTimestamps;
 @property (strong, nonatomic) NSDate *currentProcessedTimestamp;
@@ -29,18 +29,18 @@
 
 @end
 
-@implementation GLPCampusWallProgressManager
+@implementation GLPVideoPostCWProgressManager
 
 const NSString *DATA_WRITTEN = @"data_written";
 const NSString *DATA_EXPECTED = @"data_expected";
 
-static GLPCampusWallProgressManager *instance = nil;
+static GLPVideoPostCWProgressManager *instance = nil;
 
-+ (GLPCampusWallProgressManager *)sharedInstance
++ (GLPVideoPostCWProgressManager *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[GLPCampusWallProgressManager alloc] init];
+        instance = [[GLPVideoPostCWProgressManager alloc] init];
     });
     
     return instance;

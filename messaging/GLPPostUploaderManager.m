@@ -14,7 +14,7 @@
 #import "WebClientHelper.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPVideo.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 
 @interface GLPPostUploaderManager ()
@@ -834,7 +834,7 @@
     }
     else
     {
-        [[GLPCampusWallProgressManager sharedInstance] progressFinished];
+        [[GLPVideoPostCWProgressManager sharedInstance] progressFinished];
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
     }
 

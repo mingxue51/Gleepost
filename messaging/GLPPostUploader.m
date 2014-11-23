@@ -16,7 +16,7 @@
 #import "GLPPostOperationManager.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPVideo.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
@@ -124,7 +124,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     
 
     //Register the timestamp in order to avoid problems when a video selected and then unselected.
-    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+    [[GLPVideoPostCWProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
     
     
 

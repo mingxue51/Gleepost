@@ -58,7 +58,7 @@
 #import "UIRefreshControl+CustomLoader.h"
 #import "IntroKindOfNewPostViewController.h"
 #import "GLPVideoUploadManager.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "UploadingProgressView.h"
 #import "NewPostViewController.h"
 #import "GLPShowLocationViewController.h"
@@ -193,7 +193,7 @@ const float TOP_OFFSET = 180.0f;
     /** Check if there are pending video posts. */
     [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
     
-    [GLPCampusWallProgressManager sharedInstance];
+    [GLPVideoPostCWProgressManager sharedInstance];
     
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
@@ -745,7 +745,7 @@ const float TOP_OFFSET = 180.0f;
     self.tableView.tableHeaderView = self.campusWallHeader;
     
     [self.campusWallHeader reloadData];
-    [self.navigationController.navigationBar addSubview:[[GLPCampusWallProgressManager sharedInstance] progressView]];
+    [self.navigationController.navigationBar addSubview:[[GLPVideoPostCWProgressManager sharedInstance] progressView]];
 }
 
 - (void)configNewElementsIndicatorView
