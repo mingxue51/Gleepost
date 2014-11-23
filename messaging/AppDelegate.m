@@ -49,6 +49,7 @@
 #import "GLPPushNotification.h"
 #import "GLPiOSSupportHelper.h"
 #import "FileLogger.h"
+#import "GLPThemeManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -625,8 +626,10 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     }
     else
     {
+        NSString *messageStr = [[GLPThemeManager sharedInstance] appNameWithString:@"You need to be logged in, to see %@ post"];
+        
         [[[UIAlertView alloc] initWithTitle:@"Failed to load post from facebook"
-                                    message:@"You need to be logged in, to see NerdNation post"
+                                    message:messageStr
                                    delegate:self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];

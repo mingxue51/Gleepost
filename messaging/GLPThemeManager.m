@@ -12,7 +12,7 @@
 
 @interface GLPThemeManager()
 
-@property (strong, nonatomic) GLPTheme *type;
+@property (strong, nonatomic) GLPTheme *selectedTheme;
 
 @end
 
@@ -52,37 +52,47 @@ static GLPThemeManager *instance = nil;
 {
     if([network isEqualToString:stanfordUniversity])
     {
-        self.type = [[GLPStanfordTheme alloc] init];
+        self.selectedTheme = [[GLPStanfordTheme alloc] init];
     }
     else
     {
-        self.type = [[GLPDefaultTheme alloc] init];
+        self.selectedTheme = [[GLPDefaultTheme alloc] init];
     }
 }
 
 -(UIColor*)colorForTabBar
 {
-    return [self.type tabbarColour];
+    return [self.selectedTheme tabbarColour];
 }
 
 -(NSString*)imageForChatBackground
 {
-    return [self.type chatBackground];
+    return [self.selectedTheme chatBackground];
 }
 
 -(NSString*)imageForNavBar
 {
-    return [self.type navbar];
+    return [self.selectedTheme navbar];
 }
 
 -(NSString*)pullDownButton
 {
-    return [self.type pullDownImage];
+    return [self.selectedTheme pullDownImage];
 }
 
 -(GLPThemeType)themeIdentifier
 {
-    return [self.type identifier];
+    return [self.selectedTheme identifier];
+}
+
+- (NSString *)appNameWithString:(NSString *)string
+{    
+    return [NSString stringWithFormat:string, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"]];
+}
+
+- (NSString *)lowerCaseAppName
+{
+    return [NSString stringWithFormat:@"%@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"]].lowercaseString;
 }
 
 @end

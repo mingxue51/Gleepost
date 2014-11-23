@@ -588,6 +588,7 @@
 		58AEF7EF19F887D500DDAE88 /* FileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AEF7EE19F887D500DDAE88 /* FileLogger.m */; };
 		58B1161D180D8491000E9555 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B1161C180D8491000E9555 /* ProfileView.m */; };
 		58B1BC9818EB13E9000ECB6C /* more_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B1BC9718EB13E9000ECB6C /* more_old.png */; };
+		58B6BF481A22963F00113DB7 /* Gleepost_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */; };
 		58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8619C01541007E3416 /* GLPNotificationCell.m */; };
 		58B74A8A19C037DA007E3416 /* NotificationsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */; };
 		58B7815D19F9CB7C003E0F9A /* GLPTableActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B7815C19F9CB7C003E0F9A /* GLPTableActivityIndicator.m */; };
@@ -944,6 +945,16 @@
 		C04613981834E87000B422A3 /* UIViewController+GAI.m in Sources */ = {isa = PBXBuildFile; fileRef = C04613971834E87000B422A3 /* UIViewController+GAI.m */; };
 		D23E342C04344F0B93695525 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D6C24A4DFC4BA5B92AFE98 /* libPods.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		58B6BF491A22963F00113DB7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80AB890F17C267F50053E784 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80AB891617C267F50053E784;
+			remoteInfo = NerdNation;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		11707584186C6DC000F68607 /* NSUserDefaults+GLPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+GLPAdditions.h"; sourceTree = "<group>"; };
@@ -1751,6 +1762,9 @@
 		58B1161B180D8491000E9555 /* ProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
 		58B1161C180D8491000E9555 /* ProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		58B1BC9718EB13E9000ECB6C /* more_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more_old.png; sourceTree = "<group>"; };
+		58B6BF431A22963F00113DB7 /* Gleepost Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Gleepost Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		58B6BF461A22963F00113DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Gleepost_Tests.m; sourceTree = "<group>"; };
 		58B74A8519C01541007E3416 /* GLPNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNotificationCell.h; sourceTree = "<group>"; };
 		58B74A8619C01541007E3416 /* GLPNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNotificationCell.m; sourceTree = "<group>"; };
 		58B74A8819C037DA007E3416 /* NotificationsOrganiserHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsOrganiserHelper.h; sourceTree = "<group>"; };
@@ -2283,6 +2297,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		58B6BF401A22963F00113DB7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80AB891417C267F50053E784 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3814,6 +3835,23 @@
 			name = FLog;
 			sourceTree = "<group>";
 		};
+		58B6BF441A22963F00113DB7 /* Gleepost Tests */ = {
+			isa = PBXGroup;
+			children = (
+				58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */,
+				58B6BF451A22963F00113DB7 /* Supporting Files */,
+			);
+			path = "Gleepost Tests";
+			sourceTree = "<group>";
+		};
+		58B6BF451A22963F00113DB7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				58B6BF461A22963F00113DB7 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		58B74A8419C014EE007E3416 /* Notification Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -4669,6 +4707,7 @@
 			children = (
 				80AB892217C267F50053E784 /* Gleepost */,
 				11E2FBAF1856FCA9002EB2FA /* SSLCertificates */,
+				58B6BF441A22963F00113DB7 /* Gleepost Tests */,
 				80AB891917C267F50053E784 /* Frameworks */,
 				80AB891817C267F50053E784 /* Products */,
 				FF972496B7AD4044B85FE95E /* Pods.xcconfig */,
@@ -4679,6 +4718,7 @@
 			isa = PBXGroup;
 			children = (
 				80AB891717C267F50053E784 /* NerdNation.app */,
+				58B6BF431A22963F00113DB7 /* Gleepost Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5261,6 +5301,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		58B6BF421A22963F00113DB7 /* Gleepost Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 58B6BF4B1A22964000113DB7 /* Build configuration list for PBXNativeTarget "Gleepost Tests" */;
+			buildPhases = (
+				58B6BF3F1A22963F00113DB7 /* Sources */,
+				58B6BF401A22963F00113DB7 /* Frameworks */,
+				58B6BF411A22963F00113DB7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				58B6BF4A1A22963F00113DB7 /* PBXTargetDependency */,
+			);
+			name = "Gleepost Tests";
+			productName = "Gleepost Tests";
+			productReference = 58B6BF431A22963F00113DB7 /* Gleepost Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		80AB891617C267F50053E784 /* NerdNation */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 80AB893917C267F50053E784 /* Build configuration list for PBXNativeTarget "NerdNation" */;
@@ -5290,6 +5348,10 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Gleepost;
 				TargetAttributes = {
+					58B6BF421A22963F00113DB7 = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 80AB891617C267F50053E784;
+					};
 					80AB891617C267F50053E784 = {
 						DevelopmentTeam = X99AUPHK24;
 					};
@@ -5309,11 +5371,19 @@
 			targets = (
 				80AB891617C267F50053E784 /* NerdNation */,
 				807C4CD9180ADBA1003D67E6 /* Mogenerator */,
+				58B6BF421A22963F00113DB7 /* Gleepost Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		58B6BF411A22963F00113DB7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80AB891517C267F50053E784 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5876,6 +5946,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		58B6BF3F1A22963F00113DB7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				58B6BF481A22963F00113DB7 /* Gleepost_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80AB891317C267F50053E784 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6277,6 +6355,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		58B6BF4A1A22963F00113DB7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80AB891617C267F50053E784 /* NerdNation */;
+			targetProxy = 58B6BF491A22963F00113DB7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		5834902718BF80670087CC3A /* FDTake.strings */ = {
 			isa = PBXVariantGroup;
@@ -6305,6 +6391,67 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		58B6BF4C1A22964000113DB7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "Gleepost Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NerdNation.app/NerdNation";
+			};
+			name = Debug;
+		};
+		58B6BF4D1A22964000113DB7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "Gleepost Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NerdNation.app/NerdNation";
+			};
+			name = Release;
+		};
 		807C4CDA180ADBA1003D67E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6424,6 +6571,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		58B6BF4B1A22964000113DB7 /* Build configuration list for PBXNativeTarget "Gleepost Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				58B6BF4C1A22964000113DB7 /* Debug */,
+				58B6BF4D1A22964000113DB7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		807C4CDC180ADBA1003D67E6 /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

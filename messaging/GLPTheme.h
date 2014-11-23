@@ -26,4 +26,6 @@ typedef enum
 
 -(id)initWithIdentifier:(GLPThemeType)identifier chatBackground:(NSString*)chatBackground navbarImageName:(NSString*)navBar tabbarTintColour:(UIColor*)tabbarColour pullDownImage:(NSString*)pullDownImage;
 
+//- (id)initWithIdentifier:(GLPThemeType)identifier navbarImageName:()
+
 @end

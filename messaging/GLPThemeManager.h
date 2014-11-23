@@ -19,5 +19,6 @@
 -(UIColor*)colorForTabBar;
 -(NSString*)pullDownButton;
 -(GLPThemeType)themeIdentifier;
-
+- (NSString *)appNameWithString:(NSString *)string;
+- (NSString *)lowerCaseAppName;
 @end
