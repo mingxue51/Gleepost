@@ -19,5 +19,14 @@
 -(UIColor*)colorForTabBar;
 -(NSString*)pullDownButton;
 -(GLPThemeType)themeIdentifier;
-
+- (UIImage *)navigationBarImage;
+- (UIImage *)leftItemColouredImage:(UIImage *)leftImage;
+- (UIImage *)rightItemColouredImage:(UIImage *)rightImage;
+- (UIColor *)navigationBarColour;
+- (UIColor *)navigationBarTitleColour;
+- (UIColor *)campusWallNavigationBarTitleColour;
+- (UIColor *)tabbarSelectedColour;
+- (UIColor *)tabbarUnselectedColour;
+- (NSString *)appNameWithString:(NSString *)string;
+- (NSString *)lowerCaseAppName;
 @end

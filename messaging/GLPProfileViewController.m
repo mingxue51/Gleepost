@@ -155,7 +155,7 @@
     if(![GLPiOSSupportHelper isIOS6])
     {
         //Change the colour of the tab bar.
-        self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+        self.tabBarController.tabBar.tintColor = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
         [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     }
 
@@ -290,7 +290,7 @@
 
 -(void)addNavigationButtons
 {
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight specialButton:kQuit withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
 }
 
 -(void)configureNavigationBar

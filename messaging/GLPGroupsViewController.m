@@ -20,6 +20,7 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPGroupSearchViewController.h"
 #import "GLPEmptyViewManager.h"
+#import "GLPThemeManager.h"
 
 @interface GLPGroupsViewController ()
 
@@ -64,7 +65,7 @@
     [self configureNavigationButton];
     
     //Change the colour of the tab bar.
-    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+    self.tabBarController.tabBar.tintColor = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
@@ -144,16 +145,21 @@
     
     _navigationBar.topItem.title = @"MY GROUPS";
     
-    [_navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], NSFontAttributeName, [AppearanceHelper blackGleepostColour], NSForegroundColorAttributeName, nil]];
+    [_navigationBar setFontFormatWithColour:kBlack];
+    
+    [_navigationBar whiteBackgroundFormatWithShadow:NO];
+    
+    [self.view setBackgroundColor:[[GLPThemeManager sharedInstance] navigationBarColour]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)configureNavigationButton
 {
-    [self.navigationController.navigationBar setButton:kRight withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
+    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:_navItem];
     
-    [self.navigationController.navigationBar setButton:kLeft withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:_navItem];
+    
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:_navItem];
 }
 
 - (void)configTabbar

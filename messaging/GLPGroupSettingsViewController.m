@@ -62,7 +62,8 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     self.title = @"GROUP SETTINGS";
     
     
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"verification_minimize" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissModalView) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImageName:@"verification_minimize" withButtonSize:CGSizeMake(20.0, 20.0) withSelector:@selector(dismissModalView) andTarget:self];
+
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

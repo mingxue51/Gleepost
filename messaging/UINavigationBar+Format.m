@@ -11,6 +11,7 @@
 #import "AppearanceHelper.h"
 #import "ImageFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "GLPThemeManager.h"
 
 @implementation UINavigationBar (Format)
 
@@ -27,9 +28,13 @@
     }
     else
     {
-        [self setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
-                           forBarPosition:UIBarPositionAny
-                               barMetrics:UIBarMetricsDefault];
+//        [self setTintColor:[UIColor redColor]];
+        
+//        [self setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
+//                           forBarPosition:UIBarPositionAny
+//                               barMetrics:UIBarMetricsDefault];
+        
+        [self setBackgroundImage:[[GLPThemeManager sharedInstance] navigationBarImage] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     }
     
     [self setTranslucent:NO];
@@ -46,7 +51,7 @@
 
 /**
  This method adds a black image view on top of the view controller view's
- a white image in order. This kind of procedure is used when the parent view controller
+ a white image in order. This kind of procedure is used when the parent view controller (in the stack)
  has translucent navigation bar.
  
  @param shadow
@@ -81,7 +86,7 @@
         return;
     }
     
-    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], UITextAttributeFont, [self colourWithGLPColour:colour], UITextAttributeTextColor, nil]];
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], NSFontAttributeName, [[GLPThemeManager sharedInstance] navigationBarTitleColour], NSForegroundColorAttributeName, nil]];
     
     NSString *string = self.topItem.title;
     
@@ -97,7 +102,7 @@
         return;
     }
     
-    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0], UITextAttributeFont, [self colourWithGLPColour:kRed], UITextAttributeTextColor, nil]];
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0], NSFontAttributeName, [[GLPThemeManager sharedInstance] campusWallNavigationBarTitleColour], NSForegroundColorAttributeName, nil]];
     
     NSString *string = self.topItem.title;
     

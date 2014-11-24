@@ -223,8 +223,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
         
         //Set colour to the view.
-        [titleLabelBtn setTitleColor:[AppearanceHelper greenGleepostColour] forState:UIControlStateNormal];
-        
+        [titleLabelBtn setTitleColor:[[GLPThemeManager sharedInstance] navigationBarTitleColour] forState:UIControlStateNormal];
+    
         //Set navigation to profile selector.
         titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
         [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];

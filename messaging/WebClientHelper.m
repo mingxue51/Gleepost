@@ -8,6 +8,7 @@
 
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
+#import "GLPThemeManager.h"
 
 @implementation WebClientHelper
 
@@ -260,7 +261,9 @@
 
 + (void)showErrorPermissionsToCalendar
 {
-    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"NerdNation needs permissions to save that event to your Calendar. Please check your settings and try again."];
+    NSString *message = [[GLPThemeManager sharedInstance] appNameWithString:@"%@ needs permissions to save that event to your Calendar. Please check your settings and try again."];
+    
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:message];
 }
 
 @end

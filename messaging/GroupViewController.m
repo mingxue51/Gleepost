@@ -391,8 +391,9 @@ const float TOP_OFF_SET = -64.0;
     }
     
     if([_group.loggedInUser isAuthenticatedForChanges])
-    {
-        [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+    {        
+        [self.navigationController.navigationBar setButton:kRight specialButton:kQuit withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+
     }
     else if (![_group.loggedInUser isMemberOfGroup] && _group.privacy == kPublicGroup)
     {

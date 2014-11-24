@@ -560,7 +560,14 @@ const float TOP_OFFSET = 180.0f;
     
     
 //    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-    UIColor *tabColour = [AppearanceHelper redGleepostColour];
+
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
+
+    
+    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
+
+    
+//    self.tabBarController.tabBar.hidden = NO;
     [AppearanceHelper showTabBar:self];
     
     //[[CustomTabBarButtonManager sharedInstance] showItemHidden];
